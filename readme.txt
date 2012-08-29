@@ -30,6 +30,11 @@ will output to the terminal and
 
 will output to outputfile.tex
 
+For more examples, see the sampleBEFORE.tex and sampleAFTER.tex 
+which was obtained by running
+
+    perl indent.plx sampleBEFORE.tex > sampleAFTER.tex
+
 * IMPORTANT *
 
 This script may not work for your style of formatting; I highly 
