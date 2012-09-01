@@ -1,0 +1,15 @@
+Version 3: September 1st 2012
+    - made \ optional when looking for commands that split {} across 
+      lines; this is happens a lot in tikz keys
+    - allowed $\begin{.*} to be matched as the beginning of an 
+      environment, which is helpful for matching
+        $\begin{aligned}
+            ...
+            ...
+         \end{aligned}$
+      and probably others
+
+Version 2 (and below) August 28th 2012
+    - indents environments
+    - aligns at delimeter tabs (does not format rows with \multicolumn)
+    - matches commands that have split {}

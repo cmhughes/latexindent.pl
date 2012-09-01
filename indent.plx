@@ -47,6 +47,11 @@ my %lookforaligndelims=("tabular"=>1,
 my %checkunmatched=("parbox"=>1,
                     "vbox"=>1,
                     "marginpar"=>1,
+                    "pgfkeysifdefined"=>1,
+                    "pgfplotstableset"=>1,
+                    "empty header/.style"=>1,
+                    "typeset cell/.append code"=>1,
+                    "create col/assign/.code"=>1,
                     "foreach"=>1);
 
 # scalar variables
@@ -145,18 +150,21 @@ while(<>)
     # or other split-across-lines command and check that
     # we're not starting another command that has split braces (nesting)
     if(scalar(@matchbracestore) 
-        and !($_ =~ m/^\s*\\(.*?)(\[|{|\s)/ and scalar($checkunmatched{$1}))
+        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ and scalar($checkunmatched{$2}))
        )
     {
        # get the most recent value of $matchedbraces
        # and $commandname
        $matchedbraces = pop(@matchbracestore);
        $commandname = pop(@commandstore);
+       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
 
        # match { but don't match \{
-       $matchedbraces++ while ($_ =~ /(?<!\\){/g);
+       $matchedbraces++ while ($_ =~ m/(?<!\\){/g);
+       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
        # match } but don't match \}
-       $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
+       $matchedbraces-- while ($_ =~ m/(?<!\\)}/g);
+       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
 
        # if we've matched up the braces then
        # we can decrease the indent by 1 level
@@ -192,17 +200,17 @@ while(<>)
     # check to see if we have \begin{something} or \[ 
     # and make sure we're not working with %\begin{something}
     # which is commented
-    if( ($_ =~ m/^\s*\\begin{(.*?)}/ or $_=~ m/^\s*(\\\[)/) 
+    if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
         and $_ !~ m/^%/)
     {
        # INCREASE the indentation unless the environment 
        # is one that we don't want to indent
-       if(!$noindent{$1})
+       if(!$noindent{$2})
        {
-         if(scalar($indentrules{$1}))
+         if(scalar($indentrules{$2}))
          {
             # if there's a rule for indentation for this environment
-            push(@indent, $indentrules{$1});
+            push(@indent, $indentrules{$2});
           }
           else
           {
@@ -213,7 +221,7 @@ while(<>)
 
        # check to see if we need to look for alignment
        # delimeters
-       if($lookforaligndelims{$1})
+       if($lookforaligndelims{$2})
        {
            $delimeters=1;
        }
@@ -235,11 +243,11 @@ while(<>)
     #       (.*?) non-greedy character match and store the result
     #       (\[|}|\s) either [ or { or a space
     #
-    if ($_ =~ m/^\s*\\(.*?)(\[|{|\s)/ and scalar($checkunmatched{$1}))
+    if ($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ and scalar($checkunmatched{$2}))
         {
             # store the command name, because $1
             # will not exist after the next match
-            $commandname = $1;
+            $commandname = $2;
             $matchedbraces=0;
 
             # match { but don't match \{
