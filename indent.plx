@@ -157,7 +157,6 @@ while(<>)
        # and $commandname
        $matchedbraces = pop(@matchbracestore);
        $commandname = pop(@commandstore);
-       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
 
        # match { but don't match \{
        $matchedbraces++ while ($_ =~ m/(?<!\\){/g);
