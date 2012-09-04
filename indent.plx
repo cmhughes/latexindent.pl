@@ -33,7 +33,7 @@ my %noindent=("pccexample"=>1,
 # to use a space " " or maybe a double tab "\t\t"
 my %indentrules=("axis"=>"   ");
 
-# environments that have tab delimeters, add more 
+# environments that have tab delimiters, add more 
 # as needed
 my %lookforaligndelims=("tabular"=>1,
                         "align"=>1,
@@ -47,19 +47,19 @@ my %lookforaligndelims=("tabular"=>1,
 my %checkunmatched=("parbox"=>1,
                     "vbox"=>1,
                     "marginpar"=>1,
-                    "pgfkeysifdefined"=>1,
                     "pgfplotstableset"=>1,
                     "empty header/.style"=>1,
                     "typeset cell/.append code"=>1,
                     "create col/assign/.code"=>1,
                     "foreach"=>1);
+my %checkunmatchedELSE=("pgfkeysifdefined"=>1,);
 
 # scalar variables
 my $defaultindent="\t";     # $defaultindent: Default value of indentation
 my $line='';                # $line: takes the $line of the file
 my $inpreamble=1;           # $inpreamble: switch to determine if in
                             #               preamble or not
-my $delimeters=0;           # $delimeters: switch that governs if
+my $delimiters=0;           # $delimiters: switch that governs if
                             #              we need to check for & or not
 my $matchedbraces=0;        # $matchedbraces: counter to see if { }
                             #               are matched; it will be 
@@ -68,15 +68,22 @@ my $matchedbraces=0;        # $matchedbraces: counter to see if { }
                             #               0 if matched
 my $commandname='';         # $commandname: either \parbox, \marginpar,
                             #               or anything else from %checkunmatched
+my $commanddetails = '';    # $command details: a scalar that stores
+                            #               details about the command 
+                            #               that splits {} across lines
+my $countzeros = '';        # $countzeros:  a counter that helps 
+                            #               when determining if we're in
+                            #               an else construct
+my $lookforelse=0;          # $lookforelse: a boolean to help determine 
+                            #               if we need to look for an 
+                            #               else construct
 
 # array variables
 my @indent=();              # @indent: stores indentation
 my @lines=();               # @lines: stores the newly indented lines
-my @block=();               # @block: stores blocks that have & delimeters
+my @block=();               # @block: stores blocks that have & delimiters
 my @commandstore=();        # @commandstore: stores commands that 
                             #           have split {} across lines
-my @matchbracestore=();     # @matchbracestore: stores the counters used
-                            #           to match { and }, for e.g \parbox
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
 
@@ -114,17 +121,282 @@ while(<>)
     }
 
     # check to see if we have \end{something} or \]
-    # and make sure we're not working with %\end{something}
-    # which is commented
+    &at_end_of_env_or_eq();
+
+    # check to see if we're at the end of a \parbox, \marginpar
+    # or other split-across-lines command and check that
+    # we're not starting another command that has split braces (nesting)
+    &end_command_or_key_unmatched_braces();
+
+    # ADD CURRENT LEVEL OF INDENTATION
+    # (unless we're in a delimiter-aligned block)
+    if(!$delimiters)
+    {
+        # add current value of indentation to the current line
+        # and output it
+        $_ = join("",@indent).$_;
+        push(@lines,$_);
+    }
+    else
+    {
+        # output to block
+        push(@block,$_);
+    }
+
+    # check to see if we have \begin{something} or \[ 
+    &at_beg_of_env_or_eq();
+
+    # check to see if we have \parbox, \marginpar, or
+    # something similar that might split braces {} across lines,
+    # specified in %checkunmatched hash table
+    &start_command_or_key_unmatched_braces();
+
+    # check for an else statement
+    &check_for_else();
+}
+
+# output the formatted lines!
+print @lines;
+
+sub start_command_or_key_unmatched_braces{
+    # PURPOSE: This matches 
+    #              \parbox{...
+    #              \parbox[..]..{
+    #              empty header/.style={
+    #              \foreach \something
+    #              etc
+    #
+    #              or any other command/key that has braces
+    #              split across lines specified in the 
+    #              hash tables, %checkunmatched, %checkunmatchedELSE
+    #
+    # How to read: ^\s*(\\)?(.*?)(\[|{|\s)
+    #
+    #       ^                  line begins with
+    #       \s*                any (or no)spaces
+    #       (\\)?              matches a \ backslash but not necessarily
+    #       (.*?)              non-greedy character match and store the result
+    #       (\[|}|=|(\s*\\))   either [ or { or = or space \
+
+    if ($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
+            and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2}))
+        )
+        {
+            # store the command name, because $1
+            # will not exist after the next match
+            $commandname = $2;
+            $matchedbraces=0;
+
+            # by default, don't look for an else construct
+            $lookforelse=0;
+            if(scalar($checkunmatchedELSE{$2}))
+            {
+                $lookforelse=1;
+            }
+
+            # match { but don't match \{
+            $matchedbraces++ while ($_ =~ /(?<!\\){/g);
+            # match } but don't match \}
+            $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
+
+            # set the indentation
+            if($matchedbraces != 0 )
+            {
+                  &increase_indent($commandname);
+
+                  # store the command name
+                  # and the value of $matchedbraces
+                  push(@commandstore,{commandname=>$commandname,
+                                      matchedbraces=>$matchedbraces,
+                                      lookforelse=>$lookforelse,
+                                      countzeros=>0});
+
+            }
+        }
+}
+
+sub end_command_or_key_unmatched_braces{
+    # PURPOSE:  Check for the closing brace of a command that 
+    #           splits its braces across lines, such as
+    #
+    #               \parbox{ ...
+    #
+    #           or one of the tikz keys, such as
+    #           
+    #              empty header/.style={
+    #
+    #           It works by checking if we have any entries
+    #           in the array @commandstore, and making 
+    #           sure that we're not starting another command/key
+    #           that has split braces (nesting).
+    #
+    #           It also checks that the line is not commented.
+    #
+    #           We count the number of { and ADD to the counter
+    #                                  } and SUBTRACT to the counter
+    if(scalar(@commandstore) 
+        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
+                    and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2})))
+        and $_ !~ m/^\s*%/
+       )
+    {
+       # get the details of the most recent command name
+       $commanddetails = pop(@commandstore);
+       $commandname = $commanddetails->{'commandname'};
+       $matchedbraces = $commanddetails->{'matchedbraces'};
+       $countzeros = $commanddetails->{'countzeros'};
+       $lookforelse= $commanddetails->{'lookforelse'};
+
+       # match { but don't match \{
+       $matchedbraces++ while ($_ =~ m/(?<!\\){/g);
+
+       # match } but don't match \}
+       $matchedbraces-- while ($_ =~ m/(?<!\\)}/g);
+
+       # if we've matched up the braces then
+       # we can decrease the indent by 1 level
+       if($matchedbraces == 0)
+       {
+            $countzeros++ if $lookforelse;
+            pop(@indent) if !$noindent{$commandname};
+
+           if($countzeros==1)
+           {
+                push(@commandstore,{commandname=>$commandname,
+                                    matchedbraces=>$matchedbraces,
+                                    lookforelse=>$lookforelse,
+                                    countzeros=>$countzeros});
+           }
+       }
+       else
+       {
+           # otherwise we need to enter the new value
+           # of $matchedbraces and the value of $command
+           # back into storage
+           push(@commandstore,{commandname=>$commandname,
+                               matchedbraces=>$matchedbraces,
+                               lookforelse=>$lookforelse,
+                               countzeros=>$countzeros});
+       }
+     }
+}
+
+sub check_for_else{
+    # PURPOSE: Check for an else clause
+    #
+    #          Some commands have the form
+    #
+    #               \mycommand{
+    #                   if this
+    #               }
+    #               {
+    #                   else this
+    #               }
+    #
+    #          so we need to look for the else bit, and set 
+    #          the indentation appropriately.
+    #
+    #          We only perform this check if there's something
+    #          in the array @commandstore, and if 
+    #          the line itself is not a command, or comment, 
+    #          and if it begins with {
+
+    if(scalar(@commandstore) 
+        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
+                    and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2})))
+        and $_ =~ m/^\s*{/
+        and $_ !~ m/^\s*%/
+       )
+    {
+       # get the details of the most recent command name
+       $commanddetails = pop(@commandstore);
+       $commandname = $commanddetails->{'commandname'};
+       $matchedbraces = $commanddetails->{'matchedbraces'};
+       $countzeros = $commanddetails->{'countzeros'};
+       $lookforelse= $commanddetails->{'lookforelse'};
+
+       # increase indentation
+       if($lookforelse and $countzeros==1)
+       {
+         &increase_indent($commandname);
+       }
+
+       # put the array back together
+       push(@commandstore,{commandname=>$commandname,
+                           matchedbraces=>$matchedbraces,
+                           lookforelse=>$lookforelse,
+                           countzeros=>$countzeros});
+    }
+}
+
+sub at_beg_of_env_or_eq{
+    # PURPOSE: Check if we're at the BEGINning of an environment
+    #          or at the BEGINning of a displayed equation \[
+    #
+    #          This subroutine checks for matches of the form
+    #
+    #               \begin{environmentname}
+    #          or
+    #               \[
+    #
+    #          It also checks to see if the current environment
+    #          should have alignment delimiters; if so, we need to turn 
+    #          ON the $delimiter switch 
+
+    # How to read
+    #  m/^\s*(\$)?\\begin{(.*?)}/ 
+    #
+    #   ^               beginning of a line
+    #   \s*             any white spaces (possibly none)
+    #   (\$)?           possibly a $ symbol, but not required
+    #   \\begin{(.*)?}  \begin{environmentname}
+    #
+    # How to read
+    #  m/^\s*()(\\\[)/
+    #
+    #  ^        beginning of a line
+    #  \s*      any white spaces (possibly none)
+    #  ()       empty just so that $1 and $2 are defined
+    #  (\\\[)   \[  there are lots of \ because both \ and [ need escaping 
+
+    if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
+        and $_ !~ m/^\s*%/)
+    {
+       # increase the indentation 
+       &increase_indent($2);
+
+       # check to see if we need to look for alignment
+       # delimiters
+       if($lookforaligndelims{$2})
+       {
+           $delimiters=1;
+       }
+    }
+}
+
+sub at_end_of_env_or_eq{
+    # PURPOSE: Check if we're at the END of an environment
+    #          or at the END of a displayed equation \]
+    #
+    #          This subroutine checks for matches of the form
+    #
+    #               \end{environmentname}
+    #          or
+    #               \]
+    #
+    #          It also checks to see if the current environment
+    #          had alignment delimiters; if so, we need to turn 
+    #          OFF the $delimiter switch 
+    
     if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/(\\\])/)
-         and $_ !~ m/^%/)
+         and $_ !~ m/\s*^%/)
     {
 
        # check to see if we need to turn off alignment
-       # delimeters and output the current block
+       # delimiters and output the current block
        if($lookforaligndelims{$1})
        {
-           $delimeters=0;
+           $delimiters=0;
 
            # print the current FORMATTED block
            @block = &format_block(@block);
@@ -145,143 +417,12 @@ while(<>)
             pop(@indent);
         }
     }
-
-    # check to see if we're at the end of a \parbox, \marginpar
-    # or other split-across-lines command and check that
-    # we're not starting another command that has split braces (nesting)
-    if(scalar(@matchbracestore) 
-        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ and scalar($checkunmatched{$2}))
-       )
-    {
-       # get the most recent value of $matchedbraces
-       # and $commandname
-       $matchedbraces = pop(@matchbracestore);
-       $commandname = pop(@commandstore);
-
-       # match { but don't match \{
-       $matchedbraces++ while ($_ =~ m/(?<!\\){/g);
-       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
-       # match } but don't match \}
-       $matchedbraces-- while ($_ =~ m/(?<!\\)}/g);
-       #print "MATCHED BRACES: ",$matchedbraces," LINE: ",$_;
-
-       # if we've matched up the braces then
-       # we can decrease the indent by 1 level
-       if($matchedbraces == 0 and !$noindent{$commandname})
-       {
-            pop(@indent);
-       }
-       else
-       {
-           # otherwise we need to enter the new value
-           # of $matchedbraces and the value of $command
-           # back into storage
-           push(@commandstore,$commandname);
-           push(@matchbracestore,$matchedbraces);
-       }
-     }
-
-    # ADD CURRENT LEVEL OF INDENTATION
-    # (unless we're in a delimeter-aligned block)
-    if(!$delimeters)
-    {
-        # add current value of indentation to the current line
-        # and output it
-        $_ = join("",@indent).$_;
-        push(@lines,$_);
-    }
-    else
-    {
-        # output to block
-        push(@block,$_);
-    }
-
-    # check to see if we have \begin{something} or \[ 
-    # and make sure we're not working with %\begin{something}
-    # which is commented
-    if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
-        and $_ !~ m/^%/)
-    {
-       # INCREASE the indentation unless the environment 
-       # is one that we don't want to indent
-       if(!$noindent{$2})
-       {
-         if(scalar($indentrules{$2}))
-         {
-            # if there's a rule for indentation for this environment
-            push(@indent, $indentrules{$2});
-          }
-          else
-          {
-            # default indentation
-            push(@indent, $defaultindent);
-          }
-       }
-
-       # check to see if we need to look for alignment
-       # delimeters
-       if($lookforaligndelims{$2})
-       {
-           $delimeters=1;
-       }
-    }
-
-    # check to see if we have \parbox, \marginpar, or
-    # something similar that might split braces {} across lines,
-    # specified in %checkunmatched hash table
-    #
-    # this matches \parbox{...
-    #              \parbox[...
-    # etc
-    #
-    # How to read: ^\s*\\(.*?)(\[|{|\s)
-    #
-    #       ^ line begins with
-    #       \s* any (or no)spaces
-    #       \\ matches a \
-    #       (.*?) non-greedy character match and store the result
-    #       (\[|}|\s) either [ or { or a space
-    #
-    if ($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ and scalar($checkunmatched{$2}))
-        {
-            # store the command name, because $1
-            # will not exist after the next match
-            $commandname = $2;
-            $matchedbraces=0;
-
-            # match { but don't match \{
-            $matchedbraces++ while ($_ =~ /(?<!\\){/g);
-            # match } but don't match \}
-            $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
-
-            # set the indentation
-            if($matchedbraces != 0 and !$noindent{$commandname})
-            {
-                  # store the command name
-                  # and the value of $matchedbraces
-                  push(@commandstore,$commandname);
-                  push(@matchbracestore,$matchedbraces);
-
-                  if(scalar($indentrules{$commandname}))
-                  {
-                     # if there's a rule for indentation for this environment
-                     push(@indent, $indentrules{$commandname});
-                   }
-                   else
-                   {
-                     # default indentation
-                     push(@indent, $defaultindent);
-                   }
-            }
-        }
 }
 
-# output the formatted lines!
-print @lines;
-
-
 sub format_block{
-	# SUBROUTINE
+    #   PURPOSE: Format a delimited environment such as the 
+    #            tabular or align environment that contains &
+    #
     #   INPUT: @block               array containing unformatted block
     #                               from, for example, align, or tabular
     #   OUTPUT: @formattedblock     array containing FORMATTED block
@@ -445,4 +586,24 @@ sub format_block{
 
     # return the formatted block
 	@formattedblock;
+}
+
+sub increase_indent{
+       # PURPOSE: Adjust the indentation
+       #          of the current environment;
+       #          check that it's not an environment
+       #          that doesn't want indentation.
+
+       my $command = pop(@_);
+
+       if(scalar($indentrules{$command}))
+       {
+          # if there's a rule for indentation for this environment
+          push(@indent, $indentrules{$command});
+        }
+        else
+        {
+          # default indentation
+          push(@indent, $defaultindent) if !$noindent{$command};
+        }
 }
