@@ -1,6 +1,31 @@
+Version 4: September 4th 2012
+    - split the main loop into subroutines
+    - added else construct indentation, for e.g
+            \pgfkeysifdefined{/pgfplots/table/output empty row/.@cmd}{
+            	% upcoming releases offer this more convenient option:
+            	\pgfplotstableset{
+            		empty header/.style={
+            			every head row/.style={output empty row},
+            		}
+            	}
+            }
+            {
+            	% versions up to and including 1.5.1 need this:
+            	\pgfplotstableset{
+            		empty header/.style={
+            			typeset cell/.append code={%
+            				\ifnum\pgfplotstablerow=-1 %
+            				\pgfkeyssetvalue{/pgfplots/table/@cell content}{}%
+            				\fi
+            			}
+            		}
+            	}
+            }
+    - corrected spelling (delimeters-> delimiters)
+
 Version 3: September 1st 2012
     - made \ optional when looking for commands that split {} across 
-      lines; this is happens a lot in tikz keys
+      lines; this happens a lot in tikz keys
     - allowed $\begin{.*} to be matched as the beginning of an 
       environment, which is helpful for matching
         $\begin{aligned}
