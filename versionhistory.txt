@@ -1,3 +1,12 @@
+Version 4.1: September 5th 2012
+    The check for ending a brace had this
+        !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
+    
+    but it needs this
+        !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
+
+    to account for commands like \foreach \x
+
 Version 4: September 4th 2012
     - split the main loop into subroutines
     - added else construct indentation, for e.g
