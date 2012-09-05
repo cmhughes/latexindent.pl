@@ -235,7 +235,7 @@ sub end_command_or_key_unmatched_braces{
     #           We count the number of { and ADD to the counter
     #                                  } and SUBTRACT to the counter
     if(scalar(@commandstore) 
-        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
+        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
                     and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2})))
         and $_ !~ m/^\s*%/
        )
