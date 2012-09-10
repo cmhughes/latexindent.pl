@@ -34,7 +34,7 @@ USAGE
         
         chmod +x indent.plx
 
-    and then put it with your other exectutables, for example
+    and then put it with your other executable files, for example
 
         /usr/local/bin
 
@@ -173,7 +173,8 @@ EXAMPLE 4: no additional indentation for an environment; if you want
                       );
 
     Include any environment name you like in here. If you change 
-    your mind, just change 1 to a 0.
+    your mind, just change 1 to a 0, or remove it from %noindent 
+    completely.
 
     Before:
 
@@ -229,6 +230,9 @@ EXAMPLE 5: commands that split {} across lines, e.g \parbox; populate
                         "typeset cell/.append code"=>1,
                         "create col/assign/.code"=>1,
                         "foreach"=>1);
+    
+    You can specify particular indentation rules in %indentrules, 
+    as in Example 3.
 
     Before:
 
@@ -297,6 +301,9 @@ EXAMPLE 6: commands that have an else clause using {} and can split the
     TikZ key names in here too- they don't have to begin with \ 
     as in Example 5.
 
+    You can specify particular indentation rules in %indentrules, 
+    as in Example 3.
+
     Before:
     
     \mycommand{
@@ -323,7 +330,12 @@ EXAMPLE 7: commands that split [] across lines; populate
 
     my %checkunmatchedbracket=("mycommand"=>1);
 
-    Include any command name you wish.
+    Include any command name you wish that may split [] across 
+    lines; it doesn't have to begin with a \ as in Examples
+    5 and 6. 
+
+    You can specify particular indentation rules in %indentrules, 
+    as in Example 3.
     
     Before:
 
@@ -355,7 +367,8 @@ EXAMPLE 8: verbatim environments; if you don't want the script to
 
     my %verbatim=("verbatim"=>1);
 
-    Include any environment name you wish.
+    Include any environment name you wish to behave like 
+    a verbatim environment.
 
     Before:
 
