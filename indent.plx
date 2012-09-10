@@ -10,6 +10,8 @@
 #	GNU General Public License for more details.
 #
 #	See http://www.gnu.org/licenses/.
+#
+#	For details of how to use this file, please see readme.txt
 
 use strict;
 use warnings;
