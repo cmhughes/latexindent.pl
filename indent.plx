@@ -14,33 +14,25 @@
 use strict;
 use warnings;
 
-# if you don't want to indent an environment
-# put it in this hash table
-my %noindent=("pccexample"=>1,
-                  "pccdefinition"=>1,
-                  "problem"=>1,
-                  "exercises"=>1,
-                  "pccsolution"=>1,
-                  "widepage"=>1,
-                  "comment"=>1,
-                  "document"=>1,
-                  "\\\["=>0,
-                  "\\\]"=>0,
-                  );
-
 # if you have indent rules for particular environments
 # put them in here; for example, you might just want 
 # to use a space " " or maybe a double tab "\t\t"
-my %indentrules=("axis"=>"   ");
+my %indentrules=("myenvironment"=>"  ");
 
 # environments that have tab delimiters, add more 
 # as needed
 my %lookforaligndelims=("tabular"=>1,
                         "align"=>1,
                         "align*"=>1,
+                        "alignat"=>1,
+                        "alignat*"=>1,
                         "cases"=>1,
                         "dcases"=>1,
                         "aligned"=>1);
+
+#  verbatim environments- environments specified 
+#  in this hash table will not be changed at all!
+my %verbatim=("verbatim"=>1);
 
 # commands that might split {} across lines
 # such as \parbox, \marginpar, etc
@@ -52,16 +44,49 @@ my %checkunmatched=("parbox"=>1,
                     "typeset cell/.append code"=>1,
                     "create col/assign/.code"=>1,
                     "foreach"=>1);
-my %checkunmatchedELSE=("pgfkeysifdefined"=>1,);
+
+my %checkunmatchedELSE=("pgfkeysifdefined"=>1);
+
+# commands that might split []  across lines
+# such as \pgfplotstablecreatecol, etc
+my %checkunmatchedbracket=("pgfplotstablecreatecol"=>1,"mycommand"=>1);
+
+# if you don't want to have additional indentation 
+# in an environment put it in this hash table; note that
+# environments in this hash table will inherit 
+# the *current* level of indentation
+my %noindent=("pccexample"=>1,
+                  "pccdefinition"=>1,
+                  "problem"=>1,
+                  "exercises"=>1,
+                  "pccsolution"=>1,
+                  "widepage"=>1,
+                  "comment"=>1,
+                  "document"=>1,
+                  "frame"=>1,
+                  "\\\["=>0,
+                  "\\\]"=>0,
+                  );
+
+#============================================================
+# No need to edit below this (unless you want to!)
+#============================================================
 
 # scalar variables
 my $defaultindent="\t";     # $defaultindent: Default value of indentation
 my $line='';                # $line: takes the $line of the file
 my $inpreamble=1;           # $inpreamble: switch to determine if in
                             #               preamble or not
+my $inverbatim=0;           # $inverbatim: switch to determine if in
+                            #               a verbatim environment or not
 my $delimiters=0;           # $delimiters: switch that governs if
                             #              we need to check for & or not
 my $matchedbraces=0;        # $matchedbraces: counter to see if { }
+                            #               are matched; it will be 
+                            #               positive if too many { 
+                            #               negative if too many }
+                            #               0 if matched
+my $matchedBRACKETS=0;      # $matchedBRACKETS: counter to see if [ ]
                             #               are matched; it will be 
                             #               positive if too many { 
                             #               negative if too many }
@@ -79,14 +104,15 @@ my $lookforelse=0;          # $lookforelse: a boolean to help determine
                             #               else construct
 
 # array variables
-my @indent=();              # @indent: stores indentation
+my @indent=();              # @indent: stores current level of indentation
 my @lines=();               # @lines: stores the newly indented lines
 my @block=();               # @block: stores blocks that have & delimiters
 my @commandstore=();        # @commandstore: stores commands that 
                             #           have split {} across lines
+my @commandstorebrackets=();# @commandstorebrackets: stores commands that 
+                            #           have split [] across lines
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
-
 
 
 # check to see if the current file has \documentclass, if so, then 
@@ -103,7 +129,8 @@ if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0)
 while(<>)
 {
     # check to see if we're still in the preamble
-    if(!$inpreamble)
+    # or in a verbatim environment
+    if(!($inpreamble or $inverbatim))
     {
         # if not, remove all leading spaces and tabs
         # from the current line
@@ -123,40 +150,160 @@ while(<>)
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq();
 
-    # check to see if we're at the end of a \parbox, \marginpar
-    # or other split-across-lines command and check that
-    # we're not starting another command that has split braces (nesting)
-    &end_command_or_key_unmatched_braces();
+    # only check for unmatched braces if we're not in
+    # a verbatim-like environment
+    if(!$inverbatim)
+    {
+        # check to see if we're at the end of a \parbox, \marginpar
+        # or other split-across-lines command and check that
+        # we're not starting another command that has split braces (nesting)
+        &end_command_or_key_unmatched_braces();
+
+        # check to see if we're at the end of a command that splits 
+        # [ ] across lines
+        &end_command_or_key_unmatched_brackets();
+    }
 
     # ADD CURRENT LEVEL OF INDENTATION
     # (unless we're in a delimiter-aligned block)
     if(!$delimiters)
     {
-        # add current value of indentation to the current line
-        # and output it
-        $_ = join("",@indent).$_;
-        push(@lines,$_);
+        # make sure we're not in a verbatim block
+        if($inverbatim)
+        {
+           # just push the current line as is
+           push(@lines,$_);
+        }
+        else
+        {
+            # add current value of indentation to the current line
+            # and output it
+            $_ = join("",@indent).$_;
+            push(@lines,$_);
+        }
     }
     else
     {
-        # output to block
+        # output to @block if we're in a delimiter block
         push(@block,$_);
     }
 
-    # check to see if we have \begin{something} or \[ 
-    &at_beg_of_env_or_eq();
+    # only check for new environments or commands if we're 
+    # not in a verbatim-like environment
+    if(!$inverbatim)
+    {
+        # check to see if we have \begin{something} or \[ 
+        &at_beg_of_env_or_eq();
 
-    # check to see if we have \parbox, \marginpar, or
-    # something similar that might split braces {} across lines,
-    # specified in %checkunmatched hash table
-    &start_command_or_key_unmatched_braces();
+        # check to see if we have \parbox, \marginpar, or
+        # something similar that might split braces {} across lines,
+        # specified in %checkunmatched hash table
+        &start_command_or_key_unmatched_braces();
 
-    # check for an else statement
-    &check_for_else();
+        # check for an else statement
+        &check_for_else();
+
+        # check for a command that splits [] across lines
+        &start_command_or_key_unmatched_brackets();
+    }
 }
 
 # output the formatted lines!
 print @lines;
+
+sub start_command_or_key_unmatched_brackets{
+    # PURPOSE: This matches 
+    #              \pgfplotstablecreatecol[...
+    #
+    #              or any other command/key that has brackets [ ] 
+    #              split across lines specified in the 
+    #              hash tables, %checkunmatchedbracket
+    #
+    # How to read: ^\s*(\\)?(.*?)(\[\s*)
+    #
+    #       ^       line begins with
+    #       \s*     any (or no)spaces
+    #       (\\)?   matches a \ backslash but not necessarily
+    #       (.*?)   non-greedy character match and store the result
+    #       (\[\s*) match [ possibly leading with spaces
+
+    if ($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/ 
+        and (scalar($checkunmatchedbracket{$2}))
+        )
+        {
+            # store the command name, because $2
+            # will not exist after the next match
+            $commandname = $2;
+            $matchedBRACKETS=0;
+
+            # match [ but don't match \[
+            $matchedBRACKETS++ while ($_ =~ /(?<!\\)\[/g);
+            # match ] but don't match \]
+            $matchedBRACKETS-- while ($_ =~ /(?<!\\)\]/g);
+
+            # set the indentation
+            if($matchedBRACKETS != 0 )
+            {
+                  &increase_indent($commandname);
+
+                  # store the command name
+                  # and the value of $matchedBRACKETS
+                  push(@commandstorebrackets,{commandname=>$commandname,
+                                      matchedBRACKETS=>$matchedBRACKETS});
+
+            }
+        }
+}
+
+sub end_command_or_key_unmatched_brackets{
+    # PURPOSE:  Check for the closing BRACKET of a command that 
+    #           splits its BRACKETS across lines, such as
+    #
+    #               \pgfplotstablecreatecol[ ...
+    #
+    #           It works by checking if we have any entries
+    #           in the array @commandstorebrackets, and making 
+    #           sure that we're not starting another command/key
+    #           that has split BRACKETS (nesting).
+    #
+    #           It also checks that the line is not commented.
+    #
+    #           We count the number of [ and ADD to the counter
+    #                                  ] and SUBTRACT to the counter
+    if(scalar(@commandstorebrackets) 
+        and  !($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/ 
+                    and (scalar($checkunmatchedbracket{$2})))
+        and $_ !~ m/^\s*%/
+       )
+    {
+       # get the details of the most recent command name
+       $commanddetails = pop(@commandstorebrackets);
+       $commandname = $commanddetails->{'commandname'};
+       $matchedBRACKETS = $commanddetails->{'matchedBRACKETS'};
+
+       # match [ but don't match \[
+       $matchedBRACKETS++ while ($_ =~ m/(?<!\\)\[/g);
+
+       # match ] but don't match \]
+       $matchedBRACKETS-- while ($_ =~ m/(?<!\\)\]/g);
+
+       # if we've matched up the BRACKETS then
+       # we can decrease the indent by 1 level
+       if($matchedBRACKETS == 0)
+       {
+            # decrease the indentation (if appropriate)
+            &decrease_indent($commandname);
+       }
+       else
+       {
+           # otherwise we need to enter the new value
+           # of $matchedBRACKETS and the value of $command
+           # back into storage
+           push(@commandstorebrackets,{commandname=>$commandname,
+                                       matchedBRACKETS=>$matchedBRACKETS});
+       }
+     }
+}
 
 sub start_command_or_key_unmatched_braces{
     # PURPOSE: This matches 
@@ -166,7 +313,7 @@ sub start_command_or_key_unmatched_braces{
     #              \foreach \something
     #              etc
     #
-    #              or any other command/key that has braces
+    #              or any other command/key that has BRACES
     #              split across lines specified in the 
     #              hash tables, %checkunmatched, %checkunmatchedELSE
     #
@@ -216,8 +363,8 @@ sub start_command_or_key_unmatched_braces{
 }
 
 sub end_command_or_key_unmatched_braces{
-    # PURPOSE:  Check for the closing brace of a command that 
-    #           splits its braces across lines, such as
+    # PURPOSE:  Check for the closing BRACE of a command that 
+    #           splits its BRACES across lines, such as
     #
     #               \parbox{ ...
     #
@@ -228,7 +375,7 @@ sub end_command_or_key_unmatched_braces{
     #           It works by checking if we have any entries
     #           in the array @commandstore, and making 
     #           sure that we're not starting another command/key
-    #           that has split braces (nesting).
+    #           that has split BRACES (nesting).
     #
     #           It also checks that the line is not commented.
     #
@@ -258,7 +405,9 @@ sub end_command_or_key_unmatched_braces{
        if($matchedbraces == 0)
        {
             $countzeros++ if $lookforelse;
-            pop(@indent) if !$noindent{$commandname};
+
+            # decrease the indentation (if appropriate)
+            &decrease_indent($commandname);
 
            if($countzeros==1)
            {
@@ -371,6 +520,12 @@ sub at_beg_of_env_or_eq{
        {
            $delimiters=1;
        }
+
+       # check for verbatim-like environments
+       if($verbatim{$2})
+       {
+           $inverbatim = 1;
+       }
     }
 }
 
@@ -392,6 +547,12 @@ sub at_end_of_env_or_eq{
          and $_ !~ m/\s*^%/)
     {
 
+       # check if we're at teh end of a verbatim-like environment
+       if($verbatim{$1})
+       {
+           $inverbatim = 0;
+       }
+
        # check to see if we need to turn off alignment
        # delimiters and output the current block
        if($lookforaligndelims{$1})
@@ -411,11 +572,8 @@ sub at_end_of_env_or_eq{
            @block=();
        }
 
-       # DECREASE the indentation by 1 level
-       if(!$noindent{$1})
-       {
-            pop(@indent);
-        }
+       # decrease the indentation (if appropriate)
+       &decrease_indent($1);
     }
 }
 
@@ -600,10 +758,27 @@ sub increase_indent{
        {
           # if there's a rule for indentation for this environment
           push(@indent, $indentrules{$command});
-        }
-        else
-        {
+       }
+       else
+       {
           # default indentation
-          push(@indent, $defaultindent) if !$noindent{$command};
-        }
+          if(!($noindent{$command} or $verbatim{$command} or $inverbatim))
+          {
+            push(@indent, $defaultindent) 
+          }
+       }
+}
+
+sub decrease_indent{
+       # PURPOSE: Adjust the indentation
+       #          of the current environment;
+       #          check that it's not an environment
+       #          that doesn't want indentation.
+
+       my $command = pop(@_);
+
+       if(!($noindent{$command} or $verbatim{$command} or $inverbatim))
+       {
+            pop(@indent);
+       }
 }
