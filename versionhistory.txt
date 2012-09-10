@@ -1,3 +1,15 @@
+Version 5: September 10th 2012
+    - Made decrease_indent subroutine
+    - can now account for verbatim environments using
+
+        my %verbatim=("verbatim"=>1);
+
+      environments in this hash table will not be changed at all
+    - checks for commands that split [ ] across lines; 
+      specify these commands in
+
+        my  %checkunmatchedbracket=("pgfplotstablecreatecol"=>1,);
+
 Version 4.1: September 5th 2012
     The check for ending a brace had this
         !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
