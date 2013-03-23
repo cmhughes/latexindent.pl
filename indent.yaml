@@ -1,7 +1,15 @@
 !config
 # indent rule for arara
-# author: Chris Hughes
+# author: cmhughes
 # requires arara 3.0+
+#
+# Sample use:
+# % arara: indent
+# % arara: indent: {overwrite: true}
+# % arara: indent: {overwrite: on}
+# % arara: indent: {overwrite: yes}
+# % arara: indent: {overwrite: false}
+#
 identifier: indent
 name: Indent
 command: indent.plx @{overwrite} "@{file}"
