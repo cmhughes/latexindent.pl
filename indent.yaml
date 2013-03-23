@@ -1,7 +1,17 @@
 !config
 # indent rule for arara
 # author: Paulo Cereda
+# last updated: 3/23/2013
 # requires arara 3.0+
+#
+# Note: overwrite takes priority over output
+#
+# Sample usage:
+#
+# % arara: indent
+# % arara: indent: {overwrite: true}
+# % arara: indent: {output: myfile.tex, silent: off}
+# % arara: indent: {output: myfile.tex, silent: off, overwrite: on}
 identifier: indent
 name: Indent
 command: indent.plx @{silent} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
