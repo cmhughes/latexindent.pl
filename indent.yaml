@@ -1,18 +1,14 @@
 !config
 # indent rule for arara
-# author: cmhughes
+# author: Paulo Cereda
 # requires arara 3.0+
-#
-# Sample use:
-# % arara: indent
-# % arara: indent: {overwrite: true}
-# % arara: indent: {overwrite: on}
-# % arara: indent: {overwrite: yes}
-# % arara: indent: {overwrite: false}
-#
 identifier: indent
 name: Indent
-command: indent.plx @{overwrite} "@{file}"
+command: indent.plx @{silent} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
 arguments:
 - identifier: overwrite
-  flag: <arara> @{ isTrue( parameters.overwrite, "-w","" ) }
+  flag: <arara> @{ isTrue( parameters.overwrite, "-w" ) }
+- identifier: silent
+  flag: <arara> @{ isTrue( parameters.silent, "-s" ) }
+- identifier: output
+  flag: <arara> @{ parameters.output }
