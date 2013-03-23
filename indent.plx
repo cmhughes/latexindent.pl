@@ -290,6 +290,14 @@ close(MAINFILE);
 # output the formatted lines to the terminal!
 print @lines if(!$options{s});
 
+# if -w is active then output to $ARGV[0]
+if($options{w})
+{
+    open(OUTPUTFILE,">",$ARGV[0]);
+    print OUTPUTFILE @lines;
+    close(OUTPUTFILE);
+}
+
 # if -o is active then output to $ARGV[1]
 if($options{o})
 {
