@@ -101,7 +101,6 @@ checkunmatched:
     AtPageLowerLeft: 1
     AddToShipoutPicture: 1
     fancyhead: 1
-    faces: 1
 
 # very similar to %checkunmatched except these 
 # commands might have an else construct
