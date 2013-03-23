@@ -1,6 +1,6 @@
 !config
 # indent rule for arara
-# author: cmhughes
+# author: Chris Hughes
 # requires arara 3.0+
 identifier: indent
 name: Indent
