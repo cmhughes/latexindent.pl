@@ -21,7 +21,7 @@ if(scalar(@ARGV) < 1)
     print " -o \t output to another file\n";
     print " -w \t overwrite the current file- a backup will be made, but still be careful\n";
     print " -s \t silent mode- no output will be given\n";
-    exit;
+    exit(2);
 }
 
 # load packages/modules
@@ -39,8 +39,11 @@ getopts("ows", \%options);
 # a quick options check
 if($options{o} and $options{w})
 {
-    print "You can't call indent.plx with both -o and -w";
-    exit;
+    print "You can't call indent.plx with both -o and -w\n\n";
+    print "-o will overwrite the current file\n";
+    print "-w will output to another file\n\n";
+    print "No indentation done :(\n\n";
+    exit(2);
 }
 
 # don't call the script with 2 files unless the -o flag is active
@@ -49,8 +52,8 @@ if(!$options{o} and scalar(@ARGV)==2)
     print "You're calling indent.plx with two file names, but not the -o flag.\n";
     print "Did you mean to use the -o flag ?\n";
     print "Note that this will OVERWRITE the second file\n";
-    print "No indentation done :(";
-    exit;
+    print "No indentation done :(\n\n";
+    exit(2);
 }
 
 # if the script is called with the -o switch, then check that 
@@ -58,8 +61,9 @@ if(!$options{o} and scalar(@ARGV)==2)
 #           indent.plx -o myfile.tex output.tex
 if($options{o} and scalar(@ARGV)==1)
 {
-    print "indent.plx -o",$ARGV[0],"[needs another name here] ";
-    exit;
+    print "indent.plx -o",$ARGV[0],"[needs another name here] \n";
+    print "No indentation done :(\n\n";
+    exit(2);
 }
 
 # Create a YAML file
