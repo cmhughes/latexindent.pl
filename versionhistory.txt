@@ -1,3 +1,43 @@
+Version 6: March 22nd 2013
+    - Huge over haul, completely re-structured it using a YAML file
+      the default settings are now stored in defaultSettings.yaml
+    - the script can now take a few options
+            
+            indent.plx myfile.tex
+
+      simply outputs to the terminal
+
+            indent.plx -w myfile.tex
+
+      will make a backup (using default extension in defaultSettings.yaml)
+      and then overwrite myfile.tex and output to the terminal
+
+            indent.plx -o myfile.tex output.tex
+
+      will operate on myfile.tex and output it to output.tex
+
+            indent.plx -s myfile.tex
+
+      will operate in silent mode, and won't output anything
+
+    - fixed \& in the alignment blocks (previously it would matched & and \&)
+      which is clearly very bad
+
+    - added noindentblock which allows the user to wrap any blocks they 
+      don't want indented- note that this is different from verbatim blocks, 
+      as they can use %\begin{noindent} (note the comment)
+
+    - choice to make all split {} and [] matched, no need to 
+      populate the hash table unless special indentation rules
+      needed- set at the top of defaultSettings.yaml
+
+    - argument check to make sure the correct number of arguments have 
+      been called
+
+    - trailing comments are ignored so that {, }, [, ] are not counted
+      which is very important for the splitBraces and splitBrackets matches
+
+      
 Version 5: September 10th 2012
     - Made decrease_indent subroutine
     - can now account for verbatim environments using

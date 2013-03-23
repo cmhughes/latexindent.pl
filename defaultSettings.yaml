@@ -1,0 +1,120 @@
+# Default value of indentation
+defaultindent: "\t"
+
+# default file extension of backup file (if original is overwritten with -w switch)
+# for example, if your .tex file is called
+#       myfile.tex
+# and you specify the backupExtension as BACKUP.bak then your 
+# backup file will be
+#       myfileBACKUP.bak
+backupExtension: .bak
+
+# always look for split { }, which means that the user doesn't
+# have to complete checkunmatched, checkunmatchedELSE
+alwaysLookforSplitBraces: 1
+
+# always look for split [ ], which means that the user doesn't
+# have to complete checkunmatchedbracket
+alwaysLookforSplitBrackets: 1
+
+# environments that have tab delimiters, add more 
+# as needed
+lookforaligndelims:
+   tabular: 1
+   align: 1
+   align*: 1
+   alignat: 1
+   alignat*: 1
+   cases: 1
+   dcases: 1
+   aligned: 1
+   pmatrix: 1
+   listabla: 1
+
+# if you have indent rules for particular environments
+# put them in here; for example, you might just want 
+# to use a space " " or maybe a double tab "\t\t"
+indentrules:
+   myenvironment: "\s\s"
+   anotherenvironment: "\t\t\t\t"
+
+#  verbatim environments- environments specified 
+#  in this hash table will not be changed at all!
+verbatimEnvironments:
+    verbatim: 1
+    lstlisting: 1
+
+#  no indent blocks (not necessarily verbatim 
+#  environments) which are marked as %\begin{noindent}
+#  or anything else that the user puts in this hash
+#  table
+noindentblock:
+    noindent: 1
+    cmhtest: 1
+
+# if you don't want to have additional indentation 
+# in an environment put it in this hash table; note that
+# environments in this hash table will inherit 
+# the *current* level of indentation they just won't
+# get any *additional*.
+noAdditionalIndent:
+    pccexample: 1
+    pccdefinition: 1
+    problem: 1
+    exercises: 1
+    pccsolution: 1
+    foreach: 0
+    widepage: 1
+    comment: 1
+    document: 1
+    frame: 0
+    \\\[: 0
+    \\\]: 0
+
+# *** NOTE ***
+# If you have specified alwaysLookforSplitBraces: 1
+# and alwaysLookforSplitBrackets: 1 then you don't need
+# to worry about completing
+#
+#       checkunmatched
+#       checkunmatchedELSE
+#       checkunmatchedbracket
+#***      ***
+
+# commands that might split {} across lines
+# such as \parbox, \marginpar, etc
+checkunmatched:
+    parbox: 1
+    vbox: 1
+    pgfplotsset: 1
+    marginpar: 1
+    pgfplotstableset: 1
+    empty header/.style: 1
+    typeset cell/.append code: 1
+    create col/assign/.code: 1
+    def: 1
+    row predicate/.code: 1
+    create on use/mixed/.style: 1
+    every first row/.append style: 1
+    every last column/.style: 1
+    foreach: 0
+    AtPageLowerLeft: 1
+    AddToShipoutPicture: 1
+    fancyhead: 1
+    faces: 1
+
+# very similar to %checkunmatched except these 
+# commands might have an else construct
+checkunmatchedELSE:
+    pgfkeysifdefined: 1
+    DTLforeach: 1
+    ifthenelse: 1
+
+# commands that might split []  across lines
+# such as \pgfplotstablecreatecol, etc
+checkunmatchedbracket:
+    pgfplotstablecreatecol: 1
+    pgfplotstablesave: 1
+    pgfplotstabletypeset: 1
+    mycommand: 1
+    psSolid: 1

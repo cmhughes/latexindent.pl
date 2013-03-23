@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -13,69 +13,89 @@
 #
 #	For details of how to use this file, please see readme.txt
 
+# Check the number of input arguments- if it is 0 then simply 
+# display the list of options (like a manual)
+if(scalar(@ARGV) < 1)
+{
+    print "usage: indent.plx [options] [file][.tex]\n\n";
+    print " -o \t output to another file\n";
+    print " -w \t overwrite the current file- a backup will be made, but still be careful\n";
+    print " -s \t silent mode- no output will be given\n";
+    exit;
+}
+
+# load packages/modules
 use strict;
-use warnings;
+use warnings;           
+use FindBin;            # help find defaultSettings.yaml 
+use YAML::Tiny;         # interpret defaultSettings.yaml
+use File::Copy;         # to copy the original file to backup (if overwrite option set)
+use Getopt::Std;        # to get the switches/options/flags
 
-# if you have indent rules for particular environments
-# put them in here; for example, you might just want 
-# to use a space " " or maybe a double tab "\t\t"
-my %indentrules=("myenvironment"=>"  ");
+# get the options
+my %options=();
+getopts("ows", \%options);
 
-# environments that have tab delimiters, add more 
-# as needed
-my %lookforaligndelims=("tabular"=>1,
-                        "align"=>1,
-                        "align*"=>1,
-                        "alignat"=>1,
-                        "alignat*"=>1,
-                        "cases"=>1,
-                        "dcases"=>1,
-                        "aligned"=>1);
+# a quick options check
+if($options{o} and $options{w})
+{
+    print "You can't call indent.plx with both -o and -w";
+    exit;
+}
 
-#  verbatim environments- environments specified 
-#  in this hash table will not be changed at all!
-my %verbatim=("verbatim"=>1);
+# don't call the script with 2 files unless the -o flag is active
+if(!$options{o} and scalar(@ARGV)==2)
+{
+    print "You're calling indent.plx with two file names, but not the -o flag.\n";
+    print "Did you mean to use the -o flag ?\n";
+    print "Note that this will OVERWRITE the second file\n";
+    print "No indentation done :(";
+    exit;
+}
 
-# commands that might split {} across lines
-# such as \parbox, \marginpar, etc
-my %checkunmatched=("parbox"=>1,
-                    "vbox"=>1,
-                    "marginpar"=>1,
-                    "pgfplotstableset"=>1,
-                    "empty header/.style"=>1,
-                    "typeset cell/.append code"=>1,
-                    "create col/assign/.code"=>1,
-                    "foreach"=>1);
+# if the script is called with the -o switch, then check that 
+# a second file is present in the call, e.g
+#           indent.plx -o myfile.tex output.tex
+if($options{o} and scalar(@ARGV)==1)
+{
+    print "indent.plx -o",$ARGV[0],"[needs another name here] ";
+    exit;
+}
 
-my %checkunmatchedELSE=("pgfkeysifdefined"=>1);
+# Create a YAML file
+my $defaultSettings = YAML::Tiny->new;
 
-# commands that might split []  across lines
-# such as \pgfplotstablecreatecol, etc
-my %checkunmatchedbracket=("pgfplotstablecreatecol"=>1,"mycommand"=>1);
+# Open defaultSettings.yaml
+$defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );
 
-# if you don't want to have additional indentation 
-# in an environment put it in this hash table; note that
-# environments in this hash table will inherit 
-# the *current* level of indentation
-my %noindent=("pccexample"=>1,
-                  "pccdefinition"=>1,
-                  "problem"=>1,
-                  "exercises"=>1,
-                  "pccsolution"=>1,
-                  "widepage"=>1,
-                  "comment"=>1,
-                  "document"=>1,
-                  "frame"=>1,
-                  "\\\["=>0,
-                  "\\\]"=>0,
-                  );
+# setup the variables and hashes from the YAML file
+my $defaultindent = $defaultSettings->[0]->{defaultindent};
+my $alwaysLookforSplitBraces = $defaultSettings->[0]->{alwaysLookforSplitBraces};
+my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrackets};
+my %lookforaligndelims= %{$defaultSettings->[0]->{lookforaligndelims}};
+my %indentrules= %{$defaultSettings->[0]->{indentrules}};
+my %verbatimEnvironments= %{$defaultSettings->[0]->{verbatimEnvironments}};
+my %noindentblock= %{$defaultSettings->[0]->{noindentblock}};
+my %checkunmatched= %{$defaultSettings->[0]->{checkunmatched}};
+my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
+my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
+my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
+my $backupExtension = $defaultSettings->[0]->{backupExtension};
 
-#============================================================
-# No need to edit below this (unless you want to!)
-#============================================================
+# if we want to over write the current file
+# create a backup first
+if ($options{w})
+{
+    my $filename = $ARGV[0];
+    my $backupFile = $filename;
+    $backupFile =~ s/\.tex/$backupExtension/;
+    # need to output these lines to a log file
+    #print "Original file: ", $filename,"\n" if (!$options{s});
+    #print "Backup file:",$backupFile,"\n" if (!$options{s});
+    copy($filename,$backupFile);
+}
 
 # scalar variables
-my $defaultindent="\t";     # $defaultindent: Default value of indentation
 my $line='';                # $line: takes the $line of the file
 my $inpreamble=1;           # $inpreamble: switch to determine if in
                             #               preamble or not
@@ -115,20 +135,25 @@ my @commandstorebrackets=();# @commandstorebrackets: stores commands that
                             #           have split [] across lines
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
-
+my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
+                            #           a line 
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
 open(MAINFILE, $ARGV[0]) or die "Could not open input file";
     @mainfile=<MAINFILE>;
 close(MAINFILE);
+
 if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0)
 {
     $inpreamble=0;
 }
 
+# the previous OPEN command puts us at the END of the file
+open(MAINFILE, $ARGV[0]) or die "Could not open input file";
+
 # loop through the lines in the INPUT file
-while(<>)
+while(<MAINFILE>)
 {
     # check to see if we're still in the preamble
     # or in a verbatim environment
@@ -152,10 +177,29 @@ while(<>)
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq();
 
+    # check to see if we're at the end of a noindent 
+    # block %\end{noindent}
+    &at_end_noindent();
+
     # only check for unmatched braces if we're not in
     # a verbatim-like environment
     if(!$inverbatim)
     {
+        # The check for closing } and ] relies on counting, so 
+        # we have to remove trailing comments so that any {, }, [, ]
+        # that are found after % are not counted
+        #
+        # note that these lines are NOT in @lines, so we
+        # have to store the $trailingcomments to put
+        # back on after the counting
+        #
+        # note the use of (?<!\\)% so that we don't match \%
+        if ( $_=~ m/(?<!\\)%.*/)
+        {
+            s/((?<!\\)%.*)//;
+            $trailingcomments=$1;
+        }
+
         # check to see if we're at the end of a \parbox, \marginpar
         # or other split-across-lines command and check that
         # we're not starting another command that has split braces (nesting)
@@ -164,6 +208,16 @@ while(<>)
         # check to see if we're at the end of a command that splits 
         # [ ] across lines
         &end_command_or_key_unmatched_brackets();
+
+        # add the trailing comments back to the end of the line
+        if(scalar($trailingcomments))
+        {
+            # some line break magic, http://stackoverflow.com/questions/881779/neatest-way-to-remove-linebreaks-in-perl
+            s/\R//;
+            $_ = $_ . $trailingcomments."\n" ;
+            # empty the trailingcomments
+            $trailingcomments='';
+        }
     }
 
     # ADD CURRENT LEVEL OF INDENTATION
@@ -194,6 +248,26 @@ while(<>)
     # not in a verbatim-like environment
     if(!$inverbatim)
     {
+
+        # check if we are in a 
+        #   % \begin{noindent}
+        # block; this is similar to a verbatim block, the user
+        # may not want some blocks of code to be touched 
+        #
+        # IMPORTANT: this needs to go before the trailing comments
+        # are removed!
+        &at_beg_noindent();
+
+        # remove trailing comments so that any {, }, [, ]
+        # that are found after % are not counted
+        #
+        # note that these lines are already in @lines, so we
+        # can remove the trailing comments WITHOUT having
+        # to put them back in
+        #
+        # Note that this won't match \%
+        s/(?<!\\)%.*// if( $_=~ m/(?<!\\)%.*/);
+
         # check to see if we have \begin{something} or \[ 
         &at_beg_of_env_or_eq();
 
@@ -210,8 +284,49 @@ while(<>)
     }
 }
 
-# output the formatted lines!
-print @lines;
+# close the main file
+close(MAINFILE);
+
+# output the formatted lines to the terminal!
+print @lines if(!$options{s});
+
+# if -o is active then output to $ARGV[1]
+if($options{o})
+{
+    open(OUTPUTFILE,">",$ARGV[1]);
+    print OUTPUTFILE @lines;
+    close(OUTPUTFILE);
+}
+
+exit;
+
+sub at_end_noindent{
+    # PURPOSE: This matches
+    #           % \end{noindent}
+    #          the comment symbol IS indended!
+    #
+    #          This is for blocks of code that the user wants
+    #          to leave untouched- similar to verbatim blocks
+
+    if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noindentblock{$1}) 
+    {
+           $inverbatim = 0;
+    }
+}
+
+sub at_beg_noindent{
+    # PURPOSE: This matches
+    #           % \begin{noindent}
+    #          the comment symbol IS indended!
+    #
+    #          This is for blocks of code that the user wants
+    #          to leave untouched- similar to verbatim blocks
+
+    if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noindentblock{$1}) 
+    {
+           $inverbatim = 1;
+    }
+}
 
 sub start_command_or_key_unmatched_brackets{
     # PURPOSE: This matches 
@@ -230,7 +345,8 @@ sub start_command_or_key_unmatched_brackets{
     #       (\[\s*) match [ possibly leading with spaces
 
     if ($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/ 
-        and (scalar($checkunmatchedbracket{$2}))
+        and (scalar($checkunmatchedbracket{$2})
+             or $alwaysLookforSplitBrackets)
         )
         {
             # store the command name, because $2
@@ -274,7 +390,8 @@ sub end_command_or_key_unmatched_brackets{
     #                                  ] and SUBTRACT to the counter
     if(scalar(@commandstorebrackets) 
         and  !($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/ 
-                    and (scalar($checkunmatchedbracket{$2})))
+                    and (scalar($checkunmatchedbracket{$2})
+                         or $alwaysLookforSplitBrackets))
         and $_ !~ m/^\s*%/
        )
     {
@@ -322,13 +439,15 @@ sub start_command_or_key_unmatched_braces{
     # How to read: ^\s*(\\)?(.*?)(\[|{|\s)
     #
     #       ^                  line begins with
-    #       \s*                any (or no)spaces
+    #       \s*                any (or no) spaces
     #       (\\)?              matches a \ backslash but not necessarily
     #       (.*?)              non-greedy character match and store the result
     #       (\[|}|=|(\s*\\))   either [ or { or = or space \
 
     if ($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
-            and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2}))
+            and (scalar($checkunmatched{$2}) 
+                 or scalar($checkunmatchedELSE{$2})
+                 or $alwaysLookforSplitBraces)
         )
         {
             # store the command name, because $1
@@ -345,6 +464,7 @@ sub start_command_or_key_unmatched_braces{
 
             # match { but don't match \{
             $matchedbraces++ while ($_ =~ /(?<!\\){/g);
+
             # match } but don't match \}
             $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
 
@@ -385,7 +505,9 @@ sub end_command_or_key_unmatched_braces{
     #                                  } and SUBTRACT to the counter
     if(scalar(@commandstore) 
         and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
-                    and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2})))
+                    and (scalar($checkunmatched{$2}) 
+                         or scalar($checkunmatchedELSE{$2})
+                         or $alwaysLookforSplitBraces))
         and $_ !~ m/^\s*%/
        )
     {
@@ -454,7 +576,9 @@ sub check_for_else{
 
     if(scalar(@commandstore) 
         and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/ 
-                    and (scalar($checkunmatched{$2}) or scalar($checkunmatchedELSE{$2})))
+                    and (scalar($checkunmatched{$2}) 
+                         or scalar($checkunmatchedELSE{$2})
+                         or $alwaysLookforSplitBraces))
         and $_ =~ m/^\s*{/
         and $_ !~ m/^\s*%/
        )
@@ -524,7 +648,7 @@ sub at_beg_of_env_or_eq{
        }
 
        # check for verbatim-like environments
-       if($verbatim{$2})
+       if($verbatimEnvironments{$2})
        {
            $inverbatim = 1;
        }
@@ -549,8 +673,8 @@ sub at_end_of_env_or_eq{
          and $_ !~ m/\s*^%/)
     {
 
-       # check if we're at teh end of a verbatim-like environment
-       if($verbatim{$1})
+       # check if we're at the end of a verbatim-like environment
+       if($verbatimEnvironments{$1})
        {
            $inverbatim = 0;
        }
@@ -631,8 +755,8 @@ sub format_block{
           $linebreak = $1;
         }
 
-        # separate the row at each &
-        @tmprow = split("&",$row);
+        # separate the row at each &, but not at \&
+        @tmprow = split(/(?<!\\)&/,$row);
     
         if(scalar(@tmprow)>1 and ($row !~ m/multicolumn/))
         {
@@ -739,7 +863,7 @@ sub format_block{
         }
         else
         {
-            $tmpstring = sprintf($fmtstring,split("&",$row)).$linebreak."\n";
+          $tmpstring = sprintf($fmtstring,split(/(?<!\\)&/,$row)).$linebreak."\n";
         }
         push(@formattedblock,$tmpstring);
     }
@@ -764,9 +888,9 @@ sub increase_indent{
        else
        {
           # default indentation
-          if(!($noindent{$command} or $verbatim{$command} or $inverbatim))
+          if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
           {
-            push(@indent, $defaultindent) 
+            push(@indent, $defaultindent);
           }
        }
 }
@@ -779,7 +903,7 @@ sub decrease_indent{
 
        my $command = pop(@_);
 
-       if(!($noindent{$command} or $verbatim{$command} or $inverbatim))
+       if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
        {
             pop(@indent);
        }
