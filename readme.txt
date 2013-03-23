@@ -18,6 +18,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 USAGE
+    You'll need
+
+        indent.plx
+        defaultSettings.yaml
+
+    in the same directory.
 
     This file does not (or rather, should not) remove any lines
     from your .tex file.
@@ -38,18 +44,46 @@ USAGE
 
         /usr/local/bin
 
+    All of the settings are controlled in defaultSettings.yaml
+
+    - the script can take a few options
+            
+            indent.plx myfile.tex
+
+      simply outputs to the terminal
+
+            indent.plx -w myfile.tex
+
+      will make a backup (using default extension in defaultSettings.yaml)
+      and then overwrite myfile.tex and output to the terminal
+
+            indent.plx -o myfile.tex output.tex
+
+      will operate on myfile.tex and output it to output.tex
+
+            indent.plx -s myfile.tex
+
+      will operate in silent mode, and won't output anything
+
+    - you can choose to make all split {} and [] matched, no need to 
+      populate the checkunmatched, etc unless special indentation rules
+      needed- this is set at the top of defaultSettings.yaml
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-EXAMPLE 1: delimiter tabs; populate %lookforaligndelims with 
+EXAMPLE 1: delimiter tabs; populate lookforaligndelims with 
     a list of environments that have alignment tabs, the default is:
 
-    my %lookforaligndelims=("tabular"=>1,
-                            "align"=>1,
-                            "align*"=>1,
-                            "alignat"=>1,
-                            "alignat*"=>1,
-                            "cases"=>1,
-                            "dcases"=>1,
-                            "aligned"=>1);
+    lookforaligndelims:
+       tabular: 1
+       align: 1
+       align*: 1
+       alignat: 1
+       alignat*: 1
+       cases: 1
+       dcases: 1
+       aligned: 1
+       pmatrix: 1
+       listabla: 1
 
     Include any environment name you like in here. If you change 
     your mind, just change 1 to a 0 (or remove them completely).
@@ -117,9 +151,12 @@ EXAMPLE 2: nested environments; by default every time the script comes
 EXAMPLE 3: custom indentation
 
     If you want to customize the indentation for an environment, 
-    then use %indentrules, for example
+    then use indentrules, for example
 
-    my %indentrules=("axis"=>"\t\t\t");
+    indentrules:
+       myenvironment: "\s\s"
+       anotherenvironment: "\t\t\t\t"
+       axis: "\t\t\t"
 
     will indent the axis environment using 3 tabs.
 
@@ -167,13 +204,24 @@ EXAMPLE 3: custom indentation
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 EXAMPLE 4: no additional indentation for an environment; if you want
     an environment to not have additional indentation, then populate
-    %noindent, for example
+    noAdditionalIndent, for example
         
-    my %noindent=("tikzpicture"=>1,
-                      );
+    noAdditionalIndent:
+        pccexample: 1
+        pccdefinition: 1
+        problem: 1
+        exercises: 1
+        pccsolution: 1
+        foreach: 0
+        widepage: 1
+        comment: 1
+        document: 1
+        frame: 0
+        \\\[: 0
+        \\\]: 0
 
     Include any environment name you like in here. If you change 
-    your mind, just change 1 to a 0, or remove it from %noindent 
+    your mind, just change 1 to a 0, or remove it from noAdditionalIndent 
     completely.
 
     Before:
@@ -214,24 +262,36 @@ EXAMPLE 4: no additional indentation for an environment; if you want
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 EXAMPLE 5: commands that split {} across lines, e.g \parbox; populate
-    %checkunmatched, 
+    checkunmatched, 
      
-    my %checkunmatched=("parbox"=>1,);
+    checkunmatched:
+        parbox: 1
+        vbox: 1
 
     Include any command name you wish; you can put 
     TikZ key names in here too- they don't have to begin with \, 
     for example
 
-    my %checkunmatched=("parbox"=>1,
-                        "vbox"=>1,
-                        "marginpar"=>1,
-                        "pgfplotstableset"=>1,
-                        "empty header/.style"=>1,
-                        "typeset cell/.append code"=>1,
-                        "create col/assign/.code"=>1,
-                        "foreach"=>1);
+    checkunmatched:
+        parbox: 1
+        vbox: 1
+        pgfplotsset: 1
+        marginpar: 1
+        pgfplotstableset: 1
+        empty header/.style: 1
+        typeset cell/.append code: 1
+        create col/assign/.code: 1
+        def: 1
+        row predicate/.code: 1
+        create on use/mixed/.style: 1
+        every first row/.append style: 1
+        every last column/.style: 1
+        foreach: 0
+        AtPageLowerLeft: 1
+        AddToShipoutPicture: 1
+        fancyhead: 1
     
-    You can specify particular indentation rules in %indentrules, 
+    You can specify particular indentation rules in indentrules, 
     as in Example 3.
 
     Before:
@@ -293,15 +353,17 @@ EXAMPLE 5: commands that split {} across lines, e.g \parbox; populate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 EXAMPLE 6: commands that have an else clause using {} and can split the
-    {} across lines; populate %checkunmatchedELSE, for example
+    {} across lines; populate checkunmatchedELSE, for example
 
-    my %checkunmatchedELSE=("mycommand"=>1);
+    checkunmatchedELSE:
+        pgfkeysifdefined: 1
+        mycommand: 1
 
     Include any command name you wish; you can put 
     TikZ key names in here too- they don't have to begin with \ 
     as in Example 5.
 
-    You can specify particular indentation rules in %indentrules, 
+    You can specify particular indentation rules in indentrules, 
     as in Example 3.
 
     Before:
@@ -326,15 +388,21 @@ EXAMPLE 6: commands that have an else clause using {} and can split the
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 EXAMPLE 7: commands that split [] across lines; populate 
-    %checkunmatchedbracket, for example
+    checkunmatchedbracket, for example
 
-    my %checkunmatchedbracket=("mycommand"=>1);
+    checkunmatchedbracket:
+        pgfplotstablecreatecol: 1
+        pgfplotstablesave: 1
+        pgfplotstabletypeset: 1
+        mycommand: 1
+        psSolid: 1
+        mycommand: 1
 
     Include any command name you wish that may split [] across 
     lines; it doesn't have to begin with a \ as in Examples
     5 and 6. 
 
-    You can specify particular indentation rules in %indentrules, 
+    You can specify particular indentation rules in indentrules, 
     as in Example 3.
     
     Before:
@@ -363,9 +431,11 @@ EXAMPLE 7: commands that split [] across lines; populate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 EXAMPLE 8: verbatim environments; if you don't want the script to 
-    modify a code block at all, then populate %verbatim, for example
+    modify a code block at all, then populate verbatimEnvironments, for example
 
-    my %verbatim=("verbatim"=>1);
+    verbatimEnvironments:
+        verbatim: 1
+        lstlisting: 1
 
     Include any environment name you wish to behave like 
     a verbatim environment.
