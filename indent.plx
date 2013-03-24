@@ -148,6 +148,8 @@ open(MAINFILE, $ARGV[0]) or die "Could not open input file";
     @mainfile=<MAINFILE>;
 close(MAINFILE);
 
+# if the MAINFILE doesn't have a \documentclass statement, then 
+# it shouldn't have preamble
 if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0)
 {
     $inpreamble=0;
@@ -186,8 +188,8 @@ while(<MAINFILE>)
     &at_end_noindent();
 
     # only check for unmatched braces if we're not in
-    # a verbatim-like environment
-    if(!$inverbatim)
+    # a verbatim-like environment or in the preamble
+    if(!($inverbatim or $inpreamble))
     {
         # The check for closing } and ] relies on counting, so 
         # we have to remove trailing comments so that any {, }, [, ]
@@ -228,8 +230,8 @@ while(<MAINFILE>)
     # (unless we're in a delimiter-aligned block)
     if(!$delimiters)
     {
-        # make sure we're not in a verbatim block
-        if($inverbatim)
+        # make sure we're not in a verbatim block or in the preamble
+        if($inverbatim or $inpreamble)
         {
            # just push the current line as is
            push(@lines,$_);
@@ -249,8 +251,8 @@ while(<MAINFILE>)
     }
 
     # only check for new environments or commands if we're 
-    # not in a verbatim-like environment
-    if(!$inverbatim)
+    # not in a verbatim-like environment or in the preamble
+    if(!($inverbatim or $inpreamble))
     {
 
         # check if we are in a 
