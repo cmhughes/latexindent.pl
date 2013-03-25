@@ -23,7 +23,7 @@ backupExtension: .bak
 onlyOneBackUp: 0
 
 # indent preamble
-indentPreamble: 1
+indentPreamble: 0
 
 # always look for split { }, which means that the user doesn't
 # have to complete checkunmatched, checkunmatchedELSE
