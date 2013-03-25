@@ -31,28 +31,61 @@ use FindBin;            # help find defaultSettings.yaml
 use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use Getopt::Std;        # to get the switches/options/flags
+use POSIX qw/strftime/; # date and time
 
 # get the options
 my %options=();
 getopts("ows", \%options);
 
+# we'll be outputting to the logfile and to standard output
+my $logfile;
+my $out = *STDOUT;
+
+# open the log file
+open($logfile,">","indent.log") or die "Can't open indent.log";
+
+print $logfile strftime "%F %T", localtime $^T;
+print $logfile <<ENDQUOTE
+
+indent.plx, a script to indent .tex files
+file: $ARGV[0]
+ENDQUOTE
+;
+
 # a quick options check
 if($options{o} and $options{w})
 {
-    print "You can't call indent.plx with both -o and -w\n\n";
-    print "-o will overwrite the current file\n";
-    print "-w will output to another file\n\n";
-    print "No indentation done :(\n\n";
+    print $logfile "WARNING: You have called indent.plx with both -o and -w\n";
+    print $logfile "\t -o will take priority, and -w will be ignored \n\n";
+    $options{w} = 0;
+}
+
+# can't call the script with MORE THAN 2 files
+if(scalar(@ARGV)>2)
+{
+    for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
+ERROR: You're calling indent.plx with more than two file names
+The script can take at MOST two file names, for example
+
+\t indent.plx -o originalfile.tex outputfile.tex
+
+No indentation done :(
+Exiting...
+ENDQUOTE
+    };
     exit(2);
 }
 
 # don't call the script with 2 files unless the -o flag is active
 if(!$options{o} and scalar(@ARGV)==2)
 {
-    print "You're calling indent.plx with two file names, but not the -o flag.\n";
-    print "Did you mean to use the -o flag ?\n";
-    print "Note that this will OVERWRITE the second file\n";
-    print "No indentation done :(\n\n";
+for my $fh ($out,$logfile) {
+print $fh <<ENDQUOTE
+You're calling indent.plx with two file names, but not the -o flag.
+Did you mean to use the -o flag ?
+No indentation done :(
+ENDQUOTE
+};
     exit(2);
 }
 
@@ -61,8 +94,15 @@ if(!$options{o} and scalar(@ARGV)==2)
 #           indent.plx -o myfile.tex output.tex
 if($options{o} and scalar(@ARGV)==1)
 {
-    print "indent.plx -o",$ARGV[0],"[needs another name here] \n";
-    print "No indentation done :(\n\n";
+    for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
+ERROR: When using the -o flag you need to call indent.plx with 2 arguments
+
+indent.plx -o "$ARGV[0]" [needs another name here]
+
+No indentation done :(
+Exiting...
+ENDQUOTE
+};
     exit(2);
 }
 
@@ -94,9 +134,10 @@ if ($options{w})
     my $filename = $ARGV[0];
     my $backupFile = $filename;
     $backupFile =~ s/\.tex/$backupExtension/;
-    # need to output these lines to a log file
-    #print "Original file: ", $filename,"\n" if (!$options{s});
-    #print "Backup file:",$backupFile,"\n" if (!$options{s});
+
+    # output these lines to the log file
+    print $logfile "Overwriting file: ",$filename,"\n";
+    print $logfile "Backup file: ",$backupFile,"\n";
     copy($filename,$backupFile);
 }
 
@@ -313,6 +354,9 @@ if($options{o})
     print OUTPUTFILE @lines;
     close(OUTPUTFILE);
 }
+
+# close the log file
+close($logfile);
 
 exit;
 
