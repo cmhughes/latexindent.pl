@@ -1,3 +1,7 @@
+# defaultSettings.yaml
+#
+# change anything you like in here 
+
 # Default value of indentation
 defaultindent: "\t"
 
