@@ -17,10 +17,13 @@
 # display the list of options (like a manual)
 if(scalar(@ARGV) < 1)
 {
-    print "usage: indent.plx [options] [file][.tex]\n\n";
-    print " -o \t output to another file\n";
-    print " -w \t overwrite the current file- a backup will be made, but still be careful\n";
-    print " -s \t silent mode- no output will be given\n";
+    print <<ENDQUOTE
+usage: indent.plx [options] [file][.tex]
+      -o  output to another file
+      -w  overwrite the current file- a backup will be made, but still be careful
+      -s  silent mode- no output will be given to the terminal
+ENDQUOTE
+    ;
     exit(2);
 }
 
@@ -47,7 +50,8 @@ open($logfile,">","indent.log") or die "Can't open indent.log";
 print $logfile strftime "%F %T", localtime $^T;
 print $logfile <<ENDQUOTE
 
-indent.plx, a script to indent .tex files
+indent.plx v6.4, a script to indent .tex files
+
 file: $ARGV[0]
 ENDQUOTE
 ;
@@ -55,8 +59,14 @@ ENDQUOTE
 # a quick options check
 if($options{o} and $options{w})
 {
-    print $logfile "WARNING: You have called indent.plx with both -o and -w\n";
-    print $logfile "\t -o will take priority, and -w will be ignored \n\n";
+    print $logfile <<ENDQUOTE 
+
+WARNING: 
+\t You have called indent.plx with both -o and -w
+\t -o (output to file) will take priority, and -w (over write) will be ignored
+ 
+ENDQUOTE
+;
     $options{w} = 0;
 }
 
@@ -64,8 +74,11 @@ if($options{o} and $options{w})
 if(scalar(@ARGV)>2)
 {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
-ERROR: You're calling indent.plx with more than two file names
-The script can take at MOST two file names, for example
+
+ERROR:
+\t You're calling indent.plx with more than two file names
+\t The script can take at MOST two file names, but you 
+\t need to call it with the -o switch; for example
 
 \t indent.plx -o originalfile.tex outputfile.tex
 
@@ -81,9 +94,13 @@ if(!$options{o} and scalar(@ARGV)==2)
 {
 for my $fh ($out,$logfile) {
 print $fh <<ENDQUOTE
-You're calling indent.plx with two file names, but not the -o flag.
-Did you mean to use the -o flag ?
+
+ERROR:
+\t You're calling indent.plx with two file names, but not the -o flag.
+\t Did you mean to use the -o flag ?
+
 No indentation done :(
+Exiting...
 ENDQUOTE
 };
     exit(2);
@@ -126,18 +143,45 @@ my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
+my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 
 # if we want to over write the current file
 # create a backup first
 if ($options{w})
 {
+    print $logfile "\n Backup procedure:\n";
+    # original name of file
     my $filename = $ARGV[0];
+    # copy it
     my $backupFile = $filename;
-    $backupFile =~ s/\.tex/$backupExtension/;
+    
+    # if onlyOneBackUp is set, then the backup file will
+    # be overwritten each time
+    if($onlyOneBackUp)
+    {
+        $backupFile =~ s/\.tex/$backupExtension/;
+        print $logfile "\t copying $filename to $backupFile\n";
+        print $logfile "\t $backupFile was overwritten\n\n" if (-e $backupFile);
+    }
+    else
+    {
+        # start with a backup file .bak0 (or whatever $backupExtension is present)
+        my $backupCounter = 0;
+        $backupFile =~ s/\.tex$/$backupExtension$backupCounter/;
+
+        # if it exists, then keep going: .bak0, .bak1, ...
+        while (-e $backupFile)
+        {
+            print $logfile "\t $backupFile already exists, incrementing by 1...\n";
+            $backupCounter++;
+            $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;
+        }
+        print $logfile "\n\t copying $filename to $backupFile\n\n";
+    }
 
     # output these lines to the log file
-    print $logfile "Overwriting file: ",$filename,"\n";
-    print $logfile "Backup file: ",$backupFile,"\n";
+    print $logfile "\t Overwriting file: ",$filename,"\n";
+    print $logfile "\t Backup file: ",$backupFile,"\n";
     copy($filename,$backupFile);
 }
 
