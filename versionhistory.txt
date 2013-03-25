@@ -1,3 +1,30 @@
+Version 6.2: March 24th 2013
+    - made switch in defaultSettings.yaml so that preamble can be 
+      indented or not
+    - fixed a matching { and } issue (there may be more). 
+      BEFORE
+            \hypersetup{%
+            pdfstartview={%
+            FitH \hypercalcbp{\paperheight-\topmargin-0in
+            -\headheight-\headsep }%
+            }%
+            %---------------------------------------------------------------------------
+            }
+       AFTER
+            \hypersetup{%
+            	pdfstartview={%
+            		FitH \hypercalcbp{\paperheight-\topmargin-0in
+            			-\headheight-\headsep }%
+            	}%
+            	%---------------------------------------------------------------------------
+            }
+
+        Previous versions would not have accounted for the trailing
+        }  after \headsep
+
+Version 6.1: March 24th 2013
+    - fixed preamble issue
+
 Version 6: March 22nd 2013
     - Huge over haul, completely re-structured it using a YAML file
       the default settings are now stored in defaultSettings.yaml
