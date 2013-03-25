@@ -1,3 +1,13 @@
+Version 6.4: March 25th 2013
+    - user can choose to backup to a different file every time, e.g
+        .bak0, .bak1, .bak2, etc
+      this can be changed by switching
+            onlyOneBackUp: 0
+      to 
+            onlyOneBackUp: 1
+      which means that myfile.bak will always be overwritten
+    - made log file messages, warnings, errors prettier
+
 Version 6.3: March 25th 2013
     - ouputted information, warnings, and error messages to 
       indent.log
