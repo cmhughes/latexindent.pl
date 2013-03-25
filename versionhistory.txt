@@ -1,3 +1,9 @@
+Version 6.3: March 25th 2013
+    - ouputted information, warnings, and error messages to 
+      indent.log
+    - user CAN call the script with -wo but -o will take 
+      priority and will disable -w
+
 Version 6.2: March 24th 2013
     - made switch in defaultSettings.yaml so that preamble can be 
       indented or not
