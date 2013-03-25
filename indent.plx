@@ -85,6 +85,7 @@ my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 my $backupExtension = $defaultSettings->[0]->{backupExtension};
+my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 
 # if we want to over write the current file
 # create a backup first
@@ -101,7 +102,8 @@ if ($options{w})
 
 # scalar variables
 my $line='';                # $line: takes the $line of the file
-my $inpreamble=1;           # $inpreamble: switch to determine if in
+my $inpreamble=!$indentPreamble;
+                            # $inpreamble: switch to determine if in
                             #               preamble or not
 my $inverbatim=0;           # $inverbatim: switch to determine if in
                             #               a verbatim environment or not
@@ -464,7 +466,7 @@ sub start_command_or_key_unmatched_braces{
                  or $alwaysLookforSplitBraces)
         )
         {
-            # store the command name, because $1
+            # store the command name, because $2
             # will not exist after the next match
             $commandname = $2;
             $matchedbraces=0;
@@ -483,7 +485,7 @@ sub start_command_or_key_unmatched_braces{
             $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
 
             # set the indentation
-            if($matchedbraces != 0 )
+            if($matchedbraces > 0 )
             {
                   &increase_indent($commandname);
 
@@ -494,6 +496,46 @@ sub start_command_or_key_unmatched_braces{
                                       lookforelse=>$lookforelse,
                                       countzeros=>0});
 
+            }
+            else
+            {
+                # if $matchedbraces < 0 then we must be matching
+                # braces from a previous split-braces command
+                
+                # keep matching { OR }, and don't match \{ or \}
+                while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
+                {
+                     # store the match, either { or }
+                     my $braceType = $1;
+
+                     # get the details of the most recent command name
+                     $commanddetails = pop(@commandstore);
+                     $commandname = $commanddetails->{'commandname'};
+                     $matchedbraces = $commanddetails->{'matchedbraces'};
+                     $countzeros = $commanddetails->{'countzeros'};
+                     $lookforelse= $commanddetails->{'lookforelse'};
+
+                     $matchedbraces++ if($1 eq "{");
+                     $matchedbraces-- if($1 eq "}");
+
+                     # if we've matched up the braces then
+                     # we can decrease the indent by 1 level
+                     if($matchedbraces == 0)
+                     {
+                          $countzeros++ if $lookforelse;
+
+                          # decrease the indentation (if appropriate)
+                          &decrease_indent($commandname);
+
+                         if($countzeros==1)
+                         {
+                              push(@commandstore,{commandname=>$commandname,
+                                                  matchedbraces=>$matchedbraces,
+                                                  lookforelse=>$lookforelse,
+                                                  countzeros=>$countzeros});
+                         }
+                     }
+                }
             }
         }
 }
@@ -518,53 +560,58 @@ sub end_command_or_key_unmatched_braces{
     #           We count the number of { and ADD to the counter
     #                                  } and SUBTRACT to the counter
     if(scalar(@commandstore) 
-        and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
+      and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/ 
                     and (scalar($checkunmatched{$2}) 
                          or scalar($checkunmatchedELSE{$2})
                          or $alwaysLookforSplitBraces))
         and $_ !~ m/^\s*%/
        )
     {
-       # get the details of the most recent command name
-       $commanddetails = pop(@commandstore);
-       $commandname = $commanddetails->{'commandname'};
-       $matchedbraces = $commanddetails->{'matchedbraces'};
-       $countzeros = $commanddetails->{'countzeros'};
-       $lookforelse= $commanddetails->{'lookforelse'};
-
-       # match { but don't match \{
-       $matchedbraces++ while ($_ =~ m/(?<!\\){/g);
-
-       # match } but don't match \}
-       $matchedbraces-- while ($_ =~ m/(?<!\\)}/g);
-
-       # if we've matched up the braces then
-       # we can decrease the indent by 1 level
-       if($matchedbraces == 0)
+       # keep matching { OR }, and don't match \{ or \}
+       while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
        {
-            $countzeros++ if $lookforelse;
+            print $_,"\n";
+            # store the match, either { or }
+            my $braceType = $1;
 
-            # decrease the indentation (if appropriate)
-            &decrease_indent($commandname);
+            # get the details of the most recent command name
+            $commanddetails = pop(@commandstore);
+            $commandname = $commanddetails->{'commandname'};
+            $matchedbraces = $commanddetails->{'matchedbraces'};
+            $countzeros = $commanddetails->{'countzeros'};
+            $lookforelse= $commanddetails->{'lookforelse'};
 
-           if($countzeros==1)
-           {
+            $matchedbraces++ if($1 eq "{");
+            $matchedbraces-- if($1 eq "}");
+
+            # if we've matched up the braces then
+            # we can decrease the indent by 1 level
+            if($matchedbraces == 0)
+            {
+                 $countzeros++ if $lookforelse;
+
+                 # decrease the indentation (if appropriate)
+                 &decrease_indent($commandname);
+
+                if($countzeros==1)
+                {
+                     push(@commandstore,{commandname=>$commandname,
+                                         matchedbraces=>$matchedbraces,
+                                         lookforelse=>$lookforelse,
+                                         countzeros=>$countzeros});
+                }
+            }
+            else
+            {
+                # otherwise we need to enter the new value
+                # of $matchedbraces and the value of $command
+                # back into storage
                 push(@commandstore,{commandname=>$commandname,
                                     matchedbraces=>$matchedbraces,
                                     lookforelse=>$lookforelse,
                                     countzeros=>$countzeros});
-           }
-       }
-       else
-       {
-           # otherwise we need to enter the new value
-           # of $matchedbraces and the value of $command
-           # back into storage
-           push(@commandstore,{commandname=>$commandname,
-                               matchedbraces=>$matchedbraces,
-                               lookforelse=>$lookforelse,
-                               countzeros=>$countzeros});
-       }
+            }
+     }
      }
 }
 

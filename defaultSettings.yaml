@@ -9,6 +9,9 @@ defaultindent: "\t"
 #       myfileBACKUP.bak
 backupExtension: .bak
 
+# indent preamble
+indentPreamble: 1
+
 # always look for split { }, which means that the user doesn't
 # have to complete checkunmatched, checkunmatchedELSE
 alwaysLookforSplitBraces: 1
@@ -35,8 +38,9 @@ lookforaligndelims:
 # put them in here; for example, you might just want 
 # to use a space " " or maybe a double tab "\t\t"
 indentrules:
-   myenvironment: "\s\s"
+   myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
+   \[: "\t"
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -66,10 +70,9 @@ noAdditionalIndent:
     foreach: 0
     widepage: 1
     comment: 1
+    \[: 0
     document: 1
     frame: 0
-    \\\[: 0
-    \\\]: 0
 
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
