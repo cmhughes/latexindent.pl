@@ -1,6 +1,7 @@
 # defaultSettings.yaml
 #
-# change anything you like in here 
+# change anything you like in here, but you should probably
+# read the manual first to understand what each switch does :)
 
 # Default value of indentation
 defaultindent: "\t"
@@ -12,6 +13,14 @@ defaultindent: "\t"
 # backup file will be
 #       myfileBACKUP.bak
 backupExtension: .bak
+
+# only one backup per file; if onlyOneBackUp is 0 then the
+# number on the extension increments by 1 each time
+# (this is in place as a safety measure) myfile.bak0, myfile.bak1, myfile.bak2
+#
+# if you set onlyOnebackUp to 1, then the backup file will
+# be overwritten each time (not recommended until you trust the script)
+onlyOneBackUp: 0
 
 # indent preamble
 indentPreamble: 1
@@ -86,6 +95,10 @@ noAdditionalIndent:
 #       checkunmatched
 #       checkunmatchedELSE
 #       checkunmatchedbracket
+#
+# in other words, you don't really need to edit anything 
+# below this line- it used to be necessary for older 
+# versions of the script, but not anymore :)
 #***      ***
 
 # commands that might split {} across lines
