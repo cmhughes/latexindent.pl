@@ -185,6 +185,11 @@ if ($options{w})
     copy($filename,$backupFile);
 }
 
+if(!($options{o} or $options{w})) 
+{
+    print $logfile "Just out putted to the terminal :)";
+}
+
 # scalar variables
 my $line='';                # $line: takes the $line of the file
 my $inpreamble=!$indentPreamble;
@@ -585,7 +590,7 @@ sub start_command_or_key_unmatched_braces{
                                       countzeros=>0});
 
             }
-            else
+            elsif($matchedbraces<0)
             {
                 # if $matchedbraces < 0 then we must be matching
                 # braces from a previous split-braces command
