@@ -1,3 +1,6 @@
+Version 6.5: March 26th 2013
+    - line count check, written to logfile
+
 Version 6.4: March 25th 2013
     - user can choose to backup to a different file every time, e.g
         .bak0, .bak1, .bak2, etc
