@@ -663,7 +663,6 @@ sub end_command_or_key_unmatched_braces{
        # keep matching { OR }, and don't match \{ or \}
        while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
        {
-            print $_,"\n";
             # store the match, either { or }
             my $braceType = $1;
 
@@ -823,7 +822,7 @@ sub at_end_of_env_or_eq{
     #          had alignment delimiters; if so, we need to turn 
     #          OFF the $delimiter switch 
     
-    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/(\\\])/)
+    if( ($_ =~ m/^\s*({)?\\end{(.*?)}/ or $_=~ m/(\\\])/)
          and $_ !~ m/\s*^%/)
     {
 
@@ -853,7 +852,7 @@ sub at_end_of_env_or_eq{
        }
 
        # decrease the indentation (if appropriate)
-       &decrease_indent($1);
+       &decrease_indent($2);
     }
 }
 
