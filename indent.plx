@@ -40,6 +40,11 @@ use POSIX qw/strftime/; # date and time
 my %options=();
 getopts("ows", \%options);
 
+# setup variables from the flags
+my $overwrite = $options{w};
+my $outputToFile = $options{o};
+my $silentMode = $options{s};
+
 # we'll be outputting to the logfile and to standard output
 my $logfile;
 my $out = *STDOUT;
@@ -50,14 +55,14 @@ open($logfile,">","indent.log") or die "Can't open indent.log";
 print $logfile strftime "%F %T", localtime $^T;
 print $logfile <<ENDQUOTE
 
-indent.plx v6.4, a script to indent .tex files
+indent.plx version 6.5, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
 ;
 
 # a quick options check
-if($options{o} and $options{w})
+if($outputToFile and $overwrite)
 {
     print $logfile <<ENDQUOTE 
 
@@ -67,7 +72,7 @@ WARNING:
  
 ENDQUOTE
 ;
-    $options{w} = 0;
+    $overwrite = 0;
 }
 
 # can't call the script with MORE THAN 2 files
@@ -90,7 +95,7 @@ ENDQUOTE
 }
 
 # don't call the script with 2 files unless the -o flag is active
-if(!$options{o} and scalar(@ARGV)==2)
+if(!$outputToFile and scalar(@ARGV)==2)
 {
 for my $fh ($out,$logfile) {
 print $fh <<ENDQUOTE
@@ -109,7 +114,7 @@ ENDQUOTE
 # if the script is called with the -o switch, then check that 
 # a second file is present in the call, e.g
 #           indent.plx -o myfile.tex output.tex
-if($options{o} and scalar(@ARGV)==1)
+if($outputToFile and scalar(@ARGV)==1)
 {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
 ERROR: When using the -o flag you need to call indent.plx with 2 arguments
@@ -147,9 +152,9 @@ my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 
 # if we want to over write the current file
 # create a backup first
-if ($options{w})
+if ($overwrite)
 {
-    print $logfile "\n Backup procedure:\n";
+    print $logfile "\nBackup procedure:\n";
     # original name of file
     my $filename = $ARGV[0];
     # copy it
@@ -180,14 +185,14 @@ if ($options{w})
     }
 
     # output these lines to the log file
-    print $logfile "\t Overwriting file: ",$filename,"\n";
     print $logfile "\t Backup file: ",$backupFile,"\n";
+    print $logfile "\t Overwriting file: ",$filename,"\n\n";
     copy($filename,$backupFile);
 }
 
-if(!($options{o} or $options{w})) 
+if(!($outputToFile or $overwrite)) 
 {
-    print $logfile "Just out putted to the terminal :)";
+    print $logfile "Just out putted to the terminal :)\n\n";
 }
 
 # scalar variables
@@ -385,11 +390,27 @@ while(<MAINFILE>)
 # close the main file
 close(MAINFILE);
 
-# output the formatted lines to the terminal!
+# put line count information in the log file
+print $logfile "Line Count of $ARGV[0]: ",scalar(@mainfile),"\n";
+print $logfile "Line Count of indented $ARGV[0]: ",scalar(@lines);
+if(scalar(@mainfile) != scalar(@lines))
+{
+  print $logfile <<ENDQUOTE
+WARNING: \t line count of original file and indented file does 
+\t not match- consider reverting to a back up, see $backupExtension;
+ENDQUOTE
+;
+}
+else
+{
+    print $logfile "\n\nLine counts of original file and indented file match";
+}
+
+# output the formatted lines to the terminal
 print @lines if(!$options{s});
 
 # if -w is active then output to $ARGV[0]
-if($options{w})
+if($overwrite)
 {
     open(OUTPUTFILE,">",$ARGV[0]);
     print OUTPUTFILE @lines;
@@ -397,7 +418,7 @@ if($options{w})
 }
 
 # if -o is active then output to $ARGV[1]
-if($options{o})
+if($outputToFile)
 {
     open(OUTPUTFILE,">",$ARGV[1]);
     print OUTPUTFILE @lines;
@@ -822,7 +843,7 @@ sub at_end_of_env_or_eq{
     #          had alignment delimiters; if so, we need to turn 
     #          OFF the $delimiter switch 
     
-    if( ($_ =~ m/^\s*({)?\\end{(.*?)}/ or $_=~ m/(\\\])/)
+    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/(\\\])/)
          and $_ !~ m/\s*^%/)
     {
 
@@ -852,7 +873,7 @@ sub at_end_of_env_or_eq{
        }
 
        # decrease the indentation (if appropriate)
-       &decrease_indent($2);
+       &decrease_indent($1);
     }
 }
 
