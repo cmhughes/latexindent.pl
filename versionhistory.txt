@@ -1,3 +1,7 @@
+Version 7: March 27th 2013
+    - added the -t option, for tracing the process;
+      this outputs a lot of information to the .log file
+
 Version 6.5: March 26th 2013
     - line count check, written to logfile
 
