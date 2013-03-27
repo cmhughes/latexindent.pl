@@ -22,6 +22,7 @@ usage: indent.plx [options] [file][.tex]
       -o  output to another file
       -w  overwrite the current file- a backup will be made, but still be careful
       -s  silent mode- no output will be given to the terminal
+      -t  tracing mode- verbose information given to the log file
 ENDQUOTE
     ;
     exit(2);
@@ -38,12 +39,13 @@ use POSIX qw/strftime/; # date and time
 
 # get the options
 my %options=();
-getopts("ows", \%options);
+getopts("owst", \%options);
 
 # setup variables from the flags
 my $overwrite = $options{w};
 my $outputToFile = $options{o};
 my $silentMode = $options{s};
+my $tracingMode = $options{t};
 
 # we'll be outputting to the logfile and to standard output
 my $logfile;
@@ -55,7 +57,7 @@ open($logfile,">","indent.log") or die "Can't open indent.log";
 print $logfile strftime "%F %T", localtime $^T;
 print $logfile <<ENDQUOTE
 
-indent.plx version 6.5, a script to indent .tex files
+indent.plx version 7, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -238,6 +240,7 @@ my @mainfile=();            # @mainfile: stores input file; used to
                             #            grep for \documentclass
 my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
                             #           a line 
+my $lineCounter=0;
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
@@ -250,6 +253,12 @@ close(MAINFILE);
 if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0)
 {
     $inpreamble=0;
+
+    print $logfile "Trace:\tNo documentclass detected, assuming no preamble\n" if($tracingMode);
+}
+else
+{
+    print $logfile "Trace:\t documentclass detected, assuming preamble\n" if($tracingMode);
 }
 
 # the previous OPEN command puts us at the END of the file
@@ -258,6 +267,12 @@ open(MAINFILE, $ARGV[0]) or die "Could not open input file";
 # loop through the lines in the INPUT file
 while(<MAINFILE>)
 {
+    # increment the line counter
+    $lineCounter++;
+    
+    # tracing mode
+    print $logfile "\n" if($tracingMode and !($inpreamble or $inverbatim));
+
     # check to see if we're still in the preamble
     # or in a verbatim environment
     if(!($inpreamble or $inverbatim))
@@ -266,6 +281,9 @@ while(<MAINFILE>)
         # from the current line
         s/^\ *//; 
         s/^\t*//; 
+
+        # tracing mode
+        print $logfile "Line $lineCounter\t removing leading spaces\n" if($tracingMode);
     }
     else
     {
@@ -274,6 +292,21 @@ while(<MAINFILE>)
         if(m/^\s*\\begin{document}/)
         {
             $inpreamble = 0;
+
+            # tracing mode
+            print $logfile "Line $lineCounter\t \\begin{document} found \n" if($tracingMode);
+        }
+        else
+        {
+            # tracing mode
+            if($inpreamble)
+            {
+                print $logfile "Line $lineCounter\t still in preamble\n" if($tracingMode);
+            }
+            elsif($inverbatim)
+            {
+                print $logfile "Line $lineCounter\t in verbatim-like environment, doing nothing\n" if($tracingMode);
+            }
         }
     }
 
@@ -301,6 +334,9 @@ while(<MAINFILE>)
         {
             s/((?<!\\)%.*)//;
             $trailingcomments=$1;
+
+            # tracing mode
+            print $logfile "Line $lineCounter\t Removed trailing comments to count braces and brackets: $1\n" if($tracingMode);
         }
 
         # check to see if we're at the end of a \parbox, \marginpar
@@ -318,8 +354,13 @@ while(<MAINFILE>)
             # some line break magic, http://stackoverflow.com/questions/881779/neatest-way-to-remove-linebreaks-in-perl
             s/\R//;
             $_ = $_ . $trailingcomments."\n" ;
+
+            # tracing mode
+            print $logfile "Line $lineCounter\t counting braces/brackets complete: added trailing comments back on $trailingcomments\n" if($tracingMode);
+
             # empty the trailingcomments
             $trailingcomments='';
+
         }
     }
 
@@ -339,12 +380,17 @@ while(<MAINFILE>)
             # and output it
             $_ = join("",@indent).$_;
             push(@lines,$_);
+            # tracing mode
+            print $logfile "Line $lineCounter\t Adding current level of indentation\n" if($tracingMode);
         }
     }
     else
     {
         # output to @block if we're in a delimiter block
         push(@block,$_);
+
+        # tracing mode
+        print $logfile "Line $lineCounter\t In delimeter block, waiting for block formatting\n" if($tracingMode);
     }
 
     # only check for new environments or commands if we're 
@@ -370,6 +416,9 @@ while(<MAINFILE>)
         #
         # Note that this won't match \%
         s/(?<!\\)%.*// if( $_=~ m/(?<!\\)%.*/);
+
+        # tracing mode
+        print $logfile "Line $lineCounter\t Removing trailing comments for brace count (line is already stored)\n" if($tracingMode);
 
         # check to see if we have \begin{something} or \[ 
         &at_beg_of_env_or_eq();
@@ -441,6 +490,8 @@ sub at_end_noindent{
     if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noindentblock{$1}) 
     {
            $inverbatim = 0;
+            # tracing mode
+            print $logfile "Line $lineCounter\t % \\end{no indent block} found, switching verbatim OFF \n" if($tracingMode);
     }
 }
 
@@ -455,6 +506,8 @@ sub at_beg_noindent{
     if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noindentblock{$1}) 
     {
            $inverbatim = 1;
+           # tracing mode
+           print $logfile "Line $lineCounter\t % \\begin{no indent block} found, switching verbatim ON \n" if($tracingMode);
     }
 }
 
@@ -492,6 +545,9 @@ sub start_command_or_key_unmatched_brackets{
             # set the indentation
             if($matchedBRACKETS != 0 )
             {
+                  # tracing mode
+                  print $logfile "Line $lineCounter\t Found opening BRACKET [ $commandname\n" if($tracingMode);
+
                   &increase_indent($commandname);
 
                   # store the command name
@@ -540,6 +596,9 @@ sub end_command_or_key_unmatched_brackets{
        # we can decrease the indent by 1 level
        if($matchedBRACKETS == 0)
        {
+            # tracing mode
+            print $logfile "Line $lineCounter\t Found closing BRACKET ] $commandname\n" if($tracingMode);
+
             # decrease the indentation (if appropriate)
             &decrease_indent($commandname);
        }
@@ -550,6 +609,8 @@ sub end_command_or_key_unmatched_brackets{
            # back into storage
            push(@commandstorebrackets,{commandname=>$commandname,
                                        matchedBRACKETS=>$matchedBRACKETS});
+           # tracing mode
+           print $logfile "Line $lineCounter\t Searching for closing BRACKET ] $commandname\n" if($tracingMode);
        }
      }
 }
@@ -601,6 +662,9 @@ sub start_command_or_key_unmatched_braces{
             # set the indentation
             if($matchedbraces > 0 )
             {
+                  # tracing mode
+                  print $logfile "Line $lineCounter\t Found opening BRACE { $commandname\n" if($tracingMode);
+
                   &increase_indent($commandname);
 
                   # store the command name
@@ -637,6 +701,9 @@ sub start_command_or_key_unmatched_braces{
                      if($matchedbraces == 0)
                      {
                           $countzeros++ if $lookforelse;
+
+                          # tracing mode
+                          print $logfile "Line $lineCounter\t Found closing BRACE } $1\n" if($tracingMode);
 
                           # decrease the indentation (if appropriate)
                           &decrease_indent($commandname);
@@ -703,6 +770,9 @@ sub end_command_or_key_unmatched_braces{
             {
                  $countzeros++ if $lookforelse;
 
+                 # tracing mode
+                 print $logfile "Line $lineCounter\t Found closing BRACE } $commandname\n" if($tracingMode);
+
                  # decrease the indentation (if appropriate)
                  &decrease_indent($commandname);
 
@@ -723,6 +793,9 @@ sub end_command_or_key_unmatched_braces{
                                     matchedbraces=>$matchedbraces,
                                     lookforelse=>$lookforelse,
                                     countzeros=>$countzeros});
+
+               # tracing mode
+               print $logfile "Line $lineCounter\t Searching for closing BRACE } $commandname\n" if($tracingMode);
             }
      }
      }
@@ -811,6 +884,9 @@ sub at_beg_of_env_or_eq{
     if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
         and $_ !~ m/^\s*%/)
     {
+       # tracing mode
+       print $logfile "Line $lineCounter\t \\begin{environment} found: $2 \n" if($tracingMode);
+
        # increase the indentation 
        &increase_indent($2);
 
@@ -819,12 +895,16 @@ sub at_beg_of_env_or_eq{
        if($lookforaligndelims{$2})
        {
            $delimiters=1;
+            # tracing mode
+            print $logfile "Line $lineCounter\t Delimiter environment started: $2\n" if($tracingMode);
        }
 
        # check for verbatim-like environments
        if($verbatimEnvironments{$2})
        {
            $inverbatim = 1;
+           # tracing mode
+           print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, switching ON verbatim \n" if($tracingMode);
        }
     }
 }
@@ -851,6 +931,8 @@ sub at_end_of_env_or_eq{
        if($verbatimEnvironments{$1})
        {
            $inverbatim = 0;
+            # tracing mode
+            print $logfile "Line $lineCounter\t \\end{verbatim-like} found, switching off verbatim \n" if($tracingMode);
        }
 
        # check to see if we need to turn off alignment
@@ -870,7 +952,11 @@ sub at_end_of_env_or_eq{
            }
            # empty the @block, very important!
            @block=();
+
        }
+
+       # tracing mode
+       print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
 
        # decrease the indentation (if appropriate)
        &decrease_indent($1);
@@ -1065,6 +1151,8 @@ sub increase_indent{
           if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
           {
             push(@indent, $defaultindent);
+            # tracing mode
+            print $logfile "Line $lineCounter\t increasing indent \n" if($tracingMode);
           }
        }
 }
@@ -1080,5 +1168,7 @@ sub decrease_indent{
        if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
        {
             pop(@indent);
+            # tracing mode
+            print $logfile "Line $lineCounter\t decreasing indent \n" if($tracingMode);
        }
 }
