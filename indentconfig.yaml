@@ -1,0 +1,10 @@
+# Absolute paths to user settings for indent.plx
+#
+# Note that the settings will be read in the order you 
+# specify here- each successive settings file will overwrite
+# the variables that you specify
+
+absolutePaths:
+- /home/cmhughes/Documents/yamlfiles/mysettings.yaml
+- /home/cmhughes/Desktop/othersettings.yaml
+- /some/other/Desktop/othersettings.yaml
