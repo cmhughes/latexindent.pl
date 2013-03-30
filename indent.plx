@@ -13,6 +13,20 @@
 #
 #	For details of how to use this file, please see readme.txt
 
+
+# load packages/modules
+use strict;
+use warnings;           
+use FindBin;            # help find defaultSettings.yaml 
+use YAML::Tiny;         # interpret defaultSettings.yaml
+use File::Copy;         # to copy the original file to backup (if overwrite option set)
+use Getopt::Std;        # to get the switches/options/flags
+use POSIX qw/strftime/; # date and time
+
+# get the options
+my %options=();
+getopts("owst", \%options);
+
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
 if(scalar(@ARGV) < 1)
@@ -27,19 +41,6 @@ ENDQUOTE
     ;
     exit(2);
 }
-
-# load packages/modules
-use strict;
-use warnings;           
-use FindBin;            # help find defaultSettings.yaml 
-use YAML::Tiny;         # interpret defaultSettings.yaml
-use File::Copy;         # to copy the original file to backup (if overwrite option set)
-use Getopt::Std;        # to get the switches/options/flags
-use POSIX qw/strftime/; # date and time
-
-# get the options
-my %options=();
-getopts("owst", \%options);
 
 # setup variables from the flags
 my $overwrite = $options{w};
