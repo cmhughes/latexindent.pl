@@ -1,3 +1,9 @@
+Version 8: March 30th 2013
+    - users can now specify indentconfig.yaml in their home directory
+      and add paths to their own settings which will over ride 
+      the defaultSettings.yaml
+    - fixed a bug in the matched braces routine
+
 Version 7.1: March 29th 2013
     - removed -w from line 1, the Warnings package should suffice:
         http://stackoverflow.com/questions/221919/should-i-turn-on-perl-warnings-with-the-command-line-switch-or-pragma
