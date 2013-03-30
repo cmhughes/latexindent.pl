@@ -13,7 +13,6 @@
 #
 #	For details of how to use this file, please see readme.txt
 
-
 # load packages/modules
 use strict;
 use warnings;           
@@ -22,6 +21,7 @@ use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use Getopt::Std;        # to get the switches/options/flags
 use POSIX qw/strftime/; # date and time
+use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
 my %options=();
@@ -58,7 +58,7 @@ open($logfile,">","indent.log") or die "Can't open indent.log";
 print $logfile strftime "%F %T", localtime $^T;
 print $logfile <<ENDQUOTE
 
-indent.plx version 7, a script to indent .tex files
+indent.plx version 8.0, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -137,10 +137,17 @@ my $defaultSettings = YAML::Tiny->new;
 # Open defaultSettings.yaml
 $defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );
 
-# setup the variables and hashes from the YAML file
+# setup the DEFAULT variables and hashes from the YAML file
+
+# scalar variables
 my $defaultindent = $defaultSettings->[0]->{defaultindent};
 my $alwaysLookforSplitBraces = $defaultSettings->[0]->{alwaysLookforSplitBraces};
 my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrackets};
+my $backupExtension = $defaultSettings->[0]->{backupExtension};
+my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
+my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
+
+# hash variables
 my %lookforaligndelims= %{$defaultSettings->[0]->{lookforaligndelims}};
 my %indentrules= %{$defaultSettings->[0]->{indentrules}};
 my %verbatimEnvironments= %{$defaultSettings->[0]->{verbatimEnvironments}};
@@ -149,9 +156,78 @@ my %checkunmatched= %{$defaultSettings->[0]->{checkunmatched}};
 my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
-my $backupExtension = $defaultSettings->[0]->{backupExtension};
-my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
-my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
+
+# get information about user settings- first check if indentconfig.yaml exists
+my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
+if ( -e $indentconfig ) 
+{
+      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+
+      # read the absolute paths from indentconfig.yaml
+      my $userSettings = YAML::Tiny->read( "$indentconfig" );
+      my @absPaths = @{$userSettings->[0]->{absolutePaths}};
+
+      # need new hashes to store the user data before
+      # overwriting the default
+      my %lookforaligndelimsUSER;
+      my %indentrulesUSER;
+      my %verbatimEnvironmentsUSER;
+      my %noindentblockUSER;
+      my %checkunmatchedUSER;
+      my %checkunmatchedELSEUSER;
+      my %checkunmatchedbracketUSER;
+      my %noAdditionalIndentUSER;
+
+      # read in the settings from each file
+      foreach my $settings (@absPaths)
+      {
+        # check that the settings file exists
+        if (-e $settings)
+        {
+            print $logfile "Reading user settings from $settings\n";
+            $userSettings = YAML::Tiny->read( "$settings" );
+
+            # scalar variables
+            $defaultindent = $userSettings->[0]->{defaultindent} if defined($userSettings->[0]->{defaultindent});
+            $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
+            $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
+            $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
+            $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
+            $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
+
+            # hash variables - note that each one requires two lines, 
+            # one to read in the data, one to put the keys&values in correctly
+
+            %lookforaligndelimsUSER= %{$userSettings->[0]->{lookforaligndelims}} if defined($userSettings->[0]->{lookforaligndelims});
+            @lookforaligndelims{ keys %lookforaligndelimsUSER } = values %lookforaligndelimsUSER if (%lookforaligndelimsUSER);
+
+            %indentrulesUSER= %{$userSettings->[0]->{indentrules}} if defined($userSettings->[0]->{indentrules});
+            @indentrules{ keys %indentrulesUSER } = values %indentrulesUSER if (%indentrulesUSER);
+
+            %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
+            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
+
+            %noindentblockUSER= %{$userSettings->[0]->{noindentblock}} if defined($userSettings->[0]->{noindentblock});
+            @noindentblock{ keys %noindentblockUSER } = values %noindentblockUSER if (%noindentblockUSER);
+
+            %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
+            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
+
+            %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
+            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
+
+            %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
+            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+
+        }
+        else
+        {
+            # otherwise keep going, but put a warning in the log file
+            print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
+            print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
+        }
+      }
+} 
 
 # if we want to over write the current file
 # create a backup first
@@ -660,6 +736,9 @@ sub start_command_or_key_unmatched_braces{
             # match } but don't match \}
             $matchedbraces-- while ($_ =~ /(?<!\\)}/g);
 
+            # tracing mode
+            print $logfile "Line $lineCounter\t matchedbraces = $matchedbraces\n" if($tracingMode);
+
             # set the indentation
             if($matchedbraces > 0 )
             {
@@ -684,6 +763,7 @@ sub start_command_or_key_unmatched_braces{
                 # keep matching { OR }, and don't match \{ or \}
                 while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
                 {
+
                      # store the match, either { or }
                      my $braceType = $1;
 
@@ -716,6 +796,15 @@ sub start_command_or_key_unmatched_braces{
                                                   lookforelse=>$lookforelse,
                                                   countzeros=>$countzeros});
                          }
+                     }
+                     else
+                     {
+                            # otherwise we need to put the command back for the 
+                            # next brace count
+                            push(@commandstore,{commandname=>$commandname,
+                                                matchedbraces=>$matchedbraces,
+                                                lookforelse=>$lookforelse,
+                                                countzeros=>$countzeros});
                      }
                 }
             }
