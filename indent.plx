@@ -19,13 +19,14 @@ use warnings;
 use FindBin;            # help find defaultSettings.yaml 
 use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
+use File::Basename;     # to get the filename and directory path
 use Getopt::Std;        # to get the switches/options/flags
 use POSIX qw/strftime/; # date and time
 use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
 my %options=();
-getopts("owst", \%options);
+getopts("sotlw", \%options);
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
@@ -37,6 +38,7 @@ usage: indent.plx [options] [file][.tex]
       -w  overwrite the current file- a backup will be made, but still be careful
       -s  silent mode- no output will be given to the terminal
       -t  tracing mode- verbose information given to the log file
+      -l  use localSettings.yaml (assuming it exists in the directory of your file)
 ENDQUOTE
     ;
     exit(2);
@@ -47,6 +49,7 @@ my $overwrite = $options{w};
 my $outputToFile = $options{o};
 my $silentMode = $options{s};
 my $tracingMode = $options{t};
+my $readLocalSettings = $options{l};
 
 # we'll be outputting to the logfile and to standard output
 my $logfile;
@@ -157,6 +160,17 @@ my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 
+# need new hashes to store the user and local data before
+# overwriting the default
+my %lookforaligndelimsUSER;
+my %indentrulesUSER;
+my %verbatimEnvironmentsUSER;
+my %noindentblockUSER;
+my %checkunmatchedUSER;
+my %checkunmatchedELSEUSER;
+my %checkunmatchedbracketUSER;
+my %noAdditionalIndentUSER;
+
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 if ( -e $indentconfig ) 
@@ -165,18 +179,7 @@ if ( -e $indentconfig )
 
       # read the absolute paths from indentconfig.yaml
       my $userSettings = YAML::Tiny->read( "$indentconfig" );
-      my @absPaths = @{$userSettings->[0]->{absolutePaths}};
-
-      # need new hashes to store the user data before
-      # overwriting the default
-      my %lookforaligndelimsUSER;
-      my %indentrulesUSER;
-      my %verbatimEnvironmentsUSER;
-      my %noindentblockUSER;
-      my %checkunmatchedUSER;
-      my %checkunmatchedELSEUSER;
-      my %checkunmatchedbracketUSER;
-      my %noAdditionalIndentUSER;
+      my @absPaths = @{$userSettings->[0]->{paths}};
 
       # read in the settings from each file
       foreach my $settings (@absPaths)
@@ -229,6 +232,52 @@ if ( -e $indentconfig )
       }
 } 
 
+# get information about LOCAL settings, assuming that localSettings.yaml exists
+my $directoryName = dirname $ARGV[0];
+if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings) 
+{
+      print $logfile "Reading LOCAL settings from $directoryName/localSettings.yaml\n";
+
+      my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
+
+      # scalar variables
+      $defaultindent = $localSettings->[0]->{defaultindent} if defined($localSettings->[0]->{defaultindent});
+      $alwaysLookforSplitBraces = $localSettings->[0]->{alwaysLookforSplitBraces} if defined($localSettings->[0]->{alwaysLookforSplitBraces});
+      $alwaysLookforSplitBrackets = $localSettings->[0]->{alwaysLookforSplitBrackets} if defined($localSettings->[0]->{alwaysLookforSplitBrackets});
+      $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
+      $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
+      $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
+
+      # hash variables - note that each one requires two lines, 
+      # one to read in the data, one to put the keys&values in correctly
+
+      %lookforaligndelimsUSER= %{$localSettings->[0]->{lookforaligndelims}} if defined($localSettings->[0]->{lookforaligndelims});
+      @lookforaligndelims{ keys %lookforaligndelimsUSER } = values %lookforaligndelimsUSER if (%lookforaligndelimsUSER);
+
+      %indentrulesUSER= %{$localSettings->[0]->{indentrules}} if defined($localSettings->[0]->{indentrules});
+      @indentrules{ keys %indentrulesUSER } = values %indentrulesUSER if (%indentrulesUSER);
+
+      %verbatimEnvironmentsUSER= %{$localSettings->[0]->{verbatimEnvironments}} if defined($localSettings->[0]->{verbatimEnvironments});
+      @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
+
+      %noindentblockUSER= %{$localSettings->[0]->{noindentblock}} if defined($localSettings->[0]->{noindentblock});
+      @noindentblock{ keys %noindentblockUSER } = values %noindentblockUSER if (%noindentblockUSER);
+
+      %checkunmatchedUSER= %{$localSettings->[0]->{checkunmatched}} if defined($localSettings->[0]->{checkunmatched});
+      @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
+
+      %checkunmatchedbracketUSER= %{$localSettings->[0]->{checkunmatchedbracket}} if defined($localSettings->[0]->{checkunmatchedbracket});
+      @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
+
+      %noAdditionalIndentUSER= %{$localSettings->[0]->{noAdditionalIndent}} if defined($localSettings->[0]->{noAdditionalIndent});
+      @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+} 
+elsif ( !(-e "$directoryName/localSettings.yaml") and $readLocalSettings) 
+{
+      print $logfile "WARNING\n\t$directoryName/localSettings.yaml not found\n";
+      print $logfile "\tcarrying on without it.\n";
+} 
+
 # if we want to over write the current file
 # create a backup first
 if ($overwrite)
@@ -271,7 +320,7 @@ if ($overwrite)
 
 if(!($outputToFile or $overwrite)) 
 {
-    print $logfile "Just out putted to the terminal :)\n\n";
+    print $logfile "Just out putted to the terminal :)\n\n" if !$silentMode  ;
 }
 
 # scalar variables
@@ -1013,7 +1062,7 @@ sub at_end_of_env_or_eq{
     #          had alignment delimiters; if so, we need to turn 
     #          OFF the $delimiter switch 
     
-    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/(\\\])/)
+    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/^(\\\])/)
          and $_ !~ m/\s*^%/)
     {
 
