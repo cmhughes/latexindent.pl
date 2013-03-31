@@ -4,7 +4,7 @@
 # specify here- each successive settings file will overwrite
 # the variables that you specify
 
-absolutePaths:
+paths:
 - /home/cmhughes/Documents/yamlfiles/mysettings.yaml
 - /home/cmhughes/Desktop/othersettings.yaml
 - /some/other/Desktop/othersettings.yaml
