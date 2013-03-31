@@ -8,9 +8,11 @@ top=2cm,bottom=1.5cm]{geometry}
 \usepackage{listings}
 \usepackage{titlesec}
 \usepackage{xcolor}
+\usepackage[sc]{caption}
 %\usepackage{kpfonts}
-\usepackage{hyperref}
+\usepackage[colorlinks=true,linkcolor=blue]{hyperref}
 \usepackage{cleveref}
+
 
 % tex.stackexchange.com/questions/93944/using-lstinline-inside-a-item/
 % allow \lstinline inside an \item
@@ -48,9 +50,9 @@ top=2cm,bottom=1.5cm]{geometry}
 	breaklines=true,frame=single,framexleftmargin=8mm, xleftmargin=8mm,
 	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
 	backgroundcolor=\color{green!5},frameround=fttt,
-	rulecolor=\color{red},
-	keywordstyle=\color[rgb]{0,0,1},                    % keywords
-	commentstyle=\color{blue},    % comments
+	rulecolor=\color{blue!70!black},
+	keywordstyle=\color{blue},                    % keywords
+	commentstyle=\color{purple},    % comments
 	%columns=fullflexible   
 }%
 % stolen from arara.sty http://mirrors.med.harvard.edu/ctan/support/arara/doc/arara.sty
@@ -97,6 +99,48 @@ top=2cm,bottom=1.5cm]{geometry}
 
 \begin{document}
 
+\title{\lstinline[basicstyle=\huge\ttfamily]!indent.plx!}
+\author{Chris Hughes}
+\maketitle
+\begin{abstract}
+ \lstinline!indent.plx! is a \lstinline!Perl! script that indents \lstinline!.tex!
+ files according to an indentation scheme that the user can modify to suit their 
+ taste. Environments, including those with alignment delimiters (such as \lstinline!tabular!), 
+ commands, including those that can split braces and brackets across lines, 
+ are \emph{usually} handled correctly by the script.
+\end{abstract}
+
+\tableofcontents
+\lstlistoflistings
+
+\section{Before we begin}
+I first created \lstinline!indent.plx! for helping me to format chapter files 
+in a big project that I am working on. After I blogged about it on the 
+\TeX{} stack exchange \cite{cmhblog}\fixthis{citation} I received some positive feedback and 
+follow-up feature requests. A big thank you to Harish Kumar who has really 
+helped to drive the script forward and has put it through a number of challenging
+tests-- I look forward to more challenges in the future Harish!
+
+\lstinline!indent.plx! has the option to overwrite your \lstinline!.tex! files.
+It will always make at least one backup (you can choose how many it makes, see \cpageref{page:onlyonebackup})
+but you should still be careful when using it. The script has been tested on many
+files, but there are some known limitations (see \cref{sec:knownlimitations}). You, 
+the user, are responsible for ensuring that you maintain backups of your files
+before running \lstinline!indent.plx! on them. I think it is important at this
+stage to restate an important part of the license here:
+\begin{quote}\itshape
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+\end{quote}
+There is certainly no malicious intent in releasing this script, and I do hope
+that it works as you expect it to-- if it does not, please first of all 
+make sure that you have the correct settings, and then let me know with a 
+complete minimum working example as I would like to improve the code as much as possible. 
+
+\section{Demonstration: before and after}
+
 \section{How to use the script}
 There are two ways to use \lstinline!indent.plx!: from the command line, 
 and using \lstinline!arara!.  We will discuss how to change the settings and behaviour 
@@ -139,16 +183,17 @@ on which of the following options are used.
 	trying to find out where and why.
 	\item[\lstinline!-l!] \lstinline!indent.plx -l myfile.tex!
 	
+      \label{page:localswitch}
 	Local settings: you might like to read \cref{sec:defuseloc} before 
 	using this switch. \lstinline!indent.plx! will always load \lstinline!defaultSettings.yaml!
 	and if it is called with the \lstinline!-l! switch and it finds \lstinline!localSettings.yaml! 
 	in the same directory as \lstinline!myfile.tex! then these settings will be 
 	added to the indentation scheme.
 \end{itemize}
-\subsection{From arara}
+\subsection{From \lstinline!arara!}
 Using \lstinline!indent.plx! from the command line is fine for some folks, but
 others may find it easier to use from \lstinline!arara!. \lstinline!indent.plx!
-ships with an \lstinline!arara! rule-- you can either copy it to the directory of
+ships with an \lstinline!arara! rule, \lstinline!indent.yaml!, which you can either copy it to the directory of
 your other \lstinline!arara! rules, or otherwise add the \lstinline!indent.plx!
 directory to your \lstinline!araraconfig.yaml! file.
 
@@ -172,7 +217,7 @@ switches given in \cref{sec:commandline}.
 
 \begin{table}[!ht]
 	\centering
-	\caption{Orb tags and corresponding switches}
+	\caption{\lstinline!arara! orb tags and corresponding switches}
 	\label{tab:orbsandswitches}
 	\begin{tabular}{lc}
 		\toprule
@@ -220,7 +265,8 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 	etc.
 	\item[\lstinline!onlyOneBackUp!] \lstinline!0!
 	
-	If you don't want a backup for everytime that you call \lstinline!indent.plx! (so 
+      \label{page:onlyonebackup}
+	If you don't want a backup for every time that you call \lstinline!indent.plx! (so 
 	you don't want \lstinline!myfile.bak1!, \lstinline!myfile.bak2!, etc) and you simply
 	want \lstinline!myfile.bak! (or whatever you chose \lstinline!backupExtension! to be)
 	then change \lstinline!onlyOneBackUp! to \lstinline!1!.
@@ -238,7 +284,8 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 	clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!. 
 	
 	\emph{As long as you leave this switch on (set to 1) you don't need to specify which 
-	commands can split braces across lines}.
+    commands can split braces across lines-- you can ignore the 
+    fields \lstinline!checkunmatched! and \lstinline!checkunmatchedELSE! described later}.
 	\item[\lstinline!alwaysLookforSplitBrackets!] \lstinline!1!
 	
 	This switch tells \lstinline!indent.plx! to look for commands that 
@@ -247,7 +294,7 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 	this clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!. 
 	
 	\emph{As long as you leave this switch on (set to 1) you don't need to specify which 
-	commands can split brackets across lines}.
+	commands can split brackets across lines-- you can ignore \lstinline!checkunmatchedbracket! described later}.
 	
 	\item[\lstinline!lookforaligndelims!] This is the first example of a field
 	in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims}
@@ -265,7 +312,7 @@ lookforaligndelims:
    aligned: 1
    pmatrix: 1
    listabla: 1
-	\end{yaml}
+		\end{yaml}
 	
 	You can populate this field with any other environments that you have that contain \lstinline!&!. 
 	If you change your mind, just turn them off by setting them to \lstinline!0! instead.
@@ -278,17 +325,19 @@ lookforaligndelims:
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
-	\end{yaml}
+		\end{yaml}
 	
 	\item[\lstinline!noindentblock!] If you have a block of code that you don't 
 	want \lstinline!indent.plx! to touch (even if it is \emph{not} a verbatim-like
-	environment) then you can wrap it in an environment from \lstinline!noindentblock!
+	environment) then you can wrap it in an environment from \lstinline!noindentblock!;
+	you can use any name you like for this, provided you populate it as demonstrate in 
+	\cref{lst:noindentblock}.
 	
 	\begin{yaml}[caption={\lstinline!noindentblock!},label={lst:noindentblock}]
 noindentblock:
     noindent: 1
     cmhtest: 1
-	\end{yaml}
+		\end{yaml}
 	
 	Of course, you don't want to have to specify these as null environments
 	in your code, so you use them with a comment symbol, \lstinline!%!, as demonstrated in \cref{lst:noindentblockdemo}
@@ -298,7 +347,7 @@ noindentblock:
                 won't be touched
         by \lstinline!indent.plx!
 %(*@@*) \end{noindent} 
-	    \end{lstlisting}
+		    \end{lstlisting}
 	
 	\item[\lstinline!noAdditionalIndent!] If you would prefer some of your
 	environments or commands not to receive any additional indent, then 
@@ -319,7 +368,7 @@ noAdditionalIndent:
     comment: 1
     \[: 0
     frame: 0
-	  \end{yaml}
+		  \end{yaml}
 	
 	\item[\lstinline!indentrules!] If\label{page:indentrules} you would prefer to specify 
 	individual rules for certain environments or commands, just
@@ -330,56 +379,67 @@ indentrules:
    myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
    \[: "\t"
-	\end{yaml}
+		\end{yaml}
 	
-	%# *** NOTE ***
-	%# If you have specified alwaysLookforSplitBraces: 1
-	%# and alwaysLookforSplitBrackets: 1 then you don't need
-	%# to worry about completing
-	%#
-	%#       checkunmatched
-	%#       checkunmatchedELSE
-	%#       checkunmatchedbracket
-	%#
-	%# in other words, you don't really need to edit anything 
-	%# below this line- it used to be necessary for older 
-	%# versions of the script, but not anymore :)
-	%#***      ***
-	%
-	%# commands that might split {} across lines
-	%# such as \parbox, \marginpar, etc
-	%checkunmatched:
-	%    parbox: 1
-	%    vbox: 1
-	%
-	%# very similar to %checkunmatched except these 
-	%# commands might have an else construct
-	%checkunmatchedELSE:
-	%    pgfkeysifdefined: 1
-	%    DTLforeach: 1
-	%    ifthenelse: 1
-	%
-	%# commands that might split []  across lines
-	%# such as \pgfplotstablecreatecol, etc
-	%checkunmatchedbracket:
-	%    pgfplotstablecreatecol: 1
-	%    pgfplotstablesave: 1
-	%    pgfplotstabletypeset: 1
-	%    mycommand: 1
-	%    psSolid: 1
+	\item[\color{red}\bfseries!!!] \emph{The following fields are marked in red, as they are not necessary
+	unless you wish to micro manage your indentation scheme.}
+	
+	% to anyone reading the source code- I know the next line isn't the
+	% correct way to do it :)
+	\item[\color{red}\lstinline!checkunmatched!] Assuming you keep \lstinline!alwaysLookforSplitBraces! set to \lstinline!1! (which
+	is the default) then you don't need to worry about \lstinline!checkunmatched!. 
+	
+	Should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then 
+	you can populate \lstinline!checkunmatched! with commands that can split braces across 
+	lines-- see \cref{lst:checkunmatched}.
+	
+	\begin{yaml}[caption={\lstinline!checkunmatched!},label={lst:checkunmatched}]
+checkunmatched:
+    parbox: 1
+    vbox: 1
+		\end{yaml}
+	\item[\color{red}\lstinline!checkunmatchedELSE!] Similarly, assuming you keep \lstinline!alwaysLookforSplitBraces! set to \lstinline!1! (which
+	is the default) then you don't need to worry about \lstinline!checkunmatchedELSE!. 
+	
+	As in \lstinline!checkunmatched!, should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then 
+	you can populate \lstinline!checkunmatchedELSE! with commands that can split braces across 
+	lines \emph{and} have an `else' statement-- see \cref{lst:checkunmatchedELSE}.
+	
+	\begin{yaml}[caption={\lstinline!checkunmatchedELSE!},label={lst:checkunmatchedELSE}]
+checkunmatchedELSE:
+    pgfkeysifdefined: 1
+    DTLforeach: 1
+    ifthenelse: 1
+		\end{yaml}
+	\item[\color{red}\lstinline!checkunmatchedbracket!] Assuming you keep \lstinline!alwaysLookforSplitBrackets! 
+	set to \lstinline!1! (which is the default) then you don't need to worry about \lstinline!checkunmatchedbracket!. 
+	
+	Should you wish to deactivate \lstinline!alwaysLookforSplitBrackets! by setting it 
+	to \lstinline!0!, then you can populate \lstinline!checkunmatchedbracket! with commands that can 
+	split \emph{brackets} across lines-- see \cref{lst:checkunmatchedbracket}.
+	
+	\begin{yaml}[caption={\lstinline!checkunmatchedbracket!},label={lst:checkunmatchedbracket}]
+checkunmatchedbracket:
+    psSolid: 1
+    pgfplotstablecreatecol: 1
+    pgfplotstablesave: 1
+    pgfplotstabletypeset: 1
+    mycommand: 1
+		\end{yaml}
 \end{itemize}
 
 
-\subsection{\lstinline!indentconfig.yaml!}\label{sec:indentconfig}
+\subsection{\lstinline!indentconfig.yaml! (for user settings)}\label{sec:indentconfig}
 A better way to change the settings is to set up your own settings file, 
 \lstinline!mysettings.yaml! (or any name you like, provided it ends with \lstinline!.yaml!). 
 The only thing you have to do is tell \lstinline!indent.plx! where to find it. 
 
 \lstinline!indent.plx! will always check your home directory for \lstinline!indentconfig.yaml!, 
 which is a plain text file you can create that contains the \emph{absolute}
-paths for any settings files that you wish \lstinline!indent.plx! to load.
+paths for any settings files that you wish \lstinline!indent.plx! to load-- see
+\cref{lst:indentconfig} for a sample.
 
-\begin{yaml}[caption={\lstinline!indentconfig.yaml!}]
+\begin{yaml}[caption={\lstinline!indentconfig.yaml!},label={lst:indentconfig}]
 # Paths to user settings for indent.plx
 #
 # Note that the settings will be read in the order you 
@@ -389,19 +449,82 @@ paths for any settings files that you wish \lstinline!indent.plx! to load.
 paths:
 - /home/cmhughes/Documents/yamlfiles/mysettings.yaml
 - /home/cmhughes/folder/othersettings.yaml
-- /some/other/Desktop/othersettings.yaml
+- /some/other/folder/anynameyouwant.yaml
 \end{yaml}
+
+Note that the \lstinline!.yaml! files you specify in \lstinline!indentconfig.yaml!
+will be loaded in the order that you write them in. Each file doesn't have 
+to have every switch from \lstinline!defaultSettings.yaml!; in fact, I recommend 
+that you only keep the switches that you want to \emph{change} in your 
+settings files.
+
+To get started with your own settings file, you might like to save a copy of 
+\lstinline!defaultSettings.yaml! in another directory and call it, for 
+example, \lstinline!mysettings.yaml!. Once you have added the path to \lstinline!indentconfig.yaml!
+feel free to start changing the switches and adding more environments to it 
+as you see fit-- have a look at \cref{lst:mysettings} for an example 
+that uses four tabs for the default indent, and adds the \lstinline!tabbing!
+environment to the list of environments that contains alignment delimiters.
+
+\begin{yaml}[caption={\lstinline!mysettings.yaml! (example)},label={lst:mysettings}]
+# Default value of indentation
+defaultindent: "\t\t\t\t"
+
+# environments that have tab delimiters, add more 
+# as needed
+lookforaligndelims:
+   tabbing: 1
+\end{yaml}
+
+You can make sure that your settings are loaded by checking \lstinline!indent.log!
+for details-- if you have specified a path that \lstinline!indent.plx! doesn't 
+recognize then you'll get a warning, otherwise you'll get confirmation that 
+\lstinline!indent.plx! has read your settings file.
+
 \fixthis{need Windows setup}
+
+\subsection{localSettings.yaml}
+You may remember on \cpageref{page:localswitch} we discussed the \lstinline!-l! switch
+that tells \lstinline!indent.plx! to look for \lstinline!localSettings.yaml! in the 
+\emph{same directory} as \lstinline!myfile.tex!. This settings file will 
+be read \emph{after} \lstinline!defaultSettings.yaml! and, assuming they exist, 
+user settings. 
+
+In contrast to the \emph{user} settings which can be named anything you like (provided that
+they are detailed in \lstinline!indentconfig.yaml!), the \emph{local} settings file
+must be called \lstinline!localSettings.yaml!. It can contain any switches that you'd
+like to change-- a sample is shown in \cref{lst:localsettings}.
+
+\begin{yaml}[caption={\lstinline!localSettings.yaml! (example)},label={lst:localsettings}]
+# Default value of indentation
+defaultindent: " "
+
+# environments that have tab delimiters, add more 
+# as needed
+lookforaligndelims:
+   tabbing: 0
+
+#  verbatim environments- environments specified 
+#  in this hash table will not be changed at all!
+verbatimEnvironments:
+    cmhenvironment: 0
+\end{yaml}
+
+You can make sure that your local settings are loaded by checking \lstinline!indent.log!
+for details-- if \lstinline!localSettings.yaml! can not be read then you will
+get a warning, otherwise you'll get confirmation that 
+\lstinline!indent.plx! has read \lstinline!localSettings.yaml!.
 
 \subsection{Settings load order}
 \lstinline!indent.plx! loads the settings files in the following order:
 \begin{enumerate}
-	\item \lstinline!defaultSettings.yaml! (always loaded)
-	\item \lstinline!mySettings.yaml! (and any other files specified in \lstinline!indentconfig.yaml!)
+	\item \lstinline!defaultSettings.yaml! (always loaded, can not be renamed)
+	\item \lstinline!anyUserSettings.yaml! (and any other arbitrarily-named files specified in \lstinline!indentconfig.yaml!)
 	\item \lstinline!localSettings.yaml! (if found in same directory as \lstinline!myfile.tex! and called
-	with \lstinline!-l! switch)
+	with \lstinline!-l! switch; can not be renamed)
 \end{enumerate}
 
-\section{Before and after}
-should this be motivation?
+\section{Known limitations}\label{sec:knownlimitations}
+nested align delimiter blocks
+tables with multicolumn
 \end{document}
