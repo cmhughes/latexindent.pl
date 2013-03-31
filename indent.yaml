@@ -16,7 +16,7 @@
 # % arara: indent: {localsettings: true}
 identifier: indent
 name: Indent
-command: indent.plx @{silent} @{trace} @{localsettings} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
+command: <arara> indent.plx @{silent} @{trace} @{localsettings} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
 arguments:
 - identifier: overwrite
   flag: <arara> @{ isTrue( parameters.overwrite, "-w" ) }
