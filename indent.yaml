@@ -1,6 +1,6 @@
 !config
 # indent rule for arara
-# author: Paulo Cereda
+# author: Paulo Cereda, Chris Hughes
 # last updated: 3/23/2013
 # requires arara 3.0+
 #
@@ -9,13 +9,14 @@
 # Sample usage:
 #
 # % arara: indent
-# % arara: indent: {overwrite: true}
-# % arara: indent: {output: myfile.tex, silent: off}
-# % arara: indent: {output: myfile.tex, silent: off, overwrite: on}
+# % arara: indent: {overwrite: yes}
+# % arara: indent: {output: myfile.tex, silent: no}
+# % arara: indent: {output: myfile.tex, silent: yes, overwrite: yes}
 # % arara: indent: {trace: true}
+# % arara: indent: {localsettings: true}
 identifier: indent
 name: Indent
-command: indent.plx @{silent} @{trace} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
+command: indent.plx @{silent} @{trace} @{localsettings} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
 arguments:
 - identifier: overwrite
   flag: <arara> @{ isTrue( parameters.overwrite, "-w" ) }
@@ -23,5 +24,7 @@ arguments:
   flag: <arara> @{ isTrue( parameters.silent, "-s" ) }
 - identifier: trace
   flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
+- identifier: localsettings
+  flag: <arara> @{ isTrue( parameters.localsettings, "-l" ) }
 - identifier: output
   flag: <arara> @{ parameters.output }
