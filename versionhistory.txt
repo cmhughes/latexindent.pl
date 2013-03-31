@@ -1,3 +1,7 @@
+Version 8.1: March 30th 2013
+    - users can now specify localSettings.yaml which will be used
+      if the -l switch is called
+
 Version 8: March 30th 2013
     - users can now specify indentconfig.yaml in their home directory
       and add paths to their own settings which will over ride 
