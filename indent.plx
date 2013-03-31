@@ -315,12 +315,12 @@ if ($overwrite)
     # output these lines to the log file
     print $logfile "\t Backup file: ",$backupFile,"\n";
     print $logfile "\t Overwriting file: ",$filename,"\n\n";
-    copy($filename,$backupFile);
+    copy($filename,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
 }
 
 if(!($outputToFile or $overwrite)) 
 {
-    print $logfile "Just out putted to the terminal :)\n\n" if !$silentMode  ;
+    print $logfile "Just out put to the terminal :)\n\n" if !$silentMode  ;
 }
 
 # scalar variables
