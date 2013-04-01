@@ -143,18 +143,19 @@ $defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );
 # setup the DEFAULT variables and hashes from the YAML file
 
 # scalar variables
-my $defaultindent = $defaultSettings->[0]->{defaultindent};
+my $defaultIndent = $defaultSettings->[0]->{defaultIndent};
 my $alwaysLookforSplitBraces = $defaultSettings->[0]->{alwaysLookforSplitBraces};
 my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrackets};
 my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
+my $indentAfterDocument = $defaultSettings->[0]->{indentAfterDocument};
 
 # hash variables
-my %lookforaligndelims= %{$defaultSettings->[0]->{lookforaligndelims}};
-my %indentrules= %{$defaultSettings->[0]->{indentrules}};
+my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
+my %indentRules= %{$defaultSettings->[0]->{indentRules}};
 my %verbatimEnvironments= %{$defaultSettings->[0]->{verbatimEnvironments}};
-my %noindentblock= %{$defaultSettings->[0]->{noindentblock}};
+my %noIndentBlock= %{$defaultSettings->[0]->{noIndentBlock}};
 my %checkunmatched= %{$defaultSettings->[0]->{checkunmatched}};
 my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
@@ -162,10 +163,10 @@ my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 
 # need new hashes to store the user and local data before
 # overwriting the default
-my %lookforaligndelimsUSER;
-my %indentrulesUSER;
+my %lookForAlignDelimsUSER;
+my %indentRulesUSER;
 my %verbatimEnvironmentsUSER;
-my %noindentblockUSER;
+my %noIndentBlockUSER;
 my %checkunmatchedUSER;
 my %checkunmatchedELSEUSER;
 my %checkunmatchedbracketUSER;
@@ -191,27 +192,28 @@ if ( -e $indentconfig )
             $userSettings = YAML::Tiny->read( "$settings" );
 
             # scalar variables
-            $defaultindent = $userSettings->[0]->{defaultindent} if defined($userSettings->[0]->{defaultindent});
+            $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
             $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
             $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
             $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
+            $indentAfterDocument = $userSettings->[0]->{indentAfterDocument} if defined($userSettings->[0]->{indentAfterDocument});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
 
-            %lookforaligndelimsUSER= %{$userSettings->[0]->{lookforaligndelims}} if defined($userSettings->[0]->{lookforaligndelims});
-            @lookforaligndelims{ keys %lookforaligndelimsUSER } = values %lookforaligndelimsUSER if (%lookforaligndelimsUSER);
+            %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
+            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
 
-            %indentrulesUSER= %{$userSettings->[0]->{indentrules}} if defined($userSettings->[0]->{indentrules});
-            @indentrules{ keys %indentrulesUSER } = values %indentrulesUSER if (%indentrulesUSER);
+            %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
+            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
 
             %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
             @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
 
-            %noindentblockUSER= %{$userSettings->[0]->{noindentblock}} if defined($userSettings->[0]->{noindentblock});
-            @noindentblock{ keys %noindentblockUSER } = values %noindentblockUSER if (%noindentblockUSER);
+            %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
+            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
 
             %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
             @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
@@ -241,27 +243,28 @@ if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings)
       my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
 
       # scalar variables
-      $defaultindent = $localSettings->[0]->{defaultindent} if defined($localSettings->[0]->{defaultindent});
+      $defaultIndent = $localSettings->[0]->{defaultIndent} if defined($localSettings->[0]->{defaultIndent});
       $alwaysLookforSplitBraces = $localSettings->[0]->{alwaysLookforSplitBraces} if defined($localSettings->[0]->{alwaysLookforSplitBraces});
       $alwaysLookforSplitBrackets = $localSettings->[0]->{alwaysLookforSplitBrackets} if defined($localSettings->[0]->{alwaysLookforSplitBrackets});
       $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
       $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
       $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
+      $indentAfterDocument = $localSettings->[0]->{indentAfterDocument} if defined($localSettings->[0]->{indentAfterDocument});
 
       # hash variables - note that each one requires two lines, 
       # one to read in the data, one to put the keys&values in correctly
 
-      %lookforaligndelimsUSER= %{$localSettings->[0]->{lookforaligndelims}} if defined($localSettings->[0]->{lookforaligndelims});
-      @lookforaligndelims{ keys %lookforaligndelimsUSER } = values %lookforaligndelimsUSER if (%lookforaligndelimsUSER);
+      %lookForAlignDelimsUSER= %{$localSettings->[0]->{lookForAlignDelims}} if defined($localSettings->[0]->{lookForAlignDelims});
+      @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
 
-      %indentrulesUSER= %{$localSettings->[0]->{indentrules}} if defined($localSettings->[0]->{indentrules});
-      @indentrules{ keys %indentrulesUSER } = values %indentrulesUSER if (%indentrulesUSER);
+      %indentRulesUSER= %{$localSettings->[0]->{indentRules}} if defined($localSettings->[0]->{indentRules});
+      @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
 
       %verbatimEnvironmentsUSER= %{$localSettings->[0]->{verbatimEnvironments}} if defined($localSettings->[0]->{verbatimEnvironments});
       @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
 
-      %noindentblockUSER= %{$localSettings->[0]->{noindentblock}} if defined($localSettings->[0]->{noindentblock});
-      @noindentblock{ keys %noindentblockUSER } = values %noindentblockUSER if (%noindentblockUSER);
+      %noIndentBlockUSER= %{$localSettings->[0]->{noIndentBlock}} if defined($localSettings->[0]->{noIndentBlock});
+      @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
 
       %checkunmatchedUSER= %{$localSettings->[0]->{checkunmatched}} if defined($localSettings->[0]->{checkunmatched});
       @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
@@ -353,6 +356,9 @@ my $countzeros = '';        # $countzeros:  a counter that helps
 my $lookforelse=0;          # $lookforelse: a boolean to help determine 
                             #               if we need to look for an 
                             #               else construct
+my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
+                            #           a line 
+my $lineCounter=0;          # $lineCounter keeps track of the line number
 
 # array variables
 my @indent=();              # @indent: stores current level of indentation
@@ -364,9 +370,6 @@ my @commandstorebrackets=();# @commandstorebrackets: stores commands that
                             #           have split [] across lines
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
-my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
-                            #           a line 
-my $lineCounter=0;
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
@@ -427,7 +430,7 @@ while(<MAINFILE>)
             # tracing mode
             if($inpreamble)
             {
-                print $logfile "Line $lineCounter\t still in preamble\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t still in preamble, doing nothing\n" if($tracingMode);
             }
             elsif($inverbatim)
             {
@@ -437,7 +440,7 @@ while(<MAINFILE>)
     }
 
     # check to see if we have \end{something} or \]
-    &at_end_of_env_or_eq();
+    &at_end_of_env_or_eq() if(!$inpreamble);
 
     # check to see if we're at the end of a noindent 
     # block %\end{noindent}
@@ -613,7 +616,7 @@ sub at_end_noindent{
     #          This is for blocks of code that the user wants
     #          to leave untouched- similar to verbatim blocks
 
-    if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noindentblock{$1}) 
+    if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noIndentBlock{$1}) 
     {
            $inverbatim = 0;
             # tracing mode
@@ -629,7 +632,7 @@ sub at_beg_noindent{
     #          This is for blocks of code that the user wants
     #          to leave untouched- similar to verbatim blocks
 
-    if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noindentblock{$1}) 
+    if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noIndentBlock{$1}) 
     {
            $inverbatim = 1;
            # tracing mode
@@ -1031,7 +1034,7 @@ sub at_beg_of_env_or_eq{
 
        # check to see if we need to look for alignment
        # delimiters
-       if($lookforaligndelims{$2})
+       if($lookForAlignDelims{$2})
        {
            $delimiters=1;
             # tracing mode
@@ -1076,7 +1079,7 @@ sub at_end_of_env_or_eq{
 
        # check to see if we need to turn off alignment
        # delimiters and output the current block
-       if($lookforaligndelims{$1})
+       if($lookForAlignDelims{$1})
        {
            $delimiters=0;
 
@@ -1099,6 +1102,14 @@ sub at_end_of_env_or_eq{
 
        # decrease the indentation (if appropriate)
        &decrease_indent($1);
+
+       # check if we want to indent lines after \end{document}
+       if($1 =~ m/document/ and !$indentAfterDocument )
+       {
+            # tracing mode
+            print $logfile "Line $lineCounter\t \\end{document} found, turning verbatim ON\n" if($tracingMode);
+            $inverbatim = 1;
+       }
     }
 }
 
@@ -1279,17 +1290,17 @@ sub increase_indent{
 
        my $command = pop(@_);
 
-       if(scalar($indentrules{$command}))
+       if(scalar($indentRules{$command}))
        {
           # if there's a rule for indentation for this environment
-          push(@indent, $indentrules{$command});
+          push(@indent, $indentRules{$command});
        }
        else
        {
           # default indentation
           if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
           {
-            push(@indent, $defaultindent);
+            push(@indent, $defaultIndent);
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent \n" if($tracingMode);
           }
