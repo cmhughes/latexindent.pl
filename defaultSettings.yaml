@@ -38,9 +38,6 @@ alwaysLookforSplitBraces: 1
 # have to complete checkunmatchedbracket
 alwaysLookforSplitBrackets: 1
 
-# indent after \end{document}
-indentAfterDocument: 0
-
 # environments that have tab delimiters, add more 
 # as needed
 lookForAlignDelims:
