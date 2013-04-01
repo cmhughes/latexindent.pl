@@ -21,7 +21,6 @@ use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use File::Basename;     # to get the filename and directory path
 use Getopt::Std;        # to get the switches/options/flags
-use POSIX qw/strftime/; # date and time
 use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
@@ -58,10 +57,14 @@ my $out = *STDOUT;
 # open the log file
 open($logfile,">","indent.log") or die "Can't open indent.log";
 
-print $logfile strftime "%F %T", localtime $^T;
+# output time to log file
+my $time = localtime();
+print $logfile $time;
+
+# output version to log file
 print $logfile <<ENDQUOTE
 
-indent.plx version 8.0, a script to indent .tex files
+indent.plx version 8.12, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -149,7 +152,6 @@ my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrack
 my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
-my $indentAfterDocument = $defaultSettings->[0]->{indentAfterDocument};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -198,7 +200,6 @@ if ( -e $indentconfig )
             $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
-            $indentAfterDocument = $userSettings->[0]->{indentAfterDocument} if defined($userSettings->[0]->{indentAfterDocument});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -249,7 +250,6 @@ if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings)
       $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
       $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
       $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
-      $indentAfterDocument = $localSettings->[0]->{indentAfterDocument} if defined($localSettings->[0]->{indentAfterDocument});
 
       # hash variables - note that each one requires two lines, 
       # one to read in the data, one to put the keys&values in correctly
@@ -1103,13 +1103,6 @@ sub at_end_of_env_or_eq{
        # decrease the indentation (if appropriate)
        &decrease_indent($1);
 
-       # check if we want to indent lines after \end{document}
-       if($1 =~ m/document/ and !$indentAfterDocument )
-       {
-            # tracing mode
-            print $logfile "Line $lineCounter\t \\end{document} found, turning verbatim ON\n" if($tracingMode);
-            $inverbatim = 1;
-       }
     }
 }
 
