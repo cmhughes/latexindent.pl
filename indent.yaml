@@ -13,10 +13,10 @@
 # % arara: indent: {output: myfile.tex, silent: no}
 # % arara: indent: {output: myfile.tex, silent: yes, overwrite: yes}
 # % arara: indent: {trace: true}
-# % arara: indent: {localsettings: true}
+# % arara: indent: {localSettings: true}
 identifier: indent
 name: Indent
-command: indent.plx @{silent} @{trace} @{localsettings} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
+command: indent.plx @{silent} @{trace} @{localSettings} @{ isEmpty( overwrite, isNotEmpty( output, "-o"  ), overwrite ) } "@{file}" @{ isFalse( parameters.overwrite, isNotEmpty( output, '"'.concat(output).concat('"') ) )}
 arguments:
 - identifier: overwrite
   flag: <arara> @{ isTrue( parameters.overwrite, "-w" ) }
@@ -24,7 +24,7 @@ arguments:
   flag: <arara> @{ isTrue( parameters.silent, "-s" ) }
 - identifier: trace
   flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
-- identifier: localsettings
-  flag: <arara> @{ isTrue( parameters.localsettings, "-l" ) }
+- identifier: localSettings
+  flag: <arara> @{ isTrue( parameters.localSettings, "-l" ) }
 - identifier: output
   flag: <arara> @{ parameters.output }
