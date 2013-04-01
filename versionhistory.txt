@@ -1,3 +1,7 @@
+Version 8.11: March 31st 2013
+    - consistent capitilization
+    - added switch to indent after \end{document} indentAfterDocument: 1
+
 Version 8.1: March 30th 2013
     - users can now specify localSettings.yaml which will be used
       if the -l switch is called
