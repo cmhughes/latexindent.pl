@@ -1,3 +1,8 @@
+Version 8.12: April 1st 2013
+    - fixed time output issue (works on Linux and Windows now )
+    - removed switch to indent after \end{document} - it fails too many times
+      just use noindent block instead
+
 Version 8.11: March 31st 2013
     - consistent capitilization
     - added switch to indent after \end{document} indentAfterDocument: 1
