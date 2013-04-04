@@ -183,11 +183,12 @@ Let's give a demonstration of some before and after code-- after all, you probab
 won't want to try the script if you don't much like the results.
 
 As you look at \crefrange{lst:filecontentsbefore}{lst:pstricksafter}, remember
-that \lstinline!indent.pl! is just following its instincts-- there is nothing 
-particular about these commands.
+that \lstinline!indent.pl! is just following its rules-- there is nothing 
+particular about these commands. All of the rules can be modified 
+so that each user can personalize their indentation scheme.
 \begin{adjustwidth}{-2cm}{2cm}
 	\begin{minipage}{.5\textwidth}
-      \begin{lstlisting}[style=demo,caption={\lstinline!filecontents! before},label={lst:filecontentsbefore}]
+		\begin{lstlisting}[style=demo,caption={\lstinline!filecontents! before},label={lst:filecontentsbefore}]
 \begin{filecontents}{mybib.bib}
 @online{strawberryperl,
 title="Strawberry Perl",
@@ -210,7 +211,7 @@ url="...
 \end{filecontents}
 		    \end{lstlisting}
 	\end{minipage}
-
+	
 	\begin{minipage}{.5\textwidth}
 		\begin{lstlisting}[style=demo,caption={\lstinline!tikzset! before}]
 \tikzset{
@@ -247,7 +248,7 @@ shrink inner sep/.code={
 		\end{lstlisting}
 	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
-      \begin{lstlisting}[style=demo,caption={\lstinline!pstricks! after},label={lst:pstricksafter}]
+		\begin{lstlisting}[style=demo,caption={\lstinline!pstricks! after},label={lst:pstricksafter}]
 \def\Picture#1{%
 	\def\stripH{#1}%
 	\begin{pspicture}[showgrid...
@@ -275,12 +276,15 @@ produces a \lstinline!.log! file, \lstinline!indent.log! every time it
 is run. There is a base of information that is written to \lstinline!indent.log!,
 but other additional information will be written depending 
 on which of the following options are used.
+
+Note that in what follows in this section Windows users may have to substitute
+\lstinline!indent.cmd! inplace of \lstinline!indent.pl!.
 \begin{itemize}
 	\item[] \lstinline!indent.pl myfile.tex!
 	
 	This will simply output to your terminal; \lstinline!myfile.tex! will
 	not be changed in any way using this command. 
-	\item[\verbitem{-w!}] \lstinline!indent.pl -w myfile.tex!
+	\item[\verbitem{-w}] \lstinline!indent.pl -w myfile.tex!
 	
 	This \emph{will} overwrite \lstinline!myfile.tex!, but it will
 	make a copy of \lstinline!myfile.tex! first. You can control the name of 
@@ -441,9 +445,34 @@ lookForAlignDelims:
    aligned: 1
    pmatrix: 1
    listabla: 1
-									\end{yaml}
+	\end{yaml}
 	
-	You can populate this field with any other environments that you have that contain \lstinline!&!. 
+	The environments specified in this field will be operated on in a special way  by \lstinline!indent.pl!. In particular, it will try and align each column by its alignment
+	tabs. It does have some limitations (discussed further in \cref{sec:knownlimitations}), 
+	but in many cases it will produce results such as those in \cref{lst:tabularbefore,lst:tabularafter}. 
+	
+	\begin{minipage}{.5\textwidth}
+		\begin{lstlisting}[caption={\lstinline!tabular! before},label={lst:tabularbefore}]
+\begin{tabular}{cccc}
+1&	2 &3       &4\\
+5& &6       &\\
+\end{tabular}
+		\end{lstlisting}
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\begin{lstlisting}[caption={\lstinline!tabular! after},label={lst:tabularafter}]
+\begin{tabular}{cccc}
+ 1 & 2 & 3 & 4 \\
+ 5 &   & 6 &   \\
+\end{tabular}
+		\end{lstlisting}
+	\end{minipage}
+	
+	If you find that \lstinline!indent.pl! does not perform satisfactorialy on such 
+	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific} 
+	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
+	
+	You can populate \lstinline!lookForAlignDelims! with any other environments that you have that contain \lstinline!&!, in any order that you wish.
 	If you change your mind, just turn them off by setting them to \lstinline!0! instead.
 	
 	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
@@ -454,7 +483,7 @@ lookForAlignDelims:
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
-									\end{yaml}
+	\end{yaml}
 	
 	\item[\verbitem{noIndentBlock}] If you have a block of code that you don't 
 	want \lstinline!indent.pl! to touch (even if it is \emph{not} a verbatim-like
@@ -466,7 +495,7 @@ verbatimEnvironments:
 noIndentBlock:
     noindent: 1
     cmhtest: 1
-									\end{yaml}
+	\end{yaml}
 	
 	Of course, you don't want to have to specify these as null environments
 	in your code, so you use them with a comment symbol, \lstinline!%!, followed 
@@ -480,7 +509,7 @@ noIndentBlock:
                     by 
              \lstinline!indent.pl!
 %(*@@*)\end{noindent} 
-									    \end{lstlisting}
+	    \end{lstlisting}
 	
 	\item[\verbitem{noAdditionalIndent}] If you would prefer some of your
 	environments or commands not to receive any additional indent, then 
@@ -501,7 +530,7 @@ noAdditionalIndent:
     comment: 1
     \[: 0
     frame: 0
-									  \end{yaml}
+	  \end{yaml}
 	
 	\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify 
 	individual rules for certain environments or commands, just
@@ -512,7 +541,7 @@ indentRules:
    myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
    \[: "\t"
-									\end{yaml}
+	\end{yaml}
 	
 	\item[\color{red}\bfseries!!!] \emph{The following fields are marked in red, as they are not necessary
 	unless you wish to micro manage your indentation scheme.}
@@ -543,7 +572,7 @@ checkunmatchedELSE:
     pgfkeysifdefined: 1
     DTLforeach: 1
     ifthenelse: 1
-									\end{yaml}
+	\end{yaml}
 	\item[\color{red}\verbitem{checkunmatchedbracket}] Assuming you keep \lstinline!alwaysLookforSplitBrackets! 
 	set to \lstinline!1! (which is the default) then you don't need to worry about \lstinline!checkunmatchedbracket!. 
 	
@@ -558,7 +587,7 @@ checkunmatchedbracket:
     pgfplotstablesave: 1
     pgfplotstabletypeset: 1
     mycommand: 1
-									\end{yaml}
+	\end{yaml}
 \end{itemize}
 
 
@@ -620,7 +649,7 @@ for details-- if you have specified a path that \lstinline!indent.pl! doesn't
 recognize then you'll get a warning, otherwise you'll get confirmation that 
 \lstinline!indent.pl! has read your settings file.
 
-\fixthis{need Windows setup}
+\fixthis{need Windows setup- do we need blank line to finish on?}
 
 \subsection{localSettings.yaml}
 You may remember on \cpageref{page:localswitch} we discussed the \lstinline!-l! switch
