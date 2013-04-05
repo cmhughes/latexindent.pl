@@ -1,3 +1,9 @@
+Version 8.13: April 4th 2013
+    - fixed indentation at \end{verbatim-like} environments
+    - if a user specifies a command in both indentRules and noAdditionalIndent
+      then noAdditionalIndent will be given priority
+    - verbatimEnvironments gets priority over everything else
+
 Version 8.12: April 1st 2013
     - fixed time output issue (works on Linux and Windows now )
     - removed switch to indent after \end{document} - it fails too many times
