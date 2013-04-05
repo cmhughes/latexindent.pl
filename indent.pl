@@ -32,7 +32,7 @@ getopts("sotlw", \%options);
 if(scalar(@ARGV) < 1)
 {
     print <<ENDQUOTE
-usage: indent.plx [options] [file][.tex]
+usage: indent.pl [options] [file][.tex]
       -o  output to another file
       -w  overwrite the current file- a backup will be made, but still be careful
       -s  silent mode- no output will be given to the terminal
@@ -64,7 +64,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.plx version 8.13, a script to indent .tex files
+indent.pl version 8.13, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -76,7 +76,7 @@ if($outputToFile and $overwrite)
     print $logfile <<ENDQUOTE 
 
 WARNING: 
-\t You have called indent.plx with both -o and -w
+\t You have called indent.pl with both -o and -w
 \t -o (output to file) will take priority, and -w (over write) will be ignored
  
 ENDQUOTE
@@ -90,11 +90,11 @@ if(scalar(@ARGV)>2)
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
 
 ERROR:
-\t You're calling indent.plx with more than two file names
+\t You're calling indent.pl with more than two file names
 \t The script can take at MOST two file names, but you 
 \t need to call it with the -o switch; for example
 
-\t indent.plx -o originalfile.tex outputfile.tex
+\t indent.pl -o originalfile.tex outputfile.tex
 
 No indentation done :(
 Exiting...
@@ -110,7 +110,7 @@ for my $fh ($out,$logfile) {
 print $fh <<ENDQUOTE
 
 ERROR:
-\t You're calling indent.plx with two file names, but not the -o flag.
+\t You're calling indent.pl with two file names, but not the -o flag.
 \t Did you mean to use the -o flag ?
 
 No indentation done :(
@@ -122,13 +122,13 @@ ENDQUOTE
 
 # if the script is called with the -o switch, then check that 
 # a second file is present in the call, e.g
-#           indent.plx -o myfile.tex output.tex
+#           indent.pl -o myfile.tex output.tex
 if($outputToFile and scalar(@ARGV)==1)
 {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
-ERROR: When using the -o flag you need to call indent.plx with 2 arguments
+ERROR: When using the -o flag you need to call indent.pl with 2 arguments
 
-indent.plx -o "$ARGV[0]" [needs another name here]
+indent.pl -o "$ARGV[0]" [needs another name here]
 
 No indentation done :(
 Exiting...
@@ -174,6 +174,9 @@ my %checkunmatchedELSEUSER;
 my %checkunmatchedbracketUSER;
 my %noAdditionalIndentUSER;
 
+# for printing the user settings to the log file
+my %dataDump;
+
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 if ( -e $indentconfig ) 
@@ -187,11 +190,16 @@ if ( -e $indentconfig )
       # read in the settings from each file
       foreach my $settings (@absPaths)
       {
-        # check that the settings file exists
-        if (-e $settings)
+        # check that the settings file exists and that it isn't empty
+        if (-e $settings and !(-z $settings))
         {
             print $logfile "Reading user settings from $settings\n";
             $userSettings = YAML::Tiny->read( "$settings" );
+
+            # output settings to $logfile
+            %dataDump = %{$userSettings->[0]};
+            print $logfile Dump \%dataDump;
+            print $logfile "\n";
 
             # scalar variables
             $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
@@ -230,18 +238,30 @@ if ( -e $indentconfig )
         {
             # otherwise keep going, but put a warning in the log file
             print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
-            print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
+            if (-z $settings)
+            {
+                print $logfile "\tspecifies $settings \n\tbut this file is EMPTY- not reading from it\n\n"
+            }
+            else
+            {
+                print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
+            }
         }
       }
 } 
 
 # get information about LOCAL settings, assuming that localSettings.yaml exists
 my $directoryName = dirname $ARGV[0];
-if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings) 
+if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$directoryName/localSettings.yaml")) 
 {
       print $logfile "Reading LOCAL settings from $directoryName/localSettings.yaml\n";
 
       my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
+
+      # output settings to $logfile
+      %dataDump = %{$localSettings->[0]};
+      print $logfile Dump \%dataDump;
+      print $logfile "\n";
 
       # scalar variables
       $defaultIndent = $localSettings->[0]->{defaultIndent} if defined($localSettings->[0]->{defaultIndent});
@@ -359,6 +379,8 @@ my $lookforelse=0;          # $lookforelse: a boolean to help determine
 my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
                             #           a line 
 my $lineCounter=0;          # $lineCounter keeps track of the line number
+my $inIndentBlock=0;        # $inindentblock: switch to determine if in
+                            #               a inindentblock or not
 
 # array variables
 my @indent=();              # @indent: stores current level of indentation
@@ -400,11 +422,11 @@ while(<MAINFILE>)
     $lineCounter++;
     
     # tracing mode
-    print $logfile "\n" if($tracingMode and !($inpreamble or $inverbatim));
+    print $logfile "\n" if($tracingMode and !($inpreamble or $inverbatim or $inIndentBlock));
 
     # check to see if we're still in the preamble
-    # or in a verbatim environment
-    if(!($inpreamble or $inverbatim))
+    # or in a verbatim environment or in IndentBlock
+    if(!($inpreamble or $inverbatim or $inIndentBlock))
     {
         # if not, remove all leading spaces and tabs
         # from the current line
@@ -430,25 +452,30 @@ while(<MAINFILE>)
             # tracing mode
             if($inpreamble)
             {
-                print $logfile "Line $lineCounter\t still in preamble, doing nothing\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t still in PREAMBLE, doing nothing\n" if($tracingMode);
             }
             elsif($inverbatim)
             {
-                print $logfile "Line $lineCounter\t in verbatim-like environment, doing nothing\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t in VERBATIM-LIKE environment, doing nothing\n" if($tracingMode);
+            }
+            elsif($inIndentBlock)
+            {
+                print $logfile "Line $lineCounter\t in NO INDENT BLOCK, doing nothing\n" if($tracingMode);
             }
         }
     }
 
     # check to see if we have \end{something} or \]
-    &at_end_of_env_or_eq() if(!$inpreamble);
+    &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
 
     # check to see if we're at the end of a noindent 
     # block %\end{noindent}
     &at_end_noindent();
 
     # only check for unmatched braces if we're not in
-    # a verbatim-like environment or in the preamble
-    if(!($inverbatim or $inpreamble))
+    # a verbatim-like environment or in the preamble or in a
+    # noIndentBlock
+    if(!($inverbatim or $inpreamble or $inIndentBlock))
     {
         # The check for closing } and ] relies on counting, so 
         # we have to remove trailing comments so that any {, }, [, ]
@@ -498,7 +525,7 @@ while(<MAINFILE>)
     if(!$delimiters)
     {
         # make sure we're not in a verbatim block or in the preamble
-        if($inverbatim or $inpreamble)
+        if($inverbatim or $inpreamble or $inIndentBlock)
         {
            # just push the current line as is
            push(@lines,$_);
@@ -524,7 +551,8 @@ while(<MAINFILE>)
 
     # only check for new environments or commands if we're 
     # not in a verbatim-like environment or in the preamble
-    if(!($inverbatim or $inpreamble))
+    # or in a noIndentBlock
+    if(!($inverbatim or $inpreamble or $inIndentBlock))
     {
 
         # check if we are in a 
@@ -618,9 +646,9 @@ sub at_end_noindent{
 
     if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noIndentBlock{$1}) 
     {
-           $inverbatim = 0;
+            $inIndentBlock=0;
             # tracing mode
-            print $logfile "Line $lineCounter\t % \\end{no indent block} found, switching verbatim OFF \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t % \\end{no indent block} found, switching inIndentBlock OFF \n" if($tracingMode);
     }
 }
 
@@ -634,9 +662,9 @@ sub at_beg_noindent{
 
     if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noIndentBlock{$1}) 
     {
-           $inverbatim = 1;
+           $inIndentBlock = 1;
            # tracing mode
-           print $logfile "Line $lineCounter\t % \\begin{no indent block} found, switching verbatim ON \n" if($tracingMode);
+           print $logfile "Line $lineCounter\t % \\begin{no indent block} found, switching inIndentBlock ON \n" if($tracingMode);
     }
 }
 
