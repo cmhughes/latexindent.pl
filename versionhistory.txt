@@ -3,6 +3,9 @@ Version 8.13: April 4th 2013
     - if a user specifies a command in both indentRules and noAdditionalIndent
       then noAdditionalIndent will be given priority
     - verbatimEnvironments gets priority over everything else
+    - noIndentBlock has its own switch that allows it to wrap around
+      verbatim environments (previously it used $inverbatim, now it uses
+      $inIndentBlock)
 
 Version 8.12: April 1st 2013
     - fixed time output issue (works on Linux and Windows now )
