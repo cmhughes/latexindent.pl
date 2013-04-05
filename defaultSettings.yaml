@@ -58,7 +58,6 @@ lookForAlignDelims:
 indentRules:
    myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
-   \[: "\t"
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -89,6 +88,7 @@ noAdditionalIndent:
     widepage: 1
     comment: 1
     \[: 0
+    \]: 0
     document: 1
     frame: 0
 
