@@ -64,7 +64,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.plx version 8.12, a script to indent .tex files
+indent.plx version 8.13, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -1032,6 +1032,25 @@ sub at_beg_of_env_or_eq{
        # increase the indentation 
        &increase_indent($2);
 
+       # check for verbatim-like environments
+       if($verbatimEnvironments{$2})
+       {
+           $inverbatim = 1;
+           # tracing mode
+           print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, switching ON verbatim \n" if($tracingMode);
+
+           # remove the key and value from %lookForAlignDelims hash
+           # to avoid any further confusion
+           if($lookForAlignDelims{$2})
+           {
+                print $logfile "WARNING\n\t Line $lineCounter\t $2 is in *both* lookForAlignDelims and verbatimEnvironments\n";
+                print $logfile "\t\t\t ignoring lookForAlignDelims and prioritizing verbatimEnvironments\n";
+                print $logfile "\t\t\t Note that you only get this message once per environment\n";
+                delete $lookForAlignDelims{$2};
+           }
+
+       }
+
        # check to see if we need to look for alignment
        # delimiters
        if($lookForAlignDelims{$2})
@@ -1041,13 +1060,6 @@ sub at_beg_of_env_or_eq{
             print $logfile "Line $lineCounter\t Delimiter environment started: $2\n" if($tracingMode);
        }
 
-       # check for verbatim-like environments
-       if($verbatimEnvironments{$2})
-       {
-           $inverbatim = 1;
-           # tracing mode
-           print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, switching ON verbatim \n" if($tracingMode);
-       }
     }
 }
 
@@ -1074,7 +1086,11 @@ sub at_end_of_env_or_eq{
        {
            $inverbatim = 0;
             # tracing mode
-            print $logfile "Line $lineCounter\t \\end{verbatim-like} found, switching off verbatim \n" if($tracingMode);
+
+            print $logfile "Line $lineCounter\t \\end{verbatim-like} found: $1, switching off verbatim \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t removing leading spaces \n" if($tracingMode);
+            s/^\ *//; 
+            s/^\t*//; 
        }
 
        # check to see if we need to turn off alignment
@@ -1094,6 +1110,9 @@ sub at_end_of_env_or_eq{
            }
            # empty the @block, very important!
            @block=();
+
+           # tracing mode
+           print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
 
        }
 
@@ -1283,10 +1302,40 @@ sub increase_indent{
 
        my $command = pop(@_);
 
+       # if the user has specified $indentRules{$command} and 
+       # $noAdditionalIndent{$command} then they are a bit confused-
+       # we remove the $indentRules{$command} and assume that they
+       # want $noAdditionalIndent{$command}
+       if(scalar($indentRules{$command}) and $noAdditionalIndent{$command})
+       {
+            print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and noAdditionalIndent\n";
+            print $logfile "\t\t\t ignoring indentRules and prioritizing noAdditionalIndent\n";
+            print $logfile "\t\t\t Note that you only get this message once per command/environment\n";
+
+            # remove the key and value from %indentRules hash
+            # to avoid any further confusion
+            delete $indentRules{$command};
+       }
+
+       # if the command is in verbatimEnvironments and in indentRules then 
+       # remove it from %indentRules hash
+       # to avoid any further confusion
+       if($indentRules{$command} and $verbatimEnvironments{$command})
+       {
+            # remove the key and value from %indentRules hash
+            # to avoid any further confusion
+            print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and verbatimEnvironments\n";
+            print $logfile "\t\t\t ignoring indentRules and prioritizing verbatimEnvironments\n";
+            print $logfile "\t\t\t Note that you only get this message once per environment\n";
+            delete $indentRules{$command};
+       }
+
        if(scalar($indentRules{$command}))
        {
           # if there's a rule for indentation for this environment
           push(@indent, $indentRules{$command});
+          # tracing mode
+          print $logfile "Line $lineCounter\t increasing indent using rule for $command \n" if($tracingMode);
        }
        else
        {
@@ -1295,7 +1344,7 @@ sub increase_indent{
           {
             push(@indent, $defaultIndent);
             # tracing mode
-            print $logfile "Line $lineCounter\t increasing indent \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
           }
        }
 }
