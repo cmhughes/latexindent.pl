@@ -193,46 +193,55 @@ if ( -e $indentconfig )
         # check that the settings file exists and that it isn't empty
         if (-e $settings and !(-z $settings))
         {
-            print $logfile "Reading user settings from $settings\n";
+            print $logfile "Reading USER settings from $settings\n";
             $userSettings = YAML::Tiny->read( "$settings" );
 
-            # output settings to $logfile
-            %dataDump = %{$userSettings->[0]};
-            print $logfile Dump \%dataDump;
-            print $logfile "\n";
-
-            # scalar variables
-            $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
-            $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
-            $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
-            $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
-            $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
-            $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
-
-            # hash variables - note that each one requires two lines, 
-            # one to read in the data, one to put the keys&values in correctly
-
-            %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
-            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
-
-            %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
-            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
-
-            %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
-            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
-
-            %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
-            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
-
-            %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
-            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
-
-            %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
-            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
-
-            %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
-            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
-
+            # if we can read userSettings
+            if($userSettings)
+            {
+                  # output settings to $logfile
+                  %dataDump = %{$userSettings->[0]};
+                  print $logfile Dump \%dataDump;
+                  print $logfile "\n";
+      
+                  # scalar variables
+                  $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
+                  $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
+                  $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
+                  $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
+                  $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
+                  $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
+      
+                  # hash variables - note that each one requires two lines, 
+                  # one to read in the data, one to put the keys&values in correctly
+      
+                  %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
+                  @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
+      
+                  %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
+                  @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
+      
+                  %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
+                  @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
+      
+                  %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
+                  @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
+      
+                  %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
+                  @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
+      
+                  %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
+                  @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
+      
+                  %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
+                  @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+             }
+             else
+             {
+                   # otherwise print a warning that we can not read userSettings.yaml
+                   print $logfile "WARNING\n\t$settings \n\t contains invalid yaml format- not reading from it\n";
+             }
+      
         }
         else
         {
@@ -252,48 +261,61 @@ if ( -e $indentconfig )
 
 # get information about LOCAL settings, assuming that localSettings.yaml exists
 my $directoryName = dirname $ARGV[0];
+if(-z "$directoryName/localSettings.yaml")
+{
+    print $logfile "WARNING\n\tlocalSettings.yaml is EMPTY- not reading from it\n\n"
+}
 if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$directoryName/localSettings.yaml")) 
 {
       print $logfile "Reading LOCAL settings from $directoryName/localSettings.yaml\n";
 
       my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
 
-      # output settings to $logfile
-      %dataDump = %{$localSettings->[0]};
-      print $logfile Dump \%dataDump;
-      print $logfile "\n";
+      # if we can read localSettings
+      if($localSettings)
+      {
+            # output settings to $logfile
+            %dataDump = %{$localSettings->[0]};
+            print $logfile Dump \%dataDump;
+            print $logfile "\n";
 
-      # scalar variables
-      $defaultIndent = $localSettings->[0]->{defaultIndent} if defined($localSettings->[0]->{defaultIndent});
-      $alwaysLookforSplitBraces = $localSettings->[0]->{alwaysLookforSplitBraces} if defined($localSettings->[0]->{alwaysLookforSplitBraces});
-      $alwaysLookforSplitBrackets = $localSettings->[0]->{alwaysLookforSplitBrackets} if defined($localSettings->[0]->{alwaysLookforSplitBrackets});
-      $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
-      $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
-      $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
+            # scalar variables
+            $defaultIndent = $localSettings->[0]->{defaultIndent} if defined($localSettings->[0]->{defaultIndent});
+            $alwaysLookforSplitBraces = $localSettings->[0]->{alwaysLookforSplitBraces} if defined($localSettings->[0]->{alwaysLookforSplitBraces});
+            $alwaysLookforSplitBrackets = $localSettings->[0]->{alwaysLookforSplitBrackets} if defined($localSettings->[0]->{alwaysLookforSplitBrackets});
+            $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
+            $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
+            $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
 
-      # hash variables - note that each one requires two lines, 
-      # one to read in the data, one to put the keys&values in correctly
+            # hash variables - note that each one requires two lines, 
+            # one to read in the data, one to put the keys&values in correctly
 
-      %lookForAlignDelimsUSER= %{$localSettings->[0]->{lookForAlignDelims}} if defined($localSettings->[0]->{lookForAlignDelims});
-      @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
+            %lookForAlignDelimsUSER= %{$localSettings->[0]->{lookForAlignDelims}} if defined($localSettings->[0]->{lookForAlignDelims});
+            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
 
-      %indentRulesUSER= %{$localSettings->[0]->{indentRules}} if defined($localSettings->[0]->{indentRules});
-      @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
+            %indentRulesUSER= %{$localSettings->[0]->{indentRules}} if defined($localSettings->[0]->{indentRules});
+            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
 
-      %verbatimEnvironmentsUSER= %{$localSettings->[0]->{verbatimEnvironments}} if defined($localSettings->[0]->{verbatimEnvironments});
-      @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
+            %verbatimEnvironmentsUSER= %{$localSettings->[0]->{verbatimEnvironments}} if defined($localSettings->[0]->{verbatimEnvironments});
+            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
 
-      %noIndentBlockUSER= %{$localSettings->[0]->{noIndentBlock}} if defined($localSettings->[0]->{noIndentBlock});
-      @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
+            %noIndentBlockUSER= %{$localSettings->[0]->{noIndentBlock}} if defined($localSettings->[0]->{noIndentBlock});
+            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
 
-      %checkunmatchedUSER= %{$localSettings->[0]->{checkunmatched}} if defined($localSettings->[0]->{checkunmatched});
-      @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
+            %checkunmatchedUSER= %{$localSettings->[0]->{checkunmatched}} if defined($localSettings->[0]->{checkunmatched});
+            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
 
-      %checkunmatchedbracketUSER= %{$localSettings->[0]->{checkunmatchedbracket}} if defined($localSettings->[0]->{checkunmatchedbracket});
-      @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
+            %checkunmatchedbracketUSER= %{$localSettings->[0]->{checkunmatchedbracket}} if defined($localSettings->[0]->{checkunmatchedbracket});
+            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
 
-      %noAdditionalIndentUSER= %{$localSettings->[0]->{noAdditionalIndent}} if defined($localSettings->[0]->{noAdditionalIndent});
-      @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+            %noAdditionalIndentUSER= %{$localSettings->[0]->{noAdditionalIndent}} if defined($localSettings->[0]->{noAdditionalIndent});
+            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+       }
+       else
+       {
+         # otherwise print a warning that we can not read localSettings.yaml
+         print $logfile "WARNING\n\t$directoryName/localSettings.yaml contains invalid yaml format- not reading from it\n";
+       }
 } 
 elsif ( !(-e "$directoryName/localSettings.yaml") and $readLocalSettings) 
 {
@@ -1065,7 +1087,7 @@ sub at_beg_of_env_or_eq{
        {
            $inverbatim = 1;
            # tracing mode
-           print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, switching ON verbatim \n" if($tracingMode);
+           print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, $2, switching ON verbatim \n" if($tracingMode);
 
            # remove the key and value from %lookForAlignDelims hash
            # to avoid any further confusion
