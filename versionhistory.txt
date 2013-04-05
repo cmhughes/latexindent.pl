@@ -1,4 +1,4 @@
-Version 8.13: April 4th 2013
+Version 8.13: April 5th 2013
     - fixed indentation at \end{verbatim-like} environments
     - if a user specifies a command in both indentRules and noAdditionalIndent
       then noAdditionalIndent will be given priority
@@ -6,6 +6,9 @@ Version 8.13: April 4th 2013
     - noIndentBlock has its own switch that allows it to wrap around
       verbatim environments (previously it used $inverbatim, now it uses
       $inIndentBlock)
+    - if usersettings.yaml or localSettings.yaml contain invalid 
+      yaml format then we give a warning message in the log file
+      - if successful, we output the settings to indent.log
 
 Version 8.12: April 1st 2013
     - fixed time output issue (works on Linux and Windows now )
