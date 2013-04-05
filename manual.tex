@@ -1,6 +1,6 @@
-% arara: pdflatex
+% !arara: pdflatex
 % !arara: bibtex
-% !arara: indent: {overwrite: yes, trace: yes, localSettings: no}
+% arara: indent: {overwrite: yes, trace: yes, localSettings: no}
 \begin{filecontents}{mybib.bib}
 	@online{strawberryperl,
 		title="Strawberry Perl",
@@ -29,17 +29,19 @@ top=2cm,bottom=1.5cm]{geometry}
 \usepackage{titlesec}
 \usepackage{changepage}
 \usepackage{xcolor}
+\usepackage{fancyhdr}
 \usepackage[sc]{caption}
 \usepackage[backend=bibtex]{biblatex}
+\usepackage{mdframed}
 %\usepackage{kpfonts}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
 \usepackage{cleveref}
 
 \addbibresource{mybib}
 
-% tex.stackexchange.com/questions/93944/using-lstinline-inside-a-item/
-% allow \lstinline inside an \item
-%\end{noindent}
+\newmdenv[linecolor=red,innertopmargin=.5cm,linewidth=3pt,
+	splittopskip=\topskip,skipbelow=0pt,%
+]{warning}
 
 \lstset{%
 	basicstyle=\small\ttfamily,language={[LaTeX]TeX},   
@@ -151,8 +153,10 @@ that it works as you expect it to-- if it does not, please first of all
 make sure that you have the correct settings, and then feel free to let me know with a 
 complete minimum working example as I would like to improve the code as much as possible. 
 
-Before you try the script on anything important (like your thesis), test it 
-out on the sample files that come with it in the \lstinline!samples! directory.
+\begin{warning}
+	Before you try the script on anything important (like your thesis), test it 
+	out on the sample files that come with it in the \lstinline!samples! directory. 
+\end{warning}
 
 \subsection{Required \lstinline!Perl! modules}
 \lstinline!indent.pl! requires a few standard modules-- if you can run the following
@@ -484,6 +488,9 @@ verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
 	\end{yaml}
+	Note that if  you put an environment in \lstinline!verbatimEnvironments! 
+	and in other fields such as \lstinline!lookForAlignDelims! or \lstinline!noAdditionalIndent! 
+	then \lstinline!indent.pl! will \emph{always} prioritize \lstinline!verbatimEnvironments!.
 	
 	\item[\verbitem{noIndentBlock}] If you have a block of code that you don't 
 	want \lstinline!indent.pl! to touch (even if it is \emph{not} a verbatim-like
@@ -528,10 +535,14 @@ noAdditionalIndent:
     foreach: 0
     widepage: 1
     comment: 1
-    \[: 0
+    \[: 1
+    \]: 1
     frame: 0
 	  \end{yaml}
-	
+	Note in particular from \cref{lst:noAdditionalIndent} that if you wish content within 
+	\lstinline!\[!  and \lstinline!\]! to receive no additional content then 
+	you have to specify \emph{both} as \lstinline!1! (the default is \lstinline!0!). 
+	If you do not specify both as the same value you may get some interesting results!
 	\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify 
 	individual rules for certain environments or commands, just
 	populate \lstinline!indentRules!; see \cref{lst:indentRules}
@@ -541,10 +552,20 @@ indentRules:
    myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
    \[: "\t"
-	\end{yaml}
+	\end{yaml}      %%%%%\] just here to stop vim from colouring the rest of my code
+	Note that in contrast to \lstinline!noAdditionalIndent! you do \emph{not} 
+	need to specify both \lstinline!\[! and \lstinline!\]! in this field. 
 	
-	\item[\color{red}\bfseries!!!] \emph{The following fields are marked in red, as they are not necessary
-	unless you wish to micro manage your indentation scheme.}
+	If you put an environment in both \lstinline!noAdditionalIndent! and in 
+	\lstinline!indentRules! then \lstinline!indent.pl! will resolve the conflict 
+	by ignoring \lstinline!indentRules! and prioritizing \lstinline!noAdditionalIndent!.
+	You will get a warning message in \lstinline!indent.log!; note that you will only 
+	get one warning message per command or environment. Further discussion 
+	is given in \cref{sec:fieldhierachy}.
+	\begin{warning}
+		\emph{The following fields are marked in red, as they are not necessary
+		unless you wish to micro manage your indentation scheme.}
+	\end{warning}
 	
 	% to anyone reading the source code- I know the next line isn't the
 	% correct way to do it :)
@@ -590,7 +611,56 @@ checkunmatchedbracket:
 	\end{yaml}
 \end{itemize}
 
+\subsection{Hierachy of fields}\label{sec:fieldhierachy}
+After reading the previous section, it should sound reasonable that 
+\lstinline!noAdditionalIndent!, \lstinline!indentRules!, and 
+\lstinline!verbatim! all serve mutually exclusive tasks. Naturally, you may 
+well wonder what happens if you choose to ask \lstinline!indent.pl! to 
+prioritize one above the other.
 
+For example, let's say that you put the fields in \cref{lst:conflict} into 
+one of your settings files.  
+\begin{yaml}[caption={Conflicting ideas},label={lst:conflict}]
+indentRules:
+   myenvironment: "\t\t"
+noAdditionalIndent:
+   myenvironment: 1
+\end{yaml}
+
+Clearly these fields conflict: first of all 
+you are telling \lstinline!indent.pl! that \lstinline!myenvironment! should 
+receive two tabs of indentation, and then afterwards you are telling it 
+not to put any indentation in the environment. \lstinline!indent.pl!
+will always make the decision to prioritize \lstinline!noAdditionalIndent! above
+\lstinline!indentRules! regardless of the order that you load them in 
+your settings file. The first 
+time it encounters \lstinline!myenvironment! it will put a warning in \lstinline!indent.log!
+and delete the offending key from \lstinline!indentRules! so that any future 
+conflicts won't have to be addressed.
+
+Let's consider another conflicting example in \cref{lst:bigconflict}
+\begin{yaml}[caption={More conflicting ideas},label={lst:bigconflict}]
+lookForAlignDelims:
+   myenvironment: 1
+verbatimEnvironments:
+   myenvironment: 1
+\end{yaml}
+This is quite a significant conflict-- we are first of all telling \lstinline!indent.pl!
+to look for alignment delimiters in \lstinline!myenvironment! and then 
+telling it that actually we would like \lstinline!myenvironment! to be considered 
+as a \lstinline!verbatim!-like environment. Regardless of the order that we 
+state \cref{lst:bigconflict} the \lstinline!verbatim! instruction will always win.
+As in \cref{lst:conflict} you will only receive a warning in \lstinline!indent.log! the 
+first time \lstinline!indent.pl! encounters \lstinline!myenvironment! as the 
+offending key is deleted from \lstinline!lookForAlignDelims!.
+
+To summarize, \lstinline!indent.pl! will prioritize the various fields in the 
+following order:
+\begin{enumerate}
+	\item \lstinline!verbatimEnvironments!
+	\item \lstinline!noAdditionalIndent!
+	\item \lstinline!indentRules!
+\end{enumerate}
 \subsection{\lstinline!indentconfig.yaml! (for user settings)}\label{sec:indentconfig}
 Editing \lstinline!defaultSettings.yaml! is not ideal as it may be overwritten when 
 updating your distribution-- a better way to customize the settings to your liking 
@@ -650,6 +720,13 @@ recognize then you'll get a warning, otherwise you'll get confirmation that
 \lstinline!indent.pl! has read your settings file.
 
 \fixthis{need Windows setup- do we need blank line to finish on?}
+
+\begin{warning}
+	When editing \lstinline!.yaml! files it is \emph{extremely} important 
+	to remember how sensitive they are to spaces. I highly recommend copying 
+	and pasting from \lstinline!defaultSettings.yaml! when you create your
+	first \lstinline!whatevernameyoulike.yaml! file.
+\end{warning}
 
 \subsection{localSettings.yaml}
 You may remember on \cpageref{page:localswitch} we discussed the \lstinline!-l! switch
