@@ -137,11 +137,28 @@ ENDQUOTE
     exit(2);
 }
 
-# Create a YAML file
+
+# Read in YAML file
 my $defaultSettings = YAML::Tiny->new;
+
+print $logfile "Reading defaultSettings.yaml\n\n";
 
 # Open defaultSettings.yaml
 $defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );
+
+if(!$defaultSettings)
+{
+  for my $fh ($out,$logfile) {
+ print $fh <<ENDQUOTE 
+ ERROR  There seems to be a yaml formatting error in defaultSettings.yaml
+        Please check it for mistakes- you can find a working version at https://github.com/cmhughes/latexindent.plx
+        if you would like to overwrite your current version
+
+        Exiting, no indendation done.
+ENDQUOTE
+};
+ exit(2);
+}
 
 # setup the DEFAULT variables and hashes from the YAML file
 
@@ -174,18 +191,38 @@ my %checkunmatchedELSEUSER;
 my %checkunmatchedbracketUSER;
 my %noAdditionalIndentUSER;
 
-# for printing the user settings to the log file
+# for printing the user and local settings to the log file
 my %dataDump;
 
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 if ( -e $indentconfig ) 
 {
-      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
 
       # read the absolute paths from indentconfig.yaml
       my $userSettings = YAML::Tiny->read( "$indentconfig" );
-      my @absPaths = @{$userSettings->[0]->{paths}};
+
+      # empty array to store the paths
+      my @absPaths;
+
+      # integrity check
+      if($userSettings)
+      {
+        %dataDump = %{$userSettings->[0]};
+        print $logfile Dump \%dataDump;
+        print $logfile "\n";
+        @absPaths = @{$userSettings->[0]->{paths}};
+      }
+      else
+      {
+        print $logfile <<ENDQUOTE
+WARNING:  $indentconfig 
+          contains some dodgy .yaml formatting- unable to read from it.
+          No user settings loaded. 
+ENDQUOTE
+;
+      }
 
       # read in the settings from each file
       foreach my $settings (@absPaths)
@@ -367,6 +404,7 @@ if(!($outputToFile or $overwrite))
 {
     print $logfile "Just out put to the terminal :)\n\n" if !$silentMode  ;
 }
+
 
 # scalar variables
 my $line='';                # $line: takes the $line of the file
@@ -1385,7 +1423,7 @@ sub increase_indent{
           # if there's a rule for indentation for this environment
           push(@indent, $indentRules{$command});
           # tracing mode
-          print $logfile "Line $lineCounter\t increasing indent using rule for $command \n" if($tracingMode);
+          print $logfile "Line $lineCounter\t increasing indent using rule for $command (see indentRules)\n" if($tracingMode);
        }
        else
        {
@@ -1395,6 +1433,11 @@ sub increase_indent{
             push(@indent, $defaultIndent);
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
+          }
+          elsif($noAdditionalIndent{$command})
+          {
+            # tracing mode
+            print $logfile "Line $lineCounter\t no additional indent added for $command (see noAdditionalIndent)\n" if($tracingMode);
           }
        }
 }
