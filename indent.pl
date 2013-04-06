@@ -308,7 +308,7 @@ if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$
 
       my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
 
-      # if we can read localSettings
+      # if we can read localSettings (no yaml formatting mistakes)
       if($localSettings)
       {
             # output settings to $logfile
@@ -699,6 +699,9 @@ exit;
 sub at_end_noindent{
     # PURPOSE: This matches
     #           % \end{noindent}
+    #          with any number of spaces (possibly none) between
+    #          the comment and \end{noindent}.
+    #
     #          the comment symbol IS indended!
     #
     #          This is for blocks of code that the user wants
@@ -715,6 +718,9 @@ sub at_end_noindent{
 sub at_beg_noindent{
     # PURPOSE: This matches
     #           % \begin{noindent}
+    #          with any number of spaces (possibly none) between
+    #          the comment and \begin{noindent}.
+    #
     #          the comment symbol IS indended!
     #
     #          This is for blocks of code that the user wants
