@@ -6,7 +6,7 @@ Version 8.13: April 5th 2013
     - noIndentBlock has its own switch that allows it to wrap around
       verbatim environments (previously it used $inverbatim, now it uses
       $inIndentBlock)
-    - if usersettings.yaml or localSettings.yaml contain invalid 
+    - if indentconfig.yaml, usersettings.yaml or localSettings.yaml contain invalid 
       yaml format then we give a warning message in the log file
       - if successful, we output the settings to indent.log
 
