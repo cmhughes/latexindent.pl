@@ -64,7 +64,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.13, a script to indent .tex files
+indent.pl version 8.14, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
