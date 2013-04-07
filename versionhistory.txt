@@ -1,3 +1,6 @@
+Version 8.14: April 7th 2013
+    - indent after headings now available
+
 Version 8.13: April 5th 2013
     - fixed indentation at \end{verbatim-like} environments
     - if a user specifies a command in both indentRules and noAdditionalIndent
