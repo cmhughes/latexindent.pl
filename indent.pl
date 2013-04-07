@@ -179,6 +179,7 @@ my %checkunmatched= %{$defaultSettings->[0]->{checkunmatched}};
 my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
+my %indentAfterHeadings= %{$defaultSettings->[0]->{indentAfterHeadings}};
 
 # need new hashes to store the user and local data before
 # overwriting the default
@@ -190,6 +191,7 @@ my %checkunmatchedUSER;
 my %checkunmatchedELSEUSER;
 my %checkunmatchedbracketUSER;
 my %noAdditionalIndentUSER;
+my %indentAfterHeadingsUSER;
 
 # for printing the user and local settings to the log file
 my %dataDump;
@@ -272,6 +274,10 @@ ENDQUOTE
       
                   %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
                   @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+
+                  %indentAfterHeadingsUSER= %{$userSettings->[0]->{indentAfterHeadings}} if defined($userSettings->[0]->{indentAfterHeadings});
+                  @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
+
              }
              else
              {
@@ -347,6 +353,10 @@ if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$
 
             %noAdditionalIndentUSER= %{$localSettings->[0]->{noAdditionalIndent}} if defined($localSettings->[0]->{noAdditionalIndent});
             @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+
+            %indentAfterHeadingsUSER= %{$localSettings->[0]->{indentAfterHeadings}} if defined($localSettings->[0]->{indentAfterHeadings});
+            @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
+
        }
        else
        {
@@ -441,6 +451,8 @@ my $trailingcomments='';    # $trailingcomments stores the comments at the end o
 my $lineCounter=0;          # $lineCounter keeps track of the line number
 my $inIndentBlock=0;        # $inindentblock: switch to determine if in
                             #               a inindentblock or not
+my $headingLevel=0;         # $headingLevel: scalar that stores which heading
+                            #               we are under: \part, \chapter, etc
 
 # array variables
 my @indent=();              # @indent: stores current level of indentation
@@ -452,6 +464,7 @@ my @commandstorebrackets=();# @commandstorebrackets: stores commands that
                             #           have split [] across lines
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
+my @headingStore=();        # @headingStore: stores headings: chapter, section, etc
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
@@ -489,9 +502,12 @@ while(<MAINFILE>)
     if(!($inpreamble or $inverbatim or $inIndentBlock))
     {
         # if not, remove all leading spaces and tabs
-        # from the current line
-        s/^\ *//; 
-        s/^\t*//; 
+        # from the current line, assuming it isn't empty
+        #s/^\ *//; 
+        #s/^\s+//; 
+        #s/^\t+//; 
+        s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/); 
+        s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
 
         # tracing mode
         print $logfile "Line $lineCounter\t removing leading spaces\n" if($tracingMode);
@@ -563,6 +579,9 @@ while(<MAINFILE>)
         # check to see if we're at the end of a command that splits 
         # [ ] across lines
         &end_command_or_key_unmatched_brackets();
+
+        # check for a heading
+        &indent_heading();
 
         # add the trailing comments back to the end of the line
         if(scalar($trailingcomments))
@@ -650,6 +669,9 @@ while(<MAINFILE>)
 
         # check for a command that splits [] across lines
         &start_command_or_key_unmatched_brackets();
+
+        # check for a heading
+        &indent_after_heading();
     }
 }
 
@@ -695,6 +717,104 @@ if($outputToFile)
 close($logfile);
 
 exit;
+
+sub indent_heading{
+    # PURPOSE: This matches
+    #           \part
+    #           \chapter
+    #           \section
+    #           \subsection
+    #           \subsubsection
+    #           \paragraph
+    #           \subparagraph
+    #
+    #           and anything else listed in indentAfterHeadings
+    #
+    #           This subroutine specifies the indentation for the 
+    #           heading itself, i.e the line that has \chapter, \section etc
+    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1})
+    {
+       # tracing mode
+       print $logfile "Line $lineCounter\t Heading found: $1 \n" if($tracingMode);
+
+       # get the heading settings- it's a hash within a hash
+       my %currentHeading = %{$indentAfterHeadings{$1}};
+
+       # local scalar
+       my $previousHeadingLevel = $headingLevel;
+
+       # if current heading level < old heading level, 
+       if($currentHeading{level}<$previousHeadingLevel)
+       {
+            # decrease indentation, but only if 
+            # specified in indentHeadings. Note that this check 
+            # needs to be done here- decrease_indent won't 
+            # check a nested hash
+          
+            if(scalar(@headingStore))  
+            {
+               while($currentHeading{level}<$previousHeadingLevel and scalar(@headingStore))
+               {
+                    my $higherHeadingName = pop(@headingStore);
+                    my %higherLevelHeading = %{$indentAfterHeadings{$higherHeadingName}};
+
+                    # tracing mode
+                    print $logfile "Line $lineCounter\t stepping UP heading level from $higherHeadingName \n" if($tracingMode);
+
+                    &decrease_indent($higherHeadingName) if($higherLevelHeading{indent});
+                    $previousHeadingLevel=$higherLevelHeading{level};
+               }
+               # put the heading name back in to storage
+               push(@headingStore,$1);
+            }
+       }
+       elsif($currentHeading{level}==$previousHeadingLevel)
+       {
+            if(scalar(@headingStore))  
+            {
+                 my $higherHeadingName = pop(@headingStore);
+                 my %higherLevelHeading = %{$indentAfterHeadings{$higherHeadingName}};
+                 &decrease_indent($higherHeadingName) if($higherLevelHeading{indent});
+            }
+            # put the heading name back in to storage
+            push(@headingStore,$1);
+       }
+       else
+       {
+            # put the heading name into storage
+            push(@headingStore,$1);
+       }
+    }
+}
+
+sub indent_after_heading{
+    # PURPOSE: This matches
+    #           \part
+    #           \chapter
+    #           \section
+    #           \subsection
+    #           \subsubsection
+    #           \paragraph
+    #           \subparagraph
+    #
+    #           and anything else listed in indentAfterHeadings
+    #
+    #           This subroutine is specifies the indentation for 
+    #           the text AFTER the heading, i.e the body of conent
+    #           in each \chapter, \section, etc
+    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1})
+    {
+       # get the heading settings- it's a hash within a hash
+       my %currentHeading = %{$indentAfterHeadings{$1}};
+
+       &increase_indent($1) if($currentHeading{indent});
+
+       # update heading level
+       $headingLevel = $currentHeading{level};
+    }
+}
+
+
 
 sub at_end_noindent{
     # PURPOSE: This matches
@@ -1183,8 +1303,9 @@ sub at_end_of_env_or_eq{
 
             print $logfile "Line $lineCounter\t \\end{verbatim-like} found: $1, switching off verbatim \n" if($tracingMode);
             print $logfile "Line $lineCounter\t removing leading spaces \n" if($tracingMode);
-            s/^\ *//; 
-            s/^\t*//; 
+            #s/^\ *//; 
+            s/^\t+// if($_ ne ""); 
+            s/^\s+// if($_ ne ""); 
        }
 
        # check to see if we need to turn off alignment
