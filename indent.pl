@@ -465,6 +465,9 @@ my @commandstorebrackets=();# @commandstorebrackets: stores commands that
 my @mainfile=();            # @mainfile: stores input file; used to 
                             #            grep for \documentclass
 my @headingStore=();        # @headingStore: stores headings: chapter, section, etc
+my @indentNames=();         # @indentNames: keeps names of commands and 
+                            #               environments that have caused
+                            #               indentation to increase
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
@@ -616,7 +619,7 @@ while(<MAINFILE>)
             $_ = join("",@indent).$_;
             push(@lines,$_);
             # tracing mode
-            print $logfile "Line $lineCounter\t Adding current level of indentation\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
         }
     }
     else
@@ -1551,6 +1554,7 @@ sub increase_indent{
           push(@indent, $indentRules{$command});
           # tracing mode
           print $logfile "Line $lineCounter\t increasing indent using rule for $command (see indentRules)\n" if($tracingMode);
+          push(@indentNames,"$command (rule)");
        }
        else
        {
@@ -1558,6 +1562,7 @@ sub increase_indent{
           if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
           {
             push(@indent, $defaultIndent);
+            push(@indentNames,"$command (default)");
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
           }
@@ -1580,7 +1585,8 @@ sub decrease_indent{
        if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
        {
             pop(@indent);
+            pop(@indentNames);
             # tracing mode
-            print $logfile "Line $lineCounter\t decreasing indent \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t decreasing indent to: ",join(", ",@indentNames),"\n" if($tracingMode);
        }
 }
