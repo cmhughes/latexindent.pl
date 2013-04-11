@@ -1590,3 +1590,4 @@ sub decrease_indent{
             print $logfile "Line $lineCounter\t decreasing indent to: ",join(", ",@indentNames),"\n" if($tracingMode);
        }
 }
+
