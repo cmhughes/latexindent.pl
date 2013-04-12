@@ -25,15 +25,18 @@ use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
 my %options=();
-getopts("sotlw", \%options);
+getopts("sotlwh", \%options);
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
-if(scalar(@ARGV) < 1)
+if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
+indent.pl version 8.15
 usage: indent.pl [options] [file][.tex]
-      -o  output to another file
+      -h  help
+      -o  output to another file; sample usage
+                indent.pl -o myfile.tex outputfile.tex
       -w  overwrite the current file- a backup will be made, but still be careful
       -s  silent mode- no output will be given to the terminal
       -t  tracing mode- verbose information given to the log file
@@ -64,7 +67,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.14, a script to indent .tex files
+indent.pl version 8.15, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -301,6 +304,12 @@ ENDQUOTE
         }
       }
 } 
+else
+{
+      # give the user instructions on where to put indentconfig.yaml
+      print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
+      print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+}
 
 # get information about LOCAL settings, assuming that localSettings.yaml exists
 my $directoryName = dirname $ARGV[0];
