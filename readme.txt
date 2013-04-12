@@ -20,7 +20,7 @@
 
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
-FOR COMPLETE DETAILS, PLEASE SEE MANUAL.pdf
+FOR COMPLETE DETAILS, PLEASE SEE documentatino/manual.pdf
 
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
