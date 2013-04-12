@@ -36,6 +36,7 @@ top=2cm,bottom=1.5cm]{geometry}
 \usepackage[sc]{caption}
 \usepackage[backend=bibtex]{biblatex}
 \usepackage{mdframed}
+\usepackage{enumitem}
 \usepackage{varioref}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
 \usepackage{cleveref}
@@ -89,6 +90,13 @@ top=2cm,bottom=1.5cm]{geometry}
 {\llap{\thesubsection\hskip.5cm}}
 {0pt}
 {}
+% custom subsubsection
+\titleformat{\subsubsection}
+{\normalfont\bfseries}
+{\llap{\thesubsubsection\hskip.5cm}}
+{0pt}
+{}
+
 
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-5pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
@@ -265,7 +273,7 @@ of the script in \cref{sec:defuseloc}.
 \lstinline!indent.pl! ships with a few standalone exectuble files:
 \begin{itemize}
 	\item \lstinline!indent.exe! for Windows users
-	\item \lstinline!indent! for Linux and MAC users
+	\item \lstinline!indent! for Linux users
 \end{itemize}
 This means that you can use the script with or without a Perl distribution. If you 
 plan to use \lstinline!indent.pl! (i.e, the original Perl script) then you will 
@@ -283,11 +291,18 @@ is run. There is a base of information that is written to \lstinline!indent.log!
 but other additional information will be written depending 
 on which of the following options are used.
  	 	 	 	 	
-\begin{itemize}
+\begin{itemize}[labelsep=.5cm]
+	\item[] \lstinline!indent.pl!
+	
+	This will output a welcome message to the terminal, including the version number
+	and available options.
+	\item[\verbitem{-h}] \lstinline!indent.pl -h!
+	
+	As above this will output a welcome message to the terminal, including the version number
+	and available options.
 	\item[] \lstinline!indent.pl myfile.tex!
 		 		 		 		 		 					
-		This will simply output to your terminal; \lstinline!myfile.tex! will
-		not be changed in any way using this command. 
+		This will operate on \lstinline!myfile.tex!, but will simply output to your terminal; \lstinline!myfile.tex! will	not be changed in any way using this command. 
 	\item[\verbitem{-w}] \lstinline!indent.pl -w myfile.tex!
 		 		 		 		 		 					
 		This \emph{will} overwrite \lstinline!myfile.tex!, but it will
@@ -332,9 +347,10 @@ your other \lstinline!arara! rules, or otherwise add the \lstinline!indent.pl!
 directory to your \lstinline!araraconfig.yaml! file.
  	 	 	 	 	
 Once you have told \lstinline!arara! where to find your \lstinline!indent! rule, 
-you can use it any of the following ways (or combinations thereof). 
+you can use it any of the ways described in \cref{lst:arara} (or combinations thereof). 
+In fact, \lstinline!arara! allows yet greater flexibility-- you can use \lstinline!yes/no!, \lstinline!true/false!, or \lstinline!on/off! to toggle the various options.
  	 	 	 	 	
-\begin{lstlisting}[caption={\lstinline!arara! samples},escapeinside={(*@}{@*)}]
+\begin{lstlisting}[caption={\lstinline!arara! sample usage},label={lst:arara},escapeinside={(*@}{@*)}]
 %(*@@*) arara: indent
 %(*@@*) arara: indent: {overwrite: yes}
 %(*@@*) arara: indent: {output: myfile.tex}
@@ -345,6 +361,8 @@ you can use it any of the following ways (or combinations thereof).
 ...
 \end{lstlisting}
  	 	 	 	 	
+					\fixthis{add how to draw a Taurus answers to success}
+					
 Hopefully the use of these rules is fairly self-explanatory, but for completeness
 \cref{tab:orbsandswitches} shows the relationship between \lstinline!arara! orb-tags and the 
 switches given in \cref{sec:commandline}.
@@ -641,7 +659,7 @@ checkunmatchedbracket:
 	\end{yaml}
 \end{itemize}
  	 	 	 	 	
-\subsection{Hierachy of fields}\label{sec:fieldhierachy}
+\subsubsection{Hierachy of fields}\label{sec:fieldhierachy}
 After reading the previous section, it should sound reasonable that 
 \lstinline!noAdditionalIndent!, \lstinline!indentRules!, and 
 \lstinline!verbatim! all serve mutually exclusive tasks. Naturally, you may 
@@ -859,3 +877,4 @@ might visit the software center, and Strawberry Perl users on Windows might use
 
 \end{document}
       
+
