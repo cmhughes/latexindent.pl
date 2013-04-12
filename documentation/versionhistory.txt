@@ -1,3 +1,7 @@
+Version 8.15: April 11th 2013
+    - added -h option for help
+    - added output to logfile if indentconfig.yaml is not found
+
 Version 8.14: April 7th 2013
     - indent after headings now available
 
