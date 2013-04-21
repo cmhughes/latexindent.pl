@@ -1,3 +1,12 @@
+Version 8.17 April 21st
+    - fixed alignment block routine
+    - added environmentStack to make sure indentation is not
+      decreased inappropriately
+
+Version 8.16: April 21st
+    - merged local settings call with user settings- no need to write the 
+      same thing twice
+
 Version 8.15: April 11th 2013
     - added -h option for help
     - added output to logfile if indentconfig.yaml is not found

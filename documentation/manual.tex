@@ -831,12 +831,17 @@ lines from \lstinline!myfile.tex!. Note that \lstinline!indent.log! will always
 finish with a comparison of line counts before and after. 
       
 The routine works well for `standard' blocks of code that have the same number of \lstinline!&!
-per line, but it will not work well for blocks that do not-- such examples 
+per line, but it will not do anything for blocks that do not-- such examples 
 include \lstinline!tabular! environments that use \lstinline!\multicolumn! or 
 perhaps spread cell contents across multiple lines.
       
-Nested environments that contain alignment delimiters are also not supported-- it 
-would be best to wrap such nested blocks in an environment you specify in \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlock}).
+Nested environments that contain alignment delimiters will not be formatted
+using the alignment-delimeter routine. For each alignment block (\lstinline!tabular!, 
+\lstinline!align!, etc) \lstinline!indent.pl! first of all makes a record 
+of the maximum number of \lstinline!&!; if each row does not have that 
+number of \lstinline!&! then it will not try to format that row. Details 
+will be given in \lstinline!indent.log! assuming that \lstinline!trace! mode
+is active.
       
 I hope that this script is useful to some-- if you find an example where the 
 script does not behave as you think it should, feel free to e-mail me or else

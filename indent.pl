@@ -32,7 +32,7 @@ getopts("sotlwh", \%options);
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version 8.16
+indent.pl version 8.17
 usage: indent.pl [options] [file][.tex]
       -h  help
       -o  output to another file; sample usage
@@ -67,7 +67,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.16, a script to indent .tex files
+indent.pl version 8.17, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -428,6 +428,8 @@ my @headingStore=();        # @headingStore: stores headings: chapter, section, 
 my @indentNames=();         # @indentNames: keeps names of commands and 
                             #               environments that have caused
                             #               indentation to increase
+my @environmentStack;       # @environmentStack: stores the (nested) names 
+                            #                    of environments
 
 # check to see if the current file has \documentclass, if so, then 
 # it's the main file, if not, then it doesn't have preamble
@@ -593,8 +595,8 @@ while(<MAINFILE>)
 
     # only check for new environments or commands if we're 
     # not in a verbatim-like environment or in the preamble
-    # or in a noIndentBlock
-    if(!($inverbatim or $inpreamble or $inIndentBlock))
+    # or in a noIndentBlock, or delimiter block
+    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
     {
 
         # check if we are in a 
@@ -635,6 +637,9 @@ while(<MAINFILE>)
 
         # check for a heading
         &indent_after_heading();
+
+        # tracing mode
+        print $logfile "Line $lineCounter\t Environments: ",join(", ",@environmentStack),"\n" if($tracingMode and scalar(@environmentStack));
     }
 }
 
@@ -1237,6 +1242,9 @@ sub at_beg_of_env_or_eq{
             print $logfile "Line $lineCounter\t Delimiter environment started: $2\n" if($tracingMode);
        }
 
+       # store the name of the environment
+       push(@environmentStack,$2);
+
     }
 }
 
@@ -1277,6 +1285,9 @@ sub at_end_of_env_or_eq{
        {
            $delimiters=0;
 
+           # tracing mode
+           print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
+
            # print the current FORMATTED block
            @block = &format_block(@block);
            foreach $line (@block)
@@ -1288,10 +1299,6 @@ sub at_end_of_env_or_eq{
            }
            # empty the @block, very important!
            @block=();
-
-           # tracing mode
-           print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
-
        }
 
        # tracing mode
@@ -1311,33 +1318,83 @@ sub format_block{
     #                               from, for example, align, or tabular
     #   OUTPUT: @formattedblock     array containing FORMATTED block
 
+
     # @block is the input
     my @block=@_;
+
+    # tracing mode
+    print $logfile "\t\tFormatting alignment block\n" if($tracingMode);
+
+    # step the line counter back to the beginning of the block-
+    # it will be increased back to the end of the block in the 
+    # loop later on:  foreach $row (@tmpblock)
+    $lineCounter -= scalar(@block);
+
 
     # local array variables
     my @formattedblock;
     my @tmprow=();
     my @tmpblock=();
     my @maxmstringsize=();
+    my @ampersandCount=();
 
     # local scalar variables
     my $alignrowcounter=-1;
     my $aligncolcounter=-1;
-    my $tmpstring='';
-    my $row='';
-    my $column='';
-    my $maxmcolstrlength='';
-    my $i='';
-    my $j='';
-    my $fmtstring='';
-    my $linebreak='';
+    my $tmpstring;
+    my $row;
+    my $column;
+    my $maxmcolstrlength;
+    my $i;
+    my $j;
+    my $fmtstring;
+    my $linebreak;
+    my $maxNumberAmpersands = 0;
+    my $currentNumberAmpersands;
+    my $trailingcomments;
 
     # local hash table
     my %stringsize=();
+
+    # loop through the block and count & per line- store the biggest
+    # NOTE: this needs to be done in its own block so that 
+    # we can know what the maximum number of & in the block is
+    foreach $row (@block)
+    {
+       # delete trailing comments
+       $trailingcomments='';
+       if($row =~ m/((?<!\\)%.*$)/)
+       {
+            $row =~ s/((?<!\\)%.*)/%/;
+            $trailingcomments=$1;
+       }
+
+       # reset temporary counter
+       $currentNumberAmpersands=0;
+
+       # count & in current row (exclude \&)
+       $currentNumberAmpersands++ while ($row =~ /(?<!\\)&/g);
+
+       # store the ampersand count for future
+       push(@ampersandCount,$currentNumberAmpersands);
+
+       # overwrite maximum count if the temp count is higher
+       $maxNumberAmpersands = $currentNumberAmpersands if($currentNumberAmpersands > $maxNumberAmpersands );
+
+       # put trailing comments back on
+       if($trailingcomments)
+       {
+            $row =~ s/%/$trailingcomments/;
+       }
+
+    }
     
     # loop through the lines in the @block
     foreach $row (@block)
     {
+        # get the ampersand count
+        $currentNumberAmpersands = shift(@ampersandCount);
+
         # increment row counter
         $alignrowcounter++;
 
@@ -1345,8 +1402,9 @@ sub format_block{
         $linebreak='';
 
         # check for line break \\
-        # and don't mess with a line that has multicolumn
-        if($row =~ m/\\\\/ and $row !~ m/multicolumn/)
+        # and don't mess with a line that doesn't have the maximum
+        # number of &
+        if($row =~ m/\\\\/ and $currentNumberAmpersands==$maxNumberAmpersands )
         {
           # remove \\ and all characters that follow
           # and put it back in later, once the measurement
@@ -1355,11 +1413,11 @@ sub format_block{
           $linebreak = $1;
         }
 
-        # separate the row at each &, but not at \&
-        @tmprow = split(/(?<!\\)&/,$row);
-    
-        if(scalar(@tmprow)>1 and ($row !~ m/multicolumn/))
+        if($currentNumberAmpersands==$maxNumberAmpersands)
         {
+            # separate the row at each &, but not at \&
+            @tmprow = split(/(?<!\\)&/,$row);
+
             # reset column counter
             $aligncolcounter=-1;
 
@@ -1446,6 +1504,7 @@ sub format_block{
     # process the @tmpblock of aligned material
     foreach $row (@tmpblock)
     {
+
         $linebreak='';
         # check for line break \\
         if($row =~ m/\\\\/)
@@ -1460,12 +1519,21 @@ sub format_block{
         {
             $row =~ s/NOFORMATTING//;
             $tmpstring=$row;
+
+            # tracing mode
+            print $logfile "\t\tLine $lineCounter\t maximum number of & NOT found- not aligning delimiters \n" if($tracingMode);
         }
         else
         {
           $tmpstring = sprintf($fmtstring,split(/(?<!\\)&/,$row)).$linebreak."\n";
+
+          # tracing mode
+          print $logfile "\t\tLine $lineCounter\t Found maximum number of &- aligning delimiters\n" if($tracingMode);
         }
         push(@formattedblock,$tmpstring);
+
+        # increase the line counter
+        $lineCounter++;
     }
 
     # return the formatted block
