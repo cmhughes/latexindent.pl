@@ -4,7 +4,6 @@
 # last updated: 3/23/2013
 # requires arara 3.0+
 #
-#
 # Sample usage:
 #
 # % arara: indent

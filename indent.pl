@@ -32,7 +32,7 @@ getopts("sotlwh", \%options);
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version 8.15
+indent.pl version 8.16
 usage: indent.pl [options] [file][.tex]
       -h  help
       -o  output to another file; sample usage
@@ -67,7 +67,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.15, a script to indent .tex files
+indent.pl version 8.16, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -199,6 +199,12 @@ my %indentAfterHeadingsUSER;
 # for printing the user and local settings to the log file
 my %dataDump;
 
+# empty array to store the paths
+my @absPaths;
+
+# scalar to read user settings
+my $userSettings;
+
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 if ( -e $indentconfig ) 
@@ -206,10 +212,7 @@ if ( -e $indentconfig )
       print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
 
       # read the absolute paths from indentconfig.yaml
-      my $userSettings = YAML::Tiny->read( "$indentconfig" );
-
-      # empty array to store the paths
-      my @absPaths;
+      $userSettings = YAML::Tiny->read( "$indentconfig" );
 
       # integrity check
       if($userSettings)
@@ -223,85 +226,10 @@ if ( -e $indentconfig )
       {
         print $logfile <<ENDQUOTE
 WARNING:  $indentconfig 
-          contains some dodgy .yaml formatting- unable to read from it.
+          contains some invalid .yaml formatting- unable to read from it.
           No user settings loaded. 
 ENDQUOTE
 ;
-      }
-
-      # read in the settings from each file
-      foreach my $settings (@absPaths)
-      {
-        # check that the settings file exists and that it isn't empty
-        if (-e $settings and !(-z $settings))
-        {
-            print $logfile "Reading USER settings from $settings\n";
-            $userSettings = YAML::Tiny->read( "$settings" );
-
-            # if we can read userSettings
-            if($userSettings)
-            {
-                  # output settings to $logfile
-                  %dataDump = %{$userSettings->[0]};
-                  print $logfile Dump \%dataDump;
-                  print $logfile "\n";
-      
-                  # scalar variables
-                  $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
-                  $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
-                  $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
-                  $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
-                  $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
-                  $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
-      
-                  # hash variables - note that each one requires two lines, 
-                  # one to read in the data, one to put the keys&values in correctly
-      
-                  %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
-                  @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
-      
-                  %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
-                  @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
-      
-                  %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
-                  @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
-      
-                  %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
-                  @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
-      
-                  %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
-                  @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
-      
-                  %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
-                  @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
-      
-                  %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
-                  @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
-
-                  %indentAfterHeadingsUSER= %{$userSettings->[0]->{indentAfterHeadings}} if defined($userSettings->[0]->{indentAfterHeadings});
-                  @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
-
-             }
-             else
-             {
-                   # otherwise print a warning that we can not read userSettings.yaml
-                   print $logfile "WARNING\n\t$settings \n\t contains invalid yaml format- not reading from it\n";
-             }
-      
-        }
-        else
-        {
-            # otherwise keep going, but put a warning in the log file
-            print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
-            if (-z $settings)
-            {
-                print $logfile "\tspecifies $settings \n\tbut this file is EMPTY- not reading from it\n\n"
-            }
-            else
-            {
-                print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
-            }
-        }
       }
 } 
 else
@@ -313,71 +241,94 @@ else
 
 # get information about LOCAL settings, assuming that localSettings.yaml exists
 my $directoryName = dirname $ARGV[0];
-if(-z "$directoryName/localSettings.yaml")
-{
-    print $logfile "WARNING\n\tlocalSettings.yaml is EMPTY- not reading from it\n\n"
-}
+
+# add local settings to the paths, if appropriate
 if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$directoryName/localSettings.yaml")) 
 {
-      print $logfile "Reading LOCAL settings from $directoryName/localSettings.yaml\n";
-
-      my $localSettings = YAML::Tiny->read( "$directoryName/localSettings.yaml" );
-
-      # if we can read localSettings (no yaml formatting mistakes)
-      if($localSettings)
-      {
-            # output settings to $logfile
-            %dataDump = %{$localSettings->[0]};
-            print $logfile Dump \%dataDump;
-            print $logfile "\n";
-
-            # scalar variables
-            $defaultIndent = $localSettings->[0]->{defaultIndent} if defined($localSettings->[0]->{defaultIndent});
-            $alwaysLookforSplitBraces = $localSettings->[0]->{alwaysLookforSplitBraces} if defined($localSettings->[0]->{alwaysLookforSplitBraces});
-            $alwaysLookforSplitBrackets = $localSettings->[0]->{alwaysLookforSplitBrackets} if defined($localSettings->[0]->{alwaysLookforSplitBrackets});
-            $backupExtension = $localSettings->[0]->{backupExtension} if defined($localSettings->[0]->{backupExtension});
-            $indentPreamble = $localSettings->[0]->{indentPreamble} if defined($localSettings->[0]->{indentPreamble});
-            $onlyOneBackUp = $localSettings->[0]->{onlyOneBackUp} if defined($localSettings->[0]->{onlyOneBackUp});
-
-            # hash variables - note that each one requires two lines, 
-            # one to read in the data, one to put the keys&values in correctly
-
-            %lookForAlignDelimsUSER= %{$localSettings->[0]->{lookForAlignDelims}} if defined($localSettings->[0]->{lookForAlignDelims});
-            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
-
-            %indentRulesUSER= %{$localSettings->[0]->{indentRules}} if defined($localSettings->[0]->{indentRules});
-            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
-
-            %verbatimEnvironmentsUSER= %{$localSettings->[0]->{verbatimEnvironments}} if defined($localSettings->[0]->{verbatimEnvironments});
-            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
-
-            %noIndentBlockUSER= %{$localSettings->[0]->{noIndentBlock}} if defined($localSettings->[0]->{noIndentBlock});
-            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
-
-            %checkunmatchedUSER= %{$localSettings->[0]->{checkunmatched}} if defined($localSettings->[0]->{checkunmatched});
-            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
-
-            %checkunmatchedbracketUSER= %{$localSettings->[0]->{checkunmatchedbracket}} if defined($localSettings->[0]->{checkunmatchedbracket});
-            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
-
-            %noAdditionalIndentUSER= %{$localSettings->[0]->{noAdditionalIndent}} if defined($localSettings->[0]->{noAdditionalIndent});
-            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
-
-            %indentAfterHeadingsUSER= %{$localSettings->[0]->{indentAfterHeadings}} if defined($localSettings->[0]->{indentAfterHeadings});
-            @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
-
-       }
-       else
-       {
-         # otherwise print a warning that we can not read localSettings.yaml
-         print $logfile "WARNING\n\t$directoryName/localSettings.yaml contains invalid yaml format- not reading from it\n";
-       }
-} 
+    print $logfile "\nAdding ./localSettings.yaml to paths\n\n";
+    push(@absPaths,"$directoryName/localSettings.yaml");
+}
 elsif ( !(-e "$directoryName/localSettings.yaml") and $readLocalSettings) 
 {
       print $logfile "WARNING\n\t$directoryName/localSettings.yaml not found\n";
       print $logfile "\tcarrying on without it.\n";
 } 
+
+# read in the settings from each file
+foreach my $settings (@absPaths)
+{
+  # check that the settings file exists and that it isn't empty
+  if (-e $settings and !(-z $settings))
+  {
+      print $logfile "Reading USER settings from $settings\n";
+      $userSettings = YAML::Tiny->read( "$settings" );
+
+      # if we can read userSettings
+      if($userSettings)
+      {
+            # output settings to $logfile
+            %dataDump = %{$userSettings->[0]};
+            print $logfile Dump \%dataDump;
+            print $logfile "\n";
+
+            # scalar variables
+            $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
+            $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
+            $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
+            $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
+            $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
+            $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
+
+            # hash variables - note that each one requires two lines, 
+            # one to read in the data, one to put the keys&values in correctly
+
+            %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
+            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
+
+            %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
+            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
+
+            %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
+            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
+
+            %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
+            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
+
+            %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
+            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
+
+            %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
+            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
+
+            %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
+            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
+
+            %indentAfterHeadingsUSER= %{$userSettings->[0]->{indentAfterHeadings}} if defined($userSettings->[0]->{indentAfterHeadings});
+            @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
+
+       }
+       else
+       {
+             # otherwise print a warning that we can not read userSettings.yaml
+             print $logfile "WARNING\n\t$settings \n\t contains invalid yaml format- not reading from it\n";
+       }
+
+  }
+  else
+  {
+      # otherwise keep going, but put a warning in the log file
+      print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
+      if (-z $settings)
+      {
+          print $logfile "\tspecifies $settings \n\tbut this file is EMPTY- not reading from it\n\n"
+      }
+      else
+      {
+          print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
+      }
+  }
+}
+
 
 # if we want to over write the current file
 # create a backup first
