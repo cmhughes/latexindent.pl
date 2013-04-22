@@ -1205,8 +1205,9 @@ sub at_beg_of_env_or_eq{
     #  ()       empty just so that $1 and $2 are defined
     #  (\\\[)   \[  there are lots of \ because both \ and [ need escaping 
 
-    if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
-        and $_ !~ m/^\s*%/ and $_ !~ m/\\end{$2}/)
+    if( (   ( $_ =~ m/^\s*(\$)?\\begin{(.*?)}/ and $_ !~ m/\\end{$2}/) 
+         or ($_=~ m/^\s*()(\\\[)/ and $_ !~ m/\\\]/) )
+        and $_ !~ m/^\s*%/ )
     {
        # tracing mode
        print $logfile "Line $lineCounter\t \\begin{environment} found: $2 \n" if($tracingMode);
