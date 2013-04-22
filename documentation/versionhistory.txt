@@ -1,7 +1,12 @@
+Version 8.18 April 21st
+    - fixed \end{environments} not matching- see success/environments.tex
+      for samples
+    - fixed (sort of) nested alignment environments- it's still not 
+      perfect, but at least it doesn't break the user's code
+      see success/nestedalignment.tex
+
 Version 8.17 April 21st
     - fixed alignment block routine
-    - added environmentStack to make sure indentation is not
-      decreased inappropriately
 
 Version 8.16: April 21st
     - merged local settings call with user settings- no need to write the 

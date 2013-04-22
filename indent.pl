@@ -32,7 +32,7 @@ getopts("sotlwh", \%options);
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version 8.17
+indent.pl version 8.18
 usage: indent.pl [options] [file][.tex]
       -h  help
       -o  output to another file; sample usage
@@ -67,7 +67,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.17, a script to indent .tex files
+indent.pl version 8.18, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -1206,7 +1206,7 @@ sub at_beg_of_env_or_eq{
     #  (\\\[)   \[  there are lots of \ because both \ and [ need escaping 
 
     if( ($_ =~ m/^\s*(\$)?\\begin{(.*?)}/ or $_=~ m/^\s*()(\\\[)/) 
-        and $_ !~ m/^\s*%/)
+        and $_ !~ m/^\s*%/ and $_ !~ m/\\end{$2}/)
     {
        # tracing mode
        print $logfile "Line $lineCounter\t \\begin{environment} found: $2 \n" if($tracingMode);
@@ -1279,9 +1279,12 @@ sub at_end_of_env_or_eq{
             s/^\s+// if($_ ne ""); 
        }
 
+       # check to see if \end{environment} fits with most recent \begin{...}
+       my $previousEnvironment = pop(@environmentStack);
+
        # check to see if we need to turn off alignment
        # delimiters and output the current block
-       if($lookForAlignDelims{$1})
+       if($lookForAlignDelims{$1} and ($previousEnvironment eq $1))
        {
            $delimiters=0;
 
@@ -1304,9 +1307,25 @@ sub at_end_of_env_or_eq{
        # tracing mode
        print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
 
-       # decrease the indentation (if appropriate)
-       &decrease_indent($1);
+       # check to see if \end{environment} fits with most recent \begin{...}
+       if($previousEnvironment eq $1)
+       {
+            # decrease the indentation (if appropriate)
+            &decrease_indent($1);
+       }
+       else
+       {
+           # otherwise put the environment name back on the stack
+           push(@environmentStack,$previousEnvironment);
+           print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $1 eq "\\\]");
+       }
 
+       # need a special check for \[ and \]
+       if($1 eq "\\\]")
+       {
+            &decrease_indent($1);
+            pop(@environmentStack);
+       }
     }
 }
 
@@ -1528,7 +1547,7 @@ sub format_block{
           $tmpstring = sprintf($fmtstring,split(/(?<!\\)&/,$row)).$linebreak."\n";
 
           # tracing mode
-          print $logfile "\t\tLine $lineCounter\t Found maximum number of &- aligning delimiters\n" if($tracingMode);
+          print $logfile "\t\tLine $lineCounter\t Found maximum number of & so aligning delimiters\n" if($tracingMode);
         }
         push(@formattedblock,$tmpstring);
 
