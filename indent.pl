@@ -1385,7 +1385,7 @@ sub format_block{
        $trailingcomments='';
        if($row =~ m/((?<!\\)%.*$)/)
        {
-            $row =~ s/((?<!\\)%.*)/%/;
+            $row =~ s/((?<!\\)%.*)/%TC/;
             $trailingcomments=$1;
        }
 
@@ -1404,10 +1404,12 @@ sub format_block{
        # put trailing comments back on
        if($trailingcomments)
        {
-            $row =~ s/%/$trailingcomments/;
+            $row =~ s/%TC/$trailingcomments/;
        }
-
     }
+
+    # tracing mode
+    print $logfile "\t\tmaximum number of & in any row: $maxNumberAmpersands\n" if($tracingMode);
     
     # loop through the lines in the @block
     foreach $row (@block)
@@ -1435,6 +1437,15 @@ sub format_block{
 
         if($currentNumberAmpersands==$maxNumberAmpersands)
         {
+
+            # remove trailing comments
+            $trailingcomments='';
+            if($row =~ m/((?<!\\)%.*$)/)
+            {
+                 $row =~ s/((?<!\\)%.*)/%TC/;
+                 $trailingcomments=$1;
+            }
+
             # separate the row at each &, but not at \&
             @tmprow = split(/(?<!\\)&/,$row);
 
@@ -1469,10 +1480,18 @@ sub format_block{
                  $tmpstring .= "&".$column;
                }
             }
+
             
             # put $linebreak back on the string, now that
             # the measurement has been done
             $tmpstring .= $linebreak;
+
+            # put trailing comments back on
+            if($trailingcomments)
+            {
+                 $tmpstring =~ s/%TC/$trailingcomments/;
+            }
+
             push(@tmpblock,$tmpstring);
         }
         else
@@ -1545,7 +1564,21 @@ sub format_block{
         }
         else
         {
+          # remove trailing comments
+          $trailingcomments='';
+          if($row =~ m/((?<!\\)%.*$)/)
+          {
+               $row =~ s/((?<!\\)%.*)/%TC/;
+               $trailingcomments=$1;
+          }
+
           $tmpstring = sprintf($fmtstring,split(/(?<!\\)&/,$row)).$linebreak."\n";
+
+          # put trailing comments back on
+          if($trailingcomments)
+          {
+               $tmpstring =~ s/%TC/$trailingcomments/;
+          }
 
           # tracing mode
           print $logfile "\t\tLine $lineCounter\t Found maximum number of & so aligning delimiters\n" if($tracingMode);
