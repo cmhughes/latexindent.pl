@@ -1,3 +1,7 @@
+Version 8.19 April 24th
+    - fixed \\[2cm] issue
+    - removed redundant defaults such as @myarray=(); which is now simply @myarray;
+
 Version 8.18 April 21st
     - fixed \end{environments} not matching- see success/environments.tex
       for samples

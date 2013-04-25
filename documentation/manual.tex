@@ -167,7 +167,7 @@ complete minimum working example as I would like to improve the code as much as 
  	 	 	 	 	
 \begin{warning}
 	Before you try the script on anything important (like your thesis), test it 
-	out on the sample files that come with it in the \lstinline!samples! directory. 
+	out on the sample files that come with it in the \lstinline!success! directory. 
 \end{warning}
  	 	 	 	 
  	 	 	 	 	
@@ -718,7 +718,9 @@ The only thing you have to do is tell \lstinline!indent.pl! where to find it.
 which is a plain text file you can create that contains the \emph{absolute}
 paths for any settings files that you wish \lstinline!indent.pl! to load.
 Note that Mac and Linux users home directory is \lstinline!~/username! while
-Windows (Vista onwards) is \lstinline!C:\Users\username!. 
+Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure, don't 
+worry \lstinline!indent.pl! will tell you in the log file exactly where to 
+put \lstinline!indentconfig.yaml!.}
 \Cref{lst:indentconfig} shows a sample \lstinline!indentconfig.yaml! file.
  	 	 	 	 	
 \begin{yaml}[caption={\lstinline!indentconfig.yaml!},label={lst:indentconfig}]
