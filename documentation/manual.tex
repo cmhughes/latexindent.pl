@@ -1,7 +1,7 @@
-% !arara: pdflatex
+% arara: pdflatex
 % !arara: pdflatex
 % !arara: bibtex
-% arara: indent: {overwrite: yes, trace: yes, localSettings: no}
+% !arara: indent: {overwrite: yes, trace: yes, localSettings: no}
 \begin{filecontents}{mybib.bib}
 	@online{cpan,
 		title="CPAN: Comprehensive Perl Archive Network",
@@ -718,9 +718,10 @@ The only thing you have to do is tell \lstinline!indent.pl! where to find it.
 which is a plain text file you can create that contains the \emph{absolute}
 paths for any settings files that you wish \lstinline!indent.pl! to load.
 Note that Mac and Linux users home directory is \lstinline!~/username! while
-Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure, don't 
+Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure 
+where to put \lstinline!indentconfig.yaml!, don't 
 worry \lstinline!indent.pl! will tell you in the log file exactly where to 
-put \lstinline!indentconfig.yaml!.}
+put it assuming it doesn't exist already.}
 \Cref{lst:indentconfig} shows a sample \lstinline!indentconfig.yaml! file.
  	 	 	 	 	
 \begin{yaml}[caption={\lstinline!indentconfig.yaml!},label={lst:indentconfig}]
