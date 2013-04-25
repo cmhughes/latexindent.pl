@@ -32,7 +32,7 @@ getopts("sotlwh", \%options);
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version 8.18
+indent.pl version 8.19
 usage: indent.pl [options] [file][.tex]
       -h  help
       -o  output to another file; sample usage
@@ -67,7 +67,7 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.18, a script to indent .tex files
+indent.pl version 8.19, a script to indent .tex files
 
 file: $ARGV[0]
 ENDQUOTE
@@ -377,7 +377,7 @@ if(!($outputToFile or $overwrite))
 
 
 # scalar variables
-my $line='';                # $line: takes the $line of the file
+my $line;                   # $line: takes the $line of the file
 my $inpreamble=!$indentPreamble;
                             # $inpreamble: switch to determine if in
                             #               preamble or not
@@ -395,18 +395,18 @@ my $matchedBRACKETS=0;      # $matchedBRACKETS: counter to see if [ ]
                             #               positive if too many { 
                             #               negative if too many }
                             #               0 if matched
-my $commandname='';         # $commandname: either \parbox, \marginpar,
+my $commandname;            # $commandname: either \parbox, \marginpar,
                             #               or anything else from %checkunmatched
-my $commanddetails = '';    # $command details: a scalar that stores
+my $commanddetails;         # $command details: a scalar that stores
                             #               details about the command 
                             #               that splits {} across lines
-my $countzeros = '';        # $countzeros:  a counter that helps 
+my $countzeros;             # $countzeros:  a counter that helps 
                             #               when determining if we're in
                             #               an else construct
 my $lookforelse=0;          # $lookforelse: a boolean to help determine 
                             #               if we need to look for an 
                             #               else construct
-my $trailingcomments='';    # $trailingcomments stores the comments at the end of 
+my $trailingcomments;       # $trailingcomments stores the comments at the end of 
                             #           a line 
 my $lineCounter=0;          # $lineCounter keeps track of the line number
 my $inIndentBlock=0;        # $inindentblock: switch to determine if in
@@ -415,17 +415,17 @@ my $headingLevel=0;         # $headingLevel: scalar that stores which heading
                             #               we are under: \part, \chapter, etc
 
 # array variables
-my @indent=();              # @indent: stores current level of indentation
-my @lines=();               # @lines: stores the newly indented lines
-my @block=();               # @block: stores blocks that have & delimiters
-my @commandstore=();        # @commandstore: stores commands that 
+my @indent;                 # @indent: stores current level of indentation
+my @lines;                  # @lines: stores the newly indented lines
+my @block;                  # @block: stores blocks that have & delimiters
+my @commandstore;           # @commandstore: stores commands that 
                             #           have split {} across lines
-my @commandstorebrackets=();# @commandstorebrackets: stores commands that 
+my @commandstorebrackets;   # @commandstorebrackets: stores commands that 
                             #           have split [] across lines
-my @mainfile=();            # @mainfile: stores input file; used to 
+my @mainfile;               # @mainfile: stores input file; used to 
                             #            grep for \documentclass
-my @headingStore=();        # @headingStore: stores headings: chapter, section, etc
-my @indentNames=();         # @indentNames: keeps names of commands and 
+my @headingStore;           # @headingStore: stores headings: chapter, section, etc
+my @indentNames;            # @indentNames: keeps names of commands and 
                             #               environments that have caused
                             #               indentation to increase
 my @environmentStack;       # @environmentStack: stores the (nested) names 
@@ -836,9 +836,10 @@ sub start_command_or_key_unmatched_brackets{
     #       \s*     any (or no)spaces
     #       (\\)?   matches a \ backslash but not necessarily
     #       (.*?)   non-greedy character match and store the result
-    #       (\[\s*) match [ possibly leading with spaces
+    #       ((?<!\\)\[\s*) match [ possibly leading with spaces
+    #                      but it WON'T match \[
 
-    if ($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/ 
+    if ($_ =~ m/^\s*(\\)?(.*?)(\s*(?<!\\)\[)/ 
         and (scalar($checkunmatchedbracket{$2})
              or $alwaysLookforSplitBrackets)
         )
@@ -1318,7 +1319,7 @@ sub at_end_of_env_or_eq{
        {
            # otherwise put the environment name back on the stack
            push(@environmentStack,$previousEnvironment);
-           print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $1 eq "\\\]");
+           print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
        }
 
        # need a special check for \[ and \]
