@@ -85,11 +85,11 @@ noIndentBlock:
 # the *current* level of indentation they just won't
 # get any *additional*.
 noAdditionalIndent:
-    pccexample: 1
-    pccdefinition: 1
+    myexample: 1
+    mydefinition: 1
     problem: 1
     exercises: 1
-    pccsolution: 1
+    mysolution: 1
     foreach: 0
     widepage: 1
     comment: 1

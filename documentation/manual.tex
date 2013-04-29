@@ -543,11 +543,11 @@ noIndentBlock:
 	\begin{yaml}[caption={\lstinline!noAdditionalIndent!},label={lst:noAdditionalIndent}]
 noAdditionalIndent:
     document: 1
-    pccexample: 1
-    pccdefinition: 1
+    myexample: 1
+    mydefinition: 1
     problem: 1
     exercises: 1
-    pccsolution: 1
+    mysolution: 1
     foreach: 0
     widepage: 1
     comment: 1
@@ -610,7 +610,8 @@ indentAfterHeadings:
 	(once \lstinline!indent! is set to \lstinline!1! for \lstinline!chapter!).
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
-		unless you wish to micro manage your indentation scheme.}
+		unless you wish to micro-manage your indentation scheme.
+        Note that in each case, you should \emph{not} use the backslash.}
 	\end{warning}
 						 		 		 		 		 					
 	% to anyone reading the source code- I know the next line isn't the
@@ -657,7 +658,7 @@ checkunmatchedbracket:
 	\end{yaml}
 \end{itemize}
  	 	 	 	 	
-\subsubsection{Hierachy of fields}\label{sec:fieldhierachy}
+\subsubsection{Hierarchy of fields}\label{sec:fieldhierachy}
 After reading the previous section, it should sound reasonable that 
 \lstinline!noAdditionalIndent!, \lstinline!indentRules!, and 
 \lstinline!verbatim! all serve mutually exclusive tasks. Naturally, you may 
@@ -675,7 +676,7 @@ noAdditionalIndent:
  	 	 	 	 	
 Clearly these fields conflict: first of all 
 you are telling \lstinline!indent.pl! that \lstinline!myenvironment! should 
-receive two tabs of indentation, and then afterwards you are telling it 
+receive two tabs of indentation, and then you are telling it 
 not to put any indentation in the environment. \lstinline!indent.pl!
 will always make the decision to prioritize \lstinline!noAdditionalIndent! above
 \lstinline!indentRules! regardless of the order that you load them in 
@@ -819,6 +820,28 @@ get a warning, otherwise you'll get confirmation that
 	\item \lstinline!localSettings.yaml! (if found in same directory as \lstinline!myfile.tex! and called
 	with \lstinline!-l! switch; can not be renamed)
 \end{enumerate}
+
+\subsection{An interesting case study}
+I was working on a document that had the text shown in \cref{lst:casestudy}. 
+\begin{lstlisting}[caption={When to set \lstinline!alwaysLookforSplitBrackets=0!},label={lst:casestudy}]
+Hence determine how many zeros the function $h(x)=f(x)-g(x)$
+has on the interval $[0,9)$.
+\begin{shortsolution}
+	The function $h$ has $10$ zeros on the interval $[0,9)$.
+\end{shortsolution}
+	\end{lstlisting}
+I had allowed \lstinline!alwaysLookforSplitBrackets=1!, which is the default setting. 
+Unfortunately, this caused undesired results, as \lstinline!indent.pl! thought that the opening 
+\lstinline![!  in the interval notation 
+was an opening brace that needed to be closed (with a corresponding \lstinline!]!). Clearly 
+this was inappropriate. 
+
+In this particular instance, I set up \lstinline!localSettings.yaml! 
+to contain \lstinline!alwaysLookforSplitBrackets: 0! and then specified the commands 
+that could split brackets across lines (such as \lstinline!begin{axis}!) individually
+in \lstinline!checkunmatchedbracket!.  Another option would have been to wrap the 
+the line in an environment from \lstinline!noIndentBlock!.
+
  	 	 	 	 	
 \section{Known limitations}\label{sec:knownlimitations}
 There are a number of known limitations of the script, and almost certainly quite a
@@ -854,7 +877,7 @@ and in the chat room.
 
 \appendix
 \section{Required \lstinline!Perl! modules}\label{sec:requiredmodules}
-If you intend to use \lstinline!indent.pl! and \emph{not} one of the supplied standalone exectutable files, then you will need a few standard modules-- if you can run the 
+If you intend to use \lstinline!indent.pl! and \emph{not} one of the supplied standalone executable files, then you will need a few standard modules-- if you can run the 
 minimum code in \cref{lst:helloworld} (\lstinline!perl helloworld.pl!) then you will be able to run \lstinline!indent.pl!, otherwise you may 
 need to install the missing modules.
  	 	 	 	 	
@@ -908,11 +931,10 @@ arguments:
 \end{yaml}
 
 With this modification in place, you now simply to write \lstinline!% arara: indent! and 
-\lstinline!trace! mode will be activitated by default. If you wish to turn off \lstinline!trace!
+\lstinline!trace! mode will be activated by default. If you wish to turn off \lstinline!trace!
 mode then you can write \lstinline!% arara: indent: {trace: off}!.
 
 Of course, you can apply these types of modifications to \emph{any} of the identifiers, 
 but proceed with caution if you intend to do this for \lstinline!overwrite!.
-\end{document}
-      
 
+\end{document}
