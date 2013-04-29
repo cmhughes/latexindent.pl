@@ -211,7 +211,7 @@ url="...
 \end{filecontents}
 		\end{lstlisting}
 	\end{minipage}
-						 	 	 	 	 				
+								 	 	 	 	 				
 	\begin{minipage}{.5\textwidth}
 		\begin{lstlisting}[style=demo,caption={\lstinline!tikzset! before}]
 \tikzset{
@@ -293,45 +293,45 @@ on which of the following options are used.
  	 	 	 	 	
 \begin{itemize}[labelsep=.5cm]
 	\item[] \lstinline!indent.pl!
-						
+								
 	This will output a welcome message to the terminal, including the version number
 	and available options.
 	\item[\verbitem{-h}] \lstinline!indent.pl -h!
-						
+								
 	As above this will output a welcome message to the terminal, including the version number
 	and available options.
 	\item[] \lstinline!indent.pl myfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This will operate on \lstinline!myfile.tex!, but will simply output to your terminal; \lstinline!myfile.tex! will	not be changed in any way using this command. 
 	\item[\verbitem{-w}] \lstinline!indent.pl -w myfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This \emph{will} overwrite \lstinline!myfile.tex!, but it will
 	make a copy of \lstinline!myfile.tex! first. You can control the name of 
 	the extension (default is \lstinline!.bak!), and how many different backups are made-- 
 	more on this in \cref{sec:defuseloc}; see \lstinline!backupExtension! and \lstinline!onlyOneBackUp!.
-							 		 		 		 		 					
+									 		 		 		 		 					
 	Note that if \lstinline!indent.pl! can not create the backup, then it 
 	will exit without touching your original file; an error message will be given
 	asking you to check the permissions of the backup file.
 	\item[\verbitem{-o}] \lstinline!indent.pl -o myfile.tex outputfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This will indent \lstinline!myfile.tex! and output it to \lstinline!outputfile.tex!, 
 	overwriting it (\lstinline!outputfile.tex!) if it already exists. Note that if \lstinline!indent.pl! is called with both
 	the \lstinline!-w! and \lstinline!-o! switches, then \lstinline!-w! will
 	be ignored and \lstinline!-o! will take priority (this seems safer than the 
 	other way round).
-							 		 		 		 		 					
+									 		 		 		 		 					
 	Note that using \lstinline!-o! is equivalent to using \lstinline!indent.pl myfile.tex > outputfile.tex!
 	\item[\verbitem{-s}] \lstinline!indent.pl -s myfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	Silent mode: no output will be given to the terminal.
 	\item[\verbitem{-t}] \lstinline!indent.pl -t myfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	Tracing mode: verbose output will be given to \lstinline!indent.log!. This 
 	is useful if \lstinline!indent.pl! has made a mistake and you're
 	trying to find out where and why.
 	\item[\verbitem{-l}] \lstinline!indent.pl -l myfile.tex!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\label{page:localswitch}
 	Local settings: you might like to read \cref{sec:defuseloc} before 
 	using this switch. \lstinline!indent.pl! will always load \lstinline!defaultSettings.yaml!
@@ -400,59 +400,59 @@ all of your hard work tweaking the script would be undone! Don't worry,
 there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you like.
 \begin{itemize}
 	\item[\verbitem{defaultIndent}] \lstinline!"\t"!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This is the default indentation (\lstinline!\t! means a tab) used in the absence of other details 
 	for the command or environment we are working with-- see \lstinline!indentRules!
 	for more details (\cpageref{page:indentRules}).
-							 		 		 		 		 					
+									 		 		 		 		 					
 	If you're interested in experimenting with \lstinline!indent.pl! then you 
 	can \emph{remove} all indentation by setting \lstinline!defaultIndent: ""!
 	\item[\verbitem{backupExtension}] \lstinline!.bak!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	If you call \lstinline!indent.pl! with the \lstinline!-w! switch (to overwrite
 	\lstinline!myfile.tex!) then it will create a backup file before doing 
 	any indentation: \lstinline!myfile.bak0! 
-							 		 		 		 		 					
+									 		 		 		 		 					
 	By default, every time you call \lstinline!indent.pl! after this with 
 	the \lstinline!-w! switch it will create \lstinline!myfile.bak1!, \lstinline!myfile.bak2!, 
 	etc.
 	\item[\verbitem{onlyOneBackUp}] \lstinline!0!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\label{page:onlyonebackup}
 	If you don't want a backup for every time that you call \lstinline!indent.pl! (so 
 	you don't want \lstinline!myfile.bak1!, \lstinline!myfile.bak2!, etc) and you simply
 	want \lstinline!myfile.bak! (or whatever you chose \lstinline!backupExtension! to be)
 	then change \lstinline!onlyOneBackUp! to \lstinline!1!.
 	\item[\verbitem{indentPreamble}] \lstinline!0!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	The preamble of a document can sometimes contain some trickier code 
 	for \lstinline!indent.pl! to work with. By default, \lstinline!indent.pl!
 	won't try to operate on the preamble, but if you'd like it to try then 
 	change \lstinline!indentPreamble! to \lstinline!1!.
 	\item[\verbitem{alwaysLookforSplitBraces}] \lstinline!1!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This switch tells \lstinline!indent.pl! to look for commands that 
 	can split \emph{braces} across lines, such as \lstinline!parbox!, \lstinline!tikzset!, etc. In older
 	versions of \lstinline!indent.pl! you had to specify each one in \lstinline!checkunmatched!-- this 
 	clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!. 
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\emph{As long as you leave this switch on (set to 1) you don't need to specify which 
 		commands can split braces across lines-- you can ignore the 
 		fields \lstinline!checkunmatched! and \lstinline!checkunmatchedELSE! described later}.
 	\item[\verbitem{alwaysLookforSplitBrackets}] \lstinline!1!
-							 		 		 		 		 					
+									 		 		 		 		 					
 	This switch tells \lstinline!indent.pl! to look for commands that 
 	can split \emph{brackets} across lines, such as \lstinline!psSolid!, \lstinline!pgfplotstabletypeset!, 
 	etc. In older versions of \lstinline!indent.pl! you had to specify each one in \lstinline!checkunmatchedbracket!-- 
 	this clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!. 
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\emph{As long as you leave this switch on (set to 1) you don't need to specify which 
 		commands can split brackets across lines-- you can ignore \lstinline!checkunmatchedbracket! described later}.
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\item[\verbitem{lookForAlignDelims}] This is the first example of a field
 	in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims}
 	shows more details.
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!lookForAlignDelims!},label={lst:aligndelims}]
 lookForAlignDelims:
    tabular: 1
@@ -466,11 +466,11 @@ lookForAlignDelims:
    pmatrix: 1
    listabla: 1
 	\end{yaml}
-							 		 		 		 		 					
+									 		 		 		 		 					
 	The environments specified in this field will be operated on in a special way  by \lstinline!indent.pl!. In particular, it will try and align each column by its alignment
 	tabs. It does have some limitations (discussed further in \cref{sec:knownlimitations}), 
 	but in many cases it will produce results such as those in \cref{lst:tabularbefore,lst:tabularafter}. 
-							 		 		 		 		 					
+									 		 		 		 		 					
 	\begin{minipage}{.5\textwidth}
 		\begin{lstlisting}[caption={\lstinline!tabular! before},label={lst:tabularbefore}]
 \begin{tabular}{cccc}
@@ -487,18 +487,18 @@ lookForAlignDelims:
 \end{tabular}
 		\end{lstlisting}
 	\end{minipage}
-						 		 		 		 		 					
+								 		 		 		 		 					
 	If you find that \lstinline!indent.pl! does not perform satisfactorily on such 
 	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific} 
 	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
-						 		 		 		 		 					
+								 		 		 		 		 					
 	You can populate \lstinline!lookForAlignDelims! with any other environments that you have that contain \lstinline!&!, in any order that you wish.
 	If you change your mind, just turn them off by setting them to \lstinline!0! instead.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
 	that you would like left completely alone-- no indentation will be done
 	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!verbatimEnvironments!},label={lst:verbatimEnvironments}]
 verbatimEnvironments:
     verbatim: 1
@@ -507,19 +507,19 @@ verbatimEnvironments:
 	Note that if  you put an environment in \lstinline!verbatimEnvironments! 
 	and in other fields such as \lstinline!lookForAlignDelims! or \lstinline!noAdditionalIndent! 
 	then \lstinline!indent.pl! will \emph{always} prioritize \lstinline!verbatimEnvironments!.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\item[\verbitem{noIndentBlock}] If you have a block of code that you don't 
 	want \lstinline!indent.pl! to touch (even if it is \emph{not} a verbatim-like
 	environment) then you can wrap it in an environment from \lstinline!noIndentBlock!;
 	you can use any name you like for this, provided you populate it as demonstrate in 
 	\cref{lst:noIndentBlock}.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!noIndentBlock!},label={lst:noIndentBlock}]
 noIndentBlock:
     noindent: 1
     cmhtest: 1
 	\end{yaml}
-						 		 		 		 		 					
+								 		 		 		 		 					
 	Of course, you don't want to have to specify these as null environments
 	in your code, so you use them with a comment symbol, \lstinline!%!, followed 
 	by as many spaces (possibly none) as you like; see \cref{lst:noIndentBlockdemo} for 
@@ -533,13 +533,13 @@ noIndentBlock:
              \lstinline!indent.pl!
 %(*@@*)\end{noindent} 
 	\end{lstlisting}
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\item[\verbitem{noAdditionalIndent}] If you would prefer some of your
 	environments or commands not to receive any additional indent, then 
 	populate \lstinline!noAdditionalIndent!; see \cref{lst:noAdditionalIndent}. 
 	Note that these environments will still receive the \emph{current} level
 	of indentation unless they belong to \lstinline!verbatimEnvironments!, or \lstinline!noIndentBlock!.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!noAdditionalIndent!},label={lst:noAdditionalIndent}]
 noAdditionalIndent:
     document: 1
@@ -562,7 +562,7 @@ noAdditionalIndent:
 	\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify 
 	individual rules for certain environments or commands, just
 	populate \lstinline!indentRules!; see \cref{lst:indentRules}
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!indentRules!},label={lst:indentRules}]
 indentRules:
    myenvironment: "\t\t"
@@ -571,14 +571,14 @@ indentRules:
 	\end{yaml}      %%%%%\] just here to stop vim from colouring the rest of my code
 	Note that in contrast to \lstinline!noAdditionalIndent! you do \emph{not} 
 	need to specify both \lstinline!\[! and \lstinline!\]! in this field. 
-						 		 		 		 		 					
+								 		 		 		 		 					
 	If you put an environment in both \lstinline!noAdditionalIndent! and in 
 	\lstinline!indentRules! then \lstinline!indent.pl! will resolve the conflict 
 	by ignoring \lstinline!indentRules! and prioritizing \lstinline!noAdditionalIndent!.
 	You will get a warning message in \lstinline!indent.log!; note that you will only 
 	get one warning message per command or environment. Further discussion 
 	is given in \cref{sec:fieldhierachy}.
-						 		 		 		 		 			
+								 		 		 		 		 			
 	\item[\verbitem{indentAfterHeadings}] This field enables the user to specify 
 	indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!, 
 	\lstinline!\section!, \lstinline!\subsection*! etc. This field is slightly different from all 
@@ -602,7 +602,7 @@ indentAfterHeadings:
 	The \lstinline!level! field tells \lstinline!indent.pl! the hierarchy of the heading 
 	structure in your document. You might, for example, like to have both \lstinline!section!
 	and \lstinline!subsection! set with \lstinline!level: 3! because you do not want the indentation to go too deep. 
-						 		 		 		
+								 		 		 		
 	You can add any of your own custom heading commands to this field, specifying the \lstinline!level!
 	as appropriate.  You can also specify your own indentation in \lstinline!indentRules!-- 
 	you will find the default \lstinline!indentRules! contains \lstinline!chapter: " "! which 
@@ -610,19 +610,19 @@ indentAfterHeadings:
 	(once \lstinline!indent! is set to \lstinline!1! for \lstinline!chapter!).
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
-		unless you wish to micro-manage your indentation scheme.
-        Note that in each case, you should \emph{not} use the backslash.}
+			unless you wish to micro-manage your indentation scheme.
+			Note that in each case, you should \emph{not} use the backslash.}
 	\end{warning}
-						 		 		 		 		 					
+								 		 		 		 		 					
 	% to anyone reading the source code- I know the next line isn't the
 	% correct way to do it :)
 	\item[\color{red}\verbitem{checkunmatched}] Assuming you keep \lstinline!alwaysLookforSplitBraces! set to \lstinline!1! (which
 	is the default) then you don't need to worry about \lstinline!checkunmatched!. 
-						 		 		 		 		 					
+								 		 		 		 		 					
 	Should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then 
 	you can populate \lstinline!checkunmatched! with commands that can split braces across 
 	lines-- see \cref{lst:checkunmatched}.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!checkunmatched!},label={lst:checkunmatched}]
 checkunmatched:
     parbox: 1
@@ -630,11 +630,11 @@ checkunmatched:
 	\end{yaml}
 	\item[\color{red}\verbitem{checkunmatchedELSE}] Similarly, assuming you keep \lstinline!alwaysLookforSplitBraces! set to \lstinline!1! (which
 	is the default) then you don't need to worry about \lstinline!checkunmatchedELSE!. 
-						 		 		 		 		 					
+								 		 		 		 		 					
 	As in \lstinline!checkunmatched!, should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then 
 	you can populate \lstinline!checkunmatchedELSE! with commands that can split braces across 
 	lines \emph{and} have an `else' statement-- see \cref{lst:checkunmatchedELSE}.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!checkunmatchedELSE!},label={lst:checkunmatchedELSE}]
 checkunmatchedELSE:
     pgfkeysifdefined: 1
@@ -643,11 +643,11 @@ checkunmatchedELSE:
 	\end{yaml}
 	\item[\color{red}\verbitem{checkunmatchedbracket}] Assuming you keep \lstinline!alwaysLookforSplitBrackets! 
 	set to \lstinline!1! (which is the default) then you don't need to worry about \lstinline!checkunmatchedbracket!. 
-						 		 		 		 		 					
+								 		 		 		 		 					
 	Should you wish to deactivate \lstinline!alwaysLookforSplitBrackets! by setting it 
 	to \lstinline!0!, then you can populate \lstinline!checkunmatchedbracket! with commands that can 
 	split \emph{brackets} across lines-- see \cref{lst:checkunmatchedbracket}.
-						 		 		 		 		 					
+								 		 		 		 		 					
 	\begin{yaml}[caption={\lstinline!checkunmatchedbracket!},label={lst:checkunmatchedbracket}]
 checkunmatchedbracket:
     psSolid: 1
@@ -720,8 +720,8 @@ which is a plain text file you can create that contains the \emph{absolute}
 paths for any settings files that you wish \lstinline!indent.pl! to load.
 Note that Mac and Linux users home directory is \lstinline!~/username! while
 Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure 
-where to put \lstinline!indentconfig.yaml!, don't 
-worry \lstinline!indent.pl! will tell you in the log file exactly where to 
+	where to put \lstinline!indentconfig.yaml!, don't 
+	worry \lstinline!indent.pl! will tell you in the log file exactly where to 
 put it assuming it doesn't exist already.}
 \Cref{lst:indentconfig} shows a sample \lstinline!indentconfig.yaml! file.
  	 	 	 	 	
@@ -775,7 +775,7 @@ recognize then you'll get a warning, otherwise you'll get confirmation that
 	to remember how sensitive they are to spaces. I highly recommend copying 
 	and pasting from \lstinline!defaultSettings.yaml! when you create your
 	first \lstinline!whatevernameyoulike.yaml! file.
-						
+								
 	If \lstinline!indent.pl! can not read your \lstinline!.yaml! file it 
 	will tell you so in \lstinline!indent.log!.
 \end{warning}
@@ -821,26 +821,28 @@ get a warning, otherwise you'll get confirmation that
 	with \lstinline!-l! switch; can not be renamed)
 \end{enumerate}
 
-\subsection{An interesting case study}
+\subsection{An important example}
 I was working on a document that had the text shown in \cref{lst:casestudy}. 
-\begin{lstlisting}[caption={When to set \lstinline!alwaysLookforSplitBrackets=0!},label={lst:casestudy}]
+\begin{lstlisting}[caption={When to set \lstinline!alwaysLookforSplitBrackets=0!},label={lst:casestudy},escapeinside={(*@}{@*)}]
 Hence determine how many zeros the function $h(x)=f(x)-g(x)$
-has on the interval $[0,9)$.
+has on the interval $[0,9)$.(*@\label{line:interval1}@*)
 \begin{shortsolution}
-	The function $h$ has $10$ zeros on the interval $[0,9)$.
+	The function $h$ has $10$ zeros on the interval $[0,9)$.(*@\label{line:interval2}@*)
 \end{shortsolution}
-	\end{lstlisting}
+\end{lstlisting}
 I had allowed \lstinline!alwaysLookforSplitBrackets=1!, which is the default setting. 
 Unfortunately, this caused undesired results, as \lstinline!indent.pl! thought that the opening 
-\lstinline![!  in the interval notation 
+\lstinline![!  in the interval notation (\cref{line:interval1,line:interval2}) 
 was an opening brace that needed to be closed (with a corresponding \lstinline!]!). Clearly 
-this was inappropriate. 
+this was inappropriate, but also expected since \lstinline!indent.pl! was simply
+following its matching rules.
 
 In this particular instance, I set up \lstinline!localSettings.yaml! 
 to contain \lstinline!alwaysLookforSplitBrackets: 0! and then specified the commands 
 that could split brackets across lines (such as \lstinline!begin{axis}!) individually
 in \lstinline!checkunmatchedbracket!.  Another option would have been to wrap the 
-the line in an environment from \lstinline!noIndentBlock!.
+the line in an environment from \lstinline!noIndentBlock! which treats its contents
+as a verbatim environment.
 
  	 	 	 	 	
 \section{Known limitations}\label{sec:knownlimitations}
