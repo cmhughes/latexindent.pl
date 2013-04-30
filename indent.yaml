@@ -1,7 +1,7 @@
 !config
 # indent rule for arara
 # author: Paulo Cereda, Chris Hughes
-# last updated: 3/23/2013
+# last updated: 4/29/2013
 # requires arara 3.0+
 #
 # Sample usage:
@@ -16,7 +16,7 @@
 # Note: output will take priority above overwrite
 identifier: indent
 name: Indent
-command: <arara> @{ isWindows( "cmd /c indent.exe", "indent.pl" ) } @{overwrite} @{silent} @{trace} @{localSettings} @{output} "@{file}" @{ isNotEmpty( output, '"'.concat(parameters.output).concat('"') ) }
+command: <arara> @{ isWindows( "cmd /c latexindent.exe", "latexindent.pl" ) } @{overwrite} @{silent} @{trace} @{localSettings} @{output} "@{file}" @{ isNotEmpty( output, '"'.concat(parameters.output).concat('"') ) }
 arguments:
 - identifier: overwrite
   flag: <arara> @{ isTrue( parameters.overwrite, "-w" ) }
