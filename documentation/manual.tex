@@ -3,6 +3,9 @@
 % arara: pdflatex
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: no}
 \begin{filecontents}{mybib.bib}
+  @online{cmh:videodemo,
+		title="Video demonstration on youtube",
+		url="http://www.youtube.com/watch?v=s_AMmNVg5WM"}
 	@online{cpan,
 		title="CPAN: Comprehensive Perl Archive Network",
 		url="http://www.cpan.org/"}
@@ -173,7 +176,8 @@ complete minimum working example as I would like to improve the code as much as 
  	 	 	 	 	
 \section{Demonstration: before and after}
 Let's give a demonstration of some before and after code-- after all, you probably
-won't want to try the script if you don't much like the results.
+won't want to try the script if you don't much like the results. You might also 
+like to watch the video demonstration I made on youtube \cite{cmh:videodemo}
      
 As you look at \crefrange{lst:filecontentsbefore}{lst:pstricksafter}, remember
 that \lstinline!latexindent.pl! is just following its rules-- there is nothing 
