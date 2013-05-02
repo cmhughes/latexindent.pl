@@ -27,12 +27,15 @@ use File::HomeDir;      # to get users home directory, regardless of OS
 my %options=();
 getopts("sotlwh", \%options);
 
+# version number
+my $versionNumber = "8.20";
+
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version 8.19
+indent.pl version $versionNumber
 usage: indent.pl [options] [file][.tex]
       -h  help
       -o  output to another file; sample usage
@@ -67,7 +70,8 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-indent.pl version 8.19, a script to indent .tex files
+latexindent.pl version $versionNumber, a script to indent .tex files
+latexindent.pl lives here: $FindBin::Bin/
 
 file: $ARGV[0]
 ENDQUOTE
@@ -144,7 +148,7 @@ ENDQUOTE
 # Read in YAML file
 my $defaultSettings = YAML::Tiny->new;
 
-print $logfile "Reading defaultSettings.yaml\n\n";
+print $logfile "Reading defaultSettings.yaml from $FindBin::Bin/defaultSettings.yaml\n\n";
 
 # Open defaultSettings.yaml
 $defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );

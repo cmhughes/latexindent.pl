@@ -1,3 +1,7 @@
+Version 8.20 May 1st
+    - made version number easier to track
+    - added location of latexindent.pl to indent.log
+
 Version 8.19 April 24th
     - fixed \\[2cm] issue
     - removed redundant defaults such as @myarray=(); which is now simply @myarray;
