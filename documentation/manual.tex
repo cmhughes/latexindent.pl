@@ -1,10 +1,10 @@
 % arara: pdflatex
-% !arara: bibtex
-% !arara: pdflatex
+% arara: bibtex
+% arara: pdflatex
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: no, silent: yes}
 \begin{filecontents}{mybib.bib}
 	@online{cmh:videodemo,
-		title="Video demonstration on youtube",
+		title="Video demonstration of latexindet.pl on youtube",
 		url="http://www.youtube.com/watch?v=s_AMmNVg5WM"}
 	@online{cpan,
 		title="CPAN: Comprehensive Perl Archive Network",
@@ -511,10 +511,6 @@ lookForAlignDelims:
 	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific} 
 	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
 												 		 		 		 		 					
-	You can populate \lstinline!lookForAlignDelims! with any other environments that you have that contain \lstinline!&!, in any order that you wish.
-	If you change your mind, just turn them off by setting them to \lstinline!0! instead, or delete them completely
-	from \lstinline!lookForAlignDelims!.
-												 		 		 		 		 					
 	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
 	that you would like left completely alone-- no indentation will be done
 	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
@@ -550,7 +546,7 @@ noIndentBlock:
                 won't 
      be touched
                     by 
-             \lstinline!latexindent.pl!
+             latexindent.pl!
 %(*@@*)\end{noindent} 
 	\end{lstlisting}
 												 		 		 		 		 					
@@ -745,7 +741,7 @@ Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not
 put it assuming it doesn't exist already.}
 \Cref{lst:indentconfig} shows a sample \lstinline!indentconfig.yaml! file.
  	 	 	 	 	
-\begin{yaml}[caption={\lstinline!indentconfig.yaml!},label={lst:indentconfig}]
+\begin{yaml}[caption={\lstinline!indentconfig.yaml! (sample)},label={lst:indentconfig}]
 # Paths to user settings for latexindent.pl
 #
 # Note that the settings will be read in the order you 
@@ -846,7 +842,7 @@ A visual representation of this is given in \cref{fig:loadorder}.
 	\centering
 	\begin{tikzpicture}[
 			needed/.style={very thick, draw=blue,fill=blue!20,
-				text centered, minimum height=2.5em,rounded corners=3ex},
+				text centered, minimum height=2.5em,rounded corners=1ex},
 			optional/.style={draw=black, very thick,scale=0.8,
 				text centered, minimum height=2.5em,rounded corners=1ex},
 			optionalfill/.style={fill=black!10},
