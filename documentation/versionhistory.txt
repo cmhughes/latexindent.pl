@@ -1,3 +1,6 @@
+Version 8.21 May 8th
+    - made -d switch to ignore any user settings
+
 Version 8.20 May 1st
     - made version number easier to track
     - added location of latexindent.pl to indent.log

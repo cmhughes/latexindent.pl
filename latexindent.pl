@@ -25,25 +25,26 @@ use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
 my %options=();
-getopts("sotlwh", \%options);
+getopts("sotlwhd", \%options);
 
 # version number
-my $versionNumber = "8.20";
+my $versionNumber = "8.21";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
 if(scalar(@ARGV) < 1 or $options{h})
 {
     print <<ENDQUOTE
-indent.pl version $versionNumber
-usage: indent.pl [options] [file][.tex]
-      -h  help
+latexindent.pl version $versionNumber
+usage: latexindent.pl [options] [file][.tex]
+      -h  help (see the documentation for detailed instructions and examples)
       -o  output to another file; sample usage
-                indent.pl -o myfile.tex outputfile.tex
+                latexindent.pl -o myfile.tex outputfile.tex
       -w  overwrite the current file- a backup will be made, but still be careful
       -s  silent mode- no output will be given to the terminal
       -t  tracing mode- verbose information given to the log file
       -l  use localSettings.yaml (assuming it exists in the directory of your file)
+      -d  ONLY use defaultSettings.yaml, ignore ALL user files
 ENDQUOTE
     ;
     exit(2);
@@ -55,6 +56,7 @@ my $outputToFile = $options{o};
 my $silentMode = $options{s};
 my $tracingMode = $options{t};
 my $readLocalSettings = $options{l};
+my $onlyDefault = $options{d};
 
 # we'll be outputting to the logfile and to standard output
 my $logfile;
@@ -83,7 +85,7 @@ if($outputToFile and $overwrite)
     print $logfile <<ENDQUOTE 
 
 WARNING: 
-\t You have called indent.pl with both -o and -w
+\t You have called latexindent.pl with both -o and -w
 \t -o (output to file) will take priority, and -w (over write) will be ignored
  
 ENDQUOTE
@@ -97,11 +99,11 @@ if(scalar(@ARGV)>2)
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
 
 ERROR:
-\t You're calling indent.pl with more than two file names
+\t You're calling latexindent.pl with more than two file names
 \t The script can take at MOST two file names, but you 
 \t need to call it with the -o switch; for example
 
-\t indent.pl -o originalfile.tex outputfile.tex
+\t latexindent.pl -o originalfile.tex outputfile.tex
 
 No indentation done :(
 Exiting...
@@ -117,7 +119,7 @@ for my $fh ($out,$logfile) {
 print $fh <<ENDQUOTE
 
 ERROR:
-\t You're calling indent.pl with two file names, but not the -o flag.
+\t You're calling latexindent.pl with two file names, but not the -o flag.
 \t Did you mean to use the -o flag ?
 
 No indentation done :(
@@ -129,13 +131,13 @@ ENDQUOTE
 
 # if the script is called with the -o switch, then check that 
 # a second file is present in the call, e.g
-#           indent.pl -o myfile.tex output.tex
+#           latexindent.pl -o myfile.tex output.tex
 if($outputToFile and scalar(@ARGV)==1)
 {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
-ERROR: When using the -o flag you need to call indent.pl with 2 arguments
+ERROR: When using the -o flag you need to call latexindent.pl with 2 arguments
 
-indent.pl -o "$ARGV[0]" [needs another name here]
+latexindent.pl -o "$ARGV[0]" [needs another name here]
 
 No indentation done :(
 Exiting...
@@ -211,7 +213,7 @@ my $userSettings;
 
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
-if ( -e $indentconfig ) 
+if ( -e $indentconfig and !$onlyDefault ) 
 {
       print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
 
@@ -238,9 +240,18 @@ ENDQUOTE
 } 
 else
 {
-      # give the user instructions on where to put indentconfig.yaml
-      print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
-      print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+      if($onlyDefault)
+      {
+        print $logfile "Only default settings requested, not reading USER settings from indentconfig.yaml \n";
+        print $logfile "Ignoring localSettings.yaml\n" if($readLocalSettings);
+        $readLocalSettings = 0;
+      }
+      else
+      {
+        # give the user instructions on where to put indentconfig.yaml
+        print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
+        print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+      }
 }
 
 # get information about LOCAL settings, assuming that localSettings.yaml exists
@@ -1245,7 +1256,7 @@ sub at_beg_of_env_or_eq{
        {
            $delimiters=1;
             # tracing mode
-            print $logfile "Line $lineCounter\t Delimiter environment started: $2\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t Delimiter environment started: $2 (see lookForAlignDelims)\n" if($tracingMode);
        }
 
        # store the name of the environment
