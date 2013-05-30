@@ -28,7 +28,7 @@ my %options=();
 getopts("sotlwhd", \%options);
 
 # version number
-my $versionNumber = "8.21";
+my $versionNumber = "1.0R";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)

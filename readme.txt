@@ -27,10 +27,10 @@ FOR COMPLETE DETAILS, PLEASE SEE documentation/manual.pdf
 USAGE
     You'll need
 
-        indent.pl
+        latexindent.pl
         defaultSettings.yaml
 
-    in the same directory. Windows users might prefer to grab indent.exe
+    in the same directory. Windows users might prefer to grab latexindent.exe
 
 * IMPORTANT *
 
