@@ -179,6 +179,7 @@ my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 my $removeTrailingWhitespace = $defaultSettings->[0]->{removeTrailingWhitespace};
+my $treatComments = $defaultSettings->[0]->{treatComments};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -295,6 +296,7 @@ foreach my $settings (@absPaths)
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
             $removeTrailingWhitespace = $userSettings->[0]->{removeTrailingWhitespace} if defined($userSettings->[0]->{removeTrailingWhitespace});
+            $treatComments = $userSettings->[0]->{treatComments} if defined($userSettings->[0]->{treatComments});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -607,6 +609,13 @@ while(<MAINFILE>)
             unless ($_ =~ m/^$/ and $removeTrailingWhitespace){
                 $_ = join("",@indent).$_;
             }
+
+            # move comment symbol to beginning of line
+            if ($treatComments)
+            {
+                $_ = &treat_comments($_);
+            }
+
             push(@lines,$_);
             # tracing mode
             print $logfile "Line $lineCounter\t Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
@@ -1334,6 +1343,13 @@ sub at_end_of_env_or_eq{
                 {
                     $line = join("",@indent).$line;
                 }
+
+                # move comment symbol to beginning of line
+                if ($treatComments)
+                {
+                    $line = &treat_comments($line);
+                }
+
                 push(@lines,$line);
            }
            # empty the @block, very important!
@@ -1715,3 +1731,27 @@ sub decrease_indent{
        }
 }
 
+sub treat_comments{
+       # PURPOSE : Deal specifically with commented lines
+
+       my $line = pop(@_);
+
+       if ($line =~ m/^\s*\%+/)
+       {
+            # stack consecutive comment symbols
+            # have at max one space behind every bunch
+            while($line =~ m/\%\s+\%/ || $line =~ m/\%+\s{2,}.+/)
+            {
+                $line =~ s/(\%+)(\s+)(.+)/$1 $3/g;
+                $line =~ s/(\%+)(\s+)(\%+)/$1$3/g;
+            }
+       }
+
+       # if necessary remove newly generated trailing whitespace
+       if ($removeTrailingWhitespace and $line =~ m/\s+$/)
+       {
+            $line =~ s/\s+$/\n/;
+       }
+
+       return $line;
+}

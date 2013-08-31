@@ -42,6 +42,10 @@ alwaysLookforSplitBrackets: 1
 # in LaTeX) and do not introduce it
 removeTrailingWhitespace: 0
 
+# treat commented lines specifically: keep indentation, but stack consecutive
+# comment symbols (%) and allow at max one space behind each bunch
+treatComments: 0
+
 # environments that have tab delimiters, add more 
 # as needed
 lookForAlignDelims:
