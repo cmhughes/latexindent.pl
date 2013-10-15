@@ -73,7 +73,7 @@ print $logfile $time;
 print $logfile <<ENDQUOTE
 
 latexindent.pl version $versionNumber, a script to indent .tex files
-latexindent.pl lives here: $FindBin::Bin/
+latexindent.pl lives here: $FindBin::RealBin/
 
 file: $ARGV[0]
 ENDQUOTE
