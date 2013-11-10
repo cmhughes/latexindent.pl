@@ -28,7 +28,7 @@ my %options=();
 getopts("sotlwhd", \%options);
 
 # version number
-my $versionNumber = "1.0R";
+my $versionNumber = "1.1R";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
@@ -178,6 +178,8 @@ my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrack
 my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
+my $maxNumberOfBackUps = $defaultSettings->[0]->{maxNumberOfBackUps};
+my $backupFilesStoredIn = $defaultSettings->[0]->{backupFilesStoredIn};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -293,6 +295,8 @@ foreach my $settings (@absPaths)
             $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
+            $maxNumberOfBackUps = $userSettings->[0]->{maxNumberOfBackUps} if defined($userSettings->[0]->{maxNumberOfBackUps});
+            $backupFilesStoredIn = $userSettings->[0]->{backupFilesStoredIn} if defined($userSettings->[0]->{backupFilesStoredIn});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -354,7 +358,38 @@ if ($overwrite)
     my $filename = $ARGV[0];
     # copy it
     my $backupFile = $filename;
-    
+    print $logfile "Could not find directory $backupFilesStoredIn\nNo indentation done :\"(" if(!(-d $backupFilesStoredIn));
+    die "Could not find directory $backupFilesStoredIn\n" if(!(-d $backupFilesStoredIn));
+
+    # add the user's backup directory to the backup path
+    $backupFile = "$backupFilesStoredIn/$backupFile";
+
+    # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have 
+    # a conflict- er on the side of caution and turn off onlyOneBackUp
+    if($onlyOneBackUp and $maxNumberOfBackUps>1)
+    {
+        print $logfile "\t WARNING: onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps: $maxNumberOfBackUps\n";
+        print $logfile "\t\t setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps back ups\n";
+        $onlyOneBackUp = 0;
+    }
+
+    # if the user has specified that $maxNumberOfBackUps = 1 then 
+    # they only want one backup
+    if($maxNumberOfBackUps==1)
+    {
+        $onlyOneBackUp=1 ;
+        print $logfile "\t FYI: you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 \n";
+    }
+    elsif($maxNumberOfBackUps<=0 and !$onlyOneBackUp)
+    {
+#        print $logfile "\t FYI: maxNumberOfBackUps=$maxNumberOfBackUps which won't have any effect\n";
+#        print $logfile "\t      on the script- at least ONE backup is made when the -w flag is invoked.\n";
+#        print $logfile "\t      I'm setting onlyOneBackUp: 0, which means that you'll get a new back up file \n";
+#        print $logfile "\t      every time you run the script.\n";
+        $onlyOneBackUp=0 ;
+        $maxNumberOfBackUps=-1;
+    }
+
     # if onlyOneBackUp is set, then the backup file will
     # be overwritten each time
     if($onlyOneBackUp)
@@ -370,8 +405,19 @@ if ($overwrite)
         $backupFile =~ s/\.tex$/$backupExtension$backupCounter/;
 
         # if it exists, then keep going: .bak0, .bak1, ...
-        while (-e $backupFile)
+        while (-e $backupFile or $maxNumberOfBackUps>1)
         {
+            if($backupCounter==$maxNumberOfBackUps)
+            {
+                print $logfile "\t maxNumberOfBackUps reached ($maxNumberOfBackUps)\n";
+                $maxNumberOfBackUps=1 ;
+                last; # break out of the loop
+            }
+            elsif(!(-e $backupFile))
+            {
+                $maxNumberOfBackUps=1 ;
+                last; # break out of the loop
+            }
             print $logfile "\t $backupFile already exists, incrementing by 1...\n";
             $backupCounter++;
             $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;

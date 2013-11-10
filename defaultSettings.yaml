@@ -1,3 +1,4 @@
+# 
 # defaultSettings.yaml
 #
 # You're welcome to change anything you like in here, but 
@@ -26,6 +27,16 @@ backupExtension: .bak
 # if you set onlyOnebackUp to 1, then the backup file will
 # be overwritten each time (not recommended until you trust the script)
 onlyOneBackUp: 0
+
+# some users may only want a set number of backup files, 
+# say at most 3; in which case, they can change this switch.
+# If maxNumberOfBackUps is set to 0 (or less) then infinitely 
+# many backups are possible, unless onlyOneBackUp is switched on
+maxNumberOfBackUps: 0
+
+# some users may want the backup files (cruft) stored 
+# somewhere else
+backupFilesStoredIn: ./
 
 # indent preamble
 indentPreamble: 0
