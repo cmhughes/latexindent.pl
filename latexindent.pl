@@ -20,19 +20,38 @@ use FindBin;            # help find defaultSettings.yaml
 use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use File::Basename;     # to get the filename and directory path
-use Getopt::Std;        # to get the switches/options/flags
+#use Getopt::Std;        
+use Getopt::Long;       # to get the switches/options/flags
 use File::HomeDir;      # to get users home directory, regardless of OS
 
 # get the options
-my %options=();
-getopts("sotlwhd", \%options);
+my $overwrite;
+my $outputToFile;
+my $silentMode;
+my $tracingMode;
+my $readLocalSettings;
+my $onlyDefault;
+my $showhelp;
+my $cruftDirectory='./';
+
+GetOptions ("w"=>\$overwrite,
+"o"=>\$outputToFile,
+"s"=>\$silentMode,
+"t"=>\$tracingMode,
+"l"=>\$readLocalSettings,
+"d"=>\$onlyDefault,
+"h"=>\$showhelp,
+"c=s"=>\$cruftDirectory,
+);
+
+die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
 
 # version number
 my $versionNumber = "1.1R";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
-if(scalar(@ARGV) < 1 or $options{h})
+if(scalar(@ARGV) < 1 or $showhelp)
 {
     print <<ENDQUOTE
 latexindent.pl version $versionNumber
@@ -45,25 +64,19 @@ usage: latexindent.pl [options] [file][.tex]
       -t  tracing mode- verbose information given to the log file
       -l  use localSettings.yaml (assuming it exists in the directory of your file)
       -d  ONLY use defaultSettings.yaml, ignore ALL user files
+      -c=cruft directory used to specify the location of backup files and indent.log
 ENDQUOTE
     ;
     exit(2);
 }
 
-# setup variables from the flags
-my $overwrite = $options{w};
-my $outputToFile = $options{o};
-my $silentMode = $options{s};
-my $tracingMode = $options{t};
-my $readLocalSettings = $options{l};
-my $onlyDefault = $options{d};
 
 # we'll be outputting to the logfile and to standard output
 my $logfile;
 my $out = *STDOUT;
 
 # open the log file
-open($logfile,">","indent.log") or die "Can't open indent.log";
+open($logfile,">","$cruftDirectory/indent.log") or die "Can't open indent.log";
 
 # output time to log file
 my $time = localtime();
@@ -74,6 +87,8 @@ print $logfile <<ENDQUOTE
 
 latexindent.pl version $versionNumber, a script to indent .tex files
 latexindent.pl lives here: $FindBin::RealBin/
+
+Directory for backup files and indent.log: $cruftDirectory
 
 file: $ARGV[0]
 ENDQUOTE
@@ -179,7 +194,6 @@ my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 my $maxNumberOfBackUps = $defaultSettings->[0]->{maxNumberOfBackUps};
-my $backupFilesStoredIn = $defaultSettings->[0]->{backupFilesStoredIn};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -296,7 +310,6 @@ foreach my $settings (@absPaths)
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
             $maxNumberOfBackUps = $userSettings->[0]->{maxNumberOfBackUps} if defined($userSettings->[0]->{maxNumberOfBackUps});
-            $backupFilesStoredIn = $userSettings->[0]->{backupFilesStoredIn} if defined($userSettings->[0]->{backupFilesStoredIn});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -358,11 +371,9 @@ if ($overwrite)
     my $filename = $ARGV[0];
     # copy it
     my $backupFile = $filename;
-    print $logfile "Could not find directory $backupFilesStoredIn\nNo indentation done :\"(" if(!(-d $backupFilesStoredIn));
-    die "Could not find directory $backupFilesStoredIn\n" if(!(-d $backupFilesStoredIn));
 
     # add the user's backup directory to the backup path
-    $backupFile = "$backupFilesStoredIn/$backupFile";
+    $backupFile = "$cruftDirectory/$backupFile";
 
     # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have 
     # a conflict- er on the side of caution and turn off onlyOneBackUp
@@ -724,7 +735,7 @@ else
 }
 
 # output the formatted lines to the terminal
-print @lines if(!$options{s});
+print @lines if(!$silentMode);
 
 # if -w is active then output to $ARGV[0]
 if($overwrite)

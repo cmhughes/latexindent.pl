@@ -34,10 +34,6 @@ onlyOneBackUp: 0
 # many backups are possible, unless onlyOneBackUp is switched on
 maxNumberOfBackUps: 0
 
-# some users may want the backup files (cruft) stored 
-# somewhere else- default is the current working directory
-backupFilesStoredIn: ./
-
 # indent preamble
 indentPreamble: 0
 
