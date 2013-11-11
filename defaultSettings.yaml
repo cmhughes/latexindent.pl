@@ -45,8 +45,7 @@ alwaysLookforSplitBraces: 1
 # have to complete checkunmatchedbracket
 alwaysLookforSplitBrackets: 1
 
-# remove trailing whitespace from all lines (this should be a secure operation
-# in LaTeX) and do not introduce it
+# remove trailing whitespace from all lines 
 removeTrailingWhitespace: 0
 
 # environments that have tab delimiters, add more 

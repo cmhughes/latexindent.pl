@@ -15,26 +15,26 @@
 
 \tikzset{horizontal shaded border/.style args={#1 and #2}{
 	append after command={
-		\pgfextra{%                 
+		\pgfextra{%
 			\begin{pgfinterruptpath}
 				\path[rounded corners,left color=#1,right color=#2]
-				($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$) 
+				($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$)
 				rectangle
-				($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);        
+				($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);
 			\end{pgfinterruptpath}
-		} 
+		}
 	}
 	},
 	vertical shaded border/.style args={#1 and #2}{
 		append after command={
-			\pgfextra{%                 
+			\pgfextra{%
 				\begin{pgfinterruptpath}
 					\path[rounded corners,top color=#1,bottom color=#2]
-					($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$) 
+					($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$)
 					rectangle
-					($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);        
+					($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);
 				\end{pgfinterruptpath}
-			} 
+			}
 		}
 	}
 }
