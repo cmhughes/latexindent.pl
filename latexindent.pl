@@ -194,6 +194,7 @@ my $backupExtension = $defaultSettings->[0]->{backupExtension};
 my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 my $maxNumberOfBackUps = $defaultSettings->[0]->{maxNumberOfBackUps};
+my $removeTrailingWhitespace = $defaultSettings->[0]->{removeTrailingWhitespace};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -310,6 +311,7 @@ foreach my $settings (@absPaths)
             $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
             $maxNumberOfBackUps = $userSettings->[0]->{maxNumberOfBackUps} if defined($userSettings->[0]->{maxNumberOfBackUps});
+            $removeTrailingWhitespace = $userSettings->[0]->{removeTrailingWhitespace} if defined($userSettings->[0]->{removeTrailingWhitespace});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -636,6 +638,13 @@ while(<MAINFILE>)
         }
     }
 
+    # remove trailing whitespace
+    if ($removeTrailingWhitespace)
+    {
+        print $logfile "Line $lineCounter\t removing trailing whitespace\n" if ($tracingMode);
+        s/\s+$/\n/;
+    }
+
     # ADD CURRENT LEVEL OF INDENTATION
     # (unless we're in a delimiter-aligned block)
     if(!$delimiters)
@@ -650,7 +659,11 @@ while(<MAINFILE>)
         {
             # add current value of indentation to the current line
             # and output it
-            $_ = join("",@indent).$_;
+            # unless this would only create trailing whitespace and the
+            # corresponding option is set
+            unless ($_ =~ m/^$/ and $removeTrailingWhitespace){
+                $_ = join("",@indent).$_;
+            }
             push(@lines,$_);
             # tracing mode
             print $logfile "Line $lineCounter\t Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
@@ -1372,7 +1385,13 @@ sub at_end_of_env_or_eq{
                 # add the indentation and add the 
                 # each line of the formatted block
                 # to the output
-                push(@lines,join("",@indent).$line);
+                # unless this would only create trailing whitespace and the
+                # corresponding option is set
+                unless ($line =~ m/^$/ and $removeTrailingWhitespace)
+                {
+                    $line = join("",@indent).$line;
+                }
+                push(@lines,$line);
            }
            # empty the @block, very important!
            @block=();
@@ -1656,6 +1675,14 @@ sub format_block{
           # tracing mode
           print $logfile "\t\tLine $lineCounter\t Found maximum number of & so aligning delimiters\n" if($tracingMode);
         }
+
+        # remove trailing whitespace
+        if ($removeTrailingWhitespace)
+        {
+            print $logfile "Line $lineCounter\t removing trailing whitespace from delimiter aligned line\n" if ($tracingMode);
+            $tmpstring =~ s/\s+$/\n/;
+        }
+
         push(@formattedblock,$tmpstring);
 
         # increase the line counter
