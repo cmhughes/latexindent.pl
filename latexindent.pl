@@ -1419,6 +1419,16 @@ sub at_end_of_env_or_eq{
             &decrease_indent($1);
             pop(@environmentStack);
        }
+
+       # if we're at the end of the document, we remove all current 
+       # indentation- this is especially prominent in examples that 
+       # have headings, and the user has chosen to indentAfterHeadings
+       if($1 eq "document" and !(grep(/filecontents/, @indentNames)) and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock)
+       {
+            @indent=(); 
+            @indentNames=(); 
+            print $logfile "Line $lineCounter\t \\end{$1} found- emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+       }
     }
 }
 
