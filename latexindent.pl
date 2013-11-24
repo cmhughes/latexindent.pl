@@ -47,7 +47,7 @@ GetOptions ("w"=>\$overwrite,
 die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
 
 # version number
-my $versionNumber = "1.1R";
+my $versionNumber = "1.11R";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
@@ -165,10 +165,10 @@ ENDQUOTE
 # Read in YAML file
 my $defaultSettings = YAML::Tiny->new;
 
-print $logfile "Reading defaultSettings.yaml from $FindBin::Bin/defaultSettings.yaml\n\n";
+print $logfile "Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml\n\n";
 
 # Open defaultSettings.yaml
-$defaultSettings = YAML::Tiny->read( "$FindBin::Bin/defaultSettings.yaml" );
+$defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
 
 if(!$defaultSettings)
 {

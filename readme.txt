@@ -22,6 +22,12 @@
 
 FOR COMPLETE DETAILS, PLEASE SEE documentation/manual.pdf
 
+Note: latexindent.exe was created using 
+
+      pp -o latexindent.exe latexindent.pl
+
+      using the Par::Packer perl module.
+
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
 USAGE
