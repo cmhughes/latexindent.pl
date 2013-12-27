@@ -1,8 +1,9 @@
 % arara: pdflatex
-% arara: bibtex
-% arara: pdflatex
-% arara: pdflatex
+% !arara: bibtex
+% !arara: pdflatex
+% !arara: pdflatex
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: no, silent: yes}
+% http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
 \begin{filecontents}{mybib.bib}
 	@online{cmh:videodemo,
 		title="Video demonstration of latexindet.pl on youtube",
@@ -39,11 +40,14 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usepackage{fancyhdr}                                % headers & footers
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
-\usepackage{mdframed}                                % framed environments
+\usepackage{tcolorbox}                                % framed environments
 \usepackage[charter]{mathdesign}                     % changes font
 \usepackage[expansion=false,kerning=true]{microtype} % better kerning
 \usepackage{enumitem}                                % custom lists
 \usepackage{tikz}                                    % so so much
+\usepackage{tcolorbox}
+% tcolorbox libraries
+\tcbuselibrary{breakable,skins}
 \usetikzlibrary{positioning}
 \usepackage{varioref}                                % clever referencing
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
@@ -51,9 +55,13 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 
 \addbibresource{mybib}
 
-\newmdenv[linecolor=red,innertopmargin=.5cm,linewidth=3pt,
-	splittopskip=\topskip,skipbelow=0pt,%
-]{warning}
+%\newmdenv[linecolor=red,innertopmargin=.5cm,linewidth=3pt,
+%	splittopskip=\topskip,skipbelow=0pt,%
+%]{warning}
+
+
+\newtcolorbox{warning}{breakable,enhanced,arc=0mm,colback=red!5,colframe=red,leftrule=12mm,%
+overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }}
 
 \lstset{%
 	basicstyle=\small\ttfamily,language={[LaTeX]TeX},   
@@ -992,7 +1000,7 @@ use FindBin;
 use YAML::Tiny;         
 use File::Copy;         
 use File::Basename;     
-use Getopt::Std;        
+use Getopt::Long;       
 use File::HomeDir;      
 
 print "hello world";
@@ -1004,7 +1012,11 @@ did.
 				
 Installing the modules given in \cref{lst:helloworld} will vary depending on your 
 operating system and \lstinline!Perl! distribution. For example, Ubuntu users 
-might visit the software center, and Strawberry Perl users on Windows might use 
+might visit the software center, or else run
+\begin{lstlisting}[numbers=none]
+sudo perl -MCPAN -e 'install "File::HomeDir"'
+\end{lstlisting}
+Strawberry Perl users on Windows might use 
 \lstinline!CPAN client!. All of the modules are readily available on CPAN \cite{cpan}.
 			
 \section{The \lstinline!arara! rule}
