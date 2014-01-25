@@ -9,7 +9,8 @@ cp latexindent.exe latexindent
 cp defaultSettings.yaml latexindent
 cp indent.yaml latexindent
 cp readme.txt latexindent
-cp documentation/manual.* latexindent/documentation
+cp documentation/manual.tex latexindent/documentation
+cp documentation/manual.pdf latexindent/documentation
 cp success/*.tex latexindent/success
 zip -r latexindent.zip latexindent
 mv latexindent.zip ~/Desktop
