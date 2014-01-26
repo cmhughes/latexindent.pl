@@ -827,9 +827,10 @@ sub end_command_with_alignment{
     # PURPOSE: This matches
     #           %* \end{tabular}
     #          with any number of spaces (possibly none) between
-    #          the * and \end{noindent}.
+    #          the * and \end{tabular} (or any other name used from 
+    #          lookFroAlignDelims)
     #
-    #          the comment symbol IS indended!
+    #          Note: the comment symbol IS indended!
     #
     #          This is to align blocks that contain delimeters that
     #          are NOT contained in an alignment block in the usual way, e.g
@@ -1432,10 +1433,6 @@ sub at_end_of_env_or_eq{
     #               \end{environmentname}
     #          or
     #               \]
-    #
-    #          or
-    #               %* \end{environmentname} where environmentname
-    #               can be something from lookForAlignDelims
     #
     #          It also checks to see if the current environment
     #          had alignment delimiters; if so, we need to turn 

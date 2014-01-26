@@ -594,10 +594,6 @@ lookForAlignDelims:
 	If you find that \lstinline!latexindent.pl! does not perform satisfactorily on such 
 	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific} 
 	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
-																					 		 		 		 		 					
-	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
-	that you would like left completely alone-- no indentation will be done
-	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
 
   \item[\color{green}New!] If you have blocks of code that you wish to align at the \&  character that 
     are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}...\end{tabular}!, then you use the mark up
@@ -613,6 +609,11 @@ lookForAlignDelims:
 %* \end{tabular}
 }
 		\end{cmhlistings}
+																					 		 		 		 		 					
+	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
+	that you would like left completely alone-- no indentation will be done
+	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
+
 																					 		 		 		 		 					
 	\begin{cmhlistings}[style=yaml]{\lstinline!verbatimEnvironments!}{lst:verbatimEnvironments}
 verbatimEnvironments:
@@ -671,7 +672,7 @@ noAdditionalIndent:
     frame: 0
 	\end{cmhlistings}
 	Note in particular from \cref{lst:noAdditionalIndent} that if you wish content within 
-	\lstinline!\[!  and \lstinline!\]! to receive no additional content then 
+	\lstinline!\[!  and \lstinline!\]! to receive no additional indentation then 
 	you have to specify \emph{both} as \lstinline!1! (the default is \lstinline!0!). 
 	If you do not specify both as the same value you may get some interesting results!
 	\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify 
