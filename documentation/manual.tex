@@ -2,7 +2,7 @@
 % !arara: bibtex
 % !arara: pdflatex
 % !arara: pdflatex
-% !arara: indent: {overwrite: yes, trace: yes, localSettings: no, silent: yes}
+% !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
 \begin{filecontents}{mybib.bib}
 	@online{cmh:videodemo,
@@ -598,6 +598,21 @@ lookForAlignDelims:
 	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
 	that you would like left completely alone-- no indentation will be done
 	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
+
+  \item[\color{green}New!] If you have blocks of code that you wish to align at the \&  character that 
+    are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}...\end{tabular}!, then you use the mark up
+      illustrated in \cref{lst:alignmentmarkup}. Note that the \lstinline!%*! must be next to 
+      each other, but that there can be any number of spaces (possibly none) between the 
+      \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any 
+        environment name that you have specified in \lstinline!lookForAlignDelims!.
+		\begin{cmhlistings}[style=demo,columns=fixed]{Mark up for aligning delimiters outside of environments}{lst:alignmentmarkup}
+\matrix{%          
+%* \begin{tabular}
+ 1 & 2 & 3 & 4 \\
+ 5 &   & 6 &   \\
+%* \end{tabular}
+}
+		\end{cmhlistings}
 																					 		 		 		 		 					
 	\begin{cmhlistings}[style=yaml]{\lstinline!verbatimEnvironments!}{lst:verbatimEnvironments}
 verbatimEnvironments:

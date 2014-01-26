@@ -580,8 +580,16 @@ while(<MAINFILE>)
         }
     }
 
+    # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
+    # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
+    # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
+
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
+
+    # check to see if we have %* \end{something} for alignment blocks
+    # outside of environments
+    &end_command_with_alignment();
 
     # check to see if we're at the end of a noindent 
     # block %\end{noindent}
@@ -630,7 +638,8 @@ while(<MAINFILE>)
             $_ = $_ . $trailingcomments."\n" ;
 
             # tracing mode
-            print $logfile "Line $lineCounter\t counting braces/brackets complete: added trailing comments back on $trailingcomments\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t counting braces/brackets complete\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t Adding trailing comments back on: $trailingcomments\n" if($tracingMode);
 
             # empty the trailingcomments
             $trailingcomments='';
@@ -645,6 +654,8 @@ while(<MAINFILE>)
         s/\s+$/\n/;
     }
 
+    # ADD CURRENT LEVEL OF INDENTATION
+    # ADD CURRENT LEVEL OF INDENTATION
     # ADD CURRENT LEVEL OF INDENTATION
     # (unless we're in a delimiter-aligned block)
     if(!$delimiters)
@@ -678,6 +689,10 @@ while(<MAINFILE>)
         print $logfile "Line $lineCounter\t In delimeter block, waiting for block formatting\n" if($tracingMode);
     }
 
+    # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
+    # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
+    # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
+
     # only check for new environments or commands if we're 
     # not in a verbatim-like environment or in the preamble
     # or in a noIndentBlock, or delimiter block
@@ -692,6 +707,18 @@ while(<MAINFILE>)
         # IMPORTANT: this needs to go before the trailing comments
         # are removed!
         &at_beg_noindent();
+
+        # check for 
+        #   %* \begin{tabular}
+        # which might be used to align blocks that contain delimeters that
+        # are NOT contained in an alignment block in the usual way, e.g
+        #   \matrix{
+        #       %* \begin{tabular}
+        #           1 & 2 \\
+        #           3 & 4 \\
+        #       %* \end{tabular}
+        #           }
+        &begin_command_with_alignment();
 
         # remove trailing comments so that any {, }, [, ]
         # that are found after % are not counted
@@ -770,6 +797,65 @@ if($outputToFile)
 close($logfile);
 
 exit;
+
+sub begin_command_with_alignment{
+    # PURPOSE: This matches
+    #           %* \begin{tabular}
+    #          with any number of spaces (possibly none) between
+    #          the * and \begin{noindent}.
+    #
+    #          the comment symbol IS indended!
+    #
+    #          This is to align blocks that contain delimeters that
+    #          are NOT contained in an alignment block in the usual way, e.g
+    #             \matrix{
+    #                 %* \begin{tabular}
+    #                     1 & 2 \\
+    #                     3 & 4 \\
+    #                 %* \end{tabular}
+    #                     }
+
+    if( $_ =~ m/^\s*%\*\s*\\begin{(.*?)}/ and $lookForAlignDelims{$1}) 
+    {
+           $delimiters=1;
+           # tracing mode
+           print $logfile "Line $lineCounter\t Delimiter environment started: $1 (see lookForAlignDelims)\n" if($tracingMode);
+    }
+}
+
+sub end_command_with_alignment{
+    # PURPOSE: This matches
+    #           %* \end{tabular}
+    #          with any number of spaces (possibly none) between
+    #          the * and \end{noindent}.
+    #
+    #          the comment symbol IS indended!
+    #
+    #          This is to align blocks that contain delimeters that
+    #          are NOT contained in an alignment block in the usual way, e.g
+    #             \matrix{
+    #                 %* \begin{tabular}
+    #                     1 & 2 \\
+    #                     3 & 4 \\
+    #                 %* \end{tabular}
+    #                     }
+
+    if( $_ =~ m/^\s*%\*\s*\\end{(.*?)}/ and $lookForAlignDelims{$1}) 
+    {
+        # same subroutine used at the end of regular tabular, align, etc
+        # environments
+        if($delimiters)
+        {
+            &print_aligned_block();
+        }
+        else
+        {
+            # tracing mode
+            print $logfile "Line $lineCounter\t FYI: did you mean to start a delimiter block on a previous line? \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t      perhaps using %* \\begin{$1}\n" if($tracingMode);
+        }
+    }
+}
 
 sub indent_heading{
     # PURPOSE: This matches
@@ -887,6 +973,8 @@ sub at_end_noindent{
             print $logfile "Line $lineCounter\t % \\end{no indent block} found, switching inIndentBlock OFF \n" if($tracingMode);
     }
 }
+
+
 
 sub at_beg_noindent{
     # PURPOSE: This matches
@@ -1345,12 +1433,15 @@ sub at_end_of_env_or_eq{
     #          or
     #               \]
     #
+    #          or
+    #               %* \end{environmentname} where environmentname
+    #               can be something from lookForAlignDelims
+    #
     #          It also checks to see if the current environment
     #          had alignment delimiters; if so, we need to turn 
     #          OFF the $delimiter switch 
     
-    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/^(\\\])/)
-         and $_ !~ m/\s*^%/)
+    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/)
     {
 
        # check if we're at the end of a verbatim-like environment
@@ -1373,28 +1464,7 @@ sub at_end_of_env_or_eq{
        # delimiters and output the current block
        if($lookForAlignDelims{$1} and ($previousEnvironment eq $1))
        {
-           $delimiters=0;
-
-           # tracing mode
-           print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
-
-           # print the current FORMATTED block
-           @block = &format_block(@block);
-           foreach $line (@block)
-           {
-                # add the indentation and add the 
-                # each line of the formatted block
-                # to the output
-                # unless this would only create trailing whitespace and the
-                # corresponding option is set
-                unless ($line =~ m/^$/ and $removeTrailingWhitespace)
-                {
-                    $line = join("",@indent).$line;
-                }
-                push(@lines,$line);
-           }
-           # empty the @block, very important!
-           @block=();
+            &print_aligned_block();
        }
 
        # tracing mode
@@ -1430,6 +1500,39 @@ sub at_end_of_env_or_eq{
             print $logfile "Line $lineCounter\t \\end{$1} found- emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
        }
     }
+}
+
+sub print_aligned_block{
+    # PURPOSE: this subroutine does a few things related 
+    #          to printing blocks of code that contain 
+    #          delimiters, such as align, tabular, etc
+    #
+    #          It does the following
+    #           - turns off delimiters switch
+    #           - processes the block 
+    #           - deletes the block
+    $delimiters=0;
+
+    # tracing mode
+    print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
+
+    # print the current FORMATTED block
+    @block = &format_block(@block);
+    foreach $line (@block)
+    {
+         # add the indentation and add the 
+         # each line of the formatted block
+         # to the output
+         # unless this would only create trailing whitespace and the
+         # corresponding option is set
+         unless ($line =~ m/^$/ and $removeTrailingWhitespace)
+         {
+             $line = join("",@indent).$line;
+         }
+         push(@lines,$line);
+    }
+    # empty the @block, very important!
+    @block=();
 }
 
 sub format_block{
