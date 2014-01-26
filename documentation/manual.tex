@@ -47,7 +47,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usepackage{tikz}                                    % so so much
 \usepackage{tcolorbox}
 % tcolorbox libraries
-\tcbuselibrary{breakable,skins}
+\tcbuselibrary{breakable,skins,listings}
 \usetikzlibrary{positioning}
 \usepackage{varioref}                                % clever referencing
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
@@ -63,33 +63,60 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \newtcolorbox{warning}{parbox=false,breakable,enhanced,arc=0mm,colback=red!5,colframe=red,leftrule=12mm,%
 overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }}
 
+\makeatletter
+\tcbset{
+        addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
+        }
+
+\newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
+        width=\linewidth,
+        breakable,
+        colback=blue!5!white,
+        colframe=white!70!black,
+        top=0cm,
+        bottom=0cm,
+        left=6mm,
+        listing only,
+        listing options={#1},
+        center title,
+        title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
+        addtolol,
+        }
+
 \lstset{%
 	basicstyle=\small\ttfamily,language={[LaTeX]TeX},   
-	numbers=left,
-	numberstyle=\ttfamily\small,
-	breaklines=true,frame=single,framexleftmargin=8mm, xleftmargin=8mm,
-	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
-	backgroundcolor=\color{green!5},frameround=fttt,
-	rulecolor=\color{blue!70!black},
+%	numbers=left,
+	numberstyle=\ttfamily%\small,
+	breaklines=true,
+%   frame=single,framexleftmargin=8mm, xleftmargin=8mm,
+%	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
+%	backgroundcolor=\color{green!5},frameround=fttt,
+%	rulecolor=\color{blue!70!black},
 	keywordstyle=\color{blue},                    % keywords
-	commentstyle=\color{purple},    % comments
+commentstyle=\color{purple},    % comments
 	tabsize=3,
-	%columns=fullflexible   
 }%
-\lstdefinestyle{demo}{numbers=none,xleftmargin=0mm,framexleftmargin=0mm,linewidth=1.25\textwidth}
+\lstdefinestyle{yaml}{%
+        numbers=left,
+        numberstyle=\color{black},}
+\lstdefinestyle{demo}{
+numbers=none,
+linewidth=1.25\textwidth,
+    columns=fullflexible,
+}
 \newcommand{\verbitem}[1]{\small\ttfamily{#1}}
 % stolen from arara.sty http://mirrors.med.harvard.edu/ctan/support/arara/doc/arara.sty
-\lstnewenvironment{yaml}[1][]{\lstset{%
-	basicstyle=\ttfamily,
-	numbers=left,
-	xleftmargin=1.5em,
-	breaklines=true,
-	numberstyle=\ttfamily\small,
-	columns=flexible,
-	mathescape=false,
-	#1,
-}}
-{}
+%\lstnewenvironment{yaml}[1][]{\lstset{%
+%	basicstyle=\ttfamily,
+%	numbers=left,
+%	xleftmargin=1.5em,
+%	breaklines=true,
+%	numberstyle=\ttfamily\small,
+%	columns=flexible,
+%	mathescape=false,
+%	#1,
+%}}
+%{}
 
 \newcommand{\fixthis}[1]
 {%
@@ -212,8 +239,8 @@ each line which is stripped by \lstinline!latexindent.pl! (unless a \lstinline!v
 environment or \lstinline!noIndentBlock! is specified-- more on this in \cref{sec:defuseloc}).
 			
 \begin{adjustwidth}{-2cm}{2cm}
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!filecontents! before},label={lst:filecontentsbefore}]
+	\begin{minipage}{.6\textwidth}
+		\begin{cmhlistings}[style=demo]{\lstinline!filecontents! before}{lst:filecontentsbefore}
 \begin{filecontents}{mybib.bib}
 @online{strawberryperl,
 title="Strawberry Perl",
@@ -222,10 +249,10 @@ url="http://strawberryperl.com/"}
 title="A Perl script ...
 url="...
 \end{filecontents}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!filecontents! after}]
+	\begin{minipage}{.6\textwidth}
+      \begin{cmhlistings}[style=demo]{\lstinline!filecontents! after}{lst:filecontentsafter}
 \begin{filecontents}{mybib.bib}
 	@online{strawberryperl,
 		title="Strawberry Perl",
@@ -234,31 +261,31 @@ url="...
 		title="A Perl script for ...
 		url="...
 \end{filecontents}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}
 																					 	 	 	 	 				
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!tikzset! before}]
+	\begin{minipage}{.6\textwidth}
+      \begin{cmhlistings}[style=demo]{\lstinline!tikzset! before}{lst:tikzsetbefore}
 \tikzset{
 shrink inner sep/.code={
 \pgfkeysgetvalue...
 \pgfkeysgetvalue...
 }
 }
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!tikzset! after}]
+	\begin{minipage}{.6\textwidth}
+		\begin{cmhlistings}[style=demo]{\lstinline!tikzset! after}{lst:tikzsetafter}
 \tikzset{
 	shrink inner sep/.code={
 		\pgfkeysgetvalue...
 		\pgfkeysgetvalue...
 	}
 }
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!pstricks! before}]
+	\begin{minipage}{.6\textwidth}
+		\begin{cmhlistings}[style=demo]{\lstinline!pstricks! before}{lst:pstricksbefore}
 \def\Picture#1{%
 \def\stripH{#1}%
 \begin{pspicture}[showgrid...
@@ -270,10 +297,10 @@ shrink inner sep/.code={
 \expandafter...
 }
 \end{pspicture}}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}%
-	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[style=demo,caption={\lstinline!pstricks! after},label={lst:pstricksafter}]
+	\begin{minipage}{.6\textwidth}
+		\begin{cmhlistings}[style=demo]{\lstinline!pstricks! after}{lst:pstricksafter}
 \def\Picture#1{%
 	\def\stripH{#1}%
 	\begin{pspicture}[showgrid...
@@ -285,7 +312,7 @@ shrink inner sep/.code={
 			\expandafter...
 		}
 	\end{pspicture}}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}
 \end{adjustwidth}
 			     
@@ -391,7 +418,7 @@ Once you have told \lstinline!arara! where to find your \lstinline!indent! rule,
 you can use it any of the ways described in \cref{lst:arara} (or combinations thereof). 
 In fact, \lstinline!arara! allows yet greater flexibility-- you can use \lstinline!yes/no!, \lstinline!true/false!, or \lstinline!on/off! to toggle the various options.
 			 	 	 	 	 	
-\begin{lstlisting}[caption={\lstinline!arara! sample usage},label={lst:arara},escapeinside={(*@}{@*)}]
+\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\lstinline!arara! sample usage}{lst:arara}
 %(*@@*) arara: indent
 %(*@@*) arara: indent: {overwrite: yes}
 %(*@@*) arara: indent: {output: myfile.tex}
@@ -402,7 +429,7 @@ In fact, \lstinline!arara! allows yet greater flexibility-- you can use \lstinli
 %(*@@*) arara: indent: { cruft: /home/cmhughes/Desktop }
 \documentclass{article}
 ...
-\end{lstlisting}
+\end{cmhlistings}
 			 	 	 	 	 	
 Hopefully the use of these rules is fairly self-explanatory, but for completeness
 \cref{tab:orbsandswitches} shows the relationship between \lstinline!arara! directive arguments and the 
@@ -523,7 +550,7 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 	in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims}
 	shows more details.
 																						 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!lookForAlignDelims!},label={lst:aligndelims}]
+\begin{cmhlistings}[style=yaml]{\lstinline!lookForAlignDelims!}{lst:aligndelims}
 lookForAlignDelims:
    tabular: 1
    tabularx: 1
@@ -541,27 +568,27 @@ lookForAlignDelims:
    dcases: 1
    pmatrix: 1
    listabla: 1
-	\end{yaml}
+	\end{cmhlistings}
 																						 		 		 		 		 					
 	The environments specified in this field will be operated on in a special way  by \lstinline!latexindent.pl!. In particular, it will try and align each column by its alignment
 	tabs. It does have some limitations (discussed further in \cref{sec:knownlimitations}), 
 	but in many cases it will produce results such as those in \cref{lst:tabularbefore,lst:tabularafter}. 
 																						 		 		 		 		 					
 	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[caption={\lstinline!tabular! before},label={lst:tabularbefore}]
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! before}{lst:tabularbefore}
 \begin{tabular}{cccc}
 1&	2 &3       &4\\
 5& &6       &\\
 \end{tabular}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}
 	\begin{minipage}{.5\textwidth}
-		\begin{lstlisting}[caption={\lstinline!tabular! after},label={lst:tabularafter}]
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after}{lst:tabularafter}
 \begin{tabular}{cccc}
  1 & 2 & 3 & 4 \\
  5 &   & 6 &   \\
 \end{tabular}
-		\end{lstlisting}
+		\end{cmhlistings}
 	\end{minipage}
 																					 		 		 		 		 					
 	If you find that \lstinline!latexindent.pl! does not perform satisfactorily on such 
@@ -572,11 +599,11 @@ lookForAlignDelims:
 	that you would like left completely alone-- no indentation will be done
 	to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!verbatimEnvironments!},label={lst:verbatimEnvironments}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!verbatimEnvironments!}{lst:verbatimEnvironments}
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
-	\end{yaml}
+	\end{cmhlistings}
 	Note that if  you put an environment in \lstinline!verbatimEnvironments! 
 	and in other fields such as \lstinline!lookForAlignDelims! or \lstinline!noAdditionalIndent! 
 	then \lstinline!latexindent.pl! will \emph{always} prioritize \lstinline!verbatimEnvironments!.
@@ -587,17 +614,17 @@ verbatimEnvironments:
 	you can use any name you like for this, provided you populate it as demonstrate in 
 	\cref{lst:noIndentBlock}.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!noIndentBlock!},label={lst:noIndentBlock}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!noIndentBlock!}{lst:noIndentBlock}
 noIndentBlock:
     noindent: 1
     cmhtest: 1
-	\end{yaml}
+	\end{cmhlistings}
 																					 		 		 		 		 					
 	Of course, you don't want to have to specify these as null environments
 	in your code, so you use them with a comment symbol, \lstinline!%!, followed 
 	by as many spaces (possibly none) as you like; see \cref{lst:noIndentBlockdemo} for 
 	example.
-	\begin{lstlisting}[caption={\lstinline!noIndentBlock! demonstration},label={lst:noIndentBlockdemo},escapeinside={(*@}{@*)}]
+	\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\lstinline!noIndentBlock! demonstration}{lst:noIndentBlockdemo}
 %(*@@*) \begin{noindent} 
         this code
                 won't 
@@ -605,7 +632,7 @@ noIndentBlock:
                     by 
              latexindent.pl!
 %(*@@*)\end{noindent} 
-	\end{lstlisting}
+	\end{cmhlistings}
 																					 		 		 		 		 					
 	\item[\verbitem{noAdditionalIndent}] If you would prefer some of your
 	environments or commands not to receive any additional indent, then 
@@ -613,7 +640,7 @@ noIndentBlock:
 	Note that these environments will still receive the \emph{current} level
 	of indentation unless they belong to \lstinline!verbatimEnvironments!, or \lstinline!noIndentBlock!.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!noAdditionalIndent!},label={lst:noAdditionalIndent}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!noAdditionalIndent!}{lst:noAdditionalIndent}
 noAdditionalIndent:
     document: 1
     myexample: 1
@@ -627,7 +654,7 @@ noAdditionalIndent:
     \[: 1
     \]: 1
     frame: 0
-	\end{yaml}
+	\end{cmhlistings}
 	Note in particular from \cref{lst:noAdditionalIndent} that if you wish content within 
 	\lstinline!\[!  and \lstinline!\]! to receive no additional content then 
 	you have to specify \emph{both} as \lstinline!1! (the default is \lstinline!0!). 
@@ -636,12 +663,12 @@ noAdditionalIndent:
 	individual rules for certain environments or commands, just
 	populate \lstinline!indentRules!; see \cref{lst:indentRules}
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!indentRules!},label={lst:indentRules}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!indentRules!}{lst:indentRules}
 indentRules:
    myenvironment: "\t\t"
    anotherenvironment: "\t\t\t\t"
    \[: "\t"
-	\end{yaml}      %%%%%\] just here to stop vim from colouring the rest of my code
+	\end{cmhlistings}      %%%%%\] just here to stop vim from colouring the rest of my code
 	Note that in contrast to \lstinline!noAdditionalIndent! you do \emph{not} 
 	need to specify both \lstinline!\[! and \lstinline!\]! in this field. 
 																					 		 		 		 		 					
@@ -657,7 +684,7 @@ indentRules:
 	\lstinline!\section!, \lstinline!\subsection*! etc. This field is slightly different from all 
 	of the fields that we have considered previously, because each element is 
 	itself a field which has two elements: \lstinline!indent! and \lstinline!level!.
-	\begin{yaml}[caption={\lstinline!indentAfterHeadings!},label={lst:indentAfterHeadings}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!indentAfterHeadings!}{lst:indentAfterHeadings}
 indentAfterHeadings:
     part:
        indent: 0
@@ -669,7 +696,7 @@ indentAfterHeadings:
        indent: 0
        level: 3
     ...
-	\end{yaml}
+	\end{cmhlistings}
 	The default settings do \emph{not} place indentation after a heading-- you 
 	can easily switch them on by changing \lstinline!indent: 0! to \lstinline!indent: 1!.
 	The \lstinline!level! field tells \lstinline!latexindent.pl! the hierarchy of the heading 
@@ -696,11 +723,11 @@ indentAfterHeadings:
 	you can populate \lstinline!checkunmatched! with commands that can split braces across 
 	lines-- see \cref{lst:checkunmatched}.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!checkunmatched!},label={lst:checkunmatched}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatched!}{lst:checkunmatched}
 checkunmatched:
     parbox: 1
     vbox: 1
-	\end{yaml}
+	\end{cmhlistings}
 	\item[\color{red}\verbitem{checkunmatchedELSE}] Similarly, assuming you keep \lstinline!alwaysLookforSplitBraces! set to \lstinline!1! (which
 	is the default) then you don't need to worry about \lstinline!checkunmatchedELSE!. 
 																					 		 		 		 		 					
@@ -708,12 +735,12 @@ checkunmatched:
 	you can populate \lstinline!checkunmatchedELSE! with commands that can split braces across 
 	lines \emph{and} have an `else' statement-- see \cref{lst:checkunmatchedELSE}.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!checkunmatchedELSE!},label={lst:checkunmatchedELSE}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatchedELSE!}{lst:checkunmatchedELSE}
 checkunmatchedELSE:
     pgfkeysifdefined: 1
     DTLforeach: 1
     ifthenelse: 1
-	\end{yaml}
+	\end{cmhlistings}
 	\item[\color{red}\verbitem{checkunmatchedbracket}] Assuming you keep \lstinline!alwaysLookforSplitBrackets! 
 	set to \lstinline!1! (which is the default) then you don't need to worry about \lstinline!checkunmatchedbracket!. 
 																					 		 		 		 		 					
@@ -721,14 +748,14 @@ checkunmatchedELSE:
 	to \lstinline!0!, then you can populate \lstinline!checkunmatchedbracket! with commands that can 
 	split \emph{brackets} across lines-- see \cref{lst:checkunmatchedbracket}.
 																					 		 		 		 		 					
-	\begin{yaml}[caption={\lstinline!checkunmatchedbracket!},label={lst:checkunmatchedbracket}]
+	\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatchedbracket!}{lst:checkunmatchedbracket}
 checkunmatchedbracket:
     psSolid: 1
     pgfplotstablecreatecol: 1
     pgfplotstablesave: 1
     pgfplotstabletypeset: 1
     mycommand: 1
-	\end{yaml}
+	\end{cmhlistings}
 \end{itemize}
 			 	 	 	 	 	
 \subsubsection{Hierarchy of fields}\label{sec:fieldhierachy}
@@ -740,12 +767,12 @@ prioritize one above the other.
 			 	 	 	 	 	
 For example, let's say that you put the fields in \cref{lst:conflict} into 
 one of your settings files.  
-\begin{yaml}[caption={Conflicting ideas},label={lst:conflict}]
+\begin{cmhlistings}[style=yaml]{Conflicting ideas}{lst:conflict}
 indentRules:
    myenvironment: "\t\t"
 noAdditionalIndent:
    myenvironment: 1
-\end{yaml}
+\end{cmhlistings}
 			 	 	 	 	 	
 Clearly these fields conflict: first of all 
 you are telling \lstinline!latexindent.pl! that \lstinline!myenvironment! should 
@@ -759,12 +786,12 @@ and delete the offending key from \lstinline!indentRules! so that any future
 conflicts won't have to be addressed.
 			 	 	 	 	 	
 Let's consider another conflicting example in \cref{lst:bigconflict}
-\begin{yaml}[caption={More conflicting ideas},label={lst:bigconflict}]
+\begin{cmhlistings}[style=yaml]{More conflicting ideas}{lst:bigconflict}
 lookForAlignDelims:
    myenvironment: 1
 verbatimEnvironments:
    myenvironment: 1
-\end{yaml}
+\end{cmhlistings}
 This is quite a significant conflict-- we are first of all telling \lstinline!latexindent.pl!
 to look for alignment delimiters in \lstinline!myenvironment! and then 
 telling it that actually we would like \lstinline!myenvironment! to be considered 
@@ -799,7 +826,7 @@ Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not
 put it assuming it doesn't exist already.}
 \Cref{lst:indentconfig} shows a sample \lstinline!indentconfig.yaml! file.
 			 	 	 	 	 	
-\begin{yaml}[caption={\lstinline!indentconfig.yaml! (sample)},label={lst:indentconfig}]
+\begin{cmhlistings}[style=yaml]{\lstinline!indentconfig.yaml! (sample)}{lst:indentconfig}
 # Paths to user settings for latexindent.pl
 #
 # Note that the settings will be read in the order you 
@@ -812,7 +839,7 @@ paths:
 - /some/other/folder/anynameyouwant.yaml
 - C:\Users\chughes\Documents\mysettings.yaml
 - C:\Users\chughes\Desktop\test spaces\more spaces.yaml
-\end{yaml}
+\end{cmhlistings}
 			 	 	 	 	 	
 Note that the \lstinline!.yaml! files you specify in \lstinline!indentconfig.yaml!
 will be loaded in the order that you write them in. Each file doesn't have 
@@ -828,7 +855,7 @@ as you see fit-- have a look at \cref{lst:mysettings} for an example
 that uses four tabs for the default indent, and adds the \lstinline!tabbing!
 environment to the list of environments that contains alignment delimiters.
 			 	 	 	 	 	
-\begin{yaml}[caption={\lstinline!mysettings.yaml! (example)},label={lst:mysettings}]
+\begin{cmhlistings}[style=yaml]{\lstinline!mysettings.yaml! (example)}{lst:mysettings}
 # Default value of indentation
 defaultIndent: "\t\t\t\t"
 
@@ -836,7 +863,7 @@ defaultIndent: "\t\t\t\t"
 # as needed
 lookForAlignDelims:
    tabbing: 1
-\end{yaml}
+\end{cmhlistings}
 			 	 	 	 	 	
 You can make sure that your settings are loaded by checking \lstinline!indent.log!
 for details-- if you have specified a path that \lstinline!latexindent.pl! doesn't 
@@ -866,7 +893,7 @@ they are detailed in \lstinline!indentconfig.yaml!), the \emph{local} settings f
 must be called \lstinline!localSettings.yaml!. It can contain any switches that you'd
 like to change-- a sample is shown in \cref{lst:localSettings}.
 			 	 	 	 	 	
-\begin{yaml}[caption={\lstinline!localSettings.yaml! (example)},label={lst:localSettings}]
+\begin{cmhlistings}[style=yaml]{\lstinline!localSettings.yaml! (example)}{lst:localSettings}
 # Default value of indentation
 defaultIndent: " "
 
@@ -879,7 +906,7 @@ lookForAlignDelims:
 #  in this hash table will not be changed at all!
 verbatimEnvironments:
     cmhenvironment: 0
-\end{yaml}
+\end{cmhlistings}
 			 	 	 	 	 	
 You can make sure that your local settings are loaded by checking \lstinline!indent.log!
 for details-- if \lstinline!localSettings.yaml! can not be read then you will
@@ -933,13 +960,13 @@ A visual representation of this is given in \cref{fig:loadorder}.
 			
 \subsection{An important example}
 I was working on a document that had the text shown in \cref{lst:casestudy}. 
-\begin{lstlisting}[caption={When to set \lstinline!alwaysLookforSplitBrackets=0!},label={lst:casestudy},escapeinside={(*@}{@*)}]
+\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{When to set \lstinline!alwaysLookforSplitBrackets=0!}{lst:casestudy}
 Hence determine how many zeros the function $h(x)=f(x)-g(x)$
 has on the interval $[0,9)$.(*@\label{line:interval1}@*)
 \begin{shortsolution}
 	The function $h$ has $10$ zeros on the interval $[0,9)$.(*@\label{line:interval2}@*)
 \end{shortsolution}
-\end{lstlisting}
+\end{cmhlistings}
 I had allowed \lstinline!alwaysLookforSplitBrackets=1!, which is the default setting. 
 Unfortunately, this caused undesired results, as \lstinline!latexindent.pl! thought that the opening 
 \lstinline![!  in the interval notation (\cref{line:interval1,line:interval2}) 
@@ -993,7 +1020,7 @@ If you intend to use \lstinline!latexindent.pl! and \emph{not} one of the suppli
 minimum code in \cref{lst:helloworld} (\lstinline!perl helloworld.pl!) then you will be able to run \lstinline!latexindent.pl!, otherwise you may 
 need to install the missing modules.
 			 	 	 	 	 	
-\begin{lstlisting}[language=Perl,caption={\lstinline!helloworld.pl!},label={lst:helloworld}]
+\begin{cmhlistings}[language=Perl]{\lstinline!helloworld.pl!}{lst:helloworld}
 #!/usr/bin/perl
 
 use strict;
@@ -1007,7 +1034,7 @@ use File::HomeDir;
 
 print "hello world";
 exit;
-\end{lstlisting}
+\end{cmhlistings}
 My default installation on Ubuntu 12.04 did \emph{not} come
 with all of these modules as standard, but Strawberry Perl for Windows \cite{strawberryperl}
 did.
@@ -1026,25 +1053,25 @@ The \lstinline!arara! rule (\lstinline!indent.yaml!) contains lines such as thos
 given in \cref{lst:arararule}. With this setup, the user \emph{always} has 
 to specify whether or not they want (in this example) to use the \lstinline!trace!
 identifier.
-\begin{yaml}[caption={The \lstinline!arara! rule},label={lst:arararule},numbers=none]
+\begin{cmhlistings}[style=yaml,numbers=none]{The \lstinline!arara! rule}{lst:arararule}
 ...
 arguments:
 - identifier: trace
   flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
 ...
-\end{yaml}
+\end{cmhlistings}
 			
 If you would like to have the \lstinline!trace! option on by default every time you 
 call \lstinline!latexindent.pl! from \lstinline!arara! (without having to write \lstinline!% arara: indent: {trace: yes}!), then simply
 amend \cref{lst:arararule} so that it looks like \cref{lst:arararulemod}.
-\begin{yaml}[caption={The \lstinline!arara! rule (modified)},label={lst:arararulemod},numbers=none]
+\begin{cmhlistings}[style=yaml,numbers=none]{The \lstinline!arara! rule (modified)}{lst:arararulemod}
 ...
 arguments:
 - identifier: trace
   flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
   default: "-t"
 ...
-\end{yaml}
+\end{cmhlistings}
 			
 With this modification in place, you now simply to write \lstinline!% arara: indent! and 
 \lstinline!trace! mode will be activated by default. If you wish to turn off \lstinline!trace!
