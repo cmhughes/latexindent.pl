@@ -144,6 +144,15 @@ indentAfterHeadings:
        indent: 0
        level: 7
 
+indentAfterItems:
+    itemize: 1
+    enumerate: 1
+    list: 1
+
+itemNames:
+    item: 1
+    myitem: 1
+    
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
 # and alwaysLookforSplitBrackets: 1 then you don't need

@@ -206,6 +206,8 @@ my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
 my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
 my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 my %indentAfterHeadings= %{$defaultSettings->[0]->{indentAfterHeadings}};
+my %indentAfterItems= %{$defaultSettings->[0]->{indentAfterItems}};
+my %itemNames= %{$defaultSettings->[0]->{itemNames}};
 
 # need new hashes to store the user and local data before
 # overwriting the default
@@ -218,6 +220,8 @@ my %checkunmatchedELSEUSER;
 my %checkunmatchedbracketUSER;
 my %noAdditionalIndentUSER;
 my %indentAfterHeadingsUSER;
+my %indentAfterItemsUSER;
+my %itemNamesUSER;
 
 # for printing the user and local settings to the log file
 my %dataDump;
@@ -340,6 +344,11 @@ foreach my $settings (@absPaths)
             %indentAfterHeadingsUSER= %{$userSettings->[0]->{indentAfterHeadings}} if defined($userSettings->[0]->{indentAfterHeadings});
             @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
 
+            %indentAfterItemsUSER= %{$userSettings->[0]->{indentAfterItems}} if defined($userSettings->[0]->{indentAfterItems});
+            @indentAfterItems{ keys %indentAfterItemsUSER } = values %indentAfterItemsUSER if (%indentAfterItemsUSER);
+
+            %itemNamesUSER= %{$userSettings->[0]->{itemNames}} if defined($userSettings->[0]->{itemNames});
+            @itemNames{ keys %itemNamesUSER } = values %itemNamesUSER if (%itemNamesUSER);
        }
        else
        {
@@ -630,6 +639,9 @@ while(<MAINFILE>)
         # check for a heading
         &indent_heading();
 
+        # check for \item 
+        &indent_item();
+
         # add the trailing comments back to the end of the line
         if(scalar($trailingcomments))
         {
@@ -645,13 +657,12 @@ while(<MAINFILE>)
             $trailingcomments='';
 
         }
-    }
-
-    # remove trailing whitespace
-    if ($removeTrailingWhitespace)
-    {
-        print $logfile "Line $lineCounter\t removing trailing whitespace\n" if ($tracingMode);
-        s/\s+$/\n/;
+        # remove trailing whitespace
+        if ($removeTrailingWhitespace)
+        {
+            print $logfile "Line $lineCounter\t removing trailing whitespace\n" if ($tracingMode);
+            s/\s+$/\n/;
+        }
     }
 
     # ADD CURRENT LEVEL OF INDENTATION
@@ -750,6 +761,9 @@ while(<MAINFILE>)
         # check for a heading
         &indent_after_heading();
 
+        # check for \item
+        &indent_after_item();
+
         # tracing mode
         print $logfile "Line $lineCounter\t Environments: ",join(", ",@environmentStack),"\n" if($tracingMode and scalar(@environmentStack));
     }
@@ -798,6 +812,39 @@ close($logfile);
 
 exit;
 
+sub indent_item{
+    # PURPOSE: this subroutine indents the item *itself*
+
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment\n" if($tracingMode);
+        if($itemNames{$indentNames[-1]})
+        {
+            print $logfile "Line $lineCounter\t $1 found- neutralizing indentation from previous ",$indentNames[-1],"\n" if($tracingMode);
+            &decrease_indent($1);
+        }
+    }
+
+}
+
+sub indent_after_item{
+    # PURPOSE: This matches a line that begins with 
+    #
+    #               \item
+    #               \item[
+    #               \myitem
+    #               \myitem[
+    #
+    #           or anything else specified in itemNames
+    #          
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment\n" if($tracingMode);
+        &increase_indent($1);
+    }
+}
 sub begin_command_with_alignment{
     # PURPOSE: This matches
     #           %* \begin{tabular}
@@ -1454,6 +1501,13 @@ sub at_end_of_env_or_eq{
             s/^\s+// if($_ ne ""); 
        }
 
+       # check if we're in an environment that is looking 
+       # to indent after each \item
+       if(scalar(@indentNames) and $itemNames{$indentNames[-1]})
+       {
+            &decrease_indent($indentNames[-1]);
+       }
+
        # check to see if \end{environment} fits with most recent \begin{...}
        my $previousEnvironment = pop(@environmentStack);
 
@@ -1845,7 +1899,7 @@ sub increase_indent{
           push(@indent, $indentRules{$command});
           # tracing mode
           print $logfile "Line $lineCounter\t increasing indent using rule for $command (see indentRules)\n" if($tracingMode);
-          push(@indentNames,"$command (rule)");
+          push(@indentNames,"$command");
        }
        else
        {
@@ -1853,7 +1907,7 @@ sub increase_indent{
           if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
           {
             push(@indent, $defaultIndent);
-            push(@indentNames,"$command (default)");
+            push(@indentNames,"$command");
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
           }
@@ -1875,6 +1929,7 @@ sub decrease_indent{
 
        if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
        {
+            print $logfile "Line $lineCounter\t removing ", $indentNames[-1], " from indentNames\n" if($tracingMode);
             pop(@indent);
             pop(@indentNames);
             # tracing mode
