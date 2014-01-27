@@ -76,6 +76,7 @@ indentRules:
    anotherenvironment: "\t\t\t\t"
    chapter: " "
    section: " "
+   item: "      "
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
