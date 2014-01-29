@@ -72,7 +72,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 	width=\linewidth,
 	breakable,
 	colback=blue!5!white,
-	colframe=white!70!black,
+	colframe=white!85!black,
 	top=0cm,
 	bottom=0cm,
 	left=6mm,
@@ -163,7 +163,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 
 % \begin{noindent}
 	\title{\lstinline[basicstyle=\huge\ttfamily]!latexindent.pl!\\[1cm]
-		Version 1.11R}
+		Version 2.0R}
 % \end{noindent}
 \author{Chris Hughes \footnote{smr01cmh AT users.sourceforge.net}}
 \maketitle
@@ -760,11 +760,35 @@ some more text here
   \item[\verbitem{itemNames}] If you have your own \lstinline!item! commands (perhaps you 
     prefer to use \lstinline!myitem!, for example)
     then you can put populate them in \lstinline!itemNames!. 
-
     For example, users of the \lstinline!exam! document class might like to add 
-\lstinline!parts! to \lstinline!indentAfterItems! and \lstinline!part! to \lstinline!itemNames!
-\fixthis{add sample listing for exam document class}
+\lstinline!parts! to \lstinline!indentAfterItems! and \lstinline!part! to \lstinline!itemNames! 
+to their user settings--see \vref{sec:indentconfig} for details of how to configure user settings, 
+and \vref{lst:mysettings} in particular.\label{page:examsettings}
 
+\item[\verbitem{constructIfElseFi}] The commands specified in this field 
+  will tell \lstinline!latexindent.pl! to look for constructs that 
+  have the form \lstinline!\if...! \lstinline!\else...! \lstinline!\fi!, such as, 
+  for example, \lstinline!\ifnum!; see \cref{lst:iffibefore,lst:iffiafter} for 
+  a before-and-after demonstration.
+
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,xleftmargin=-3mm,columns=fixed]{\lstinline!if-else-fi! construct before}{lst:iffibefore}
+\ifnum\radius>5
+\ifnum\radius<16
+\draw[decorate,...
+\fi
+\fi
+\end{cmhlistings}
+	\end{minipage}
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,xleftmargin=-3mm,columns=fixed]{\lstinline!if-else-fi! construct after}{lst:iffiafter}
+\ifnum\radius>5
+    \ifnum\radius<16
+    	\draw[decorate,...
+	\fi
+\fi
+\end{cmhlistings}
+	\end{minipage}
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
 			unless you wish to micro-manage your indentation scheme.
@@ -822,7 +846,7 @@ After reading the previous section, it should sound reasonable that
 well wonder what happens if you choose to ask \lstinline!latexindent.pl! to
 prioritize one above the other.
 
-For example, let's say that you put the fields in \cref{lst:conflict} into
+For example, let's say that (after reading \cref{sec:indentconfig}) you put the fields in \cref{lst:conflict} into
 one of your settings files.
 \begin{cmhlistings}[style=yaml]{Conflicting ideas}{lst:conflict}
 indentRules:
@@ -840,7 +864,7 @@ will always make the decision to prioritize \lstinline!noAdditionalIndent! above
 your settings file. The first
 time it encounters \lstinline!myenvironment! it will put a warning in \lstinline!indent.log!
 and delete the offending key from \lstinline!indentRules! so that any future
-conflicts won't have to be addressed.
+conflicts will not have to be addressed.
 
 Let's consider another conflicting example in \cref{lst:bigconflict}
 \begin{cmhlistings}[style=yaml]{More conflicting ideas}{lst:bigconflict}
@@ -909,8 +933,9 @@ To get started with your own settings file, you might like to save a copy of
 example, \lstinline!mysettings.yaml!. Once you have added the path to \lstinline!indentconfig.yaml!
 feel free to start changing the switches and adding more environments to it
 as you see fit-- have a look at \cref{lst:mysettings} for an example
-that uses four tabs for the default indent, and adds the \lstinline!tabbing!
-environment to the list of environments that contains alignment delimiters.
+that uses four tabs for the default indent, adds the \lstinline!tabbing!
+environment to the list of environments that contains alignment delimiters, 
+and adds the changes we described on \cpageref{page:examsettings}.
 
 \begin{cmhlistings}[style=yaml]{\lstinline!mysettings.yaml! (example)}{lst:mysettings}
 # Default value of indentation
@@ -920,6 +945,16 @@ defaultIndent: "\t\t\t\t"
 # as needed
 lookForAlignDelims:
    tabbing: 1
+
+# If you use the exam documentclass, you might 
+# like the following settings
+# environments that have \item commands
+indentAfterItems:
+    parts: 1
+
+# commands to be treated like \item
+itemNames:
+    part: 1
 \end{cmhlistings}
 
 You can make sure that your settings are loaded by checking \lstinline!indent.log!

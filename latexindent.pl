@@ -851,6 +851,12 @@ sub indent_after_if_else_fi{
     #                   <stuff>
     #                   <stuff>
     #               \fi
+    #
+    #   How to read /^\s*\\(if.*?)(\s|\\|\#)
+    #
+    #       ^\s*        begins with multiple spaces (possibly none)
+    #       \\(if.*?)(\s|\\|\#)   matches \if... up to either a
+    #                             space, a \, or a #
     if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $constructIfElseFi{$1}) 
     {
         # tracing mode
