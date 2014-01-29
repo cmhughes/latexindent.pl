@@ -813,7 +813,7 @@ close($logfile);
 exit;
 
 sub indent_item{
-    # PURPOSE: this subroutine indents the item *itself*
+    # PURPOSE: this subroutine sets the indentation for the item *itself*
 
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]}) 
     {
@@ -829,7 +829,8 @@ sub indent_item{
 }
 
 sub indent_after_item{
-    # PURPOSE: This matches a line that begins with 
+    # PURPOSE: Set the indentation *after* the item
+    #          This matches a line that begins with 
     #
     #               \item
     #               \item[
@@ -838,7 +839,9 @@ sub indent_after_item{
     #
     #           or anything else specified in itemNames
     #          
-    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]}) 
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ 
+            and $itemNames{$1} 
+            and $indentAfterItems{$environmentStack[-1]}) 
     {
         # tracing mode
         print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment\n" if($tracingMode);
