@@ -145,17 +145,40 @@ indentAfterHeadings:
        indent: 0
        level: 7
 
+# if you want the script to look for \item commands 
+# and format it, as follows (for example),
+#       \begin{itemize}
+#           \item content here
+#                 next line is indented
+#                 next line is indented
+#           \item another item
+#       \end{itemize}
+# then populate indentAfterItems. See also itemNames
 indentAfterItems:
     itemize: 1
     enumerate: 1
     list: 1
 
+# if you want to use other names for your items (such as, for example, part)
+# then populate them here- note that you can trick latexindent.pl
+# into indenting all kinds of commands (within environments specified in 
+# indentAfterItems) using this technique.
 itemNames:
     item: 1
     myitem: 1
 
+# if you want to indent if, else, fi constructs such as, for example,
+#
+#       \ifnum#1=2
+#               something
+#       \else
+#               something else
+#       \fi
+#
+# then populate them in constructIfElseFi
 constructIfElseFi:
     ifnum: 1
+    ifodd: 1
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1

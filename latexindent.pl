@@ -47,7 +47,7 @@ GetOptions ("w"=>\$overwrite,
 die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
 
 # version number
-my $versionNumber = "1.11R";
+my $versionNumber = "2.0R";
 
 # Check the number of input arguments- if it is 0 then simply 
 # display the list of options (like a manual)
@@ -208,6 +208,7 @@ my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
 my %indentAfterHeadings= %{$defaultSettings->[0]->{indentAfterHeadings}};
 my %indentAfterItems= %{$defaultSettings->[0]->{indentAfterItems}};
 my %itemNames= %{$defaultSettings->[0]->{itemNames}};
+my %constructIfElseFi= %{$defaultSettings->[0]->{constructIfElseFi}};
 
 # need new hashes to store the user and local data before
 # overwriting the default
@@ -222,6 +223,7 @@ my %noAdditionalIndentUSER;
 my %indentAfterHeadingsUSER;
 my %indentAfterItemsUSER;
 my %itemNamesUSER;
+my %constructIfElseFiUSER;
 
 # for printing the user and local settings to the log file
 my %dataDump;
@@ -349,6 +351,9 @@ foreach my $settings (@absPaths)
 
             %itemNamesUSER= %{$userSettings->[0]->{itemNames}} if defined($userSettings->[0]->{itemNames});
             @itemNames{ keys %itemNamesUSER } = values %itemNamesUSER if (%itemNamesUSER);
+
+            %constructIfElseFiUSER= %{$userSettings->[0]->{constructIfElseFi}} if defined($userSettings->[0]->{constructIfElseFi});
+            @constructIfElseFi{ keys %constructIfElseFiUSER } = values %constructIfElseFiUSER if (%constructIfElseFiUSER);
        }
        else
        {
@@ -636,11 +641,14 @@ while(<MAINFILE>)
         # [ ] across lines
         &end_command_or_key_unmatched_brackets();
 
-        # check for a heading
+        # check for a heading such as \chapter, \section, etc
         &indent_heading();
 
         # check for \item 
         &indent_item();
+
+        # check for \else or \fi
+        &indent_if_else_fi();
 
         # add the trailing comments back to the end of the line
         if(scalar($trailingcomments))
@@ -752,7 +760,7 @@ while(<MAINFILE>)
         # specified in %checkunmatched hash table
         &start_command_or_key_unmatched_braces();
 
-        # check for an else statement
+        # check for an else statement (braces, not \else)
         &check_for_else();
 
         # check for a command that splits [] across lines
@@ -763,6 +771,9 @@ while(<MAINFILE>)
 
         # check for \item
         &indent_after_item();
+
+        # check for \if or \else command
+        &indent_after_if_else_fi();
 
         # tracing mode
         print $logfile "Line $lineCounter\t Environments: ",join(", ",@environmentStack),"\n" if($tracingMode and scalar(@environmentStack));
@@ -811,6 +822,51 @@ if($outputToFile)
 close($logfile);
 
 exit;
+
+sub indent_if_else_fi{
+    # PURPOSE: set indentation of line that contains \if, \else, \fi
+    #          command
+    if( $_ =~ m/^\s*\\fi/ and $constructIfElseFi{$indentNames[-1]}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t \\fi command found, matching: \\",$indentNames[-1], "\n" if($tracingMode);
+        &decrease_indent($indentNames[-1]);
+    }
+    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/) and $constructIfElseFi{$indentNames[-1]}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t \\else command found, matching: \\",$indentNames[-1], "\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t decreasing indent, but indentNames is still  \\",join(", ",@indentNames), "\n" if($tracingMode);
+        pop(@indent);
+    }
+}
+
+sub indent_after_if_else_fi{
+    # PURPOSE: set indentation *after* \if construct such as
+    #
+    #               \ifnum\x=2
+    #                   <stuff>
+    #                   <stuff>
+    #               \else
+    #                   <stuff>
+    #                   <stuff>
+    #               \fi
+    if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $constructIfElseFi{$1}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t ifelsefi construct found: $1 \n" if($tracingMode);
+        &increase_indent($1);
+    }
+    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) and $constructIfElseFi{$indentNames[-1]}) 
+    {
+        # tracing mode
+        print $logfile "Line $lineCounter\t \\else command found: $1 \n" if($tracingMode);
+        &increase_indent($indentNames[-1]);
+        # don't want to store the name of the \if construct twice
+        # so remove the second copy
+        pop(@indentNames);
+    }
+  }
 
 sub indent_item{
     # PURPOSE: this subroutine sets the indentation for the item *itself*
