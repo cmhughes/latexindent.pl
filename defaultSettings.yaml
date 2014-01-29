@@ -153,6 +153,9 @@ indentAfterItems:
 itemNames:
     item: 1
     myitem: 1
+
+constructIfElseFi:
+    ifnum: 1
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
