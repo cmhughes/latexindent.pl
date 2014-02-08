@@ -612,8 +612,8 @@ while(<MAINFILE>)
 
     # only check for unmatched braces if we're not in
     # a verbatim-like environment or in the preamble or in a
-    # noIndentBlock
-    if(!($inverbatim or $inpreamble or $inIndentBlock))
+    # noIndentBlock or in a delimiter block
+    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
     {
         # The check for closing } and ] relies on counting, so 
         # we have to remove trailing comments so that any {, }, [, ]
@@ -1916,7 +1916,7 @@ sub format_block{
         # remove trailing whitespace
         if ($removeTrailingWhitespace)
         {
-            print $logfile "Line $lineCounter\t removing trailing whitespace from delimiter aligned line\n" if ($tracingMode);
+            print $logfile "\t\tLine $lineCounter\t removing trailing whitespace from delimiter aligned line\n" if ($tracingMode);
             $tmpstring =~ s/\s+$/\n/;
         }
 
