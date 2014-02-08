@@ -598,6 +598,7 @@ while(<MAINFILE>)
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
 
+    print $logfile "Line $lineCounter\t << PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
 
@@ -696,7 +697,7 @@ while(<MAINFILE>)
             }
             push(@lines,$_);
             # tracing mode
-            print $logfile "Line $lineCounter\t Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t || PHASE 2: Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
         }
     }
     else
@@ -717,6 +718,8 @@ while(<MAINFILE>)
     # or in a noIndentBlock, or delimiter block
     if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
     {
+
+        print $logfile "Line $lineCounter\t >> PHASE 3: looking for reasons to INCREASE indentation of SUBSEQUENT lines \n" if($tracingMode);
 
         # check if we are in a 
         #   % \begin{noindent}
@@ -1613,7 +1616,12 @@ sub at_end_of_env_or_eq{
        {
             @indent=(); 
             @indentNames=(); 
-            print $logfile "Line $lineCounter\t \\end{$1} found- emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+
+            # tracing mode
+            if($tracingMode)
+            {
+                print $logfile "Line $lineCounter\t \\end{$1} found- emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+            }
        }
     }
 }

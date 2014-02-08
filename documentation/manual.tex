@@ -1173,3 +1173,40 @@ Of course, you can apply these types of modifications to \emph{any} of the ident
 but proceed with caution if you intend to do this for \lstinline!overwrite!.
 
 \end{document}
+
+set local settings to include psset as an item
+\documentclass[pstricks,border=30pt,12pt]{standalone}
+\usepackage{pst-eucl}
+\psset{opacity=.2}
+\begin{document}
+\begin{pspicture}(7,7)
+    \pstGeonode[PosAngle={-90,-90,0,-90,180}]{A}(5,0){B}(7,1){C}(2,1){D}(0,5){A_1}
+    \pstTranslation[PosAngle=120]{A}{A_1}{B,C,D}[B_1,C_1,D_1]
+    \pspolygon(A)(B)(C)(C_1)(D_1)(A_1)
+    \psline(A_1)(B_1)(C_1)(B)(B_1)
+    \pstMiddleAB[PosAngle=20]{B}{C_1}{E}
+    \psline(E)(C)
+    \pstMarkAngle{D}{E}{C}{}
+    \psset{linestyle=dashed}
+    \psline(C)(D)(D_1)
+    \psline(A)(D)
+    \psline(B)(D)(C_1)
+    \psline(D)(E)
+    \psset{linestyle=none,fillstyle=solid,fillcolor=gray}
+    \pspolygon(A)(D)(D_1)(A_1)
+    \pspolygon(B)(C_1)(D)
+\end{pspicture}
+\end{document}
+\begin{frame}[label=timeline]{The journey\ldots}
+   \begin{tikzpicture}
+      \pause
+         \node[cloudy](spring2010){Spr...
+         \node[below=0mm of spring2010...
+      \pause
+         \node[cloudy,right=of spring20...
+         \node[below=0mm of summer2010...
+      \pause
+         \node[cloudy,right=of summer2...
+         \node[below=0mm of fall2010...
+    \end{tikzpicture}
+\end{frame}
