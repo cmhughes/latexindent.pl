@@ -187,7 +187,7 @@ in a big project. After I blogged about it on the
 \TeX{} stack exchange \cite{cmhblog} I received some positive feedback and
 follow-up feature requests. A big thank you to Harish Kumar who has really
 helped to drive the script forward and has put it through a number of challenging
-tests-- I look forward to more challenges in the future Harish!
+tests--I look forward to more challenges in the future Harish!
 
 The \lstinline!yaml!-based interface of \lstinline!latexindent.pl! was inspired
 by the wonderful \lstinline!arara! tool; any similarities are deliberate, and
@@ -213,7 +213,7 @@ stage to restate an important part of the license here:
 	GNU General Public License for more details.
 \end{quote}
 There is certainly no malicious intent in releasing this script, and I do hope
-that it works as you expect it to-- if it does not, please first of all
+that it works as you expect it to--if it does not, please first of all
 make sure that you have the correct settings, and then feel free to let me know with a
 complete minimum working example as I would like to improve the code as much as possible.
 
@@ -224,12 +224,12 @@ complete minimum working example as I would like to improve the code as much as 
 
 
 \section{Demonstration: before and after}
-Let's give a demonstration of some before and after code-- after all, you probably
+Let's give a demonstration of some before and after code--after all, you probably
 won't want to try the script if you don't much like the results. You might also
 like to watch the video demonstration I made on youtube \cite{cmh:videodemo}
 
 As you look at \crefrange{lst:filecontentsbefore}{lst:pstricksafter}, remember
-that \lstinline!latexindent.pl! is just following its rules-- there is nothing
+that \lstinline!latexindent.pl! is just following its rules--there is nothing
 particular about these code snippets. All of the rules can be modified
 so that each user can personalize their indentation scheme.
 
@@ -237,7 +237,7 @@ In each of the samples given in \crefrange{lst:filecontentsbefore}{lst:pstricksa
 the `before' case is a `worst case scenario' with no effort to make indentation. The `after'
 result would be the same, regardless of the leading white space at the beginning of
 each line which is stripped by \lstinline!latexindent.pl! (unless a \lstinline!verbatim!-like
-environment or \lstinline!noIndentBlock! is specified-- more on this in \cref{sec:defuseloc}).
+environment or \lstinline!noIndentBlock! is specified--more on this in \cref{sec:defuseloc}).
 
 \begin{adjustwidth}{-2cm}{2cm}
 	\begin{minipage}{.6\textwidth}
@@ -325,7 +325,7 @@ of the script in \cref{sec:defuseloc}.
 \lstinline!latexindent.pl! ships with \lstinline!latexindent.exe! for Windows
 users, so that you can use the script with or without a Perl distribution.
 If you plan to use \lstinline!latexindent.pl! (i.e, the original Perl script) then you will
-need a few standard Perl modules-- see \vref{sec:requiredmodules} for details.
+need a few standard Perl modules--see \vref{sec:requiredmodules} for details.
 
 In what follows, we will always refer to \lstinline!latexindent.pl!, but depending on
 your operating system and preference, you might substitute \lstinline!latexindent.exe! or
@@ -378,7 +378,7 @@ on which of the following options are used.
 		Tracing mode: verbose output will be given to \lstinline!indent.log!. This
 		is useful if \lstinline!latexindent.pl! has made a mistake and you're
 		trying to find out where and why. You might also be interested in learning
-		about \lstinline!latexindent.pl!'s thought process-- if so, this
+		about \lstinline!latexindent.pl!'s thought process--if so, this
 		switch is for you.
 	\item[\verbitem{-l}] \lstinline!latexindent.pl -l myfile.tex!
 
@@ -417,7 +417,7 @@ resides to your \lstinline!araraconfig.yaml! file.
 
 Once you have told \lstinline!arara! where to find your \lstinline!indent! rule,
 you can use it any of the ways described in \cref{lst:arara} (or combinations thereof).
-In fact, \lstinline!arara! allows yet greater flexibility-- you can use \lstinline!yes/no!, \lstinline!true/false!, or \lstinline!on/off! to toggle the various options.
+In fact, \lstinline!arara! allows yet greater flexibility--you can use \lstinline!yes/no!, \lstinline!true/false!, or \lstinline!on/off! to toggle the various options.
 
 \begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\lstinline!arara! sample usage}{lst:arara}
 %(*@@*) arara: indent
@@ -461,7 +461,7 @@ directories that contain spaces.
 \section{default, user, and local settings}\label{sec:defuseloc}
 \lstinline!latexindent.pl! loads its settings from \lstinline!defaultSettings.yaml!
 (rhymes with camel). The idea is to separate the behaviour of the script
-from the internal working-- this is very similar to the way that we separate content
+from the internal working--this is very similar to the way that we separate content
 from form when writing our documents in \LaTeX.
 
 \subsection{\lstinline!defaultSettings.yaml!}
@@ -476,12 +476,12 @@ value is given in each case.
 You can certainly feel free to edit \lstinline!defaultSettings.yaml!, but
 this is not ideal as it may be overwritten when you update your distribution--
 all of your hard work tweaking the script would be undone! Don't worry,
-there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you like.
+there's a solution--feel free to peek ahead to \cref{sec:indentconfig} if you like.
 \begin{itemize}
 	\item[\verbitem{defaultIndent}] \lstinline!"\t"!
 
 		This is the default indentation (\lstinline!\t! means a tab) used in the absence of other details
-		for the command or environment we are working with-- see \lstinline!indentRules!
+		for the command or environment we are working with--see \lstinline!indentRules!
 		for more details (\cpageref{page:indentRules}).
 
 		If you're interested in experimenting with \lstinline!latexindent.pl! then you
@@ -508,7 +508,7 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 		Some users may only want a finite number of backup files,
 		say at most $3$, in which case, they can change this switch.
 		The smallest value of \lstinline!maxNumberOfBackUps! is $0$ which will \emph{not}
-		prevent backup files being made-- in this case, the behaviour will be dictated
+		prevent backup files being made--in this case, the behaviour will be dictated
 		entirely by \lstinline!onlyOneBackUp!.
 		%\footnote{This was a feature request made on \href{https://github.com/cmhughes/latexindent.plx}{github}}
 	\item[\verbitem{cycleThroughBackUps}]\lstinline!0!
@@ -536,11 +536,11 @@ copy myfile.bak4 to myfile.bak3
 
 		This switch tells \lstinline!latexindent.pl! to look for commands that
 		can split \emph{braces} across lines, such as \lstinline!parbox!, \lstinline!tikzset!, etc. In older
-		versions of \lstinline!latexindent.pl! you had to specify each one in \lstinline!checkunmatched!-- this
+		versions of \lstinline!latexindent.pl! you had to specify each one in \lstinline!checkunmatched!--this
 		clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!.
 
 		\emph{As long as you leave this switch on (set to 1) you don't need to specify which
-			commands can split braces across lines-- you can ignore the
+			commands can split braces across lines--you can ignore the
 			fields \lstinline!checkunmatched! and \lstinline!checkunmatchedELSE! described 
             later on \cpageref{lst:checkunmatched}}.
 	\item[\verbitem{alwaysLookforSplitBrackets}] \lstinline!1!
@@ -551,7 +551,7 @@ copy myfile.bak4 to myfile.bak3
 		this clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!.
 
 		\emph{As long as you leave this switch on (set to 1) you don't need to specify which
-			commands can split brackets across lines-- you can ignore \lstinline!checkunmatchedbracket! described later on 
+			commands can split brackets across lines--you can ignore \lstinline!checkunmatchedbracket! described later on 
             \cpageref{lst:checkunmatched}}.
 
 	\item[\verbitem{removeTrailingWhitespace}] \lstinline!0!
@@ -628,8 +628,8 @@ lookForAlignDelims:
 	\end{cmhlistings}
 
 	\item[\verbitem{verbatimEnvironments}] A field that contains a list of environments
-		that you would like left completely alone-- no indentation will be done
-		to environments that you have specified in this field-- see \cref{lst:verbatimEnvironments}.
+		that you would like left completely alone--no indentation will be done
+		to environments that you have specified in this field--see \cref{lst:verbatimEnvironments}.
 
 
 		\begin{cmhlistings}[style=yaml]{\lstinline!verbatimEnvironments!}{lst:verbatimEnvironments}
@@ -730,7 +730,7 @@ indentAfterHeadings:
        level: 3
     ...
 	\end{cmhlistings}
-	The default settings do \emph{not} place indentation after a heading-- you
+	The default settings do \emph{not} place indentation after a heading--you
 	can easily switch them on by changing \lstinline!indent: 0! to \lstinline!indent: 1!.
 	The \lstinline!level! field tells \lstinline!latexindent.pl! the hierarchy of the heading
 	structure in your document. You might, for example, like to have both \lstinline!section!
@@ -818,7 +818,7 @@ and \vref{lst:mysettings} in particular.\label{page:examsettings}
 
 		Should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then
 		you can populate \lstinline!checkunmatched! with commands that can split braces across
-		lines-- see \cref{lst:checkunmatched}.
+		lines--see \cref{lst:checkunmatched}.
 
 		\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatched!}{lst:checkunmatched}
 checkunmatched:
@@ -830,7 +830,7 @@ checkunmatched:
 
 		As in \lstinline!checkunmatched!, should you wish to deactivate \lstinline!alwaysLookforSplitBraces! by setting it to \lstinline!0!, then
 		you can populate \lstinline!checkunmatchedELSE! with commands that can split braces across
-		lines \emph{and} have an `else' statement-- see \cref{lst:checkunmatchedELSE}.
+		lines \emph{and} have an `else' statement--see \cref{lst:checkunmatchedELSE}.
 
 		\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatchedELSE!}{lst:checkunmatchedELSE}
 checkunmatchedELSE:
@@ -843,7 +843,7 @@ checkunmatchedELSE:
 
 		Should you wish to deactivate \lstinline!alwaysLookforSplitBrackets! by setting it
 		to \lstinline!0!, then you can populate \lstinline!checkunmatchedbracket! with commands that can
-		split \emph{brackets} across lines-- see \cref{lst:checkunmatchedbracket}.
+		split \emph{brackets} across lines--see \cref{lst:checkunmatchedbracket}.
 
 		\begin{cmhlistings}[style=yaml]{\lstinline!checkunmatchedbracket!}{lst:checkunmatchedbracket}
 checkunmatchedbracket:
@@ -889,7 +889,7 @@ lookForAlignDelims:
 verbatimEnvironments:
    myenvironment: 1
 \end{cmhlistings}
-This is quite a significant conflict-- we are first of all telling \lstinline!latexindent.pl!
+This is quite a significant conflict--we are first of all telling \lstinline!latexindent.pl!
 to look for alignment delimiters in \lstinline!myenvironment! and then
 telling it that actually we would like \lstinline!myenvironment! to be considered
 as a \lstinline!verbatim!-like environment. Regardless of the order that we
@@ -907,7 +907,7 @@ following order:
 \end{enumerate}
 \subsection{\lstinline!indentconfig.yaml! (for user settings)}\label{sec:indentconfig}
 Editing \lstinline!defaultSettings.yaml! is not ideal as it may be overwritten when
-updating your distribution-- a better way to customize the settings to your liking
+updating your distribution--a better way to customize the settings to your liking
 is to set up your own settings file,
 \lstinline!mysettings.yaml! (or any name you like, provided it ends with \lstinline!.yaml!).
 The only thing you have to do is tell \lstinline!latexindent.pl! where to find it.
@@ -948,7 +948,7 @@ To get started with your own settings file, you might like to save a copy of
 \lstinline!defaultSettings.yaml! in another directory and call it, for
 example, \lstinline!mysettings.yaml!. Once you have added the path to \lstinline!indentconfig.yaml!
 feel free to start changing the switches and adding more environments to it
-as you see fit-- have a look at \cref{lst:mysettings} for an example
+as you see fit--have a look at \cref{lst:mysettings} for an example
 that uses four tabs for the default indent, adds the \lstinline!tabbing!
 environment to the list of environments that contains alignment delimiters, 
 and adds the changes we described on \cpageref{page:examsettings}.
@@ -974,7 +974,7 @@ itemNames:
 \end{cmhlistings}
 
 You can make sure that your settings are loaded by checking \lstinline!indent.log!
-for details-- if you have specified a path that \lstinline!latexindent.pl! doesn't
+for details--if you have specified a path that \lstinline!latexindent.pl! doesn't
 recognize then you'll get a warning, otherwise you'll get confirmation that
 \lstinline!latexindent.pl! has read your settings file \footnote{Windows users
 	may find that they have to end \lstinline!.yaml! files with a blank line}.
@@ -999,7 +999,7 @@ user settings.
 In contrast to the \emph{user} settings which can be named anything you like (provided that
 they are detailed in \lstinline!indentconfig.yaml!), the \emph{local} settings file
 must be called \lstinline!localSettings.yaml!. It can contain any switches that you'd
-like to change-- a sample is shown in \cref{lst:localSettings}.
+like to change--a sample is shown in \cref{lst:localSettings}.
 
 \begin{cmhlistings}[style=yaml]{\lstinline!localSettings.yaml! (example)}{lst:localSettings}
 # Default value of indentation
@@ -1017,7 +1017,7 @@ verbatimEnvironments:
 \end{cmhlistings}
 
 You can make sure that your local settings are loaded by checking \lstinline!indent.log!
-for details-- if \lstinline!localSettings.yaml! can not be read then you will
+for details--if \lstinline!localSettings.yaml! can not be read then you will
 get a warning, otherwise you'll get confirmation that
 \lstinline!latexindent.pl! has read \lstinline!localSettings.yaml!.
 
@@ -1061,7 +1061,7 @@ A visual representation of this is given in \cref{fig:loadorder}.
 	\end{tikzpicture}
 	\caption{Schematic of the load order described in \cref{sec:loadorder}; solid lines represent
 		mandatory files, dotted lines represent optional files. \lstinline!indentconfig.yaml! can
-		contain as many files as you like-- the files will be loaded in order; if you specify
+		contain as many files as you like--the files will be loaded in order; if you specify
 	settings for the same field in more than one file, the most recent takes priority. }
 	\label{fig:loadorder}
 \end{figure}
@@ -1095,13 +1095,13 @@ There are a number of known limitations of the script, and almost certainly quit
 few that are \emph{unknown}!
 
 The main limitation is to do with the alignment routine of environments that contain
-delimiters-- in other words, environments that are entered in \lstinline!lookForAlignDelims!.
+delimiters--in other words, environments that are entered in \lstinline!lookForAlignDelims!.
 Indeed, this is the only part of the script that can \emph{potentially} remove
 lines from \lstinline!myfile.tex!. Note that \lstinline!indent.log! will always
 finish with a comparison of line counts before and after.
 
 The routine works well for `standard' blocks of code that have the same number of \lstinline!&!
-per line, but it will not do anything for blocks that do not-- such examples
+per line, but it will not do anything for lines that do not--such examples
 include \lstinline!tabular! environments that use \lstinline!\multicolumn! or
 perhaps spread cell contents across multiple lines.  For each alignment block (\lstinline!tabular!,
 \lstinline!align!, etc) \lstinline!latexindent.pl! first of all makes a record
@@ -1115,7 +1115,7 @@ environment, the \lstinline!verbatim! environment \emph{will} be formatted, whic
 is probably not what you want. I hope to address this in future versions, but for the
 moment wrap it in a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
 
-I hope that this script is useful to some-- if you find an example where the
+I hope that this script is useful to some--if you find an example where the
 script does not behave as you think it should, feel free to e-mail me or else
 come and find me on the \url{http://tex.stackexchange.com} site; I'm often around
 and in the chat room.
@@ -1124,7 +1124,7 @@ and in the chat room.
 
 \appendix
 \section{Required \lstinline!Perl! modules}\label{sec:requiredmodules}
-If you intend to use \lstinline!latexindent.pl! and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules-- if you can run the
+If you intend to use \lstinline!latexindent.pl! and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules--if you can run the
 minimum code in \cref{lst:helloworld} (\lstinline!perl helloworld.pl!) then you will be able to run \lstinline!latexindent.pl!, otherwise you may
 need to install the missing modules.
 
