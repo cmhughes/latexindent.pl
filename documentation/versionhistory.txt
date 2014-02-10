@@ -1,5 +1,13 @@
+Version 2.0R January, February 2014
+    - added constructIfElseFi
+    - added indentAfterItems, and itemNames
+    - fixed a bug #13 about having brace matching within delimiter environment
+
 Version 1.11R Novermber 23rd
     - changed bin to RealBin
+    - added cruft directory option
+    - maximum backups
+
 Version 8.21 May 8th
     - made -d switch to ignore any user settings
 
