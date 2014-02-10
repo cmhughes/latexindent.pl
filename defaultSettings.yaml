@@ -34,6 +34,18 @@ onlyOneBackUp: 0
 # many backups are possible, unless onlyOneBackUp is switched on
 maxNumberOfBackUps: 0
 
+# some users may wish to cycle through back up files, for example, 
+# with maxNumberOfBackUps: 4, they may wish to delete the oldest
+# back up file, and keep only the most recent.
+#
+#    copy myfile.bak1 to myfile.bak0
+#    copy myfile.bak2 to myfile.bak1
+#    copy myfile.bak3 to myfile.bak2
+#    copy myfile.bak4 to myfile.bak3
+#
+# the back up will be written to myfile.bak4
+cycleThroughBackUps: 0
+
 # indent preamble
 indentPreamble: 0
 

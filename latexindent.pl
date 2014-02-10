@@ -194,6 +194,7 @@ my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
 my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
 my $maxNumberOfBackUps = $defaultSettings->[0]->{maxNumberOfBackUps};
 my $removeTrailingWhitespace = $defaultSettings->[0]->{removeTrailingWhitespace};
+my $cycleThroughBackUps = $defaultSettings->[0]->{cycleThroughBackUps};
 
 # hash variables
 my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
@@ -317,6 +318,7 @@ foreach my $settings (@absPaths)
             $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
             $maxNumberOfBackUps = $userSettings->[0]->{maxNumberOfBackUps} if defined($userSettings->[0]->{maxNumberOfBackUps});
             $removeTrailingWhitespace = $userSettings->[0]->{removeTrailingWhitespace} if defined($userSettings->[0]->{removeTrailingWhitespace});
+            $cycleThroughBackUps = $userSettings->[0]->{cycleThroughBackUps} if defined($userSettings->[0]->{cycleThroughBackUps});
 
             # hash variables - note that each one requires two lines, 
             # one to read in the data, one to put the keys&values in correctly
@@ -436,6 +438,32 @@ if ($overwrite)
             if($backupCounter==$maxNumberOfBackUps)
             {
                 print $logfile "\t maxNumberOfBackUps reached ($maxNumberOfBackUps)\n";
+
+                # some users may wish to cycle through back up files, e.g:
+                #    copy myfile.bak1 to myfile.bak0
+                #    copy myfile.bak2 to myfile.bak1
+                #    copy myfile.bak3 to myfile.bak2
+                #
+                #    current back up is stored in myfile.bak4
+                if($cycleThroughBackUps)
+                {
+                    print $logfile "\t cycleThroughBackUps detected (see cycleThroughBackUps) \n";
+                    for(my $i=1;$i<=$maxNumberOfBackUps;$i++)
+                    {
+                        # remove number from backUpFile
+                        my $oldBackupFile = $backupFile;
+                        $oldBackupFile =~ s/$backupExtension.*/$backupExtension/;
+                        my $newBackupFile = $oldBackupFile;
+
+                        # add numbers back on
+                        $oldBackupFile .= $i;
+                        $newBackupFile .= $i-1;
+                        print $logfile "\t\t copying $oldBackupFile to $newBackupFile \n";
+                        copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
+                    }
+                }
+
+                # rest maxNumberOfBackUps
                 $maxNumberOfBackUps=1 ;
                 last; # break out of the loop
             }

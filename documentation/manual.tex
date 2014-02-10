@@ -508,9 +508,23 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 		Some users may only want a finite number of backup files,
 		say at most $3$, in which case, they can change this switch.
 		The smallest value of \lstinline!maxNumberOfBackUps! is $0$ which will \emph{not}
-		prevent back up files being made-- in this case, the behaviour will be dictated
+		prevent backup files being made-- in this case, the behaviour will be dictated
 		entirely by \lstinline!onlyOneBackUp!.
 		%\footnote{This was a feature request made on \href{https://github.com/cmhughes/latexindent.plx}{github}}
+	\item[\verbitem{cycleThroughBackUps}]\lstinline!0!
+
+ Some users may wish to cycle through backup files, by deleting the 
+ oldest backup file and keeping only the most recent; for example, 
+ with \lstinline!maxNumberOfBackUps: 4!, and \lstinline!cycleThroughBackUps! 
+ set to \lstinline!1!  then the \lstinline!copy! procedure given in \cref{lst:cycleThroughBackUps} 
+ would be obeyed.
+
+		\begin{cmhlistings}[language=Perl]{\lstinline!cycleThroughBackUps!}{lst:cycleThroughBackUps}
+copy myfile.bak1 to myfile.bak0
+copy myfile.bak2 to myfile.bak1
+copy myfile.bak3 to myfile.bak2
+copy myfile.bak4 to myfile.bak3
+  \end{cmhlistings}
 
 	\item[\verbitem{indentPreamble}] \lstinline!0!
 
@@ -527,7 +541,8 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 
 		\emph{As long as you leave this switch on (set to 1) you don't need to specify which
 			commands can split braces across lines-- you can ignore the
-			fields \lstinline!checkunmatched! and \lstinline!checkunmatchedELSE! described later}.
+			fields \lstinline!checkunmatched! and \lstinline!checkunmatchedELSE! described 
+            later on \cpageref{lst:checkunmatched}}.
 	\item[\verbitem{alwaysLookforSplitBrackets}] \lstinline!1!
 
 		This switch tells \lstinline!latexindent.pl! to look for commands that
@@ -536,7 +551,8 @@ there's a solution-- feel free to peek ahead to \cref{sec:indentconfig} if you l
 		this clearly became tedious, hence the introduction of \lstinline!alwaysLookforSplitBraces!.
 
 		\emph{As long as you leave this switch on (set to 1) you don't need to specify which
-			commands can split brackets across lines-- you can ignore \lstinline!checkunmatchedbracket! described later}.
+			commands can split brackets across lines-- you can ignore \lstinline!checkunmatchedbracket! described later on 
+            \cpageref{lst:checkunmatched}}.
 
 	\item[\verbitem{removeTrailingWhitespace}] \lstinline!0!
 
