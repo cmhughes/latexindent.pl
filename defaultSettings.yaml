@@ -178,7 +178,19 @@ itemNames:
 # then populate them in constructIfElseFi
 constructIfElseFi:
     ifnum: 1
+    ifdim: 1
     ifodd: 1
+    ifvmode: 1
+    ifhmode: 1
+    ifmmode: 1
+    ifinner: 1
+    if: 1
+    ifcat: 1
+    ifx: 1
+    ifvoid: 1
+    ifeof: 1
+    iftrue: 1
+    ifcase: 1
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
