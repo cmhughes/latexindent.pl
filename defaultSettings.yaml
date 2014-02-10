@@ -12,6 +12,9 @@
 # Default value of indentation
 defaultIndent: "\t"
 
+# maximum depth
+maximumDepth: -1
+
 # default file extension of backup file (if original is overwritten with -w switch)
 # for example, if your .tex file is called
 #       myfile.tex

@@ -669,7 +669,7 @@ while(<MAINFILE>)
         # remove trailing whitespace
         if ($removeTrailingWhitespace)
         {
-            print $logfile "Line $lineCounter\t removing trailing whitespace\n" if ($tracingMode);
+            print $logfile "Line $lineCounter\t removing trailing whitespace (see removeTrailingWhitespace)\n" if ($tracingMode);
             s/\s+$/\n/;
         }
     }
@@ -883,7 +883,7 @@ sub indent_item{
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]}) 
     {
         # tracing mode
-        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         if($itemNames{$indentNames[-1]})
         {
             print $logfile "Line $lineCounter\t $1 found- neutralizing indentation from previous ",$indentNames[-1],"\n" if($tracingMode);
@@ -909,7 +909,7 @@ sub indent_after_item{
             and $indentAfterItems{$environmentStack[-1]}) 
     {
         # tracing mode
-        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         &increase_indent($1);
     }
 }
