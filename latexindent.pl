@@ -20,7 +20,6 @@ use FindBin;            # help find defaultSettings.yaml
 use YAML::Tiny;         # interpret defaultSettings.yaml
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use File::Basename;     # to get the filename and directory path
-#use Getopt::Std;        
 use Getopt::Long;       # to get the switches/options/flags
 use File::HomeDir;      # to get users home directory, regardless of OS
 
