@@ -77,7 +77,6 @@ lookForAlignDelims:
    aligned: 1
    cases: 1
    dcases: 1
-   pmatrix: 1
    listabla: 1
 
 # if you have indent rules for particular environments
