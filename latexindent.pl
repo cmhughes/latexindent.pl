@@ -43,13 +43,6 @@ GetOptions ("w"=>\$overwrite,
 "c=s"=>\$cruftDirectory,
 );
 
-# set up default for cruftDirectory using the one from the input file, 
-# unless it has been specified using -c="/some/directory"
-$cruftDirectory=dirname $ARGV[0] unless(defined($cruftDirectory));
-
-die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
-
-
 # version number
 my $versionNumber = "2.0R";
 
@@ -74,6 +67,11 @@ ENDQUOTE
     exit(2);
 }
 
+# set up default for cruftDirectory using the one from the input file, 
+# unless it has been specified using -c="/some/directory"
+$cruftDirectory=dirname $ARGV[0] unless(defined($cruftDirectory));
+
+die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
 
 # we'll be outputting to the logfile and to standard output
 my $logfile;
