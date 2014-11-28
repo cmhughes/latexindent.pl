@@ -31,7 +31,7 @@ my $tracingMode;
 my $readLocalSettings;
 my $onlyDefault;
 my $showhelp;
-my $cruftDirectory='./';
+my $cruftDirectory;
 
 GetOptions ("w"=>\$overwrite,
 "o"=>\$outputToFile,
@@ -43,7 +43,12 @@ GetOptions ("w"=>\$overwrite,
 "c=s"=>\$cruftDirectory,
 );
 
+# set up default for cruftDirectory using the one from the input file, 
+# unless it has been specified using -c="/some/directory"
+$cruftDirectory=dirname($ARGV[0]) unless(defined($cruftDirectory));
+
 die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
+
 
 # version number
 my $versionNumber = "2.0R";
@@ -387,7 +392,7 @@ if ($overwrite)
     # original name of file
     my $filename = $ARGV[0];
     # copy it
-    my $backupFile = $filename;
+    my $backupFile = basename($filename);
 
     # add the user's backup directory to the backup path
     $backupFile = "$cruftDirectory/$backupFile";
