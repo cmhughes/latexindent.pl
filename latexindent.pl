@@ -45,7 +45,7 @@ GetOptions ("w"=>\$overwrite,
 
 # set up default for cruftDirectory using the one from the input file, 
 # unless it has been specified using -c="/some/directory"
-$cruftDirectory=dirname($ARGV[0]) unless(defined($cruftDirectory));
+$cruftDirectory=dirname $ARGV[0] unless(defined($cruftDirectory));
 
 die "Could not find directory $cruftDirectory\nExiting, no indentation done." if(!(-d $cruftDirectory));
 
@@ -288,7 +288,7 @@ my $directoryName = dirname $ARGV[0];
 # add local settings to the paths, if appropriate
 if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$directoryName/localSettings.yaml"))
 {
-    print $logfile "\nAdding ./localSettings.yaml to paths\n\n";
+    print $logfile "\nAdding $directoryName/localSettings.yaml to paths\n\n";
     push(@absPaths,"$directoryName/localSettings.yaml");
 }
 elsif ( !(-e "$directoryName/localSettings.yaml") and $readLocalSettings)
@@ -463,8 +463,12 @@ if ($overwrite)
                         # add numbers back on
                         $oldBackupFile .= $i;
                         $newBackupFile .= $i-1;
+
+                        # check that the oldBackupFile exists
+                        if(-e $oldBackupFile){
                         print $logfile "\t\t copying $oldBackupFile to $newBackupFile \n";
-                        copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
+                            copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
+                        }
                     }
                 }
 
