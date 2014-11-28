@@ -240,6 +240,7 @@ each line which is stripped by \lstinline!latexindent.pl! (unless a \lstinline!v
 environment or \lstinline!noIndentBlock! is specified--more on this in \cref{sec:defuseloc}).
 
 \begin{adjustwidth}{-2cm}{2cm}
+    \noindent
 	\begin{minipage}{.6\textwidth}
 		\begin{cmhlistings}[style=demo]{\lstinline!filecontents! before}{lst:filecontentsbefore}
 \begin{filecontents}{mybib.bib}
@@ -252,6 +253,7 @@ url="...
 \end{filecontents}
 		\end{cmhlistings}
 	\end{minipage}%
+    \noindent
 	\begin{minipage}{.6\textwidth}
 		\begin{cmhlistings}[style=demo]{\lstinline!filecontents! after}{lst:filecontentsafter}
 \begin{filecontents}{mybib.bib}
@@ -264,7 +266,6 @@ url="...
 \end{filecontents}
 		\end{cmhlistings}
 	\end{minipage}
-
 	\begin{minipage}{.6\textwidth}
 		\begin{cmhlistings}[style=demo]{\lstinline!tikzset! before}{lst:tikzsetbefore}
 \tikzset{
