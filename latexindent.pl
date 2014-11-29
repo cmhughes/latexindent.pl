@@ -389,8 +389,9 @@ if ($overwrite)
     print $logfile "\nBackup procedure:\n";
     # original name of file
     my $filename = $ARGV[0];
-    # copy it
-    my $backupFile = basename($filename);
+
+    # get the base file name, allowing for different extensions
+    my $backupFile = basename($filename,(".tex",".sty",".cls"));
 
     # add the user's backup directory to the backup path
     $backupFile = "$cruftDirectory/$backupFile";
@@ -425,7 +426,7 @@ if ($overwrite)
     # be overwritten each time
     if($onlyOneBackUp)
     {
-        $backupFile =~ s/\.tex/$backupExtension/;
+        $backupFile .= $backupExtension;
         print $logfile "\t copying $filename to $backupFile\n";
         print $logfile "\t $backupFile was overwritten\n\n" if (-e $backupFile);
     }
@@ -433,7 +434,7 @@ if ($overwrite)
     {
         # start with a backup file .bak0 (or whatever $backupExtension is present)
         my $backupCounter = 0;
-        $backupFile =~ s/\.tex$/$backupExtension$backupCounter/;
+        $backupFile .= $backupExtension.$backupCounter;
 
         # if it exists, then keep going: .bak0, .bak1, ...
         while (-e $backupFile or $maxNumberOfBackUps>1)
