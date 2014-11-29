@@ -1116,6 +1116,11 @@ environment, the \lstinline!verbatim! environment \emph{will} be formatted, whic
 is probably not what you want. I hope to address this in future versions, but for the
 moment wrap it in a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
 
+You can run \lstinline!latexindent! on \lstinline!.sty! and  \lstinline!.cls! files, but it may
+struggle with some of the pattern matching; if you find such a case in which it struggles, please feel free 
+to report it at \href{https://github.com/cmhughes/latexindent.pl}{https://github.com/cmhughes/latexindent.pl}, and 
+in the meantime, use a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
+
 I hope that this script is useful to some--if you find an example where the
 script does not behave as you think it should, feel free to e-mail me or else
 come and find me on the \url{http://tex.stackexchange.com} site; I'm often around
