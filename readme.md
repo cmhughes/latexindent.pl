@@ -1,5 +1,3 @@
----
----
 `PERL` script to indent code within environments, and align delimited 
 environments in `.tex`files.
 
@@ -54,8 +52,6 @@ nothing has been changed (or removed) in a way that will damage
 your file.
 
 I recommend using both of the following:
-- a visual check, at the very least, make sure that 
+* a visual check, at the very least, make sure that 
       each file has the same number of lines
-- a check using `latexdiff inputfile.tex outputfile.tex`
----
----
+* a check using `latexdiff inputfile.tex outputfile.tex`
