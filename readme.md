@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    PERL script to indent code within environments, and align delimited 
-    environments in .tex files.
+PERL script to indent code within environments, and align delimited 
+environments in .tex files.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -14,35 +14,35 @@
     
     See http://www.gnu.org/licenses/
 
-    Dr. C. M. Hughes
+Dr. C. M. Hughes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+### *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
-FOR COMPLETE DETAILS, PLEASE SEE documentation/manual.pdf
+For complete details, please see documentation/manual.pdf
 
-Note: latexindent.exe was created using 
+Note: `latexindent.exe` was created using 
 
       pp -o latexindent.exe latexindent.pl
 
-      using the Par::Packer perl module.
+using the `Par::Packer` perl module.
 
-*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
+### *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
-USAGE
-=
-    You'll need
+### USAGE
+
+You'll need
 
         latexindent.pl
         defaultSettings.yaml
 
-    in the same directory. Windows users might prefer to grab latexindent.exe
+in the same directory. Windows users might prefer to grab latexindent.exe
 
-TEST
-=
-    A nice way to test the script is to navigate to the success 
-    directory, and then run the command:
+### Testing
+
+A nice way to test the script is to navigate to the success 
+directory, and then run the command:
 
         find -name "*.tex"|while read file; do arara "$file";done
 
