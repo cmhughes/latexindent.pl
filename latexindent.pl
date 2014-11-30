@@ -1544,8 +1544,11 @@ sub at_beg_of_env_or_eq{
     #  \s*      any white spaces (possibly none)
     #  ()       empty just so that $1 and $2 are defined
     #  (\\\[)   \[  there are lots of \ because both \ and [ need escaping
+    #  \\begin{\\?(.*?)}  \begin{something} where something could start
+    #                     with a backslash, e.g \my@env@ which can happen 
+    #                     in a style or class file, for example
 
-    if( (   ( $_ =~ m/^\s*(\$)?\\begin{(.*?)}/ and $_ !~ m/\\end{$2}/)
+    if( (   ( $_ =~ m/^\s*(\$)?\\begin{\\?(.*?)}/ and $_ !~ m/\\end{$2}/)
          or ($_=~ m/^\s*()(\\\[)/ and $_ !~ m/\\\]/) )
         and $_ !~ m/^\s*%/ )
     {
@@ -1599,11 +1602,14 @@ sub at_end_of_env_or_eq{
     #          or
     #               \]
     #
+    #          Note: environmentname can begin with a backslash
+    #                which might happen in a sty or cls file.
+    #
     #          It also checks to see if the current environment
     #          had alignment delimiters; if so, we need to turn
     #          OFF the $delimiter switch
 
-    if( ($_ =~ m/^\s*\\end{(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/)
+    if( ($_ =~ m/^\s*\\end{\\?(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/)
     {
 
        # check if we're at the end of a verbatim-like environment

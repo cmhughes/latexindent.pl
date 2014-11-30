@@ -27,7 +27,7 @@
 % change the page geometry using \newgeometry
 %\cleardoublepage
 \clearpage
-%\setbool{@twoside}{false} 
+%\setbool{@twoside}{false}
 \fancyheadoffset[RE,RO]{2cm}
 \fancyheadoffset[LE,LO]{1cm}
 \renewcommand{\rightmark}{Solutions to Section \thesection}
@@ -46,7 +46,7 @@
 \Closesolutionfile{crossrefsWEB}
 
 % when itemized lists are used in the solutions, they
-% are actually at 2nd depth because the solution environment 
+% are actually at 2nd depth because the solution environment
 % uses an \itemize environment to get the indendation correct
 \setlist[itemize,2]{label=\textbullet}
 
@@ -93,7 +93,7 @@
 	{%
 		% set a boolean that says the problem number is odd (used later)
 		\setbool{oddproblemnumber}{true}%
-		% display or not 
+		% display or not
 		\ifbool{showoddsolns}%
 		{%
 			% if we want to show the odd problems
@@ -107,7 +107,7 @@
 		}%
 		{%
 			% otherwise don't show them!
-			\expandafter\comment%          
+			\expandafter\comment%
 		}%
 	}%
 	{%
@@ -126,7 +126,7 @@
 		}%
 		{%
 			% otherwise don't show them!
-			\expandafter\comment%          
+			\expandafter\comment%
 		}%
 	}%
 }%
@@ -134,7 +134,7 @@
 	% after the environment finishes
 	\ifbool{oddproblemnumber}%
 	{%
-		% odd numbered problems 
+		% odd numbered problems
 		\ifbool{showoddsolns}%
 		{%
 			% if we want to show the odd problems
@@ -202,7 +202,7 @@
 	{%
 		% set a boolean that says the problem number is odd (used later)
 		\setbool{oddproblemnumber}{true}%
-		% display or not 
+		% display or not
 		\ifbool{showoddsolns}%
 		{%
 			% if we want to show the odd problems
@@ -210,7 +210,7 @@
 		}%
 		{%
 			% otherwise don't show them!
-			\expandafter\comment%          
+			\expandafter\comment%
 		}%
 	}%
 	{%
@@ -223,7 +223,7 @@
 		}%
 		{%
 			% otherwise don't show them!
-			\expandafter\comment%          
+			\expandafter\comment%
 		}%
 	}%
 }%
@@ -231,7 +231,7 @@
 	% after the environment finishes
 	\ifbool{oddproblemnumber}%
 	{%
-		% odd numbered problems 
+		% odd numbered problems
 		\ifbool{showoddsolns}%
 		{%
 			% if we want to show the odd problems
