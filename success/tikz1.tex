@@ -28,21 +28,21 @@
 	\foreach \samples[count=\xi from 1] in {#1}{%
 		\StrCut{\samples}{|}{\vertdir}{\hordir}
 		\ifnum\xi=1
-		\draw[\samplelinewidth,\samplecol](start)
-		--++(\hordir,0) coordinate (start);
+			\draw[\samplelinewidth,\samplecol](start)
+			--++(\hordir,0) coordinate (start);
 		\else
-		\IfStrEq{\vertdir}{+}{%true
-			\draw[\samplelinewidth,\samplecol]($(start)+(0,\vertfactor)$)
-			--++(\hordir,0)coordinate(start);
-			}{%false
-			\relax
-		}
-		\IfStrEq{\vertdir}{-}{%true
-			\draw[\samplelinewidth,\samplecol]($(start)+(0,-\vertfactor)$)
-			--++(\hordir,0)coordinate(start);
-			}{%false
-			\relax
-		}
+			\IfStrEq{\vertdir}{+}{%true
+				\draw[\samplelinewidth,\samplecol]($(start)+(0,\vertfactor)$)
+				--++(\hordir,0)coordinate(start);
+				}{%false
+				\relax
+			}
+			\IfStrEq{\vertdir}{-}{%true
+				\draw[\samplelinewidth,\samplecol]($(start)+(0,-\vertfactor)$)
+				--++(\hordir,0)coordinate(start);
+				}{%false
+				\relax
+			}
 		\fi
 	}
 }
@@ -59,21 +59,21 @@
 	\foreach \samples[count=\xi from 1] in {#1}{%
 		\StrCut{\samples}{|}{\vertdir}{\hordir}
 		\ifnum\xi=1
-		\path(start)node[sample]{}
-		--++(\hordir,0) coordinate (start);
+			\path(start)node[sample]{}
+			--++(\hordir,0) coordinate (start);
 		\else
-		\IfStrEq{\vertdir}{+}{%true
-			\path($(start)+(0,\vertfactor)$)node[sample]{}
-			--++(\hordir,0)coordinate(start);
-			}{%false
-			\relax
-		}
-		\IfStrEq{\vertdir}{-}{%true
-			\path($(start)+(0,-\vertfactor)$)node[sample]{}
-			--++(\hordir,0)coordinate(start);
-			}{%false
-			\relax
-		}
+			\IfStrEq{\vertdir}{+}{%true
+				\path($(start)+(0,\vertfactor)$)node[sample]{}
+				--++(\hordir,0)coordinate(start);
+				}{%false
+				\relax
+			}
+			\IfStrEq{\vertdir}{-}{%true
+				\path($(start)+(0,-\vertfactor)$)node[sample]{}
+				--++(\hordir,0)coordinate(start);
+				}{%false
+				\relax
+			}
 		\fi
 	}
 }

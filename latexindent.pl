@@ -862,8 +862,14 @@ close($logfile);
 exit;
 
 sub indent_if_else_fi{
-    # PURPOSE: set indentation of line that contains \if, \else, \fi
-    #          command
+    # PURPOSE: set indentation of line that contains \else, \fi  command
+    #
+    #
+
+    # @indentNames could be empty -- if so, exit
+    return 0 unless(@indentNames);
+
+    # look for \fi
     if( $_ =~ m/^\s*\\fi/ and $constructIfElseFi{$indentNames[-1]})
     {
         # tracing mode
@@ -901,15 +907,18 @@ sub indent_after_if_else_fi{
         print $logfile "Line $lineCounter\t ifelsefi construct found: $1 \n" if($tracingMode);
         &increase_indent($1);
     }
-    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) and $constructIfElseFi{$indentNames[-1]})
+    elsif(@indentNames)
     {
-        # tracing mode
-        print $logfile "Line $lineCounter\t \\else command found: $1 \n" if($tracingMode);
-        &increase_indent($indentNames[-1]);
-        # don't want to store the name of the \if construct twice
-        # so remove the second copy
-        pop(@indentNames);
-    }
+        if( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) and $constructIfElseFi{$indentNames[-1]})
+        {
+            # tracing mode
+            print $logfile "Line $lineCounter\t setting indent *after* \\else or \\or command found for $indentNames[-1] \n" if($tracingMode);
+            &increase_indent($indentNames[-1]);
+            # don't want to store the name of the \if construct twice
+            # so remove the second copy
+            pop(@indentNames);
+        }
+  }
   }
 
 sub indent_item{
@@ -1326,6 +1335,9 @@ sub start_command_or_key_unmatched_braces{
                      # store the match, either { or }
                      my $braceType = $1;
 
+                     # exit the loop if @commandstore is empty
+                     last if(!@commandstore);
+
                      # get the details of the most recent command name
                      $commanddetails = pop(@commandstore);
                      $commandname = $commanddetails->{'commandname'};
@@ -1402,6 +1414,9 @@ sub end_command_or_key_unmatched_braces{
        {
             # store the match, either { or }
             my $braceType = $1;
+
+            # exit the loop if @commandstore is empty
+            last if(!@commandstore);
 
             # get the details of the most recent command name
             $commanddetails = pop(@commandstore);
@@ -2041,7 +2056,17 @@ sub decrease_indent{
             pop(@indent);
             pop(@indentNames);
             # tracing mode
-            print $logfile "Line $lineCounter\t decreasing indent to: ",join(", ",@indentNames),"\n" if($tracingMode);
+            if($tracingMode)
+            {
+                if(@indentNames)
+                {
+                    print $logfile "Line $lineCounter\t decreasing indent to: ",join(", ",@indentNames),"\n" ;
+                }
+                else
+                {
+                    print $logfile "Line $lineCounter\t indent now empty \n";
+              }
+            }
        }
 }
 

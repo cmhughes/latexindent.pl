@@ -1,0 +1,11 @@
+% add these lines to a localSettings.yaml file
+%constructIfElseFi:
+%    if@isu@draftcls@: 1
+\newif\if@isu@draftcls@
+\if@isu@draftcls@
+	\RequirePackage[firstpage]{draftwatermark}
+	\RequirePackage{datetime}
+	\newcommand{\isu@draftfooter}{DRAFT --- rendered \today\ at \currenttime}
+\else
+	\newcommand{\isu@draftfooter}{}
+\fi
