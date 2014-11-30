@@ -31,9 +31,9 @@
 	}%
 	{%
 		\ifnum\value{totalpages\@roman{#1}}=#2
-		\typeout{Total pages for Chapter #1 match auxilary file (#2)}
+			\typeout{Total pages for Chapter #1 match auxilary file (#2)}
 		\else
-		\typeout{Warning: total pages for Chapter #1 updated from \the\value{totalpages\@roman{#1}} to #2-- recompile to fix}
+			\typeout{Warning: total pages for Chapter #1 updated from \the\value{totalpages\@roman{#1}} to #2-- recompile to fix}
 		\fi
 		\setcounter{totalpages\@roman{#1}}{#2}
 	}%
@@ -42,9 +42,9 @@
 
 \preto\chapter{%
 	\ifnum\value{chapter}>0
-	\immediate\write\@auxout{%
-		\string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
-	}
+		\immediate\write\@auxout{%
+			\string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
+		}
 	\fi
 }
 

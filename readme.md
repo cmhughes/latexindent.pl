@@ -44,6 +44,10 @@ directory, and then run the command:
 
         find -name "*.tex"|while read file; do arara "$file";done
 
+or, without `arara` (note that this uses `localSettings.yaml` for *every* file)
+
+        find . -type f \( -name "*.tex" -or -name "*.cls" \) | while read file; do echo $file; latexindent.pl -w -s -l "$file";done
+
 ## *IMPORTANT*
 
 This script may not work for your style of formatting; I highly 
