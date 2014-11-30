@@ -13,11 +13,27 @@
 #
 #	For details of how to use this file, please see readme.txt
 
-# load packages/modules
+# load packages/modules: assume strict and warnings are part of every perl distribution
 use strict;
 use warnings;
+
+# check the other modules are available
+foreach my $moduleName ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getopt::Long','File::HomeDir')
+{
+    # references: 
+    #       http://stackoverflow.com/questions/251694/how-can-i-check-if-i-have-a-perl-module-before-using-it
+    #       http://stackoverflow.com/questions/1917261/how-can-i-dynamically-include-perl-modules-without-using-eval
+    eval {
+        (my $file = $moduleName) =~ s|::|/|g;
+        require $file . '.pm';
+        $moduleName->import();
+        1;
+    } or die "$moduleName Perl Module not currently installed; please install the module, and then try running latexindent.pl again; exiting";
+}
+
+# now that we have confirmed the modules are available, load them
 use FindBin;            # help find defaultSettings.yaml
-use YAML::Tiny;         # interpret defaultSettings.yaml
+use YAML::Tiny;         # interpret defaultSettings.yaml and other potential settings files
 use File::Copy;         # to copy the original file to backup (if overwrite option set)
 use File::Basename;     # to get the filename and directory path
 use Getopt::Long;       # to get the switches/options/flags
@@ -177,7 +193,7 @@ if(!$defaultSettings)
   for my $fh ($out,$logfile) {
  print $fh <<ENDQUOTE
  ERROR  There seems to be a yaml formatting error in defaultSettings.yaml
-        Please check it for mistakes- you can find a working version at https://github.com/cmhughes/latexindent.plx
+        Please check it for mistakes- you can find a working version at https://github.com/cmhughes/latexindent.pl
         if you would like to overwrite your current version
 
         Exiting, no indendation done.
