@@ -1648,37 +1648,44 @@ sub at_end_of_env_or_eq{
             &decrease_indent($indentNames[-1]);
        }
 
-       # check to see if \end{environment} fits with most recent \begin{...}
-       my $previousEnvironment = pop(@environmentStack);
-
-       # check to see if we need to turn off alignment
-       # delimiters and output the current block
-       if($lookForAlignDelims{$1} and ($previousEnvironment eq $1))
+       # some commands contain \end{environmentname}, which 
+       # can cause a problem if \begin{environmentname} was not 
+       # started previously; if @environmentStack is empty, 
+       # then we don't need to check for \end{environmentname}
+       if(@environmentStack)
        {
-            &print_aligned_block();
-       }
+          # check to see if \end{environment} fits with most recent \begin{...}
+          my $previousEnvironment = pop(@environmentStack);
 
-       # tracing mode
-       print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
+          # check to see if we need to turn off alignment
+          # delimiters and output the current block
+          if($lookForAlignDelims{$1} and ($previousEnvironment eq $1))
+          {
+               &print_aligned_block();
+          }
 
-       # check to see if \end{environment} fits with most recent \begin{...}
-       if($previousEnvironment eq $1)
-       {
-            # decrease the indentation (if appropriate)
-            &decrease_indent($1);
-       }
-       else
-       {
-           # otherwise put the environment name back on the stack
-           push(@environmentStack,$previousEnvironment);
-           print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
-       }
+          # tracing mode
+          print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
 
-       # need a special check for \[ and \]
-       if($1 eq "\\\]")
-       {
-            &decrease_indent($1);
-            pop(@environmentStack);
+          # check to see if \end{environment} fits with most recent \begin{...}
+          if($previousEnvironment eq $1)
+          {
+               # decrease the indentation (if appropriate)
+               &decrease_indent($1);
+          }
+          else
+          {
+              # otherwise put the environment name back on the stack
+              push(@environmentStack,$previousEnvironment);
+              print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+          }
+
+          # need a special check for \[ and \]
+          if($1 eq "\\\]")
+          {
+               &decrease_indent($1);
+               pop(@environmentStack);
+          }
        }
 
        # if we're at the end of the document, we remove all current
