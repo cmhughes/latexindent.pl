@@ -12,6 +12,7 @@ cp readme.txt latexindent
 cp documentation/manual.tex latexindent/documentation
 cp documentation/manual.pdf latexindent/documentation
 cp success/*.tex latexindent/success
+cp success/*.cls latexindent/success
 zip -r latexindent.zip latexindent
 mv latexindent.zip ~/Desktop
 trash-put latexindent

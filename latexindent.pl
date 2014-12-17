@@ -17,8 +17,11 @@
 use strict;
 use warnings;
 
+# list of modules
+my @listOfModules = ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getopt::Long','File::HomeDir');
+
 # check the other modules are available
-foreach my $moduleName ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getopt::Long','File::HomeDir')
+foreach my $moduleName (@listOfModules)
 {
     # references: 
     #       http://stackoverflow.com/questions/251694/how-can-i-check-if-i-have-a-perl-module-before-using-it
@@ -106,11 +109,22 @@ print $logfile <<ENDQUOTE
 latexindent.pl version $versionNumber, a script to indent .tex files
 latexindent.pl lives here: $FindBin::RealBin/
 
-Directory for backup files and indent.log: $cruftDirectory
-
-file: $ARGV[0]
 ENDQUOTE
 ;
+
+# output location of modules
+print $logfile "Modules are being loaded from the following directories:\n ";
+foreach my $moduleName (@listOfModules)
+{
+        (my $file = $moduleName) =~ s|::|/|g;
+        require $file . '.pm';
+        print $logfile "\t",$INC{$file .'.pm'},"\n";
+      }
+
+# cruft directory
+print $logfile "Directory for backup files and indent.log: $cruftDirectory\n";
+print "file: $ARGV[0]";
+
 
 # a quick options check
 if($outputToFile and $overwrite)
