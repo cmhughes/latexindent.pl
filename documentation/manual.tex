@@ -394,8 +394,8 @@ on which of the following options are used.
 
 		Only \lstinline!defaultSettings.yaml!: you might like to read \cref{sec:defuseloc} before
 		using this switch. By default, \lstinline!latexindent.pl! will always search for
-		\lstinline!indentconfig.yaml! in your home directory. If you would prefer it not to do so
-		then (instead of deleting or renaming \lstinline!indentconfig.yaml!) you can simply
+		\lstinline!indentconfig.yaml! or \lstinline!.indentconfig.yaml!  in your home directory. If you would prefer it not to do so
+		then (instead of deleting or renaming \lstinline!indentconfig.yaml!/\lstinline!.indentconfig.yaml!) you can simply
 		call the script with the \lstinline!-d! switch; note that this will also tell
 		the script to ignore \lstinline!localSettings.yaml! even if it has been called with the
 		\lstinline!-l! switch.
@@ -561,8 +561,8 @@ copy myfile.bak4 to myfile.bak3
 		which creates `trailing whitespace' feared by most version control systems. If
 		this option is set to \lstinline!1!, trailing whitespace is removed from all
 		lines, also non-empty ones. In general this should not create any problems, but
-		by precaution this option is turned off by default. \footnote{Thanks to \href{https://github.com/vosskuhle}{vosskuhle} for
-		providing this feature.}
+		by precaution this option is turned off by default. Thanks to \href{https://github.com/vosskuhle}{vosskuhle} for
+		providing this feature.
 
 	\item[\verbitem{lookForAlignDelims}] This is the first example of a field
 		in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims}
@@ -906,18 +906,25 @@ following order:
 	\item \lstinline!noAdditionalIndent!
 	\item \lstinline!indentRules!
 \end{enumerate}
-\subsection{\lstinline!indentconfig.yaml! (for user settings)}\label{sec:indentconfig}
+\subsection{\lstinline!indentconfig.yaml! and \lstinline!.indentconfig.yaml! (for user settings)}\label{sec:indentconfig}
 Editing \lstinline!defaultSettings.yaml! is not ideal as it may be overwritten when
 updating your distribution--a better way to customize the settings to your liking
 is to set up your own settings file,
 \lstinline!mysettings.yaml! (or any name you like, provided it ends with \lstinline!.yaml!).
 The only thing you have to do is tell \lstinline!latexindent.pl! where to find it.
 
-\lstinline!latexindent.pl! will always check your home directory for \lstinline!indentconfig.yaml! (unless
+\lstinline!latexindent.pl! will always check your home directory for \lstinline!indentconfig.yaml!
+and  \lstinline!.indentconfig.yaml! (unless
 it is called with the \lstinline!-d! switch),
 which is a plain text file you can create that contains the \emph{absolute}
-paths for any settings files that you wish \lstinline!latexindent.pl! to load.
-Note that Mac and Linux users home directory is \lstinline!~/username! while
+paths for any settings files that you wish \lstinline!latexindent.pl! to load. There is no difference
+between \lstinline!indentconfig.yaml! and \lstinline!.indentconfig.yaml!, other than the 
+fact that \lstinline!.indentconfig.yaml! is a `hidden' file; thank you to \href{https://github.com/cmhughes/latexindent.pl/pull/23}{Jacobo Diaz}
+for providing this feature. In what follows, we will use \lstinline!indentconfig.yaml!, but it 
+is understood that this equally represents \lstinline!.indentconfig.yaml! as well. If you 
+have both files in existence,  \lstinline!indentconfig.yaml! takes priority. 
+
+For Mac and Linux users, their home directory is \lstinline!~/username! while
 Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure
 	where to put \lstinline!indentconfig.yaml!, don't
 	worry \lstinline!latexindent.pl! will tell you in the log file exactly where to

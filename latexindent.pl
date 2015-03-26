@@ -23,7 +23,7 @@ my @listOfModules = ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getop
 # check the other modules are available
 foreach my $moduleName (@listOfModules)
 {
-    # references: 
+    # references:
     #       http://stackoverflow.com/questions/251694/how-can-i-check-if-i-have-a-perl-module-before-using-it
     #       http://stackoverflow.com/questions/1917261/how-can-i-dynamically-include-perl-modules-without-using-eval
     eval {
@@ -86,7 +86,7 @@ ENDQUOTE
     exit(2);
 }
 
-# set up default for cruftDirectory using the one from the input file, 
+# set up default for cruftDirectory using the one from the input file,
 # unless it has been specified using -c="/some/directory"
 $cruftDirectory=dirname $ARGV[0] unless(defined($cruftDirectory));
 
@@ -140,8 +140,6 @@ if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe
 
 # cruft directory
 print $logfile "Directory for backup files and indent.log: $cruftDirectory\n";
-print "file: $ARGV[0]";
-
 
 # a quick options check
 if($outputToFile and $overwrite)
@@ -286,9 +284,26 @@ my $userSettings;
 
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
+# if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
+$indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml" if(! -e $indentconfig);
+
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
+      print $logfile "Reading path information from ",File::HomeDir->my_home,"$indentconfig\n";
+      # if both indentconfig.yaml and .indentconfig.yaml exist
+      if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml")
+      {
+            print $logfile File::HomeDir->my_home,"/.indentconfig.yaml has been found, but $indentconfig takes priority\n";
+      }
+      elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" )
+      {
+            print $logfile "Alternatively, ",File::HomeDir->my_home,"/.indentconfig.yaml can be used\n";
+
+      }
+      elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" )
+      {
+            print $logfile "Alternatively, ",File::HomeDir->my_home,"/indentconfig.yaml can be used\n";
+      }
 
       # read the absolute paths from indentconfig.yaml
       $userSettings = YAML::Tiny->read( "$indentconfig" );
@@ -315,15 +330,16 @@ else
 {
       if($onlyDefault)
       {
-        print $logfile "Only default settings requested, not reading USER settings from indentconfig.yaml \n";
+        print $logfile "Only default settings requested, not reading USER settings from $indentconfig\n";
         print $logfile "Ignoring localSettings.yaml\n" if($readLocalSettings);
         $readLocalSettings = 0;
       }
       else
       {
-        # give the user instructions on where to put indentconfig.yaml
+        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
         print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
         print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+        print $logfile "Alternatively, you can use the hidden file .indentconfig.yaml as: \n\t",File::HomeDir->my_home,"/.indentconfig.yaml\n\n";
       }
 }
 
@@ -1592,7 +1608,7 @@ sub at_beg_of_env_or_eq{
     #  ()       empty just so that $1 and $2 are defined
     #  (\\\[)   \[  there are lots of \ because both \ and [ need escaping
     #  \\begin{\\?(.*?)}  \begin{something} where something could start
-    #                     with a backslash, e.g \my@env@ which can happen 
+    #                     with a backslash, e.g \my@env@ which can happen
     #                     in a style or class file, for example
 
     if( (   ( $_ =~ m/^\s*(\$)?\\begin{\\?(.*?)}/ and $_ !~ m/\\end{$2}/)
@@ -1679,9 +1695,9 @@ sub at_end_of_env_or_eq{
             &decrease_indent($indentNames[-1]);
        }
 
-       # some commands contain \end{environmentname}, which 
-       # can cause a problem if \begin{environmentname} was not 
-       # started previously; if @environmentStack is empty, 
+       # some commands contain \end{environmentname}, which
+       # can cause a problem if \begin{environmentname} was not
+       # started previously; if @environmentStack is empty,
        # then we don't need to check for \end{environmentname}
        if(@environmentStack)
        {
