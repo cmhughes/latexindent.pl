@@ -267,13 +267,13 @@ my @absPaths;
 # scalar to read user settings
 my $userSettings;
 
-# get information about user settings- first check if indentconfig.yaml exists
-my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
+# get information about user settings- first check if .latexindentconfig.yaml exists
+my $indentconfig = File::HomeDir->my_home . "/.latexindentconfig.yaml";
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
+      print $logfile "Reading path information from ",File::HomeDir->my_home,"/.latexindentconfig.yaml\n";
 
-      # read the absolute paths from indentconfig.yaml
+      # read the absolute paths from .latexindentconfig.yaml
       $userSettings = YAML::Tiny->read( "$indentconfig" );
 
       # integrity check
@@ -298,15 +298,15 @@ else
 {
       if($onlyDefault)
       {
-        print $logfile "Only default settings requested, not reading USER settings from indentconfig.yaml \n";
+        print $logfile "Only default settings requested, not reading USER settings from .latexindentconfig.yaml \n";
         print $logfile "Ignoring localSettings.yaml\n" if($readLocalSettings);
         $readLocalSettings = 0;
       }
       else
       {
-        # give the user instructions on where to put indentconfig.yaml
+        # give the user instructions on where to put .latexindentconfig.yaml
         print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
-        print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+        print $logfile "To specify user settings you would put .latexindentconfig.yaml here: \n\t",File::HomeDir->my_home,"/.latexindentconfig.yaml\n\n";
       }
 }
 
@@ -399,7 +399,7 @@ foreach my $settings (@absPaths)
   else
   {
       # otherwise keep going, but put a warning in the log file
-      print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
+      print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/.latexindentconfig.yaml\n";
       if (-z $settings)
       {
           print $logfile "\tspecifies $settings \n\tbut this file is EMPTY- not reading from it\n\n"
