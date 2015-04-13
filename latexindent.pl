@@ -293,7 +293,7 @@ else
 
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from $indentconfig\n";
+      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
       print $logfile "Only default settings requested, not reading USER settings from $indentconfig\n";
 
       # read the absolute paths from indentconfig.yaml
