@@ -270,12 +270,31 @@ my $userSettings;
 # get information about user settings- first check if indentconfig.yaml exists
 my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 
-# if indentconfig.yaml does not exist, then look for .indentconfig.yaml
-if ( ! -e $indentconfig){$indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml";}
+if ( -e $indentconfig)
+{
+      print $logfile "Using settings file $indentconfig\n";
+      if ( -e File::HomeDir->my_home . "/.indentconfig.yaml"){
+        print $logfile File::HomeDir->my_home,"/.indentconfig.yaml has been found, but $indentconfig takes priority\n";
+      }
+      else
+      {
+        print $logfile "Alternatively, ",File::HomeDir->my_home,"/.indentconfig.yaml can be used\n";
+      }
+}
+else
+{
+      $indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml";
+      if ( -e $indentconfig)
+      {
+        print $logfile "Using settings file $indentconfig\n";
+        print $logfile "Alternatively, ",File::HomeDir->my_home,"/indentconfig.yaml can be used\n";
+      }
+}
 
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from ",File::HomeDir->my_home,"/indentconfig.yaml\n";
+      print $logfile "Reading path information from $indentconfig\n";
+      print $logfile "Only default settings requested, not reading USER settings from $indentconfig\n";
 
       # read the absolute paths from indentconfig.yaml
       $userSettings = YAML::Tiny->read( "$indentconfig" );
@@ -302,15 +321,16 @@ else
 {
       if($onlyDefault)
       {
-        print $logfile "Only default settings requested, not reading USER settings from indentconfig.yaml \n";
+        print $logfile "Only default settings requested, not reading USER settings from $indentconfig\n";
         print $logfile "Ignoring localSettings.yaml\n" if($readLocalSettings);
         $readLocalSettings = 0;
       }
       else
       {
-        # give the user instructions on where to put indentconfig.yaml
+        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
         print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
         print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+        print $logfile "Alternatively, you can use the hidden file .indentconfig.yaml as: \n\t",File::HomeDir->my_home,"/.indentconfig.yaml\n\n";
       }
 }
 
