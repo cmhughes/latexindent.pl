@@ -106,20 +106,37 @@ print $logfile $time;
 # output version to log file
 print $logfile <<ENDQUOTE
 
-latexindent.pl version $versionNumber, a script to indent .tex files
-latexindent.pl lives here: $FindBin::RealBin/
+$FindBin::Script version $versionNumber, a script to indent .tex files
+$FindBin::Script lives here: $FindBin::RealBin/
 
 ENDQUOTE
 ;
 
-# output location of modules
-print $logfile "Modules are being loaded from the following directories:\n ";
-foreach my $moduleName (@listOfModules)
+# latexindent.exe is a standalone executable, and caches 
+# the required perl modules onto the users system; they will
+# only be displayed if the user specifies the trace option
+if($FindBin::Script eq 'latexindent.exe' and !$tracingMode )
 {
-        (my $file = $moduleName) =~ s|::|/|g;
-        require $file . '.pm';
-        print $logfile "\t",$INC{$file .'.pm'},"\n";
-      }
+print $logfile <<ENDQUOTE
+$FindBin::Script is a standalone script and caches the required perl modules
+onto your system. If you'd like to see their location in your log file, indent.log, 
+call the script with the tracing option, e.g latexindent.exe -t myfile.tex
+
+ENDQUOTE
+;
+}
+
+# output location of modules
+if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $tracingMode ))
+{
+    print $logfile "Modules are being loaded from the following directories:\n ";
+    foreach my $moduleName (@listOfModules)
+    {
+            (my $file = $moduleName) =~ s|::|/|g;
+            require $file . '.pm';
+            print $logfile "\t",$INC{$file .'.pm'},"\n";
+          }
+}
 
 # cruft directory
 print $logfile "Directory for backup files and indent.log: $cruftDirectory\n";
