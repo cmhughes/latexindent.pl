@@ -63,7 +63,7 @@ GetOptions ("w"=>\$overwrite,
 );
 
 # version number
-my $versionNumber = "2.0R";
+my $versionNumber = "2.1R";
 
 # Check the number of input arguments- if it is 0 then simply
 # display the list of options (like a manual)
@@ -220,7 +220,7 @@ print $logfile "Reading defaultSettings.yaml from $FindBin::RealBin/defaultSetti
 if(!$defaultSettings)
 {
     $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
-    print $logfile "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
+    print $logfile "Reading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
 }
 
 # if both of the above attempts have failed, we need to exit
@@ -296,7 +296,7 @@ $indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml" if(! -e $indentco
 
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from ",File::HomeDir->my_home,"$indentconfig\n";
+      print $logfile "Reading path information from $indentconfig\n";
       # if both indentconfig.yaml and .indentconfig.yaml exist
       if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml")
       {

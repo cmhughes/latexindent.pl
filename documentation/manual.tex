@@ -2,6 +2,7 @@
 % !arara: bibtex
 % !arara: pdflatex
 % !arara: pdflatex
+% !arara: pdflatex
 % !arara: indent: {overwrite: no, trace: yes, localSettings: yes, silent: yes}
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
 \begin{filecontents}{mybib.bib}
@@ -163,7 +164,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 
 % \begin{noindent}
 	\title{\lstinline[basicstyle=\huge\ttfamily]!latexindent.pl!\\[1cm]
-		Version 2.0R}
+		Version 2.1R}
 % \end{noindent}
 \author{Chris Hughes \footnote{smr01cmh AT users.sourceforge.net}}
 \maketitle
@@ -1168,6 +1169,11 @@ sudo perl -MCPAN -e 'install "File::HomeDir"'
 \end{lstlisting}
 Strawberry Perl users on Windows might use
 \lstinline!CPAN client!. All of the modules are readily available on CPAN \cite{cpan}.
+
+As of Version 2.1R,  \lstinline!indent.log! will contain details of the location
+of the Perl modules on your system.  \lstinline!latexindent.exe! is a standalone
+executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you 
+wish to see where they are cached, use the  \lstinline!trace! option, e.g  \lstinline!latexindent.exe -t myfile.tex!.
 
 \section{The \lstinline!arara! rule}
 The \lstinline!arara! rule (\lstinline!indent.yaml!) contains lines such as those
