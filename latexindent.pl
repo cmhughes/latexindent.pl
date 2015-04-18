@@ -208,15 +208,22 @@ ENDQUOTE
     exit(2);
 }
 
-
-# Read in YAML file
+# Read in defaultSettings.YAML file
 my $defaultSettings = YAML::Tiny->new;
-
-print $logfile "Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml\n\n";
 
 # Open defaultSettings.yaml
 $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
+print $logfile "Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml\n\n" if($defaultSettings);
 
+# if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
+# the same directory as it; we need to navigate to it
+if(!$defaultSettings)
+{
+    $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
+    print $logfile "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
+}
+
+# if both of the above attempts have failed, we need to exit
 if(!$defaultSettings)
 {
   for my $fh ($out,$logfile) {
