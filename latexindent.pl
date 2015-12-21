@@ -242,9 +242,6 @@ ENDQUOTE
 # and we update them with USER settings (if any) below
 my %masterSettings = %{$defaultSettings->[0]};
 
-# for printing the user and local settings to the log file
-my %dataDump;
-
 # empty array to store the paths
 my @absPaths;
 
@@ -280,8 +277,7 @@ if ( -e $indentconfig and !$onlyDefault )
       # integrity check
       if($userSettings)
       {
-        %dataDump = %{$userSettings->[0]};
-        print $logfile Dump \%dataDump;
+        print $logfile Dump \%{$userSettings->[0]};
         print $logfile "\n";
         @absPaths = @{$userSettings->[0]->{paths}};
       }
@@ -340,8 +336,7 @@ foreach my $settings (@absPaths)
       if($userSettings)
       {
             # output settings to $logfile
-            %dataDump = %{$userSettings->[0]};
-            print $logfile Dump \%dataDump;
+            print $logfile Dump \%{$userSettings->[0]};
             print $logfile "\n";
 
             # update the MASTER setttings to include updates from the userSettings
