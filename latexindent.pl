@@ -35,12 +35,12 @@ foreach my $moduleName (@listOfModules)
 }
 
 # now that we have confirmed the modules are available, load them
-use FindBin;            # help find defaultSettings.yaml
-use YAML::Tiny;         # interpret defaultSettings.yaml and other potential settings files
-use File::Copy;         # to copy the original file to backup (if overwrite option set)
-use File::Basename;     # to get the filename and directory path
-use Getopt::Long;       # to get the switches/options/flags
-use File::HomeDir;      # to get users home directory, regardless of OS
+use FindBin;        # help find defaultSettings.yaml
+use YAML::Tiny;     # interpret defaultSettings.yaml and other potential settings files
+use File::Copy;     # to copy the original file to backup (if overwrite option set)
+use File::Basename; # to get the filename and directory path
+use Getopt::Long;   # to get the switches/options/flags
+use File::HomeDir;  # to get users home directory, regardless of OS
 
 # get the options
 my $overwrite;
@@ -238,47 +238,9 @@ ENDQUOTE
  exit(2);
 }
 
-# setup the DEFAULT variables and hashes from the YAML file
-
-# scalar variables
-my $defaultIndent = $defaultSettings->[0]->{defaultIndent};
-my $alwaysLookforSplitBraces = $defaultSettings->[0]->{alwaysLookforSplitBraces};
-my $alwaysLookforSplitBrackets = $defaultSettings->[0]->{alwaysLookforSplitBrackets};
-my $backupExtension = $defaultSettings->[0]->{backupExtension};
-my $indentPreamble = $defaultSettings->[0]->{indentPreamble};
-my $onlyOneBackUp = $defaultSettings->[0]->{onlyOneBackUp};
-my $maxNumberOfBackUps = $defaultSettings->[0]->{maxNumberOfBackUps};
-my $removeTrailingWhitespace = $defaultSettings->[0]->{removeTrailingWhitespace};
-my $cycleThroughBackUps = $defaultSettings->[0]->{cycleThroughBackUps};
-
-# hash variables
-my %lookForAlignDelims= %{$defaultSettings->[0]->{lookForAlignDelims}};
-my %indentRules= %{$defaultSettings->[0]->{indentRules}};
-my %verbatimEnvironments= %{$defaultSettings->[0]->{verbatimEnvironments}};
-my %noIndentBlock= %{$defaultSettings->[0]->{noIndentBlock}};
-my %checkunmatched= %{$defaultSettings->[0]->{checkunmatched}};
-my %checkunmatchedELSE= %{$defaultSettings->[0]->{checkunmatchedELSE}};
-my %checkunmatchedbracket= %{$defaultSettings->[0]->{checkunmatchedbracket}};
-my %noAdditionalIndent= %{$defaultSettings->[0]->{noAdditionalIndent}};
-my %indentAfterHeadings= %{$defaultSettings->[0]->{indentAfterHeadings}};
-my %indentAfterItems= %{$defaultSettings->[0]->{indentAfterItems}};
-my %itemNames= %{$defaultSettings->[0]->{itemNames}};
-my %constructIfElseFi= %{$defaultSettings->[0]->{constructIfElseFi}};
-
-# need new hashes to store the user and local data before
-# overwriting the default
-my %lookForAlignDelimsUSER;
-my %indentRulesUSER;
-my %verbatimEnvironmentsUSER;
-my %noIndentBlockUSER;
-my %checkunmatchedUSER;
-my %checkunmatchedELSEUSER;
-my %checkunmatchedbracketUSER;
-my %noAdditionalIndentUSER;
-my %indentAfterHeadingsUSER;
-my %indentAfterItemsUSER;
-my %itemNamesUSER;
-my %constructIfElseFiUSER;
+# the MASTER settings will initially be from defaultSettings.yaml
+# and we update them with USER settings (if any) below
+my %masterSettings = %{$defaultSettings->[0]};
 
 # for printing the user and local settings to the log file
 my %dataDump;
@@ -382,52 +344,56 @@ foreach my $settings (@absPaths)
             print $logfile Dump \%dataDump;
             print $logfile "\n";
 
-            # scalar variables
-            $defaultIndent = $userSettings->[0]->{defaultIndent} if defined($userSettings->[0]->{defaultIndent});
-            $alwaysLookforSplitBraces = $userSettings->[0]->{alwaysLookforSplitBraces} if defined($userSettings->[0]->{alwaysLookforSplitBraces});
-            $alwaysLookforSplitBrackets = $userSettings->[0]->{alwaysLookforSplitBrackets} if defined($userSettings->[0]->{alwaysLookforSplitBrackets});
-            $backupExtension = $userSettings->[0]->{backupExtension} if defined($userSettings->[0]->{backupExtension});
-            $indentPreamble = $userSettings->[0]->{indentPreamble} if defined($userSettings->[0]->{indentPreamble});
-            $onlyOneBackUp = $userSettings->[0]->{onlyOneBackUp} if defined($userSettings->[0]->{onlyOneBackUp});
-            $maxNumberOfBackUps = $userSettings->[0]->{maxNumberOfBackUps} if defined($userSettings->[0]->{maxNumberOfBackUps});
-            $removeTrailingWhitespace = $userSettings->[0]->{removeTrailingWhitespace} if defined($userSettings->[0]->{removeTrailingWhitespace});
-            $cycleThroughBackUps = $userSettings->[0]->{cycleThroughBackUps} if defined($userSettings->[0]->{cycleThroughBackUps});
+            # update the MASTER setttings to include updates from the userSettings
+            #@masterSettings{ keys %{$userSettings->[0]} } = values %{$userSettings->[0]};
 
-            # hash variables - note that each one requires two lines,
-            # one to read in the data, one to put the keys&values in correctly
+            #foreach my $r (values %{$userSettings->[0]})
+            while(my($k, $v) = each %{$userSettings->[0]})
+            {
+                    if (ref($v) eq "HASH") {
+                        print "\n in a hash!\n";
+                        print "key, k: ";
+                        print $k,"\n";
+                        print "Value, v: ";
+                        print Dump \%{$v};
+                        print %{$v},"\n";
+                        print "merge attempt:\n";
+                        #print %{$masterSettings{$k}}=%{$v},"\n";
+                        #print Dump \%{@masterSettings{ $k }};
+                        #print %{@masterSettings{ $k }} = %{$v};
 
-            %lookForAlignDelimsUSER= %{$userSettings->[0]->{lookForAlignDelims}} if defined($userSettings->[0]->{lookForAlignDelims});
-            @lookForAlignDelims{ keys %lookForAlignDelimsUSER } = values %lookForAlignDelimsUSER if (%lookForAlignDelimsUSER);
+                        #print @masterSettings{keys %{$masterSettings{ $k }}} = values  %{$userSettings->[0]{$k}};
+                        print %{$masterSettings{$k}},"\n";
+                        print %{$userSettings->[0]{$k}};
+                        print "\n\n";
+                        #foreach my $keycmh ( keys %{$userSettings->[0]{$k}} )
+                        while(my ($keycmh,$valuecmh) = each %{$userSettings->[0]{$k}}) 
+                        {
+                          $masterSettings{$k}{$keycmh} = $valuecmh;
+                          print "key: ",$keycmh,"\n";
+                          print "value: ",$valuecmh,"\n";
+                          #print "master version: \n";
+                          #if (defined $masterSettings{$k}{$keycmh})
+                          #{
+                          #    print $keycmh,"\n";
+                          #    print $masterSettings{$k}{$keycmh},"\n";
+                          #} else {
+                          #    print $keycmh,"doesn't exist in master settings \n";
+                          #}
 
-            %indentRulesUSER= %{$userSettings->[0]->{indentRules}} if defined($userSettings->[0]->{indentRules});
-            @indentRules{ keys %indentRulesUSER } = values %indentRulesUSER if (%indentRulesUSER);
+                          #print "user version: \n";
+                          #print %{$userSettings->[0]{$k}},"\n";
+                          #print "\n";
 
-            %verbatimEnvironmentsUSER= %{$userSettings->[0]->{verbatimEnvironments}} if defined($userSettings->[0]->{verbatimEnvironments});
-            @verbatimEnvironments{ keys %verbatimEnvironmentsUSER } = values %verbatimEnvironmentsUSER if (%verbatimEnvironmentsUSER);
-
-            %noIndentBlockUSER= %{$userSettings->[0]->{noIndentBlock}} if defined($userSettings->[0]->{noIndentBlock});
-            @noIndentBlock{ keys %noIndentBlockUSER } = values %noIndentBlockUSER if (%noIndentBlockUSER);
-
-            %checkunmatchedUSER= %{$userSettings->[0]->{checkunmatched}} if defined($userSettings->[0]->{checkunmatched});
-            @checkunmatched{ keys %checkunmatchedUSER } = values %checkunmatchedUSER if (%checkunmatchedUSER);
-
-            %checkunmatchedbracketUSER= %{$userSettings->[0]->{checkunmatchedbracket}} if defined($userSettings->[0]->{checkunmatchedbracket});
-            @checkunmatchedbracket{ keys %checkunmatchedbracketUSER } = values %checkunmatchedbracketUSER if (%checkunmatchedbracketUSER);
-
-            %noAdditionalIndentUSER= %{$userSettings->[0]->{noAdditionalIndent}} if defined($userSettings->[0]->{noAdditionalIndent});
-            @noAdditionalIndent{ keys %noAdditionalIndentUSER } = values %noAdditionalIndentUSER if (%noAdditionalIndentUSER);
-
-            %indentAfterHeadingsUSER= %{$userSettings->[0]->{indentAfterHeadings}} if defined($userSettings->[0]->{indentAfterHeadings});
-            @indentAfterHeadings{ keys %indentAfterHeadingsUSER } = values %indentAfterHeadingsUSER if (%indentAfterHeadingsUSER);
-
-            %indentAfterItemsUSER= %{$userSettings->[0]->{indentAfterItems}} if defined($userSettings->[0]->{indentAfterItems});
-            @indentAfterItems{ keys %indentAfterItemsUSER } = values %indentAfterItemsUSER if (%indentAfterItemsUSER);
-
-            %itemNamesUSER= %{$userSettings->[0]->{itemNames}} if defined($userSettings->[0]->{itemNames});
-            @itemNames{ keys %itemNamesUSER } = values %itemNamesUSER if (%itemNamesUSER);
-
-            %constructIfElseFiUSER= %{$userSettings->[0]->{constructIfElseFi}} if defined($userSettings->[0]->{constructIfElseFi});
-            @constructIfElseFi{ keys %constructIfElseFiUSER } = values %constructIfElseFiUSER if (%constructIfElseFiUSER);
+                        #  print values %{$userSettings->[0]{$keycmh}};
+                        #  #@masterSettings{keys %{$keycmh}} = values %{$userSettings->[0]{$keycmh}};
+                        }
+                        print "\n\n";
+                    }
+                    else {
+                          $masterSettings{$k} = $v;
+                    }
+            }
        }
        else
        {
@@ -451,6 +417,35 @@ foreach my $settings (@absPaths)
   }
 }
 
+# scalar variables
+my $defaultIndent = $masterSettings{defaultIndent};
+my $alwaysLookforSplitBraces = $masterSettings{alwaysLookforSplitBraces};
+my $alwaysLookforSplitBrackets = $masterSettings{alwaysLookforSplitBrackets};
+my $backupExtension = $masterSettings{backupExtension};
+my $indentPreamble = $masterSettings{indentPreamble};
+my $onlyOneBackUp = $masterSettings{onlyOneBackUp};
+my $maxNumberOfBackUps = $masterSettings{maxNumberOfBackUps};
+my $removeTrailingWhitespace = $masterSettings{removeTrailingWhitespace};
+my $cycleThroughBackUps = $masterSettings{cycleThroughBackUps};
+
+# hash variables
+my %lookForAlignDelims= %{$masterSettings{lookForAlignDelims}};
+my %indentRules= %{$masterSettings{indentRules}};
+my %verbatimEnvironments= %{$masterSettings{verbatimEnvironments}};
+my %noIndentBlock= %{$masterSettings{noIndentBlock}};
+my %checkunmatched= %{$masterSettings{checkunmatched}};
+my %checkunmatchedELSE= %{$masterSettings{checkunmatchedELSE}};
+my %checkunmatchedbracket= %{$masterSettings{checkunmatchedbracket}};
+my %noAdditionalIndent= %{$masterSettings{noAdditionalIndent}};
+my %indentAfterHeadings= %{$masterSettings{indentAfterHeadings}};
+my %indentAfterItems= %{$masterSettings{indentAfterItems}};
+my %itemNames= %{$masterSettings{itemNames}};
+my %constructIfElseFi= %{$masterSettings{constructIfElseFi}};
+
+print $logfile "masterSettings\n";
+print $logfile "masterSettings\n";
+print $logfile "masterSettings\n";
+print $logfile Dump \%masterSettings;
 
 # if we want to over write the current file
 # create a backup first
