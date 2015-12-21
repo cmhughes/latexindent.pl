@@ -345,53 +345,14 @@ foreach my $settings (@absPaths)
             print $logfile "\n";
 
             # update the MASTER setttings to include updates from the userSettings
-            #@masterSettings{ keys %{$userSettings->[0]} } = values %{$userSettings->[0]};
-
-            #foreach my $r (values %{$userSettings->[0]})
-            while(my($k, $v) = each %{$userSettings->[0]})
-            {
-                    if (ref($v) eq "HASH") {
-                        print "\n in a hash!\n";
-                        print "key, k: ";
-                        print $k,"\n";
-                        print "Value, v: ";
-                        print Dump \%{$v};
-                        print %{$v},"\n";
-                        print "merge attempt:\n";
-                        #print %{$masterSettings{$k}}=%{$v},"\n";
-                        #print Dump \%{@masterSettings{ $k }};
-                        #print %{@masterSettings{ $k }} = %{$v};
-
-                        #print @masterSettings{keys %{$masterSettings{ $k }}} = values  %{$userSettings->[0]{$k}};
-                        print %{$masterSettings{$k}},"\n";
-                        print %{$userSettings->[0]{$k}};
-                        print "\n\n";
-                        #foreach my $keycmh ( keys %{$userSettings->[0]{$k}} )
-                        while(my ($keycmh,$valuecmh) = each %{$userSettings->[0]{$k}}) 
-                        {
-                          $masterSettings{$k}{$keycmh} = $valuecmh;
-                          print "key: ",$keycmh,"\n";
-                          print "value: ",$valuecmh,"\n";
-                          #print "master version: \n";
-                          #if (defined $masterSettings{$k}{$keycmh})
-                          #{
-                          #    print $keycmh,"\n";
-                          #    print $masterSettings{$k}{$keycmh},"\n";
-                          #} else {
-                          #    print $keycmh,"doesn't exist in master settings \n";
-                          #}
-
-                          #print "user version: \n";
-                          #print %{$userSettings->[0]{$k}},"\n";
-                          #print "\n";
-
-                        #  print values %{$userSettings->[0]{$keycmh}};
-                        #  #@masterSettings{keys %{$keycmh}} = values %{$userSettings->[0]{$keycmh}};
+            while(my($userKey, $userValue) = each %{$userSettings->[0]}) {
+                    # the update approach is slightly different for hashes vs scalars/arrays
+                    if (ref($userValue) eq "HASH") {
+                        while(my ($userKeyFromHash,$userValueFromHash) = each %{$userSettings->[0]{$userKey}}) {
+                          $masterSettings{$userKey}{$userKeyFromHash} = $userValueFromHash;
                         }
-                        print "\n\n";
-                    }
-                    else {
-                          $masterSettings{$k} = $v;
+                    } else {
+                          $masterSettings{$userKey} = $userValue;
                     }
             }
        }
@@ -441,11 +402,6 @@ my %indentAfterHeadings= %{$masterSettings{indentAfterHeadings}};
 my %indentAfterItems= %{$masterSettings{indentAfterItems}};
 my %itemNames= %{$masterSettings{itemNames}};
 my %constructIfElseFi= %{$masterSettings{constructIfElseFi}};
-
-print $logfile "masterSettings\n";
-print $logfile "masterSettings\n";
-print $logfile "masterSettings\n";
-print $logfile Dump \%masterSettings;
 
 # if we want to over write the current file
 # create a backup first
