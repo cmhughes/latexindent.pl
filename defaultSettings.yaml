@@ -1,5 +1,9 @@
 # 
-# defaultSettings.yaml
+# defaultSettings.yaml for latexindent.pl,
+#                      a script that aims to
+#                      beautify .tex, .sty, .cls files
+#
+# (or latexindent.exe if you're on Windows)
 #
 # You're welcome to change anything you like in here, but 
 # it would probably be better to have your own user settings 
@@ -202,6 +206,18 @@ constructIfElseFi:
     ifeof: 1
     iftrue: 1
     ifcase: 1
+
+# latexindent can be called without a file extension, 
+# e.g, simply
+#       latexindent myfile
+# in which case the choice of file extension is chosen
+# according to the choices made in fileExtensionPreference
+# Other file extensions can be added.
+fileExtensionPreference:
+    .tex: 1
+    .sty: 2
+    .cls: 3
+    .bib: 4
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1

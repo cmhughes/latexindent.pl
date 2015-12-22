@@ -305,9 +305,9 @@ shrink inner sep/.code={
 \end{adjustwidth}
 
 \section{How to use the script}
-\lstinline!latexindent.pl! ships as part of the TeXLive distribution for
-Linux and Mac users; \lstinline!latexindent.exe! ships as part of the TeXLive
-and MiKTeX distributions for Windows users. These files are also available
+\lstinline!latexindent.pl! ships as part of the \TeX Live distribution for
+Linux and Mac users; \lstinline!latexindent.exe! ships as part of the \TeX Live
+and MiK\TeX distributions for Windows users. These files are also available
 from github \cite{latexindent-home} should you wish to use them without
 a \TeX{} distribution; in this case, you may like to read \vref{sec:updating-path}
 which details how the \lstinline!path! variable can be updated.
@@ -400,6 +400,11 @@ on which of the following options are used.
 		to another directory.
 		% this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
 \end{itemize}
+
+\lstinline!latexindent.pl! can also be called on a file without the file extension, for
+example \lstinline!latexindent.pl myfile! and in which case, you can specify 
+the order in which extensions are searched for; see \vref{lst:fileExtensionPreference} 
+for full details.
 
 \subsection{From \lstinline!arara!}
 Using \lstinline!latexindent.pl! from the command line is fine for some folks, but
@@ -799,6 +804,23 @@ and \vref{lst:mysettings} in particular.\label{page:examsettings}
 \fi
 \end{cmhlistings}
 	\end{minipage}
+
+\item[\verbitem{fileExtensionPreference}] \lstinline!latexindent.pl! can be called to 
+  act on a file without
+  specifying the file extension.  For example we can call \lstinline!latexindent.pl myfile!
+  in which case the script will look for \lstinline!myfile! with the extensions
+  specified in \lstinline!fileExtensionPreference! in their numeric order. If
+  no match is found, the script will exit. As with all of the fields, you should
+  change and/or add to this as necessary.
+  \begin{cmhlistings}{\lstinline!fileExtensionPreference!}{lst:fileExtensionPreference}
+fileExtensionPreference:
+    .tex: 1
+    .sty: 2
+    .cls: 3
+    .bib: 4
+\end{cmhlistings}
+Calling \lstinline!latexindent.pl myfile! with the details specified in \cref{lst:fileExtensionPreference}
+means that the script will first look for \lstinline!myfile.tex! and then \lstinline!myfile.sty!, etc.
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
 			unless you wish to micro-manage your indentation scheme.

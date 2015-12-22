@@ -397,17 +397,70 @@ my %indentAfterHeadings= %{$masterSettings{indentAfterHeadings}};
 my %indentAfterItems= %{$masterSettings{indentAfterItems}};
 my %itemNames= %{$masterSettings{itemNames}};
 my %constructIfElseFi= %{$masterSettings{constructIfElseFi}};
+my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
 
-# if we want to over write the current file
-# create a backup first
+# original name of file
+my $fileName = $ARGV[0];
+
+# sort the file extensions by preference 
+my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
+
+# get the base file name, allowing for different extensions (possibly no extension)
+my ($dir, $name, $ext) = fileparse($fileName, @fileExtensions);
+
+# quick check to make sure given file type is supported
+if( -e $ARGV[0] and !$ext ){
+for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
+The file $ARGV[0] exists , but the extension does not correspond to any given in fileExtensionPreference;
+consinder updating fileExtensionPreference.
+
+Exiting, no indentation done.
+ENDQUOTE
+};
+exit(2);
+}
+
+# if no extension, search according to fileExtensionPreference
+if (!$ext) {
+    print $logfile "File extension work:\n";
+    print $logfile "\tlatexindent called to act upon $fileName with no file extension;\n";
+    print $logfile "\tsearching for file with an extension in the following order (see fileExtensionPreference):\n\t\t";
+    print $logfile join("\n\t\t",@fileExtensions),"\n";
+    my $fileFound = 0;
+    foreach my $fileExt (@fileExtensions ){
+        if ( -e $fileName.$fileExt ) {
+           print $logfile "\t",$fileName,$fileExt," found!\n";
+           $fileName .= $fileExt;
+           print $logfile "\tUpdated $ARGV[0] to ",$fileName,"\n";
+           $fileFound = 1;
+           last;
+        }
+    }
+    unless($fileFound){
+      print $logfile "\tI couldn't find a match for $ARGV[0] in fileExtensionPreference (see defaultSettings.yaml)\n";
+      foreach my $fileExt (@fileExtensions ){
+        print $logfile "\t\tI searched for $ARGV[0]$fileExt\n";
+      }
+      print $logfile "\tbut couldn't find any of them.\n";
+      print $logfile "\tConsider updating fileExtensionPreference. \nError: Exiting, no indendation done.";
+      die "I couldn't find a match for $ARGV[0] in fileExtensionPreference.\nExiting, no indendation done.\n" 
+    }
+  } else {
+    # if the file has a recognised extension, check that the file exists
+    unless( -e $ARGV[0] ){
+      print $logfile "Error: I couldn't find $ARGV[0], are you sure it exists?. No indentation done. \nExiting.\n";
+      die "Error: I couldn't find $ARGV[0], are you sure it exists?. Exiting.\n" ;
+    }
+  }
+
+# if we want to over write the current file create a backup first
 if ($overwrite)
 {
     print $logfile "\nBackup procedure:\n";
-    # original name of file
-    my $filename = $ARGV[0];
+    my $backupFile; 
 
-    # get the base file name, allowing for different extensions
-    my $backupFile = basename($filename,(".tex",".sty",".cls"));
+    # backup file name is the base name
+    $backupFile = basename($fileName,@fileExtensions);
 
     # add the user's backup directory to the backup path
     $backupFile = "$cruftDirectory/$backupFile";
@@ -443,7 +496,7 @@ if ($overwrite)
     if($onlyOneBackUp)
     {
         $backupFile .= $backupExtension;
-        print $logfile "\t copying $filename to $backupFile\n";
+        print $logfile "\t copying $fileName to $backupFile\n";
         print $logfile "\t $backupFile was overwritten\n\n" if (-e $backupFile);
     }
     else
@@ -500,13 +553,13 @@ if ($overwrite)
             $backupCounter++;
             $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;
         }
-        print $logfile "\n\t copying $filename to $backupFile\n\n";
+        print $logfile "\n\t copying $fileName to $backupFile\n\n";
     }
 
     # output these lines to the log file
     print $logfile "\t Backup file: ",$backupFile,"\n";
-    print $logfile "\t Overwriting file: ",$filename,"\n\n";
-    copy($filename,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
+    print $logfile "\t Overwriting file: ",$fileName,"\n\n";
+    copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
 }
 
 if(!($outputToFile or $overwrite))
@@ -572,7 +625,7 @@ my @environmentStack;       # @environmentStack: stores the (nested) names
 
 # check to see if the current file has \documentclass, if so, then
 # it's the main file, if not, then it doesn't have preamble
-open(MAINFILE, $ARGV[0]) or die "Could not open input file";
+open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
     @mainfile=<MAINFILE>;
 close(MAINFILE);
 
@@ -590,7 +643,7 @@ else
 }
 
 # the previous OPEN command puts us at the END of the file
-open(MAINFILE, $ARGV[0]) or die "Could not open input file";
+open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
 
 # loop through the lines in the INPUT file
 while(<MAINFILE>)
@@ -838,8 +891,8 @@ while(<MAINFILE>)
 close(MAINFILE);
 
 # put line count information in the log file
-print $logfile "Line Count of $ARGV[0]: ",scalar(@mainfile),"\n";
-print $logfile "Line Count of indented $ARGV[0]: ",scalar(@lines);
+print $logfile "Line Count of $fileName: ",scalar(@mainfile),"\n";
+print $logfile "Line Count of indented $fileName: ",scalar(@lines);
 if(scalar(@mainfile) != scalar(@lines))
 {
   print $logfile <<ENDQUOTE
@@ -850,7 +903,7 @@ ENDQUOTE
 }
 else
 {
-    print $logfile "\n\nLine counts of original file and indented file match";
+    print $logfile "\n\nLine counts of original file and indented file match.";
 }
 
 # output the formatted lines to the terminal
@@ -859,7 +912,7 @@ print @lines if(!$silentMode);
 # if -w is active then output to $ARGV[0]
 if($overwrite)
 {
-    open(OUTPUTFILE,">",$ARGV[0]);
+    open(OUTPUTFILE,">",$fileName);
     print OUTPUTFILE @lines;
     close(OUTPUTFILE);
 }
