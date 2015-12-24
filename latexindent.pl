@@ -335,10 +335,6 @@ foreach my $settings (@absPaths)
       # if we can read userSettings
       if($userSettings)
       {
-            # output settings to $logfile
-            print $logfile Dump \%{$userSettings->[0]};
-            print $logfile "\n";
-
             # update the MASTER setttings to include updates from the userSettings
             while(my($userKey, $userValue) = each %{$userSettings->[0]}) {
                     # the update approach is slightly different for hashes vs scalars/arrays
@@ -349,6 +345,14 @@ foreach my $settings (@absPaths)
                     } else {
                           $masterSettings{$userKey} = $userValue;
                     }
+            }
+
+            # output settings to $logfile
+            if($masterSettings{logFilePreferences}{showEveryYamlRead}){
+                print $logfile Dump \%{$userSettings->[0]};
+                print $logfile "\n";
+            } else {
+                print $logfile "\tNot showing settings in the log file, see showEveryYamlRead.\n";
             }
        }
        else
@@ -371,6 +375,14 @@ foreach my $settings (@absPaths)
           print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
       }
   }
+}
+
+# some people may wish to see showAlmagamatedSettings
+# which details the overall state of the settings modified
+# from the default in various user files
+if($masterSettings{logFilePreferences}{showAlmagamatedSettings}){
+    print $logfile "Almagamated/overall settings to be used:\n";
+    print $logfile Dump \%masterSettings ;
 }
 
 # scalar variables
@@ -423,7 +435,7 @@ exit(2);
 # if no extension, search according to fileExtensionPreference
 if (!$ext) {
     print $logfile "File extension work:\n";
-    print $logfile "\tlatexindent called to act upon $fileName with no file extension;\n";
+    print $logfile "\tlatexindent called to act upon $fileName with an, as yet, unrecognised file extension;\n";
     print $logfile "\tsearching for file with an extension in the following order (see fileExtensionPreference):\n\t\t";
     print $logfile join("\n\t\t",@fileExtensions),"\n";
     my $fileFound = 0;
@@ -652,7 +664,7 @@ while(<MAINFILE>)
     $lineCounter++;
 
     # tracing mode
-    print $logfile "\n" if($tracingMode and !($inpreamble or $inverbatim or $inIndentBlock));
+    print $logfile $masterSettings{logFilePreferences}{traceModeBetweenLines} if($tracingMode and !($inpreamble or $inverbatim or $inIndentBlock));
 
     # check to see if we're still in the preamble
     # or in a verbatim environment or in IndentBlock
@@ -702,7 +714,7 @@ while(<MAINFILE>)
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
 
-    print $logfile "Line $lineCounter\t << PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
+    print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
 
@@ -801,7 +813,7 @@ while(<MAINFILE>)
             }
             push(@lines,$_);
             # tracing mode
-            print $logfile "Line $lineCounter\t || PHASE 2: Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeAddCurrentIndent} PHASE 2: Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
         }
     }
     else
@@ -823,7 +835,7 @@ while(<MAINFILE>)
     if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
     {
 
-        print $logfile "Line $lineCounter\t >> PHASE 3: looking for reasons to INCREASE indentation of SUBSEQUENT lines \n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeIncreaseIndent} PHASE 3: looking for reasons to INCREASE indentation of SUBSEQUENT lines \n" if($tracingMode);
 
         # check if we are in a
         #   % \begin{noindent}
@@ -925,10 +937,12 @@ if($outputToFile)
     close(OUTPUTFILE);
 }
 
+print $logfile "\n",$masterSettings{logFilePreferences}{endLogFileWith};
+
 # close the log file
 close($logfile);
 
-exit;
+exit(0);
 
 sub indent_if_else_fi{
     # PURPOSE: set indentation of line that contains \else, \fi  command
