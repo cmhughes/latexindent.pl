@@ -697,15 +697,15 @@ while(<MAINFILE>)
             # tracing mode
             if($inpreamble)
             {
-                print $logfile "Line $lineCounter\t still in PREAMBLE, doing nothing\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t still in PREAMBLE, leaving exisiting leading space\n" if($tracingMode);
             }
             elsif($inverbatim)
             {
-                print $logfile "Line $lineCounter\t in VERBATIM-LIKE environment, doing nothing\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t in VERBATIM-LIKE environment, leaving exisiting leading space\n" if($tracingMode);
             }
             elsif($inIndentBlock)
             {
-                print $logfile "Line $lineCounter\t in NO INDENT BLOCK, doing nothing\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t in NO INDENT BLOCK, leaving exisiting leading space\n" if($tracingMode);
             }
         }
     }
@@ -714,7 +714,15 @@ while(<MAINFILE>)
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
 
-    print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
+    if($inverbatim){
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in VERBATIM-LIKE environment, looking for \\end{$environmentStack[-1]}\n" if($tracingMode);
+    } elsif($inIndentBlock) {
+        print $logfile "Line $lineCounter\t in NO INDENT BLOCK, doing nothing\n" if($tracingMode);
+    } elsif($delimiters) {
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in ALIGNMENT BLOCK environment, looking for \\end{$environmentStack[-1]}\n" if($tracingMode);
+    } else {
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
+    }
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
 
@@ -822,7 +830,7 @@ while(<MAINFILE>)
         push(@block,$_);
 
         # tracing mode
-        print $logfile "Line $lineCounter\t In delimeter block, waiting for block formatting\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t In delimeter block ($environmentStack[-1]), waiting for block formatting\n" if($tracingMode);
     }
 
     # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
@@ -872,27 +880,27 @@ while(<MAINFILE>)
         print $logfile "Line $lineCounter\t Removing trailing comments for brace count (line is already stored)\n" if($tracingMode);
 
         # check to see if we have \begin{something} or \[
-        &at_beg_of_env_or_eq();
+        &at_beg_of_env_or_eq() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # check to see if we have \parbox, \marginpar, or
         # something similar that might split braces {} across lines,
         # specified in %checkunmatched hash table
-        &start_command_or_key_unmatched_braces();
+        &start_command_or_key_unmatched_braces() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # check for an else statement (braces, not \else)
-        &check_for_else();
+        &check_for_else() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # check for a command that splits [] across lines
         &start_command_or_key_unmatched_brackets();
 
         # check for a heading
-        &indent_after_heading();
+        &indent_after_heading() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # check for \item
-        &indent_after_item();
+        &indent_after_item() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # check for \if or \else command
-        &indent_after_if_else_fi();
+        &indent_after_if_else_fi() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # tracing mode
         print $logfile "Line $lineCounter\t Environments: ",join(", ",@environmentStack),"\n" if($tracingMode and scalar(@environmentStack));
