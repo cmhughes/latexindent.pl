@@ -47,7 +47,7 @@ my $overwrite;
 my $outputToFile;
 my $silentMode;
 my $tracingMode;
-my $readLocalSettings;
+my $readLocalSettings=0;
 my $onlyDefault;
 my $showhelp;
 my $cruftDirectory;
@@ -56,14 +56,49 @@ GetOptions ("w"=>\$overwrite,
 "o"=>\$outputToFile,
 "s"=>\$silentMode,
 "t"=>\$tracingMode,
-"l"=>\$readLocalSettings,
+"l:s"=>\$readLocalSettings,
 "d"=>\$onlyDefault,
 "h"=>\$showhelp,
 "c=s"=>\$cruftDirectory,
 );
 
+# check local settings doesn't interfer with reading the file;
+# this can happen if the script is called as follows:
+#
+#       latexindent.pl -l myfile.tex
+#
+# in which case, the GetOptions routine mistakes myfile.tex
+# as the optional parameter to the l flag.
+#
+# In such circumstances, we correct the mistake by assuming that 
+# the only argument is the file to be indented, and place it in @ARGV
+if($readLocalSettings and scalar(@ARGV) < 1) {
+    push(@ARGV,$readLocalSettings);
+    $readLocalSettings = '';
+}
+
+# this can also happen if the script is called as
+#
+#       latexindent.pl -o -l myfile.tex outputfile.tex
+#
+# in which case, the GetOptions routine mistakes myfile.tex
+# as the optional parameter to the l flag.
+if($readLocalSettings and scalar(@ARGV) < 2 and $outputToFile) {
+    unshift(@ARGV,$readLocalSettings);
+    $readLocalSettings = '';
+}
+
+# default value of readLocalSettings
+#
+#       latexindent -l myfile.tex
+#
+# means that we wish to use localSettings.yaml
+if(defined($readLocalSettings) and ($readLocalSettings eq '')){
+    $readLocalSettings = 'localSettings.yaml';
+}
+
 # version number
-my $versionNumber = "2.1R";
+my $versionNumber = "2.2";
 
 # Check the number of input arguments- if it is 0 then simply
 # display the list of options (like a manual)
@@ -138,9 +173,6 @@ if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe
           }
 }
 
-# cruft directory
-print $logfile "Directory for backup files and indent.log: $cruftDirectory\n";
-
 # a quick options check
 if($outputToFile and $overwrite)
 {
@@ -208,19 +240,22 @@ ENDQUOTE
     exit(2);
 }
 
+# yaml work
+print $logfile "YAML files:\n";
+
 # Read in defaultSettings.YAML file
 my $defaultSettings = YAML::Tiny->new;
 
 # Open defaultSettings.yaml
 $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
-print $logfile "Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml\n\n" if($defaultSettings);
+print $logfile "\tReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml\n\n" if($defaultSettings);
 
 # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
 # the same directory as it; we need to navigate to it
 if(!$defaultSettings)
 {
     $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
-    print $logfile "Reading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
+    print $logfile "\tReading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
 }
 
 # if both of the above attempts have failed, we need to exit
@@ -255,7 +290,7 @@ $indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml" if(! -e $indentco
 
 if ( -e $indentconfig and !$onlyDefault )
 {
-      print $logfile "Reading path information from $indentconfig\n";
+      print $logfile "\tReading path information from $indentconfig\n";
       # if both indentconfig.yaml and .indentconfig.yaml exist
       if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml")
       {
@@ -263,12 +298,12 @@ if ( -e $indentconfig and !$onlyDefault )
       }
       elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" )
       {
-            print $logfile "Alternatively, ",File::HomeDir->my_home,"/.indentconfig.yaml can be used\n";
+            print $logfile "\tAlternatively, ",File::HomeDir->my_home,"/.indentconfig.yaml can be used\n";
 
       }
       elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" )
       {
-            print $logfile "Alternatively, ",File::HomeDir->my_home,"/indentconfig.yaml can be used\n";
+            print $logfile "\tAlternatively, ",File::HomeDir->my_home,"/indentconfig.yaml can be used\n";
       }
 
       # read the absolute paths from indentconfig.yaml
@@ -277,7 +312,7 @@ if ( -e $indentconfig and !$onlyDefault )
       # integrity check
       if($userSettings)
       {
-        print $logfile Dump \%{$userSettings->[0]};
+        print $logfile "\t",Dump \%{$userSettings->[0]};
         print $logfile "\n";
         @absPaths = @{$userSettings->[0]->{paths}};
       }
@@ -295,46 +330,43 @@ else
 {
       if($onlyDefault)
       {
-        print $logfile "Only default settings requested, not reading USER settings from $indentconfig\n";
-        print $logfile "Ignoring localSettings.yaml\n" if($readLocalSettings);
+        print $logfile "\tOnly default settings requested, not reading USER settings from $indentconfig\n";
+        print $logfile "\tIgnoring $readLocalSettings\n" if($readLocalSettings);
         $readLocalSettings = 0;
       }
       else
       {
         # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
-        print $logfile "Home directory is ",File::HomeDir->my_home,"\n";
-        print $logfile "To specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
-        print $logfile "Alternatively, you can use the hidden file .indentconfig.yaml as: \n\t",File::HomeDir->my_home,"/.indentconfig.yaml\n\n";
+        print $logfile "\tHome directory is ",File::HomeDir->my_home,"\n";
+        print $logfile "\tTo specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
+        print $logfile "\tAlternatively, you can use the hidden file .indentconfig.yaml as: \n\t",File::HomeDir->my_home,"/.indentconfig.yaml\n\n";
       }
 }
 
-# get information about LOCAL settings, assuming that localSettings.yaml exists
+# get information about LOCAL settings, assuming that $readLocalSettings exists
 my $directoryName = dirname $ARGV[0];
 
 # add local settings to the paths, if appropriate
-if ( (-e "$directoryName/localSettings.yaml") and $readLocalSettings and !(-z "$directoryName/localSettings.yaml"))
+if ( (-e "$directoryName/$readLocalSettings") and $readLocalSettings and !(-z "$directoryName/$readLocalSettings"))
 {
-    print $logfile "\nAdding $directoryName/localSettings.yaml to paths\n\n";
-    push(@absPaths,"$directoryName/localSettings.yaml");
+    print $logfile "\tAdding $directoryName/$readLocalSettings to paths\n\n";
+    push(@absPaths,"$directoryName/$readLocalSettings");
 }
-elsif ( !(-e "$directoryName/localSettings.yaml") and $readLocalSettings)
+elsif ( !(-e "$directoryName/$readLocalSettings") and $readLocalSettings)
 {
-      print $logfile "WARNING\n\t$directoryName/localSettings.yaml not found\n";
-      print $logfile "\tcarrying on without it.\n";
+      print $logfile "\tWARNING yaml file not found: \n\t$directoryName/$readLocalSettings not found\n";
+      print $logfile "\t\tcarrying on without it.\n";
 }
 
 # read in the settings from each file
-foreach my $settings (@absPaths)
-{
+foreach my $settings (@absPaths) {
   # check that the settings file exists and that it isn't empty
-  if (-e $settings and !(-z $settings))
-  {
-      print $logfile "Reading USER settings from $settings\n";
+  if (-e $settings and !(-z $settings)) {
+      print $logfile "\tReading USER settings from $settings\n";
       $userSettings = YAML::Tiny->read( "$settings" );
 
       # if we can read userSettings
-      if($userSettings)
-      {
+      if($userSettings) {
             # update the MASTER setttings to include updates from the userSettings
             while(my($userKey, $userValue) = each %{$userSettings->[0]}) {
                     # the update approach is slightly different for hashes vs scalars/arrays
@@ -346,32 +378,23 @@ foreach my $settings (@absPaths)
                           $masterSettings{$userKey} = $userValue;
                     }
             }
-
             # output settings to $logfile
             if($masterSettings{logFilePreferences}{showEveryYamlRead}){
                 print $logfile Dump \%{$userSettings->[0]};
                 print $logfile "\n";
             } else {
-                print $logfile "\tNot showing settings in the log file, see showEveryYamlRead.\n";
+                print $logfile "\t\tNot showing settings in the log file, see showEveryYamlRead.\n";
             }
-       }
-       else
-       {
+       } else {
              # otherwise print a warning that we can not read userSettings.yaml
              print $logfile "WARNING\n\t$settings \n\t contains invalid yaml format- not reading from it\n";
        }
-
-  }
-  else
-  {
+  } else {
       # otherwise keep going, but put a warning in the log file
       print $logfile "\nWARNING\n\t",File::HomeDir->my_home,"/indentconfig.yaml\n";
-      if (-z $settings)
-      {
+      if (-z $settings) {
           print $logfile "\tspecifies $settings \n\tbut this file is EMPTY- not reading from it\n\n"
-      }
-      else
-      {
+      } else {
           print $logfile "\tspecifies $settings \n\tbut this file does not exist- unable to read settings from this file\n\n"
       }
   }
@@ -439,6 +462,7 @@ if (!$ext) {
     print $logfile "\tsearching for file with an extension in the following order (see fileExtensionPreference):\n\t\t";
     print $logfile join("\n\t\t",@fileExtensions),"\n";
     my $fileFound = 0;
+    # loop through the known file extensions (see @fileExtensions)
     foreach my $fileExt (@fileExtensions ){
         if ( -e $fileName.$fileExt ) {
            print $logfile "\t",$fileName,$fileExt," found!\n";
@@ -469,6 +493,9 @@ if (!$ext) {
 if ($overwrite)
 {
     print $logfile "\nBackup procedure:\n";
+    # cruft directory
+    print $logfile "\tDirectory for backup files and indent.log: $cruftDirectory\n\n";
+
     my $backupFile; 
 
     # backup file name is the base name
@@ -508,8 +535,8 @@ if ($overwrite)
     if($onlyOneBackUp)
     {
         $backupFile .= $backupExtension;
-        print $logfile "\t copying $fileName to $backupFile\n";
-        print $logfile "\t $backupFile was overwritten\n\n" if (-e $backupFile);
+        print $logfile "\tcopying $fileName to $backupFile\n";
+        print $logfile "\t$backupFile was overwritten\n\n" if (-e $backupFile);
     }
     else
     {
@@ -569,8 +596,8 @@ if ($overwrite)
     }
 
     # output these lines to the log file
-    print $logfile "\t Backup file: ",$backupFile,"\n";
-    print $logfile "\t Overwriting file: ",$fileName,"\n\n";
+    print $logfile "\tBackup file: ",$backupFile,"\n";
+    print $logfile "\tOverwriting file: ",$fileName,"\n\n";
     copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
 }
 
@@ -923,7 +950,7 @@ ENDQUOTE
 }
 else
 {
-    print $logfile "\n\nLine counts of original file and indented file match.";
+    print $logfile "\n\nLine counts of original file and indented file match.\n";
 }
 
 # output the formatted lines to the terminal
@@ -943,8 +970,10 @@ if($outputToFile)
     open(OUTPUTFILE,">",$ARGV[1]);
     print OUTPUTFILE @lines;
     close(OUTPUTFILE);
+    print $logfile "Output from indentation written to $ARGV[1].\n";
 }
 
+# final line of the logfil
 print $logfile "\n",$masterSettings{logFilePreferences}{endLogFileWith};
 
 # close the log file

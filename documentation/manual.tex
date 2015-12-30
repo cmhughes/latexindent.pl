@@ -436,6 +436,11 @@ on which of the following options are used.
 	      switch is for you.
 	\item[\verbitem{-l}] \lstinline!latexindent.pl -l myfile.tex!
 
+\lstinline!latexindent.pl -l=myyaml.yaml myfile.tex!
+
+\lstinline!latexindent.pl -l myyaml.yaml myfile.tex!
+
+
 	      \label{page:localswitch}
 	      Local settings: you might like to read \cref{sec:defuseloc} before
 	      using this switch. \lstinline!latexindent.pl! will always load \lstinline!defaultSettings.yaml!
@@ -443,6 +448,11 @@ on which of the following options are used.
 	      in the same directory as \lstinline!myfile.tex! then these settings will be
 	      added to the indentation scheme. Information will be given in \lstinline!indent.log! on
 	      the success or failure of loading \lstinline!localSettings.yaml!.
+
+The \lstinline!-l! flag can take an \emph{optional} parameter which details the name of a \lstinline!yaml! file
+that resides in the same directory as \lstinline!myfile.tex!; you can use this option if you would 
+like to load a settings file in the current working directory that is \emph{not} called \lstinline!localSettings.yaml!.
+
 	\item[\verbitem{-d}] \lstinline!latexindent.pl -d myfile.tex!
 
 	      Only \lstinline!defaultSettings.yaml!: you might like to read \cref{sec:defuseloc} before
@@ -1104,9 +1114,8 @@ that tells \lstinline!latexindent.pl! to look for \lstinline!localSettings.yaml!
 be read \emph{after} \lstinline!defaultSettings.yaml! and, assuming they exist,
 user settings.
 
-In contrast to the \emph{user} settings which can be named anything you like (provided that
-they are detailed in \lstinline!indentconfig.yaml!), the \emph{local} settings file
-must be called \lstinline!localSettings.yaml!. It can contain any switches that you'd
+The \emph{local} settings file may be called \lstinline!localSettings.yaml!, and
+it can contain any switches that you'd
 like to change--a sample is shown in \cref{lst:localSettings}.
 
 \begin{cmhlistings}[style=yaml]{\lstinline!localSettings.yaml! (example)}{lst:localSettings}
@@ -1129,13 +1138,17 @@ for details--if \lstinline!localSettings.yaml! can not be read then you will
 get a warning, otherwise you'll get confirmation that
 \lstinline!latexindent.pl! has read \lstinline!localSettings.yaml!.
 
+If you'd prefer to name your \lstinline!localSettings.yaml! file something different, (say, \lstinline!myyaml.yaml!) then
+you can call \lstinline!latexindent.pl! using, for example, \lstinline[breaklines=true]!latexindent.pl -l=myyaml.yaml myfile.tex!.
+
 \subsection{Settings load order}\label{sec:loadorder}
 \lstinline!latexindent.pl! loads the settings files in the following order:
 \begin{enumerate}
 	\item \lstinline!defaultSettings.yaml! (always loaded, can not be renamed)
 	\item \lstinline!anyUserSettings.yaml! (and any other arbitrarily-named files specified in \lstinline!indentconfig.yaml!)
 	\item \lstinline!localSettings.yaml! (if found in same directory as \lstinline!myfile.tex! and called
-	      with \lstinline!-l! switch; can not be renamed)
+	      with \lstinline!-l! switch; can be renamed, provided that the call to \lstinline!latexindent.pl! is adjusted 
+          accordingly)
 \end{enumerate}
 A visual representation of this is given in \cref{fig:loadorder}.
 
