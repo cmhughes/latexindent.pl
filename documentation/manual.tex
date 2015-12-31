@@ -32,6 +32,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usepackage{enumitem}                                % custom lists
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
+\usepackage{examplep}
 % tcolorbox libraries
 \tcbuselibrary{breakable,skins,listings}
 % tikz libraries
@@ -150,7 +151,8 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 {\endlist\endstars}
 {\item}
 
-\newcommand{\verbitem}[1]{\small\ttfamily{#1}}
+% see: http://tex.stackexchange.com/questions/2245/verbatim-description-list-item
+\newcommand{\verbitem}[1]{\small\PVerb{#1}}
 % stolen from arara.sty http://mirrors.med.harvard.edu/ctan/support/arara/doc/arara.sty
 %\lstnewenvironment{yaml}[1][]{\lstset{%
 %	basicstyle=\ttfamily,
@@ -422,25 +424,25 @@ need a few standard Perl modules--see \vref{sec:requiredmodules} for details.
 
 \subsection{From the command line}\label{sec:commandline}
 \lstinline!latexindent.pl! has a number of different switches/flags/options, which
-can be combined in any way that you like. \lstinline!latexindent.pl!
-produces a \lstinline!.log! file, \lstinline!indent.log! every time it
+can be combined in any way that you like, either in short or long form as detailed below. 
+\lstinline!latexindent.pl!  produces a \lstinline!.log! file, \lstinline!indent.log! every time it
 is run. There is a base of information that is written to \lstinline!indent.log!,
 but other additional information will be written depending
 on which of the following options are used.
 
-\begin{itemize}[labelsep=.5cm]
+\begin{itemize}[labelsep=.25cm]
 	\item[] \lstinline!latexindent.pl!
 
 	      This will output a welcome message to the terminal, including the version number
 	      and available options.
-	\item[\verbitem{-h}] \lstinline!latexindent.pl -h!
+	\item[\verbitem{-h, --help}] \lstinline!latexindent.pl -h!
 
 	      As above this will output a welcome message to the terminal, including the version number
 	      and available options.
 	\item[] \lstinline!latexindent.pl myfile.tex!
 
 	      This will operate on \lstinline!myfile.tex!, but will simply output to your terminal; \lstinline!myfile.tex! will	not be changed in any way using this command.
-	\item[\verbitem{-w}] \lstinline!latexindent.pl -w myfile.tex!
+	\item[\verbitem{-w, --overwrite}] \lstinline!latexindent.pl -w myfile.tex!
 
 	      This \emph{will} overwrite \lstinline!myfile.tex!, but it will
 	      make a copy of \lstinline!myfile.tex! first. You can control the name of
@@ -450,7 +452,7 @@ on which of the following options are used.
 	      Note that if \lstinline!latexindent.pl! can not create the backup, then it
 	      will exit without touching your original file; an error message will be given
 	      asking you to check the permissions of the backup file.
-	\item[\verbitem{-o}] \lstinline!latexindent.pl -o myfile.tex outputfile.tex!
+	\item[\verbitem{-o,--outputfile}] \lstinline!latexindent.pl -o myfile.tex outputfile.tex!
 
 	      This will indent \lstinline!myfile.tex! and output it to \lstinline!outputfile.tex!,
 	      overwriting it (\lstinline!outputfile.tex!) if it already exists. Note that if \lstinline!latexindent.pl! is called with both
@@ -459,10 +461,10 @@ on which of the following options are used.
 	      other way round).
 
 	      Note that using \lstinline!-o! is equivalent to using \lstinline!latexindent.pl myfile.tex > outputfile.tex!
-	\item[\verbitem{-s}] \lstinline!latexindent.pl -s myfile.tex!
+	\item[\verbitem{-s, --silent}] \lstinline!latexindent.pl -s myfile.tex!
 
 	      Silent mode: no output will be given to the terminal.
-	\item[\verbitem{-t}] \lstinline!latexindent.pl -t myfile.tex!
+	\item[\verbitem{-t, --trace}] \lstinline!latexindent.pl -t myfile.tex!
 
 	      \label{page:traceswitch}
 	      Tracing mode: verbose output will be given to \lstinline!indent.log!. This
@@ -470,7 +472,7 @@ on which of the following options are used.
 	      trying to find out where and why. You might also be interested in learning
 	      about \lstinline!latexindent.pl!'s thought process--if so, this
 	      switch is for you.
-	\item[\verbitem{-l}] \lstinline!latexindent.pl -l myfile.tex!
+	\item[\verbitem{-l, --local[=myyaml.yaml]}] \lstinline!latexindent.pl -l myfile.tex!
 
 \lstinline!latexindent.pl -l=myyaml.yaml myfile.tex!
 
@@ -489,7 +491,7 @@ The \lstinline!-l! flag can take an \emph{optional} parameter which details the 
 that resides in the same directory as \lstinline!myfile.tex!; you can use this option if you would 
 like to load a settings file in the current working directory that is \emph{not} called \lstinline!localSettings.yaml!.
 
-	\item[\verbitem{-d}] \lstinline!latexindent.pl -d myfile.tex!
+	\item[\verbitem{-d, --onlydefault}] \lstinline!latexindent.pl -d myfile.tex!
 
 	      Only \lstinline!defaultSettings.yaml!: you might like to read \cref{sec:defuseloc} before
 	      using this switch. By default, \lstinline!latexindent.pl! will always search for
@@ -499,7 +501,7 @@ like to load a settings file in the current working directory that is \emph{not}
 	      the script to ignore \lstinline!localSettings.yaml! even if it has been called with the
 	      \lstinline!-l! switch.
 
-	\item[\verbitem{-c}]\lstinline!latexindent.pl -c=/path/to/directory/ myfile.tex!
+	\item[\verbitem{-c, --cruft=<directory>}]\lstinline!latexindent.pl -c=/path/to/directory/ myfile.tex!
 
 	      If you wish to have backup files and \lstinline!indent.log! written to a directory
 	      other than the current working directory, then you can send these `cruft' files
@@ -717,7 +719,7 @@ lookForAlignDelims:
 	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific}
 	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
 
-	\item If you have blocks of code that you wish to align at the \&  character that
+	If you have blocks of code that you wish to align at the \&  character that
 	      are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}...\end{tabular}!, then you use the mark up
 	      illustrated in \cref{lst:alignmentmarkup}. Note that the \lstinline!%*! must be next to
 	      each other, but that there can be any number of spaces (possibly none) between the

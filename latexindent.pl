@@ -52,14 +52,15 @@ my $onlyDefault;
 my $showhelp;
 my $cruftDirectory;
 
-GetOptions ("w"=>\$overwrite,
-"o"=>\$outputToFile,
-"s"=>\$silentMode,
-"t"=>\$tracingMode,
-"l:s"=>\$readLocalSettings,
-"d"=>\$onlyDefault,
-"h"=>\$showhelp,
-"c=s"=>\$cruftDirectory,
+GetOptions (
+ "overwrite|w"=>\$overwrite,
+"outputfile|o"=>\$outputToFile,
+"silent|s"=>\$silentMode,
+"trace|t"=>\$tracingMode,
+"local|l:s"=>\$readLocalSettings,
+"onlydefault|d"=>\$onlyDefault,
+"help|h"=>\$showhelp,
+"cruft|c=s"=>\$cruftDirectory,
 );
 
 # check local settings doesn't interfer with reading the file;
@@ -107,15 +108,24 @@ if(scalar(@ARGV) < 1 or $showhelp)
     print <<ENDQUOTE
 latexindent.pl version $versionNumber
 usage: latexindent.pl [options] [file][.tex]
-      -h  help (see the documentation for detailed instructions and examples)
-      -o  output to another file; sample usage
+      -h, --help
+          help (see the documentation for detailed instructions and examples)
+      -o, --outputfile
+          output to another file; sample usage
                 latexindent.pl -o myfile.tex outputfile.tex
-      -w  overwrite the current file- a backup will be made, but still be careful
-      -s  silent mode- no output will be given to the terminal
-      -t  tracing mode- verbose information given to the log file
-      -l  use localSettings.yaml (assuming it exists in the directory of your file)
-      -d  ONLY use defaultSettings.yaml, ignore ALL user files
-      -c=cruft directory used to specify the location of backup files and indent.log
+      -w, --overwrite
+          overwrite the current file- a backup will be made, but still be careful
+      -s, --silent
+          silent mode- no output will be given to the terminal
+      -t, --trace
+          tracing mode- verbose information given to the log file
+      -l, --local[=myyaml.yaml]
+          use localSettings.yaml (assuming it exists in the directory of your file);
+          alternatively, use myyaml.yaml, if it exists
+      -d, --onlydefault
+          ONLY use defaultSettings.yaml, ignore ALL user files
+      -c, --cruft=<cruft directory> 
+          used to specify the location of backup files and indent.log
 ENDQUOTE
     ;
     exit(2);
