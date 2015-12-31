@@ -30,8 +30,11 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usepackage[charter]{mathdesign}                     % changes font
 \usepackage[expansion=false,kerning=true]{microtype} % better kerning
 \usepackage{enumitem}                                % custom lists
+% setup gitinfo2, as in the manual, details just above begin{document}
+\usepackage[mark,grumpy]{gitinfo2}
 % tcolorbox libraries
 \tcbuselibrary{breakable,skins,listings}
+% tikz libraries
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
@@ -110,7 +113,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 	breakable, % allow page breaks
 	left=0cm,
 	top=0cm,
-	before skip=0cm,
+	before skip=0.2cm,
 	boxsep=0cm,
 	frame style={draw=none,fill=none}, % hide the default frame
 	colback=white,
@@ -118,7 +121,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 		\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 		decorate[decoration={stars,segment length=2cm}] {
 			decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-				([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.6cm]frame.north west)
+				([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.4cm]frame.north west)
 		}};
 		\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 		decorate[decoration={stars,segment length=2cm}] {
@@ -201,12 +204,44 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \crefname{listing}{Listing}{Listings}
 \Crefname{listing}{Listing}{Listings}
 
+% headers and footers
+\fancyhf{} % delete current header and footer
+\fancyhead[R]{\bfseries\thepage}
+\fancyheadoffset[L]{3cm}
+\pagestyle{fancy}
+
+% renew plain style
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+
+% sidebyside environment
+\newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{1cm}}{\end{adjustwidth}}
+
+% gitinfo2 settings
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,(\gitAuthorDate)}
+
+% setting up gitinfo2:
+%   copy the file post-xxx-sample.txt from https://www.ctan.org/tex-archive/macros/latex/contrib/gitinfo2
+%   and put it in .git/hooks/post-checkout
+% then
+%   cd .git/hooks
+%   chmod g+x post-checkout
+%   chmod +x post-checkout
+%   cp post-checkout post-commit
+%   cp post-checkout post-merge
+%   cd ../..
+%   git checkout master
+%   git checkout develop
+%   ls .git
+% and you should see gitHeadInfo.gin
 \begin{document}
 % \begin{noindent}
 	\title{\lstinline[basicstyle=\huge\ttfamily]!latexindent.pl!\\[1cm]
-		Version 2.1R}
+		Version 2.2}
 % \end{noindent}
-\author{Chris Hughes \footnote{and contributors! (See \vref{sec:knownlimitations}.)}}
+\author{Chris Hughes \footnote{and contributors! (See \vref{sec:contributors}.)}}
 \maketitle
 \begin{abstract}
 	\lstinline!latexindent.pl! is a \lstinline!Perl! script that indents \lstinline!.tex!
@@ -239,7 +274,7 @@ has meant there is no need. Thank you to Paulo for all of your advice and
 encouragement.
 
 There have been several contributors to the project so far (and hopefully more in
-the future!); thank you very much to the people detailed in \vref{sec:knownlimitations}
+the future!); thank you very much to the people detailed in \vref{sec:contributors}
 for their valued contributions.
 
 \subsection{License}
@@ -284,7 +319,7 @@ result would be the same, regardless of the leading white space at the beginning
 each line which is stripped by \lstinline!latexindent.pl! (unless a \lstinline!verbatim!-like
 environment or \lstinline!noIndentBlock! is specified--more on this in \cref{sec:defuseloc}).
 
-\begin{adjustwidth}{-2cm}{2cm}
+  \begin{sidebyside}
 	\noindent
 	\begin{minipage}{.6\textwidth}
 		\begin{cmhlistings}[style=demo]{\lstinline!filecontents! before}{lst:filecontentsbefore}
@@ -361,7 +396,7 @@ shrink inner sep/.code={
 	\end{pspicture}}
 		\end{cmhlistings}
 	\end{minipage}
-\end{adjustwidth}
+  \end{sidebyside}
 
 \section{How to use the script}
 \lstinline!latexindent.pl! ships as part of the \TeX Live distribution for
@@ -667,7 +702,7 @@ lookForAlignDelims:
 5& &6       &\\
 \end{tabular}
 		\end{cmhlistings}
-	\end{minipage}
+	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
 		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after}{lst:tabularafter}
 \begin{tabular}{cccc}
@@ -830,7 +865,7 @@ some more text here
 \item another item
 \end{itemize}
 		\end{cmhlistings}
-	\end{minipage}
+	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
 		\begin{cmhlistings}[style=demo,xleftmargin=-3mm,columns=fixed]{\lstinline!items! after}{lst:itemsafter}
 \begin{itemize}
@@ -864,7 +899,7 @@ some more text here
 \fi
 \fi
 	      	\end{cmhlistings}
-	      \end{minipage}
+	      \end{minipage}%
 	      \begin{minipage}{.5\textwidth}
 	      	\begin{cmhlistings}[style=demo,xleftmargin=-3mm,columns=fixed]{\lstinline!if-else-fi! construct after}{lst:iffiafter}
 \ifnum\radius>5
@@ -1241,14 +1276,16 @@ struggle with some of the pattern matching; if you find such a case in which it 
 to report it at \cite{latexindent-home}, and
 in the meantime, use a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
 
-I hope that this script is useful to some--if you find an example where the
-script does not behave as you think it should, feel free to e-mail me or else
-come and find me on the \url{http://tex.stackexchange.com} site; I'm often around
+I hope that this script is useful to some; if you find an example where the
+script does not behave as you think it should, the best way to contact me is to
+report an issue on \cite{latexindent-home}; otherwise, feel free to find me on 
+the \url{http://tex.stackexchange.com} site; I'm often around
 and in the chat room.
 
 \nocite{*}
-\printbibliography[heading=bibintoc,title={References},notkeyword=contributor]
-\printbibliography[env=specialbib,heading=bibintoc,title={Contributors},keyword=contributor]
+\section{References}
+\printbibliography[heading=subbibnumbered,title={External links},notkeyword=contributor]
+\printbibliography[env=specialbib,heading=subbibnumbered,title={Contributors\label{sec:contributors}},keyword=contributor]
 
 \appendix
 \section{Required \lstinline!Perl! modules}\label{sec:requiredmodules}
