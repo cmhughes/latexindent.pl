@@ -220,7 +220,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{1cm}}{\end{adjustwidth}}
 
 % gitinfo2 settings
-\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,(\gitAuthorDate)}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}
 
 % setting up gitinfo2:
 %   copy the file post-xxx-sample.txt from https://www.ctan.org/tex-archive/macros/latex/contrib/gitinfo2
@@ -244,7 +244,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \author{Chris Hughes \footnote{and contributors! (See \vref{sec:contributors}.)}}
 \maketitle
 \begin{abstract}
-	\lstinline!latexindent.pl! is a \lstinline!Perl! script that indents \lstinline!.tex!
+	\lstinline!latexindent.pl! is a \lstinline!Perl! script that indents \lstinline!.tex! (and other)
 	files according to an indentation scheme that the user can modify to suit their
 	taste. Environments, including those with alignment delimiters (such as \lstinline!tabular!),
 	and commands, including those that can split braces and brackets across lines,
@@ -411,8 +411,9 @@ your operating system and preference, you might substitute \lstinline!latexinden
 simply \lstinline!latexindent!.
 
 There are two ways to use \lstinline!latexindent.pl!: from the command line,
-and using \lstinline!arara!.  We will discuss how to change the settings and behaviour
-of the script in \cref{sec:defuseloc}.
+and using \lstinline!arara!; we discuss these in \cref{sec:commandline} and
+\cref{sec:arara} respectively. We will discuss how to change the settings and 
+behaviour of the script in \vref{sec:defuseloc}.
 
 \lstinline!latexindent.pl! ships with \lstinline!latexindent.exe! for Windows
 users, so that you can use the script with or without a Perl distribution.
@@ -511,7 +512,7 @@ example \lstinline[breaklines=true,breakatwhitespace=true,]!latexindent.pl myfil
 the order in which extensions are searched for; see \vref{lst:fileExtensionPreference}
 for full details.
 
-\subsection{From \lstinline!arara!}
+\subsection{From \lstinline!arara!}\label{sec:arara}
 Using \lstinline!latexindent.pl! from the command line is fine for some folks, but
 others may find it easier to use from \lstinline!arara!. \lstinline!latexindent.pl!
 ships with an \lstinline!arara! rule, \lstinline!indent.yaml!, which can be copied
@@ -1142,7 +1143,7 @@ recognize then you'll get a warning, otherwise you'll get confirmation that
 	will tell you so in \lstinline!indent.log!.
 \end{warning}
 
-\subsection{\lstinline!localSettings.yaml!}
+\subsection{\lstinline!localSettings.yaml!}\label{sec:localsettings}
 You may remember on \cpageref{page:localswitch} we discussed the \lstinline!-l! switch
 that tells \lstinline!latexindent.pl! to look for \lstinline!localSettings.yaml! in the
 \emph{same directory} as \lstinline!myfile.tex!. This settings file will
@@ -1179,11 +1180,11 @@ you can call \lstinline!latexindent.pl! using, for example, \lstinline[breakline
 \subsection{Settings load order}\label{sec:loadorder}
 \lstinline!latexindent.pl! loads the settings files in the following order:
 \begin{enumerate}
-	\item \lstinline!defaultSettings.yaml! (always loaded, can not be renamed)
-	\item \lstinline!anyUserSettings.yaml! (and any other arbitrarily-named files specified in \lstinline!indentconfig.yaml!)
-	\item \lstinline!localSettings.yaml! (if found in same directory as \lstinline!myfile.tex! and called
-	      with \lstinline!-l! switch; can be renamed, provided that the call to \lstinline!latexindent.pl! is adjusted 
-          accordingly)
+	\item \lstinline!defaultSettings.yaml! is always loaded, and can not be renamed;
+	\item \lstinline!anyUserSettings.yaml! and any other arbitrarily-named files specified in \lstinline!indentconfig.yaml!;
+	\item \lstinline!localSettings.yaml! but only if found in the same directory as \lstinline!myfile.tex! and called
+	      with \lstinline!-l! switch; this file can be renamed, provided that the call to \lstinline!latexindent.pl! is adjusted 
+          accordingly (see \cref{sec:localsettings}).
 \end{enumerate}
 A visual representation of this is given in \cref{fig:loadorder}.
 
@@ -1271,10 +1272,11 @@ environment, the \lstinline!verbatim! environment \emph{will} be formatted, whic
 is probably not what you want. I hope to address this in future versions, but for the
 moment wrap it in a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
 
-You can run \lstinline!latexindent! on \lstinline!.sty! and  \lstinline!.cls! files, but it may
-struggle with some of the pattern matching; if you find such a case in which it struggles, please feel free
+You can run \lstinline!latexindent! on \lstinline!.sty!, \lstinline!.cls! and any filetypes
+that you specify in \lstinline[breaklines=true]!fileExtensionPreference! (see \vref{lst:fileExtensionPreference}); 
+if you find a case in which the script struggles, please feel free
 to report it at \cite{latexindent-home}, and
-in the meantime, use a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
+in the meantime, consider using a \lstinline!noIndentBlock! (see \cpageref{lst:noIndentBlockdemo}).
 
 I hope that this script is useful to some; if you find an example where the
 script does not behave as you think it should, the best way to contact me is to
