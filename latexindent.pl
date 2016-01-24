@@ -656,8 +656,6 @@ my $inIndentBlock=0;        # $inindentblock: switch to determine if in
 my @indent;                 # @indent: stores current level of indentation
 my @lines;                  # @lines: stores the newly indented lines
 my @block;                  # @block: stores blocks that have & delimiters
-my @commandstore;           # @commandstore: stores commands that
-                            #           have split {} across lines
 my @commandstorebrackets;   # @commandstorebrackets: stores commands that
                             #           have split [] across lines
 my @mainfile;               # @mainfile: stores input file; used to
@@ -740,7 +738,6 @@ while(<MAINFILE>)
 
     if(@masterIndentationArrayOfHashes){
            $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
-           print $logfile "delimiters = ",$delimiters,"\n";
          }
 
     if($inverbatim){
@@ -1295,10 +1292,7 @@ sub start_command_or_key_unmatched_brackets{
     #                      but it WON'T match \[
 
     if ($_ =~ m/^\s*(\\)?(.*?)(\s*(?<!\\)\[)/
-        and (scalar($checkunmatchedbracket{$2})
-             or $alwaysLookforSplitBrackets)
-        )
-        {
+        and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets)) {
             # store the command name, because $2
             # will not exist after the next match
             $commandname = $2;
@@ -1310,12 +1304,11 @@ sub start_command_or_key_unmatched_brackets{
             $matchedBRACKETS-- while ($_ =~ /(?<!\\)\]/g);
 
             # set the indentation
-            if($matchedBRACKETS != 0 )
-            {
+            if($matchedBRACKETS != 0 ) {
                   # tracing mode
                   print $logfile "Line $lineCounter\t Found opening BRACKET [ $commandname\n" if($tracingMode);
 
-                  &increase_indent($commandname);
+                  &increase_indent({name=>$commandname,matchedBRACKETS=>$matchedBRACKETS});
 
                   # store the command name
                   # and the value of $matchedBRACKETS
@@ -1343,11 +1336,9 @@ sub end_command_or_key_unmatched_brackets{
     #                                  ] and SUBTRACT to the counter
     if(scalar(@commandstorebrackets)
         and  !($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/
-                    and (scalar($checkunmatchedbracket{$2})
-                         or $alwaysLookforSplitBrackets))
-        and $_ !~ m/^\s*%/
-       )
-    {
+                    and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets))
+        and $_ !~ m/^\s*%/) {
+
        # get the details of the most recent command name
        $commanddetails = pop(@commandstorebrackets);
        $commandname = $commanddetails->{'commandname'};
@@ -1403,11 +1394,9 @@ sub start_command_or_key_unmatched_braces{
     #       (\[|}|=|(\s*\\))   either [ or { or = or space \
 
     if ($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
-            and (scalar($checkunmatched{$2})
-                 or scalar($checkunmatchedELSE{$2})
+            and ($checkunmatched{$2} or $checkunmatchedELSE{$2}
                  or $alwaysLookforSplitBraces)
-        )
-        {
+        ) {
             # store the command name, because $2
             # will not exist after the next match
             $commandname = $2;
@@ -1415,8 +1404,7 @@ sub start_command_or_key_unmatched_braces{
 
             # by default, don't look for an else construct
             $lookforelse=0;
-            if(scalar($checkunmatchedELSE{$2}))
-            {
+            if($checkunmatchedELSE{$2}) {
                 $lookforelse=1;
             }
 
@@ -1430,50 +1418,43 @@ sub start_command_or_key_unmatched_braces{
             print $logfile "Line $lineCounter\t matchedbraces = $matchedbraces\n" if($tracingMode);
 
             # set the indentation
-            if($matchedbraces > 0 )
-            {
+            if($matchedbraces > 0 ) {
                   # tracing mode
                   print $logfile "Line $lineCounter\t Found opening BRACE { $commandname\n" if($tracingMode);
 
-                  &increase_indent($commandname);
-
-                  # store the command name
-                  # and the value of $matchedbraces
-                  push(@commandstore,{commandname=>$commandname,
+                  &increase_indent({name=>$commandname,
                                       matchedbraces=>$matchedbraces,
                                       lookforelse=>$lookforelse,
-                                      countzeros=>0});
-
-            }
-            elsif($matchedbraces<0)
-            {
+                                      countzeros=>0,
+                                      type=>"splitbraces"});
+            } elsif($matchedbraces<0) {
                 # if $matchedbraces < 0 then we must be matching
                 # braces from a previous split-braces command
 
                 # keep matching { OR }, and don't match \{ or \}
-                while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
-                {
+                while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g) {
 
                      # store the match, either { or }
                      my $braceType = $1;
 
-                     # exit the loop if @commandstore is empty
-                     last if(!@commandstore);
+                     # exit the loop if @masterIndentationArrayOfHashes[-1] is empty
+                     last if(!@masterIndentationArrayOfHashes);
+
+                     # exit the loop if we're not looking for split braces
+                     last if($masterIndentationArrayOfHashes[-1]{type} ne 'splitbraces');
 
                      # get the details of the most recent command name
-                     $commanddetails = pop(@commandstore);
-                     $commandname = $commanddetails->{'commandname'};
-                     $matchedbraces = $commanddetails->{'matchedbraces'};
-                     $countzeros = $commanddetails->{'countzeros'};
-                     $lookforelse= $commanddetails->{'lookforelse'};
+                     $commandname =  $masterIndentationArrayOfHashes[-1]{name};
+                     $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
+                     $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
+                     $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
 
                      $matchedbraces++ if($1 eq "{");
                      $matchedbraces-- if($1 eq "}");
 
                      # if we've matched up the braces then
                      # we can decrease the indent by 1 level
-                     if($matchedbraces == 0)
-                     {
+                     if($matchedbraces == 0) {
                           $countzeros++ if $lookforelse;
 
                           # tracing mode
@@ -1482,23 +1463,12 @@ sub start_command_or_key_unmatched_braces{
                           # decrease the indentation (if appropriate)
                           &decrease_indent($commandname);
 
-                         if($countzeros==1)
-                         {
-                              push(@commandstore,{commandname=>$commandname,
-                                                  matchedbraces=>$matchedbraces,
-                                                  lookforelse=>$lookforelse,
-                                                  countzeros=>$countzeros});
+                         if($countzeros==1) {
+                              $masterIndentationArrayOfHashes[-1]{'matchedbraces'} = $matchedbraces;
+                              $masterIndentationArrayOfHashes[-1]{'countzeros'} = $countzeros;
+                              $masterIndentationArrayOfHashes[-1]{'lookforelse'} = $lookforelse;
                          }
-                     }
-                     else
-                     {
-                            # otherwise we need to put the command back for the
-                            # next brace count
-                            push(@commandstore,{commandname=>$commandname,
-                                                matchedbraces=>$matchedbraces,
-                                                lookforelse=>$lookforelse,
-                                                countzeros=>$countzeros});
-                     }
+                     } 
                 }
             }
         }
@@ -1515,7 +1485,7 @@ sub end_command_or_key_unmatched_braces{
     #              empty header/.style={
     #
     #           It works by checking if we have any entries
-    #           in the array @commandstore, and making
+    #           in the array @masterIndentationArrayOfHashes, and making
     #           sure that we're not starting another command/key
     #           that has split BRACES (nesting).
     #
@@ -1523,37 +1493,35 @@ sub end_command_or_key_unmatched_braces{
     #
     #           We count the number of { and ADD to the counter
     #                                  } and SUBTRACT to the counter
-    if(scalar(@commandstore)
+    if(scalar(@masterIndentationArrayOfHashes)
       and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
-                    and (scalar($checkunmatched{$2})
-                         or scalar($checkunmatchedELSE{$2})
+                    and ($checkunmatched{$2} or $checkunmatchedELSE{$2}
                          or $alwaysLookforSplitBraces))
         and $_ !~ m/^\s*%/
-       )
-    {
+       ) {
        # keep matching { OR }, and don't match \{ or \}
-       while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g)
-       {
+       while ($_ =~ m/(((?<!\\){)|((?<!\\)}))/g) {
             # store the match, either { or }
             my $braceType = $1;
 
-            # exit the loop if @commandstore is empty
-            last if(!@commandstore);
+            # exit the loop if @masterIndentationArrayOfHashes[-1] is empty
+            last if(!@masterIndentationArrayOfHashes);
+
+            # exit the loop if we're not looking for split braces
+            last if($masterIndentationArrayOfHashes[-1]{type} ne 'splitbraces');
 
             # get the details of the most recent command name
-            $commanddetails = pop(@commandstore);
-            $commandname = $commanddetails->{'commandname'};
-            $matchedbraces = $commanddetails->{'matchedbraces'};
-            $countzeros = $commanddetails->{'countzeros'};
-            $lookforelse= $commanddetails->{'lookforelse'};
+            $commandname =  $masterIndentationArrayOfHashes[-1]{name};
+            $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
+            $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
+            $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
 
             $matchedbraces++ if($1 eq "{");
             $matchedbraces-- if($1 eq "}");
 
             # if we've matched up the braces then
             # we can decrease the indent by 1 level
-            if($matchedbraces == 0)
-            {
+            if($matchedbraces == 0) {
                  $countzeros++ if $lookforelse;
 
                  # tracing mode
@@ -1562,27 +1530,19 @@ sub end_command_or_key_unmatched_braces{
                  # decrease the indentation (if appropriate)
                  &decrease_indent($commandname);
 
-                if($countzeros==1)
-                {
-                     push(@commandstore,{commandname=>$commandname,
-                                         matchedbraces=>$matchedbraces,
-                                         lookforelse=>$lookforelse,
-                                         countzeros=>$countzeros});
+                if($countzeros==1){
+                    $masterIndentationArrayOfHashes[-1]{'matchedbraces'} = $matchedbraces;
+                    $masterIndentationArrayOfHashes[-1]{'countzeros'} = $countzeros;
+                    $masterIndentationArrayOfHashes[-1]{'lookforelse'} = $lookforelse;
                 }
-            }
-            else
-            {
-                # otherwise we need to enter the new value
-                # of $matchedbraces and the value of $command
-                # back into storage
-                push(@commandstore,{commandname=>$commandname,
-                                    matchedbraces=>$matchedbraces,
-                                    lookforelse=>$lookforelse,
-                                    countzeros=>$countzeros});
-
-               # tracing mode
-               print $logfile "Line $lineCounter\t Searching for closing BRACE } $commandname\n" if($tracingMode);
-            }
+            } 
+            
+            if(@masterIndentationArrayOfHashes){
+                if($masterIndentationArrayOfHashes[-1]{'type'} eq 'splitbraces'){
+                   # tracing mode
+                   print $logfile "Line $lineCounter\t Searching for closing BRACE } $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
+                }
+             }
      }
      }
 }
@@ -1603,37 +1563,31 @@ sub check_for_else{
     #          the indentation appropriately.
     #
     #          We only perform this check if there's something
-    #          in the array @commandstore, and if
+    #          in the array @masterIndentationArrayOfHashes, and if
     #          the line itself is not a command, or comment,
     #          and if it begins with {
 
-    if(scalar(@commandstore)
+    if(scalar(@masterIndentationArrayOfHashes)
         and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=)/
-                    and (scalar($checkunmatched{$2})
-                         or scalar($checkunmatchedELSE{$2})
+                    and ($checkunmatched{$2} or $checkunmatchedELSE{$2}
                          or $alwaysLookforSplitBraces))
         and $_ =~ m/^\s*{/
         and $_ !~ m/^\s*%/
-       )
-    {
+       ) {
        # get the details of the most recent command name
-       $commanddetails = pop(@commandstore);
-       $commandname = $commanddetails->{'commandname'};
-       $matchedbraces = $commanddetails->{'matchedbraces'};
-       $countzeros = $commanddetails->{'countzeros'};
-       $lookforelse= $commanddetails->{'lookforelse'};
+       $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
+       $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
+       $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
 
        # increase indentation
-       if($lookforelse and $countzeros==1)
-       {
-         &increase_indent($commandname);
+       if($lookforelse and $countzeros==1) {
+         #&increase_indent($commandname);
        }
 
        # put the array back together
-       push(@commandstore,{commandname=>$commandname,
-                           matchedbraces=>$matchedbraces,
-                           lookforelse=>$lookforelse,
-                           countzeros=>$countzeros});
+       $masterIndentationArrayOfHashes[-1]{'matchedbraces'} = $matchedbraces;
+       $masterIndentationArrayOfHashes[-1]{'countzeros'} = $countzeros;
+       $masterIndentationArrayOfHashes[-1]{'lookforelse'} = $lookforelse;
     }
 }
 
