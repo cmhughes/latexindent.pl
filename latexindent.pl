@@ -651,8 +651,6 @@ my $trailingcomments;       # $trailingcomments stores the comments at the end o
 my $lineCounter=0;          # $lineCounter keeps track of the line number
 my $inIndentBlock=0;        # $inindentblock: switch to determine if in
                             #               a inindentblock or not
-my $headingLevel=0;         # $headingLevel: scalar that stores which heading
-                            #               we are under: \part, \chapter, etc
 
 # array variables
 my @indent;                 # @indent: stores current level of indentation
@@ -664,7 +662,6 @@ my @commandstorebrackets;   # @commandstorebrackets: stores commands that
                             #           have split [] across lines
 my @mainfile;               # @mainfile: stores input file; used to
                             #            grep for \documentclass
-my @headingStore;           # @headingStore: stores headings: chapter, section, etc
 my @indentNames;            # @indentNames: keeps names of commands and
                             #               environments that have caused
                             #               indentation to increase
@@ -1164,29 +1161,36 @@ sub indent_heading{
     #
     #           This subroutine specifies the indentation for the
     #           heading itself, i.e the line that has \chapter, \section etc
-    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1})
-    {
+    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1}){
        # tracing mode
        print $logfile "Line $lineCounter\t Heading found: $1 \n" if($tracingMode);
 
-       # get the heading settings- it's a hash within a hash
+       # get the heading settings, it's a hash within a hash
        my %currentHeading = %{$indentAfterHeadings{$1}};
 
-       # local scalar
-       my $previousHeadingLevel = $headingLevel;
+       # $previousHeadingLevel: scalar that stores which heading
+       # we are under: \part, \chapter, etc
+       my $previousHeadingLevel=0;         
+
+       # form an array of the headings available
+       my @headingStore=();
+       foreach my $env (@masterIndentationArrayOfHashes){
+           if($env->{type} eq 'heading'){
+               push(@headingStore,$env->{name});
+               # update heading level
+               $previousHeadingLevel= $env->{headinglevel};
+             }
+         }
 
        # if current heading level < old heading level,
-       if($currentHeading{level}<$previousHeadingLevel)
-       {
+       if($currentHeading{level}<$previousHeadingLevel) {
             # decrease indentation, but only if
             # specified in indentHeadings. Note that this check
             # needs to be done here- decrease_indent won't
             # check a nested hash
 
-            if(scalar(@headingStore))
-            {
-               while($currentHeading{level}<$previousHeadingLevel and scalar(@headingStore))
-               {
+            if(scalar(@headingStore)) {
+               while($currentHeading{level}<$previousHeadingLevel and scalar(@headingStore)) {
                     my $higherHeadingName = pop(@headingStore);
                     my %higherLevelHeading = %{$indentAfterHeadings{$higherHeadingName}};
 
@@ -1199,20 +1203,15 @@ sub indent_heading{
                # put the heading name back in to storage
                push(@headingStore,$1);
             }
-       }
-       elsif($currentHeading{level}==$previousHeadingLevel)
-       {
-            if(scalar(@headingStore))
-            {
+       } elsif($currentHeading{level}==$previousHeadingLevel) {
+            if(scalar(@headingStore)) {
                  my $higherHeadingName = pop(@headingStore);
                  my %higherLevelHeading = %{$indentAfterHeadings{$higherHeadingName}};
                  &decrease_indent($higherHeadingName) if($higherLevelHeading{indent});
             }
             # put the heading name back in to storage
             push(@headingStore,$1);
-       }
-       else
-       {
+       } else {
             # put the heading name into storage
             push(@headingStore,$1);
        }
@@ -1234,15 +1233,11 @@ sub indent_after_heading{
     #           This subroutine is specifies the indentation for
     #           the text AFTER the heading, i.e the body of conent
     #           in each \chapter, \section, etc
-    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1})
-    {
+    if( $_ =~ m/^\s*\\(.*?)(\[|{)/ and $indentAfterHeadings{$1}) {
        # get the heading settings- it's a hash within a hash
        my %currentHeading = %{$indentAfterHeadings{$1}};
 
-       &increase_indent($1) if($currentHeading{indent});
-
-       # update heading level
-       $headingLevel = $currentHeading{level};
+       &increase_indent({name=>$1,type=>"heading",headinglevel=>$currentHeading{level}}) if($currentHeading{indent});
     }
 }
 
@@ -1741,7 +1736,7 @@ sub at_end_of_env_or_eq{
 
        # check if we're in an environment that is looking
        # to indent after each \item
-       if(scalar(@indentNames) and $itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
+       if(scalar(@masterIndentationArrayOfHashes) and $itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
             &decrease_indent($masterIndentationArrayOfHashes[-1]{name});
        }
 
@@ -1782,14 +1777,12 @@ sub at_end_of_env_or_eq{
        # if we're at the end of the document, we remove all current
        # indentation- this is especially prominent in examples that
        # have headings, and the user has chosen to indentAfterHeadings
-       if($1 eq "document" and !(grep(/filecontents/, @indentNames)) and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock) {
-            @indent=();
-            @indentNames=();
+       if($1 eq "document" and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock) {
+            @masterIndentationArrayOfHashes=();
 
             # tracing mode
-            if($tracingMode)
-            {
-                print $logfile "Line $lineCounter\t \\end{$1} found- emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+            if($tracingMode) {
+                print $logfile "Line $lineCounter\t \\end{$1} found, emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
             }
        }
     }
@@ -2180,6 +2173,12 @@ sub increase_indent{
             # tracing mode
             print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
        }
+
+       # heading information (part,chapter,section,etc)
+       if($infoHash{type} eq 'heading'){
+            $masterIndentationArrayOfHashes[-1]{type}="heading";
+            $masterIndentationArrayOfHashes[-1]{headinglevel}= $infoHash{headinglevel};
+        }
 }
 
 sub decrease_indent{
