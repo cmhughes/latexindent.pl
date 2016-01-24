@@ -854,11 +854,11 @@ while(<MAINFILE>)
             # unless this would only create trailing whitespace and the
             # corresponding option is set
             unless ($_ =~ m/^$/ and $removeTrailingWhitespace){
-                $_ = join("",@indent).$_;
+                $_ = &current_indentation().$_;
             }
             push(@lines,$_);
             # tracing mode
-            print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeAddCurrentIndent} PHASE 2: Adding current level of indentation: ",join(", ",@indentNames),"\n" if($tracingMode);
+            print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeAddCurrentIndent} PHASE 2: Adding current level of indentation: ",&current_indentation_names(),"\n" if($tracingMode);
         }
     }
     else
@@ -941,12 +941,7 @@ while(<MAINFILE>)
 
         # tracing mode
         if($tracingMode and scalar(@masterIndentationArrayOfHashes)){
-            print $logfile "Line $lineCounter\t Environments: ";
-            foreach my $env (@masterIndentationArrayOfHashes){
-                print $logfile $env->{name};
-                print $logfile "," unless $env == $masterIndentationArrayOfHashes[-1];
-              }
-            print $logfile "\n";
+            print $logfile "Line $lineCounter\t Environments/commands: ",&current_indentation_names(),"\n";
         }
     }
 }
@@ -1004,21 +999,22 @@ sub indent_if_else_fi{
     #
 
     # @indentNames could be empty -- if so, exit
-    return 0 unless(@indentNames);
+    return 0 unless(@masterIndentationArrayOfHashes);
 
     # look for \fi
-    if( $_ =~ m/^\s*\\fi/ and $constructIfElseFi{$indentNames[-1]})
-    {
+    if( $_ =~ m/^\s*\\fi/ and $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}}) {
         # tracing mode
-        print $logfile "Line $lineCounter\t \\fi command found, matching: \\",$indentNames[-1], "\n" if($tracingMode);
-        &decrease_indent($indentNames[-1]);
-    }
-    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/) and $constructIfElseFi{$indentNames[-1]})
-    {
+        print $logfile "Line $lineCounter\t \\fi command found, matching: \\",$masterIndentationArrayOfHashes[-1]{name}, "\n" if($tracingMode);
+        &decrease_indent($masterIndentationArrayOfHashes[-1]{name});
+    } 
+    # look for \else or \or
+    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/) and $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}}) {
         # tracing mode
-        print $logfile "Line $lineCounter\t \\else command found, matching: \\",$indentNames[-1], "\n" if($tracingMode);
-        print $logfile "Line $lineCounter\t decreasing indent, but indentNames is still  \\",join(", ",@indentNames), "\n" if($tracingMode);
-        pop(@indent);
+        print $logfile "Line $lineCounter\t \\else command found, matching: \\",$masterIndentationArrayOfHashes[-1]{name}, "\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t decreasing indent, still looking for \\fi to match \\",&current_indentation_names(), "\n" if($tracingMode);
+
+        # finding an \else or \or command removes the *indentation*, but not the entry from the master hash
+        $masterIndentationArrayOfHashes[-1]{indent}="";
     }
 }
 
@@ -1038,25 +1034,20 @@ sub indent_after_if_else_fi{
     #       ^\s*        begins with multiple spaces (possibly none)
     #       \\(if.*?)(\s|\\|\#)   matches \if... up to either a
     #                             space, a \, or a #
-    if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $constructIfElseFi{$1})
-    {
+    if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $constructIfElseFi{$1}) {
         # tracing mode
         print $logfile "Line $lineCounter\t ifelsefi construct found: $1 \n" if($tracingMode);
-        &increase_indent($1);
-    }
-    elsif(@indentNames)
-    {
-        if( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) and $constructIfElseFi{$indentNames[-1]})
-        {
+        &increase_indent({name=>$1,type=>"ifelseif"});
+    } elsif(@masterIndentationArrayOfHashes) {
+        if( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) and $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}}) {
             # tracing mode
-            print $logfile "Line $lineCounter\t setting indent *after* \\else or \\or command found for $indentNames[-1] \n" if($tracingMode);
-            &increase_indent($indentNames[-1]);
-            # don't want to store the name of the \if construct twice
-            # so remove the second copy
-            pop(@indentNames);
+            print $logfile "Line $lineCounter\t setting indent *after* \\else or \\or command found for $masterIndentationArrayOfHashes[-1]{name} \n" if($tracingMode);
+
+            # recover the indentation to be implemented *after* the \else or \or
+            $masterIndentationArrayOfHashes[-1]{indent}=$indentRules{$masterIndentationArrayOfHashes[-1]{name}}||$defaultIndent unless ($noAdditionalIndent{$masterIndentationArrayOfHashes[-1]{name}});
         }
   }
-  }
+}
 
 sub indent_item{
     # PURPOSE: this subroutine sets the indentation for the item *itself*
@@ -1094,6 +1085,7 @@ sub indent_after_item{
         &increase_indent($1);
     }
 }
+
 sub begin_command_with_alignment{
     # PURPOSE: This matches
     #           %* \begin{tabular}
@@ -2169,7 +2161,10 @@ sub increase_indent{
           } else {
             push(@masterIndentationArrayOfHashes,{name=>$command});
         }
+
+       # environment information
        if($infoHash{type} eq 'environment'){
+            $masterIndentationArrayOfHashes[-1]{type}="environment";
             $masterIndentationArrayOfHashes[-1]{begin}="\\begin{$masterIndentationArrayOfHashes[-1]{name}}";
             $masterIndentationArrayOfHashes[-1]{end}="\\end{$masterIndentationArrayOfHashes[-1]{name}}";
        }
@@ -2190,23 +2185,48 @@ sub decrease_indent{
 
        my $command = pop(@_);
 
-       if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
-       {
-            print $logfile "Line $lineCounter\t removing ", $indentNames[-1], " from indentNames\n" if($tracingMode);
-            pop(@indent);
-            pop(@indentNames);
+       if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim)) {
+            print $logfile "Line $lineCounter\t removing ", $masterIndentationArrayOfHashes[-1]{name}, " from masterIndentationArrayOfHashes\n" if($tracingMode);
+            pop(@masterIndentationArrayOfHashes);
             # tracing mode
-            if($tracingMode)
-            {
-                if(@indentNames)
-                {
-                    print $logfile "Line $lineCounter\t decreasing indent to: ",join(", ",@indentNames),"\n" ;
-                }
-                else
-                {
-                    print $logfile "Line $lineCounter\t indent now empty \n";
+            if($tracingMode) {
+                if(@masterIndentationArrayOfHashes) {
+                    print $logfile "Line $lineCounter\t decreasing masterIndentationArrayOfHashes to: ";
+                    foreach my $env (@masterIndentationArrayOfHashes){
+                        print $logfile $env->{name};
+                        print $logfile "," unless $env == $masterIndentationArrayOfHashes[-1];
+                      }
+                     print $logfile "\n";
+                } else {
+                    print $logfile "Line $lineCounter\t masterIndentationArrayOfHashes now empty \n";
               }
             }
        }
 }
 
+sub current_indentation{
+    # PURPOSE: loop through masterIndentationArrayOfHashes and 
+    #          pull out the indentation, and join it together
+
+    # if the masterIndentationArrayOfHashes is empty, return an empty string
+    return "" unless(@masterIndentationArrayOfHashes);
+
+    my $indent;
+    foreach my $env (@masterIndentationArrayOfHashes){
+        $indent .= $env->{indent};
+      }
+    return $indent;
+}
+
+sub current_indentation_names{
+    # PURPOSE: loop through masterIndentationArrayOfHashes and 
+    #          pull out the list of environment/command names
+    return "masterIndentationArrayOfHashes empty" unless(@masterIndentationArrayOfHashes);
+
+    my $listOfNames;
+    foreach my $env (@masterIndentationArrayOfHashes){
+        $listOfNames .= $env->{name};
+        $listOfNames .= "," unless $env == $masterIndentationArrayOfHashes[-1];
+      }
+    return $listOfNames;
+}
