@@ -702,21 +702,15 @@ while(<MAINFILE>)
 
     # check to see if we're still in the preamble
     # or in a verbatim environment or in IndentBlock
-    if(!($inpreamble or $inverbatim or $inIndentBlock))
-    {
+    if(!($inpreamble or $inverbatim or $inIndentBlock)) {
         # if not, remove all leading spaces and tabs
         # from the current line, assuming it isn't empty
-        #s/^\ *//;
-        #s/^\s+//;
-        #s/^\t+//;
         s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/);
         s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
 
         # tracing mode
         print $logfile "Line $lineCounter\t removing leading spaces\n" if($tracingMode);
-    }
-    else
-    {
+    } else {
         # otherwise check to see if we've reached the main
         # part of the document
         if(m/^\s*\\begin{document}/) {
@@ -1746,7 +1740,7 @@ sub at_end_of_env_or_eq{
        # then we don't need to check for \end{environmentname}
        if(@masterIndentationArrayOfHashes) {
           # check to see if \end{environment} fits with most recent \begin{...}
-          my %previousEnvironment = %{pop(@masterIndentationArrayOfHashes)};
+          my %previousEnvironment = %{@masterIndentationArrayOfHashes[-1]};
 
           # check to see if we need to turn off alignment
           # delimiters and output the current block
@@ -1764,7 +1758,6 @@ sub at_end_of_env_or_eq{
                &decrease_indent($1);
           } else {
               # otherwise put the environment name back on the stack
-              push(@masterIndentationArrayOfHashes,%previousEnvironment);
               print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment{name}}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
           }
 
