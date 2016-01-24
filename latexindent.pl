@@ -940,8 +940,12 @@ while(<MAINFILE>)
         &indent_after_if_else_fi() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # tracing mode
-        if($tracingMode and scalar(@masterIndentationArrayOfHashes)){
-            print $logfile "Line $lineCounter\t Environments/commands: ",&current_indentation_names(),"\n";
+        if($tracingMode){
+            if(scalar(@masterIndentationArrayOfHashes)){
+                print $logfile "Line $lineCounter\t Indentation array: ",&current_indentation_names(),"\n";
+              } else {
+                print $logfile "Line $lineCounter\t Indentation array empty\n";
+              }
         }
     }
 }
@@ -998,7 +1002,7 @@ sub indent_if_else_fi{
     #
     #
 
-    # @indentNames could be empty -- if so, exit
+    # @masterIndentationArrayOfHashes could be empty -- if so, exit
     return 0 unless(@masterIndentationArrayOfHashes);
 
     # look for \fi
@@ -1050,16 +1054,17 @@ sub indent_after_if_else_fi{
 }
 
 sub indent_item{
-    # PURPOSE: this subroutine sets the indentation for the item *itself*
+    # PURPOSE: when considering environments that can contain items, such 
+    #          as enumerate, itemize, etc, this subroutine sets the indentation for the item *itself*
 
-    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}})
-    {
-        # tracing mode
-        print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
-        if($itemNames{$indentNames[-1]})
-        {
-            print $logfile "Line $lineCounter\t $1 found- neutralizing indentation from previous ",$indentNames[-1],"\n" if($tracingMode);
-            &decrease_indent($1);
+    if(scalar(@masterIndentationArrayOfHashes)>1){
+        if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-2]{name}}){
+            # tracing mode
+            print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
+            if($itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
+                print $logfile "Line $lineCounter\t $1 found - neutralizing indentation from previous ",$masterIndentationArrayOfHashes[-1]{name},"\n" if($tracingMode);
+                &decrease_indent($1);
+            }
         }
     }
 
@@ -1078,11 +1083,10 @@ sub indent_after_item{
     #
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/
             and $itemNames{$1}
-            and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}})
-    {
+            and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}}) {
         # tracing mode
         print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
-        &increase_indent($1);
+        &increase_indent({name=>$1,type=>"item"});
     }
 }
 
@@ -1737,8 +1741,8 @@ sub at_end_of_env_or_eq{
 
        # check if we're in an environment that is looking
        # to indent after each \item
-       if(scalar(@indentNames) and $itemNames{$indentNames[-1]}) {
-            &decrease_indent($indentNames[-1]);
+       if(scalar(@indentNames) and $itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
+            &decrease_indent($masterIndentationArrayOfHashes[-1]{name});
        }
 
        # some commands contain \end{environmentname}, which
@@ -1756,11 +1760,12 @@ sub at_end_of_env_or_eq{
           }
 
           # tracing mode
-          print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
+          print $logfile "Line $lineCounter\t \\end{environment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
 
           # check to see if \end{environment} fits with most recent \begin{...}
           if($previousEnvironment{name} eq $1) {
                # decrease the indentation (if appropriate)
+               print $logfile "Line $lineCounter\t removed $1 from Indentation array\n"; 
                &decrease_indent($1);
           } else {
               # otherwise put the environment name back on the stack
@@ -2183,6 +2188,10 @@ sub decrease_indent{
        #          check that it's not an environment
        #          that doesn't want indentation.
 
+       # if there is no evidence of indentation, then return
+       return unless(scalar(@masterIndentationArrayOfHashes));
+
+       # otherwise get details of the most recent command, environment, item, if, heading, etc
        my $command = pop(@_);
 
        if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim)) {
@@ -2191,12 +2200,7 @@ sub decrease_indent{
             # tracing mode
             if($tracingMode) {
                 if(@masterIndentationArrayOfHashes) {
-                    print $logfile "Line $lineCounter\t decreasing masterIndentationArrayOfHashes to: ";
-                    foreach my $env (@masterIndentationArrayOfHashes){
-                        print $logfile $env->{name};
-                        print $logfile "," unless $env == $masterIndentationArrayOfHashes[-1];
-                      }
-                     print $logfile "\n";
+                    print $logfile "Line $lineCounter\t decreasing masterIndentationArrayOfHashes to: ",&current_indentation_names(),"\n";
                 } else {
                     print $logfile "Line $lineCounter\t masterIndentationArrayOfHashes now empty \n";
               }
