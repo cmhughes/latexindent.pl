@@ -70,10 +70,14 @@ lookForAlignDelims:
    tabular: 1
    tabularx: 1
    longtable: 1
+   tabu: 1
    array: 1
    matrix: 1
    bmatrix: 1
+   Bmatrix: 1
    pmatrix: 1
+   vmatrix: 1
+   Vmatrix: 1
    align: 1
    align*: 1
    alignat: 1

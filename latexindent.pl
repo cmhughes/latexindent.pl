@@ -1715,7 +1715,6 @@ sub at_end_of_env_or_eq{
     #          OFF the $delimiter switch
 
     if( ($_ =~ m/^\s*\\end{\\?(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/) {
-
        # check if we're at the end of a verbatim-like environment
        if($verbatimEnvironments{$1}) {
            $inverbatim = 0;
@@ -1732,6 +1731,12 @@ sub at_end_of_env_or_eq{
        # to indent after each \item
        if(scalar(@masterIndentationArrayOfHashes) and $itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
             &decrease_indent($masterIndentationArrayOfHashes[-1]{name});
+       }
+
+       # if we're at the end of an environment that receives no additional indent, log it, and move on
+       if($noAdditionalIndent{$1}){
+            print $logfile "Line $lineCounter\t \\end{$1} finished a no-additional-indent environment (see noAdditionalIndent)\n" if($tracingMode);
+            return;
        }
 
        # some commands contain \end{environmentname}, which
@@ -1797,16 +1802,14 @@ sub print_aligned_block{
 
     # print the current FORMATTED block
     @block = &format_block(@block);
-    foreach $line (@block)
-    {
+    foreach $line (@block) {
          # add the indentation and add the
          # each line of the formatted block
          # to the output
          # unless this would only create trailing whitespace and the
          # corresponding option is set
-         unless ($line =~ m/^$/ and $removeTrailingWhitespace)
-         {
-             $line = join("",@indent).$line;
+         unless ($line =~ m/^$/ and $removeTrailingWhitespace) {
+             $line =&current_indentation().$line;
          }
          push(@lines,$line);
     }
@@ -2094,31 +2097,8 @@ sub increase_indent{
        my %infoHash = %{pop(@_)};
        my $command = $infoHash{name};
 
-       # if the user has specified $indentRules{$command} and
-       # $noAdditionalIndent{$command} then they are a bit confused-
-       # we remove the $indentRules{$command} and assume that they
-       # want $noAdditionalIndent{$command}
-       if(scalar($indentRules{$command}) and $noAdditionalIndent{$command}) {
-            print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and noAdditionalIndent\n";
-            print $logfile "\t\t\t ignoring indentRules and prioritizing noAdditionalIndent\n";
-            print $logfile "\t\t\t Note that you only get this message once per command/environment\n";
-
-            # remove the key and value from %indentRules hash
-            # to avoid any further confusion
-            delete $indentRules{$command};
-       }
-
-       # if the command is in verbatimEnvironments and in indentRules then
-       # remove it from %indentRules hash
-       # to avoid any further confusion
-       if($indentRules{$command} and $verbatimEnvironments{$command}) {
-            # remove the key and value from %indentRules hash
-            # to avoid any further confusion
-            print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and verbatimEnvironments\n";
-            print $logfile "\t\t\t ignoring indentRules and prioritizing verbatimEnvironments\n";
-            print $logfile "\t\t\t Note that you only get this message once per environment\n";
-            delete $indentRules{$command};
-       }
+       # check for conflicting hash keys
+       &check_conflicting_keys($command);
 
        # quick check for verbatim Environment
        if($inverbatim){
@@ -2220,4 +2200,44 @@ sub current_indentation_names{
         $listOfNames .= "," unless $env == $masterIndentationArrayOfHashes[-1];
       }
     return $listOfNames;
+}
+
+sub check_conflicting_keys{
+  # PURPOSE: users may sometimes put an environment in two
+  #          hash keys; for example, they might put lstlistings
+  #          in both indentRules and in noAdditionalIndent;
+  #          in which case, we need a hierachy.
+  #
+  #          This subroutine implements such a hierachy, 
+  #          and deletes the redundant key.
+
+  # if the user has specified $indentRules{$command} and
+  # $noAdditionalIndent{$command} then they are a bit confused-
+  # we remove the $indentRules{$command} and assume that they
+  # want $noAdditionalIndent{$command}
+
+  my $command = pop(@_);
+
+  if(scalar($indentRules{$command}) and $noAdditionalIndent{$command}) {
+       print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and noAdditionalIndent\n";
+       print $logfile "\t\t\t ignoring indentRules and prioritizing noAdditionalIndent\n";
+       print $logfile "\t\t\t Note that you only get this message once per command/environment\n";
+
+       # remove the key and value from %indentRules hash
+       # to avoid any further confusion
+       delete $indentRules{$command};
+  }
+
+  # if the command is in verbatimEnvironments and in indentRules then
+  # remove it from %indentRules hash
+  # to avoid any further confusion
+  if($indentRules{$command} and $verbatimEnvironments{$command}) {
+       # remove the key and value from %indentRules hash
+       # to avoid any further confusion
+       print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and verbatimEnvironments\n";
+       print $logfile "\t\t\t ignoring indentRules and prioritizing verbatimEnvironments\n";
+       print $logfile "\t\t\t Note that you only get this message once per environment\n";
+       delete $indentRules{$command};
+  }
+
 }
