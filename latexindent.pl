@@ -1740,7 +1740,7 @@ sub at_end_of_env_or_eq{
        # then we don't need to check for \end{environmentname}
        if(@masterIndentationArrayOfHashes) {
           # check to see if \end{environment} fits with most recent \begin{...}
-          my %previousEnvironment = %{@masterIndentationArrayOfHashes[-1]};
+          my %previousEnvironment = %{$masterIndentationArrayOfHashes[-1]};
 
           # check to see if we need to turn off alignment
           # delimiters and output the current block
@@ -2126,7 +2126,7 @@ sub increase_indent{
             return;
        }
 
-       if(scalar($indentRules{$command})) {
+       if($indentRules{$command}) {
           # if there's a rule for indentation for this environment
           push(@indent, $indentRules{$command});
           # tracing mode
@@ -2146,32 +2146,27 @@ sub increase_indent{
           }
        }
 
-       # assemble the master array of hashes
-       if(!$verbatimEnvironments{$command}){
-            push(@masterIndentationArrayOfHashes,{name=>$command,indent=>$indentRules{$command}||$defaultIndent});
-          } else {
-            push(@masterIndentationArrayOfHashes,{name=>$command});
-        }
+       # add to the master array of hashes
+       push(@masterIndentationArrayOfHashes,\%infoHash);
 
-       # environment information
+       # handle the keys slightly different when dealing with environments or commands
        if($infoHash{type} eq 'environment'){
-            $masterIndentationArrayOfHashes[-1]{type}="environment";
+            # environments
+            if(!$verbatimEnvironments{$command}){
+                 $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
+               } 
+            # check to see if we need to look for alignment delimiters
+            if($lookForAlignDelims{$command}) {
+                $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=1;
+                # tracing mode
+                print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
+            }
             $masterIndentationArrayOfHashes[-1]{begin}="\\begin{$masterIndentationArrayOfHashes[-1]{name}}";
             $masterIndentationArrayOfHashes[-1]{end}="\\end{$masterIndentationArrayOfHashes[-1]{name}}";
+       } else {
+            # commands, headings, etc
+            $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
        }
-
-       # check to see if we need to look for alignment delimiters
-       if($lookForAlignDelims{$command}) {
-           $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=1;
-            # tracing mode
-            print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
-       }
-
-       # heading information (part,chapter,section,etc)
-       if($infoHash{type} eq 'heading'){
-            $masterIndentationArrayOfHashes[-1]{type}="heading";
-            $masterIndentationArrayOfHashes[-1]{headinglevel}= $infoHash{headinglevel};
-        }
 }
 
 sub decrease_indent{
