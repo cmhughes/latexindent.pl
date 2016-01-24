@@ -21,8 +21,7 @@ use warnings;
 my @listOfModules = ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getopt::Long','File::HomeDir');
 
 # check the other modules are available
-foreach my $moduleName (@listOfModules)
-{
+foreach my $moduleName (@listOfModules) {
     # references:
     #       http://stackoverflow.com/questions/251694/how-can-i-check-if-i-have-a-perl-module-before-using-it
     #       http://stackoverflow.com/questions/1917261/how-can-i-dynamically-include-perl-modules-without-using-eval
@@ -669,8 +668,9 @@ my @headingStore;           # @headingStore: stores headings: chapter, section, 
 my @indentNames;            # @indentNames: keeps names of commands and
                             #               environments that have caused
                             #               indentation to increase
-my @environmentStack;       # @environmentStack: stores the (nested) names
-                            #                    of environments
+
+# array of hashes, rework!
+my @masterIndentationArrayOfHashes;
 
 # check to see if the current file has \documentclass, if so, then
 # it's the main file, if not, then it doesn't have preamble
@@ -722,41 +722,42 @@ while(<MAINFILE>)
     {
         # otherwise check to see if we've reached the main
         # part of the document
-        if(m/^\s*\\begin{document}/)
-        {
+        if(m/^\s*\\begin{document}/) {
             $inpreamble = 0;
 
             # tracing mode
             print $logfile "Line $lineCounter\t \\begin{document} found \n" if($tracingMode);
-        }
-        else
-        {
+        } else {
             # tracing mode
-            if($inpreamble)
-            {
+            if($inpreamble) {
                 print $logfile "Line $lineCounter\t still in PREAMBLE, leaving exisiting leading space\n" if($tracingMode);
-            }
-            elsif($inverbatim)
-            {
+            } elsif($inverbatim) {
                 print $logfile "Line $lineCounter\t in VERBATIM-LIKE environment, leaving exisiting leading space\n" if($tracingMode);
-            }
-            elsif($inIndentBlock)
-            {
+            } elsif($inIndentBlock) {
                 print $logfile "Line $lineCounter\t in NO INDENT BLOCK, leaving exisiting leading space\n" if($tracingMode);
             }
         }
+    }
+
+    for my $href ( @masterIndentationArrayOfHashes) {
+           print $logfile Dump \%{$href};
     }
 
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
 
+    if(@masterIndentationArrayOfHashes){
+           $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
+           print $logfile "delimiters = ",$delimiters,"\n";
+         }
+
     if($inverbatim){
-        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in VERBATIM-LIKE environment, looking for \\end{$environmentStack[-1]}\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in VERBATIM-LIKE environment, looking for $masterIndentationArrayOfHashes[-1]{end} \n" if($tracingMode);
     } elsif($inIndentBlock) {
         print $logfile "Line $lineCounter\t in NO INDENT BLOCK, doing nothing\n" if($tracingMode);
     } elsif($delimiters) {
-        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in ALIGNMENT BLOCK environment, looking for \\end{$environmentStack[-1]}\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in ALIGNMENT BLOCK environment, looking for $masterIndentationArrayOfHashes[-1]{end}\n" if($tracingMode);
     } else {
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
     }
@@ -774,8 +775,7 @@ while(<MAINFILE>)
     # only check for unmatched braces if we're not in
     # a verbatim-like environment or in the preamble or in a
     # noIndentBlock or in a delimiter block
-    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
-    {
+    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters)) {
         # The check for closing } and ] relies on counting, so
         # we have to remove trailing comments so that any {, }, [, ]
         # that are found after % are not counted
@@ -867,7 +867,7 @@ while(<MAINFILE>)
         push(@block,$_);
 
         # tracing mode
-        print $logfile "Line $lineCounter\t In delimeter block ($environmentStack[-1]), waiting for block formatting\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t In delimeter block ($masterIndentationArrayOfHashes[-1]{name}), waiting for block formatting\n" if($tracingMode);
     }
 
     # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
@@ -940,7 +940,14 @@ while(<MAINFILE>)
         &indent_after_if_else_fi() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
 
         # tracing mode
-        print $logfile "Line $lineCounter\t Environments: ",join(", ",@environmentStack),"\n" if($tracingMode and scalar(@environmentStack));
+        if($tracingMode and scalar(@masterIndentationArrayOfHashes)){
+            print $logfile "Line $lineCounter\t Environments: ";
+            foreach my $env (@masterIndentationArrayOfHashes){
+                print $logfile $env->{name};
+                print $logfile "," unless $env == $masterIndentationArrayOfHashes[-1];
+              }
+            print $logfile "\n";
+        }
     }
 }
 
@@ -1054,10 +1061,10 @@ sub indent_after_if_else_fi{
 sub indent_item{
     # PURPOSE: this subroutine sets the indentation for the item *itself*
 
-    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$environmentStack[-1]})
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}})
     {
         # tracing mode
-        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         if($itemNames{$indentNames[-1]})
         {
             print $logfile "Line $lineCounter\t $1 found- neutralizing indentation from previous ",$indentNames[-1],"\n" if($tracingMode);
@@ -1080,10 +1087,10 @@ sub indent_after_item{
     #
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/
             and $itemNames{$1}
-            and $indentAfterItems{$environmentStack[-1]})
+            and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}})
     {
         # tracing mode
-        print $logfile "Line $lineCounter\t $1 found within ",$environmentStack[-1]," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
+        print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         &increase_indent($1);
     }
 }
@@ -1680,45 +1687,28 @@ sub at_beg_of_env_or_eq{
 
     if( (   ( $_ =~ m/^\s*(\$)?\\begin{\\?(.*?)}/ and $_ !~ m/\\end{$2}/)
          or ($_=~ m/^\s*()(\\\[)/ and $_ !~ m/\\\]/) )
-        and $_ !~ m/^\s*%/ )
-    {
+        and $_ !~ m/^\s*%/ ) {
        # tracing mode
        print $logfile "Line $lineCounter\t \\begin{environment} found: $2 \n" if($tracingMode);
 
        # increase the indentation
-       &increase_indent($2);
+       &increase_indent({name=>$2,type=>"environment"});
 
        # check for verbatim-like environments
-       if($verbatimEnvironments{$2})
-       {
+       if($verbatimEnvironments{$2}){
            $inverbatim = 1;
            # tracing mode
            print $logfile "Line $lineCounter\t \\begin{verbatim-like} found, $2, switching ON verbatim \n" if($tracingMode);
 
            # remove the key and value from %lookForAlignDelims hash
            # to avoid any further confusion
-           if($lookForAlignDelims{$2})
-           {
+           if($lookForAlignDelims{$2}) {
                 print $logfile "WARNING\n\t Line $lineCounter\t $2 is in *both* lookForAlignDelims and verbatimEnvironments\n";
                 print $logfile "\t\t\t ignoring lookForAlignDelims and prioritizing verbatimEnvironments\n";
                 print $logfile "\t\t\t Note that you only get this message once per environment\n";
                 delete $lookForAlignDelims{$2};
            }
-
        }
-
-       # check to see if we need to look for alignment
-       # delimiters
-       if($lookForAlignDelims{$2})
-       {
-           $delimiters=1;
-            # tracing mode
-            print $logfile "Line $lineCounter\t Delimiter environment started: $2 (see lookForAlignDelims)\n" if($tracingMode);
-       }
-
-       # store the name of the environment
-       push(@environmentStack,$2);
-
     }
 }
 
@@ -1739,12 +1729,10 @@ sub at_end_of_env_or_eq{
     #          had alignment delimiters; if so, we need to turn
     #          OFF the $delimiter switch
 
-    if( ($_ =~ m/^\s*\\end{\\?(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/)
-    {
+    if( ($_ =~ m/^\s*\\end{\\?(.*?)}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/) {
 
        # check if we're at the end of a verbatim-like environment
-       if($verbatimEnvironments{$1})
-       {
+       if($verbatimEnvironments{$1}) {
            $inverbatim = 0;
             # tracing mode
 
@@ -1757,24 +1745,21 @@ sub at_end_of_env_or_eq{
 
        # check if we're in an environment that is looking
        # to indent after each \item
-       if(scalar(@indentNames) and $itemNames{$indentNames[-1]})
-       {
+       if(scalar(@indentNames) and $itemNames{$indentNames[-1]}) {
             &decrease_indent($indentNames[-1]);
        }
 
        # some commands contain \end{environmentname}, which
        # can cause a problem if \begin{environmentname} was not
-       # started previously; if @environmentStack is empty,
+       # started previously; if @masterIndentationArrayOfHashes is empty,
        # then we don't need to check for \end{environmentname}
-       if(@environmentStack)
-       {
+       if(@masterIndentationArrayOfHashes) {
           # check to see if \end{environment} fits with most recent \begin{...}
-          my $previousEnvironment = pop(@environmentStack);
+          my %previousEnvironment = %{pop(@masterIndentationArrayOfHashes)};
 
           # check to see if we need to turn off alignment
           # delimiters and output the current block
-          if($lookForAlignDelims{$1} and ($previousEnvironment eq $1))
-          {
+          if($lookForAlignDelims{$1} and ($previousEnvironment{name} eq $1)) {
                &print_aligned_block();
           }
 
@@ -1782,31 +1767,25 @@ sub at_end_of_env_or_eq{
           print $logfile "Line $lineCounter\t \\end{envrionment} found: $1 \n" if($tracingMode and !$verbatimEnvironments{$1});
 
           # check to see if \end{environment} fits with most recent \begin{...}
-          if($previousEnvironment eq $1)
-          {
+          if($previousEnvironment{name} eq $1) {
                # decrease the indentation (if appropriate)
                &decrease_indent($1);
-          }
-          else
-          {
+          } else {
               # otherwise put the environment name back on the stack
-              push(@environmentStack,$previousEnvironment);
-              print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+              push(@masterIndentationArrayOfHashes,%previousEnvironment);
+              print $logfile "Line $lineCounter\t WARNING: \\end{$1} found on its own line, not matched to \\begin{$previousEnvironment{name}}\n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
           }
 
           # need a special check for \[ and \]
-          if($1 eq "\\\]")
-          {
+          if($1 eq "\\\]") {
                &decrease_indent($1);
-               pop(@environmentStack);
           }
        }
 
        # if we're at the end of the document, we remove all current
        # indentation- this is especially prominent in examples that
        # have headings, and the user has chosen to indentAfterHeadings
-       if($1 eq "document" and !(grep(/filecontents/, @indentNames)) and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock)
-       {
+       if($1 eq "document" and !(grep(/filecontents/, @indentNames)) and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock) {
             @indent=();
             @indentNames=();
 
@@ -2125,18 +2104,18 @@ sub format_block{
 
 sub increase_indent{
        # PURPOSE: Adjust the indentation
-       #          of the current environment;
+       #          of the current environment, command, etc;
        #          check that it's not an environment
        #          that doesn't want indentation.
 
-       my $command = pop(@_);
+       my %infoHash = %{pop(@_)};
+       my $command = $infoHash{name};
 
        # if the user has specified $indentRules{$command} and
        # $noAdditionalIndent{$command} then they are a bit confused-
        # we remove the $indentRules{$command} and assume that they
        # want $noAdditionalIndent{$command}
-       if(scalar($indentRules{$command}) and $noAdditionalIndent{$command})
-       {
+       if(scalar($indentRules{$command}) and $noAdditionalIndent{$command}) {
             print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and noAdditionalIndent\n";
             print $logfile "\t\t\t ignoring indentRules and prioritizing noAdditionalIndent\n";
             print $logfile "\t\t\t Note that you only get this message once per command/environment\n";
@@ -2149,8 +2128,7 @@ sub increase_indent{
        # if the command is in verbatimEnvironments and in indentRules then
        # remove it from %indentRules hash
        # to avoid any further confusion
-       if($indentRules{$command} and $verbatimEnvironments{$command})
-       {
+       if($indentRules{$command} and $verbatimEnvironments{$command}) {
             # remove the key and value from %indentRules hash
             # to avoid any further confusion
             print $logfile "WARNING\n\t Line $lineCounter\t $command is in *both* indentRules and verbatimEnvironments\n";
@@ -2159,29 +2137,48 @@ sub increase_indent{
             delete $indentRules{$command};
        }
 
-       if(scalar($indentRules{$command}))
-       {
+       # quick check for verbatim Environment
+       if($inverbatim){
+            print $logfile "Line $lineCounter\t currently inverbatim environment, not increasing indentation\n" if($tracingMode);
+            return;
+       }
+
+       if(scalar($indentRules{$command})) {
           # if there's a rule for indentation for this environment
           push(@indent, $indentRules{$command});
           # tracing mode
           print $logfile "Line $lineCounter\t increasing indent using rule for $command (see indentRules)\n" if($tracingMode);
           push(@indentNames,"$command");
-       }
-       else
-       {
+       } else {
           # default indentation
-          if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim))
-          {
+          if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command})) {
             push(@indent, $defaultIndent);
             push(@indentNames,"$command");
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
-          }
-          elsif($noAdditionalIndent{$command})
-          {
+          } elsif($noAdditionalIndent{$command})  {
             # tracing mode
             print $logfile "Line $lineCounter\t no additional indent added for $command (see noAdditionalIndent)\n" if($tracingMode);
+            return;
           }
+       }
+
+       # assemble the master array of hashes
+       if(!$verbatimEnvironments{$command}){
+            push(@masterIndentationArrayOfHashes,{name=>$command,indent=>$indentRules{$command}||$defaultIndent});
+          } else {
+            push(@masterIndentationArrayOfHashes,{name=>$command});
+        }
+       if($infoHash{type} eq 'environment'){
+            $masterIndentationArrayOfHashes[-1]{begin}="\\begin{$masterIndentationArrayOfHashes[-1]{name}}";
+            $masterIndentationArrayOfHashes[-1]{end}="\\end{$masterIndentationArrayOfHashes[-1]{name}}";
+       }
+
+       # check to see if we need to look for alignment delimiters
+       if($lookForAlignDelims{$command}) {
+           $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=1;
+            # tracing mode
+            print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
        }
 }
 
