@@ -40,7 +40,19 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % clever referencing
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
+\usepackage[%
+	bookmarksnumbered,
+	bookmarksopen,
+	linktocpage,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=black
+	]{hyperref}
+\hypersetup{
+   pdfauthor={Chris Hughes},
+   pdftitle={latexindent.pl package},
+   pdfkeywords={perl;beautify;indentation},
+}
 \usepackage{cleveref}
 
 \addbibresource{latex-indent}
