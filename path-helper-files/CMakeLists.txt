@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 project(latexindent)
 
-install(PROGRAMS latexindent.pl
+install(PROGRAMS ../latexindent.pl
         DESTINATION bin)
 
-install(FILES defaultSettings.yaml
+install(FILES ../defaultSettings.yaml
         DESTINATION bin)
 
 # uninstall target
