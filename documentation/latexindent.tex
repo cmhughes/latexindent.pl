@@ -1381,8 +1381,11 @@ on a Linux or Mac machine, then you'll want \lstinline!CMakeLists.txt! from \cit
 \subsection{Add to path for Linux}
 To add \lstinline!latexindent.pl! to the path for Linux, follow these steps:
 \begin{enumerate}
-	\item download  \lstinline!latexindent.pl!, \lstinline!defaultSettings.yaml!,  and \lstinline!CMakeLists.txt!
-	      from \cite{latexindent-home} to your chosen directory;
+	\item download  \lstinline!latexindent.pl!, \lstinline!defaultSettings.yaml!,  to your
+      chosen directory from \cite{latexindent-home} ; 
+    \item within your directory, create a directory called \lstinline!path-helper-files! and 
+      download \lstinline!CMakeLists.txt! and \lstinline!cmake_uninstall.cmake.in!
+	      from \cite{latexindent-home}/path-helper-files to this directory;
 	\item run \lstinline!ls /usr/local/bin! to see what is \emph{currently} in there;
 	\item run the commands given in \cref{linux-add-to-path};
 	\item run \lstinline!ls /usr/local/bin! again to check that \lstinline!latexindent.pl! and \lstinline!defaultSettings.yaml!
@@ -1392,7 +1395,7 @@ To add \lstinline!latexindent.pl! to the path for Linux, follow these steps:
 sudo apt-get install cmake
 sudo apt-get update && sudo apt-get install build-essential
 mkdir build && cd build
-cmake ..
+cmake ../path-helper-files
 sudo make install
 \end{cmhlistings}
 To \emph{remove} the files, run \lstinline!sudo make uninstall!.
