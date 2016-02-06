@@ -1,11 +1,16 @@
 # gitmd preview site: https://jbt.github.io/markdown-editor/
 
+development model:
+=
+http://nvie.com/posts/a-successful-git-branching-model/
+
 logging commands
 =
 ```
 git log
 git log --decorate
 git log --all --graph
+git shortlog -sn        # shows all contributors
 ```
 
 commiting
@@ -95,7 +100,7 @@ ls .git
 ```
 and you should see gitHeadInfo.gin
 
-tagging release info:
+tagging release info: (see also https://git-scm.com/book/en/v2/Git-Basics-Tagging)
 -
 ```
 git add abc.tex
