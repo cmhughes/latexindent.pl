@@ -46,6 +46,7 @@ my $overwrite;
 my $outputToFile;
 my $silentMode;
 my $tracingMode;
+my $tracingModeVeryDetailed;
 my $readLocalSettings=0;
 my $onlyDefault;
 my $showhelp;
@@ -56,6 +57,7 @@ GetOptions (
 "outputfile|o"=>\$outputToFile,
 "silent|s"=>\$silentMode,
 "trace|t"=>\$tracingMode,
+"ttrace|tt"=>\$tracingModeVeryDetailed,
 "local|l:s"=>\$readLocalSettings,
 "onlydefault|d"=>\$onlyDefault,
 "help|h"=>\$showhelp,
@@ -97,13 +99,15 @@ if(defined($readLocalSettings) and ($readLocalSettings eq '')){
     $readLocalSettings = 'localSettings.yaml';
 }
 
+# detailed tracing mode also implies regular tracing mode
+$tracingMode = $tracingModeVeryDetailed ? 1 : $tracingMode;
+
 # version number
 my $versionNumber = "2.2";
 
 # Check the number of input arguments- if it is 0 then simply
 # display the list of options (like a manual)
-if(scalar(@ARGV) < 1 or $showhelp)
-{
+if(scalar(@ARGV) < 1 or $showhelp) {
     print <<ENDQUOTE
 latexindent.pl version $versionNumber
 usage: latexindent.pl [options] [file][.tex]
@@ -159,8 +163,7 @@ ENDQUOTE
 # latexindent.exe is a standalone executable, and caches 
 # the required perl modules onto the users system; they will
 # only be displayed if the user specifies the trace option
-if($FindBin::Script eq 'latexindent.exe' and !$tracingMode )
-{
+if($FindBin::Script eq 'latexindent.exe' and !$tracingMode ) {
 print $logfile <<ENDQUOTE
 $FindBin::Script is a standalone script and caches the required perl modules
 onto your system. If you'd like to see their location in your log file, indent.log, 
@@ -171,11 +174,9 @@ ENDQUOTE
 }
 
 # output location of modules
-if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $tracingMode ))
-{
+if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $tracingMode )) {
     print $logfile "Modules are being loaded from the following directories:\n ";
-    foreach my $moduleName (@listOfModules)
-    {
+    foreach my $moduleName (@listOfModules) {
             (my $file = $moduleName) =~ s|::|/|g;
             require $file . '.pm';
             print $logfile "\t",$INC{$file .'.pm'},"\n";
@@ -183,8 +184,7 @@ if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe
 }
 
 # a quick options check
-if($outputToFile and $overwrite)
-{
+if($outputToFile and $overwrite) {
     print $logfile <<ENDQUOTE
 
 WARNING:
@@ -197,8 +197,7 @@ ENDQUOTE
 }
 
 # can't call the script with MORE THAN 2 files
-if(scalar(@ARGV)>2)
-{
+if(scalar(@ARGV)>2) {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
 
 ERROR:
@@ -235,8 +234,7 @@ ENDQUOTE
 # if the script is called with the -o switch, then check that
 # a second file is present in the call, e.g
 #           latexindent.pl -o myfile.tex output.tex
-if($outputToFile and scalar(@ARGV)==1)
-{
+if($outputToFile and scalar(@ARGV)==1) {
     for my $fh ($out,$logfile) {print $fh <<ENDQUOTE
 ERROR: When using the -o flag you need to call latexindent.pl with 2 arguments
 
@@ -261,15 +259,13 @@ print $logfile "\tReading defaultSettings.yaml from $FindBin::RealBin/defaultSet
 
 # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
 # the same directory as it; we need to navigate to it
-if(!$defaultSettings)
-{
+if(!$defaultSettings) {
     $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
     print $logfile "\tReading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n\n" if($defaultSettings);
 }
 
 # if both of the above attempts have failed, we need to exit
-if(!$defaultSettings)
-{
+if(!$defaultSettings) {
   for my $fh ($out,$logfile) {
  print $fh <<ENDQUOTE
  ERROR  There seems to be a yaml formatting error in defaultSettings.yaml
@@ -630,10 +626,19 @@ if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0) {
 open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
 
 # loop through the lines in the INPUT file
-while(<MAINFILE>)
-{
+while(<MAINFILE>) {
     # increment the line counter
     $lineCounter++;
+
+    # very detailed output to logfile
+    if($tracingModeVeryDetailed){
+        if( @masterIndentationArrayOfHashes){
+            print $logfile "\nLine $lineCounter\t (detailed trace) indentation hash: \n" if($tracingMode);
+            for my $href ( @masterIndentationArrayOfHashes) {
+                   print $logfile Dump \%{$href};
+            }
+        }
+    }
 
     # tracing mode
     print $logfile $masterSettings{logFilePreferences}{traceModeBetweenLines} if($tracingMode and !($inpreamble or $inverbatim or $inIndentBlock));
@@ -668,10 +673,6 @@ while(<MAINFILE>)
         }
     }
 
-    for my $href ( @masterIndentationArrayOfHashes) {
-           print $logfile Dump \%{$href};
-    }
-
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
@@ -699,6 +700,7 @@ while(<MAINFILE>)
     } else {
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
     }
+
     # check to see if we have \end{something} or \]
     &at_end_of_env_or_eq() unless ($inpreamble or $inIndentBlock);
 
@@ -813,8 +815,7 @@ while(<MAINFILE>)
     # only check for new environments or commands if we're
     # not in a verbatim-like environment or in the preamble
     # or in a noIndentBlock, or delimiter block
-    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters))
-    {
+    if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters)) {
 
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeIncreaseIndent} PHASE 3: looking for reasons to INCREASE indentation of SUBSEQUENT lines \n" if($tracingMode);
 
@@ -905,9 +906,7 @@ WARNING: \t line count of original file and indented file does
 \t not match- consider reverting to a back up, see $backupExtension;
 ENDQUOTE
 ;
-}
-else
-{
+} else {
     print $logfile "\n\nLine counts of original file and indented file match.\n";
 }
 
@@ -915,16 +914,14 @@ else
 print @lines if(!$silentMode);
 
 # if -w is active then output to $ARGV[0]
-if($overwrite)
-{
+if($overwrite) {
     open(OUTPUTFILE,">",$fileName);
     print OUTPUTFILE @lines;
     close(OUTPUTFILE);
 }
 
 # if -o is active then output to $ARGV[1]
-if($outputToFile)
-{
+if($outputToFile) {
     open(OUTPUTFILE,">",$ARGV[1]);
     print OUTPUTFILE @lines;
     close(OUTPUTFILE);
@@ -1000,14 +997,14 @@ sub indent_item{
     # PURPOSE: when considering environments that can contain items, such 
     #          as enumerate, itemize, etc, this subroutine sets the indentation for the item *itself*
 
-    if(scalar(@masterIndentationArrayOfHashes)>1){
-        if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-2]{name}}){
-            # tracing mode
-            print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
-            if($itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
-                print $logfile "Line $lineCounter\t $1 found - neutralizing indentation from previous ",$masterIndentationArrayOfHashes[-1]{name},"\n" if($tracingMode);
-                &decrease_indent($1);
-            }
+    return unless(scalar(@masterIndentationArrayOfHashes)>1);
+
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-2]{name}}){
+        # tracing mode
+        print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
+        if($itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
+            print $logfile "Line $lineCounter\t $1 found - neutralizing indentation from previous ",$masterIndentationArrayOfHashes[-1]{name},"\n" if($tracingMode);
+            &decrease_indent($1);
         }
     }
 
@@ -1050,8 +1047,7 @@ sub begin_command_with_alignment{
     #                 %* \end{tabular}
     #                     }
 
-    if( $_ =~ m/^\s*%\*\s*\\begin{(.*?)}/ and $lookForAlignDelims{$1})
-    {
+    if( $_ =~ m/^\s*%\*\s*\\begin{(.*?)}/ and $lookForAlignDelims{$1}) {
            $delimiters=1;
            # tracing mode
            print $logfile "Line $lineCounter\t Delimiter environment started: $1 (see lookForAlignDelims)\n" if($tracingMode);
@@ -1076,16 +1072,12 @@ sub end_command_with_alignment{
     #                 %* \end{tabular}
     #                     }
 
-    if( $_ =~ m/^\s*%\*\s*\\end{(.*?)}/ and $lookForAlignDelims{$1})
-    {
+    if( $_ =~ m/^\s*%\*\s*\\end{(.*?)}/ and $lookForAlignDelims{$1}) {
         # same subroutine used at the end of regular tabular, align, etc
         # environments
-        if($delimiters)
-        {
+        if($delimiters) {
             &print_aligned_block();
-        }
-        else
-        {
+        } else {
             # tracing mode
             print $logfile "Line $lineCounter\t FYI: did you mean to start a delimiter block on a previous line? \n" if($tracingMode);
             print $logfile "Line $lineCounter\t      perhaps using %* \\begin{$1}\n" if($tracingMode);
@@ -1187,8 +1179,6 @@ sub indent_after_heading{
     }
 }
 
-
-
 sub at_end_noindent{
     # PURPOSE: This matches
     #           % \end{noindent}
@@ -1200,15 +1190,12 @@ sub at_end_noindent{
     #          This is for blocks of code that the user wants
     #          to leave untouched- similar to verbatim blocks
 
-    if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noIndentBlock{$1})
-    {
+    if( $_ =~ m/^%\s*\\end{(.*?)}/ and $noIndentBlock{$1}) {
             $inIndentBlock=0;
             # tracing mode
             print $logfile "Line $lineCounter\t % \\end{no indent block} found, switching inIndentBlock OFF \n" if($tracingMode);
     }
 }
-
-
 
 sub at_beg_noindent{
     # PURPOSE: This matches
@@ -1221,8 +1208,7 @@ sub at_beg_noindent{
     #          This is for blocks of code that the user wants
     #          to leave untouched- similar to verbatim blocks
 
-    if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noIndentBlock{$1})
-    {
+    if( $_ =~ m/^%\s*\\begin{(.*?)}/ and $noIndentBlock{$1}) {
            $inIndentBlock = 1;
            # tracing mode
            print $logfile "Line $lineCounter\t % \\begin{no indent block} found, switching inIndentBlock ON \n" if($tracingMode);
