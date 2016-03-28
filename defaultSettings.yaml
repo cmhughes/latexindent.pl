@@ -232,6 +232,13 @@ logFilePreferences:
     traceModeAddCurrentIndent: '||'
     traceModeDecreaseIndent: '<<'
     traceModeBetweenLines: "\n"
+
+# \begin{document} and \end{document} are treated differently
+# by latexindent within filecontents environments
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1

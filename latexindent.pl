@@ -297,21 +297,15 @@ my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
 # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
 $indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml" if(! -e $indentconfig);
 
-if ( -e $indentconfig and !$onlyDefault )
-{
+if ( -e $indentconfig and !$onlyDefault ) {
       print $logfile "\tReading path information from $indentconfig\n";
       # if both indentconfig.yaml and .indentconfig.yaml exist
-      if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml")
-      {
+      if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
             print $logfile File::HomeDir->my_home,"/.indentconfig.yaml has been found, but $indentconfig takes priority\n";
-      }
-      elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" )
-      {
+      } elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" ) {
             print $logfile "\tAlternatively, ",File::HomeDir->my_home,"/.indentconfig.yaml can be used\n";
 
-      }
-      elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" )
-      {
+      } elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" ) {
             print $logfile "\tAlternatively, ",File::HomeDir->my_home,"/indentconfig.yaml can be used\n";
       }
 
@@ -319,14 +313,11 @@ if ( -e $indentconfig and !$onlyDefault )
       $userSettings = YAML::Tiny->read( "$indentconfig" );
 
       # integrity check
-      if($userSettings)
-      {
+      if($userSettings) {
         print $logfile "\t",Dump \%{$userSettings->[0]};
         print $logfile "\n";
         @absPaths = @{$userSettings->[0]->{paths}};
-      }
-      else
-      {
+      } else {
         print $logfile <<ENDQUOTE
 WARNING:  $indentconfig
           contains some invalid .yaml formatting- unable to read from it.
@@ -334,17 +325,12 @@ WARNING:  $indentconfig
 ENDQUOTE
 ;
       }
-}
-else
-{
-      if($onlyDefault)
-      {
+} else {
+      if($onlyDefault) {
         print $logfile "\tOnly default settings requested, not reading USER settings from $indentconfig\n";
         print $logfile "\tIgnoring $readLocalSettings\n" if($readLocalSettings);
         $readLocalSettings = 0;
-      }
-      else
-      {
+      } else {
         # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
         print $logfile "\tHome directory is ",File::HomeDir->my_home,"\n";
         print $logfile "\tTo specify user settings you would put indentconfig.yaml here: \n\t",File::HomeDir->my_home,"/indentconfig.yaml\n\n";
@@ -356,13 +342,10 @@ else
 my $directoryName = dirname $ARGV[0];
 
 # add local settings to the paths, if appropriate
-if ( (-e "$directoryName/$readLocalSettings") and $readLocalSettings and !(-z "$directoryName/$readLocalSettings"))
-{
+if ( (-e "$directoryName/$readLocalSettings") and $readLocalSettings and !(-z "$directoryName/$readLocalSettings")) {
     print $logfile "\tAdding $directoryName/$readLocalSettings to paths\n\n";
     push(@absPaths,"$directoryName/$readLocalSettings");
-}
-elsif ( !(-e "$directoryName/$readLocalSettings") and $readLocalSettings)
-{
+} elsif ( !(-e "$directoryName/$readLocalSettings") and $readLocalSettings) {
       print $logfile "\tWARNING yaml file not found: \n\t$directoryName/$readLocalSettings not found\n";
       print $logfile "\t\tcarrying on without it.\n";
 }
@@ -442,6 +425,7 @@ my %indentAfterItems= %{$masterSettings{indentAfterItems}};
 my %itemNames= %{$masterSettings{itemNames}};
 my %constructIfElseFi= %{$masterSettings{constructIfElseFi}};
 my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
+my %fileContentsEnvironments= %{$masterSettings{fileContentsEnvironments}};
 
 # original name of file
 my $fileName = $ARGV[0];
@@ -499,8 +483,7 @@ if (!$ext) {
   }
 
 # if we want to over write the current file create a backup first
-if ($overwrite)
-{
+if ($overwrite) {
     print $logfile "\nBackup procedure:\n";
     # cruft directory
     print $logfile "\tDirectory for backup files and indent.log: $cruftDirectory\n\n";
@@ -515,8 +498,7 @@ if ($overwrite)
 
     # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have
     # a conflict- er on the side of caution and turn off onlyOneBackUp
-    if($onlyOneBackUp and $maxNumberOfBackUps>1)
-    {
+    if($onlyOneBackUp and $maxNumberOfBackUps>1) {
         print $logfile "\t WARNING: onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps: $maxNumberOfBackUps\n";
         print $logfile "\t\t setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps back ups\n";
         $onlyOneBackUp = 0;
@@ -524,13 +506,10 @@ if ($overwrite)
 
     # if the user has specified that $maxNumberOfBackUps = 1 then
     # they only want one backup
-    if($maxNumberOfBackUps==1)
-    {
+    if($maxNumberOfBackUps==1) {
         $onlyOneBackUp=1 ;
         print $logfile "\t FYI: you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 \n";
-    }
-    elsif($maxNumberOfBackUps<=0 and !$onlyOneBackUp)
-    {
+    } elsif($maxNumberOfBackUps<=0 and !$onlyOneBackUp) {
 #        print $logfile "\t FYI: maxNumberOfBackUps=$maxNumberOfBackUps which won't have any effect\n";
 #        print $logfile "\t      on the script- at least ONE backup is made when the -w flag is invoked.\n";
 #        print $logfile "\t      I'm setting onlyOneBackUp: 0, which means that you'll get a new back up file \n";
@@ -541,23 +520,18 @@ if ($overwrite)
 
     # if onlyOneBackUp is set, then the backup file will
     # be overwritten each time
-    if($onlyOneBackUp)
-    {
+    if($onlyOneBackUp) {
         $backupFile .= $backupExtension;
         print $logfile "\tcopying $fileName to $backupFile\n";
         print $logfile "\t$backupFile was overwritten\n\n" if (-e $backupFile);
-    }
-    else
-    {
+    } else {
         # start with a backup file .bak0 (or whatever $backupExtension is present)
         my $backupCounter = 0;
         $backupFile .= $backupExtension.$backupCounter;
 
         # if it exists, then keep going: .bak0, .bak1, ...
-        while (-e $backupFile or $maxNumberOfBackUps>1)
-        {
-            if($backupCounter==$maxNumberOfBackUps)
-            {
+        while (-e $backupFile or $maxNumberOfBackUps>1) {
+            if($backupCounter==$maxNumberOfBackUps) {
                 print $logfile "\t maxNumberOfBackUps reached ($maxNumberOfBackUps)\n";
 
                 # some users may wish to cycle through back up files, e.g:
@@ -566,11 +540,9 @@ if ($overwrite)
                 #    copy myfile.bak3 to myfile.bak2
                 #
                 #    current back up is stored in myfile.bak4
-                if($cycleThroughBackUps)
-                {
+                if($cycleThroughBackUps) {
                     print $logfile "\t cycleThroughBackUps detected (see cycleThroughBackUps) \n";
-                    for(my $i=1;$i<=$maxNumberOfBackUps;$i++)
-                    {
+                    for(my $i=1;$i<=$maxNumberOfBackUps;$i++) {
                         # remove number from backUpFile
                         my $oldBackupFile = $backupFile;
                         $oldBackupFile =~ s/$backupExtension.*/$backupExtension/;
@@ -591,9 +563,7 @@ if ($overwrite)
                 # rest maxNumberOfBackUps
                 $maxNumberOfBackUps=1 ;
                 last; # break out of the loop
-            }
-            elsif(!(-e $backupFile))
-            {
+            } elsif(!(-e $backupFile)) {
                 $maxNumberOfBackUps=1 ;
                 last; # break out of the loop
             }
@@ -610,8 +580,7 @@ if ($overwrite)
     copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.\n";
 }
 
-if(!($outputToFile or $overwrite))
-{
+if(!($outputToFile or $overwrite)) {
     print $logfile "Just out put to the terminal :)\n\n" if !$silentMode  ;
 }
 
@@ -625,32 +594,12 @@ my $inverbatim=0;           # $inverbatim: switch to determine if in
                             #               a verbatim environment or not
 my $delimiters=0;           # $delimiters: switch that governs if
                             #              we need to check for & or not
-my $matchedbraces=0;        # $matchedbraces: counter to see if { }
-                            #               are matched; it will be
-                            #               positive if too many {
-                            #               negative if too many }
-                            #               0 if matched
-my $matchedBRACKETS=0;      # $matchedBRACKETS: counter to see if [ ]
-                            #               are matched; it will be
-                            #               positive if too many {
-                            #               negative if too many }
-                            #               0 if matched
-my $commandname;            # $commandname: either \parbox, \marginpar,
-                            #               or anything else from %checkunmatched
-my $commanddetails;         # $command details: a scalar that stores
-                            #               details about the command
-                            #               that splits {} across lines
-my $countzeros;             # $countzeros:  a counter that helps
-                            #               when determining if we're in
-                            #               an else construct
-my $lookforelse=0;          # $lookforelse: a boolean to help determine
-                            #               if we need to look for an
-                            #               else construct
 my $trailingcomments;       # $trailingcomments stores the comments at the end of
                             #           a line
 my $lineCounter=0;          # $lineCounter keeps track of the line number
 my $inIndentBlock=0;        # $inindentblock: switch to determine if in
                             #               a inindentblock or not
+my $inFileContents=0;       # $inFileContents: switch to determine if we're in a filecontents environment
 
 # array variables
 my @lines;                  # @lines: stores the newly indented lines
@@ -669,14 +618,11 @@ close(MAINFILE);
 
 # if the MAINFILE doesn't have a \documentclass statement, then
 # it shouldn't have preamble
-if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0)
-{
+if(scalar(@{[grep(m/^\s*\\documentclass/, @mainfile)]})==0) {
     $inpreamble=0;
 
     print $logfile "Trace:\tNo documentclass detected, assuming no preamble\n" if($tracingMode);
-}
-else
-{
+} else {
     print $logfile "Trace:\t documentclass detected, assuming preamble\n" if($tracingMode);
 }
 
@@ -705,15 +651,15 @@ while(<MAINFILE>)
     } else {
         # otherwise check to see if we've reached the main
         # part of the document
-        if(m/^\s*\\begin{document}/) {
+        if(m/^\s*\\begin{document}/ and !$inFileContents and !$inverbatim) {
             $inpreamble = 0;
 
             # tracing mode
-            print $logfile "Line $lineCounter\t \\begin{document} found \n" if($tracingMode);
+            print $logfile "Line $lineCounter\t \\begin{document} found, switching indentation searches on. \n" if($tracingMode);
         } else {
             # tracing mode
             if($inpreamble) {
-                print $logfile "Line $lineCounter\t still in PREAMBLE, leaving exisiting leading space\n" if($tracingMode);
+                print $logfile "Line $lineCounter\t still in PREAMBLE, leaving exisiting leading space (see indentPreamble)\n" if($tracingMode);
             } elsif($inverbatim) {
                 print $logfile "Line $lineCounter\t in VERBATIM-LIKE environment, leaving exisiting leading space\n" if($tracingMode);
             } elsif($inIndentBlock) {
@@ -730,6 +676,12 @@ while(<MAINFILE>)
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
     # \END{ENVIRONMENTS}, or CLOSING } or CLOSING ]
 
+    # check to see if we're ending a filecontents environment
+    if( $_ =~ m/^\s*\\end{(.*?)}/ and  $fileContentsEnvironments{$1} and $inFileContents){
+        print $logfile "Line $lineCounter\t Found END of filecontents environment (see fileContentsEnvironments)\n" if($tracingMode);
+        $inFileContents = 0;
+    }
+
     if(@masterIndentationArrayOfHashes){
            $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
          }
@@ -740,6 +692,10 @@ while(<MAINFILE>)
         print $logfile "Line $lineCounter\t in NO INDENT BLOCK, doing nothing\n" if($tracingMode);
     } elsif($delimiters) {
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in ALIGNMENT BLOCK environment, looking for $masterIndentationArrayOfHashes[-1]{end}\n" if($tracingMode);
+    } elsif($inpreamble and !$inFileContents) {
+        print $logfile "Line $lineCounter\t In preamble, looking for \\begin{document}\n" if($tracingMode);
+    } elsif($inpreamble and $inFileContents) {
+        print $logfile "Line $lineCounter\t In preamble, in filecontents environment\n" if($tracingMode);
     } else {
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: looking for reasons to DECREASE indentation of CURRENT line \n" if($tracingMode);
     }
@@ -847,6 +803,12 @@ while(<MAINFILE>)
     # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
     # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
     # \BEGIN{ENVIRONMENT} or OPEN { or OPEN [
+
+    # check to see if we're beginning a filecontents environment
+    if( ($_ =~ m/^\s*\\begin{(.*?)}/ and  $fileContentsEnvironments{$1} and !$inverbatim)){
+        print $logfile "Line $lineCounter\t Found filecontents environment (see fileContentsEnvironments)\n" if($tracingMode);
+        $inFileContents = 1;
+    }
 
     # only check for new environments or commands if we're
     # not in a verbatim-like environment or in the preamble
@@ -1287,8 +1249,8 @@ sub start_command_or_key_unmatched_brackets{
         and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets)) {
             # store the command name, because $2
             # will not exist after the next match
-            $commandname = $2;
-            $matchedBRACKETS=0;
+            my $commandname = $2;
+            my $matchedBRACKETS=0;
 
             # match [ but don't match \[
             $matchedBRACKETS++ while ($_ =~ /(?<!\\)\[/g);
@@ -1326,8 +1288,8 @@ sub end_command_or_key_unmatched_brackets{
         and $_ !~ m/^\s*%/) {
 
        # get the details of the most recent command name
-       $commandname =  $masterIndentationArrayOfHashes[-1]{name};
-       $matchedBRACKETS = $masterIndentationArrayOfHashes[-1]{matchedBRACKETS};
+       my $commandname =  $masterIndentationArrayOfHashes[-1]{name};
+       my $matchedBRACKETS = $masterIndentationArrayOfHashes[-1]{matchedBRACKETS};
 
        # match [ but don't match \[
        $matchedBRACKETS++ while ($_ =~ m/(?<!\\)\[/g);
@@ -1381,14 +1343,11 @@ sub start_command_or_key_unmatched_braces{
         ) {
             # store the command name, because $2
             # will not exist after the next match
-            $commandname = $2;
-            $matchedbraces=0;
+            my $commandname = $2;
+            my $matchedbraces=0;
 
             # by default, don't look for an else construct
-            $lookforelse=0;
-            if($checkunmatchedELSE{$2}) {
-                $lookforelse=1;
-            }
+            my $lookforelse=$checkunmatchedELSE{$2}||0;
 
             # match { but don't match \{
             $matchedbraces++ while ($_ =~ /(?<!\\){/g);
@@ -1428,7 +1387,7 @@ sub start_command_or_key_unmatched_braces{
                      # get the details of the most recent command name
                      $commandname =  $masterIndentationArrayOfHashes[-1]{name};
                      $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
-                     $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
+                     my $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
                      $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
 
                      $matchedbraces++ if($1 eq "{");
@@ -1495,10 +1454,10 @@ sub end_command_or_key_unmatched_braces{
             last if($masterIndentationArrayOfHashes[-1]{type} ne 'splitbraces');
 
             # get the details of the most recent command name
-            $commandname =  $masterIndentationArrayOfHashes[-1]{name};
-            $matchedbraces = $masterIndentationArrayOfHashes[-1]{matchedbraces};
-            $countzeros = $masterIndentationArrayOfHashes[-1]{countzeros};
-            $lookforelse= $masterIndentationArrayOfHashes[-1]{lookforelse};
+            my $commandname =  $masterIndentationArrayOfHashes[-1]{name};
+            my $matchedbraces = $masterIndentationArrayOfHashes[-1]{matchedbraces};
+            my $countzeros = $masterIndentationArrayOfHashes[-1]{countzeros};
+            my $lookforelse= $masterIndentationArrayOfHashes[-1]{lookforelse};
 
             $matchedbraces++ if($1 eq "{");
             $matchedbraces-- if($1 eq "}");
@@ -1562,9 +1521,9 @@ sub check_for_else{
         and $_ !~ m/^\s*%/
        ) {
        # get the details of the most recent command name
-       $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
-       $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
-       $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
+       my $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
+       my $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
+       my $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
 
        # increase indentation
        if($lookforelse and $countzeros==1) {
@@ -1719,7 +1678,7 @@ sub at_end_of_env_or_eq{
        # if we're at the end of the document, we remove all current
        # indentation- this is especially prominent in examples that
        # have headings, and the user has chosen to indentAfterHeadings
-       if($1 eq "document" and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock and @masterIndentationArrayOfHashes) {
+       if($1 eq "document" and !$inFileContents and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock and @masterIndentationArrayOfHashes) {
             @masterIndentationArrayOfHashes=();
 
             # tracing mode

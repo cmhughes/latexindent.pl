@@ -40,18 +40,17 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % clever referencing
-\usepackage[%
+\usepackage{hyperref}
+\hypersetup{
+   pdfauthor={Chris Hughes},
+   pdftitle={latexindent.pl package},
+   pdfkeywords={perl;beautify;indentation},
 	bookmarksnumbered,
 	bookmarksopen,
 	linktocpage,
     colorlinks=true,
     linkcolor=blue,
     citecolor=black
-	]{hyperref}
-\hypersetup{
-   pdfauthor={Chris Hughes},
-   pdftitle={latexindent.pl package},
-   pdfkeywords={perl;beautify;indentation},
 }
 \usepackage{cleveref}
 
@@ -966,6 +965,17 @@ When \lstinline!trace! mode is active (see \cpageref{page:traceswitch}) verbose 
 to \lstinline!indent.log!. The decoration of this information can be customised through the remaining
 fields given in \cref{lst:logFilePreferences}; note, in particular, the use of \lstinline!"\n"! for 
 escaped characters (using single quotes will not produce the same results).
+
+\item[\verbitem{fileContentsEnvironments}] 
+  \lstinline!latexindent.pl! determines when the main document begins by looking for \lstinline!\begin{document}!; 
+  it will not do so when inside any of the environments specified in \lstinline!fileContentsEnvironments!, see
+  \cref{lst:fileContentsEnvironments}.
+\begin{cmhlistings}[style=yaml]{\lstinline!fileContentsEnvironments!}{lst:fileContentsEnvironments}
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+  \end{cmhlistings}
+
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
 			unless you wish to micro-manage your indentation scheme.
