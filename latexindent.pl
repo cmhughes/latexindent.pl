@@ -653,16 +653,10 @@ my $inIndentBlock=0;        # $inindentblock: switch to determine if in
                             #               a inindentblock or not
 
 # array variables
-my @indent;                 # @indent: stores current level of indentation
 my @lines;                  # @lines: stores the newly indented lines
 my @block;                  # @block: stores blocks that have & delimiters
-my @commandstorebrackets;   # @commandstorebrackets: stores commands that
-                            #           have split [] across lines
 my @mainfile;               # @mainfile: stores input file; used to
                             #            grep for \documentclass
-my @indentNames;            # @indentNames: keeps names of commands and
-                            #               environments that have caused
-                            #               indentation to increase
 
 # array of hashes, rework!
 my @masterIndentationArrayOfHashes;
@@ -785,11 +779,11 @@ while(<MAINFILE>)
         # check to see if we're at the end of a \parbox, \marginpar
         # or other split-across-lines command and check that
         # we're not starting another command that has split braces (nesting)
-        &end_command_or_key_unmatched_braces();
+        &end_command_or_key_unmatched_braces() if(scalar(@masterIndentationArrayOfHashes));
 
         # check to see if we're at the end of a command that splits
         # [ ] across lines
-        &end_command_or_key_unmatched_brackets();
+        &end_command_or_key_unmatched_brackets() if(scalar(@masterIndentationArrayOfHashes));
 
         # check for a heading such as \chapter, \section, etc
         &indent_heading();
@@ -801,8 +795,7 @@ while(<MAINFILE>)
         &indent_if_else_fi();
 
         # add the trailing comments back to the end of the line
-        if(scalar($trailingcomments))
-        {
+        if(scalar($trailingcomments)) {
             # some line break magic, http://stackoverflow.com/questions/881779/neatest-way-to-remove-linebreaks-in-perl
             s/\R//;
             $_ = $_ . $trailingcomments."\n" ;
@@ -816,8 +809,7 @@ while(<MAINFILE>)
 
         }
         # remove trailing whitespace
-        if ($removeTrailingWhitespace)
-        {
+        if ($removeTrailingWhitespace) {
             print $logfile "Line $lineCounter\t removing trailing whitespace (see removeTrailingWhitespace)\n" if ($tracingMode);
             s/\s+$/\n/;
         }
@@ -827,16 +819,12 @@ while(<MAINFILE>)
     # ADD CURRENT LEVEL OF INDENTATION
     # ADD CURRENT LEVEL OF INDENTATION
     # (unless we're in a delimiter-aligned block)
-    if(!$delimiters)
-    {
+    if(!$delimiters) {
         # make sure we're not in a verbatim block or in the preamble
-        if($inverbatim or $inpreamble or $inIndentBlock)
-        {
+        if($inverbatim or $inpreamble or $inIndentBlock) {
            # just push the current line as is
            push(@lines,$_);
-        }
-        else
-        {
+        } else {
             # add current value of indentation to the current line
             # and output it
             # unless this would only create trailing whitespace and the
@@ -848,9 +836,7 @@ while(<MAINFILE>)
             # tracing mode
             print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeAddCurrentIndent} PHASE 2: Adding current level of indentation: ",&current_indentation_names(),"\n" if($tracingMode);
         }
-    }
-    else
-    {
+    } else {
         # output to @block if we're in a delimiter block
         push(@block,$_);
 
@@ -890,6 +876,9 @@ while(<MAINFILE>)
         #       %* \end{tabular}
         #           }
         &begin_command_with_alignment();
+        if(@masterIndentationArrayOfHashes){
+               $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
+             }
 
         # remove trailing comments so that any {, }, [, ]
         # that are found after % are not counted
@@ -906,6 +895,9 @@ while(<MAINFILE>)
 
         # check to see if we have \begin{something} or \[
         &at_beg_of_env_or_eq() if(!($inverbatim or $inpreamble or $inIndentBlock or $delimiters));
+        if(@masterIndentationArrayOfHashes){
+               $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
+             }
 
         # check to see if we have \parbox, \marginpar, or
         # something similar that might split braces {} across lines,
@@ -1308,13 +1300,7 @@ sub start_command_or_key_unmatched_brackets{
                   # tracing mode
                   print $logfile "Line $lineCounter\t Found opening BRACKET [ $commandname\n" if($tracingMode);
 
-                  &increase_indent({name=>$commandname,matchedBRACKETS=>$matchedBRACKETS});
-
-                  # store the command name
-                  # and the value of $matchedBRACKETS
-                  push(@commandstorebrackets,{commandname=>$commandname,
-                                      matchedBRACKETS=>$matchedBRACKETS});
-
+                  &increase_indent({name=>$commandname,matchedBRACKETS=>$matchedBRACKETS,type=>'splitBrackets'});
             }
         }
 }
@@ -1326,7 +1312,7 @@ sub end_command_or_key_unmatched_brackets{
     #               \pgfplotstablecreatecol[ ...
     #
     #           It works by checking if we have any entries
-    #           in the array @commandstorebrackets, and making
+    #           in the array @masterIndentationArrayOfHashes, and making
     #           sure that we're not starting another command/key
     #           that has split BRACKETS (nesting).
     #
@@ -1334,15 +1320,14 @@ sub end_command_or_key_unmatched_brackets{
     #
     #           We count the number of [ and ADD to the counter
     #                                  ] and SUBTRACT to the counter
-    if(scalar(@commandstorebrackets)
+    if(($masterIndentationArrayOfHashes[-1]{type} eq 'splitBrackets')
         and  !($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/
                     and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets))
         and $_ !~ m/^\s*%/) {
 
        # get the details of the most recent command name
-       $commanddetails = pop(@commandstorebrackets);
-       $commandname = $commanddetails->{'commandname'};
-       $matchedBRACKETS = $commanddetails->{'matchedBRACKETS'};
+       $commandname =  $masterIndentationArrayOfHashes[-1]{name};
+       $matchedBRACKETS = $masterIndentationArrayOfHashes[-1]{matchedBRACKETS};
 
        # match [ but don't match \[
        $matchedBRACKETS++ while ($_ =~ m/(?<!\\)\[/g);
@@ -1352,21 +1337,18 @@ sub end_command_or_key_unmatched_brackets{
 
        # if we've matched up the BRACKETS then
        # we can decrease the indent by 1 level
-       if($matchedBRACKETS == 0)
-       {
+       if($matchedBRACKETS == 0){
             # tracing mode
             print $logfile "Line $lineCounter\t Found closing BRACKET ] $commandname\n" if($tracingMode);
 
             # decrease the indentation (if appropriate)
             &decrease_indent($commandname);
-       }
-       else
-       {
+       } else {
            # otherwise we need to enter the new value
            # of $matchedBRACKETS and the value of $command
            # back into storage
-           push(@commandstorebrackets,{commandname=>$commandname,
-                                       matchedBRACKETS=>$matchedBRACKETS});
+           $masterIndentationArrayOfHashes[-1]{matchedBRACKETS} = $matchedBRACKETS;
+
            # tracing mode
            print $logfile "Line $lineCounter\t Searching for closing BRACKET ] $commandname\n" if($tracingMode);
        }
@@ -1452,6 +1434,9 @@ sub start_command_or_key_unmatched_braces{
                      $matchedbraces++ if($1 eq "{");
                      $matchedbraces-- if($1 eq "}");
 
+                     # update the matched braces count
+                     $masterIndentationArrayOfHashes[-1]{matchedbraces} = $matchedbraces;
+
                      # if we've matched up the braces then
                      # we can decrease the indent by 1 level
                      if($matchedbraces == 0) {
@@ -1494,9 +1479,8 @@ sub end_command_or_key_unmatched_braces{
     #           We count the number of { and ADD to the counter
     #                                  } and SUBTRACT to the counter
     if(scalar(@masterIndentationArrayOfHashes)
-      and  !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
-                    and ($checkunmatched{$2} or $checkunmatchedELSE{$2}
-                         or $alwaysLookforSplitBraces))
+        and !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
+        and ($checkunmatched{$2} or $checkunmatchedELSE{$2} or $alwaysLookforSplitBraces))
         and $_ !~ m/^\s*%/
        ) {
        # keep matching { OR }, and don't match \{ or \}
@@ -1512,12 +1496,15 @@ sub end_command_or_key_unmatched_braces{
 
             # get the details of the most recent command name
             $commandname =  $masterIndentationArrayOfHashes[-1]{name};
-            $matchedbraces = $masterIndentationArrayOfHashes[-1]{'matchedbraces'};
-            $countzeros = $masterIndentationArrayOfHashes[-1]{'countzeros'};
-            $lookforelse= $masterIndentationArrayOfHashes[-1]{'lookforelse'};
+            $matchedbraces = $masterIndentationArrayOfHashes[-1]{matchedbraces};
+            $countzeros = $masterIndentationArrayOfHashes[-1]{countzeros};
+            $lookforelse= $masterIndentationArrayOfHashes[-1]{lookforelse};
 
             $matchedbraces++ if($1 eq "{");
             $matchedbraces-- if($1 eq "}");
+
+            # update the matched braces count
+            $masterIndentationArrayOfHashes[-1]{matchedbraces} = $matchedbraces;
 
             # if we've matched up the braces then
             # we can decrease the indent by 1 level
@@ -1543,7 +1530,7 @@ sub end_command_or_key_unmatched_braces{
                    print $logfile "Line $lineCounter\t Searching for closing BRACE } $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
                 }
              }
-     }
+        }
      }
 }
 
@@ -1631,7 +1618,10 @@ sub at_beg_of_env_or_eq{
        print $logfile "Line $lineCounter\t \\begin{environment} found: $2 \n" if($tracingMode);
 
        # increase the indentation
-       &increase_indent({name=>$2,type=>"environment"});
+       &increase_indent({name=>$2,
+                         type=>"environment",
+                         begin=>"\\begin{$2}",
+                         end=>"\\end{$2}"});
 
        # check for verbatim-like environments
        if($verbatimEnvironments{$2}){
@@ -1690,7 +1680,7 @@ sub at_end_of_env_or_eq{
        # if we're at the end of an environment that receives no additional indent, log it, and move on
        if($noAdditionalIndent{$1}){
             print $logfile "Line $lineCounter\t \\end{$1} finished a no-additional-indent environment (see noAdditionalIndent)\n" if($tracingMode);
-            return;
+            return unless($1 eq "document");
        }
 
        # some commands contain \end{environmentname}, which
@@ -1729,12 +1719,12 @@ sub at_end_of_env_or_eq{
        # if we're at the end of the document, we remove all current
        # indentation- this is especially prominent in examples that
        # have headings, and the user has chosen to indentAfterHeadings
-       if($1 eq "document" and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock) {
+       if($1 eq "document" and !$inpreamble and !$delimiters and !$inverbatim and !$inIndentBlock and @masterIndentationArrayOfHashes) {
             @masterIndentationArrayOfHashes=();
 
             # tracing mode
             if($tracingMode) {
-                print $logfile "Line $lineCounter\t \\end{$1} found, emptying indent array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
+                print $logfile "Line $lineCounter\t \\end{$1} found, emptying indentation array \n" unless ($delimiters or $inverbatim or $inIndentBlock or $1 eq "\\\]");
             }
        }
     }
@@ -2061,16 +2051,11 @@ sub increase_indent{
        }
 
        if($indentRules{$command}) {
-          # if there's a rule for indentation for this environment
-          push(@indent, $indentRules{$command});
           # tracing mode
           print $logfile "Line $lineCounter\t increasing indent using rule for $command (see indentRules)\n" if($tracingMode);
-          push(@indentNames,"$command");
        } else {
           # default indentation
           if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command})) {
-            push(@indent, $defaultIndent);
-            push(@indentNames,"$command");
             # tracing mode
             print $logfile "Line $lineCounter\t increasing indent using defaultIndent\n" if($tracingMode);
           } elsif($noAdditionalIndent{$command})  {
@@ -2095,8 +2080,6 @@ sub increase_indent{
                 # tracing mode
                 print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
             }
-            $masterIndentationArrayOfHashes[-1]{begin}="\\begin{$masterIndentationArrayOfHashes[-1]{name}}";
-            $masterIndentationArrayOfHashes[-1]{end}="\\end{$masterIndentationArrayOfHashes[-1]{name}}";
        } else {
             # commands, headings, etc
             $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
@@ -2115,7 +2098,7 @@ sub decrease_indent{
        # otherwise get details of the most recent command, environment, item, if, heading, etc
        my $command = pop(@_);
 
-       if(!($noAdditionalIndent{$command} or $verbatimEnvironments{$command} or $inverbatim)) {
+       if(!($noAdditionalIndent{$command} or $inverbatim)) {
             print $logfile "Line $lineCounter\t removing ", $masterIndentationArrayOfHashes[-1]{name}, " from masterIndentationArrayOfHashes\n" if($tracingMode);
             pop(@masterIndentationArrayOfHashes);
             # tracing mode
