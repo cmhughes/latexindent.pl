@@ -187,12 +187,14 @@
 % - Page break after
 % - TODO: couldn't get pdfbookmark to point to this page instead of the
 %   first page so it was removed.
+%\begin{noindent}
 \xpretocmd{\tableofcontents}{%
 	\begin{singlespace}}{}{}
-	\xapptocmd{\tableofcontents}{%
-	\end{singlespace}%
-	\pagestyle{plain}%
-	\clearpage}{}{}
+\xapptocmd{\tableofcontents}{%
+\end{singlespace}%
+\pagestyle{plain}%
+\clearpage}{}{}
+%\end{noindent}
 
 % - Add dot leader for chapter levels
 \renewcommand\cftchapdotsep{\cftdotsep}
@@ -201,23 +203,23 @@
 % - Adjust indentation of levels
 % - Capitalize title entries, if requested
 \if@isu@capstoc
-\renewcommand\cftchappresnum{\MakeUppercase{\chaptertitlename} }
-\cftsetindents{chapter}{0em}{8em}
-\cftsetindents{section}{2em}{0em}
-\cftsetindents{subsection}{3em}{0em}
-\renewcommand{\cftchapfont}{\MakeUppercase}
+	\renewcommand\cftchappresnum{\MakeUppercase{\chaptertitlename} }
+	\cftsetindents{chapter}{0em}{8em}
+	\cftsetindents{section}{2em}{0em}
+	\cftsetindents{subsection}{3em}{0em}
+	\renewcommand{\cftchapfont}{\MakeUppercase}
 \else
-\renewcommand\cftchappresnum{\chaptertitlename\ }
-\cftsetindents{chapter}{0em}{6em}
-\cftsetindents{section}{1em}{0em}
-\cftsetindents{subsection}{2em}{0em}
+	\renewcommand\cftchappresnum{\chaptertitlename\ }
+	\cftsetindents{chapter}{0em}{6em}
+	\cftsetindents{section}{1em}{0em}
+	\cftsetindents{subsection}{2em}{0em}
 \fi
 
 % - Remove section/subsection numbers from ToC by capturing
 %   see idea at  http://tex.stackexchange.com/questions/71123/remove-section-number-toc-entries-with-tocloft
 \if@isu@tocnumbersections@\else
-\renewcommand{\cftsecpresnum}{\begin{lrbox}{\@tempboxa}}
-\renewcommand{\cftsecaftersnum}{\end{lrbox}}
+	\renewcommand{\cftsecpresnum}{\begin{lrbox}{\@tempboxa}}
+	\renewcommand{\cftsecaftersnum}{\end{lrbox}}
 \fi
 
 \if@isu@tocnumbersubsections@\else
@@ -229,10 +231,12 @@
 % List of Figures:
 % - Single space
 % - Page break after
+%\begin{noindent}
 \xpretocmd{\listoffigures}{%
-	\begin{singlespace}}{}{}
-	\xapptocmd{\listoffigures}{%
-	\end{singlespace}\clearpage}{}{}
+\begin{singlespace}}{}{}
+\xapptocmd{\listoffigures}{%
+\end{singlespace}\clearpage}{}{}
+%\end{noindent}
 
 % - Prepend the word "Figure" to the number
 \renewcommand\cftfigpresnum{Figure }
@@ -242,10 +246,12 @@
 % List of Tables:
 % - Single space
 % - Page break after
+%\begin{noindent}
 \xpretocmd{\listoftables}{%
 	\begin{singlespace}}{}{}
-	\xapptocmd{\listoftables}{%
-	\end{singlespace}\clearpage}{}{}
+\xapptocmd{\listoftables}{%
+    \end{singlespace}\clearpage}{}{}
+%\end{noindent}
 
 % - Prepend the word "Table" to the number
 \renewcommand\cfttabpresnum{Table }
@@ -279,13 +285,13 @@
 % Verify that we actually got some main matter
 \AfterEndDocument{
 	\if@isu@errormissingmainmatter@
-	\ifdefined\@isu@gottitle
-	\ClassInfo{\@isu@classname}{Full dissertation mode}
-	\unless\ifdefined\@isu@gotmainmatter@
-	\ClassError{\@isu@classname}{Missing \protect\mainmatter\space before your first real chapter!}{Missing mainmatter}
-	%             \ClassError{\@isu@classname}{%
-	%                 \protect\mainmatter\space not called in your document expected before your first real chapter}{%
-	%                 You need to put \protect\mainmatter\space before your first real numbered chapter, typically your introduction.}
+		\ifdefined\@isu@gottitle
+		\ClassInfo{\@isu@classname}{Full dissertation mode}
+		\unless\ifdefined\@isu@gotmainmatter@
+		\ClassError{\@isu@classname}{Missing \protect\mainmatter\space before your first real chapter!}{Missing mainmatter}
+		%             \ClassError{\@isu@classname}{%
+		%                 \protect\mainmatter\space not called in your document expected before your first real chapter}{%
+		%                 You need to put \protect\mainmatter\space before your first real numbered chapter, typically your introduction.}
 	\fi
 	\fi
 	\fi
