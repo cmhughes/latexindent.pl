@@ -980,7 +980,8 @@ sub indent_after_if_else_fi{
     #       ^\s*        begins with multiple spaces (possibly none)
     #       \\(if.*?)(\s|\\|\#)   matches \if... up to either a
     #                             space, a \, or a #
-    if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $constructIfElseFi{$1}) {
+    #   Note: this won't match \if.*\fi
+    if( $_ =~ m/^\s*\\(if.*?)(\s|\\|\#)/ and $_ !~ m/^\s*\\(if.*?\\fi)/ and $constructIfElseFi{$1}) {
         # tracing mode
         print $logfile "Line $lineCounter\t ifelsefi construct found: $1 \n" if($tracingMode);
         &increase_indent({name=>$1,type=>"ifelseif"});
