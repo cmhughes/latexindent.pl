@@ -39,6 +39,9 @@ cycleThroughBackUps: 1
 maxNumberOfBackUps: 0
 constructIfElseFi:
     if@isu@draftcls@: 1
+    if@isu@capstoc: 1
+    if@isu@tocnumbersections@: 1
+    if@isu@errormissingmainmatter@: 1
 lookForAlignDelims:
   align: 0
 logFilePreferences:
