@@ -5,5 +5,8 @@ lookForAlignDelims:
       spacesBeforeDoubleBackSlash: 2
    tabularx:
       delims: 1
+   align*: 
+      delims: 1
+      alignDoubleBackSlash: 0
 logFilePreferences:
     showEveryYamlRead: 1
