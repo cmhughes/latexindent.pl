@@ -506,10 +506,6 @@ if ($overwrite) {
         $onlyOneBackUp=1 ;
         print $logfile "\t FYI: you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 \n";
     } elsif($maxNumberOfBackUps<=0 and !$onlyOneBackUp) {
-#        print $logfile "\t FYI: maxNumberOfBackUps=$maxNumberOfBackUps which won't have any effect\n";
-#        print $logfile "\t      on the script- at least ONE backup is made when the -w flag is invoked.\n";
-#        print $logfile "\t      I'm setting onlyOneBackUp: 0, which means that you'll get a new back up file \n";
-#        print $logfile "\t      every time you run the script.\n";
         $onlyOneBackUp=0 ;
         $maxNumberOfBackUps=-1;
     }
@@ -599,11 +595,10 @@ my $inFileContents=0;       # $inFileContents: switch to determine if we're in a
 
 # array variables
 my @lines;                  # @lines: stores the newly indented lines
-my @block;                  # @block: stores blocks that have & delimiters
 my @mainfile;               # @mainfile: stores input file; used to
                             #            grep for \documentclass
 
-# array of hashes, rework!
+# array of hashes, containing details of commands & environments
 my @masterIndentationArrayOfHashes;
 
 # check to see if the current file has \documentclass, if so, then
@@ -795,8 +790,8 @@ while(<MAINFILE>) {
             print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeAddCurrentIndent} PHASE 2: Adding current level of indentation: ",&current_indentation_names(),"\n" if($tracingMode);
         }
     } else {
-        # output to @block if we're in a delimiter block
-        push(@block,$_);
+        # output to @block (within masterIndentationArrayOfHashes) if we're in a delimiter block
+        push(@{$masterIndentationArrayOfHashes[-1]{block}},$_);
 
         # tracing mode
         print $logfile "Line $lineCounter\t In delimeter block ($masterIndentationArrayOfHashes[-1]{name}), waiting for block formatting\n" if($tracingMode);
@@ -1697,7 +1692,7 @@ sub print_aligned_block{
     print $logfile "Line $lineCounter\t Delimiter body FINISHED: $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
 
     # print the current FORMATTED block
-    @block = &format_block(@block);
+    my @block = &format_block(@{$masterIndentationArrayOfHashes[-1]{block}});
     foreach $line (@block) {
          # add the indentation and add the
          # each line of the formatted block
@@ -1709,8 +1704,6 @@ sub print_aligned_block{
          }
          push(@lines,$line);
     }
-    # empty the @block, very important!
-    @block=();
 }
 
 sub format_block{
@@ -1720,7 +1713,6 @@ sub format_block{
     #   INPUT: @block               array containing unformatted block
     #                               from, for example, align, or tabular
     #   OUTPUT: @formattedblock     array containing FORMATTED block
-
 
     # @block is the input
     my @block=@_;
