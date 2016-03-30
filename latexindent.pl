@@ -1639,7 +1639,7 @@ sub at_end_of_env_or_eq{
 
           # check to see if we need to turn off alignment
           # delimiters and output the current block
-          if($lookForAlignDelims{$1} and ($previousEnvironment{name} eq $1)) {
+          if($masterIndentationArrayOfHashes[-1]{alignmentDelimiters} and ($previousEnvironment{name} eq $1)) {
                &print_aligned_block();
           }
 
@@ -1649,7 +1649,7 @@ sub at_end_of_env_or_eq{
           # check to see if \end{environment} fits with most recent \begin{...}
           if($previousEnvironment{name} eq $1) {
                # decrease the indentation (if appropriate)
-               print $logfile "Line $lineCounter\t removed $1 from Indentation array\n"; 
+               print $logfile "Line $lineCounter\t removed $1 from Indentation array\n" if($tracingMode); 
                &decrease_indent($1);
           } else {
               # otherwise put the environment name back on the stack
@@ -1688,7 +1688,7 @@ sub print_aligned_block{
     $delimiters=0;
 
     # tracing mode
-    print $logfile "Line $lineCounter\t Delimiter body FINISHED: $1\n" if($tracingMode);
+    print $logfile "Line $lineCounter\t Delimiter body FINISHED: $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
 
     # print the current FORMATTED block
     @block = &format_block(@block);
@@ -1720,13 +1720,12 @@ sub format_block{
     my @block=@_;
 
     # tracing mode
-    print $logfile "\t\tFormatting alignment block\n" if($tracingMode);
+    print $logfile "\t\tFormatting alignment block: $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
 
     # step the line counter back to the beginning of the block-
     # it will be increased back to the end of the block in the
     # loop later on:  foreach $row (@tmpblock)
     $lineCounter -= scalar(@block);
-
 
     # local array variables
     my @formattedblock;
@@ -1756,12 +1755,10 @@ sub format_block{
     # loop through the block and count & per line- store the biggest
     # NOTE: this needs to be done in its own block so that
     # we can know what the maximum number of & in the block is
-    foreach $row (@block)
-    {
+    foreach $row (@block) {
        # delete trailing comments
        $trailingcomments='';
-       if($row =~ m/((?<!\\)%.*$)/)
-       {
+       if($row =~ m/((?<!\\)%.*$)/) {
             $row =~ s/((?<!\\)%.*)/%TC/;
             $trailingcomments=$1;
        }
@@ -1779,8 +1776,7 @@ sub format_block{
        $maxNumberAmpersands = $currentNumberAmpersands if($currentNumberAmpersands > $maxNumberAmpersands );
 
        # put trailing comments back on
-       if($trailingcomments)
-       {
+       if($trailingcomments){
             $row =~ s/%TC/$trailingcomments/;
        }
     }
@@ -1789,8 +1785,7 @@ sub format_block{
     print $logfile "\t\tmaximum number of & in any row: $maxNumberAmpersands\n" if($tracingMode);
 
     # loop through the lines in the @block
-    foreach $row (@block)
-    {
+    foreach $row (@block){
         # get the ampersand count
         $currentNumberAmpersands = shift(@ampersandCount);
 
@@ -1803,8 +1798,7 @@ sub format_block{
         # check for line break \\
         # and don't mess with a line that doesn't have the maximum
         # number of &
-        if($row =~ m/\\\\/ and $currentNumberAmpersands==$maxNumberAmpersands )
-        {
+        if($row =~ m/\\\\/ and $currentNumberAmpersands==$maxNumberAmpersands ) {
           # remove \\ and all characters that follow
           # and put it back in later, once the measurement
           # has been done
@@ -1812,13 +1806,11 @@ sub format_block{
           $linebreak = $1;
         }
 
-        if($currentNumberAmpersands==$maxNumberAmpersands)
-        {
+        if($currentNumberAmpersands==$maxNumberAmpersands) {
 
             # remove trailing comments
             $trailingcomments='';
-            if($row =~ m/((?<!\\)%.*$)/)
-            {
+            if($row =~ m/((?<!\\)%.*$)/) {
                  $row =~ s/((?<!\\)%.*)/%TC/;
                  $trailingcomments=$1;
             }
@@ -1831,8 +1823,7 @@ sub format_block{
 
             # loop through each column element
             # removing leading and trailing space
-            foreach $column (@tmprow)
-            {
+            foreach $column (@tmprow) {
                # increment column counter
                $aligncolcounter++;
 
@@ -1842,18 +1833,14 @@ sub format_block{
 
                # assign string size to the array
                $stringsize{$alignrowcounter.$aligncolcounter}=length($column);
-               if(length($column)==0)
-               {
+               if(length($column)==0){
                  $column=" ";
                }
 
                # put the row back together
-               if ($aligncolcounter ==0)
-               {
+               if ($aligncolcounter ==0){
                  $tmpstring = $column;
-               }
-               else
-               {
+               } else {
                  $tmpstring .= "&".$column;
                }
             }
@@ -1864,15 +1851,12 @@ sub format_block{
             $tmpstring .= $linebreak;
 
             # put trailing comments back on
-            if($trailingcomments)
-            {
+            if($trailingcomments) {
                  $tmpstring =~ s/%TC/$trailingcomments/;
             }
 
             push(@tmpblock,$tmpstring);
-        }
-        else
-        {
+        } else {
                # if there are no & then use the
                # NOFORMATTING token
                # remove leading space
@@ -1882,16 +1866,12 @@ sub format_block{
     }
 
     # calculate the maximum string size of each column
-    for($j=0;$j<=$aligncolcounter;$j++)
-    {
+    for($j=0;$j<=$aligncolcounter;$j++) {
         $maxmcolstrlength=0;
-        for($i=0; $i<=$alignrowcounter;$i++)
-        {
+        for($i=0; $i<=$alignrowcounter;$i++) {
             # make sure the stringsize is defined
-            if(defined $stringsize{$i.$j})
-            {
-                if ($stringsize{$i.$j}>$maxmcolstrlength)
-                {
+            if(defined $stringsize{$i.$j}) {
+                if ($stringsize{$i.$j}>$maxmcolstrlength) {
                     $maxmcolstrlength = $stringsize{$i.$j};
                 }
             }
@@ -1918,42 +1898,49 @@ sub format_block{
     $fmtstring = "%-".$fmtstring;
 
     # process the @tmpblock of aligned material
-    foreach $row (@tmpblock)
-    {
-
+    foreach $row (@tmpblock) {
         $linebreak='';
         # check for line break \\
-        if($row =~ m/\\\\/)
-        {
+        if($row =~ m/\\\\/) {
           # remove \\ and all characters that follow
           # and put it back in later
           $row =~ s/(\\\\.*$)//;
           $linebreak = $1;
         }
 
-        if($row =~ m/NOFORMATTING/)
-        {
+        if($row =~ m/NOFORMATTING/) {
             $row =~ s/NOFORMATTING//;
             $tmpstring=$row;
 
             # tracing mode
             print $logfile "\t\tLine $lineCounter\t maximum number of & NOT found- not aligning delimiters \n" if($tracingMode);
-        }
-        else
-        {
+        } else {
           # remove trailing comments
           $trailingcomments='';
-          if($row =~ m/((?<!\\)%.*$)/)
-          {
+          if($row =~ m/((?<!\\)%.*$)/) {
                $row =~ s/((?<!\\)%.*)/%TC/;
                $trailingcomments=$1;
           }
 
           $tmpstring = sprintf($fmtstring,split(/(?<!\\)&/,$row)).$linebreak."\n";
 
+          # remove space before \\ if specified in alignDoubleBackSlash
+          if($masterIndentationArrayOfHashes[-1]{alignDoubleBackSlash}==0){
+                print $logfile "\t\tLine $lineCounter\t removing space before \\\\ (see $masterIndentationArrayOfHashes[-1]{name} alignDoubleBackSlash)\n" if($tracingMode);
+                $tmpstring =~ s/\s*\\\\/\\\\/;
+                # some users may like to put a number of spaces before \\
+                if($masterIndentationArrayOfHashes[-1]{spacesBeforeDoubleBackSlash}){
+                    my $spaceString;
+                    for($j=1;$j<=$masterIndentationArrayOfHashes[-1]{spacesBeforeDoubleBackSlash};$j++) {
+                        $spaceString .= ' ';
+                    }
+                    print $logfile "\t\tLine $lineCounter\t adding $masterIndentationArrayOfHashes[-1]{spacesBeforeDoubleBackSlash} ",$masterIndentationArrayOfHashes[-1]{spacesBeforeDoubleBackSlash}>1?"spaces":"space"," before \\\\ (see $masterIndentationArrayOfHashes[-1]{name} spacesBeforeDoubleBackSlash)\n" if($tracingMode);
+                    $tmpstring =~ s/\\\\/$spaceString\\\\/;
+                }
+          }
+
           # put trailing comments back on
-          if($trailingcomments)
-          {
+          if($trailingcomments) {
                $tmpstring =~ s/%TC/$trailingcomments/;
           }
 
@@ -1962,8 +1949,7 @@ sub format_block{
         }
 
         # remove trailing whitespace
-        if ($removeTrailingWhitespace)
-        {
+        if ($removeTrailingWhitespace) {
             print $logfile "\t\tLine $lineCounter\t removing trailing whitespace from delimiter aligned line\n" if ($tracingMode);
             $tmpstring =~ s/\s+$/\n/;
         }
@@ -2021,10 +2007,35 @@ sub increase_indent{
                  $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
                } 
             # check to see if we need to look for alignment delimiters
-            if($lookForAlignDelims{$command}) {
-                $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=1;
-                # tracing mode
-                print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
+            if($lookForAlignDelims{$command}){ 
+                # there are two ways to complete the lookForAlignDelims field, either as a scalar
+                # or as a hash, so that we can check for alignDoubleBackSlash. 
+                #
+                # tabular: 
+                #    delims: 1
+                #    alignDoubleBackSlash: 1
+                #
+                # or, simply,
+                #
+                # tabular: 1
+                #
+                # We need to perform a check to see which has been done.
+                if(ref($lookForAlignDelims{$command}) eq 'HASH'){
+                      # tabular: 
+                      #    delims: 1
+                      #    alignDoubleBackSlash: 1
+                      $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=defined $lookForAlignDelims{$command}{delims}?$lookForAlignDelims{$command}{delims}:1;
+                      $masterIndentationArrayOfHashes[-1]{alignDoubleBackSlash}=defined $lookForAlignDelims{$command}{alignDoubleBackSlash}?$lookForAlignDelims{$command}{alignDoubleBackSlash}:1;
+                      $masterIndentationArrayOfHashes[-1]{spacesBeforeDoubleBackSlash}=$lookForAlignDelims{$command}{spacesBeforeDoubleBackSlash}||0;
+                } else {
+                    # tabular: 1
+                    $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}=1;
+                    $masterIndentationArrayOfHashes[-1]{alignDoubleBackSlash}=1;
+                }
+                if($masterIndentationArrayOfHashes[-1]{alignmentDelimiters}==1){
+                    # tracing mode
+                    print $logfile "Line $lineCounter\t Delimiter environment started: $command (see lookForAlignDelims)\n" if($tracingMode);
+                }
             }
        } else {
             # commands, headings, etc

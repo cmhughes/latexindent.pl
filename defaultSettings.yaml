@@ -67,8 +67,12 @@ removeTrailingWhitespace: 0
 # environments that have tab delimiters, add more 
 # as needed
 lookForAlignDelims:
-   tabular: 1
-   tabularx: 1
+   tabular: 
+      delims: 1
+      alignDoubleBackSlash: 1
+      spacesBeforeDoubleBackSlash: 2
+   tabularx:
+      delims: 1
    longtable: 1
    tabu: 1
    array: 1
