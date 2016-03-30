@@ -1048,7 +1048,12 @@ sub begin_command_with_alignment{
     #                     }
 
     if( $_ =~ m/^\s*%\*\s*\\begin\{(.*?)\}/ and $lookForAlignDelims{$1}) {
-           $delimiters=1;
+           # increase the indentation
+           &increase_indent({name=>$1,
+                             alignmentDelimiters=>1,
+                             type=>"environment",
+                             begin=>"\\begin{$1}",
+                             end=>"\\end{$1}"});
            # tracing mode
            print $logfile "Line $lineCounter\t Delimiter environment started: $1 (see lookForAlignDelims)\n" if($tracingMode);
     }
@@ -1077,6 +1082,7 @@ sub end_command_with_alignment{
         # environments
         if($delimiters) {
             &print_aligned_block();
+            &decrease_indent($1);
         } else {
             # tracing mode
             print $logfile "Line $lineCounter\t FYI: did you mean to start a delimiter block on a previous line? \n" if($tracingMode);
