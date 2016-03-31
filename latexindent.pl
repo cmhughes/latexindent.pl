@@ -1016,6 +1016,8 @@ sub indent_after_item{
     #
     #           or anything else specified in itemNames
     #
+    return unless(@masterIndentationArrayOfHashes);
+
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/
             and $itemNames{$1}
             and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}}) {
@@ -1627,7 +1629,6 @@ sub at_end_of_env_or_eq{
        # if we're at the end of an environment that receives no additional indent, log it, and move on
        if($noAdditionalIndent{$1}){
             print $logfile "Line $lineCounter\t \\end{$1} finished a no-additional-indent environment (see noAdditionalIndent)\n" if($tracingMode);
-            return unless($1 eq "document");
        }
 
        # some commands contain \end{environmentname}, which
@@ -1991,7 +1992,6 @@ sub increase_indent{
           } elsif($noAdditionalIndent{$command})  {
             # tracing mode
             print $logfile "Line $lineCounter\t no additional indent added for $command (see noAdditionalIndent)\n" if($tracingMode);
-            return;
           }
        }
 
@@ -2001,7 +2001,7 @@ sub increase_indent{
        # handle the keys slightly different when dealing with environments or commands
        if($infoHash{type} eq 'environment'){
             # environments
-            if(!$verbatimEnvironments{$command}){
+            if(!$noAdditionalIndent{$command}){
                  $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
                } 
             # check to see if we need to look for alignment delimiters
@@ -2037,7 +2037,14 @@ sub increase_indent{
             }
        } else {
             # commands, headings, etc
-            $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
+            if(!$noAdditionalIndent{$command}){
+                $masterIndentationArrayOfHashes[-1]{indent} = $indentRules{$command}||$defaultIndent;
+             } 
+       }
+
+       # details of noAdditionalIndent to the main hash
+       if($noAdditionalIndent{$command}){
+             $masterIndentationArrayOfHashes[-1]{noAdditionalIndent} = 'yes';
        }
 }
 
@@ -2053,7 +2060,7 @@ sub decrease_indent{
        # otherwise get details of the most recent command, environment, item, if, heading, etc
        my $command = pop(@_);
 
-       if(!($noAdditionalIndent{$command} or $inverbatim)) {
+       if(!$inverbatim) {
             print $logfile "Line $lineCounter\t removing ", $masterIndentationArrayOfHashes[-1]{name}, " from masterIndentationArrayOfHashes\n" if($tracingMode);
             pop(@masterIndentationArrayOfHashes);
             # tracing mode
@@ -2076,7 +2083,7 @@ sub current_indentation{
 
     my $indent;
     foreach my $env (@masterIndentationArrayOfHashes){
-        $indent .= $env->{indent};
+        $indent .= defined($env->{indent})?$env->{indent}:'';
       }
     return $indent;
 }
