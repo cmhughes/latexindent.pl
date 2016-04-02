@@ -50,7 +50,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 	linktocpage,
     colorlinks=true,
     linkcolor=blue,
-    citecolor=black
+    citecolor=black,
 }
 \usepackage{cleveref}
 
@@ -781,7 +781,7 @@ lookForAlignDelims:
 		\end{cmhlistings}
 	\end{minipage}
 
-    Using  \lstinline!spacesBeforeDoubleBackSlash: 3! gives \cref{lst:tabularafter:spacing,lst:tabularafter:spacing}, 
+    Using  \lstinline!spacesBeforeDoubleBackSlash: 3! gives \cref{lst:tabularbefore:spacing,lst:tabularafter:spacing}, 
     note the spacing before the \lstinline!\\! in \cref{lst:tabularafter:spacing}.
 
 	\begin{minipage}{.5\textwidth}
@@ -1419,10 +1419,23 @@ might visit the software center, or else run
 \begin{lstlisting}[numbers=none]
 sudo perl -MCPAN -e 'install "File::HomeDir"'
 \end{lstlisting}
+
+Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup 
+options follow for Ubuntu (other distributions will need slightly different commands).
+\begin{lstlisting}[numbers=none]
+sudo apt-get install perlbrew
+perlbrew install perl-5.20.1
+perlbrew switch perl-5.20.1
+sudo apt-get install curl
+curl -L http://cpanmin.us | perl - App::cpanminus
+cpanm YAML::Tiny
+cpanm File::HomeDir
+\end{lstlisting}
+
 Strawberry Perl users on Windows might use
 \lstinline!CPAN client!. All of the modules are readily available on CPAN \cite{cpan}.
 
-As of Version 2.1R,  \lstinline!indent.log! will contain details of the location
+As of Version 2.1,  \lstinline!indent.log! will contain details of the location
 of the Perl modules on your system.  \lstinline!latexindent.exe! is a standalone
 executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
 wish to see where they are cached, use the  \lstinline!trace! option, e.g  \lstinline!latexindent.exe -t myfile.tex!.

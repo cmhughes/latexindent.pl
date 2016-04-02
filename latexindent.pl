@@ -678,9 +678,8 @@ while(<MAINFILE>) {
         $inFileContents = 0;
     }
 
-    if(@masterIndentationArrayOfHashes){
-           $delimiters = $masterIndentationArrayOfHashes[-1]{alignmentDelimiters}||0;
-         }
+    # set the delimiters switch
+    $delimiters = @masterIndentationArrayOfHashes?$masterIndentationArrayOfHashes[-1]{alignmentDelimiters}:0;
 
     if($inverbatim){
         print $logfile "Line $lineCounter\t $masterSettings{logFilePreferences}{traceModeDecreaseIndent} PHASE 1: in VERBATIM-LIKE environment, looking for $masterIndentationArrayOfHashes[-1]{end} \n" if($tracingMode);
@@ -720,8 +719,7 @@ while(<MAINFILE>) {
         # back on after the counting
         #
         # note the use of (?<!\\)% so that we don't match \%
-        if ( $_=~ m/(?<!\\)%.*/)
-        {
+        if ( $_=~ m/(?<!\\)%.*/) {
             s/((?<!\\)%.*)//;
             $trailingcomments=$1;
 
@@ -732,11 +730,11 @@ while(<MAINFILE>) {
         # check to see if we're at the end of a \parbox, \marginpar
         # or other split-across-lines command and check that
         # we're not starting another command that has split braces (nesting)
-        &end_command_or_key_unmatched_braces() if(scalar(@masterIndentationArrayOfHashes));
+        &end_command_or_key_unmatched_braces();
 
         # check to see if we're at the end of a command that splits
         # [ ] across lines
-        &end_command_or_key_unmatched_brackets() if(scalar(@masterIndentationArrayOfHashes));
+        &end_command_or_key_unmatched_brackets();
 
         # check for a heading such as \chapter, \section, etc
         &indent_heading();
@@ -937,16 +935,17 @@ sub indent_if_else_fi{
     #
 
     # @masterIndentationArrayOfHashes could be empty -- if so, exit
-    return 0 unless(@masterIndentationArrayOfHashes);
+    return unless @masterIndentationArrayOfHashes;
+    return unless $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}};
 
     # look for \fi
-    if( $_ =~ m/^\s*\\fi/ and $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}}) {
+    if( $_ =~ m/^\s*\\fi/) {
         # tracing mode
         print $logfile "Line $lineCounter\t \\fi command found, matching: \\",$masterIndentationArrayOfHashes[-1]{name}, "\n" if($tracingMode);
         &decrease_indent($masterIndentationArrayOfHashes[-1]{name});
     } 
     # look for \else or \or
-    elsif( ($_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/) and $constructIfElseFi{$masterIndentationArrayOfHashes[-1]{name}}) {
+    elsif( $_ =~ m/^\s*\\else/ or $_ =~ m/^\s*\\or/ ) {
         # tracing mode
         print $logfile "Line $lineCounter\t \\else command found, matching: \\",$masterIndentationArrayOfHashes[-1]{name}, "\n" if($tracingMode);
         print $logfile "Line $lineCounter\t decreasing indent, still looking for \\fi to match \\",&current_indentation_names(), "\n" if($tracingMode);
@@ -993,8 +992,9 @@ sub indent_item{
     #          as enumerate, itemize, etc, this subroutine sets the indentation for the item *itself*
 
     return unless(scalar(@masterIndentationArrayOfHashes)>1);
+    return unless $indentAfterItems{$masterIndentationArrayOfHashes[-2]{name}};
 
-    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1} and $indentAfterItems{$masterIndentationArrayOfHashes[-2]{name}}){
+    if( $_ =~ m/^\s*\\(.*?)(\[|\s)/ and $itemNames{$1}){
         # tracing mode
         print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         if($itemNames{$masterIndentationArrayOfHashes[-1]{name}}) {
@@ -1016,11 +1016,11 @@ sub indent_after_item{
     #
     #           or anything else specified in itemNames
     #
-    return unless(@masterIndentationArrayOfHashes);
+    return unless @masterIndentationArrayOfHashes;
+    return unless $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}};
 
     if( $_ =~ m/^\s*\\(.*?)(\[|\s)/
-            and $itemNames{$1}
-            and $indentAfterItems{$masterIndentationArrayOfHashes[-1]{name}}) {
+            and $itemNames{$1}) {
         # tracing mode
         print $logfile "Line $lineCounter\t $1 found within ",$masterIndentationArrayOfHashes[-1]{name}," environment (see indentAfterItems and itemNames)\n" if($tracingMode);
         &increase_indent({name=>$1,type=>"item"});
@@ -1073,6 +1073,8 @@ sub end_command_with_alignment{
     #                     3 & 4 \\
     #                 %* \end{tabular}
     #                     }
+    return unless @masterIndentationArrayOfHashes;
+    return unless $masterIndentationArrayOfHashes[-1]{alignmentDelimiters};
 
     if( $_ =~ m/^\s*%\*\s*\\end\{(.*?)\}/ and $lookForAlignDelims{$1}) {
         # same subroutine used at the end of regular tabular, align, etc
@@ -1150,12 +1152,7 @@ sub indent_heading{
                  my %higherLevelHeading = %{$indentAfterHeadings{$higherHeadingName}};
                  &decrease_indent($higherHeadingName) if($higherLevelHeading{indent});
             }
-            # put the heading name back in to storage
-            push(@headingStore,$1);
-       } else {
-            # put the heading name into storage
-            push(@headingStore,$1);
-       }
+       } 
     }
 }
 
@@ -1272,9 +1269,12 @@ sub end_command_or_key_unmatched_brackets{
     #
     #           We count the number of [ and ADD to the counter
     #                                  ] and SUBTRACT to the counter
-    if(($masterIndentationArrayOfHashes[-1]{type} eq 'splitBrackets')
-        and  !($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/
-                    and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets))
+    return unless @masterIndentationArrayOfHashes;
+    return unless ($masterIndentationArrayOfHashes[-1]{type} eq 'splitBrackets');
+    print $logfile "Line $lineCounter\t Searching for closing BRACKET ] $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
+
+    if(!($_ =~ m/^\s*(\\)?(.*?)(\s*\[)/
+        and ($checkunmatchedbracket{$2} or $alwaysLookforSplitBrackets))
         and $_ !~ m/^\s*%/) {
 
        # get the details of the most recent command name
@@ -1427,8 +1427,11 @@ sub end_command_or_key_unmatched_braces{
     #
     #           We count the number of { and ADD to the counter
     #                                  } and SUBTRACT to the counter
-    if(scalar(@masterIndentationArrayOfHashes)
-        and !($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
+    return unless @masterIndentationArrayOfHashes;
+    return unless ($masterIndentationArrayOfHashes[-1]{type} eq 'splitbraces');
+    print $logfile "Line $lineCounter\t Searching for closing BRACE } $masterIndentationArrayOfHashes[-1]{name}\n" if($tracingMode);
+
+    if(!($_ =~ m/^\s*(\\)?(.*?)(\[|{|=|(\s*\\))/
         and ($checkunmatched{$2} or $checkunmatchedELSE{$2} or $alwaysLookforSplitBraces))
         and $_ !~ m/^\s*%/
        ) {
@@ -1606,6 +1609,9 @@ sub at_end_of_env_or_eq{
     #          It also checks to see if the current environment
     #          had alignment delimiters; if so, we need to turn
     #          OFF the $delimiter switch
+
+    return unless @masterIndentationArrayOfHashes;
+    print $logfile "Line $lineCounter\t looking for \\end{$masterIndentationArrayOfHashes[-1]{name}} \n" if($tracingMode);
 
     if( ($_ =~ m/^\s*\\end\{\\?(.*?)\}/ or $_=~ m/^(\\\])/) and $_ !~ m/\s*^%/) {
        # check if we're at the end of a verbatim-like environment

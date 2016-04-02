@@ -11,4 +11,5 @@ latexindent.pl  -w -l=items3.yaml -s --ttrace items3
 
 echo latexindent.pl  -w -l=items4.yaml -s --ttrace items4
 latexindent.pl  -w -l=items4.yaml -s --ttrace items4
+git status
 exit
