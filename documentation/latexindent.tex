@@ -40,7 +40,18 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % clever referencing
-\usepackage[colorlinks=true,linkcolor=blue,citecolor=black]{hyperref}
+\usepackage{hyperref}
+\hypersetup{
+   pdfauthor={Chris Hughes},
+   pdftitle={latexindent.pl package},
+   pdfkeywords={perl;beautify;indentation},
+	bookmarksnumbered,
+	bookmarksopen,
+	linktocpage,
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=black,
+}
 \usepackage{cleveref}
 
 \addbibresource{latex-indent}
@@ -472,6 +483,10 @@ on which of the following options are used.
 	      trying to find out where and why. You might also be interested in learning
 	      about \lstinline!latexindent.pl!'s thought process--if so, this
 	      switch is for you.
+	\item[\verbitem{-tt, --ttrace}] \lstinline!latexindent.pl -tt myfile.tex!
+
+      \emph{More detailed} tracing mode: this option gives more details to \lstinline!indent.log!
+      than the standard \lstinline!trace! option.
 	\item[\verbitem{-l, --local[=myyaml.yaml]}] \lstinline!latexindent.pl -l myfile.tex!
 
 \lstinline!latexindent.pl -l=myyaml.yaml myfile.tex!
@@ -671,10 +686,12 @@ copy myfile.bak4 to myfile.bak3
 	      providing this feature.
 
 	\item[\verbitem{lookForAlignDelims}] This is the first example of a field
-	      in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims}
-	      shows more details.
+	      in \lstinline!defaultSettings.yaml! that has more than one line; \cref{lst:aligndelims:basic}
+	      shows more details. In fact, the fields in \verbitem{lookForAlignDelims} can actually
+          take two different forms: the \emph{basic} version is shown in \cref{lst:aligndelims:basic} 
+          and the \emph{advanced} version in \cref{lst:aligndelims:advanced}; we will discuss each in turn.
 
-	      \begin{cmhlistings}[style=yaml]{\lstinline!lookForAlignDelims!}{lst:aligndelims}
+	      \begin{cmhlistings}[style=yaml]{\lstinline!lookForAlignDelims! (basic)}{lst:aligndelims:basic}
 lookForAlignDelims:
    tabular: 1
    tabularx: 1
@@ -696,10 +713,10 @@ lookForAlignDelims:
 
 	The environments specified in this field will be operated on in a special way  by \lstinline!latexindent.pl!. In particular, it will try and align each column by its alignment
 	tabs. It does have some limitations (discussed further in \cref{sec:knownlimitations}),
-	but in many cases it will produce results such as those in \cref{lst:tabularbefore,lst:tabularafter}.
+	but in many cases it will produce results such as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
 
 	\begin{minipage}{.5\textwidth}
-		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! before}{lst:tabularbefore}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! before}{lst:tabularbefore:basic}
 \begin{tabular}{cccc}
 1&	2 &3       &4\\
 5& &6       &\\
@@ -707,7 +724,7 @@ lookForAlignDelims:
 		\end{cmhlistings}
 	\end{minipage}%
 	\begin{minipage}{.5\textwidth}
-		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after}{lst:tabularafter}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after (basic)}{lst:tabularafter:basic}
 \begin{tabular}{cccc}
  1 & 2 & 3 & 4 \\
  5 &   & 6 &   \\
@@ -718,6 +735,74 @@ lookForAlignDelims:
 	If you find that \lstinline!latexindent.pl! does not perform satisfactorily on such
 	environments then you can either remove them from \lstinline!lookForAlignDelims! altogether, or set the relevant key to \lstinline!0!, for example \lstinline!tabular: 0!, or if you just want to ignore \emph{specific}
 	instances of the environment, you could wrap them in something from \lstinline!noIndentBlock! (see \cref{lst:noIndentBlock}).
+
+    If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
+    advanced form of \lstinline!lookForAlignDelims! shown in \cref{lst:aligndelims:advanced} is for you. 
+	      \begin{cmhlistings}[style=yaml]{\lstinline!lookForAlignDelims! (advanced)}{lst:aligndelims:advanced}
+lookForAlignDelims:
+   tabular: 
+      delims: 1
+      alignDoubleBackSlash: 0
+      spacesBeforeDoubleBackSlash: 0
+   tabularx:
+      delims: 1
+   longtable: 1
+	\end{cmhlistings}
+
+    Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \lstinline!tabular! and \lstinline!tabularx! 
+    are advanced and \lstinline!longtable! is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive up to 3 fields: 
+    \begin{itemize}
+      \item \lstinline!delims!: switch equivalent to simply specifying, for example, \lstinline!tabular: 1! in
+        the basic version shown in \cref{lst:aligndelims:basic} (default: 1);
+      \item \lstinline!alignDoubleBackSlash!: switch to determine if \lstinline!\\! should be aligned (default: 1);
+      \item \lstinline!spacesBeforeDoubleBackSlash!: optionally, specifies the number of spaces to be inserted
+        before (non-aligned) \lstinline!\\!. In order to use this field, \lstinline!alignDoubleBackSlash! needs
+        to be set to 0 (default: 0).
+    \end{itemize}
+    
+    With the settings shown in \cref{lst:aligndelims:advanced} we receive the before-and-after results shown in
+    \cref{lst:tabularbefore:advanced,lst:tabularafter:advanced}; note that the ampersands have been aligned, but 
+    the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
+
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! before }{lst:tabularbefore:advanced}
+\begin{tabular}{cccc}
+1&	2 &3       &4\\
+5& &6       &\\
+\end{tabular}
+		\end{cmhlistings}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after (advanced)}{lst:tabularafter:advanced}
+\begin{tabular}{cccc}
+ 1 & 2 & 3 & 4\\
+ 5 &   & 6 &\\
+\end{tabular}
+		\end{cmhlistings}
+	\end{minipage}
+
+    Using  \lstinline!spacesBeforeDoubleBackSlash: 3! gives \cref{lst:tabularbefore:spacing,lst:tabularafter:spacing}, 
+    note the spacing before the \lstinline!\\! in \cref{lst:tabularafter:spacing}.
+
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! before}{lst:tabularbefore:spacing}
+\begin{tabular}{cccc}
+1&	2 &3       &4\\
+5& &6       &\\
+\end{tabular}
+		\end{cmhlistings}
+	\end{minipage}%
+	\begin{minipage}{.5\textwidth}
+		\begin{cmhlistings}[style=demo,columns=fixed]{\lstinline!tabular! after (spacing)}{lst:tabularafter:spacing}
+\begin{tabular}{cccc}
+ 1 & 2 & 3 & 4   \\
+ 5 &   & 6 &   \\
+\end{tabular}
+		\end{cmhlistings}
+	\end{minipage}
+
+	
+
 
 	If you have blocks of code that you wish to align at the \&  character that
 	      are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}...\end{tabular}!, then you use the mark up
@@ -821,9 +906,10 @@ indentRules:
 
 	\item[\verbitem{indentAfterHeadings}] This field enables the user to specify
 	      indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,
-	      \lstinline!\section!, \lstinline!\subsection*! etc. This field is slightly different from all
+	      \lstinline!\section!, \lstinline!\subsection*! etc. This field is slightly different from most
 	      of the fields that we have considered previously, because each element is
-	      itself a field which has two elements: \lstinline!indent! and \lstinline!level!.
+	      itself a field which has two elements: \lstinline!indent! and \lstinline!level!. (Similar 
+          in structure to the advanced form of  \lstinline!lookForAlignDelims! in \cref{lst:aligndelims:advanced}.)
 	      \begin{cmhlistings}[style=yaml]{\lstinline!indentAfterHeadings!}{lst:indentAfterHeadings}
 indentAfterHeadings:
     part:
@@ -954,6 +1040,17 @@ When \lstinline!trace! mode is active (see \cpageref{page:traceswitch}) verbose 
 to \lstinline!indent.log!. The decoration of this information can be customised through the remaining
 fields given in \cref{lst:logFilePreferences}; note, in particular, the use of \lstinline!"\n"! for 
 escaped characters (using single quotes will not produce the same results).
+
+\item[\verbitem{fileContentsEnvironments}] 
+  \lstinline!latexindent.pl! determines when the main document begins by looking for \lstinline!\begin{document}!; 
+  it will not do so when inside any of the environments specified in \lstinline!fileContentsEnvironments!, see
+  \cref{lst:fileContentsEnvironments}.
+\begin{cmhlistings}[style=yaml]{\lstinline!fileContentsEnvironments!}{lst:fileContentsEnvironments}
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+  \end{cmhlistings}
+
 	\begin{warning}
 		\emph{The following fields are marked in red, as they are not necessary
 			unless you wish to micro-manage your indentation scheme.
@@ -1322,10 +1419,23 @@ might visit the software center, or else run
 \begin{lstlisting}[numbers=none]
 sudo perl -MCPAN -e 'install "File::HomeDir"'
 \end{lstlisting}
+
+Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup 
+options follow for Ubuntu (other distributions will need slightly different commands).
+\begin{lstlisting}[numbers=none]
+sudo apt-get install perlbrew
+perlbrew install perl-5.20.1
+perlbrew switch perl-5.20.1
+sudo apt-get install curl
+curl -L http://cpanmin.us | perl - App::cpanminus
+cpanm YAML::Tiny
+cpanm File::HomeDir
+\end{lstlisting}
+
 Strawberry Perl users on Windows might use
 \lstinline!CPAN client!. All of the modules are readily available on CPAN \cite{cpan}.
 
-As of Version 2.1R,  \lstinline!indent.log! will contain details of the location
+As of Version 2.1,  \lstinline!indent.log! will contain details of the location
 of the Perl modules on your system.  \lstinline!latexindent.exe! is a standalone
 executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
 wish to see where they are cached, use the  \lstinline!trace! option, e.g  \lstinline!latexindent.exe -t myfile.tex!.

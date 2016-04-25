@@ -67,13 +67,21 @@ removeTrailingWhitespace: 0
 # environments that have tab delimiters, add more 
 # as needed
 lookForAlignDelims:
-   tabular: 1
-   tabularx: 1
+   tabular: 
+      delims: 1
+      alignDoubleBackSlash: 1
+      spacesBeforeDoubleBackSlash: 2
+   tabularx:
+      delims: 1
    longtable: 1
+   tabu: 1
    array: 1
    matrix: 1
    bmatrix: 1
+   Bmatrix: 1
    pmatrix: 1
+   vmatrix: 1
+   Vmatrix: 1
    align: 1
    align*: 1
    alignat: 1
@@ -228,6 +236,13 @@ logFilePreferences:
     traceModeAddCurrentIndent: '||'
     traceModeDecreaseIndent: '<<'
     traceModeBetweenLines: "\n"
+
+# \begin{document} and \end{document} are treated differently
+# by latexindent within filecontents environments
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
