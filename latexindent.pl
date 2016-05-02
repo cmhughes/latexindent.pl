@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use FindBin;        # help find defaultSettings.yaml
 use YAML::Tiny;     # interpret defaultSettings.yaml and other potential settings files
+use LatexIndent::Document;
+use LatexIndent::Environment;
 
 # original name of file
 my $fileName = $ARGV[0];
@@ -16,41 +18,35 @@ close(MAINFILE);
 
 my $newlines = join("",@mainfile);
 
-if( $newlines =~ m/(.*?)\\begin{(.*?)}(.*)\\end{\2}(.*)/s){
-  print "before env: \n",$1,"\n";
-  print "environment found: ",$2,"\n";
-  print "body: ",$3,"\n";
-  print "after env: ",$4,"\n";
-  #my $body = $3;
-  #my $new;
-  #($new = $body) =~ s/^\s*/%%%/gm,"\n";
-  #print "new body: \n$new","\n";
-  #($new = $body) =~ s/\R/%%%/gm,"\n";
-  #print "new body: \n$new","\n";
-}
+my $document = LatexIndent::Document->new(body=>join("",@mainfile));
+$document->process_body_of_text;
 
-my @arrayOfRefs;
-my $match = $1;
-push (@arrayOfRefs,\$match);
-$match = $2;
-push (@arrayOfRefs,\$match);
-$match = $3;
-push (@arrayOfRefs,\$match);
-push (@arrayOfRefs,\$4);
-print "\n\n array of references: ",@arrayOfRefs,"\n\n";
-print "\n\n references to array: ",\@arrayOfRefs,"\n\n";
+# print "object type: ",ref($document),"\n";
+# print "object children: ",${@{${$document}{children}}[1]}{body},"\n";
 
-#print ${$arrayOfRefs[0]} = "cmh";
-print "output of arrayOfRefs:\n";
-foreach my $thing (@arrayOfRefs){
-    print ${$thing},"\n";
-}
-#print "\n\n type of thing: ",ref(\@arrayOfRefs),"\n\n";
-#print "\n\n type of thing: ",ref($arrayOfRefs[0]),"\n\n";
-#print "dereferenced: \n";
-#print ${$arrayOfRefs[0]};
-#print ${$arrayOfRefs[1]};
-#print ${$arrayOfRefs[2]};
-#print ${$arrayOfRefs[3]};
 
 exit(0);
+
+
+
+
+
+
+my $env = LatexIndent::Environment->new(name=>"hughesy");
+print "object type: ",ref($env),"\n";
+print "object name: ",${$env}{name},"\n";
+
+my $output = LatexIndent::Environment::cmh($newlines);
+bless $output,'LatexIndent::Environment';
+#$output = LatexIndent::Environment->new($output);
+#my $output = LatexIndent::Environment::cmh($newlines);
+
+#print "body: \n";
+print "BEFORE:\n";
+print ${$output}{begin},${$output}{body},${$output}{end};
+$output->indent;
+print "AFTER:\n";
+print ${$output}{begin},${$output}{body},${$output}{end};
+
+#$output->LatexIndent::Environment->new;
+
