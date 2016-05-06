@@ -11,42 +11,30 @@ use LatexIndent::Environment;
 my $fileName = $ARGV[0];
 
 my @mainfile;               # @mainfile: stores input file; used to
+my @lines;
 
+open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
+while(<MAINFILE>) {
+     s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/);
+     s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
+     push(@lines,$_);
+   }
+close(MAINFILE);
 open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
 @mainfile=<MAINFILE>;
 close(MAINFILE);
 
-my $newlines = join("",@mainfile);
-
-my $document = LatexIndent::Document->new(body=>join("",@mainfile));
+print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+my $document = LatexIndent::Document->new(body=>join("",@lines));
 $document->process_body_of_text;
 
-# print "object type: ",ref($document),"\n";
-# print "object children: ",${@{${$document}{children}}[1]}{body},"\n";
-
+# test cases
+# PASS
+#   success/environments-simple.tex
+#   success/environments-simple-nested.tex
+#   success/environments-nested-nested.tex
+#   success/environments-one-line.tex
 
 exit(0);
-
-
-
-
-
-
-my $env = LatexIndent::Environment->new(name=>"hughesy");
-print "object type: ",ref($env),"\n";
-print "object name: ",${$env}{name},"\n";
-
-my $output = LatexIndent::Environment::cmh($newlines);
-bless $output,'LatexIndent::Environment';
-#$output = LatexIndent::Environment->new($output);
-#my $output = LatexIndent::Environment::cmh($newlines);
-
-#print "body: \n";
-print "BEFORE:\n";
-print ${$output}{begin},${$output}{body},${$output}{end};
-$output->indent;
-print "AFTER:\n";
-print ${$output}{begin},${$output}{body},${$output}{end};
-
-#$output->LatexIndent::Environment->new;
-
