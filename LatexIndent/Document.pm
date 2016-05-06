@@ -3,6 +3,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Data::UUID;
+our @logFileNotes;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -16,21 +17,28 @@ sub new{
     return $self;
 }
 
+sub operate_on_file{
+  my $self = shift;
+  $self->logger('latexindent.pl version 3.0','heading');
+  $self->process_body_of_text;
+  $self->output_logfile;
+  print ${$self}{body};
+  return
+}
+
 sub process_body_of_text{
     my $self = shift;
+    $self->logger('looking for environments','heading');
     $self->find_environments;
-    #print "\n\n ++++++++++++++++\n";
-    print Dumper(\%{$self});
-    print "Pre-processed body: \n";
-    print ${$self}{body};
-    ## loop recursively through the children
-    #foreach my $child (@{${$self}{children}}){
-    #  $child->process_body_of_text;
-    #}
-    print $self,"\n";
+    $self->logger(Dumper(\%{$self}),'verbose');
+    $self->logger("Operating on: $self",'heading');
+    $self->logger("Number of children:",'heading');
+    $self->logger(scalar keys %{%{$self}{children}});
+    $self->logger('Pre-processed body:','heading');
+    $self->logger(${$self}{body});
+    $self->logger("Indenting children objects:",'heading');
 
     # loop through document children hash
-    print "number of childs:",scalar keys %{%{$self}{children}},"\n";
     while( (scalar keys %{%{$self}{children}})>0 ){
           while( my ($key,$child)= each %{%{$self}{children}}){
             if(${$self}{body} =~ m/
@@ -42,20 +50,29 @@ sub process_body_of_text{
                         ${$child}{id}   # the ID
                         /mx){
                 my $indent = $1?$1:q();
-                print "current indentation: '$indent'\n";
+
+                # log file info
+                $self->logger("indenting ${$child}{name}");
+                $self->logger("current indentation: '$indent'");
+
+                # perform indentation
                 $child->indent($indent);
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+
+                # log file info
+                $self->logger('Body now looks like:','verbose');
+                $self->logger(${$self}{body},'verbose');
+
+                # delete the hash so it won't be operated upon again
                 delete ${$self}{children}{${$child}{id}};
-                print "deleted key\n";
+                $self->logger("  deleted key");
               }
             }
     }
-    print "number of childs:",scalar keys %{%{$self}{children}},"\n";
-    #$self->indent_objects;
-    #$self->replace_ids_with_body;
-    print "\n\nPost-processed body: \n";
-    print ${$self}{body};
-    print "\n\n====================\n";
+    $self->logger("Number of children:",'heading');
+    $self->logger(scalar keys %{%{$self}{children}});
+    $self->logger('Post-processed body:','verbose');
+    $self->logger(${$self}{body},'verbose');
     return;
 }
 
@@ -100,7 +117,7 @@ sub find_environments{
       ${$self}{children}{$uuid1}=$env;
 
       # log file output
-      print "environment found: $2\n";
+      $self->logger("environment found: $2");
 
       # remove the environment block, and replace with unique ID
       ${$self}{body} =~ s/
@@ -110,10 +127,39 @@ sub find_environments{
                 (\\end\{\2\})       # the \end{<something>} statement
                 /$uuid1/sx;
 
-      # print "replaced with ID: ${$self}{body}\n";
+      $self->logger("replaced with ID: ${$env}{id}");
     } 
     return;
   }
+
+sub logger{
+    shift;
+    my $line = shift;
+    my $infoLevel = shift;
+    push(@logFileNotes,{line=>$line,level=>$infoLevel?$infoLevel:'default'});
+    return
+}
+
+sub output_logfile{
+  my $logfile;
+  open($logfile,">","indent.log") or die "Can't open indent.log";
+  foreach my $line (@logFileNotes){
+        if(${$line}{level} eq 'heading'){
+            print $logfile ${$line}{line},"\n";
+          } elsif(${$line}{level} eq 'default') {
+            # add tabs to the beginning of lines 
+            # for default logfile lines
+            ${$line}{line} =~ s/^/\t/mg;
+            print $logfile ${$line}{line},"\n";
+          } elsif(${$line}{level} eq 'verbose') {
+            # add tabs to the beginning of lines 
+            # for default logfile lines
+            ${$line}{line} =~ s/^/\t/mg;
+            #print $logfile ${$line}{line},"\n";
+          }
+  }
+  close($logfile);
+}
 
 sub indent_objects{
     my $self = shift;

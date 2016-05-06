@@ -9,10 +9,10 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 sub indent{
     my $self = shift;
     my $previousIndent = shift;
-    print "indenting ENVIRONMENT ${$self}{name}\n";
-    print "indentation of object: '",${$self}{indent},"'\n";
-    print "indentation before object: '",$previousIndent,"'\n";
-    print "total indentation to be added: '",$previousIndent.${$self}{indent},"'\n";
+    $self->logger("indenting ENVIRONMENT ${$self}{name}");
+    $self->logger("indentation *before* object: '$previousIndent'");
+    $self->logger("indentation *of* object: '${$self}{indent}'");
+    $self->logger("*total* indentation to be added: '$previousIndent${$self}{indent}'");
     my $indent = $previousIndent.${$self}{indent};
     #print "begin:\n",${$self}{begin},"\n";
     #print "end:\n",${$self}{end},"\n";

@@ -27,8 +27,8 @@ close(MAINFILE);
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(body=>join("",@lines));
-$document->process_body_of_text;
+my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName);
+$document->operate_on_file;
 
 # test cases
 # PASS
