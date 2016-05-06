@@ -18,7 +18,7 @@ sub indent{
     #print "end:\n",${$self}{end},"\n";
 
     # ${$self}{body} =~ s/\R*$//;        # remove line break(s) at end of body
-    ${$self}{body} =~ s/(^)/$indent/mg;  # add indentation
+    ${$self}{body} =~ s/(^)/$indent/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
     ${$self}{end} =~ s/(^)/$previousIndent/mg;  # add indentation
     #print "body:\n",${$self}{body},"\n";
     # ${$self}{begin} =~ s/\R*$//;       # remove line break(s) before body

@@ -20,7 +20,7 @@ sub process_body_of_text{
     my $self = shift;
     $self->find_environments;
     #print "\n\n ++++++++++++++++\n";
-    # print Dumper(\%{$self});
+    print Dumper(\%{$self});
     print "Pre-processed body: \n";
     print ${$self}{body};
     ## loop recursively through the children
@@ -33,9 +33,16 @@ sub process_body_of_text{
     print "number of childs:",scalar keys %{%{$self}{children}},"\n";
     while( (scalar keys %{%{$self}{children}})>0 ){
           while( my ($key,$child)= each %{%{$self}{children}}){
-            if(${$self}{body} =~ m/(^\s*)?${$child}{id}/m){
-                my $indent = ($1?$1:q());
-                print "current indentation: '$1'\n";
+            if(${$self}{body} =~ m/
+                        (   
+                            ^           # beginning of the line
+                            \s*         # with 0 or more spaces
+                        )?              # possibly
+                                        #
+                        ${$child}{id}   # the ID
+                        /mx){
+                my $indent = $1?$1:q();
+                print "current indentation: '$indent'\n";
                 $child->indent($indent);
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
                 delete ${$self}{children}{${$child}{id}};
@@ -55,12 +62,23 @@ sub process_body_of_text{
 sub find_environments{
     my $self = shift;
     while( ${$self}{body} =~ m/
-                (.*?)                   # anything before \begin
-                (\\begin\{(.*?)\}       # the \begin{<something>} statement
-                             (\R*)?)    # possible line breaks
-                (((?!(\\begin)).)*?)    # don't include \begin in the body
-                (\\end\{\3\})           # the \end{<something>} statement
-                (.*)                    # anything after \end
+                (
+                    \\begin\{
+                            (.*?)       # environment name captured into $2
+                           \}           # \begin{<something>} statement
+                            (\R*)?      # possible line breaks (into $3)
+                )                       # begin statement captured into $1
+                (
+                    (?:                 # cluster-only (), don't capture 
+                        (?!             # don't include \begin in the body
+                            (?:\\begin) # cluster-only (), don't capture
+                        ).              # any character, but not \\begin
+                    )*?                 # non-greedy
+                            (\R*)?      # possible line breaks (into $5)
+                )                       # environment body captured into $4
+                (
+                    \\end\{\2\}         # \end{<something>} statement
+                )                       # captured into $6
                 /sx){
 
       # generate a unique ID (http://stackoverflow.com/questions/18628244/how-we-can-create-a-unique-id-in-perl)
@@ -68,16 +86,21 @@ sub find_environments{
 
       # create a new Environment object
       my $env = LatexIndent::Environment->new(id=>$uuid1,
-                                              begin=>$2,
-                                              name=>$3,
-                                              body=>$5,
-                                              end=>$8,
+                                              begin=>$1,
+                                              name=>$2,
+                                              body=>$4,
+                                              end=>$6,
+                                              linebreaksAtEnd=>{
+                                                begin=> ($3)?1:0,
+                                                body=> ($5)?1:0,
+                                                end=> ($7)?1:0,
+                                              },
                                               indent=>"     ",
                                             );
       ${$self}{children}{$uuid1}=$env;
 
       # log file output
-      print "environment found: $3\n";
+      print "environment found: $2\n";
 
       # remove the environment block, and replace with unique ID
       ${$self}{body} =~ s/
