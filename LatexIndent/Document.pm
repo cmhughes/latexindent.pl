@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Data::UUID;
-our @logFileNotes;
+use LatexIndent::Logfile qw/logger output_logfile/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -28,8 +28,11 @@ sub operate_on_file{
 
 sub process_body_of_text{
     my $self = shift;
+    # search for environments
     $self->logger('looking for environments','heading');
     $self->find_environments;
+
+    # logfile information
     $self->logger(Dumper(\%{$self}),'verbose');
     $self->logger("Operating on: $self",'heading');
     $self->logger("Number of children:",'heading');
@@ -57,6 +60,8 @@ sub process_body_of_text{
 
                 # perform indentation
                 $child->indent($indent);
+
+                # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
@@ -69,6 +74,8 @@ sub process_body_of_text{
               }
             }
     }
+
+    # logfile info
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{children}});
     $self->logger('Post-processed body:','verbose');
@@ -131,50 +138,5 @@ sub find_environments{
     } 
     return;
   }
-
-sub logger{
-    shift;
-    my $line = shift;
-    my $infoLevel = shift;
-    push(@logFileNotes,{line=>$line,level=>$infoLevel?$infoLevel:'default'});
-    return
-}
-
-sub output_logfile{
-  my $logfile;
-  open($logfile,">","indent.log") or die "Can't open indent.log";
-  foreach my $line (@logFileNotes){
-        if(${$line}{level} eq 'heading'){
-            print $logfile ${$line}{line},"\n";
-          } elsif(${$line}{level} eq 'default') {
-            # add tabs to the beginning of lines 
-            # for default logfile lines
-            ${$line}{line} =~ s/^/\t/mg;
-            print $logfile ${$line}{line},"\n";
-          } elsif(${$line}{level} eq 'verbose') {
-            # add tabs to the beginning of lines 
-            # for default logfile lines
-            ${$line}{line} =~ s/^/\t/mg;
-            #print $logfile ${$line}{line},"\n";
-          }
-  }
-  close($logfile);
-}
-
-sub indent_objects{
-    my $self = shift;
-    foreach my $child (@{${$self}{children}}){
-      $child->indent;
-    }
-    return;
-}
-
-sub replace_ids_with_body{
-    my $self = shift;
-    foreach my $child (@{${$self}{children}}){
-        ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
-    }
-    return;
-}
 
 1;
