@@ -3,10 +3,10 @@
 use strict;
 use warnings;
 use FindBin;                   # help find defaultSettings.yaml
-use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use Getopt::Long;              # to get the switches/options/flags
 use LatexIndent::Document;
 use LatexIndent::Environment;
+use LatexIndent::Verbatim;
 
 # get the options
 my $overwrite;
@@ -39,8 +39,8 @@ my @lines;
 
 open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
 while(<MAINFILE>) {
-     s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/);
-     s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
+  # s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/);
+  # s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
      push(@lines,$_);
    }
 close(MAINFILE);
@@ -52,6 +52,10 @@ print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName);
+$document->logger('latexindent.pl version 3.0','heading');
+$document->readSettings;
+$document->find_verbatim_environments;
+$document->remove_leading_space;
 $document->operate_on_file;
 
 # test cases

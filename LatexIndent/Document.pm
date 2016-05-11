@@ -3,7 +3,10 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Data::UUID;
+
+# gain access to subroutines in the following modules
 use LatexIndent::Logfile qw/logger output_logfile/;
+use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -17,9 +20,82 @@ sub new{
     return $self;
 }
 
+sub find_verbatim_environments{
+    my $self = shift;
+    $self->logger('looking for VERBATIM environments','heading');
+    $self->masterYamlSettings;
+    print %{%{$self}{settings}}{verbatimEnvironments};
+    while( my ($verbEnv,$yesno)= each %{%{$self}{settings}}{verbatimEnvironments}){
+        if($yesno){
+            $self->logger("looking for $verbEnv:$yesno environments");
+
+            while( ${$self}{body} =~ m/
+                            (
+                            \\begin\{
+                                    $verbEnv    # environment name captured into $2
+                                   \}           # \begin{<something>} statement
+                            )
+                            (
+                                .*
+                            )?                  # any character, but not \\begin
+                            (
+                                \\end\{$verbEnv\}
+                            )                   # \end{<something>} statement
+                        /sx){
+
+              # generate a unique ID (http://stackoverflow.com/questions/18628244/how-we-can-create-a-unique-id-in-perl)
+              my $uuid1 = Data::UUID->new->create_str();
+
+              # create a new Environment object
+              my $env = LatexIndent::Verbatim->new(id=>$uuid1,
+                                                      begin=>$1,
+                                                      name=>$verbEnv,
+                                                      body=>$2,
+                                                      end=>$3,
+                                                    );
+              ${$self}{children}{$uuid1}=$env;
+
+              # log file output
+              $self->logger("VERBATIM environment found: $verbEnv");
+
+              # remove the environment block, and replace with unique ID
+              ${$self}{body} =~ s/
+                            (
+                            \\begin\{
+                                    ($verbEnv)  # environment name captured into $2
+                                   \}           # \begin{<something>} statement
+                            )
+                            (
+                                .*
+                            )?                  # any character, but not \\begin
+                            (
+                                \\end\{$verbEnv\}
+                            )                   # \end{<something>} statement
+                        /$uuid1/sx;
+
+              $self->logger("replaced with ID: ${$env}{id}");
+            } 
+      } else {
+            $self->logger("*not* looking for $verbEnv as $verbEnv:$yesno");
+      }
+    }
+    return
+}
+
+sub remove_leading_space{
+    my $self = shift;
+    $self->logger("removing leading space",'heading');
+    ${$self}{body} =~ s/
+                        (   
+                            ^           # beginning of the line
+                            \s*|\t*     # with 0 or more spaces
+                        )?              # possibly
+                        //mxg;
+    return;
+}
+
 sub operate_on_file{
   my $self = shift;
-  $self->logger('latexindent.pl version 3.0','heading');
   $self->process_body_of_text;
   $self->output_logfile;
   print ${$self}{body};
@@ -55,8 +131,8 @@ sub process_body_of_text{
                 my $indent = $1?$1:q();
 
                 # log file info
-                $self->logger("indenting ${$child}{name}");
                 $self->logger("current indentation: '$indent'");
+                $self->logger("looking up indentation scheme for ${$child}{name}");
 
                 # perform indentation
                 $child->indent($indent);
