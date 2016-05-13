@@ -54,8 +54,6 @@ print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName);
 $document->logger('latexindent.pl version 3.0','heading');
 $document->readSettings;
-$document->find_verbatim_environments;
-$document->remove_leading_space;
 $document->operate_on_file;
 
 # test cases
@@ -65,6 +63,9 @@ $document->operate_on_file;
 #   success/environments-nested-nested.tex
 #   success/environments-one-line.tex
 #   success/environments-challenging.tex
+#   success/environments-verbatim-simple.tex
+#   success/environments-verbatim-harder.tex
+#   success/environments-noindent-block.tex
 #
 # Necessary changes from 2.1 to 3.0
 #   OLD

@@ -8,7 +8,9 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 
 sub indent{
     my $self = shift;
-    $self->logger("in verbatim environment ${$self}{name}, not indenting");
+    my $previousIndent = shift;
+    $self->logger("in verbatim environment ${$self}{name}, not indenting body");
+    ${$self}{end} =~ s/(^\s*)/$previousIndent/mg;  # add indentation
     return;
 }
 
