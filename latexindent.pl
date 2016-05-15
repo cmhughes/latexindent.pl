@@ -67,6 +67,7 @@ $document->operate_on_file;
 #   success/environments-verbatim-harder.tex
 #   success/environments-noindent-block.tex
 #   success/no-environments.tex
+#   success/environments-repeated.tex
 #
 # Necessary changes from 2.1 to 3.0
 #   OLD

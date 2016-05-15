@@ -146,8 +146,10 @@ sub find_environments{
                                               },
                                             );
 
-      # get indentation
+      # get settings for this object
       $env->get_indentation_settings_for_this_object;
+
+      $self->logger(Dumper(\%{$env}),'verbose');
 
       # give unique id
       $env->create_unique_id;
@@ -170,12 +172,6 @@ sub find_environments{
     } 
     return;
   }
-
-sub get_indentation_settings_for_this_object{
-    my $self = shift;
-    ${$self}{indent} = "           ";
-    return;
-}
 
 sub create_unique_id{
     my $self = shift;

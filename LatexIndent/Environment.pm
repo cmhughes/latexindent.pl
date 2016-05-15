@@ -5,6 +5,7 @@ package LatexIndent::Environment;
 use strict;
 use warnings;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our %previouslyFoundSettings;
 
 sub indent{
     my $self = shift;
@@ -24,6 +25,42 @@ sub indent{
     # ${$self}{begin} =~ s/\R*$//;       # remove line break(s) before body
     # ${$self}{body} =~ s/\R*//mg;       # remove line break(s) from body
     return $self;
+}
+
+sub get_indentation_settings_for_this_object{
+    my $self = shift;
+
+    # check for storage of repeated environments
+    if ($previouslyFoundSettings{${$self}{name}}){
+        $self->logger("Using stored settings for ${$self}{name}",'verbose');
+    } else {
+        $self->logger("Storing settings for ${$self}{name}",'verbose');
+
+        # get master settings
+        $self->masterYamlSettings;
+
+        # check for noAdditionalIndent and indentRules
+        # otherwise use defaultIndent
+        my $indent = (${${$self}{settings}{noAdditionalIndent}}{${$self}{name}})
+                                ?
+                                q()
+                                :
+                     (${${$self}{settings}{indentRules}}{${$self}{name}}
+                                ||
+                     ${$self}{settings}{defaultIndent});
+        %{${previouslyFoundSettings}{${$self}{name}}} = (
+                        indent=>$indent,
+                      );
+        # there's no need for the current object to keep all of the settings
+        delete ${$self}{settings};
+    }
+
+    # append indentation settings to the ENVIRONMENT object
+    while( my ($key,$value)= each %{${previouslyFoundSettings}{${$self}{name}}}){
+            ${$self}{$key} = $value;
+    }
+
+    return;
 }
 
 1;
