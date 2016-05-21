@@ -9,26 +9,18 @@ use LatexIndent::Environment;
 use LatexIndent::Verbatim;
 
 # get the options
-my $overwrite;
-my $outputToFile;
-my $silentMode;
-my $tracingMode;
-my $tracingModeVeryDetailed;
-my $readLocalSettings=0;
-my $onlyDefault;
-my $showhelp;
-my $cruftDirectory;
+my %options;
 
 GetOptions (
- "overwrite|w"=>\$overwrite,
-"outputfile|o:s"=>\$outputToFile,
-"silent|s"=>\$silentMode,
-"trace|t"=>\$tracingMode,
-"ttrace|tt"=>\$tracingModeVeryDetailed,
-"local|l:s"=>\$readLocalSettings,
-"onlydefault|d"=>\$onlyDefault,
-"help|h"=>\$showhelp,
-"cruft|c=s"=>\$cruftDirectory,
+# "overwrite|w"=>\$options{overwrite},
+#"outputfile|o:s"=>\$outputToFile,
+"silent|s"=>\$options{silentMode},
+"trace|t"=>\$options{trace},
+"ttrace|tt"=>\$options{ttrace},
+#"local|l:s"=>\$readLocalSettings,
+#"onlydefault|d"=>\$onlyDefault,
+#"help|h"=>\$showhelp,
+#"cruft|c=s"=>\$cruftDirectory,
 );
 
 # original name of file
@@ -51,8 +43,8 @@ close(MAINFILE);
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName);
-$document->logger('latexindent.pl version 3.0','heading');
+my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName,switches=>\%options);
+$document->processSwitches;
 $document->readSettings;
 $document->operate_on_file;
 

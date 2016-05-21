@@ -24,7 +24,7 @@ sub find_verbatim_environments{
     # noindent block
     # noindent block
     $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading');
-    $self->logger(Dumper(\%{%{%{$self}{settings}}{noIndentBlock}}),'verbose');
+    $self->logger(Dumper(\%{%{%{$self}{settings}}{noIndentBlock}}),'trace');
     while( my ($noIndentBlock,$yesno)= each %{%{%{$self}{settings}}{noIndentBlock}}){
         if($yesno){
             $self->logger("looking for $noIndentBlock:$yesno environments");
@@ -96,7 +96,7 @@ sub find_verbatim_environments{
     # verbatim environments
     # verbatim environments
     $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading');
-    $self->logger(Dumper(\%{%{%{$self}{settings}}{verbatimEnvironments}}),'verbose');
+    $self->logger(Dumper(\%{%{%{$self}{settings}}{verbatimEnvironments}}),'trace');
     while( my ($verbEnv,$yesno)= each %{%{%{$self}{settings}}{verbatimEnvironments}}){
         if($yesno){
             $self->logger("looking for $verbEnv:$yesno environments");
@@ -161,8 +161,8 @@ sub  put_verbatim_back_in {
     return unless(%{$self}{verbatim});
 
     # search for environments
-    $self->logger('Putting verbatim back in, here is the pre-processed body:','heading');
-    $self->logger(${$self}{body});
+    $self->logger('Putting verbatim back in, here is the pre-processed body:','heading.trace');
+    $self->logger(${$self}{body},'trace');
 
     # loop through document children hash
     while( (scalar keys %{%{$self}{verbatim}})>0 ){
@@ -179,6 +179,7 @@ sub  put_verbatim_back_in {
                 my $indent = $1?$1:q();
 
                 # log file info
+                $self->logger("Indentation info",'heading');
                 $self->logger("current indentation: '$indent'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
@@ -189,8 +190,8 @@ sub  put_verbatim_back_in {
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','verbose');
-                $self->logger(${$self}{body},'verbose');
+                $self->logger('Body now looks like:','heading.trace');
+                $self->logger(${$self}{body},'trace');
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatim}{${$child}{id}};
@@ -202,8 +203,8 @@ sub  put_verbatim_back_in {
     # logfile info
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{verbatim}});
-    $self->logger('Post-processed body:','verbose');
-    $self->logger(${$self}{body},'verbose');
+    $self->logger('Post-processed body:','heading.trace');
+    $self->logger(${$self}{body},'trace');
     return;
 }
 

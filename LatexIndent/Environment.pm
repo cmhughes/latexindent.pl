@@ -32,9 +32,9 @@ sub get_indentation_settings_for_this_object{
 
     # check for storage of repeated environments
     if ($previouslyFoundSettings{${$self}{name}}){
-        $self->logger("Using stored settings for ${$self}{name}",'verbose');
+        $self->logger("Using stored settings for ${$self}{name}",'trace');
     } else {
-        $self->logger("Storing settings for ${$self}{name}",'verbose');
+        $self->logger("Storing settings for ${$self}{name}",'trace');
 
         # get master settings
         $self->masterYamlSettings;

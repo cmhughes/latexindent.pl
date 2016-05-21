@@ -5,7 +5,7 @@ use Data::Dumper;
 use Data::UUID;
 
 # gain access to subroutines in the following modules
-use LatexIndent::Logfile qw/logger output_logfile/;
+use LatexIndent::Logfile qw/logger output_logfile processSwitches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments/;
 
@@ -42,7 +42,7 @@ sub operate_on_file{
     $self->process_body_of_text;
     $self->put_verbatim_back_in;
     $self->output_logfile;
-    print ${$self}{body};
+    print ${$self}{body} unless ${%{$self}{switches}}{silentMode};
     return
 }
 
@@ -62,7 +62,7 @@ sub process_body_of_text{
     }
 
     # logfile information
-    $self->logger(Dumper(\%{$self}),'verbose');
+    $self->logger(Dumper(\%{$self}),'ttrace');
     $self->logger("Operating on: $self",'heading');
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{children}});
@@ -84,6 +84,7 @@ sub process_body_of_text{
                 my $indent = $1?$1:q();
 
                 # log file info
+                $self->logger("Indentation info",'heading');
                 $self->logger("current indentation: '$indent'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
@@ -94,8 +95,8 @@ sub process_body_of_text{
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','verbose');
-                $self->logger(${$self}{body},'verbose');
+                $self->logger('Body now looks like:','heading.trace');
+                $self->logger(${$self}{body},'trace');
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{children}{${$child}{id}};
@@ -107,8 +108,8 @@ sub process_body_of_text{
     # logfile info
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{children}});
-    $self->logger('Post-processed body:','verbose');
-    $self->logger(${$self}{body},'verbose');
+    $self->logger('Post-processed body:','trace');
+    $self->logger(${$self}{body},'trace');
     return;
 }
 
@@ -149,7 +150,7 @@ sub find_environments{
       # get settings for this object
       $env->get_indentation_settings_for_this_object;
 
-      $self->logger(Dumper(\%{$env}),'verbose');
+      $self->logger(Dumper(\%{$env}),'trace');
 
       # give unique id
       $env->create_unique_id;
