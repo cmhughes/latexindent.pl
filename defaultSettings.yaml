@@ -199,7 +199,12 @@ itemNames:
 #       \fi
 #
 # then populate them in constructIfElseFi
+#
+# The following list is by no means exhaustive, but is taken from etex documentation;
+# add your own if commands to your own yaml settings.
 constructIfElseFi:
+    if: 1
+    ifcat: 1
     ifnum: 1
     ifdim: 1
     ifodd: 1
@@ -207,13 +212,16 @@ constructIfElseFi:
     ifhmode: 1
     ifmmode: 1
     ifinner: 1
-    if: 1
-    ifcat: 1
-    ifx: 1
     ifvoid: 1
+    ifhbox: 1
+    ifvbox: 1
+    ifx: 1
     ifeof: 1
     iftrue: 1
     ifcase: 1
+    ifdefined: 1
+    ifcsname: 1
+    iffontchar: 1
 
 # latexindent can be called without a file extension, 
 # e.g, simply

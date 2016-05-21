@@ -9,19 +9,43 @@ use LatexIndent::Environment;
 use LatexIndent::Verbatim;
 
 # get the options
-my %options;
+my %switches = (readLocalSettings=>0);
 
 GetOptions (
-# "overwrite|w"=>\$options{overwrite},
-#"outputfile|o:s"=>\$outputToFile,
-"silent|s"=>\$options{silentMode},
-"trace|t"=>\$options{trace},
-"ttrace|tt"=>\$options{ttrace},
-#"local|l:s"=>\$readLocalSettings,
-#"onlydefault|d"=>\$onlyDefault,
+"silent|s"=>\$switches{silentMode},
+"trace|t"=>\$switches{trace},
+"ttrace|tt"=>\$switches{ttrace},
+"local|l:s"=>\$switches{readLocalSettings},
+"onlydefault|d"=>\$switches{onlyDefault},
 #"help|h"=>\$showhelp,
 #"cruft|c=s"=>\$cruftDirectory,
+# "overwrite|w"=>\$options{overwrite},
+#"outputfile|o:s"=>\$outputToFile,
 );
+
+# check local settings doesn't interfer with reading the file;
+# this can happen if the script is called as follows:
+#
+#       latexindent.pl -l myfile.tex
+#
+# in which case, the GetOptions routine mistakes myfile.tex
+# as the optional parameter to the l flag.
+#
+# In such circumstances, we correct the mistake by assuming that 
+# the only argument is the file to be indented, and place it in @ARGV
+if($switches{readLocalSettings} and scalar(@ARGV) < 1) {
+    push(@ARGV,$switches{readLocalSettings});
+    $switches{readLocalSettings} = '';
+}
+
+# default value of readLocalSettings
+#
+#       latexindent -l myfile.tex
+#
+# means that we wish to use localSettings.yaml
+if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq '')){
+    $switches{readLocalSettings} = 'localSettings.yaml';
+}
 
 # original name of file
 my $fileName = $ARGV[0];
@@ -43,7 +67,7 @@ close(MAINFILE);
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName,switches=>\%options);
+my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName,switches=>\%switches);
 $document->processSwitches;
 $document->readSettings;
 $document->operate_on_file;
