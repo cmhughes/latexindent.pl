@@ -31,7 +31,7 @@ sub find_verbatim_environments{
 
             while( ${$self}{body} =~ m/
                             (
-                                %\*
+                                %
                                 (?: \s*)?
                                 \\begin\{
                                         $noIndentBlock  # environment name captured into $2
@@ -43,7 +43,7 @@ sub find_verbatim_environments{
                             (\R*)?                      # possible line breaks
                             (
                                 (\s*)?                  # possible spaces
-                                %\*                     # %*
+                                %                       # %
                                 (?: \s*)?               # possible spaces
                                 \\end\{$noIndentBlock\} # \end{noindentblock}
                             )                           # %* \end{<something>} statement
@@ -68,7 +68,7 @@ sub find_verbatim_environments{
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/
                             (
-                                %\*
+                                %
                                 (?: \s*)?
                                 \\begin\{
                                     ($noIndentBlock)    # environment name captured into $2
@@ -79,7 +79,7 @@ sub find_verbatim_environments{
                             )?                          # non-greedy match up until
                             (
                                 (?:\s*)                 # possibly having space before
-                                %\*                     # %*
+                                %                       # %
                                 (?: \s*)?               # possibly followed by space
                                 \\end\{$noIndentBlock\}
                             )                           # %* \end{<something>} statement
