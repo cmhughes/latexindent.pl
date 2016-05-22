@@ -4,6 +4,9 @@ use strict;
 use warnings;
 use FindBin;                   # help find defaultSettings.yaml
 use Getopt::Long;              # to get the switches/options/flags
+
+# use lib to make sure that @INC contains the latexindent directory
+use lib $FindBin::RealBin;
 use LatexIndent::Document;
 use LatexIndent::Environment;
 use LatexIndent::Verbatim;
@@ -17,9 +20,9 @@ GetOptions (
 "ttrace|tt"=>\$switches{ttrace},
 "local|l:s"=>\$switches{readLocalSettings},
 "onlydefault|d"=>\$switches{onlyDefault},
+"overwrite|w"=>\$switches{overwrite},
 #"help|h"=>\$showhelp,
 #"cruft|c=s"=>\$cruftDirectory,
-# "overwrite|w"=>\$options{overwrite},
 #"outputfile|o:s"=>\$outputToFile,
 );
 
@@ -67,7 +70,7 @@ close(MAINFILE);
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(body=>join("",@lines),name=>$fileName,switches=>\%switches);
+my $document = LatexIndent::Document->new(body=>join("",@lines),fileName=>$fileName,switches=>\%switches);
 $document->processSwitches;
 $document->readSettings;
 $document->operate_on_file;
@@ -91,5 +94,9 @@ $document->operate_on_file;
 #   NEW
 #       latexindent.pl -o outputfile.tex myfile.tex 
 #       latexindent.pl -o=outputfile.tex myfile.tex 
+#
+# TEST CASES:
+#       - on Windows, move defaultSettings.yaml to a different directory
+#           and see if logfile is updated correctly
 
 exit(0);

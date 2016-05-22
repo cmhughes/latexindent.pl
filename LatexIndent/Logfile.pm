@@ -41,10 +41,12 @@ sub processSwitches{
     $switches{trace} = $switches{ttrace} ?  1 : $switches{trace};
 
     # output details of switches
-    $self->logger('Trace mode active (you have used either -t or --trace)') if($switches{trace} and !$switches{ttrace});
-    $self->logger('TTrace mode active (you have used either -tt or --ttrace)') if($switches{tracingModeVeryDetailed});
-    $self->logger('Silent mode active (you have used either -s or --silent)') if($switches{silentMode});
-    $self->logger('Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)') if($switches{onlyDefault});
+    $self->logger('-t|--trace: Trace mode active (you have used either -t or --trace)') if($switches{trace} and !$switches{ttrace});
+    $self->logger('-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)') if($switches{tracingModeVeryDetailed});
+    $self->logger('-s|--silent: Silent mode active (you have used either -s or --silent)') if($switches{silentMode});
+    $self->logger('-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)') if($switches{onlyDefault});
+    $self->logger("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
+    $self->logger("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {

@@ -27,13 +27,14 @@ sub readSettings{
   # array to store the paths to user settings
   my @absPaths;
   
+  # we'll need the home directory a lot in what follows
+  my $homeDir = File::HomeDir->my_home; 
+  
   # get information about user settings- first check if indentconfig.yaml exists
-  my $indentconfig = File::HomeDir->my_home . "/indentconfig.yaml";
+  my $indentconfig = "$homeDir/indentconfig.yaml";
 
   # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
-  $indentconfig = File::HomeDir->my_home . "/.indentconfig.yaml" if(! -e $indentconfig);
-  
-  my $homeDir = File::HomeDir->my_home; 
+  $indentconfig = "$homeDir/.indentconfig.yaml" if(! -e $indentconfig);
 
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !${%{$self}{switches}}{onlyDefault}) {
@@ -58,7 +59,7 @@ sub readSettings{
   } else {
      if(${%{$self}{switches}}{onlyDefault}) {
         $self->logger("Only default settings requested, not reading USER settings from $indentconfig");
-        $self->logger("Ignoring ${%{$self}{switches}}{readLocalSettings}") if(${%{$self}{switches}}{readLocalSettings});
+        $self->logger("Ignoring ${%{$self}{switches}}{readLocalSettings} (you used the -d switch)") if(${%{$self}{switches}}{readLocalSettings});
         ${%{$self}{switches}}{readLocalSettings}=0;
      } else {
        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
@@ -69,7 +70,7 @@ sub readSettings{
   }
 
   # get information about LOCAL settings, assuming that $readLocalSettings exists
-  my $directoryName = dirname (${$self}{name});
+  my $directoryName = dirname (${$self}{fileName});
   
   # add local settings to the paths, if appropriate
   if ( (-e "$directoryName/${%{$self}{switches}}{readLocalSettings}") and ${%{$self}{switches}}{readLocalSettings} and !(-z "$directoryName/${%{$self}{switches}}{readLocalSettings}")) {

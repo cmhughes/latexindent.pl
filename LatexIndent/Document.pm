@@ -8,6 +8,7 @@ use Data::UUID;
 use LatexIndent::Logfile qw/logger output_logfile processSwitches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments/;
+use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -37,13 +38,35 @@ sub remove_leading_space{
 sub operate_on_file{
     my $self = shift;
     $self->masterYamlSettings;
+    $self->create_back_up_file;
+    # remove trailing comments
     $self->find_verbatim_environments;
+    # find filecontents environments
+    # find preamble
     $self->remove_leading_space;
+    # find alignment environments
     $self->process_body_of_text;
+    # process alignment environments
     $self->put_verbatim_back_in;
+    # put trailing comments back in
+    $self->output_indented_text;
     $self->output_logfile;
-    print ${$self}{body} unless ${%{$self}{switches}}{silentMode};
     return
+}
+
+sub output_indented_text{
+    my $self = shift;
+
+    # output to screen, unless silent mode
+    print ${$self}{body} unless ${%{$self}{switches}}{silentMode};
+
+    # if -overwrite is active then output to original fileName
+    if(${%{$self}{switches}}{overwrite}) {
+        open(OUTPUTFILE,">",${$self}{fileName});
+        print OUTPUTFILE ${$self}{body};
+        close(OUTPUTFILE);
+    } 
+    return;
 }
 
 sub process_body_of_text{
