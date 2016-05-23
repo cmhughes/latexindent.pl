@@ -75,19 +75,6 @@ $document->processSwitches;
 $document->readSettings;
 $document->operate_on_file;
 
-# test cases
-# PASS
-#   success/environments-simple.tex
-#   success/environments-simple-nested.tex
-#   success/environments-nested-nested.tex
-#   success/environments-one-line.tex
-#   success/environments-challenging.tex
-#   success/environments-verbatim-simple.tex
-#   success/environments-verbatim-harder.tex
-#   success/environments-noindent-block.tex
-#   success/no-environments.tex
-#   success/environments-repeated.tex
-#
 # Necessary changes from 2.1 to 3.0
 #   OLD
 #       latexindent.pl -o myfile.tex outputfile.tex

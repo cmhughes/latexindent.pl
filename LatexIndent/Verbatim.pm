@@ -13,6 +13,7 @@ sub indent{
     my $self = shift;
     my $previousIndent = shift;
     $self->logger("in verbatim environment ${$self}{name}, not indenting body");
+    print "END: '${$self}{end}'\n";
     ${$self}{end} =~ s/(^\s*)/$previousIndent/mg;  # add indentation
     return;
 }
@@ -104,22 +105,24 @@ sub find_verbatim_environments{
             while( ${$self}{body} =~ m/
                             (
                             \\begin\{
-                                    $verbEnv    # environment name captured into $2
-                                   \}           # \begin{<something>} statement
+                                    $verbEnv     # environment name captured into $1
+                                   \}            # \begin{<something>} statement
                             )
                             (
-                                .*
-                            )?                  # any character, but not \\begin
+                                .*?
+                            )                    # any character, but not \\begin
+                            (\R*)?               # possible line breaks
                             (
-                                \\end\{$verbEnv\}
-                            )                   # \end{<something>} statement
+                                (\h*)?           # possible spaces
+                                \\end\{$verbEnv\}# \end{<something>} statement
+                            )                    
                         /sx){
 
               # create a new Environment object
               my $env = LatexIndent::Verbatim->new( begin=>$1,
                                                     name=>$verbEnv,
-                                                    body=>$2,
-                                                    end=>$3,
+                                                    body=>$2.($3?$3:q()),
+                                                    end=>($5?$5:q()).$4,
                                                     );
               # give unique id
               $env->create_unique_id;
@@ -132,17 +135,11 @@ sub find_verbatim_environments{
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/
-                            (
                             \\begin\{
-                                    ($verbEnv)  # environment name captured into $2
-                                   \}           # \begin{<something>} statement
-                            )
-                            (
-                                .*
-                            )?                  # any character, but not \\begin
-                            (
-                                \\end\{$verbEnv\}
-                            )                   # \end{<something>} statement
+                                    ($verbEnv)   # environment name captured into $2
+                                   \}            # \begin{<something>} statement
+                                .*?
+                                \\end\{$verbEnv\}# \end{<something>} statement
                         /${$env}{id}/sx;
 
               $self->logger("replaced with ID: ${$env}{id}");
