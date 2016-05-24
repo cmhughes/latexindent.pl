@@ -14,13 +14,13 @@ sub indent{
     $self->logger("indentation *before* object: '$previousIndent'");
     $self->logger("indentation *of* object: '${$self}{indent}'");
     $self->logger("*total* indentation to be added: '$previousIndent${$self}{indent}'");
-    my $indent = $previousIndent.${$self}{indent};
+    my $indentation = $previousIndent.${$self}{indent};
     #print "begin:\n",${$self}{begin},"\n";
     #print "end:\n",${$self}{end},"\n";
 
     # ${$self}{body} =~ s/\R*$//;        # remove line break(s) at end of body
-    ${$self}{body} =~ s/(^)/$indent/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
-    ${$self}{end} =~ s/(^)/$previousIndent/mg;  # add indentation
+    ${$self}{body} =~ s/^\h*/$indentation/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
+    ${$self}{end} =~ s/^\h*/$previousIndent/mg;  # add indentation
     #print "body:\n",${$self}{body},"\n";
     # ${$self}{begin} =~ s/\R*$//;       # remove line break(s) before body
     # ${$self}{body} =~ s/\R*//mg;       # remove line break(s) from body
@@ -41,7 +41,7 @@ sub get_indentation_settings_for_this_object{
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indent = (${${$self}{settings}{noAdditionalIndent}}{${$self}{name}})
+        my $indentation = (${${$self}{settings}{noAdditionalIndent}}{${$self}{name}})
                                 ?
                                 q()
                                 :
@@ -49,7 +49,7 @@ sub get_indentation_settings_for_this_object{
                                 ||
                      ${$self}{settings}{defaultIndent});
         %{${previouslyFoundSettings}{${$self}{name}}} = (
-                        indent=>$indent,
+                        indent=>$indentation,
                       );
         # there's no need for the current object to keep all of the settings
         delete ${$self}{settings};

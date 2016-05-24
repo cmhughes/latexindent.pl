@@ -29,7 +29,7 @@ sub remove_leading_space{
     ${$self}{body} =~ s/
                         (   
                             ^           # beginning of the line
-                            \s*|\t*     # with 0 or more spaces
+                            \h*         # with 0 or more horizontal spaces
                         )?              # possibly
                         //mxg;
     return;
@@ -38,12 +38,14 @@ sub remove_leading_space{
 sub operate_on_file{
     my $self = shift;
     $self->masterYamlSettings;
+    # file extension check
     $self->create_back_up_file;
     # remove trailing comments
     $self->find_verbatim_environments;
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
+    # remove trailing spaces
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
@@ -99,20 +101,21 @@ sub process_body_of_text{
             if(${$self}{body} =~ m/
                         (   
                             ^           # beginning of the line
-                            \s*         # with 0 or more spaces
+                            \h*         # with 0 or more horizontal spaces
                         )?              # possibly
                                         #
                         ${$child}{id}   # the ID
                         /mx){
-                my $indent = $1?$1:q();
+                my $indentation = $1?$1:q();
 
                 # log file info
                 $self->logger("Indentation info",'heading');
-                $self->logger("current indentation: '$indent'");
+                $self->logger("object name: ${$child}{name}");
+                $self->logger("current indentation: '$indentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
                 # perform indentation
-                $child->indent($indent);
+                $child->indent($indentation);
 
                 # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
@@ -123,7 +126,7 @@ sub process_body_of_text{
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{children}{${$child}{id}};
-                $self->logger("  deleted key");
+                $self->logger("deleted key");
               }
             }
     }

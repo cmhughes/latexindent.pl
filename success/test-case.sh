@@ -12,15 +12,15 @@
 #echo latexindent.pl  -w -l=items4.yaml -s --ttrace items4
 #latexindent.pl  -w -l=items4.yaml -s --ttrace items4
 
-latexindent.pl -w environments-simple.tex
-latexindent.pl -w environments-simple-nested.tex
-latexindent.pl -w environments-nested-nested.tex
-latexindent.pl -w environments-one-line.tex
-latexindent.pl -w environments-challenging.tex
-latexindent.pl -w environments-verbatim-simple.tex
-latexindent.pl -w environments-verbatim-harder.tex
-latexindent.pl -w environments-noindent-block.tex
-latexindent.pl -w no-environments.tex
-latexindent.pl -w environments-repeated.tex
+latexindent.pl -w -s environments-simple.tex
+latexindent.pl -w -s environments-simple-nested.tex
+latexindent.pl -w -s environments-nested-nested.tex
+latexindent.pl -w -s environments-one-line.tex
+latexindent.pl -w -s environments-challenging.tex
+latexindent.pl -w -s environments-verbatim-simple.tex
+latexindent.pl -w -s environments-verbatim-harder.tex
+latexindent.pl -w -s environments-noindent-block.tex
+latexindent.pl -w -s no-environments.tex
+latexindent.pl -w -s environments-repeated.tex
 git status
 exit

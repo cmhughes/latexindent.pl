@@ -13,8 +13,7 @@ sub indent{
     my $self = shift;
     my $previousIndent = shift;
     $self->logger("in verbatim environment ${$self}{name}, not indenting body");
-    print "END: '${$self}{end}'\n";
-    ${$self}{end} =~ s/(^\s*)/$previousIndent/mg;  # add indentation
+    ${$self}{end} =~ s/(^\h*)/$previousIndent/mg;  # add indentation
     return;
 }
 
@@ -33,7 +32,7 @@ sub find_verbatim_environments{
             while( ${$self}{body} =~ m/
                             (
                                 %
-                                (?: \s*)?
+                                (?: \h*)?               # possible horizontal spaces
                                 \\begin\{
                                         $noIndentBlock  # environment name captured into $2
                                        \}               # %* \begin{noindentblock} statement
@@ -43,9 +42,9 @@ sub find_verbatim_environments{
                             )                           # non-greedy match (body)
                             (\R*)?                      # possible line breaks
                             (
-                                (\s*)?                  # possible spaces
+                                (\h*)?                  # possible horizontal spaces
                                 %                       # %
-                                (?: \s*)?               # possible spaces
+                                (?: \h*)?               # possible horizontal spaces
                                 \\end\{$noIndentBlock\} # \end{noindentblock}
                             )                           # %* \end{<something>} statement
                         /sx){
@@ -68,22 +67,16 @@ sub find_verbatim_environments{
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/
-                            (
                                 %
-                                (?: \s*)?
+                                (?: \h*)?
                                 \\begin\{
                                     ($noIndentBlock)    # environment name captured into $2
                                    \}                   # %* \begin{<something>} statement
-                            )
-                            (
-                                .*
-                            )?                          # non-greedy match up until
-                            (
-                                (?:\s*)                 # possibly having space before
+                                .*?                     # non-greedy match up until
+                                (?:\h*)                 # possibly having horizontal space before
                                 %                       # %
-                                (?: \s*)?               # possibly followed by space
-                                \\end\{$noIndentBlock\}
-                            )                           # %* \end{<something>} statement
+                                (?: \h*)?               # possibly followed by horizontal space
+                                \\end\{$noIndentBlock\} # %* \end{<something>} statement
                         /${$env}{id}/sx;
 
               $self->logger("replaced with ID: ${$env}{id}");
@@ -113,7 +106,7 @@ sub find_verbatim_environments{
                             )                    # any character, but not \\begin
                             (\R*)?               # possible line breaks
                             (
-                                (\h*)?           # possible spaces
+                                (\h*)?           # possible horizontal spaces
                                 \\end\{$verbEnv\}# \end{<something>} statement
                             )                    
                         /sx){
@@ -167,21 +160,21 @@ sub  put_verbatim_back_in {
             if(${$self}{body} =~ m/
                         (   
                             ^           # beginning of the line
-                            \s*         # with 0 or more spaces
+                            \h*         # with 0 or more horizontal spaces
                         )?              # possibly
                                         #
                         ${$child}{id}   # the ID
                         /mx){
 
-                my $indent = $1?$1:q();
+                my $indentation = $1?$1:q();
 
                 # log file info
                 $self->logger("Indentation info",'heading');
-                $self->logger("current indentation: '$indent'");
+                $self->logger("current indentation: '$indentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
                 # perform indentation
-                $child->indent($indent);
+                $child->indent($indentation);
 
                 # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
@@ -192,7 +185,7 @@ sub  put_verbatim_back_in {
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatim}{${$child}{id}};
-                $self->logger("  deleted key");
+                $self->logger("deleted key");
               }
             }
     }
