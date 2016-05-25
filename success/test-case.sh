@@ -22,5 +22,6 @@ latexindent.pl -w -s environments-verbatim-harder.tex
 latexindent.pl -w -s environments-noindent-block.tex
 latexindent.pl -w -s no-environments.tex
 latexindent.pl -w -s environments-repeated.tex
+latexindent.pl -w -s environments-trailing-comments.tex
 git status
 exit

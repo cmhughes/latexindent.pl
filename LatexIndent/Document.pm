@@ -7,7 +7,7 @@ use Data::UUID;
 # gain access to subroutines in the following modules
 use LatexIndent::Logfile qw/logger output_logfile processSwitches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 
 sub new{
@@ -40,7 +40,8 @@ sub operate_on_file{
     $self->masterYamlSettings;
     # file extension check
     $self->create_back_up_file;
-    # remove trailing comments
+    $self->find_noindent_block;
+    $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     # find filecontents environments
     # find preamble
@@ -50,7 +51,7 @@ sub operate_on_file{
     $self->process_body_of_text;
     # process alignment environments
     $self->put_verbatim_back_in;
-    # put trailing comments back in
+    $self->put_trailing_comments_back_in;
     $self->output_indented_text;
     $self->output_logfile;
     return
@@ -208,6 +209,45 @@ sub create_unique_id{
 
     # allocate id to the object
     ${$self}{id} = $uuid1;
+    return;
+}
+
+sub remove_trailing_comments{
+    my $self = shift;
+    $self->logger("Storing trailing comments",'heading');
+    my $commentCounter = 0;
+    ${$self}{body} =~ s/
+                            %        # % 
+                            (
+                                \h*? # followed by possible horizontal space
+                                .*?  # and anything else
+                            )
+                            $        # up to the end of a line
+                        /   
+                            # increment comment counter and store comment
+                            $commentCounter++;
+                            ${${$self}{trailingcomments}}{"latexindenttrailingcomment$commentCounter"}= $1;
+                            # replace comment with dummy text
+                            "% latexindenttrailingcomment".$commentCounter;
+                       /xsmeg;
+    if(%{$self}{trailingcomments}){
+        $self->logger("Trailing comments stored in:",'trace');
+        $self->logger(Dumper(\%{%{$self}{trailingcomments}}),'trace');
+    } else {
+        $self->logger("No trailing comments found",'trace');
+    }
+    return;
+}
+
+sub put_trailing_comments_back_in{
+    my $self = shift;
+    return unless(%{$self}{trailingcomments});
+
+    $self->logger("Returning trailing comments to body",'heading');
+    while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
+        ${$self}{body} =~ s/%\h$trailingcommentID/%$trailingcommentValue/;
+        $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
+    }
     return;
 }
 

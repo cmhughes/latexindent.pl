@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 
 sub indent{
@@ -17,7 +17,7 @@ sub indent{
     return;
 }
 
-sub find_verbatim_environments{
+sub find_noindent_block{
     my $self = shift;
 
     # noindent block
@@ -85,6 +85,11 @@ sub find_verbatim_environments{
             $self->logger("*not* looking for $noIndentBlock as $noIndentBlock:$yesno");
       }
     }
+    return;
+}
+
+sub find_verbatim_environments{
+    my $self = shift;
 
     # verbatim environments
     # verbatim environments
