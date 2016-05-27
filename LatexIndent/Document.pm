@@ -105,6 +105,7 @@ sub process_body_of_text{
                             \h*         # with 0 or more horizontal spaces
                         )?              # possibly
                                         #
+                        (.*?)?          # any other character
                         ${$child}{id}   # the ID
                         /mx){
                 my $indentation = $1?$1:q();
@@ -217,6 +218,7 @@ sub remove_trailing_comments{
     $self->logger("Storing trailing comments",'heading');
     my $commentCounter = 0;
     ${$self}{body} =~ s/
+                            (?<!\\)  # not preceeded by a \
                             %        # % 
                             (
                                 \h*? # followed by possible horizontal space
@@ -227,6 +229,7 @@ sub remove_trailing_comments{
                             # increment comment counter and store comment
                             $commentCounter++;
                             ${${$self}{trailingcomments}}{"latexindenttrailingcomment$commentCounter"}= $1;
+
                             # replace comment with dummy text
                             "% latexindenttrailingcomment".$commentCounter;
                        /xsmeg;

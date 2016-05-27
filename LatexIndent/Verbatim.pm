@@ -168,6 +168,8 @@ sub  put_verbatim_back_in {
                             \h*         # with 0 or more horizontal spaces
                         )?              # possibly
                                         #
+                                        #
+                        (.*?)?          # any other character
                         ${$child}{id}   # the ID
                         /mx){
 

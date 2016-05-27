@@ -67,9 +67,9 @@ open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
 @mainfile=<MAINFILE>;
 close(MAINFILE);
 
-print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
+#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 my $document = LatexIndent::Document->new(body=>join("",@lines),fileName=>$fileName,switches=>\%switches);
 $document->processSwitches;
 $document->readSettings;
