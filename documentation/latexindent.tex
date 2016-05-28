@@ -463,15 +463,15 @@ on which of the following options are used.
 	      Note that if \lstinline!latexindent.pl! can not create the backup, then it
 	      will exit without touching your original file; an error message will be given
 	      asking you to check the permissions of the backup file.
-	\item[\verbitem{-o,--outputfile}] \lstinline!latexindent.pl -o myfile.tex outputfile.tex!
+	\item[\verbitem{-o=output.tex,--outputfile=output.tex}] \lstinline!latexindent.pl -o=output.tex myfile.tex!
 
-	      This will indent \lstinline!myfile.tex! and output it to \lstinline!outputfile.tex!,
-	      overwriting it (\lstinline!outputfile.tex!) if it already exists. Note that if \lstinline!latexindent.pl! is called with both
+	      This will indent \lstinline!myfile.tex! and output it to \lstinline!output.tex!,
+	      overwriting it (\lstinline!output.tex!) if it already exists. Note that if \lstinline!latexindent.pl! is called with both
 	      the \lstinline!-w! and \lstinline!-o! switches, then \lstinline!-w! will
 	      be ignored and \lstinline!-o! will take priority (this seems safer than the
 	      other way round).
 
-	      Note that using \lstinline!-o! is equivalent to using \lstinline!latexindent.pl myfile.tex > outputfile.tex!
+	      Note that using \lstinline!-o! is equivalent to using \lstinline!latexindent.pl myfile.tex > output.tex!
 	\item[\verbitem{-s, --silent}] \lstinline!latexindent.pl -s myfile.tex!
 
 	      Silent mode: no output will be given to the terminal.
@@ -1511,4 +1511,14 @@ To add \lstinline!latexindent.exe! to the path for Windows, follow these steps:
 	      \lstinline!%path%!.
 \end{enumerate}
 To \emph{remove} the directory from your \lstinline!%path%!, run \lstinline!remove-from-path.bat! as administrator.
+
+\section{Differences from Version 2.1 to 3.0 (and beyond)}
+There are a few (small) changes to the interface when comparing Version 2.1 to Version 3.0. 
+Explicitly, these are:
+\begin{description}
+  \item[OLD] \lstinline!latexindent.pl -o myfile.tex outputfile.tex!
+    \item[NEW] \lstinline!latexindent.pl -o=outputfile.tex myfile.tex!
+
+      \lstinline!latexindent.pl -o outputfile.tex myfile.tex!
+\end{description}
 \end{document}

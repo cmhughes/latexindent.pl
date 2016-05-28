@@ -47,6 +47,16 @@ sub processSwitches{
     $self->logger('-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)') if($switches{onlyDefault});
     $self->logger("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
     $self->logger("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
+    $self->logger("-o|--outputfile: output to file") if($switches{outputToFile});
+
+    # check if overwrite and outputfile are active similtaneously
+    if($switches{overwrite} and $switches{outputToFile}){
+        $self->logger("Options check",'heading');
+        $self->logger("You have called latexindent.pl with both -o and -w");
+        $self->logger("-o (output to file) will take priority, and -w (over write) will be ignored");
+        ${%{$self}{switches}}{overwrite}=0;
+        $switches{overwrite}=0;
+    }
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {

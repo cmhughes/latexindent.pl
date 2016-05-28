@@ -63,12 +63,22 @@ sub output_indented_text{
     # output to screen, unless silent mode
     print ${$self}{body} unless ${%{$self}{switches}}{silentMode};
 
+    $self->logger("Output routine",'heading');
+
     # if -overwrite is active then output to original fileName
     if(${%{$self}{switches}}{overwrite}) {
+        $self->logger("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
-    } 
+    } elsif(${%{$self}{switches}}{outputToFile}) {
+        $self->logger("Outputting to file ${%{$self}{switches}}{outputToFile}");
+        open(OUTPUTFILE,">",${%{$self}{switches}}{outputToFile});
+        print OUTPUTFILE ${$self}{body};
+        close(OUTPUTFILE);
+    } else {
+        $self->logger("Not outputting to file; see -w and -o switches for more options.");
+    }
     return;
 }
 

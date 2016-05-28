@@ -1,3 +1,11 @@
 success/*.bak*
 success/*.log
 *.log
+documentation/latexindent-blx.*
+documentation/*.aux
+documentation/*.listing
+documentation/*.lol
+documentation/*.out
+documentation/*.run.xml
+documentation/*.toc
+documentation/*.out

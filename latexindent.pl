@@ -15,15 +15,15 @@ use LatexIndent::Verbatim;
 my %switches = (readLocalSettings=>0);
 
 GetOptions (
-"silent|s"=>\$switches{silentMode},
-"trace|t"=>\$switches{trace},
-"ttrace|tt"=>\$switches{ttrace},
-"local|l:s"=>\$switches{readLocalSettings},
-"onlydefault|d"=>\$switches{onlyDefault},
-"overwrite|w"=>\$switches{overwrite},
-#"help|h"=>\$showhelp,
-#"cruft|c=s"=>\$cruftDirectory,
-#"outputfile|o:s"=>\$outputToFile,
+    "silent|s"=>\$switches{silentMode},
+    "trace|t"=>\$switches{trace},
+    "ttrace|tt"=>\$switches{ttrace},
+    "local|l:s"=>\$switches{readLocalSettings},
+    "onlydefault|d"=>\$switches{onlyDefault},
+    "overwrite|w"=>\$switches{overwrite},
+    "outputfile|o=s"=>\$switches{outputToFile},
+    #"help|h"=>\$showhelp,
+    #"cruft|c=s"=>\$cruftDirectory,
 );
 
 # check local settings doesn't interfer with reading the file;
@@ -76,11 +76,6 @@ $document->readSettings;
 $document->operate_on_file;
 
 # Necessary changes from 2.1 to 3.0
-#   OLD
-#       latexindent.pl -o myfile.tex outputfile.tex
-#   NEW
-#       latexindent.pl -o outputfile.tex myfile.tex 
-#       latexindent.pl -o=outputfile.tex myfile.tex 
 #
 # TEST CASES:
 #       - on Windows, move defaultSettings.yaml to a different directory
