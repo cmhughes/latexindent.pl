@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use FindBin; 
 use Exporter qw/import/;
-our @EXPORT_OK = qw/logger output_logfile processSwitches/;
+our @EXPORT_OK = qw/logger output_logfile processSwitches get_switches/;
 our @logFileNotes;
 our %switches;
 
@@ -11,6 +11,12 @@ our %switches;
 # log file methods
 # log file methods
 #   reference: http://stackoverflow.com/questions/6736998/help-calling-a-sub-routine-from-a-perl-module-and-printing-to-logfile
+
+sub get_switches{
+    my $self = shift;
+    ${$self}{switches} = \%switches;
+    return;
+}
 
 sub logger{
     shift;
@@ -48,6 +54,7 @@ sub processSwitches{
     $self->logger("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
     $self->logger("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
     $self->logger("-o|--outputfile: output to file") if($switches{outputToFile});
+    $self->logger("-m|--modifylinebreaks: modify line breaks") if($switches{modifyLineBreaks});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
@@ -68,8 +75,7 @@ sub processSwitches{
                 $self->logger($INC{$file .'.pm'});
               }
     }
-
-    return
+    return;
 }
 
 sub output_logfile{

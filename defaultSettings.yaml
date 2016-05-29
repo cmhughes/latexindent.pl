@@ -251,6 +251,47 @@ fileContentsEnvironments:
     filecontents: 1
     filecontents*: 1
 
+# modifyLineBreaks will only be searched if the -m 
+# switch is active
+#    everyBeginStartsOnOwnLine: 1
+#       if a begin statement is not already on its own line,
+#       then, with -m active, it will be moved to its own line.
+#       e.g 
+#               some text some text \begin{myenvironment}
+#       will be changed to
+#               some text some text 
+#               \begin{myenvironment}
+#
+#    everyBodyStartsOnOwnLine: 1
+#       if body does not already start on its own line, then with 
+#       -m active, it will be moved to its own line.
+#       e.g
+#               \begin{myenv}body text body text
+#       will be changed to
+#               \begin{myenv}
+#                   body text body text
+#    everyEndStartsOnOwnLine: 1
+#       if an end statement is not already on its own line,
+#       then, with -m active, it will be moved to its own line.
+#       e.g 
+#               some text some text \end{myenvironment}
+#       will be changed to
+#               some text some text 
+#               \end{myenvironment}
+#
+# Naturally, you can specify settings for individual environments,
+# commands, headings, etc, populate as you wish.
+modifyLineBreaks:
+    everyBeginStartsOnOwnLine: 1
+    everyBodyStartsOnOwnLine: 1
+    everyEndStartsOnOwnLine: 1
+    everyEndFinishesWithLineBreak: 1
+    equation*:
+        BeginStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
+        EndStartsOnOwnLine: 1
+        EndFinishesWithLineBreak: 1
+        
     
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1

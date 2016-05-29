@@ -30,5 +30,6 @@ latexindent.pl -w -s -t environments-trailing-comments.tex
 latexindent.pl -w -s -t -o=environments-challenging-output.tex environments-challenging.tex
 latexindent.pl -w -l=env-chall.yaml -s -t -o=environments-challenging-output.tex environments-challenging.tex
 latexindent.pl -w -l env-chall.yaml -s -t -o environments-challenging-output.tex environments-challenging.tex
+latexindent.pl -s -l=env-mod-lines1.yaml -t -m -o=environments-one-line-mod-lines1.tex environments-one-line.tex
 git status
 exit

@@ -5,7 +5,7 @@ use Data::Dumper;
 use Data::UUID;
 
 # gain access to subroutines in the following modules
-use LatexIndent::Logfile qw/logger output_logfile processSwitches/;
+use LatexIndent::Logfile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
@@ -117,8 +117,12 @@ sub process_body_of_text{
                                         #
                         (.*?)?          # any other character
                         ${$child}{id}   # the ID
+                        (\h*)?          # possibly followed by horizontal space
+                        (\R*)?          # then line breaks
                         /mx){
                 my $indentation = $1?$1:q();
+                my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
+                my $IDFollowedImmediatelyByLineBreak = $4?1:0;
 
                 # log file info
                 $self->logger("Indentation info",'heading');
@@ -126,8 +130,20 @@ sub process_body_of_text{
                 $self->logger("current indentation: '$indentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
+                # line break checks for begin and end
+                if(${$child}{BeginStartsOnOwnLine} and !$IDFirstNonWhiteSpaceCharacter){
+                    ${$child}{begin} = "\n".${$child}{begin};
+                }
+
+                if(${$child}{EndFinishesWithLineBreak} and !$IDFollowedImmediatelyByLineBreak){
+                    $self->logger("Updating ${$child}{end} to include a linebreak");
+                    ${$child}{end} =~ s/\h*$/\n/;
+                    ${$child}{linebreaksAtEnd}{end} = 1;
+                }
+
                 # perform indentation
                 $child->indent($indentation);
+                $self->logger(Dumper(\%{$child}),'ttrace');
 
                 # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
@@ -170,6 +186,7 @@ sub find_environments{
                 )                       # environment body captured into $4
                 (
                     \\end\{\2\}         # \end{<something>} statement
+                    (\h*)?              # possibly followed by horizontal space
                 )                       # captured into $6
                 /sx){
 
@@ -204,7 +221,7 @@ sub find_environments{
                 (\\begin\{(.*?)\}   # the \begin{<something>} statement
                 (\R*)?)             # possible line breaks
                 (((?!(\\begin)).)*?)
-                (\\end\{\2\})       # the \end{<something>} statement
+                (\\end\{\2\}(\h*)?)       # the \end{<something>} statement
                 /${$env}{id}/sx;
 
       $self->logger("replaced with ID: ${$env}{id}");

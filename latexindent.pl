@@ -22,6 +22,7 @@ GetOptions (
     "onlydefault|d"=>\$switches{onlyDefault},
     "overwrite|w"=>\$switches{overwrite},
     "outputfile|o=s"=>\$switches{outputToFile},
+    "modifylinebreaks|m"=>\$switches{modifyLineBreaks},
     #"help|h"=>\$showhelp,
     #"cruft|c=s"=>\$cruftDirectory,
 );
