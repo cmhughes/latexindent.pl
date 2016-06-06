@@ -31,5 +31,9 @@ latexindent.pl -w -s -t -o=environments-challenging-output.tex environments-chal
 latexindent.pl -w -l=env-chall.yaml -s -t -o=environments-challenging-output.tex environments-challenging.tex
 latexindent.pl -w -l env-chall.yaml -s -t -o environments-challenging-output.tex environments-challenging.tex
 latexindent.pl -s -l=env-mod-lines1.yaml -t -m -o=environments-one-line-mod-lines1.tex environments-one-line.tex
+latexindent.pl -s -l env-mod-lines2.yaml -t -m -o=environments-one-line-mod-lines2.tex environments-one-line.tex
+latexindent.pl -s -l env-mod-lines3.yaml -t -m -o=environments-one-line-mod-lines3.tex environments-one-line.tex
+latexindent.pl -s -l env-mod-lines4.yaml -t -m -o=environments-one-line-mod-lines4.tex environments-one-line.tex
+latexindent.pl -s -l env-mod-lines5.yaml -t -m -o=environments-one-line-mod-lines5.tex environments-one-line.tex
 git status
 exit

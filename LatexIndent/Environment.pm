@@ -28,14 +28,14 @@ sub indent{
 
     # add a line break after \begin{statement} if appropriate
     if(${$self}{BodyStartsOnOwnLine} and !${$self}{linebreaksAtEnd}{begin}){
-        $self->logger("Updating linebreaks on begin.");
+        $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see BodyStartsOnOwnLine)");
         ${$self}{begin} .= "\n";       
         ${$self}{linebreaksAtEnd}{begin} = 1;
      }
 
     # add a line break after body, if appropriate
     if(${$self}{EndStartsOnOwnLine} and !${$self}{linebreaksAtEnd}{body}){
-        $self->logger("Updating linebreaks on body.");
+        $self->logger("Adding a linebreak at the end of body, ${$self}{body} (see EndStartsOnOwnLine)");
         ${$self}{body} .= "\n";
         ${$self}{linebreaksAtEnd}{body} = 1;
     }
@@ -110,6 +110,7 @@ sub get_indentation_settings_for_this_object{
                         EndStartsOnOwnLine=>$EndStartsOnOwnLine,
                         EndFinishesWithLineBreak=>$EndFinishesWithLineBreak,
                       );
+
         # there's no need for the current object to keep all of the settings
         delete ${$self}{settings};
         delete ${$self}{switches};

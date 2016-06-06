@@ -132,11 +132,13 @@ sub process_body_of_text{
 
                 # line break checks for begin and end
                 if(${$child}{BeginStartsOnOwnLine} and !$IDFirstNonWhiteSpaceCharacter){
+                    $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
                     ${$child}{begin} = "\n".${$child}{begin};
+                    ${$child}{begin} =~ s/^(\h*)?/$indentation/mg;  # add indentation
                 }
 
                 if(${$child}{EndFinishesWithLineBreak} and !$IDFollowedImmediatelyByLineBreak){
-                    $self->logger("Updating ${$child}{end} to include a linebreak");
+                    $self->logger("Adding a linebreak at the end of ${$child}{end} (see EndFinishesWithLineBreak)");
                     ${$child}{end} =~ s/\h*$/\n/;
                     ${$child}{linebreaksAtEnd}{end} = 1;
                 }

@@ -1,0 +1,13 @@
+modifyLineBreaks:
+    everyBeginStartsOnOwnLine: 0
+    everyBodyStartsOnOwnLine: 0
+    everyEndStartsOnOwnLine: 0
+    everyEndFinishesWithLineBreak: 0
+    equation*:
+        BeginStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 1
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAlmagamatedSettings: 0
