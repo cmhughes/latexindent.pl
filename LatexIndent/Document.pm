@@ -172,11 +172,9 @@ sub process_body_of_text{
                     ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                 }
 
-                # line break checks after <end> statement
-                if(${$child}{EndFinishesWithLineBreak} and !$IDFollowedImmediatelyByLineBreak){
-                    $self->logger("Adding a linebreak at the end of ${$child}{end} (see EndFinishesWithLineBreak)");
-                    ${$child}{end} =~ s/\h*$/\n$surroundingIndentation /;
-                    ${$child}{linebreaksAtEnd}{end} = 1;
+                # nested objects can lead to double line breaks
+                if($IDFollowedImmediatelyByLineBreak and ${$child}{linebreaksAtEnd}{end}) {
+                    ${$child}{end} =~ s/\R//g;  # remove line break from <end>
                 }
 
                 # perform indentation
@@ -226,6 +224,7 @@ sub find_environments{
                     \\end\{\2\}         # \end{<something>} statement
                     (\h*)?              # possibly followed by horizontal space
                 )                       # captured into $6
+                (\R)?                   # possibly followed by a line break 
                 /sx){
 
       # create a new Environment object
@@ -236,7 +235,7 @@ sub find_environments{
                                               linebreaksAtEnd=>{
                                                 begin=> ($3)?1:0,
                                                 body=> ($5)?1:0,
-                                                end=> ($7)?1:0,
+                                                end=> ($8)?1:0,
                                               },
                                             );
 
@@ -248,11 +247,21 @@ sub find_environments{
       # give unique id
       $env->create_unique_id;
 
-      # store children in special hash
-      ${$self}{children}{${$env}{id}}=$env;
-
       # log file output
       $self->logger("environment found: $2");
+
+      my $replacementText = ${$env}{id};
+
+      # line break checks after <end> statement
+      if(${$env}{EndFinishesWithLineBreak} and !${$env}{linebreaksAtEnd}{end}){
+          $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
+          ${$env}{end} =~ s/\h*//g;
+          ${$env}{linebreaksAtEnd}{end} = 1;
+          $replacementText .= "\n";
+      }
+
+      # store children in special hash
+      ${$self}{children}{${$env}{id}}=$env;
 
       # remove the environment block, and replace with unique ID
       ${$self}{body} =~ s/
@@ -260,7 +269,7 @@ sub find_environments{
                 (\R*)?)             # possible line breaks
                 (((?!(\\begin)).)*?)
                 (\\end\{\2\}(\h*)?)       # the \end{<something>} statement
-                /${$env}{id}/sx;
+                /$replacementText/sx;
 
       $self->logger("replaced with ID: ${$env}{id}");
     } 
