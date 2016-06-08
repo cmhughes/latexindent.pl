@@ -108,6 +108,8 @@ sub output_logfile{
             # for default logfile lines
             ${$line}{line} =~ s/^/\t/mg;
             print $logfile ${$line}{line},"\n";
+          } elsif ($switches{ttrace} and ${$line}{level} eq 'heading.ttrace') {
+            print $logfile ${$line}{line},"\n";
           }
   }
   close($logfile);

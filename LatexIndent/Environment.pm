@@ -10,12 +10,14 @@ our %previouslyFoundSettings;
 
 sub indent{
     my $self = shift;
-    my $previousIndent = shift;
+    my $surroundingIndentation = ${$self}{surroundingIndentation}?${${$self}{surroundingIndentation}}:q();
+
     $self->logger("indenting ENVIRONMENT ${$self}{name}");
-    $self->logger("indentation *before* object: '$previousIndent'");
-    $self->logger("indentation *of* object: '${$self}{indent}'");
-    $self->logger("*total* indentation to be added: '$previousIndent${$self}{indent}'");
-    my $indentation = $previousIndent.${$self}{indent};
+    $self->logger("indentation *surrounding* object: '$surroundingIndentation'");
+    $self->logger("indentation *of* object: '${$self}{indentation}'");
+    $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'");
+    my $indentation = $surroundingIndentation.${$self}{indentation};
+    ${$self}{indentation} = $indentation;
 
     # line break stuff
     # line break stuff
@@ -42,7 +44,7 @@ sub indent{
 
     # adjust indendation
     ${$self}{body} =~ s/^\h*/$indentation/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
-    ${$self}{end} =~ s/^\h*/$previousIndent/mg unless(!${$self}{linebreaksAtEnd}{body});  # add indentation
+    ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg unless(!${$self}{linebreaksAtEnd}{body});  # add indentation
 
     # ${$self}{body} =~ s/\R*//mg;       # remove line break(s) from body
     return $self;
@@ -103,7 +105,7 @@ sub get_indentation_settings_for_this_object{
 
         # store the settings
         %{${previouslyFoundSettings}{$name}} = (
-                        indent=>$indentation,
+                        indentation=>$indentation,
                         modLineBreaksSwitch=>$modLineBreaksSwitch,
                         BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,
                         BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,

@@ -102,6 +102,41 @@ sub process_body_of_text{
     $self->logger("Operating on: $self",'heading');
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{children}});
+
+    $self->logger("searching for hidden children",'ttrace');
+    # finding hidden children
+    while( my ($key,$child)= each %{%{$self}{children}}){
+        if(${$self}{body} !~ m/${$child}{id}/){
+            $self->logger("child not found, ${$child}{id}",'ttrace');
+            ${$self}{hiddenChildren}{${$child}{id}} = \%{$child};
+        } else {
+            $self->logger("child found, ${$child}{id}",'ttrace');
+        }
+    }
+
+    # operate on hiddenChildren, if any
+    if(%{$self}{hiddenChildren}){
+        $self->logger("Hidden children: ",'heading.ttrace');
+        $self->logger(Dumper(\%{%{$self}{hiddenChildren}}),'ttrace');
+
+        # surrounding indentation
+        $self->logger("Adding surrounding indentation");
+
+        # loop through hidden children
+        while( my ($key,$hiddenChild)= each %{%{$self}{hiddenChildren}}){
+            $self->logger("Searching sibblings for ${$hiddenChild}{id} (${$hiddenChild}{name})",'heading.ttrace');
+
+            # try to find in one of the other children
+            while( my ($key,$child)= each %{%{$self}{children}}){
+               if(${$child}{body} =~ m/${$hiddenChild}{id}/){
+                    $self->logger("Hidden child found! ${$hiddenChild}{name} within ${$child}{name}",'ttrace');
+                    ${${$self}{children}{${$hiddenChild}{id}}}{surroundingIndentation} = \${$child}{indentation};
+                    $self->logger(Dumper(\%{${$self}{children}{${$hiddenChild}{id}}}),'ttrace');
+               }
+            }
+        }
+    }
+
     $self->logger('Pre-processed body:','heading');
     $self->logger(${$self}{body});
     $self->logger("Indenting children objects:",'heading');
@@ -120,31 +155,32 @@ sub process_body_of_text{
                         (\h*)?          # possibly followed by horizontal space
                         (\R*)?          # then line breaks
                         /mx){
-                my $indentation = $1?$1:q();
                 my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
                 my $IDFollowedImmediatelyByLineBreak = $4?1:0;
+                my $surroundingIndentation = ${$child}{surroundingIndentation}?${${$child}{surroundingIndentation}}:q();
 
                 # log file info
                 $self->logger("Indentation info",'heading');
                 $self->logger("object name: ${$child}{name}");
-                $self->logger("current indentation: '$indentation'");
+                $self->logger("current indentation: '$surroundingIndentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
-                # line break checks for begin and end
+                # line break checks before <begin> statement
                 if(${$child}{BeginStartsOnOwnLine} and !$IDFirstNonWhiteSpaceCharacter){
                     $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
                     ${$child}{begin} = "\n".${$child}{begin};
-                    ${$child}{begin} =~ s/^(\h*)?/$indentation/mg;  # add indentation
+                    ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                 }
 
+                # line break checks after <end> statement
                 if(${$child}{EndFinishesWithLineBreak} and !$IDFollowedImmediatelyByLineBreak){
                     $self->logger("Adding a linebreak at the end of ${$child}{end} (see EndFinishesWithLineBreak)");
-                    ${$child}{end} =~ s/\h*$/\n/;
+                    ${$child}{end} =~ s/\h*$/\n$surroundingIndentation /;
                     ${$child}{linebreaksAtEnd}{end} = 1;
                 }
 
                 # perform indentation
-                $child->indent($indentation);
+                $child->indent;
                 $self->logger(Dumper(\%{$child}),'ttrace');
 
                 # replace ids with body
