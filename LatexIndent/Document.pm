@@ -250,9 +250,24 @@ sub find_environments{
       # log file output
       $self->logger("environment found: $2");
 
+      # the replacement text can be just the ID, but the ID might have a line break at the end of it
       my $replacementText = ${$env}{id};
 
-      # line break checks after <end> statement
+      # add a line break after \begin{statement} if appropriate
+      if(${$env}{BodyStartsOnOwnLine} and !${$env}{linebreaksAtEnd}{begin}){
+          $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)");
+          ${$env}{begin} .= "\n";       
+          ${$env}{linebreaksAtEnd}{begin} = 1;
+       }
+
+      # add a line break after body, if appropriate
+      if(${$env}{EndStartsOnOwnLine} and !${$env}{linebreaksAtEnd}{body}){
+          $self->logger("Adding a linebreak at the end of body, ${$env}{body} (see EndStartsOnOwnLine)");
+          ${$env}{body} .= "\n";
+          ${$env}{linebreaksAtEnd}{body} = 1;
+      }
+
+      # line break checks after \end{statement} if appripriate
       if(${$env}{EndFinishesWithLineBreak} and !${$env}{linebreaksAtEnd}{end}){
           $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
           ${$env}{end} =~ s/\h*//g;

@@ -28,20 +28,6 @@ sub indent{
     # remove line break(s) before body
     #${$self}{begin} =~ s/\R*$// if(${$self}{BodyStartsOnOwnLine}==0);       
 
-    # add a line break after \begin{statement} if appropriate
-    if(${$self}{BodyStartsOnOwnLine} and !${$self}{linebreaksAtEnd}{begin}){
-        $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see BodyStartsOnOwnLine)");
-        ${$self}{begin} .= "\n";       
-        ${$self}{linebreaksAtEnd}{begin} = 1;
-     }
-
-    # add a line break after body, if appropriate
-    if(${$self}{EndStartsOnOwnLine} and !${$self}{linebreaksAtEnd}{body}){
-        $self->logger("Adding a linebreak at the end of body, ${$self}{body} (see EndStartsOnOwnLine)");
-        ${$self}{body} .= "\n";
-        ${$self}{linebreaksAtEnd}{body} = 1;
-    }
-
     # adjust indendation
     ${$self}{body} =~ s/^\h*/$indentation/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
     ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg unless(!${$self}{linebreaksAtEnd}{body});  # add indentation
