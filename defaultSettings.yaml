@@ -237,13 +237,10 @@ fileExtensionPreference:
 
 # preferences for information displayed in the log file
 logFilePreferences:
+    logFileName: "indent.log"
     showEveryYamlRead: 1
     showAlmagamatedSettings: 0
     endLogFileWith: '--------------' 
-    traceModeIncreaseIndent: '>>'
-    traceModeAddCurrentIndent: '||'
-    traceModeDecreaseIndent: '<<'
-    traceModeBetweenLines: "\n"
 
 # \begin{document} and \end{document} are treated differently
 # by latexindent within filecontents environments

@@ -79,8 +79,11 @@ sub processSwitches{
 }
 
 sub output_logfile{
+  my $self = shift;
   my $logfile;
-  open($logfile,">","indent.log") or die "Can't open indent.log";
+  open($logfile,">","${${${$self}{settings}}{logFilePreferences}}{logFileName}") or die "Can't open ${${${$self}{settings}}{logFilePreferences}}{logFileName}";
+  $self->logger("${${${$self}{settings}}{logFilePreferences}}{endLogFileWith}",'heading');
+
   foreach my $line (@logFileNotes){
         if(${$line}{level} eq 'heading'){
             print $logfile ${$line}{line},"\n";

@@ -437,7 +437,9 @@ need a few standard Perl modules--see \vref{sec:requiredmodules} for details.
 \lstinline!latexindent.pl! has a number of different switches/flags/options, which
 can be combined in any way that you like, either in short or long form as detailed below. 
 \lstinline!latexindent.pl!  produces a \lstinline!.log! file, \lstinline!indent.log! every time it
-is run. There is a base of information that is written to \lstinline!indent.log!,
+is run; the name of the log file can be customised (see \vref{lst:logFilePreferences}), but we will 
+refer to the log file as \lstinline!indent.log! throughout this document. 
+There is a base of information that is written to \lstinline!indent.log!,
 but other additional information will be written depending
 on which of the following options are used.
 
@@ -1021,25 +1023,18 @@ fileExtensionPreference:
   of which can be customised by changing \lstinline!logFilePreferences!; see \cref{lst:logFilePreferences}.
 \begin{cmhlistings}[style=yaml]{\lstinline!logFilePreferences!}{lst:logFilePreferences}
 logFilePreferences:
+    logFileName: "indent.log"
     showEveryYamlRead: 1
     showAlmagamatedSettings: 0
     endLogFileWith: '--------------' 
-    traceModeIncreaseIndent: '>>'
-    traceModeAddCurrentIndent: '||'
-    traceModeDecreaseIndent: '<<'
-    traceModeBetweenLines: "\n"
   \end{cmhlistings}
+  You can customize the name of your logfile to anything you like by changing \lstinline!logFileName!.
 If you load your own user settings (see \vref{sec:indentconfig}) then \lstinline!latexindent.pl! will
 detail them in \lstinline!indent.log!; you can choose not to have the details logged by switching
 \lstinline!showEveryYamlRead! to \lstinline!0!. Once all of your settings have 
 been loaded, you can see the amalgamated settings by switching \lstinline!showAlmagamatedSettings! 
 to \lstinline!1!, if you wish. The log file will end with the characters 
 given in \lstinline!endLogFileWith!.
-
-When \lstinline!trace! mode is active (see \cpageref{page:traceswitch}) verbose information is written 
-to \lstinline!indent.log!. The decoration of this information can be customised through the remaining
-fields given in \cref{lst:logFilePreferences}; note, in particular, the use of \lstinline!"\n"! for 
-escaped characters (using single quotes will not produce the same results).
 
 \item[\verbitem{fileContentsEnvironments}] 
   \lstinline!latexindent.pl! determines when the main document begins by looking for \lstinline!\begin{document}!; 
