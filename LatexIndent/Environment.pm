@@ -51,15 +51,18 @@ sub get_indentation_settings_for_this_object{
         # get master settings
         $self->masterYamlSettings;
 
+        # we'll use %settings a lot in what follows
+        my %settings = %{%{$self}{settings}};
+
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = (${${$self}{settings}{noAdditionalIndent}}{$name})
+        my $indentation = (${$settings{noAdditionalIndent}}{$name})
                                 ?
                                 q()
                                 :
-                     (${${$self}{settings}{indentRules}}{$name}
+                     (${$settings{indentRules}}{$name}
                                 ||
-                     ${$self}{settings}{defaultIndent});
+                     $settings{defaultIndent});
 
         # check if the -m switch is active
         $self->get_switches;
@@ -73,21 +76,21 @@ sub get_indentation_settings_for_this_object{
 
         # if the -m switch is active, update these settings
         if($modLineBreaksSwitch){
-                $BeginStartsOnOwnLine = (${${$self}{settings}{modifyLineBreaks}}{everyBeginStartsOnOwnLine}
+                $BeginStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine}
                                                              or
-                                        ${${${$self}{settings}{modifyLineBreaks}}{$name}}{BeginStartsOnOwnLine})
+                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine})
                                             ?  1 : 0;
-                $BodyStartsOnOwnLine = (${${$self}{settings}{modifyLineBreaks}}{everyBodyStartsOnOwnLine}
+                $BodyStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBodyStartsOnOwnLine}
                                                              or
-                                           ${${${$self}{settings}{modifyLineBreaks}}{$name}}{BodyStartsOnOwnLine})
+                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BodyStartsOnOwnLine})
                                             ?  1 : 0;
-                $EndStartsOnOwnLine =  (${${$self}{settings}{modifyLineBreaks}}{everyEndStartsOnOwnLine}
+                $EndStartsOnOwnLine =  (${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine}
                                                              or
-                                           ${${${$self}{settings}{modifyLineBreaks}}{$name}}{EndStartsOnOwnLine})
+                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine})
                                             ?  1 : 0;
-                $EndFinishesWithLineBreak =  (${${$self}{settings}{modifyLineBreaks}}{everyEndFinishesWithLineBreak}
+                $EndFinishesWithLineBreak =  (${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak}
                                                              or
-                                           ${${${$self}{settings}{modifyLineBreaks}}{$name}}{EndFinishesWithLineBreak})
+                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak})
                                             ?  1 : 0;
         }
 

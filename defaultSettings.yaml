@@ -282,15 +282,18 @@ fileContentsEnvironments:
 # Naturally, you can specify settings for individual environments,
 # commands, headings, etc, populate as you wish.
 modifyLineBreaks:
-    everyBeginStartsOnOwnLine: 1
-    everyBodyStartsOnOwnLine: 1
-    everyEndStartsOnOwnLine: 1
-    everyEndFinishesWithLineBreak: 1
-    equation*:
-        BeginStartsOnOwnLine: 1
-        BodyStartsOnOwnLine: 1
-        EndStartsOnOwnLine: 1
-        EndFinishesWithLineBreak: 1
+    environments:
+        everyBeginStartsOnOwnLine: 1
+        everyBodyStartsOnOwnLine: 1
+        everyEndStartsOnOwnLine: 1
+        everyEndFinishesWithLineBreak: 1
+        equation*:
+            BeginStartsOnOwnLine: 1
+            BodyStartsOnOwnLine: 1
+            EndStartsOnOwnLine: 1
+            EndFinishesWithLineBreak: 1
+    ifElseFi:
+        everyBeginStartsOnOwnLine: 1
         
     
 # *** NOTE ***
