@@ -20,6 +20,7 @@ sub indent{
     $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'");
     my $indentation = $surroundingIndentation.${$self}{indentation};
     ${$self}{indentation} = $indentation;
+    $self->logger(Dumper(\%{$self}),'ttrace');
 
     # line break stuff
     # line break stuff
@@ -30,10 +31,35 @@ sub indent{
     # remove line break(s) before body
     #${$self}{begin} =~ s/\R*$// if(${$self}{BodyStartsOnOwnLine}==0);       
 
-    # adjust indendation
-    ${$self}{body} =~ s/^\h*/$indentation/mg unless(!${$self}{linebreaksAtEnd}{begin});  # add indentation
-    ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg unless(!${$self}{linebreaksAtEnd}{body});  # add indentation
+    # body indendation
+    if(${$self}{linebreaksAtEnd}{begin}==1){
+        ${$self}{body} =~ s/^\h*/$indentation/mg;  # add indentation
+    } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
+        ${$self}{body} =~ m/
+                            (.*?)      # content of first line
+                            \R         # first line break
+                            (.*$)      # rest of body
+                            /sx;  
+        my $bodyFirstLine = $1;
+        my $remainingBody = $2;
+        $self->logger("first line of body: $bodyFirstLine");
+        $self->logger("remaining body (before indentation): '$remainingBody'");
 
+        # add the indentation to all the body except first line
+        $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
+        $self->logger("remaining body (after indentation): '$remainingBody'");
+
+        # put the body back together
+        ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
+    }
+
+    # \end{statement} indentation
+    if(${$self}{linebreaksAtEnd}{body}){
+        ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg;  # add indentation
+        $self->logger("Adding surrounding indentation to ${$self}{end} ('$surroundingIndentation')");
+     }
+
+    $self->logger("Finished indenting ${$self}{name}",'heading');
     # ${$self}{body} =~ s/\R*//mg;       # remove line break(s) from body
     return $self;
 }
@@ -84,10 +110,25 @@ sub get_indentation_settings_for_this_object{
                                                              or
                                         ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BodyStartsOnOwnLine})
                                             ?  1 : 0;
-                $EndStartsOnOwnLine =  (${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine}
-                                                             or
-                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine})
-                                            ?  1 : 0;
+
+                # $EndStartsOnOwnLine 
+                # $EndStartsOnOwnLine 
+                # $EndStartsOnOwnLine 
+
+                # check for the *every* value
+                if (defined ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine}
+                                        and
+                    ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine} >= 0){
+                    $EndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
+                 };
+
+                # check for the *custom* value
+                if (defined ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine}
+                                        and
+                    ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine}>=0){
+                    $EndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
+                 };
+
                 $EndFinishesWithLineBreak =  (${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak}
                                                              or
                                         ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak})
@@ -142,6 +183,9 @@ sub find_environments{
                 (\R)?                   # possibly followed by a line break 
                 /sx){
 
+      # log file output
+      $self->logger("environment found: $2");
+
       # create a new Environment object
       my $env = LatexIndent::Environment->new(begin=>$1,
                                               name=>$2,
@@ -154,16 +198,16 @@ sub find_environments{
                                               },
                                             );
 
+      # count linebreaks in body
+      my $bodyLineBreaks = 0;
+      $bodyLineBreaks++ while(${$env}{body} =~ m/\R/sxg);
+      ${$env}{bodyLineBreaks} = $bodyLineBreaks;
+
       # get settings for this object
       $env->get_indentation_settings_for_this_object;
 
-      $self->logger(Dumper(\%{$env}),'trace');
-
       # give unique id
       $env->create_unique_id;
-
-      # log file output
-      $self->logger("environment found: $2");
 
       # the replacement text can be just the ID, but the ID might have a line break at the end of it
       my $replacementText = ${$env}{id};
@@ -175,14 +219,22 @@ sub find_environments{
           ${$env}{linebreaksAtEnd}{begin} = 1;
        }
 
-      # add a line break after body, if appropriate
-      if(${$env}{EndStartsOnOwnLine} and !${$env}{linebreaksAtEnd}{body}){
-          $self->logger("Adding a linebreak at the end of body, ${$env}{body} (see EndStartsOnOwnLine)");
-          ${$env}{body} .= "\n";
-          ${$env}{linebreaksAtEnd}{body} = 1;
+      # possibly modify line break *before* \end{statement}
+      if(defined ${$env}{EndStartsOnOwnLine}){
+            if(${$env}{EndStartsOnOwnLine}==1 and !${$env}{linebreaksAtEnd}{body}){
+                # add a line break after body, if appropriate
+                $self->logger("Adding a linebreak at the end of body (see EndStartsOnOwnLine)");
+                ${$env}{body} .= "\n";
+                ${$env}{linebreaksAtEnd}{body} = 1;
+            } elsif (${$env}{EndStartsOnOwnLine}==0 and ${$env}{linebreaksAtEnd}{body}){
+                # remove line break *after* body, if appropriate
+                $self->logger("Removing linebreak at the end of body (see EndStartsOnOwnLine)");
+                ${$env}{body} =~ s/\R*$//sx;
+                ${$env}{linebreaksAtEnd}{body} = 0;
+            }
       }
 
-      # line break checks after \end{statement} if appripriate
+      # line break checks *after* \end{statement} if appropriate
       if(${$env}{EndFinishesWithLineBreak} and !${$env}{linebreaksAtEnd}{end}){
           $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
           ${$env}{end} =~ s/\h*//g;
@@ -201,6 +253,7 @@ sub find_environments{
                 (\\end\{\2\}(\h*)?)       # the \end{<something>} statement
                 /$replacementText/sx;
 
+      $self->logger(Dumper(\%{$env}),'trace');
       $self->logger("replaced with ID: ${$env}{id}");
     } 
     return;

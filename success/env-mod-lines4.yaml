@@ -2,7 +2,7 @@ modifyLineBreaks:
     environments:
         everyBeginStartsOnOwnLine: 0
         everyBodyStartsOnOwnLine: 0
-        everyEndStartsOnOwnLine: 0
+        everyEndStartsOnOwnLine: -1
         everyEndFinishesWithLineBreak: 0
         equation*:
             BeginStartsOnOwnLine: 0

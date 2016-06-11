@@ -160,8 +160,7 @@ sub process_body_of_text{
                 my $surroundingIndentation = ${$child}{surroundingIndentation}?${${$child}{surroundingIndentation}}:q();
 
                 # log file info
-                $self->logger("Indentation info",'heading');
-                $self->logger("object name: ${$child}{name}");
+                $self->logger("Indenting  ${$child}{name}",'heading');
                 $self->logger("current indentation: '$surroundingIndentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
