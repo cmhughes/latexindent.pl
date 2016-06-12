@@ -38,5 +38,7 @@ latexindent.pl -s -l env-mod-lines5.yaml -t -m -o=environments-one-line-mod-line
 latexindent.pl -s -l env-mod-lines5.yaml -t -m -o=environments-one-line-simple-mod1.tex environments-one-line-simple.tex
 latexindent.pl -s -w -o environments-nested-fourth-mod1.tex -m environments-nested-fourth.tex
 latexindent.pl -s -l=testlogfile.yaml environments-nested-fourth.tex
+latexindent.pl  -m -tt -l=env-mod-lines6.yaml -o env-remove-line-breaks-mod1.tex environments-remove-line-breaks.tex
+latexindent.pl  -m -tt -l=env-mod-lines7.yaml -o env-remove-line-breaks-mod2.tex environments-remove-line-breaks.tex
 git status
 exit
