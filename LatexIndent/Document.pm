@@ -50,6 +50,7 @@ sub operate_on_file{
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
+    $self->remove_trailing_whitespace;
     $self->put_verbatim_back_in;
     $self->put_trailing_comments_back_in;
     $self->output_indented_text;
@@ -247,6 +248,18 @@ sub put_trailing_comments_back_in{
         $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
     }
     return;
+}
+
+sub remove_trailing_whitespace{
+    my $self = shift;
+    return unless(${%{$self}{settings}}{removeTrailingWhitespace});
+
+    $self->logger("Removing trailing white space");
+    ${$self}{body} =~ s/
+                       \h+  # followed by possible horizontal space
+                       $    # up to the end of a line
+                       //xsmg;
+
 }
 
 1;
