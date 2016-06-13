@@ -166,6 +166,9 @@ sub find_environments{
                     \\begin\{
                             (.*?)       # environment name captured into $2
                            \}           # \begin{<something>} statement
+                           (?:          # cluster-only (), don't capture
+                            \h*         # horizontal space
+                           )?           # possibly
                             (\R*)?      # possible line breaks (into $3)
                 )                       # begin statement captured into $1
                 (
@@ -237,7 +240,6 @@ sub find_environments{
       # line break checks *after* \end{statement} if appropriate
       if(${$env}{EndFinishesWithLineBreak} and !${$env}{linebreaksAtEnd}{end}){
           $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
-          ${$env}{end} =~ s/\h*//g;
           ${$env}{linebreaksAtEnd}{end} = 1;
           $replacementText .= "\n";
       }

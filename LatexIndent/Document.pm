@@ -244,7 +244,20 @@ sub put_trailing_comments_back_in{
 
     $self->logger("Returning trailing comments to body",'heading');
     while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
-        ${$self}{body} =~ s/%\h$trailingcommentID/%$trailingcommentValue/;
+        if(${$self}{body} =~ m/%\h$trailingcommentID
+                                (
+                                    (?!          # don't include % in the body   
+                                        (?<!\\)  # not \
+                                        %        # %
+                                    ).*?
+                                )                # captured into $1
+                                (\h*)?$                
+                            /mx and $1 ne ''){
+            $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
+            ${$self}{body} =~ s/%\h$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+        } else {
+            ${$self}{body} =~ s/%\h$trailingcommentID/%$trailingcommentValue/;
+        }
         $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
     }
     return;
