@@ -11,6 +11,8 @@ use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments fin
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::Environment qw/find_environments/;
 
+our $environmentCounter;
+
 sub new{
     # Create new objects, with optional key/value pairs
     # passed as initializers.
@@ -46,6 +48,7 @@ sub operate_on_file{
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
+    # token check (we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body)
     # remove trailing spaces
     # find alignment environments
     $self->process_body_of_text;
@@ -138,6 +141,9 @@ sub process_body_of_text{
         }
     }
 
+    # the modify line switch can adjust line breaks, so we need another sweep
+    $self->pre_print;
+
     $self->logger('Pre-processed body:','heading');
     $self->logger(${$self}{body});
     $self->logger("Indenting children objects:",'heading');
@@ -198,6 +204,79 @@ sub process_body_of_text{
     return;
 }
 
+sub pre_print{
+    my $self = shift;
+    return unless ${%{$self}{switches}}{modifyLineBreaks};
+
+    $self->logger('Checking amalgamated line breaks (-m switch active):','heading.trace');
+
+    $self->logger('children to process:','trace');
+    $self->logger(scalar keys %{%{$self}{children}},'trace');
+
+    my $processedChildren = 0;
+    my $totalChildren = scalar keys %{%{$self}{children}};
+    my $body = ${$self}{body};
+
+    # loop through document children hash, remove comments, 
+    # produce a pre-print of the document so that line breaks can be checked
+    while($processedChildren != $totalChildren){
+            foreach my $child (values %{%{$self}{children}}) { 
+                if(index($body,${$child}{id}) != -1){
+                    # make a copy of the begin, body and end statements
+                    ${${$child}{noComments}}{begin} = "begin".reverse ${$child}{id};
+                    ${${$child}{noComments}}{begin} .= "\n" if(${$child}{linebreaksAtEnd}{begin});
+                    ${${$child}{noComments}}{body} = ${$child}{body};
+                    ${${$child}{noComments}}{end} = "end".reverse ${$child}{id};
+                    ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
+
+                    # remove all trailing comments from the copied begin, body and end statements
+                    ${${$child}{noComments}}{begin} =~ s/%\hlatexindenttrailingcomment\d+//mg;
+                    ${${$child}{noComments}}{body} =~ s/%\hlatexindenttrailingcomment\d+//mg;
+                    ${${$child}{noComments}}{end} =~ s/%\hlatexindenttrailingcomment\d+//mg;
+
+                    # replace ids with body
+                    $body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
+
+                    # increment the processed children counter
+                    $processedChildren++;
+                  }
+             }
+    }
+
+    # remove any remaining comments
+    $body =~ s/%\hlatexindenttrailingcomment\d+//mg;
+    
+    # output the body to the log file
+    $self->logger("Expanded body, no comments (just to check linebreaks)","heading.ttrace");
+    $self->logger($body,'ttrace');
+
+    # reset counter
+    $processedChildren = 0;
+
+    # sweep back through, check linebreaks
+    while($processedChildren != $totalChildren){
+            foreach my $child (values %{%{$self}{children}}) { 
+                if(index($body,${${$child}{noComments}}{begin}.${${$child}{noComments}}{body}.${${$child}{noComments}}{end})!=-1){
+                      # check for an undisclosed line break
+                      if(${${$child}{noComments}}{body} =~ m/\R$/m and !${$child}{linebreaksAtEnd}{body}){
+                          $self->logger("Undisclosed line break for ${$child}{end}",'trace');
+                          ${$child}{body} .= "\n";
+                          ${$child}{linebreaksAtEnd}{body}=1;
+                      }
+
+                      # replace block with ID
+                      $body =~ s/\Q${${$child}{noComments}}{begin}${${$child}{noComments}}{body}\E\Q${${$child}{noComments}}{end}\E/${$child}{id}/;
+
+                      # increment the processed children counter
+                      $processedChildren++;
+                }
+             }
+    }
+
+    $self->logger('Processed line breaks','heading.trace');
+    return;
+}
+
 sub create_unique_id{
     my $self = shift;
 
@@ -206,6 +285,9 @@ sub create_unique_id{
 
     # allocate id to the object
     ${$self}{id} = $uuid1;
+
+    $environmentCounter++;
+    ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
     return;
 }
 
@@ -246,8 +328,8 @@ sub put_trailing_comments_back_in{
     while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
         if(${$self}{body} =~ m/%\h$trailingcommentID
                                 (
-                                    (?!          # don't include % in the body   
-                                        (?<!\\)  # not \
+                                    (?!          # not immediately preceeded by 
+                                        (?<!\\)  # \
                                         %        # %
                                     ).*?
                                 )                # captured into $1
