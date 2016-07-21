@@ -3,7 +3,7 @@ modifyLineBreaks:
         everyBeginStartsOnOwnLine: 0
         everyBodyStartsOnOwnLine: 0
         everyEndStartsOnOwnLine: -1
-        everyEndFinishesWithLineBreak: 0
+        everyEndFinishesWithLineBreak: -1
         equation*:
             BeginStartsOnOwnLine: 0
             BodyStartsOnOwnLine: 0

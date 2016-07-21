@@ -35,22 +35,23 @@ sub indent{
     if(${$self}{linebreaksAtEnd}{begin}==1){
         ${$self}{body} =~ s/^\h*/$indentation/mg;  # add indentation
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
-        ${$self}{body} =~ m/
+        if(${$self}{body} =~ m/
                             (.*?)      # content of first line
                             \R         # first line break
                             (.*$)      # rest of body
-                            /sx;  
-        my $bodyFirstLine = $1;
-        my $remainingBody = $2;
-        $self->logger("first line of body: $bodyFirstLine");
-        $self->logger("remaining body (before indentation): '$remainingBody'");
-
-        # add the indentation to all the body except first line
-        $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
-        $self->logger("remaining body (after indentation): '$remainingBody'");
-
-        # put the body back together
-        ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
+                            /sx){
+            my $bodyFirstLine = $1;
+            my $remainingBody = $2;
+            $self->logger("first line of body: $bodyFirstLine");
+            $self->logger("remaining body (before indentation): '$remainingBody'");
+    
+            # add the indentation to all the body except first line
+            $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
+            $self->logger("remaining body (after indentation): '$remainingBody'");
+    
+            # put the body back together
+            ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
+        }
     }
 
     # \end{statement} indentation
@@ -114,25 +115,42 @@ sub get_indentation_settings_for_this_object{
                 # $EndStartsOnOwnLine 
                 # $EndStartsOnOwnLine 
                 # $EndStartsOnOwnLine 
+                my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
+                my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
 
-                # check for the *every* value
-                if (defined ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine}
-                                        and
-                    ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine} >= 0){
-                    $EndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
-                 };
+                # check for the *every* value; note that
+                # since EndStartsOnOwnLine is undef by default, 
+                # we only need to check if the 'every' value is non-negative
+                if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
+                    $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
+                }
 
-                # check for the *custom* value
-                if (defined ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine}
-                                        and
-                    ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine}>=0){
-                    $EndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
-                 };
+                # check for the *custom* value; since the 'every'
+                # value may have switched EndStartsOnOwnLine back on,
+                # we may have to switch it off, hence the ternary check
+                if (defined $customEndStartsOnOwnLine){
+                    $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
+                 }
 
-                $EndFinishesWithLineBreak =  (${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak}
-                                                             or
-                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak})
-                                            ?  1 : 0;
+                # EndFinishesWithLineBreak 
+                # EndFinishesWithLineBreak 
+                # EndFinishesWithLineBreak 
+                my $everyEndFinishesWithLineBreak = ${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak};
+                my $customEndFinishesWithLineBreak = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak};
+
+                # check for the *every* value; note that
+                # since EndFinishesWithLineBreak is undef by default, 
+                # we only need to check if the 'every' value is non-negative
+                if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
+                    $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
+                }
+
+                # check for the *custom* value; since the 'every'
+                # value may have switched EndFinishesWithLineBreak back on,
+                # we may have to switch it off, hence the ternary check
+                if (defined $customEndFinishesWithLineBreak ){
+                    $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
+                }
         }
 
         # store the settings
@@ -237,11 +255,13 @@ sub find_environments{
             }
       }
 
-      # line break checks *after* \end{statement} if appropriate
-      if(${$env}{EndFinishesWithLineBreak} and !${$env}{linebreaksAtEnd}{end}){
-          $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
-          ${$env}{linebreaksAtEnd}{end} = 1;
-          $replacementText .= "\n";
+      # possibly modify line break *after* \end{statement}
+      if(defined ${$env}{EndFinishesWithLineBreak}
+         and ${$env}{EndFinishesWithLineBreak}==1 
+         and !${$env}{linebreaksAtEnd}{end}){
+                $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
+                ${$env}{linebreaksAtEnd}{end} = 1;
+                $replacementText .= "\n";
       }
 
       # store children in special hash

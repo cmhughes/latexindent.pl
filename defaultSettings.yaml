@@ -270,11 +270,29 @@ fileContentsEnvironments:
 #    everyEndStartsOnOwnLine: 1
 #       if an end statement is not already on its own line,
 #       then, with -m active, it will be moved to its own line.
-#       e.g 
+#       e.g
 #               some text some text \end{myenvironment}
 #       will be changed to
 #               some text some text 
 #               \end{myenvironment}
+#       when the switch is set to 0, then
+#       e.g
+#
+#    everyEndFinishesWithLineBreak: 1
+#       this switch adjusts line breaks immmediately 
+#       after an end statement (with -m active)
+#       
+#       when set to 1, e.g 
+#               \end{myenvironment}some text some text 
+#           will be changed to
+#                   \end{myenvironment}
+#                   some text some text 
+#       when set to 0, e.g 
+#               \end{myenvironment}
+#               some text some text 
+#           will be changed to
+#                   \end{myenvironment}some text some text 
+#       when set to -1, the switch is ignored
 #
 # Naturally, you can specify settings for individual environments,
 # commands, headings, etc, populate as you wish.

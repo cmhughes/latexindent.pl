@@ -167,15 +167,25 @@ sub process_body_of_text{
                 my $surroundingIndentation = ${$child}{surroundingIndentation}?${${$child}{surroundingIndentation}}:q();
 
                 # log file info
-                $self->logger("Indenting  ${$child}{name}",'heading');
+                $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
                 $self->logger("current indentation: '$surroundingIndentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
-                # line break checks before <begin> statement
+                # line break checks before \begin{statement}
                 if(${$child}{BeginStartsOnOwnLine} and !$IDFirstNonWhiteSpaceCharacter){
                     $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
                     ${$child}{begin} = "\n".${$child}{begin};
                     ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+                }
+
+                # line break checks *after* \end{statement}
+                if (defined ${$child}{EndFinishesWithLineBreak}
+                    and ${$child}{EndFinishesWithLineBreak}==0 
+                    and $IDFollowedImmediatelyByLineBreak) {
+                    # remove line break *after* \end{statement}, if appropriate
+                    $self->logger("Removing linebreak after ${$child}{end} (see EndFinishesWithLineBreak)");
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R\h*/${$child}{id}$1/s;
+                    ${$child}{linebreaksAtEnd}{end} = 0;
                 }
 
                 # perform indentation
@@ -265,7 +275,7 @@ sub pre_print{
                       }
 
                       # replace block with ID
-                      $body =~ s/\Q${${$child}{noComments}}{begin}${${$child}{noComments}}{body}\E\Q${${$child}{noComments}}{end}\E/${$child}{id}/;
+                      $body =~ s/\Q${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}\E/${$child}{id}/;
 
                       # increment the processed children counter
                       $processedChildren++;

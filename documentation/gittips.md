@@ -40,6 +40,7 @@ checking
 git status      # lots of information
 git diff        # show differences
 git diff master # show differences when compared with master
+git diff --cached # show differences in staged files compared to latest committed file
 
 # show
 git show e0a86c674a80a7440dde2072b4836bba2e0b93db xsl/omdchapter2tex.xsl
