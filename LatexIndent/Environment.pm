@@ -116,14 +116,27 @@ sub get_indentation_settings_for_this_object{
                                                              or
                                         ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine})
                                             ?  1 : 0;
-                $BodyStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBodyStartsOnOwnLine}
-                                                             or
-                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BodyStartsOnOwnLine})
-                                            ?  1 : 0;
+                # BodyStartsOnOwnLine 
+                # BodyStartsOnOwnLine 
+                # BodyStartsOnOwnLine 
+                my $everyBodyStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyBodyStartsOnOwnLine};
+                my $customBodyStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BodyStartsOnOwnLine};
 
-                # $EndStartsOnOwnLine 
-                # $EndStartsOnOwnLine 
-                # $EndStartsOnOwnLine 
+                # check for the *every* value
+                if (defined $everyBodyStartsOnOwnLine and $everyBodyStartsOnOwnLine >= 0){
+                    $self->logger("everyBodyStartOnOwnLine=$everyBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
+                    $BodyStartsOnOwnLine = $everyBodyStartsOnOwnLine;
+                }
+
+                # check for the *custom* value
+                if (defined $customBodyStartsOnOwnLine){
+                    $self->logger("$name: BodyStartOnOwnLine=$customBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
+                    $BodyStartsOnOwnLine = $customBodyStartsOnOwnLine>=0 ? $customBodyStartsOnOwnLine : undef;
+                 }
+
+                # EndStartsOnOwnLine 
+                # EndStartsOnOwnLine 
+                # EndStartsOnOwnLine 
                 my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
                 my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
 
@@ -239,11 +252,18 @@ sub find_environments{
       my $replacementText = ${$env}{id};
 
       # add a line break after \begin{statement} if appropriate
-      if(${$env}{BodyStartsOnOwnLine} and !${$env}{linebreaksAtEnd}{begin}){
-          $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)",'heading');
-          ${$env}{begin} .= "\n";       
-          ${$env}{linebreaksAtEnd}{begin} = 1;
-       }
+      if(defined ${$env}{BodyStartsOnOwnLine}){
+        if(${$env}{BodyStartsOnOwnLine}==1 and !${$env}{linebreaksAtEnd}{begin}){
+            $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)",'heading');
+            ${$env}{begin} .= "\n";       
+            ${$env}{linebreaksAtEnd}{begin} = 1;
+         } elsif (${$env}{BodyStartsOnOwnLine}==0 and ${$env}{linebreaksAtEnd}{begin}){
+            # remove line break *after* begin, if appropriate
+            $self->logger("Removing linebreak at the end of begin (see BodyStartsOnOwnLine)",'heading');
+            ${$env}{begin} =~ s/\R*$//sx;
+            ${$env}{linebreaksAtEnd}{begin} = 0;
+         }
+      }
 
       # possibly modify line break *before* \end{statement}
       if(defined ${$env}{EndStartsOnOwnLine}){

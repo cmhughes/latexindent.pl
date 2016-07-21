@@ -1,12 +1,12 @@
 modifyLineBreaks:
     environments:
         everyBeginStartsOnOwnLine: 0
-        everyBodyStartsOnOwnLine: 0
+        everyBodyStartsOnOwnLine: -1
         everyEndStartsOnOwnLine: -1
         everyEndFinishesWithLineBreak: -1
         equation*:
             BeginStartsOnOwnLine: 0
-            BodyStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: -1
             EndStartsOnOwnLine: 0
             EndFinishesWithLineBreak: 1
 logFilePreferences:
