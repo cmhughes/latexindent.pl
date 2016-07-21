@@ -184,7 +184,7 @@ sub process_body_of_text{
                     and $IDFollowedImmediatelyByLineBreak) {
                     # remove line break *after* \end{statement}, if appropriate
                     $self->logger("Removing linebreak after ${$child}{end} (see EndFinishesWithLineBreak)");
-                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R\h*/${$child}{id}$1/s;
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R*\h*/${$child}{id}$1/s;
                     ${$child}{linebreaksAtEnd}{end} = 0;
                 }
 

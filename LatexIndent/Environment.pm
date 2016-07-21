@@ -103,6 +103,14 @@ sub get_indentation_settings_for_this_object{
 
         # if the -m switch is active, update these settings
         if($modLineBreaksSwitch){
+                # since each of the four values are undef by default, 
+                # the 'every' value check (for each of the four values)
+                # only needs to be non-negative
+
+                # the 'every' value may well switch each of the four
+                # values on, and the 'custom' value may switch it off, 
+                # hence the ternary check (using (test)?true:false)
+
                 $BeginStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine}
                                                              or
                                         ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine})
@@ -118,16 +126,12 @@ sub get_indentation_settings_for_this_object{
                 my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
                 my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
 
-                # check for the *every* value; note that
-                # since EndStartsOnOwnLine is undef by default, 
-                # we only need to check if the 'every' value is non-negative
+                # check for the *every* value
                 if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
                     $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
                 }
 
-                # check for the *custom* value; since the 'every'
-                # value may have switched EndStartsOnOwnLine back on,
-                # we may have to switch it off, hence the ternary check
+                # check for the *custom* value
                 if (defined $customEndStartsOnOwnLine){
                     $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
                  }
@@ -138,17 +142,13 @@ sub get_indentation_settings_for_this_object{
                 my $everyEndFinishesWithLineBreak = ${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak};
                 my $customEndFinishesWithLineBreak = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak};
 
-                # check for the *every* value; note that
-                # since EndFinishesWithLineBreak is undef by default, 
-                # we only need to check if the 'every' value is non-negative
+                # check for the *every* value
                 if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
                     $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
                 }
 
-                # check for the *custom* value; since the 'every'
-                # value may have switched EndFinishesWithLineBreak back on,
-                # we may have to switch it off, hence the ternary check
-                if (defined $customEndFinishesWithLineBreak ){
+                # check for the *custom* value
+                if (defined $customEndFinishesWithLineBreak){
                     $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
                 }
         }

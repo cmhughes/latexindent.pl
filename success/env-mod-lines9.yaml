@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    environments:
+        everyBeginStartsOnOwnLine: 1
+        everyBodyStartsOnOwnLine: 1
+        everyEndStartsOnOwnLine: -1
+        everyEndFinishesWithLineBreak: -1
+        myenv:
+            EndStartsOnOwnLine: 0
+            EndFinishesWithLineBreak: 0
