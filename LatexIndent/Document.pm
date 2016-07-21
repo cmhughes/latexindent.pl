@@ -45,11 +45,12 @@ sub operate_on_file{
     $self->find_noindent_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
+    # protect line breaks (need a subroutine to replace blank lines with a token (e.g latex-indent-blank-lines)) when -m switch active
+    # condense multiple blank lines into 1 blank line; option to turn every blank line into multiple, when -m switch active
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
     # token check (we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body)
-    # remove trailing spaces
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments

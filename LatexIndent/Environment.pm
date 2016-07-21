@@ -110,6 +110,7 @@ sub get_indentation_settings_for_this_object{
                 # the 'every' value may well switch each of the four
                 # values on, and the 'custom' value may switch it off, 
                 # hence the ternary check (using (test)?true:false)
+                $self->logger("-m modifylinebreaks switch active, looking for settings for $name ",'heading.trace');
 
                 $BeginStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine}
                                                              or
@@ -128,11 +129,13 @@ sub get_indentation_settings_for_this_object{
 
                 # check for the *every* value
                 if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
+                    $self->logger("everyEndStartOnOwnLine=$everyEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
                     $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
                 }
 
                 # check for the *custom* value
                 if (defined $customEndStartsOnOwnLine){
+                    $self->logger("$name: EndStartOnOwnLine=$customEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
                     $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
                  }
 
@@ -144,11 +147,13 @@ sub get_indentation_settings_for_this_object{
 
                 # check for the *every* value
                 if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
+                    $self->logger("everyEndFinishesWithLineBreak=$everyEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
                     $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
                 }
 
                 # check for the *custom* value
                 if (defined $customEndFinishesWithLineBreak){
+                    $self->logger("$name: EndFinishesWithLineBreak=$customEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
                     $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
                 }
         }
@@ -235,7 +240,7 @@ sub find_environments{
 
       # add a line break after \begin{statement} if appropriate
       if(${$env}{BodyStartsOnOwnLine} and !${$env}{linebreaksAtEnd}{begin}){
-          $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)");
+          $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)",'heading');
           ${$env}{begin} .= "\n";       
           ${$env}{linebreaksAtEnd}{begin} = 1;
        }
@@ -244,12 +249,12 @@ sub find_environments{
       if(defined ${$env}{EndStartsOnOwnLine}){
             if(${$env}{EndStartsOnOwnLine}==1 and !${$env}{linebreaksAtEnd}{body}){
                 # add a line break after body, if appropriate
-                $self->logger("Adding a linebreak at the end of body (see EndStartsOnOwnLine)");
+                $self->logger("Adding a linebreak at the end of body (see EndStartsOnOwnLine)",'heading');
                 ${$env}{body} .= "\n";
                 ${$env}{linebreaksAtEnd}{body} = 1;
             } elsif (${$env}{EndStartsOnOwnLine}==0 and ${$env}{linebreaksAtEnd}{body}){
                 # remove line break *after* body, if appropriate
-                $self->logger("Removing linebreak at the end of body (see EndStartsOnOwnLine)");
+                $self->logger("Removing linebreak at the end of body (see EndStartsOnOwnLine)",'heading');
                 ${$env}{body} =~ s/\R*$//sx;
                 ${$env}{linebreaksAtEnd}{body} = 0;
             }
@@ -259,7 +264,7 @@ sub find_environments{
       if(defined ${$env}{EndFinishesWithLineBreak}
          and ${$env}{EndFinishesWithLineBreak}==1 
          and !${$env}{linebreaksAtEnd}{end}){
-                $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)");
+                $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)",'heading');
                 ${$env}{linebreaksAtEnd}{end} = 1;
                 $replacementText .= "\n";
       }
