@@ -112,10 +112,24 @@ sub get_indentation_settings_for_this_object{
                 # hence the ternary check (using (test)?true:false)
                 $self->logger("-m modifylinebreaks switch active, looking for settings for $name ",'heading.trace');
 
-                $BeginStartsOnOwnLine = (${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine}
-                                                             or
-                                        ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine})
-                                            ?  1 : 0;
+                # BeginStartsOnOwnLine 
+                # BeginStartsOnOwnLine 
+                # BeginStartsOnOwnLine 
+                my $everyBeginStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine};
+                my $customBeginStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine};
+
+                # check for the *every* value
+                if (defined $everyBeginStartsOnOwnLine and $everyBeginStartsOnOwnLine >= 0){
+                    $self->logger("everyBeginStartOnOwnLine=$everyBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
+                    $BeginStartsOnOwnLine = $everyBeginStartsOnOwnLine;
+                }
+
+                # check for the *custom* value
+                if (defined $customBeginStartsOnOwnLine){
+                    $self->logger("$name: BeginStartOnOwnLine=$customBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
+                    $BeginStartsOnOwnLine = $customBeginStartsOnOwnLine>=0 ? $customBeginStartsOnOwnLine : undef;
+                 }
+
                 # BodyStartsOnOwnLine 
                 # BodyStartsOnOwnLine 
                 # BodyStartsOnOwnLine 

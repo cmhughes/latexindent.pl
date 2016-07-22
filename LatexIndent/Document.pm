@@ -173,10 +173,15 @@ sub process_body_of_text{
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
                 # line break checks before \begin{statement}
-                if(${$child}{BeginStartsOnOwnLine} and !$IDFirstNonWhiteSpaceCharacter){
-                    $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
-                    ${$child}{begin} = "\n".${$child}{begin};
-                    ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+                if(defined ${$child}{BeginStartsOnOwnLine}){
+                    if(${$child}{BeginStartsOnOwnLine}==1 and !$IDFirstNonWhiteSpaceCharacter){
+                        $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
+                        ${$child}{begin} = "\n".${$child}{begin};
+                        ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+                    } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
+                        $self->logger("Removing linebreak before ${$child}{begin} (see BeginStartsOnOwnLine)",'heading');
+                        ${$self}{body} =~ s/\R*(\h*)?${$child}{id}/${$child}{id}/s;
+                    }
                 }
 
                 # line break checks *after* \end{statement}
