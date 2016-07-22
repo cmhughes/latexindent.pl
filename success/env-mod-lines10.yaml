@@ -1,5 +1,5 @@
 modifyLineBreaks:
-    protectBlankLines: 0
+    preserveBlankLines: 0
     environments:
         everyBeginStartsOnOwnLine: 1
         everyBodyStartsOnOwnLine: 0

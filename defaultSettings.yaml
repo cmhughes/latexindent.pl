@@ -317,7 +317,7 @@ fileContentsEnvironments:
 # Naturally, you can specify settings for individual environments,
 # commands, headings, etc, populate as you wish.
 modifyLineBreaks:
-    protectBlankLines: 1
+    preserveBlankLines: 1
     environments:
         everyBeginStartsOnOwnLine: 1
         everyBodyStartsOnOwnLine: 1

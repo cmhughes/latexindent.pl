@@ -377,12 +377,12 @@ sub remove_trailing_whitespace{
 sub protect_blank_lines{
     my $self = shift;
     return unless ${%{$self}{switches}}{modifyLineBreaks};
-    unless(${${${$self}{settings}}{modifyLineBreaks}}{protectBlankLines}){
-        $self->logger("Blank lines will not be protected (protectBlankLines=0)",'heading.trace');
+    unless(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}){
+        $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
         return
     }
 
-    $self->logger("Protecting blank lines (see protectBlankLines)",'heading.trace');
+    $self->logger("Protecting blank lines (see preserveBlankLines)",'heading.trace');
     ${$self}{body} =~ s/^(\h*)?\R/latex-indent-blank-line\n/mg;
     return;
 }
@@ -390,9 +390,9 @@ sub protect_blank_lines{
 sub unprotect_blank_lines{
     my $self = shift;
     return unless ${%{$self}{switches}}{modifyLineBreaks};
-    return unless ${${${$self}{settings}}{modifyLineBreaks}}{protectBlankLines};
+    return unless ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines};
 
-    $self->logger("Unprotecting blank lines (see protectBlankLines)",'heading.trace');
+    $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/latex-indent-blank-line/m){
