@@ -9,6 +9,7 @@ use LatexIndent::Logfile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
+use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::Environment qw/find_environments/;
 
 our $environmentCounter;
@@ -46,7 +47,6 @@ sub operate_on_file{
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     $self->protect_blank_lines;
-    # condense multiple blank lines into 1 blank line; option to turn every blank line into multiple, when -m switch active
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
@@ -55,6 +55,7 @@ sub operate_on_file{
     $self->process_body_of_text;
     # process alignment environments
     $self->remove_trailing_whitespace;
+    $self->condense_blank_lines;
     $self->unprotect_blank_lines;
     $self->put_verbatim_back_in;
     $self->put_trailing_comments_back_in;
@@ -372,37 +373,6 @@ sub remove_trailing_whitespace{
                        $    # up to the end of a line
                        //xsmg;
 
-}
-
-sub protect_blank_lines{
-    my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
-    unless(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}){
-        $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
-        return
-    }
-
-    $self->logger("Protecting blank lines (see preserveBlankLines)",'heading.trace');
-    ${$self}{body} =~ s/^(\h*)?\R/latex-indent-blank-line\n/mg;
-    return;
-}
-
-sub unprotect_blank_lines{
-    my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
-    return unless ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines};
-
-    $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
-
-    # loop through the body, looking for the blank line token
-    while(${$self}{body} =~ m/latex-indent-blank-line/m){
-        # when the blank line token occupies the whole line
-        while(${$self}{body} =~ m/^\h*?latex-indent-blank-line$/m){
-            ${$self}{body} =~ s/^\h*?latex-indent-blank-line$//m;
-        }
-        # otherwise the blank line has been deleted, so we compensate with an extra
-        ${$self}{body} =~ s/latex-indent-blank-line/\n/m;
-    }
 }
 
 1;

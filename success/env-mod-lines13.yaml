@@ -1,0 +1,13 @@
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    environments:
+        everyBeginStartsOnOwnLine: -1
+        everyBodyStartsOnOwnLine: 0
+        everyEndStartsOnOwnLine: -1
+        everyEndFinishesWithLineBreak: 0
+        myenv:
+            BeginStartsOnOwnLine: 0
+            EndStartsOnOwnLine: 0
+            EndFinishesWithLineBreak: 0
+            BodyStartsOnOwnLine: 1

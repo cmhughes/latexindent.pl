@@ -318,6 +318,7 @@ fileContentsEnvironments:
 # commands, headings, etc, populate as you wish.
 modifyLineBreaks:
     preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
     environments:
         everyBeginStartsOnOwnLine: 1
         everyBodyStartsOnOwnLine: 1
