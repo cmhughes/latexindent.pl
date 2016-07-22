@@ -1,10 +1,10 @@
 modifyLineBreaks:
-    protectBlankLines: 0
+    protectBlankLines: 1
     environments:
         everyBeginStartsOnOwnLine: -1
         everyBodyStartsOnOwnLine: 0
         everyEndStartsOnOwnLine: -1
-        everyEndFinishesWithLineBreak: -1
+        everyEndFinishesWithLineBreak: 0
         myenv:
             BeginStartsOnOwnLine: 0
             EndStartsOnOwnLine: 0

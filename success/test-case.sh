@@ -49,5 +49,7 @@ latexindent.pl  -s -m -l=env-mod-lines8.yaml -o=environments-remove-line-breaks-
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod1.tex -m -tt -l=env-mod-lines9.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod2.tex -m -tt -l=env-mod-lines10.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod3.tex -m -tt -l=env-mod-lines11.yaml environments-modify-multiple-line-breaks.tex
+# protect blank lines test
+latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l=env-mod-lines12.yaml environments-modify-multiple-line-breaks.tex
 git status
 exit
