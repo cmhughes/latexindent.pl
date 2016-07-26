@@ -8,6 +8,7 @@ use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our $verbatimCounter;
 
 sub indent{
     my $self = shift;
@@ -202,6 +203,14 @@ sub  put_verbatim_back_in {
     $self->logger(scalar keys %{%{$self}{verbatim}});
     $self->logger('Post-processed body:','heading.trace');
     $self->logger(${$self}{body},'trace');
+    return;
+}
+
+sub create_unique_id{
+    my $self = shift;
+
+    $verbatimCounter++;
+    ${$self}{id} = "LATEX-INDENT-VERBATIM$verbatimCounter";
     return;
 }
 

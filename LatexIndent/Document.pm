@@ -2,7 +2,6 @@ package LatexIndent::Document;
 use strict;
 use warnings;
 use Data::Dumper;
-use Data::UUID;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
@@ -11,8 +10,7 @@ use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments fin
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::Environment qw/find_environments/;
-
-our $environmentCounter;
+use LatexIndent::IfElseFi qw/find_ifelsefi/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -96,7 +94,11 @@ sub process_body_of_text{
     $self->logger('looking for ENVIRONMENTS','heading');
     $self->find_environments;
 
-    # if there are no verbatim children, return
+    # search for ifElseFi blocks
+    $self->logger('looking for IFELSEFI','heading');
+    $self->find_ifelsefi;
+
+    # if there are no children, return
     if(%{$self}{children}){
         $self->logger("Objects have been found.",'heading');
     } else {
@@ -292,20 +294,6 @@ sub pre_print{
     }
 
     $self->logger('Processed line breaks','heading.trace');
-    return;
-}
-
-sub create_unique_id{
-    my $self = shift;
-
-    # generate a unique ID (http://stackoverflow.com/questions/18628244/how-we-can-create-a-unique-id-in-perl)
-    my $uuid1 = Data::UUID->new->create_str();
-
-    # allocate id to the object
-    ${$self}{id} = $uuid1;
-
-    $environmentCounter++;
-    ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
     return;
 }
 

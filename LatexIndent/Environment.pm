@@ -9,6 +9,7 @@ use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_environments/;
 our %previouslyFoundSettings;
+our $environmentCounter;
 
 sub indent{
     my $self = shift;
@@ -309,5 +310,14 @@ sub find_environments{
     } 
     return;
 }
+
+sub create_unique_id{
+    my $self = shift;
+
+    $environmentCounter++;
+    ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
+    return;
+}
+
 
 1;

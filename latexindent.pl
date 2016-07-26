@@ -8,8 +8,6 @@ use Getopt::Long;              # to get the switches/options/flags
 # use lib to make sure that @INC contains the latexindent directory
 use lib $FindBin::RealBin;
 use LatexIndent::Document;
-use LatexIndent::Environment;
-use LatexIndent::Verbatim;
 
 # get the options
 my %switches = (readLocalSettings=>0);
