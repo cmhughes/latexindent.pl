@@ -22,15 +22,6 @@ sub indent{
     ${$self}{indentation} = $indentation;
     $self->logger(Dumper(\%{$self}),'ttrace');
 
-    # line break stuff
-    # line break stuff
-    # line break stuff
-
-    # ${$self}{body} =~ s/\R*$//;        # remove line break(s) at end of body
-
-    # remove line break(s) before body
-    #${$self}{begin} =~ s/\R*$// if(${$self}{BodyStartsOnOwnLine}==0);       
-
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         ${$self}{body} =~ s/^\h*/$indentation/mg;  # add indentation
@@ -61,7 +52,6 @@ sub indent{
      }
 
     $self->logger("Finished indenting ${$self}{name}",'heading');
-    # ${$self}{body} =~ s/\R*//mg;       # remove line break(s) from body
     return $self;
 }
 
@@ -84,12 +74,12 @@ sub get_indentation_settings_for_this_object{
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
         my $indentation = (${$settings{noAdditionalIndent}}{$name})
-                                ?
-                                q()
-                                :
-                     (${$settings{indentRules}}{$name}
-                                ||
-                     $settings{defaultIndent});
+                                     ?
+                                     q()
+                                     :
+                          (${$settings{indentRules}}{$name}
+                                     ||
+                          $settings{defaultIndent});
 
         # check if the -m switch is active
         $self->get_switches;
