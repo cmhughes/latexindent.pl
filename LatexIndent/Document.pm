@@ -5,7 +5,7 @@ use Data::Dumper;
 use Data::UUID;
 
 # gain access to subroutines in the following modules
-use LatexIndent::Logfile qw/logger output_logfile processSwitches get_switches/;
+use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;

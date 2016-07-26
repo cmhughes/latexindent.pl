@@ -1,4 +1,4 @@
-package LatexIndent::Logfile;
+package LatexIndent::LogFile;
 use strict;
 use warnings;
 use FindBin; 
