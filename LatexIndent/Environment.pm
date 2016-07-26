@@ -202,7 +202,9 @@ sub get_indentation_settings_for_this_object{
 
 sub find_environments{
     my $self = shift;
-    while( ${$self}{body} =~ m/
+
+    # store the regular expresssion for matching and replacing the \begin{}...\end{} statements
+    my $environmentRegExp = qr/
                 (
                     \\begin\{
                             (.*?)       # environment name captured into $2
@@ -225,8 +227,9 @@ sub find_environments{
                     (\h*)?              # possibly followed by horizontal space
                 )                       # captured into $6
                 (\R)?                   # possibly followed by a line break 
-                /sx){
+                /sx;
 
+    while( ${$self}{body} =~ m/$environmentRegExp/){
       # log file output
       $self->logger("environment found: $2");
 
@@ -255,6 +258,10 @@ sub find_environments{
 
       # the replacement text can be just the ID, but the ID might have a line break at the end of it
       my $replacementText = ${$env}{id};
+
+      # the above regexp, when used in the substitution below, will remove the trailing linebreak 
+      # in ${$env}{linebreaksAtEnd}{end}, so we compensate for it here
+      $replacementText .= "\n" if(${$env}{linebreaksAtEnd}{end});
 
       # add a line break after \begin{statement} if appropriate
       if(defined ${$env}{BodyStartsOnOwnLine}){
@@ -298,13 +305,9 @@ sub find_environments{
       ${$self}{children}{${$env}{id}}=$env;
 
       # remove the environment block, and replace with unique ID
-      ${$self}{body} =~ s/
-                (\\begin\{(.*?)\}   # the \begin{<something>} statement
-                (\R*)?)             # possible line breaks
-                (((?!(\\begin)).)*?)
-                (\\end\{\2\}(\h*)?)       # the \end{<something>} statement
-                /$replacementText/sx;
+      ${$self}{body} =~ s/$environmentRegExp/$replacementText/;
 
+      # log file information
       $self->logger(Dumper(\%{$env}),'trace');
       $self->logger("replaced with ID: ${$env}{id}");
     } 
