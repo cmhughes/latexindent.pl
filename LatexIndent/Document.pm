@@ -10,6 +10,7 @@ use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in/;
+use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
@@ -26,18 +27,6 @@ sub new{
     my $self = {@_};
     bless ($self,$class);
     return $self;
-}
-
-sub remove_leading_space{
-    my $self = shift;
-    $self->logger("Removing leading space from entire document (verbatim/noindentblock already accounted for)",'heading');
-    ${$self}{body} =~ s/
-                        (   
-                            ^           # beginning of the line
-                            \h*         # with 0 or more horizontal spaces
-                        )?              # possibly
-                        //mxg;
-    return;
 }
 
 sub operate_on_file{
@@ -256,19 +245,6 @@ sub tasks_common_to_each_object{
     $self->modify_line_breaks_body_and_end;
 
     return;
-}
-
-
-sub remove_trailing_whitespace{
-    my $self = shift;
-    return unless(${%{$self}{settings}}{removeTrailingWhitespace});
-
-    $self->logger("Removing trailing white space");
-    ${$self}{body} =~ s/
-                       \h+  # followed by possible horizontal space
-                       $    # up to the end of a line
-                       //xsmg;
-
 }
 
 1;

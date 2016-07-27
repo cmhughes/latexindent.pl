@@ -1,7 +1,6 @@
 package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
-use FindBin; 
 use Exporter qw/import/;
 our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print/;
 

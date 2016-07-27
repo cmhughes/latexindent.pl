@@ -1,7 +1,6 @@
 package LatexIndent::TrailingComments;
 use strict;
 use warnings;
-use FindBin; 
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in/;
