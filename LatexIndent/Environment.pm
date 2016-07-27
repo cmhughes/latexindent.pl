@@ -8,7 +8,6 @@ use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_environments/;
-our %previouslyFoundSettings;
 our $environmentCounter;
 
 sub indent{
@@ -56,150 +55,6 @@ sub indent{
     return $self;
 }
 
-sub get_indentation_settings_for_this_object{
-    my $self = shift;
-
-    # check for storage of repeated environments
-    if ($previouslyFoundSettings{${$self}{name}}){
-        $self->logger("Using stored settings for ${$self}{name}",'trace');
-    } else {
-        my $name = ${$self}{name};
-        $self->logger("Storing settings for $name",'trace');
-
-        # get master settings
-        $self->masterYamlSettings;
-
-        # we'll use %settings a lot in what follows
-        my %settings = %{%{$self}{settings}};
-
-        # check for noAdditionalIndent and indentRules
-        # otherwise use defaultIndent
-        my $indentation = (${$settings{noAdditionalIndent}}{$name})
-                                     ?
-                                     q()
-                                     :
-                          (${$settings{indentRules}}{$name}
-                                     ||
-                          $settings{defaultIndent});
-
-        # check if the -m switch is active
-        $self->get_switches;
-        my $modLineBreaksSwitch = ${${$self}{switches}}{modifyLineBreaks}?${${$self}{switches}}{modifyLineBreaks}:0;
-
-        # settings for modifying line breaks, off by default
-        my $BeginStartsOnOwnLine = undef;
-        my $BodyStartsOnOwnLine = undef;
-        my $EndStartsOnOwnLine = undef;
-        my $EndFinishesWithLineBreak = undef;
-
-        # if the -m switch is active, update these settings
-        if($modLineBreaksSwitch){
-                # since each of the four values are undef by default, 
-                # the 'every' value check (for each of the four values)
-                # only needs to be non-negative
-
-                # the 'every' value may well switch each of the four
-                # values on, and the 'custom' value may switch it off, 
-                # hence the ternary check (using (test)?true:false)
-                $self->logger("-m modifylinebreaks switch active, looking for settings for $name ",'heading.trace');
-
-                # BeginStartsOnOwnLine 
-                # BeginStartsOnOwnLine 
-                # BeginStartsOnOwnLine 
-                my $everyBeginStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyBeginStartsOnOwnLine};
-                my $customBeginStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BeginStartsOnOwnLine};
-
-                # check for the *every* value
-                if (defined $everyBeginStartsOnOwnLine and $everyBeginStartsOnOwnLine >= 0){
-                    $self->logger("everyBeginStartOnOwnLine=$everyBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
-                    $BeginStartsOnOwnLine = $everyBeginStartsOnOwnLine;
-                }
-
-                # check for the *custom* value
-                if (defined $customBeginStartsOnOwnLine){
-                    $self->logger("$name: BeginStartOnOwnLine=$customBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
-                    $BeginStartsOnOwnLine = $customBeginStartsOnOwnLine>=0 ? $customBeginStartsOnOwnLine : undef;
-                 }
-
-                # BodyStartsOnOwnLine 
-                # BodyStartsOnOwnLine 
-                # BodyStartsOnOwnLine 
-                my $everyBodyStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyBodyStartsOnOwnLine};
-                my $customBodyStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{BodyStartsOnOwnLine};
-
-                # check for the *every* value
-                if (defined $everyBodyStartsOnOwnLine and $everyBodyStartsOnOwnLine >= 0){
-                    $self->logger("everyBodyStartOnOwnLine=$everyBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
-                    $BodyStartsOnOwnLine = $everyBodyStartsOnOwnLine;
-                }
-
-                # check for the *custom* value
-                if (defined $customBodyStartsOnOwnLine){
-                    $self->logger("$name: BodyStartOnOwnLine=$customBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
-                    $BodyStartsOnOwnLine = $customBodyStartsOnOwnLine>=0 ? $customBodyStartsOnOwnLine : undef;
-                 }
-
-                # EndStartsOnOwnLine 
-                # EndStartsOnOwnLine 
-                # EndStartsOnOwnLine 
-                my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{environments}}{everyEndStartsOnOwnLine};
-                my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndStartsOnOwnLine};
-
-                # check for the *every* value
-                if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
-                    $self->logger("everyEndStartOnOwnLine=$everyEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
-                    $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
-                }
-
-                # check for the *custom* value
-                if (defined $customEndStartsOnOwnLine){
-                    $self->logger("$name: EndStartOnOwnLine=$customEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
-                    $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
-                 }
-
-                # EndFinishesWithLineBreak 
-                # EndFinishesWithLineBreak 
-                # EndFinishesWithLineBreak 
-                my $everyEndFinishesWithLineBreak = ${${$settings{modifyLineBreaks}}{environments}}{everyEndFinishesWithLineBreak};
-                my $customEndFinishesWithLineBreak = ${${${$settings{modifyLineBreaks}}{environments}}{$name}}{EndFinishesWithLineBreak};
-
-                # check for the *every* value
-                if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
-                    $self->logger("everyEndFinishesWithLineBreak=$everyEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
-                    $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
-                }
-
-                # check for the *custom* value
-                if (defined $customEndFinishesWithLineBreak){
-                    $self->logger("$name: EndFinishesWithLineBreak=$customEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
-                    $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
-                }
-        }
-
-        # store the settings
-        %{${previouslyFoundSettings}{$name}} = (
-                        indentation=>$indentation,
-                        modLineBreaksSwitch=>$modLineBreaksSwitch,
-                        BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,
-                        BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,
-                        EndStartsOnOwnLine=>$EndStartsOnOwnLine,
-                        EndFinishesWithLineBreak=>$EndFinishesWithLineBreak,
-                      );
-
-        # there's no need for the current object to keep all of the settings
-        delete ${$self}{settings};
-        delete ${$self}{switches};
-    }
-
-
-    # append indentation settings to the ENVIRONMENT object
-    while( my ($key,$value)= each %{${previouslyFoundSettings}{${$self}{name}}}){
-            ${$self}{$key} = $value;
-    }
-
-    return;
-}
-
 sub find_environments{
     my $self = shift;
 
@@ -243,6 +98,7 @@ sub find_environments{
                                                 body=> ($5)?1:0,
                                                 end=> ($8)?1:0,
                                               },
+                                              modifyLineBreaksYamlName=>"environments",
                                             );
 
       # count linebreaks in body

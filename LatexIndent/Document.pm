@@ -5,7 +5,7 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
-use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings/;
+use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -52,6 +52,7 @@ sub operate_on_file{
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
+    # PREVIOUSLY FOUND SETTINGS: need another check, e.g if environment shares same name as (e.g) command
     $self->remove_trailing_whitespace;
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;

@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/masterYamlSettings readSettings/;
+our @EXPORT_OK = qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -15,6 +15,9 @@ $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) 
 
 # master yaml settings is a hash, global to this module
 our %masterSettings = %{$defaultSettings->[0]};
+
+# previously found settings is a hash, global to this module
+our %previouslyFoundSettings;
 
 sub readSettings{
   my $self = shift;
@@ -136,6 +139,172 @@ sub readSettings{
 sub masterYamlSettings{
     my $self = shift;
     ${$self}{settings} = \%masterSettings;
+    return;
+}
+
+sub get_indentation_settings_for_this_object{
+    my $self = shift;
+
+    # check for storage of repeated environments
+    if ($previouslyFoundSettings{${$self}{name}}){
+        $self->logger("Using stored settings for ${$self}{name}",'trace');
+    } else {
+        my $name = ${$self}{name};
+        $self->logger("Storing settings for $name",'trace');
+
+        # get master settings
+        $self->masterYamlSettings;
+
+        # we'll use %settings a lot in what follows
+        my %settings = %{%{$self}{settings}};
+
+        # check for noAdditionalIndent and indentRules
+        # otherwise use defaultIndent
+        my $indentation = (${$settings{noAdditionalIndent}}{$name})
+                                     ?
+                                     q()
+                                     :
+                          (${$settings{indentRules}}{$name}
+                                     ||
+                          $settings{defaultIndent});
+
+        # check if the -m switch is active
+        $self->get_switches;
+
+        # check for line break settings
+        $self->modify_line_breaks_settings;
+
+        # store the settings
+        %{${previouslyFoundSettings}{$name}} = (
+                        indentation=>$indentation,
+                        modLineBreaksSwitch=>${${$self}{switches}}{modifyLineBreaks},
+                        BeginStartsOnOwnLine=>${$self}{BeginStartsOnOwnLine},
+                        BodyStartsOnOwnLine=>${$self}{BodyStartsOnOwnLine},
+                        EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
+                        EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
+                      );
+
+        # there's no need for the current object to keep all of the settings
+        delete ${$self}{settings};
+        delete ${$self}{switches};
+    }
+
+    # append indentation settings to the ENVIRONMENT object
+    while( my ($key,$value)= each %{${previouslyFoundSettings}{${$self}{name}}}){
+            ${$self}{$key} = $value;
+    }
+
+    return;
+}
+
+sub modify_line_breaks_settings{
+    my $self = shift;
+
+    # settings for modifying line breaks, off by default
+    my $BeginStartsOnOwnLine = undef;
+    my $BodyStartsOnOwnLine = undef;
+    my $EndStartsOnOwnLine = undef;
+    my $EndFinishesWithLineBreak = undef;
+    
+    # return with undefined values unless the -m switch is active
+    return  unless(${${$self}{switches}}{modifyLineBreaks});
+
+    # name of the object
+    my $name = ${$self}{name};
+
+    # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
+    my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
+
+    # we'll use %settings a lot in what follows
+    my %settings = %{%{$self}{settings}};
+
+    # since each of the four values are undef by default, 
+    # the 'every' value check (for each of the four values)
+    # only needs to be non-negative
+    
+    # the 'every' value may well switch each of the four
+    # values on, and the 'custom' value may switch it off, 
+    # hence the ternary check (using (test)?true:false)
+    $self->logger("-m modifylinebreaks switch active, looking for settings for $name ",'heading.trace');
+    
+    # BeginStartsOnOwnLine 
+    # BeginStartsOnOwnLine 
+    # BeginStartsOnOwnLine 
+    my $everyBeginStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBeginStartsOnOwnLine};
+    my $customBeginStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BeginStartsOnOwnLine};
+    
+    # check for the *every* value
+    if (defined $everyBeginStartsOnOwnLine and $everyBeginStartsOnOwnLine >= 0){
+        $self->logger("everyBeginStartOnOwnLine=$everyBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
+        $BeginStartsOnOwnLine = $everyBeginStartsOnOwnLine;
+    }
+    
+    # check for the *custom* value
+    if (defined $customBeginStartsOnOwnLine){
+        $self->logger("$name: BeginStartOnOwnLine=$customBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
+        $BeginStartsOnOwnLine = $customBeginStartsOnOwnLine>=0 ? $customBeginStartsOnOwnLine : undef;
+     }
+    
+    # BodyStartsOnOwnLine 
+    # BodyStartsOnOwnLine 
+    # BodyStartsOnOwnLine 
+    my $everyBodyStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBodyStartsOnOwnLine};
+    my $customBodyStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BodyStartsOnOwnLine};
+    
+    # check for the *every* value
+    if (defined $everyBodyStartsOnOwnLine and $everyBodyStartsOnOwnLine >= 0){
+        $self->logger("everyBodyStartOnOwnLine=$everyBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
+        $BodyStartsOnOwnLine = $everyBodyStartsOnOwnLine;
+    }
+    
+    # check for the *custom* value
+    if (defined $customBodyStartsOnOwnLine){
+        $self->logger("$name: BodyStartOnOwnLine=$customBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
+        $BodyStartsOnOwnLine = $customBodyStartsOnOwnLine>=0 ? $customBodyStartsOnOwnLine : undef;
+     }
+    
+    # EndStartsOnOwnLine 
+    # EndStartsOnOwnLine 
+    # EndStartsOnOwnLine 
+    my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndStartsOnOwnLine};
+    my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndStartsOnOwnLine};
+    
+    # check for the *every* value
+    if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
+        $self->logger("everyEndStartOnOwnLine=$everyEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
+        $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
+    }
+    
+    # check for the *custom* value
+    if (defined $customEndStartsOnOwnLine){
+        $self->logger("$name: EndStartOnOwnLine=$customEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
+        $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
+     }
+    
+    # EndFinishesWithLineBreak 
+    # EndFinishesWithLineBreak 
+    # EndFinishesWithLineBreak 
+    my $everyEndFinishesWithLineBreak = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndFinishesWithLineBreak};
+    my $customEndFinishesWithLineBreak = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndFinishesWithLineBreak};
+    
+    # check for the *every* value
+    if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
+        $self->logger("everyEndFinishesWithLineBreak=$everyEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
+        $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
+    }
+    
+    # check for the *custom* value
+    if (defined $customEndFinishesWithLineBreak){
+        $self->logger("$name: EndFinishesWithLineBreak=$customEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
+        $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
+    }
+
+    # update keys
+    ${$self}{BeginStartsOnOwnLine}=$BeginStartsOnOwnLine;
+    ${$self}{BodyStartsOnOwnLine}=$BodyStartsOnOwnLine;
+    ${$self}{EndStartsOnOwnLine}=$EndStartsOnOwnLine;
+    ${$self}{EndFinishesWithLineBreak}=$EndFinishesWithLineBreak;
+
     return;
 }
 
