@@ -6,9 +6,13 @@ use Data::Dumper;
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object/;
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print/;
+use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in/;
+
+# code blocks
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
 
@@ -225,132 +229,35 @@ sub process_body_of_text{
     return;
 }
 
-sub pre_print{
+sub tasks_common_to_each_object{
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
 
-    $self->logger('Checking amalgamated line breaks (-m switch active):','heading.trace');
+    # in what follows, $self can be an environment, ifElseFi, etc
 
-    $self->logger('children to process:','trace');
-    $self->logger(scalar keys %{%{$self}{children}},'trace');
+    # count linebreaks in body
+    my $bodyLineBreaks = 0;
+    $bodyLineBreaks++ while(${$self}{body} =~ m/\R/sxg);
+    ${$self}{bodyLineBreaks} = $bodyLineBreaks;
 
-    my $processedChildren = 0;
-    my $totalChildren = scalar keys %{%{$self}{children}};
-    my $body = ${$self}{body};
+    # get settings for this object
+    $self->get_indentation_settings_for_this_object;
 
-    # loop through document children hash, remove comments, 
-    # produce a pre-print of the document so that line breaks can be checked
-    while($processedChildren != $totalChildren){
-            foreach my $child (values %{%{$self}{children}}) { 
-                if(index($body,${$child}{id}) != -1){
-                    # make a copy of the begin, body and end statements
-                    ${${$child}{noComments}}{begin} = "begin".reverse ${$child}{id};
-                    ${${$child}{noComments}}{begin} .= "\n" if(${$child}{linebreaksAtEnd}{begin});
-                    ${${$child}{noComments}}{body} = ${$child}{body};
-                    ${${$child}{noComments}}{end} = "end".reverse ${$child}{id};
-                    ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
+    # give unique id
+    $self->create_unique_id;
 
-                    # remove all trailing comments from the copied begin, body and end statements
-                    ${${$child}{noComments}}{begin} =~ s/%\hlatexindenttrailingcomment\d+//mg;
-                    ${${$child}{noComments}}{body} =~ s/%\hlatexindenttrailingcomment\d+//mg;
-                    ${${$child}{noComments}}{end} =~ s/%\hlatexindenttrailingcomment\d+//mg;
+    # the replacement text can be just the ID, but the ID might have a line break at the end of it
+    ${$self}{replacementText} = ${$self}{id};
 
-                    # replace ids with body
-                    $body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
+    # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
+    # so we compensate for it here
+    ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
-                    # increment the processed children counter
-                    $processedChildren++;
-                  }
-             }
-    }
+    # modify line breaks on body and end statements
+    $self->modify_line_breaks_body_and_end;
 
-    # remove any remaining comments
-    $body =~ s/%\hlatexindenttrailingcomment\d+//mg;
-    
-    # output the body to the log file
-    $self->logger("Expanded body, no comments (just to check linebreaks)","heading.ttrace");
-    $self->logger($body,'ttrace');
-
-    # reset counter
-    $processedChildren = 0;
-
-    # sweep back through, check linebreaks
-    while($processedChildren != $totalChildren){
-            foreach my $child (values %{%{$self}{children}}) { 
-                if(index($body,${${$child}{noComments}}{begin}.${${$child}{noComments}}{body}.${${$child}{noComments}}{end})!=-1){
-                      # check for an undisclosed line break
-                      if(${${$child}{noComments}}{body} =~ m/\R$/m and !${$child}{linebreaksAtEnd}{body}){
-                          $self->logger("Undisclosed line break for ${$child}{end}",'trace');
-                          ${$child}{body} .= "\n";
-                          ${$child}{linebreaksAtEnd}{body}=1;
-                      }
-
-                      # replace block with ID
-                      $body =~ s/\Q${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}\E/${$child}{id}/;
-
-                      # increment the processed children counter
-                      $processedChildren++;
-                }
-             }
-    }
-
-    $self->logger('Processed line breaks','heading.trace');
     return;
 }
 
-sub remove_trailing_comments{
-    my $self = shift;
-    $self->logger("Storing trailing comments",'heading');
-    my $commentCounter = 0;
-    ${$self}{body} =~ s/
-                            (?<!\\)  # not preceeded by a \
-                            %        # % 
-                            (
-                                \h*? # followed by possible horizontal space
-                                .*?  # and anything else
-                            )
-                            $        # up to the end of a line
-                        /   
-                            # increment comment counter and store comment
-                            $commentCounter++;
-                            ${${$self}{trailingcomments}}{"latexindenttrailingcomment$commentCounter"}= $1;
-
-                            # replace comment with dummy text
-                            "% latexindenttrailingcomment".$commentCounter;
-                       /xsmeg;
-    if(%{$self}{trailingcomments}){
-        $self->logger("Trailing comments stored in:",'trace');
-        $self->logger(Dumper(\%{%{$self}{trailingcomments}}),'trace');
-    } else {
-        $self->logger("No trailing comments found",'trace');
-    }
-    return;
-}
-
-sub put_trailing_comments_back_in{
-    my $self = shift;
-    return unless(%{$self}{trailingcomments});
-
-    $self->logger("Returning trailing comments to body",'heading');
-    while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
-        if(${$self}{body} =~ m/%\h$trailingcommentID
-                                (
-                                    (?!          # not immediately preceeded by 
-                                        (?<!\\)  # \
-                                        %        # %
-                                    ).*?
-                                )                # captured into $1
-                                (\h*)?$                
-                            /mx and $1 ne ''){
-            $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
-            ${$self}{body} =~ s/%\h$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
-        } else {
-            ${$self}{body} =~ s/%\h$trailingcommentID/%$trailingcommentValue/;
-        }
-        $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
-    }
-    return;
-}
 
 sub remove_trailing_whitespace{
     my $self = shift;

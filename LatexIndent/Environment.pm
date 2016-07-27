@@ -101,67 +101,14 @@ sub find_environments{
                                               modifyLineBreaksYamlName=>"environments",
                                             );
 
-      # count linebreaks in body
-      my $bodyLineBreaks = 0;
-      $bodyLineBreaks++ while(${$env}{body} =~ m/\R/sxg);
-      ${$env}{bodyLineBreaks} = $bodyLineBreaks;
-
-      # get settings for this object
-      $env->get_indentation_settings_for_this_object;
-
-      # give unique id
-      $env->create_unique_id;
-
-      # the replacement text can be just the ID, but the ID might have a line break at the end of it
-      my $replacementText = ${$env}{id};
-
-      # the above regexp, when used in the substitution below, will remove the trailing linebreak 
-      # in ${$env}{linebreaksAtEnd}{end}, so we compensate for it here
-      $replacementText .= "\n" if(${$env}{linebreaksAtEnd}{end});
-
-      # add a line break after \begin{statement} if appropriate
-      if(defined ${$env}{BodyStartsOnOwnLine}){
-        if(${$env}{BodyStartsOnOwnLine}==1 and !${$env}{linebreaksAtEnd}{begin}){
-            $self->logger("Adding a linebreak at the end of begin, ${$env}{begin} (see BodyStartsOnOwnLine)",'heading');
-            ${$env}{begin} .= "\n";       
-            ${$env}{linebreaksAtEnd}{begin} = 1;
-         } elsif (${$env}{BodyStartsOnOwnLine}==0 and ${$env}{linebreaksAtEnd}{begin}){
-            # remove line break *after* begin, if appropriate
-            $self->logger("Removing linebreak at the end of begin (see BodyStartsOnOwnLine)",'heading');
-            ${$env}{begin} =~ s/\R*$//sx;
-            ${$env}{linebreaksAtEnd}{begin} = 0;
-         }
-      }
-
-      # possibly modify line break *before* \end{statement}
-      if(defined ${$env}{EndStartsOnOwnLine}){
-            if(${$env}{EndStartsOnOwnLine}==1 and !${$env}{linebreaksAtEnd}{body}){
-                # add a line break after body, if appropriate
-                $self->logger("Adding a linebreak at the end of body (see EndStartsOnOwnLine)",'heading');
-                ${$env}{body} .= "\n";
-                ${$env}{linebreaksAtEnd}{body} = 1;
-            } elsif (${$env}{EndStartsOnOwnLine}==0 and ${$env}{linebreaksAtEnd}{body}){
-                # remove line break *after* body, if appropriate
-                $self->logger("Removing linebreak at the end of body (see EndStartsOnOwnLine)",'heading');
-                ${$env}{body} =~ s/\R*$//sx;
-                ${$env}{linebreaksAtEnd}{body} = 0;
-            }
-      }
-
-      # possibly modify line break *after* \end{statement}
-      if(defined ${$env}{EndFinishesWithLineBreak}
-         and ${$env}{EndFinishesWithLineBreak}==1 
-         and !${$env}{linebreaksAtEnd}{end}){
-                $self->logger("Adding a linebreak at the end of ${$env}{end} (see EndFinishesWithLineBreak)",'heading');
-                ${$env}{linebreaksAtEnd}{end} = 1;
-                $replacementText .= "\n";
-      }
+      # there are a number of tasks common to each object
+      $env->tasks_common_to_each_object;
 
       # store children in special hash
       ${$self}{children}{${$env}{id}}=$env;
 
       # remove the environment block, and replace with unique ID
-      ${$self}{body} =~ s/$environmentRegExp/$replacementText/;
+      ${$self}{body} =~ s/$environmentRegExp/${$env}{replacementText}/;
 
       # log file information
       $self->logger(Dumper(\%{$env}),'trace');
