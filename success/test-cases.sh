@@ -52,5 +52,7 @@ latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod3.tex -m -tt -l
 # protect blank lines test
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l=env-mod-lines12.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l=env-mod-lines13.yaml environments-modify-multiple-line-breaks.tex
+# if else fi code blocks
+latexindent.pl -w -s -t ifelsefi-first.tex
 git status
 exit

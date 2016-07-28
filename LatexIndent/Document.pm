@@ -11,6 +11,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
