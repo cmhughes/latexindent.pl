@@ -145,28 +145,22 @@ sub masterYamlSettings{
 sub get_indentation_settings_for_this_object{
     my $self = shift;
 
-    # check for storage of repeated environments
+    # check for storage of repeated objects
     if ($previouslyFoundSettings{${$self}{name}}){
         $self->logger("Using stored settings for ${$self}{name}",'trace');
     } else {
         my $name = ${$self}{name};
         $self->logger("Storing settings for $name",'trace');
 
-        # get master settings
-        $self->masterYamlSettings;
-
-        # we'll use %settings a lot in what follows
-        my %settings = %{%{$self}{settings}};
-
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = (${$settings{noAdditionalIndent}}{$name})
+        my $indentation = (${$masterSettings{noAdditionalIndent}}{$name})
                                      ?
                                      q()
                                      :
-                          (${$settings{indentRules}}{$name}
+                          (${$masterSettings{indentRules}}{$name}
                                      ||
-                          $settings{defaultIndent});
+                          $masterSettings{defaultIndent});
 
         # check if the -m switch is active
         $self->get_switches;
@@ -189,7 +183,7 @@ sub get_indentation_settings_for_this_object{
         delete ${$self}{switches};
     }
 
-    # append indentation settings to the ENVIRONMENT object
+    # append indentation settings to the current object
     while( my ($key,$value)= each %{${previouslyFoundSettings}{${$self}{name}}}){
             ${$self}{$key} = $value;
     }
@@ -215,9 +209,6 @@ sub modify_line_breaks_settings{
     # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
     my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
 
-    # we'll use %settings a lot in what follows
-    my %settings = %{%{$self}{settings}};
-
     # since each of the four values are undef by default, 
     # the 'every' value check (for each of the four values)
     # only needs to be non-negative
@@ -230,8 +221,8 @@ sub modify_line_breaks_settings{
     # BeginStartsOnOwnLine 
     # BeginStartsOnOwnLine 
     # BeginStartsOnOwnLine 
-    my $everyBeginStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBeginStartsOnOwnLine};
-    my $customBeginStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BeginStartsOnOwnLine};
+    my $everyBeginStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBeginStartsOnOwnLine};
+    my $customBeginStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BeginStartsOnOwnLine};
     
     # check for the *every* value
     if (defined $everyBeginStartsOnOwnLine and $everyBeginStartsOnOwnLine >= 0){
@@ -248,8 +239,8 @@ sub modify_line_breaks_settings{
     # BodyStartsOnOwnLine 
     # BodyStartsOnOwnLine 
     # BodyStartsOnOwnLine 
-    my $everyBodyStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBodyStartsOnOwnLine};
-    my $customBodyStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BodyStartsOnOwnLine};
+    my $everyBodyStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBodyStartsOnOwnLine};
+    my $customBodyStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BodyStartsOnOwnLine};
     
     # check for the *every* value
     if (defined $everyBodyStartsOnOwnLine and $everyBodyStartsOnOwnLine >= 0){
@@ -266,8 +257,8 @@ sub modify_line_breaks_settings{
     # EndStartsOnOwnLine 
     # EndStartsOnOwnLine 
     # EndStartsOnOwnLine 
-    my $everyEndStartsOnOwnLine = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndStartsOnOwnLine};
-    my $customEndStartsOnOwnLine = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndStartsOnOwnLine};
+    my $everyEndStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndStartsOnOwnLine};
+    my $customEndStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndStartsOnOwnLine};
     
     # check for the *every* value
     if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
@@ -284,8 +275,8 @@ sub modify_line_breaks_settings{
     # EndFinishesWithLineBreak 
     # EndFinishesWithLineBreak 
     # EndFinishesWithLineBreak 
-    my $everyEndFinishesWithLineBreak = ${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndFinishesWithLineBreak};
-    my $customEndFinishesWithLineBreak = ${${${$settings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndFinishesWithLineBreak};
+    my $everyEndFinishesWithLineBreak = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndFinishesWithLineBreak};
+    my $customEndFinishesWithLineBreak = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndFinishesWithLineBreak};
     
     # check for the *every* value
     if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
