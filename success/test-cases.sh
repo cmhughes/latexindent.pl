@@ -54,5 +54,6 @@ latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l=env-mod-lines13.yaml environments-modify-multiple-line-breaks.tex
 # if else fi code blocks
 latexindent.pl -w -s -t ifelsefi-first.tex
+latexindent.pl -w -s -t ifelsefi-simple-nested.tex
 git status
 exit

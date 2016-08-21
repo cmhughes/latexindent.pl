@@ -41,29 +41,20 @@ sub find_ifelsefi{
     # store the regular expresssion for matching and replacing the \if...\else...\fi statements
     # note: we search for \else separately in an attempt to keep this regexp a little more managable
     my $ifElseFiRegExp = qr/
-                (
-                    \\(
-                        if.*?           # ifelsefi name captured into $2
-                       )                
-                )                       # begin statement is $1
-                (
-                    \s|\\|\#            # space OR backslash OR #
-                )              
-                (\R*)?                  # possible line break into $4
-                (                       
-                    (?:                 
-                        (?!             
-                            (?:\\if)    
-                        ).              # any character, but not \\if                                   
-                    )*?                 # non-greedy
-                    (\R*)?              # possible line breaks (into $6)    
-                )                       # ifelsefi body captured into $5
-                (                       
-                    \\fi                # \fi statement
-                    (?:\h*)?            # possibly followed by horizontal space
-                )                       # captured into $7
-                (\R)?                   # possibly followed by a line break 
-    
+                    (
+                        \\
+                            (@?if[a-zA-Z@]*?)
+                    )
+                    (\R*)
+                    (\\
+                        (?: 
+                            (?!\\if).
+                        )*?                 # body
+                    )
+                    (\R*)
+                    \\fi
+                    \h*
+                    (\R*)
     /sx;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp/){
@@ -73,12 +64,12 @@ sub find_ifelsefi{
       # create a new Environment object
       my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1,
                                               name=>$2,
-                                              body=>$3.$5,
-                                              end=>$7,
+                                              body=>$4.$5,
+                                              end=>"\\fi",
                                               linebreaksAtEnd=>{
-                                                begin=> ($4)?1:0,
-                                                body=> ($6)?1:0,
-                                                end=> ($8)?1:0,
+                                                begin=> ($3)?1:0,
+                                                body=> ($5)?1:0,
+                                                end=> ($6)?1:0,
                                               },
                                               elsePresent=>0,
                                               modifyLineBreaksYamlName=>"ifElseFi",
