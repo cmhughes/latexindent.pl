@@ -94,16 +94,29 @@ sub readSettings{
         # if we can read userSettings
         if($userSettings) {
               # update the MASTER setttings to include updates from the userSettings
-              while(my($userKey, $userValue) = each %{$userSettings->[0]}) {
+              while(my($firstLevelKey, $firstLevelValue) = each %{$userSettings->[0]}) {
                       # the update approach is slightly different for hashes vs scalars/arrays
-                      if (ref($userValue) eq "HASH") {
-                          while(my ($userKeyFromHash,$userValueFromHash) = each %{$userSettings->[0]{$userKey}}) {
-                            $masterSettings{$userKey}{$userKeyFromHash} = $userValueFromHash;
+                      if (ref($firstLevelValue) eq "HASH") {
+                          while(my ($secondLevelKey,$secondLevelValue) = each %{$userSettings->[0]{$firstLevelKey}}) {
+                            if (ref $secondLevelValue eq "HASH"){
+                                while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
+                                    if (ref $thirdLevelValue eq "HASH"){
+                                        while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {
+                                            $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey}{$fourthLevelKey} = $fourthLevelValue;
+                                        }
+                                    } else {
+                                        $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} = $thirdLevelValue;
+                                    }
+                                }
+                            } else {
+                                $masterSettings{$firstLevelKey}{$secondLevelKey} = $secondLevelValue;
+                            }
                           }
                       } else {
-                            $masterSettings{$userKey} = $userValue;
+                            $masterSettings{$firstLevelKey} = $firstLevelValue;
                       }
               }
+
               # output settings to $logfile
               if($masterSettings{logFilePreferences}{showEveryYamlRead}){
                   $self->logger(Dump \%{$userSettings->[0]});
@@ -125,11 +138,11 @@ sub readSettings{
     }
   }
 
-  # some users may wish to see showAlmagamatedSettings
+  # some users may wish to see showAmalgamatedSettings
   # which details the overall state of the settings modified
   # from the default in various user files
-  if($masterSettings{logFilePreferences}{showAlmagamatedSettings}){
-      $self->logger("Almagamated/overall settings to be used:");
+  if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
+      $self->logger("Amalgamated/overall settings to be used:");
       $self->logger(Dump \%masterSettings);
   }
 
@@ -194,14 +207,30 @@ sub get_indentation_settings_for_this_object{
 sub modify_line_breaks_settings{
     my $self = shift;
 
-    # settings for modifying line breaks, off by default
-    my $BeginStartsOnOwnLine = undef;
-    my $BodyStartsOnOwnLine = undef;
-    my $EndStartsOnOwnLine = undef;
-    my $EndFinishesWithLineBreak = undef;
-    
     # return with undefined values unless the -m switch is active
     return  unless(${${$self}{switches}}{modifyLineBreaks});
+
+    # settings for modifying line breaks, off by default
+    my %BeginStartsOnOwnLine = (
+                                finalvalue=>undef,
+                                every=>{name=>"everyBeginStartsOnOwnLine"},
+                                custom=>{name=>"BeginStartsOnOwnLine"}
+                              );
+    my %BodyStartsOnOwnLine = (
+                                finalvalue=>undef,
+                                every=>{name=>"everyBodyStartsOnOwnLine"},
+                                custom=>{name=>"BodyStartsOnOwnLine"}
+                              );
+    my %EndStartsOnOwnLine = (
+                                finalvalue=>undef,
+                                every=>{name=>"everyEndStartsOnOwnLine"},
+                                custom=>{name=>"EndStartsOnOwnLine"}
+                              );
+    my %EndFinishesWithLineBreak = (
+                                finalvalue=>undef,
+                                every=>{name=>"everyEndFinishesWithLineBreak"},
+                                custom=>{name=>"EndFinishesWithLineBreak"}
+                              );
 
     # name of the object
     my $name = ${$self}{name};
@@ -217,84 +246,134 @@ sub modify_line_breaks_settings{
     # values on, and the 'custom' value may switch it off, 
     # hence the ternary check (using (test)?true:false)
     $self->logger("-m modifylinebreaks switch active, looking for settings for $name ",'heading.trace');
+
+    # aliases: for example, ifElseFi uses everyIfStartsOnOwnLine, but it really just means everyBeginStartsOnOwnLine
+    if(defined ${$self}{aliases}){
+        my %aliases = %{${$self}{aliases}};
+        $self->logger("aliases found for $name (type: $modifyLineBreaksYamlName)",'trace');
+
+        # begin statements
+        $self->logger("aliases for BEGIN statements",'trace');
+        if(defined $aliases{everyBeginStartsOnOwnLine}){
+            $BeginStartsOnOwnLine{every}{name} = $aliases{everyBeginStartsOnOwnLine};
+            $self->logger("aliased everyBeginStartsOnOwnLine using $aliases{everyBeginStartsOnOwnLine}",'trace');
+        }
+        if(defined $aliases{BeginStartsOnOwnLine}){
+            $BeginStartsOnOwnLine{custom}{name} = $aliases{BeginStartsOnOwnLine};
+            $self->logger("aliased BeginStartsOnOwnLine using $aliases{BeginStartsOnOwnLine}",'trace');
+        }
+
+        # body statements
+        $self->logger("aliases for BODY statements",'trace');
+        if(defined $aliases{everyBodyStartsOnOwnLine}){
+            $BodyStartsOnOwnLine{every}{name} = $aliases{everyBodyStartsOnOwnLine};
+            $self->logger("aliased everyBodyStartsOnOwnLine using $aliases{everyBodyStartsOnOwnLine}",'trace');
+        }
+        if(defined $aliases{BodyStartsOnOwnLine}){
+            $BodyStartsOnOwnLine{custom}{name} = $aliases{BodyStartsOnOwnLine};
+            $self->logger("aliased BodyStartsOnOwnLine using $aliases{BodyStartsOnOwnLine}",'trace');
+        }
+
+        # end statements
+        $self->logger("aliases for END statements",'trace');
+        if(defined $aliases{everyEndStartsOnOwnLine}){
+            $EndStartsOnOwnLine{every}{name} = $aliases{everyEndStartsOnOwnLine};
+            $self->logger("aliased everyEndStartsOnOwnLine using $aliases{everyEndStartsOnOwnLine}",'trace');
+        }
+        if(defined $aliases{EndStartsOnOwnLine}){
+            $EndStartsOnOwnLine{custom}{name} = $aliases{EndStartsOnOwnLine};
+            $self->logger("aliased EndStartsOnOwnLine using $aliases{EndStartsOnOwnLine}",'trace');
+        }
+
+        # *after* end statements
+        $self->logger("aliases for line breaks *after* END statements",'trace');
+        if(defined $aliases{everyEndFinishesWithLineBreak}){
+            $EndFinishesWithLineBreak{every}{name} = $aliases{everyEndFinishesWithLineBreak};
+            $self->logger("aliased everyEndFinishesWithLineBreak using $aliases{everyEndFinishesWithLineBreak}",'trace');
+        }
+        if(defined $aliases{EndFinishesWithLineBreak}){
+            $EndFinishesWithLineBreak{custom}{name} = $aliases{EndFinishesWithLineBreak};
+            $self->logger("aliased EndFinishesWithLineBreak using $aliases{EndFinishesWithLineBreak}",'trace');
+        }
+    }
     
     # BeginStartsOnOwnLine 
     # BeginStartsOnOwnLine 
     # BeginStartsOnOwnLine 
-    my $everyBeginStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBeginStartsOnOwnLine};
-    my $customBeginStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BeginStartsOnOwnLine};
+    $BeginStartsOnOwnLine{every}{value}  = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$BeginStartsOnOwnLine{every}{name}};
+    $BeginStartsOnOwnLine{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$BeginStartsOnOwnLine{custom}{name}};
     
     # check for the *every* value
-    if (defined $everyBeginStartsOnOwnLine and $everyBeginStartsOnOwnLine >= 0){
-        $self->logger("everyBeginStartOnOwnLine=$everyBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
-        $BeginStartsOnOwnLine = $everyBeginStartsOnOwnLine;
+    if (defined $BeginStartsOnOwnLine{every}{value} and $BeginStartsOnOwnLine{every}{value} >= 0){
+        $self->logger("$BeginStartsOnOwnLine{every}{name}=$BeginStartsOnOwnLine{every}{value}, (*every* value) adjusting BeginStartsOnOwnLine",'trace');
+        $BeginStartsOnOwnLine{finalvalue} = $BeginStartsOnOwnLine{every}{value};
     }
     
     # check for the *custom* value
-    if (defined $customBeginStartsOnOwnLine){
-        $self->logger("$name: BeginStartOnOwnLine=$customBeginStartsOnOwnLine, adjusting BeginStartsOnOwnLine",'trace');
-        $BeginStartsOnOwnLine = $customBeginStartsOnOwnLine>=0 ? $customBeginStartsOnOwnLine : undef;
+    if (defined $BeginStartsOnOwnLine{custom}{value}){
+        $self->logger("$name: $BeginStartsOnOwnLine{custom}{name}=$BeginStartsOnOwnLine{custom}{value}, (*custom* value) adjusting BeginStartsOnOwnLine",'trace');
+        $BeginStartsOnOwnLine{finalvalue} = $BeginStartsOnOwnLine{custom}{value} >=0 ? $BeginStartsOnOwnLine{custom}{value} : undef;
      }
     
     # BodyStartsOnOwnLine 
     # BodyStartsOnOwnLine 
     # BodyStartsOnOwnLine 
-    my $everyBodyStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyBodyStartsOnOwnLine};
-    my $customBodyStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{BodyStartsOnOwnLine};
+    $BodyStartsOnOwnLine{every}{value} = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$BodyStartsOnOwnLine{every}{name}};
+    $BodyStartsOnOwnLine{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$BodyStartsOnOwnLine{custom}{name}};
     
     # check for the *every* value
-    if (defined $everyBodyStartsOnOwnLine and $everyBodyStartsOnOwnLine >= 0){
-        $self->logger("everyBodyStartOnOwnLine=$everyBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
-        $BodyStartsOnOwnLine = $everyBodyStartsOnOwnLine;
+    if (defined $BodyStartsOnOwnLine{every}{value} and $BodyStartsOnOwnLine{every}{value} >= 0){
+        $self->logger("$BodyStartsOnOwnLine{every}{name}=$BodyStartsOnOwnLine{every}{value}, adjusting (*every* value) BodyStartsOnOwnLine",'trace');
+        $BodyStartsOnOwnLine{finalvalue} = $BodyStartsOnOwnLine{every}{value};
     }
     
     # check for the *custom* value
-    if (defined $customBodyStartsOnOwnLine){
-        $self->logger("$name: BodyStartOnOwnLine=$customBodyStartsOnOwnLine, adjusting BodyStartsOnOwnLine",'trace');
-        $BodyStartsOnOwnLine = $customBodyStartsOnOwnLine>=0 ? $customBodyStartsOnOwnLine : undef;
+    if (defined $BodyStartsOnOwnLine{custom}{value}){
+        $self->logger("$name: $BodyStartsOnOwnLine{custom}{name}=$BodyStartsOnOwnLine{custom}{value}, (*custom* value) adjusting BodyStartsOnOwnLine",'trace');
+        $BodyStartsOnOwnLine{finalvalue} = $BodyStartsOnOwnLine{custom}{value}>=0 ? $BodyStartsOnOwnLine{custom}{value} : undef;
      }
     
     # EndStartsOnOwnLine 
     # EndStartsOnOwnLine 
     # EndStartsOnOwnLine 
-    my $everyEndStartsOnOwnLine = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndStartsOnOwnLine};
-    my $customEndStartsOnOwnLine = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndStartsOnOwnLine};
+    $EndStartsOnOwnLine{every}{value} = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$EndStartsOnOwnLine{every}{name}};
+    $EndStartsOnOwnLine{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$EndStartsOnOwnLine{custom}{name}};
     
     # check for the *every* value
-    if (defined $everyEndStartsOnOwnLine and $everyEndStartsOnOwnLine >= 0){
-        $self->logger("everyEndStartOnOwnLine=$everyEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
-        $EndStartsOnOwnLine = $everyEndStartsOnOwnLine;
+    if (defined $EndStartsOnOwnLine{every}{value} and $EndStartsOnOwnLine{every}{value} >= 0){
+        $self->logger("$EndStartsOnOwnLine{every}{name}=$EndStartsOnOwnLine{every}{value}, (*every* value) adjusting EndStartsOnOwnLine",'trace');
+        $EndStartsOnOwnLine{finalvalue} = $EndStartsOnOwnLine{every}{value};
     }
     
     # check for the *custom* value
-    if (defined $customEndStartsOnOwnLine){
-        $self->logger("$name: EndStartOnOwnLine=$customEndStartsOnOwnLine, adjusting EndStartsOnOwnLine",'trace');
-        $EndStartsOnOwnLine = $customEndStartsOnOwnLine>=0 ? $customEndStartsOnOwnLine : undef;
+    if (defined $EndStartsOnOwnLine{custom}{value}){
+        $self->logger("$name: $EndStartsOnOwnLine{custom}{name}=$EndStartsOnOwnLine{custom}{value}, (*custom* value) adjusting EndStartsOnOwnLine",'trace');
+        $EndStartsOnOwnLine{finalvalue} = $EndStartsOnOwnLine{custom}{value}>=0 ? $EndStartsOnOwnLine{custom}{value} : undef;
      }
     
     # EndFinishesWithLineBreak 
     # EndFinishesWithLineBreak 
     # EndFinishesWithLineBreak 
-    my $everyEndFinishesWithLineBreak = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{everyEndFinishesWithLineBreak};
-    my $customEndFinishesWithLineBreak = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{EndFinishesWithLineBreak};
+    $EndFinishesWithLineBreak{every}{value} = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$EndFinishesWithLineBreak{every}{name}};
+    $EndFinishesWithLineBreak{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$EndFinishesWithLineBreak{custom}{name}};
     
     # check for the *every* value
-    if (defined $everyEndFinishesWithLineBreak and $everyEndFinishesWithLineBreak>=0){
-        $self->logger("everyEndFinishesWithLineBreak=$everyEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
-        $EndFinishesWithLineBreak = $everyEndFinishesWithLineBreak;
+    if (defined $EndFinishesWithLineBreak{every}{value} and $EndFinishesWithLineBreak{every}{value}>=0){
+        $self->logger("$EndFinishesWithLineBreak{every}{name}=$EndFinishesWithLineBreak{every}{value}, (*every* value) adjusting EndFinishesWithLineBreak",'trace');
+        $EndFinishesWithLineBreak{finalvalue} = $EndFinishesWithLineBreak{every}{value};
     }
     
     # check for the *custom* value
-    if (defined $customEndFinishesWithLineBreak){
-        $self->logger("$name: EndFinishesWithLineBreak=$customEndFinishesWithLineBreak, adjusting EndFinishesWithLineBreak",'trace');
-        $EndFinishesWithLineBreak  = $customEndFinishesWithLineBreak>=0 ? $customEndFinishesWithLineBreak : undef;
+    if (defined $EndFinishesWithLineBreak{custom}{value}){
+        $self->logger("$name: $EndFinishesWithLineBreak{custom}{name}=$EndFinishesWithLineBreak{custom}{value}, (*custom* value) adjusting EndFinishesWithLineBreak",'trace');
+        $EndFinishesWithLineBreak{finalvalue}  = $EndFinishesWithLineBreak{custom}{value}>=0 ? $EndFinishesWithLineBreak{custom}{value} : undef;
     }
 
     # update keys
-    ${$self}{BeginStartsOnOwnLine}=$BeginStartsOnOwnLine;
-    ${$self}{BodyStartsOnOwnLine}=$BodyStartsOnOwnLine;
-    ${$self}{EndStartsOnOwnLine}=$EndStartsOnOwnLine;
-    ${$self}{EndFinishesWithLineBreak}=$EndFinishesWithLineBreak;
+    ${$self}{BeginStartsOnOwnLine}=$BeginStartsOnOwnLine{finalvalue};
+    ${$self}{BodyStartsOnOwnLine}=$BodyStartsOnOwnLine{finalvalue};
+    ${$self}{EndStartsOnOwnLine}=$EndStartsOnOwnLine{finalvalue};
+    ${$self}{EndFinishesWithLineBreak}=$EndFinishesWithLineBreak{finalvalue};
 
     return;
 }

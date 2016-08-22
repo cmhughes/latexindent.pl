@@ -239,7 +239,7 @@ fileExtensionPreference:
 logFilePreferences:
     logFileName: "indent.log"
     showEveryYamlRead: 1
-    showAlmagamatedSettings: 0
+    showAmalgamatedSettings: 0
     endLogFileWith: '--------------' 
 
 # \begin{document} and \end{document} are treated differently
@@ -330,7 +330,19 @@ modifyLineBreaks:
             EndStartsOnOwnLine: 1
             EndFinishesWithLineBreak: 1
     ifElseFi:
-        everyBeginStartsOnOwnLine: 1
+        everyIfStartsOnOwnLine: 1
+        everyBodyStartsOnOwnLine: 1
+        everyElseStartsOnOwnLine: 1
+        everyElseFinishesWithLineBreak: 1
+        everyFiStartsOnOwnLine: 1
+        everyFiFinishesWithLineBreak: 1
+        ifnum:
+            IfStartsOnOwnLine: 1
+            BodyStartsOnOwnLine: 1
+            ElseStartsOnOwnLine: 1
+            ElseFinishesWithLineBreak: 1
+            FiStartsOnOwnLine: 1
+            FiFinishesWithLineBreak: 1
         
     
 # *** NOTE ***

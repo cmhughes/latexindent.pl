@@ -32,6 +32,22 @@ sub indent{
 
     # wrap-up statement
     $self->wrap_up_statement;
+
+    # line break checks *after* \end{statement}
+    if (defined ${$self}{EndFinishesWithLineBreak}
+        and ${$self}{EndFinishesWithLineBreak}==0 
+        ) {
+        # add a single horizontal space after the child id, otherwise we can end up 
+        # with things like
+        #       before: 
+        #               \fi
+        #                   text
+        #       after:
+        #               \fitext
+        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading.trace');
+        ${$self}{end} =${$self}{end}." ";
+    }
+
     return $self;
 }
 
@@ -44,17 +60,22 @@ sub find_ifelsefi{
                     (
                         \\
                             (@?if[a-zA-Z@]*?)
-                    )
-                    (\R*)
-                    (\\
+                        (\R*)
+                    )                            # begin statement, e.g \ifnum, \ifodd
+                    (
+                        (?:
+                            \\(?!if)|\R|\s|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                        )                        # part of the tokens used for latexindent
                         (?: 
                             (?!\\if).
-                        )*?                 # body
+                        )*?                      # body, which can't include another \if
                     )
-                    (\R*)
-                    \\fi
-                    \h*
-                    (\R*)
+                    (\R*)                        # linebreaks after body
+                    (
+                        \\fi                     # \fi statement 
+                        \h*                      # 0 or more horizontal spaces
+                    )
+                    (\R*)                        # linebreaks after \fi
     /sx;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp/){
@@ -65,11 +86,25 @@ sub find_ifelsefi{
       my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1,
                                               name=>$2,
                                               body=>$4.$5,
-                                              end=>"\\fi",
+                                              end=>"$6",
                                               linebreaksAtEnd=>{
                                                 begin=> ($3)?1:0,
                                                 body=> ($5)?1:0,
-                                                end=> ($6)?1:0,
+                                                end=> ($7)?1:0,
+                                              },
+                                              aliases=>{
+                                                # begin statements
+                                                everyBeginStartsOnOwnLine=>"everyIfStartsOnOwnLine",
+                                                BeginStartsOnOwnLine=>"IfStartsOnOwnLine",
+                                                # body statements
+                                                everyBodyStartsOnOwnLine=>"everyBodyStartsOnOwnLine",
+                                                BodyStartsOnOwnLine=>"BodyStartsOnOwnLine",
+                                                # end statements
+                                                everyEndStartsOnOwnLine=>"everyFiStartsOnOwnLine",
+                                                EndStartsOnOwnLine=>"FiStartsOnOwnLine",
+                                                # after end statements
+                                                everyEndFinishesWithLineBreak=>"everyFiFinishesWithLineBreak",
+                                                EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
                                               },
                                               elsePresent=>0,
                                               modifyLineBreaksYamlName=>"ifElseFi",
@@ -97,27 +132,106 @@ sub create_unique_id{
     my $self = shift;
 
     $ifElseFiCounter++;
-    ${$self}{id} = "LATEX-INDENT-IFELSEFI$ifElseFiCounter";
+    ${$self}{id} = "!-!LATEX-INDENT-IFELSEFI$ifElseFiCounter";
     return;
 }
 
 sub check_for_else_statement{
     my $self = shift;
-    $self->logger("Looking for \\else statement",'heading.trace');
+    $self->logger("Looking for \\else statement (${$self}{name})",'heading.trace');
     if(${$self}{body} =~ m/
-                            (\R*)?  # possible line breaks before \else statement
+                            (\R*)   # possible line breaks before \else statement
                             \\else  
-                            (?:
-                                \h*
-                            )?     # possible (uncaptured) horizontal space
-                            (\R*)? # possible line breaks after \else statement
+                            \h*     # possible horizontal space
+                            (\R*)   # possible line breaks after \else statement
                             /x){
       $self->logger("found \\else statement, storing line break information:",'trace');
+
+      # linebreaks *before* \else statement
       ${$self}{linebreaksAtEnd}{ifbody} = $1?1:0;
       $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace');
+
+      # linebreaks *after* \else statement
       ${$self}{linebreaksAtEnd}{else} = $2?1:0;
       $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}",'trace');
       ${$self}{elsePresent}=1;
+
+      # default modifylinebreak values undefined
+      ${$self}{ElseStartsOnOwnLine}=undef;
+
+      # check if -m switch is active
+      $self->get_switches;
+
+      # return with undefined values unless the -m switch is active
+      return  unless(${${$self}{switches}}{modifyLineBreaks});
+
+      # master settings
+      $self->masterYamlSettings;
+      my %masterSettings = %{${$self}{settings}};
+
+      # name of the object
+      my $name = ${$self}{name};
+
+      # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
+      my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
+
+      # ElseStartsOnOwnLine 
+      # ElseStartsOnOwnLine 
+      # ElseStartsOnOwnLine 
+      my %ElseStartsOnOwnLine= (
+                                finalvalue=>undef,
+                                every=>{name=>"everyElseStartsOnOwnLine"},
+                                custom=>{name=>"ElseStartsOnOwnLine"}
+                              );
+      $ElseStartsOnOwnLine{every}{value}  = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$ElseStartsOnOwnLine{every}{name}};
+      $ElseStartsOnOwnLine{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$ElseStartsOnOwnLine{custom}{name}};
+      
+      # check for the *every* value
+      if (defined $ElseStartsOnOwnLine{every}{value} and $ElseStartsOnOwnLine{every}{value} >= 0){
+          $self->logger("$ElseStartsOnOwnLine{every}{name}=$ElseStartsOnOwnLine{every}{value}, (*every* value) adjusting ElseStartsOnOwnLine",'trace');
+          $ElseStartsOnOwnLine{finalvalue} = $ElseStartsOnOwnLine{every}{value};
+      }
+      
+      # check for the *custom* value
+      if (defined $ElseStartsOnOwnLine{custom}{value}){
+          $self->logger("$name: $ElseStartsOnOwnLine{custom}{name}=$ElseStartsOnOwnLine{custom}{value}, (*custom* value) adjusting ElseStartsOnOwnLine",'trace');
+          $ElseStartsOnOwnLine{finalvalue} = $ElseStartsOnOwnLine{custom}{value} >=0 ? $ElseStartsOnOwnLine{custom}{value} : undef;
+      }
+
+      # update the final value
+      ${$self}{ElseStartsOnOwnLine}=$ElseStartsOnOwnLine{finalvalue};
+
+      # possibly modify line break *before* \else statement
+      if(defined ${$self}{ElseStartsOnOwnLine}){
+          if(${$self}{ElseStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{ifbody}){
+              # add a line break after ifbody, if appropriate
+              $self->logger("Adding a linebreak before the \\else statement (see ElseStartsOnOwnLine)");
+              ${$self}{body} =~ s/\\else/\n\\else/s;
+              ${$self}{linebreaksAtEnd}{ifbody} = 1;
+          } elsif (${$self}{ElseStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{ifbody}){
+              # remove line break *after* ifbody, if appropriate
+              $self->logger("Removing linebreak before \\else statement (see ElseStartsOnOwnLine)");
+              ${$self}{body} =~ s/\R*(\h*)\\else/$1\\else/sx;
+              ${$self}{linebreaksAtEnd}{ifbody} = 0;
+          }
+      }
+
+
+      # ElseFinishesWithLineBreak
+      # ElseFinishesWithLineBreak
+      # ElseFinishesWithLineBreak
+        # need this!
+
+
+
+
+
+      # there's no need for the current object to keep all of the settings
+      delete ${$self}{settings};
+      delete ${$self}{switches};
+      return;
+    } else {
+      $self->logger("\\else statement not found",'trace');
     }
 }
 

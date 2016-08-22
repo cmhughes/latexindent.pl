@@ -1,6 +1,7 @@
-success/*.bak*
 success/*.log
+*.bak*
 *.log
+*.swp
 documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing

@@ -173,12 +173,13 @@ sub process_body_of_text{
 
                 # line break checks before \begin{statement}
                 if(defined ${$child}{BeginStartsOnOwnLine}){
+                    my $BeginStringLogFile = ${$child}{aliases}{everyBeginStartsOnOwnLine}||"everyBeginStartsOnOwnLine";
                     if(${$child}{BeginStartsOnOwnLine}==1 and !$IDFirstNonWhiteSpaceCharacter){
-                        $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see BeginStartsOnOwnLine)");
+                        $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
                         ${$child}{begin} = "\n".${$child}{begin};
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
-                        $self->logger("Removing linebreak before ${$child}{begin} (see BeginStartsOnOwnLine)",'heading');
+                        $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)",'heading');
                         ${$self}{body} =~ s/\R*(\h*)?${$child}{id}/${$child}{id}/s;
                     }
                 }

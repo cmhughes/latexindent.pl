@@ -11,4 +11,4 @@ modifyLineBreaks:
             EndFinishesWithLineBreak: 1
 logFilePreferences:
     showEveryYamlRead: 1
-    showAlmagamatedSettings: 1
+    showAmalgamatedSettings: 1

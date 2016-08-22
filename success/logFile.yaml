@@ -1,5 +1,5 @@
 logFilePreferences:
-    showAlmagamatedSettings: 0
+    showAmalgamatedSettings: 0
     showEveryYamlRead: 1
     traceModeDecreaseIndent: '--'
     traceModeIncreaseIndent: '++'

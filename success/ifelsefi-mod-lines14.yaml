@@ -1,0 +1,14 @@
+modifyLineBreaks:
+    preserveBlankLines: 0
+    ifElseFi:
+        everyIfStartsOnOwnLine: -1
+        everyBodyStartsOnOwnLine: -1
+        everyElseStartsOnOwnLine: 0
+        everyFiStartsOnOwnLine: -1
+        everyFiFinishesWithLineBreak: -1
+        ifnum:  
+            ElseStartsOnOwnLine: 0
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 1
+

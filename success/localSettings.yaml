@@ -45,7 +45,7 @@ constructIfElseFi:
 lookForAlignDelims:
   align: 0
 logFilePreferences:
-    showAlmagamatedSettings: 0
+    showAmalgamatedSettings: 0
     traceModeDecreaseIndent: '--'
     traceModeIncreaseIndent: '++'
     traceModeAddCurrentIndent: '&&&&'
