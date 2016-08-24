@@ -142,7 +142,7 @@ sub readSettings{
   # which details the overall state of the settings modified
   # from the default in various user files
   if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
-      $self->logger("Amalgamated/overall settings to be used:");
+      $self->logger("Amalgamated/overall settings to be used:",'heading');
       $self->logger(Dump \%masterSettings);
   }
 

@@ -3,12 +3,13 @@ modifyLineBreaks:
     ifElseFi:
         everyIfStartsOnOwnLine: -1
         everyBodyStartsOnOwnLine: -1
-        everyElseStartsOnOwnLine: 0
+        everyElseStartsOnOwnLine: -1
         everyFiStartsOnOwnLine: -1
         everyFiFinishesWithLineBreak: -1
+        everyElseFinishesWithLineBreak: 0
         ifnum:  
-            ElseStartsOnOwnLine: 0
-            ElseFinishesWithLineBreak: -1
+            ElseStartsOnOwnLine: -1
+            ElseFinishesWithLineBreak: 1
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 1

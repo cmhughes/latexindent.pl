@@ -8,6 +8,7 @@ modifyLineBreaks:
         ifnum:
             ElseStartsOnOwnLine: -1
             BodyStartsOnOwnLine: 1
+            ElseFinishesWithLineBreak: -1
         ifodd:
             BodyStartsOnOwnLine: 0
             FiStartsOnOwnLine: -1

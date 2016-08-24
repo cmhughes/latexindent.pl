@@ -78,5 +78,7 @@ latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines13.yaml -o
 latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines14.yaml -o=ifelsefi-first-mod-E-mod14.tex
 latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines15.yaml -o=ifelsefi-first-mod-E-mod15.tex
 latexindent.pl ifelsefi-first-mod-F.tex -s -t -m -l=ifelsefi-mod-lines13.yaml -o=ifelsefi-first-mod-F-mod13.tex
+latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines16.yaml -o=ifelsefi-first-mod-E-mod16.tex
+latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines17.yaml -o=ifelsefi-first-mod-E-mod17.tex
 git status
 exit

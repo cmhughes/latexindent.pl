@@ -220,10 +220,43 @@ sub check_for_else_statement{
       # ElseFinishesWithLineBreak
       # ElseFinishesWithLineBreak
       # ElseFinishesWithLineBreak
-        # need this!
+      my %ElseFinishesWithLineBreak= (
+                                finalvalue=>undef,
+                                every=>{name=>"everyElseFinishesWithLineBreak"},
+                                custom=>{name=>"ElseFinishesWithLineBreak"}
+                              );
+      $ElseFinishesWithLineBreak{every}{value}  = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$ElseFinishesWithLineBreak{every}{name}};
+      $ElseFinishesWithLineBreak{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$ElseFinishesWithLineBreak{custom}{name}};
 
+      # check for the *every* value
+      if (defined $ElseFinishesWithLineBreak{every}{value} and $ElseFinishesWithLineBreak{every}{value} >= 0){
+          $self->logger("$ElseFinishesWithLineBreak{every}{name}=$ElseFinishesWithLineBreak{every}{value}, (*every* value) adjusting ElseFinishesWithLineBreak",'trace');
+          $ElseFinishesWithLineBreak{finalvalue} = $ElseFinishesWithLineBreak{every}{value};
+      }
+      
+      # check for the *custom* value
+      if (defined $ElseFinishesWithLineBreak{custom}{value}){
+          $self->logger("$name: $ElseFinishesWithLineBreak{custom}{name}=$ElseFinishesWithLineBreak{custom}{value}, (*custom* value) adjusting ElseFinishesWithLineBreak",'trace');
+          $ElseFinishesWithLineBreak{finalvalue} = $ElseFinishesWithLineBreak{custom}{value} >=0 ? $ElseFinishesWithLineBreak{custom}{value} : undef;
+      }
 
+      # update the final value
+      ${$self}{ElseFinishesWithLineBreak}=$ElseFinishesWithLineBreak{finalvalue};
 
+      # possibly modify line break *before* \else statement
+      if(defined ${$self}{ElseFinishesWithLineBreak}){
+          if(${$self}{ElseFinishesWithLineBreak}==1 and !${$self}{linebreaksAtEnd}{else}){
+              # add a line break after else, if appropriate
+              $self->logger("Adding a linebreak after the \\else statement (see ElseFinishesWithLineBreak)");
+              ${$self}{body} =~ s/\\else\h*/\\else\n/s;
+              ${$self}{linebreaksAtEnd}{else} = 1;
+          } elsif (${$self}{ElseFinishesWithLineBreak}==0 and ${$self}{linebreaksAtEnd}{else}){
+              # remove line break *after* else, if appropriate
+              $self->logger("Removing linebreak after \\else statement (see ElseFinishesWithLineBreak)");
+              ${$self}{body} =~ s/\\else\h*\R*/\\else/sx;
+              ${$self}{linebreaksAtEnd}{else} = 0;
+          }
+      }
 
 
       # there's no need for the current object to keep all of the settings

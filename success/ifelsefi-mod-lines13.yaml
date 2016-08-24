@@ -12,6 +12,7 @@ modifyLineBreaks:
             FiFinishesWithLineBreak: 0
         ifnum:  
             ElseStartsOnOwnLine: 0
+            ElseFinishesWithLineBreak: -1
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 1
