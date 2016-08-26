@@ -5,7 +5,7 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
-use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object/;
+use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print/;
