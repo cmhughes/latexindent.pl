@@ -76,7 +76,7 @@ sub find_ifelsefi{
                         \\fi                    # \fi statement 
                         \h*                     # 0 or more horizontal spaces
                     )
-                    (\R*)                       # linebreaks after \fi
+                    (\R)?                       # linebreaks after \fi
     /sx;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp/){

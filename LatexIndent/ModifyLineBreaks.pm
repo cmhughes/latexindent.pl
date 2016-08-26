@@ -47,7 +47,7 @@ sub pre_print{
     $body =~ s/%\hlatexindenttrailingcomment\d+//mg;
     
     # output the body to the log file
-    $self->logger("Expanded body, no comments (just to check linebreaks)","heading.ttrace");
+    $self->logger("Expanded body (before sweep), no comments (just to check linebreaks)","heading.ttrace");
     $self->logger($body,'ttrace');
 
     # reset counter
@@ -74,6 +74,8 @@ sub pre_print{
     }
 
     $self->logger('Processed line breaks','heading.trace');
+    $self->logger("Expanded body (after sweep), no comments (just to check linebreaks)","heading.ttrace");
+    $self->logger($body,'ttrace');
     return;
 }
 

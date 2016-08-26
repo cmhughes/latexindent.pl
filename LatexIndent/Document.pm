@@ -85,6 +85,16 @@ sub output_indented_text{
 sub process_body_of_text{
     my $self = shift;
 
+    # find objects recursively
+    $self->find_objects_recursively;
+
+    $self->indent_children;
+    return;
+}
+
+sub find_objects_recursively{
+    my $self = shift;
+
     # search for environments
     $self->logger('looking for ENVIRONMENTS','heading');
     $self->find_environments;
@@ -143,9 +153,20 @@ sub process_body_of_text{
 
     # the modify line switch can adjust line breaks, so we need another sweep
     $self->pre_print;
+    return;
+}
+
+sub indent_children{
+    my $self = shift;
 
     $self->logger('Pre-processed body:','heading');
     $self->logger(${$self}{body});
+
+    unless(defined ${$self}{children}){
+        $self->logger("No child objects");
+        return;
+    }
+
     $self->logger("Indenting children objects:",'heading');
 
     # loop through document children hash
@@ -217,7 +238,7 @@ sub process_body_of_text{
     $self->logger(scalar keys %{%{$self}{children}});
     $self->logger('Post-processed body:','trace');
     $self->logger(${$self}{body},'trace');
-    return;
+
 }
 
 sub tasks_common_to_each_object{

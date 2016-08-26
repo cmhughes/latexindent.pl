@@ -49,9 +49,9 @@ sub find_environments{
                                               body=>$4,
                                               end=>$6,
                                               linebreaksAtEnd=>{
-                                                begin=> ($3)?1:0,
-                                                body=> ($5)?1:0,
-                                                end=> ($8)?1:0,
+                                                begin=> $3?1:0,
+                                                body=> $5?1:0,
+                                                end=> $8?1:0,
                                               },
                                               modifyLineBreaksYamlName=>"environments",
                                             );
