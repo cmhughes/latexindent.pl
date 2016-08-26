@@ -98,9 +98,6 @@ sub find_ifelsefi{
                                                 # begin statements
                                                 everyBeginStartsOnOwnLine=>"everyIfStartsOnOwnLine",
                                                 BeginStartsOnOwnLine=>"IfStartsOnOwnLine",
-                                                # body statements
-                                                everyBodyStartsOnOwnLine=>"everyBodyStartsOnOwnLine",
-                                                BodyStartsOnOwnLine=>"BodyStartsOnOwnLine",
                                                 # end statements
                                                 everyEndStartsOnOwnLine=>"everyFiStartsOnOwnLine",
                                                 EndStartsOnOwnLine=>"FiStartsOnOwnLine",
@@ -110,6 +107,7 @@ sub find_ifelsefi{
                                               },
                                               elsePresent=>0,
                                               modifyLineBreaksYamlName=>"ifElseFi",
+                                              additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
                                             );
 
       # there are a number of tasks common to each object
@@ -164,50 +162,11 @@ sub check_for_else_statement{
         $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace');
       }
 
-      # default modifylinebreak values undefined
-      ${$self}{ElseStartsOnOwnLine}=undef;
-
       # check if -m switch is active
       $self->get_switches;
 
       # return with undefined values unless the -m switch is active
       return  unless(${${$self}{switches}}{modifyLineBreaks});
-
-      # master settings
-      $self->masterYamlSettings;
-      my %masterSettings = %{${$self}{settings}};
-
-      # name of the object
-      my $name = ${$self}{name};
-
-      # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
-      my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
-
-      # ElseStartsOnOwnLine 
-      # ElseStartsOnOwnLine 
-      # ElseStartsOnOwnLine 
-      my %ElseStartsOnOwnLine= (
-                                finalvalue=>undef,
-                                every=>{name=>"everyElseStartsOnOwnLine"},
-                                custom=>{name=>"ElseStartsOnOwnLine"}
-                              );
-      $ElseStartsOnOwnLine{every}{value}  = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$ElseStartsOnOwnLine{every}{name}};
-      $ElseStartsOnOwnLine{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$ElseStartsOnOwnLine{custom}{name}};
-      
-      # check for the *every* value
-      if (defined $ElseStartsOnOwnLine{every}{value} and $ElseStartsOnOwnLine{every}{value} >= 0){
-          $self->logger("$ElseStartsOnOwnLine{every}{name}=$ElseStartsOnOwnLine{every}{value}, (*every* value) adjusting ElseStartsOnOwnLine",'trace');
-          $ElseStartsOnOwnLine{finalvalue} = $ElseStartsOnOwnLine{every}{value};
-      }
-      
-      # check for the *custom* value
-      if (defined $ElseStartsOnOwnLine{custom}{value}){
-          $self->logger("$name: $ElseStartsOnOwnLine{custom}{name}=$ElseStartsOnOwnLine{custom}{value}, (*custom* value) adjusting ElseStartsOnOwnLine",'trace');
-          $ElseStartsOnOwnLine{finalvalue} = $ElseStartsOnOwnLine{custom}{value} >=0 ? $ElseStartsOnOwnLine{custom}{value} : undef;
-      }
-
-      # update the final value
-      ${$self}{ElseStartsOnOwnLine}=$ElseStartsOnOwnLine{finalvalue};
 
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseStartsOnOwnLine}){
@@ -224,33 +183,6 @@ sub check_for_else_statement{
           }
       }
 
-
-      # ElseFinishesWithLineBreak
-      # ElseFinishesWithLineBreak
-      # ElseFinishesWithLineBreak
-      my %ElseFinishesWithLineBreak= (
-                                finalvalue=>undef,
-                                every=>{name=>"everyElseFinishesWithLineBreak"},
-                                custom=>{name=>"ElseFinishesWithLineBreak"}
-                              );
-      $ElseFinishesWithLineBreak{every}{value}  = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$ElseFinishesWithLineBreak{every}{name}};
-      $ElseFinishesWithLineBreak{custom}{value} = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$ElseFinishesWithLineBreak{custom}{name}};
-
-      # check for the *every* value
-      if (defined $ElseFinishesWithLineBreak{every}{value} and $ElseFinishesWithLineBreak{every}{value} >= 0){
-          $self->logger("$ElseFinishesWithLineBreak{every}{name}=$ElseFinishesWithLineBreak{every}{value}, (*every* value) adjusting ElseFinishesWithLineBreak",'trace');
-          $ElseFinishesWithLineBreak{finalvalue} = $ElseFinishesWithLineBreak{every}{value};
-      }
-      
-      # check for the *custom* value
-      if (defined $ElseFinishesWithLineBreak{custom}{value}){
-          $self->logger("$name: $ElseFinishesWithLineBreak{custom}{name}=$ElseFinishesWithLineBreak{custom}{value}, (*custom* value) adjusting ElseFinishesWithLineBreak",'trace');
-          $ElseFinishesWithLineBreak{finalvalue} = $ElseFinishesWithLineBreak{custom}{value} >=0 ? $ElseFinishesWithLineBreak{custom}{value} : undef;
-      }
-
-      # update the final value
-      ${$self}{ElseFinishesWithLineBreak}=$ElseFinishesWithLineBreak{finalvalue};
-
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseFinishesWithLineBreak}){
           if(${$self}{ElseFinishesWithLineBreak}==1 and !${$self}{linebreaksAtEnd}{else}){
@@ -265,7 +197,6 @@ sub check_for_else_statement{
               ${$self}{linebreaksAtEnd}{else} = 0;
           }
       }
-
 
       # there's no need for the current object to keep all of the settings
       delete ${$self}{settings};

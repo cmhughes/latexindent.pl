@@ -213,9 +213,13 @@ sub modify_line_breaks_settings{
     # details to the log file
     $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading.trace');
 
-    # we can effeciently loop through the following
-    my @toBeAssignedTo = ("BeginStartsOnOwnLine","BodyStartsOnOwnLine","EndStartsOnOwnLine","EndFinishesWithLineBreak");
+    # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
+    my @toBeAssignedTo = defined ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
 
+    # the following will *definitley* be in the array, so let's add them
+    push(@toBeAssignedTo,("BeginStartsOnOwnLine","BodyStartsOnOwnLine","EndStartsOnOwnLine","EndFinishesWithLineBreak"));
+
+    # we can effeciently loop through the following
     foreach (@toBeAssignedTo){
                     $self->get_every_or_custom_value(
                                     every=> (defined ${$self}{aliases}{"every".$_}) ?  ${$self}{aliases}{"every".$_} : "every".$_,
