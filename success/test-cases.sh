@@ -90,6 +90,10 @@ latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod4.yaml 
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod5.yaml -o=env-ifelsefi-mixed-mod5.tex
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod6.yaml -o=env-ifelsefi-mixed-mod6.tex
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod7.yaml -o=env-ifelsefi-mixed-mod7.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod8.yaml -o=env-ifelsefi-mixed-mod8.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod9.yaml -o=env-ifelsefi-mixed-mod9.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod10.yaml -o=env-ifelsefi-mixed-mod10.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod11.yaml -o=env-ifelsefi-mixed-mod11.tex
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this

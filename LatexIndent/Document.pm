@@ -159,8 +159,8 @@ sub find_objects_recursively{
 sub indent_children{
     my $self = shift;
 
-    $self->logger('Pre-processed body:','heading');
-    $self->logger(${$self}{body});
+    $self->logger('Pre-processed body:','heading.trace');
+    $self->logger(${$self}{body},'trace');
 
     unless(defined ${$self}{children}){
         $self->logger("No child objects");
