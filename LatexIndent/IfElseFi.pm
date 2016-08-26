@@ -60,37 +60,39 @@ sub find_ifelsefi{
                     (
                         \\
                             (@?if[a-zA-Z@]*?)
+                        \h*
                         (\R*)
-                    )                            # begin statement, e.g \ifnum, \ifodd
+                    )                           # begin statement, e.g \ifnum, \ifodd
                     (
-                        (?:
-                            \\(?!if)|\R|\s|\#|!-!   # up until a \\, linebreak # or !-!, which is 
-                        )                        # part of the tokens used for latexindent
+                        \\(?!if)|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                    )                           # part of the tokens used for latexindent
+                    (
                         (?: 
                             (?!\\if).
-                        )*?                      # body, which can't include another \if
+                        )*?                     # body, which can't include another \if
                     )
-                    (\R*)                        # linebreaks after body
+                    (\R*)                       # linebreaks after body
                     (
-                        \\fi                     # \fi statement 
-                        \h*                      # 0 or more horizontal spaces
+                        \\fi                    # \fi statement 
+                        \h*                     # 0 or more horizontal spaces
                     )
-                    (\R*)                        # linebreaks after \fi
+                    (\R*)                       # linebreaks after \fi
     /sx;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp/){
       # log file output
-      $self->logger("IfElseFi found: $2");
+      $self->logger("IfElseFi found: $2",'heading');
 
       # create a new Environment object
       my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1,
                                               name=>$2,
-                                              body=>$4.$5,
-                                              end=>"$6",
+                                              # if $4 is a line break, don't count it twice (it will already be in 'begin')
+                                              body=>($4 eq "\n") ? $5.$6 : $4.$5.$6,
+                                              end=>$7,
                                               linebreaksAtEnd=>{
                                                 begin=> ($3)?1:0,
-                                                body=> ($5)?1:0,
-                                                end=> ($7)?1:0,
+                                                body=> ($6)?1:0,
+                                                end=> ($8)?1:0,
                                               },
                                               aliases=>{
                                                 # begin statements
@@ -155,6 +157,12 @@ sub check_for_else_statement{
       ${$self}{linebreaksAtEnd}{else} = $2?1:0;
       $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}",'trace');
       ${$self}{elsePresent}=1;
+
+      # check that \else isn't the first thing in body
+      if(${$self}{body} =~ m/^\\else/s and ${$self}{linebreaksAtEnd}{begin}){
+        ${$self}{linebreaksAtEnd}{ifbody} = 1;
+        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace');
+      }
 
       # default modifylinebreak values undefined
       ${$self}{ElseStartsOnOwnLine}=undef;

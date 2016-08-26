@@ -28,7 +28,15 @@ sub condense_blank_lines{
         $replacementToken .= "\nlatex-indent-blank-line";
     }
 
-    ${$self}{body} =~ s/(latex-indent-blank-line\R?\h*){2,}/$replacementToken/mg;
+    $self->logger("blank line replacement token: $replacementToken",'ttrace');
+    # need to return to this
+    # need to return to this
+    # need to return to this
+    #while(${$self}{body} =~ m/latex-indent-blank-line\h*\R*\h*latex-indent-blank-line/){
+    #    ${$self}{body} =~ s/latex-indent-blank-line\h*\R*\h*latex-indent-blank-line/$replacementToken/mgs;
+    #}
+    ${$self}{body} =~ s/(latex-indent-blank-line\h*\R*\h*){1,}latex-indent-blank-line$/$replacementToken/mgs;
+    $self->logger("body now looks like ${$self}{body}",'ttrace');
     return;
 }
 
@@ -39,15 +47,20 @@ sub unprotect_blank_lines{
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
 
+    # need to return to this
+    # need to return to this
+    # need to return to this
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/latex-indent-blank-line/m){
         # when the blank line token occupies the whole line
-        while(${$self}{body} =~ m/^\h*?latex-indent-blank-line$/m){
-            ${$self}{body} =~ s/^\h*?latex-indent-blank-line$//m;
-        }
+        #while(${$self}{body} =~ m/^\h*?latex-indent-blank-line$/m){
+        #    ${$self}{body} =~ s/^\h*?latex-indent-blank-line$//m;
+        #}
+        ${$self}{body} =~ s/^\h*latex-indent-blank-line$//mg;
         # otherwise the blank line has been deleted, so we compensate with an extra
-        ${$self}{body} =~ s/latex-indent-blank-line/\n/m;
+        ${$self}{body} =~ s/(^\h*)?latex-indent-blank-line/$1?$1:"\n"/me;
     }
+    $self->logger("body now looks like ${$self}{body}",'ttrace');
 }
 
 1;

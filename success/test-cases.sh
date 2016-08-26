@@ -49,9 +49,6 @@ latexindent.pl  -s -m -l=env-mod-lines8.yaml -o=environments-remove-line-breaks-
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod1.tex -m -tt -l=env-mod-lines9.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod2.tex -m -tt -l=env-mod-lines10.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod3.tex -m -tt -l=env-mod-lines11.yaml environments-modify-multiple-line-breaks.tex
-# protect blank lines test
-latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l=env-mod-lines12.yaml environments-modify-multiple-line-breaks.tex
-latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l=env-mod-lines13.yaml environments-modify-multiple-line-breaks.tex
 # if else fi code blocks, simple no line breaks
 latexindent.pl -w -s -t ifelsefi-first.tex
 latexindent.pl -w -s -t ifelsefi-simple-nested.tex
@@ -80,5 +77,14 @@ latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines15.yaml -o
 latexindent.pl ifelsefi-first-mod-F.tex -s -t -m -l=ifelsefi-mod-lines13.yaml -o=ifelsefi-first-mod-F-mod13.tex
 latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines16.yaml -o=ifelsefi-first-mod-E-mod16.tex
 latexindent.pl ifelsefi-first-mod-E.tex -s -t -m -l=ifelsefi-mod-lines17.yaml -o=ifelsefi-first-mod-E-mod17.tex
+# testing a nested, one-line example
+latexindent.pl ifelsefi-one-line.tex -s -t -m -o=ifelsefi-one-line-mod1.tex
+# blank lines -- need to return to this
+latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -l=ifelsefi-mod-lines18.yaml -o=ifelsefi-nested-blank-lines-mod18.tex
+latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense.tex
+# protect blank lines test -- need to return to this
+latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l=env-mod-lines12.yaml environments-modify-multiple-line-breaks.tex
+latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l=env-mod-lines13.yaml environments-modify-multiple-line-breaks.tex
+latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod6.tex -m -tt -l=env-mod-lines14.yaml environments-modify-multiple-line-breaks.tex
 git status
 exit

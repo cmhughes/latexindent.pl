@@ -38,7 +38,7 @@ sub operate_on_file{
     $self->find_noindent_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
-    $self->protect_blank_lines;
+    #$self->protect_blank_lines;
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
@@ -48,8 +48,8 @@ sub operate_on_file{
     # process alignment environments
     # PREVIOUSLY FOUND SETTINGS: need another check, e.g if environment shares same name as (e.g) command
     $self->remove_trailing_whitespace;
-    $self->condense_blank_lines;
-    $self->unprotect_blank_lines;
+    #$self->condense_blank_lines;
+    #$self->unprotect_blank_lines;
     $self->put_verbatim_back_in;
     $self->put_trailing_comments_back_in;
     $self->output_indented_text;
@@ -179,8 +179,8 @@ sub process_body_of_text{
                         ${$child}{begin} = "\n".${$child}{begin};
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
-                        $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)",'heading');
-                        ${$self}{body} =~ s/\R*(\h*)?${$child}{id}/${$child}{id}/s;
+                        $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
+                        ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;
                     }
                 }
 
