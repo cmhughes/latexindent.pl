@@ -83,6 +83,13 @@ latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -l=ifelsefi-mod-lines18.
 latexindent.pl ifelsefi-one-line.tex -s -t -m -o=ifelsefi-one-line-mod1.tex
 # first mixed example
 latexindent.pl env-ifelsefi-mixed.tex -s -t -m -o=env-ifelsefi-mixed-out1.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod1.yaml -o=env-ifelsefi-mixed-mod1.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod2.yaml -o=env-ifelsefi-mixed-mod2.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod3.yaml -o=env-ifelsefi-mixed-mod3.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod4.yaml -o=env-ifelsefi-mixed-mod4.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod5.yaml -o=env-ifelsefi-mixed-mod5.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod6.yaml -o=env-ifelsefi-mixed-mod6.tex
+latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod7.yaml -o=env-ifelsefi-mixed-mod7.tex
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this
