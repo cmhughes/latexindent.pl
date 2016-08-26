@@ -191,9 +191,16 @@ sub check_for_else_statement{
               ${$self}{body} =~ s/\\else\h*/\\else\n/s;
               ${$self}{linebreaksAtEnd}{else} = 1;
           } elsif (${$self}{ElseFinishesWithLineBreak}==0 and ${$self}{linebreaksAtEnd}{else}){
-              # remove line break *after* else, if appropriate
+              # remove line break *after* else, if appropriate, 
+              # note the space so that, for example,
+              #     \else
+              #             some text
+              # becomes
+              #     \else some text
+              # and not
+              #     \elsesome text
               $self->logger("Removing linebreak after \\else statement (see ElseFinishesWithLineBreak)");
-              ${$self}{body} =~ s/\\else\h*\R*/\\else/sx;
+              ${$self}{body} =~ s/\\else\h*\R*/\\else /sx;
               ${$self}{linebreaksAtEnd}{else} = 0;
           }
       }
