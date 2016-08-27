@@ -69,7 +69,7 @@ close(MAINFILE);
 #print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 #print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
 #print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(body=>join("",@lines),fileName=>$fileName,switches=>\%switches);
+my $document = LatexIndent::Document->new(name=>"masterdocument",body=>join("",@lines),fileName=>$fileName,switches=>\%switches);
 $document->processSwitches;
 $document->readSettings;
 $document->operate_on_file;

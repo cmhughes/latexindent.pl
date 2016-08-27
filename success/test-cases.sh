@@ -94,6 +94,8 @@ latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod8.yaml 
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod9.yaml -o=env-ifelsefi-mixed-mod9.tex
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod10.yaml -o=env-ifelsefi-mixed-mod10.tex
 latexindent.pl env-ifelsefi-mixed.tex -s -t  -m -l=env-ifelsefi-mixed-mod11.yaml -o=env-ifelsefi-mixed-mod11.tex
+# first recursive example
+latexindent.pl env-ifelsefi-mixed-recursive.tex -s -t -m -o=env-ifelsefi-mixed-recursive-mod1.tex
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this
 # FIX protect blank lines test -- need to return to this

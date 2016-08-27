@@ -25,6 +25,7 @@ sub indent{
     if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
             $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')");
             ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
+            $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}","trace");
     }
 
     # indent the end statement

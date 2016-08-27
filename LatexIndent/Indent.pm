@@ -50,9 +50,12 @@ sub indent_body{
     # grab the indentation of the object
     my $indentation = ${$self}{indentation};
 
+    # output to the logfile
+    $self->logger("Body (${$self}{name}) before indentation:\n${$self}{body}","trace");
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
-        ${$self}{body} =~ s/^\h*/$indentation/mg;  # add indentation
+        ${$self}{body} =~ s/^(\h*)/$1$indentation/mg;  # add indentation
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
         if(${$self}{body} =~ m/
                             (.*?)      # content of first line
@@ -72,6 +75,9 @@ sub indent_body{
             ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
         }
     }
+
+    # output to the logfile
+    $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}","trace");
     return $self;
 }
 

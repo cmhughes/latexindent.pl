@@ -88,7 +88,8 @@ sub process_body_of_text{
     # find objects recursively
     $self->find_objects_recursively;
 
-    $self->indent_children;
+    # indentation recursively
+    $self->indent_children_recursively;
     return;
 }
 
@@ -96,11 +97,11 @@ sub find_objects_recursively{
     my $self = shift;
 
     # search for environments
-    $self->logger('looking for ENVIRONMENTS','heading');
+    $self->logger('looking for ENVIRONMENTS');
     $self->find_environments;
 
     # search for ifElseFi blocks
-    $self->logger('looking for IFELSEFI','heading');
+    $self->logger('looking for IFELSEFI');
     $self->find_ifelsefi;
 
     # if there are no children, return
@@ -118,6 +119,7 @@ sub find_objects_recursively{
     $self->logger(scalar keys %{%{$self}{children}});
 
     $self->logger("searching for hidden children",'ttrace');
+
     # finding hidden children
     while( my ($key,$child)= each %{%{$self}{children}}){
         if(${$self}{body} !~ m/${$child}{id}/){
@@ -151,23 +153,41 @@ sub find_objects_recursively{
         }
     }
 
+    # send each child through this routine
+    while( my ($key,$child)= each %{%{$self}{children}}){
+        $self->logger("Searching ${$child}{name} for objects...",'heading');
+        $child->get_switches;
+        $child->masterYamlSettings;
+        $child->find_objects_recursively;
+        delete ${$child}{settings};
+        delete ${$child}{switches};
+    }
+
     # the modify line switch can adjust line breaks, so we need another sweep
     $self->pre_print;
     return;
 }
 
-sub indent_children{
+sub indent_children_recursively{
     my $self = shift;
 
     $self->logger('Pre-processed body:','heading.trace');
     $self->logger(${$self}{body},'trace');
 
     unless(defined ${$self}{children}){
-        $self->logger("No child objects");
+        $self->logger("No child objects (${$self}{name})");
         return;
     }
 
-    $self->logger("Indenting children objects:",'heading');
+    # send the children through this indentation routine recursively
+    if(defined ${$self}{children}){
+        while( my ($key,$child)= each %{%{$self}{children}}){
+            $self->logger("Indenting child objects on ${$child}{name}");
+            $child->indent_children_recursively;#(parentIndentation=>\${$child}{indentation});
+        }
+    }
+
+    $self->logger("Indenting children objects (${$self}{name}):",'heading');
 
     # loop through document children hash
     while( (scalar keys %{%{$self}{children}})>0 ){
@@ -223,20 +243,20 @@ sub indent_children{
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','heading.trace');
+                $self->logger("Body (${$self}{name}) now looks like:",'heading.trace');
                 $self->logger(${$self}{body},'trace');
 
+                $self->logger("deleted child key ${$child}{name} (parent is: ${$self}{name})");
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{children}{${$child}{id}};
-                $self->logger("deleted key");
               }
             }
     }
 
     # logfile info
-    $self->logger("Number of children:",'heading');
+    $self->logger("${$self}{name} has this many children:",'heading');
     $self->logger(scalar keys %{%{$self}{children}});
-    $self->logger('Post-processed body:','trace');
+    $self->logger("Post-processed body (${$self}{name}):",'trace');
     $self->logger(${$self}{body},'trace');
 
 }
