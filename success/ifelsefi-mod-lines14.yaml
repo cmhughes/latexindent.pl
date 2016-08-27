@@ -1,11 +1,11 @@
 modifyLineBreaks:
     preserveBlankLines: 0
     ifElseFi:
-        everyIfStartsOnOwnLine: -1
-        everyBodyStartsOnOwnLine: -1
-        everyElseStartsOnOwnLine: 0
-        everyFiStartsOnOwnLine: -1
-        everyFiFinishesWithLineBreak: -1
+        IfStartsOnOwnLine: -1
+        BodyStartsOnOwnLine: -1
+        ElseStartsOnOwnLine: 0
+        FiStartsOnOwnLine: -1
+        FiFinishesWithLineBreak: -1
         ifnum:  
             ElseStartsOnOwnLine: 0
             ElseFinishesWithLineBreak: -1

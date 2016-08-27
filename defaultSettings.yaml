@@ -250,7 +250,7 @@ fileContentsEnvironments:
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
-#    everyBeginStartsOnOwnLine: 1
+#    BeginStartsOnOwnLine: 1
 #       if a begin statement is not already on its own line,
 #       then, with -m active, it will be moved to its own line.
 #
@@ -266,7 +266,7 @@ fileContentsEnvironments:
 #               some text some text \begin{myenvironment}
 #       when set to -1, the switch is ignored
 #
-#    everyBodyStartsOnOwnLine: 1
+#    BodyStartsOnOwnLine: 1
 #       if body does not already start on its own line, then with 
 #       -m active, it will be moved to its own line.
 #
@@ -282,7 +282,7 @@ fileContentsEnvironments:
 #               \begin{myenv}body text body text
 #       when set to -1, the switch is ignored
 #
-#    everyEndStartsOnOwnLine: 1
+#    EndStartsOnOwnLine: 1
 #       if an end statement is not already on its own line,
 #       then, with -m active, it will be moved to its own line.
 #
@@ -298,7 +298,7 @@ fileContentsEnvironments:
 #               some text some text \end{myenvironment}
 #       when set to -1, the switch is ignored
 #
-#    everyEndFinishesWithLineBreak: 1
+#    EndFinishesWithLineBreak: 1
 #       this switch adjusts line breaks immmediately 
 #       after an end statement (with -m active)
 #       
@@ -320,22 +320,22 @@ modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
     environments:
-        everyBeginStartsOnOwnLine: 1
-        everyBodyStartsOnOwnLine: 1
-        everyEndStartsOnOwnLine: 1
-        everyEndFinishesWithLineBreak: 1
+        BeginStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
+        EndStartsOnOwnLine: 1
+        EndFinishesWithLineBreak: 1
         equation*:
             BeginStartsOnOwnLine: 1
             BodyStartsOnOwnLine: 1
             EndStartsOnOwnLine: 1
             EndFinishesWithLineBreak: 1
     ifElseFi:
-        everyIfStartsOnOwnLine: 1
-        everyBodyStartsOnOwnLine: 1
-        everyElseStartsOnOwnLine: 1
-        everyElseFinishesWithLineBreak: 1
-        everyFiStartsOnOwnLine: 1
-        everyFiFinishesWithLineBreak: 1
+        IfStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
+        ElseStartsOnOwnLine: 1
+        ElseFinishesWithLineBreak: 1
+        FiStartsOnOwnLine: 1
+        FiFinishesWithLineBreak: 1
         ifnum:
             IfStartsOnOwnLine: 1
             BodyStartsOnOwnLine: 1

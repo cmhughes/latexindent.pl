@@ -97,13 +97,10 @@ sub find_ifelsefi{
                                               },
                                               aliases=>{
                                                 # begin statements
-                                                everyBeginStartsOnOwnLine=>"everyIfStartsOnOwnLine",
                                                 BeginStartsOnOwnLine=>"IfStartsOnOwnLine",
                                                 # end statements
-                                                everyEndStartsOnOwnLine=>"everyFiStartsOnOwnLine",
                                                 EndStartsOnOwnLine=>"FiStartsOnOwnLine",
                                                 # after end statements
-                                                everyEndFinishesWithLineBreak=>"everyFiFinishesWithLineBreak",
                                                 EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
                                               },
                                               elsePresent=>0,

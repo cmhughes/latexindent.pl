@@ -214,7 +214,7 @@ sub modify_line_breaks_settings{
     $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading.trace');
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
-    my @toBeAssignedTo = defined ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
+    my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
 
     # the following will *definitley* be in the array, so let's add them
     push(@toBeAssignedTo,("BeginStartsOnOwnLine","BodyStartsOnOwnLine","EndStartsOnOwnLine","EndFinishesWithLineBreak"));
@@ -222,9 +222,8 @@ sub modify_line_breaks_settings{
     # we can effeciently loop through the following
     foreach (@toBeAssignedTo){
                     $self->get_every_or_custom_value(
-                                    every=> (defined ${$self}{aliases}{"every".$_}) ?  ${$self}{aliases}{"every".$_} : "every".$_,
-                                    custom=> (defined ${$self}{aliases}{$_}) ?  ${$self}{aliases}{$_} : $_,
                                     toBeAssignedTo=>$_,
+                                    toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
       }
     return;
@@ -234,19 +233,12 @@ sub get_every_or_custom_value{
   my $self = shift;
   my $input = {@_};
 
-  my $every = ${$input}{every};
-  my $custom = ${$input}{custom};
   my $toBeAssignedTo = ${$input}{toBeAssignedTo};
+  my $toBeAssignedToAlias = ${$input}{toBeAssignedToAlias};
 
-  # alias: every value
-  my $everyAlias = "every".$toBeAssignedTo; 
-  if(defined ${$self}{aliases}{$everyAlias}){
-        $self->logger("aliased $everyAlias using ${$self}{aliases}{$everyAlias} (every value)",'trace');
-  }
-
-  # alias: custom value
-  if(defined ${$self}{aliases}{$toBeAssignedTo}){
-        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo} (custom value)",'trace');
+  # alias
+  if(${$self}{aliases}{$toBeAssignedTo}){
+        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}",'trace');
   }
 
   # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -256,17 +248,17 @@ sub get_every_or_custom_value{
   my $name = ${$self}{name};
 
   # these variables just ease the notation what follows
-  my $everyValue = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$every};
-  my $customValue = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$custom};
+  my $everyValue = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$toBeAssignedToAlias};
+  my $customValue = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$toBeAssignedToAlias};
 
   # check for the *custom* value
   if (defined $customValue){
-      $self->logger("$name: $custom=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace');
+      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace');
       ${$self}{$toBeAssignedTo} = $customValue >=0 ? $customValue : undef;
    } else {
       # check for the *every* value
       if (defined $everyValue and $everyValue >= 0){
-          $self->logger("$name: $every=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace');
+          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace');
           ${$self}{$toBeAssignedTo} = $everyValue;
       }
    }

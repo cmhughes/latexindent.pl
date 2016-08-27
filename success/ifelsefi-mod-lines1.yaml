@@ -1,8 +1,8 @@
 modifyLineBreaks:
     ifElseFi:
-        everyIfStartsOnOwnLine: 1
+        IfStartsOnOwnLine: 1
     environments:
-        everyBodyStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 1

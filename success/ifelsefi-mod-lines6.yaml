@@ -1,7 +1,7 @@
 modifyLineBreaks:
     ifElseFi:
-        everyIfStartsOnOwnLine: 1
-        everyBodyStartsOnOwnLine: -1
+        IfStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: -1
         ifodd:
             BodyStartsOnOwnLine: 0
 logFilePreferences:

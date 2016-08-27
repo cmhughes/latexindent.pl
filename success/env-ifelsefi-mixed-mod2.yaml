@@ -1,13 +1,13 @@
 modifyLineBreaks:
     environments:
-        everyBeginStartsOnOwnLine: 1
-        everyBodyStartsOnOwnLine: 0
-        everyEndStartsOnOwnLine: 0
-        everyEndFinishesWithLineBreak: 0
+        BeginStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
     ifElseFi:
-        everyIfStartsOnOwnLine: 0
-        everyBodyStartsOnOwnLine: 0
-        everyElseStartsOnOwnLine: 0
-        everyElseFinishesWithLineBreak: 0
-        everyFiStartsOnOwnLine: 0
-        everyFiFinishesWithLineBreak: 0
+        IfStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        ElseStartsOnOwnLine: 0
+        ElseFinishesWithLineBreak: 0
+        FiStartsOnOwnLine: 0
+        FiFinishesWithLineBreak: 0
