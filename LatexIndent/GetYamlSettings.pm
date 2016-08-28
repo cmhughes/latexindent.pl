@@ -231,10 +231,10 @@ sub modify_line_breaks_settings{
 
 sub get_every_or_custom_value{
   my $self = shift;
-  my $input = {@_};
+  my %input = @_;
 
-  my $toBeAssignedTo = ${$input}{toBeAssignedTo};
-  my $toBeAssignedToAlias = ${$input}{toBeAssignedToAlias};
+  my $toBeAssignedTo = $input{toBeAssignedTo};
+  my $toBeAssignedToAlias = $input{toBeAssignedToAlias};
 
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
