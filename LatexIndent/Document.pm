@@ -155,7 +155,7 @@ sub find_objects_recursively{
 
     # send each child through this routine
     while( my ($key,$child)= each %{%{$self}{children}}){
-        $self->logger("Searching ${$child}{name} for objects...",'heading');
+        $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
         $child->get_switches;
         $child->masterYamlSettings;
         $child->find_objects_recursively;
@@ -214,7 +214,7 @@ sub indent_children_recursively{
 
                 # line break checks before \begin{statement}
                 if(defined ${$child}{BeginStartsOnOwnLine}){
-                    my $BeginStringLogFile = ${$child}{aliases}{everyBeginStartsOnOwnLine}||"everyBeginStartsOnOwnLine";
+                    my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     if(${$child}{BeginStartsOnOwnLine}==1 and !$IDFirstNonWhiteSpaceCharacter){
                         $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
                         ${$child}{begin} = "\n".${$child}{begin};
