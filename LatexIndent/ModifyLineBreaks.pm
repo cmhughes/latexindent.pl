@@ -11,16 +11,16 @@ sub pre_print{
     $self->logger('Checking amalgamated line breaks (-m switch active):','heading.trace');
 
     $self->logger('children to process:','trace');
-    $self->logger(scalar keys %{%{$self}{children}},'trace');
+    $self->logger(scalar @{%{$self}{children}},'trace');
 
     my $processedChildren = 0;
-    my $totalChildren = scalar keys %{%{$self}{children}};
+    my $totalChildren = scalar @{%{$self}{children}};
     my $body = ${$self}{body};
 
     # loop through document children hash, remove comments, 
     # produce a pre-print of the document so that line breaks can be checked
     while($processedChildren != $totalChildren){
-            foreach my $child (values %{%{$self}{children}}) { 
+            foreach my $child (@{${$self}{children}}){
                 if(index($body,${$child}{id}) != -1){
                     # make a copy of the begin, body and end statements
                     ${${$child}{noComments}}{begin} = "begin".reverse ${$child}{id};
@@ -55,7 +55,7 @@ sub pre_print{
 
     # sweep back through, check linebreaks
     while($processedChildren != $totalChildren){
-            foreach my $child (values %{%{$self}{children}}) { 
+            foreach my $child (@{${$self}{children}}){
                 if(index($body,${${$child}{noComments}}{begin}.${${$child}{noComments}}{body}.${${$child}{noComments}}{end})!=-1){
                       # check for an undisclosed line break
                       if(${${$child}{noComments}}{body} =~ m/\R$/m and !${$child}{linebreaksAtEnd}{body}){

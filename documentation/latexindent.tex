@@ -1516,4 +1516,27 @@ Explicitly, these are:
 
       \lstinline!latexindent.pl -o outputfile.tex myfile.tex!
 \end{description}
+
+\section{The \lstinline!-m! switch}
+\subsection{The phases of \lstinline!latexindent.pl!}
+latexindent.pl essentially has 3 phases:
+\begin{enumerate}
+  \item packing, in which code blocks are replaced with unique ids; if the -m switch is active, then during this phase,
+    \begin{itemize}
+      \item line breaks at the beginning of the \emph{body} can be added (BodyStartsOnOwnLine: 1) or removed (BodyStartsOnOwnLine: 0);
+      \item line breaks at the end of the body can be added (see EndStartsOnOwnLine: 1) or removed (see EndStartsOnOwnLine: 0);
+    \end{itemize}
+  \item indentation, in which white space is added to the begin, body, and end statements;
+  \item unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
+    \begin{itemize}
+      \item line breaks before \emph{begin} statements can be added or removed (see BeginStartsOnOwnLine);
+      \item line breaks after \emph{end} statements can be removed but \emph{NOT} added (see EndFinishesWithLineBreak).
+    \end{itemize}
+\end{enumerate}
+With these rules in mind, let's study a few test cases:
+
+\fixthis{go into details about each of the following}
+latexindent.pl environments-line-break-conflict.tex -s -t -m -o environments-line-break-conflict-mod1.tex -l=env-conflicts-mod1.yaml
+latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-2.tex -l=env-conflicts-mod2.yaml
+latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-3.tex -l=env-conflicts-mod3.yaml
 \end{document}

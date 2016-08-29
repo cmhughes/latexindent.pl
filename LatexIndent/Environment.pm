@@ -41,7 +41,7 @@ sub find_environments{
 
     while( ${$self}{body} =~ m/$environmentRegExp/){
       # log file output
-      $self->logger("environment found: $2");
+      $self->logger("environment found: $2",'heading');
 
       # create a new Environment object
       my $env = LatexIndent::Environment->new(begin=>$1,
@@ -60,7 +60,7 @@ sub find_environments{
       $env->tasks_common_to_each_object;
 
       # store children in special hash
-      ${$self}{children}{${$env}{id}}=$env;
+      push(@{${$self}{children}},$env);
 
       # remove the environment block, and replace with unique ID
       ${$self}{body} =~ s/$environmentRegExp/${$env}{replacementText}/;

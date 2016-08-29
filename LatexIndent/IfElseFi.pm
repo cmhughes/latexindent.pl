@@ -115,7 +115,7 @@ sub find_ifelsefi{
       $ifElseFi->check_for_else_statement;
 
       # store children in special hash
-      ${$self}{children}{${$ifElseFi}{id}}=$ifElseFi;
+      push(@{${$self}{children}},$ifElseFi);
 
       # remove the environment block, and replace with unique ID
       ${$self}{body} =~ s/$ifElseFiRegExp/${$ifElseFi}{replacementText}/;

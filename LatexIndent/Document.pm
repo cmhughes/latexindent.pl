@@ -108,23 +108,23 @@ sub find_objects_recursively{
     if(%{$self}{children}){
         $self->logger("Objects have been found.",'heading');
     } else {
-        $self->logger("No objects found.",'heading');
+        $self->logger("No objects found.");
         return;
     }
 
     # logfile information
     $self->logger(Dumper(\%{$self}),'ttrace');
-    $self->logger("Operating on: $self",'heading');
+    $self->logger("Operating on: ${$self}{name}",'heading');
     $self->logger("Number of children:",'heading');
-    $self->logger(scalar keys %{%{$self}{children}});
+    $self->logger(scalar (@{${$self}{children}}));
 
     $self->logger("searching for hidden children",'ttrace');
 
     # finding hidden children
-    while( my ($key,$child)= each %{%{$self}{children}}){
+    foreach my $child (@{${$self}{children}}){
         if(${$self}{body} !~ m/${$child}{id}/){
             $self->logger("child not found, ${$child}{id}",'ttrace');
-            ${$self}{hiddenChildren}{${$child}{id}} = \%{$child};
+            push(@{${$self}{hiddenChildren}},\%{$child});
         } else {
             $self->logger("child found, ${$child}{id}",'ttrace');
         }
@@ -133,28 +133,31 @@ sub find_objects_recursively{
     # operate on hiddenChildren, if any
     if(%{$self}{hiddenChildren}){
         $self->logger("Hidden children: ",'heading.ttrace');
-        $self->logger(Dumper(\%{%{$self}{hiddenChildren}}),'ttrace');
+        $self->logger(Dumper(\@{%{$self}{hiddenChildren}}),'ttrace');
 
         # surrounding indentation
         $self->logger("Adding surrounding indentation");
 
         # loop through hidden children
-        while( my ($key,$hiddenChild)= each %{%{$self}{hiddenChildren}}){
+        foreach my $hiddenChild (@{${$self}{hiddenChildren}}){
             $self->logger("Searching sibblings for ${$hiddenChild}{id} (${$hiddenChild}{name})",'heading.ttrace');
 
             # try to find in one of the other children
-            while( my ($key,$child)= each %{%{$self}{children}}){
+            foreach my $child (@{${$self}{children}}){
                if(${$child}{body} =~ m/${$hiddenChild}{id}/){
                     $self->logger("Hidden child found! ${$hiddenChild}{name} within ${$child}{name}",'ttrace');
-                    ${${$self}{children}{${$hiddenChild}{id}}}{surroundingIndentation} = \${$child}{indentation};
-                    $self->logger(Dumper(\%{${$self}{children}{${$hiddenChild}{id}}}),'ttrace');
+
+                    # search for hash in array: http://stackoverflow.com/questions/934225/search-for-hash-in-an-array-by-value
+                    my ($item) = grep { $_->{id} eq ${$hiddenChild}{id}} @{${$self}{hiddenChildren}};
+                    ${$item}{surroundingIndentation} = \${$child}{indentation};
+                    $self->logger(Dumper(\%{$item}),'ttrace');
                }
             }
         }
     }
 
     # send each child through this routine
-    while( my ($key,$child)= each %{%{$self}{children}}){
+    foreach my $child (@{${$self}{children}}){
         $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
         $child->get_switches;
         $child->masterYamlSettings;
@@ -181,17 +184,19 @@ sub indent_children_recursively{
 
     # send the children through this indentation routine recursively
     if(defined ${$self}{children}){
-        while( my ($key,$child)= each %{%{$self}{children}}){
+        foreach my $child (@{${$self}{children}}){
             $self->logger("Indenting child objects on ${$child}{name}");
-            $child->indent_children_recursively;#(parentIndentation=>\${$child}{indentation});
+            $child->indent_children_recursively;
         }
     }
 
     $self->logger("Indenting children objects (${$self}{name}):",'heading');
 
     # loop through document children hash
-    while( (scalar keys %{%{$self}{children}})>0 ){
-          while( my ($key,$child)= each %{%{$self}{children}}){
+    while( scalar (@{${$self}{children}}) > 0 ){
+          # we work through the array *in order*
+          foreach my $child (@{${$self}{children}}){
+            $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading.trace');
             if(${$self}{body} =~ m/
                         (   
                             ^           # beginning of the line
@@ -208,6 +213,7 @@ sub indent_children_recursively{
                 my $surroundingIndentation = ${$child}{surroundingIndentation}?${${$child}{surroundingIndentation}}:q();
 
                 # log file info
+                $self->logger("${$child}{id} found!",'trace');
                 $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
                 $self->logger("current indentation: '$surroundingIndentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
@@ -246,16 +252,25 @@ sub indent_children_recursively{
                 $self->logger("Body (${$self}{name}) now looks like:",'heading.trace');
                 $self->logger(${$self}{body},'trace');
 
+                # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
+                my $index = 0;
+                $index++ until ${${$self}{children}[$index]}{id} eq ${$child}{id};
+                splice(@{${$self}{children}}, $index, 1);
+
+                # output to the log file
                 $self->logger("deleted child key ${$child}{name} (parent is: ${$self}{name})");
-                # delete the hash so it won't be operated upon again
-                delete ${$self}{children}{${$child}{id}};
+
+                # restart the loop, as the size of the array has changed
+                last;
+              } else {
+                $self->logger("${$child}{id} not found",'trace');
               }
             }
     }
 
     # logfile info
     $self->logger("${$self}{name} has this many children:",'heading');
-    $self->logger(scalar keys %{%{$self}{children}});
+    $self->logger(scalar @{${$self}{children}});
     $self->logger("Post-processed body (${$self}{name}):",'trace');
     $self->logger(${$self}{body},'trace');
 
