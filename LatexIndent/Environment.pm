@@ -49,11 +49,12 @@ sub find_environments{
                                               body=>$4,
                                               end=>$6,
                                               linebreaksAtEnd=>{
-                                                begin=> $3?1:0,
-                                                body=> $5?1:0,
-                                                end=> $8?1:0,
+                                                begin=>$3?1:0,
+                                                body=>$5?1:0,
+                                                end=>$8?1:0,
                                               },
                                               modifyLineBreaksYamlName=>"environments",
+                                              regexp=>$environmentRegExp,
                                             );
 
       # there are a number of tasks common to each object
@@ -62,12 +63,8 @@ sub find_environments{
       # store children in special hash
       push(@{${$self}{children}},$env);
 
-      # remove the environment block, and replace with unique ID
-      ${$self}{body} =~ s/$environmentRegExp/${$env}{replacementText}/;
-
-      # log file information
-      $self->logger(Dumper(\%{$env}),'trace');
-      $self->logger("replaced with ID: ${$env}{id}");
+      # wrap_up_tasks
+      $self->wrap_up_tasks;
     } 
     return;
 }
@@ -79,6 +76,5 @@ sub create_unique_id{
     ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
     return;
 }
-
 
 1;

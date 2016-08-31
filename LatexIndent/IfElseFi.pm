@@ -84,16 +84,16 @@ sub find_ifelsefi{
       # log file output
       $self->logger("IfElseFi found: $2",'heading');
 
-      # create a new Environment object
+      # create a new IfElseFi object
       my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1,
                                               name=>$2,
                                               # if $4 is a line break, don't count it twice (it will already be in 'begin')
                                               body=>($4 eq "\n") ? $5.$6 : $4.$5.$6,
                                               end=>$7,
                                               linebreaksAtEnd=>{
-                                                begin=> ($3)?1:0,
-                                                body=> ($6)?1:0,
-                                                end=> ($8)?1:0,
+                                                begin=>$3?1:0,
+                                                body=>$6?1:0,
+                                                end=>$8?1:0,
                                               },
                                               aliases=>{
                                                 # begin statements
@@ -106,6 +106,7 @@ sub find_ifelsefi{
                                               elsePresent=>0,
                                               modifyLineBreaksYamlName=>"ifElseFi",
                                               additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
+                                              regexp=>$ifElseFiRegExp,
                                             );
 
       # there are a number of tasks common to each object
@@ -117,11 +118,8 @@ sub find_ifelsefi{
       # store children in special hash
       push(@{${$self}{children}},$ifElseFi);
 
-      # remove the environment block, and replace with unique ID
-      ${$self}{body} =~ s/$ifElseFiRegExp/${$ifElseFi}{replacementText}/;
-
-      $self->logger(Dumper(\%{$ifElseFi}),'trace');
-      $self->logger("replaced with ID: ${$ifElseFi}{id}");
+      # wrap_up_tasks
+      $self->wrap_up_tasks;
     } 
     return;
 }

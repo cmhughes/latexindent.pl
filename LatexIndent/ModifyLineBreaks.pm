@@ -2,7 +2,7 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print/;
+our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks_end_parent/;
 
 sub pre_print{
     my $self = shift;
@@ -122,6 +122,22 @@ sub modify_line_breaks_body_and_end{
 
 }
 
+sub adjust_line_breaks_end_parent{
+    # when a parent object contains a child object, the line break
+    # at the end of the parent object can become messy
 
+    my $self = shift;
+    return unless ${%{$self}{switches}}{modifyLineBreaks};
+
+    # most recent child object
+    my $child = @{${$self}{children}}[-1];
+
+    # adjust parent linebreaks information
+    if(${$child}{linebreaksAtEnd}{end} and ${$self}{body} =~ m/${$child}{replacementText}$/m and !${$self}{linebreaksAtEnd}{body}){
+        $self->logger("${$child}{begin}...${$child}{end} is found at the END of body of parent, ${$self}{name}, avoiding a double line break:",'trace');
+        $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1",'trace');
+        ${$self}{linebreaksAtEnd}{body}=1;
+      }
+}
 
 1;

@@ -8,7 +8,7 @@ use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement/;
@@ -303,6 +303,23 @@ sub tasks_common_to_each_object{
     $self->modify_line_breaks_body_and_end;
 
     return;
+}
+
+sub wrap_up_tasks{
+    my $self = shift;
+
+    # most recent child object
+    my $child = @{${$self}{children}}[-1];
+
+    # remove the environment block, and replace with unique ID
+    ${$self}{body} =~ s/${$child}{regexp}/${$child}{replacementText}/;
+
+    # check if the last object was the last thing in the body, and if it has adjusted linebreaks
+    $self->adjust_line_breaks_end_parent;
+
+    $self->logger(Dumper(\%{$child}),'trace');
+    $self->logger("replaced with ID: ${$child}{id}");
+
 }
 
 1;
