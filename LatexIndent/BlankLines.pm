@@ -29,14 +29,8 @@ sub condense_blank_lines{
     }
 
     $self->logger("blank line replacement token: $replacementToken",'ttrace');
-    # need to return to this
-    # need to return to this
-    # need to return to this
-    #while(${$self}{body} =~ m/latex-indent-blank-line\h*\R*\h*latex-indent-blank-line/){
-    #    ${$self}{body} =~ s/latex-indent-blank-line\h*\R*\h*latex-indent-blank-line/$replacementToken/mgs;
-    #}
-    ${$self}{body} =~ s/(latex-indent-blank-line\h*\R*\h*){1,}latex-indent-blank-line$/$replacementToken/mgs;
-    $self->logger("body now looks like ${$self}{body}",'ttrace');
+    ${$self}{body} =~ s/(latex-indent-blank-line\h*\R*\h*){1,}latex-indent-blank-line/$replacementToken/mgs;
+    $self->logger("body now looks like:\n${$self}{body}",'ttrace');
     return;
 }
 
@@ -47,19 +41,22 @@ sub unprotect_blank_lines{
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
 
-    # need to return to this
-    # need to return to this
-    # need to return to this
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/latex-indent-blank-line/m){
         # when the blank line token occupies the whole line
-        #while(${$self}{body} =~ m/^\h*?latex-indent-blank-line$/m){
-        #    ${$self}{body} =~ s/^\h*?latex-indent-blank-line$//m;
-        #}
-        ${$self}{body} =~ s/^\h*latex-indent-blank-line$//mg;
+        if(${$self}{body} =~ m/^\h*latex-indent-blank-line$/m){
+            $self->logger("Replacing purely blank lines",'heading.ttrace');
+            ${$self}{body} =~ s/^\h*latex-indent-blank-line$//mg;
+            $self->logger("body now looks like:\n${$self}{body}",'ttrace');
+        }
         # otherwise the blank line has been deleted, so we compensate with an extra
-        ${$self}{body} =~ s/(^\h*)?latex-indent-blank-line/$1?$1:"\n"/me;
+        if(${$self}{body} =~ m/(^\h*)?latex-indent-blank-line/m){
+            $self->logger("Replacing blank line token that doesn't take up whole line",'heading.ttrace');
+            ${$self}{body} =~ s/(^\h*)?latex-indent-blank-line/$1?$1."\n":"\n"/me;
+            $self->logger("body now looks like:\n${$self}{body}",'ttrace');
+        }
     }
+    $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading.trace');
     $self->logger("body now looks like ${$self}{body}",'ttrace');
 }
 
