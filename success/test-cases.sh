@@ -109,5 +109,7 @@ latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod6.tex -m -tt -l=env-mod-lines14.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense.tex
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod1.tex -l=ifelsefi-condense-mod1.yaml
+latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod2.tex -l=ifelsefi-condense-mod2.yaml
+latexinden.pl environments-modify-multiple-line-breaks-verbatim.tex -s -t -m -o=environments-modify-multiple-line-breaks-verbatim-mod1.tex -l=env-mod-lines12.yaml 
 git status
 exit
