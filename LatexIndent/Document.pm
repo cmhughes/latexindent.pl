@@ -17,6 +17,8 @@ use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation 
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
+use LatexIndent::Arguments qw/find_opt_mand_arguments/;
+use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -236,7 +238,8 @@ sub indent_children_recursively{
                     and ${$child}{EndFinishesWithLineBreak}==0 
                     and $IDFollowedImmediatelyByLineBreak) {
                     # remove line break *after* \end{statement}, if appropriate
-                    $self->logger("Removing linebreak after ${$child}{end} (see EndFinishesWithLineBreak)");
+                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
                     ${$self}{body} =~ s/${$child}{id}(\h*)?\R*\h*/${$child}{id}$1/s;
                     ${$child}{linebreaksAtEnd}{end} = 0;
                 }

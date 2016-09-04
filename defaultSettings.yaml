@@ -343,6 +343,11 @@ modifyLineBreaks:
             ElseFinishesWithLineBreak: 1
             FiStartsOnOwnLine: 1
             FiFinishesWithLineBreak: 1
+    optionalArguments:
+        LSqBStartsOnOwnLine: 0
+        RSqBStartsOnOwnLine: 0
+        OptArgBodyStartsOnOwnLine: 0
+        RSqBFinishesWithLineBreak: 0
         
     
 # *** NOTE ***

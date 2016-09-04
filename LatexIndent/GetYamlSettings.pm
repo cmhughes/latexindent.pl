@@ -158,12 +158,15 @@ sub masterYamlSettings{
 sub get_indentation_settings_for_this_object{
     my $self = shift;
 
+    # create a name for previously found settings
+    my $storageName = ${$self}{name}.ref $self;
+
     # check for storage of repeated objects
-    if ($previouslyFoundSettings{${$self}{name}}){
-        $self->logger("Using stored settings for ${$self}{name}",'trace');
+    if ($previouslyFoundSettings{$storageName}){
+        $self->logger("Using stored settings for $storageName",'trace');
     } else {
         my $name = ${$self}{name};
-        $self->logger("Storing settings for $name",'trace');
+        $self->logger("Storing settings for $storageName",'trace');
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
@@ -182,7 +185,7 @@ sub get_indentation_settings_for_this_object{
         $self->modify_line_breaks_settings;
 
         # store the settings
-        %{${previouslyFoundSettings}{$name}} = (
+        %{${previouslyFoundSettings}{$storageName}} = (
                         indentation=>$indentation,
                         modLineBreaksSwitch=>${${$self}{switches}}{modifyLineBreaks},
                         BeginStartsOnOwnLine=>${$self}{BeginStartsOnOwnLine},
@@ -197,7 +200,7 @@ sub get_indentation_settings_for_this_object{
     }
 
     # append indentation settings to the current object
-    while( my ($key,$value)= each %{${previouslyFoundSettings}{${$self}{name}}}){
+    while( my ($key,$value)= each %{${previouslyFoundSettings}{$storageName}}){
             ${$self}{$key} = $value;
     }
 

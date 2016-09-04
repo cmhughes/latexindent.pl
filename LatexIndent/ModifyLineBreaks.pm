@@ -84,13 +84,14 @@ sub modify_line_breaks_body_and_end{
 
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
+      my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
       if(${$self}{BodyStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{begin}){
-          $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see BodyStartsOnOwnLine)");
+          $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
           ${$self}{begin} .= "\n";       
           ${$self}{linebreaksAtEnd}{begin} = 1;
        } elsif (${$self}{BodyStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
-          $self->logger("Removing linebreak at the end of begin (see BodyStartsOnOwnLine)");
+          $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
           ${$self}{begin} =~ s/\R*$//sx;
           ${$self}{linebreaksAtEnd}{begin} = 0;
        }
@@ -98,14 +99,15 @@ sub modify_line_breaks_body_and_end{
 
     # possibly modify line break *before* \end{statement}
     if(defined ${$self}{EndStartsOnOwnLine}){
+          my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
           if(${$self}{EndStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{body}){
               # add a line break after body, if appropriate
-              $self->logger("Adding a linebreak at the end of body (see EndStartsOnOwnLine)");
+              $self->logger("Adding a linebreak at the end of body (see $EndStringLogFile)");
               ${$self}{body} .= "\n";
               ${$self}{linebreaksAtEnd}{body} = 1;
           } elsif (${$self}{EndStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
-              $self->logger("Removing linebreak at the end of body (see EndStartsOnOwnLine)");
+              $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
               ${$self}{body} =~ s/\R*$//sx;
               ${$self}{linebreaksAtEnd}{body} = 0;
           }
@@ -115,7 +117,8 @@ sub modify_line_breaks_body_and_end{
     if(defined ${$self}{EndFinishesWithLineBreak}
        and ${$self}{EndFinishesWithLineBreak}==1 
        and !${$self}{linebreaksAtEnd}{end}){
-              $self->logger("Adding a linebreak at the end of ${$self}{end} (see EndFinishesWithLineBreak)",'heading');
+              my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+              $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
               ${$self}{linebreaksAtEnd}{end} = 1;
               ${$self}{replacementText} .= "\n";
     }

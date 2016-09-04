@@ -60,6 +60,9 @@ sub find_environments{
       # there are a number of tasks common to each object
       $env->tasks_common_to_each_object;
 
+      # search for arguments
+      $env->find_opt_mand_arguments;
+
       # store children in special hash
       push(@{${$self}{children}},$env);
 
@@ -76,5 +79,6 @@ sub create_unique_id{
     ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
     return;
 }
+
 
 1;
