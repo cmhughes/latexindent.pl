@@ -113,9 +113,52 @@ latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank
 latexindent.pl environments-modify-multiple-line-breaks-verbatim.tex -s -t -m -o=environments-modify-multiple-line-breaks-verbatim-mod1.tex -l=env-mod-lines12.yaml 
 # optional arguments in environments
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod0.tex
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod0.tex
+# mod1
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod1.tex -l=opt-args-mod1.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod1.tex -l=opt-args-mod1.yaml 
+# mod2
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod2.tex -l=opt-args-mod2.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod2.tex -l=opt-args-mod2.yaml 
+# mod3
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod3.tex -l=opt-args-mod3.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod3.tex -l=opt-args-mod3.yaml 
+# mod4
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod4.tex -l=opt-args-mod4.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod4.tex -l=opt-args-mod4.yaml 
+# mod5
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod5.tex -l=opt-args-mod5.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod5.tex -l=opt-args-mod5.yaml 
+# mod6
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod6.tex -l=opt-args-mod6.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod6.tex -l=opt-args-mod6.yaml 
+# mod7
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod7.tex -l=opt-args-mod7.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod7.tex -l=opt-args-mod7.yaml 
+# mod8
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod8.tex -l=opt-args-mod8.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod8.tex -l=opt-args-mod8.yaml 
+# mod9
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod9.tex -l=opt-args-mod9.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod9.tex -l=opt-args-mod9.yaml 
+# mod10
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod10.tex -l=opt-args-mod10.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod10.tex -l=opt-args-mod10.yaml 
+# mod11
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod11.tex -l=opt-args-mod11.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod11.tex -l=opt-args-mod11.yaml 
+# mod12
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod12.tex -l=opt-args-mod12.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod12.tex -l=opt-args-mod12.yaml 
+# mod13
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod13.tex -l=opt-args-mod13.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod13.tex -l=opt-args-mod13.yaml 
+# mod14
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod14.tex -l=opt-args-mod14.yaml 
+latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod14.tex -l=opt-args-mod14.yaml 
+# fixthis- need to return to this file
+# fixthis- need to return to this file
+# fixthis- need to return to this file
 latexindent.pl environments-simple-opt-args.tex -m  -tt -s -o=environments-simple-opt-args-out.tex
 git status
 exit

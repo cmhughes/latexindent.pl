@@ -3,4 +3,4 @@ modifyLineBreaks:
         LSqBStartsOnOwnLine: 0
         OptArgBodyStartsOnOwnLine: 0
         RSqBStartsOnOwnLine: 1
-        RSqBFinishesWithLineBreak: 1
+        RSqBFinishesWithLineBreak: 0

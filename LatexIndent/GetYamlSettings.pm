@@ -159,7 +159,7 @@ sub get_indentation_settings_for_this_object{
     my $self = shift;
 
     # create a name for previously found settings
-    my $storageName = ${$self}{name}.ref $self;
+    my $storageName = ${$self}{name};
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){

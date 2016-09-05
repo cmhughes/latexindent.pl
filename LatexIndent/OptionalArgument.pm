@@ -17,13 +17,16 @@ sub find_optional_arguments{
                                    \h*         # 0 or more spaces
                                    \R*         # 0 or more line breaks
                                    (?<!\\)     # not immediately pre-ceeded by \
-                                   \[
+                                   (
+                                    \[
                                        \h*
                                        (\R*)
-                                       (.*?)
-                                       (\R*)
+                                   )
+                                   (.*?)
+                                   (\R*)
                                    (?<!\\)     # not immediately pre-ceeded by \
                                    \]          # [optional arguments]
+                                   \h*
                                    (\R)?
                                /sx;
 
@@ -33,14 +36,14 @@ sub find_optional_arguments{
         $self->logger("Optional argument found, body $2",'heading');
 
         # create a new Optional Argument object
-        my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"[",
+        my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
                                                 name=>${$self}{name}.":optionalArgument",
-                                                body=>$2,
+                                                body=>$3.($4?$4:q()),
                                                 end=>"]",
                                                 linebreaksAtEnd=>{
-                                                  begin=>$1?1:0,
-                                                  body=>$3?1:0,
-                                                  end=>$4?1:0,
+                                                  begin=>$2?1:0,
+                                                  body=>$4?1:0,
+                                                  end=>$5?1:0,
                                                 },
                                                 aliases=>{
                                                   # begin statements
