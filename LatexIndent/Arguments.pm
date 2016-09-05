@@ -73,8 +73,27 @@ sub find_opt_mand_arguments{
             # look for optional arguments
             $arguments->find_optional_arguments;
 
+            # examine *first* child
+            if(${$self}{BodyStartsOnOwnLine}==1){
+                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0){
+                    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+                    my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+                    $self->logger("$BodyStringLogFile = 1, but first argument should not begin on its own line (see $BeginStringLogFile)");
+                    $self->logger("Removing line breaks at the end of ${$self}{begin}");
+                    ${$self}{begin} =~ s/\R$//s;
+                    ${$self}{linebreaksAtEnd}{begin} = 0;
+                }
+            }
+
             # the replacement text can be just the ID, but the ID might have a line break at the end of it
             ${$arguments}{replacementText} = ${$arguments}{id};
+
+            # the argument object only needs a trailing line break if the *last* child
+            # did not add one at the end, and if BodyStartsOnOwnLine == 1
+            if(${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}!=1 and ${$self}{BodyStartsOnOwnLine}==1){
+                $self->logger("Updating replacementtext to include a linebreak for arguments in ${$self}{name}");
+                ${$arguments}{replacementText} .= "\n" if(${$arguments}{linebreaksAtEnd}{end});
+            }
 
             # store children in special hash
             push(@{${$self}{children}},$arguments);

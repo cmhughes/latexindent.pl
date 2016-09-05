@@ -112,7 +112,9 @@ latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod2.tex -l=ifelsefi-condense-mod2.yaml
 latexinden.pl environments-modify-multiple-line-breaks-verbatim.tex -s -t -m -o=environments-modify-multiple-line-breaks-verbatim-mod1.tex -l=env-mod-lines12.yaml 
 # optional arguments in environments
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod0.tex
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod1.tex -l=opt-args-mod1.yaml 
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod2.tex -l=opt-args-mod2.yaml 
+latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod3.tex -l=opt-args-mod3.yaml 
 git status
 exit
