@@ -75,13 +75,27 @@ sub readSettings{
   # get information about LOCAL settings, assuming that $readLocalSettings exists
   my $directoryName = dirname (${$self}{fileName});
   
+  # local settings can be separated by ,
+  # e.g  
+  #     -l = myyaml1.yaml,myyaml2.yaml
+  # and in which case, we need to read them all
+  my @localSettings;
+  if(${%{$self}{switches}}{readLocalSettings} =~ m/,/){
+        $self->logger("Multiple localSettings found, separated by commas:",'heading');
+        @localSettings = split(/,/,${%{$self}{switches}}{readLocalSettings});
+  } else {
+    push(@localSettings,${%{$self}{switches}}{readLocalSettings}) if(${%{$self}{switches}}{readLocalSettings});
+  }
+
   # add local settings to the paths, if appropriate
-  if ( (-e "$directoryName/${%{$self}{switches}}{readLocalSettings}") and ${%{$self}{switches}}{readLocalSettings} and !(-z "$directoryName/${%{$self}{switches}}{readLocalSettings}")) {
-      $self->logger("Adding $directoryName/${%{$self}{switches}}{readLocalSettings} to YAML read paths");
-      push(@absPaths,"$directoryName/${%{$self}{switches}}{readLocalSettings}");
-  } elsif ( !(-e "$directoryName/${%{$self}{switches}}{readLocalSettings}") and ${%{$self}{switches}}{readLocalSettings}) {
-        $self->logger("WARNING yaml file not found: $directoryName/${%{$self}{switches}}{readLocalSettings} not found");
-        $self->logger("Proceeding without it.");
+  foreach (@localSettings) {
+    if ( (-e "$directoryName/$_") and !(-z "$directoryName/$_")) {
+        $self->logger("Adding $directoryName/$_ to YAML read paths");
+        push(@absPaths,"$directoryName/$_");
+    } elsif ( !(-e "$directoryName/$_") ) {
+          $self->logger("WARNING yaml file not found: $directoryName/$_ not found");
+          $self->logger("Proceeding without it.");
+    }
   }
 
   # read in the settings from each file
