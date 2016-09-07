@@ -74,14 +74,35 @@ sub find_opt_mand_arguments{
             $arguments->find_optional_arguments;
 
             # examine *first* child
-            if(${$self}{BodyStartsOnOwnLine}==1){
+            #   situation: parent BodyStartsOnOwnLine == 1, but first child has BeginStartsOnOwnLine == 0
+            #   problem: the *body* of parent actually starts after the arguments
+            #   solution: remove the linebreak at the end of the begin statement of the parent
+            if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==1){
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                    $self->logger("$BodyStringLogFile = 1, but first argument should not begin on its own line (see $BeginStringLogFile)");
+                    $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)");
                     $self->logger("Removing line breaks at the end of ${$self}{begin}");
                     ${$self}{begin} =~ s/\R$//s;
                     ${$self}{linebreaksAtEnd}{begin} = 0;
+                }
+            }
+
+            # examine *first* child
+            #   situation: parent BodyStartsOnOwnLine == 0, but first child has BeginStartsOnOwnLine == 1
+            #   problem: the *body* of parent actually starts after the arguments
+            #   solution: add a linebreak at the end of the begin statement of the parent so that
+            #              the child settings are obeyed.
+            #              BodyStartsOnOwnLine == 0 will actually be controlled by the last arguments' 
+            #              settings of EndFinishesWithLineBreak
+            if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0){
+                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==1){
+                    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+                    my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+                    $self->logger("$BodyStringLogFile = 0 (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
+                    $self->logger("Adding line breaks at the end of ${$self}{begin}");
+                    ${$self}{begin} .= "\n";
+                    ${$self}{linebreaksAtEnd}{begin} = 1;
                 }
             }
 
@@ -90,7 +111,8 @@ sub find_opt_mand_arguments{
 
             # the argument object only needs a trailing line break if the *last* child
             # did not add one at the end, and if BodyStartsOnOwnLine == 1
-            if(${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}!=1 and ${$self}{BodyStartsOnOwnLine}==1){
+            if( (defined ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak} and ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}!=1)
+                and (defined ${$self}{BodyStartsOnOwnLine}==1 and ${$self}{BodyStartsOnOwnLine}==1) ){
                 $self->logger("Updating replacementtext to include a linebreak for arguments in ${$self}{name}");
                 ${$arguments}{replacementText} .= "\n" if(${$arguments}{linebreaksAtEnd}{end});
             }

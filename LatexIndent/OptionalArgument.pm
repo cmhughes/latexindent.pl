@@ -33,7 +33,7 @@ sub find_optional_arguments{
     # pick out the optional arguments
     while(${$self}{body} =~ m/$optArgRegExp/){
         # log file output
-        $self->logger("Optional argument found, body $2",'heading');
+        $self->logger("Optional argument found, body in ${$self}{name}",'heading');
 
         # create a new Optional Argument object
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
