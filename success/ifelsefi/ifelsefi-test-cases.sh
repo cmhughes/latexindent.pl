@@ -7,6 +7,7 @@ set -x
 latexindent.pl -w -s -t ifelsefi-first.tex
 latexindent.pl -w -s -t ifelsefi-simple-nested.tex
 latexindent.pl -w -s -t ifelsefi-multiple-nested.tex
+latexindent.pl -w -s -t ifelsefiSmall.tex
 # modify line breaks
 latexindent.pl ifelsefi-first.tex -s -t -m -l=ifelsefi-mod-lines1.yaml -o=ifelsefi-first-mod1.tex
 latexindent.pl ifelsefi-first.tex -s -t -m -l=ifelsefi-mod-lines2.yaml -o=ifelsefi-first-mod2.tex
@@ -56,4 +57,5 @@ latexindent.pl ifelsefi-env-mixed-recursive.tex  -m -tt -l=if-env-recursive-conf
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense.tex
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod1.tex -l=ifelsefi-condense-mod1.yaml
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod2.tex -l=ifelsefi-condense-mod2.yaml
+git status
 exit

@@ -85,13 +85,13 @@ sub find_ifelsefi{
       $self->logger("IfElseFi found: $2",'heading');
 
       # create a new IfElseFi object
-      my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1,
+      my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1.(($4 eq "\n" and !$3)?"\n":q()),
                                               name=>$2,
                                               # if $4 is a line break, don't count it twice (it will already be in 'begin')
                                               body=>($4 eq "\n") ? $5.$6 : $4.$5.$6,
                                               end=>$7,
                                               linebreaksAtEnd=>{
-                                                begin=>$3?1:0,
+                                                begin=>(($4 eq "\n")||$3)?1:0,
                                                 body=>$6?1:0,
                                                 end=>$8?1:0,
                                               },

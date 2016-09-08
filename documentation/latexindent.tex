@@ -1526,6 +1526,9 @@ latexindent.pl essentially has 3 phases:
     \begin{itemize}
       \item line breaks at the beginning of the \emph{body} can be added (BodyStartsOnOwnLine: 1) or removed (BodyStartsOnOwnLine: 0);
       \item line breaks at the end of the body can be added (see EndStartsOnOwnLine: 1) or removed (see EndStartsOnOwnLine: 0);
+      \item NOTE: let's say that any key (such as, for example, BeginStartsOnOwnLine) is set to 1, and the 
+        appropriate <thing> does already begin on its own line and is immediately preceeded by one or more blank line; in this situation, 
+        the blank lines will \emph{not} be removed
     \end{itemize}
   \item indentation, in which white space is added to the begin, body, and end statements;
   \item unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
