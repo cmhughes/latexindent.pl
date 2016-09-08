@@ -83,7 +83,7 @@ sub find_opt_mand_arguments{
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)");
                     $self->logger("Removing line breaks at the end of ${$self}{begin}");
-                    ${$self}{begin} =~ s/\R$//s;
+                    ${$self}{begin} =~ s/\R*$//s;
                     ${$self}{linebreaksAtEnd}{begin} = 0;
                 }
             }
