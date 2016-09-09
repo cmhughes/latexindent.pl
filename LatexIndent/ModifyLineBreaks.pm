@@ -136,7 +136,8 @@ sub adjust_line_breaks_end_parent{
     my $child = @{${$self}{children}}[-1];
 
     # adjust parent linebreaks information
-    if(${$child}{linebreaksAtEnd}{end} and ${$self}{body} =~ m/${$child}{replacementText}$/m and !${$self}{linebreaksAtEnd}{body}){
+    if(${$child}{linebreaksAtEnd}{end} and ${$self}{body} =~ m/${$child}{replacementText}\h*\R*$/s and !${$self}{linebreaksAtEnd}{body}){
+        $self->logger("ID: ${$child}{id}",'trace');
         $self->logger("${$child}{begin}...${$child}{end} is found at the END of body of parent, ${$self}{name}, avoiding a double line break:",'trace');
         $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1",'trace');
         ${$self}{linebreaksAtEnd}{body}=1;

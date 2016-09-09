@@ -1533,7 +1533,7 @@ latexindent.pl essentially has 3 phases:
   \item indentation, in which white space is added to the begin, body, and end statements;
   \item unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
     \begin{itemize}
-      \item line breaks before \emph{begin} statements can be added or removed (see BeginStartsOnOwnLine);
+      \item line breaks before \emph{begin} statements can be added or removed (if BeginStartsOnOwnLine==0);
       \item line breaks after \emph{end} statements can be removed but \emph{NOT} added (see EndFinishesWithLineBreak).
     \end{itemize}
 \end{enumerate}
@@ -1544,4 +1544,5 @@ latexindent.pl environments-line-break-conflict.tex -s -t -m -o environments-lin
 latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-2.tex -l=env-conflicts-mod2.yaml
 latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-3.tex -l=env-conflicts-mod3.yaml
 environments-first-opt-args.tex, see all of the different examples in test-cases.sh
+environments-second-opt-args.tex provides some interesting cases too
 \end{document}

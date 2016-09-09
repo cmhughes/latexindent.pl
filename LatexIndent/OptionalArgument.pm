@@ -14,8 +14,6 @@ sub find_optional_arguments{
     my $self = shift;
 
     my $optArgRegExp = qr/      
-                                   \h*         # 0 or more spaces
-                                   \R*         # 0 or more line breaks
                                    (?<!\\)     # not immediately pre-ceeded by \
                                    (
                                     \[
@@ -25,8 +23,10 @@ sub find_optional_arguments{
                                    (.*?)
                                    (\R*)
                                    (?<!\\)     # not immediately pre-ceeded by \
-                                   \]          # [optional arguments]
-                                   \h*
+                                   (
+                                    \]          # [optional arguments]
+                                    \h*
+                                   )
                                    (\R)?
                                /sx;
 
@@ -39,11 +39,11 @@ sub find_optional_arguments{
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
                                                 name=>${$self}{name}.":optionalArgument",
                                                 body=>$3.($4?$4:q()),
-                                                end=>"]",
+                                                end=>"$5",
                                                 linebreaksAtEnd=>{
                                                   begin=>$2?1:0,
                                                   body=>$4?1:0,
-                                                  end=>$5?1:0,
+                                                  end=>$6?1:0,
                                                 },
                                                 aliases=>{
                                                   # begin statements
