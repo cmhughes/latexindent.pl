@@ -19,13 +19,17 @@ sub indent{
 sub find_opt_mand_arguments{
     my $self = shift;
 
+    $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading');
+    $self->get_blank_line_token;
+    my $blankLineToken = ${$self}{blankLineToken};
+
     my $optAndMandRegExp = qr/
                             ^                      # begins with
                              (                     # capture into $1
                                 (                  
+                                   (\h|\R|$blankLineToken)* 
                                    (
                                        \h*         # 0 or more spaces
-                                       \R*         # 0 or more line breaks
                                        (?<!\\)     # not immediately pre-ceeded by \
                                        \[
                                            .*?
@@ -61,7 +65,7 @@ sub find_opt_mand_arguments{
                                                     name=>${$self}{name}.":arguments",
                                                     body=>$1,
                                                     linebreaksAtEnd=>{
-                                                      end=>$5?1:0,
+                                                      end=>$6?1:0,
                                                     },
                                                     end=>"",
                                                     regexp=>$optAndMandRegExp,
@@ -78,7 +82,7 @@ sub find_opt_mand_arguments{
             #   problem: the *body* of parent actually starts after the arguments
             #   solution: remove the linebreak at the end of the begin statement of the parent
             if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==1){
-                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0){
+                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0 and ${$self}{body} !~ m/^$blankLineToken/){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)");
@@ -125,6 +129,8 @@ sub find_opt_mand_arguments{
 
             $self->logger(Dumper(\%{$arguments}),'trace');
             $self->logger("replaced with ID: ${$arguments}{id}");
+        } else {
+            $self->logger("... no arguments found");
         }
 
 }

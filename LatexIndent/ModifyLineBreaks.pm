@@ -107,9 +107,18 @@ sub modify_line_breaks_body_and_end{
               ${$self}{linebreaksAtEnd}{body} = 1;
           } elsif (${$self}{EndStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
-              $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
-              ${$self}{body} =~ s/\R*$//sx;
-              ${$self}{linebreaksAtEnd}{body} = 0;
+
+              # check to see that body does *not* finish with blank-line-token, 
+              # if so, then don't remove that final line break
+              $self->get_blank_line_token;
+              my $blankLineToken = ${$self}{blankLineToken};
+              if(${$self}{body} !~ m/$blankLineToken$/s){
+                $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
+                ${$self}{body} =~ s/\R*$//sx;
+                ${$self}{linebreaksAtEnd}{body} = 0;
+              } else {
+                $self->logger("Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}");
+              }
           }
     }
 

@@ -2,7 +2,7 @@ package LatexIndent::BlankLines;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
+our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
 
 sub protect_blank_lines{
     my $self = shift;
@@ -52,12 +52,18 @@ sub unprotect_blank_lines{
         # otherwise the blank line has been deleted, so we compensate with an extra
         if(${$self}{body} =~ m/(^\h*)?latex-indent-blank-line/m){
             $self->logger("Replacing blank line token that doesn't take up whole line",'heading.ttrace');
-            ${$self}{body} =~ s/(^\h*)?latex-indent-blank-line/$1?$1."\n":"\n"/me;
+            ${$self}{body} =~ s/(^\h*)?latex-indent-blank-line/$1?"\n".$1:"\n"/me;
             $self->logger("body now looks like:\n${$self}{body}",'ttrace');
         }
     }
     $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading.trace');
     $self->logger("body now looks like ${$self}{body}",'ttrace');
+}
+
+sub get_blank_line_token{
+    my $self = shift;
+    ${$self}{blankLineToken} = "latex-indent-blank-line";
+    return
 }
 
 1;

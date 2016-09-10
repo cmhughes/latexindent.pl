@@ -7,7 +7,7 @@ use Data::Dumper;
 use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
-use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
+use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -228,8 +228,16 @@ sub indent_children_recursively{
                         ${$child}{begin} = "\n".${$child}{begin};
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
-                        $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
-                        ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;
+                        # important to check we don't move the begin statement next to a 
+                        # blank-line-token
+                        $self->get_blank_line_token;
+                        my $blankLineToken = ${$self}{blankLineToken};
+                        if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
+                            $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
+                            ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;
+                        } else {
+                            $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)");
+                        }
                     }
                 }
 
