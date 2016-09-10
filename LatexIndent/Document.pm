@@ -41,6 +41,7 @@ sub operate_on_file{
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     $self->protect_blank_lines;
+    $self->remove_trailing_whitespace(when=>"before");
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
@@ -49,7 +50,7 @@ sub operate_on_file{
     $self->process_body_of_text;
     # process alignment environments
     # PREVIOUSLY FOUND SETTINGS: need another check, e.g if environment shares same name as (e.g) command
-    $self->remove_trailing_whitespace;
+    $self->remove_trailing_whitespace(when=>"after");
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;
     $self->put_verbatim_back_in;

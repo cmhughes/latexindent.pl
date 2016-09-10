@@ -1545,4 +1545,26 @@ latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environme
 latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-3.tex -l=env-conflicts-mod3.yaml
 environments-first-opt-args.tex, see all of the different examples in test-cases.sh
 environments-second-opt-args.tex provides some interesting cases too
+
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1
+
+there is a difference between these two, especially when it comes to modifying line breaks. 
+
+For example, let's say that you have 
+
+\end{something}****
+my text
+
+and you tell latexindent not to finish something with a linebreak; with beforeProcessing set to 0, then you'll receive:
+
+\end{something}****my text
+
+and if you set beforeProcessing to 1, then you'll receive
+
+\end{something}my text
+
+The \fi command knows to insert a space, so as to give, for example, \fi text, and avoid things such as \fitext
+
 \end{document}

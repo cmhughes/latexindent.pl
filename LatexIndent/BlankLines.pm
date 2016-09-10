@@ -26,6 +26,21 @@ sub condense_blank_lines{
     return unless ${%{$self}{switches}}{modifyLineBreaks};
     return unless ${${${$self}{settings}}{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
+    # if preserveBlankLines is set to 0, then the blank-line-token will not be present
+    # in the document -- we change that here
+    if(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}==0){
+        # turn the switch on
+        ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}=1;
+
+        # log file information
+        $self->logger("Updating body to inclued blank line token, this requires preserveBlankLines = 1",'ttrace');
+        $self->logger("(any blanklines that could have been removed, would have done so by this point)",'ttrace');
+
+        # make the call
+        $self->protect_blank_lines ;
+        $self->logger("body now looks like:\n${$self}{body}",'ttrace');
+     }
+
     # grab the value from the settings
     my $condenseMultipleBlankLinesInto = ${${${$self}{settings}}{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
 
