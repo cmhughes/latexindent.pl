@@ -23,6 +23,8 @@ do
    latexindent.pl environments-second-opt-args.tex -m -l=opt-args-mod$i.yaml -tt -s -o=environments-second-opt-args-mod$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect$i.tex 
+
+   latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
    set +x
 done
 set -x
