@@ -17,6 +17,12 @@ sub pre_print{
     my $totalChildren = scalar @{%{$self}{children}};
     my $body = ${$self}{body};
 
+    # some objects may not have the trailing comment already stored
+    $self->get_trailing_comment_token if(!${$self}{trailingCommentToken});
+    my $trailingCommentsToken = ${$self}{trailingCommentToken};
+
+    $self->get_trailing_comment_regexp;
+
     # loop through document children hash, remove comments, 
     # produce a pre-print of the document so that line breaks can be checked
     while($processedChildren != $totalChildren){
@@ -30,9 +36,9 @@ sub pre_print{
                     ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
 
                     # remove all trailing comments from the copied begin, body and end statements
-                    ${${$child}{noComments}}{begin} =~ s/%\hlatexindenttrailingcomment\d+//mg;
-                    ${${$child}{noComments}}{body} =~ s/%\hlatexindenttrailingcomment\d+//mg;
-                    ${${$child}{noComments}}{end} =~ s/%\hlatexindenttrailingcomment\d+//mg;
+                    ${${$child}{noComments}}{begin} =~ s/${$self}{trailingCommentRegExp}//mg;
+                    ${${$child}{noComments}}{body} =~ s/${$self}{trailingCommentRegExp}//mg;
+                    ${${$child}{noComments}}{end} =~ s/${$self}{trailingCommentRegExp}//mg;
 
                     # replace ids with body
                     $body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
@@ -44,7 +50,7 @@ sub pre_print{
     }
 
     # remove any remaining comments
-    $body =~ s/%\hlatexindenttrailingcomment\d+//mg;
+    $body =~ s/${$self}{trailingCommentRegExp}//mg;
     
     # output the body to the log file
     $self->logger("Expanded body (before sweep), no comments (just to check linebreaks)","heading.ttrace");

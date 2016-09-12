@@ -3,12 +3,15 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in/;
+our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp/;
 
 sub remove_trailing_comments{
     my $self = shift;
     $self->logger("Storing trailing comments",'heading');
     my $commentCounter = 0;
+    $self->get_trailing_comment_token;
+
+    # perform the substitution
     ${$self}{body} =~ s/
                             (?<!\\)  # not preceeded by a \
                             %        # % 
@@ -20,10 +23,10 @@ sub remove_trailing_comments{
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
-                            ${${$self}{trailingcomments}}{"latexindenttrailingcomment$commentCounter"}= $1;
+                            ${${$self}{trailingcomments}}{"${$self}{trailingCommentToken}$commentCounter"}= $1;
 
                             # replace comment with dummy text
-                            "% latexindenttrailingcomment".$commentCounter;
+                            "%".${$self}{trailingCommentToken}.$commentCounter;
                        /xsmeg;
     if(%{$self}{trailingcomments}){
         $self->logger("Trailing comments stored in:",'trace');
@@ -40,7 +43,7 @@ sub put_trailing_comments_back_in{
 
     $self->logger("Returning trailing comments to body",'heading');
     while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
-        if(${$self}{body} =~ m/%\h$trailingcommentID
+        if(${$self}{body} =~ m/%$trailingcommentID
                                 (
                                     (?!          # not immediately preceeded by 
                                         (?<!\\)  # \
@@ -50,14 +53,26 @@ sub put_trailing_comments_back_in{
                                 (\h*)?$                
                             /mx and $1 ne ''){
             $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
-            ${$self}{body} =~ s/%\h$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+            ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
         } else {
-            ${$self}{body} =~ s/%\h$trailingcommentID/%$trailingcommentValue/;
+            ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
         }
         $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
     }
     return;
 }
 
+sub get_trailing_comment_token{
+    my $self = shift;
 
+    ${$self}{trailingCommentToken} = "latexindenttrailingcomment";
+    return;
+}
+
+sub get_trailing_comment_regexp{
+    my $self = shift;
+    
+    ${$self}{trailingCommentRegExp} = qr/(?<!\\)%${$self}{trailingCommentToken}\d+/;
+    return;
+}
 1;
