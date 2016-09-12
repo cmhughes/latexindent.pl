@@ -20,14 +20,20 @@ sub find_opt_mand_arguments{
     my $self = shift;
 
     $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading');
+
+    # blank line token
     $self->get_blank_line_token;
     my $blankLineToken = ${$self}{blankLineToken};
+
+    # trailing comment regexp
+    $self->get_trailing_comment_regexp;
+    my $trailingCommentRegExp = ${$self}{trailingCommentRegExp};
 
     my $optAndMandRegExp = qr/
                             ^                      # begins with
                              (                     # capture into $1
                                 (                  
-                                   (\h|\R|$blankLineToken)* 
+                                   (\h|\R|$blankLineToken|$trailingCommentRegExp)* 
                                    (
                                        \h*         # 0 or more spaces
                                        (?<!\\)     # not immediately pre-ceeded by \

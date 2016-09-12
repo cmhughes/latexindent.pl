@@ -72,6 +72,8 @@ sub get_trailing_comment_token{
 sub get_trailing_comment_regexp{
     my $self = shift;
     
+    $self->get_trailing_comment_token if(!${$self}{trailingCommentToken});
+
     ${$self}{trailingCommentRegExp} = qr/(?<!\\)%${$self}{trailingCommentToken}\d+/;
     return;
 }
