@@ -208,6 +208,12 @@ sub get_indentation_settings_for_this_object{
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
                       );
 
+        # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
+        # these need to be stored as well!
+        foreach (@{${$self}{additionalAssignments}}){
+            ${${previouslyFoundSettings}{$storageName}}{$_} = ${$self}{$_};
+        }
+
         # there's no need for the current object to keep all of the settings
         delete ${$self}{settings};
         delete ${$self}{switches};

@@ -93,7 +93,14 @@ sub modify_line_breaks_body_and_end{
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
       if(${$self}{BodyStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{begin}){
           $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
-          ${$self}{begin} .= "\n";       
+          # by default, assume that no trailing comment token is needed
+          my $trailingCommentToken = q();
+          if(${$self}{addPercentAfterBeginWhenAddingLineBreak}){
+            my $addPercentBeginLogFile = ${$self}{aliases}{addPercentAfterBeginWhenAddingLineBreak}||"addPercentAfterBeginWhenAddingLineBreak";
+            $self->logger("Adding a % at the end of begin, ${$self}{begin} (see $addPercentBeginLogFile)");
+            $trailingCommentToken = "%".$self->add_comment_symbol;
+          }
+          ${$self}{begin} .= "$trailingCommentToken\n";       
           ${$self}{linebreaksAtEnd}{begin} = 1;
        } elsif (${$self}{BodyStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
@@ -135,7 +142,14 @@ sub modify_line_breaks_body_and_end{
               my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
               $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
               ${$self}{linebreaksAtEnd}{end} = 1;
-              ${$self}{replacementText} .= "\n";
+              # by default, assume that no trailing comment token is needed
+              my $trailingCommentToken = q();
+              if(${$self}{addPercentAfterEndWhenAddingLineBreak}){
+                my $addPercentEndLogFile = ${$self}{aliases}{addPercentAfterEndWhenAddingLineBreak}||"addPercentAfterEndWhenAddingLineBreak";
+                $self->logger("Adding a % after ${$self}{end} (see $addPercentEndLogFile)");
+                $trailingCommentToken = "%".$self->add_comment_symbol;
+              }
+              ${$self}{replacementText} .= "$trailingCommentToken\n";
     }
 
 }

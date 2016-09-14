@@ -54,8 +54,13 @@ sub find_optional_arguments{
                                                   EndStartsOnOwnLine=>"RSqBStartsOnOwnLine",
                                                   # after end statements
                                                   EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
+                                                  # comments after LSqB
+                                                  addPercentAfterBeginWhenAddingLineBreak=>"addPercentAfterLSqBWhenAddingLineBreak",
+                                                  # comments after RSqB
+                                                  addPercentAfterEndWhenAddingLineBreak=>"addPercentAfterRSqBWhenAddingLineBreak",
                                                 },
                                                 modifyLineBreaksYamlName=>"optionalArguments",
+                                                additionalAssignments=>["addPercentAfterBeginWhenAddingLineBreak","addPercentAfterEndWhenAddingLineBreak"],
                                                 regexp=>$optArgRegExp,
                                               );
         # there are a number of tasks common to each object

@@ -3,12 +3,35 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp/;
+our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
+our @trailingComments;
+our $commentCounter = 0;
+
+sub add_comment_symbol{
+    # add a trailing comment token after, for example, a square brace [
+    # or a curly brace {
+    #
+    # see, for example, addPercentAfterBeginWhenAddingLineBreak
+    my $self = shift;
+    $self->get_trailing_comment_token;
+
+    # increment the comment counter
+    $commentCounter++;
+
+    # store the comment -- without this, it won't get processed correctly at the end
+    push(@trailingComments,{id=>${$self}{trailingCommentToken}.$commentCounter,value=>q()});
+
+    # log file info
+    $self->logger("Updating trailing comment array",'heading');
+    $self->logger(Dumper(\@trailingComments),'ttrace');
+
+    # the returned value
+    return ${$self}{trailingCommentToken}.$commentCounter;
+}
 
 sub remove_trailing_comments{
     my $self = shift;
     $self->logger("Storing trailing comments",'heading');
-    my $commentCounter = 0;
     $self->get_trailing_comment_token;
 
     # perform the substitution
@@ -23,14 +46,14 @@ sub remove_trailing_comments{
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
-                            ${${$self}{trailingcomments}}{"${$self}{trailingCommentToken}$commentCounter"}= $1;
+                            push(@trailingComments,{id=>${$self}{trailingCommentToken}.$commentCounter,value=>$1});
 
                             # replace comment with dummy text
                             "%".${$self}{trailingCommentToken}.$commentCounter;
                        /xsmeg;
-    if(%{$self}{trailingcomments}){
+    if(@trailingComments){
         $self->logger("Trailing comments stored in:",'trace');
-        $self->logger(Dumper(\%{%{$self}{trailingcomments}}),'trace');
+        $self->logger(Dumper(\@trailingComments),'trace');
     } else {
         $self->logger("No trailing comments found",'trace');
     }
@@ -39,25 +62,27 @@ sub remove_trailing_comments{
 
 sub put_trailing_comments_back_in{
     my $self = shift;
-    return unless(%{$self}{trailingcomments});
+    return unless( @trailingComments > 0 );
 
     $self->logger("Returning trailing comments to body",'heading');
-    while( my ($trailingcommentID,$trailingcommentValue)= each %{%{$self}{trailingcomments}}){
-        if(${$self}{body} =~ m/%$trailingcommentID
-                                (
-                                    (?!          # not immediately preceeded by 
-                                        (?<!\\)  # \
-                                        %        # %
-                                    ).*?
-                                )                # captured into $1
-                                (\h*)?$                
-                            /mx and $1 ne ''){
-            $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
-            ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
-        } else {
-            ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
-        }
-        $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
+    foreach my $comment (@trailingComments){
+      my $trailingcommentID = ${$comment}{id};
+      my $trailingcommentValue = ${$comment}{value};
+      if(${$self}{body} =~ m/%$trailingcommentID
+                              (
+                                  (?!          # not immediately preceeded by 
+                                      (?<!\\)  # \
+                                      %        # %
+                                  ).*?
+                              )                # captured into $1
+                              (\h*)?$                
+                          /mx and $1 ne ''){
+          $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
+          ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+      } else {
+          ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
+      }
+      $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
     }
     return;
 }

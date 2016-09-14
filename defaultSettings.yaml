@@ -350,6 +350,8 @@ modifyLineBreaks:
         OptArgBodyStartsOnOwnLine: 0
         RSqBStartsOnOwnLine: 0
         RSqBFinishesWithLineBreak: 0
+        addPercentAfterLSqBWhenAddingLineBreak: 0
+        addPercentAfterRSqBWhenAddingLineBreak: 0
         
     
 # *** NOTE ***
