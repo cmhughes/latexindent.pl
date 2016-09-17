@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use FindBin; 
 use Exporter qw/import/;
-our @EXPORT_OK = qw/logger output_logfile processSwitches get_switches/;
+our @EXPORT_OK = qw/logger output_logfile processSwitches is_m_switch_active/;
 our @logFileNotes;
 our %switches;
 
@@ -12,10 +12,9 @@ our %switches;
 # log file methods
 #   reference: http://stackoverflow.com/questions/6736998/help-calling-a-sub-routine-from-a-perl-module-and-printing-to-logfile
 
-sub get_switches{
+sub is_m_switch_active{
     my $self = shift;
-    ${$self}{switches} = \%switches;
-    return;
+    return $switches{modifyLineBreaks};
 }
 
 sub logger{

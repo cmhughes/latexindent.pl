@@ -192,9 +192,6 @@ sub get_indentation_settings_for_this_object{
                                      ||
                           $masterSettings{defaultIndent});
 
-        # check if the -m switch is active
-        $self->get_switches;
-
         # check for line break settings
         $self->modify_line_breaks_settings;
 
@@ -231,7 +228,7 @@ sub modify_line_breaks_settings{
     my $self = shift;
 
     # return with undefined values unless the -m switch is active
-    return  unless(${${$self}{switches}}{modifyLineBreaks});
+    return unless $self->is_m_switch_active;
 
     # details to the log file
     $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading.trace');

@@ -159,10 +159,7 @@ sub check_for_else_statement{
       }
 
       # check if -m switch is active
-      $self->get_switches;
-
-      # return with undefined values unless the -m switch is active
-      return  unless(${${$self}{switches}}{modifyLineBreaks});
+      return unless $self->is_m_switch_active;
 
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseStartsOnOwnLine}){

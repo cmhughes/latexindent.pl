@@ -4,7 +4,7 @@ use warnings;
 use Data::Dumper;
 
 # gain access to subroutines in the following modules
-use LatexIndent::LogFile qw/logger output_logfile processSwitches get_switches/;
+use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active/;
 use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
@@ -162,11 +162,9 @@ sub find_objects_recursively{
     # send each child through this routine
     foreach my $child (@{${$self}{children}}){
         $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
-        $child->get_switches;
         $child->masterYamlSettings;
         $child->find_objects_recursively;
         delete ${$child}{settings};
-        delete ${$child}{switches};
     }
 
     # the modify line switch can adjust line breaks, so we need another sweep

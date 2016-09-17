@@ -6,7 +6,8 @@ our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks
 
 sub pre_print{
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
+
+    return unless $self->is_m_switch_active;
 
     $self->logger('Checking amalgamated line breaks (-m switch active):','heading.trace');
 
@@ -174,7 +175,8 @@ sub adjust_line_breaks_end_parent{
     # at the end of the parent object can become messy
 
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
+
+    return unless $self->is_m_switch_active;
 
     # most recent child object
     my $child = @{${$self}{children}}[-1];

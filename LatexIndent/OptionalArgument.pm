@@ -64,16 +64,8 @@ sub find_optional_arguments{
         # store children in special hash
         push(@{${$self}{children}},$optionalArg);
 
-        # grab switches and settings
-        $self->get_switches;
-        $self->masterYamlSettings;
-
         # wrap_up_tasks
         $self->wrap_up_tasks;
-
-        # no need to keep settings/switches
-        delete ${$self}{settings};
-        delete ${$self}{switches};
         }
   }
 
