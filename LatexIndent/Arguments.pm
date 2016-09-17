@@ -84,10 +84,10 @@ sub find_opt_mand_arguments{
             $arguments->find_optional_arguments;
 
             # examine *first* child
-            #   situation: parent BodyStartsOnOwnLine == 1, but first child has BeginStartsOnOwnLine == 0
+            #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0
             #   problem: the *body* of parent actually starts after the arguments
             #   solution: remove the linebreak at the end of the begin statement of the parent
-            if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==1){
+            if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}>=1){
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0 and ${$self}{body} !~ m/^$blankLineToken/){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
@@ -106,12 +106,21 @@ sub find_opt_mand_arguments{
             #              BodyStartsOnOwnLine == 0 will actually be controlled by the last arguments' 
             #              settings of EndFinishesWithLineBreak
             if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0){
-                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==1){
+                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     $self->logger("$BodyStringLogFile = 0 (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
-                    $self->logger("Adding line breaks at the end of ${$self}{begin}");
-                    ${$self}{begin} .= "\n";
+                    $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})");
+
+                    # possibly add a comment at the end of the begin statement
+                    my $trailingCommentToken = q();
+                    if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==2){
+                      $self->logger("Adding a % at the end of begin, ${$self}{begin} ($BeginStringLogFile == 2)");
+                      $trailingCommentToken = "%".$self->add_comment_symbol;
+                      $self->logger("Removing trailing space on ${$self}{begin}");
+                      ${$self}{begin} =~ s/\h*$//s;
+                    }
+                    ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
                 }
             }
@@ -120,9 +129,9 @@ sub find_opt_mand_arguments{
             ${$arguments}{replacementText} = ${$arguments}{id};
 
             # the argument object only needs a trailing line break if the *last* child
-            # did not add one at the end, and if BodyStartsOnOwnLine == 1
-            if( (defined ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak} and ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}!=1)
-                and (defined ${$self}{BodyStartsOnOwnLine}==1 and ${$self}{BodyStartsOnOwnLine}==1) ){
+            # did not add one at the end, and if BodyStartsOnOwnLine >= 1
+            if( (defined ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak} and ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}<1)
+                and (defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}>=1) ){
                 $self->logger("Updating replacementtext to include a linebreak for arguments in ${$self}{name}");
                 ${$arguments}{replacementText} .= "\n" if(${$arguments}{linebreaksAtEnd}{end});
             }

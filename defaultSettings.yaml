@@ -53,14 +53,6 @@ cycleThroughBackUps: 0
 # indent preamble
 indentPreamble: 0
 
-# always look for split { }, which means that the user doesn't
-# have to complete checkunmatched, checkunmatchedELSE
-alwaysLookforSplitBraces: 1
-
-# always look for split [ ], which means that the user doesn't
-# have to complete checkunmatchedbracket
-alwaysLookforSplitBrackets: 1
-
 # remove trailing whitespace from all lines 
 removeTrailingWhitespace:
     beforeProcessing: 0
@@ -192,39 +184,6 @@ itemNames:
     item: 1
     myitem: 1
 
-# if you want to indent if, else, fi constructs such as, for example,
-#
-#       \ifnum#1=2
-#               something
-#       \else
-#               something else
-#       \fi
-#
-# then populate them in constructIfElseFi
-#
-# The following list is by no means exhaustive, but is taken from etex documentation;
-# add your own if commands to your own yaml settings.
-constructIfElseFi:
-    if: 1
-    ifcat: 1
-    ifnum: 1
-    ifdim: 1
-    ifodd: 1
-    ifvmode: 1
-    ifhmode: 1
-    ifmmode: 1
-    ifinner: 1
-    ifvoid: 1
-    ifhbox: 1
-    ifvbox: 1
-    ifx: 1
-    ifeof: 1
-    iftrue: 1
-    ifcase: 1
-    ifdefined: 1
-    ifcsname: 1
-    iffontchar: 1
-
 # latexindent can be called without a file extension, 
 # e.g, simply
 #       latexindent myfile
@@ -239,7 +198,6 @@ fileExtensionPreference:
 
 # preferences for information displayed in the log file
 logFilePreferences:
-    logFileName: "indent.log"
     showEveryYamlRead: 1
     showAmalgamatedSettings: 0
     endLogFileWith: '--------------' 
@@ -350,10 +308,10 @@ modifyLineBreaks:
         OptArgBodyStartsOnOwnLine: 0
         RSqBStartsOnOwnLine: 0
         RSqBFinishesWithLineBreak: 0
-        addPercentAfterLSqBWhenAddingLineBreak: 0
-        addPercentAfterRSqBWhenAddingLineBreak: 0
         
-    
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
 # *** NOTE ***
 # If you have specified alwaysLookforSplitBraces: 1
 # and alwaysLookforSplitBrackets: 1 then you don't need
@@ -367,6 +325,53 @@ modifyLineBreaks:
 # below this line- it used to be necessary for older 
 # versions of the script, but not anymore :)
 #***      ***
+#
+# always look for split { }, which means that the user doesn't
+# have to complete checkunmatched, checkunmatchedELSE
+
+# if you want to indent if, else, fi constructs such as, for example,
+#
+#       \ifnum#1=2
+#               something
+#       \else
+#               something else
+#       \fi
+#
+# then populate them in constructIfElseFi
+#
+# The following list is by no means exhaustive, but is taken from etex documentation;
+# add your own if commands to your own yaml settings.
+constructIfElseFi:
+    if: 1
+    ifcat: 1
+    ifnum: 1
+    ifdim: 1
+    ifodd: 1
+    ifvmode: 1
+    ifhmode: 1
+    ifmmode: 1
+    ifinner: 1
+    ifvoid: 1
+    ifhbox: 1
+    ifvbox: 1
+    ifx: 1
+    ifeof: 1
+    iftrue: 1
+    ifcase: 1
+    ifdefined: 1
+    ifcsname: 1
+    iffontchar: 1
+
+#noAdditionalIndent:
+#    \[: 0
+#    \]: 0
+
+alwaysLookforSplitBraces: 1
+
+# always look for split [ ], which means that the user doesn't
+# have to complete checkunmatchedbracket
+alwaysLookforSplitBrackets: 1
+
 
 # commands that might split {} across lines
 # such as \parbox, \marginpar, etc

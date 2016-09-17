@@ -55,6 +55,7 @@ sub processSwitches{
     $self->logger("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
     $self->logger("-o|--outputfile: output to file") if($switches{outputToFile});
     $self->logger("-m|--modifylinebreaks: modify line breaks") if($switches{modifyLineBreaks});
+    $self->logger("-g|--logfile: logfile name") if($switches{logFileName});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
@@ -81,8 +82,9 @@ sub processSwitches{
 sub output_logfile{
   my $self = shift;
   my $logfile;
-  open($logfile,">","${${${$self}{settings}}{logFilePreferences}}{logFileName}") or die "Can't open ${${${$self}{settings}}{logFilePreferences}}{logFileName}";
-  $self->logger("${${${$self}{settings}}{logFilePreferences}}{endLogFileWith}",'heading');
+  my $logfileName = $switches{logFileName}||"indent.log";
+
+  open($logfile,">","$logfileName") or die "Can't open $logfileName";
 
   foreach my $line (@logFileNotes){
         if(${$line}{level} eq 'heading'){
@@ -115,6 +117,8 @@ sub output_logfile{
             print $logfile ${$line}{line},"\n";
           }
   }
+
+  $self->logger("${${${$self}{settings}}{logFilePreferences}}{endLogFileWith}",'heading');
   close($logfile);
 }
 

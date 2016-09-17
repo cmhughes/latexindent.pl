@@ -91,15 +91,17 @@ sub modify_line_breaks_body_and_end{
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-      if(${$self}{BodyStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{begin}){
+      if(${$self}{BodyStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{begin}){
           $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
+
           # by default, assume that no trailing comment token is needed
           my $trailingCommentToken = q();
-          if(${$self}{addPercentAfterBeginWhenAddingLineBreak}){
-            my $addPercentBeginLogFile = ${$self}{aliases}{addPercentAfterBeginWhenAddingLineBreak}||"addPercentAfterBeginWhenAddingLineBreak";
-            $self->logger("Adding a % at the end of begin, ${$self}{begin} (see $addPercentBeginLogFile)");
+          if(${$self}{BodyStartsOnOwnLine}==2){
+            $self->logger("Adding a % at the end of begin, ${$self}{begin} ($BodyStringLogFile == 2)");
             $trailingCommentToken = "%".$self->add_comment_symbol;
           }
+
+          # modified begin statement
           ${$self}{begin} .= "$trailingCommentToken\n";       
           ${$self}{linebreaksAtEnd}{begin} = 1;
        } elsif (${$self}{BodyStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{begin}){
@@ -113,10 +115,20 @@ sub modify_line_breaks_body_and_end{
     # possibly modify line break *before* \end{statement}
     if(defined ${$self}{EndStartsOnOwnLine}){
           my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
-          if(${$self}{EndStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{body}){
+          if(${$self}{EndStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{body}){
               # add a line break after body, if appropriate
               $self->logger("Adding a linebreak at the end of body (see $EndStringLogFile)");
-              ${$self}{body} .= "\n";
+
+              # by default, assume that no trailing comment token is needed
+              my $trailingCommentToken = q();
+              if(${$self}{EndStartsOnOwnLine}==2){
+                $self->logger("Adding a % immediately after body of ${$self}{name} ($EndStringLogFile==2)");
+                $trailingCommentToken = "%".$self->add_comment_symbol;
+                ${$self}{body} =~ s/\h*$//s;
+              }
+              
+              # modified end statement
+              ${$self}{body} .= "$trailingCommentToken\n";
               ${$self}{linebreaksAtEnd}{body} = 1;
           } elsif (${$self}{EndStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
@@ -137,18 +149,21 @@ sub modify_line_breaks_body_and_end{
 
     # possibly modify line break *after* \end{statement}
     if(defined ${$self}{EndFinishesWithLineBreak}
-       and ${$self}{EndFinishesWithLineBreak}==1 
+       and ${$self}{EndFinishesWithLineBreak}>=1 
        and !${$self}{linebreaksAtEnd}{end}){
               my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
               $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
               ${$self}{linebreaksAtEnd}{end} = 1;
+
               # by default, assume that no trailing comment token is needed
               my $trailingCommentToken = q();
-              if(${$self}{addPercentAfterEndWhenAddingLineBreak}){
-                my $addPercentEndLogFile = ${$self}{aliases}{addPercentAfterEndWhenAddingLineBreak}||"addPercentAfterEndWhenAddingLineBreak";
-                $self->logger("Adding a % after ${$self}{end} (see $addPercentEndLogFile)");
+              if(${$self}{EndFinishesWithLineBreak}==2){
+                $self->logger("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)");
                 $trailingCommentToken = "%".$self->add_comment_symbol;
+                ${$self}{end} =~ s/\h*$//s;
               }
+              
+              # modified end statement
               ${$self}{replacementText} .= "$trailingCommentToken\n";
     }
 

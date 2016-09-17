@@ -9,9 +9,7 @@ our $commentCounter = 0;
 
 sub add_comment_symbol{
     # add a trailing comment token after, for example, a square brace [
-    # or a curly brace {
-    #
-    # see, for example, addPercentAfterBeginWhenAddingLineBreak
+    # or a curly brace { when, for example, BeginStartsOnOwnLine == 2
     my $self = shift;
     $self->get_trailing_comment_token;
 
@@ -82,7 +80,7 @@ sub put_trailing_comments_back_in{
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }
-      $self->logger("replace $trailingcommentID with $trailingcommentValue",'trace');
+      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace');
     }
     return;
 }

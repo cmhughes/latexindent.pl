@@ -21,6 +21,7 @@ GetOptions (
     "overwrite|w"=>\$switches{overwrite},
     "outputfile|o=s"=>\$switches{outputToFile},
     "modifylinebreaks|m"=>\$switches{modifyLineBreaks},
+    "logfile|g=s"=>\$switches{logFileName},
     #"help|h"=>\$showhelp,
     #"cruft|c=s"=>\$cruftDirectory,
 );

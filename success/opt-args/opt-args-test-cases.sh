@@ -25,9 +25,13 @@ do
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
    latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod$i.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod$i.tex
+   latexindent.pl environments-third-opt-args.tex -m -l=opt-args-mod$i.yaml,addPercentAfterBegin.yaml -tt -s -o=environments-third-opt-args-mod$i.tex -g=other.log
    set +x
 done
 latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod1.yaml,addPercentAfterBegin.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
+latexindent.pl environments-third-opt-args.tex -l=opt-args-mod1.yaml,addPercentBeforeBegin.yaml -m -o=environments-third-opt-args-percent-before-begin.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercentAfterEnd.yaml -m -o=environments-third-opt-args-percent-after-end.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercentAfterBody.yaml -m -o=environments-third-opt-args-percent-after-body.tex
    
 set -x
 # FIXTHIS- NEED TO RETURN TO THIS FILE
