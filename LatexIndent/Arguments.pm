@@ -26,8 +26,7 @@ sub find_opt_mand_arguments{
     my $blankLineToken = ${$self}{blankLineToken};
 
     # trailing comment regexp
-    $self->get_trailing_comment_regexp;
-    my $trailingCommentRegExp = ${$self}{trailingCommentRegExp};
+    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     my $optAndMandRegExp = qr/
                             ^                      # begins with
@@ -84,11 +83,12 @@ sub find_opt_mand_arguments{
             $arguments->find_optional_arguments;
 
             # examine *first* child
-            #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0
+            #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0 || BeginStartsOnOwnLine == undef
             #   problem: the *body* of parent actually starts after the arguments
             #   solution: remove the linebreak at the end of the begin statement of the parent
             if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}>=1){
-                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==0 and ${$self}{body} !~ m/^$blankLineToken/){
+                if( !(defined ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine} and ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1) 
+                        and ${$self}{body} !~ m/^$blankLineToken/){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)");

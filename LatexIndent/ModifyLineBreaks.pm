@@ -19,10 +19,7 @@ sub pre_print{
     my $body = ${$self}{body};
 
     # some objects may not have the trailing comment already stored
-    $self->get_trailing_comment_token if(!${$self}{trailingCommentToken});
-    my $trailingCommentsToken = ${$self}{trailingCommentToken};
-
-    $self->get_trailing_comment_regexp;
+    my $trailingCommentsRegExp = $self->get_trailing_comment_regexp;
 
     # loop through document children hash, remove comments, 
     # produce a pre-print of the document so that line breaks can be checked
@@ -37,9 +34,9 @@ sub pre_print{
                     ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
 
                     # remove all trailing comments from the copied begin, body and end statements
-                    ${${$child}{noComments}}{begin} =~ s/${$self}{trailingCommentRegExp}//mg;
-                    ${${$child}{noComments}}{body} =~ s/${$self}{trailingCommentRegExp}//mg;
-                    ${${$child}{noComments}}{end} =~ s/${$self}{trailingCommentRegExp}//mg;
+                    ${${$child}{noComments}}{begin} =~ s/$trailingCommentsRegExp//mg;
+                    ${${$child}{noComments}}{body} =~ s/$trailingCommentsRegExp//mg;
+                    ${${$child}{noComments}}{end} =~ s/$trailingCommentsRegExp//mg;
 
                     # replace ids with body
                     $body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
@@ -51,7 +48,7 @@ sub pre_print{
     }
 
     # remove any remaining comments
-    $body =~ s/${$self}{trailingCommentRegExp}//mg;
+    $body =~ s/$trailingCommentsRegExp//mg;
     
     # output the body to the log file
     $self->logger("Expanded body (before sweep), no comments (just to check linebreaks)","heading.ttrace");
@@ -88,23 +85,31 @@ sub pre_print{
 
 sub modify_line_breaks_body_and_end{
     my $self = shift;
+    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
       if(${$self}{BodyStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{begin}){
-          $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
+          if(${$self}{BodyStartsOnOwnLine}==1){
+            # modify the begin statement
+            $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
+            ${$self}{begin} .= "\n";       
+            ${$self}{linebreaksAtEnd}{begin} = 1;
+          } elsif(${$self}{BodyStartsOnOwnLine}==2){
+            # by default, assume that no trailing comment token is needed
+            my $trailingCommentToken = q();
+            if(${$self}{body} !~ m/^\h*$trailingCommentRegExp/s){
+                $self->logger("Adding a % at the end of begin, ${$self}{begin}, followed by a linebreak ($BodyStringLogFile == 2)");
+                $trailingCommentToken = "%".$self->add_comment_symbol;
 
-          # by default, assume that no trailing comment token is needed
-          my $trailingCommentToken = q();
-          if(${$self}{BodyStartsOnOwnLine}==2){
-            $self->logger("Adding a % at the end of begin, ${$self}{begin} ($BodyStringLogFile == 2)");
-            $trailingCommentToken = "%".$self->add_comment_symbol;
-          }
-
-          # modified begin statement
-          ${$self}{begin} .= "$trailingCommentToken\n";       
-          ${$self}{linebreaksAtEnd}{begin} = 1;
+                # modify the begin statement
+                ${$self}{begin} .= "$trailingCommentToken\n";       
+                ${$self}{linebreaksAtEnd}{begin} = 1;
+            } else {
+                $self->logger("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.");
+            }
+          } 
        } elsif (${$self}{BodyStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
           $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");

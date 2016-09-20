@@ -29,9 +29,11 @@ do
    set +x
 done
 latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod1.yaml,addPercentAfterBegin.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-mod1.yaml,addPercentBeforeBegin.yaml -m -o=environments-third-opt-args-percent-before-begin.tex
-latexindent.pl environments-third-opt-args.tex -l=addPercentAfterEnd.yaml -m -o=environments-third-opt-args-percent-after-end.tex
-latexindent.pl environments-third-opt-args.tex -l=addPercentAfterBody.yaml -m -o=environments-third-opt-args-percent-after-body.tex
+latexindent.pl environments-third-opt-args.tex -l=opt-args-mod1.yaml,addPercentBeforeBegin.yaml -m -s -o=environments-third-opt-args-percent-before-begin.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercentAfterEnd.yaml -m -s -o=environments-third-opt-args-percent-after-end.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercentAfterBody.yaml -m -s -o=environments-third-opt-args-percent-after-body.tex
+latexindent.pl -m -w environments-first-opt-args-mod-supp1.tex -l=addPercentAfterBody.yaml -o=environments-first-opt-args-mod-supp1-mod1.tex 
+latexindent.pl environments-first-opt-args-more-comments.tex -m -l=addPercentAfterBegin.yaml  -tt -o=environments-first-opt-args-more-comments-addPercentAfterBegin.tex
    
 set -x
 # FIXTHIS- NEED TO RETURN TO THIS FILE

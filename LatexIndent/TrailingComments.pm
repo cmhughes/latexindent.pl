@@ -11,26 +11,26 @@ sub add_comment_symbol{
     # add a trailing comment token after, for example, a square brace [
     # or a curly brace { when, for example, BeginStartsOnOwnLine == 2
     my $self = shift;
-    $self->get_trailing_comment_token;
+    my $trailingCommentToken = $self->get_trailing_comment_token;
 
     # increment the comment counter
     $commentCounter++;
 
     # store the comment -- without this, it won't get processed correctly at the end
-    push(@trailingComments,{id=>${$self}{trailingCommentToken}.$commentCounter,value=>q()});
+    push(@trailingComments,{id=>$trailingCommentToken.$commentCounter,value=>q()});
 
     # log file info
     $self->logger("Updating trailing comment array",'heading');
     $self->logger(Dumper(\@trailingComments),'ttrace');
 
     # the returned value
-    return ${$self}{trailingCommentToken}.$commentCounter;
+    return $trailingCommentToken.$commentCounter;
 }
 
 sub remove_trailing_comments{
     my $self = shift;
     $self->logger("Storing trailing comments",'heading');
-    $self->get_trailing_comment_token;
+    my $trailingCommentToken = $self->get_trailing_comment_token;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -44,10 +44,10 @@ sub remove_trailing_comments{
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
-                            push(@trailingComments,{id=>${$self}{trailingCommentToken}.$commentCounter,value=>$1});
+                            push(@trailingComments,{id=>$trailingCommentToken.$commentCounter,value=>$1});
 
                             # replace comment with dummy text
-                            "%".${$self}{trailingCommentToken}.$commentCounter;
+                            "%".$trailingCommentToken.$commentCounter;
                        /xsmeg;
     if(@trailingComments){
         $self->logger("Trailing comments stored in:",'trace');
@@ -86,18 +86,14 @@ sub put_trailing_comments_back_in{
 }
 
 sub get_trailing_comment_token{
-    my $self = shift;
-
-    ${$self}{trailingCommentToken} = "latexindenttrailingcomment";
-    return;
+    return "latexindenttrailingcomment";
 }
 
 sub get_trailing_comment_regexp{
     my $self = shift;
     
-    $self->get_trailing_comment_token if(!${$self}{trailingCommentToken});
+    my $trailingCommentToken = $self->get_trailing_comment_token;
 
-    ${$self}{trailingCommentRegExp} = qr/(?<!\\)%${$self}{trailingCommentToken}\d+/;
-    return;
+    return qr/(?<!\\)%$trailingCommentToken\d+/;
 }
 1;
