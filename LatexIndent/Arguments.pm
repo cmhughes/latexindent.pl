@@ -106,21 +106,25 @@ sub find_opt_mand_arguments{
             #              the child settings are obeyed.
             #              BodyStartsOnOwnLine == 0 will actually be controlled by the last arguments' 
             #              settings of EndFinishesWithLineBreak
-            if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0){
+            if( (defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0) 
+                or !(defined ${$self}{BodyStartsOnOwnLine})){
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                    $self->logger("$BodyStringLogFile = 0 (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
-                    $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})");
+                    $self->logger("$BodyStringLogFile = ${$self}{BodyStartsOnOwnLine} (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
 
                     # possibly add a comment at the end of the begin statement
                     my $trailingCommentToken = q();
-                    if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==2){
-                      $self->logger("Adding a % at the end of begin, ${$self}{begin} ($BeginStringLogFile == 2)");
-                      $trailingCommentToken = "%".$self->add_comment_symbol;
-                      $self->logger("Removing trailing space on ${$self}{begin}");
-                      ${$self}{begin} =~ s/\h*$//s;
+                    if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==1){
+                        $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})");
+                    } elsif(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==2){
+                        $self->logger("Adding a % at the end of begin, ${$self}{begin} followed by a linebreak ($BeginStringLogFile == 2)");
+                        $trailingCommentToken = "%".$self->add_comment_symbol;
+                        $self->logger("Removing trailing space on ${$self}{begin}");
+                        ${$self}{begin} =~ s/\h*$//s;
                     }
+
+                    # modification
                     ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
                 }

@@ -34,6 +34,7 @@ latexindent.pl environments-third-opt-args.tex -l=addPercentAfterEnd.yaml -m -s 
 latexindent.pl environments-third-opt-args.tex -l=addPercentAfterBody.yaml -m -s -o=environments-third-opt-args-percent-after-body.tex
 latexindent.pl -m -w environments-first-opt-args-mod-supp1.tex -l=addPercentAfterBody.yaml -o=environments-first-opt-args-mod-supp1-mod1.tex 
 latexindent.pl environments-first-opt-args-more-comments.tex -m -l=addPercentAfterBegin.yaml  -tt -o=environments-first-opt-args-more-comments-addPercentAfterBegin.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercentAll.yaml -m -s -o=environments-third-opt-args-percent-after-all.tex
    
 set -x
 # FIXTHIS- NEED TO RETURN TO THIS FILE
