@@ -30,10 +30,14 @@ sub find_optional_arguments{
                                    (\R)?
                                /sx;
 
+    # trailing comment regexp
+    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
+
     # pick out the optional arguments
-    while(${$self}{body} =~ m/$optArgRegExp/){
+    while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
         # log file output
         $self->logger("Optional argument found, body in ${$self}{name}",'heading');
+        $self->logger("(last argument)") if($8 eq '');
 
         # create a new Optional Argument object
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
@@ -57,6 +61,8 @@ sub find_optional_arguments{
                                                 },
                                                 modifyLineBreaksYamlName=>"optionalArguments",
                                                 regexp=>$optArgRegExp,
+                                                # the last argument (determined by $8 eq '') needs information from the argument container object
+                                                endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
                                               );
         # there are a number of tasks common to each object
         $optionalArg->tasks_common_to_each_object;

@@ -39,7 +39,10 @@ sub find_environments{
                 (\R)?                   # possibly followed by a line break 
                 /sx;
 
-    while( ${$self}{body} =~ m/$environmentRegExp/){
+    # trailing comment regexp
+    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
+
+    while( ${$self}{body} =~ m/$environmentRegExp\h*($trailingCommentRegExp)?/){
       # log file output
       $self->logger("environment found: $2",'heading');
 
@@ -55,6 +58,7 @@ sub find_environments{
                                               },
                                               modifyLineBreaksYamlName=>"environments",
                                               regexp=>$environmentRegExp,
+                                              endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                             );
 
       # there are a number of tasks common to each object

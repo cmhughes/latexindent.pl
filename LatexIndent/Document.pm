@@ -222,13 +222,21 @@ sub indent_children_recursively{
                 # line break checks before \begin{statement}
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                    if(${$child}{BeginStartsOnOwnLine}==1 and !$IDFirstNonWhiteSpaceCharacter){
-                        $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
-                        ${$child}{begin} = "\n".${$child}{begin};
+                    if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
+                        # by default, assume that no trailing comment token is needed
+                        my $trailingCommentToken = q();
+                        if(${$child}{BeginStartsOnOwnLine}==2){
+                            $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)");
+                            $trailingCommentToken = "%".$self->add_comment_symbol;
+                        } else {
+                            $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
+                        }
+
+                        # the trailing comment/linebreak magic
+                        ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
-                        # important to check we don't move the begin statement next to a 
-                        # blank-line-token
+                        # important to check we don't move the begin statement next to a blank-line-token
                         $self->get_blank_line_token;
                         my $blankLineToken = ${$self}{blankLineToken};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){

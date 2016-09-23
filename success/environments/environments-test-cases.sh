@@ -46,4 +46,9 @@ latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod4.tex -m -tt -l
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod5.tex -m -tt -l=env-mod-lines13.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod6.tex -m -tt -l=env-mod-lines14.yaml environments-modify-multiple-line-breaks.tex
 latexindent.pl environments-modify-multiple-line-breaks-verbatim.tex -s -t -m -o=environments-modify-multiple-line-breaks-verbatim-mod1.tex -l=env-mod-lines12.yaml 
+# multi-switch == 2 (trailing comment stuff)
+latexindent.pl -s -l=env-addPercentAfterBegin.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-begin.tex
+latexindent.pl -s -l=env-addPercentAfterBody.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-Body.tex
+latexindent.pl -s -l=env-addPercentAfterEnd.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-End.tex
+
 git status

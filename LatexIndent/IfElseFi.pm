@@ -80,7 +80,10 @@ sub find_ifelsefi{
                     (\R)?                       # linebreaks after \fi
     /sx;
 
-    while( ${$self}{body} =~ m/$ifElseFiRegExp/){
+    # trailing comment regexp
+    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
+
+    while( ${$self}{body} =~ m/$ifElseFiRegExp\h*($trailingCommentRegExp)?/){
       # log file output
       $self->logger("IfElseFi found: $2",'heading');
 
@@ -107,6 +110,7 @@ sub find_ifelsefi{
                                               modifyLineBreaksYamlName=>"ifElseFi",
                                               additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
                                               regexp=>$ifElseFiRegExp,
+                                              endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                             );
 
       # there are a number of tasks common to each object

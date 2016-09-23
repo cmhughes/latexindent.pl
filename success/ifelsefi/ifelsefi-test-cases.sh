@@ -57,5 +57,10 @@ latexindent.pl ifelsefi-env-mixed-recursive.tex  -m -tt -l=if-env-recursive-conf
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense.tex
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod1.tex -l=ifelsefi-condense-mod1.yaml
 latexindent.pl ifelsefi-nested-blank-lines.tex -s -t -m -o=ifelsefi-nested-blank-lines-condense-mod2.tex -l=ifelsefi-condense-mod2.yaml
+# multi-switch takes value of 2
+latexindent.pl -s -m -l=ifelsefi-addPercentBeforeBegin.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentBeforeBegin.tex 
+latexindent.pl -s -m -l=ifelsefi-addPercentAfterBegin.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBegin.tex 
+latexindent.pl -s -m -l=ifelsefi-addPercentAfterBody.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBody.tex 
+latexindent.pl -s -m -l=ifelsefi-addPercentAfterEnd.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterEnd.tex 
 git status
 exit

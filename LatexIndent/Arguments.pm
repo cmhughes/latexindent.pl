@@ -57,7 +57,7 @@ sub find_opt_mand_arguments{
                              )                  
                              /sx;
 
-        if(${$self}{body} =~ m/$optAndMandRegExp/){
+        if(${$self}{body} =~ m/$optAndMandRegExp\h*($trailingCommentRegExp)?/){
             $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading');
 
             # create a new Arguments object
@@ -74,6 +74,7 @@ sub find_opt_mand_arguments{
                                                     },
                                                     end=>"",
                                                     regexp=>$optAndMandRegExp,
+                                                    endImmediatelyFollowedByComment=>$6?0:($7?1:0),
                                                   );
 
             # give unique id

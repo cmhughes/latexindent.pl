@@ -100,10 +100,9 @@ sub modify_line_breaks_body_and_end{
             # by default, assume that no trailing comment token is needed
             my $trailingCommentToken = q();
             if(${$self}{body} !~ m/^\h*$trailingCommentRegExp/s){
+                # modify the begin statement
                 $self->logger("Adding a % at the end of begin, ${$self}{begin}, followed by a linebreak ($BodyStringLogFile == 2)");
                 $trailingCommentToken = "%".$self->add_comment_symbol;
-
-                # modify the begin statement
                 ${$self}{begin} .= "$trailingCommentToken\n";       
                 ${$self}{linebreaksAtEnd}{begin} = 1;
             } else {
@@ -158,19 +157,25 @@ sub modify_line_breaks_body_and_end{
        and ${$self}{EndFinishesWithLineBreak}>=1 
        and !${$self}{linebreaksAtEnd}{end}){
               my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-              $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
-              ${$self}{linebreaksAtEnd}{end} = 1;
+              if(${$self}{EndFinishesWithLineBreak}==1){
+                $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
+                ${$self}{linebreaksAtEnd}{end} = 1;
 
-              # by default, assume that no trailing comment token is needed
-              my $trailingCommentToken = q();
-              if(${$self}{EndFinishesWithLineBreak}==2){
-                $self->logger("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)");
-                $trailingCommentToken = "%".$self->add_comment_symbol;
-                ${$self}{end} =~ s/\h*$//s;
+                # modified end statement
+                ${$self}{replacementText} .= "\n";
+              } elsif(${$self}{EndFinishesWithLineBreak}==2){
+                if(${$self}{endImmediatelyFollowedByComment}){
+                  # no need to add a % if one already exists
+                  $self->logger("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.");
+                } else {
+                  # otherwise, create a trailing comment, and tack it on 
+                  $self->logger("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)");
+                  my $trailingCommentToken = "%".$self->add_comment_symbol;
+                  ${$self}{end} =~ s/\h*$//s;
+                  ${$self}{replacementText} .= "$trailingCommentToken\n";
+                  ${$self}{linebreaksAtEnd}{end} = 1;
+                }
               }
-              
-              # modified end statement
-              ${$self}{replacementText} .= "$trailingCommentToken\n";
     }
 
 }
