@@ -35,10 +35,11 @@ sub create_back_up_file{
     $backupFile = "$cruftDirectory/$backupFile";
 
     # local variables, determined from the YAML settings
-    my $onlyOneBackUp = ${$self}{settings}{onlyOneBackUp};
-    my $maxNumberOfBackUps = ${$self}{settings}{maxNumberOfBackUps};
-    my $cycleThroughBackUps= ${$self}{settings}{cycleThroughBackUps};
-    my $backupExtension= ${$self}{settings}{backupExtension};
+    my %masterSettings = %{$self->get_master_settings};
+    my $onlyOneBackUp = $masterSettings{onlyOneBackUp};
+    my $maxNumberOfBackUps = $masterSettings{maxNumberOfBackUps};
+    my $cycleThroughBackUps= $masterSettings{cycleThroughBackUps};
+    my $backupExtension= $masterSettings{backupExtension};
     
     # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have
     # a conflict- er on the side of caution and turn off onlyOneBackUp

@@ -202,9 +202,6 @@ sub check_for_else_statement{
           }
       }
 
-      # there's no need for the current object to keep all of the settings
-      delete ${$self}{settings};
-      delete ${$self}{switches};
       return;
     } else {
       $self->logger("\\else statement not found",'trace');

@@ -21,12 +21,15 @@ sub indent{
 sub find_noindent_block{
     my $self = shift;
 
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+
     # noindent block
     # noindent block
     # noindent block
     $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading');
-    $self->logger(Dumper(\%{%{%{$self}{settings}}{noIndentBlock}}),'trace');
-    while( my ($noIndentBlock,$yesno)= each %{%{%{$self}{settings}}{noIndentBlock}}){
+    $self->logger(Dumper(\%{$masterSettings{noIndentBlock}}),'trace');
+    while( my ($noIndentBlock,$yesno)= each %{$masterSettings{noIndentBlock}}){
         if($yesno){
             $self->logger("looking for $noIndentBlock:$yesno environments");
 
@@ -92,12 +95,15 @@ sub find_noindent_block{
 sub find_verbatim_environments{
     my $self = shift;
 
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+
     # verbatim environments
     # verbatim environments
     # verbatim environments
     $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading');
-    $self->logger(Dumper(\%{%{%{$self}{settings}}{verbatimEnvironments}}),'trace');
-    while( my ($verbEnv,$yesno)= each %{%{%{$self}{settings}}{verbatimEnvironments}}){
+    $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}}),'trace');
+    while( my ($verbEnv,$yesno)= each %{$masterSettings{verbatimEnvironments}}){
         if($yesno){
             $self->logger("looking for $verbEnv:$yesno environments");
 

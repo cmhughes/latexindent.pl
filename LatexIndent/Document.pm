@@ -5,7 +5,7 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks_end_parent/;
@@ -34,7 +34,6 @@ sub new{
 
 sub operate_on_file{
     my $self = shift;
-    $self->masterYamlSettings;
     # file extension check
     $self->create_back_up_file;
     $self->find_noindent_block;
@@ -162,9 +161,7 @@ sub find_objects_recursively{
     # send each child through this routine
     foreach my $child (@{${$self}{children}}){
         $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
-        $child->masterYamlSettings;
         $child->find_objects_recursively;
-        delete ${$child}{settings};
     }
 
     # the modify line switch can adjust line breaks, so we need another sweep

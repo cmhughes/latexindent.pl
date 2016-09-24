@@ -8,12 +8,15 @@ sub remove_trailing_whitespace{
     my $self = shift;
     my %input = @_;
 
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){
-        return unless(${${%{$self}{settings}}{removeTrailingWhitespace}}{beforeProcessing});
+        return unless(${$masterSettings{removeTrailingWhitespace}}{beforeProcessing});
         $self->logger("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)",'heading');
     } elsif($input{when} eq "after"){
-        return unless(${${%{$self}{settings}}{removeTrailingWhitespace}}{afterProcessing});
+        return unless(${$masterSettings{removeTrailingWhitespace}}{afterProcessing});
         $self->logger("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)",'heading');
     } else {
         return;

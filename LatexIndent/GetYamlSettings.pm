@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/masterYamlSettings readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -163,10 +163,8 @@ sub readSettings{
   return;
 }
 
-sub masterYamlSettings{
-    my $self = shift;
-    ${$self}{settings} = \%masterSettings;
-    return;
+sub get_master_settings{
+    return \%masterSettings;
 }
 
 sub get_indentation_settings_for_this_object{
@@ -211,9 +209,6 @@ sub get_indentation_settings_for_this_object{
             ${${previouslyFoundSettings}{$storageName}}{$_} = ${$self}{$_};
         }
 
-        # there's no need for the current object to keep all of the settings
-        delete ${$self}{settings};
-        delete ${$self}{switches};
     }
 
     # append indentation settings to the current object

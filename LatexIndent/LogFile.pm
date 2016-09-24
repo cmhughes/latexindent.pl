@@ -85,6 +85,13 @@ sub output_logfile{
 
   open($logfile,">","$logfileName") or die "Can't open $logfileName";
 
+  # grab the settings
+  my %masterSettings = %{$self->get_master_settings};
+
+  # put the final line in the logfile
+  $self->logger("${$masterSettings{logFilePreferences}}{endLogFileWith}",'heading');
+
+  # output the logfile
   foreach my $line (@logFileNotes){
         if(${$line}{level} eq 'heading'){
             print $logfile ${$line}{line},"\n";
@@ -117,7 +124,6 @@ sub output_logfile{
           }
   }
 
-  $self->logger("${${${$self}{settings}}{logFilePreferences}}{endLogFileWith}",'heading');
   close($logfile);
 }
 

@@ -7,7 +7,11 @@ our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lin
 sub protect_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
-    unless(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}){
+
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+    
+    unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
         $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
         return
     }
@@ -24,13 +28,16 @@ sub protect_blank_lines{
 sub condense_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
-    return unless ${${${$self}{settings}}{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
+
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+    return unless ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
-    if(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}==0){
+    if(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}==0){
         # turn the switch on
-        ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}=1;
+        ${$masterSettings{modifyLineBreaks}}{preserveBlankLines}=1;
 
         # log file information
         $self->logger("Updating body to inclued blank line token, this requires preserveBlankLines = 1",'ttrace');
@@ -42,7 +49,7 @@ sub condense_blank_lines{
      }
 
     # grab the value from the settings
-    my $condenseMultipleBlankLinesInto = ${${${$self}{settings}}{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
+    my $condenseMultipleBlankLinesInto = ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
 
     # grab the blank-line-token
     $self->get_blank_line_token;
@@ -64,7 +71,10 @@ sub condense_blank_lines{
 sub unprotect_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
-    return unless ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines};
+
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+    return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
     my $blankLineToken = ${$self}{blankLineToken};
