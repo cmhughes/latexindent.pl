@@ -6,7 +6,7 @@ our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lin
 
 sub protect_blank_lines{
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
+    return unless $self->is_m_switch_active;
     unless(${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines}){
         $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
         return
@@ -23,7 +23,7 @@ sub protect_blank_lines{
 
 sub condense_blank_lines{
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
+    return unless $self->is_m_switch_active;
     return unless ${${${$self}{settings}}{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
@@ -63,7 +63,7 @@ sub condense_blank_lines{
 
 sub unprotect_blank_lines{
     my $self = shift;
-    return unless ${%{$self}{switches}}{modifyLineBreaks};
+    return unless $self->is_m_switch_active;
     return unless ${${${$self}{settings}}{modifyLineBreaks}}{preserveBlankLines};
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
