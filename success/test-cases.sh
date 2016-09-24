@@ -25,5 +25,8 @@ cd ../ifelsefi
 # optional arguments in environments
 cd ../opt-args
 ./opt-args-test-cases.sh
+# mandatory arguments in environments
+cd ../mand-args
+./mand-args-test-cases.sh
 git status
 exit

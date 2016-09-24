@@ -34,22 +34,23 @@ sub find_opt_mand_arguments{
                                 (                  
                                    (\h|\R|$blankLineToken|$trailingCommentRegExp)* 
                                    (
-                                       \h*         # 0 or more spaces
-                                       (?<!\\)     # not immediately pre-ceeded by \
-                                       \[
-                                           .*?
-                                       (?<!\\)     # not immediately pre-ceeded by \
-                                       \]          # [optional arguments]
-                                   )
-                                   |               # OR
-                                   (
-                                       \h*         # 0 or more spaces
-                                       \R*         # 0 or more line breaks
-                                       (?<!\\)     # not immediately pre-ceeded by \
-                                       \{
-                                           .*?
-                                       (?<!\\)     # not immediately pre-ceeded by \
-                                       \}          # {mandatory arguments}
+                                        (
+                                            \h*         # 0 or more spaces
+                                            (?<!\\)     # not immediately pre-ceeded by \
+                                            \[
+                                                .*?
+                                            (?<!\\)     # not immediately pre-ceeded by \
+                                            \]          # [optional arguments]
+                                        )
+                                        |               # OR
+                                        (
+                                            \h*         # 0 or more spaces
+                                            (?<!\\)     # not immediately pre-ceeded by \
+                                            \{
+                                                .*?
+                                            (?<!\\)     # not immediately pre-ceeded by \
+                                            \}          # {mandatory arguments}
+                                        )
                                    )
                                 )
                                 +                  # at least one of the above
@@ -71,11 +72,11 @@ sub find_opt_mand_arguments{
                                                     parent=>${$self}{name},
                                                     body=>$1,
                                                     linebreaksAtEnd=>{
-                                                      end=>$6?1:0,
+                                                      end=>$7?1:0,
                                                     },
                                                     end=>"",
                                                     regexp=>$optAndMandRegExp,
-                                                    endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                                    endImmediatelyFollowedByComment=>$7?0:($8?1:0),
                                                   );
 
             # give unique id
@@ -83,6 +84,9 @@ sub find_opt_mand_arguments{
 
             # look for optional arguments
             $arguments->find_optional_arguments;
+
+            # look for mandatory arguments
+            $arguments->find_mandatory_arguments;
 
             # examine *first* child
             #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0 || BeginStartsOnOwnLine == undef

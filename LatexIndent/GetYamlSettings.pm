@@ -135,7 +135,7 @@ sub readSettings{
               if($masterSettings{logFilePreferences}{showEveryYamlRead}){
                   $self->logger(Dump \%{$userSettings->[0]});
               } else {
-                  $self->logger("Not showing settings in the log file (see showEveryYamlRead).");
+                  $self->logger("Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).");
               }
          } else {
                # otherwise print a warning that we can not read userSettings.yaml

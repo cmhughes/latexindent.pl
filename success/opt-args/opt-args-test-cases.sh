@@ -15,15 +15,18 @@ set +x
 for (( i=1 ; i <= 16 ; i++ )) 
 do 
    set -x
+   # one optional arg
    latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod$i.tex -l=opt-args-mod$i.yaml 
    latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod-supp$i.tex -l=opt-args-mod$i.yaml,opt-args-supp.yaml 
    latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod$i.tex -l=opt-args-mod$i.yaml 
    latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod-supp$i.tex -l=opt-args-mod$i.yaml,opt-args-supp.yaml
    latexindent.pl environments-first-opt-args-remove-linebreaks2.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks2-mod-supp$i.tex -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml
+   # two optional args
    latexindent.pl environments-second-opt-args.tex -m -l=opt-args-mod$i.yaml -tt -s -o=environments-second-opt-args-mod$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect$i.tex 
    latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml -tt -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
+   # three, ah ah ah
    latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod$i.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod$i.tex
    latexindent.pl environments-third-opt-args.tex -m -l=opt-args-mod$i.yaml,addPercentAfterBegin.yaml -tt -s -o=environments-third-opt-args-mod$i.tex -g=other.log
    set +x

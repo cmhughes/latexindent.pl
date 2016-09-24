@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        MandArgBodyStartsOnOwnLine: 2
+        RCuBFinishesWithLineBreak: 2

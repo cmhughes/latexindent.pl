@@ -494,6 +494,8 @@ on which of the following options are used.
 \lstinline!latexindent.pl -l=myyaml.yaml myfile.tex!
 
 \lstinline!latexindent.pl -l myyaml.yaml myfile.tex!
+\lstinline!latexindent.pl -l first.yaml,second.yaml,third.yaml myfile.tex!
+\lstinline!latexindent.pl -l=first.yaml,second.yaml,third.yaml myfile.tex!
 
 
 	      \label{page:localswitch}
@@ -505,7 +507,7 @@ on which of the following options are used.
 	      the success or failure of loading \lstinline!localSettings.yaml!.
           {\huge locasettings can be renamed, and can be comma separated -- update this!}
 
-The \lstinline!-l! flag can take an \emph{optional} parameter which details the name of a \lstinline!yaml! file
+The \lstinline!-l! flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a \lstinline!yaml! file(s)
 that resides in the same directory as \lstinline!myfile.tex!; you can use this option if you would 
 like to load a settings file in the current working directory that is \emph{not} called \lstinline!localSettings.yaml!.
 

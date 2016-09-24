@@ -40,11 +40,11 @@ sub find_optional_arguments{
         $self->logger("(last argument)") if($8 eq '');
 
         # create a new Optional Argument object
-        my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
+        my $optionalArg = LatexIndent::OptionalArgument->new(begin=>$1,
                                                 name=>${$self}{name}.":optionalArgument",
                                                 parent=>${$self}{parent},
                                                 body=>$3.($4?$4:q()),
-                                                end=>"$5",
+                                                end=>$5,
                                                 linebreaksAtEnd=>{
                                                   begin=>$2?1:0,
                                                   body=>$4?1:0,

@@ -19,6 +19,7 @@ use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/find_opt_mand_arguments/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
+use LatexIndent::MandatoryArgument qw/find_mandatory_arguments/;
 
 sub new{
     # Create new objects, with optional key/value pairs
