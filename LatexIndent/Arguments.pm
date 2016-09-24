@@ -68,6 +68,7 @@ sub find_opt_mand_arguments{
             # they will, however, exist for its children: OptionalArgument, MandatoryArgument
             my $arguments = LatexIndent::Arguments->new(begin=>"",
                                                     name=>${$self}{name}.":arguments",
+                                                    parent=>${$self}{name},
                                                     body=>$1,
                                                     linebreaksAtEnd=>{
                                                       end=>$6?1:0,
@@ -111,7 +112,8 @@ sub find_opt_mand_arguments{
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                    $self->logger("$BodyStringLogFile = ${$self}{BodyStartsOnOwnLine} (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
+                    my $BodyValue = ${$self}{BodyStartsOnOwnLine} ? ${$self}{BodyStartsOnOwnLine} : "-1";
+                    $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
 
                     # possibly add a comment at the end of the begin statement
                     my $trailingCommentToken = q();

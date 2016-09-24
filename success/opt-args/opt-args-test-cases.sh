@@ -28,14 +28,26 @@ do
    latexindent.pl environments-third-opt-args.tex -m -l=opt-args-mod$i.yaml,addPercentAfterBegin.yaml -tt -s -o=environments-third-opt-args-mod$i.tex -g=other.log
    set +x
 done
+# multi switches set to 2
 latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod1.yaml,addPercentAfterBegin.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
 latexindent.pl environments-third-opt-args.tex -l=opt-args-mod1.yaml,addPercentBeforeBegin.yaml -m -s -o=environments-third-opt-args-percent-before-begin.tex
 latexindent.pl environments-third-opt-args.tex -l=addPercentAfterEnd.yaml -m -s -o=environments-third-opt-args-percent-after-end.tex
 latexindent.pl environments-third-opt-args.tex -l=addPercentAfterBody.yaml -m -s -o=environments-third-opt-args-percent-after-body.tex
-latexindent.pl -m -w environments-first-opt-args-mod-supp1.tex -l=addPercentAfterBody.yaml -o=environments-first-opt-args-mod-supp1-mod1.tex 
-latexindent.pl environments-first-opt-args-more-comments.tex -m -l=addPercentAfterBegin.yaml  -tt -o=environments-first-opt-args-more-comments-addPercentAfterBegin.tex
+latexindent.pl -s -m -w environments-first-opt-args-mod-supp1.tex -l=addPercentAfterBody.yaml -o=environments-first-opt-args-mod-supp1-mod1.tex 
+latexindent.pl -s environments-first-opt-args-more-comments.tex -m -l=addPercentAfterBegin.yaml  -tt -o=environments-first-opt-args-more-comments-addPercentAfterBegin.tex
 latexindent.pl environments-third-opt-args.tex -l=addPercentAll.yaml -m -s -o=environments-third-opt-args-percent-after-all.tex
-   
+# noAdditionalIndent experiments   
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentScalar.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-mod1.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod1.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-mod2.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod2.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-mod3.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod3.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-mod4.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod4.tex
+# indent rules
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules1.yaml -m -s -o=environments-third-opt-args-indent-rules1.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules2.yaml -m -s -o=environments-third-opt-args-indent-rules2.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules3.yaml -m -s -o=environments-third-opt-args-indent-rules3.tex
+latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules4.yaml -m -s -o=environments-third-opt-args-indent-rules4.tex
+
 set -x
 # FIXTHIS- NEED TO RETURN TO THIS FILE
 # FIXTHIS- NEED TO RETURN TO THIS FILE

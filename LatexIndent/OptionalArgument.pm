@@ -42,6 +42,7 @@ sub find_optional_arguments{
         # create a new Optional Argument object
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>"$1",
                                                 name=>${$self}{name}.":optionalArgument",
+                                                parent=>${$self}{parent},
                                                 body=>$3.($4?$4:q()),
                                                 end=>"$5",
                                                 linebreaksAtEnd=>{

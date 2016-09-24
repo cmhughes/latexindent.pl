@@ -864,6 +864,39 @@ noIndentBlock:
 %(*@@*)\end{noindent}
 	\end{cmhlistings}
 
+    # noAdditionalIndent can be a scalar or a hash, e.g
+    #
+    #   noAdditionalIndent:
+    #       myexample: 1
+    #
+    # OR
+    #
+    #   noAdditionalIndent:
+    #       myexample: 
+    #           body: 1
+    #           optionalArguments: 1
+    #           mandatoryArguments: 1
+    # 
+    # specifying as a scalar with no field (e.g myexample: 1)
+    # will be interpreted as noAdditionalIndent for *every*
+    # field, so the body, optional arguments and mandatory arguments
+    # will *all* receive noAdditionalIndent 
+    #
+    # indentRules can also be a scalar or a hash, e.g
+    #   indentRules:
+    #       myexample: "\t"
+    #
+    # OR
+    #
+    #   indentRules:
+    #       myexample:
+    #           body: "  "
+    #           optionalArguments: "\t \t"
+    #           mandatoryArguments: ""
+    #
+    # specifying as a scalar with no field will
+    # mean that *every* field will receive the same treatment
+
 	\item[\verbitem{noAdditionalIndent}] If you would prefer some of your
 	      environments or commands not to receive any additional indent, then
 	      populate \lstinline!noAdditionalIndent!; see \cref{lst:noAdditionalIndent}.
@@ -1568,5 +1601,94 @@ and if you set beforeProcessing to 1, then you'll receive
 \end{something}my text
 
 The \fi command knows to insert a space, so as to give, for example, \fi text, and avoid things such as \fitext
+        
+from yaml
+
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
+# EVERYTHING BELOW HERE IS OBSOLETE IN V3.0  
+# *** NOTE ***
+# If you have specified alwaysLookforSplitBraces: 1
+# and alwaysLookforSplitBrackets: 1 then you don't need
+# to worry about completing
+#
+#       checkunmatched
+#       checkunmatchedELSE
+#       checkunmatchedbracket
+#
+# in other words, you don't really need to edit anything 
+# below this line- it used to be necessary for older 
+# versions of the script, but not anymore :)
+#***      ***
+#
+# always look for split { }, which means that the user doesn't
+# have to complete checkunmatched, checkunmatchedELSE
+
+# if you want to indent if, else, fi constructs such as, for example,
+#
+#       \ifnum#1=2
+#               something
+#       \else
+#               something else
+#       \fi
+#
+# then populate them in constructIfElseFi
+#
+# The following list is by no means exhaustive, but is taken from etex documentation;
+# add your own if commands to your own yaml settings.
+constructIfElseFi:
+    if: 1
+    ifcat: 1
+    ifnum: 1
+    ifdim: 1
+    ifodd: 1
+    ifvmode: 1
+    ifhmode: 1
+    ifmmode: 1
+    ifinner: 1
+    ifvoid: 1
+    ifhbox: 1
+    ifvbox: 1
+    ifx: 1
+    ifeof: 1
+    iftrue: 1
+    ifcase: 1
+    ifdefined: 1
+    ifcsname: 1
+    iffontchar: 1
+
+#noAdditionalIndent:
+#    \[: 0
+#    \]: 0
+
+alwaysLookforSplitBraces: 1
+
+# always look for split [ ], which means that the user doesn't
+# have to complete checkunmatchedbracket
+alwaysLookforSplitBrackets: 1
+
+
+# commands that might split {} across lines
+# such as \parbox, \marginpar, etc
+checkunmatched:
+    parbox: 1
+    vbox: 1
+
+# very similar to %checkunmatched except these 
+# commands might have an else construct
+checkunmatchedELSE:
+    pgfkeysifdefined: 1
+    DTLforeach: 1
+    ifthenelse: 1
+
+# commands that might split []  across lines
+# such as \pgfplotstablecreatecol, etc
+checkunmatchedbracket:
+    pgfplotstablecreatecol: 1
+    pgfplotstablesave: 1
+    pgfplotstabletypeset: 1
+    mycommand: 1
+    psSolid: 1
+
 
 \end{document}

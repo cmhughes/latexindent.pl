@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -182,11 +182,11 @@ sub get_indentation_settings_for_this_object{
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = (${$masterSettings{noAdditionalIndent}}{$name})
+        my $indentation = ($self->get_indentation_information(about=>"noAdditionalIndent"))
                                      ?
                                      q()
                                      :
-                          (${$masterSettings{indentRules}}{$name}
+                          ($self->get_indentation_information(about=>"indentRules")
                                      ||
                           $masterSettings{defaultIndent});
 
@@ -278,6 +278,69 @@ sub get_every_or_custom_value{
       }
    }
   return;
+}
+
+sub get_indentation_information{
+    # noAdditionalIndent can be a scalar or a hash, e.g
+    #
+    #   noAdditionalIndent:
+    #       myexample: 1
+    #
+    # OR
+    #
+    #   noAdditionalIndent:
+    #       myexample: 
+    #           body: 1
+    #           optionalArguments: 1
+    #           mandatoryArguments: 1
+    # 
+    # specifying as a scalar with no field (e.g myexample: 1)
+    # will be interpreted as noAdditionalIndent for *every*
+    # field, so the body, optional arguments and mandatory arguments
+    # will *all* receive noAdditionalIndent 
+    #
+    # indentRules can also be a scalar or a hash, e.g
+    #   indentRules:
+    #       myexample: "\t"
+    #
+    # OR
+    #
+    #   indentRules:
+    #       myexample:
+    #           body: "  "
+    #           optionalArguments: "\t \t"
+    #           mandatoryArguments: ""
+    #
+    # specifying as a scalar with no field will
+    # mean that *every* field will receive the same treatment
+    my $self = shift;
+    my %input = @_;
+    my $indentationAbout = ${input}{about};
+
+    # gather information
+    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+
+    # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+    my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+
+    # if the YamlName is not optionalArguments or mandatoryArguments, then assume we're looking for 'body'
+    $YamlName = ($YamlName =~ m/Arguments/) ? $YamlName : "body";
+
+    return unless ${$masterSettings{$indentationAbout}}{$name}; 
+
+    my $indentationInformation;
+    if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
+        $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)");
+        $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
+        if(defined $indentationInformation and $indentationInformation ne ''){
+            $self->logger("Using '$indentationInformation' (see $indentationAbout)") ;
+         }
+    } else {
+        $self->logger("$indentationAbout indentation specified for $name (see $indentationAbout)");
+        $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
+    }
+
+    return $indentationInformation;
 }
 
 1;
