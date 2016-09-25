@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        LCuBStartsOnOwnLine: -1
+        MandArgBodyStartsOnOwnLine: -1
+        RCuBFinishesWithLineBreak: 2

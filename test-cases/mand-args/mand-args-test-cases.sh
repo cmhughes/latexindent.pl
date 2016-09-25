@@ -33,5 +33,26 @@ do
    latexindent.pl environments-third-mand-args.tex -m -l=mand-args-mod$i.yaml,addPercentAfterBegin.yaml -tt -s -o=environments-third-mand-args-mod$i.tex -g=other.log
    set +x
 done
+# multi switches set to 2
+latexindent.pl environments-third-mand-args-remove-linebreaks1-trailing-comments.tex -m -l=mand-args-mod1.yaml,addPercentAfterBegin.yaml -s -tt -o=environments-third-mand-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
+latexindent.pl environments-third-mand-args.tex -l=mand-args-mod1.yaml,addPercentBeforeBegin.yaml -m -s -o=environments-third-mand-args-percent-before-begin.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercentAfterEnd.yaml -m -s -o=environments-third-mand-args-percent-after-end.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercentAfterBody.yaml -m -s -o=environments-third-mand-args-percent-after-body.tex
+latexindent.pl -s -tt -m -w environments-first-mand-args-mod-supp1.tex -l=addPercentAfterBody.yaml -o=environments-first-mand-args-mod-supp1-mod1.tex 
+latexindent.pl -s environments-first-mand-args-more-comments.tex -m -l=addPercentAfterBegin.yaml  -tt -o=environments-first-mand-args-more-comments-addPercentAfterBegin.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercentAll.yaml -m -s -o=environments-third-mand-args-percent-after-all.tex
+# noAdditionalIndent experiments   
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent.yaml -m -s -o=environments-third-mand-args-noAddtionalIndentScalar.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-mod1.yaml -m -s -o=environments-third-mand-args-noAddtionalIndentHash-mod1.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-mod2.yaml -m -s -o=environments-third-mand-args-noAddtionalIndentHash-mod2.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-mod3.yaml -m -s -o=environments-third-mand-args-noAddtionalIndentHash-mod3.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-mod4.yaml -m -s -o=environments-third-mand-args-noAddtionalIndentHash-mod4.tex
+# indent rules
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-indent-rules1.yaml -m -s -o=environments-third-mand-args-indent-rules1.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-indent-rules2.yaml -m -s -o=environments-third-mand-args-indent-rules2.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-indent-rules3.yaml -m -s -o=environments-third-mand-args-indent-rules3.tex
+latexindent.pl environments-third-mand-args.tex -l=addPercent-noAdditionalIndent-mand-args-indent-rules4.yaml -m -s -o=environments-third-mand-args-indent-rules4.tex
+
+set -x
 git status
 exit
