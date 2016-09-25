@@ -52,9 +52,5 @@ latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-
 latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules4.yaml -m -s -o=environments-third-opt-args-indent-rules4.tex
 
 set -x
-# FIXTHIS- NEED TO RETURN TO THIS FILE
-# FIXTHIS- NEED TO RETURN TO THIS FILE
-# FIXTHIS- NEED TO RETURN TO THIS FILE
-#latexindent.pl environments-more-opt-mand-args.tex -s
 git status
 exit
