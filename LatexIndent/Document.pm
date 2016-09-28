@@ -20,6 +20,7 @@ use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/find_opt_mand_arguments/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments/;
+use LatexIndent::Item qw/find_items/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -235,8 +236,7 @@ sub indent_children_recursively{
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
                         # important to check we don't move the begin statement next to a blank-line-token
-                        $self->get_blank_line_token;
-                        my $blankLineToken = ${$self}{blankLineToken};
+                        my $blankLineToken = $self->get_blank_line_token;
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
                             $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
                             ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;

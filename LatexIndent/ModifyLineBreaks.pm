@@ -96,6 +96,8 @@ sub modify_line_breaks_body_and_end{
             $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
             ${$self}{begin} .= "\n";       
             ${$self}{linebreaksAtEnd}{begin} = 1;
+            $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)");
+            ${$self}{body} =~ s/^\h*//;       
           } elsif(${$self}{BodyStartsOnOwnLine}==2){
             # by default, assume that no trailing comment token is needed
             my $trailingCommentToken = q();
@@ -105,6 +107,8 @@ sub modify_line_breaks_body_and_end{
                 $trailingCommentToken = "%".$self->add_comment_symbol;
                 ${$self}{begin} .= "$trailingCommentToken\n";       
                 ${$self}{linebreaksAtEnd}{begin} = 1;
+                $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)");
+                ${$self}{body} =~ s/^\h*//;       
             } else {
                 $self->logger("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.");
             }
@@ -140,8 +144,7 @@ sub modify_line_breaks_body_and_end{
 
               # check to see that body does *not* finish with blank-line-token, 
               # if so, then don't remove that final line break
-              $self->get_blank_line_token;
-              my $blankLineToken = ${$self}{blankLineToken};
+              my $blankLineToken = $self->get_blank_line_token;
               if(${$self}{body} !~ m/$blankLineToken$/s){
                 $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
                 ${$self}{body} =~ s/\R*$//sx;

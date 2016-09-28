@@ -17,8 +17,7 @@ sub protect_blank_lines{
     }
 
     # get the blank-line-token
-    $self->get_blank_line_token;
-    my $blankLineToken = ${$self}{blankLineToken};
+    my $blankLineToken = $self->get_blank_line_token;
 
     $self->logger("Protecting blank lines (see preserveBlankLines)",'heading.trace');
     ${$self}{body} =~ s/^(\h*)?\R/$blankLineToken\n/mg;
@@ -52,8 +51,7 @@ sub condense_blank_lines{
     my $condenseMultipleBlankLinesInto = ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
 
     # grab the blank-line-token
-    $self->get_blank_line_token;
-    my $blankLineToken = ${$self}{blankLineToken};
+    my $blankLineToken = $self->get_blank_line_token;
 
     # condense!
     $self->logger("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)",'heading.trace');
@@ -77,7 +75,7 @@ sub unprotect_blank_lines{
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
-    my $blankLineToken = ${$self}{blankLineToken};
+    my $blankLineToken = $self->get_blank_line_token;
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/$blankLineToken/m){
@@ -99,9 +97,7 @@ sub unprotect_blank_lines{
 }
 
 sub get_blank_line_token{
-    my $self = shift;
-    ${$self}{blankLineToken} = "latex-indent-blank-line";
-    return
+    return "latex-indent-blank-line";
 }
 
 1;

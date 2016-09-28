@@ -336,8 +336,8 @@ sub get_indentation_information{
             $self->logger("Using '$indentationInformation' (see $indentationAbout)") ;
          }
     } else {
-        $self->logger("$indentationAbout indentation specified for $name (see $indentationAbout)");
         $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
+        $self->logger("$indentationAbout indentation specified for $name, using '$indentationInformation' (see $indentationAbout)");
     }
 
     return $indentationInformation;

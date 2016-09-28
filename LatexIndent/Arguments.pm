@@ -22,8 +22,7 @@ sub find_opt_mand_arguments{
     $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading');
 
     # blank line token
-    $self->get_blank_line_token;
-    my $blankLineToken = ${$self}{blankLineToken};
+    my $blankLineToken = $self->get_blank_line_token;
 
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;

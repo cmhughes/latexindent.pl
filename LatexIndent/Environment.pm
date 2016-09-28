@@ -67,6 +67,9 @@ sub find_environments{
       # search for arguments
       $env->find_opt_mand_arguments;
 
+      # search for items
+      $env->find_items;
+
       # store children in special hash
       push(@{${$self}{children}},$env);
 

@@ -32,14 +32,30 @@ sub wrap_up_statement{
 
 sub determine_total_indentation{
     my $self = shift;
+
+    # get the surrounding indentation, if it exists
     my $surroundingIndentation = ${$self}{surroundingIndentation}?${${$self}{surroundingIndentation}}:q();
 
+    # logfile information
     $self->logger("indenting object ${$self}{name}");
     $self->logger("indentation *surrounding* object: '$surroundingIndentation'");
     $self->logger("indentation *of* object: '${$self}{indentation}'");
     $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'");
 
+    # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
+
+    # problem:
+    #       if a tab is appended to spaces, it will look different 
+    #       from spaces appended to tabs (see test-cases/items/spaces-and-tabs.tex)
+    # solution:
+    #       move all of the tabs to the beginning of ${$self}{indentation}
+    # notes;
+    #       this came to light when studying test-cases/items/items1.tex
+    while(${$self}{indentation} =~ m/(.*)(\t+)/ and ${$self}{indentation} !~ m/^\t*$/ and $1 ne '' and $1 ne "\t"){
+        $self->logger("Indentation: tabs found after spaces -- rearranging so that spaces follow tabs");
+        ${$self}{indentation} = $2.$1;
+    }
     $self->logger(Dumper(\%{$self}),'ttrace');
     return $self;
 }
@@ -55,7 +71,8 @@ sub indent_body{
 
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
-        ${$self}{body} =~ s/^(\h*)/$1$indentation/mg;  # add indentation
+        # put any existing horizontal space after the current indentation
+        ${$self}{body} =~ s/^(\h*)/$indentation$1/mg;  # add indentation
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
         if(${$self}{body} =~ m/
                             (.*?)      # content of first line

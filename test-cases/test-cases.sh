@@ -28,5 +28,11 @@ cd ../opt-args
 # mandatory arguments in environments
 cd ../mand-args
 ./mand-args-test-cases.sh
+# mixture of optional and mandatory arguments
+cd ../opt-and-mand-args/
+./opt-mand-args-test-cases.sh
+# items
+cd ../items/
+./items-test-cases.sh
 git status
 exit
