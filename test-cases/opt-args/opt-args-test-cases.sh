@@ -50,7 +50,8 @@ latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-
 latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules2.yaml -m -s -o=environments-third-opt-args-indent-rules2.tex
 latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules3.yaml -m -s -o=environments-third-opt-args-indent-rules3.tex
 latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules4.yaml -m -s -o=environments-third-opt-args-indent-rules4.tex
-
+# multiple lines in optional arguments
+latexindent.pl environments-third-opt-args-multiple-lines.tex -w -s
 set -x
 git status
 exit
