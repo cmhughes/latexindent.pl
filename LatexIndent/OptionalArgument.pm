@@ -66,7 +66,7 @@ sub find_optional_arguments{
                                                 endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
                                               );
         # there are a number of tasks common to each object
-        $optionalArg->tasks_common_to_each_object;
+        $optionalArg->tasks_common_to_each_object(%{$self});
 
         # store children in special hash
         push(@{${$self}{children}},$optionalArg);

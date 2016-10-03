@@ -72,7 +72,7 @@ sub find_items{
                                                         endImmediatelyFollowedByComment=>$4?0:($5?1:0),
                                                       );
                 # there are a number of tasks common to each object
-                $itemObject->tasks_common_to_each_object;
+                $itemObject->tasks_common_to_each_object(%{$self});
 
                 # store children in special hash
                 push(@{${$self}{children}},$itemObject);

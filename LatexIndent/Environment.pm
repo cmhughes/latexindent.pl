@@ -62,8 +62,8 @@ sub find_environments{
                                             );
 
       # there are a number of tasks common to each object
-      $env->tasks_common_to_each_object;
-
+      $env->tasks_common_to_each_object(%{$self});
+        
       # search for arguments
       $env->find_opt_mand_arguments;
 

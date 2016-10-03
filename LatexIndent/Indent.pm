@@ -34,7 +34,22 @@ sub determine_total_indentation{
     my $self = shift;
 
     # get the surrounding indentation, if it exists
-    my $surroundingIndentation = ${$self}{surroundingIndentation}?${${$self}{surroundingIndentation}}:q();
+    my $surroundingIndentation = (${$self}{surroundingIndentation} and ${$self}{hiddenChildYesNo})
+                                            ?
+                                 (ref(${$self}{surroundingIndentation}) eq 'SCALAR'?${${$self}{surroundingIndentation}}:${$self}{surroundingIndentation})
+                                            :q();
+
+
+    # check for ancestors
+    if(${$self}{ancestors} and ${$self}{hiddenChildYesNo}){
+        $self->logger("ancestors found for ${$self}{name}");
+        foreach (@{${$self}{ancestors}}){
+            $self->logger("ID: ${$_}{ancestorID}");
+            $surroundingIndentation .= ${$_}{ancestorIndentation};
+        }
+        $self->logger("Updating surroundingIndentation");
+        ${$self}{surroundingIndentation} = $surroundingIndentation;
+    }
 
     # logfile information
     $self->logger("indenting object ${$self}{name}");
@@ -55,6 +70,14 @@ sub determine_total_indentation{
     while(${$self}{indentation} =~ m/(.*)(\t+)/ and ${$self}{indentation} !~ m/^\t*$/ and $1 ne '' and $1 ne "\t"){
         $self->logger("Indentation: tabs found after spaces -- rearranging so that spaces follow tabs");
         ${$self}{indentation} = $2.$1;
+    }
+
+    # the same is, obviously, true for surroundingIndentation
+    if(${$self}{surroundingIndentation}){
+        while(${$self}{surroundingIndentation} =~ m/(.*)(\t+)/ and ${$self}{surroundingIndentation} !~ m/^\t*$/ and $1 ne '' and $1 ne "\t"){
+            $self->logger("surroundingIndentation: tabs found after spaces -- rearranging so that spaces follow tabs");
+            ${$self}{surroundingIndentation} = $2.$1;
+        }
     }
     $self->logger(Dumper(\%{$self}),'ttrace');
     return $self;
@@ -100,7 +123,10 @@ sub indent_body{
 
 sub indent_end_statement{
     my $self = shift;
-    my $surroundingIndentation = ${$self}{surroundingIndentation}?${${$self}{surroundingIndentation}}:q();
+    my $surroundingIndentation = (${$self}{surroundingIndentation} and ${$self}{hiddenChildYesNo})
+                                            ?
+                                 (ref(${$self}{surroundingIndentation}) eq 'SCALAR'?${${$self}{surroundingIndentation}}:${$self}{surroundingIndentation})
+                                            :q();
 
     # end{statement} indentation, e.g \end{environment}, \fi, }, etc
     if(${$self}{linebreaksAtEnd}{body}){

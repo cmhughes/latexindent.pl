@@ -22,6 +22,9 @@ use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments/;
 use LatexIndent::Item qw/find_items/;
 
+# hiddenChildren can be stored in a global array, it doesn't matter what level they're at
+our @hiddenChildren;
+
 sub new{
     # Create new objects, with optional key/value pairs
     # passed as initializers.
@@ -90,9 +93,15 @@ sub process_body_of_text{
     my $self = shift;
 
     # find objects recursively
+    $self->logger('Phase 1: finding objects','heading');
     $self->find_objects_recursively;
 
+    # find all hidden child
+    $self->logger('Phase 2: finding surrounding indentation','heading');
+    $self->find_surrounding_indentation_for_children;
+
     # indentation recursively
+    $self->logger('Phase 3: indenting objects','heading');
     $self->indent_children_recursively;
     return;
 }
@@ -122,44 +131,6 @@ sub find_objects_recursively{
     $self->logger("Number of children:",'heading');
     $self->logger(scalar (@{${$self}{children}}));
 
-    $self->logger("searching for hidden children",'ttrace');
-
-    # finding hidden children
-    foreach my $child (@{${$self}{children}}){
-        if(${$self}{body} !~ m/${$child}{id}/){
-            $self->logger("child not found, ${$child}{id}",'ttrace');
-            push(@{${$self}{hiddenChildren}},\%{$child});
-        } else {
-            $self->logger("child found, ${$child}{id}",'ttrace');
-        }
-    }
-
-    # operate on hiddenChildren, if any
-    if(%{$self}{hiddenChildren}){
-        $self->logger("Hidden children: ",'heading.ttrace');
-        $self->logger(Dumper(\@{%{$self}{hiddenChildren}}),'ttrace');
-
-        # surrounding indentation
-        $self->logger("Adding surrounding indentation");
-
-        # loop through hidden children
-        foreach my $hiddenChild (@{${$self}{hiddenChildren}}){
-            $self->logger("Searching sibblings for ${$hiddenChild}{id} (${$hiddenChild}{name})",'heading.ttrace');
-
-            # try to find in one of the other children
-            foreach my $child (@{${$self}{children}}){
-               if(${$child}{body} =~ m/${$hiddenChild}{id}/){
-                    $self->logger("Hidden child found! ${$hiddenChild}{name} within ${$child}{name}",'ttrace');
-
-                    # search for hash in array: http://stackoverflow.com/questions/934225/search-for-hash-in-an-array-by-value
-                    my ($item) = grep { $_->{id} eq ${$hiddenChild}{id}} @{${$self}{hiddenChildren}};
-                    ${$item}{surroundingIndentation} = \${$child}{indentation};
-                    $self->logger(Dumper(\%{$item}),'ttrace');
-               }
-            }
-        }
-    }
-
     # send each child through this routine
     foreach my $child (@{${$self}{children}}){
         $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
@@ -169,6 +140,66 @@ sub find_objects_recursively{
     # the modify line switch can adjust line breaks, so we need another sweep
     $self->pre_print;
     return;
+}
+
+sub find_surrounding_indentation_for_children{
+    my $self = shift;
+
+    # find all hidden children
+    $self->find_hidden_children;
+
+    # operate on hidden children
+    foreach (@hiddenChildren){
+        $self->operate_on_hidden_children($_);
+    }
+    return;
+}
+
+sub find_hidden_children{
+    my $self = shift;
+
+    # finding hidden children
+    foreach my $child (@{${$self}{children}}){
+        if(${$self}{body} !~ m/${$child}{id}/){
+            $self->logger("child not found, ${$child}{id}",'ttrace');
+            ${$child}{hiddenChildYesNo} = 1;
+            push(@hiddenChildren,\%{$child});
+        } else {
+            $self->logger("child found, ${$child}{id} within ${$self}{name}",'ttrace');
+        }
+
+        # recursively find other hidden children
+        $child->find_hidden_children;
+    }
+
+}
+
+sub operate_on_hidden_children{
+    my $self = shift;
+
+    # the hidden child is the argument
+    my $hiddenChild = $_[0];
+
+    # if the hidden child is found in the current body, take action
+    if(${$self}{body} =~ m/${$hiddenChild}{id}/){
+        $self->logger("hiddenChild found, ${$hiddenChild}{id} within ${$self}{name} (${$self}{id})",'ttrace');
+        $self->logger("updating surrounding indentation of ${$hiddenChild}{id} '${$self}{indentation}'",'ttrace');
+        ${$hiddenChild}{surroundingIndentation} = \${$self}{indentation};
+
+        # check if the current object has ancestors, and if so, update the hidden child
+        #   note: test-cases/items/items1.5.tex and items2.tex first highlighted the need for this
+        if(${$self}{ancestors}){
+            $self->logger("Adding the ancestors of ${$self}{id} to ${$hiddenChild}{id}",'ttrace');
+            ${$hiddenChild}{ancestors} = ${$self}{ancestors};
+            $self->logger(Dumper(@{${$hiddenChild}{ancestors}}),'ttrace');
+        }
+    } else {
+        # call this subroutine recursively for the children
+        foreach my $child (@{${$self}{children}}){
+            $self->logger("Searching children of ${$child}{name} for ${$hiddenChild}{id}",'ttrace');
+            $child->operate_on_hidden_children(\%{$hiddenChild});
+        }
+    }
 }
 
 sub indent_children_recursively{
@@ -190,7 +221,7 @@ sub indent_children_recursively{
         }
     }
 
-    $self->logger("Indenting children objects (${$self}{name}):",'heading');
+    $self->logger("Replacing ids with begin, body, and end statements:",'heading');
 
     # loop through document children hash
     while( scalar (@{${$self}{children}}) > 0 ){
@@ -210,7 +241,10 @@ sub indent_children_recursively{
                         /mx){
                 my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
                 my $IDFollowedImmediatelyByLineBreak = $4?1:0;
-                my $surroundingIndentation = ${$child}{surroundingIndentation}?${${$child}{surroundingIndentation}}:q();
+                my $surroundingIndentation = (${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo})
+                                                        ?
+                                             (ref(${$child}{surroundingIndentation}) eq 'SCALAR'?${${$child}{surroundingIndentation}}:${$child}{surroundingIndentation})
+                                                        :q();
 
                 # log file info
                 $self->logger("${$child}{id} found!",'trace');
@@ -294,6 +328,21 @@ sub indent_children_recursively{
 
 sub tasks_common_to_each_object{
     my $self = shift;
+
+    # grab the parent information
+    my %parent = @_;
+
+    # update/create the ancestor information
+    if($parent{ancestors}){
+      $self->logger("Ancestors *have* been found for ${$self}{name}",'trace');
+      push(@{${$self}{ancestors}},@{$parent{ancestors}});
+    } else {
+      $self->logger("No ancestors found for ${$self}{name}",'trace');
+      if(defined $parent{id} and $parent{id} ne ''){
+        $self->logger("Creating ancestors with $parent{id} as the first one",'trace');
+        push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>$parent{indentation}});
+      }
+    }
 
     # in what follows, $self can be an environment, ifElseFi, etc
 

@@ -114,7 +114,7 @@ sub find_ifelsefi{
                                             );
 
       # there are a number of tasks common to each object
-      $ifElseFi->tasks_common_to_each_object;
+      $ifElseFi->tasks_common_to_each_object(%{$self});
 
       # check for existence of \else statement, and associated line break information
       $ifElseFi->check_for_else_statement;
