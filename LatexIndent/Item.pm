@@ -71,14 +71,9 @@ sub find_items{
                                                         regexp=>$itemRegExp,
                                                         endImmediatelyFollowedByComment=>$4?0:($5?1:0),
                                                       );
-                # there are a number of tasks common to each object
-                $itemObject->tasks_common_to_each_object(%{$self});
 
-                # store children in special hash
-                push(@{${$self}{children}},$itemObject);
-
-                # wrap_up_tasks
-                $self->wrap_up_tasks;
+                # the settings and storage of most objects has a lot in common
+                $self->get_settings_and_store_new_object($itemObject);
             }
         } else {
             $self->logger("Not searching for $item, as $item: $lookForThisItem");

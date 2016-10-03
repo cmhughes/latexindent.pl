@@ -61,22 +61,20 @@ sub find_environments{
                                               endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                             );
 
-      # there are a number of tasks common to each object
-      $env->tasks_common_to_each_object(%{$self});
-        
-      # search for arguments
-      $env->find_opt_mand_arguments;
-
-      # search for items
-      $env->find_items;
-
-      # store children in special hash
-      push(@{${$self}{children}},$env);
-
-      # wrap_up_tasks
-      $self->wrap_up_tasks;
+      # the settings and storage of most objects has a lot in common
+      $self->get_settings_and_store_new_object($env);
     } 
     return;
+}
+
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    # search for arguments
+    $self->find_opt_mand_arguments;
+
+    # search for items
+    $self->find_items;
 }
 
 sub create_unique_id{

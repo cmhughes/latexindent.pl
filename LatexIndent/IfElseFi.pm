@@ -113,19 +113,18 @@ sub find_ifelsefi{
                                               endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                             );
 
-      # there are a number of tasks common to each object
-      $ifElseFi->tasks_common_to_each_object(%{$self});
-
-      # check for existence of \else statement, and associated line break information
-      $ifElseFi->check_for_else_statement;
-
-      # store children in special hash
-      push(@{${$self}{children}},$ifElseFi);
-
-      # wrap_up_tasks
-      $self->wrap_up_tasks;
+      # the settings and storage of most objects has a lot in common
+      $self->get_settings_and_store_new_object($ifElseFi);
     } 
     return;
+}
+
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    # check for existence of \else statement, and associated line break information
+    $self->check_for_else_statement;
+
 }
 
 sub create_unique_id{

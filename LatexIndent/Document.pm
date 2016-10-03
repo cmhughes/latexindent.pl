@@ -326,6 +326,30 @@ sub indent_children_recursively{
 
 }
 
+sub tasks_particular_to_each_object{
+    my $self = shift;
+    $self->logger("There are no tasks particular to ${$self}{name}");
+}
+
+sub get_settings_and_store_new_object{
+    my $self = shift;
+
+    # grab the object to be operated upon
+    my ($latexIndentObject) = @_;
+
+    # there are a number of tasks common to each object
+    $latexIndentObject->tasks_common_to_each_object(%{$self});
+      
+    # tasks particular to each object
+    $latexIndentObject->tasks_particular_to_each_object;
+
+    # store children in special hash
+    push(@{${$self}{children}},$latexIndentObject);
+
+    # wrap_up_tasks
+    $self->wrap_up_tasks;
+}
+
 sub tasks_common_to_each_object{
     my $self = shift;
 

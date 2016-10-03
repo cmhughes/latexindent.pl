@@ -65,14 +65,9 @@ sub find_optional_arguments{
                                                 # the last argument (determined by $8 eq '') needs information from the argument container object
                                                 endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
                                               );
-        # there are a number of tasks common to each object
-        $optionalArg->tasks_common_to_each_object(%{$self});
 
-        # store children in special hash
-        push(@{${$self}{children}},$optionalArg);
-
-        # wrap_up_tasks
-        $self->wrap_up_tasks;
+        # the settings and storage of most objects has a lot in common
+        $self->get_settings_and_store_new_object($optionalArg);
         }
   }
 

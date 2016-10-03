@@ -65,14 +65,9 @@ sub find_mandatory_arguments{
                                                 # the last argument (determined by $8 eq '') needs information from the argument container object
                                                 endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
                                               );
-        # there are a number of tasks common to each object
-        $mandatoryArg->tasks_common_to_each_object(%{$self});
 
-        # store children in special hash
-        push(@{${$self}{children}},$mandatoryArg);
-
-        # wrap_up_tasks
-        $self->wrap_up_tasks;
+        # the settings and storage of most objects has a lot in common
+        $self->get_settings_and_store_new_object($mandatoryArg);
         }
   }
 
