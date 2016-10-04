@@ -10,6 +10,7 @@ latexindent.pl -w -s -t environments-one-line.tex
 latexindent.pl -w -s -t environments-challenging.tex
 latexindent.pl -w -s -t environments-verbatim-simple.tex
 latexindent.pl -w -s -t environments-verbatim-harder.tex
+latexindent.pl -w -s -t verbatim1.tex
 latexindent.pl -w -s -t environments-noindent-block.tex
 latexindent.pl -w -s -t no-environments.tex
 latexindent.pl -w -s -t environments-repeated.tex
