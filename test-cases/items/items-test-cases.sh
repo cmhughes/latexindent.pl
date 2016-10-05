@@ -15,4 +15,11 @@ latexindent.pl -s -w items1.tex
 latexindent.pl -s -w items1.5.tex
 latexindent.pl -s -w items2.tex
 latexindent.pl -s -w items3.tex
+# noAdditionalIndent
+latexindent.pl -s -l=noAdditionalIndentItemize.yaml items1.tex -o=items1-noAdditionalIndentItemize.tex
+latexindent.pl -s -l=noAdditionalIndentItems.yaml items1.tex -o=items1-noAdditionalIndentItems.tex
+latexindent.pl -s -g=other.log -l=noAdditionalIndent-myenv.yaml items3.tex -o=items3-noAdditionalIndent-myenv.tex
+# indentRules
+latexindent.pl -s -l=indentRulesItemize.yaml items1.tex -o=items1-indentRulesItemize.tex
+latexindent.pl -s -l=indentRulesItems.yaml items1.tex -o=items1-indentRulesItems.tex
 git status
