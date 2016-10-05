@@ -22,4 +22,7 @@ latexindent.pl -s -g=other.log -l=noAdditionalIndent-myenv.yaml items3.tex -o=it
 # indentRules
 latexindent.pl -s -l=indentRulesItemize.yaml items1.tex -o=items1-indentRulesItemize.tex
 latexindent.pl -s -l=indentRulesItems.yaml items1.tex -o=items1-indentRulesItems.tex
+# test different item names
+latexindent.pl -s -l=myitem.yaml -w items1-myitem.tex
+latexindent.pl -s -l=part.yaml -w items1-part.tex
 git status
