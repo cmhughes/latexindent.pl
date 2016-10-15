@@ -8,7 +8,7 @@ use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_ac
 use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print adjust_line_breaks_end_parent/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement/;
@@ -100,8 +100,12 @@ sub process_body_of_text{
     $self->logger('Phase 2: finding surrounding indentation','heading');
     $self->find_surrounding_indentation_for_children;
 
+    # the modify line switch can adjust line breaks, so we need another sweep
+    $self->logger('Phase 3: pre-print process for undisclosed linebreaks','heading');
+    $self->pre_print_entire_body;
+
     # indentation recursively
-    $self->logger('Phase 3: indenting objects','heading');
+    $self->logger('Phase 4: indenting objects','heading');
     $self->indent_children_recursively;
     return;
 }
@@ -137,8 +141,6 @@ sub find_objects_recursively{
         $child->find_objects_recursively;
     }
 
-    # the modify line switch can adjust line breaks, so we need another sweep
-    $self->pre_print;
     return;
 }
 

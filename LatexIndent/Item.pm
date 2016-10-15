@@ -52,9 +52,9 @@ sub find_items{
 
                 # create a new Item object
                 my $itemObject = LatexIndent::Item->new(begin=>$1,
-                                                        name=>$item,
                                                         body=>$3,
-                                                        end=>"",
+                                                        end=>q(),
+                                                        name=>$item,
                                                         linebreaksAtEnd=>{
                                                           begin=>$2?1:0,
                                                           body=>$4?1:0,
@@ -63,14 +63,15 @@ sub find_items{
                                                           # begin statements
                                                           BeginStartsOnOwnLine=>"ItemStartsOnOwnLine",
                                                           # body statements
-                                                          BodyStartsOnOwnLine=>"ItemBodyStartsOnOwnLine",
-                                                          # after end statements
-                                                          EndFinishesWithLineBreak=>"ItemBodyFinishesWithLineBreak",
+                                                          BodyStartsOnOwnLine=>"ItemFinishesWithLineBreak",
                                                         },
                                                         modifyLineBreaksYamlName=>"items",
                                                         regexp=>$itemRegExp,
                                                         endImmediatelyFollowedByComment=>$4?0:($5?1:0),
                                                       );
+
+                # the item body could hoover up line breaks; we do an additional check
+                ${${$itemObject}{linebreaksAtEnd}}{body}=1 if(${$itemObject}{body} =~ m/\R+$/s );
 
                 # the settings and storage of most objects has a lot in common
                 $self->get_settings_and_store_new_object($itemObject);

@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    environments:
+        ItemStartsOnOwnLine: 1
+        ItemBodyStartsOnOwnLine: 1
+        ItemBodyFinishesWithLineBreak: 1

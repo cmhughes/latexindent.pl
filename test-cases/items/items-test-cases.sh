@@ -25,4 +25,7 @@ latexindent.pl -s -l=indentRulesItems.yaml items1.tex -o=items1-indentRulesItems
 # test different item names
 latexindent.pl -s -l=myitem.yaml -w items1-myitem.tex
 latexindent.pl -s -l=part.yaml -w items1-part.tex
+# modify linebreaks starts here
+latexindent.pl -s -m items1.tex -o=items1-mod0.tex
+latexindent.pl -s -m items2.tex -o=items2-mod0.tex
 git status

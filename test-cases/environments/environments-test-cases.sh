@@ -32,6 +32,7 @@ latexindent.pl -s -l=testlogfile.yaml environments-nested-fourth.tex
 latexindent.pl  -s -m -tt -l=env-mod-lines6.yaml -o env-remove-line-breaks-mod1.tex environments-remove-line-breaks.tex
 latexindent.pl  -s -m -tt -l=env-mod-lines7.yaml -o env-remove-line-breaks-mod2.tex environments-remove-line-breaks.tex
 latexindent.pl  -s -m -tt -l=env-mod-lines7.yaml -o env-remove-line-breaks-mk1-mod1.tex environments-remove-line-breaks-mk1.tex
+# this next one tests undisclosed linebreaks!
 latexindent.pl  -s -m -tt -l=env-mod-lines7.yaml -o environments-remove-line-breaks-trailing-comments-mod1.tex environments-remove-line-breaks-trailing-comments.tex
 latexindent.pl  -s -m -l=env-mod-lines8.yaml -o=environments-remove-line-breaks-trailing-comments-mk1-mod1.tex environments-remove-line-breaks-trailing-comments-mk1.tex
 latexindent.pl -s -o=environments-modify-multiple-line-breaks-mod1.tex -m -tt -l=env-mod-lines9.yaml environments-modify-multiple-line-breaks.tex
