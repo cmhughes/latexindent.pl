@@ -91,6 +91,7 @@ sub modify_line_breaks_body_and_end{
                 # modify the begin statement
                 $self->logger("Adding a % at the end of begin, ${$self}{begin}, followed by a linebreak ($BodyStringLogFile == 2)");
                 $trailingCommentToken = "%".$self->add_comment_symbol;
+                ${$self}{begin} =~ s/\h*$//;       
                 ${$self}{begin} .= "$trailingCommentToken\n";       
                 ${$self}{linebreaksAtEnd}{begin} = 1;
                 $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)");

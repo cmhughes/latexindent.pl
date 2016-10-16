@@ -1,6 +1,10 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
+loopmax=7
+[[ $# -eq 1 ]] &&  loopmax=$1  # mand-args-test-cases.sh <maxloop>
+echo "mand-args-test-cases.sh will run with loopmax = $loopmax"
+
 set -x 
 
 # making strings of tabs and spaces gives different results; 
@@ -15,6 +19,8 @@ latexindent.pl -s -w items1.tex
 latexindent.pl -s -w items1.5.tex
 latexindent.pl -s -w items2.tex
 latexindent.pl -s -w items3.tex
+latexindent.pl -s -w items4.tex
+latexindent.pl -s -w items5.tex
 # noAdditionalIndent
 latexindent.pl -s -l=noAdditionalIndentItemize.yaml items1.tex -o=items1-noAdditionalIndentItemize.tex
 latexindent.pl -s -l=noAdditionalIndentItems.yaml items1.tex -o=items1-noAdditionalIndentItems.tex
@@ -27,5 +33,23 @@ latexindent.pl -s -l=myitem.yaml -w items1-myitem.tex
 latexindent.pl -s -l=part.yaml -w items1-part.tex
 # modify linebreaks starts here
 latexindent.pl -s -m items1.tex -o=items1-mod0.tex
+latexindent.pl -tt -s -m items1-blanklines.tex -o=items1-blanklines-mod0.tex 
 latexindent.pl -s -m items2.tex -o=items2-mod0.tex
+set +x
+for (( i=1 ; i <= $loopmax ; i++ )) 
+do 
+    set -x
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items1.tex -o=items1-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items2.tex -o=items2-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items3.tex -o=items3-mod$i.tex
+    # blank line tests
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items1-blanklines.tex -o=items1-blanklines-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml,unPreserveBlankLines.yaml items1-blanklines.tex -o=items1-blanklines-unPreserveBlankLines-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml,BodyStartsOnOwnLine.yaml items1.tex -o=items1-BodyStartsOnOwnLine-mod$i.tex
+    # starts on one line, adds linebreaks accordingly
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items5.tex -o=items5-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items6.tex -o=items6-mod$i.tex
+    latexindent.pl -s -tt -m -l=items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
+    set +x
+done
 git status

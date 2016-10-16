@@ -33,8 +33,8 @@ sub find_items{
                                   (
                                       \\$item
                                       \h*
+                                      (\R*)?
                                   )
-                                  (\R*)?
                                   (
                                       (?:                 # cluster-only (), don't capture 
                                           (?!             

@@ -311,3 +311,6 @@ modifyLineBreaks:
         MandArgBodyStartsOnOwnLine: -1
         RCuBStartsOnOwnLine: -1
         RCuBFinishesWithLineBreak: -1
+    items:
+        ItemStartsOnOwnLine: -1
+        ItemFinishesWithLineBreak: -1

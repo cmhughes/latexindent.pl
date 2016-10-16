@@ -243,16 +243,31 @@ sub indent_children_recursively{
                         /mx){
                 my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
                 my $IDFollowedImmediatelyByLineBreak = $4?1:0;
-                my $surroundingIndentation = (${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo})
-                                                        ?
-                                             (ref(${$child}{surroundingIndentation}) eq 'SCALAR'?${${$child}{surroundingIndentation}}:${$child}{surroundingIndentation})
-                                                        :q();
 
                 # log file info
                 $self->logger("${$child}{id} found!",'trace');
                 $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
-                $self->logger("current indentation: '$surroundingIndentation'");
                 $self->logger("looking up indentation scheme for ${$child}{name}");
+
+                # line break checks *after* \end{statement}
+                if (defined ${$child}{EndFinishesWithLineBreak}
+                    and ${$child}{EndFinishesWithLineBreak}==0 
+                    and $IDFollowedImmediatelyByLineBreak) {
+                    # remove line break *after* \end{statement}, if appropriate
+                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R*\h*/${$child}{id}$1/s;
+                    ${$child}{linebreaksAtEnd}{end} = 0;
+                }
+
+                # perform indentation
+                $child->indent;
+
+                # surrounding indentation is now up to date
+                my $surroundingIndentation = (${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo})
+                                                        ?
+                                             (ref(${$child}{surroundingIndentation}) eq 'SCALAR'?${${$child}{surroundingIndentation}}:${$child}{surroundingIndentation})
+                                                        :q();
 
                 # line break checks before \begin{statement}
                 if(defined ${$child}{BeginStartsOnOwnLine}){
@@ -282,19 +297,6 @@ sub indent_children_recursively{
                     }
                 }
 
-                # line break checks *after* \end{statement}
-                if (defined ${$child}{EndFinishesWithLineBreak}
-                    and ${$child}{EndFinishesWithLineBreak}==0 
-                    and $IDFollowedImmediatelyByLineBreak) {
-                    # remove line break *after* \end{statement}, if appropriate
-                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
-                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R*\h*/${$child}{id}$1/s;
-                    ${$child}{linebreaksAtEnd}{end} = 0;
-                }
-
-                # perform indentation
-                $child->indent;
                 $self->logger(Dumper(\%{$child}),'ttrace');
 
                 # replace ids with body
