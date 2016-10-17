@@ -86,7 +86,7 @@ sub create_unique_id{
     my $self = shift;
 
     $environmentCounter++;
-    ${$self}{id} = "LATEX-INDENT-ENVIRONMENT$environmentCounter";
+    ${$self}{id} = "${$self->get_tokens}{environment}$environmentCounter";
     return;
 }
 

@@ -131,7 +131,8 @@ sub create_unique_id{
     my $self = shift;
 
     $ifElseFiCounter++;
-    ${$self}{id} = "!-!LATEX-INDENT-IFELSEFI$ifElseFiCounter";
+
+    ${$self}{id} = "${$self->get_tokens}{ifelsefi}$ifElseFiCounter";
     return;
 }
 

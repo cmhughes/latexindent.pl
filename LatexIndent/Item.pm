@@ -87,7 +87,8 @@ sub create_unique_id{
     my $self = shift;
 
     $itemCounter++;
-    ${$self}{id} = "LATEX-INDENT-ITEMS$itemCounter";
+
+    ${$self}{id} = "${$self->get_tokens}{item}$itemCounter";
     return;
 }
 

@@ -86,7 +86,8 @@ sub put_trailing_comments_back_in{
 }
 
 sub get_trailing_comment_token{
-    return "latexindenttrailingcomment";
+    my $self = shift;
+    return ${$self->get_tokens}{trailingComment};
 }
 
 sub get_trailing_comment_regexp{

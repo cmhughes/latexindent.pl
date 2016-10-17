@@ -75,7 +75,7 @@ sub create_unique_id{
     my $self = shift;
 
     $mandatoryArgumentCounter++;
-    ${$self}{id} = "LATEX-INDENT-MANDATORY-ARGUMENT$mandatoryArgumentCounter";
+    ${$self}{id} = "${$self->get_tokens}{mandatoryArgument}$mandatoryArgumentCounter";
     return;
 }
 

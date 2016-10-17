@@ -97,7 +97,8 @@ sub unprotect_blank_lines{
 }
 
 sub get_blank_line_token{
-    return "latex-indent-blank-line";
+    my $self = shift;
+    return ${$self->get_tokens}{blanklines};
 }
 
 1;

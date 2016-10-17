@@ -216,7 +216,7 @@ sub create_unique_id{
     my $self = shift;
 
     $verbatimCounter++;
-    ${$self}{id} = "LATEX-INDENT-VERBATIM$verbatimCounter";
+    ${$self}{id} = "${$self->get_tokens}{verbatim}$verbatimCounter";
     return;
 }
 

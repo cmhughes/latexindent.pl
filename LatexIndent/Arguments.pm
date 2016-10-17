@@ -165,7 +165,7 @@ sub create_unique_id{
     my $self = shift;
 
     $ArgumentCounter++;
-    ${$self}{id} = "LATEX-INDENT-ARGUMENTS$ArgumentCounter";
+    ${$self}{id} = "${$self->get_tokens}{arguments}$ArgumentCounter";
     return;
 }
 

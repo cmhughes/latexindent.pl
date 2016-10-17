@@ -132,7 +132,7 @@ sub final_indentation_check{
     while(${$self}{body} =~ m/^((\h*|\t*)((\h+)(\t+))+)(.*)/mg){
         # replace offending indentation with a token
         $indentationCounter++;
-        my $indentationToken = "indentation-token$indentationCounter";
+        my $indentationToken = "${$self->get_tokens}{indentation}$indentationCounter";
         ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
 
         # fix the indentation
