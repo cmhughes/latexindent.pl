@@ -52,4 +52,6 @@ do
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
     set +x
 done
+# ifelsefi within an item
+latexindent.pl -s items8.tex -o=items8-mod0.tex
 git status

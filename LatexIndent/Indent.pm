@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check/;
 
 sub indent{
     my $self = shift;
@@ -60,27 +60,6 @@ sub determine_total_indentation{
     # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
 
-    # problem:
-    #       if a tab is appended to spaces, it will look different 
-    #       from spaces appended to tabs (see test-cases/items/spaces-and-tabs.tex)
-    # solution:
-    #       move all of the tabs to the beginning of ${$self}{indentation}
-    # notes;
-    #       this came to light when studying test-cases/items/items1.tex
-    while(${$self}{indentation} =~ m/(.*)(\t+)/ and ${$self}{indentation} !~ m/^\t*$/ and $1 ne '' and $1 ne "\t"){
-        $self->logger("Indentation: tabs found after spaces -- rearranging so that spaces follow tabs");
-        ${$self}{indentation} = $2.$1;
-    }
-
-    # the same is, obviously, true for surroundingIndentation
-    if(${$self}{surroundingIndentation}){
-        while(${$self}{surroundingIndentation} =~ m/(.*)(\t+)/ and ${$self}{surroundingIndentation} !~ m/^\t*$/ and $1 ne '' and $1 ne "\t"){
-            $self->logger("surroundingIndentation: tabs found after spaces -- rearranging so that spaces follow tabs");
-            ${$self}{surroundingIndentation} = $2.$1;
-        }
-    }
-    $self->logger(Dumper(\%{$self}),'ttrace');
-    return $self;
 }
 
 sub indent_body{
@@ -134,6 +113,44 @@ sub indent_end_statement{
         $self->logger("Adding surrounding indentation to ${$self}{end} ('$surroundingIndentation')");
      }
     return $self;
+}
+
+sub final_indentation_check{
+    # problem:
+    #       if a tab is appended to spaces, it will look different 
+    #       from spaces appended to tabs (see test-cases/items/spaces-and-tabs.tex)
+    # solution:
+    #       move all of the tabs to the beginning of ${$self}{indentation}
+    # notes;
+    #       this came to light when studying test-cases/items/items1.tex
+
+    my $self = shift;
+
+    my $indentationCounter;
+    my @indentationTokens;
+
+    while(${$self}{body} =~ m/^((\h*|\t*)((\h+)(\t+))+)(.*)/mg){
+        # replace offending indentation with a token
+        $indentationCounter++;
+        my $indentationToken = "indentation-token$indentationCounter";
+        ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
+
+        # fix the indentation
+        my $indentation = $1;
+        while($indentation =~ m/(.*)(\t+)/ and $indentation !~ m/^\t*$/  and $1 ne '' and $1 ne "\t"){
+            $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs");
+            $indentation = $2.$1;
+        }
+
+        # store it
+        push(@indentationTokens,{id=>$indentationToken,value=>$indentation});
+    }
+
+    # loop back through the body and replace tokens with updated values
+    foreach (@indentationTokens){
+        ${$self}{body} =~ s/${$_}{id}/${$_}{value}/;
+    }
+
 }
 
 
