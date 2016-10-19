@@ -102,7 +102,8 @@ sub process_body_of_text{
     $self->find_surrounding_indentation_for_children;
 
     # the modify line switch can adjust line breaks, so we need another sweep
-    $self->logger('Phase 3: pre-print process for undisclosed linebreaks','heading');
+    $self->logger('Phase 3: pre-print process for undisclosed linebreaks','heading') if $self->is_m_switch_active;
+    $self->logger('Phase 3: skipping phase 3, -m not active','heading') if !$self->is_m_switch_active;
     $self->pre_print_entire_body;
 
     # indentation recursively
@@ -203,7 +204,7 @@ sub operate_on_hidden_children{
 
             # don't forget about the children! test-cases/items/items2.5.tex first highlighted this
             foreach (@{${$hiddenChild}{children}}){
-                $self->logger("child (${$_}{id}) inheriting ancestor information: ${$hiddenChild}{id}");
+                $self->logger("child (${$_}{id}: ${$_}{name}) inheriting ancestor information: ${$hiddenChild}{id} (${$hiddenChild}{name})");
                 push(@{${$_}{ancestors}},@{${${$hiddenChild}{ancestors}}});
                 push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>\${$self}{indentation}});
             }

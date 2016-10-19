@@ -55,4 +55,5 @@ do
 done
 # ifelsefi within an item
 latexindent.pl -s items8.tex -o=items8-mod0.tex
+latexindent.pl -s items9.tex -o=items9-mod0.tex
 git status
