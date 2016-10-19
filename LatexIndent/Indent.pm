@@ -40,12 +40,14 @@ sub determine_total_indentation{
                                             :q();
 
 
+    $self->logger("surroundingIndentation: '$surroundingIndentation'");
+
     # check for ancestors
     if(${$self}{ancestors} and ${$self}{hiddenChildYesNo}){
         $self->logger("ancestors found for ${$self}{name}");
-        foreach (@{${$self}{ancestors}}){
+        foreach (@{${${$self}{ancestors}}}){
             $self->logger("ID: ${$_}{ancestorID}");
-            $surroundingIndentation .= ${$_}{ancestorIndentation};
+            $surroundingIndentation .= (ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation});
         }
         $self->logger("Updating surroundingIndentation");
         ${$self}{surroundingIndentation} = $surroundingIndentation;
@@ -133,14 +135,30 @@ sub final_indentation_check{
         # replace offending indentation with a token
         $indentationCounter++;
         my $indentationToken = "${$self->get_tokens}{indentation}$indentationCounter";
+        my $lineDetails = $6;
         ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
+
+        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs");
 
         # fix the indentation
         my $indentation = $1;
-        while($indentation =~ m/(.*)(\t+)/ and $indentation !~ m/^\t*$/  and $1 ne '' and $1 ne "\t"){
-            $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs");
-            $indentation = $2.$1;
+
+        # log the before
+        (my $before = $indentation) =~ s/\t/TAB/g;
+        $self->logger("Indentation before: '$before'");
+
+        # move tabs to the beginning
+        while($indentation =~ m/(\h+[^\t])(\t+)/ and $indentation !~ m/^\t*$/  and $1 ne '' and $1 ne "\t"){
+            $indentation =~ s/(\h+)(\t+)/$2$1/;
+
+            # log the during
+            (my $during = $indentation) =~ s/\t/TAB/g;
+            $self->logger("Indentation during: '$during'");
         }
+
+        # log the after
+        (my $after = $indentation) =~ s/\t/TAB/g;
+        $self->logger("Indentation after: '$after'");
 
         # store it
         push(@indentationTokens,{id=>$indentationToken,value=>$indentation});

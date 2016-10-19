@@ -197,9 +197,16 @@ sub operate_on_hidden_children{
         # check if the current object has ancestors, and if so, update the hidden child
         #   note: test-cases/items/items1.5.tex and items2.tex first highlighted the need for this
         if(${$self}{ancestors}){
-            $self->logger("Adding the ancestors of ${$self}{id} to ${$hiddenChild}{id}",'ttrace');
-            ${$hiddenChild}{ancestors} = ${$self}{ancestors};
-            $self->logger(Dumper(@{${$hiddenChild}{ancestors}}),'ttrace');
+            $self->logger("Adding the ancestors of ${$self}{id} (${$self}{name}) to ${$hiddenChild}{id} (${$hiddenChild}{name})",'ttrace');
+            ${$hiddenChild}{ancestors} = \${$self}{ancestors};
+            $self->logger(Dumper(@{${${$hiddenChild}{ancestors}}}),'ttrace');
+
+            # don't forget about the children! test-cases/items/items2.5.tex first highlighted this
+            foreach (@{${$hiddenChild}{children}}){
+                $self->logger("child (${$_}{id}) inheriting ancestor information: ${$hiddenChild}{id}");
+                push(@{${$_}{ancestors}},@{${${$hiddenChild}{ancestors}}});
+                push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>\${$self}{indentation}});
+            }
         }
     } else {
         # call this subroutine recursively for the children
@@ -374,7 +381,7 @@ sub tasks_common_to_each_object{
       $self->logger("No ancestors found for ${$self}{name}",'trace');
       if(defined $parent{id} and $parent{id} ne ''){
         $self->logger("Creating ancestors with $parent{id} as the first one",'trace');
-        push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>$parent{indentation}});
+        push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation}});
       }
     }
 

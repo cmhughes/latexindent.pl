@@ -18,6 +18,7 @@ latexindent.pl -s -w items1.tex
 # nested itemize/enumerate environments -- these ones needed ancestors, the understanding/development of which took about a week!
 latexindent.pl -s -w items1.5.tex
 latexindent.pl -s -w items2.tex
+latexindent.pl -s -w items2.5.tex
 latexindent.pl -s -w items3.tex
 latexindent.pl -s -w items4.tex
 latexindent.pl -s -w items5.tex
