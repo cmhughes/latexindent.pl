@@ -112,7 +112,7 @@ sub find_opt_mand_arguments{
             #              settings of EndFinishesWithLineBreak
             if( (defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0) 
                 or !(defined ${$self}{BodyStartsOnOwnLine})){
-                if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
+                if(defined ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine} and ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                     my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     my $BodyValue = ${$self}{BodyStartsOnOwnLine} ? ${$self}{BodyStartsOnOwnLine} : "-1";

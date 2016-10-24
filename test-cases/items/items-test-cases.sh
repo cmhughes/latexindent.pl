@@ -53,6 +53,7 @@ do
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
     set +x
 done
+set -x
 # ifelsefi within an item
 latexindent.pl -s items8.tex -o=items8-mod0.tex
 latexindent.pl -s items9.tex -o=items9-mod0.tex
@@ -61,4 +62,5 @@ latexindent.pl -s items10.tex -o=items10-myenv-noAdditionalIndent.tex -l=myenv.y
 latexindent.pl -s items10.tex -o=items10-items-noAdditionalIndent.tex -l=noAdditionalIndentItems.yaml
 latexindent.pl -s items11.tex -w
 latexindent.pl -s items12.tex -o=items12-mod0.tex
+latexindent.pl -s items12.tex -m -l=env-mod-lines1.yaml -o=items12-mod1.tex
 git status
