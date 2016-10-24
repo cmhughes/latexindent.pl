@@ -18,7 +18,7 @@ use LatexIndent::Tokens qw/get_tokens/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
-use LatexIndent::Arguments qw/find_opt_mand_arguments/;
+use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments/;
 use LatexIndent::Item qw/find_items/;
