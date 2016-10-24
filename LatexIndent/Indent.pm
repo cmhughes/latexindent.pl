@@ -5,7 +5,14 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation/;
+our %familyTree;
+
+sub push_family_tree_to_indent{
+    my $self = shift;
+
+    %familyTree = %{$self->get_family_tree};
+}
 
 sub indent{
     my $self = shift;
@@ -33,27 +40,11 @@ sub wrap_up_statement{
 sub determine_total_indentation{
     my $self = shift;
 
-    # get the surrounding indentation, if it exists
-    my $surroundingIndentation = (${$self}{surroundingIndentation} and ${$self}{hiddenChildYesNo})
-                                            ?
-                                 (ref(${$self}{surroundingIndentation}) eq 'SCALAR'?${${$self}{surroundingIndentation}}:${$self}{surroundingIndentation})
-                                            :q();
-
-
-    $self->logger("surroundingIndentation: '$surroundingIndentation'");
-
-    # check for ancestors
-    if(${$self}{ancestors} and ${$self}{hiddenChildYesNo}){
-        $self->logger("ancestors found for ${$self}{name}");
-        foreach (@{${${$self}{ancestors}}}){
-            $self->logger("ID: ${$_}{ancestorID}");
-            $surroundingIndentation .= (ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation});
-        }
-        $self->logger("Updating surroundingIndentation");
-        ${$self}{surroundingIndentation} = $surroundingIndentation;
-    }
+    # calculate and grab the surrounding indentation
+    $self->get_surrounding_indentation;
 
     # logfile information
+    my $surroundingIndentation = ${$self}{surroundingIndentation};
     $self->logger("indenting object ${$self}{name}");
     $self->logger("indentation *surrounding* object: '$surroundingIndentation'");
     $self->logger("indentation *of* object: '${$self}{indentation}'");
@@ -61,6 +52,23 @@ sub determine_total_indentation{
 
     # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
+
+}
+
+sub get_surrounding_indentation{
+    my $self = shift;
+
+    my $surroundingIndentation = q();
+
+    if($familyTree{${$self}{id}}){
+        $self->logger("ancestors found!");
+        foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
+            my $newAncestorId = ${$_}{ancestorID};
+            $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}");
+            $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
+        }
+    }
+    ${$self}{surroundingIndentation} = $surroundingIndentation;
 
 }
 

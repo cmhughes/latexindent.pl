@@ -11,7 +11,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation/;
 use LatexIndent::Tokens qw/get_tokens/;
 
 # code blocks
@@ -25,6 +25,7 @@ use LatexIndent::Item qw/find_items/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;
+our %familyTree;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -102,8 +103,8 @@ sub process_body_of_text{
     $self->find_surrounding_indentation_for_children;
 
     # the modify line switch can adjust line breaks, so we need another sweep
-    $self->logger('Phase 3: pre-print process for undisclosed linebreaks','heading') if $self->is_m_switch_active;
-    $self->logger('Phase 3: skipping phase 3, -m not active','heading') if !$self->is_m_switch_active;
+    my $phase3text = $self->is_m_switch_active?"pre-print process for undisclosed linebreaks":"-m not active";
+    $self->logger("Phase 3: $phase3text",'heading');
     $self->pre_print_entire_body;
 
     # indentation recursively
@@ -161,7 +162,58 @@ sub find_surrounding_indentation_for_children{
     foreach (@hiddenChildren){
         $self->operate_on_hidden_children($_);
     }
+
+    # output to logfile
+    $self->logger("FamilyTree before update:",'trace');
+    $self->logger(Dumper(\%familyTree),'trace');
+
+    # update the family tree with ancestors
+    $self->update_family_tree;
+
+    # output information to the logfile
+    $self->logger("FamilyTree after update:",'trace');
+    $self->logger(Dumper(\%familyTree),'trace');
+
+    while( my ($idToSearch,$ancestorToSearch) = each %familyTree){
+          $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading');
+          foreach(@{${$ancestorToSearch}{ancestors}}){
+              $self->logger("ID: ${$_}{ancestorID}");
+              my $tmpIndentation = ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
+              $self->logger("indentation: '$tmpIndentation'");
+              }
+          }
+
     return;
+}
+
+sub update_family_tree{
+    my $self = shift;
+
+    # loop through the hash
+    while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
+          foreach(@{${$ancestorToSearch}{ancestors}}){
+              my $ancestorID = ${$_}{ancestorID};
+              $self->logger("current ID: $idToSearch, ancestor: $ancestorID");
+              if($familyTree{$ancestorID}){
+                  $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors");
+                  foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
+                      $self->logger("ancestor: ${$_}{ancestorID}");
+                      my $newAncestorId = ${$_}{ancestorID};
+                      my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
+                      push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation}}) unless($matched);
+                  }
+              } else {
+                  $self->logger("$ancestorID is *not* a key within familyTree, *no* ancestors to grab");
+              }
+          }
+    }
+
+    # Indent.pm needs a copy of the familyTree hash
+    $self->push_family_tree_to_indent;
+}
+
+sub get_family_tree{
+    return \%familyTree;
 }
 
 sub find_hidden_children{
@@ -170,7 +222,7 @@ sub find_hidden_children{
     # finding hidden children
     foreach my $child (@{${$self}{children}}){
         if(${$self}{body} !~ m/${$child}{id}/){
-            $self->logger("child not found, ${$child}{id}",'ttrace');
+            $self->logger("child not found, ${$child}{id}, adding it to hidden children",'ttrace');
             ${$child}{hiddenChildYesNo} = 1;
             push(@hiddenChildren,\%{$child});
         } else {
@@ -192,23 +244,14 @@ sub operate_on_hidden_children{
     # if the hidden child is found in the current body, take action
     if(${$self}{body} =~ m/${$hiddenChild}{id}/){
         $self->logger("hiddenChild found, ${$hiddenChild}{id} within ${$self}{name} (${$self}{id})",'ttrace');
-        $self->logger("updating surrounding indentation of ${$hiddenChild}{id} '${$self}{indentation}'",'ttrace');
-        ${$hiddenChild}{surroundingIndentation} = \${$self}{indentation};
 
-        # check if the current object has ancestors, and if so, update the hidden child
-        #   note: test-cases/items/items1.5.tex and items2.tex first highlighted the need for this
+        # update the family tree
         if(${$self}{ancestors}){
-            $self->logger("Adding the ancestors of ${$self}{id} (${$self}{name}) to ${$hiddenChild}{id} (${$hiddenChild}{name})",'ttrace');
-            ${$hiddenChild}{ancestors} = \${$self}{ancestors};
-            $self->logger(Dumper(@{${${$hiddenChild}{ancestors}}}),'ttrace');
-
-            # don't forget about the children! test-cases/items/items2.5.tex first highlighted this
-            foreach (@{${$hiddenChild}{children}}){
-                $self->logger("child (${$_}{id}: ${$_}{name}) inheriting ancestor information: ${$hiddenChild}{id} (${$hiddenChild}{name})");
-                push(@{${$_}{ancestors}},@{${${$hiddenChild}{ancestors}}});
-                push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>\${$self}{indentation}});
+            foreach(@{${$self}{ancestors}}){
+                push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},$_);
             }
         }
+        push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation}});
     } else {
         # call this subroutine recursively for the children
         foreach my $child (@{${$self}{children}}){

@@ -20,8 +20,10 @@ sub indent{
     # indent the body
     $self->indent_body;
 
-    # \else statement adjustment
-    my $surroundingIndentation = ${$self}{surroundingIndentation}?${${$self}{surroundingIndentation}}:q();
+    # calculate and grab the surrounding indentation for the \else statement adjustment
+    $self->get_surrounding_indentation;
+    my $surroundingIndentation = ${$self}{surroundingIndentation}?${$self}{surroundingIndentation}:q();
+
     if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
             $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')");
             ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
