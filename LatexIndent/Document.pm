@@ -164,14 +164,14 @@ sub find_surrounding_indentation_for_children{
     }
 
     # output to logfile
-    $self->logger("FamilyTree before update:",'trace');
+    $self->logger("FamilyTree before update:",'heading.trace');
     $self->logger(Dumper(\%familyTree),'trace');
 
     # update the family tree with ancestors
     $self->update_family_tree;
 
     # output information to the logfile
-    $self->logger("FamilyTree after update:",'trace');
+    $self->logger("FamilyTree after update:",'heading.trace');
     $self->logger(Dumper(\%familyTree),'trace');
 
     while( my ($idToSearch,$ancestorToSearch) = each %familyTree){
@@ -190,6 +190,7 @@ sub update_family_tree{
     my $self = shift;
 
     # loop through the hash
+    $self->logger("Updating FamilyTree...",'heading.trace');
     while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
           foreach(@{${$ancestorToSearch}{ancestors}}){
               my $ancestorID = ${$_}{ancestorID};

@@ -57,4 +57,8 @@ done
 latexindent.pl -s items8.tex -o=items8-mod0.tex
 latexindent.pl -s items9.tex -o=items9-mod0.tex
 latexindent.pl -s items10.tex -w
+latexindent.pl -s items10.tex -o=items10-myenv-noAdditionalIndent.tex -l=myenv.yaml
+latexindent.pl -s items10.tex -o=items10-items-noAdditionalIndent.tex -l=noAdditionalIndentItems.yaml
+latexindent.pl -s items11.tex -w
+latexindent.pl -s items12.tex -o=items12-mod0.tex
 git status
