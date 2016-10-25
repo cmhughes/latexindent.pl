@@ -1,7 +1,4 @@
 #!/bin/bash
-# set verbose mode, 
-# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-set -x 
 
 # A little script to help me run through test cases
 
@@ -16,23 +13,53 @@ set -x
 #echo latexindent.pl  -w -l=items4.yaml -s --ttrace items4
 #latexindent.pl  -w -l=items4.yaml -s --ttrace items4
 
+silentMode=0
+flagToPass=''
+# check flags, and change defaults appropriately
+while getopts "s" OPTION
+do
+ case $OPTION in 
+  s)    
+   echo "Silent mode on..."
+   flagToPass='-s'
+   silentMode=1
+   ;;
+  ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
+        exit 2
+        ;;
+ # end case
+ esac 
+done
+
+# set verbose mode, 
+# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
+
 # environment objects
 cd environments
-./environments-test-cases.sh
+[[ $silentMode == 1 ]] && echo "./environments/environments-test-cases.sh"
+./environments-test-cases.sh $flagToPass
 # ifelsefi objects
 cd ../ifelsefi
-./ifelsefi-test-cases.sh
+[[ $silentMode == 1 ]] && echo "./ifelsefi/ifelsefi-test-cases.sh"
+./ifelsefi-test-cases.sh $flagToPass
 # optional arguments in environments
 cd ../opt-args
-./opt-args-test-cases.sh
+[[ $silentMode == 1 ]] && echo "./opt-args/opt-args-test-cases.sh"
+./opt-args-test-cases.sh $flagToPass
 # mandatory arguments in environments
 cd ../mand-args
-./mand-args-test-cases.sh
+[[ $silentMode == 1 ]] && echo "./mand-args/mand-args-test-cases.sh"
+./mand-args-test-cases.sh $flagToPass
 # mixture of optional and mandatory arguments
 cd ../opt-and-mand-args/
-./opt-mand-args-test-cases.sh
+[[ $silentMode == 1 ]] && echo "./opt-and-mand-args/opt-and-mand-args-test-cases.sh"
+./opt-mand-args-test-cases.sh $flagToPass
 # items
 cd ../items/
-./items-test-cases.sh
-git status
+[[ $silentMode == 1 ]] && echo "./items/items-test-cases.sh"
+./items-test-cases.sh $flagToPass
+# commands
+cd ../commands/
+[[ $silentMode == 1 ]] && echo "./commands/commands-test-cases.sh"
+./commands-test-cases.sh $flagToPass
 exit

@@ -22,6 +22,7 @@ use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments/;
 use LatexIndent::Item qw/find_items/;
+use LatexIndent::Command qw/find_commands/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;
@@ -129,6 +130,10 @@ sub find_objects_recursively{
     $self->logger('looking for IFELSEFI');
     $self->find_ifelsefi;
 
+    # search for ifElseFi blocks
+    $self->logger('looking for COMMANDS');
+    $self->find_commands;
+
     # if there are no children, return
     if(%{$self}{children}){
         $self->logger("Objects have been found.",'heading');
@@ -179,6 +184,7 @@ sub find_surrounding_indentation_for_children{
           foreach(@{${$ancestorToSearch}{ancestors}}){
               $self->logger("ID: ${$_}{ancestorID}");
               my $tmpIndentation = ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
+              $tmpIndentation = $tmpIndentation ? $tmpIndentation : q(); 
               $self->logger("indentation: '$tmpIndentation'");
               }
           }

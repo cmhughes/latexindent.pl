@@ -30,7 +30,7 @@ sub find_opt_mand_arguments{
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
-    if(${$self}{body} =~ m/$optAndMandRegExp\h*($trailingCommentRegExp)?/){
+    if(${$self}{body} =~ m/^$optAndMandRegExp\h*($trailingCommentRegExp)?/){
         $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading');
 
         # create a new Arguments object
@@ -44,11 +44,11 @@ sub find_opt_mand_arguments{
                                                 parent=>${$self}{name},
                                                 body=>$1,
                                                 linebreaksAtEnd=>{
-                                                  end=>$7?1:0,
+                                                  end=>$2?1:0,
                                                 },
                                                 end=>"",
                                                 regexp=>$optAndMandRegExp,
-                                                endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                                endImmediatelyFollowedByComment=>$2?0:($3?1:0),
                                               );
 
         # give unique id
@@ -155,12 +155,11 @@ sub get_arguments_regexp{
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
-                            ^                      # begins with
                              (                     # capture into $1
-                                (                  
-                                   (\h|\R|$blankLineToken|$trailingCommentRegExp)* 
-                                   (
-                                        (
+                                (?:                  
+                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
+                                   (?:
+                                        (?:
                                             \h*         # 0 or more spaces
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \[
@@ -169,11 +168,11 @@ sub get_arguments_regexp{
                                             \]          # [optional arguments]
                                         )
                                         |               # OR
-                                        (
+                                        (?:
                                             \h*         # 0 or more spaces
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \{
-                                                .*?
+                                                .*? # not including {
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \}          # {mandatory arguments}
                                         )

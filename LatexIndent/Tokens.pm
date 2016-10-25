@@ -15,6 +15,7 @@ our %tokens = (
                 mandatoryArgument=>"LATEX-INDENT-MANDATORY-ARGUMENT",
                 verbatim=>"LATEX-INDENT-VERBATIM",
                 indentation=>"LATEX-INDENT-INDENTATION",
+                command=>"LATEX-INDENT-COMMAND",
               );
 
 sub get_tokens{

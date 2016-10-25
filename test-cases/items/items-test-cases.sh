@@ -1,11 +1,28 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=7
-[[ $# -eq 1 ]] &&  loopmax=$1  # mand-args-test-cases.sh <maxloop>
-echo "mand-args-test-cases.sh will run with loopmax = $loopmax"
 
-set -x 
+silentMode=0
+# check flags, and change defaults appropriately
+while getopts 's' OPTION
+do
+ case $OPTION in 
+  s)    
+   echo "Silent mode on...next thing you'll see is git status."
+   silentMode=1
+   ;;
+  ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
+        exit 2
+        ;;
+ # end case
+ esac 
+done
+
+# if silentMode is not active, verbose
+[[ $silentMode == 0 ]] && set -x 
+loopmax=7
+#[[ $# -eq 1 ]] &&  loopmax=$1  # mand-args-test-cases.sh <maxloop>
+#echo "mand-args-test-cases.sh will run with loopmax = $loopmax"
 
 # making strings of tabs and spaces gives different results; 
 # this first came to light when studying items1.tex -- the following test cases helped to 
@@ -36,10 +53,10 @@ latexindent.pl -s -l=part.yaml -w items1-part.tex
 latexindent.pl -s -m items1.tex -o=items1-mod0.tex
 latexindent.pl -tt -s -m items1-blanklines.tex -o=items1-blanklines-mod0.tex 
 latexindent.pl -s -m items2.tex -o=items2-mod0.tex
-set +x
+[[ $silentMode == 0 ]] && set +x 
 for (( i=1 ; i <= $loopmax ; i++ )) 
 do 
-    set -x
+    [[ $silentMode == 0 ]] && set -x 
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items1.tex -o=items1-mod$i.tex
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items2.tex -o=items2-mod$i.tex
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items3.tex -o=items3-mod$i.tex
@@ -51,9 +68,9 @@ do
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items5.tex -o=items5-mod$i.tex
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items6.tex -o=items6-mod$i.tex
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
-    set +x
+    [[ $silentMode == 0 ]] && set +x 
 done
-set -x
+[[ $silentMode == 0 ]] && set -x 
 # ifelsefi within an item
 latexindent.pl -s items8.tex -o=items8-mod0.tex
 latexindent.pl -s items9.tex -o=items9-mod0.tex

@@ -4,17 +4,34 @@
 #
 # hugely useful, for example:
 #       vim opt-args-test-cases.sh && ./opt-args-test-cases.sh && vim -p environments-second-opt-args.tex environments-second-opt-args-mod2.tex
-set -x 
+silentMode=0
+# check flags, and change defaults appropriately
+while getopts 's' OPTION
+do
+ case $OPTION in 
+  s)    
+   echo "Silent mode on...next thing you'll see is git status."
+   silentMode=1
+   ;;
+  ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
+        exit 2
+        ;;
+ # end case
+ esac 
+done
+
+# if silentMode is not active, verbose
+[[ $silentMode == 0 ]] && set -x 
 
 # optional arguments in environments
 latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod0.tex
 latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -tt -s -o=environments-first-opt-args-remove-linebreaks1-mod0.tex
 latexindent.pl environments-simple-opt-args.tex -m  -tt -s -o=environments-simple-opt-args-out.tex
 # loop through -opt-args-mod<i>.yaml, from i=1...16
-set +x
+[[ $silentMode == 0 ]] && set +x
 for (( i=1 ; i <= 16 ; i++ )) 
 do 
-   set -x
+   [[ $silentMode == 0 ]] && set -x
    # one optional arg
    latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod$i.tex -l=opt-args-mod$i.yaml 
    latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod-supp$i.tex -l=opt-args-mod$i.yaml,opt-args-supp.yaml 
@@ -29,7 +46,7 @@ do
    # three, ah ah ah
    latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod$i.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod$i.tex
    latexindent.pl environments-third-opt-args.tex -m -l=opt-args-mod$i.yaml,addPercentAfterBegin.yaml -tt -s -o=environments-third-opt-args-mod$i.tex -g=other.log
-   set +x
+    [[ $silentMode == 0 ]] && set +x
 done
 # multi switches set to 2
 latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-mod1.yaml,addPercentAfterBegin.yaml -s -tt -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
@@ -52,6 +69,6 @@ latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-
 latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-opt-args-indent-rules4.yaml -m -s -o=environments-third-opt-args-indent-rules4.tex
 # multiple lines in optional arguments
 latexindent.pl environments-third-opt-args-multiple-lines.tex -w -s
-set -x
+[[ $silentMode == 0 ]] && set -x
 git status
 exit

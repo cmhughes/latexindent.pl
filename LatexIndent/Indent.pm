@@ -65,7 +65,11 @@ sub get_surrounding_indentation{
         foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
             my $newAncestorId = ${$_}{ancestorID};
             $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}");
-            $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
+            $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'
+                                                ?
+                                        (${${$_}{ancestorIndentation}}?${${$_}{ancestorIndentation}}:q())
+                                                :
+                                        (${$_}{ancestorIndentation}?${$_}{ancestorIndentation}:q());
         }
     }
     ${$self}{surroundingIndentation} = $surroundingIndentation;
