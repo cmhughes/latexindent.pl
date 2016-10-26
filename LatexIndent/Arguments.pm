@@ -155,7 +155,7 @@ sub get_arguments_regexp{
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
-                             (                     # capture into $1
+                             (                          # capture into $1
                                 (?:                  
                                    (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
                                    (?:
@@ -163,7 +163,11 @@ sub get_arguments_regexp{
                                             \h*         # 0 or more spaces
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \[
-                                                .*?
+                                                (?:
+                                                    (?!
+                                                        (?:(?<!\\)\[) 
+                                                    ).
+                                                )*?     # not including [, but \[ ok
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \]          # [optional arguments]
                                         )
@@ -172,13 +176,17 @@ sub get_arguments_regexp{
                                             \h*         # 0 or more spaces
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \{
-                                                .*? # not including {
+                                                (?:
+                                                    (?!
+                                                        (?:(?<!\\)\{) 
+                                                    ).
+                                                )*?     # not including {, but \{ ok
                                             (?<!\\)     # not immediately pre-ceeded by \
                                             \}          # {mandatory arguments}
                                         )
                                    )
                                 )
-                                +                  # at least one of the above
+                                +                       # at least one of the above
                                 (\R*)
                              )                  
                              /sx;

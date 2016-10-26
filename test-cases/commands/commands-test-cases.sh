@@ -21,4 +21,5 @@ done
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s -w commands-simple.tex
 latexindent.pl -s -w commands-nested.tex
+latexindent.pl -s -w commands-nested-opt-nested.tex
 git status

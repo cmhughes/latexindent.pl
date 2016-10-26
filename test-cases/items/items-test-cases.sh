@@ -37,7 +37,7 @@ latexindent.pl -s -w items1.5.tex
 latexindent.pl -s -w items2.tex
 latexindent.pl -s -w items2.5.tex
 latexindent.pl -s -w items3.tex
-latexindent.pl -s -w items4.tex
+latexindent.pl -s -w items4.tex -g=items4-check.log
 latexindent.pl -s -w items5.tex
 # noAdditionalIndent
 latexindent.pl -s -l=noAdditionalIndentItemize.yaml items1.tex -o=items1-noAdditionalIndentItemize.tex
