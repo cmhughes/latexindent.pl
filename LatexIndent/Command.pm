@@ -10,10 +10,26 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/find_commands/;
 our $commandCounter;
 
-sub indent{
+#sub indent{
+#    my $self = shift;
+#    $self->logger("Command object doesn't receive any direct indentation, (its arguments already have done)");
+#    return;
+#}
+sub determine_total_indentation{
     my $self = shift;
-    $self->logger("Command object doesn't receive any direct indentation, (its arguments already have done)");
-    return;
+
+    # calculate and grab the surrounding indentation
+    $self->get_surrounding_indentation;
+
+    # logfile information
+    my $surroundingIndentation = ${$self}{surroundingIndentation};
+    $self->logger("Custom indentation routine for Command",'heading');
+    $self->logger("indentation *surrounding* object: '$surroundingIndentation'");
+    $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'");
+
+    # form the total indentation of the object
+    ${$self}{indentation} = $surroundingIndentation;
+
 }
 
 sub find_commands{
@@ -26,9 +42,6 @@ sub find_commands{
     my $commandRegExp = qr/
                   (\\(?!\[|\])|@)
                   (
-                  #(?!     
-                  #    (?:\\|\{|\}|\[|\]) 
-                  #  )
                     [^\\]*?
                   )                
                   ($optAndMandRegExp)
@@ -38,30 +51,26 @@ sub find_commands{
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     while( ${$self}{body} =~ m/$commandRegExp\h*($trailingCommentRegExp)?/){
-      #print "1: $1\n";
-      #print "2: $2\n";
-      #print "3: $3\n";
-      #print "4: $4\n";
-      #print "5: $5\n";
-      #print "6: $6\n";
       # log file output
       $self->logger("command found: $2",'heading');
 
+      # store the arguments
+      my $arguments = $3;
+
       # create a new command object
-      my $env = LatexIndent::Command->new(begin=>$1.$2,
+      my $command = LatexIndent::Command->new(begin=>$1.$2,
                                               name=>$2,
                                               body=>$3,
                                               end=>q(),
-                                              #linebreaksAtEnd=>{
-                                              #  end=>$5?1:0,
-                                              #},
                                               modifyLineBreaksYamlName=>"intentionallyleftblank",
                                               regexp=>$commandRegExp,
                                               endImmediatelyFollowedByComment=>$5?0:($6?1:0),
                                             );
 
+      ${${$command}{linebreaksAtEnd}}{begin}= ($arguments =~ m/^\h*\R+/s)?1:0;
+
       # the settings and storage of most objects has a lot in common
-      $self->get_settings_and_store_new_object($env);
+      $self->get_settings_and_store_new_object($command);
     } 
     return;
 }
