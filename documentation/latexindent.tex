@@ -1,7 +1,7 @@
 % arara: pdflatex
-% !arara: bibtex
-% !arara: pdflatex
-% !arara: pdflatex
+% arara: bibtex
+% arara: pdflatex
+% arara: pdflatex
 % !arara: pdflatex
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 \documentclass[11pt]{article}
@@ -233,7 +233,7 @@ top=2cm,bottom=1.5cm]{geometry}                      % page setup
 \newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{1cm}}{\end{adjustwidth}}
 
 % gitinfo2 settings
-\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\, Head tags: \gitTags}
 
 % setting up gitinfo2:
 %   copy the file post-xxx-sample.txt from https://www.ctan.org/tex-archive/macros/latex/contrib/gitinfo2
