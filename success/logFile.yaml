@@ -1,0 +1,8 @@
+logFilePreferences:
+    showAlmagamatedSettings: 0
+    showEveryYamlRead: 1
+    traceModeDecreaseIndent: '--'
+    traceModeIncreaseIndent: '++'
+    traceModeAddCurrentIndent: '&&&&'
+    traceModeBetweenLines: "\n\n"
+    endLogFileWith: "\n--------------\n****"

@@ -1,0 +1,21 @@
+% arara: indent: {overwrite: true, trace: false, localSettings: yes}
+
+\documentclass{article}
+\usepackage{verbatim}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+	\end{document}
+\end{filecontents}
+
+\begin{document}
+
+\begin{verbatim}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+	\end{document}
+        \end{filecontents}
+\end{verbatim}
+
+\end{document}

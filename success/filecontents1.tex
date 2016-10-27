@@ -1,0 +1,18 @@
+% arara: indent: {overwrite: true, trace: false, localSettings: yes}
+
+\documentclass{article}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+	\end{document}
+\end{filecontents}
+
+\begin{document}
+\begin{myotherenvironment}
+	some text goes here
+	some text goes here
+	some text goes here
+	some text goes here
+\end{myotherenvironment}
+
+\end{document}

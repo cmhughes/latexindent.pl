@@ -46,7 +46,7 @@ directory, and then run the command:
 
 or, without `arara` (note that this uses `localSettings.yaml` for *every* file)
 
-        find . -type f \( -name "*.tex" -or -name "*.cls" \) | while read file; do echo $file; latexindent.pl -w -s -l "$file";done
+        find . -type f \( -name "*.tex" -or -name "*.cls" -or -name "*.bib" \) | while read file; do echo $file; latexindent.pl -w -s -l "$file";done
 
 ## *IMPORTANT*
 
