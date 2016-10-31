@@ -454,6 +454,7 @@ sub tasks_common_to_each_object{
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
+    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace');
     ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
     # modify line breaks on body and end statements

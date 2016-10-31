@@ -45,6 +45,7 @@ sub find_commands{
                     [^\\]*?
                   )                
                   ($optAndMandRegExp)
+                  (\R)?
                 /sx;
 
     # trailing comment regexp
@@ -62,9 +63,12 @@ sub find_commands{
                                               name=>$2,
                                               body=>$3,
                                               end=>q(),
+                                              linebreaksAtEnd=>{
+                                                end=>$6?1:0,
+                                              },
                                               modifyLineBreaksYamlName=>"intentionallyleftblank",
                                               regexp=>$commandRegExp,
-                                              endImmediatelyFollowedByComment=>$5?0:($6?1:0),
+                                              endImmediatelyFollowedByComment=>$6?0:($7?1:0),
                                             );
 
       ${${$command}{linebreaksAtEnd}}{begin}= ($arguments =~ m/^\h*\R+/s)?1:0;
@@ -90,5 +94,14 @@ sub create_unique_id{
     return;
 }
 
+sub get_indentation_information{
+    # custom version of get_indentation_information
+    
+    my $self = shift;
+
+    # returning 1 means that noAdditionalIndent is active
+    $self->logger("Custom version of get_indentation_information used for Command object (${$self}{name})");
+    return 1;
+}
 
 1;

@@ -28,7 +28,7 @@ sub find_opt_mand_arguments{
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # grab the arguments regexp
-    my $optAndMandRegExp = $self->get_arguments_regexp;
+    my $optAndMandRegExp = $self->get_arguments_regexp(mode=>"lineBreaksAtEnd");
 
     if(${$self}{body} =~ m/^$optAndMandRegExp\h*($trailingCommentRegExp)?/){
         $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading');
@@ -111,6 +111,12 @@ sub find_opt_mand_arguments{
         # the replacement text can be just the ID, but the ID might have a line break at the end of it
         ${$arguments}{replacementText} = ${$arguments}{id};
 
+        # children need to receive ancestor information, see test-cases/commands/commands-triple-nested.tex
+        foreach (@{${$arguments}{children}}){
+            $self->logger("Updating argument children of ${$self}{name} to include ${$self}{id} in ancestors");
+            push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation}});
+        }
+
         # the argument object only needs a trailing line break if the *last* child
         # did not add one at the end, and if BodyStartsOnOwnLine >= 1
         if( (defined ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak} and ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}<1)
@@ -145,12 +151,16 @@ sub create_unique_id{
 sub get_arguments_regexp{
 
     my $self = shift;
+    my %input = @_;
 
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # blank line token
     my $blankLineToken = $self->get_blank_line_token;
+
+    # some calls to this routine need to account for the linebreaks at the end, some do not
+    my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();
 
     # arguments regexp
     my $optAndMandRegExp = 
@@ -187,7 +197,7 @@ sub get_arguments_regexp{
                                    )
                                 )
                                 +                       # at least one of the above
-                                (\R*)
+                                ($lineBreaksAtEnd)
                              )                  
                              /sx;
     return $optAndMandRegExp; 

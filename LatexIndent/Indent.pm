@@ -26,6 +26,9 @@ sub indent{
     # indent the end statement
     $self->indent_end_statement;
 
+    # output the completed object to the log file
+    $self->logger("Complete indented object (${$self}{name}) after indentation:\n${$self}{begin}${$self}{body}${$self}{end}","trace");
+
     # wrap-up statement
     $self->wrap_up_statement;
     return $self;
