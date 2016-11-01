@@ -7,28 +7,13 @@ use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_mandatory_arguments/;
+our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 our $mandatoryArgumentCounter;
 
 sub find_mandatory_arguments{
     my $self = shift;
 
-    my $mandArgRegExp = qr/      
-                                   (?<!\\)     # not immediately pre-ceeded by \
-                                   (
-                                    \{
-                                       \h*
-                                       (\R*)   # linebreaks after { into $2
-                                   )           # { captured into $1
-                                   (.*?)       # body into $3
-                                   (\R*)       # linebreaks after body into $4
-                                   (?<!\\)     # not immediately pre-ceeded by \
-                                   (
-                                    \}         # {mandatory arguments}
-                                    \h*
-                                   )           # } into $5
-                                   (\R)?       # linebreaks after } into $6
-                               /sx;
+    my $mandArgRegExp = $self->get_mand_arg_reg_exp;
 
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
@@ -77,6 +62,34 @@ sub create_unique_id{
     $mandatoryArgumentCounter++;
     ${$self}{id} = "${$self->get_tokens}{mandatoryArgument}$mandatoryArgumentCounter";
     return;
+}
+
+sub get_mand_arg_reg_exp{
+
+    my $mandArgRegExp = qr/      
+                                   (?<!\\)     # not immediately pre-ceeded by \
+                                   (
+                                    \{
+                                       \h*
+                                       (\R*)   # linebreaks after { into $2
+                                   )           # { captured into $1
+                                   (
+                                       (?:
+                                           (?!
+                                               (?:(?<!\\)\{) 
+                                           ).
+                                       )*?     # not including {, but \{ ok
+                                   )            # body into $3
+                                   (\R*)       # linebreaks after body into $4
+                                   (?<!\\)     # not immediately pre-ceeded by \
+                                   (
+                                    \}         # {mandatory arguments}
+                                    \h*
+                                   )           # } into $5
+                                   (\R)?       # linebreaks after } into $6
+                               /sx;
+
+    return $mandArgRegExp;
 }
 
 1;
