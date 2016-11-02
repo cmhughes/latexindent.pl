@@ -165,6 +165,28 @@ sub get_arguments_regexp{
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
+                             # NOT
+                             (?!
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
+                                 (?<!\\)     # not immediately pre-ceeded by \
+                                 \[
+                                     (?:
+                                         (?!
+                                             (?:(?<!\\)\[) 
+                                         ).
+                                     )*?     # not including [, but \[ ok
+                                 (?<!\\)     # not immediately pre-ceeded by \
+                                \]          # [optional arguments]
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
+                                (?<!\\)\{
+                                        (?:
+                                            (?!
+                                                 (?:(?<!\\)\}) 
+                                            ).
+                                        )*?(?:(?<!\\)\[|(?<!\\)\{).*?
+                                (?<!\\)\}
+                             )
+                             # end of NOT
                              (                          # capture into $1
                                 (?:                  
                                    (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 

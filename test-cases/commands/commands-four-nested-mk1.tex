@@ -1,0 +1,27 @@
+before text
+\newlevel{          % 4
+	\{x^2\}
+	body goes here
+	\mycommand{         % 2
+		argument text
+		argument text
+		argument text
+		\nested[        % 1
+			\[x^2\]
+			first opt-arg]
+		{
+			first mand arg
+			\fourthcommand{
+				\{ x^2\}\[x^2\]
+				fourth command argument body
+				fourth command argument body
+				fourth command argument body
+			}
+		}
+	} after text
+	\anothercommand{    % 3
+		another argument text
+		another argument text
+		another argument text
+	}% after text
+}
