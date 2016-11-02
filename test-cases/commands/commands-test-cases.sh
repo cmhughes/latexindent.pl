@@ -27,4 +27,5 @@ latexindent.pl -s -w commands-four-nested.tex
 latexindent.pl -s -w commands-four-nested-mk1.tex
 latexindent.pl -s -w commands-five-nested.tex
 latexindent.pl -s -w commands-five-nested-mk1.tex
+latexindent.pl -s -w commands-six-nested.tex
 git status

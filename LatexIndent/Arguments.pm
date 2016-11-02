@@ -165,63 +165,65 @@ sub get_arguments_regexp{
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
-                             # NOT
-                             (?!
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
-                                 (?<!\\)     # not immediately pre-ceeded by \
-                                 \[
+                          # NOT
+                          (?!
+                             (?:
+                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                  (?<!\\)                                           # not immediately pre-ceeded by \
+                                  \[                                         
+                                      (?:
+                                          (?!
+                                              (?:(?<!\\)\[)                          # anything but a [
+                                          ).
+                                      )*?                                            # not including [, but \[ ok
+                                  (?<!\\)                                            # not immediately pre-ceeded by \
+                                 \]                                                  # [optional arguments]
+                             )+                                                      # at least one lot of this
+                             (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*       
+                             (?<!\\)\{                                               # {
                                      (?:
                                          (?!
-                                             (?:(?<!\\)\[) 
+                                              (?:(?<!\\)\})                          # anything except }
                                          ).
-                                     )*?     # not including [, but \[ ok
-                                 (?<!\\)     # not immediately pre-ceeded by \
-                                \]          # [optional arguments]
+                                     )*?(?:(?<!\\)\[|(?<!\\)\{).*?                   # up to a [ or }
+                             (?<!\\)\}                                               # }
+                          )
+                          # end of NOT
+                          (                          # capture into $1
+                             (?:                  
                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
-                                (?<!\\)\{
-                                        (?:
-                                            (?!
-                                                 (?:(?<!\\)\}) 
-                                            ).
-                                        )*?(?:(?<!\\)\[|(?<!\\)\{).*?
-                                (?<!\\)\}
-                             )
-                             # end of NOT
-                             (                          # capture into $1
-                                (?:                  
-                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
-                                   (?:
-                                        (?:
-                                            \h*         # 0 or more spaces
-                                            (?<!\\)     # not immediately pre-ceeded by \
-                                            \[
-                                                (?:
-                                                    (?!
-                                                        (?:(?<!\\)\[) 
-                                                    ).
-                                                )*?     # not including [, but \[ ok
-                                            (?<!\\)     # not immediately pre-ceeded by \
-                                            \]          # [optional arguments]
-                                        )
-                                        |               # OR
-                                        (?:
-                                            \h*         # 0 or more spaces
-                                            (?<!\\)     # not immediately pre-ceeded by \
-                                            \{
-                                                (?:
-                                                    (?!
-                                                        (?:(?<!\\)\{) 
-                                                    ).
-                                                )*?     # not including {, but \{ ok
-                                            (?<!\\)     # not immediately pre-ceeded by \
-                                            \}          # {mandatory arguments}
-                                        )
-                                   )
+                                (?:
+                                     (?:
+                                         \h*         # 0 or more spaces
+                                         (?<!\\)     # not immediately pre-ceeded by \
+                                         \[
+                                             (?:
+                                                 (?!
+                                                     (?:(?<!\\)\[) 
+                                                 ).
+                                             )*?     # not including [, but \[ ok
+                                         (?<!\\)     # not immediately pre-ceeded by \
+                                         \]          # [optional arguments]
+                                     )
+                                     |               # OR
+                                     (?:
+                                         \h*         # 0 or more spaces
+                                         (?<!\\)     # not immediately pre-ceeded by \
+                                         \{
+                                             (?:
+                                                 (?!
+                                                     (?:(?<!\\)\{) 
+                                                 ).
+                                             )*?     # not including {, but \{ ok
+                                         (?<!\\)     # not immediately pre-ceeded by \
+                                         \}          # {mandatory arguments}
+                                     )
                                 )
-                                +                       # at least one of the above
-                                ($lineBreaksAtEnd)
-                             )                  
-                             /sx;
+                             )
+                             +                       # at least one of the above
+                             ($lineBreaksAtEnd)
+                          )                  
+                          /sx;
     return $optAndMandRegExp; 
 }
 
