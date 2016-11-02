@@ -28,4 +28,9 @@ latexindent.pl -s -w commands-four-nested-mk1.tex
 latexindent.pl -s -w commands-five-nested.tex
 latexindent.pl -s -w commands-five-nested-mk1.tex
 latexindent.pl -s -w commands-six-nested.tex
+# noAdditionalIndent
+latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
+latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
+latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
+latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
 git status
