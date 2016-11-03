@@ -27,5 +27,7 @@ latexindent.pl -m -s environments-opt-mand-args1.tex -o=environments-opt-mand-ar
 # remove linebreaks
 latexindent.pl -tt -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod1.tex -l=opt-args-mod5.yaml,mand-args-mod5.yaml
 latexindent.pl -tt -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod2.tex -l=opt-args-mod5.yaml,mand-args-mod5.yaml,unprotect-blank-lines.yaml
+# noAdditionalIndent
+latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=noAdditionalIndentGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-Global.tex
 git status
 exit

@@ -924,6 +924,19 @@ noAdditionalIndent:
 	\lstinline!\[!  and \lstinline!\]! to receive no additional indentation then
 	you have to specify \emph{both} as \lstinline!1! (the default is \lstinline!0!).
 	If you do not specify both as the same value you may get some interesting results!
+
+# set noAdditionalIndent globally for codeblocks
+noAdditionalIndentGlobal:
+    environments: 0
+    commands: 1
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+
+This specifies noAdditionalIndent globally for code blocks; if this is specified as $1$, 
+then noAdditionalIndent/indentRules will be ignored for these code blocks. 
+
 	\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify
 	      individual rules for certain environments or commands, just
 	      populate \lstinline!indentRules!; see \cref{lst:indentRules}
@@ -943,6 +956,15 @@ indentRules:
 	You will get a warning message in \lstinline!indent.log!; note that you will only
 	get one warning message per command or environment. Further discussion
 	is given in \cref{sec:fieldhierachy}.
+
+In summary, The hierachy is
+\begin{enumerate}
+  \item noAdditionalIndentGlobal
+  \item noAdditionalIndent (on a per-name basis)
+  \item indentRules (on a per-name basis)
+  \item defaultIndent
+\end{enumerate}
+
 
 	\item[\verbitem{indentAfterHeadings}] This field enables the user to specify
 	      indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,

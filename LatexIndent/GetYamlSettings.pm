@@ -320,6 +320,13 @@ sub get_indentation_information{
     # gather information
     my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
+    # global assignments in noAdditionalIndentGlobal
+    my $globalInformation = $indentationAbout."Global";
+    if(defined ${$masterSettings{$globalInformation}}{$YamlName} and ${$masterSettings{$globalInformation}}{$YamlName}==1){
+        $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+        return ${$masterSettings{$globalInformation}}{$YamlName};
+    }
+
     # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
     my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
 

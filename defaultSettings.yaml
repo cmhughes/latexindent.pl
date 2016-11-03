@@ -126,6 +126,15 @@ noAdditionalIndent:
     document: 1
     frame: 0
 
+# set noAdditionalIndent globally for codeblocks
+noAdditionalIndentGlobal:
+    environments: 0
+    commands: 1
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
 # then populate it in here - you can add 

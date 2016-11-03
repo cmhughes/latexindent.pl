@@ -69,5 +69,7 @@ latexindent.pl environments-modify-multiple-line-breaks-verbatim.tex -s -t -m -o
 latexindent.pl -s -l=env-addPercentAfterBegin.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-begin.tex
 latexindent.pl -s -l=env-addPercentAfterBody.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-Body.tex
 latexindent.pl -s -l=env-addPercentAfterEnd.yaml -m -tt environments-simple-trailing-comments.tex -o=environments-simple-trailing-comments-percent-after-End.tex
-
+# global noAdditionalIndent test
+latexindent.pl -s -l=noAdditionalIndentGlobal.yaml environments-simple.tex -o=environments-simple-global.tex
+latexindent.pl -s -l=noAdditionalIndentGlobal.yaml environments-ifelsefi.tex -o=environments-ifelsefi-global.tex
 git status
