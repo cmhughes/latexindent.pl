@@ -36,4 +36,6 @@ latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml,noAddition
 latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=noAdditionalIndentGlobal.yaml
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-not-global.tex
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=noAdditionalIndentGlobal.yaml
+# indentRules
+latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=indentRulesGlobal.yaml
 git status

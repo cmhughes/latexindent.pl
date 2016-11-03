@@ -71,6 +71,8 @@ latexindent.pl environments-third-opt-args.tex -l=addPercent-noAdditionalIndent-
 latexindent.pl environments-third-opt-args-multiple-lines.tex -w -s
 # noAdditionalIndent
 latexindent.pl environments-third-opt-args-mod1.tex -l=noAdditionalIndentGlobal.yaml -s -o=environments-third-opt-args-mod1-global.tex -tt
+# indentRules
+latexindent.pl environments-third-opt-args-mod1.tex -l=indentRulesGlobal.yaml -s -o=environments-third-opt-args-mod1-indent-rules-global.tex -tt
 [[ $silentMode == 0 ]] && set -x
 git status
 exit

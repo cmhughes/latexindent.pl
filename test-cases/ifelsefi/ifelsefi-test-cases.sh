@@ -81,5 +81,7 @@ latexindent.pl -s -m -l=ifelsefi-addPercentAfterBody.yaml ifelsefi-simpletrailin
 latexindent.pl -s -m -l=ifelsefi-addPercentAfterEnd.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterEnd.tex 
 # noAdditionalIndent
 latexindent.pl -s -tt ifelsefi-multiple-nested.tex -l=noAdditionalIndentGlobal.yaml -o=ifelsefi-multiple-nested-global.tex
+# indentRules
+latexindent.pl -s -tt ifelsefi-multiple-nested.tex -l=indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
 git status
 exit

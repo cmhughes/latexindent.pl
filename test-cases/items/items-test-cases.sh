@@ -82,4 +82,6 @@ latexindent.pl -s items12.tex -o=items12-mod0.tex
 latexindent.pl -s items12.tex -m -l=env-mod-lines1.yaml -o=items12-mod1.tex
 # noAdditionalIndent
 latexindent.pl -s -tt items12.tex -o=items12-Global.tex -l=noAdditionalIndentGlobal.yaml
+# indentRules
+latexindent.pl -s -tt items12.tex -o=items12-indent-rules-Global.tex -l=indentRulesGlobal.yaml
 git status

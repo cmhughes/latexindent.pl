@@ -322,9 +322,16 @@ sub get_indentation_information{
 
     # global assignments in noAdditionalIndentGlobal
     my $globalInformation = $indentationAbout."Global";
-    if(defined ${$masterSettings{$globalInformation}}{$YamlName} and ${$masterSettings{$globalInformation}}{$YamlName}==1){
+    if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
         $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
         return ${$masterSettings{$globalInformation}}{$YamlName};
+    } elsif($globalInformation eq "indentRulesGlobal") {
+        if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
+            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+            return ${$masterSettings{$globalInformation}}{$YamlName};
+        } else {
+            $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
+      }
     }
 
     # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*

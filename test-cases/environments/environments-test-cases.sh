@@ -72,4 +72,9 @@ latexindent.pl -s -l=env-addPercentAfterEnd.yaml -m -tt environments-simple-trai
 # global noAdditionalIndent test
 latexindent.pl -s -l=noAdditionalIndentGlobal.yaml environments-simple.tex -o=environments-simple-global.tex
 latexindent.pl -s -l=noAdditionalIndentGlobal.yaml environments-ifelsefi.tex -o=environments-ifelsefi-global.tex
+# global indentRules test
+latexindent.pl -s -l=indentRulesGlobal.yaml environments-simple.tex -o=environments-simple-indent-rules-global.tex
+latexindent.pl -tt -s -l=indentRulesGlobal.yaml environments-ifelsefi.tex -o=environments-ifelsefi-indent-rules-global.tex
+# conflicting global noAdditionalIndent and indentRules 
+latexindent.pl -s -l=indentRulesGlobal.yaml,noAdditionalIndentGlobal.yaml  environments-simple.tex -o=environments-simple-indent-rules-global-conflict.tex
 git status
