@@ -94,6 +94,7 @@ indentRules:
    chapter: " "
    section: " "
    item: "      "
+   myitem: "        "
 
 # set indentRules globally for codeblocks; these need 
 # to be horizontal spaces, if they are to be used
