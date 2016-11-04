@@ -21,7 +21,6 @@ sub pre_print_entire_body{
     # replace all of the IDs with their associated (no-comments) begin, body, end statements
     while(scalar @allObjects>0){
         foreach my $child (@allObjects){
-            ${$child}{test} = "cmh";
             if($pre_print_body =~ m/${$child}{id}/){
                 $pre_print_body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
                 # check for an undisclosed line break

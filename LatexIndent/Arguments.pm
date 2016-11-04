@@ -221,6 +221,7 @@ sub get_arguments_regexp{
                                 )
                              )
                              +                       # at least one of the above
+                             \h*
                              ($lineBreaksAtEnd)
                           )                  
                           /sx;
