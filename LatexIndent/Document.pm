@@ -463,6 +463,18 @@ sub tasks_common_to_each_object{
     return;
 }
 
+sub count_body_line_breaks{
+    my $self = shift;
+
+    my $oldBodyLineBreaks = (defined ${$self}{bodyLineBreaks})? ${$self}{bodyLineBreaks} : 0;
+
+    # count linebreaks in body
+    my $bodyLineBreaks = 0;
+    $bodyLineBreaks++ while(${$self}{body} =~ m/\R/sxg);
+    ${$self}{bodyLineBreaks} = $bodyLineBreaks;
+    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}",'trace') if(${$self}{bodyLineBreaks} != $oldBodyLineBreaks);
+}
+
 sub wrap_up_tasks{
     my $self = shift;
 

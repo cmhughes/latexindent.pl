@@ -88,6 +88,9 @@ sub indent_body{
     # output to the logfile
     $self->logger("Body (${$self}{name}) before indentation:\n${$self}{body}","trace");
 
+    # last minute check for modified bodyLineBreaks
+    $self->count_body_line_breaks if $self->is_m_switch_active;
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         # put any existing horizontal space after the current indentation

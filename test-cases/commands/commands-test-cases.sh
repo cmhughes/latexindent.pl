@@ -22,6 +22,8 @@ do
  esac 
 done
 
+echo "loopmax is $loopmax"
+
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s -w commands-simple.tex
 latexindent.pl -s -w commands-nested.tex
@@ -49,6 +51,7 @@ for (( i=1 ; i <= $loopmax ; i++ ))
 do 
    [[ $silentMode == 0 ]] && set -x 
    latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-mod$i.tex -l=mand-args-mod$i.yaml 
+   latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml 
    [[ $silentMode == 0 ]] && set +x 
 done
 git status
