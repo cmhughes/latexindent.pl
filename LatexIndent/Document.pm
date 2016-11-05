@@ -22,7 +22,7 @@ use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::Item qw/find_items/;
-use LatexIndent::Command qw/find_commands find_commands_with_only_mandatory_arguments find_commands_with_optional_and_mandatory_arguments/;
+use LatexIndent::Command qw/find_commands/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;
