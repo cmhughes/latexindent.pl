@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    commands:
+        CommandStartsOnOwnLine: -1
+        CommandNameFinishesWithLineBreak: -1

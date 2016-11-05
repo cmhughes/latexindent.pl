@@ -54,11 +54,24 @@ sub find_opt_mand_arguments{
         # give unique id
         $arguments->create_unique_id;
 
-        # look for optional arguments
-        $arguments->find_optional_arguments;
+        # determine which comes first, optional or mandatory
+        ${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s;
 
-        # look for mandatory arguments
-        $arguments->find_mandatory_arguments;
+        if($1 eq "\["){
+            $self->logger("Searching for optional arguments, and then mandatory (optional found first)");
+            # look for optional arguments
+            $arguments->find_optional_arguments;
+
+            # look for mandatory arguments
+            $arguments->find_mandatory_arguments;
+        } else {
+            $self->logger("Searching for mandatory arguments, and then optional (mandatory found first)");
+            # look for mandatory arguments
+            $arguments->find_mandatory_arguments;
+
+            # look for optional arguments
+            $arguments->find_optional_arguments;
+        }
 
         # examine *first* child
         #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0 || BeginStartsOnOwnLine == undef
@@ -83,12 +96,14 @@ sub find_opt_mand_arguments{
         #              the child settings are obeyed.
         #              BodyStartsOnOwnLine == 0 will actually be controlled by the last arguments' 
         #              settings of EndFinishesWithLineBreak
-        if( (defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0) 
-            or !(defined ${$self}{BodyStartsOnOwnLine})){
+        if( ${$self}{linebreaksAtEnd}{begin} == 0
+           and ((defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0) 
+                    or !(defined ${$self}{BodyStartsOnOwnLine})) 
+              ){
             if(defined ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine} and ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                 my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                 my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                my $BodyValue = ${$self}{BodyStartsOnOwnLine} ? ${$self}{BodyStartsOnOwnLine} : "-1";
+                my $BodyValue = (defined ${$self}{BodyStartsOnOwnLine}) ? ${$self}{BodyStartsOnOwnLine} : "-1";
                 $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
 
                 # possibly add a comment at the end of the begin statement
@@ -173,22 +188,32 @@ sub get_arguments_regexp{
                                   \[                                         
                                       (?:
                                           (?!
-                                              (?:(?<!\\)\[)                          # anything but a [
+                                              (?:(?<!\\)\])                          # anything except ]
                                           ).
-                                      )*?                                            # not including [, but \[ ok
+                                      )*?(?:(?<!\\)\[|(?<!\\)\{).*?                  # up to a [ or }
                                   (?<!\\)                                            # not immediately pre-ceeded by \
                                  \]                                                  # [optional arguments]
-                             )+                                                      # at least one lot of this
-                             (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*       
-                             (?<!\\)\{                                               # {
-                                     (?:
-                                         (?!
-                                              (?:(?<!\\)\})                          # anything except }
-                                         ).
-                                     )*?(?:(?<!\\)\[|(?<!\\)\{).*?                   # up to a [ or }
-                             (?<!\\)\}                                               # }
+                             )                                                       
+                           )
+                           # end of NOT
+                           # MORE NOT
+                           (?!
+                             .*
+                             (?:
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*       
+                                (?<!\\)                                               # not immediately pre-ceeded by \
+                                \{                                                    # {
+                                        (?:
+                                            (?!
+                                                 (?:(?<!\\)\})                        # anything except }
+                                            ).
+                                        )*?(?:(?<!\\)\[|(?<!\\)\{).*?                 # up to a [ or }
+                                (?<!\\)                                               # not immediately pre-ceeded by \
+                                \}                                                    # }
+                            )
                           )
                           # end of NOT
+                          # If we make it this far, we start matching
                           (                          # capture into $1
                              (?:                  
                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 

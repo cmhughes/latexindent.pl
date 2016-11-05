@@ -26,8 +26,10 @@ sub find_commands{
                                     #          or
                                     #          @
                   (
-                  [^\\|(?<!\\)\{]*? # not \\ or {, but \{ is ok
+                    [^\\|(?<!\\)\{]*? # not \\ or {, but \{ is ok
                   )                
+                  \h*
+                  (\R*)?
                   ($optAndMandRegExp)
                   (\R)?
                 /sx;
@@ -39,23 +41,25 @@ sub find_commands{
       # log file output
       $self->logger("command found: $2",'heading');
 
-      # store the arguments
-      my $arguments = $3;
-
       # create a new command object
-      my $command = LatexIndent::Command->new(begin=>$1.$2,
+      my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()),
                                               name=>$2,
-                                              body=>$3,
+                                              body=>$4,
                                               end=>q(),
                                               linebreaksAtEnd=>{
-                                                end=>$6?1:0,
+                                                begin=>$3?1:0,
+                                                end=>$7?1:0,
                                               },
                                               modifyLineBreaksYamlName=>"commands",
                                               regexp=>$commandRegExp,
-                                              endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                              endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                              aliases=>{
+                                                # begin statements
+                                                BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
+                                                # body statements
+                                                BodyStartsOnOwnLine=>"CommandNameFinishesWithLineBreak",
+                                              },
                                             );
-
-      ${${$command}{linebreaksAtEnd}}{begin}= ($arguments =~ m/^\h*\R+/s)?1:0;
 
       # the settings and storage of most objects has a lot in common
       $self->get_settings_and_store_new_object($command);
@@ -75,14 +79,6 @@ sub create_unique_id{
 
     $commandCounter++;
     ${$self}{id} = "${$self->get_tokens}{command}$commandCounter";
-    return;
-}
-
-sub last_body_check{
-    my $self = shift;
-
-    $self->logger("Last body check for Command object (${$self}{name}) to ensure that linebreaksAtEnd is as it should be",'heading');
-    ${${$self}{linebreaksAtEnd}}{begin} = (${$self}{body} =~ m/^\h*\R+/s)?1:0;
     return;
 }
 
