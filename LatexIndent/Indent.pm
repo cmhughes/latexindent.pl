@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation last_body_check/;
 our %familyTree;
 
 sub push_family_tree_to_indent{
@@ -79,6 +79,10 @@ sub get_surrounding_indentation{
 
 }
 
+sub last_body_check{
+    return;
+}
+
 sub indent_body{
     my $self = shift;
 
@@ -91,9 +95,13 @@ sub indent_body{
     # last minute check for modified bodyLineBreaks
     $self->count_body_line_breaks if $self->is_m_switch_active;
 
+    # the command object can cause difficulties with line breaks at the beginning of the body
+    $self->last_body_check if $self->is_m_switch_active;
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         # put any existing horizontal space after the current indentation
+        $self->logger("Entire body of ${$self}{name} receives indendentation","trace");
         ${$self}{body} =~ s/^(\h*)/$indentation$1/mg;  # add indentation
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
         if(${$self}{body} =~ m/

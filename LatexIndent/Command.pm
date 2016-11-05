@@ -78,4 +78,12 @@ sub create_unique_id{
     return;
 }
 
+sub last_body_check{
+    my $self = shift;
+
+    $self->logger("Last body check for Command object (${$self}{name}) to ensure that linebreaksAtEnd is as it should be",'heading');
+    ${${$self}{linebreaksAtEnd}}{begin} = (${$self}{body} =~ m/^\h*\R+/s)?1:0;
+    return;
+}
+
 1;
