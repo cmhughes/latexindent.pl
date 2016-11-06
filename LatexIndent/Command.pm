@@ -72,6 +72,27 @@ sub tasks_particular_to_each_object{
 
     # search for arguments
     $self->find_opt_mand_arguments;
+    
+    # if the last argument finishes with a linebreak, it won't get interpreted at 
+    # the right time (see test-cases/commands/commands-one-line-nested-simple-mod1.tex for example)
+    # so this little bit fixes it
+    if(${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} and ${${$self}{linebreaksAtEnd}}{end} == 0 
+        and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
+        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 ){
+
+        $self->logger("Adjusting last argument in command, ${$self}{name}","trace");
+        # update the Command object
+        ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
+        ${$self}{replacementText} .= "\n";
+
+        # update the argument object
+        ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
+        ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = 0;
+        ${${${${$self}{children}}[0]}{children}[-1]}{replacementText} =~ s/\R$//s;
+
+        # output to log file
+        $self->logger(Dumper(${${${$self}{children}}[0]}{children}[-1]),"trace");
+    }
 }
 
 sub create_unique_id{

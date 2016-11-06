@@ -182,6 +182,7 @@ sub get_arguments_regexp{
                         qr/
                           # NOT
                           (?!
+                             .*
                              (?:
                                  (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*  # 0 or more h-space, blanklines, trailing comments
                                   (?<!\\)                                           # not immediately pre-ceeded by \
