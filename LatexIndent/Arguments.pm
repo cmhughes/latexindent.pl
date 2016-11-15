@@ -89,6 +89,13 @@ sub find_opt_mand_arguments{
             }
         }
 
+        # situation: preserveBlankLines is active, so the body may well begin with a blank line token
+        #            which means that ${$self}{linebreaksAtEnd}{begin} *should be* 1
+        if(${${${$arguments}{children}}[0]}{body} =~ m/^($blankLineToken)/){
+            $self->logger("Updating {linebreaksAtEnd}{begin} for ${$self}{name} as $blankLineToken or blank line found at beginning of argument child");
+            ${$self}{linebreaksAtEnd}{begin} = 1 
+          }
+
         # examine *first* child
         #   situation: parent BodyStartsOnOwnLine == 0, but first child has BeginStartsOnOwnLine == 1
         #   problem: the *body* of parent actually starts after the arguments

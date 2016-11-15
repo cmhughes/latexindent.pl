@@ -80,12 +80,18 @@ sub tasks_particular_to_each_object{
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
         and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 ){
 
-        $self->logger("Adjusting last argument in command, ${$self}{name}","trace");
         # update the Command object
+        $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}","trace");
         ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
         ${$self}{replacementText} .= "\n";
 
         # update the argument object
+        $self->logger("Adjusting argument object in command, ${$self}{name}","trace");
+        ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
+        ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
+
+        # update the last mandatory/optional argument
+        $self->logger("Adjusting last argument in command, ${$self}{name}","trace");
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
         ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = 0;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText} =~ s/\R$//s;

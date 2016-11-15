@@ -1,9 +1,9 @@
 #!/bin/bash
-# set verbose mode, 
-# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
+# 
+# i=22 && vim -p commands-one-line.tex commands-one-line-mod$i.tex && vim -p commands-one-line.tex commands-one-line-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-one-line-nested-simple.tex commands-one-line-nested-simple-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-no-condense-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex
 
 silentMode=0
-loopmax=16
+loopmax=32
 # check flags, and change defaults appropriately
 while getopts 'sl:' OPTION
 do
@@ -61,6 +61,7 @@ do
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-mod$i.tex -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-no-condense-mod$i.tex -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml,noChangeCommandBody.yaml
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml 
+   # note the ChangeCommandBody.yaml in the following, which changes the behaviour of linebreaks at the end of a command
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
    [[ $silentMode == 0 ]] && set +x 
 done

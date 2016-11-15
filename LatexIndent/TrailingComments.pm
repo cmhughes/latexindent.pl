@@ -63,7 +63,11 @@ sub put_trailing_comments_back_in{
     return unless( @trailingComments > 0 );
 
     $self->logger("Returning trailing comments to body",'heading');
-    foreach my $comment (@trailingComments){
+
+    # loop through trailing comments in reverse so that, for example, 
+    # latexindenttrailingcomment1 doesn't match the first 
+    # part of latexindenttrailingcomment18, which would result in an 8 left over (bad)
+    while( my $comment = pop @trailingComments){
       my $trailingcommentID = ${$comment}{id};
       my $trailingcommentValue = ${$comment}{value};
       if(${$self}{body} =~ m/%$trailingcommentID
