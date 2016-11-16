@@ -449,6 +449,9 @@ sub tasks_common_to_each_object{
     # give unique id
     $self->create_unique_id;
 
+    # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
+    ${$self}{id} .= ${$self->get_tokens}{endOfToken};
+
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     ${$self}{replacementText} = ${$self}{id};
 

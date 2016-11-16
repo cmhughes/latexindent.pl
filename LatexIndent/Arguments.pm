@@ -166,7 +166,7 @@ sub create_unique_id{
     my $self = shift;
 
     $ArgumentCounter++;
-    ${$self}{id} = "${$self->get_tokens}{arguments}$ArgumentCounter";
+    ${$self}{id} = "${$self->get_tokens}{arguments}$ArgumentCounter${$self->get_tokens}{endOfToken}";
     return;
 }
 

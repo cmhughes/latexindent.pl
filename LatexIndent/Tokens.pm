@@ -16,6 +16,7 @@ our %tokens = (
                 verbatim=>"LATEX-INDENT-VERBATIM",
                 indentation=>"LATEX-INDENT-INDENTATION",
                 command=>"LATEX-INDENT-COMMAND",
+                endOfToken=>"-END",
               );
 
 sub get_tokens{

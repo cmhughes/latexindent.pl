@@ -1,11 +1,22 @@
 #!/bin/bash
+#
+# sample usage:
+#   non-silent
+#       commands-test-cases.sh
+#   silent mode
+#       commands-test-cases.sh -s
+#   silent mode, loopmax 5
+#       commands-test-cases.sh -s -l 5
+#   silent mode, loopmin is 13, loopmax is 13
+#       commands-test-cases.sh -s -o 13
 # 
 # i=22 && vim -p commands-one-line.tex commands-one-line-mod$i.tex && vim -p commands-one-line.tex commands-one-line-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-one-line-nested-simple.tex commands-one-line-nested-simple-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-no-condense-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex
 
 silentMode=0
+loopmin=1
 loopmax=32
 # check flags, and change defaults appropriately
-while getopts 'sl:' OPTION
+while getopts 'sl:o:' OPTION
 do
  case $OPTION in 
   s)    
@@ -13,6 +24,12 @@ do
    silentMode=1
    ;;
   l)
+    # change loopmax
+    loopmax=$OPTARG
+   ;;
+  o)
+    # only do this one in the loop
+    loopmin=$OPTARG
     loopmax=$OPTARG
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
@@ -22,6 +39,7 @@ do
  esac 
 done
 
+echo "loopmin is $loopmin"
 echo "loopmax is $loopmax"
 
 [[ $silentMode == 0 ]] && set -x 
@@ -47,7 +65,7 @@ latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=indentRulesGlobal.yaml
 # modifyLineBreaks experiments
 [[ $silentMode == 0 ]] && set +x 
-for (( i=1 ; i <= $loopmax ; i++ )) 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    [[ $silentMode == 0 ]] && set -x 
    # add line breaks
@@ -63,6 +81,11 @@ do
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml 
    # note the ChangeCommandBody.yaml in the following, which changes the behaviour of linebreaks at the end of a command
    latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
+   # multiple commands
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-mod$i.tex -l=mand-args-mod$i.yaml -g=one.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml -g=two.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml,noAdditionalIndentGlobal.yaml -g=three.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
    [[ $silentMode == 0 ]] && set +x 
 done
 git status

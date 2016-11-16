@@ -1,0 +1,3 @@
+noAdditionalIndent:
+    textbf:
+        mandatoryArguments: 1

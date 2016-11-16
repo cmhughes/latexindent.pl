@@ -935,7 +935,7 @@ noAdditionalIndentGlobal:
     items: 0
 
 This specifies noAdditionalIndent globally for code blocks; if this is specified as $1$, 
-then noAdditionalIndent/indentRules will be ignored for these code blocks. 
+then noAdditionalIndent and indentRules will be ignored for these code blocks. 
 
 # set indentRules globally for codeblocks; these need 
 # to be horizontal spaces, if they are to be used
@@ -969,10 +969,10 @@ indentRules:
 
 In summary, The hierachy is
 \begin{enumerate}
-  \item noAdditionalIndentGlobal
   \item noAdditionalIndent (on a per-name basis)
-  \item indentRulesGlobal
+  \item noAdditionalIndentGlobal
   \item indentRules (on a per-name basis)
+  \item indentRulesGlobal
   \item defaultIndent
 \end{enumerate}
 
