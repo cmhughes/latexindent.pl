@@ -1,0 +1,28 @@
+before text
+\@n@@ewlevel{          % 4
+	body goes here
+	\my_com_mand{         % 2
+		argument text
+		argument text
+		argument text
+		\nested*[        % 1
+			first opt-arg]
+		{
+			first mand arg
+			\fo*urthcommand{
+				fourth command argument body
+				fourth command argument body
+				fourth command argument body
+			}
+		}
+	} after text
+	\anothercommand{    % 3
+		another argument text
+		another argument text
+		another argument text
+	}% after text
+}
+
+*{
+11
+}{c}

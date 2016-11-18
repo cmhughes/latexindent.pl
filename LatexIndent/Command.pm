@@ -21,12 +21,9 @@ sub find_commands{
 
     # store the regular expresssion for matching and replacing 
     my $commandRegExp = qr/
-                  (\\(?!\[|\])|@)   # either: 
-                                    #   \\ but not \\[ or \\]
-                                    #          or
-                                    #          @
+                  (\\)   
                   (
-                    [^\\|(?<!\\)\{]*? # not \\ or {, but \{ is ok
+                   [a-zA-Z@\*0-9_]+? # lowercase|uppercase letters, @, *, numbers
                   )                
                   \h*
                   (\R*)?

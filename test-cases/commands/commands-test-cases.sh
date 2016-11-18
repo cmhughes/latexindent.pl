@@ -93,4 +93,6 @@ latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multip
 latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod2.tex -l=command-begin-mod2.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-begin-mod3.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-begin-mod3.yaml,unprotect-blank-lines.yaml
+# special characters test case
+latexindent.pl commands-four-special-characters.tex -o=commands-four-special-characters-default.tex
 git status

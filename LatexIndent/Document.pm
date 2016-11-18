@@ -492,6 +492,9 @@ sub wrap_up_tasks{
     # remove the environment block, and replace with unique ID
     ${$self}{body} =~ s/${$child}{regexp}/${$child}{replacementText}/;
 
+    # there's no need to store the regexp, and it makes the logfile unnecessarily big
+    delete ${${${$self}{children}}[-1]}{regexp};
+
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent;
 

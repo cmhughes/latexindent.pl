@@ -153,6 +153,9 @@ sub find_opt_mand_arguments{
         # remove the environment block, and replace with unique ID
         ${$self}{body} =~ s/${$arguments}{regexp}/${$arguments}{replacementText}/;
 
+        # delete the regexp, as there's no need for it
+        delete ${${${$self}{children}}[-1]}{regexp};
+
         $self->logger(Dumper(\%{$arguments}),'trace');
         $self->logger("replaced with ID: ${$arguments}{id}");
     } else {

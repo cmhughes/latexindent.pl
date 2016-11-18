@@ -18,30 +18,25 @@ sub find_environments{
                 (
                     \\begin\{
                             (
-                             (?:               # cluster-only (), don't capture 
-                                 (?!           # don't include \begin in the body
-                                   (?:\\begin) # cluster-only (), don't capture
-                                 ).            # any character, but not \\begin
-                             )
-                             *?
-                            )                  # environment name captured into $2
-                           \}                  # \begin{<something>} statement
-                           \h*                 # horizontal space
-                           (\R*)?              # possible line breaks (into $3)
-                )                              # begin statement captured into $1
+                             [a-zA-Z@\*0-9_]+ # lowercase|uppercase letters, @, *, numbers
+                            )                 # environment name captured into $2
+                           \}                 # \begin{<something>} statement
+                           \h*                # horizontal space
+                           (\R*)?             # possible line breaks (into $3)
+                )                             # begin statement captured into $1
                 (
-                    (?:                        # cluster-only (), don't capture 
-                        (?!                    # don't include \begin in the body
-                            (?:\\begin)        # cluster-only (), don't capture
-                        ).                     # any character, but not \\begin
-                    )*?                        # non-greedy
-                            (\R*)?             # possible line breaks (into $5)
-                )                              # environment body captured into $4
+                    (?:                       # cluster-only (), don't capture 
+                        (?!                   # don't include \begin in the body
+                            (?:\\begin)       # cluster-only (), don't capture
+                        ).                    # any character, but not \\begin
+                    )*?                       # non-greedy
+                            (\R*)?            # possible line breaks (into $5)
+                )                             # environment body captured into $4
                 (
-                    \\end\{\2\}                # \end{<something>} statement
-                    (\h*)?                     # possibly followed by horizontal space
-                )                              # captured into $6
-                (\R)?                          # possibly followed by a line break 
+                    \\end\{\2\}               # \end{<something>} statement
+                    (\h*)?                    # possibly followed by horizontal space
+                )                             # captured into $6
+                (\R)?                         # possibly followed by a line break 
                 /sx;
 
     # trailing comment regexp
