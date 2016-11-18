@@ -88,4 +88,9 @@ do
    latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
    [[ $silentMode == 0 ]] && set +x 
 done
+# testing the linebreak immediately before, e.g, \mycommand
+latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod1.tex -l=command-begin-mod1.yaml
+latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod2.tex -l=command-begin-mod2.yaml
+latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-begin-mod3.yaml
+latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-begin-mod3.yaml,unprotect-blank-lines.yaml
 git status

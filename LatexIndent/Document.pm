@@ -340,6 +340,8 @@ sub indent_children_recursively{
                         # by default, assume that no trailing comment token is needed
                         my $trailingCommentToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
+                            $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)");
+                            ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
                             $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)");
                             $trailingCommentToken = "%".$self->add_comment_symbol;
                         } else {
@@ -349,6 +351,9 @@ sub indent_children_recursively{
                         # the trailing comment/linebreak magic
                         ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
                         ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+
+                        # remove surrounding indentation ahead of %
+                        ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $self->get_blank_line_token;
