@@ -53,6 +53,8 @@ latexindent.pl -s -w commands-five-nested.tex
 latexindent.pl -s -w commands-five-nested-mk1.tex
 latexindent.pl -s -w commands-six-nested.tex
 latexindent.pl -s -w commands-six-nested-mk1.tex
+latexindent.pl -s -w trailingComments.tex
+latexindent.pl -s -w bracketTest.tex
 # noAdditionalIndent
 latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
 latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
@@ -94,5 +96,9 @@ latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multip
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-begin-mod3.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-begin-mod3.yaml,unprotect-blank-lines.yaml
 # special characters test case
-latexindent.pl commands-four-special-characters.tex -o=commands-four-special-characters-default.tex
+latexindent.pl commands-four-special-characters.tex -o=commands-four-special-characters-default.tex -s
+# multiple brace test
+latexindent.pl -s -w multipleBraces.tex
+latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml -o multipleBraces-mod1.tex
+latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml -o multipleBraces-xapptocmd-none-mod1.tex
 git status

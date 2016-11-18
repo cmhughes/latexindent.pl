@@ -25,6 +25,7 @@ latexindent.pl -w -s -t ifelsefi-first.tex
 latexindent.pl -w -s -t ifelsefi-simple-nested.tex
 latexindent.pl -w -s -t ifelsefi-multiple-nested.tex
 latexindent.pl -w -s -t ifelsefiSmall.tex
+latexindent.pl -w -s -t conditional.tex
 # modify line breaks
 latexindent.pl ifelsefi-first.tex -s -t -m -l=ifelsefi-mod-lines1.yaml -o=ifelsefi-first-mod1.tex
 latexindent.pl ifelsefi-first.tex -s -t -m -l=ifelsefi-mod-lines2.yaml -o=ifelsefi-first-mod2.tex
