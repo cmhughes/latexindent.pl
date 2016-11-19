@@ -257,14 +257,14 @@ sub get_every_or_custom_value{
   }
 
   # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
-  my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
+  my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
-  # name of the object
-  my $name = ${$self}{name};
+  # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+  my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
 
   # these variables just ease the notation what follows
-  my $everyValue = ${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$toBeAssignedToAlias};
-  my $customValue = ${${${$masterSettings{modifyLineBreaks}}{$modifyLineBreaksYamlName}}{$name}}{$toBeAssignedToAlias};
+  my $everyValue = ${${$masterSettings{modifyLineBreaks}}{$YamlName}}{$toBeAssignedToAlias};
+  my $customValue = ${${${$masterSettings{modifyLineBreaks}}{$YamlName}}{$name}}{$toBeAssignedToAlias};
 
   # check for the *custom* value
   if (defined $customValue){

@@ -11,36 +11,8 @@
 #       commands-test-cases.sh -s -o 13
 # 
 # i=22 && vim -p commands-one-line.tex commands-one-line-mod$i.tex && vim -p commands-one-line.tex commands-one-line-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-one-line-nested-simple.tex commands-one-line-nested-simple-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-no-condense-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex
-
-silentMode=0
-loopmin=1
 loopmax=32
-# check flags, and change defaults appropriately
-while getopts 'sl:o:' OPTION
-do
- case $OPTION in 
-  s)    
-   echo "Silent mode on...next thing you'll see is git status."
-   silentMode=1
-   ;;
-  l)
-    # change loopmax
-    loopmax=$OPTARG
-   ;;
-  o)
-    # only do this one in the loop
-    loopmin=$OPTARG
-    loopmax=$OPTARG
-   ;;
-  ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
-        exit 2
-        ;;
- # end case
- esac 
-done
-
-echo "loopmin is $loopmin"
-echo "loopmax is $loopmax"
+. ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s -w commands-simple.tex
@@ -101,4 +73,5 @@ latexindent.pl commands-four-special-characters.tex -o=commands-four-special-cha
 latexindent.pl -s -w multipleBraces.tex
 latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml -o multipleBraces-mod1.tex
 latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml -o multipleBraces-xapptocmd-none-mod1.tex
+latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex
 git status

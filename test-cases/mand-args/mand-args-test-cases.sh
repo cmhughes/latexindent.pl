@@ -4,25 +4,8 @@
 #
 # hugely useful, for example:
 #       vim mand-args-test-cases.sh && ./mand-args-test-cases.sh && vim -p environments-second-mand-args.tex environments-second-mand-args-mod2.tex
-silentMode=0
-# check flags, and change defaults appropriately
-while getopts 's' OPTION
-do
- case $OPTION in 
-  s)    
-   echo "Silent mode on...next thing you'll see is git status."
-   silentMode=1
-   ;;
-  ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
-        exit 2
-        ;;
- # end case
- esac 
-done
-
 loopmax=16
-#[[ $# -eq 1 ]] &&  loopmax=$1  # mand-args-test-cases.sh <maxloop>
-#echo "mand-args-test-cases.sh will run with loopmax = $loopmax"
+. ../common.sh
 
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
@@ -31,7 +14,7 @@ loopmax=16
 latexindent.pl environments-first-mand-args.tex -m  -tt -s -w
 # loop through mand-args-mod<i>.yaml, from i=1...16
 [[ $silentMode == 0 ]] && set +x 
-for (( i=1 ; i <= $loopmax ; i++ )) 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    [[ $silentMode == 0 ]] && set -x 
    # one mand arg
