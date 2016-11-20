@@ -54,4 +54,8 @@ cd ../items/
 cd ../commands/
 [[ $silentMode == 1 ]] && echo "./commands/commands-test-cases.sh"
 ./commands-test-cases.sh $flagToPass
+# key equals value braces
+cd ../keyEqualsValueBraces/
+[[ $silentMode == 1 ]] && echo "./keyEqualsValueBraces/key-equals-values-test-cases.sh"
+./key-equals-values-test-cases.sh
 exit

@@ -7,14 +7,12 @@ use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_commands/;
+our @EXPORT_OK = qw/get_command_regexp/;
 our $commandCounter;
 
-sub find_commands{
+sub get_command_regexp{
 
     my $self = shift;
-
-    $self->logger("Searching for commands with optional and mandatory arguments",'heading');
 
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
@@ -31,37 +29,7 @@ sub find_commands{
                   (\R)?
                 /sx;
 
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
-    while( ${$self}{body} =~ m/$commandRegExp\h*($trailingCommentRegExp)?/){
-      # log file output
-      $self->logger("command found: $2",'heading');
-
-      # create a new command object
-      my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()),
-                                              name=>$2,
-                                              body=>$4,
-                                              end=>q(),
-                                              linebreaksAtEnd=>{
-                                                begin=>$3?1:0,
-                                                end=>$7?1:0,
-                                              },
-                                              modifyLineBreaksYamlName=>"commands",
-                                              regexp=>$commandRegExp,
-                                              endImmediatelyFollowedByComment=>$7?0:($8?1:0),
-                                              aliases=>{
-                                                # begin statements
-                                                BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
-                                                # body statements
-                                                BodyStartsOnOwnLine=>"CommandNameFinishesWithLineBreak",
-                                              },
-                                            );
-
-      # the settings and storage of most objects has a lot in common
-      $self->get_settings_and_store_new_object($command);
-    } 
-    return;
+    return $commandRegExp;
 }
 
 sub tasks_particular_to_each_object{

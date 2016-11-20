@@ -16,6 +16,7 @@ our %tokens = (
                 verbatim=>"LATEX-INDENT-VERBATIM",
                 indentation=>"LATEX-INDENT-INDENTATION",
                 command=>"LATEX-INDENT-COMMAND",
+                key_equals_values_braces=>"LATEX-INDENT-KEY-VALUE-BRACES",
                 endOfToken=>"-END",
               );
 

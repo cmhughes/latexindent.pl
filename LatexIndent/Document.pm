@@ -22,7 +22,9 @@ use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::Item qw/find_items/;
-use LatexIndent::Command qw/find_commands/;
+use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
+use LatexIndent::Command qw/get_command_regexp/;
+use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;
@@ -129,10 +131,10 @@ sub find_objects_recursively{
     # search for ifElseFi blocks
     $self->logger('looking for IFELSEFI');
     $self->find_ifelsefi;
-
-    # search for ifElseFi blocks
-    $self->logger('looking for COMMANDS');
-    $self->find_commands;
+    
+    # search for commands with arguments
+    $self->logger('looking for COMMANDS and key = {value}');
+    $self->find_commands_or_key_equals_values_braces;
 
     # if there are no children, return
     if(%{$self}{children}){
@@ -458,7 +460,7 @@ sub tasks_common_to_each_object{
     ${$self}{id} .= ${$self->get_tokens}{endOfToken};
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
-    ${$self}{replacementText} = ${$self}{id};
+    $self->get_replacement_text;
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
@@ -469,6 +471,14 @@ sub tasks_common_to_each_object{
     $self->modify_line_breaks_body_and_end;
 
     return;
+}
+
+sub get_replacement_text{
+    my $self = shift;
+
+    # the replacement text can be just the ID, but the ID might have a line break at the end of it
+    ${$self}{replacementText} = ${$self}{id};
+
 }
 
 sub count_body_line_breaks{

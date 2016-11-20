@@ -6,7 +6,7 @@
 silentMode=0
 loopmin=1
 # check flags, and change defaults appropriately
-while getopts 'sl:o:' OPTION
+while getopts 'csl:o:' OPTION
 do
  case $OPTION in 
   s)    
@@ -22,6 +22,10 @@ do
     loopmin=$OPTARG
     loopmax=$OPTARG
    ;;
+  c)
+    # show the loop counter
+    showCounter=1
+  ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
         ;;
