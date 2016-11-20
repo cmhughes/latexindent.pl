@@ -4,4 +4,5 @@ loopmax=0
 
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s -w keyEqualsValueFirst.tex 
+latexindent.pl -s -w braceTestsmall.tex
 git status
