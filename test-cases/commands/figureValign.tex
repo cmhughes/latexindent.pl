@@ -14,12 +14,14 @@
 	% measure the height of the body
 	\begin{lrbox}{\vabox}
 		\BODY%
-	\end{lrbox}%
+	\end{lrbox}
+	%
 	% set the height of the minipage box
 	\newlength{\vamaxheight}
 	\setlength{\vamaxheight}{\ht\vabox}
 	% output the body, which now contains the new height :)
-	\noindent\makebox[\linewidth][c]{\mbox{}\hfill\BODY\hfill\mbox{}}%
+	\noindent\makebox[\linewidth][c]{\mbox{}\hfill\BODY\hfill\mbox{}}
+	%
 }
 
 \begin{document}
@@ -28,95 +30,113 @@
 	\begin{minipage}[b][][b]{.10\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image-a}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\begin{minipage}[b][][t]{.15\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image-b}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\begin{minipage}[b][][t]{.20\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image-c}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\begin{minipage}[b][][c]{.10\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\begin{minipage}[b][][t]{.20\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image}
-	\end{minipage}%
+	\end{minipage}
+	%
 }%
 
 \noindent
 \begin{minipage}[b][\ht\vabox][b]{.10\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{example-image-a}
-\end{minipage}%
+\end{minipage}
+%
 \hfill
 \begin{minipage}[b][\ht\vabox][t]{.15\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{example-image-b}
-\end{minipage}%
+\end{minipage}
+%
 \hfill
 \begin{minipage}[b][\ht\vabox][t]{.20\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{example-image-c}
-\end{minipage}%
+\end{minipage}
+%
 \hfill
 \begin{minipage}[b][\ht\vabox][c]{.10\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{example-image}
-\end{minipage}%
+\end{minipage}
+%
 \hfill
 \begin{minipage}[b][\ht\vabox][t]{.20\textwidth}
 	\centering
 	\includegraphics[width=\textwidth]{example-image}
-\end{minipage}%
+\end{minipage}
+%
 \par\lipsum
 
-
 \begin{verticallyaligned}
-	\noindent\begin{minipage}[b][\vamaxheight][b]{.30\textwidth}
-	\centering
-	\includegraphics[width=\textwidth]{example-image-a}
-	\end{minipage}%
+	\noindent
+	\begin{minipage}[b][\vamaxheight][b]{.30\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-a}
+	\end{minipage}
+	%
 	\hfill
 	\begin{minipage}[b][\vamaxheight][t]{.10\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image-b}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\hfill
 	\begin{minipage}[b][\vamaxheight][t]{.20\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image-c}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\hfill
 	\begin{minipage}[b][\vamaxheight][c]{.20\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image}
-	\end{minipage}%
+	\end{minipage}
+	%
 	\hfill
 	\begin{minipage}[b][\vamaxheight][t]{.20\textwidth}
 		\centering
 		\includegraphics[width=\textwidth]{example-image}
-	\end{minipage}%
+	\end{minipage}
+	%
 \end{verticallyaligned}
 
 \lipsum[1]
 
 \begin{figure}
 	\begin{verticallyaligned}
-		\noindent\begin{minipage}[b][\vamaxheight][c]{.50\textwidth}
-		\centering
-		\includegraphics[width=\textwidth]{example-image}
-		\caption{}
-		\end{minipage}%
+		\noindent
+		\begin{minipage}[b][\vamaxheight][c]{.50\textwidth}
+			\centering
+			\includegraphics[width=\textwidth]{example-image}
+			\caption{}
+		\end{minipage}
+		%
 		\hfill
 		\begin{minipage}[b][\vamaxheight][t]{.40\textwidth}
 			\centering
 			\includegraphics[width=\textwidth]{example-image}
 			\caption{}
-		\end{minipage}%
+		\end{minipage}
+		%
 	\end{verticallyaligned}
 	\caption{}
 \end{figure}

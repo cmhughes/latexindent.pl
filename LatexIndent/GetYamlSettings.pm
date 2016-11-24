@@ -196,7 +196,6 @@ sub get_indentation_settings_for_this_object{
         # store the settings
         %{${previouslyFoundSettings}{$storageName}} = (
                         indentation=>$indentation,
-                        modLineBreaksSwitch=>${${$self}{switches}}{modifyLineBreaks},
                         BeginStartsOnOwnLine=>${$self}{BeginStartsOnOwnLine},
                         BodyStartsOnOwnLine=>${$self}{BodyStartsOnOwnLine},
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},

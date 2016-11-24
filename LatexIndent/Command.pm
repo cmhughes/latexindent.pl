@@ -37,6 +37,17 @@ sub tasks_particular_to_each_object{
 
     # search for arguments
     $self->find_opt_mand_arguments;
+
+    # situation: ${${$self}{linebreaksAtEnd}}{end} == 1 and the last argument specifies
+    # EndFinishesWithLineBreaks = 0 (see test-cases/commands/just-one-command-mod10.tex)
+    if(${${$self}{linebreaksAtEnd}}{end} == 1 
+        and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
+        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 0
+        ){
+          $self->logger("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0","trace");
+          ${${$self}{linebreaksAtEnd}}{end} = 0;
+          ${$self}{EndFinishesWithLineBreak} = 0;
+        }
     
     # if the last argument finishes with a linebreak, it won't get interpreted at 
     # the right time (see test-cases/commands/commands-one-line-nested-simple-mod1.tex for example)
@@ -64,6 +75,25 @@ sub tasks_particular_to_each_object{
         # output to log file
         $self->logger(Dumper(${${${$self}{children}}[0]}{children}[-1]),"trace");
     }
+
+    # situation: ${${$self}{linebreaksAtEnd}}{end} == 1 and the last argument has added 
+    # a line break, which can result in a bogus blank line (see test-cases/commands/just-one-command.tex with mand-args-mod1.yaml)
+    if(${${$self}{linebreaksAtEnd}}{end} == 1 
+        and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
+        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 
+        and ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~m/\R$/s){
+    
+        # last argument adjustment
+        $self->logger("Adjusting last argument in command, ${$self}{name} to avoid double line break","trace");
+        ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~s/\R$//s;
+        ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
+
+        # argument object adjustment
+        $self->logger("Adjusting argument object in command, ${$self}{name} to avoid double line break","trace");
+        ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
+        ${${${$self}{children}}[0]}{body}=~s/\R$//s;
+    }
+
 }
 
 sub create_unique_id{

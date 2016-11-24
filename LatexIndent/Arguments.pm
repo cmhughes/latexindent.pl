@@ -31,7 +31,7 @@ sub find_opt_mand_arguments{
     my $optAndMandRegExp = $self->get_arguments_regexp(mode=>"lineBreaksAtEnd");
 
     if(${$self}{body} =~ m/^$optAndMandRegExp\h*($trailingCommentRegExp)?/){
-        $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading');
+        $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading.trace');
 
         # create a new Arguments object
         # The arguments object is a little different to most

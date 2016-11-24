@@ -123,8 +123,12 @@ sub modify_line_breaks_body_and_end{
               }
               
               # modified end statement
-              ${$self}{body} .= "$trailingCommentToken\n";
-              ${$self}{linebreaksAtEnd}{body} = 1;
+              if(${$self}{body} =~ m/^\h*$/s and ${$self}{BodyStartsOnOwnLine} >=1 ){
+                ${$self}{linebreaksAtEnd}{body} = 0;
+              } else {
+                ${$self}{body} .= "$trailingCommentToken\n";
+                ${$self}{linebreaksAtEnd}{body} = 1;
+              }
           } elsif (${$self}{EndStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
 
@@ -187,6 +191,7 @@ sub adjust_line_breaks_end_parent{
         $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1",'trace');
         ${$self}{linebreaksAtEnd}{body}=1;
       }
+
 }
 
 1;

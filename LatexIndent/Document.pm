@@ -182,12 +182,12 @@ sub find_surrounding_indentation_for_children{
     $self->logger(Dumper(\%familyTree),'trace');
 
     while( my ($idToSearch,$ancestorToSearch) = each %familyTree){
-          $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading');
+          $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading.trace');
           foreach(@{${$ancestorToSearch}{ancestors}}){
-              $self->logger("ID: ${$_}{ancestorID}");
+              $self->logger("ID: ${$_}{ancestorID}",'trace');
               my $tmpIndentation = ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
               $tmpIndentation = $tmpIndentation ? $tmpIndentation : q(); 
-              $self->logger("indentation: '$tmpIndentation'");
+              $self->logger("indentation: '$tmpIndentation'",'trace');
               }
           }
 
@@ -202,17 +202,17 @@ sub update_family_tree{
     while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
           foreach(@{${$ancestorToSearch}{ancestors}}){
               my $ancestorID = ${$_}{ancestorID};
-              $self->logger("current ID: $idToSearch, ancestor: $ancestorID");
+              $self->logger("current ID: $idToSearch, ancestor: $ancestorID",'trace');
               if($familyTree{$ancestorID}){
-                  $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors");
+                  $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors",'trace');
                   foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
-                      $self->logger("ancestor: ${$_}{ancestorID}");
+                      $self->logger("ancestor: ${$_}{ancestorID}",'trace');
                       my $newAncestorId = ${$_}{ancestorID};
                       my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
                       push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation}}) unless($matched);
                   }
               } else {
-                  $self->logger("$ancestorID is *not* a key within familyTree, *no* ancestors to grab");
+                  $self->logger("$ancestorID is *not* a key within familyTree, *no* ancestors to grab",'trace');
               }
           }
     }

@@ -48,10 +48,10 @@ sub determine_total_indentation{
 
     # logfile information
     my $surroundingIndentation = ${$self}{surroundingIndentation};
-    $self->logger("indenting object ${$self}{name}");
-    $self->logger("indentation *surrounding* object: '$surroundingIndentation'");
-    $self->logger("indentation *of* object: '${$self}{indentation}'");
-    $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'");
+    $self->logger("indenting object ${$self}{name}",'trace');
+    $self->logger("indentation *surrounding* object: '$surroundingIndentation'",'trace');
+    $self->logger("indentation *of* object: '${$self}{indentation}'",'trace');
+    $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'",'trace');
 
     # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
@@ -67,7 +67,7 @@ sub get_surrounding_indentation{
         $self->logger("ancestors found!");
         foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
             my $newAncestorId = ${$_}{ancestorID};
-            $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}");
+            $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}",'trace');
             $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'
                                                 ?
                                         (${${$_}{ancestorIndentation}}?${${$_}{ancestorIndentation}}:q())
@@ -93,9 +93,13 @@ sub indent_body{
 
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
-        # put any existing horizontal space after the current indentation
-        $self->logger("Entire body of ${$self}{name} receives indendentation","trace");
-        ${$self}{body} =~ s/^(\h*)/$indentation$1/mg;  # add indentation
+        if(${$self}{body} =~ m/^\h*$/s){
+            $self->logger("Body of ${$self}{name} is empty, not applying indentation","trace");
+        } else {
+            # put any existing horizontal space after the current indentation
+            $self->logger("Entire body of ${$self}{name} receives indendentation","trace");
+            ${$self}{body} =~ s/^(\h*)/$indentation$1/mg;  # add indentation
+        }
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
         if(${$self}{body} =~ m/
                             (.*?)      # content of first line
@@ -104,16 +108,22 @@ sub indent_body{
                             /sx){
             my $bodyFirstLine = $1;
             my $remainingBody = $2;
-            $self->logger("first line of body: $bodyFirstLine");
-            $self->logger("remaining body (before indentation): '$remainingBody'");
+            $self->logger("first line of body: $bodyFirstLine",'heading.trace');
+            $self->logger("remaining body (before indentation): '$remainingBody'",'trace');
     
             # add the indentation to all the body except first line
             $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
-            $self->logger("remaining body (after indentation): '$remainingBody'");
+            $self->logger("remaining body (after indentation): '$remainingBody'",'trace');
     
             # put the body back together
             ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
         }
+    }
+
+    # the final linebreak can be modified by a child object; see test-cases/commands/figureValign-mod5.tex, for example
+    if($self->is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/){
+        $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)",'trace');
+        ${$self}{body} .= "\n";
     }
 
     # output to the logfile
@@ -131,7 +141,7 @@ sub indent_end_statement{
     # end{statement} indentation, e.g \end{environment}, \fi, }, etc
     if(${$self}{linebreaksAtEnd}{body}){
         ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg;  # add indentation
-        $self->logger("Adding surrounding indentation to ${$self}{end} ('$surroundingIndentation')");
+        $self->logger("Adding surrounding indentation to ${$self}{end} (${$self}{name}: '$surroundingIndentation')");
      }
     return $self;
 }
@@ -153,18 +163,18 @@ sub final_indentation_check{
     while(${$self}{body} =~ m/^((\h*|\t*)((\h+)(\t+))+)(.*)/mg){
         # replace offending indentation with a token
         $indentationCounter++;
-        my $indentationToken = "${$self->get_tokens}{indentation}$indentationCounter";
+        my $indentationToken = "${$self->get_tokens}{indentation}$indentationCounter${$self->get_tokens}{endOfToken}";
         my $lineDetails = $6;
         ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
 
-        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs");
+        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs",'trace');
 
         # fix the indentation
         my $indentation = $1;
 
         # log the before
         (my $before = $indentation) =~ s/\t/TAB/g;
-        $self->logger("Indentation before: '$before'");
+        $self->logger("Indentation before: '$before'",'trace');
 
         # move tabs to the beginning
         while($indentation =~ m/(\h+[^\t])(\t+)/ and $indentation !~ m/^\t*$/  and $1 ne '' and $1 ne "\t"){
@@ -172,12 +182,12 @@ sub final_indentation_check{
 
             # log the during
             (my $during = $indentation) =~ s/\t/TAB/g;
-            $self->logger("Indentation during: '$during'");
+            $self->logger("Indentation during: '$during'",'trace');
         }
 
         # log the after
         (my $after = $indentation) =~ s/\t/TAB/g;
-        $self->logger("Indentation after: '$after'");
+        $self->logger("Indentation after: '$after'",'trace');
 
         # store it
         push(@indentationTokens,{id=>$indentationToken,value=>$indentation});

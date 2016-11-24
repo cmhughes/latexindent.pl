@@ -37,6 +37,8 @@ latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=noAdditionalIndentGlobal.yaml
 # indentRules
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=indentRulesGlobal.yaml
+# multiple environments and commands with optional/mandatory arguments
+latexindent.pl -w figureValign.tex -s
 # modifyLineBreaks experiments
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
@@ -44,6 +46,7 @@ do
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
    # add line breaks
+   latexindent.pl just-one-command.tex -m  -tt -s -o=just-one-command-mod$i.tex -l=mand-args-mod$i.yaml 
    latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-mod$i.tex -l=mand-args-mod$i.yaml 
    latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml 
    latexindent.pl commands-one-line-nested-simple.tex -m  -tt -s -o=commands-one-line-nested-simple-mod$i.tex -l=mand-args-mod$i.yaml -g=one.log
@@ -61,6 +64,8 @@ do
    latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml -g=two.log
    latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml,noAdditionalIndentGlobal.yaml -g=three.log
    latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
+   # multiple commands and environments
+   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-mod$i.tex -l=mand-args-mod$i.yaml,figValign-yaml.yaml -g=fig.log
    [[ $silentMode == 0 ]] && set +x 
 done
 # testing the linebreak immediately before, e.g, \mycommand
