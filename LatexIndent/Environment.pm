@@ -61,6 +61,12 @@ sub find_environments{
                                               endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                             );
 
+      # if the environment is empty, we may need to update linebreaksAtEnd{body}
+      if(${$env}{body} =~ m/^\h*$/s and ${${$env}{linebreaksAtEnd}}{begin}){
+            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1",'trace');
+            ${${$env}{linebreaksAtEnd}}{body} = 1;
+      }
+
       # the settings and storage of most objects has a lot in common
       $self->get_settings_and_store_new_object($env);
     } 
