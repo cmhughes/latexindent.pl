@@ -11,6 +11,7 @@
 #       commands-test-cases.sh -s -o 13
 # 
 # i=22 && vim -p commands-one-line.tex commands-one-line-mod$i.tex && vim -p commands-one-line.tex commands-one-line-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-one-line-nested-simple.tex commands-one-line-nested-simple-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-no-condense-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex
+# for i in {1..32}; do latexindent.pl -m -l=opt-args-mod$i.yaml,figValign-yaml.yaml figureValign.tex -o=figureValign-opt-mod$i.tex -s && vim -p figureValign.tex figureValign-opt-mod$i.tex;done
 loopmax=32
 . ../common.sh
 
@@ -66,6 +67,7 @@ do
    latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
    # multiple commands and environments
    latexindent.pl figureValign.tex -m -tt -s -o=figureValign-mod$i.tex -l=mand-args-mod$i.yaml,figValign-yaml.yaml -g=fig.log
+   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-opt-mod$i.tex -l=opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml -g=fig.log
    [[ $silentMode == 0 ]] && set +x 
 done
 # testing the linebreak immediately before, e.g, \mycommand
