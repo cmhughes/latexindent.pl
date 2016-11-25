@@ -36,7 +36,7 @@ sub get_key_equals_values_regexp{
                   )                                                                 # $1                                 
                   (\\)?                                                             # $2
                   (
-                   [a-zA-Z@\*0-9_]+? # lowercase|uppercase letters, @, *, numbers
+                   [a-zA-Z@\*0-9_\/.\h]+? # lowercase|uppercase letters, @, *, numbers
                   )                                                                 # $3
                   (
                     \h*\R*=\h*
