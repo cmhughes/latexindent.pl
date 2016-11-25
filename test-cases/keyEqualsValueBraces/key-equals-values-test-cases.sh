@@ -18,6 +18,9 @@ latexindent.pl -s  -tt braceTest.tex -l=noAdditionalIndent-pdfstartview.yaml,noA
 # key = brace within a command
 latexindent.pl -s -tt -w pgfkeys-first.tex
 latexindent.pl -s -tt -w pgfkeys-nested.tex
+# multiple nesting with modifyLineBreaks
+latexindent.pl -s -tt pgfkeys-multiple-nested.tex -m -l=../commands/mand-args-mod1.yaml -o=pgfkeys-multiple-nested-mod1.tex
+latexindent.pl -s -tt pgfkeys-multiple-nested.tex -m -l=../commands/mand-args-mod1.yaml,noAdditionalIndentGlobal.yaml  -o=pgfkeys-multiple-nested-global-mod1.tex
 # modifyLineBreaks experiments
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
