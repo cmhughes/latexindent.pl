@@ -10,14 +10,6 @@ our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noinden
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
-sub indent{
-    my $self = shift;
-    my $previousIndent = shift;
-    $self->logger("in verbatim environment ${$self}{name}, not indenting body");
-    ${$self}{end} =~ s/(^\h*)/$previousIndent/mg;  # add indentation
-    return;
-}
-
 sub find_noindent_block{
     my $self = shift;
 
@@ -33,10 +25,11 @@ sub find_noindent_block{
         if($yesno){
             $self->logger("looking for $noIndentBlock:$yesno environments");
 
-            while( ${$self}{body} =~ m/
+            my $noIndentRegExp = qr/
                             (
+                                (?!<\\)
                                 %
-                                (?: \h*)?               # possible horizontal spaces
+                                \h*                     # possible horizontal spaces
                                 \\begin\{
                                         $noIndentBlock  # environment name captured into $2
                                        \}               # %* \begin{noindentblock} statement
@@ -44,46 +37,36 @@ sub find_noindent_block{
                             (
                                 .*?
                             )                           # non-greedy match (body)
-                            (\R*)?                      # possible line breaks
                             (
-                                (\h*)?                  # possible horizontal spaces
+                                (?!<\\)
                                 %                       # %
-                                (?: \h*)?               # possible horizontal spaces
+                                \h*                     # possible horizontal spaces
                                 \\end\{$noIndentBlock\} # \end{noindentblock}
                             )                           # %* \end{<something>} statement
-                        /sx){
+                        /sx;
+
+            while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
               # create a new Environment object
-              my $env = LatexIndent::Verbatim->new( begin=>$1,
+              my $noIndentBlock = LatexIndent::Verbatim->new( begin=>$1,
+                                                    body=>$2,
+                                                    end=>$3,
                                                     name=>$noIndentBlock,
-                                                    body=>$2.($3?$3:q()),
-                                                    end=>($5?$5:q()).$4,
                                                     );
             
               # give unique id
-              $env->create_unique_id;
+              $noIndentBlock->create_unique_id;
 
               # verbatim children go in special hash
-              ${$self}{verbatim}{${$env}{id}}=$env;
+              ${$self}{verbatim}{${$noIndentBlock}{id}}=$noIndentBlock;
 
               # log file output
               $self->logger("NOINDENTBLOCK environment found: $noIndentBlock");
 
               # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/
-                                %
-                                (?: \h*)?
-                                \\begin\{
-                                    ($noIndentBlock)    # environment name captured into $2
-                                   \}                   # %* \begin{<something>} statement
-                                .*?                     # non-greedy match up until
-                                (?:\h*)                 # possibly having horizontal space before
-                                %                       # %
-                                (?: \h*)?               # possibly followed by horizontal space
-                                \\end\{$noIndentBlock\} # %* \end{<something>} statement
-                        /${$env}{id}/sx;
+              ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlock}{id}/sx;
 
-              $self->logger("replaced with ID: ${$env}{id}");
+              $self->logger("replaced with ID: ${$noIndentBlock}{id}");
             } 
       } else {
             $self->logger("*not* looking for $noIndentBlock as $noIndentBlock:$yesno");
@@ -107,7 +90,7 @@ sub find_verbatim_environments{
         if($yesno){
             $self->logger("looking for $verbEnv:$yesno environments");
 
-            while( ${$self}{body} =~ m/
+            my $verbatimRegExp = qr/
                             (
                             \\begin\{
                                     $verbEnv     # environment name captured into $1
@@ -116,38 +99,32 @@ sub find_verbatim_environments{
                             (
                                 .*?
                             )                    # any character, but not \\begin
-                            (\R*)?               # possible line breaks
                             (
-                                (\h*)?           # possible horizontal spaces
                                 \\end\{$verbEnv\}# \end{<something>} statement
                             )                    
-                        /sx){
+                        /sx;
+
+            while( ${$self}{body} =~ m/$verbatimRegExp/sx){
 
               # create a new Environment object
-              my $env = LatexIndent::Verbatim->new( begin=>$1,
+              my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
+                                                    body=>$2,
+                                                    end=>$3,
                                                     name=>$verbEnv,
-                                                    body=>$2.($3?$3:q()),
-                                                    end=>($5?$5:q()).$4,
                                                     );
               # give unique id
-              $env->create_unique_id;
+              $verbatimBlock->create_unique_id;
 
               # verbatim children go in special hash
-              ${$self}{verbatim}{${$env}{id}}=$env;
+              ${$self}{verbatim}{${$verbatimBlock}{id}}=$verbatimBlock;
 
               # log file output
               $self->logger("VERBATIM environment found: $verbEnv");
 
               # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/
-                            \\begin\{
-                                    ($verbEnv)   # environment name captured into $2
-                                   \}            # \begin{<something>} statement
-                                .*?
-                                \\end\{$verbEnv\}# \end{<something>} statement
-                        /${$env}{id}/sx;
+              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{id}/sx;
 
-              $self->logger("replaced with ID: ${$env}{id}");
+              $self->logger("replaced with ID: ${$verbatimBlock}{id}");
             } 
       } else {
             $self->logger("*not* looking for $verbEnv as $verbEnv:$yesno");
@@ -169,33 +146,14 @@ sub  put_verbatim_back_in {
     # loop through document children hash
     while( (scalar keys %{%{$self}{verbatim}})>0 ){
           while( my ($key,$child)= each %{%{$self}{verbatim}}){
-            if(${$self}{body} =~ m/
-                        (   
-                            ^           # beginning of the line
-                            \h*         # with 0 or more horizontal spaces
-                        )?              # possibly
-                                        #
-                                        #
-                        (.*?)?          # any other character
-                        ${$child}{id}   # the ID
-                        /mx){
-
-                my $indentation = $1?$1:q();
-
-                # log file info
-                $self->logger("Indentation info",'heading');
-                $self->logger("current indentation: '$indentation'");
-                $self->logger("looking up indentation scheme for ${$child}{name}");
-
-                # perform indentation
-                $child->indent($indentation);
+            if(${$self}{body} =~ m/${$child}{id}/mx){
 
                 # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','heading.trace');
-                $self->logger(${$self}{body},'trace');
+                $self->logger('Body now looks like:','heading.ttrace');
+                $self->logger(${$self}{body},'ttrace');
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatim}{${$child}{id}};
@@ -216,7 +174,7 @@ sub create_unique_id{
     my $self = shift;
 
     $verbatimCounter++;
-    ${$self}{id} = "${$self->get_tokens}{verbatim}$verbatimCounter";
+    ${$self}{id} = "${$self->get_tokens}{verbatim}$verbatimCounter${$self->get_tokens}{endOfToken}";
     return;
 }
 
