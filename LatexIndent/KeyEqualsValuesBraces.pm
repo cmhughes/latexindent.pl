@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/get_key_equals_values_regexp/;
 our $key_equals_values_braces_Counter;
 

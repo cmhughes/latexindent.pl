@@ -18,6 +18,7 @@ latexindent.pl environments-simple-opt-args.tex -m  -tt -s -o=environments-simpl
 [[ $silentMode == 0 ]] && set +x
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x
    # one optional arg
    latexindent.pl environments-first-opt-args.tex -m  -tt -s -o=environments-first-opt-args-mod$i.tex -l=opt-args-mod$i.yaml 

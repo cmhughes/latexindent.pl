@@ -346,7 +346,7 @@ sub get_indentation_information{
         $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)");
         $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
         if(defined $indentationInformation and $indentationInformation ne ''){
-            $self->logger("Using '$indentationInformation' (see $indentationAbout)") ;
+            $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") ;
          }
     } else {
         $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};

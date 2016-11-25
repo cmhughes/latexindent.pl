@@ -16,6 +16,7 @@ latexindent.pl environments-first-mand-args.tex -m  -tt -s -w
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
    # one mand arg
    latexindent.pl environments-first-mand-args.tex -m  -tt -s -o=environments-first-mand-args-mod$i.tex -l=mand-args-mod$i.yaml 

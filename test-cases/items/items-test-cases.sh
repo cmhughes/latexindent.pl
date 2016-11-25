@@ -44,6 +44,7 @@ latexindent.pl -s -m items2.tex -o=items2-mod0.tex
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
     [[ $silentMode == 0 ]] && set -x 
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items1.tex -o=items1-mod$i.tex
     latexindent.pl -s -tt -m -l=items-mod$i.yaml items2.tex -o=items2-mod$i.tex
