@@ -33,17 +33,17 @@ sub get_key_equals_values_regexp{
                        (?:(?<!\\)\[)
                      )
                      (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*
-                  )                                                                 # $1                                 
-                  (\\)?                                                             # $2
+                  )                                                     # $1 pre-key bit: could be { OR , OR [                                 
+                  (\\)?                                                 # $2 possible backslash
                   (
-                   [a-zA-Z@\*0-9_\/.\h]+? # lowercase|uppercase letters, @, *, numbers
-                  )                                                                 # $3
+                   [a-zA-Z@\*0-9_\/.\h]+?                               # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                  )                                                     # $3 name
                   (
                     \h*\R*=\h*
-                  )                                                                 # $4
-                  (\R*)?                                                            # $5
-                  ($optAndMandRegExp)                                               # $6
-                  (\R)?                                                             # $9
+                  )                                                     # $4 = symbol
+                  (\R*)?                                                # $5 linebreak after =
+                  ($optAndMandRegExp)                                   # $6 opt|mand arguments
+                  (\R)?                                                 # $9 linebreak at end
                 /sx;
 
     return $key_equals_values_bracesRegExp; 

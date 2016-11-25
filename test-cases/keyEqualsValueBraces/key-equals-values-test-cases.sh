@@ -1,5 +1,5 @@
 #!/bin/bash
-loopmax=0
+loopmax=32
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
@@ -17,4 +17,22 @@ latexindent.pl -s  -tt braceTest.tex -l=noAdditionalIndent-pdfstartview.yaml -o=
 latexindent.pl -s  -tt braceTest.tex -l=noAdditionalIndent-pdfstartview.yaml,noAdditionalKey.yaml -o=braceTest-noAdditional-pdfstartview-and-global.tex
 # key = brace within a command
 latexindent.pl -s -tt -w pgfkeys-first.tex
+latexindent.pl -s -tt -w pgfkeys-nested.tex
+# modifyLineBreaks experiments
+[[ $silentMode == 0 ]] && set +x 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+   [[ $silentMode == 0 ]] && set -x 
+   # just linebreak modification
+   latexindent.pl -s -tt pgfkeys-nested.tex -m -l=mand-args-mod$i.yaml -o=pgfkeys-nested-mod$i.tex
+   # linebreak modification, together with noAdditionalIndent globally for key={value} set to 1
+   latexindent.pl -s -tt pgfkeys-nested.tex -m -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml -o=pgfkeys-nested-noAdditional-Global-mod$i.tex
+   # linebreak modification, together with noAdditionalIndent set for 'another/. style'
+   latexindent.pl -s -tt pgfkeys-nested.tex -m -l=mand-args-mod$i.yaml,noAdditionalIndent-start.yaml -o=pgfkeys-nested-noAdditional-start-mod$i.tex
+   [[ $silentMode == 0 ]] && set +x 
+done
+###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
+###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
+###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
 git status
