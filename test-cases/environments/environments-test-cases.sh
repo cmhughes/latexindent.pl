@@ -17,6 +17,7 @@ latexindent.pl -w -s -t environments-verbatim-harder.tex
 latexindent.pl -w -s -t verbatim1.tex
 latexindent.pl -w -s -t environments-noindent-block.tex
 latexindent.pl -w -s -t environments-noindent-block-mk1.tex
+latexindent.pl -w -s -t noIndent-maetra.tex
 latexindent.pl -w -s -t no-environments.tex
 latexindent.pl -w -s -t environments-repeated.tex
 latexindent.pl -w -s -t environments-trailing-comments.tex

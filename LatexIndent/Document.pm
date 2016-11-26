@@ -15,7 +15,7 @@ use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation 
 use LatexIndent::Tokens qw/get_tokens/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
@@ -49,6 +49,7 @@ sub operate_on_file{
     $self->find_noindent_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
+    $self->find_verbatim_commands;
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     # find filecontents environments

@@ -84,4 +84,6 @@ latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.ya
 latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
+# verbatim command
+latexindent.pl -s -w verbatim-commands.tex
 git status

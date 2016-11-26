@@ -113,6 +113,11 @@ verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
 
+#  verbatim commands such as \verb! body !, \lstinline$something else$
+verbatimCommands:
+    verb: 1
+    lstinline: 1
+
 #  no indent blocks (not necessarily verbatim 
 #  environments) which are marked as %\begin{noindent}
 #  or anything else that the user puts in this hash

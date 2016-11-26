@@ -6,7 +6,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
@@ -16,8 +16,6 @@ sub find_noindent_block{
     # grab the settings
     my %masterSettings = %{$self->get_master_settings};
 
-    # noindent block
-    # noindent block
     # noindent block
     $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading');
     $self->logger(Dumper(\%{$masterSettings{noIndentBlock}}),'trace');
@@ -82,8 +80,6 @@ sub find_verbatim_environments{
     my %masterSettings = %{$self->get_master_settings};
 
     # verbatim environments
-    # verbatim environments
-    # verbatim environments
     $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading');
     $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}}),'trace');
     while( my ($verbEnv,$yesno)= each %{$masterSettings{verbatimEnvironments}}){
@@ -133,13 +129,85 @@ sub find_verbatim_environments{
     return;
 }
 
+sub find_verbatim_commands{
+    my $self = shift;
+
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+
+    # verbatim commands
+    $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading');
+    $self->logger(Dumper(\%{$masterSettings{verbatimCommands}}),'trace');
+    while( my ($verbCommand,$yesno)= each %{$masterSettings{verbatimCommands}}){
+        if($yesno){
+            $self->logger("looking for $verbCommand:$yesno Commands");
+
+            my $verbatimCommandRegExp = qr/
+                            (
+                                \\$verbCommand     
+                                \h*                                             
+                            )                                                   # name of command into $1
+                            (
+                                \[
+                                    (?:
+                                        (?!
+                                            (?:(?<!\\)\[) 
+                                        ).
+                                    )*?     # not including [, but \[ ok
+                                (?<!\\)     # not immediately pre-ceeded by \
+                                \]          # [optional arguments]
+                                \h*
+                            )?                                                  # opt arg into $2
+                            (
+                              .
+                            )                                                   # delimiter into $3
+                            (
+                              .*?
+                            )                                                   # body into $4
+                            \3
+                        /sx;
+
+            while( ${$self}{body} =~ m/$verbatimCommandRegExp/sx){
+
+              # create a new Environment object
+              my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($2?$2:q()).$3,
+                                                    body=>$4,
+                                                    end=>$3,
+                                                    name=>$verbCommand,
+                                                    optArg=>$2?$2:q(),
+                                                    );
+              # give unique id
+              $verbatimCommand->create_unique_id;
+
+              # output, if desired
+              $self->logger(Dumper($verbatimCommand),'ttrace');
+
+              # verbatim children go in special hash
+              ${$self}{verbatim}{${$verbatimCommand}{id}}=$verbatimCommand;
+
+              # log file output
+              $self->logger("VERBATIM command found: $verbCommand");
+
+              # remove the environment block, and replace with unique ID
+              ${$self}{body} =~ s/$verbatimCommandRegExp/${$verbatimCommand}{id}/sx;
+
+              $self->logger("replaced with ID: ${$verbatimCommand}{id}");
+            } 
+      } else {
+            $self->logger("*not* looking for $verbCommand as $verbCommand:$yesno");
+      }
+    }
+    return;
+
+}
+
 sub  put_verbatim_back_in {
     my $self = shift;
 
     # if there are no verbatim children, return
     return unless(%{$self}{verbatim});
 
-    # search for environments
+    # search for environments/commands
     $self->logger('Putting verbatim back in, here is the pre-processed body:','heading.trace');
     $self->logger(${$self}{body},'trace');
 
