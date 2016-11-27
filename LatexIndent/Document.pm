@@ -316,14 +316,14 @@ sub indent_children_recursively{
                 $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
-                # line break checks *after* \end{statement}
+                # line break checks *after* <end statement>
                 if (defined ${$child}{EndFinishesWithLineBreak}
                     and ${$child}{EndFinishesWithLineBreak}==0 
                     and $IDFollowedImmediatelyByLineBreak) {
-                    # remove line break *after* \end{statement}, if appropriate
+                    # remove line break *after* <end statement>, if appropriate
                     my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
                     $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
-                    ${$self}{body} =~ s/${$child}{id}(\h*)?\R*\h*/${$child}{id}$1/s;
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?(\R|\h)*/${$child}{id}$1/s;
                     ${$child}{linebreaksAtEnd}{end} = 0;
                 }
 
@@ -336,7 +336,7 @@ sub indent_children_recursively{
                                              (ref(${$child}{surroundingIndentation}) eq 'SCALAR'?${${$child}{surroundingIndentation}}:${$child}{surroundingIndentation})
                                                         :q();
 
-                # line break checks before \begin{statement}
+                # line break checks before <begin statement>
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                     if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){

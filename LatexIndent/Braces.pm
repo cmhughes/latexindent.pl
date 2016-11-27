@@ -61,7 +61,8 @@ sub find_commands_or_key_equals_values_braces{
         $self->logger("key_equals_values_braces found: $3",'heading');
 
         # create a new key_equals_values_braces object
-        my $key_equals_values_braces = LatexIndent::KeyEqualsValuesBraces->new(begin=>($2?$2:q()).$3.($4?$4:q()),
+        my $key_equals_values_braces = LatexIndent::KeyEqualsValuesBraces->new(
+                                                begin=>($2?$2:q()).$3.$4.($5?$5:q()),
                                                 name=>$3,
                                                 body=>$6,
                                                 end=>q(),
@@ -77,7 +78,7 @@ sub find_commands_or_key_equals_values_braces{
                                                   # begin statements
                                                   BeginStartsOnOwnLine=>"KeyStartsOnOwnLine",
                                                   # body statements
-                                                  BodyStartsOnOwnLine=>"KeyNameFinishesWithLineBreak",
+                                                  BodyStartsOnOwnLine=>"EqualsFinishesWithLineBreak",
                                                 },
                                               );
 

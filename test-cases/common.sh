@@ -3,6 +3,20 @@
 # to asses optional arguments
 #
 # reference: https://ubuntuforums.org/showthread.php?t=664657
+#
+# each of the test case scripts can be called with the following, for example:
+#
+# sample usage:
+#   non-silent
+#       commands-test-cases.sh
+#   silent mode
+#       commands-test-cases.sh -s
+#   silent mode, loopmax 5
+#       commands-test-cases.sh -s -l 5
+#   silent mode, loopmin is 13, loopmax is 13
+#       commands-test-cases.sh -s -o 13
+#   silent mode, loopmin is 13, loopmax is 13, show the loop counter 
+#       commands-test-cases.sh -s -o 13 -c
 silentMode=0
 loopmin=1
 # check flags, and change defaults appropriately

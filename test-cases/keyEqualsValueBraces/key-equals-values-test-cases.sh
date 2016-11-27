@@ -33,6 +33,16 @@ do
    latexindent.pl -s -tt pgfkeys-nested.tex -m -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml -o=pgfkeys-nested-noAdditional-Global-mod$i.tex
    # linebreak modification, together with noAdditionalIndent set for 'another/. style'
    latexindent.pl -s -tt pgfkeys-nested.tex -m -l=mand-args-mod$i.yaml,noAdditionalIndent-start.yaml -o=pgfkeys-nested-noAdditional-start-mod$i.tex
+   # remove line breaks
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks-first.tex -m -l=mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-first-mod$i.tex -g=one.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks-first.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,equalsKeyOff.yaml -o=pgfkeys-remove-line-breaks-first-unprotect-equalsKeyOff-mod$i.tex -g=two.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks-first.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml -o=pgfkeys-remove-line-breaks-first-unprotect-mod$i.tex -g=three.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks-first.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-first-unprotect-nocondense-mod$i.tex -g=four.log
+   # remove line breaks, with trailing comments
+   ##latexindent.pl pgfkeys-remove-line-breaks-first-tc.tex
+   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-mod$i.tex -g=one.log
+   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml -o=pgfkeys-remove-line-breaks-unprotect-mod$i.tex -g=two.log
+   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-unprotect-nocondense-mod$i.tex -g=three.log
    [[ $silentMode == 0 ]] && set +x 
 done
 ###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
