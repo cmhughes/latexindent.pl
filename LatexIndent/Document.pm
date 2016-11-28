@@ -13,7 +13,7 @@ use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print p
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation/;
-use LatexIndent::Tokens qw/get_tokens/;
+use LatexIndent::Tokens qw/get_tokens token_check/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
@@ -47,6 +47,7 @@ sub operate_on_file{
     my $self = shift;
 
     $self->create_back_up_file;
+    $self->token_check;
     $self->find_noindent_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
@@ -56,7 +57,6 @@ sub operate_on_file{
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
-    # token check (we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body)
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments

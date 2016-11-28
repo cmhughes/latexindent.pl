@@ -1,9 +1,8 @@
 package LatexIndent::Tokens;
 use strict;
 use warnings;
-use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/get_tokens/;
+our @EXPORT_OK = qw/get_tokens token_check/;
 our %tokens = (
                 environment=>"LATEX-INDENT-ENVIRONMENT",
                 ifelsefi=>"!-!LATEX-INDENT-IFELSEFI", 
@@ -19,6 +18,20 @@ our %tokens = (
                 key_equals_values_braces=>"LATEX-INDENT-KEY-VALUE-BRACES",
                 endOfToken=>"-END",
               );
+
+sub token_check{
+    my $self = shift;
+
+    $self->logger("Token check",'heading.trace');
+    # we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body
+    foreach( keys %tokens){
+        while(${$self}{body} =~ m/$tokens{$_}/si){
+            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN",'trace');
+            $tokens{$_} .= "-LIN";
+        }
+    }
+}
+
 
 sub get_tokens{
     return \%tokens; 

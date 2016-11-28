@@ -71,4 +71,8 @@ cd ../keyEqualsValueBraces/
 cd ../fileextensions/
 [[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
 ./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
+# token checks
+cd ../tokenChecks/
+[[ $silentMode == 1 ]] && echo "./tokenChecks/token-checks.sh"
+./token-checks.sh $silentModeFlag $showCounterFlag $loopminFlag
 exit
