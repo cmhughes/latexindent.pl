@@ -50,29 +50,10 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
     $switches{readLocalSettings} = 'localSettings.yaml';
 }
 
-# original name of file
-my $fileName = $ARGV[0];
-
-my @mainfile;               # @mainfile: stores input file; used to
-my @lines;
-
-open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
-while(<MAINFILE>) {
-  # s/^\t*// if($_ !~ /^((\s*)|(\t*))*$/);
-  # s/^\s*// if($_ !~ /^((\s*)|(\t*))*$/);
-     push(@lines,$_);
-   }
-close(MAINFILE);
-open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
-@mainfile=<MAINFILE>;
-close(MAINFILE);
-
-#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-#print "*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n";
-my $document = LatexIndent::Document->new(name=>"masterdocument",body=>join("",@lines),fileName=>$fileName,switches=>\%switches);
+my $document = LatexIndent::Document->new(name=>"masterdocument",fileName=>$ARGV[0],switches=>\%switches);
 $document->processSwitches;
 $document->readSettings;
+$document->file_extension_check;
 $document->operate_on_file;
 
 # Necessary changes from 2.1 to 3.0

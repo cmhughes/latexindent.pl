@@ -9,7 +9,7 @@ silentMode=0
 silentModeFlag=''
 showCounterFlag=''
 # check flags, and change defaults appropriately
-while getopts "sc" OPTION
+while getopts "sco:" OPTION
 do
  case $OPTION in 
   s)    
@@ -20,6 +20,10 @@ do
   c)    
    echo "Show counter mode active!"
    showCounterFlag='-c'
+   ;;
+  o)
+    # only do this one in the loop
+    loopminFlag="-o $OPTARG"
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
@@ -34,33 +38,37 @@ done
 # environment objects
 cd environments
 [[ $silentMode == 1 ]] && echo "./environments/environments-test-cases.sh"
-./environments-test-cases.sh $silentModeFlag $showCounterFlag
+./environments-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # ifelsefi objects
 cd ../ifelsefi
 [[ $silentMode == 1 ]] && echo "./ifelsefi/ifelsefi-test-cases.sh"
-./ifelsefi-test-cases.sh $silentModeFlag $showCounterFlag
+./ifelsefi-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # optional arguments in environments
 cd ../opt-args
 [[ $silentMode == 1 ]] && echo "./opt-args/opt-args-test-cases.sh"
-./opt-args-test-cases.sh $silentModeFlag $showCounterFlag
+./opt-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # mandatory arguments in environments
 cd ../mand-args
 [[ $silentMode == 1 ]] && echo "./mand-args/mand-args-test-cases.sh"
-./mand-args-test-cases.sh $silentModeFlag $showCounterFlag
+./mand-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # mixture of optional and mandatory arguments
 cd ../opt-and-mand-args/
 [[ $silentMode == 1 ]] && echo "./opt-and-mand-args/opt-and-mand-args-test-cases.sh"
-./opt-mand-args-test-cases.sh $silentModeFlag $showCounterFlag
+./opt-mand-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # items
 cd ../items/
 [[ $silentMode == 1 ]] && echo "./items/items-test-cases.sh"
-./items-test-cases.sh $silentModeFlag $showCounterFlag
+./items-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # commands
 cd ../commands/
 [[ $silentMode == 1 ]] && echo "./commands/commands-test-cases.sh"
-./commands-test-cases.sh $silentModeFlag $showCounterFlag
+./commands-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 # key equals value braces
 cd ../keyEqualsValueBraces/
 [[ $silentMode == 1 ]] && echo "./keyEqualsValueBraces/key-equals-values-test-cases.sh"
-./key-equals-values-test-cases.sh $silentModeFlag $showCounterFlag
+./key-equals-values-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
+# file extension
+cd ../fileextensions/
+[[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
+./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 exit
