@@ -17,14 +17,14 @@ sub add_comment_symbol{
     $commentCounter++;
 
     # store the comment -- without this, it won't get processed correctly at the end
-    push(@trailingComments,{id=>$trailingCommentToken.$commentCounter,value=>q()});
+    push(@trailingComments,{id=>$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken},value=>q()});
 
     # log file info
     $self->logger("Updating trailing comment array",'heading');
     $self->logger(Dumper(\@trailingComments),'ttrace');
 
     # the returned value
-    return $trailingCommentToken.$commentCounter;
+    return $trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
 }
 
 sub remove_trailing_comments{
@@ -44,10 +44,10 @@ sub remove_trailing_comments{
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
-                            push(@trailingComments,{id=>$trailingCommentToken.$commentCounter,value=>$1});
+                            push(@trailingComments,{id=>$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken},value=>$1});
 
                             # replace comment with dummy text
-                            "%".$trailingCommentToken.$commentCounter;
+                            "%".$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
                        /xsmeg;
     if(@trailingComments){
         $self->logger("Trailing comments stored in:",'trace');
@@ -99,6 +99,6 @@ sub get_trailing_comment_regexp{
     
     my $trailingCommentToken = $self->get_trailing_comment_token;
 
-    return qr/(?<!\\)%$trailingCommentToken\d+/;
+    return qr/(?<!\\)%$trailingCommentToken\d+${$self->get_tokens}{endOfToken}/;
 }
 1;
