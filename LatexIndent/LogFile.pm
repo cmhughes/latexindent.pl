@@ -2,6 +2,7 @@ package LatexIndent::LogFile;
 use strict;
 use warnings;
 use FindBin; 
+use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 our @EXPORT_OK = qw/logger output_logfile processSwitches is_m_switch_active/;
 our @logFileNotes;
@@ -39,6 +40,39 @@ sub processSwitches{
     # copy document switches into hash local to this module
     %switches = %{%{$self}{switches}};
 
+    if(scalar(@ARGV) < 1 or $switches{showhelp}) {
+    print <<ENDQUOTE
+latexindent.pl version 3.0
+usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
+      -h, --help
+          help (see the documentation for detailed instructions and examples)
+      -o, --outputfile
+          output to another file; sample usage:
+                latexindent.pl -o outputfile.tex myfile.tex 
+                latexindent.pl -o=outputfile.tex myfile.tex 
+      -w, --overwrite
+          overwrite the current file; a backup will be made, but still be careful
+      -s, --silent
+          silent mode: no output will be given to the terminal
+      -t, --trace
+          tracing mode: verbose information given to the log file
+      -l, --local[=myyaml.yaml]
+          use localSettings.yaml (assuming it exists in the directory of your file);
+          alternatively, use myyaml.yaml, if it exists; sample usage:
+                latexindent.pl -l some.yaml myfile.tex 
+                latexindent.pl -l=another.yaml myfile.tex 
+                latexindent.pl -l=some.yaml,another.yaml myfile.tex 
+      -d, --onlydefault
+          ONLY use defaultSettings.yaml, ignore ALL (yaml) user files
+      -g, --logfile
+          used to specify the name of logfile (default is indent.log)
+      -c, --cruft=<cruft directory> 
+          used to specify the location of backup files and indent.log
+ENDQUOTE
+    ;
+    exit(2);
+}
+
     # log the switches from the user
     $self->logger('Processing switches','heading');
 
@@ -55,6 +89,7 @@ sub processSwitches{
     $self->logger("-o|--outputfile: output to file") if($switches{outputToFile});
     $self->logger("-m|--modifylinebreaks: modify line breaks") if($switches{modifyLineBreaks});
     $self->logger("-g|--logfile: logfile name") if($switches{logFileName});
+    $self->logger("-c|--cruft: cruft directory") if($switches{cruftDirectory});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
@@ -65,9 +100,35 @@ sub processSwitches{
         $switches{overwrite}=0;
     }
 
+    # cruft directory
+    ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
+    die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
+    my $logfileName = $switches{logFileName}||"indent.log";
+    $self->logger("Directory for backup files and $logfileName: ${$self}{cruftDirectory}",'heading');
+
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
-        my @listOfModules = ('FindBin','YAML::Tiny','File::Copy','File::Basename','Getopt::Long','File::HomeDir');
+        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir',
+                             'LatexIndent::Document',
+                             'LatexIndent::GetYamlSettings', 
+                             'LatexIndent::FileExtension', 
+                             'LatexIndent::BackUpFileProcedure', 
+                             'LatexIndent::BlankLines', 
+                             'LatexIndent::ModifyLineBreaks', 
+                             'LatexIndent::TrailingComments',
+                             'LatexIndent::HorizontalWhiteSpace',
+                             'LatexIndent::Indent',
+                             'LatexIndent::Tokens',
+                             'LatexIndent::Verbatim',
+                             'LatexIndent::Environment',
+                             'LatexIndent::IfElseFi',
+                             'LatexIndent::Arguments',
+                             'LatexIndent::OptionalArgument',
+                             'LatexIndent::MandatoryArgument',
+                             'LatexIndent::Item',
+                             'LatexIndent::Braces',
+                             'LatexIndent::Command',
+                             'LatexIndent::KeyEqualsValuesBraces');
         $self->logger("Modules are being loaded from the following directories:",'heading');
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;
@@ -83,7 +144,7 @@ sub output_logfile{
   my $logfile;
   my $logfileName = $switches{logFileName}||"indent.log";
 
-  open($logfile,">","$logfileName") or die "Can't open $logfileName";
+  open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
 
   # grab the settings
   my %masterSettings = %{$self->get_master_settings};

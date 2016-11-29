@@ -7,8 +7,6 @@ use Exporter qw/import/;
 our @EXPORT_OK = qw/create_back_up_file/;
 
 # copy main file to a back up in the case of the overwrite switch being active
-# copy main file to a back up in the case of the overwrite switch being active
-# copy main file to a back up in the case of the overwrite switch being active
 
 sub create_back_up_file{
     my $self = shift;
@@ -16,26 +14,26 @@ sub create_back_up_file{
     return unless(${%{$self}{switches}}{overwrite});
 
     # if we want to over write the current file create a backup first
-    $self->logger("Backup procedure:",'heading');
+    $self->logger("Backup procedure (-w flag active):",'heading');
 
     my $fileName = ${$self}{fileName};
 
-    # cruft directory
-    my $cruftDirectory=dirname $fileName; # FIX THIS FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS
-    $self->logger("Directory for backup files and indent.log: $cruftDirectory");
-    
-    my @fileExtensions  = (".tex");# FIX THIS FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS# FIX THIS
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
 
-    my $backupFile; 
-    
+    # grab the file extension preferences
+    my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
+
+    # sort the file extensions by preference 
+    my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
+
     # backup file name is the base name
-    $backupFile = basename($fileName,@fileExtensions);
+    my $backupFile = basename(${$self}{fileName},@fileExtensions);
     
     # add the user's backup directory to the backup path
-    $backupFile = "$cruftDirectory/$backupFile";
+    $backupFile = "${$self}{cruftDirectory}/$backupFile";
 
     # local variables, determined from the YAML settings
-    my %masterSettings = %{$self->get_master_settings};
     my $onlyOneBackUp = $masterSettings{onlyOneBackUp};
     my $maxNumberOfBackUps = $masterSettings{maxNumberOfBackUps};
     my $cycleThroughBackUps= $masterSettings{cycleThroughBackUps};
@@ -64,7 +62,7 @@ sub create_back_up_file{
     if($onlyOneBackUp) {
         $backupFile .= $backupExtension;
         $self->logger("copying $fileName to $backupFile");
-        $self->logger("$backupFile was overwritten") if (-e $backupFile);
+        $self->logger("$backupFile was overwritten (see onlyOneBackUp)") if (-e $backupFile);
     } else {
         # start with a backup file .bak0 (or whatever $backupExtension is present)
         my $backupCounter = 0;
@@ -73,7 +71,7 @@ sub create_back_up_file{
         # if it exists, then keep going: .bak0, .bak1, ...
         while (-e $backupFile or $maxNumberOfBackUps>1) {
             if($backupCounter==$maxNumberOfBackUps) {
-                $self->logger("maxNumberOfBackUps reached ($maxNumberOfBackUps)");
+                $self->logger("maxNumberOfBackUps reached ($maxNumberOfBackUps, see maxNumberOfBackUps)");
     
                 # some users may wish to cycle through back up files, e.g:
                 #    copy myfile.bak1 to myfile.bak0
@@ -105,10 +103,10 @@ sub create_back_up_file{
                 $maxNumberOfBackUps=1 ;
                 last; # break out of the loop
             } elsif(!(-e $backupFile)) {
-                $maxNumberOfBackUps=1 ;
+                $maxNumberOfBackUps=1;
                 last; # break out of the loop
             }
-            $self->logger(" $backupFile already exists, incrementing by 1...");
+            $self->logger(" $backupFile already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)");
             $backupCounter++;
             $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;
         }

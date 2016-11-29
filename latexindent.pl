@@ -22,8 +22,8 @@ GetOptions (
     "outputfile|o=s"=>\$switches{outputToFile},
     "modifylinebreaks|m"=>\$switches{modifyLineBreaks},
     "logfile|g=s"=>\$switches{logFileName},
-    #"help|h"=>\$showhelp,
-    #"cruft|c=s"=>\$cruftDirectory,
+    "help|h"=>\$switches{showhelp},
+    "cruft|c=s"=>\$switches{cruftDirectory},
 );
 
 # check local settings doesn't interfer with reading the file;
@@ -55,11 +55,4 @@ $document->processSwitches;
 $document->readSettings;
 $document->file_extension_check;
 $document->operate_on_file;
-
-# Necessary changes from 2.1 to 3.0
-#
-# TEST CASES:
-#       - on Windows, move defaultSettings.yaml to a different directory
-#           and see if logfile is updated correctly
-
 exit(0);

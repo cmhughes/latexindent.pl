@@ -75,4 +75,8 @@ cd ../fileextensions/
 cd ../tokenChecks/
 [[ $silentMode == 1 ]] && echo "./tokenChecks/token-checks.sh"
 ./token-checks.sh $silentModeFlag $showCounterFlag $loopminFlag
+# cruft directory
+cd ../cruftdirectory/
+[[ $silentMode == 1 ]] && echo "./cruftdirectory/cruft-directory-test-cases.sh"
+./cruft-directory-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag
 exit
