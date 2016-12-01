@@ -26,7 +26,7 @@ sub find_commands_or_key_equals_values_braces{
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # command regexp with trailing comment
-    my $commandRegExpTrailingComment = qr/$commandRegExp\h*($trailingCommentRegExp)?(\R)?/;
+    my $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)(\R)?/;
 
     # match either a \\command or key={value}
     while( ${$self}{body} =~ m/$commandRegExpTrailingComment/

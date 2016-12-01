@@ -86,4 +86,6 @@ latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.ya
 latexindent.pl -s -w command-nest-env.tex
 # verbatim command
 latexindent.pl -s -w verbatim-commands.tex
+# multiple trailing comment
+latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -tt -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=mand-args-mod17.yaml 
 git status
