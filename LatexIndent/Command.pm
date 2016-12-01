@@ -38,6 +38,17 @@ sub tasks_particular_to_each_object{
     # search for arguments
     $self->find_opt_mand_arguments;
 
+    # situation: ${${$self}{linebreaksAtEnd}}{end} == 1, and the argument container object
+    # still contains a linebreak at the end; in this case, we need to remove the linebreak from 
+    # the container object
+    if(${${$self}{linebreaksAtEnd}}{end} == 1 
+      and ${${${$self}{children}}[0]}{body} =~ m/\R$/s
+      and !${$self}{endImmediatelyFollowedByComment}){
+        $self->logger("Removing linebreak from argument container of ${$self}{name}","trace");
+        ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
+        ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
+    }
+
     # situation: ${${$self}{linebreaksAtEnd}}{end} == 1 and the last argument specifies
     # EndFinishesWithLineBreaks = 0 (see test-cases/commands/just-one-command-mod10.tex)
     if(${${$self}{linebreaksAtEnd}}{end} == 1 
@@ -81,7 +92,8 @@ sub tasks_particular_to_each_object{
     if(${${$self}{linebreaksAtEnd}}{end} == 1 
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
         and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 
-        and ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~m/\R$/s){
+        and ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~m/\R$/s
+        and !${$self}{endImmediatelyFollowedByComment}){
     
         # last argument adjustment
         $self->logger("Adjusting last argument in command, ${$self}{name} to avoid double line break","trace");

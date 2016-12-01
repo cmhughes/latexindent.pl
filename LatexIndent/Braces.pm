@@ -25,25 +25,28 @@ sub find_commands_or_key_equals_values_braces{
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
+    # command regexp with trailing comment
+    my $commandRegExpTrailingComment = qr/$commandRegExp\h*($trailingCommentRegExp)?(\R)?/;
+
     # match either a \\command or key={value}
-    while( ${$self}{body} =~ m/$commandRegExp\h*($trailingCommentRegExp)?/ 
+    while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
                             or  
            ${$self}{body} =~ m/$key_equals_values_bracesRegExp\h*($trailingCommentRegExp)?/){
-      if(${$self}{body} =~ m/$commandRegExp\h*($trailingCommentRegExp)?/){ 
+      if(${$self}{body} =~ m/$commandRegExpTrailingComment/){ 
         # log file output
         $self->logger("command found: $2",'heading');
 
         # create a new command object
         my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()),
                                                 name=>$2,
-                                                body=>$4,
+                                                body=>$4.($7?$7:($8?$8:q())),    # $7 is linebreak, $8 is trailing comment
                                                 end=>q(),
                                                 linebreaksAtEnd=>{
                                                   begin=>$3?1:0,
-                                                  end=>$7?1:0,
+                                                  end=>$7?1:($9?1:0),            # $7 is linebreak before comment check, $9 is after
                                                 },
                                                 modifyLineBreaksYamlName=>"commands",
-                                                regexp=>$commandRegExp,
+                                                regexp=>($7?$commandRegExp:$commandRegExpTrailingComment),
                                                 endImmediatelyFollowedByComment=>$7?0:($8?1:0),
                                                 aliases=>{
                                                   # begin statements
