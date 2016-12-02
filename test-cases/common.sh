@@ -19,8 +19,9 @@
 #       commands-test-cases.sh -s -o 13 -c
 silentMode=0
 loopmin=1
+noisyMode=0
 # check flags, and change defaults appropriately
-while getopts 'csl:o:' OPTION
+while getopts 'ncsl:o:' OPTION
 do
  case $OPTION in 
   s)    
@@ -39,6 +40,10 @@ do
   c)
     # show the loop counter
     showCounter=1
+  ;;
+  n)
+    # show the loop counter
+    noisyMode=1
   ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2

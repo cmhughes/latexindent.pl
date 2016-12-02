@@ -65,7 +65,8 @@ sub tasks_particular_to_each_object{
     # so this little bit fixes it
     if(${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} and ${${$self}{linebreaksAtEnd}}{end} == 0 
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
-        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 ){
+        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} >= 1 
+        and !${$self}{endImmediatelyFollowedByComment}){
 
         # update the Command object
         $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}","trace");
