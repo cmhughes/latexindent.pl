@@ -19,7 +19,7 @@ sub get_command_regexp{
 
     # store the regular expresssion for matching and replacing 
     my $commandRegExp = qr/
-                  (\\)   
+                  (\\|@)   
                   (
                    [a-zA-Z@\*0-9_]+? # lowercase|uppercase letters, @, *, numbers
                   )                

@@ -26,6 +26,7 @@ use LatexIndent::Item qw/find_items/;
 use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
 use LatexIndent::Command qw/get_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
+use LatexIndent::GroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;

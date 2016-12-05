@@ -22,17 +22,27 @@ sub find_commands_or_key_equals_values_braces{
     # key = {value} regexp
     my $key_equals_values_bracesRegExp = $self->get_key_equals_values_regexp;
 
+    # something {value} regexp
+    my $grouping_braces_regexp = $self->get_grouping_braces_brackets_regexp;
+
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # command regexp with trailing comment
     my $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)/;
 
+    # key ={value} regexp with trailing comment
     my $key_equals_values_bracesRegExpTrailingComment = qr/$key_equals_values_bracesRegExp\h*((?:$trailingCommentRegExp\h*)*)?/;
+
+    # something {value} grouping braces with trailing comment
+    my $grouping_braces_regexpTrailingComment = qr/$grouping_braces_regexp\h*((?:$trailingCommentRegExp\h*)*)?/;
+
     # match either a \\command or key={value}
     while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
                             or  
-           ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/){
+           ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
+                            or
+           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ ){
       if(${$self}{body} =~ m/$commandRegExpTrailingComment/){ 
         # log file output
         $self->logger("command found: $2",'heading');
@@ -89,8 +99,36 @@ sub find_commands_or_key_equals_values_braces{
         # the settings and storage of most objects has a lot in common
         $self->get_settings_and_store_new_object($key_equals_values_braces);
 
-      }
+      } elsif (${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/){
+
+        # log file output
+        $self->logger("grouping braces found: $1",'heading');
+
+        # create a new key_equals_values_braces object
+        my $grouping_braces = LatexIndent::GroupingBracesBrackets->new(
+                                                begin=>$1.($2?$2:q()).($3?$3:q()),
+                                                name=>$1,
+                                                body=>$4.($7?$7:($8?$8:q())),    
+                                                end=>q(),
+                                                linebreaksAtEnd=>{
+                                                  begin=>0,
+                                                  end=>$7?1:0,
+                                                },
+                                                modifyLineBreaksYamlName=>"keyEqualsValuesBraces",
+                                                regexp=>($7?$grouping_braces_regexp:$grouping_braces_regexpTrailingComment),
+                                                endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                                aliases=>{
+                                                  # begin statements
+                                                  BeginStartsOnOwnLine=>"KeyStartsOnOwnLine",
+                                                  # body statements
+                                                  BodyStartsOnOwnLine=>"EqualsFinishesWithLineBreak",
+                                                },
+                                              );
+
+        # the settings and storage of most objects has a lot in common
+        $self->get_settings_and_store_new_object($grouping_braces);
     } 
+  }
     return;
 }
 

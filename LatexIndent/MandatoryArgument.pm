@@ -4,7 +4,6 @@
 package LatexIndent::MandatoryArgument;
 use strict;
 use warnings;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
