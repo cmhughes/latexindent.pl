@@ -39,7 +39,8 @@ sub get_key_equals_values_regexp{
                    [a-zA-Z@\*0-9_\/.\h]+?                               # lowercase|uppercase letters, @, *, numbers, forward slash, dots
                   )                                                     # $3 name
                   (
-                    \h*\R*=\h*
+                    (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*
+                    =\h*
                   )                                                     # $4 = symbol
                   (\R*)?                                                # $5 linebreak after =
                   ($optAndMandRegExp)                                   # $6 opt|mand arguments
@@ -47,6 +48,42 @@ sub get_key_equals_values_regexp{
                 /sx;
 
     return $key_equals_values_bracesRegExp; 
+}
+
+sub indent_begin{
+    my $self = shift;
+
+    # blank line token
+    my $blankLineToken = $self->get_blank_line_token;
+
+    if(${$self}{begin} =~ /\R=/s or ${$self}{begin} =~ /$blankLineToken\h*=/s ){
+        $self->logger("= found on own line in ${$self}{name}, adding indentation");
+        ${$self}{begin} =~ s/=/${$self}{indentation}=/s;
+    }
+}
+
+sub check_linebreaks_before_equals{
+    my $self = shift;
+
+    # check if -m switch is active
+    return unless $self->is_m_switch_active;
+    
+    # linebreaks *infront* of = symbol
+    if(${$self}{begin} =~ /\R\h*=/s){
+          if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==0){
+            $self->logger("Removing linebreak before = symbol in ${$self}{name} (see EqualsStartsOnOwnLine)");
+            ${$self}{begin} =~ s/(\R|\h)*=/=/s;
+          }
+    } else {
+      if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==1){
+            $self->logger("Adding a linebreak before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)");
+            ${$self}{begin} =~ s/=/\n=/s;
+      } elsif(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==2){
+            $self->logger("Adding a % linebreak immediately before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)");
+            ${$self}{begin} =~ s/\h*=/%\n=/s;
+      }
+    }
+    return;
 }
 
 sub create_unique_id{

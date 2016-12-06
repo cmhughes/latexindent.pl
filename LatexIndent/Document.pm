@@ -12,7 +12,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation/;
 use LatexIndent::Tokens qw/get_tokens token_check/;
 
 # code blocks

@@ -52,9 +52,15 @@ latexindent.pl -s -tt pgfkeys-multiple-keys -l=keyStartsOnOwnLine.yaml -m -o=pgf
 latexindent.pl -s -tt pgfkeys-multiple-keys -l=keyStartsOnOwnLine.yaml,unprotect-blank-lines.yaml -m -o=pgfkeys-multiple-keys-unprotect-remove.tex
 latexindent.pl -s -tt pgfkeys-multiple-keys-single-line.tex -l=keyStartsOnOwnLineYes.yaml -m -o=pgfkeys-multiple-keys-single-line-to-multiple.tex
 latexindent.pl -s -tt pgfkeys-multiple-keys-single-line.tex -l=keyStartsOnOwnLineWithComment.yaml -m -o=pgfkeys-multiple-keys-single-line-to-multiple-comment.tex
+# EqualsStartsOnOwnLine.yaml
+latexindent.pl -s -tt pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine.yaml -o=pgfkeys-add-equals-first.tex
+latexindent.pl -s -tt pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine-comment.yaml -o=pgfkeys-add-equals-comments.tex
+latexindent.pl -s -tt pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine-comment.yaml,mand-args-mod17.yaml -o=pgfkeys-add-equals-comments-everywhere.tex
+latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=EqualsStartsOnOwnLine-remove.yaml -o=pgfkeys-equals-remove-line-breaks-mod0.tex
+latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=EqualsStartsOnOwnLine-remove.yaml,unprotect-blank-lines.yaml  -o=pgfkeys-equals-remove-line-breaks-unprotect-mod0.tex
 
-
-###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
-###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
-###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
+#### NEED just key=value option (no braces) #####
+#### NEED just key=value option (no braces) #####
+#### NEED just key=value option (no braces) #####
 git status
+[[ $noisyMode == 1 ]] && makenoise

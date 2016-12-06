@@ -71,4 +71,5 @@ latexindent.pl -s -tt ifelsefi-multiple-nested.tex -l=noAdditionalIndentGlobal.y
 # indentRules
 latexindent.pl -s -tt ifelsefi-multiple-nested.tex -l=indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
 git status
+[[ $noisyMode == 1 ]] && makenoise
 exit

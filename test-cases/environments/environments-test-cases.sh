@@ -68,4 +68,5 @@ latexindent.pl -tt -s -l=indentRulesGlobal.yaml environments-ifelsefi.tex -o=env
 latexindent.pl -s -l=indentRulesGlobal.yaml,noAdditionalIndentGlobal.yaml  environments-simple.tex -o=environments-simple-indent-rules-global-conflict.tex
 # special characters
 latexindent.pl -s environments-special-characters.tex -o environments-special-characters-default.tex
+[[ $noisyMode == 1 ]] && makenoise
 git status

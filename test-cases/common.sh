@@ -54,3 +54,8 @@ done
 
 echo "loopmin is $loopmin"
 echo "loopmax is $loopmax"
+
+function makenoise
+{
+    paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+}

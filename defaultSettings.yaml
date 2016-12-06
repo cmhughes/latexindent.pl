@@ -343,6 +343,7 @@ modifyLineBreaks:
         RCuBFinishesWithLineBreak: -1
     keyEqualsValuesBraces:
         KeyStartsOnOwnLine: -1
+        EqualsStartsOnOwnLine: -1
         EqualsFinishesWithLineBreak: 0
     items:
         ItemStartsOnOwnLine: -1

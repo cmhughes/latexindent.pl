@@ -35,6 +35,9 @@ sub get_command_regexp{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
+    # check for adding/removing linebreaks before =
+    $self->check_linebreaks_before_equals;
+
     # search for arguments
     $self->find_opt_mand_arguments;
 
@@ -106,7 +109,11 @@ sub tasks_particular_to_each_object{
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body}=~s/\R$//s;
     }
+}
 
+sub check_linebreaks_before_equals{
+    # empty routine, which allows the above routine to function (this routine kicks in for KeyEqualsValuesBraces)
+    return;
 }
 
 sub create_unique_id{

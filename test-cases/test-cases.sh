@@ -29,6 +29,7 @@ do
   n)
     # only do this one in the loop
     noisyModeFlag="-n"
+    noisyMode=1
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
@@ -86,7 +87,7 @@ cd ../cruftdirectory/
 ./cruft-directory-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
-do
-    paplay /usr/share/sounds/freedesktop/stereo/complete.oga
+do 
+  [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 done
 exit

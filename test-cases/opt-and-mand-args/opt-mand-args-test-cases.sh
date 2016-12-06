@@ -19,4 +19,5 @@ latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=noAdditi
 latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=indentRulesGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-Global.tex
 latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=indentRulesGlobal.yaml,indentRulesGlobalEnv.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-all-Global.tex
 git status
+[[ $noisyMode == 1 ]] && makenoise
 exit

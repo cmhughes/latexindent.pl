@@ -59,4 +59,5 @@ latexindent.pl environments-third-mand-args-mod1.tex -l=noAdditionalIndentGlobal
 latexindent.pl environments-third-mand-args-mod1.tex -l=indentRulesGlobal.yaml -s -o=environments-third-mand-args-mod1-indent-rules-global.tex -tt
 [[ $silentMode == 0 ]] && set -x 
 git status
+[[ $noisyMode == 1 ]] && makenoise
 exit

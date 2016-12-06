@@ -94,6 +94,7 @@ sub find_commands_or_key_equals_values_braces{
                                                   # body statements
                                                   BodyStartsOnOwnLine=>"EqualsFinishesWithLineBreak",
                                                 },
+                                                additionalAssignments=>["EqualsStartsOnOwnLine"],
                                               );
 
         # the settings and storage of most objects has a lot in common

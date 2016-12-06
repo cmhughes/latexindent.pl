@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation/;
 our %familyTree;
 
 sub push_family_tree_to_indent{
@@ -19,6 +19,9 @@ sub indent{
 
     # determine the surrounding and current indentation
     $self->determine_total_indentation;
+
+    # indent the begin statement
+    $self->indent_begin;
 
     # indent the body
     $self->indent_body;
@@ -77,6 +80,11 @@ sub get_surrounding_indentation{
     }
     ${$self}{surroundingIndentation} = $surroundingIndentation;
 
+}
+
+sub indent_begin{
+    # for most objects, the begin statement is just one line, but there are exceptions, e.g KeyEqualsValuesBraces
+    return;
 }
 
 sub indent_body{
