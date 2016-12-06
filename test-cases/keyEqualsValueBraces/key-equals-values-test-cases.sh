@@ -42,9 +42,9 @@ do
    latexindent.pl -s -tt contributors.bib -m -l=mand-args-keywords$i.yaml -o=contributors-mod$i.bib
    # remove line breaks, with trailing comments
    latexindent.pl pgfkeys-remove-line-breaks-first-tc.tex -s -tt -m -l=unprotect-blank-lines.yaml,mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-first-tc-mod$i.tex
-   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-mod$i.tex -g=one.log
-   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml -o=pgfkeys-remove-line-breaks-unprotect-mod$i.tex -g=two.log
-   ##latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-unprotect-nocondense-mod$i.tex -g=three.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-mod$i.tex -g=one.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml -o=pgfkeys-remove-line-breaks-unprotect-mod$i.tex -g=two.log
+   latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-unprotect-nocondense-mod$i.tex -g=three.log
    [[ $silentMode == 0 ]] && set +x 
 done
 ###### NEED TO TEST key STARTS ON OWN LINE!!!
