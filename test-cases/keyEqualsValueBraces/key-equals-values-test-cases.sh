@@ -47,9 +47,12 @@ do
    latexindent.pl -s -tt pgfkeys-remove-line-breaks.tex -m -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-unprotect-nocondense-mod$i.tex -g=three.log
    [[ $silentMode == 0 ]] && set +x 
 done
-###### NEED TO TEST key STARTS ON OWN LINE!!!
-###### NEED TO TEST key STARTS ON OWN LINE!!!
-###### NEED TO TEST key STARTS ON OWN LINE!!!
+# KeyStartsOnOwnLine
+latexindent.pl -s -tt pgfkeys-multiple-keys -l=keyStartsOnOwnLine.yaml -m -o=pgfkeys-multiple-keys-remove.tex
+latexindent.pl -s -tt pgfkeys-multiple-keys -l=keyStartsOnOwnLine.yaml,unprotect-blank-lines.yaml -m -o=pgfkeys-multiple-keys-unprotect-remove.tex
+latexindent.pl -s -tt pgfkeys-multiple-keys-single-line.tex -l=keyStartsOnOwnLineYes.yaml -m -o=pgfkeys-multiple-keys-single-line-to-multiple.tex
+latexindent.pl -s -tt pgfkeys-multiple-keys-single-line.tex -l=keyStartsOnOwnLineWithComment.yaml -m -o=pgfkeys-multiple-keys-single-line-to-multiple-comment.tex
+
 
 ###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
 ###### NEED TO TEST EQUALS STARTS ON OWN LINE!!!
