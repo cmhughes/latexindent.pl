@@ -1,33 +1,3 @@
-
-Skip to content
-Personal
-Open source
-Business
-Explore
-Pricing
-Blog
-Support
-This repository
-
-2
-0
-
-    1
-
-rbrignall/OU-SUPPS
-Code
-Issues 6
-Pull requests 0
-Projects 0
-Wiki
-Pulse
-Graphs
-OU-SUPPS/outn.cls
-971d663 on Sep 16
-@rbrignall rbrignall outn v0.61
-@rbrignall
-@cmhughes
-563 lines (518 sloc) 18.6 KB
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{outn}[2016/09/16 v0.61 (Robert Brignall, all rights reserved)]
 
@@ -590,9 +560,3 @@ OU-SUPPS/outn.cls
 
 %%
 %% EOF
-
-    Contact GitHub API Training Shop Blog About 
-
-    © 2016 GitHub, Inc. Terms Privacy Security Status Help 
-
-

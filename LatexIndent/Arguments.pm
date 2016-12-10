@@ -187,12 +187,15 @@ sub get_arguments_regexp{
     # some calls to this routine need to account for the linebreaks at the end, some do not
     my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();
 
+    # for example #1 #2, etc
+    my $numberedArgRegExp = qr/#\h*\d+/;
+
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
                           (                          # capture into $1
                              (?:                  
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)* 
                                 (?:
                                      (?:
                                          \h*         # 0 or more spaces
@@ -225,7 +228,7 @@ sub get_arguments_regexp{
                              # NOT followed by
                              (?!
                                (?:
-                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)*  # 0 or more h-space, blanklines, trailing comments
                                    (?:
                                      (?:(?<!\\)\[)
                                      |

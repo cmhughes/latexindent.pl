@@ -21,7 +21,7 @@ sub get_command_regexp{
     my $commandRegExp = qr/
                   (\\|@)   
                   (
-                   [a-zA-Z@\*0-9_]+? # lowercase|uppercase letters, @, *, numbers
+                   [a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
                   )                
                   \h*
                   (\R*)?

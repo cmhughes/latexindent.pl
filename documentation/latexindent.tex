@@ -1419,6 +1419,19 @@ as a verbatim environment.
 
 
 \section{Known limitations}\label{sec:knownlimitations}
+
+The following command struggles because of the []
+\strip_marks:n #1
+	{
+	\regex_replace_all:nnN { \c{marks}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
+	}
+
+The following struggles:
+
+	\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
+
+because of the unmatched [
+
 There are a number of known limitations of the script, and almost certainly quite a
 few that are \emph{unknown}!
 

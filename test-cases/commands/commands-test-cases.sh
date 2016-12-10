@@ -90,5 +90,7 @@ latexindent.pl -s -w verbatim-commands.tex
 latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -tt -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=mand-args-mod17.yaml 
 # test that commands with trailing comments do not remove line breaks
 latexindent.pl -m commands-remove-line-breaks-tc.tex -s -tt -o=commands-remove-line-breaks-tc-mod5.tex -l=mand-args-mod5.yaml
+# command with numeric arguments
+latexindent.pl -s command-with-numeric-args -o=command-with-numeric-args-default.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
