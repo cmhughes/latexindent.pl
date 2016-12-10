@@ -190,41 +190,6 @@ sub get_arguments_regexp{
     # arguments regexp
     my $optAndMandRegExp = 
                         qr/
-                          # NOT
-                          (?!
-                             .*
-                             (?:
-                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*  # 0 or more h-space, blanklines, trailing comments
-                                  (?<!\\)                                           # not immediately pre-ceeded by \
-                                  \[                                         
-                                      (?:
-                                          (?!
-                                              (?:(?<!\\)\])                          # anything except ]
-                                          ).
-                                      )*?(?:(?<!\\)\[|(?<!\\)\{).*?                  # up to a [ or }
-                                  (?<!\\)                                            # not immediately pre-ceeded by \
-                                 \]                                                  # [optional arguments]
-                             )                                                       
-                           )
-                           # end of NOT
-                           # MORE NOT
-                           (?!
-                             .*
-                             (?:
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*       
-                                (?<!\\)                                               # not immediately pre-ceeded by \
-                                \{                                                    # {
-                                        (?:
-                                            (?!
-                                                 (?:(?<!\\)\})                        # anything except }
-                                            ).
-                                        )*?(?:(?<!\\)\[|(?<!\\)\{).*?                 # up to a [ or }
-                                (?<!\\)                                               # not immediately pre-ceeded by \
-                                \}                                                    # }
-                            )
-                          )
-                          # end of NOT
-                          # If we make it this far, we start matching
                           (                          # capture into $1
                              (?:                  
                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp)* 
@@ -235,7 +200,7 @@ sub get_arguments_regexp{
                                          \[
                                              (?:
                                                  (?!
-                                                     (?:(?<!\\)\[) 
+                                                     (?:(?<!\\)\[|(?<!\\)\{) 
                                                  ).
                                              )*?     # not including [, but \[ ok
                                          (?<!\\)     # not immediately pre-ceeded by \
@@ -248,7 +213,7 @@ sub get_arguments_regexp{
                                          \{
                                              (?:
                                                  (?!
-                                                     (?:(?<!\\)\{) 
+                                                     (?:(?<!\\)\{|(?<!\\)\[) 
                                                  ).
                                              )*?     # not including {, but \{ ok
                                          (?<!\\)     # not immediately pre-ceeded by \
@@ -257,6 +222,17 @@ sub get_arguments_regexp{
                                 )
                              )
                              +                       # at least one of the above
+                             # NOT followed by
+                             (?!
+                               (?:
+                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                   (?:
+                                     (?:(?<!\\)\[)
+                                     |
+                                     (?:(?<!\\)\{)
+                                   )
+                               )
+                             )
                              \h*
                              ($lineBreaksAtEnd)
                           )                  

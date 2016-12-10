@@ -58,6 +58,9 @@ latexindent.pl -s -tt pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine-comment.yam
 latexindent.pl -s -tt pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine-comment.yaml,mand-args-mod17.yaml -o=pgfkeys-add-equals-comments-everywhere.tex
 latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=EqualsStartsOnOwnLine-remove.yaml -o=pgfkeys-equals-remove-line-breaks-mod0.tex
 latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=EqualsStartsOnOwnLine-remove.yaml,unprotect-blank-lines.yaml  -o=pgfkeys-equals-remove-line-breaks-unprotect-mod0.tex
+# outn.cls
+latexindent.pl -s outn-small.cls -o=outn-small-default.cls
+latexindent.pl -s outn.cls -o=outn-default.cls
 
 #### NEED just key=value option (no braces) #####
 #### NEED just key=value option (no braces) #####

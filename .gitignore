@@ -10,3 +10,4 @@ documentation/*.out
 documentation/*.run.xml
 documentation/*.toc
 documentation/*.out
+nytprof*
