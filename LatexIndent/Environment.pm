@@ -76,11 +76,15 @@ sub find_environments{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
+    # search for items as the first order of business
+    $self->find_items;
+
+    # search for commands, keys, named grouping braces
+    $self->find_commands_or_key_equals_values_braces;
+
     # search for arguments
     $self->find_opt_mand_arguments;
 
-    # search for items
-    $self->find_items;
 }
 
 sub create_unique_id{

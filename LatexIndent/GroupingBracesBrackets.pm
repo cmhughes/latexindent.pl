@@ -24,12 +24,15 @@ sub get_grouping_braces_brackets_regexp{
     # store the regular expresssion for matching and replacing 
     my $grouping_braces_RegExp = qr/
                   (
+                     \h|\R
+                  )
+                  (
                    [a-zA-Z@\*]+?       # lowercase|uppercase letters, @, *, numbers, forward slash, dots
-                  )                    # $1 name
-                  (\h*)                # $2 h-space
-                  (\R*)                # $3 linebreaks
-                  ($optAndMandRegExp)  # $4 mand|opt arguments (at least one)
-                  (\R)?                # $7 linebreak 
+                  )                    # $2 name
+                  (\h*)                # $3 h-space
+                  (\R*)                # $4 linebreaks
+                  ($optAndMandRegExp)  # $5 mand|opt arguments (at least one)
+                  (\R)?                # $8 linebreak 
                 /sx;
 
     return $grouping_braces_RegExp; 
@@ -41,6 +44,15 @@ sub create_unique_id{
     $groupingBracesCounter++;
     ${$self}{id} = "${$self->get_tokens}{groupingBraces}$groupingBracesCounter";
     return;
+}
+
+sub get_replacement_text{
+    my $self = shift;
+
+    # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
+    $self->logger("Custom replacement text routine for ${$self}{name}");
+    ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
+    delete ${$self}{beginningbit};
 }
 
 1;

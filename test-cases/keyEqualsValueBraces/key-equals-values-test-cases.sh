@@ -61,6 +61,10 @@ latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=EqualsStartsOnOwnL
 # outn.cls
 latexindent.pl -s outn-small.cls -o=outn-small-default.cls
 latexindent.pl -s outn.cls -o=outn-default.cls
+# optional argument to an environment with keys, and commands
+latexindent.pl -s environment-opt-arg-with-commands1 -o=environment-opt-arg-with-commands1-default.tex
+# mixed object example
+latexindent.pl -s mixed-ifelsefi-commands-keys-braces1 -o=mixed-ifelsefi-commands-keys-braces1-default.tex
 
 #### NEED just key=value option (no braces) #####
 #### NEED just key=value option (no braces) #####

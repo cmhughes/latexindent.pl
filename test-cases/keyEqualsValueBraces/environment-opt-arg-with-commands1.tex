@@ -1,0 +1,23 @@
+\begin{tikzpicture}
+		\begin{axis}[
+				xbar stacked,
+				xmin=-0.1,
+				%ymin=0,ymax=1,
+				bar width=40pt,
+				nodes near coords,
+				axis lines=none,
+				nodes near coords align={horizontal},
+				visualization depends on=x \as \myxcoord,
+				nodes near coords={\pgfmathprintnumber\myxcoord},
+				every node near coord/.append style={
+					anchor=east},
+			]
+			\@ifundefined{c@totalchapters}
+			{}
+			{%
+				\foreach \i in {1,...,\thetotalchapters}{%
+					\addplot coordinates {(\the\value{totalpages\@roman{\i}},0)};
+				}
+			}
+		\end{axis}
+	\end{tikzpicture}

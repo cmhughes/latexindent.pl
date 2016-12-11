@@ -107,17 +107,18 @@ sub find_commands_or_key_equals_values_braces{
 
         # create a new key_equals_values_braces object
         my $grouping_braces = LatexIndent::GroupingBracesBrackets->new(
-                                                begin=>$1.($2?$2:q()).($3?$3:q()),
-                                                name=>$1,
-                                                body=>$4.($7?$7:($8?$8:q())),    
+                                                begin=>$2.($3?$3:q()).($4?$4:q()),
+                                                name=>$2,
+                                                body=>$5.($8?$8:($9?$9:q())),    
                                                 end=>q(),
                                                 linebreaksAtEnd=>{
                                                   begin=>0,
-                                                  end=>$7?1:0,
+                                                  end=>$8?1:0,
                                                 },
                                                 modifyLineBreaksYamlName=>"keyEqualsValuesBraces",
-                                                regexp=>($7?$grouping_braces_regexp:$grouping_braces_regexpTrailingComment),
-                                                endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                                regexp=>($8?$grouping_braces_regexp:$grouping_braces_regexpTrailingComment),
+                                                beginningbit=>$1,
+                                                endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                                 aliases=>{
                                                   # begin statements
                                                   BeginStartsOnOwnLine=>"KeyStartsOnOwnLine",
