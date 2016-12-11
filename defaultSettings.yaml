@@ -305,37 +305,37 @@ modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
     environments:
-        BeginStartsOnOwnLine: 1
-        BodyStartsOnOwnLine: 1
-        EndStartsOnOwnLine: 1
-        EndFinishesWithLineBreak: 1
+        BeginStartsOnOwnLine: -1
+        BodyStartsOnOwnLine: -1
+        EndStartsOnOwnLine: -1
+        EndFinishesWithLineBreak: -1
         equation*:
-            BeginStartsOnOwnLine: 1
-            BodyStartsOnOwnLine: 1
-            EndStartsOnOwnLine: 1
-            EndFinishesWithLineBreak: 1
+            BeginStartsOnOwnLine: -1
+            BodyStartsOnOwnLine: -1
+            EndStartsOnOwnLine: -1
+            EndFinishesWithLineBreak: -1
     commands:
         CommandStartsOnOwnLine: -1
-        CommandNameFinishesWithLineBreak: 0
+        CommandNameFinishesWithLineBreak: -1
     ifElseFi:
-        IfStartsOnOwnLine: 1
-        BodyStartsOnOwnLine: 1
-        ElseStartsOnOwnLine: 1
-        ElseFinishesWithLineBreak: 1
-        FiStartsOnOwnLine: 1
-        FiFinishesWithLineBreak: 1
+        IfStartsOnOwnLine: -1
+        BodyStartsOnOwnLine: -1
+        ElseStartsOnOwnLine: -1
+        ElseFinishesWithLineBreak: -1
+        FiStartsOnOwnLine: -1
+        FiFinishesWithLineBreak: -1
         ifnum:
-            IfStartsOnOwnLine: 1
-            BodyStartsOnOwnLine: 1
-            ElseStartsOnOwnLine: 1
-            ElseFinishesWithLineBreak: 1
-            FiStartsOnOwnLine: 1
-            FiFinishesWithLineBreak: 1
+            IfStartsOnOwnLine: -1
+            BodyStartsOnOwnLine: -1
+            ElseStartsOnOwnLine: -1
+            ElseFinishesWithLineBreak: -1
+            FiStartsOnOwnLine: -1
+            FiFinishesWithLineBreak: -1
     optionalArguments:
-        LSqBStartsOnOwnLine: 0
-        OptArgBodyStartsOnOwnLine: 0
-        RSqBStartsOnOwnLine: 0
-        RSqBFinishesWithLineBreak: 0
+        LSqBStartsOnOwnLine: -1
+        OptArgBodyStartsOnOwnLine: -1
+        RSqBStartsOnOwnLine: -1
+        RSqBFinishesWithLineBreak: -1
     mandatoryArguments:
         LCuBStartsOnOwnLine: -1
         MandArgBodyStartsOnOwnLine: -1
@@ -344,7 +344,7 @@ modifyLineBreaks:
     keyEqualsValuesBraces:
         KeyStartsOnOwnLine: -1
         EqualsStartsOnOwnLine: -1
-        EqualsFinishesWithLineBreak: 0
+        EqualsFinishesWithLineBreak: -1
     items:
         ItemStartsOnOwnLine: -1
         ItemFinishesWithLineBreak: -1

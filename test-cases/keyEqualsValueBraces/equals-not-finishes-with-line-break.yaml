@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    keyEqualsValuesBraces:
+        EqualsFinishesWithLineBreak: 0

@@ -16,28 +16,28 @@ loopmax=32
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
-latexindent.pl -s -w commands-simple.tex
-latexindent.pl -s -w commands-nested.tex
-latexindent.pl -s -w commands-nested-opt-nested.tex
-latexindent.pl -s -w commands-nested-harder.tex
-latexindent.pl -s -w commands-four-nested.tex
-latexindent.pl -s -w commands-four-nested-mk1.tex
-latexindent.pl -s -w commands-five-nested.tex
-latexindent.pl -s -w commands-five-nested-mk1.tex
-latexindent.pl -s -w commands-six-nested.tex
-latexindent.pl -s -w commands-six-nested-mk1.tex
-latexindent.pl -s -w trailingComments.tex
-latexindent.pl -s -w bracketTest.tex
+latexindent.pl -s -w commands-simple.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-nested.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-nested-opt-nested.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-nested-harder.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-four-nested.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-four-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-five-nested.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-five-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-six-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w trailingComments.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w bracketTest.tex -l=command-name-not-finishes-with-line-break.yaml
 # noAdditionalIndent
-latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
-latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
-latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
-latexindent.pl -s commands-six-nested.tex -l=noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
-latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=noAdditionalIndentGlobal.yaml
+latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
+latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
+latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
+latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
+latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndentGlobal.yaml
 latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-not-global.tex
-latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=noAdditionalIndentGlobal.yaml
+latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndentGlobal.yaml
 # indentRules
-latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=indentRulesGlobal.yaml
+latexindent.pl -tt -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s
 # modifyLineBreaks experiments
@@ -47,49 +47,49 @@ do
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
    # add line breaks
-   latexindent.pl just-one-command.tex -m  -tt -s -o=just-one-command-mod$i.tex -l=mand-args-mod$i.yaml 
-   latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-mod$i.tex -l=mand-args-mod$i.yaml 
-   latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml 
-   latexindent.pl commands-one-line-nested-simple.tex -m  -tt -s -o=commands-one-line-nested-simple-mod$i.tex -l=mand-args-mod$i.yaml -g=one.log
-   latexindent.pl commands-one-line-nested.tex -m  -tt -s -o=commands-one-line-nested-mod$i.tex -l=mand-args-mod$i.yaml -g=one.log
-   latexindent.pl commands-one-line-nested.tex -m  -tt -s -o=commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml -g=two.log 
+   latexindent.pl just-one-command.tex -m  -tt -s -o=just-one-command-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
+   latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
+   latexindent.pl commands-one-line.tex -m  -tt -s -o=commands-one-line-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml 
+   latexindent.pl commands-one-line-nested-simple.tex -m  -tt -s -o=commands-one-line-nested-simple-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml -g=one.log
+   latexindent.pl commands-one-line-nested.tex -m  -tt -s -o=commands-one-line-nested-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml -g=one.log
+   latexindent.pl commands-one-line-nested.tex -m  -tt -s -o=commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml -g=two.log 
    # remove line breaks
-   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-mod$i.tex -l=mand-args-mod$i.yaml
-   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-mod$i.tex -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml
-   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-no-condense-mod$i.tex -l=mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml,noChangeCommandBody.yaml
-   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml 
+   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml
+   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml
+   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-unprotect-no-condense-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml,noChangeCommandBody.yaml
+   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml 
    # note the ChangeCommandBody.yaml in the following, which changes the behaviour of linebreaks at the end of a command
-   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
+   latexindent.pl commands-remove-line-breaks.tex -s -m -tt -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
    # multiple commands
-   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-mod$i.tex -l=mand-args-mod$i.yaml -g=one.log
-   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml -g=two.log
-   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf.yaml,noAdditionalIndentGlobal.yaml -g=three.log
-   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml -g=one.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf.yaml -g=two.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf.yaml,noAdditionalIndentGlobal.yaml -g=three.log
+   latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml -g=four.log
    # multiple commands and environments
-   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-mod$i.tex -l=mand-args-mod$i.yaml,figValign-yaml.yaml -g=fig.log
-   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-opt-mod$i.tex -l=opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml -g=fig.log
+   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml -g=fig.log
+   latexindent.pl figureValign.tex -m -tt -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml -g=fig.log
    [[ $silentMode == 0 ]] && set +x 
 done
 # testing the linebreak immediately before, e.g, \mycommand
-latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod1.tex -l=command-begin-mod1.yaml
-latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod2.tex -l=command-begin-mod2.yaml
-latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-begin-mod3.yaml
-latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-begin-mod3.yaml,unprotect-blank-lines.yaml
+latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod1.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod1.yaml
+latexindent.pl commands-nested-multiple.tex -m  -tt -s -o=commands-nested-multiple-command-mod2.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod2.yaml
+latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml
+latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -tt -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml,unprotect-blank-lines.yaml
 # special characters test case
 latexindent.pl commands-four-special-characters.tex -o=commands-four-special-characters-default.tex -s
 # multiple brace test
 latexindent.pl -s -w multipleBraces.tex
-latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml -o multipleBraces-mod1.tex
-latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml -o multipleBraces-xapptocmd-none-mod1.tex
-latexindent.pl -s -m multipleBraces.tex -l=mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex
+latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml -o multipleBraces-mod1.tex
+latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml,xapptocmd-none.yaml -o multipleBraces-xapptocmd-none-mod1.tex
+latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
 # verbatim command
 latexindent.pl -s -w verbatim-commands.tex
 # multiple trailing comment
-latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -tt -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=mand-args-mod17.yaml 
+latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -tt -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod17.yaml 
 # test that commands with trailing comments do not remove line breaks
-latexindent.pl -m commands-remove-line-breaks-tc.tex -s -tt -o=commands-remove-line-breaks-tc-mod5.tex -l=mand-args-mod5.yaml
+latexindent.pl -m commands-remove-line-breaks-tc.tex -s -tt -o=commands-remove-line-breaks-tc-mod5.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod5.yaml
 # command with numeric arguments
 latexindent.pl -s command-with-numeric-args -o=command-with-numeric-args-default.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
