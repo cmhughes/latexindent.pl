@@ -52,9 +52,12 @@ sub determine_total_indentation{
     # logfile information
     my $surroundingIndentation = ${$self}{surroundingIndentation};
     $self->logger("indenting object ${$self}{name}",'trace');
-    $self->logger("indentation *surrounding* object: '$surroundingIndentation'",'trace');
-    $self->logger("indentation *of* object: '${$self}{indentation}'",'trace');
-    $self->logger("*total* indentation to be added: '$surroundingIndentation${$self}{indentation}'",'trace');
+    (my $during = $surroundingIndentation) =~ s/\t/TAB/g;
+    $self->logger("indentation *surrounding* object: '$during'",'trace');
+    ($during = ${$self}{indentation}) =~ s/\t/TAB/g;
+    $self->logger("indentation *of* object: '$during'",'trace');
+    ($during = $surroundingIndentation.${$self}{indentation}) =~ s/\t/TAB/g;
+    $self->logger("*total* indentation to be added: '$during'",'trace');
 
     # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
