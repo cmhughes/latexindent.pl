@@ -107,6 +107,7 @@ indentRulesGlobal:
     items: 0
     keyEqualsValuesBraces: 0
     namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -154,6 +155,7 @@ noAdditionalIndentGlobal:
     items: 0
     keyEqualsValuesBraces: 0
     namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

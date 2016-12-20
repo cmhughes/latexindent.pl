@@ -20,7 +20,7 @@ use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children upd
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
-use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp/;
+use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp get_numbered_arg_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::Item qw/find_items/;
@@ -28,6 +28,7 @@ use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
 use LatexIndent::Command qw/get_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
+use LatexIndent::UnNamedGroupingBracesBrackets qw/get_unnamed_grouping_braces_brackets_regexp/;
 
 sub new{
     # Create new objects, with optional key/value pairs

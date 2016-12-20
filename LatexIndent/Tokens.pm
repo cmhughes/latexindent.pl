@@ -17,6 +17,7 @@ our %tokens = (
                 command=>"LATEX-INDENT-COMMAND",
                 key_equals_values_braces=>"LATEX-INDENT-KEY-VALUE-BRACES",
                 groupingBraces=>"LATEX-INDENT-GROUPING-BRACES",
+                unNamedgroupingBraces=>"LATEX-INDENT-UN-NAMED-GROUPING-BRACES",
                 endOfToken=>"-END",
               );
 

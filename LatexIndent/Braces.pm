@@ -22,8 +22,11 @@ sub find_commands_or_key_equals_values_braces{
     # key = {value} regexp
     my $key_equals_values_bracesRegExp = $self->get_key_equals_values_regexp;
 
-    # something {value} regexp
+    # something {value} or something [value] regexp
     my $grouping_braces_regexp = $self->get_grouping_braces_brackets_regexp;
+
+    # {something} or [something] regexp (unnamed grouping braces)
+    my $un_named_grouping_braces_RegExp = $self->get_unnamed_grouping_braces_brackets_regexp; 
 
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
@@ -37,28 +40,34 @@ sub find_commands_or_key_equals_values_braces{
     # something {value} grouping braces with trailing comment
     my $grouping_braces_regexpTrailingComment = qr/$grouping_braces_regexp\h*((?:$trailingCommentRegExp\h*)*)?/;
 
+    # {something} or [something] with trailing comment
+    my $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp\h*((?:$trailingCommentRegExp\h*)*)?/; 
+
     # match either a \\command or key={value}
     while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
                             or  
            ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
                             or
-           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ ){
+           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ 
+                            or
+           ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/
+         ){
       if(${$self}{body} =~ m/$commandRegExpTrailingComment/){ 
         # log file output
         $self->logger("command found: $2",'heading');
 
         # create a new command object
-        my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()),
+        my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()).($4?$4:q()),
                                                 name=>$2,
-                                                body=>$4.($7?$7:($8?$8:q())),    # $7 is linebreak, $8 is trailing comment
+                                                body=>$5.($8?$8:($9?$9:q())),    # $8 is linebreak, $9 is trailing comment
                                                 end=>q(),
                                                 linebreaksAtEnd=>{
-                                                  begin=>$3?1:0,
-                                                  end=>$7?1:0,            # $7 is linebreak before comment check, $9 is after
+                                                  begin=>$4?1:0,
+                                                  end=>$8?1:0,            # $8 is linebreak before comment check, $9 is after
                                                 },
                                                 modifyLineBreaksYamlName=>"commands",
-                                                regexp=>($7?$commandRegExp:$commandRegExpTrailingComment),
-                                                endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                                regexp=>($8?$commandRegExp:$commandRegExpTrailingComment),
+                                                endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                                 aliases=>{
                                                   # begin statements
                                                   BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
@@ -129,7 +138,30 @@ sub find_commands_or_key_equals_values_braces{
 
         # the settings and storage of most objects has a lot in common
         $self->get_settings_and_store_new_object($grouping_braces);
-    } 
+    } elsif (${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/) {
+        # log file output
+        $self->logger("UNnamed grouping braces found (no name, by definition!)",'heading');
+
+        # create a new Un-named-grouping-braces-brackets object
+        my $un_named_grouping_braces = LatexIndent::UnNamedGroupingBracesBrackets->new(
+                                                begin=>q(),
+                                                name=>"always-un-named",
+                                                body=>$3.($6?$6:($7?$7:q())),    
+                                                end=>q(),
+                                                linebreaksAtEnd=>{
+                                                  begin=>$2?1:0,
+                                                  end=>$6?1:0,
+                                                },
+                                                modifyLineBreaksYamlName=>"UnNamedGroupingBracesBrackets",
+                                                regexp=>($6?$un_named_grouping_braces_RegExp:$un_named_grouping_braces_RegExp_trailing_comment),
+                                                beginningbit=>$1,
+                                                endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                              );
+
+        # the settings and storage of most objects has a lot in common
+        $self->get_settings_and_store_new_object($un_named_grouping_braces);
+
+    }
   }
     return;
 }

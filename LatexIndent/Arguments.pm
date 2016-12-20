@@ -7,7 +7,7 @@ use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_opt_mand_arguments get_arguments_regexp/;
+our @EXPORT_OK = qw/find_opt_mand_arguments get_arguments_regexp get_numbered_arg_regexp/;
 our $ArgumentCounter;
 
 sub indent{
@@ -173,6 +173,13 @@ sub create_unique_id{
     return;
 }
 
+sub get_numbered_arg_regexp{
+
+    # for example #1 #2, etc
+    my $numberedArgRegExp = qr/#\h*\d+/;
+    return $numberedArgRegExp;
+}
+
 sub get_arguments_regexp{
 
     my $self = shift;
@@ -188,7 +195,7 @@ sub get_arguments_regexp{
     my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();
 
     # for example #1 #2, etc
-    my $numberedArgRegExp = qr/#\h*\d+/;
+    my $numberedArgRegExp = $self->get_numbered_arg_regexp;
 
     # arguments regexp
     my $optAndMandRegExp = 

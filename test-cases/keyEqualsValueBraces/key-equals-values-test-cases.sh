@@ -59,6 +59,7 @@ latexindent.pl -s -tt pgfkeys-add-equals -m -l=equals-not-finishes-with-line-bre
 latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=equals-not-finishes-with-line-break.yaml,EqualsStartsOnOwnLine-remove.yaml -o=pgfkeys-equals-remove-line-breaks-mod0.tex
 latexindent.pl -s -tt pgfkeys-equals-remove-line-breaks -m -l=equals-not-finishes-with-line-break.yaml,EqualsStartsOnOwnLine-remove.yaml,unprotect-blank-lines.yaml  -o=pgfkeys-equals-remove-line-breaks-unprotect-mod0.tex
 # outn.cls
+latexindent.pl -s outn-tiny.cls -o=outn-tiny-default.cls
 latexindent.pl -s outn-small.cls -o=outn-small-default.cls
 latexindent.pl -s outn.cls -o=outn-default.cls
 # optional argument to an environment with keys, and commands

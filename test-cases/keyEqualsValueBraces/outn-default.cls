@@ -188,8 +188,8 @@
 \def\@cutoff{\@cutofftext\ #1}
 {\large \textbf{\@assignmentname\ #2} \hfill\textbf{\@cutofftext}#1}
 \@ifnextchar[{\@assignmentsubtitle}{
-\par\addvspace{\bigskipamount}
-}
+		\par\addvspace{\bigskipamount}
+	}
 }
 
 \def\@assignmentnocutoff#1{%
@@ -506,32 +506,32 @@
 	\tl_new:N \l_solution_text_tl
 	\iow_new:N \g_solution_stream
 
-	\cs_generate_variant:Nn \tl_replace_all:Nnn{NV}
-	\cs_generate_variant:Nn \iow_now:Nn{ NV }
-	\str_const:Nx \c_other_eol_str{ \cs_to_str:N \^^M }
+	\cs_generate_variant:Nn \tl_replace_all:Nnn {NV}
+	\cs_generate_variant:Nn \iow_now:Nn { NV }
+	\str_const:Nx \c_other_eol_str { \cs_to_str:N \^^M }
 
 	\cs_new_protected:Npn \strip_marks:n #1
 	{
-	\tl_set:Nn \l_solution_text_tl{ #1 }
+	\tl_set:Nn \l_solution_text_tl { #1 }
 	\l_solution_text_tl % Send token list to normal output unmodified 
 	%\tl_show_analysis:n { \l_solution_text_tl } % for debugging
 	% Remove all instances of \marks{} commands
 	\regex_replace_all:nnN { \c{marks}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\regex_replace_all:nnN{ \c{marks} \w } {  } \l_solution_text_tl
+	\regex_replace_all:nnN { \c{marks} \w } {  } \l_solution_text_tl
 	\regex_replace_all:nnN { \c{solnmarksplus}\cB\{ [^\}]* \cE\} \cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
 	\regex_replace_all:nnN { \c{solnmarksplus} ^[\}|\{] } {  } \l_solution_text_tl
 	\regex_replace_all:nnN { \c{mk}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\regex_replace_all:nnN{ \c{mk} \w } {  } \l_solution_text_tl
+	\regex_replace_all:nnN { \c{mk} \w } {  } \l_solution_text_tl
 	\regex_replace_all:nnN { \c{remark}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\iow_now:Nx \g_solution_stream{Solution~to~Question~\thequestion}
+	\iow_now:Nx \g_solution_stream {Solution~to~Question~\thequestion}
 	\iow_now:NV \g_solution_stream \l_solution_text_tl % Send modified token list to stream.
 	}
-	\cs_generate_variant:Nn \strip_marks:n{ V }
+	\cs_generate_variant:Nn \strip_marks:n { V }
 
 	\AtBeginDocument{
-		\iow_open:Nn \g_solution_stream{ \jobname-student.tex }
+		\iow_open:Nn \g_solution_stream { \jobname-student.tex }
 		\def\solnpreamble{\documentclass{article}\usepackage{amsmath}\begin{document}}
-		\iow_now:Nn \g_solution_stream{\documentclass{article}\usepackage{amsmath}\begin{document}}
+		\iow_now:Nn \g_solution_stream {\documentclass{article}\usepackage{amsmath}\begin{document}}
 			}
 			\AtEndDocument{
 			\iow_now:Nn \g_solution_stream{\end{document}}

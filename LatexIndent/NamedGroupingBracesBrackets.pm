@@ -24,10 +24,10 @@ sub get_grouping_braces_brackets_regexp{
     # store the regular expresssion for matching and replacing 
     my $grouping_braces_RegExp = qr/
                   (
-                     \h|\R
+                     \h|\R|\{|\[
                   )
                   (
-                   [a-zA-Z@\*]+?       # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                   [a-zA-Z@\*><]+?       # lowercase|uppercase letters, @, *, numbers, forward slash, dots
                   )                    # $2 name
                   (\h*)                # $3 h-space
                   (\R*)                # $4 linebreaks

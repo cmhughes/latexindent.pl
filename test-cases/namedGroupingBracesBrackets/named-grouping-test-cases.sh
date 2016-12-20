@@ -23,5 +23,7 @@ latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-
     latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-line-breaks-vo-mod$i.bib -l=mand-args-Vo-mod$i.yaml,../commands/unprotect-blank-lines.yaml 
     [[ $silentMode == 0 ]] && set +x 
  done
+# special characters
+latexindent.pl -s special-charaters.tex -m -l=mand-args-mod1.yaml -o=special-charaters-mod1.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise

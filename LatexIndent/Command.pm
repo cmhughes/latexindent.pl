@@ -23,7 +23,7 @@ sub get_command_regexp{
                   (
                    [a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
                   )                
-                  \h*
+                  (\h*)
                   (\R*)?
                   ($optAndMandRegExp)
                   (\R)?
