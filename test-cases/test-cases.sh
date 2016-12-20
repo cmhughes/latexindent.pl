@@ -85,6 +85,10 @@ cd ../tokenChecks/
 cd ../cruftdirectory/
 [[ $silentMode == 1 ]] && echo "./cruftdirectory/cruft-directory-test-cases.sh"
 ./cruft-directory-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# named grouping braces
+cd ../namedGroupingBracesBrackets
+[[ $silentMode == 1 ]] && echo "./namedGroupingBracesBrackets/named-grouping-test-cases.sh"
+./named-grouping-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
 do 

@@ -106,6 +106,7 @@ indentRulesGlobal:
     ifElseFi: 0
     items: 0
     keyEqualsValuesBraces: 0
+    namedGroupingBracesBrackets: 0
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -152,6 +153,7 @@ noAdditionalIndentGlobal:
     ifElseFi: 0
     items: 0
     keyEqualsValuesBraces: 0
+    namedGroupingBracesBrackets: 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
@@ -348,3 +350,6 @@ modifyLineBreaks:
     items:
         ItemStartsOnOwnLine: -1
         ItemFinishesWithLineBreak: -1
+    namedGroupingBracesBrackets:
+        NameStartsOnOwnLine: -1
+        NameFinishesWithLineBreak: -1

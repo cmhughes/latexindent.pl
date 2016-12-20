@@ -103,27 +103,27 @@ sub find_commands_or_key_equals_values_braces{
       } elsif (${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/){
 
         # log file output
-        $self->logger("grouping braces found: $1",'heading');
+        $self->logger("named grouping braces found: $2",'heading');
 
         # create a new key_equals_values_braces object
-        my $grouping_braces = LatexIndent::GroupingBracesBrackets->new(
+        my $grouping_braces = LatexIndent::NamedGroupingBracesBrackets->new(
                                                 begin=>$2.($3?$3:q()).($4?$4:q()),
                                                 name=>$2,
                                                 body=>$5.($8?$8:($9?$9:q())),    
                                                 end=>q(),
                                                 linebreaksAtEnd=>{
-                                                  begin=>0,
+                                                  begin=>$4?1:0,
                                                   end=>$8?1:0,
                                                 },
-                                                modifyLineBreaksYamlName=>"keyEqualsValuesBraces",
+                                                modifyLineBreaksYamlName=>"namedGroupingBracesBrackets",
                                                 regexp=>($8?$grouping_braces_regexp:$grouping_braces_regexpTrailingComment),
                                                 beginningbit=>$1,
                                                 endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                                 aliases=>{
                                                   # begin statements
-                                                  BeginStartsOnOwnLine=>"KeyStartsOnOwnLine",
+                                                  BeginStartsOnOwnLine=>"NameStartsOnOwnLine",
                                                   # body statements
-                                                  BodyStartsOnOwnLine=>"EqualsFinishesWithLineBreak",
+                                                  BodyStartsOnOwnLine=>"NameFinishesWithLineBreak",
                                                 },
                                               );
 

@@ -1,7 +1,7 @@
 # GroupingBracesBrackets.pm
 #   creates a class for the GroupingBracesBrackets objects
 #   which are a subclass of the Document object.
-package LatexIndent::GroupingBracesBrackets;
+package LatexIndent::NamedGroupingBracesBrackets;
 use strict;
 use warnings;
 use Exporter qw/import/;
