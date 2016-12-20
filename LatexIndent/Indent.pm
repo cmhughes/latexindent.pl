@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively/;
 our %familyTree;
 
 sub push_family_tree_to_indent{
@@ -210,6 +210,137 @@ sub final_indentation_check{
     foreach (@indentationTokens){
         ${$self}{body} =~ s/${$_}{id}/${$_}{value}/;
     }
+
+}
+
+sub indent_children_recursively{
+    my $self = shift;
+
+    $self->logger('Pre-processed body:','heading.trace');
+    $self->logger(${$self}{body},'trace');
+
+    unless(defined ${$self}{children}){
+        $self->logger("No child objects (${$self}{name})");
+        return;
+    }
+
+    # send the children through this indentation routine recursively
+    if(defined ${$self}{children}){
+        foreach my $child (@{${$self}{children}}){
+            $self->logger("Indenting child objects on ${$child}{name}");
+            $child->indent_children_recursively;
+        }
+    }
+
+    $self->logger("Replacing ids with begin, body, and end statements:",'heading');
+
+    # loop through document children hash
+    while( scalar (@{${$self}{children}}) > 0 ){
+          # we work through the array *in order*
+          foreach my $child (@{${$self}{children}}){
+            $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading.trace');
+            if(${$self}{body} =~ m/
+                        (   
+                            ^           # beginning of the line
+                            \h*         # with 0 or more horizontal spaces
+                        )?              # possibly
+                                        #
+                        (.*?)?          # any other character
+                        ${$child}{id}   # the ID
+                        (\h*)?          # possibly followed by horizontal space
+                        (\R*)?          # then line breaks
+                        /mx){
+                my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
+                my $IDFollowedImmediatelyByLineBreak = $4?1:0;
+
+                # log file info
+                $self->logger("${$child}{id} found!",'trace');
+                $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
+                $self->logger("looking up indentation scheme for ${$child}{name}");
+
+                # line break checks *after* <end statement>
+                if (defined ${$child}{EndFinishesWithLineBreak}
+                    and ${$child}{EndFinishesWithLineBreak}==0 
+                    and $IDFollowedImmediatelyByLineBreak) {
+                    # remove line break *after* <end statement>, if appropriate
+                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?(\R|\h)*/${$child}{id}$1/s;
+                    ${$child}{linebreaksAtEnd}{end} = 0;
+                }
+
+                # perform indentation
+                $child->indent;
+
+                # surrounding indentation is now up to date
+                my $surroundingIndentation = (${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo})
+                                                        ?
+                                             (ref(${$child}{surroundingIndentation}) eq 'SCALAR'?${${$child}{surroundingIndentation}}:${$child}{surroundingIndentation})
+                                                        :q();
+
+                # line break checks before <begin statement>
+                if(defined ${$child}{BeginStartsOnOwnLine}){
+                    my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+                    if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
+                        # by default, assume that no trailing comment token is needed
+                        my $trailingCommentToken = q();
+                        if(${$child}{BeginStartsOnOwnLine}==2){
+                            $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)");
+                            ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
+                            $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)");
+                            $trailingCommentToken = "%".$self->add_comment_symbol;
+                        } else {
+                            $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
+                        }
+
+                        # the trailing comment/linebreak magic
+                        ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
+                        ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+
+                        # remove surrounding indentation ahead of %
+                        ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
+                    } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
+                        # important to check we don't move the begin statement next to a blank-line-token
+                        my $blankLineToken = $self->get_blank_line_token;
+                        if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
+                            $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
+                            ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;
+                        } else {
+                            $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)");
+                        }
+                    }
+                }
+
+                $self->logger(Dumper(\%{$child}),'ttrace');
+
+                # replace ids with body
+                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+
+                # log file info
+                $self->logger("Body (${$self}{name}) now looks like:",'heading.trace');
+                $self->logger(${$self}{body},'trace');
+
+                # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
+                my $index = 0;
+                $index++ until ${${$self}{children}[$index]}{id} eq ${$child}{id};
+                splice(@{${$self}{children}}, $index, 1);
+
+                # output to the log file
+                $self->logger("deleted child key ${$child}{name} (parent is: ${$self}{name})");
+
+                # restart the loop, as the size of the array has changed
+                last;
+              } else {
+                $self->logger("${$child}{id} not found",'trace');
+              }
+            }
+    }
+
+    # logfile info
+    $self->logger("${$self}{name} has this many children:",'heading');
+    $self->logger(scalar @{${$self}{children}});
+    $self->logger("Post-processed body (${$self}{name}):",'trace');
+    $self->logger(${$self}{body},'trace');
 
 }
 
