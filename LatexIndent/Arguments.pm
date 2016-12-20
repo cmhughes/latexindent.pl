@@ -136,7 +136,7 @@ sub find_opt_mand_arguments{
         # children need to receive ancestor information, see test-cases/commands/commands-triple-nested.tex
         foreach (@{${$arguments}{children}}){
             $self->logger("Updating argument children of ${$self}{name} to include ${$self}{id} in ancestors");
-            push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation}});
+            push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"natural"});
         }
 
         # the argument object only needs a trailing line break if the *last* child

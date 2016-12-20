@@ -1,0 +1,43 @@
+% arara: indent: {overwrite: yes, trace: yes}
+\documentclass[tikz]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,decorations.shapes}
+
+\begin{document}
+
+\foreach \radius in {1,2,...,20}
+	{
+		\begin{tikzpicture}
+			% background rectangle
+			\filldraw[black] (-3,-3) rectangle (5,3);
+			% skyline
+			\filldraw[black!80!blue](-3,-3)--(-3,-2)--(-2.5,-2)--(-2.5,-1)--(-2.25,-1)--(-2.25,-2)--(-2,-2)
+			--(-2,-1)--(-1.75,-0.75)--(-1.5,-1)
+			--(-1.5,-2)--(-1.1,-2)--(-1.1,0)--(-0.5,0)--(-0.5,-2)
+			--(0,-2)--(0,-1.5)--(1,-1.5)--(1.25,-0.5)--(1.5,-1.5)--(1.5,-2)
+			--(2,-2)--(2,0)--(2.5,0)--(2.5,-2)
+			--(3,-2)--(3,-1)--(4,-1)--(4,-2)--(5,-2)--(5,-3)--cycle;
+			% moon- what a hack!
+			\filldraw[white] (4,2.5) arc (90:-90:20pt);
+			\filldraw[black] (3.8,2.5) arc (90:-90:20pt);
+			% fireworks
+			\pgfmathparse{100-(\radius-1)*10};
+			% red firework
+			\ifnum\radius<11
+				\draw[decorate,decoration={crosses},red!\pgfmathresult!black] (0,0) circle (\radius ex);
+			\fi
+			% orange firework
+			\pgfmathparse{100-(\radius-6)*10};
+			\ifnum\radius>5
+				\ifnum\radius<16
+					\draw[decorate,decoration={crosses},orange!\pgfmathresult!black] (1,1) circle ( \radius ex-5ex);
+				\fi
+			\fi
+			% yellow firework
+			\pgfmathparse{100-(\radius-11)*10};
+			\ifnum\radius>10
+				\draw[decorate,decoration={crosses},yellow!\pgfmathresult!black] (2.5,1) circle (\radius ex-10ex);
+			\fi
+		\end{tikzpicture}
+	}
+\end{document}

@@ -92,5 +92,9 @@ latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -tt -s -o=jus
 latexindent.pl -m commands-remove-line-breaks-tc.tex -s -tt -o=commands-remove-line-breaks-tc-mod5.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod5.yaml
 # command with numeric arguments
 latexindent.pl -s command-with-numeric-args -o=command-with-numeric-args-default.tex
+# small test case for intricate ancestors
+latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
+latexindent.pl -s -w testcls.cls
+latexindent.pl -s -w ifelsefiONE.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

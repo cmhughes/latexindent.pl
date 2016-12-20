@@ -72,12 +72,12 @@
 \hypersetup{bookmarksnumbered=true,bookmarksopen=true,pdfpagemode=UseOutlines,pdfview=FitB}
 
 \if@isu@print
-% Hide links for print
-% Apparently doesn't work right now. Sad.
-\hypersetup{hidelinks}
+	% Hide links for print
+	% Apparently doesn't work right now. Sad.
+	\hypersetup{hidelinks}
 \else
-% Nice blue links.
-\hypersetup{colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue}
+	% Nice blue links.
+	\hypersetup{colorlinks=true,linkcolor=blue,anchorcolor=blue,citecolor=blue,filecolor=blue,urlcolor=blue}
 \fi
 
 % Indent first paragraph after sectioning things.
@@ -219,12 +219,12 @@
 %   see idea at  http://tex.stackexchange.com/questions/71123/remove-section-number-toc-entries-with-tocloft
 \if@isu@tocnumbersections@\else
 	\renewcommand{\cftsecpresnum}{\begin{lrbox}{\@tempboxa}}
-	\renewcommand{\cftsecaftersnum}{\end{lrbox}}
+			\renewcommand{\cftsecaftersnum}{\end{lrbox}}
 \fi
 
 \if@isu@tocnumbersubsections@\else
-\renewcommand{\cftsubsecpresnum}{\begin{lrbox}{\@tempboxa}}
-\renewcommand{\cftsubsecaftersnum}{\end{lrbox}}
+	\renewcommand{\cftsubsecpresnum}{\begin{lrbox}{\@tempboxa}}
+			\renewcommand{\cftsubsecaftersnum}{\end{lrbox}}
 \fi
 
 %%%
@@ -286,14 +286,14 @@
 \AfterEndDocument{
 	\if@isu@errormissingmainmatter@
 		\ifdefined\@isu@gottitle
-		\ClassInfo{\@isu@classname}{Full dissertation mode}
-		\unless\ifdefined\@isu@gotmainmatter@
-		\ClassError{\@isu@classname}{Missing \protect\mainmatter\space before your first real chapter!}{Missing mainmatter}
-		%             \ClassError{\@isu@classname}{%
-		%                 \protect\mainmatter\space not called in your document expected before your first real chapter}{%
-		%                 You need to put \protect\mainmatter\space before your first real numbered chapter, typically your introduction.}
-	\fi
-	\fi
+			\ClassInfo{\@isu@classname}{Full dissertation mode}
+			\unless\ifdefined\@isu@gotmainmatter@
+				\ClassError{\@isu@classname}{Missing \protect\mainmatter\space before your first real chapter!}{Missing mainmatter}
+				%             \ClassError{\@isu@classname}{%
+				%                 \protect\mainmatter\space not called in your document expected before your first real chapter}{%
+				%                 You need to put \protect\mainmatter\space before your first real numbered chapter, typically your introduction.}
+			\fi
+		\fi
 	\fi
 }
 
@@ -311,7 +311,7 @@
 	Debra Satterfield \\ Jonathan Kelly \\ David Weiss \\ Horea Ilies}
 \newcommand\isu@copyrightnotice{\\       % Unclear what the spacing between notice and the text above should be.
 	Copyright \copyright\ \@author, \isu@gradyear.
-All rights reserved.}
+	All rights reserved.}
 
 % Spacing tools
 % - used for what the thesis office calls "two blank lines"

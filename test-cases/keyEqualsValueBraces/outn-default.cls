@@ -98,7 +98,7 @@
 			\begin{tabular}{@{}p{17cm}@{}}
 				\parbox{12cm}{
 					\textbf{\@faculty\newline
-						\@modulecode\ \@moduletitle}
+										\@modulecode\ \@moduletitle}
 				}
 				\hfill{\fboxsep=5mm\fboxrule=1.5mm\fbox{\large\sf Specimen Solutions}}\par
 				\medskip
@@ -119,7 +119,7 @@
 				\vspace{0.2cm}\relax
 				\parbox{8cm}{
 					\textbf{\@faculty\newline
-						\@modulecode\ \@moduletitle}
+										\@modulecode\ \@moduletitle}
 				}
 				\hfill{\fboxsep=5mm\fboxrule=1.5mm\fbox{\large\sf Tutor Notes}}\par
 				\medskip
@@ -317,11 +317,11 @@
 		\afterassignment\get@args\count@=0#1\hfuzz#1\hfuzz}
 	\def\get@args#1\hfuzz#2\hfuzz{%
 		\if\relax\detokenize{#1}\relax
-		\addtocounter{subtotal}{#2}%
-		\addtocounter{total}{#2}%
-	\else
-		\relax
-	\fi
+			\addtocounter{subtotal}{#2}%
+			\addtocounter{total}{#2}%
+		\else
+			\relax
+		\fi
 	}
 	\newcommand{\bracketedmarks}[2][\unskip]{\marginnote{\hfill \makebox[1cm][r]{[\textsl{#2}]}\makebox[4cm][r]{\parbox[t]{3.75cm}{\small\raggedright #1}}}\@update@totals{#2}}
 	\newcommand{\solnmarks}[2][\unskip]{\marginnote{\hfill\small \makebox[1cm][r]{#2}\makebox[4cm][r]{\parbox[t]{3.75cm}{\raggedright #1}}}\@update@totals{#2}}
@@ -532,9 +532,9 @@
 		\iow_open:Nn \g_solution_stream{ \jobname-student.tex }
 		\def\solnpreamble{\documentclass{article}\usepackage{amsmath}\begin{document}}
 		\iow_now:Nn \g_solution_stream{\documentclass{article}\usepackage{amsmath}\begin{document}}
-		}
-		\AtEndDocument{
-		\iow_now:Nn \g_solution_stream{\end{document}}
+			}
+			\AtEndDocument{
+			\iow_now:Nn \g_solution_stream{\end{document}}
 		\iow_close:N \g_solution_stream
 	}
 	\ExplSyntaxOff

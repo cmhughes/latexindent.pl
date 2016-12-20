@@ -70,15 +70,17 @@ sub get_surrounding_indentation{
     my $surroundingIndentation = q();
 
     if($familyTree{${$self}{id}}){
-        $self->logger("ancestors found!");
+        $self->logger("Adopted ancestors found!");
         foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
-            my $newAncestorId = ${$_}{ancestorID};
-            $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}",'trace');
-            $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'
-                                                ?
-                                        (${${$_}{ancestorIndentation}}?${${$_}{ancestorIndentation}}:q())
-                                                :
-                                        (${$_}{ancestorIndentation}?${$_}{ancestorIndentation}:q());
+            if(${$_}{type} eq "adopted"){
+                my $newAncestorId = ${$_}{ancestorID};
+                $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}",'trace');
+                $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'
+                                                    ?
+                                            (${${$_}{ancestorIndentation}}?${${$_}{ancestorIndentation}}:q())
+                                                    :
+                                            (${$_}{ancestorIndentation}?${$_}{ancestorIndentation}:q());
+            }
         }
     }
     ${$self}{surroundingIndentation} = $surroundingIndentation;

@@ -18,7 +18,7 @@ sub find_environments{
                 (
                     \\begin\{
                             (
-                             [a-zA-Z@\*0-9_]+ # lowercase|uppercase letters, @, *, numbers
+                             [a-zA-Z@\*0-9_\\]+ # lowercase|uppercase letters, @, *, numbers
                             )                 # environment name captured into $2
                            \}                 # \begin{<something>} statement
                            \h*                # horizontal space

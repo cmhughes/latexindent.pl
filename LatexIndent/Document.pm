@@ -30,6 +30,7 @@ use LatexIndent::GroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our @hiddenChildren;
+our %nonHiddenChildren;
 our %familyTree;
 
 sub new{
@@ -208,12 +209,42 @@ sub update_family_tree{
               $self->logger("current ID: $idToSearch, ancestor: $ancestorID",'trace');
               if($familyTree{$ancestorID}){
                   $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors",'trace');
-                  foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
-                      $self->logger("ancestor: ${$_}{ancestorID}",'trace');
-                      my $newAncestorId = ${$_}{ancestorID};
-                      my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
-                      push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation}}) unless($matched);
+                  my $naturalAncestors = q();
+                  foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
+                      $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
                   }
+                  foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
+                      $self->logger("ancestor of *hidden* child: ${$_}{ancestorID}",'trace');
+                      my $newAncestorId = ${$_}{ancestorID};
+                      my $type;
+                      if($naturalAncestors =~ m/$ancestorID/){
+                            $type = "natural";
+                      } else {
+                            $type = "adopted";
+                      }
+                      my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
+                      push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type}) unless($matched);
+                  }
+              } elsif ($nonHiddenChildren{$ancestorID}){
+                    my $naturalAncestors = q();
+                    foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
+                        $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
+                    }
+                    $self->logger("natural ancestors of $ancestorID: $naturalAncestors",'trace');
+                    foreach(@{${$nonHiddenChildren{$ancestorID}}{ancestors}}){
+                        my $newAncestorId = ${$_}{ancestorID};
+                        my $type;
+                        if($naturalAncestors =~ m/$newAncestorId/){
+                            $type = "natural";
+                        } else {
+                            $type = "adopted";
+                        }
+                        my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
+                        unless($matched){
+                            $self->logger("ancestor of UNHIDDEN child: ${$_}{ancestorID}",'trace');
+                            push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
+                        }
+                    }
               } else {
                   $self->logger("$ancestorID is *not* a key within familyTree, *no* ancestors to grab",'trace');
               }
@@ -239,6 +270,7 @@ sub find_hidden_children{
             push(@hiddenChildren,\%{$child});
         } else {
             $self->logger("child found, ${$child}{id} within ${$self}{name}",'ttrace');
+            $nonHiddenChildren{${$child}{id}} = \%{$child};
         }
 
         # recursively find other hidden children
@@ -257,13 +289,27 @@ sub operate_on_hidden_children{
     if(${$self}{body} =~ m/${$hiddenChild}{id}/){
         $self->logger("hiddenChild found, ${$hiddenChild}{id} within ${$self}{name} (${$self}{id})",'ttrace');
 
+        my $naturalAncestors = q();
+        foreach(@{${$hiddenChild}{ancestors}}){
+            $naturalAncestors .= "---".${$_}{ancestorID};# if(${$_}{type} eq "natural");
+        }
+
         # update the family tree
         if(${$self}{ancestors}){
             foreach(@{${$self}{ancestors}}){
-                push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},$_);
+                if($naturalAncestors =~ m/${$_}{ancestorID}/ ){
+                    push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>"natural"});
+                } else {
+                    $self->logger("Adding ${$_}{ancestorID} to the adopted family tree of hiddenChild found, ${$hiddenChild}{id}",'trace');
+                    push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>"adopted"});
+                }
             }
         }
-        push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation}});
+        if($naturalAncestors =~ m/${$self}{id}/ ){
+            push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"natural"});
+        } else {
+            push(@{$familyTree{${$hiddenChild}{id}}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"adopted"});
+        }
     } else {
         # call this subroutine recursively for the children
         foreach my $child (@{${$self}{children}}){
@@ -442,7 +488,7 @@ sub tasks_common_to_each_object{
       $self->logger("No ancestors found for ${$self}{name}",'trace');
       if(defined $parent{id} and $parent{id} ne ''){
         $self->logger("Creating ancestors with $parent{id} as the first one",'trace');
-        push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation}});
+        push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation},type=>"natural",name=>${$self}{name}});
       }
     }
 
