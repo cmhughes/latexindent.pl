@@ -68,6 +68,8 @@ latexindent.pl -s environment-opt-arg-with-commands1 -o=environment-opt-arg-with
 latexindent.pl -s mixed-ifelsefi-commands-keys-braces1-default-small.tex -o mixed-ifelsefi-commands-keys-braces1-default-small-out.tex
 latexindent.pl -s environment-opt-arg-with-commands1-default-small.tex -o environment-opt-arg-with-commands1-default-small-out.tex
 latexindent.pl -s mixed-ifelsefi-commands-keys-braces1 -o=mixed-ifelsefi-commands-keys-braces1-default.tex
+latexindent.pl -s glossary1.tex -o glossary1-default.tex
+latexindent.pl -s pgfplotstable1.tex -o pgfplotstable1-default.tex
 
 #### NEED just key=value option (no braces) #####
 #### NEED just key=value option (no braces) #####
