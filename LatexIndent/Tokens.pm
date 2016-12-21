@@ -18,6 +18,7 @@ our %tokens = (
                 key_equals_values_braces=>"LATEX-INDENT-KEY-VALUE-BRACES",
                 groupingBraces=>"LATEX-INDENT-GROUPING-BRACES",
                 unNamedgroupingBraces=>"LATEX-INDENT-UN-NAMED-GROUPING-BRACES",
+                special=>"LATEX-INDENT-SPECIAL",
                 endOfToken=>"-END",
               );
 

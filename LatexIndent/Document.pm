@@ -23,12 +23,13 @@ use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp get_numbered_arg_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
-use LatexIndent::Item qw/find_items/;
+use LatexIndent::Item qw/find_items construct_list_of_items/;
 use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
 use LatexIndent::Command qw/get_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/get_unnamed_grouping_braces_brackets_regexp/;
+use LatexIndent::Special qw/find_special construct_special_begin/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -56,6 +57,8 @@ sub operate_on_file{
     # find filecontents environments
     # find preamble
     $self->remove_leading_space;
+    $self->construct_list_of_items;
+    $self->construct_special_begin;
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
@@ -136,6 +139,10 @@ sub find_objects_recursively{
     # search for commands with arguments
     $self->logger('looking for COMMANDS and key = {value}');
     $self->find_commands_or_key_equals_values_braces;
+
+    # search for special begin/end
+    $self->logger('looking for SPECIAL begin/end');
+    $self->find_special;
 
     # if there are no children, return
     if(%{$self}{children}){

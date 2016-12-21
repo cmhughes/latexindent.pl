@@ -7,10 +7,31 @@ use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_items/;
+our @EXPORT_OK = qw/find_items construct_list_of_items/;
 our $itemCounter;
+our $listOfItems = q();
+
+sub construct_list_of_items{
+    my $self = shift;
+
+    # grab the settings
+    my %masterSettings = %{$self->get_master_settings};
+
+    # put together a list of the items
+    while( my ($item,$lookForThisItem)= each %{$masterSettings{itemNames}}){
+        $listOfItems .= ($listOfItems eq "")?"$item":"|$item" if($lookForThisItem);
+    }
+
+    # detail items in the log
+    $self->logger("List of items: $listOfItems (see itemNames)",'heading');
+
+    return;
+}
 
 sub find_items{
+    # no point carrying on if the list of items is empty
+    return if($listOfItems eq "");
+
     my $self = shift;
 
     # grab the settings
@@ -21,18 +42,6 @@ sub find_items{
     # otherwise loop through the item names
     $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)");
     $self->logger(Dumper(\%{$masterSettings{itemNames}}));
-
-    # put together a list of the items
-    my $listOfItems = q();
-    while( my ($item,$lookForThisItem)= each %{$masterSettings{itemNames}}){
-        $listOfItems .= ($listOfItems eq "")?"$item":"|$item" if($lookForThisItem);
-    }
-
-    # detail items in the log
-    $self->logger("List of items: $listOfItems");
-
-    # no point carrying on if the list of items is empty
-    return if($listOfItems eq "");
 
     # get the blank line token
     my $blankLineToken = $self->get_blank_line_token;

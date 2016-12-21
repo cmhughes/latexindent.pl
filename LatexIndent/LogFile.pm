@@ -111,33 +111,17 @@ ENDQUOTE
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
-        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir',
-                             'LatexIndent::Document',
-                             'LatexIndent::GetYamlSettings', 
-                             'LatexIndent::FileExtension', 
-                             'LatexIndent::BackUpFileProcedure', 
-                             'LatexIndent::BlankLines', 
-                             'LatexIndent::ModifyLineBreaks', 
-                             'LatexIndent::TrailingComments',
-                             'LatexIndent::HorizontalWhiteSpace',
-                             'LatexIndent::Indent',
-                             'LatexIndent::Tokens',
-                             'LatexIndent::Verbatim',
-                             'LatexIndent::Environment',
-                             'LatexIndent::IfElseFi',
-                             'LatexIndent::Arguments',
-                             'LatexIndent::OptionalArgument',
-                             'LatexIndent::MandatoryArgument',
-                             'LatexIndent::Item',
-                             'LatexIndent::Braces',
-                             'LatexIndent::Command',
-                             'LatexIndent::KeyEqualsValuesBraces');
-        $self->logger("Modules are being loaded from the following directories:",'heading');
+        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir');
+        $self->logger("Perl modules are being loaded from the following directories:",'heading');
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;
                 require $file . '.pm';
                 $self->logger($INC{$file .'.pm'});
               }
+        $self->logger("Latex Indent perl modules are being loaded from, for example:",'heading');
+                (my $file = 'LatexIndent::Document') =~ s|::|/|g;
+                require $file . '.pm';
+                $self->logger($INC{$file .'.pm'});
     }
     return;
 }

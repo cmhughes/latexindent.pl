@@ -108,6 +108,7 @@ indentRulesGlobal:
     keyEqualsValuesBraces: 0
     namedGroupingBracesBrackets: 0
     UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -156,6 +157,7 @@ noAdditionalIndentGlobal:
     keyEqualsValuesBraces: 0
     namedGroupingBracesBrackets: 0
     UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
@@ -212,6 +214,20 @@ indentAfterItems:
 itemNames:
     item: 1
     myitem: 1
+
+specialBeginEnd:
+    displayMath:
+        begin: '\\\['
+        end: '\\\]'
+        lookForThis: 1
+    inlineMath:
+        begin: '\$'
+        end: '\$'
+        lookForThis: 1
+    inlineMathTeX:
+        begin: '\$\$'
+        end: '\$\$'
+        lookForThis: 1
 
 # latexindent can be called without a file extension, 
 # e.g, simply
@@ -355,3 +371,8 @@ modifyLineBreaks:
     namedGroupingBracesBrackets:
         NameStartsOnOwnLine: -1
         NameFinishesWithLineBreak: -1
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: -1
+        SpecialBodyStartsOnOwnLine: -1
+        SpecialEndStartsOnOwnLine: -1
+        SpecialEndFinishesWithLineBreak: -1
