@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning/;
 our %familyTree;
 
 sub push_family_tree_to_indent{
@@ -104,6 +104,9 @@ sub indent_body{
     # last minute check for modified bodyLineBreaks
     $self->count_body_line_breaks if $self->is_m_switch_active;
 
+    # some objects need to check for blank line tokens at the beginning
+    $self->check_for_blank_lines_at_beginning if $self->is_m_switch_active; 
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         if(${$self}{body} =~ m/^\h*$/s){
@@ -133,6 +136,10 @@ sub indent_body{
         }
     }
 
+    # if the routine check_for_blank_lines_at_beginning has been called, then the following routine
+    # puts blank line tokens back in 
+    $self->put_blank_lines_back_in_at_beginning if $self->is_m_switch_active; 
+
     # the final linebreak can be modified by a child object; see test-cases/commands/figureValign-mod5.tex, for example
     if($self->is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/){
         $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)",'trace');
@@ -142,6 +149,16 @@ sub indent_body{
     # output to the logfile
     $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}","trace");
     return $self;
+}
+
+sub check_for_blank_lines_at_beginning{
+    # some objects need this routine
+    return;
+}
+
+sub put_blank_lines_back_in_at_beginning{
+    # some objects need this routine
+    return;
 }
 
 sub indent_end_statement{

@@ -76,4 +76,46 @@ sub get_replacement_text{
     delete ${$self}{beginningbit};
 }
 
+sub check_for_blank_lines_at_beginning{
+    # some examples can have blank line tokens at the beginning of the body, 
+    # which can confuse the routine below 
+    # See, for example, 
+    #       test-cases/namedGroupingBracesBrackets/special-characters-minimal-blank-lines-m-switch.tex
+    #   compared to
+    #       test-cases/namedGroupingBracesBrackets/special-characters-minimal-blank-lines-default.tex
+    my $self = shift;
+
+    # blank line token
+    my $blankLineToken = $self->get_blank_line_token;
+
+    # if the body begins with 2 or more blank line tokens
+    if(${$self}{body} =~ m/^((?:$blankLineToken\R){2,})/s){
+
+        # remove them
+        ${$self}{body} =~ s/^((?:$blankLineToken\R)+)//s;
+
+        # store
+        my $blank_line_tokens_at_beginning_of_body = $1;
+
+        # and count them, for use after the indentation routine
+        ${$self}{blankLinesAtBeginning} = () = $blank_line_tokens_at_beginning_of_body =~ /$blankLineToken\R/sg
+    }
+    return;
+}
+
+sub put_blank_lines_back_in_at_beginning{
+    my $self = shift;
+
+    # blank line token
+    my $blankLineToken = $self->get_blank_line_token;
+
+    # some bodies have blank lines at the beginning
+    if(${$self}{blankLinesAtBeginning}){
+        for(my $i=0; $i<${$self}{blankLinesAtBeginning}; $i++){
+            ${$self}{body} = $blankLineToken.${$self}{body};
+        }
+    }
+    return
+}
+
 1;

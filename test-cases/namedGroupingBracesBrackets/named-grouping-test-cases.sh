@@ -26,7 +26,9 @@ latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-
 # special characters
 latexindent.pl -s special-characters.tex -m -l=mand-args-mod1.yaml -o=special-characters-mod1.tex
 latexindent.pl -s special-characters-minimal.tex -o special-characters-minimal-default.tex
-latexindent.pl -s special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-default.tex
-latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switc.tex -l=noCondenseBlankLines.yaml
+latexindent.pl -tt -s special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-default.tex -g=one.log
+# m switch active
+latexindent.pl -t -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch.tex -l=noCondenseBlankLines.yaml -g=two.log
+latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch-condense.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise
