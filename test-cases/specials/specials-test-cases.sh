@@ -13,6 +13,8 @@ do
    [[ $silentMode == 0 ]] && set -x 
    # add line breaks
    latexindent.pl -s special1.tex -o special1-mod$i.tex -m -l=special-mod$i.yaml
+   latexindent.pl -s special1-remove-line-breaks.tex -o special1-remove-line-breaks-mod$i.tex -m -l=special-mod$i.yaml
+   latexindent.pl -s special1-remove-line-breaks.tex -o special1-remove-line-breaks-unprotect-mod$i.tex -m -l=special-mod$i.yaml,../commands/unprotect-blank-lines.yaml
    [[ $silentMode == 0 ]] && set +x 
 done
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
