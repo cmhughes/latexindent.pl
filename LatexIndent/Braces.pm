@@ -154,8 +154,12 @@ sub find_commands_or_key_equals_values_braces{
                                                 },
                                                 modifyLineBreaksYamlName=>"UnNamedGroupingBracesBrackets",
                                                 regexp=>($6?$un_named_grouping_braces_RegExp:$un_named_grouping_braces_RegExp_trailing_comment),
-                                                beginningbit=>$1,
+                                                beginningbit=>$1.($2?$2:q()),
                                                 endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                                # begin statements
+                                                BeginStartsOnOwnLine=>-1,
+                                                # body statements
+                                                BodyStartsOnOwnLine=>-1,
                                               );
 
         # the settings and storage of most objects has a lot in common

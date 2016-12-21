@@ -41,10 +41,10 @@ sub get_unnamed_grouping_braces_brackets_regexp{
                         \{|\[|,
                      )
                      \h*
-                  )                    # $1 into beginning bit
-                  (\R*)                # $2 linebreaksAtEnd of begin
-                  ($optAndMandRegExp)  # $3 mand|opt arguments (at least one) stored into body
-                  (\R)?                # $6 linebreak 
+                  )                     # $1 into beginning bit
+                  (\R*)                 # $2 linebreaksAtEnd of begin
+                  ($optAndMandRegExp)   # $3 mand|opt arguments (at least one) stored into body
+                  (\R)?                 # $6 linebreak 
                 /sx;
 
     return $un_named_grouping_braces_RegExp; 
@@ -63,7 +63,16 @@ sub get_replacement_text{
 
     # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
     $self->logger("Custom replacement text routine for ${$self}{name}");
+
+    # the un-named object is a little special, as it doesn't have a name; as such, if there are blank lines before
+    # the braces/brackets, we have to insert them
+    #${$self}{replacementText} = ${$self}{beginningbit}.(${${$self}{linebreaksAtEnd}}{begin}?"\n":q()).${$self}{id};
     ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
+
+    # but now turn off the switch for linebreaksAtEnd{begin}, otherwise the first brace gets too much indentation
+    # (see, for example, test-cases/namedGroupingBracesBrackets/special-characters-minimal.tex)
+    ${${$self}{linebreaksAtEnd}}{begin} = 0;
+    $self->logger("Beginning bit is: ${$self}{beginningbit}",'trace');
     delete ${$self}{beginningbit};
 }
 
