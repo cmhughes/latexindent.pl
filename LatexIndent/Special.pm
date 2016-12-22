@@ -10,6 +10,7 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/find_special construct_special_begin/;
 our $specialCounter;
 our $specialBegins = q();
+our $specialAllMatchesRegExp = q();
 
 sub construct_special_begin{
     my $self = shift;
@@ -19,7 +20,26 @@ sub construct_special_begin{
 
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
-      $specialBegins .= ($specialBegins eq "")?"${$BeginEnd}{begin}":"|${$BeginEnd}{begin}" if(${$BeginEnd}{lookForThis});
+
+      # only append the regexps if lookForThis is 1
+      if(${$BeginEnd}{lookForThis}){
+        # the beginning parts
+        $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin};
+
+        # the overall regexp
+        $specialAllMatchesRegExp .= ($specialAllMatchesRegExp eq ""?q():"|")
+                                    .qr/
+                                    ${$BeginEnd}{begin}
+                                    (?:                        # cluster-only (), don't capture 
+                                        (?!             
+                                            (?:$specialBegins) # cluster-only (), don't capture
+                                        ).                     # any character, but not anything in $specialBegins
+                                    )*?                 
+                                    ${$BeginEnd}{end}
+                             /sx;
+        } else {
+            $self->logger("The special regexps won't include anything from $specialName (see lookForThis)",'heading');
+        }
     }
 
     # move $$ to the beginning
@@ -30,6 +50,9 @@ sub construct_special_begin{
 
     # info to the log file
     $self->logger("The special beginnings regexp is: $specialBegins (see specialBeginEnd)",'heading.trace');
+
+    # overall special regexp
+    $self->logger("The overall special regexp is: $specialAllMatchesRegExp(see specialBeginEnd)",'heading.trace');
 
   }
 
@@ -52,71 +75,76 @@ sub find_special{
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
-    while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+    # keep looping as long as there is a special match of some kind
+    while(${$self}{body} =~ m/$specialAllMatchesRegExp/sx){
 
-        # log file
-        if(${$BeginEnd}{lookForThis}){
-            $self->logger("Looking for $specialName",'heading');
-        } else {
-            $self->logger("Not looking for $specialName (see lookForThis)",'heading');
-            next;
-        }
+        # loop through each special match
+        while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
-        # the regexp
-        my $specialRegExp = qr/
-                              (
-                                  ${$BeginEnd}{begin}
-                                  \h*
-                                  (\R*)?
-                              )
-                              (
-                                  (?:                        # cluster-only (), don't capture 
-                                      (?!             
-                                          (?:$specialBegins) # cluster-only (), don't capture
-                                      ).                     # any character, but not \\$special
-                                  )*?                 
-                                 (\R*)?
-                              )                       
-                              (
-                                ${$BeginEnd}{end}
-                                \h*
-                              )
-                              (\R)?
-                           /sx;
-        
-        while(${$self}{body} =~ m/$specialRegExp\h*($trailingCommentRegExp)?/){
+            # log file
+            if(${$BeginEnd}{lookForThis}){
+                $self->logger("Looking for $specialName",'heading');
+            } else {
+                $self->logger("Not looking for $specialName (see lookForThis)",'heading');
+                next;
+            }
 
-            # log file output
-            $self->logger("special found: $specialName",'heading');
+            # the regexp
+            my $specialRegExp = qr/
+                                  (
+                                      ${$BeginEnd}{begin}
+                                      \h*
+                                      (\R*)?
+                                  )
+                                  (
+                                      (?:                        # cluster-only (), don't capture 
+                                          (?!             
+                                              (?:$specialBegins) # cluster-only (), don't capture
+                                          ).                     # any character, but not anything in $specialBegins
+                                      )*?                 
+                                     (\R*)?
+                                  )                       
+                                  (
+                                    ${$BeginEnd}{end}
+                                    \h*
+                                  )
+                                  (\R)?
+                               /sx;
+            
+            while(${$self}{body} =~ m/$specialRegExp\h*($trailingCommentRegExp)?/){
 
-            # create a new special object
-            my $specialObject = LatexIndent::Special->new(begin=>$1,
-                                                    body=>$3,
-                                                    end=>$5,
-                                                    name=>$specialName,
-                                                    linebreaksAtEnd=>{
-                                                      begin=>$2?1:0,
-                                                      body=>$4?1:0,
-                                                      end=>$6?1:0,
-                                                    },
-                                                    aliases=>{
-                                                      # begin statements
-                                                      BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
-                                                      # body statements
-                                                      BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
-                                                      # end statements
-                                                      EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
-                                                      # after end statements
-                                                      EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
-                                                    },
-                                                    modifyLineBreaksYamlName=>"specialBeginEnd",
-                                                    regexp=>$specialRegExp,
-                                                    endImmediatelyFollowedByComment=>$6?0:($7?1:0),
-                                                  );
+                # log file output
+                $self->logger("special found: $specialName",'heading');
 
-            # the settings and storage of most objects has a lot in common
-            $self->get_settings_and_store_new_object($specialObject);
-        }
+                # create a new special object
+                my $specialObject = LatexIndent::Special->new(begin=>$1,
+                                                        body=>$3,
+                                                        end=>$5,
+                                                        name=>$specialName,
+                                                        linebreaksAtEnd=>{
+                                                          begin=>$2?1:0,
+                                                          body=>$4?1:0,
+                                                          end=>$6?1:0,
+                                                        },
+                                                        aliases=>{
+                                                          # begin statements
+                                                          BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
+                                                          # body statements
+                                                          BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
+                                                          # end statements
+                                                          EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
+                                                          # after end statements
+                                                          EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
+                                                        },
+                                                        modifyLineBreaksYamlName=>"specialBeginEnd",
+                                                        regexp=>$specialRegExp,
+                                                        endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                                      );
+
+                # the settings and storage of most objects has a lot in common
+                $self->get_settings_and_store_new_object($specialObject);
+            }
+         }
      }
 }
 
