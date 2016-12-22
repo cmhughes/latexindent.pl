@@ -1,5 +1,5 @@
 # 
-# defaultSettings.yaml for latexindent.pl,
+# defaultSettings.yaml for latexindent.pl, version 3.0
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -221,10 +221,10 @@ specialBeginEnd:
         end: '\\\]'
         lookForThis: 1
     inlineMath:
-        begin: '\$'
-        end: '\$'
+        begin: '(?<!\$)\$(?!\$)'
+        end: '\$(?!\$)'
         lookForThis: 1
-    inlineMathTeX:
+    displayMathTeX:
         begin: '\$\$'
         end: '\$\$'
         lookForThis: 1

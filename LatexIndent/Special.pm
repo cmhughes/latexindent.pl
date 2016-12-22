@@ -22,6 +22,12 @@ sub construct_special_begin{
       $specialBegins .= ($specialBegins eq "")?"${$BeginEnd}{begin}":"|${$BeginEnd}{begin}" if(${$BeginEnd}{lookForThis});
     }
 
+    # move $$ to the beginning
+    if($specialBegins =~ m/\|\\\$\\\$/){
+      $specialBegins =~ s/\|(\\\$\\\$)//;
+      $specialBegins = $1."|".$specialBegins; 
+    }
+
     # info to the log file
     $self->logger("The special beginnings regexp is: $specialBegins (see specialBeginEnd)",'heading.trace');
 
