@@ -33,5 +33,9 @@ latexindent.pl -s special3.tex -tt -o special3-no-inline-math-mod17.tex -m -l=no
 
 # issues from github
 latexindent.pl -s Focus.tex -o Focus-default.tex
+latexindent.pl -s heptadecagon1.tex -o heptadecagon1-default.tex
+latexindent.pl -s heptadecagon2.tex -o heptadecagon2-default.tex
+latexindent.pl -s heptadecagon3.tex -o heptadecagon3-mod1.tex -m -l=special-mod1.yaml,env-mod1.yaml
+latexindent.pl -s heptadecagon3.tex -o heptadecagon3-mod17.tex -m -l=special-mod17.yaml,env-mod1.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
