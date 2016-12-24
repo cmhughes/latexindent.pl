@@ -20,6 +20,12 @@ sub construct_special_begin{
 
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+      # only append the regexps if lookForThis is 1
+      $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis});
+    }
+
+    # put together a list of the begin terms in special
+    while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
       # only append the regexps if lookForThis is 1
       if(${$BeginEnd}{lookForThis}){

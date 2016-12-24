@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_name_for_indentation_settings get_object_attribute_for_indentation_settings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -113,8 +113,19 @@ sub readSettings{
                       if (ref($firstLevelValue) eq "HASH") {
                           while(my ($secondLevelKey,$secondLevelValue) = each %{$userSettings->[0]{$firstLevelKey}}) {
                             if (ref $secondLevelValue eq "HASH"){
+                                # if masterSettings already contains a *scalar* value in secondLevelKey
+                                # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
+                                if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
+                                    $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar");
+                                    delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
+                                }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
+                                        # similarly for third level
+                                        if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
+                                            $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar");
+                                            delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
+                                        }
                                         while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {
                                             $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey}{$fourthLevelKey} = $fourthLevelValue;
                                         }
@@ -280,6 +291,33 @@ sub get_every_or_custom_value{
 }
 
 sub get_indentation_information{
+    my $self = shift;
+    my %input = @_;
+    my $indentationAbout = ${input}{about};
+
+    # gather information
+    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+
+    # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
+    my $globalInformation = $indentationAbout."Global";
+    if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
+        $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+        return ${$masterSettings{$globalInformation}}{$YamlName};
+    } elsif($globalInformation eq "indentRulesGlobal") {
+        if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
+            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+            return ${$masterSettings{$globalInformation}}{$YamlName};
+        } else {
+            $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
+      }
+    }
+
+    # if we make it this far, then it means that neither 
+    # noAdditionalIndentGlobal nor indentRulesGlobal are valid, so we 
+    # look for information in noAdditionalIndent and then indentRules
+    # on a *per name* basis.
+    #
+    #
     # noAdditionalIndent can be a scalar or a hash, e.g
     #
     #   noAdditionalIndent:
@@ -312,34 +350,14 @@ sub get_indentation_information{
     #
     # specifying as a scalar with no field will
     # mean that *every* field will receive the same treatment
-    my $self = shift;
-    my %input = @_;
-    my $indentationAbout = ${input}{about};
-
-    # gather information
-    my $YamlName = ${$self}{modifyLineBreaksYamlName};
-
-    # global assignments in noAdditionalIndentGlobal
-    my $globalInformation = $indentationAbout."Global";
-    if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
-        $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
-        return ${$masterSettings{$globalInformation}}{$YamlName};
-    } elsif($globalInformation eq "indentRulesGlobal") {
-        if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
-            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
-            return ${$masterSettings{$globalInformation}}{$YamlName};
-        } else {
-            $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
-      }
-    }
 
     # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-    my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+    my $name = $self->get_object_name_for_indentation_settings;
+    return unless ${$masterSettings{$indentationAbout}}{$name}; 
 
     # if the YamlName is not optionalArguments or mandatoryArguments, then assume we're looking for 'body'
-    $YamlName = ($YamlName =~ m/Arguments/) ? $YamlName : "body";
-
-    return unless ${$masterSettings{$indentationAbout}}{$name}; 
+    #$YamlName = ($YamlName =~ m/Arguments/) ? $YamlName : "body";
+    $YamlName = $self->get_object_attribute_for_indentation_settings;
 
     my $indentationInformation;
     if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
@@ -350,10 +368,35 @@ sub get_indentation_information{
          }
     } else {
         $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
-        $self->logger("$indentationAbout indentation specified for $name, using '$indentationInformation' (see $indentationAbout)");
+        $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)");
     }
 
     return $indentationInformation;
+}
+
+sub get_object_name_for_indentation_settings{
+    # when looking for noAdditionalIndent or indentRules, most objects go 
+    # by their name, but some objects (such as arguments), need to use their
+    # parent name, and they will have their own version of this subroutine (method)
+    my $self = shift;
+
+    return ${$self}{name};
+
+}
+
+sub get_object_attribute_for_indentation_settings{
+    # when looking for noAdditionalIndent or indentRules, we may need to determine
+    # which thing we're looking for, e.g
+    #
+    #   chapter:
+    #       body: 0
+    #       optionalArguments: 1
+    #       mandatoryArguments: 1
+    #       afterHeading: 0
+    #
+    # this method returns 'body' by default, but the other objects (optionalArgument, mandatoryArgument, afterHeading)
+    # return their appropriate identifier.
+    return "body";
 }
 
 1;

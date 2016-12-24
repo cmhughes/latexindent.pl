@@ -70,6 +70,21 @@ sub find_optional_arguments{
         }
   }
 
+sub get_object_name_for_indentation_settings{
+    # when looking for noAdditionalIndent or indentRules, the 
+    # argument objects need to look for their *parent*'s name
+    my $self = shift;
+
+    return ${$self}{parent};
+
+}
+
+sub get_object_attribute_for_indentation_settings{
+    my $self = shift;
+    
+    return ${$self}{modifyLineBreaksYamlName};
+}
+
 sub create_unique_id{
     my $self = shift;
 

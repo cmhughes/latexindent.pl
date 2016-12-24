@@ -5,7 +5,7 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_name_for_indentation_settings get_object_attribute_for_indentation_settings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
@@ -30,6 +30,7 @@ use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/get_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special qw/find_special construct_special_begin/;
+use LatexIndent::Heading qw/find_heading construct_headings_levels/;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -59,6 +60,7 @@ sub operate_on_file{
     $self->remove_leading_space;
     $self->construct_list_of_items;
     $self->construct_special_begin;
+    $self->construct_headings_levels;
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
@@ -102,7 +104,7 @@ sub process_body_of_text{
     my $self = shift;
 
     # find objects recursively
-    $self->logger('Phase 1: finding objects','heading');
+    $self->logger('Phase 1: searching for objects','heading');
     $self->find_objects_recursively;
 
     # find all hidden child
@@ -135,6 +137,10 @@ sub find_objects_recursively{
     # search for ifElseFi blocks
     $self->logger('looking for IFELSEFI');
     $self->find_ifelsefi;
+
+    # search for headings (part, chapter, section, setc)
+    $self->logger('looking for HEADINGS (chapter, section, part, etc)');
+    $self->find_heading;
     
     # search for commands with arguments
     $self->logger('looking for COMMANDS and key = {value}');
@@ -230,8 +236,7 @@ sub tasks_common_to_each_object{
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
-    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace');
-    ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
+    $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
     $self->modify_line_breaks_body_and_end;
@@ -244,6 +249,16 @@ sub get_replacement_text{
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     ${$self}{replacementText} = ${$self}{id};
+    return;
+}
+
+sub adjust_replacement_text_line_breaks_at_end{
+    my $self = shift;
+
+    # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
+    # so we compensate for it here
+    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace');
+    ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
 }
 

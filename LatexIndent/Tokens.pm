@@ -19,6 +19,7 @@ our %tokens = (
                 groupingBraces=>"LATEX-INDENT-GROUPING-BRACES",
                 unNamedgroupingBraces=>"LATEX-INDENT-UN-NAMED-GROUPING-BRACES",
                 special=>"LATEX-INDENT-SPECIAL",
+                heading=>"LATEX-INDENT-HEADING",
                 endOfToken=>"-END",
               );
 

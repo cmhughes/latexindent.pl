@@ -93,6 +93,10 @@ cd ../namedGroupingBracesBrackets
 cd ../specials
 [[ $silentMode == 1 ]] && echo "./specials/specials-test-cases.sh"
 ./specials-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# headings
+cd ../headings
+[[ $silentMode == 1 ]] && echo "./headings/headings-test-cases.sh"
+./headings-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
 do 
