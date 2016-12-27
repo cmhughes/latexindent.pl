@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_name_for_indentation_settings get_object_attribute_for_indentation_settings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -351,12 +351,11 @@ sub get_indentation_information{
     # specifying as a scalar with no field will
     # mean that *every* field will receive the same treatment
 
-    # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-    my $name = $self->get_object_name_for_indentation_settings;
+    # if the YamlName is, for example, optionalArguments, mandatoryArguments, heading, then we'll be looking for information about the *parent*
+    my $name = (defined ${$self}{nameForIndentationSettings}) ? ${$self}{nameForIndentationSettings} : ${$self}{name};
     return unless ${$masterSettings{$indentationAbout}}{$name}; 
 
-    # if the YamlName is not optionalArguments or mandatoryArguments, then assume we're looking for 'body'
-    #$YamlName = ($YamlName =~ m/Arguments/) ? $YamlName : "body";
+    # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
     $YamlName = $self->get_object_attribute_for_indentation_settings;
 
     my $indentationInformation;
@@ -372,16 +371,6 @@ sub get_indentation_information{
     }
 
     return $indentationInformation;
-}
-
-sub get_object_name_for_indentation_settings{
-    # when looking for noAdditionalIndent or indentRules, most objects go 
-    # by their name, but some objects (such as arguments), need to use their
-    # parent name, and they will have their own version of this subroutine (method)
-    my $self = shift;
-
-    return ${$self}{name};
-
 }
 
 sub get_object_attribute_for_indentation_settings{

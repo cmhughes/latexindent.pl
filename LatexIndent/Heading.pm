@@ -88,6 +88,7 @@ sub find_heading{
                                                     afterbit=>($4?$4:q()).($5?$5:q()),
                                                     name=>$2.":heading",
                                                     parent=>$2,
+                                                    nameForIndentationSettings=>$2,
                                                     linebreaksAtEnd=>{
                                                       begin=>0,
                                                       body=>0,
@@ -150,15 +151,6 @@ sub tasks_particular_to_each_object{
     $self->find_commands_or_key_equals_values_braces;
 
     return;
-}
-
-sub get_object_name_for_indentation_settings{
-    # when looking for noAdditionalIndent or indentRules, the 
-    # argument objects need to look for their *parent*'s name
-    my $self = shift;
-
-    return ${$self}{parent};
-
 }
 
 1;
