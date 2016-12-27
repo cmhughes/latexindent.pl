@@ -206,18 +206,14 @@ sub final_indentation_check{
         (my $before = $indentation) =~ s/\t/TAB/g;
         $self->logger("Indentation before: '$before'",'trace');
 
-        # move tabs to the beginning
-        while($indentation =~ m/(\h+[^\t])(\t+)/ and $indentation !~ m/^\t*$/  and $1 ne '' and $1 ne "\t"){
-            $indentation =~ s/(\h+)(\t+)/$2$1/;
-
-            # log the during
-            (my $during = $indentation) =~ s/\t/TAB/g;
-            $self->logger("Indentation during: '$during'",'trace');
-        }
+        my $numberOfTABS = () = $indentation=~ /\t/g;
+        $self->logger("Number of tabs: $numberOfTABS",'trace');
 
         # log the after
-        (my $after = $indentation) =~ s/\t/TAB/g;
+        (my $after = $indentation) =~ s/\t//g;
+        $after = "TAB"x$numberOfTABS.$after;
         $self->logger("Indentation after: '$after'",'trace');
+        ($indentation = $after) =~s/TAB/\t/g;
 
         # store it
         push(@indentationTokens,{id=>$indentationToken,value=>$indentation});

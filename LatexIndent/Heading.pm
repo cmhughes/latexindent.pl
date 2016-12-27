@@ -10,6 +10,7 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/find_heading construct_headings_levels/;
 our $headingCounter;
 our @headingsRegexpArray;
+our $allHeadingsRegexp = q();
 
 sub construct_headings_levels{
     my $self = shift;
@@ -25,6 +26,9 @@ sub construct_headings_levels{
         if(!${$headingsLevels{$headingName}}{indentAfterThisHeading}){
             $self->logger("Not indenting after $headingName (see indentAfterThisHeading)",'heading');
             delete $headingsLevels{$headingName};
+        } else {
+            # *all heading* regexp
+            $allHeadingsRegexp .= ($allHeadingsRegexp eq '' ?q():"|").$headingName;
         }
     }
 
@@ -34,8 +38,11 @@ sub construct_headings_levels{
     # it could be that @sortedByLevels is empty;
     return if !@sortedByLevels;
 
+    $self->logger("All headings regexp: $allHeadingsRegexp",'heading'); 
+
     # loop through the levels, and create a regexp for each (min and max values are the first and last values respectively from sortedByLevels)
     for(my $i = ${$headingsLevels{$sortedByLevels[0]}}{level}; $i <= ${$headingsLevels{$sortedByLevels[-1]}}{level}; $i++ ){
+        # level regexp
         my @tmp = grep { ${$headingsLevels{$_}}{level} == $i } keys %headingsLevels;
         push(@headingsRegexpArray,join("|",@tmp)) if @tmp;
         $self->logger("Heading level regexp for level $i will contain: @tmp",'heading') if @tmp;
@@ -61,8 +68,9 @@ sub find_heading{
     # trailing comment regexp
     my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
-    # loop through each special match
-    foreach(@headingsRegexpArray){
+    # loop through each headings match; note that we need to 
+    # do it in *reverse* so as to ensure that the lower level headings get matched first of all
+    foreach(reverse(@headingsRegexpArray)){
         
         # the regexp
         my $headingRegExp = qr/
@@ -73,7 +81,7 @@ sub find_heading{
                                   .*?                 
                               )                 # body into $3      
                               (\R*)?            # linebreaks at end of body into $4
-                              ((?:\\(?:$_))|$)  # up to another heading, or else the end of the file
+                              ((?:\\(?:$allHeadingsRegexp))|$)  # up to another heading, or else the end of the file
                            /sx;
         
         while(${$self}{body} =~ m/$headingRegExp/){
@@ -81,8 +89,8 @@ sub find_heading{
             # log file output
             $self->logger("heading found: $2",'heading');
 
-            # create a new special object
-            my $specialObject = LatexIndent::Heading->new(begin=>q(),
+            # create a new heading object
+            my $headingObject = LatexIndent::Heading->new(begin=>q(),
                                                     body=>$1.$3,
                                                     end=>q(),
                                                     afterbit=>($4?$4:q()).($5?$5:q()),
@@ -100,7 +108,7 @@ sub find_heading{
                                                   );
 
             # the settings and storage of most objects has a lot in common
-            $self->get_settings_and_store_new_object($specialObject);
+            $self->get_settings_and_store_new_object($headingObject);
         }
      }
 }
