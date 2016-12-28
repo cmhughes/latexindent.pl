@@ -1,0 +1,7 @@
+indentAfterHeadings:
+    myheading:
+       indentAfterThisHeading: 1
+       level: 2
+    otherheading: 
+       indentAfterThisHeading: 1
+       level: 2

@@ -1,8 +1,0 @@
-indentRules:
-   tabular: "\t\t\t\t"
-noAdditionalIndent:
-   ifnum: 1
-   ifodd: 0
-   tabular: 1
-lookForAlignDelims:
-   tabular: 1

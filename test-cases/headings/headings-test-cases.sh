@@ -18,6 +18,11 @@ latexindent.pl -s testHeadings.tex -o testHeadings-default.tex
 latexindent.pl -s testHeadings.tex -o testHeadings1.tex -l=levels1.yaml -g=one.log -tt
 latexindent.pl -s testHeadings.tex -o testHeadings2.tex -l=levels2.yaml -tt -g=two.log
 latexindent.pl -s testHeadings.tex -o testHeadings3.tex -l=levels3.yaml -tt -g=three.log
+latexindent.pl -s testHeadings.tex -o testHeadings4.tex -l=levels4.yaml -tt -g=four.log
+# custom headings
+latexindent.pl -s customHeadings.tex -o customHeadings1.tex -l custom1.yaml 
+latexindent.pl -s customHeadings.tex -o customHeadings2.tex -l custom2.yaml 
+latexindent.pl -s customHeadings.tex -o customHeadings3.tex -l custom3.yaml 
 
 # # modifyLineBreaks experiments
 # [[ $silentMode == 0 ]] && set +x 
