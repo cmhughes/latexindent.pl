@@ -60,6 +60,13 @@ lookForPreamble:
     .cls: 0
     .bib: 0
 
+# some preambles can contain \begin and \end statements
+# that are not in their 'standard environment block', for example,
+# consider the following key = values:
+#    preheadhook={\begin{mdframed}[style=myframedstyle]},
+#    postfoothook=\end{mdframed},
+preambleCommandsBeforeEnvironments: 0
+
 # remove trailing whitespace from all lines 
 removeTrailingWhitespace:
     beforeProcessing: 0
@@ -232,8 +239,8 @@ specialBeginEnd:
         end: '\\\]'
         lookForThis: 1
     inlineMath:
-        begin: '(?<!\$)\$(?!\$)'
-        end: '\$(?!\$)'
+        begin: '(?<!\$)(?<!\\)\$(?!\$)'
+        end: '(?<!\\)\$(?!\$)'
         lookForThis: 1
     displayMathTeX:
         begin: '\$\$'

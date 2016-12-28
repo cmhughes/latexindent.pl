@@ -96,6 +96,8 @@ sub find_file_contents_environments_and_preamble{
                 /sx;
     my $preamble = q();
 
+    my $needToStorePreamble = 0;
+
     # try and find the preamble
     if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$masterSettings{lookForPreamble}}{${$self}{fileExtension}}){
 
@@ -132,8 +134,7 @@ sub find_file_contents_environments_and_preamble{
         # indentPreamble set to 1
         if($masterSettings{indentPreamble}){
             $self->logger("storing ${$preamble}{id} for indentation (see indentPreamble)");
-            $preamble->remove_leading_space;
-            push(@{${$self}{children}},$preamble);
+            $needToStorePreamble = 1;
         } else {
             # indentPreamble set to 0
             $self->logger("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (see indentPreamble)");
@@ -168,6 +169,11 @@ sub find_file_contents_environments_and_preamble{
               }
     }
 
+    if($needToStorePreamble){
+        $preamble->remove_leading_space;
+        $preamble->find_commands_or_key_equals_values_braces if($masterSettings{preambleCommandsBeforeEnvironments});
+        push(@{${$self}{children}},$preamble);
+    }
     return;
 }
 
