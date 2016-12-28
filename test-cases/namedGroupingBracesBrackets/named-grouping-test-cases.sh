@@ -24,7 +24,7 @@ latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-
     [[ $silentMode == 0 ]] && set +x 
  done
 # special characters
-latexindent.pl -s special-characters.tex -m -l=mand-args-mod1.yaml -o=special-characters-mod1.tex
+latexindent.pl -s special-characters.tex -m -l=mand-args-mod1.yaml,../filecontents/indentPreambleYes.yaml -o=special-characters-mod1.tex 
 latexindent.pl -s special-characters-minimal.tex -o special-characters-minimal-default.tex
 latexindent.pl -tt -s special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-default.tex -g=one.log
 # m switch active

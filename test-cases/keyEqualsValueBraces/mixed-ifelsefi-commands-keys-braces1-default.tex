@@ -68,14 +68,14 @@
 				visualization depends on=x \as \myxcoord,
 				nodes near coords={\pgfmathprintnumber\myxcoord},
 				every node near coord/.append style={
-						anchor=east},
+									anchor=east},
 			]
 			\@ifundefined{c@totalchapters}
 			{}
 			{%
 				\foreach \i in {1,...,\thetotalchapters}{%
-									\addplot coordinates {(\the\value{totalpages\@roman{\i}},0)};
-								}
+						\addplot coordinates {(\the\value{totalpages\@roman{\i}},0)};
+					}
 			}
 		\end{axis}
 	\end{tikzpicture}

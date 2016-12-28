@@ -47,6 +47,7 @@ sub file_extension_check{
                $self->logger("Updated fileName to $fileName");
                ${$self}{fileName} = $fileName ;
                $fileFound = 1;
+               $ext = $_;
                last;
             }
         }
@@ -69,6 +70,9 @@ sub file_extension_check{
           die $message;
         }
       }
+
+    # store the file extension
+    ${$self}{fileExtension} = $ext;
 
     # read the file into the Document body
     my @lines;

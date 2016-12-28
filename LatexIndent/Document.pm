@@ -15,6 +15,8 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 use LatexIndent::Tokens qw/get_tokens token_check/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree find_hidden_children operate_on_hidden_children/;
+use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
+use LatexIndent::Preamble;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
@@ -55,8 +57,7 @@ sub operate_on_file{
     $self->find_verbatim_commands;
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
-    # find filecontents environments
-    # find preamble
+    $self->find_file_contents_environments_and_preamble;
     $self->remove_leading_space;
     $self->construct_list_of_items;
     $self->construct_special_begin;

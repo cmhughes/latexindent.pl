@@ -53,6 +53,13 @@ cycleThroughBackUps: 0
 # indent preamble
 indentPreamble: 0
 
+# assume no preamble in cls, sty, by default
+lookForPreamble:
+    .tex: 1
+    .sty: 0
+    .cls: 0
+    .bib: 0
+
 # remove trailing whitespace from all lines 
 removeTrailingWhitespace:
     beforeProcessing: 0
@@ -110,6 +117,7 @@ indentRulesGlobal:
     UnNamedGroupingBracesBrackets: 0
     specialBeginEnd: 0
     afterHeading: 0
+    filecontents: 0
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
@@ -160,6 +168,7 @@ noAdditionalIndentGlobal:
     UnNamedGroupingBracesBrackets: 0
     specialBeginEnd: 0
     afterHeading: 0
+    filecontents: 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

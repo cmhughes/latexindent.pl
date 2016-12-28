@@ -20,6 +20,8 @@ our %tokens = (
                 unNamedgroupingBraces=>"LATEX-INDENT-UN-NAMED-GROUPING-BRACES",
                 special=>"LATEX-INDENT-SPECIAL",
                 heading=>"LATEX-INDENT-HEADING",
+                filecontents=>"LATEX-INDENT-FILECONTENTS",
+                preamble=>"latex-indent-preamble",
                 endOfToken=>"-END",
               );
 
