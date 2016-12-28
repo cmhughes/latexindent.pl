@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 our %familyTree;
 
 sub push_family_tree_to_indent{
@@ -308,7 +308,7 @@ sub indent_children_recursively{
 
                         # the trailing comment/linebreak magic
                         ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
-                        ${$child}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+                        $child->add_surrounding_indentation_to_begin_statement;
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
@@ -357,5 +357,14 @@ sub indent_children_recursively{
 
 }
 
+sub add_surrounding_indentation_to_begin_statement{
+    # almost all of the objects add surrounding indentation to the 'begin' statements, 
+    # but some (e.g HEADING) have their own method
+    my $self = shift;
+
+    my $surroundingIndentation = ${$self}{surroundingIndentation};
+    ${$self}{begin} =~ s/^(\h*)?/$surroundingIndentation/mg;  # add indentation
+
+}
 
 1;

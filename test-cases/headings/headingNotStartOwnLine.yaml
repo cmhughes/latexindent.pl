@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    preserveBlankLines: 0
+    condenseMultipleBlankLinesInto: 1
+    commands:
+        CommandStartsOnOwnLine: 0
+        emph:
+            CommandStartsOnOwnLine: -1
+    mandatoryArguments:
+        RCuBFinishesWithLineBreak: 1
+        emph:
+            RCuBFinishesWithLineBreak: -1

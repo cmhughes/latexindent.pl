@@ -158,7 +158,46 @@ sub tasks_particular_to_each_object{
     # search for commands, keys, named grouping braces
     $self->find_commands_or_key_equals_values_braces;
 
+    # we need to transfer the details from the modifyLineBreaks of the command
+    # child object to the heading object.
+    #
+    # for example, if we have
+    #
+    #   \chapter{some heading here}
+    #
+    # and we want to modify the linebreak before the \chapter command using, for example,
+    #
+    # commands:
+    #     CommandStartsOnOwnLine: 1
+    #
+    # then we need to transfer this information to the heading object
+    if($self->is_m_switch_active){
+        $self->logger("Searching for linebreak preferences immediately infront of ${$self}{parent}",'heading');
+        foreach(@{${$self}{children}}){
+            if(${$_}{name} eq ${$self}{parent}){
+                $self->logger("Named child found: ${$_}{name}");
+                if(defined ${$_}{BeginStartsOnOwnLine}){
+                    $self->logger("Transferring information from ${$_}{id} (${$_}{name}) to ${$self}{id} (${$self}{name}) for BeginStartsOnOwnLine");
+                    ${$self}{BeginStartsOnOwnLine} = ${$_}{BeginStartsOnOwnLine};
+                } else {
+                    $self->logger("No information found in ${$_}{name} for BeginStartsOnOwnLine");
+                }
+                last;
+            }
+        }
+    }
+
     return;
+}
+
+sub add_surrounding_indentation_to_begin_statement{
+    # almost all of the objects add surrounding indentation to the 'begin' statements, 
+    # but some (e.g HEADING) have their own method
+    my $self = shift;
+    
+    $self->logger("Adding surrounding indentation after (empty, by design!) begin statement of ${$self}{name} (${$self}{id})");
+    ${$self}{begin} .= ${$self}{surroundingIndentation};  # add indentation
+
 }
 
 1;
