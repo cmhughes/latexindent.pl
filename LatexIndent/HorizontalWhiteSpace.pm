@@ -34,7 +34,7 @@ sub remove_trailing_whitespace{
 
 sub remove_leading_space{
     my $self = shift;
-    $self->logger("Removing leading space from entire document (verbatim/noindentblock already accounted for)",'heading');
+    $self->logger("Removing leading space from ${$self}{name} (verbatim/noindentblock already accounted for)",'heading');
     ${$self}{body} =~ s/
                         (   
                             ^           # beginning of the line

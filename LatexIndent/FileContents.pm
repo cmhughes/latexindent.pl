@@ -28,6 +28,12 @@ sub find_file_contents_environments_and_preamble{
         if($yesno){
             $self->logger("looking for $fileContentsEnv:$yesno environments");
 
+            # the trailing * needs some care
+            if($fileContentsEnv =~ m/\*$/){
+                $fileContentsEnv =~ s/\*$//;
+                $fileContentsEnv .= '\*';
+            }
+
             my $fileContentsRegExp = qr/
                             (
                             \\begin\{
