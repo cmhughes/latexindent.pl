@@ -27,10 +27,19 @@ sub construct_headings_levels{
             $self->logger("Not indenting after $headingName (see indentAfterThisHeading)",'heading');
             delete $headingsLevels{$headingName};
         } else {
-            # *all heading* regexp
-            $allHeadingsRegexp .= ($allHeadingsRegexp eq '' ?q():"|").$headingName;
+            # *all heading* regexp, remembering put starred headings at the front of the regexp
+            if($headingName =~ m/\*/){
+                 $self->logger("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *");
+                 $allHeadingsRegexp = $headingName.($allHeadingsRegexp eq '' ?q():"|$allHeadingsRegexp");
+            } else {
+                 $self->logger("Putting $headingName at the END of the allHeadings regexp, as it contains a *");
+                 $allHeadingsRegexp .= ($allHeadingsRegexp eq '' ?q():"|").$headingName ;
+            }
         }
     }
+
+    # check for a * in the name
+    $allHeadingsRegexp =~ s/\*/\\\*/g;
 
     # sort the file extensions by preference 
     my @sortedByLevels = sort { ${$headingsLevels{$a}}{level} <=> $headingsLevels{$b}{level} } keys(%headingsLevels);
@@ -39,13 +48,30 @@ sub construct_headings_levels{
     return if !@sortedByLevels;
 
     $self->logger("All headings regexp: $allHeadingsRegexp",'heading'); 
+    $self->logger("Now to construct headings regexp for each level:",'heading'); 
 
     # loop through the levels, and create a regexp for each (min and max values are the first and last values respectively from sortedByLevels)
     for(my $i = ${$headingsLevels{$sortedByLevels[0]}}{level}; $i <= ${$headingsLevels{$sortedByLevels[-1]}}{level}; $i++ ){
         # level regexp
         my @tmp = grep { ${$headingsLevels{$_}}{level} == $i } keys %headingsLevels;
-        push(@headingsRegexpArray,join("|",@tmp)) if @tmp;
-        $self->logger("Heading level regexp for level $i will contain: @tmp",'heading') if @tmp;
+        if(@tmp){
+            my $headingsAtThisLevel = q();
+            foreach(@tmp){
+               # put starred headings at the front of the regexp
+               if($_ =~ m/\*/){
+                    $self->logger("Putting $_ at the beginning of this regexp, as it contains a *");
+                    $headingsAtThisLevel = $_.($headingsAtThisLevel eq '' ?q():"|$headingsAtThisLevel");
+               } else {
+                    $self->logger("Putting $_ at the END of this regexp, as it contains a *");
+                    $headingsAtThisLevel .= ($headingsAtThisLevel eq '' ?q():"|").$_ ;
+               }
+            }
+
+            # make the stars escaped correctly
+            $headingsAtThisLevel =~ s/\*/\\\*/g;
+            push(@headingsRegexpArray,$headingsAtThisLevel);
+            $self->logger("Heading level regexp for level $i will contain: $headingsAtThisLevel");
+        }
     }
   }
 

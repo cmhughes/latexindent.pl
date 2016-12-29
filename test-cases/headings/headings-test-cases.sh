@@ -39,6 +39,8 @@ latexindent.pl -s headings-single-line.tex -o headings-single-line-comment-mod2.
 latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod1.tex -l=levels1.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml -tt -m
 latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod2.tex -l=levels2.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -tt -m
 latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod3.tex -l=levels3.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -tt -m
-
+# headings with stars at different levels
+latexindent.pl -s headings-names-with-stars.tex -o headings-names-with-stars-mod5.tex -l=levels5.yaml
+latexindent.pl -s headings-names-with-stars.tex -o headings-names-with-stars-mod6.tex -l=levels6.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
