@@ -31,4 +31,8 @@ latexindent.pl -s filecontents5.tex -o filecontents5-indent-preamble.tex -l=inde
 # filecontents with noindent block in preamble
 latexindent.pl -s filecontents6.tex -o filecontents6-default.tex -g=one.log
 latexindent.pl -s filecontents6.tex -o filecontents6-indent-preamble.tex -l=indentPreambleYes.yaml -g two.log
+# headings-preamble-verbatim.tex
+latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-default.tex
+latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-indent-preamble.tex -l=indentPreambleYes.yaml
+latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-indent-preamble-with-headings.tex -l=indentPreambleYes.yaml,../headings/levels1.yaml
 git status
