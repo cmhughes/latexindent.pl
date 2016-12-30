@@ -51,13 +51,13 @@ sub determine_total_indentation{
 
     # logfile information
     my $surroundingIndentation = ${$self}{surroundingIndentation};
-    $self->logger("indenting object ${$self}{name}",'trace');
+    $self->logger("indenting object ${$self}{name}",'trace') if($self->is_t_switch_active);
     (my $during = $surroundingIndentation) =~ s/\t/TAB/g;
-    $self->logger("indentation *surrounding* object: '$during'",'trace');
+    $self->logger("indentation *surrounding* object: '$during'",'trace') if($self->is_t_switch_active);
     ($during = ${$self}{indentation}) =~ s/\t/TAB/g;
-    $self->logger("indentation *of* object: '$during'",'trace');
+    $self->logger("indentation *of* object: '$during'",'trace') if($self->is_t_switch_active);
     ($during = $surroundingIndentation.${$self}{indentation}) =~ s/\t/TAB/g;
-    $self->logger("*total* indentation to be added: '$during'",'trace');
+    $self->logger("*total* indentation to be added: '$during'",'trace') if($self->is_t_switch_active);
 
     # form the total indentation of the object
     ${$self}{indentation} = $surroundingIndentation.${$self}{indentation};
@@ -74,7 +74,7 @@ sub get_surrounding_indentation{
         foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
             if(${$_}{type} eq "adopted"){
                 my $newAncestorId = ${$_}{ancestorID};
-                $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}",'trace');
+                $self->logger("ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}",'trace') if($self->is_t_switch_active);
                 $surroundingIndentation .= ref(${$_}{ancestorIndentation}) eq 'SCALAR'
                                                     ?
                                             (${${$_}{ancestorIndentation}}?${${$_}{ancestorIndentation}}:q())
@@ -128,11 +128,11 @@ sub indent_body{
             my $bodyFirstLine = $1;
             my $remainingBody = $2;
             $self->logger("first line of body: $bodyFirstLine",'heading.trace');
-            $self->logger("remaining body (before indentation): '$remainingBody'",'trace');
+            $self->logger("remaining body (before indentation): '$remainingBody'",'trace') if($self->is_t_switch_active);
     
             # add the indentation to all the body except first line
             $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
-            $self->logger("remaining body (after indentation): '$remainingBody'",'trace');
+            $self->logger("remaining body (after indentation): '$remainingBody'",'trace') if($self->is_t_switch_active);
     
             # put the body back together
             ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
@@ -145,7 +145,7 @@ sub indent_body{
 
     # the final linebreak can be modified by a child object; see test-cases/commands/figureValign-mod5.tex, for example
     if($self->is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/){
-        $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)",'trace');
+        $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)",'trace') if($self->is_t_switch_active);
         ${$self}{body} .= "\n";
     }
 
@@ -200,22 +200,22 @@ sub final_indentation_check{
         my $lineDetails = $6;
         ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
 
-        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs",'trace');
+        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs",'trace') if($self->is_t_switch_active);
 
         # fix the indentation
         my $indentation = $1;
 
         # log the before
         (my $before = $indentation) =~ s/\t/TAB/g;
-        $self->logger("Indentation before: '$before'",'trace');
+        $self->logger("Indentation before: '$before'",'trace') if($self->is_t_switch_active);
 
         my $numberOfTABS = () = $indentation=~ /\t/g;
-        $self->logger("Number of tabs: $numberOfTABS",'trace');
+        $self->logger("Number of tabs: $numberOfTABS",'trace') if($self->is_t_switch_active);
 
         # log the after
         (my $after = $indentation) =~ s/\t//g;
         $after = "TAB"x$numberOfTABS.$after;
-        $self->logger("Indentation after: '$after'",'trace');
+        $self->logger("Indentation after: '$after'",'trace') if($self->is_t_switch_active);
         ($indentation = $after) =~s/TAB/\t/g;
 
         # store it
@@ -233,7 +233,7 @@ sub indent_children_recursively{
     my $self = shift;
 
     $self->logger('Pre-processed body:','heading.trace');
-    $self->logger(${$self}{body},'trace');
+    $self->logger(${$self}{body},'trace') if($self->is_t_switch_active);
 
     unless(defined ${$self}{children}){
         $self->logger("No child objects (${$self}{name})");
@@ -261,7 +261,7 @@ sub indent_children_recursively{
                 my $IDFollowedImmediatelyByLineBreak = $2?1:0;
 
                 # log file info
-                $self->logger("${$child}{id} found!",'trace');
+                $self->logger("${$child}{id} found!",'trace') if($self->is_t_switch_active);
                 $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
                 $self->logger("looking up indentation scheme for ${$child}{name}");
 
@@ -318,14 +318,14 @@ sub indent_children_recursively{
                     }
                 }
 
-                $self->logger(Dumper(\%{$child}),'ttrace');
+                $self->logger(Dumper(\%{$child}),'ttrace') if($self->is_tt_switch_active);
 
                 # replace ids with body
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
                 $self->logger("Body (${$self}{name}) now looks like:",'heading.trace');
-                $self->logger(${$self}{body},'trace');
+                $self->logger(${$self}{body},'trace') if($self->is_t_switch_active);
 
                 # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
                 my $index = 0;
@@ -338,7 +338,7 @@ sub indent_children_recursively{
                 # restart the loop, as the size of the array has changed
                 last;
               } else {
-                $self->logger("${$child}{id} not found",'trace');
+                $self->logger("${$child}{id} not found",'trace') if($self->is_t_switch_active);
               }
             }
     }
@@ -346,8 +346,8 @@ sub indent_children_recursively{
     # logfile info
     $self->logger("${$self}{name} has this many children:",'heading');
     $self->logger(scalar @{${$self}{children}});
-    $self->logger("Post-processed body (${$self}{name}):",'trace');
-    $self->logger(${$self}{body},'trace');
+    $self->logger("Post-processed body (${$self}{name}):",'trace') if($self->is_t_switch_active);
+    $self->logger(${$self}{body},'trace') if($self->is_t_switch_active);
 
 }
 

@@ -72,7 +72,7 @@ sub get_replacement_text{
     # but now turn off the switch for linebreaksAtEnd{begin}, otherwise the first brace gets too much indentation
     # (see, for example, test-cases/namedGroupingBracesBrackets/special-characters-minimal.tex)
     ${${$self}{linebreaksAtEnd}}{begin} = 0;
-    $self->logger("Beginning bit is: ${$self}{beginningbit}",'trace');
+    $self->logger("Beginning bit is: ${$self}{beginningbit}",'trace') if($self->is_t_switch_active);
     delete ${$self}{beginningbit};
 }
 

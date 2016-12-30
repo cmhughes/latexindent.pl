@@ -23,7 +23,7 @@ sub find_file_contents_environments_and_preamble{
 
     # fileContents environments
     $self->logger('looking for FILE CONTENTS environments (see fileContentsEnvironments)','heading');
-    $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}}),'trace');
+    $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}}),'trace') if($self->is_t_switch_active);
     while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
         if($yesno){
             $self->logger("looking for $fileContentsEnv:$yesno environments");

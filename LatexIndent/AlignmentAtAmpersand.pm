@@ -127,7 +127,9 @@ sub align_at_ampersand{
     }
 
     # to the log file
-    $self->logger(${$_}{row},'ttrace') for @formattedBody;
+    if($self->is_tt_switch_active){    
+        $self->logger(${$_}{row},'ttrace') for @formattedBody;
+    }
 
     # delete the original body
     ${$self}{body} = q();

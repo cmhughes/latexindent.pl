@@ -4,7 +4,7 @@ use warnings;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/logger output_logfile processSwitches is_m_switch_active/;
+our @EXPORT_OK = qw/logger output_logfile processSwitches is_m_switch_active is_t_switch_active is_tt_switch_active/;
 our @logFileNotes;
 our %switches;
 
@@ -16,6 +16,16 @@ our %switches;
 sub is_m_switch_active{
     my $self = shift;
     return $switches{modifyLineBreaks};
+}
+
+sub is_t_switch_active{
+    my $self = shift;
+    return $switches{trace};
+}
+
+sub is_tt_switch_active{
+    my $self = shift;
+    return $switches{ttrace};
 }
 
 sub logger{

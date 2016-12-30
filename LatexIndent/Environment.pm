@@ -63,7 +63,7 @@ sub find_environments{
 
       # if the environment is empty, we may need to update linebreaksAtEnd{body}
       if(${$env}{body} =~ m/^\h*$/s and ${${$env}{linebreaksAtEnd}}{begin}){
-            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1",'trace');
+            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1",'trace') if($self->is_t_switch_active);
             ${${$env}{linebreaksAtEnd}}{body} = 1;
       }
 

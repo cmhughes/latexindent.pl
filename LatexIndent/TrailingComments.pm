@@ -21,7 +21,7 @@ sub add_comment_symbol{
 
     # log file info
     $self->logger("Updating trailing comment array",'heading');
-    $self->logger(Dumper(\@trailingComments),'ttrace');
+    $self->logger(Dumper(\@trailingComments),'ttrace') if($self->is_tt_switch_active);
 
     # the returned value
     return $trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
@@ -50,10 +50,10 @@ sub remove_trailing_comments{
                             "%".$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
                        /xsmeg;
     if(@trailingComments){
-        $self->logger("Trailing comments stored in:",'trace');
-        $self->logger(Dumper(\@trailingComments),'trace');
+        $self->logger("Trailing comments stored in:",'trace') if($self->is_t_switch_active);
+        $self->logger(Dumper(\@trailingComments),'trace') if($self->is_t_switch_active);
     } else {
-        $self->logger("No trailing comments found",'trace');
+        $self->logger("No trailing comments found",'trace') if($self->is_t_switch_active);
     }
     return;
 }
@@ -84,7 +84,7 @@ sub put_trailing_comments_back_in{
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }
-      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace');
+      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace') if($self->is_t_switch_active);
     }
     return;
 }

@@ -156,7 +156,7 @@ sub find_opt_mand_arguments{
         # delete the regexp, as there's no need for it
         delete ${${${$self}{children}}[-1]}{regexp};
 
-        $self->logger(Dumper(\%{$arguments}),'trace');
+        $self->logger(Dumper(\%{$arguments}),'trace') if($self->is_t_switch_active);
         $self->logger("replaced with ID: ${$arguments}{id}");
     } else {
         $self->logger("... no arguments found");

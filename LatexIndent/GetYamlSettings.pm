@@ -186,10 +186,10 @@ sub get_indentation_settings_for_this_object{
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
-        $self->logger("Using stored settings for $storageName",'trace');
+        $self->logger("Using stored settings for $storageName",'trace') if($self->is_t_switch_active);
     } else {
         my $name = ${$self}{name};
-        $self->logger("Storing settings for $storageName",'trace');
+        $self->logger("Storing settings for $storageName",'trace') if($self->is_t_switch_active);
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
@@ -307,7 +307,7 @@ sub get_every_or_custom_value{
 
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
-        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}",'trace');
+        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}",'trace') if($self->is_t_switch_active);
   }
 
   # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -322,12 +322,12 @@ sub get_every_or_custom_value{
 
   # check for the *custom* value
   if (defined $customValue){
-      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace');
+      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace') if($self->is_t_switch_active);
       ${$self}{$toBeAssignedTo} = $customValue >=0 ? $customValue : undef;
    } else {
       # check for the *every* value
       if (defined $everyValue and $everyValue >= 0){
-          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace');
+          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace') if($self->is_t_switch_active);
           ${$self}{$toBeAssignedTo} = $everyValue;
       }
    }

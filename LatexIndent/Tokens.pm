@@ -32,7 +32,7 @@ sub token_check{
     # we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body
     foreach( keys %tokens){
         while(${$self}{body} =~ m/$tokens{$_}/si){
-            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN",'trace');
+            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN",'trace') if($self->is_t_switch_active);
             $tokens{$_} .= "-LIN";
         }
     }
