@@ -172,6 +172,8 @@ sub operate_on_hidden_children{
     # the hidden child is the argument
     my $hiddenChild = $_[0];
 
+    return if($familyTree{${$hiddenChild}{id}});
+
     # if the hidden child is found in the current body, take action
     if(${$self}{body} =~ m/${$hiddenChild}{id}/){
         $self->logger("hiddenChild found, ${$hiddenChild}{id} within ${$self}{name} (${$self}{id})",'ttrace');
@@ -199,9 +201,13 @@ sub operate_on_hidden_children{
         }
     } else {
         # call this subroutine recursively for the children
-        foreach my $child (@{${$self}{children}}){
-            $self->logger("Searching children of ${$child}{name} for ${$hiddenChild}{id}",'ttrace');
-            $child->operate_on_hidden_children(\%{$hiddenChild});
+        unless(defined ${$self}{id} and (${$self}{id} eq ${$hiddenChild}{id})){
+            foreach my $child (@{${$self}{children}}){
+                unless($familyTree{${$hiddenChild}{id}}){
+                    $self->logger("Searching children of ${$child}{name} for ${$hiddenChild}{id}",'ttrace');
+                    $child->operate_on_hidden_children(\%{$hiddenChild});
+                }
+            }
         }
     }
 }

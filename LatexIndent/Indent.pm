@@ -255,19 +255,10 @@ sub indent_children_recursively{
           # we work through the array *in order*
           foreach my $child (@{${$self}{children}}){
             $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading.trace');
-            if(${$self}{body} =~ m/
-                        (   
-                            ^           # beginning of the line
-                            \h*         # with 0 or more horizontal spaces
-                        )?              # possibly
-                                        #
-                        (.*?)?          # any other character
-                        ${$child}{id}   # the ID
-                        (\h*)?          # possibly followed by horizontal space
-                        (\R*)?          # then line breaks
-                        /mx){
-                my $IDFirstNonWhiteSpaceCharacter = $2?0:1;
-                my $IDFollowedImmediatelyByLineBreak = $4?1:0;
+            if(${$self}{body} =~ m/${$child}{id}/s){
+                ${$self}{body} =~ m/^(.*?)\h*${$child}{id}\h*(\R*)/m;
+                my $IDFirstNonWhiteSpaceCharacter = $1?0:1;
+                my $IDFollowedImmediatelyByLineBreak = $2?1:0;
 
                 # log file info
                 $self->logger("${$child}{id} found!",'trace');
