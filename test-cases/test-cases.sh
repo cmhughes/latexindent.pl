@@ -101,6 +101,10 @@ cd ../headings
 cd ../filecontents
 [[ $silentMode == 1 ]] && echo "./filecontents/filecontents-test-cases.sh"
 ./filecontents-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# alignment
+cd ../alignment
+[[ $silentMode == 1 ]] && echo "./alignment/alignment-test-cases.sh"
+./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
 do 

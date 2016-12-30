@@ -107,6 +107,9 @@ sub indent_body{
     # some objects need to check for blank line tokens at the beginning
     $self->check_for_blank_lines_at_beginning if $self->is_m_switch_active; 
 
+    # some objects can format their body to align at the & character
+    $self->align_at_ampersand if ${$self}{lookForAlignDelims};
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         if(${$self}{body} =~ m/^\h*$/s){

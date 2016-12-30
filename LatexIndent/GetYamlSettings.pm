@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -201,6 +201,9 @@ sub get_indentation_settings_for_this_object{
                                      ||
                           $masterSettings{defaultIndent});
 
+        # check for alignment at ampersand settings
+        $self->alignment_at_ampersand_settings;
+
         # check for line break settings
         $self->modify_line_breaks_settings;
 
@@ -212,6 +215,9 @@ sub get_indentation_settings_for_this_object{
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
                       );
+
+        # don't forget alignment settings!
+        ${${previouslyFoundSettings}{$storageName}}{lookForAlignDelims} = ${$self}{lookForAlignDelims} if(defined ${$self}{lookForAlignDelims});
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -226,6 +232,40 @@ sub get_indentation_settings_for_this_object{
             ${$self}{$key} = $value;
     }
 
+    return;
+}
+
+sub alignment_at_ampersand_settings{
+    my $self = shift;
+
+    # if the YamlName is, for example, optionalArguments, mandatoryArguments, heading, then we'll be looking for information about the *parent*
+    my $name = (defined ${$self}{nameForIndentationSettings}) ? ${$self}{nameForIndentationSettings} : ${$self}{name};
+
+    # check, for example,
+    #   lookForAlignDelims:
+    #      tabular: 1
+    # or
+    #
+    #   lookForAlignDelims:
+    #      tabular: 
+    #         delims: 1
+    #         alignDoubleBackSlash: 1
+    #         spacesBeforeDoubleBackSlash: 2
+    return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
+
+    ## check, for example,
+    ##   lookForAlignDelims:
+    ##      tabular:
+    ##         body: 1
+    #return unless $self->get_object_attribute_for_indentation_settings;
+    
+    if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
+      ${$self}{lookForAlignDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} : 1;
+      #${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
+    } else {
+      ${$self}{lookForAlignDelims} = 1;
+      #${$self}{alignDoubleBackSlash} = 1;
+    }
     return;
 }
 

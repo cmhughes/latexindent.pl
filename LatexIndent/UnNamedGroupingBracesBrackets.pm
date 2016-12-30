@@ -38,7 +38,7 @@ sub get_unnamed_grouping_braces_brackets_regexp{
                   # END of NOT
                   (
                      (?:
-                        \{|\[|,
+                        \{|\[|,|&       # starting with { [ , or &
                      )
                      \h*
                   )                     # $1 into beginning bit

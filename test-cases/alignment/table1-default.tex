@@ -1,4 +1,3 @@
-% arara: indent: {overwrite: true, silent: on}
 \documentclass{article}
 \usepackage{multirow}
 \usepackage{booktabs}
@@ -15,8 +14,9 @@
 		r3c1               & r3c2               & r3c3                 &                                               \\\cmidrule{1-3}
 		r4c1               & r4c2               & r4c3                 &                                               \\\midrule
 		r5c1               & r5c2               & r5c3                 &                                               \\\midrule
-		r6c1               & r6c2               & r6c3                 &                                               \\\midrule
-		r7c1               & r7c2               & r7c3                 &                                               \\\bottomrule
+		r6c1               & r6c2               & r6c3                 &                                               \\\midrule%another trailing comment
+		r7c1               & r7c2               & r7c3                 &                                               \\\bottomrule % trailing comment
+		deliberately & not got max ampersands   % trailing
 	\end{tabular}
 \end{table}
 \end{document}

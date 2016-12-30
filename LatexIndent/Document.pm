@@ -5,7 +5,7 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
@@ -17,6 +17,7 @@ use LatexIndent::Tokens qw/get_tokens token_check/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree find_hidden_children operate_on_hidden_children/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
+use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
