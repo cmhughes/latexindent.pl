@@ -109,6 +109,15 @@ sub align_at_ampersand{
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
             # format the row, and put the trailing \\ and trailing comments back into the row
             ${$_}{row} = sprintf($fmtstring,split(/(?<!\\)&/,${$_}{row})).(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+
+            # possibly remove space ahead of \\
+            ${$_}{row} =~ s/\h*\\\\/\\\\/ if(!${$self}{alignDoubleBackSlash});
+
+            # possibly insert spaces infront of \\
+            if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
+                my $horizontalSpaceToInsert = " "x (${$self}{spacesBeforeDoubleBackSlash});
+                ${$_}{row} =~ s/\h*\\\\/$horizontalSpaceToInsert\\\\/;
+            }
         }
 
         # if we have an empty row, it's possible that it originally had an end piece (e.g \\) and/or trailing comments
