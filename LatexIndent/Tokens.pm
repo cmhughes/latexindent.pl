@@ -39,7 +39,4 @@ sub token_check{
 }
 
 
-sub get_tokens{
-    return \%tokens; 
-}
 1;
