@@ -4,6 +4,8 @@
 package LatexIndent::KeyEqualsValuesBraces;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
@@ -16,11 +18,8 @@ sub get_key_equals_values_regexp{
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # store the regular expresssion for matching and replacing 
     my $key_equals_values_bracesRegExp = qr/
@@ -54,7 +53,7 @@ sub indent_begin{
     my $self = shift;
 
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     if(${$self}{begin} =~ /\R=/s or ${$self}{begin} =~ /$blankLineToken\h*=/s ){
         $self->logger("= found on own line in ${$self}{name}, adding indentation");
@@ -90,7 +89,7 @@ sub create_unique_id{
     my $self = shift;
 
     $key_equals_values_braces_Counter++;
-    ${$self}{id} = "${$self->get_tokens}{key_equals_values_braces}$key_equals_values_braces_Counter";
+    ${$self}{id} = "$tokens{key_equals_values_braces}$key_equals_values_braces_Counter";
     return;
 }
 

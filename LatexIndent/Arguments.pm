@@ -4,6 +4,8 @@
 package LatexIndent::Arguments;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -22,10 +24,7 @@ sub find_opt_mand_arguments{
     $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading');
 
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
+    my $blankLineToken = $tokens{blanklines};
 
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp(mode=>"lineBreaksAtEnd");
@@ -169,7 +168,7 @@ sub create_unique_id{
     my $self = shift;
 
     $ArgumentCounter++;
-    ${$self}{id} = "${$self->get_tokens}{arguments}$ArgumentCounter${$self->get_tokens}{endOfToken}";
+    ${$self}{id} = "$tokens{arguments}$ArgumentCounter$tokens{endOfToken}";
     return;
 }
 
@@ -185,11 +184,8 @@ sub get_arguments_regexp{
     my $self = shift;
     my %input = @_;
 
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # some calls to this routine need to account for the linebreaks at the end, some do not
     my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();

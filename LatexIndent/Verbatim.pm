@@ -4,6 +4,8 @@
 package LatexIndent::Verbatim;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
@@ -12,9 +14,6 @@ our $verbatimCounter;
 
 sub find_noindent_block{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # noindent block
     $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading');
@@ -76,9 +75,6 @@ sub find_noindent_block{
 sub find_verbatim_environments{
     my $self = shift;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
-
     # verbatim environments
     $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading');
     $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}}),'trace') if($self->is_t_switch_active);
@@ -131,9 +127,6 @@ sub find_verbatim_environments{
 
 sub find_verbatim_commands{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # verbatim commands
     $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading');
@@ -242,7 +235,7 @@ sub create_unique_id{
     my $self = shift;
 
     $verbatimCounter++;
-    ${$self}{id} = "${$self->get_tokens}{verbatim}$verbatimCounter${$self->get_tokens}{endOfToken}";
+    ${$self}{id} = "$tokens{verbatim}$verbatimCounter$tokens{endOfToken}";
     return;
 }
 

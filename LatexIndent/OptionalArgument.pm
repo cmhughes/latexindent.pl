@@ -4,6 +4,8 @@
 package LatexIndent::OptionalArgument;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_optional_arguments/;
@@ -28,9 +30,6 @@ sub find_optional_arguments{
                                    )
                                    (\R)?
                                /sx;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # pick out the optional arguments
     while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
@@ -81,7 +80,7 @@ sub create_unique_id{
     my $self = shift;
 
     $optionalArgumentCounter++;
-    ${$self}{id} = "${$self->get_tokens}{optionalArgument}$optionalArgumentCounter";
+    ${$self}{id} = "$tokens{optionalArgument}$optionalArgumentCounter";
     return;
 }
 

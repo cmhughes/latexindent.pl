@@ -4,6 +4,7 @@
 package LatexIndent::Preamble;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $preambleCounter;
 
@@ -11,7 +12,7 @@ sub create_unique_id{
     my $self = shift;
 
     $preambleCounter++;
-    ${$self}{id} = "${$self->get_tokens}{preamble}$preambleCounter${$self->get_tokens}{endOfToken}";
+    ${$self}{id} = "$tokens{preamble}$preambleCounter$tokens{endOfToken}";
     return;
 }
 

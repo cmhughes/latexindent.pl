@@ -1,6 +1,7 @@
 package LatexIndent::FileExtension;
 use strict;
 use warnings;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 our @EXPORT_OK = qw/file_extension_check/;
@@ -10,9 +11,6 @@ sub file_extension_check{
 
     # grab the filename
     my $fileName = ${$self}{fileName};
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # grab the file extension preferences
     my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};

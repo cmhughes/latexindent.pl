@@ -3,6 +3,7 @@
 package LatexIndent::AlignmentAtAmpersand;
 use strict;
 use warnings;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/align_at_ampersand/;
@@ -20,9 +21,6 @@ sub align_at_ampersand{
 
     # create an array of zeros
     my @columnSizes = (0) x ($maximumNumberOfAmpersands+1); 
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # array for the new body
     my @formattedBody;

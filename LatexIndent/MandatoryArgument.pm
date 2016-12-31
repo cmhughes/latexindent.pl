@@ -4,6 +4,8 @@
 package LatexIndent::MandatoryArgument;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
@@ -13,9 +15,6 @@ sub find_mandatory_arguments{
     my $self = shift;
 
     my $mandArgRegExp = $self->get_mand_arg_reg_exp;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # pick out the mandatory arguments
     while(${$self}{body} =~ m/$mandArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
@@ -60,7 +59,7 @@ sub create_unique_id{
     my $self = shift;
 
     $mandatoryArgumentCounter++;
-    ${$self}{id} = "${$self->get_tokens}{mandatoryArgument}$mandatoryArgumentCounter";
+    ${$self}{id} = "$tokens{mandatoryArgument}$mandatoryArgumentCounter";
     return;
 }
 

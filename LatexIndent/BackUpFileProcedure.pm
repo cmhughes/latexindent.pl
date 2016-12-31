@@ -1,6 +1,7 @@
 package LatexIndent::BackUpFileProcedure;
 use strict;
 use warnings;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use File::Basename;             # to get the filename and directory path
 use File::Copy;                 # to copy the original file to backup (if overwrite option set)
 use Exporter qw/import/;
@@ -17,9 +18,6 @@ sub create_back_up_file{
     $self->logger("Backup procedure (-w flag active):",'heading');
 
     my $fileName = ${$self}{fileName};
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # grab the file extension preferences
     my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};

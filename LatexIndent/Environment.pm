@@ -4,6 +4,8 @@
 package LatexIndent::Environment;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -38,9 +40,6 @@ sub find_environments{
                 )                             # captured into $6
                 (\R)?                         # possibly followed by a line break 
                 /sx;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     while( ${$self}{body} =~ m/$environmentRegExp\h*($trailingCommentRegExp)?/){
       # log file output
@@ -94,7 +93,7 @@ sub create_unique_id{
     my $self = shift;
 
     $environmentCounter++;
-    ${$self}{id} = "${$self->get_tokens}{environment}$environmentCounter";
+    ${$self}{id} = "$tokens{environment}$environmentCounter";
     return;
 }
 

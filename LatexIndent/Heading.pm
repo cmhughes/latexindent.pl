@@ -4,6 +4,9 @@
 package LatexIndent::Heading;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -14,9 +17,6 @@ our $allHeadingsRegexp = q();
 
 sub construct_headings_levels{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # grab the heading levels
     my %headingsLevels = %{$masterSettings{indentAfterHeadings}};
@@ -82,17 +82,8 @@ sub find_heading{
 
     my $self = shift;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
-
     # otherwise loop through the headings regexp
     $self->logger("Searching for special begin/end (see specialBeginEnd)");
-
-    # get the blank line token
-    my $blankLineToken = $self->get_blank_line_token;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # loop through each headings match; note that we need to 
     # do it in *reverse* so as to ensure that the lower level headings get matched first of all
@@ -153,7 +144,7 @@ sub create_unique_id{
 
     $headingCounter++;
 
-    ${$self}{id} = "${$self->get_tokens}{heading}$headingCounter";
+    ${$self}{id} = "$tokens{heading}$headingCounter";
     return;
 }
 

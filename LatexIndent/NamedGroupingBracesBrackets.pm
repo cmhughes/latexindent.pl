@@ -4,6 +4,8 @@
 package LatexIndent::NamedGroupingBracesBrackets;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/get_grouping_braces_brackets_regexp/;
@@ -14,12 +16,6 @@ sub get_grouping_braces_brackets_regexp{
 
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
-    # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
 
     # store the regular expresssion for matching and replacing 
     my $grouping_braces_RegExp = qr/
@@ -42,7 +38,7 @@ sub create_unique_id{
     my $self = shift;
 
     $groupingBracesCounter++;
-    ${$self}{id} = "${$self->get_tokens}{groupingBraces}$groupingBracesCounter";
+    ${$self}{id} = "$tokens{groupingBraces}$groupingBracesCounter";
     return;
 }
 

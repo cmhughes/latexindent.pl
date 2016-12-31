@@ -1,15 +1,13 @@
 package LatexIndent::HorizontalWhiteSpace;
 use strict;
 use warnings;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
 
 sub remove_trailing_whitespace{
     my $self = shift;
     my %input = @_;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){

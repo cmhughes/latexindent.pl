@@ -3,6 +3,7 @@
 package LatexIndent::Indent;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
@@ -196,7 +197,7 @@ sub final_indentation_check{
     while(${$self}{body} =~ m/^((\h*|\t*)((\h+)(\t+))+)(.*)/mg){
         # replace offending indentation with a token
         $indentationCounter++;
-        my $indentationToken = "${$self->get_tokens}{indentation}$indentationCounter${$self->get_tokens}{endOfToken}";
+        my $indentationToken = "$tokens{indentation}$indentationCounter$tokens{endOfToken}";
         my $lineDetails = $6;
         ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
 
@@ -308,7 +309,7 @@ sub indent_children_recursively{
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
                     } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
                         # important to check we don't move the begin statement next to a blank-line-token
-                        my $blankLineToken = $self->get_blank_line_token;
+                        my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
                             $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
                             ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;

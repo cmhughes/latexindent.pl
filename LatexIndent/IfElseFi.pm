@@ -4,6 +4,8 @@
 package LatexIndent::IfElseFi;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -82,9 +84,6 @@ sub find_ifelsefi{
                     (\R)?                       # linebreaks after \fi
     /sx;
 
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
     while( ${$self}{body} =~ m/$ifElseFiRegExp\h*($trailingCommentRegExp)?/){
       # log file output
       $self->logger("IfElseFi found: $2",'heading');
@@ -134,7 +133,7 @@ sub create_unique_id{
 
     $ifElseFiCounter++;
 
-    ${$self}{id} = "${$self->get_tokens}{ifelsefi}$ifElseFiCounter";
+    ${$self}{id} = "$tokens{ifelsefi}$ifElseFiCounter";
     return;
 }
 

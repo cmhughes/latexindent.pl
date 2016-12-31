@@ -4,6 +4,9 @@
 package LatexIndent::Special;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -14,9 +17,6 @@ our $specialAllMatchesRegExp = q();
 
 sub construct_special_begin{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
@@ -68,18 +68,9 @@ sub find_special{
     # no point carrying on if the list of specials is empty
     return if($specialBegins eq "");
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
-
     # otherwise loop through the special begin/end
     $self->logger("Searching for special begin/end (see specialBeginEnd)");
     $self->logger(Dumper(\%{$masterSettings{specialBeginEnd}}));
-
-    # get the blank line token
-    my $blankLineToken = $self->get_blank_line_token;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # keep looping as long as there is a special match of some kind
     while(${$self}{body} =~ m/$specialAllMatchesRegExp/sx){
@@ -160,7 +151,7 @@ sub create_unique_id{
 
     $specialCounter++;
 
-    ${$self}{id} = "${$self->get_tokens}{special}$specialCounter";
+    ${$self}{id} = "$tokens{special}$specialCounter";
     return;
 }
 

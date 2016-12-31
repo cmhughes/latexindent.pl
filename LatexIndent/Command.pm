@@ -4,6 +4,7 @@
 package LatexIndent::Command;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -120,7 +121,7 @@ sub create_unique_id{
     my $self = shift;
 
     $commandCounter++;
-    ${$self}{id} = "${$self->get_tokens}{command}$commandCounter";
+    ${$self}{id} = "$tokens{command}$commandCounter";
     return;
 }
 

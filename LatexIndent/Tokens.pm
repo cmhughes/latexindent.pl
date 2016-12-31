@@ -2,7 +2,7 @@ package LatexIndent::Tokens;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/get_tokens token_check/;
+our @EXPORT_OK = qw/token_check %tokens/;
 our %tokens = (
                 environment=>"LATEX-INDENT-ENVIRONMENT",
                 ifelsefi=>"!-!LATEX-INDENT-IFELSEFI", 

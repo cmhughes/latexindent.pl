@@ -1,26 +1,22 @@
 package LatexIndent::BlankLines;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
+our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 
 sub protect_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
-    
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
         $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
         return
     }
 
-    # get the blank-line-token
-    my $blankLineToken = $self->get_blank_line_token;
-
     $self->logger("Protecting blank lines (see preserveBlankLines)",'heading.trace');
-    ${$self}{body} =~ s/^(\h*)?\R/$blankLineToken\n/mg;
+    ${$self}{body} =~ s/^(\h*)?\R/$tokens{blanklines}\n/mg;
     return;
 }
 
@@ -28,8 +24,6 @@ sub condense_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
     return unless ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
@@ -51,7 +45,7 @@ sub condense_blank_lines{
     my $condenseMultipleBlankLinesInto = ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
 
     # grab the blank-line-token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # condense!
     $self->logger("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)",'heading.trace');
@@ -70,12 +64,10 @@ sub unprotect_blank_lines{
     my $self = shift;
     return unless $self->is_m_switch_active;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/$blankLineToken/m){
@@ -94,11 +86,6 @@ sub unprotect_blank_lines{
     }
     $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading.trace');
     $self->logger("body now looks like ${$self}{body}",'ttrace') if($self->is_tt_switch_active);
-}
-
-sub get_blank_line_token{
-    my $self = shift;
-    return ${$self->get_tokens}{blanklines};
 }
 
 1;

@@ -4,6 +4,8 @@
 package LatexIndent::UnNamedGroupingBracesBrackets;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/get_unnamed_grouping_braces_brackets_regexp/;
@@ -15,11 +17,8 @@ sub get_unnamed_grouping_braces_brackets_regexp{
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
-
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # for example #1 #2, etc
     my $numberedArgRegExp = $self->get_numbered_arg_regexp;
@@ -54,7 +53,7 @@ sub create_unique_id{
     my $self = shift;
 
     $unNamedGroupingBracesCounter++;
-    ${$self}{id} = "${$self->get_tokens}{unNamedgroupingBraces}$unNamedGroupingBracesCounter";
+    ${$self}{id} = "$tokens{unNamedgroupingBraces}$unNamedGroupingBracesCounter";
     return;
 }
 
@@ -86,7 +85,7 @@ sub check_for_blank_lines_at_beginning{
     my $self = shift;
 
     # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
+    my $blankLineToken = $tokens{blanklines};
 
     # if the body begins with 2 or more blank line tokens
     if(${$self}{body} =~ m/^((?:$blankLineToken\R){2,})/s){
@@ -106,13 +105,10 @@ sub check_for_blank_lines_at_beginning{
 sub put_blank_lines_back_in_at_beginning{
     my $self = shift;
 
-    # blank line token
-    my $blankLineToken = $self->get_blank_line_token;
-
     # some bodies have blank lines at the beginning
     if(${$self}{blankLinesAtBeginning}){
         for(my $i=0; $i<${$self}{blankLinesAtBeginning}; $i++){
-            ${$self}{body} = $blankLineToken.${$self}{body};
+            ${$self}{body} = $tokens{blanklines}.${$self}{body};
         }
     }
     return

@@ -2,6 +2,8 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter qw/import/;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 our @allObjects;
 
@@ -15,8 +17,7 @@ sub pre_print_entire_body{
 
     # search for undisclosed linebreaks, no need to do this recursively as @allObjects is flat (one-dimensional)
     my $pre_print_body = ${$self}{body};
-    my $trailingCommentsRegExp = $self->get_trailing_comment_regexp;
-    $pre_print_body =~ s/$trailingCommentsRegExp//mg;
+    $pre_print_body =~ s/$trailingCommentRegExp//mg;
 
     # replace all of the IDs with their associated (no-comments) begin, body, end statements
     while(scalar @allObjects>0){
@@ -48,7 +49,6 @@ sub pre_print{
 
     return unless $self->is_m_switch_active;
 
-    my $trailingCommentsRegExp = $self->get_trailing_comment_regexp;
 
     # send the children through this routine recursively
     foreach my $child (@{${$self}{children}}){
@@ -60,9 +60,9 @@ sub pre_print{
         ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
 
         # remove all trailing comments from the copied begin, body and end statements
-        ${${$child}{noComments}}{begin} =~ s/$trailingCommentsRegExp//mg;
-        ${${$child}{noComments}}{body} =~ s/$trailingCommentsRegExp//mg;
-        ${${$child}{noComments}}{end} =~ s/$trailingCommentsRegExp//mg;
+        ${${$child}{noComments}}{begin} =~ s/$trailingCommentRegExp//mg;
+        ${${$child}{noComments}}{body} =~ s/$trailingCommentRegExp//mg;
+        ${${$child}{noComments}}{end} =~ s/$trailingCommentRegExp//mg;
         push(@allObjects,$child);
     }
 
@@ -70,7 +70,6 @@ sub pre_print{
 
 sub modify_line_breaks_body_and_end{
     my $self = shift;
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
@@ -134,8 +133,7 @@ sub modify_line_breaks_body_and_end{
 
               # check to see that body does *not* finish with blank-line-token, 
               # if so, then don't remove that final line break
-              my $blankLineToken = $self->get_blank_line_token;
-              if(${$self}{body} !~ m/$blankLineToken$/s){
+              if(${$self}{body} !~ m/$tokens{blanklines}$/s){
                 $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
                 ${$self}{body} =~ s/\R*$//sx;
                 ${$self}{linebreaksAtEnd}{body} = 0;

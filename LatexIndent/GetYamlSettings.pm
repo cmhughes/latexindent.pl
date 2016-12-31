@@ -7,7 +7,7 @@ use warnings;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings = YAML::Tiny->new;
@@ -172,10 +172,6 @@ sub readSettings{
   }
 
   return;
-}
-
-sub get_master_settings{
-    return \%masterSettings;
 }
 
 sub get_indentation_settings_for_this_object{

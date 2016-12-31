@@ -4,6 +4,8 @@
 package LatexIndent::FileContents;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
@@ -12,9 +14,6 @@ our $fileContentsCounter;
 
 sub find_file_contents_environments_and_preamble{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # store the file contents blocks in an array which, depending on the value 
     # of indentPreamble, will be put into the verbatim hash, or otherwise 
@@ -187,7 +186,7 @@ sub create_unique_id{
     my $self = shift;
 
     $fileContentsCounter++;
-    ${$self}{id} = "${$self->get_tokens}{filecontents}$fileContentsCounter${$self->get_tokens}{endOfToken}";
+    ${$self}{id} = "$tokens{filecontents}$fileContentsCounter$tokens{endOfToken}";
     return;
 }
 

@@ -5,15 +5,15 @@ use Data::Dumper;
 
 # gain access to subroutines in the following modules
 use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active is_t_switch_active is_tt_switch_active/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_master_settings get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
-use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines get_blank_line_token/;
+use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
-use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
+use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
-use LatexIndent::Tokens qw/get_tokens token_check/;
+use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree find_hidden_children operate_on_hidden_children/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
@@ -231,7 +231,7 @@ sub tasks_common_to_each_object{
     $self->create_unique_id;
 
     # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
-    ${$self}{id} .= ${$self->get_tokens}{endOfToken};
+    ${$self}{id} .= $tokens{endOfToken};
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     $self->get_replacement_text;

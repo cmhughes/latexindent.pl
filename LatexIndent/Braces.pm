@@ -4,6 +4,7 @@
 package LatexIndent::Braces;
 use strict;
 use warnings;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -27,9 +28,6 @@ sub find_commands_or_key_equals_values_braces{
 
     # {something} or [something] regexp (unnamed grouping braces)
     my $un_named_grouping_braces_RegExp = $self->get_unnamed_grouping_braces_brackets_regexp; 
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     # command regexp with trailing comment
     my $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)/;

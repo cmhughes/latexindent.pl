@@ -1,36 +1,36 @@
 package LatexIndent::TrailingComments;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in get_trailing_comment_token get_trailing_comment_regexp add_comment_symbol/;
+our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol/;
 our @trailingComments;
 our $commentCounter = 0;
+our $trailingCommentRegExp = qr/(?<!\\)%$tokens{trailingComment}\d+$tokens{endOfToken}/;
 
 sub add_comment_symbol{
     # add a trailing comment token after, for example, a square brace [
     # or a curly brace { when, for example, BeginStartsOnOwnLine == 2
     my $self = shift;
-    my $trailingCommentToken = $self->get_trailing_comment_token;
 
     # increment the comment counter
     $commentCounter++;
 
     # store the comment -- without this, it won't get processed correctly at the end
-    push(@trailingComments,{id=>$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken},value=>q()});
+    push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>q()});
 
     # log file info
     $self->logger("Updating trailing comment array",'heading');
     $self->logger(Dumper(\@trailingComments),'ttrace') if($self->is_tt_switch_active);
 
     # the returned value
-    return $trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
+    return $tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
 }
 
 sub remove_trailing_comments{
     my $self = shift;
     $self->logger("Storing trailing comments",'heading');
-    my $trailingCommentToken = $self->get_trailing_comment_token;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -44,10 +44,10 @@ sub remove_trailing_comments{
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
-                            push(@trailingComments,{id=>$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken},value=>$1});
+                            push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>$1});
 
                             # replace comment with dummy text
-                            "%".$trailingCommentToken.$commentCounter.${$self->get_tokens}{endOfToken};
+                            "%".$tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
                        /xsmeg;
     if(@trailingComments){
         $self->logger("Trailing comments stored in:",'trace') if($self->is_t_switch_active);
@@ -89,16 +89,4 @@ sub put_trailing_comments_back_in{
     return;
 }
 
-sub get_trailing_comment_token{
-    my $self = shift;
-    return ${$self->get_tokens}{trailingComment};
-}
-
-sub get_trailing_comment_regexp{
-    my $self = shift;
-    
-    my $trailingCommentToken = $self->get_trailing_comment_token;
-
-    return qr/(?<!\\)%$trailingCommentToken\d+${$self->get_tokens}{endOfToken}/;
-}
 1;

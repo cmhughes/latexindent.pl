@@ -4,6 +4,9 @@
 package LatexIndent::Item;
 use strict;
 use warnings;
+use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -13,9 +16,6 @@ our $listOfItems = q();
 
 sub construct_list_of_items{
     my $self = shift;
-
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
 
     # put together a list of the items
     while( my ($item,$lookForThisItem)= each %{$masterSettings{itemNames}}){
@@ -34,20 +34,11 @@ sub find_items{
 
     my $self = shift;
 
-    # grab the settings
-    my %masterSettings = %{$self->get_master_settings};
-
     return unless ${$masterSettings{indentAfterItems}}{${$self}{name}};
 
     # otherwise loop through the item names
     $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)");
     $self->logger(Dumper(\%{$masterSettings{itemNames}}));
-
-    # get the blank line token
-    my $blankLineToken = $self->get_blank_line_token;
-
-    # trailing comment regexp
-    my $trailingCommentRegExp = $self->get_trailing_comment_regexp;
 
     my $itemRegExp = qr/
                           (
@@ -104,7 +95,7 @@ sub create_unique_id{
 
     $itemCounter++;
 
-    ${$self}{id} = "${$self->get_tokens}{item}$itemCounter";
+    ${$self}{id} = "$tokens{item}$itemCounter";
     return;
 }
 

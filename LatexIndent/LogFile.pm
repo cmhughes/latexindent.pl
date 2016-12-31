@@ -1,6 +1,7 @@
 package LatexIndent::LogFile;
 use strict;
 use warnings;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
@@ -142,9 +143,6 @@ sub output_logfile{
   my $logfileName = $switches{logFileName}||"indent.log";
 
   open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
-
-  # grab the settings
-  my %masterSettings = %{$self->get_master_settings};
 
   # put the final line in the logfile
   $self->logger("${$masterSettings{logFilePreferences}}{endLogFileWith}",'heading');
