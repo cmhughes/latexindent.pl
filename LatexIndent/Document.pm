@@ -4,7 +4,8 @@ use warnings;
 use Data::Dumper;
 
 # gain access to subroutines in the following modules
-use LatexIndent::LogFile qw/logger output_logfile processSwitches is_m_switch_active is_t_switch_active is_tt_switch_active/;
+use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/logger output_logfile processSwitches/;
 use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
@@ -81,19 +82,19 @@ sub output_indented_text{
     my $self = shift;
 
     # output to screen, unless silent mode
-    print ${$self}{body} unless ${%{$self}{switches}}{silentMode};
+    print ${$self}{body} unless $switches{silentMode};
 
     $self->logger("Output routine",'heading');
 
     # if -overwrite is active then output to original fileName
-    if(${%{$self}{switches}}{overwrite}) {
+    if($switches{overwrite}) {
         $self->logger("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
-    } elsif(${%{$self}{switches}}{outputToFile}) {
-        $self->logger("Outputting to file ${%{$self}{switches}}{outputToFile}");
-        open(OUTPUTFILE,">",${%{$self}{switches}}{outputToFile});
+    } elsif($switches{outputToFile}) {
+        $self->logger("Outputting to file $switches{outputToFile}");
+        open(OUTPUTFILE,">",$switches{outputToFile});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } else {
@@ -114,7 +115,7 @@ sub process_body_of_text{
     $self->find_surrounding_indentation_for_children;
 
     # the modify line switch can adjust line breaks, so we need another sweep
-    my $phase3text = $self->is_m_switch_active?"pre-print process for undisclosed linebreaks":"-m not active";
+    my $phase3text = $is_m_switch_active?"pre-print process for undisclosed linebreaks":"-m not active";
     $self->logger("Phase 3: $phase3text",'heading');
     $self->pre_print_entire_body;
 
@@ -161,7 +162,7 @@ sub find_objects_recursively{
     }
 
     # logfile information
-    $self->logger(Dumper(\%{$self}),'ttrace') if($self->is_tt_switch_active);
+    $self->logger(Dumper(\%{$self}),'ttrace') if($is_tt_switch_active);
     $self->logger("Operating on: ${$self}{name}",'heading');
     $self->logger("Number of children:",'heading');
     $self->logger(scalar (@{${$self}{children}}));
@@ -207,12 +208,12 @@ sub tasks_common_to_each_object{
 
     # update/create the ancestor information
     if($parent{ancestors}){
-      $self->logger("Ancestors *have* been found for ${$self}{name}",'trace') if($self->is_t_switch_active);
+      $self->logger("Ancestors *have* been found for ${$self}{name}",'trace') if($is_t_switch_active);
       push(@{${$self}{ancestors}},@{$parent{ancestors}});
     } else {
-      $self->logger("No ancestors found for ${$self}{name}",'trace') if($self->is_t_switch_active);
+      $self->logger("No ancestors found for ${$self}{name}",'trace') if($is_t_switch_active);
       if(defined $parent{id} and $parent{id} ne ''){
-        $self->logger("Creating ancestors with $parent{id} as the first one",'trace') if($self->is_t_switch_active);
+        $self->logger("Creating ancestors with $parent{id} as the first one",'trace') if($is_t_switch_active);
         push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation},type=>"natural",name=>${$self}{name}});
       }
     }
@@ -259,7 +260,7 @@ sub adjust_replacement_text_line_breaks_at_end{
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
-    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace') if($self->is_t_switch_active);
+    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace') if($is_t_switch_active);
     ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
 }
@@ -291,7 +292,7 @@ sub wrap_up_tasks{
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent;
 
-    $self->logger(Dumper(\%{$child}),'trace') if($self->is_t_switch_active);
+    $self->logger(Dumper(\%{$child}),'trace') if($is_t_switch_active);
     $self->logger("replaced with ID: ${$child}{id}");
 
 }

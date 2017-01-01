@@ -4,13 +4,14 @@ use warnings;
 use Exporter qw/import/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 our @allObjects;
 
 sub pre_print_entire_body{
     my $self = shift;
 
-    return unless $self->is_m_switch_active;
+    return unless $is_m_switch_active;
 
     # pre print the entire document, strip comments
     $self->pre_print;
@@ -26,8 +27,8 @@ sub pre_print_entire_body{
                 $pre_print_body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
                 # check for an undisclosed line break
                 if(${${$child}{noComments}}{body} =~ m/\R$/m and !${$child}{linebreaksAtEnd}{body}){
-                    $self->logger("Undisclosed line break at the end of body of ${$child}{name}: '${$child}{end}'",'trace') if($self->is_t_switch_active);
-                    $self->logger("Adding a linebreak at the end of body for ${$child}{id}",'trace') if($self->is_t_switch_active);
+                    $self->logger("Undisclosed line break at the end of body of ${$child}{name}: '${$child}{end}'",'trace') if($is_t_switch_active);
+                    $self->logger("Adding a linebreak at the end of body for ${$child}{id}",'trace') if($is_t_switch_active);
                     ${$child}{body} .= "\n";
                     ${$child}{linebreaksAtEnd}{body}=1;
                 }
@@ -40,14 +41,14 @@ sub pre_print_entire_body{
 
     # output the body to the log file
     $self->logger("Pre-print body (after sweep), no comments (just to check linebreaks)","heading.ttrace");
-    $self->logger($pre_print_body,'ttrace') if($self->is_tt_switch_active);
+    $self->logger($pre_print_body,'ttrace') if($is_tt_switch_active);
 
 }
 
 sub pre_print{
     my $self = shift;
 
-    return unless $self->is_m_switch_active;
+    return unless $is_m_switch_active;
 
 
     # send the children through this routine recursively
@@ -177,16 +178,16 @@ sub adjust_line_breaks_end_parent{
 
     my $self = shift;
 
-    return unless $self->is_m_switch_active;
+    return unless $is_m_switch_active;
 
     # most recent child object
     my $child = @{${$self}{children}}[-1];
 
     # adjust parent linebreaks information
     if(${$child}{linebreaksAtEnd}{end} and ${$self}{body} =~ m/${$child}{replacementText}\h*\R*$/s and !${$self}{linebreaksAtEnd}{body}){
-        $self->logger("ID: ${$child}{id}",'trace') if($self->is_t_switch_active);
-        $self->logger("${$child}{begin}...${$child}{end} is found at the END of body of parent, ${$self}{name}, avoiding a double line break:",'trace') if($self->is_t_switch_active);
-        $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1",'trace') if($self->is_t_switch_active);
+        $self->logger("ID: ${$child}{id}",'trace') if($is_t_switch_active);
+        $self->logger("${$child}{begin}...${$child}{end} is found at the END of body of parent, ${$self}{name}, avoiding a double line break:",'trace') if($is_t_switch_active);
+        $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1",'trace') if($is_t_switch_active);
         ${$self}{linebreaksAtEnd}{body}=1;
       }
 

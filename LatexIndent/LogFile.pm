@@ -2,32 +2,17 @@ package LatexIndent::LogFile;
 use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/%switches/;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-our @EXPORT_OK = qw/logger output_logfile processSwitches is_m_switch_active is_t_switch_active is_tt_switch_active/;
+our @EXPORT_OK = qw/logger output_logfile processSwitches/;
 our @logFileNotes;
-our %switches;
 
 # log file methods
 # log file methods
 # log file methods
 #   reference: http://stackoverflow.com/questions/6736998/help-calling-a-sub-routine-from-a-perl-module-and-printing-to-logfile
-
-sub is_m_switch_active{
-    my $self = shift;
-    return $switches{modifyLineBreaks};
-}
-
-sub is_t_switch_active{
-    my $self = shift;
-    return $switches{trace};
-}
-
-sub is_tt_switch_active{
-    my $self = shift;
-    return $switches{ttrace};
-}
 
 sub logger{
     shift;
@@ -47,9 +32,6 @@ sub processSwitches{
     # time the script is used
     my $time = localtime();
     $self->logger("$time");
-
-    # copy document switches into hash local to this module
-    %switches = %{%{$self}{switches}};
 
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
     print <<ENDQUOTE
@@ -110,7 +92,6 @@ ENDQUOTE
         $self->logger("Options check",'heading');
         $self->logger("You have called latexindent.pl with both -o and -w");
         $self->logger("-o (output to file) will take priority, and -w (over write) will be ignored");
-        ${%{$self}{switches}}{overwrite}=0;
         $switches{overwrite}=0;
     }
 

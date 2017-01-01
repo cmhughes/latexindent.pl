@@ -2,6 +2,7 @@ package LatexIndent::Tokens;
 use strict;
 use warnings;
 use Exporter qw/import/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 our @EXPORT_OK = qw/token_check %tokens/;
 our %tokens = (
                 environment=>"LATEX-INDENT-ENVIRONMENT",
@@ -32,7 +33,7 @@ sub token_check{
     # we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body
     foreach( keys %tokens){
         while(${$self}{body} =~ m/$tokens{$_}/si){
-            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN",'trace') if($self->is_t_switch_active);
+            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN",'trace') if($is_t_switch_active);
             $tokens{$_} .= "-LIN";
         }
     }

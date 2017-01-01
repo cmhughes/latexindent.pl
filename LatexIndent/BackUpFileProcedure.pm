@@ -2,6 +2,7 @@ package LatexIndent::BackUpFileProcedure;
 use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/%switches/;
 use File::Basename;             # to get the filename and directory path
 use File::Copy;                 # to copy the original file to backup (if overwrite option set)
 use Exporter qw/import/;
@@ -12,7 +13,7 @@ our @EXPORT_OK = qw/create_back_up_file/;
 sub create_back_up_file{
     my $self = shift;
 
-    return unless(${%{$self}{switches}}{overwrite});
+    return unless($switches{overwrite});
 
     # if we want to over write the current file create a backup first
     $self->logger("Backup procedure (-w flag active):",'heading');

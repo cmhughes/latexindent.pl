@@ -2,6 +2,7 @@ package LatexIndent::TrailingComments;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol/;
@@ -22,7 +23,7 @@ sub add_comment_symbol{
 
     # log file info
     $self->logger("Updating trailing comment array",'heading');
-    $self->logger(Dumper(\@trailingComments),'ttrace') if($self->is_tt_switch_active);
+    $self->logger(Dumper(\@trailingComments),'ttrace') if($is_tt_switch_active);
 
     # the returned value
     return $tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
@@ -50,10 +51,10 @@ sub remove_trailing_comments{
                             "%".$tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
                        /xsmeg;
     if(@trailingComments){
-        $self->logger("Trailing comments stored in:",'trace') if($self->is_t_switch_active);
-        $self->logger(Dumper(\@trailingComments),'trace') if($self->is_t_switch_active);
+        $self->logger("Trailing comments stored in:",'trace') if($is_t_switch_active);
+        $self->logger(Dumper(\@trailingComments),'trace') if($is_t_switch_active);
     } else {
-        $self->logger("No trailing comments found",'trace') if($self->is_t_switch_active);
+        $self->logger("No trailing comments found",'trace') if($is_t_switch_active);
     }
     return;
 }
@@ -84,7 +85,7 @@ sub put_trailing_comments_back_in{
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }
-      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace') if($self->is_t_switch_active);
+      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace') if($is_t_switch_active);
     }
     return;
 }

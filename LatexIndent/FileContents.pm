@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
@@ -22,7 +23,7 @@ sub find_file_contents_environments_and_preamble{
 
     # fileContents environments
     $self->logger('looking for FILE CONTENTS environments (see fileContentsEnvironments)','heading');
-    $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}}),'trace') if($self->is_t_switch_active);
+    $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}}),'trace') if($is_t_switch_active);
     while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
         if($yesno){
             $self->logger("looking for $fileContentsEnv:$yesno environments");

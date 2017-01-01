@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -62,7 +63,7 @@ sub find_environments{
 
       # if the environment is empty, we may need to update linebreaksAtEnd{body}
       if(${$env}{body} =~ m/^\h*$/s and ${${$env}{linebreaksAtEnd}}{begin}){
-            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1",'trace') if($self->is_t_switch_active);
+            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1",'trace') if($is_t_switch_active);
             ${${$env}{linebreaksAtEnd}}{body} = 1;
       }
 

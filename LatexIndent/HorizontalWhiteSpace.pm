@@ -2,6 +2,7 @@ package LatexIndent::HorizontalWhiteSpace;
 use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
 
@@ -25,8 +26,8 @@ sub remove_trailing_whitespace{
                        $    # up to the end of a line
                        //xsmg;
 
-    $self->logger("Processed body, *$input{when}* indentation (${$self}{name}):",'trace') if($self->is_t_switch_active);
-    $self->logger(${$self}{body},'trace') if($self->is_t_switch_active);
+    $self->logger("Processed body, *$input{when}* indentation (${$self}{name}):",'trace') if($is_t_switch_active);
+    $self->logger(${$self}{body},'trace') if($is_t_switch_active);
 
 }
 

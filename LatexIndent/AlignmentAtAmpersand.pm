@@ -4,6 +4,7 @@ package LatexIndent::AlignmentAtAmpersand;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/align_at_ampersand/;
@@ -125,7 +126,7 @@ sub align_at_ampersand{
     }
 
     # to the log file
-    if($self->is_tt_switch_active){    
+    if($is_tt_switch_active){    
         $self->logger(${$_}{row},'ttrace') for @formattedBody;
     }
 

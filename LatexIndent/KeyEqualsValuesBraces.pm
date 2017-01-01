@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_m_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
@@ -65,7 +66,7 @@ sub check_linebreaks_before_equals{
     my $self = shift;
 
     # check if -m switch is active
-    return unless $self->is_m_switch_active;
+    return unless $is_m_switch_active;
     
     # linebreaks *infront* of = symbol
     if(${$self}{begin} =~ /\R\h*=/s){

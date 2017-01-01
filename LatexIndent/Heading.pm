@@ -5,6 +5,7 @@ package LatexIndent::Heading;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Switches qw/$is_m_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
@@ -188,7 +189,7 @@ sub tasks_particular_to_each_object{
     #     CommandStartsOnOwnLine: 1
     #
     # then we need to transfer this information to the heading object
-    if($self->is_m_switch_active){
+    if($is_m_switch_active){
         $self->logger("Searching for linebreak preferences immediately infront of ${$self}{parent}",'heading');
         foreach(@{${$self}{children}}){
             if(${$_}{name} eq ${$self}{parent}){

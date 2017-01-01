@@ -4,6 +4,7 @@
 package LatexIndent::GetYamlSettings;
 use strict;
 use warnings;
+use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use Exporter qw/import/;
@@ -40,7 +41,7 @@ sub readSettings{
   $indentconfig = "$homeDir/.indentconfig.yaml" if(! -e $indentconfig);
 
   # messages for indentconfig.yaml and/or .indentconfig.yaml
-  if ( -e $indentconfig and !${%{$self}{switches}}{onlyDefault}) {
+  if ( -e $indentconfig and !$switches{onlyDefault}) {
         $self->logger("Reading path information from $indentconfig");
         # if both indentconfig.yaml and .indentconfig.yaml exist
         if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
@@ -60,10 +61,10 @@ sub readSettings{
         # update the absolute paths
         @absPaths = @{$userSettings->[0]->{paths}};
   } else {
-     if(${%{$self}{switches}}{onlyDefault}) {
+     if($switches{onlyDefault}) {
         $self->logger("Only default settings requested, not reading USER settings from $indentconfig");
-        $self->logger("Ignoring ${%{$self}{switches}}{readLocalSettings} (you used the -d switch)") if(${%{$self}{switches}}{readLocalSettings});
-        ${%{$self}{switches}}{readLocalSettings}=0;
+        $self->logger("Ignoring $switches{readLocalSettings} (you used the -d switch)") if($switches{readLocalSettings});
+        $switches{readLocalSettings}=0;
      } else {
        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
        $self->logger("Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)");
@@ -80,11 +81,11 @@ sub readSettings{
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
   my @localSettings;
-  if(${%{$self}{switches}}{readLocalSettings} =~ m/,/){
+  if($switches{readLocalSettings} =~ m/,/){
         $self->logger("Multiple localSettings found, separated by commas:",'heading');
-        @localSettings = split(/,/,${%{$self}{switches}}{readLocalSettings});
+        @localSettings = split(/,/,$switches{readLocalSettings});
   } else {
-    push(@localSettings,${%{$self}{switches}}{readLocalSettings}) if(${%{$self}{switches}}{readLocalSettings});
+    push(@localSettings,$switches{readLocalSettings}) if($switches{readLocalSettings});
   }
 
   # add local settings to the paths, if appropriate
@@ -182,10 +183,10 @@ sub get_indentation_settings_for_this_object{
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
-        $self->logger("Using stored settings for $storageName",'trace') if($self->is_t_switch_active);
+        $self->logger("Using stored settings for $storageName",'trace') if($is_t_switch_active);
     } else {
         my $name = ${$self}{name};
-        $self->logger("Storing settings for $storageName",'trace') if($self->is_t_switch_active);
+        $self->logger("Storing settings for $storageName",'trace') if($is_t_switch_active);
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
@@ -273,7 +274,7 @@ sub modify_line_breaks_settings{
     my $self = shift;
 
     # return with undefined values unless the -m switch is active
-    return unless $self->is_m_switch_active;
+    return unless $is_m_switch_active;
 
     # details to the log file
     $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading.trace');
@@ -303,7 +304,7 @@ sub get_every_or_custom_value{
 
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
-        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}",'trace') if($self->is_t_switch_active);
+        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}",'trace') if($is_t_switch_active);
   }
 
   # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -318,12 +319,12 @@ sub get_every_or_custom_value{
 
   # check for the *custom* value
   if (defined $customValue){
-      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace') if($self->is_t_switch_active);
+      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo",'trace') if($is_t_switch_active);
       ${$self}{$toBeAssignedTo} = $customValue >=0 ? $customValue : undef;
    } else {
       # check for the *every* value
       if (defined $everyValue and $everyValue >= 0){
-          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace') if($self->is_t_switch_active);
+          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo",'trace') if($is_t_switch_active);
           ${$self}{$toBeAssignedTo} = $everyValue;
       }
    }

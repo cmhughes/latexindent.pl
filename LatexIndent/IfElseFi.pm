@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -146,25 +147,25 @@ sub check_for_else_statement{
                             \h*     # possible horizontal space
                             (\R*)   # possible line breaks after \else statement
                             /x){
-      $self->logger("found \\else statement, storing line break information:",'trace') if($self->is_t_switch_active);
+      $self->logger("found \\else statement, storing line break information:",'trace') if($is_t_switch_active);
 
       # linebreaks *before* \else statement
       ${$self}{linebreaksAtEnd}{ifbody} = $1?1:0;
-      $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($self->is_t_switch_active);
+      $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($is_t_switch_active);
 
       # linebreaks *after* \else statement
       ${$self}{linebreaksAtEnd}{else} = $2?1:0;
-      $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}",'trace') if($self->is_t_switch_active);
+      $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}",'trace') if($is_t_switch_active);
       ${$self}{elsePresent}=1;
 
       # check that \else isn't the first thing in body
       if(${$self}{body} =~ m/^\\else/s and ${$self}{linebreaksAtEnd}{begin}){
         ${$self}{linebreaksAtEnd}{ifbody} = 1;
-        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($self->is_t_switch_active);
+        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($is_t_switch_active);
       }
 
       # check if -m switch is active
-      return unless $self->is_m_switch_active;
+      return unless $is_m_switch_active;
 
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseStartsOnOwnLine}){
@@ -205,7 +206,7 @@ sub check_for_else_statement{
 
       return;
     } else {
-      $self->logger("\\else statement not found",'trace') if($self->is_t_switch_active);
+      $self->logger("\\else statement not found",'trace') if($is_t_switch_active);
     }
 }
 

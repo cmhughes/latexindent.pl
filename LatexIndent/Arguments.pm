@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -155,7 +156,7 @@ sub find_opt_mand_arguments{
         # delete the regexp, as there's no need for it
         delete ${${${$self}{children}}[-1]}{regexp};
 
-        $self->logger(Dumper(\%{$arguments}),'trace') if($self->is_t_switch_active);
+        $self->logger(Dumper(\%{$arguments}),'ttrace') if($is_tt_switch_active);
         $self->logger("replaced with ID: ${$arguments}{id}");
     } else {
         $self->logger("... no arguments found");

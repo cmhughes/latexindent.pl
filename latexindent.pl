@@ -51,6 +51,7 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
 }
 
 my $document = LatexIndent::Document->new(name=>"masterdocument",fileName=>$ARGV[0],switches=>\%switches);
+$document->storeSwitches;
 $document->processSwitches;
 $document->readSettings;
 $document->file_extension_check;
