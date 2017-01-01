@@ -10,9 +10,9 @@ loopmax=7
 # making strings of tabs and spaces gives different results; 
 # this first came to light when studying items1.tex -- the following test cases helped to 
 # resolve the issue
-latexindent.pl -s -t spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-tabs.yaml -o=spaces-and-tabs-tft.tex
-latexindent.pl -s -t spaces-and-tabs.tex -l=../environments/env-all-on.yaml,spaces-follow-tabs.yaml -o=spaces-and-tabs-sft.tex
-latexindent.pl -s -t spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-spaces -o=spaces-and-tabs-tfs.tex
+latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-tabs.yaml -o=spaces-and-tabs-tft.tex
+latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,spaces-follow-tabs.yaml -o=spaces-and-tabs-sft.tex
+latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-spaces -o=spaces-and-tabs-tfs.tex
 # first lot of items
 latexindent.pl -s -w items1.tex
 # nested itemize/enumerate environments -- these ones needed ancestors, the understanding/development of which took about a week!
@@ -39,24 +39,24 @@ latexindent.pl -s -l=../environments/env-all-on.yaml,myitem.yaml -w items1-myite
 latexindent.pl -s -l=../environments/env-all-on.yaml,part.yaml -w items1-part.tex
 # modify linebreaks starts here
 latexindent.pl -s -m items1.tex -o=items1-mod0.tex
-latexindent.pl -tt -s -m items1-blanklines.tex -o=items1-blanklines-mod0.tex 
+latexindent.pl -s -m items1-blanklines.tex -o=items1-blanklines-mod0.tex 
 latexindent.pl -s -m items2.tex -o=items2-mod0.tex
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
     [[ $silentMode == 0 ]] && set -x 
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1.tex -o=items1-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items2.tex -o=items2-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items3.tex -o=items3-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1.tex -o=items1-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items2.tex -o=items2-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items3.tex -o=items3-mod$i.tex
     # blank line tests
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1-blanklines.tex -o=items1-blanklines-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,unPreserveBlankLines.yaml items1-blanklines.tex -o=items1-blanklines-unPreserveBlankLines-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,BodyStartsOnOwnLine.yaml items1.tex -o=items1-BodyStartsOnOwnLine-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1-blanklines.tex -o=items1-blanklines-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,unPreserveBlankLines.yaml items1-blanklines.tex -o=items1-blanklines-unPreserveBlankLines-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,BodyStartsOnOwnLine.yaml items1.tex -o=items1-BodyStartsOnOwnLine-mod$i.tex
     # starts on one line, adds linebreaks accordingly
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items5.tex -o=items5-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items6.tex -o=items6-mod$i.tex
-    latexindent.pl -s -tt -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items5.tex -o=items5-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items6.tex -o=items6-mod$i.tex
+    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
     [[ $silentMode == 0 ]] && set +x 
 done
 [[ $silentMode == 0 ]] && set -x 
@@ -70,8 +70,8 @@ latexindent.pl -s items11.tex -w
 latexindent.pl -s items12.tex -o=items12-mod0.tex -l=../environments/env-all-on.yaml
 latexindent.pl -s items12.tex -m -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,env-mod-lines1.yaml -o=items12-mod1.tex
 # noAdditionalIndent
-latexindent.pl -s -tt items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml
+latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml
 # indentRules
-latexindent.pl -s -tt items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml
+latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

@@ -1,0 +1,2001 @@
+% arara: indent: {overwrite: true, trace: on}
+% A sample chapter file- it contains a lot of
+% environments, including tabulars, align, etc
+%
+% Don't try and compile this file using pdflatex etc, just
+% compare the *format* of it to the format of the
+% sampleAFTER.tex
+%
+% In particular, compare the tabular and align-type
+% environments before and after running the script
+
+\section{Polynomial functions}
+ \reformatstepslist{P} % the steps list should be P1, P2, \ldots
+ In your previous mathematics classes you have studied \emph{linear} and
+ \emph{quadratic} functions. The most general forms of these types of
+ functions can be represented (respectively) by  the functions $f$
+ and $g$ that have formulas
+ \begin{equation}\label{poly:eq:linquad}
+ 	f(x)=mx+b, \qquad g(x)=ax^2+bx+c
+ \end{equation}
+ We know that $m$ is the slope of $f$, and that $a$ is the \emph{leading coefficient}
+ of $g$. We also know that the \emph{signs} of $m$ and $a$ completely
+ determine the behavior of the functions $f$ and $g$. For example, if $m>0$
+ then $f$ is an \emph{increasing} function, and if $m<0$ then $f$ is
+ a \emph{decreasing} function.  Similarly, if $a>0$ then $g$ is
+ \emph{concave up} and if $a<0$ then $g$ is \emph{concave down}. Graphical
+ representations of these statements are given in \cref{poly:fig:linquad}.
+
+ \begin{figure}[!htb]
+ 	\setlength{\figurewidth}{.2\textwidth}
+ 	\begin{subfigure}{\figurewidth}
+ 		\begin{tikzpicture}
+ 			\begin{axis}[
+ 					framed,
+ 					xmin=-10,xmax=10,
+ 					ymin=-10,ymax=10,
+ 					width=\textwidth,
+ 					xtick={-11},
+ 					ytick={-11},
+ 				]
+ 				\addplot expression[domain=-10:8]{(x+2)};
+ 			\end{axis}
+ 		\end{tikzpicture}
+ 		\caption{$m>0$}
+ 	\end{subfigure}
+ 	\hfill
+ 	\begin{subfigure}{\figurewidth}
+ 		\begin{tikzpicture}
+ 			\begin{axis}[
+ 					framed,
+ 					xmin=-10,xmax=10,
+ 					ymin=-10,ymax=10,
+ 					width=\textwidth,
+ 					xtick={-11},
+ 					ytick={-11},
+ 				]
+ 				\addplot expression[domain=-10:8]{-(x+2)};
+ 			\end{axis}
+ 		\end{tikzpicture}
+ 		\caption{$m<0$}
+ 	\end{subfigure}
+ 	\hfill
+ 	\begin{subfigure}{\figurewidth}
+ 		\begin{tikzpicture}
+ 			\begin{axis}[
+ 					framed,
+ 					xmin=-10,xmax=10,
+ 					ymin=-10,ymax=10,
+ 					width=\textwidth,
+ 					xtick={-11},
+ 					ytick={-11},
+ 				]
+ 				\addplot expression[domain=-4:4]{(x^2-6)};
+ 			\end{axis}
+ 		\end{tikzpicture}
+ 		\caption{$a>0$}
+ 	\end{subfigure}
+ 	\hfill
+ 	\begin{subfigure}{\figurewidth}
+ 		\begin{tikzpicture}
+ 			\begin{axis}[
+ 					framed,
+ 					xmin=-10,xmax=10,
+ 					ymin=-10,ymax=10,
+ 					width=\textwidth,
+ 					xtick={-11},
+ 					ytick={-11},
+ 				]
+ 				\addplot expression[domain=-4:4]{-(x^2-6)};
+ 			\end{axis}
+ 		\end{tikzpicture}
+ 		\caption{$a<0$}
+ 	\end{subfigure}
+ 	\caption{Typical graphs of linear and quadratic functions.}
+ 	\label{poly:fig:linquad}
+ \end{figure}
+
+ Let's look a little more closely at the formulas for $f$ and $g$ in
+ \cref{poly:eq:linquad}. Note that the \emph{degree}
+ of $f$ is $1$ since the highest power of $x$ that is present in the
+ formula for $f(x)$ is $1$. Similarly, the degree of $g$ is $2$ since
+ the highest power of $x$ that is present in the formula for $g(x)$
+ is $2$.
+
+ In this section we will build upon our knowledge of these elementary
+ functions. In particular, we will generalize the functions $f$ and $g$ to a function $p$ that has
+ any degree that we wish.
+
+ %===================================
+ %   Author: Hughes
+ %   Date:   March 2012
+ %===================================
+ \begin{essentialskills}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{problem}[Quadratic functions]
+ 	Every quadratic function has the form $y=ax^2+bx+c$; state the value
+ 	of $a$ for each of the following functions, and hence decide if the
+ 	parabola that represents the function opens upward or downward.
+ 	\begin{multicols}{2}
+ 		\begin{subproblem}
+ 			$F(x)=x^2+3$
+ 			\begin{shortsolution}
+ 				$a=1$; the parabola opens upward.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$G(t)=4-5t^2$
+ 			\begin{shortsolution}
+ 				$a=-5$; the parabola opens downward.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$H(y)=4y^2-96y+8$
+ 			\begin{shortsolution}
+ 				$a=4$; the parabola opens upward.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$K(z)=-19z^2$
+ 			\begin{shortsolution}
+ 				$m=-19$; the parabola opens downward.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 	\end{multicols}
+ 	Now let's generalize our findings for the most general quadratic function $g$
+ 	that has formula $g(x)=a_2x^2+a_1x+a_0$. Complete the following sentences.
+ 	\begin{subproblem}
+ 		When $a_2>0$, the parabola that represents $y=g(x)$ opens $\ldots$
+ 		\begin{shortsolution}
+ 			When $a_2>0$, the parabola that represents the function opens upward.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		When $a_2<0$, the parabola that represents $y=g(x)$ opens $\ldots$
+ 		\begin{shortsolution}
+ 			When $a_2<0$, the parabola that represents the function opens downward.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+ \end{essentialskills}
+
+ \subsection*{Power functions with positive exponents}
+ 	The study of polynomials will rely upon a good knowledge
+ 	of power functions| you may reasonably ask, what is a power function?
+ 	\begin{pccdefinition}[Power functions]
+ 		Power functions have the form
+ 		\[
+ 			f(x) = a_n x^n
+ 		\]
+ 		where $n$ can be any real number.
+
+ 		Note that for this section we will only be concerned with the
+ 		case when $n$ is a positive integer.
+ 	\end{pccdefinition}
+
+ 	You may find assurance in the fact that you are already very comfortable
+ 	with power functions that have $n=1$ (linear) and $n=2$ (quadratic). Let's
+ 	explore some power functions that you might not be so familiar with.
+ 	As you read \cref{poly:ex:oddpow,poly:ex:evenpow}, try and spot
+ 	as many patterns and similarities as you can.
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{pccexample}[Power functions with odd positive exponents]
+ 		\label{poly:ex:oddpow}
+ 		Graph each of the following functions, state their domain, and their
+ 		long-run behavior as $x\rightarrow\pm\infty$
+ 		\[
+ 			f(x)=x^3,   \qquad  g(x)=x^5, \qquad h(x)=x^7
+ 		\]
+ 		\begin{pccsolution}
+ 			The functions $f$, $g$, and $h$ are plotted in \cref{poly:fig:oddpow}.
+ 			The domain of each of the functions $f$, $g$, and $h$ is $(-\infty,\infty)$. Note that
+ 			the long-run behavior of each of the functions is the same, and in particular
+ 			\begin{align*}
+ 				f(x)\rightarrow\infty                           & \text{ as } x\rightarrow\infty  \\
+ 				\mathllap{\text{and }}   f(x)\rightarrow-\infty & \text{ as } x\rightarrow-\infty
+ 			\end{align*}
+ 			The same results hold for $g$ and $h$.
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	\begin{figure}[!htb]
+ 		\begin{minipage}{.45\textwidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-1.5,xmax=1.5,
+ 						ymin=-5,ymax=5,
+ 						xtick={-1.0,-0.5,...,1.0},
+ 						minor ytick={-3,-1,...,3},
+ 						grid=both,
+ 						width=\textwidth,
+ 						legend pos=north west,
+ 					]
+ 					\addplot expression[domain=-1.5:1.5]{x^3};
+ 					\addplot expression[domain=-1.379:1.379]{x^5};
+ 					\addplot expression[domain=-1.258:1.258]{x^7};
+ 					\addplot[soldot]coordinates{(-1,-1)} node[axisnode,anchor=north west]{$(-1,-1)$};
+ 					\addplot[soldot]coordinates{(1,1)} node[axisnode,anchor=south east]{$(1,1)$};
+ 					\legend{$f$,$g$,$h$}
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{Odd power functions}
+ 			\label{poly:fig:oddpow}
+ 		\end{minipage}%
+ 		\hfill
+ 		\begin{minipage}{.45\textwidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-2.5,xmax=2.5,
+ 						ymin=-5,ymax=5,
+ 						xtick={-2.0,-1.5,...,2.0},
+ 						minor ytick={-3,-1,...,3},
+ 						grid=both,
+ 						width=\textwidth,
+ 						legend pos=south east,
+ 					]
+ 					\addplot expression[domain=-2.236:2.236]{x^2};
+ 					\addplot expression[domain=-1.495:1.495]{x^4};
+ 					\addplot expression[domain=-1.307:1.307]{x^6};
+ 					\addplot[soldot]coordinates{(-1,1)} node[axisnode,anchor=east]{$(-1,1)$};
+ 					\addplot[soldot]coordinates{(1,1)} node[axisnode,anchor=west]{$(1,1)$};
+ 					\legend{$F$,$G$,$H$}
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{Even power functions}
+ 			\label{poly:fig:evenpow}
+ 		\end{minipage}%
+ 	\end{figure}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{pccexample}[Power functions with even positive exponents]\label{poly:ex:evenpow}%
+ 		Graph each of the following functions, state their domain, and their
+ 		long-run behavior as $x\rightarrow\pm\infty$
+ 		\[
+ 			F(x)=x^2, \qquad G(x)=x^4, \qquad H(x)=x^6
+ 		\]
+ 		\begin{pccsolution}
+ 			The functions $F$, $G$, and $H$ are plotted in \cref{poly:fig:evenpow}. The domain
+ 			of each of the functions is $(-\infty,\infty)$. Note that the long-run behavior
+ 			of each of the functions is the same, and in particular
+ 			\begin{align*}
+ 				F(x)\rightarrow\infty                          & \text{ as } x\rightarrow\infty  \\
+ 				\mathllap{\text{and }}   F(x)\rightarrow\infty & \text{ as } x\rightarrow-\infty
+ 			\end{align*}
+ 			The same result holds for $G$ and $H$.
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	\begin{doyouunderstand}
+ 		\begin{problem}
+ 		Repeat \cref{poly:ex:oddpow,poly:ex:evenpow} using (respectively)
+ 		\begin{subproblem}
+ 			$f(x)=-x^3,   \qquad  g(x)=-x^5, \qquad h(x)=-x^7$
+ 			\begin{shortsolution}
+ 				The functions $f$, $g$, and $h$ have domain $(-\infty,\infty)$ and
+ 				are graphed below.
+
+ 				\begin{tikzpicture}
+ 					\begin{axis}[
+ 							framed,
+ 							xmin=-1.5,xmax=1.5,
+ 							ymin=-5,ymax=5,
+ 							xtick={-1.0,-0.5,...,0.5},
+ 							minor ytick={-3,-1,...,3},
+ 							grid=both,
+ 							width=\solutionfigurewidth,
+ 							legend pos=north east,
+ 						]
+ 						\addplot expression[domain=-1.5:1.5]{-x^3};
+ 						\addplot expression[domain=-1.379:1.379]{-x^5};
+ 						\addplot expression[domain=-1.258:1.258]{-x^7};
+ 						\legend{$f$,$g$,$h$}
+ 					\end{axis}
+ 				\end{tikzpicture}
+
+ 				Note that
+ 				\begin{align*}
+ 					f(x)\rightarrow-\infty                         & \text{ as } x\rightarrow\infty  \\
+ 					\mathllap{\text{and }}   f(x)\rightarrow\infty & \text{ as } x\rightarrow-\infty
+ 				\end{align*}
+ 				The same is true for $g$ and $h$.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$F(x)=-x^2,   \qquad  G(x)=-x^4, \qquad H(x)=-x^6$
+ 			\begin{shortsolution}
+ 				The functions $F$, $G$, and $H$ have domain $(-\infty,\infty)$ and
+ 				are graphed below.
+
+ 				\begin{tikzpicture}
+ 					\begin{axis}[
+ 							framed,
+ 							xmin=-2.5,xmax=2.5,
+ 							ymin=-5,ymax=5,
+ 							xtick={-1.0,-0.5,...,0.5},
+ 							minor ytick={-3,-1,...,3},
+ 							grid=both,
+ 							width=\solutionfigurewidth,
+ 							legend pos=north east,
+ 						]
+ 						\addplot expression[domain=-2.236:2.236]{-x^2};
+ 						\addplot expression[domain=-1.495:1.495]{-x^4};
+ 						\addplot expression[domain=-1.307:1.307]{-x^6};
+ 						\legend{$F$,$G$,$H$}
+ 					\end{axis}
+ 				\end{tikzpicture}
+
+ 				Note that
+ 				\begin{align*}
+ 					F(x)\rightarrow-\infty                          & \text{ as } x\rightarrow\infty  \\
+ 					\mathllap{\text{and }}   F(x)\rightarrow-\infty & \text{ as } x\rightarrow-\infty
+ 				\end{align*}
+ 				The same is true for $G$ and $H$.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\end{problem}
+ 	\end{doyouunderstand}
+
+ \subsection*{Polynomial functions}
+ 	Now that we have a little more familiarity with power functions,
+ 	we can define polynomial functions. Provided that you were comfortable
+ 	with our opening discussion about linear and quadratic functions (see
+ 	$f$ and $g$ in \cref{poly:eq:linquad}) then there is every chance
+ 	that you'll be able to master polynomial functions as well; just remember
+ 	that polynomial functions are a natural generalization of linear
+ 	and quadratic functions. Once you've studied the examples and problems
+ 	in this section, you'll hopefully agree that polynomial functions
+ 	are remarkably predictable.
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{pccdefinition}[Polynomial functions]
+ 		Polynomial functions have the form
+ 		\[
+ 			p(x)=a_nx^n+a_{n-1}x^{n-1}+\ldots+a_1x+a_0
+ 		\]
+ 		where $a_n$, $a_{n-1}$, $a_{n-2}$, \ldots, $a_0$ are real numbers.
+ 		\begin{itemize}
+ 			\item We call $n$ the degree of the polynomial, and require that $n$
+ 			      is a non-negative integer;
+ 			\item $a_n$, $a_{n-1}$, $a_{n-2}$, \ldots, $a_0$ are called the coefficients;
+ 			\item We typically write polynomial functions in descending powers of $x$.
+ 		\end{itemize}
+ 		In particular, we call $a_n$ the \emph{leading} coefficient, and $a_nx^n$ the
+ 		\emph{leading term}.
+
+ 		Note that if a polynomial is given in factored form, then the degree can be found
+ 		by counting the number of linear factors.
+ 	\end{pccdefinition}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{pccexample}[Polynomial or not]
+ 		Identify the following functions as polynomial or not; if the function
+ 		is a polynomial, state its degree.
+ 		\begin{multicols}{3}
+ 			\begin{enumerate}
+ 				\item $p(x)=x^2-3$
+ 				\item $q(x)=-4x^{\nicefrac{1}{2}}+10$
+ 				\item $r(x)=10x^5$
+ 				\item $s(x)=x^{-2}+x^{23}$
+ 				\item $f(x)=-8$
+ 				\item $g(x)=3^x$
+ 				\item $h(x)=\sqrt[3]{x^7}-x^2+x$
+ 				\item $k(x)=4x(x+2)(x-3)$
+ 				\item $j(x)=x^2(x-4)(5-x)$
+ 			\end{enumerate}
+ 		\end{multicols}
+ 		\begin{pccsolution}
+ 			\begin{enumerate}
+ 				\item $p$ is a polynomial, and its degree is $2$.
+ 				\item $q$ is \emph{not} a polynomial, because $\frac{1}{2}$ is not an integer.
+ 				\item $r$ is a polynomial, and its degree is $5$.
+ 				\item $s$ is \emph{not} a polynomial, because $-2$ is not a positive integer.
+ 				\item $f$ is a polynomial, and its degree is $0$.
+ 				\item $g$ is \emph{not} a polynomial, because the independent
+ 				      variable, $x$, is in the exponent.
+ 				\item $h$ is \emph{not} a polynomial, because $\frac{7}{3}$ is not an integer.
+ 				\item $k$ is a polynomial, and its degree is $3$.
+ 				\item $j$ is a polynomial, and its degree is $4$.
+ 			\end{enumerate}
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{pccexample}[Typical graphs]\label{poly:ex:typical}
+ 		\Cref{poly:fig:typical} shows graphs of some polynomial functions;
+ 		the ticks have deliberately been left off the axis to allow us to concentrate
+ 		on the features of each graph. Note in particular that:
+ 		\begin{itemize}
+ 			\item \cref{poly:fig:typical1} shows a degree-$1$ polynomial (you might also
+ 			      classify the function as linear) whose leading coefficient, $a_1$, is positive.
+ 			\item \cref{poly:fig:typical2} shows a degree-$2$ polynomial (you might also
+ 			      classify the function as quadratic) whose leading coefficient, $a_2$, is positive.
+ 			\item \cref{poly:fig:typical3} shows a degree-$3$ polynomial whose leading coefficient, $a_3$,
+ 			      is positive| compare its overall
+ 			      shape and long-run behavior to the functions described in \cref{poly:ex:oddpow}.
+ 			\item \cref{poly:fig:typical4} shows a degree-$4$ polynomial whose leading coefficient, $a_4$,
+ 			      is positive|compare its overall shape and long-run behavior to the functions described in \cref{poly:ex:evenpow}.
+ 			\item \cref{poly:fig:typical5} shows a degree-$5$ polynomial whose leading coefficient, $a_5$,
+ 			      is positive| compare its overall
+ 			      shape and long-run behavior to the functions described in \cref{poly:ex:oddpow}.
+ 		\end{itemize}
+ 	\end{pccexample}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{figure}[!htb]
+ 		\begin{widepage}
+ 		\setlength{\figurewidth}{\textwidth/6}
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\textwidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-10:8]{(x+2)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$a_1>0$}
+ 			\label{poly:fig:typical1}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\textwidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-4:4]{(x^2-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$a_2>0$}
+ 			\label{poly:fig:typical2}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\textwidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-7.5:7.5]{0.05*(x+6)*x*(x-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$a_3>0$}
+ 			\label{poly:fig:typical3}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\textwidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-2.35:5.35,samples=100]{0.2*(x-5)*x*(x-3)*(x+2)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$a_4>0$}
+ 			\label{poly:fig:typical4}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\textwidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-5.5:6.3,samples=100]{0.01*(x+2)*x*(x-3)*(x+5)*(x-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$a_5>0$}
+ 			\label{poly:fig:typical5}
+ 		\end{subfigure}
+ 		\end{widepage}
+ 		\caption{Graphs to illustrate typical curves of polynomial functions.}
+ 		\label{poly:fig:typical}
+ 	\end{figure}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{doyouunderstand}
+ 		\begin{problem}
+ 		Use \cref{poly:ex:typical} and \cref{poly:fig:typical} to help you sketch
+ 		the graphs of polynomial functions that have negative leading coefficients| note
+ 		that there are many ways to do this! The intention with this problem
+ 		is to use your knowledge of transformations- in particular, \emph{reflections}-
+ 		to guide you.
+ 		\begin{shortsolution}
+ 			$a_1<0$:
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-10:8]{-(x+2)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$a_2<0$
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-4:4]{-(x^2-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$a_3<0$
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-7.5:7.5]{-0.05*(x+6)*x*(x-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$a_4<0$
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-2.35:5.35,samples=100]{-0.2*(x-5)*x*(x-3)*(x+2)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$a_5<0$
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 						xtick={-11},
+ 						ytick={-11},
+ 					]
+ 					\addplot expression[domain=-5.5:6.3,samples=100]{-0.01*(x+2)*x*(x-3)*(x+5)*(x-6)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 		\end{shortsolution}
+ 		\end{problem}
+ 	\end{doyouunderstand}
+
+ 	\fixthis{poly: Need a more basic example here- it can have a similar
+ 		format to the multiple zeros example, but just keep it simple; it should
+ 	be halfway between the 2 examples surrounding it}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{pccexample}[Multiple zeros]
+ 		Consider the polynomial functions $p$, $q$, and $r$ which are
+ 		graphed in \cref{poly:fig:moremultiple}.
+ 		The formulas for $p$, $q$, and $r$ are as follows
+ 		\begin{align*}
+ 			p(x) & =(x-3)^2(x+4)^2       \\
+ 			q(x) & =x(x+2)^2(x-1)^2(x-3) \\
+ 			r(x) & =x(x-3)^3(x+1)^2
+ 		\end{align*}
+ 		Find the degree of $p$, $q$, and $r$, and decide if the functions bounce off or cut
+ 		through the horizontal axis at each of their zeros.
+ 		\begin{pccsolution}
+ 			The degree of $p$ is 4. Referring to \cref{poly:fig:bouncep},
+ 			the curve bounces off the horizontal axis at both zeros, $3$ and $4$.
+
+ 			The degree of $q$ is 6. Referring to \cref{poly:fig:bounceq},
+ 			the curve bounces off the horizontal axis at $-2$ and $1$, and cuts
+ 			through the horizontal axis at $0$ and $3$.
+
+ 			The degree of $r$ is 6. Referring to \cref{poly:fig:bouncer},
+ 			the curve bounces off the horizontal axis at $-1$, and cuts through
+ 			the horizontal axis at $0$ and at $3$, although is flattened immediately to the left and right of $3$.
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	\setlength{\figurewidth}{0.25\textwidth}
+ 	\begin{figure}[!htb]
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-6,xmax=5,
+ 						ymin=-30,ymax=200,
+ 						xtick={-4,-2,...,4},
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-5.63733:4.63733,samples=50]{(x-3)^2*(x+4)^2};
+ 					\addplot[soldot]coordinates{(3,0)(-4,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=p(x)$}
+ 			\label{poly:fig:bouncep}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-3,xmax=4,
+ 						xtick={-2,...,3},
+ 						ymin=-60,ymax=40,
+ 						width=\textwidth,
+ 					]
+ 					\addplot+[samples=50] expression[domain=-2.49011:3.11054]{x*(x+2)^2*(x-1)^2*(x-3)};
+ 					\addplot[soldot]coordinates{(-2,0)(0,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=q(x)$}
+ 			\label{poly:fig:bounceq}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-2,xmax=4,
+ 						xtick={-1,...,3},
+ 						ymin=-40,ymax=40,
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-1.53024:3.77464,samples=50]{x*(x-3)^3*(x+1)^2};
+ 					\addplot[soldot]coordinates{(-1,0)(0,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=r(x)$}
+ 			\label{poly:fig:bouncer}
+ 		\end{subfigure}
+ 		\caption{}
+ 		\label{poly:fig:moremultiple}
+ 	\end{figure}
+
+ 	\begin{pccdefinition}[Multiple zeros]\label{poly:def:multzero}
+ 		Let $p$ be a polynomial that has a repeated linear factor $(x-a)^n$. Then we say
+ 		that $p$ has a multiple zero at $a$ of multiplicity $n$ and
+ 		\begin{itemize}
+ 			\item if the factor $(x-a)$ is repeated an even number of times, the graph of $y=p(x)$ does not
+ 			      cross the $x$ axis at $a$, but `bounces' off the horizontal axis at $a$.
+ 			\item if the factor $(x-a)$ is repeated an odd number of times, the graph of $y=p(x)$ crosses the
+ 			      horizontal axis at $a$, but it looks `flattened' there
+ 		\end{itemize}
+ 		If $n=1$, then we say that $p$ has a \emph{simple} zero at $a$.
+ 	\end{pccdefinition}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{pccexample}[Find a formula]
+ 		Find formulas for the polynomial functions, $p$ and $q$, graphed in \cref{poly:fig:findformulademoboth}.
+ 		\begin{figure}[!htb]
+ 			\begin{subfigure}{.45\textwidth}
+ 				\begin{tikzpicture}
+ 					\begin{axis}[framed,
+ 							xmin=-5,xmax=5,
+ 							ymin=-10,ymax=10,
+ 							xtick={-4,-2,...,4},
+ 							minor xtick={-3,-1,...,3},
+ 							ytick={-8,-6,...,8},
+ 							width=\textwidth,
+ 						grid=both]
+ 						\addplot expression[domain=-3.25842:2.25842,samples=50]{-x*(x-2)*(x+3)*(x+1)};
+ 						\addplot[soldot]coordinates{(1,8)}node[axisnode,inner sep=.35cm,anchor=west]{$(1,8)$};
+ 						\addplot[soldot]coordinates{(-3,0)(-1,0)(0,0)(2,0)};
+ 					\end{axis}
+ 				\end{tikzpicture}
+ 				\caption{$p$}
+ 				\label{poly:fig:findformulademo}
+ 			\end{subfigure}
+ 			\hfill
+ 			\begin{subfigure}{.45\textwidth}
+ 				\begin{tikzpicture}
+ 					\begin{axis}[framed,
+ 							xmin=-5,xmax=5,
+ 							ymin=-10,ymax=10,
+ 							xtick={-4,-2,...,4},
+ 							minor xtick={-3,-1,...,3},
+ 							ytick={-8,-6,...,8},
+ 							width=\textwidth,
+ 						grid=both]
+ 						\addplot expression[domain=-4.33:4.08152]{-.25*(x+2)^2*(x-3)};
+ 						\addplot[soldot]coordinates{(2,4)}node[axisnode,anchor=south west]{$(2,4)$};
+ 						\addplot[soldot]coordinates{(-2,0)(3,0)};
+ 					\end{axis}
+ 				\end{tikzpicture}
+ 				\caption{$q$}
+ 				\label{poly:fig:findformulademo1}
+ 			\end{subfigure}
+ 			\caption{}
+ 			\label{poly:fig:findformulademoboth}
+ 		\end{figure}
+ 		\begin{pccsolution}
+ 			\begin{enumerate}
+ 				\item We begin by noting that the horizontal intercepts of $p$ are $(-3,0)$, $(-1,0)$, $(0,0)$ and $(2,0)$.
+ 				      We also note that each zero is simple (multiplicity $1$).
+ 				      If we assume that $p$ has no other zeros, then we can start by writing
+ 				      \begin{align*}
+ 				      	p(x) & =(x+3)(x+1)(x-0)(x-2) \\
+ 				      	     & =x(x+3)(x+1)(x-2)     \\
+ 				      \end{align*}
+ 				      According to \cref{poly:fig:findformulademo}, the point $(1,8)$ lies
+ 				      on the curve $y=p(x)$.
+ 				      Let's check if the formula we have written satisfies this requirement
+ 				      \begin{align*}
+ 				      	p(1) & = (1)(4)(2)(-1) \\
+ 				      	     & = -8
+ 				      \end{align*}
+ 				      which is clearly not correct| it is close though. We can correct this by
+ 				      multiplying $p$ by a constant $k$; so let's assume that
+ 				      \[
+ 				      	p(x)=kx(x+3)(x+1)(x-2)
+ 				      \]
+ 				      Then $p(1)=-8k$, and if this is to equal $8$, then $k=-1$. Therefore
+ 				      the formula for $p(x)$ is
+ 				      \[
+ 				      	p(x)=-x(x+3)(x+1)(x-2)
+ 				      \]
+ 				\item The function $q$ has a zero at $-2$ of multiplicity $2$, and zero of
+ 				      multiplicity $1$ at $3$ (so $3$ is a simple zero of $q$); we can therefore assume that $q$ has the form
+ 				      \[
+ 				      	q(x)=k(x+2)^2(x-3)
+ 				      \]
+ 				      where $k$ is some real number. In order to find $k$, we use the given ordered pair, $(2,4)$, and
+ 				      evaluate $p(2)$
+ 				      \begin{align*}
+ 				      	p(2) & =k(4)^2(-1) \\
+ 				      	     & =-16k
+ 				      \end{align*}
+ 				      We solve the equation $4=-8k$ and obtain $k=-\frac{1}{4}$ and conclude that the
+ 				      formula for $q(x)$ is
+ 				      \[
+ 				      	q(x)=-\frac{1}{4}(x+2)^2(x-3)
+ 				      \]
+ 			\end{enumerate}
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+
+ 	\fixthis{Chris: need sketching polynomial problems}
+ 	\begin{pccspecialcomment}[Steps to follow when sketching polynomial functions]
+ 		\begin{steps}
+ 			\item \label{poly:step:first} Determine the degree of the polynomial,
+ 			its leading term and leading coefficient, and hence determine
+ 			the long-run behavior of the polynomial| does it behave like $\pm x^2$ or $\pm x^3$
+ 			as $x\rightarrow\pm\infty$?
+ 			\item Determine the zeros and their multiplicity. Mark all zeros
+ 			and the vertical intercept on the graph using solid circles $\bullet$.
+ 			\item \label{poly:step:last}  Deduce the overall shape of the curve, and sketch it. If there isn't
+ 			enough information from the previous steps, then construct a table of values.
+ 		\end{steps}
+ 		Remember that until we have the tools of calculus, we won't be able to
+ 		find the exact coordinates of local minimums, local maximums, and points
+ 		of inflection.
+ 	\end{pccspecialcomment}
+ 	Before we demonstrate some examples, it is important to remember the following:
+ 	\begin{itemize}
+ 		\item our sketches will give a good representation of the overall
+ 		      shape of the graph, but until we have the tools of calculus (from MTH 251)
+ 		      we can not find local minimums, local maximums, and inflection points algebraically. This
+ 		      means that we will make our best guess as to where these points are.
+ 		\item we will not concern ourselves too much with the vertical scale (because of
+ 		      our previous point)| we will, however, mark the vertical intercept (assuming there is one),
+ 		      and any horizontal asymptotes.
+ 	\end{itemize}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2012
+ 	%===================================
+ 	\begin{pccexample}\label{poly:ex:simplecubic}
+ 		Use \crefrange{poly:step:first}{poly:step:last} to sketch a graph of the function $p$
+ 		that has formula
+ 		\[
+ 			p(x)=\frac{1}{2}(x-4)(x-1)(x+3)
+ 		\]
+ 		\begin{pccsolution}
+ 			\begin{steps}
+ 				\item $p$ has degree $3$. The leading term of $p$ is $\frac{1}{2}x^3$, so the leading coefficient of $p$
+ 				is $\frac{1}{2}$. The long-run behavior of $p$ is therefore similar to that of $x^3$.
+ 				\item The zeros of $p$ are $-3$, $1$, and $4$; each zero is simple (i.e, it has multiplicity $1$).
+ 				This means that the curve of $p$ cuts the horizontal axis at each zero. The vertical
+ 				intercept of $p$ is $(0,6)$.
+ 				\item We draw the details we have obtained so far on \cref{poly:fig:simplecubicp1}. Given
+ 				that the curve of $p$ looks like the curve of $x^3$ in the long-run, we are able to complete a sketch of the
+ 				graph of $p$ in \cref{poly:fig:simplecubicp2}.
+
+ 				Note that we can not find the coordinates of the local minimums, local maximums, and inflection
+ 				points| for the moment we make reasonable guesses as to where these points are (you'll find how
+ 				to do this in calculus).
+ 			\end{steps}
+
+ 			\begin{figure}[!htbp]
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-10,xmax=10,
+ 								ymin=-10,ymax=15,
+ 								xtick={-8,-6,...,8},
+ 								ytick={-5,5},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-3,0)(1,0)(4,0)(0,6)}node[axisnode,anchor=south west]{$(0,6)$};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:simplecubicp1}
+ 				\end{subfigure}%
+ 				\hfill
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-10,xmax=10,
+ 								ymin=-10,ymax=15,
+ 								xtick={-8,-6,...,8},
+ 								ytick={-5,5},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-3,0)(1,0)(4,0)(0,6)}node[axisnode,anchor=south west]{$(0,6)$};
+ 							\addplot[pccplot] expression[domain=-3.57675:4.95392,samples=100]{.5*(x-4)*(x-1)*(x+3)};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:simplecubicp2}
+ 				\end{subfigure}%
+ 				\caption{$y=\dfrac{1}{2}(x-4)(x-1)(x+3)$}
+ 				\label{poly:fig:simplecubic}
+ 			\end{figure}
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2012
+ 	%===================================
+ 	\begin{pccexample}\label{poly:ex:degree5}
+ 		Use \crefrange{poly:step:first}{poly:step:last} to sketch a graph of the function $q$
+ 		that has formula
+ 		\[
+ 			q(x)=\frac{1}{200}(x+7)^2(2-x)(x-6)^2
+ 		\]
+ 		\begin{pccsolution}
+ 			\begin{steps}
+ 				\item $q$ has degree $4$. The leading term of $q$ is
+ 				\[
+ 					-\frac{1}{200}x^5
+ 				\]
+ 				so the leading coefficient of $q$ is $-\frac{1}{200}$. The long-run behavior of $q$
+ 				is therefore similar to that of $-x^5$.
+ 				\item The zeros of $q$ are $-7$ (multiplicity 2), $2$ (simple), and $6$ (multiplicity $2$).
+ 				The curve of $q$ bounces off the horizontal axis at the zeros with multiplicity $2$ and
+ 				cuts the horizontal axis at the simple zeros. The vertical intercept of $q$ is $\left( 0,\frac{441}{25} \right)$.
+ 				\item We mark the details we have found so far on \cref{poly:fig:degree5p1}. Given that
+ 				the curve of $q$ looks like the curve of $-x^5$ in the long-run, we can complete \cref{poly:fig:degree5p2}.
+ 			\end{steps}
+
+ 			\begin{figure}[!htbp]
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-10,xmax=10,
+ 								ymin=-10,ymax=40,
+ 								xtick={-8,-6,...,8},
+ 								ytick={-5,0,...,35},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-7,0)(2,0)(6,0)(0,441/25)}node[axisnode,anchor=south west]{$\left( 0, \frac{441}{25} \right)$};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:degree5p1}
+ 				\end{subfigure}%
+ 				\hfill
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-10,xmax=10,
+ 								ymin=-10,ymax=40,
+ 								xtick={-8,-6,...,8},
+ 								ytick={-5,0,...,35},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-7,0)(2,0)(6,0)(0,441/25)}node[axisnode,anchor=south west]{$\left( 0, \frac{441}{25} \right)$};
+ 							\addplot[pccplot] expression[domain=-8.83223:7.34784,samples=50]{1/200*(x+7)^2*(2-x)*(x-6)^2};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:degree5p2}
+ 				\end{subfigure}%
+ 				\caption{$y=\dfrac{1}{200}(x+7)^2(2-x)(x-6)^2$}
+ 				\label{poly:fig:degree5}
+ 			\end{figure}
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2012
+ 	%===================================
+ 	\begin{pccexample}
+ 		Use \crefrange{poly:step:first}{poly:step:last} to sketch a graph of the function $r$
+ 		that has formula
+ 		\[
+ 			r(x)=\frac{1}{100}x^3(x+4)(x-4)(x-6)
+ 		\]
+ 		\begin{pccsolution}
+ 			\begin{steps}
+ 				\item $r$ has degree $6$. The leading term of $r$ is
+ 				\[
+ 					\frac{1}{100}x^6
+ 				\]
+ 				so the leading coefficient of $r$ is $\frac{1}{100}$. The long-run behavior of $r$
+ 				is therefore similar to that of $x^6$.
+ 				\item The zeros of $r$ are $-4$ (simple), $0$ (multiplicity $3$), $4$ (simple),
+ 				and $6$ (simple). The vertical intercept of $r$ is $(0,0)$. The curve of $r$
+ 				cuts the horizontal axis at the simple zeros, and goes through the axis
+ 				at $(0,0)$, but does so in a flattened way.
+ 				\item We mark the zeros and vertical intercept on \cref{poly:fig:degree6p1}. Given that
+ 				the curve of $r$ looks like the curve of $x^6$ in the long-run, we complete the graph
+ 				of $r$ in \cref{poly:fig:degree6p2}.
+ 			\end{steps}
+
+ 			\begin{figure}[!htbp]
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-5,xmax=10,
+ 								ymin=-20,ymax=10,
+ 								xtick={-4,-2,...,8},
+ 								ytick={-15,-10,...,5},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-4,0)(0,0)(4,0)(6,0)};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:degree6p1}
+ 				\end{subfigure}%
+ 				\hfill
+ 				\begin{subfigure}{.45\textwidth}
+ 					\begin{tikzpicture}
+ 						\begin{axis}[
+ 								xmin=-5,xmax=10,
+ 								ymin=-20,ymax=10,
+ 								xtick={-4,-2,...,8},
+ 								ytick={-15,-10,...,5},
+ 								width=\textwidth,
+ 							]
+ 							\addplot[soldot] coordinates{(-4,0)(0,0)(4,0)(6,0)};
+ 							\addplot[pccplot] expression[domain=-4.16652:6.18911,samples=100]{1/100*(x+4)*x^3*(x-4)*(x-6)};
+ 						\end{axis}
+ 					\end{tikzpicture}
+ 					\caption{}
+ 					\label{poly:fig:degree6p2}
+ 				\end{subfigure}%
+ 				\caption{$y=\dfrac{1}{100}(x+4)x^3(x-4)(x-6)$}
+ 			\end{figure}
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{pccexample}[An open-topped box]
+ 		A cardboard company makes open-topped boxes for their clients. The specifications
+ 		dictate that the box must have a square base, and that it must be open-topped.
+ 		The company uses sheets of cardboard that are $\unit[1200]{cm^2}$. Assuming that
+ 		the base of each box has side $x$ (measured in cm), it can be shown that the volume of each box, $V(x)$,
+ 		has formula
+ 		\[
+ 			V(x)=\frac{x}{4}(1200-x^2)
+ 		\]
+ 		Find the dimensions of the box that maximize the volume.
+ 		\begin{pccsolution}
+ 			We graph $y=V(x)$ in \cref{poly:fig:opentoppedbox}. Note that because
+ 			$x$ represents the length of a side, and $V(x)$ represents the volume
+ 			of the box, we necessarily require both values to be positive; we illustrate
+ 			the part of the curve that applies to this problem using a solid line.
+
+ 			\begin{figure}[!htb]
+ 				\centering
+ 				\begin{tikzpicture}
+ 					\begin{axis}[framed,
+ 							xmin=-50,xmax=50,
+ 							ymin=-5000,ymax=5000,
+ 							xtick={-40,-30,...,40},
+ 							minor xtick={-45,-35,...,45},
+ 							minor ytick={-3000,-1000,1000,3000},
+ 							width=.75\textwidth,
+ 							height=.5\textwidth,
+ 						grid=both]
+ 						\addplot[pccplot,dashed,<-] expression[domain=-40:0,samples=50]{x/4*(1200-x^2)};
+ 						\addplot[pccplot,-] expression[domain=0:34.64,samples=50]{x/4*(1200-x^2)};
+ 						\addplot[pccplot,dashed,->] expression[domain=34.64:40,samples=50]{x/4*(1200-x^2)};
+ 						\addplot[soldot] coordinates{(20,4000)};
+ 					\end{axis}
+ 				\end{tikzpicture}
+ 				\caption{$y=V(x)$}
+ 				\label{poly:fig:opentoppedbox}
+ 			\end{figure}
+
+ 			According to \cref{poly:fig:opentoppedbox}, the maximum volume of such a box is
+ 			approximately $\unit[4000]{cm^2}$, and we achieve it using a base of length
+ 			approximately $\unit[20]{cm}$. Since the base is square and each sheet of cardboard
+ 			is $\unit[1200]{cm^2}$, we conclude that the dimensions of each box are $\unit[20]{cm}\times\unit[20]{cm}\times\unit[30]{cm}$.
+ 		\end{pccsolution}
+ 	\end{pccexample}
+
+ \subsection*{Complex zeros}
+ 	There has been a pattern to all of the examples that we have seen so far|
+ 	the degree of the polynomial has dictated the number of \emph{real} zeros that the
+ 	polynomial has. For example, the function $p$ in \cref{poly:ex:simplecubic}
+ 	has degree $3$, and $p$ has $3$ real zeros; the function $q$ in \cref{poly:ex:degree5}
+ 	has degree $5$ and $q$ has $5$ real zeros.
+
+ 	You may wonder if this result can be generalized| does every polynomial that
+ 	has degree $n$ have $n$ real zeros? Before we tackle the general result,
+ 	let's consider an example that may help motivate it.
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   June 2012
+ 	%===================================
+ 	\begin{pccexample}\label{poly:ex:complx}
+ 		Consider the polynomial function $c$ that has formula
+ 		\[
+ 			c(x)=x(x^2+1)
+ 		\]
+ 		It is clear that $c$ has degree $3$, and that $c$ has a (simple) zero at $0$. Does
+ 		$c$ have any other zeros, i.e, can we find any values of $x$ that satisfy the equation
+ 		\begin{equation}\label{poly:eq:complx}
+ 			x^2+1=0
+ 		\end{equation}
+ 		The solutions to \cref{poly:eq:complx} are $\pm i$.
+
+ 		We conclude that $c$ has $3$ zeros: $0$ and $\pm i$; we note that \emph{not
+ 		all of them are real}.
+ 	\end{pccexample}
+ 	\Cref{poly:ex:complx} shows that not every degree-$3$ polynomial has $3$
+ 	\emph{real} zeros; however, if we are prepared to venture into the complex numbers,
+ 	then we can state the following theorem.
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   June 2012
+ 	%===================================
+ 	\begin{pccspecialcomment}[The fundamental theorem of algebra]
+ 		Every polynomial function of degree $n$ has $n$ roots, some of which may
+ 		be complex, and some may be repeated.
+ 	\end{pccspecialcomment}
+ 	\fixthis{Fundamental theorem of algebra: is this wording ok? do we want
+ 	it as a theorem?}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   June 2012
+ 	%===================================
+ 	\begin{pccexample}
+ 		Find all the zeros of the polynomial function $p$ that has formula
+ 		\[
+ 			p(x)=x^4-2x^3+5x^2
+ 		\]
+ 		\begin{pccsolution}
+ 			We begin by factoring $p$
+ 			\begin{align*}
+ 				p(x) & =x^4-2x^3+5x^2 \\
+ 				     & =x^2(x^2-2x+5)
+ 			\end{align*}
+ 			We note that $0$ is a zero of $p$ with multiplicity $2$. The other zeros of $p$
+ 			can be found by solving the equation
+ 			\[
+ 				x^2-2x+5=0
+ 			\]
+ 			This equation can not be factored, so we use the quadratic formula
+ 			\begin{align*}
+ 				x & =\frac{2\pm\sqrt{(-2)^2}-20}{2(1)} \\
+ 				  & =\frac{2\pm\sqrt{-16}}{2}          \\
+ 				  & =1\pm 2i
+ 			\end{align*}
+ 			We conclude that $p$ has $4$ zeros: $0$ (multiplicity $2$), and $1\pm 2i$ (simple).
+ 		\end{pccsolution}
+ 	\end{pccexample}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   June 2012
+ 	%===================================
+ 	\begin{pccexample}
+ 		Find a polynomial that has zeros at $2\pm i\sqrt{2}$.
+ 		\begin{pccsolution}
+ 			We know that the zeros of a polynomial can be found by analyzing the linear
+ 			factors. We are given the zeros, and have to work backwards to find the
+ 			linear factors.
+
+ 			We begin by assuming that $p$ has the form
+ 			\begin{align*}
+ 				p(x) & =(x-(2-i\sqrt{2}))(x-(2+i\sqrt{2}))                           \\
+ 				     & =x^2-x(2+i\sqrt{2})-x(2-i\sqrt{2})+(2-i\sqrt{2})(2+i\sqrt{2}) \\
+ 				     & =x^2-4x+(4-2i^2)                                              \\
+ 				     & =x^2-4x+6
+ 			\end{align*}
+ 			We conclude that a possible formula for a polynomial function, $p$,
+ 			that has zeros at $2\pm i\sqrt{2}$ is
+ 			\[
+ 				p(x)=x^2-4x+6
+ 			\]
+ 			Note that we could multiply $p$ by any real number and still ensure
+ 			that $p$ has the same zeros.
+ 		\end{pccsolution}
+ 	\end{pccexample}
+ 	\investigation*{}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Find a formula from a graph]
+ 	For each of the polynomials in \cref{poly:fig:findformula}
+ 	\begin{enumerate}
+ 		\item count the number of times the curve turns round, and cuts/bounces off the $x$ axis;
+ 		\item approximate the degree of the polynomial;
+ 		\item use your information to find the linear factors of each polynomial, and therefore write a possible formula for each;
+ 		\item make sure your polynomial goes through the given ordered pair.
+ 	\end{enumerate}
+ 	\begin{shortsolution}
+ 		\Vref{poly:fig:findformdeg2}:
+ 		\begin{enumerate}
+ 			\item the curve turns round once;
+ 			\item the degree could be 2;
+ 			\item based on the zeros, the linear factors are $(x+5)$ and $(x-3)$; since the
+ 			      graph opens downwards, we will assume the leading coefficient is negative: $p(x)=-k(x+5)(x-3)$;
+ 			\item $p$ goes through $(2,2)$, so we need to solve $2=-k(7)(-1)$ and therefore $k=\nicefrac{2}{7}$, so
+ 			      \[
+ 			      	p(x)=-\frac{2}{7}(x+5)(x-3)
+ 			      \]
+ 		\end{enumerate}
+ 		\Vref{poly:fig:findformdeg3}:
+ 		\begin{enumerate}
+ 			\item the curve turns around twice;
+ 			\item the degree could be 3;
+ 			\item based on the zeros, the linear factors are $(x+2)^2$, and $(x-1)$;
+ 			      based on the behavior of $p$, we assume that the leading coefficient is positive, and try $p(x)=k(x+2)^2(x-1)$;
+ 			\item $p$ goes through $(0,-2)$, so we need to solve $-2=k(4)(-1)$ and therefore $k=\nicefrac{1}{2}$, so
+ 			      \[
+ 			      	p(x)=\frac{1}{2}(x+2)^2(x-1)
+ 			      \]
+ 		\end{enumerate}
+ 		\Vref{poly:fig:findformdeg5}:
+ 		\begin{enumerate}
+ 			\item the curve turns around 4 times;
+ 			\item the degree could be 5;
+ 			\item based on the zeros, the linear factors are $(x+5)^2$, $(x+1)$, $(x-2)$, $(x-3)$;
+ 			      based on the behavior of $p$, we assume that the leading coefficient is positive, and try $p(x)=k(x+5)^2(x+1)(x-2)(x-3)$;
+ 			\item $p$ goes through $(-3,-50)$, so we need to solve $-50=k(64)(-2)(-5)(-6)$ and therefore $k=\nicefrac{5}{384}$, so
+ 			      \[
+ 			      	p(x)=\frac{5}{384}(x+5)^2(x+1)(x-2)(x-3)
+ 			      \]
+ 		\end{enumerate}
+ 	\end{shortsolution}
+ 	\end{problem}
+
+
+ 	\begin{figure}[!htb]
+ 		\setlength{\figurewidth}{0.3\textwidth}
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-2,ymax=5,
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-4.5:3.75]{-1/3*(x+4)*(x-3)};
+ 					\addplot[soldot] coordinates{(-4,0)(3,0)(2,2)} node[axisnode,above right]{$(2,2)$};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:findformdeg2}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-3,xmax=2,
+ 						ymin=-2,ymax=4,
+ 						xtick={-2,...,1},
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-2.95:1.75]{1/3*(x+2)^2*(x-1)};
+ 					\addplot[soldot]coordinates{(-2,0)(1,0)(0,-1.33)}node[axisnode,anchor=north west]{$(0,-2)$};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:findformdeg3}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-100,ymax=150,
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-4.5:3.4,samples=50]{(x+4)^2*(x+1)*(x-2)*(x-3)};
+ 					\addplot[soldot]coordinates{(-4,0)(-1,0)(2,0)(3,0)(-3,-60)}node[axisnode,anchor=north]{$(-3,-50)$};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:findformdeg5}
+ 		\end{subfigure}
+ 		\caption{}
+ 		\label{poly:fig:findformula}
+ 	\end{figure}
+
+
+
+
+ 	\begin{exercises}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{problem}[Prerequisite classifacation skills]
+ 	Decide if each of the following functions are linear or quadratic.
+ 	\begin{multicols}{3}
+ 		\begin{subproblem}
+ 			$f(x)=2x+3$
+ 			\begin{shortsolution}
+ 				$f$ is linear.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$g(x)=10-7x$
+ 			\begin{shortsolution}
+ 				$g$ is linear
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$h(x)=-x^2+3x-9$
+ 			\begin{shortsolution}
+ 				$h$ is quadratic.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$k(x)=-17$
+ 			\begin{shortsolution}
+ 				$k$ is linear.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$l(x)=-82x^2-4$
+ 			\begin{shortsolution}
+ 				$l$ is quadratic
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$m(x)=6^2x-8$
+ 			\begin{shortsolution}
+ 				$m$ is linear.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 	\end{multicols}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{problem}[Prerequisite slope identification]
+ 	State the slope of each of the following linear functions, and
+ 	hence decide if each function is increasing or decreasing.
+ 	\begin{multicols}{4}
+ 		\begin{subproblem}
+ 			$\alpha(x)=4x+1$
+ 			\begin{shortsolution}
+ 				$m=4$; $\alpha$ is increasing.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$\beta(x)=-9x$
+ 			\begin{shortsolution}
+ 				$m=-9$; $\beta$ is decreasing.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$\gamma(t)=18t+100$
+ 			\begin{shortsolution}
+ 				$m=18$; $\gamma$ is increasing.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$\delta(y)=23-y$
+ 			\begin{shortsolution}
+ 				$m=-1$; $\delta$ is decreasing.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 	\end{multicols}
+ 	Now let's generalize our findings for the most general linear function $f$
+ 	that has formula $f(x)=mx+b$. Complete the following sentences.
+ 	\begin{subproblem}
+ 		When $m>0$, the function $f$ is $\ldots$
+ 		\begin{shortsolution}
+ 			When $m>0$, the function $f$ is $\ldots$  \emph{increasing}.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		When $m<0$, the function $f$ is $\ldots$
+ 		\begin{shortsolution}
+ 			When $m<0$, the function $f$ is $\ldots$  \emph{decreasing}.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Polynomial or not?]
+ 	Identify whether each of the following functions is a polynomial or not.
+ 	If the function is a polynomial, state its degree.
+ 	\begin{multicols}{3}
+ 		\begin{subproblem}
+ 			$p(x)=2x+1$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial (you might also describe $p$ as linear). The degree of $p$ is 1.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=7x^2+4x$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial (you might also describe $p$ as quadratic). The degree of $p$ is 2.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=\sqrt{x}+2x+1$
+ 			\begin{shortsolution}
+ 				$p$ is not a polynomial; we require the powers of $x$ to be integer values.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=2^x-45$
+ 			\begin{shortsolution}
+ 				$p$ is not a polynomial; the $2^x$ term is exponential.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=6x^4-5x^3+9$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial, and the degree of $p$ is $6$.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=-5x^{17}+9x+2$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial, and the degree of $p$ is 17.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=4x(x+7)^2(x-3)^3$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial, and the degree of $p$ is $6$.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=4x^{-5}-x^2+x$
+ 			\begin{shortsolution}
+ 				$p$ is not a polynomial because $-5$ is not a positive integer.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$p(x)=-x^6(x^2+1)(x^3-2)$
+ 			\begin{shortsolution}
+ 				$p$ is a polynomial, and the degree of $p$ is $11$.
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 	\end{multicols}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Polynomial graphs]
+ 	Three polynomial functions $p$, $m$, and $n$ are shown in \crefrange{poly:fig:functionp}{poly:fig:functionn}.
+ 	The functions have the following formulas
+ 	\begin{align*}
+ 		p(x) & = (x-1)(x+2)(x-3)           \\
+ 		m(x) & = -(x-1)(x+2)(x-3)          \\
+ 		n(x) & = (x-1)(x+2)(x-3)(x+1)(x+4)
+ 	\end{align*}
+ 	Note that for our present purposes we are not concerned with the vertical scale of the graphs.
+ 	\begin{subproblem}
+ 		Identify both on the graph {\em and} algebraically, the zeros of each polynomial.
+ 		\begin{shortsolution}
+ 			$y=p(x)$ is shown below.
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-2.5:3.5,samples=50]{(x-1)*(x+2)*(x-3)};
+ 					\addplot[soldot] coordinates{(-2,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$y=m(x)$ is shown below.
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-10,ymax=10,
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-2.5:3.5,samples=50]{-1*(x-1)*(x+2)*(x-3)};
+ 					\addplot[soldot] coordinates{(-2,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			$y=n(x)$ is shown below.
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-90,ymax=70,
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-4.15:3.15,samples=50]{(x-1)*(x+2)*(x-3)*(x+1)*(x+4)};
+ 					\addplot[soldot] coordinates{(-4,0)(-2,0)(-1,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+
+ 			The zeros of $p$ are $-2$, $1$, and $3$; the zeros of $m$ are $-2$, $1$, and $3$; the zeros of $n$ are
+ 			$-4$, $-2$, $-1$, and $3$.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Write down the degree, how many times the curve of each function `turns around',
+ 		and how many zeros it has
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item The degree of $p$ is 3, and the curve $y=p(x)$ turns around twice.
+ 				\item The degree of $q$ is also 3, and the curve $y=q(x)$ turns around twice.
+ 				\item The degree of $n$ is $5$, and the curve $y=n(x)$ turns around 4 times.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+
+ 	\begin{figure}[!htb]
+ 		\begin{widepage}
+ 		\setlength{\figurewidth}{0.3\textwidth}
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-10,ymax=10,
+ 						ytick={-5,5},
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-2.5:3.5,samples=50]{(x-1)*(x+2)*(x-3)};
+ 					\addplot[soldot]coordinates{(-2,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=p(x)$}
+ 			\label{poly:fig:functionp}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-10,ymax=10,
+ 						ytick={-5,5},
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-2.5:3.5,samples=50]{-1*(x-1)*(x+2)*(x-3)};
+ 					\addplot[soldot]coordinates{(-2,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=m(x)$}
+ 			\label{poly:fig:functionm}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-5,xmax=5,
+ 						ymin=-90,ymax=70,
+ 						width=\textwidth,
+ 					]
+ 					\addplot expression[domain=-4.15:3.15,samples=100]{(x-1)*(x+2)*(x-3)*(x+1)*(x+4)};
+ 					\addplot[soldot]coordinates{(-4,0)(-2,0)(-1,0)(1,0)(3,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{$y=n(x)$}
+ 			\label{poly:fig:functionn}
+ 		\end{subfigure}
+ 		\caption{}
+ 		\end{widepage}
+ 	\end{figure}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Horizontal intercepts]\label{poly:prob:matchpolys}%
+ 	State the horizontal intercepts (as ordered pairs) of the following polynomials.
+ 	\begin{multicols}{2}
+ 		\begin{subproblem}\label{poly:prob:degree5}
+ 			$p(x)=(x-1)(x+2)(x-3)(x+1)(x+4)$
+ 			\begin{shortsolution}
+ 				$(-4,0)$, $(-2,0)$, $(-1,0)$, $(1,0)$, $(3,0)$
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$q(x)=-(x-1)(x+2)(x-3)$
+ 			\begin{shortsolution}
+ 				$(-2,0)$, $(1,0)$, $(3,0)$
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}
+ 			$r(x)=(x-1)(x+2)(x-3)$
+ 			\begin{shortsolution}
+ 				$(-2,0)$, $(1,0)$, $(3,0)$
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 		\begin{subproblem}\label{poly:prob:degree2}
+ 			$s(x)=(x-2)(x+2)$
+ 			\begin{shortsolution}
+ 				$(-2,0)$, $(2,0)$
+ 			\end{shortsolution}
+ 		\end{subproblem}
+ 	\end{multicols}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   March 2012
+ 	%===================================
+ 	\begin{problem}[Minimums, maximums, and concavity]\label{poly:prob:incdec}
+ 	Four polynomial functions are graphed in \cref{poly:fig:incdec}. The formulas
+ 	for these functions are (not respectively)
+ 	\begin{gather*}
+ 		p(x)=\frac{x^3}{6}-\frac{x^2}{4}-3x, \qquad q(x)=\frac{x^4}{20}+\frac{x^3}{15}-\frac{6}{5}x^2+1\\
+ 		r(x)=-\frac{x^5}{50}-\frac{x^4}{40}+\frac{2x^3}{5}+6, \qquad s(x)=-\frac{x^6}{6000}-\frac{x^5}{2500}+\frac{67x^4}{4000}+\frac{17x^3}{750}-\frac{42x^2}{125}
+ 	\end{gather*}
+ 	\begin{figure}[!htb]
+ 		\begin{widepage}
+ 		\setlength{\figurewidth}{.23\textwidth}
+ 		\centering
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						width=\textwidth,
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-8,-6,...,8},
+ 						grid=major,
+ 					]
+ 					\addplot expression[domain=-5.28:4.68,samples=50]{-x^5/50-x^4/40+2*x^3/5+6};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:incdec3}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						width=\textwidth,
+ 						xmin=-10,xmax=10,ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-8,-6,...,8},
+ 						grid=major,
+ 					]
+ 					\addplot expression[domain=-6.08:4.967,samples=50]{x^4/20+x^3/15-6/5*x^2+1};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:incdec2}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						width=\textwidth,
+ 						xmin=-6,xmax=8,ymin=-10,ymax=10,
+ 						xtick={-4,-2,...,6},
+ 						ytick={-8,-4,4,8},
+ 						minor ytick={-6,-2,...,6},
+ 						grid=both,
+ 					]
+ 					\addplot expression[domain=-4.818:6.081,samples=50]{x^3/6-x^2/4-3*x};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:incdec1}
+ 		\end{subfigure}
+ 		\hfill
+ 		\begin{subfigure}{\figurewidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						framed,
+ 						width=\textwidth,
+ 						xmin=-10,xmax=10,ymin=-10,ymax=10,
+ 						xtick={-8,-4,4,8},
+ 						ytick={-8,-4,4,8},
+ 						minor xtick={-6,-2,...,6},
+ 						minor ytick={-6,-2,...,6},
+ 						grid=both,
+ 					]
+ 					\addplot expression[domain=-9.77:8.866,samples=50]{-x^6/6000-x^5/2500+67*x^4/4000+17/750*x^3-42/125*x^2};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:incdec4}
+ 		\end{subfigure}
+ 		\caption{Graphs for \cref{poly:prob:incdec}.}
+ 		\label{poly:fig:incdec}
+ 		\end{widepage}
+ 	\end{figure}
+ 	\begin{subproblem}
+ 		Match each of the formulas with one of the given graphs.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ is graphed in \vref{poly:fig:incdec1};
+ 				\item $q$ is graphed in \vref{poly:fig:incdec2};
+ 				\item $r$ is graphed in \vref{poly:fig:incdec3};
+ 				\item $s$ is graphed in \vref{poly:fig:incdec4}.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Approximate the zeros of each function using the appropriate graph.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ has simple zeros at about $-3.8$, $0$, and $5$.
+ 				\item $q$ has simple zeros at about $-5.9$, $-1$, $1$, and $4$.
+ 				\item $r$ has simple zeros at about $-5$, $-2.9$, and $4.1$.
+ 				\item $s$ has simple zeros at about $-9$, $-6$, $4.2$, $8.1$, and a zero of multiplicity $2$ at $0$.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Approximate the local maximums and minimums of each of the functions.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ has a local maximum of approximately $3.9$ at $-2$, and a local minimum of approximately $-6.5$ at $3$.
+ 				\item $q$ has a local minimum of approximately $-10$ at $-4$, and $-4$ at $3$; $q$ has a local maximum of approximately $1$ at $0$.
+ 				\item $r$ has a local minimum of approximately $-5.5$ at $-4$, and a local maximum of approximately $10$ at $3$.
+ 				\item $s$ has a local maximum of approximately $5$ at $-8$, $0$ at $0$, and $5$ at  $7$; $s$ has local minimums
+ 				      of approximately $-3$ at $-4$, and $-1$ at $3$.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Approximate the global maximums and minimums of each of the functions.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ does not have a global maximum, nor a global minimum.
+ 				\item $q$ has a global minimum of approximately $-10$; it does not have a global maximum.
+ 				\item $r$ does not have a global maximum, nor a global minimum.
+ 				\item $s$ has a global maximum of approximately $5$; it does not have a global minimum.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Approximate the intervals on which each function is increasing and decreasing.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ is increasing on $(-\infty,-2)\cup (3,\infty)$, and decreasing on $(-2,3)$.
+ 				\item $q$ is increasing on $(-4,0)\cup (3,\infty)$, and decreasing on $(-\infty,-4)\cup (0,3)$.
+ 				\item $r$ is increasing on $(-4,3)$, and decreasing on $(-\infty,-4)\cup (3,\infty)$.
+ 				\item $s$ is increasing on $(-\infty,-8)\cup (-4,0)\cup (3,5)$, and decreasing on $(-8,-4)\cup (0,3)\cup (5,\infty)$.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Approximate the intervals on which each function is concave up and concave down.
+ 		\begin{shortsolution}
+ 			\begin{itemize}
+ 				\item $p$ is concave up on  $(1,\infty)$, and concave down on  $(-\infty,1)$.
+ 				\item $q$ is concave up on $(-\infty,-1)\cup (1,\infty)$, and concave down on $(-1,1)$.
+ 				\item $r$ is concave up on $(-\infty,-3)\cup (0,2)$, and concave down on $(-3,0)\cup (2,\infty)$.
+ 				\item $s$ is concave up on $(-6,-2)\cup (2,5)$, and concave down on $(-\infty,-6)\cup (-2,2)\cup (5,\infty)$.
+ 			\end{itemize}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		The degree of $q$ is $5$. Assuming that all of the real zeros of $q$ are
+ 		shown in its graph, how many complex zeros does $q$ have?
+ 		\begin{shortsolution}
+ 			\Vref{poly:fig:incdec2} shows that $q$ has $3$ real zeros
+ 			since the curve of $q$ cuts the horizontal axis $3$ times.
+ 			Since $q$ has degree $5$, $q$ must have $2$ complex zeros.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Long-run behaviour of polynomials]
+ 	Describe the long-run behavior of each of polynomial functions in
+ 	\crefrange{poly:prob:degree5}{poly:prob:degree2}.
+ 	\begin{shortsolution}
+ 		$\dd\lim_{x\rightarrow-\infty}p(x)=-\infty$,
+ 		$\dd\lim_{x\rightarrow\infty}p(x)=\infty$,
+ 		$\dd\lim_{x\rightarrow-\infty}q(x)=\infty$,
+ 		$\dd\lim_{x\rightarrow\infty}q(x)=-\infty$,
+ 		$\dd\lim_{x\rightarrow-\infty}r(x)=-\infty$,
+ 		$\dd\lim_{x\rightarrow\infty}r(x)=\infty$,
+ 		$\dd\lim_{x\rightarrow-\infty}s(x)=\infty$,
+ 		$\dd\lim_{x\rightarrow\infty}s(x)=\infty$,
+ 	\end{shortsolution}
+ 	\end{problem}
+
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[True of false?]
+ 	Let $p$ be a polynomial function.
+ 	Label each of the following statements as true (T) or false (F); if they are false,
+ 	provide an example that supports your answer.
+ 	\begin{subproblem}
+ 		If $p$ has degree $3$, then $p$ has $3$ distinct zeros.
+ 		\begin{shortsolution}
+ 			False. Consider $p(x)=x^2(x+1)$ which has only 2 distinct zeros.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		If $p$ has degree $4$, then $\dd\lim_{x\rightarrow-\infty}p(x)=\infty$ and $\dd\lim_{x\rightarrow\infty}p(x)=\infty$.
+ 		\begin{shortsolution}
+ 			False. Consider $p(x)=-x^4$.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		If $p$ has even degree, then it is possible that $p$ can have no real zeros.
+ 		\begin{shortsolution}
+ 			True.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		If $p$ has odd degree, then it is possible that $p$ can have no real zeros.
+ 		\begin{shortsolution}
+ 			False. All odd degree polynomials will cut the horizontal axis at least once.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   May 2011
+ 	%===================================
+ 	\begin{problem}[Find a formula from a description]
+ 	In each of the following problems, give a possible formula for a polynomial
+ 	function that has the specified properties.
+ 	\begin{subproblem}
+ 		Degree 2 and has zeros at $4$ and $5$.
+ 		\begin{shortsolution}
+ 			Possible option: $p(x)=(x-4)(x-5)$. Note we could multiply $p$ by any real number, and still meet the requirements.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Degree 3 and has zeros at $4$,$5$ and $-3$.
+ 		\begin{shortsolution}
+ 			Possible option: $p(x)=(x-4)(x-5)(x+3)$. Note we could multiply $p$ by any real number, and still meet the requirements.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Degree 4 and has zeros at $0$, $4$, $5$, $-3$.
+ 		\begin{shortsolution}
+ 			Possible option: $p(x)=x(x-4)(x-5)(x+3)$. Note we could multiply $p$ by any real number, and still meet the requirements.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Degree 4, with zeros that make the graph cut at $2$, $-5$, and a zero that makes the graph touch at $-2$;
+ 		\begin{shortsolution}
+ 			Possible option: $p(x)=(x-2)(x+5)(x+2)^2$. Note we could multiply $p$ by any real number, and still meet the requirements.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Degree 3, with only one zero at $-1$.
+ 		\begin{shortsolution}
+ 			Possible option: $p(x)=(x+1)^3$. Note we could multiply $p$ by any real number, and still meet the requirements.
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}
+ 	%===================================
+ 	%   Author: Hughes
+ 	%   Date:   June 2012
+ 	%===================================
+ 	\begin{problem}[\Cref{poly:step:last}]
+ 	\pccname{Saheed} is graphing a polynomial function, $p$.
+ 	He is following \crefrange{poly:step:first}{poly:step:last} and has so far
+ 	marked the zeros of $p$ on \cref{poly:fig:optionsp1}. Saheed tells you that
+ 	$p$ has degree $3$, but does \emph{not} say if the leading coefficient
+ 	of $p$ is positive or negative.
+ 	\begin{figure}[!htbp]
+ 		\begin{widepage}
+ 		\begin{subfigure}{.45\textwidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\textwidth,
+ 						height=.5\textwidth,
+ 					]
+ 					\addplot[soldot] coordinates{(-5,0)(2,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:optionsp1}
+ 		\end{subfigure}%
+ 		\hfill
+ 		\begin{subfigure}{.45\textwidth}
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\textwidth,
+ 						height=.5\textwidth,
+ 					]
+ 					\addplot[soldot] coordinates{(-5,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 			\caption{}
+ 			\label{poly:fig:optionsp2}
+ 		\end{subfigure}%
+ 		\caption{}
+ 		\end{widepage}
+ 	\end{figure}
+ 	\begin{subproblem}
+ 		Use the information in \cref{poly:fig:optionsp1} to help sketch $p$, assuming that the leading coefficient
+ 		is positive.
+ 		\begin{shortsolution}
+ 			Assuming that $a_3>0$:
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-6.78179:8.35598,samples=50]{1/20*(x+5)*(x-2)*(x-6)};
+ 					\addplot[soldot] coordinates{(-5,0)(2,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Use the information in \cref{poly:fig:optionsp1} to help sketch $p$, assuming that the leading coefficient
+ 		is negative.
+ 		\begin{shortsolution}
+ 			Assuming that $a_3<0$:
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-6.78179:8.35598,samples=50]{-1/20*(x+5)*(x-2)*(x-6)};
+ 					\addplot[soldot] coordinates{(-5,0)(2,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	Saheed now turns his attention to another polynomial function, $q$. He finds
+ 	the zeros of $q$ (there are only $2$) and marks them on \cref{poly:fig:optionsp2}.
+ 	Saheed knows that $q$ has degree $3$, but doesn't know if the leading
+ 	coefficient is positive or negative.
+ 	\begin{subproblem}
+ 		Use the information in \cref{poly:fig:optionsp2} to help sketch $q$, assuming that the leading
+ 		coefficient of $q$ is positive. Hint: only one of the zeros is simple.
+ 		\begin{shortsolution}
+ 			Assuming that $a_4>0$ there are $2$ different options:
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-8.68983:7.31809,samples=50]{1/20*(x+5)^2*(x-6)};
+ 					\addplot expression[domain=-6.31809:9.68893,samples=50]{1/20*(x+5)*(x-6)^2};
+ 					\addplot[soldot] coordinates{(-5,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\begin{subproblem}
+ 		Use the information in \cref{poly:fig:optionsp2} to help sketch $q$, assuming that the leading
+ 		coefficient of $q$ is negative.
+ 		\begin{shortsolution}
+ 			Assuming that $a_4<0$ there are $2$ different options:
+
+ 			\begin{tikzpicture}
+ 				\begin{axis}[
+ 						xmin=-10,xmax=10,
+ 						ymin=-10,ymax=10,
+ 						xtick={-8,-6,...,8},
+ 						ytick={-15},
+ 						width=\solutionfigurewidth,
+ 					]
+ 					\addplot expression[domain=-8.68983:7.31809,samples=50]{-1/20*(x+5)^2*(x-6)};
+ 					\addplot expression[domain=-6.31809:9.68893,samples=50]{-1/20*(x+5)*(x-6)^2};
+ 					\addplot[soldot] coordinates{(-5,0)(6,0)};
+ 				\end{axis}
+ 			\end{tikzpicture}
+ 		\end{shortsolution}
+ 	\end{subproblem}
+ 	\end{problem}

@@ -2,8 +2,8 @@
 
 # A little script to help me run through test cases
 
-#echo latexindent.pl -w -t -l=table5.yaml -s table5
-#latexindent.pl -w -t -l=table5.yaml -s table5
+#echo latexindent.pl -w -l=table5.yaml -s table5
+#latexindent.pl -w -l=table5.yaml -s table5
 
 silentMode=0
 silentModeFlag=''

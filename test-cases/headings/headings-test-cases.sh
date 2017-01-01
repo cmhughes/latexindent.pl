@@ -26,19 +26,19 @@ latexindent.pl -s customHeadings.tex -o customHeadings3.tex -l custom3.yaml
 
 # modifyLineBreaks experiments
 # levels1.yaml
-latexindent.pl -s headings-single-line.tex -o headings-single-line-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -tt -m
-latexindent.pl -s headings-single-line-simple.tex -o headings-single-line-simple-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -tt -m
-latexindent.pl -s headings-single-line.tex -o headings-single-line-comment-mod1.tex  -l=levels1.yaml,headingStartOwnLineComment.yaml -tt -m
+latexindent.pl -s headings-single-line.tex -o headings-single-line-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -m
+latexindent.pl -s headings-single-line-simple.tex -o headings-single-line-simple-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -m
+latexindent.pl -s headings-single-line.tex -o headings-single-line-comment-mod1.tex  -l=levels1.yaml,headingStartOwnLineComment.yaml -m
 latexindent.pl -s headings-blank-line.tex -o headings-blank-line-default.tex 
-latexindent.pl -s headings-blank-line.tex -o headings-blank-line-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -tt -m
-latexindent.pl -s headings-blank-line.tex -o headings-remove-blank-line-mod1.tex  -l=levels1.yaml,headingNotStartOwnLine.yaml -tt -m
+latexindent.pl -s headings-blank-line.tex -o headings-blank-line-mod1.tex  -l=levels1.yaml,headingStartOnOwnLine.yaml -m
+latexindent.pl -s headings-blank-line.tex -o headings-remove-blank-line-mod1.tex  -l=levels1.yaml,headingNotStartOwnLine.yaml -m
 # levels2.yaml
-latexindent.pl -s headings-single-line.tex -o headings-single-line-mod2.tex  -l=levels2.yaml,headingStartOnOwnLine.yaml -tt -m -g=one.log
-latexindent.pl -s headings-single-line.tex -o headings-single-line-comment-mod2.tex  -l=levels2.yaml,headingStartOwnLineComment.yaml -tt -m
+latexindent.pl -s headings-single-line.tex -o headings-single-line-mod2.tex  -l=levels2.yaml,headingStartOnOwnLine.yaml -m -g=one.log
+latexindent.pl -s headings-single-line.tex -o headings-single-line-comment-mod2.tex  -l=levels2.yaml,headingStartOwnLineComment.yaml -m
 # single line, with many titles
-latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod1.tex -l=levels1.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml -tt -m
-latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod2.tex -l=levels2.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -tt -m
-latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod3.tex -l=levels3.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -tt -m
+latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod1.tex -l=levels1.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml -m
+latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod2.tex -l=levels2.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -m
+latexindent.pl -s headings-single-line-many.tex -o headings-single-line-many-mod3.tex -l=levels3.yaml,headingStartOnOwnLine.yaml,../specials/special-mod1.yaml  -m
 # headings with stars at different levels
 latexindent.pl -s headings-names-with-stars.tex -o headings-names-with-stars-mod5.tex -l=levels5.yaml
 latexindent.pl -s headings-names-with-stars.tex -o headings-names-with-stars-mod6.tex -l=levels6.yaml

@@ -11,13 +11,13 @@
 latexindent.pl -m -s environments-opt-mand-args1.tex -o=environments-opt-mand-args1-default.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml
 latexindent.pl -m -s environments-opt-mand-args1.tex -o=environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAll-mand.yaml,addPercentAll-opts.yaml
 # remove linebreaks
-latexindent.pl -tt -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod1.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod5.yaml,mand-args-mod5.yaml
-latexindent.pl -tt -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod2.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod5.yaml,mand-args-mod5.yaml,unprotect-blank-lines.yaml
+latexindent.pl -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod1.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod5.yaml,mand-args-mod5.yaml
+latexindent.pl -m -s environments-opt-mand-args1-remove-linebreaks1.tex -o=environments-opt-mand-args1-remove-linebreaks1-mod2.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod5.yaml,mand-args-mod5.yaml,unprotect-blank-lines.yaml
 # noAdditionalIndent
-latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-Global.tex
+latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-Global.tex
 # indentRules
-latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-Global.tex
-latexindent.pl -s -tt environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml,indentRulesGlobalEnv.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-all-Global.tex
+latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-Global.tex
+latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml,indentRulesGlobalEnv.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-all-Global.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit
