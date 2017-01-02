@@ -253,9 +253,8 @@ sub indent_children_recursively{
           foreach my $child (@{${$self}{children}}){
             $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading.trace');
             if(${$self}{body} =~ m/${$child}{id}/s){
-                ${$self}{body} =~ m/^(.*?)\h*${$child}{id}\h*(\R*)/m;
-                my $IDFirstNonWhiteSpaceCharacter = $1?0:1;
-                my $IDFollowedImmediatelyByLineBreak = $2?1:0;
+                my $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^\h*${$child}{id}/m) ?1:0;
+                my $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R*/m) ?1:0;
 
                 # log file info
                 $self->logger("${$child}{id} found!",'trace') if($is_t_switch_active);
