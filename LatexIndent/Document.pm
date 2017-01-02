@@ -13,9 +13,9 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 use LatexIndent::Tokens qw/token_check %tokens/;
-use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree find_hidden_children operate_on_hidden_children/;
+use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree update_child_id_reg_exp check_for_hidden_children/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
@@ -218,6 +218,12 @@ sub tasks_common_to_each_object{
       }
     }
 
+    # natural ancestors
+    ${$self}{naturalAncestors} = q();
+    if(${$self}{ancestors}){
+      ${$self}{naturalAncestors} .= "---".${$_}{ancestorID}."\n" for @{${$self}{ancestors}};
+    }
+
     # in what follows, $self can be an environment, ifElseFi, etc
 
     # count linebreaks in body
@@ -243,6 +249,12 @@ sub tasks_common_to_each_object{
 
     # modify line breaks on body and end statements
     $self->modify_line_breaks_body_and_end;
+
+    # check the body for current children
+    $self->check_for_hidden_children;
+
+    # store child ID in $allChildrenIDRegExp 
+    $self->update_child_id_reg_exp;
 
     return;
 }

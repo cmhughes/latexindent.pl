@@ -98,7 +98,7 @@
 			\begin{tabular}{@{}p{17cm}@{}}
 				\parbox{12cm}{
 					\textbf{\@faculty\newline
-										\@modulecode\ \@moduletitle}
+						\@modulecode\ \@moduletitle}
 				}
 				\hfill{\fboxsep=5mm\fboxrule=1.5mm\fbox{\large\sf Specimen Solutions}}\par
 				\medskip
@@ -119,7 +119,7 @@
 				\vspace{0.2cm}\relax
 				\parbox{8cm}{
 					\textbf{\@faculty\newline
-										\@modulecode\ \@moduletitle}
+						\@modulecode\ \@moduletitle}
 				}
 				\hfill{\fboxsep=5mm\fboxrule=1.5mm\fbox{\large\sf Tutor Notes}}\par
 				\medskip

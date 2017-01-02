@@ -16,6 +16,7 @@ sub storeSwitches{
     $is_m_switch_active = defined $switches{modifyLineBreaks}?$switches{modifyLineBreaks}: 0;
     $is_t_switch_active = defined $switches{trace}?$switches{trace}: 0;
     $is_tt_switch_active = defined $switches{ttrace}?$switches{ttrace}: 0;
+    $is_t_switch_active = $is_tt_switch_active ? $is_tt_switch_active : $is_t_switch_active;
     delete ${$self}{switches};
   }
 1;

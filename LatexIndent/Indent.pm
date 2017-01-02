@@ -5,16 +5,11 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::HiddenChildren qw/%familyTree/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 our %familyTree;
-
-sub push_family_tree_to_indent{
-    my $self = shift;
-
-    %familyTree = %{$self->get_family_tree};
-}
 
 sub indent{
     my $self = shift;
@@ -168,7 +163,7 @@ sub put_blank_lines_back_in_at_beginning{
 
 sub indent_end_statement{
     my $self = shift;
-    my $surroundingIndentation = (${$self}{surroundingIndentation} and ${$self}{hiddenChildYesNo})
+    my $surroundingIndentation = (${$self}{surroundingIndentation} and $familyTree{${$self}{id}})
                                             ?
                                  (ref(${$self}{surroundingIndentation}) eq 'SCALAR'?${${$self}{surroundingIndentation}}:${$self}{surroundingIndentation})
                                             :q();

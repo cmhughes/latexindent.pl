@@ -4,25 +4,31 @@ use warnings;
 use Exporter qw/import/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 our @EXPORT_OK = qw/token_check %tokens/;
+
+# each of the tokens begins the same way -- this is exploited during the hidden Children routine
+my $beginningToken = "LTXIN-TK-";
+
+# the %tokens hash is passed around many modules
 our %tokens = (
-                environment=>"LATEX-INDENT-ENVIRONMENT",
-                ifelsefi=>"!-!LATEX-INDENT-IFELSEFI", 
-                item=>"LATEX-INDENT-ITEMS",
+                environment=>$beginningToken."ENVIRONMENT",
+                ifelsefi=>"!-!".$beginningToken."IFELSEFI", 
+                item=>$beginningToken."ITEMS",
                 trailingComment=>"latexindenttrailingcomment", 
-                blanklines=>"latex-indent-blank-line",
-                arguments=>"LATEX-INDENT-ARGUMENTS",
-                optionalArgument=>"LATEX-INDENT-OPTIONAL-ARGUMENT",
-                mandatoryArgument=>"LATEX-INDENT-MANDATORY-ARGUMENT",
-                verbatim=>"LATEX-INDENT-VERBATIM",
-                indentation=>"LATEX-INDENT-INDENTATION",
-                command=>"LATEX-INDENT-COMMAND",
-                key_equals_values_braces=>"LATEX-INDENT-KEY-VALUE-BRACES",
-                groupingBraces=>"LATEX-INDENT-GROUPING-BRACES",
-                unNamedgroupingBraces=>"LATEX-INDENT-UN-NAMED-GROUPING-BRACES",
-                special=>"LATEX-INDENT-SPECIAL",
-                heading=>"LATEX-INDENT-HEADING",
-                filecontents=>"LATEX-INDENT-FILECONTENTS",
-                preamble=>"latex-indent-preamble",
+                blanklines=>$beginningToken."blank-line",
+                arguments=>$beginningToken."ARGUMENTS",
+                optionalArgument=>$beginningToken."OPTIONAL-ARGUMENT",
+                mandatoryArgument=>$beginningToken."MANDATORY-ARGUMENT",
+                verbatim=>$beginningToken."VERBATIM",
+                indentation=>$beginningToken."INDENTATION",
+                command=>$beginningToken."COMMAND",
+                key_equals_values_braces=>$beginningToken."KEY-VALUE-BRACES",
+                groupingBraces=>$beginningToken."GROUPING-BRACES",
+                unNamedgroupingBraces=>$beginningToken."UN-NAMED-GROUPING-BRACES",
+                special=>$beginningToken."SPECIAL",
+                heading=>$beginningToken."HEADING",
+                filecontents=>$beginningToken."FILECONTENTS",
+                preamble=>$beginningToken."preamble",
+                beginOfToken=>$beginningToken,
                 endOfToken=>"-END",
               );
 
