@@ -16,8 +16,6 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree update_child_id_reg_exp check_for_hidden_children/;
-use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
-use LatexIndent::Preamble;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
 
 # code blocks
@@ -35,6 +33,8 @@ use LatexIndent::NamedGroupingBracesBrackets qw/get_grouping_braces_brackets_reg
 use LatexIndent::UnNamedGroupingBracesBrackets qw/get_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special qw/find_special construct_special_begin/;
 use LatexIndent::Heading qw/find_heading construct_headings_levels/;
+use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
+use LatexIndent::Preamble;
 
 sub new{
     # Create new objects, with optional key/value pairs
@@ -108,7 +108,7 @@ sub process_body_of_text{
 
     # find objects recursively
     $self->logger('Phase 1: searching for objects','heading');
-    $self->find_objects_recursively;
+    $self->find_objects;
 
     # find all hidden child
     $self->logger('Phase 2: finding surrounding indentation','heading');
@@ -130,7 +130,7 @@ sub process_body_of_text{
     return;
 }
 
-sub find_objects_recursively{
+sub find_objects{
     my $self = shift;
 
     # search for environments
@@ -166,12 +166,6 @@ sub find_objects_recursively{
     $self->logger("Operating on: ${$self}{name}",'heading');
     $self->logger("Number of children:",'heading');
     $self->logger(scalar (@{${$self}{children}}));
-
-    # send each child through this routine
-    foreach my $child (@{${$self}{children}}){
-        $self->logger("Searching ${$child}{name} recursively for objects...",'heading');
-        $child->find_objects_recursively;
-    }
 
     return;
 }

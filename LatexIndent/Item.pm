@@ -99,4 +99,24 @@ sub create_unique_id{
     return;
 }
 
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    # search for ifElseFi blocks
+    $self->logger('looking for IFELSEFI');
+    $self->find_ifelsefi;
+
+    # search for headings (part, chapter, section, setc)
+    $self->logger('looking for HEADINGS (chapter, section, part, etc)');
+    $self->find_heading;
+    
+    # search for commands with arguments
+    $self->logger('looking for COMMANDS and key = {value}');
+    $self->find_commands_or_key_equals_values_braces;
+
+    # search for special begin/end
+    $self->logger('looking for SPECIAL begin/end');
+    $self->find_special;
+
+}
 1;

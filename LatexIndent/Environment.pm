@@ -88,6 +88,12 @@ sub tasks_particular_to_each_object{
     # search for arguments
     $self->find_opt_mand_arguments;
 
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
+    # search for special begin/end
+    $self->find_special;
+
 }
 
 sub create_unique_id{

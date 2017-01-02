@@ -205,6 +205,9 @@ sub tasks_particular_to_each_object{
         }
     }
 
+    # search for special begin/end
+    $self->find_special;
+
     return;
 }
 

@@ -110,6 +110,13 @@ sub tasks_particular_to_each_object{
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body}=~s/\R$//s;
     }
+
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
+    # search for special begin/end
+    $self->find_special;
+
 }
 
 sub check_linebreaks_before_equals{

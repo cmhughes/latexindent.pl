@@ -14,6 +14,7 @@ our @EXPORT_OK = qw/find_special construct_special_begin/;
 our $specialCounter;
 our $specialBegins = q();
 our $specialAllMatchesRegExp = q();
+our %individualSpecialRegExps;
 
 sub construct_special_begin{
     my $self = shift;
@@ -43,6 +44,29 @@ sub construct_special_begin{
                                     )*?                 
                                     ${$BeginEnd}{end}
                              /sx;
+
+        # store the individual special regexp
+        $individualSpecialRegExps{$specialName} = qr/
+                                  (
+                                      ${$BeginEnd}{begin}
+                                      \h*
+                                      (\R*)?
+                                  )
+                                  (
+                                      (?:                        # cluster-only (), don't capture 
+                                          (?!             
+                                              (?:$specialBegins) # cluster-only (), don't capture
+                                          ).                     # any character, but not anything in $specialBegins
+                                      )*?                 
+                                     (\R*)?
+                                  )                       
+                                  (
+                                    ${$BeginEnd}{end}
+                                    \h*
+                                  )
+                                  (\R)?
+                               /sx
+
         } else {
             $self->logger("The special regexps won't include anything from $specialName (see lookForThis)",'heading');
         }
@@ -87,26 +111,7 @@ sub find_special{
             }
 
             # the regexp
-            my $specialRegExp = qr/
-                                  (
-                                      ${$BeginEnd}{begin}
-                                      \h*
-                                      (\R*)?
-                                  )
-                                  (
-                                      (?:                        # cluster-only (), don't capture 
-                                          (?!             
-                                              (?:$specialBegins) # cluster-only (), don't capture
-                                          ).                     # any character, but not anything in $specialBegins
-                                      )*?                 
-                                     (\R*)?
-                                  )                       
-                                  (
-                                    ${$BeginEnd}{end}
-                                    \h*
-                                  )
-                                  (\R)?
-                               /sx;
+            my $specialRegExp = $individualSpecialRegExps{$specialName};
             
             while(${$self}{body} =~ m/$specialRegExp\h*($trailingCommentRegExp)?/){
 

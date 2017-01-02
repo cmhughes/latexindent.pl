@@ -171,6 +171,7 @@ sub find_file_contents_environments_and_preamble{
               if($indentThisChild){
                     $_->remove_leading_space;
                     $_->get_indentation_settings_for_this_object;
+                    $_->tasks_particular_to_each_object;
                     push(@{${$self}{children}},$_);
               }
     }
@@ -178,6 +179,7 @@ sub find_file_contents_environments_and_preamble{
     if($needToStorePreamble){
         $preamble->remove_leading_space;
         $preamble->find_commands_or_key_equals_values_braces if($masterSettings{preambleCommandsBeforeEnvironments});
+        $preamble->tasks_particular_to_each_object;
         push(@{${$self}{children}},$preamble);
     }
     return;
@@ -189,6 +191,27 @@ sub create_unique_id{
     $fileContentsCounter++;
     ${$self}{id} = "$tokens{filecontents}$fileContentsCounter$tokens{endOfToken}";
     return;
+}
+
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    # search for environments
+    $self->find_environments;
+
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
+    # search for headings (part, chapter, section, setc)
+    $self->find_heading;
+    
+    # search for commands with arguments
+    $self->find_commands_or_key_equals_values_braces;
+
+    # search for special begin/end
+    $self->find_special;
+
+
 }
 
 1;

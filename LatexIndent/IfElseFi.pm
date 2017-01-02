@@ -127,6 +127,21 @@ sub tasks_particular_to_each_object{
     # check for existence of \else statement, and associated line break information
     $self->check_for_else_statement;
 
+    # search for headings (important to do this before looking for commands!)
+    $self->find_heading;
+
+    # search for commands, keys, named grouping braces
+    $self->find_commands_or_key_equals_values_braces;
+
+    # search for arguments
+    $self->find_opt_mand_arguments;
+
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
+    # search for special begin/end
+    $self->find_special;
+
 }
 
 sub create_unique_id{

@@ -101,5 +101,15 @@ sub update_child_id_reg_exp{
     return;
   }
 
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
+    # search for special begin/end
+    $self->find_special;
+
+}
 
 1;
