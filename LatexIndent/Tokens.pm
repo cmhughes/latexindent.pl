@@ -19,7 +19,6 @@ our %tokens = (
                 optionalArgument=>$beginningToken."OPTIONAL-ARGUMENT",
                 mandatoryArgument=>$beginningToken."MANDATORY-ARGUMENT",
                 verbatim=>$beginningToken."VERBATIM",
-                indentation=>$beginningToken."INDENTATION",
                 command=>$beginningToken."COMMAND",
                 key_equals_values_braces=>$beginningToken."KEY-VALUE-BRACES",
                 groupingBraces=>$beginningToken."GROUPING-BRACES",

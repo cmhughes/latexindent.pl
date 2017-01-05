@@ -187,42 +187,26 @@ sub final_indentation_check{
 
     my $self = shift;
 
-    my $indentationCounter;
-    my @indentationTokens;
+    my $indentation;
+    my $numberOfTABS; 
+    my $after;
+    ${$self}{body} =~ s/
+                        ^((\h*|\t*)((\h+)(\t+))+)
+                        /   
+                        # fix the indentation
+                        $indentation = $1;
 
-    while(${$self}{body} =~ m/^((\h*|\t*)((\h+)(\t+))+)(.*)/mg){
-        # replace offending indentation with a token
-        $indentationCounter++;
-        my $indentationToken = "$tokens{indentation}$indentationCounter$tokens{endOfToken}";
-        my $lineDetails = $6;
-        ${$self}{body} =~ s/^((\h*|\t*)((\h+)(\t+))+)/$indentationToken/m;
+                        # count the number of tabs
+                        $numberOfTABS = () = $indentation=~ \/\t\/g;
+                        $self->logger("Number of tabs: $numberOfTABS",'trace') if($is_t_switch_active);
 
-        $self->logger("Final indentation check: tabs found after spaces -- rearranging so that spaces follow tabs",'trace') if($is_t_switch_active);
-
-        # fix the indentation
-        my $indentation = $1;
-
-        # log the before
-        (my $before = $indentation) =~ s/\t/TAB/g;
-        $self->logger("Indentation before: '$before'",'trace') if($is_t_switch_active);
-
-        my $numberOfTABS = () = $indentation=~ /\t/g;
-        $self->logger("Number of tabs: $numberOfTABS",'trace') if($is_t_switch_active);
-
-        # log the after
-        (my $after = $indentation) =~ s/\t//g;
-        $after = "TAB"x$numberOfTABS.$after;
-        $self->logger("Indentation after: '$after'",'trace') if($is_t_switch_active);
-        ($indentation = $after) =~s/TAB/\t/g;
-
-        # store it
-        push(@indentationTokens,{id=>$indentationToken,value=>$indentation});
-    }
-
-    # loop back through the body and replace tokens with updated values
-    foreach (@indentationTokens){
-        ${$self}{body} =~ s/${$_}{id}/${$_}{value}/;
-    }
+                        # log the after
+                        ($after = $indentation) =~ s|\t||g;
+                        $after = "TAB"x$numberOfTABS.$after;
+                        $self->logger("Indentation after: '$after'",'trace') if($is_t_switch_active);
+                        ($indentation = $after) =~s|TAB|\t|g;
+                        $indentation;
+                       /xsmeg;
 
 }
 
