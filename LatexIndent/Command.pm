@@ -5,32 +5,34 @@ package LatexIndent::Command;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_command_regexp/;
+our @EXPORT_OK = qw/construct_command_regexp $commandRegExp $commandRegExpTrailingComment/;
 our $commandCounter;
+our $commandRegExp;
+our $commandRegExpTrailingComment; 
 
-sub get_command_regexp{
-
+# store the regular expresssion for matching and replacing 
+sub construct_command_regexp{
     my $self = shift;
 
-    # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
+    $commandRegExp = qr/
+              (\\|@)   
+              (
+               [a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
+              )                
+              (\h*)
+              (\R*)?
+              ($optAndMandRegExp)
+              (\R)?
+            /sx;
 
-    # store the regular expresssion for matching and replacing 
-    my $commandRegExp = qr/
-                  (\\|@)   
-                  (
-                   [a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
-                  )                
-                  (\h*)
-                  (\R*)?
-                  ($optAndMandRegExp)
-                  (\R)?
-                /sx;
+    # command regexp with trailing comment
+    $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)/;
 
-    return $commandRegExp;
 }
 
 sub tasks_particular_to_each_object{

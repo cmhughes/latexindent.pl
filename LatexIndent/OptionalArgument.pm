@@ -10,26 +10,25 @@ use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_optional_arguments/;
 our $optionalArgumentCounter;
+our $optArgRegExp = qr/      
+                               (?<!\\)     # not immediately pre-ceeded by \
+                               (
+                                \[
+                                   \h*
+                                   (\R*)
+                               )
+                               (.*?)
+                               (\R*)
+                               (?<!\\)     # not immediately pre-ceeded by \
+                               (
+                                \]          # [optional arguments]
+                                \h*
+                               )
+                               (\R)?
+                           /sx;
 
 sub find_optional_arguments{
     my $self = shift;
-
-    my $optArgRegExp = qr/      
-                                   (?<!\\)     # not immediately pre-ceeded by \
-                                   (
-                                    \[
-                                       \h*
-                                       (\R*)
-                                   )
-                                   (.*?)
-                                   (\R*)
-                                   (?<!\\)     # not immediately pre-ceeded by \
-                                   (
-                                    \]          # [optional arguments]
-                                    \h*
-                                   )
-                                   (\R)?
-                               /sx;
 
     # pick out the optional arguments
     while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){

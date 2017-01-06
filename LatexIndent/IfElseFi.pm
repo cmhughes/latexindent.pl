@@ -14,6 +14,32 @@ our @EXPORT_OK = qw/find_ifelsefi/;
 our %previouslyFoundSettings;
 our $ifElseFiCounter;
 
+# store the regular expresssion for matching and replacing the \if...\else...\fi statements
+# note: we search for \else separately in an attempt to keep this regexp a little more managable
+our $ifElseFiRegExp = qr/
+                (
+                    \\
+                        (@?if[a-zA-Z@]*?)
+                    \h*
+                    (\R*)
+                )                           # begin statement, e.g \ifnum, \ifodd
+                (
+                    \\(?!if)|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                )                           # part of the tokens used for latexindent
+                (
+                    (?: 
+                        (?!\\if).
+                    )*?                     # body, which can't include another \if
+                )
+                (\R*)                       # linebreaks after body
+                (
+                    \\fi                    # \fi statement 
+                    \h*                     # 0 or more horizontal spaces
+                )
+                (\R)?                       # linebreaks after \fi
+/sx;
+
+
 sub indent{
     my $self = shift;
 
@@ -59,31 +85,6 @@ sub indent{
 
 sub find_ifelsefi{
     my $self = shift;
-
-    # store the regular expresssion for matching and replacing the \if...\else...\fi statements
-    # note: we search for \else separately in an attempt to keep this regexp a little more managable
-    my $ifElseFiRegExp = qr/
-                    (
-                        \\
-                            (@?if[a-zA-Z@]*?)
-                        \h*
-                        (\R*)
-                    )                           # begin statement, e.g \ifnum, \ifodd
-                    (
-                        \\(?!if)|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
-                    )                           # part of the tokens used for latexindent
-                    (
-                        (?: 
-                            (?!\\if).
-                        )*?                     # body, which can't include another \if
-                    )
-                    (\R*)                       # linebreaks after body
-                    (
-                        \\fi                    # \fi statement 
-                        \h*                     # 0 or more horizontal spaces
-                    )
-                    (\R)?                       # linebreaks after \fi
-    /sx;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp\h*($trailingCommentRegExp)?/){
       # log file output

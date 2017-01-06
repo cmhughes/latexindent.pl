@@ -9,10 +9,12 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_unnamed_grouping_braces_brackets_regexp/;
+our @EXPORT_OK = qw/construct_unnamed_grouping_braces_brackets_regexp $un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 our $unNamedGroupingBracesCounter;
+our $un_named_grouping_braces_RegExp;
+our $un_named_grouping_braces_RegExp_trailing_comment; 
 
-sub get_unnamed_grouping_braces_brackets_regexp{
+sub construct_unnamed_grouping_braces_brackets_regexp{
     my $self = shift;
 
     # grab the arguments regexp
@@ -25,7 +27,7 @@ sub get_unnamed_grouping_braces_brackets_regexp{
     my $numberedArgRegExp = $self->get_numbered_arg_regexp;
 
     # store the regular expresssion for matching and replacing 
-    my $un_named_grouping_braces_RegExp = qr/
+    $un_named_grouping_braces_RegExp = qr/
                   # NOT
                   (?!
                       (?:
@@ -47,7 +49,7 @@ sub get_unnamed_grouping_braces_brackets_regexp{
                   (\R)?                 # $6 linebreak 
                 /sx;
 
-    return $un_named_grouping_braces_RegExp; 
+    $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp\h*((?:$trailingCommentRegExp\h*)*)?/; 
 }
 
 sub create_unique_id{

@@ -5,6 +5,10 @@ package LatexIndent::Braces;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Command qw/$commandRegExp $commandRegExpTrailingComment/;
+use LatexIndent::KeyEqualsValuesBraces qw/$key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
+use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
+use LatexIndent::UnNamedGroupingBracesBrackets qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -17,36 +21,12 @@ sub find_commands_or_key_equals_values_braces{
 
     $self->logger("Searching for commands with optional and/or mandatory arguments AND key = {value}",'heading');
 
-    # store the regular expresssion for matching and replacing 
-    my $commandRegExp = $self->get_command_regexp;
-
-    # key = {value} regexp
-    my $key_equals_values_bracesRegExp = $self->get_key_equals_values_regexp;
-
-    # something {value} or something [value] regexp
-    my $grouping_braces_regexp = $self->get_grouping_braces_brackets_regexp;
-
-    # {something} or [something] regexp (unnamed grouping braces)
-    my $un_named_grouping_braces_RegExp = $self->get_unnamed_grouping_braces_brackets_regexp; 
-
-    # command regexp with trailing comment
-    my $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)/;
-
-    # key ={value} regexp with trailing comment
-    my $key_equals_values_bracesRegExpTrailingComment = qr/$key_equals_values_bracesRegExp\h*((?:$trailingCommentRegExp\h*)*)?/;
-
-    # something {value} grouping braces with trailing comment
-    my $grouping_braces_regexpTrailingComment = qr/$grouping_braces_regexp\h*((?:$trailingCommentRegExp\h*)*)?/;
-
-    # {something} or [something] with trailing comment
-    my $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp\h*((?:$trailingCommentRegExp\h*)*)?/; 
-
     # match either a \\command or key={value}
     while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
                             or  
            ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
                             or
-           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ 
+           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/
                             or
            ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/
          ){

@@ -8,17 +8,19 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_grouping_braces_brackets_regexp/;
+our @EXPORT_OK = qw/construct_grouping_braces_brackets_regexp $grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
 our $groupingBracesCounter;
+our $grouping_braces_regexp; 
+our $grouping_braces_regexpTrailingComment; 
 
-sub get_grouping_braces_brackets_regexp{
+sub construct_grouping_braces_brackets_regexp{
     my $self = shift;
 
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
     # store the regular expresssion for matching and replacing 
-    my $grouping_braces_RegExp = qr/
+    $grouping_braces_regexp = qr/
                   (
                      \h|\R|\{|\[
                   )
@@ -31,7 +33,9 @@ sub get_grouping_braces_brackets_regexp{
                   (\R)?                # $8 linebreak 
                 /sx;
 
-    return $grouping_braces_RegExp; 
+    # something {value} grouping braces with trailing comment
+    $grouping_braces_regexpTrailingComment = qr/$grouping_braces_regexp\h*((?:$trailingCommentRegExp\h*)*)?/;
+
 }
 
 sub create_unique_id{

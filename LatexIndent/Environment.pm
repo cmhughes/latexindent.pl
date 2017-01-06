@@ -13,34 +13,35 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/find_environments/;
 our $environmentCounter;
 
+# store the regular expresssion for matching and replacing the \begin{}...\end{} statements
+our $environmentRegExp = qr/
+            (
+                \\begin\{
+                        (
+                         [a-zA-Z@\*0-9_\\]+ # lowercase|uppercase letters, @, *, numbers
+                        )                 # environment name captured into $2
+                       \}                 # \begin{<something>} statement
+                       \h*                # horizontal space
+                       (\R*)?             # possible line breaks (into $3)
+            )                             # begin statement captured into $1
+            (
+                (?:                       # cluster-only (), don't capture 
+                    (?!                   # don't include \begin in the body
+                        (?:\\begin)       # cluster-only (), don't capture
+                    ).                    # any character, but not \\begin
+                )*?                       # non-greedy
+                        (\R*)?            # possible line breaks (into $5)
+            )                             # environment body captured into $4
+            (
+                \\end\{\2\}               # \end{<something>} statement
+                (\h*)?                    # possibly followed by horizontal space
+            )                             # captured into $6
+            (\R)?                         # possibly followed by a line break 
+            /sx;
+
 sub find_environments{
     my $self = shift;
 
-    # store the regular expresssion for matching and replacing the \begin{}...\end{} statements
-    my $environmentRegExp = qr/
-                (
-                    \\begin\{
-                            (
-                             [a-zA-Z@\*0-9_\\]+ # lowercase|uppercase letters, @, *, numbers
-                            )                 # environment name captured into $2
-                           \}                 # \begin{<something>} statement
-                           \h*                # horizontal space
-                           (\R*)?             # possible line breaks (into $3)
-                )                             # begin statement captured into $1
-                (
-                    (?:                       # cluster-only (), don't capture 
-                        (?!                   # don't include \begin in the body
-                            (?:\\begin)       # cluster-only (), don't capture
-                        ).                    # any character, but not \\begin
-                    )*?                       # non-greedy
-                            (\R*)?            # possible line breaks (into $5)
-                )                             # environment body captured into $4
-                (
-                    \\end\{\2\}               # \end{<something>} statement
-                    (\h*)?                    # possibly followed by horizontal space
-                )                             # captured into $6
-                (\R)?                         # possibly followed by a line break 
-                /sx;
 
     while( ${$self}{body} =~ m/$environmentRegExp\h*($trailingCommentRegExp)?/){
       # log file output

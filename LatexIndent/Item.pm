@@ -13,6 +13,7 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/find_items construct_list_of_items/;
 our $itemCounter;
 our $listOfItems = q();
+our $itemRegExp; 
 
 sub construct_list_of_items{
     my $self = shift;
@@ -24,6 +25,23 @@ sub construct_list_of_items{
 
     # detail items in the log
     $self->logger("List of items: $listOfItems (see itemNames)",'heading');
+
+    $itemRegExp = qr/
+                          (
+                              \\($listOfItems)
+                              \h*
+                              (\R*)?
+                          )
+                          (
+                              (?:                 # cluster-only (), don't capture 
+                                  (?!             
+                                      (?:\\(?:$listOfItems)) # cluster-only (), don't capture
+                                  ).              # any character, but not \\$item
+                              )*                 
+                          )                       
+                          (\R)?
+                       /sx;
+    
 
     return;
 }
@@ -40,22 +58,6 @@ sub find_items{
     $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)");
     $self->logger(Dumper(\%{$masterSettings{itemNames}}));
 
-    my $itemRegExp = qr/
-                          (
-                              \\($listOfItems)
-                              \h*
-                              (\R*)?
-                          )
-                          (
-                              (?:                 # cluster-only (), don't capture 
-                                  (?!             
-                                      (?:\\(?:$listOfItems)) # cluster-only (), don't capture
-                                  ).              # any character, but not \\$item
-                              )*                 
-                          )                       
-                          (\R)?
-                       /sx;
-    
     while(${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/){
 
         # log file output

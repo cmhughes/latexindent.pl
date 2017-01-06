@@ -22,15 +22,15 @@ use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
-use LatexIndent::Arguments qw/find_opt_mand_arguments get_arguments_regexp get_numbered_arg_regexp/;
+use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::Item qw/find_items construct_list_of_items/;
 use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
-use LatexIndent::Command qw/get_command_regexp/;
-use LatexIndent::KeyEqualsValuesBraces qw/get_key_equals_values_regexp/;
-use LatexIndent::NamedGroupingBracesBrackets qw/get_grouping_braces_brackets_regexp/;
-use LatexIndent::UnNamedGroupingBracesBrackets qw/get_unnamed_grouping_braces_brackets_regexp/;
+use LatexIndent::Command qw/construct_command_regexp/;
+use LatexIndent::KeyEqualsValuesBraces qw/construct_key_equals_values_regexp/;
+use LatexIndent::NamedGroupingBracesBrackets qw/construct_grouping_braces_brackets_regexp/;
+use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special qw/find_special construct_special_begin/;
 use LatexIndent::Heading qw/find_heading construct_headings_levels/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
@@ -53,6 +53,7 @@ sub operate_on_file{
 
     $self->create_back_up_file;
     $self->token_check;
+    $self->construct_regular_expressions;
     $self->find_noindent_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
@@ -61,9 +62,6 @@ sub operate_on_file{
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
     $self->remove_leading_space;
-    $self->construct_list_of_items;
-    $self->construct_special_begin;
-    $self->construct_headings_levels;
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
@@ -76,6 +74,19 @@ sub operate_on_file{
     $self->output_indented_text;
     $self->output_logfile;
     return
+}
+
+sub construct_regular_expressions{
+    my $self = shift;
+    $self->construct_list_of_items;
+    $self->construct_special_begin;
+    $self->construct_headings_levels;
+    $self->construct_arguments_regexp;
+    $self->construct_command_regexp;
+    $self->construct_key_equals_values_regexp;
+    $self->construct_grouping_braces_brackets_regexp;
+    $self->construct_unnamed_grouping_braces_brackets_regexp;
+
 }
 
 sub output_indented_text{

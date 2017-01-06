@@ -10,10 +10,12 @@ use LatexIndent::Switches qw/$is_m_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_key_equals_values_regexp/;
+our @EXPORT_OK = qw/construct_key_equals_values_regexp $key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
 our $key_equals_values_braces_Counter;
+our $key_equals_values_bracesRegExp; 
+our $key_equals_values_bracesRegExpTrailingComment; 
 
-sub get_key_equals_values_regexp{
+sub construct_key_equals_values_regexp{
     my $self = shift;
 
     # grab the arguments regexp
@@ -23,7 +25,7 @@ sub get_key_equals_values_regexp{
     my $blankLineToken = $tokens{blanklines};
 
     # store the regular expresssion for matching and replacing 
-    my $key_equals_values_bracesRegExp = qr/
+    $key_equals_values_bracesRegExp = qr/
                   (
                     (?:
                        (?:(?<!\\)\{)
@@ -47,7 +49,7 @@ sub get_key_equals_values_regexp{
                   (\R)?                                                 # $9 linebreak at end
                 /sx;
 
-    return $key_equals_values_bracesRegExp; 
+    $key_equals_values_bracesRegExpTrailingComment = qr/$key_equals_values_bracesRegExp\h*((?:$trailingCommentRegExp\h*)*)?/;
 }
 
 sub indent_begin{

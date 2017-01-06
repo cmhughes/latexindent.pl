@@ -10,8 +10,18 @@ use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_opt_mand_arguments get_arguments_regexp get_numbered_arg_regexp/;
+our @EXPORT_OK = qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp $optAndMandRegExp/;
 our $ArgumentCounter;
+our $optAndMandRegExp; 
+our $optAndMandRegExpWithLineBreaks; 
+
+sub construct_arguments_regexp{
+    my $self = shift;
+
+    $optAndMandRegExp = $self->get_arguments_regexp;
+
+    $optAndMandRegExpWithLineBreaks = $self->get_arguments_regexp(mode=>"lineBreaksAtEnd");
+}
 
 sub indent{
     my $self = shift;
@@ -27,10 +37,7 @@ sub find_opt_mand_arguments{
     # blank line token
     my $blankLineToken = $tokens{blanklines};
 
-    # grab the arguments regexp
-    my $optAndMandRegExp = $self->get_arguments_regexp(mode=>"lineBreaksAtEnd");
-
-    if(${$self}{body} =~ m/^$optAndMandRegExp\h*($trailingCommentRegExp)?/){
+    if(${$self}{body} =~ m/^$optAndMandRegExpWithLineBreaks\h*($trailingCommentRegExp)?/){
         $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading.trace');
 
         # create a new Arguments object
@@ -47,7 +54,7 @@ sub find_opt_mand_arguments{
                                                   end=>$2?1:0,
                                                 },
                                                 end=>"",
-                                                regexp=>$optAndMandRegExp,
+                                                regexp=>$optAndMandRegExpWithLineBreaks,
                                                 endImmediatelyFollowedByComment=>$2?0:($3?1:0),
                                               );
 
@@ -195,8 +202,7 @@ sub get_arguments_regexp{
     my $numberedArgRegExp = $self->get_numbered_arg_regexp;
 
     # arguments regexp
-    my $optAndMandRegExp = 
-                        qr/
+    return qr/
                           (                          # capture into $1
                              (?:                  
                                 (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)* 
@@ -244,7 +250,6 @@ sub get_arguments_regexp{
                              ($lineBreaksAtEnd)
                           )                  
                           /sx;
-    return $optAndMandRegExp; 
 }
 
 1;
