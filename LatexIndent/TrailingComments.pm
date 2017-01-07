@@ -5,10 +5,14 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol/;
+our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp/;
 our @trailingComments;
 our $commentCounter = 0;
-our $trailingCommentRegExp = qr/(?<!\\)%$tokens{trailingComment}\d+$tokens{endOfToken}/;
+our $trailingCommentRegExp;
+
+sub construct_trailing_comment_regexp{
+    $trailingCommentRegExp = qr/(?<!\\)%$tokens{trailingComment}\d+$tokens{endOfToken}/;
+}
 
 sub add_comment_symbol{
     # add a trailing comment token after, for example, a square brace [
@@ -51,10 +55,10 @@ sub remove_trailing_comments{
                             "%".$tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
                        /xsmeg;
     if(@trailingComments){
-        $self->logger("Trailing comments stored in:",'trace') if($is_t_switch_active);
-        $self->logger(Dumper(\@trailingComments),'trace') if($is_t_switch_active);
+        $self->logger("Trailing comments stored in:") if($is_t_switch_active);
+        $self->logger(Dumper(\@trailingComments)) if($is_t_switch_active);
     } else {
-        $self->logger("No trailing comments found",'trace') if($is_t_switch_active);
+        $self->logger("No trailing comments found") if($is_t_switch_active);
     }
     return;
 }
@@ -85,7 +89,7 @@ sub put_trailing_comments_back_in{
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }
-      $self->logger("replace %$trailingcommentID with %$trailingcommentValue",'trace') if($is_t_switch_active);
+      $self->logger("replace %$trailingcommentID with %$trailingcommentValue") if($is_t_switch_active);
     }
     return;
 }

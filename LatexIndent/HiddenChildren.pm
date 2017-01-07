@@ -57,22 +57,22 @@ sub find_surrounding_indentation_for_children{
 
     # output to logfile
     $self->logger("FamilyTree before update:",'heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%familyTree),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%familyTree)) if($is_t_switch_active);
 
     # update the family tree with ancestors
     $self->update_family_tree;
 
     # output information to the logfile
     $self->logger("FamilyTree after update:",'heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%familyTree),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%familyTree)) if($is_t_switch_active);
 
     while( my ($idToSearch,$ancestorToSearch) = each %familyTree){
           $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading') if $is_t_switch_active;
           foreach(@{${$ancestorToSearch}{ancestors}}){
-              $self->logger("ID: ${$_}{ancestorID}",'trace') if($is_t_switch_active);
+              $self->logger("ID: ${$_}{ancestorID}") if($is_t_switch_active);
               my $tmpIndentation = ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
               $tmpIndentation = $tmpIndentation ? $tmpIndentation : q(); 
-              $self->logger("indentation: '$tmpIndentation'",'trace') if($is_t_switch_active);
+              $self->logger("indentation: '$tmpIndentation'") if($is_t_switch_active);
               }
           }
 
@@ -87,15 +87,15 @@ sub update_family_tree{
     while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
           foreach(@{${$ancestorToSearch}{ancestors}}){
               my $ancestorID = ${$_}{ancestorID};
-              $self->logger("current ID: $idToSearch, ancestor: $ancestorID",'trace') if($is_t_switch_active);
+              $self->logger("current ID: $idToSearch, ancestor: $ancestorID") if($is_t_switch_active);
               if($familyTree{$ancestorID}){
-                  $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors",'trace') if($is_t_switch_active);
+                  $self->logger("$ancestorID is a key within familyTree, grabbing its ancestors") if($is_t_switch_active);
                   my $naturalAncestors = q();
                   foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
                       $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
                   }
                   foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
-                      $self->logger("ancestor of *hidden* child: ${$_}{ancestorID}",'trace') if($is_t_switch_active);
+                      $self->logger("ancestor of *hidden* child: ${$_}{ancestorID}") if($is_t_switch_active);
                       my $newAncestorId = ${$_}{ancestorID};
                       my $type;
                       if($naturalAncestors =~ m/$ancestorID/){
@@ -111,7 +111,7 @@ sub update_family_tree{
                     foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
                         $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
                     }
-                    $self->logger("natural ancestors of $ancestorID: $naturalAncestors",'trace') if($is_t_switch_active);
+                    $self->logger("natural ancestors of $ancestorID: $naturalAncestors") if($is_t_switch_active);
                     foreach(@{${$allChildren{$ancestorID}}{ancestors}}){
                         my $newAncestorId = ${$_}{ancestorID};
                         my $type;
@@ -122,7 +122,7 @@ sub update_family_tree{
                         }
                         my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
                         unless($matched){
-                            $self->logger("ancestor of UNHIDDEN child: ${$_}{ancestorID}",'trace') if($is_t_switch_active);
+                            $self->logger("ancestor of UNHIDDEN child: ${$_}{ancestorID}") if($is_t_switch_active);
                             push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
                         }
                     }
@@ -144,7 +144,7 @@ sub check_for_hidden_children{
 
     # log file
     $self->logger("Hidden children check") if $is_t_switch_active;
-    $self->logger(join("|",@matched),'trace') if $is_t_switch_active;
+    $self->logger(join("|",@matched)) if $is_t_switch_active;
 
     my $naturalAncestors = ${$self}{naturalAncestors}; 
 
@@ -156,7 +156,7 @@ sub check_for_hidden_children{
                 my $newAncestorId = ${$_}{ancestorID};
                 unless (grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$match}}{ancestors}}){
                     my $type = ($naturalAncestors =~ m/${$_}{ancestorID}/ ) ? "natural" : "adopted";
-                    $self->logger("Adding ${$_}{ancestorID} to the $type family tree of $match",'trace') if($is_t_switch_active);
+                    $self->logger("Adding ${$_}{ancestorID} to the $type family tree of $match") if($is_t_switch_active);
                     push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
                 }
             }
@@ -165,7 +165,7 @@ sub check_for_hidden_children{
         # update the family tree with self
         unless (grep { $_->{ancestorID} eq ${$self}{id}} @{${$familyTree{$match}}{ancestors}}){
                     my $type = ($naturalAncestors =~ m/${$self}{id}/ ) ? "natural" : "adopted";
-                    $self->logger("Adding ${$self}{id} to the $type family tree of hiddenChild $match",'trace') if($is_t_switch_active);
+                    $self->logger("Adding ${$self}{id} to the $type family tree of hiddenChild $match") if($is_t_switch_active);
                     push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>$type});
         }
     }

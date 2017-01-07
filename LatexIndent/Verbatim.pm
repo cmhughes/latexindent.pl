@@ -18,7 +18,7 @@ sub find_noindent_block{
 
     # noindent block
     $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading');
-    $self->logger(Dumper(\%{$masterSettings{noIndentBlock}}),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%{$masterSettings{noIndentBlock}})) if($is_t_switch_active);
     while( my ($noIndentBlock,$yesno)= each %{$masterSettings{noIndentBlock}}){
         if($yesno){
             $self->logger("looking for $noIndentBlock:$yesno environments");
@@ -78,7 +78,7 @@ sub find_verbatim_environments{
 
     # verbatim environments
     $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading');
-    $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}}),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}})) if($is_t_switch_active);
     while( my ($verbEnv,$yesno)= each %{$masterSettings{verbatimEnvironments}}){
         if($yesno){
             $self->logger("looking for $verbEnv:$yesno environments");
@@ -131,7 +131,7 @@ sub find_verbatim_commands{
 
     # verbatim commands
     $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading');
-    $self->logger(Dumper(\%{$masterSettings{verbatimCommands}}),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%{$masterSettings{verbatimCommands}})) if($is_t_switch_active);
     while( my ($verbCommand,$yesno)= each %{$masterSettings{verbatimCommands}}){
         if($yesno){
             $self->logger("looking for $verbCommand:$yesno Commands");
@@ -203,7 +203,7 @@ sub  put_verbatim_back_in {
 
     # search for environments/commands
     $self->logger('Putting verbatim back in, here is the pre-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body},'trace') if($is_t_switch_active);
+    $self->logger(${$self}{body}) if($is_t_switch_active);
 
     # loop through document children hash
     while( (scalar keys %{%{$self}{verbatim}})>0 ){
@@ -228,7 +228,7 @@ sub  put_verbatim_back_in {
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{verbatim}});
     $self->logger('Post-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body},'trace') if($is_t_switch_active);
+    $self->logger(${$self}{body}) if($is_t_switch_active);
     return;
 }
 

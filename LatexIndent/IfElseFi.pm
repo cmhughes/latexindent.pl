@@ -163,21 +163,21 @@ sub check_for_else_statement{
                             \h*     # possible horizontal space
                             (\R*)   # possible line breaks after \else statement
                             /x){
-      $self->logger("found \\else statement, storing line break information:",'trace') if($is_t_switch_active);
+      $self->logger("found \\else statement, storing line break information:") if($is_t_switch_active);
 
       # linebreaks *before* \else statement
       ${$self}{linebreaksAtEnd}{ifbody} = $1?1:0;
-      $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($is_t_switch_active);
+      $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}") if($is_t_switch_active);
 
       # linebreaks *after* \else statement
       ${$self}{linebreaksAtEnd}{else} = $2?1:0;
-      $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}",'trace') if($is_t_switch_active);
+      $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}") if($is_t_switch_active);
       ${$self}{elsePresent}=1;
 
       # check that \else isn't the first thing in body
       if(${$self}{body} =~ m/^\\else/s and ${$self}{linebreaksAtEnd}{begin}){
         ${$self}{linebreaksAtEnd}{ifbody} = 1;
-        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}",'trace') if($is_t_switch_active);
+        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}") if($is_t_switch_active);
       }
 
       # check if -m switch is active
@@ -222,7 +222,7 @@ sub check_for_else_statement{
 
       return;
     } else {
-      $self->logger("\\else statement not found",'trace') if($is_t_switch_active);
+      $self->logger("\\else statement not found") if($is_t_switch_active);
     }
 }
 

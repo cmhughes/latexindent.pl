@@ -11,7 +11,7 @@ use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
-use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol/;
+use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 use LatexIndent::Tokens qw/token_check %tokens/;
@@ -78,6 +78,7 @@ sub operate_on_file{
 
 sub construct_regular_expressions{
     my $self = shift;
+    $self->construct_trailing_comment_regexp;
     $self->construct_list_of_items;
     $self->construct_special_begin;
     $self->construct_headings_levels;
@@ -213,12 +214,12 @@ sub tasks_common_to_each_object{
 
     # update/create the ancestor information
     if($parent{ancestors}){
-      $self->logger("Ancestors *have* been found for ${$self}{name}",'trace') if($is_t_switch_active);
+      $self->logger("Ancestors *have* been found for ${$self}{name}") if($is_t_switch_active);
       push(@{${$self}{ancestors}},@{$parent{ancestors}});
     } else {
-      $self->logger("No ancestors found for ${$self}{name}",'trace') if($is_t_switch_active);
+      $self->logger("No ancestors found for ${$self}{name}") if($is_t_switch_active);
       if(defined $parent{id} and $parent{id} ne ''){
-        $self->logger("Creating ancestors with $parent{id} as the first one",'trace') if($is_t_switch_active);
+        $self->logger("Creating ancestors with $parent{id} as the first one") if($is_t_switch_active);
         push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation},type=>"natural",name=>${$self}{name}});
       }
     }
@@ -274,7 +275,7 @@ sub adjust_replacement_text_line_breaks_at_end{
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
-    $self->logger("Putting linebreak after replacementText for ${$self}{name}",'trace') if($is_t_switch_active);
+    $self->logger("Putting linebreak after replacementText for ${$self}{name}") if($is_t_switch_active);
     ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
 }
@@ -288,7 +289,7 @@ sub count_body_line_breaks{
     my $bodyLineBreaks = 0;
     $bodyLineBreaks++ while(${$self}{body} =~ m/\R/sxg);
     ${$self}{bodyLineBreaks} = $bodyLineBreaks;
-    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}",'trace')  if(${$self}{bodyLineBreaks} != $oldBodyLineBreaks);
+    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}")  if(${$self}{bodyLineBreaks} != $oldBodyLineBreaks);
 }
 
 sub wrap_up_tasks{
@@ -306,7 +307,7 @@ sub wrap_up_tasks{
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent;
 
-    $self->logger(Dumper(\%{$child}),'trace') if($is_t_switch_active);
+    $self->logger(Dumper(\%{$child})) if($is_t_switch_active);
     $self->logger("replaced with ID: ${$child}{id}");
 
 }

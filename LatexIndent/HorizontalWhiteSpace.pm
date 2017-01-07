@@ -26,8 +26,8 @@ sub remove_trailing_whitespace{
                        $    # up to the end of a line
                        //xsmg;
 
-    $self->logger("Processed body, *$input{when}* indentation (${$self}{name}):",'trace') if($is_t_switch_active);
-    $self->logger(${$self}{body},'trace') if($is_t_switch_active);
+    $self->logger("Processed body, *$input{when}* indentation (${$self}{name}):") if($is_t_switch_active);
+    $self->logger(${$self}{body}) if($is_t_switch_active);
 
 }
 
