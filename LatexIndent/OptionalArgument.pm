@@ -83,10 +83,6 @@ sub create_unique_id{
     return;
 }
 
-sub update_child_id_reg_exp{
-    return;
-  }
-
 sub tasks_particular_to_each_object{
     my $self = shift;
 

@@ -5,12 +5,11 @@ use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Tokens qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/find_surrounding_indentation_for_children update_family_tree get_family_tree update_child_id_reg_exp check_for_hidden_children %familyTree/;
+our @EXPORT_OK = qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children %familyTree/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our %familyTree;
 our %allChildren;
-our $allChildrenIDRegExp = q();
 
 
 #----------------------------------------------------------
@@ -134,55 +133,43 @@ sub update_family_tree{
 }
 
 sub check_for_hidden_children{
+
     my $self = shift;
 
-    if(${$self}{body} =~ m/$tokens{beginOfToken}/ and ($allChildrenIDRegExp ne q())){
-        my $allChildrenIDRegExp_TMP = $allChildrenIDRegExp;
-        while(${$self}{body} =~ m/($allChildrenIDRegExp)/ and ($allChildrenIDRegExp ne q())){
-            # grab the match
-            my $match = $1;
+    # if there are no hidden children, then exit
+    return if ${$self}{body} !~ m/$tokens{beginOfToken}/;
 
-            # remove the match from the regexp
-            $allChildrenIDRegExp =~ s/\|?$match//;
+    # grab the matches
+    my @matched = (${$self}{body} =~ /((?:$tokens{ifelsefiSpecial})?$tokens{beginOfToken}.[-a-z0-9]+?$tokens{endOfToken})/ig);
 
-            my $naturalAncestors = ${$self}{naturalAncestors}; 
-            # update the family tree with ancestors of self
-            if(${$self}{ancestors}){
-                foreach(@{${$self}{ancestors}}){
-                    my $newAncestorId = ${$_}{ancestorID};
-                    my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$match}}{ancestors}};
-                    if($naturalAncestors =~ m/${$_}{ancestorID}/ ){
-                        $self->logger("Adding ${$_}{ancestorID} to the natural family tree of $match",'trace') if($is_t_switch_active);
-                        push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>"natural"}) unless $matched;
-                    } else {
-                        $self->logger("Adding ${$_}{ancestorID} to the adopted family tree of $match",'trace') if($is_t_switch_active);
-                        push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>"adopted"})  unless $matched;
-                    }
+    # log file
+    $self->logger("Hidden children check") if $is_t_switch_active;
+    $self->logger(join("|",@matched),'trace') if $is_t_switch_active;
+
+    my $naturalAncestors = ${$self}{naturalAncestors}; 
+
+    # loop through the hidden children
+    foreach my $match (@matched){
+        # update the family tree with ancestors of self
+        if(${$self}{ancestors}){
+            foreach(@{${$self}{ancestors}}){
+                my $newAncestorId = ${$_}{ancestorID};
+                unless (grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$match}}{ancestors}}){
+                    my $type = ($naturalAncestors =~ m/${$_}{ancestorID}/ ) ? "natural" : "adopted";
+                    $self->logger("Adding ${$_}{ancestorID} to the $type family tree of $match",'trace') if($is_t_switch_active);
+                    push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
                 }
             }
-
-            # update the family tree with self
-            my $newAncestorId = ${$self}{id};
-            my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$match}}{ancestors}};
-            if($naturalAncestors =~ m/${$self}{id}/ ){
-                $self->logger("Adding ${$self}{id} to the natural family tree of hiddenChild $match",'trace') if($is_t_switch_active);
-                push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"natural"}) unless $matched;
-            } else {
-                $self->logger("Adding ${$self}{id} to the adopted family tree of hiddenChild $match",'trace') if($is_t_switch_active);
-                push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"adopted"}) unless $matched;
-            }
         }
-        $allChildrenIDRegExp = $allChildrenIDRegExp_TMP; 
+
+        # update the family tree with self
+        unless (grep { $_->{ancestorID} eq ${$self}{id}} @{${$familyTree{$match}}{ancestors}}){
+                    my $type = ($naturalAncestors =~ m/${$self}{id}/ ) ? "natural" : "adopted";
+                    $self->logger("Adding ${$self}{id} to the $type family tree of hiddenChild $match",'trace') if($is_t_switch_active);
+                    push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>$type});
+        }
     }
 
-}
-
-sub update_child_id_reg_exp{
-    my $self = shift;
-
-    $allChildrenIDRegExp .= ($allChildrenIDRegExp eq '' ?q():"|").${$self}{id};
-    $allChildren{${$self}{id}} = \%{$self};
-    return;
 }
 
 1;

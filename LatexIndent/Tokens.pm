@@ -7,11 +7,13 @@ our @EXPORT_OK = qw/token_check %tokens/;
 
 # each of the tokens begins the same way -- this is exploited during the hidden Children routine
 my $beginningToken = "LTXIN-TK-";
+my $ifelsefiSpecial = "!-!";
 
 # the %tokens hash is passed around many modules
 our %tokens = (
                 environment=>$beginningToken."ENVIRONMENT",
-                ifelsefi=>"!-!".$beginningToken."IFELSEFI", 
+                ifelsefiSpecial=>$ifelsefiSpecial,
+                ifelsefi=>$ifelsefiSpecial.$beginningToken."IFELSEFI", 
                 item=>$beginningToken."ITEMS",
                 trailingComment=>"latexindenttrailingcomment", 
                 blanklines=>$beginningToken."blank-line",
