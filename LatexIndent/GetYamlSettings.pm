@@ -272,10 +272,10 @@ sub alignment_at_ampersand_settings{
 }
 
 sub modify_line_breaks_settings{
-    my $self = shift;
-
     # return with undefined values unless the -m switch is active
     return unless $is_m_switch_active;
+
+    my $self = shift;
 
     # details to the log file
     $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading') if $is_t_switch_active;

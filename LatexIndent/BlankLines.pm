@@ -8,8 +8,8 @@ use Exporter qw/import/;
 our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 
 sub protect_blank_lines{
-    my $self = shift;
     return unless $is_m_switch_active;
+    my $self = shift;
 
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
         $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading') if $is_t_switch_active;
@@ -22,10 +22,11 @@ sub protect_blank_lines{
 }
 
 sub condense_blank_lines{
-    my $self = shift;
     return unless $is_m_switch_active;
 
     return unless ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
+
+    my $self = shift;
 
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
@@ -62,10 +63,10 @@ sub condense_blank_lines{
 }
 
 sub unprotect_blank_lines{
-    my $self = shift;
     return unless $is_m_switch_active;
 
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
+    my $self = shift;
 
     $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
     my $blankLineToken = $tokens{blanklines};

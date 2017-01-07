@@ -213,13 +213,13 @@ sub final_indentation_check{
 sub indent_children_recursively{
     my $self = shift;
 
-    $self->logger('Pre-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body}) if($is_t_switch_active);
-
-    unless(defined ${$self}{children}){
+    unless(defined ${$self}{children}) {
         $self->logger("No child objects (${$self}{name})");
         return;
     }
+
+    $self->logger('Pre-processed body:','heading') if $is_t_switch_active;
+    $self->logger(${$self}{body}) if($is_t_switch_active);
 
     # send the children through this indentation routine recursively
     if(defined ${$self}{children}){
@@ -227,7 +227,7 @@ sub indent_children_recursively{
             $self->logger("Indenting child objects on ${$child}{name}");
             $child->indent_children_recursively;
         }
-    }
+    } 
 
     $self->logger("Replacing ids with begin, body, and end statements:",'heading');
 
@@ -237,8 +237,20 @@ sub indent_children_recursively{
           foreach my $child (@{${$self}{children}}){
             $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading') if $is_t_switch_active;
             if(${$self}{body} =~ m/${$child}{id}/s){
-                my $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^\h*${$child}{id}/m) ?1:0;
-                my $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R*/m) ?1:0;
+                # we only care if id is first non-white space character 
+                # and if followed by line break 
+                # if m switch is active 
+                my $IDFirstNonWhiteSpaceCharacter = 0;
+                my $IDFollowedImmediatelyByLineBreak = 0;
+
+                # update the above two, if necessary
+                if ($is_m_switch_active){
+                    $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^${$child}{id}/m 
+                                                            or 
+                                                         ${$self}{body} =~ m/^\h\h*${$child}{id}/m
+                                                        ) ?1:0;
+                    $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R*/m) ?1:0;
+               }
 
                 # log file info
                 $self->logger("${$child}{id} found!") if($is_t_switch_active);

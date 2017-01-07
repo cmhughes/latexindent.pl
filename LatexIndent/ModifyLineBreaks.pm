@@ -9,9 +9,9 @@ our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print pre_print_entire_b
 our @allObjects;
 
 sub pre_print_entire_body{
-    my $self = shift;
-
     return unless $is_m_switch_active;
+
+    my $self = shift;
 
     # pre print the entire document, strip comments
     $self->pre_print;
@@ -46,10 +46,9 @@ sub pre_print_entire_body{
 }
 
 sub pre_print{
-    my $self = shift;
-
     return unless $is_m_switch_active;
 
+    my $self = shift;
 
     # send the children through this routine recursively
     foreach my $child (@{${$self}{children}}){
@@ -175,10 +174,9 @@ sub modify_line_breaks_body_and_end{
 sub adjust_line_breaks_end_parent{
     # when a parent object contains a child object, the line break
     # at the end of the parent object can become messy
+    return unless $is_m_switch_active;
 
     my $self = shift;
-
-    return unless $is_m_switch_active;
 
     # most recent child object
     my $child = @{${$self}{children}}[-1];
