@@ -36,7 +36,7 @@ our %tokens = (
 sub token_check{
     my $self = shift;
 
-    $self->logger("Token check",'heading.trace');
+    $self->logger("Token check",'heading') if $is_t_switch_active;
     # we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body
     foreach( keys %tokens){
         while(${$self}{body} =~ m/$tokens{$_}/si){

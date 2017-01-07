@@ -76,7 +76,7 @@ sub indent{
         #                   text
         #       after:
         #               \fitext
-        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading.trace');
+        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
         ${$self}{end} =${$self}{end}." ";
     }
 
@@ -156,7 +156,7 @@ sub create_unique_id{
 
 sub check_for_else_statement{
     my $self = shift;
-    $self->logger("Looking for \\else statement (${$self}{name})",'heading.trace');
+    $self->logger("Looking for \\else statement (${$self}{name})",'heading') if $is_t_switch_active;
     if(${$self}{body} =~ m/
                             (\R*)   # possible line breaks before \else statement
                             \\else  

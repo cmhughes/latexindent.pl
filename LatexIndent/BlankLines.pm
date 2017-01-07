@@ -12,11 +12,11 @@ sub protect_blank_lines{
     return unless $is_m_switch_active;
 
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
-        $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading.trace');
+        $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading') if $is_t_switch_active;
         return
     }
 
-    $self->logger("Protecting blank lines (see preserveBlankLines)",'heading.trace');
+    $self->logger("Protecting blank lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
     ${$self}{body} =~ s/^(\h*)?\R/$tokens{blanklines}\n/mg;
     return;
 }
@@ -49,7 +49,7 @@ sub condense_blank_lines{
     my $blankLineToken = $tokens{blanklines};
 
     # condense!
-    $self->logger("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)",'heading.trace');
+    $self->logger("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)",'heading') if $is_t_switch_active;
     my $replacementToken = $blankLineToken;
     for (my $i=1; $i<$condenseMultipleBlankLinesInto; $i++ ){
         $replacementToken .= "\n$blankLineToken";
@@ -67,25 +67,25 @@ sub unprotect_blank_lines{
 
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
 
-    $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading.trace');
+    $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
     my $blankLineToken = $tokens{blanklines};
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/$blankLineToken/m){
         # when the blank line token occupies the whole line
         if(${$self}{body} =~ m/^\h*$blankLineToken$/m){
-            $self->logger("Replacing purely blank lines",'heading.ttrace');
+            $self->logger("Replacing purely blank lines",'heading') if $is_tt_switch_active;
             ${$self}{body} =~ s/^\h*$blankLineToken$//mg;
             $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
         }
         # otherwise the blank line has been deleted, so we compensate with an extra
         if(${$self}{body} =~ m/(^\h*)?$blankLineToken/m){
-            $self->logger("Replacing blank line token that doesn't take up whole line",'heading.ttrace');
+            $self->logger("Replacing blank line token that doesn't take up whole line",'heading') if $is_tt_switch_active;
             ${$self}{body} =~ s/(^\h*)?$blankLineToken/$1?"\n".$1:"\n"/me;
             $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
         }
     }
-    $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading.trace');
+    $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
     $self->logger("body now looks like ${$self}{body}",'ttrace') if($is_tt_switch_active);
 }
 

@@ -7,6 +7,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -79,10 +80,10 @@ sub construct_special_begin{
     }
 
     # info to the log file
-    $self->logger("The special beginnings regexp is: $specialBegins (see specialBeginEnd)",'heading.trace');
+    $self->logger("The special beginnings regexp is: $specialBegins (see specialBeginEnd)",'heading') if $is_t_switch_active;
 
     # overall special regexp
-    $self->logger("The overall special regexp is: $specialAllMatchesRegExp(see specialBeginEnd)",'heading.trace');
+    $self->logger("The overall special regexp is: $specialAllMatchesRegExp(see specialBeginEnd)",'heading') if $is_t_switch_active;
 
   }
 

@@ -138,27 +138,6 @@ sub output_logfile{
             ${$line}{line} =~ s/^/\t/mg;
             print $logfile ${$line}{line},"\n";
           } 
-
-        # trace mode, headings
-        if($switches{trace} and ${$line}{level} eq 'heading.trace') {
-            print $logfile ${$line}{line},"\n";
-          }
-        # trace mode, default lines
-        if($switches{trace} and ${$line}{level} eq 'trace') {
-            # add tabs to the beginning of lines 
-            # for default logfile lines
-            ${$line}{line} =~ s/^/\t/mg;
-            print $logfile ${$line}{line},"\n";
-          }
-        # ttrace mode, default lines
-        if($switches{ttrace} and ${$line}{level} eq 'ttrace') {
-            # add tabs to the beginning of lines 
-            # for default logfile lines
-            ${$line}{line} =~ s/^/\t/mg;
-            print $logfile ${$line}{line},"\n";
-          } elsif ($switches{ttrace} and ${$line}{level} eq 'heading.ttrace') {
-            print $logfile ${$line}{line},"\n";
-          }
   }
 
   close($logfile);

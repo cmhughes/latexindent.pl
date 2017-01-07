@@ -2,6 +2,7 @@
 #   reads defaultSettings.yaml
 #   and combines user settings
 package LatexIndent::GetYamlSettings;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use strict;
 use warnings;
 use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -277,7 +278,7 @@ sub modify_line_breaks_settings{
     return unless $is_m_switch_active;
 
     # details to the log file
-    $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading.trace');
+    $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading') if $is_t_switch_active;
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
     my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();

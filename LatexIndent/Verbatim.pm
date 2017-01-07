@@ -202,7 +202,7 @@ sub  put_verbatim_back_in {
     return unless(%{$self}{verbatim});
 
     # search for environments/commands
-    $self->logger('Putting verbatim back in, here is the pre-processed body:','heading.trace');
+    $self->logger('Putting verbatim back in, here is the pre-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body},'trace') if($is_t_switch_active);
 
     # loop through document children hash
@@ -214,7 +214,7 @@ sub  put_verbatim_back_in {
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','heading.ttrace');
+                $self->logger('Body now looks like:','heading') if $is_tt_switch_active;
                 $self->logger(${$self}{body},'ttrace') if($is_tt_switch_active);
 
                 # delete the hash so it won't be operated upon again
@@ -227,7 +227,7 @@ sub  put_verbatim_back_in {
     # logfile info
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{verbatim}});
-    $self->logger('Post-processed body:','heading.trace');
+    $self->logger('Post-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body},'trace') if($is_t_switch_active);
     return;
 }

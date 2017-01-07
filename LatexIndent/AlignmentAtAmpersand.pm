@@ -101,7 +101,7 @@ sub align_at_ampersand{
     $fmtstring = "%-".$fmtstring."s ";
 
     # log file info
-    $self->logger("Formatting string is: $fmtstring",'heading.trace');
+    $self->logger("Formatting string is: $fmtstring",'heading') if $is_t_switch_active;
 
     # finally, reformat the body
     foreach(@formattedBody){

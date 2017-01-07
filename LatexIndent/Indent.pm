@@ -124,7 +124,7 @@ sub indent_body{
                             /sx){
             my $bodyFirstLine = $1;
             my $remainingBody = $2;
-            $self->logger("first line of body: $bodyFirstLine",'heading.trace');
+            $self->logger("first line of body: $bodyFirstLine",'heading') if $is_t_switch_active;
             $self->logger("remaining body (before indentation): '$remainingBody'",'trace') if($is_t_switch_active);
     
             # add the indentation to all the body except first line
@@ -213,7 +213,7 @@ sub final_indentation_check{
 sub indent_children_recursively{
     my $self = shift;
 
-    $self->logger('Pre-processed body:','heading.trace');
+    $self->logger('Pre-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body},'trace') if($is_t_switch_active);
 
     unless(defined ${$self}{children}){
@@ -235,7 +235,7 @@ sub indent_children_recursively{
     while( scalar (@{${$self}{children}}) > 0 ){
           # we work through the array *in order*
           foreach my $child (@{${$self}{children}}){
-            $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading.trace');
+            $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading') if $is_t_switch_active;
             if(${$self}{body} =~ m/${$child}{id}/s){
                 my $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^\h*${$child}{id}/m) ?1:0;
                 my $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R*/m) ?1:0;
@@ -304,7 +304,7 @@ sub indent_children_recursively{
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger("Body (${$self}{name}) now looks like:",'heading.trace');
+                $self->logger("Body (${$self}{name}) now looks like:",'heading') if $is_t_switch_active;
                 $self->logger(${$self}{body},'trace') if($is_t_switch_active);
 
                 # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl

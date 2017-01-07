@@ -38,7 +38,7 @@ sub find_opt_mand_arguments{
     my $blankLineToken = $tokens{blanklines};
 
     if(${$self}{body} =~ m/^$optAndMandRegExpWithLineBreaks\h*($trailingCommentRegExp)?/){
-        $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading.trace');
+        $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading') if $is_t_switch_active;
 
         # create a new Arguments object
         # The arguments object is a little different to most

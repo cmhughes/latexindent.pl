@@ -56,18 +56,18 @@ sub find_surrounding_indentation_for_children{
     my $self = shift;
 
     # output to logfile
-    $self->logger("FamilyTree before update:",'heading.trace');
+    $self->logger("FamilyTree before update:",'heading') if $is_t_switch_active;
     $self->logger(Dumper(\%familyTree),'trace') if($is_t_switch_active);
 
     # update the family tree with ancestors
     $self->update_family_tree;
 
     # output information to the logfile
-    $self->logger("FamilyTree after update:",'heading.trace');
+    $self->logger("FamilyTree after update:",'heading') if $is_t_switch_active;
     $self->logger(Dumper(\%familyTree),'trace') if($is_t_switch_active);
 
     while( my ($idToSearch,$ancestorToSearch) = each %familyTree){
-          $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading.trace');
+          $self->logger("Hidden child ID: ,$idToSearch, here are its ancestors:",'heading') if $is_t_switch_active;
           foreach(@{${$ancestorToSearch}{ancestors}}){
               $self->logger("ID: ${$_}{ancestorID}",'trace') if($is_t_switch_active);
               my $tmpIndentation = ref(${$_}{ancestorIndentation}) eq 'SCALAR'?${${$_}{ancestorIndentation}}:${$_}{ancestorIndentation};
@@ -83,7 +83,7 @@ sub update_family_tree{
     my $self = shift;
 
     # loop through the hash
-    $self->logger("Updating FamilyTree...",'heading.trace');
+    $self->logger("Updating FamilyTree...",'heading') if $is_t_switch_active;
     while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
           foreach(@{${$ancestorToSearch}{ancestors}}){
               my $ancestorID = ${$_}{ancestorID};
