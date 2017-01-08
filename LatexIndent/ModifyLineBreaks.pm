@@ -1,72 +1,13 @@
 package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
+use Data::Dumper;
 use Exporter qw/import/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-our @EXPORT_OK = qw/modify_line_breaks_body_and_end pre_print pre_print_entire_body adjust_line_breaks_end_parent/;
+our @EXPORT_OK = qw/modify_line_breaks_body_and_end adjust_line_breaks_end_parent/;
 our @allObjects;
-
-sub pre_print_entire_body{
-    return unless $is_m_switch_active;
-
-    my $self = shift;
-
-    # pre print the entire document, strip comments
-    $self->pre_print;
-
-    # search for undisclosed linebreaks, no need to do this recursively as @allObjects is flat (one-dimensional)
-    my $pre_print_body = ${$self}{body};
-    $pre_print_body =~ s/$trailingCommentRegExp//mg;
-
-    # replace all of the IDs with their associated (no-comments) begin, body, end statements
-    while(scalar @allObjects>0){
-        my $index = 0;
-        foreach my $child (@allObjects){
-            if($pre_print_body =~ m/${$child}{id}/){
-                $pre_print_body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
-                # check for an undisclosed line break
-                if(${${$child}{noComments}}{body} =~ m/\R$/m and !${$child}{linebreaksAtEnd}{body}){
-                    $self->logger("Undisclosed line break at the end of body of ${$child}{name}: '${$child}{end}'") if($is_t_switch_active);
-                    $self->logger("Adding a linebreak at the end of body for ${$child}{id}") if($is_t_switch_active);
-                    ${$child}{body} .= "\n";
-                    ${$child}{linebreaksAtEnd}{body}=1;
-                }
-                splice(@allObjects, $index, 1);
-            }
-            $index++;
-        }
-    }
-
-    # output the body to the log file
-    $self->logger("Pre-print body (after sweep), no comments (just to check linebreaks)","heading.ttrace");
-    $self->logger($pre_print_body,'ttrace') if($is_tt_switch_active);
-
-}
-
-sub pre_print{
-    return unless $is_m_switch_active;
-
-    my $self = shift;
-
-    # send the children through this routine recursively
-    foreach my $child (@{${$self}{children}}){
-        $child->pre_print;
-        ${${$child}{noComments}}{begin} = "begin".reverse ${$child}{id};
-        ${${$child}{noComments}}{begin} .= "\n" if(${$child}{linebreaksAtEnd}{begin});
-        ${${$child}{noComments}}{body} = ${$child}{body};
-        ${${$child}{noComments}}{end} = "end".reverse ${$child}{id};
-        ${${$child}{noComments}}{end} .= "\n" if(${$child}{linebreaksAtEnd}{end});
-
-        # remove all trailing comments from the copied begin, body and end statements
-        ${${$child}{noComments}}{begin} =~ s/$trailingCommentRegExp//mg;
-        ${${$child}{noComments}}{body} =~ s/$trailingCommentRegExp//mg;
-        ${${$child}{noComments}}{end} =~ s/$trailingCommentRegExp//mg;
-        push(@allObjects,$child);
-    }
-
-}
 
 sub modify_line_breaks_body_and_end{
     my $self = shift;
@@ -188,6 +129,20 @@ sub adjust_line_breaks_end_parent{
         $self->logger("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1") if($is_t_switch_active);
         ${$self}{linebreaksAtEnd}{body}=1;
       }
+
+    # the modify line switch can adjust line breaks, so we need another check, 
+    # see for example, test-cases/environments/environments-remove-line-breaks-trailing-comments.tex
+    if(defined ${$child}{linebreaksAtEnd}{body} 
+        and !${$child}{linebreaksAtEnd}{body} 
+        and ${$child}{body} =~ m/\R(?:$trailingCommentRegExp\h*)?$/s ){
+        # log file information
+        $self->logger("Undisclosed line break at the end of body of ${$child}{name}: '${$child}{end}'") if($is_t_switch_active);
+        $self->logger("Adding a linebreak at the end of body for ${$child}{id}") if($is_t_switch_active);
+        
+        # make the adjustments
+        ${$child}{body} .= "\n";
+        ${$child}{linebreaksAtEnd}{body}=1;
+    }
 
 }
 
