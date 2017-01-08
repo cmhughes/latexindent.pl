@@ -22,6 +22,7 @@ sub pre_print_entire_body{
 
     # replace all of the IDs with their associated (no-comments) begin, body, end statements
     while(scalar @allObjects>0){
+        my $index = 0;
         foreach my $child (@allObjects){
             if($pre_print_body =~ m/${$child}{id}/){
                 $pre_print_body =~ s/${$child}{id}/${${$child}{noComments}}{begin}${${$child}{noComments}}{body}${${$child}{noComments}}{end}/;
@@ -32,10 +33,9 @@ sub pre_print_entire_body{
                     ${$child}{body} .= "\n";
                     ${$child}{linebreaksAtEnd}{body}=1;
                 }
-                my $index = 0;
-                $index++ until ${$allObjects[$index]}{id} eq ${$child}{id};
                 splice(@allObjects, $index, 1);
             }
+            $index++;
         }
     }
 
