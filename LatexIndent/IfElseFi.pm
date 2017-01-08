@@ -56,7 +56,7 @@ sub indent{
     if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
             $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')");
             ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
-            $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}","trace");
+            $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}") if $is_t_switch_active;
     }
 
     # indent the end statement

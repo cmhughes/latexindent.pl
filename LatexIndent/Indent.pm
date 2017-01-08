@@ -27,7 +27,7 @@ sub indent{
     $self->indent_end_statement;
 
     # output the completed object to the log file
-    $self->logger("Complete indented object (${$self}{name}) after indentation:\n${$self}{begin}${$self}{body}${$self}{end}","trace");
+    $self->logger("Complete indented object (${$self}{name}) after indentation:\n${$self}{begin}${$self}{body}${$self}{end}") if $is_t_switch_active;
 
     # wrap-up statement
     $self->wrap_up_statement;
@@ -96,7 +96,7 @@ sub indent_body{
     my $indentation = ${$self}{indentation};
 
     # output to the logfile
-    $self->logger("Body (${$self}{name}) before indentation:\n${$self}{body}","trace");
+    $self->logger("Body (${$self}{name}) before indentation:\n${$self}{body}") if $is_t_switch_active;
 
     # last minute check for modified bodyLineBreaks
     $self->count_body_line_breaks if $is_m_switch_active;
@@ -110,10 +110,10 @@ sub indent_body{
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         if(${$self}{body} =~ m/^\h*$/s){
-            $self->logger("Body of ${$self}{name} is empty, not applying indentation","trace");
+            $self->logger("Body of ${$self}{name} is empty, not applying indentation") if $is_t_switch_active;
         } else {
             # put any existing horizontal space after the current indentation
-            $self->logger("Entire body of ${$self}{name} receives indendentation","trace");
+            $self->logger("Entire body of ${$self}{name} receives indendentation") if $is_t_switch_active;
             ${$self}{body} =~ s/^(\h*)/$indentation$1/mg;  # add indentation
         }
     } elsif(${$self}{linebreaksAtEnd}{begin}==0 and ${$self}{bodyLineBreaks}>0) {
@@ -147,7 +147,7 @@ sub indent_body{
     }
 
     # output to the logfile
-    $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}","trace");
+    $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}") if $is_t_switch_active;
     return $self;
 }
 
@@ -233,6 +233,7 @@ sub indent_children_recursively{
 
     # loop through document children hash
     while( scalar (@{${$self}{children}}) > 0 ){
+          my $index = 0;
           # we work through the array *in order*
           foreach my $child (@{${$self}{children}}){
             $self->logger("Searching ${$self}{name} for ${$child}{id}...",'heading') if $is_t_switch_active;
@@ -320,18 +321,19 @@ sub indent_children_recursively{
                 $self->logger(${$self}{body}) if($is_t_switch_active);
 
                 # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
-                my $index = 0;
-                $index++ until ${${$self}{children}[$index]}{id} eq ${$child}{id};
                 splice(@{${$self}{children}}, $index, 1);
 
                 # output to the log file
-                $self->logger("deleted child key ${$child}{name} (parent is: ${$self}{name})");
+                $self->logger("deleted child key ${$child}{name} (parent is: ${$self}{name})") if $is_t_switch_active;
 
                 # restart the loop, as the size of the array has changed
                 last;
               } else {
                 $self->logger("${$child}{id} not found") if($is_t_switch_active);
               }
+
+              # increment the loop counter
+              $index++;
             }
     }
 

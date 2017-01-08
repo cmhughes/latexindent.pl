@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -50,7 +51,7 @@ sub tasks_particular_to_each_object{
     if(${${$self}{linebreaksAtEnd}}{end} == 1 
       and ${${${$self}{children}}[0]}{body} =~ m/\R$/s
       and !${$self}{endImmediatelyFollowedByComment}){
-        $self->logger("Removing linebreak from argument container of ${$self}{name}","trace");
+        $self->logger("Removing linebreak from argument container of ${$self}{name}") if $is_t_switch_active;
         ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
     }
@@ -61,7 +62,7 @@ sub tasks_particular_to_each_object{
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
         and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 0
         ){
-          $self->logger("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0","trace");
+          $self->logger("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0") if $is_t_switch_active;
           ${${$self}{linebreaksAtEnd}}{end} = 0;
           ${$self}{EndFinishesWithLineBreak} = 0;
         }
@@ -75,23 +76,23 @@ sub tasks_particular_to_each_object{
         and !${$self}{endImmediatelyFollowedByComment}){
 
         # update the Command object
-        $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}","trace");
+        $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}") if $is_t_switch_active;
         ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
         ${$self}{replacementText} .= "\n";
 
         # update the argument object
-        $self->logger("Adjusting argument object in command, ${$self}{name}","trace");
+        $self->logger("Adjusting argument object in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
 
         # update the last mandatory/optional argument
-        $self->logger("Adjusting last argument in command, ${$self}{name}","trace");
+        $self->logger("Adjusting last argument in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
         ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = 0;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText} =~ s/\R$//s;
 
         # output to log file
-        $self->logger(Dumper(${${${$self}{children}}[0]}{children}[-1]),"trace");
+        $self->logger(Dumper(${${${$self}{children}}[0]}{children}[-1])) if $is_t_switch_active;
     }
 
     # situation: ${${$self}{linebreaksAtEnd}}{end} == 1 and the last argument has added 
@@ -103,12 +104,12 @@ sub tasks_particular_to_each_object{
         and !${$self}{endImmediatelyFollowedByComment}){
     
         # last argument adjustment
-        $self->logger("Adjusting last argument in command, ${$self}{name} to avoid double line break","trace");
+        $self->logger("Adjusting last argument in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~s/\R$//s;
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
 
         # argument object adjustment
-        $self->logger("Adjusting argument object in command, ${$self}{name} to avoid double line break","trace");
+        $self->logger("Adjusting argument object in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body}=~s/\R$//s;
     }
