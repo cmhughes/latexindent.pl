@@ -43,5 +43,7 @@ latexindent.pl -s heptadecagon3.tex -o heptadecagon3-mod17.tex -m -l=special-mod
 latexindent.pl -s special-nested-simple.tex -o special-nested-simple-default.tex
 latexindent.pl -s special-nested.tex -o special-nested-default.tex
 latexindent.pl -s special-nested.tex -o special-nested-mod1.tex -m -l special-mod1.yaml
+# mixed test case
+latexindent.pl -s tabdo.sty -o tabdo-default.sty
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

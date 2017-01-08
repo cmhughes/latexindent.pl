@@ -33,7 +33,7 @@ our $ifElseFiRegExp = qr/
                 )
                 (\R*)                       # linebreaks after body
                 (
-                    \\fi                    # \fi statement 
+                    \\fi(?![a-zA-Z])                    # \fi statement 
                     \h*                     # 0 or more horizontal spaces
                 )
                 (\R)?                       # linebreaks after \fi
