@@ -71,7 +71,9 @@ latexindent.pl -s mixed-ifelsefi-commands-keys-braces1 -o=mixed-ifelsefi-command
 latexindent.pl -s glossary1.tex -o glossary1-default.tex
 latexindent.pl -s pgfplotstable1.tex -o pgfplotstable1-default.tex -l=../filecontents/indentPreambleYes.yaml
 latexindent.pl -s tikz2.tex -o tikz2-default.tex
-
+# hea files
+latexindent.pl -s heabib.bib -o heabib-default.bib
+latexindent.pl -s hea-senior-fellowship-application.tex -o hea-senior-fellowship-application-default.tex -l=../filecontents/indentPreambleYes.yaml
 #### NEED just key=value option (no braces) #####
 #### NEED just key=value option (no braces) #####
 #### NEED just key=value option (no braces) #####
