@@ -67,7 +67,7 @@ sub get_surrounding_indentation{
     my $surroundingIndentation = q();
 
     if($familyTree{${$self}{id}}){
-        $self->logger("Adopted ancestors found!");
+        $self->logger("Adopted ancestors found!") if($is_t_switch_active);
         foreach(@{${$familyTree{${$self}{id}}}{ancestors}}){
             if(${$_}{type} eq "adopted"){
                 my $newAncestorId = ${$_}{ancestorID};
@@ -171,7 +171,7 @@ sub indent_end_statement{
     # end{statement} indentation, e.g \end{environment}, \fi, }, etc
     if(${$self}{linebreaksAtEnd}{body}){
         ${$self}{end} =~ s/^\h*/$surroundingIndentation/mg;  # add indentation
-        $self->logger("Adding surrounding indentation to ${$self}{end} (${$self}{name}: '$surroundingIndentation')");
+        $self->logger("Adding surrounding indentation to ${$self}{end} (${$self}{name}: '$surroundingIndentation')") if($is_t_switch_active);
      }
     return $self;
 }
@@ -256,7 +256,7 @@ sub indent_children_recursively{
                 # log file info
                 $self->logger("${$child}{id} found!") if($is_t_switch_active);
                 $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
-                $self->logger("looking up indentation scheme for ${$child}{name}");
+                $self->logger("looking up indentation scheme for ${$child}{name}") if($is_t_switch_active);
 
                 # line break checks *after* <end statement>
                 if (defined ${$child}{EndFinishesWithLineBreak}
