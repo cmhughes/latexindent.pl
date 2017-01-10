@@ -1,0 +1,21 @@
+\nonstopmode \input expl3-generic \relax \ExplSyntaxOn % -*- expl3 -*-
+
+\cs_new:Nn \svend_gcd:nn
+{
+	\int_compare:nNnTF {#2} = { 0 } {#1}
+		{ \svend_gcd:ff {#2} { \int_mod:nn {#1} {#2} } }
+}
+\cs_generate_variant:Nn \svend_gcd:nn { ff }
+
+\int_new:N \l__svend_tmp_int
+\cs_new:Nn \svend_reduced:nn
+{
+	\int_set:Nn \l__svend_tmp_int { \svend_gcd:nn {#1} {#2} }
+	{ \int_eval:n { #1 / \l__svend_tmp_int } }
+	\over
+	{ \int_eval:n { #2 / \l__svend_tmp_int } }
+}
+
+$$ \svend_reduced:nn {278922} {74088} $$
+
+\bye

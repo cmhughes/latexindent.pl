@@ -26,9 +26,9 @@
 				\abovedisplayskip=-\baselineskip \abovedisplayshortskip=-\baselineskip
 				\belowdisplayskip\z@skip \belowdisplayshortskip\z@skip
 				\halign{##\cr\noalign{%
-							% get the width of the line above
-							%\message{>>> Line \the\inputlineno\space -- \predisplaydirection\the\predisplaydirection, \predisplaysize\the\predisplaysize, \displayindent\the\displayindent, \leftskip\the\leftskip, \linewidth\the\linewidth. }%
-							\ifdim\predisplaysize=\maxdimen % mixed R and L; call the line full
+						% get the width of the line above
+						%\message{>>> Line \the\inputlineno\space -- \predisplaydirection\the\predisplaydirection, \predisplaysize\the\predisplaysize, \displayindent\the\displayindent, \leftskip\the\leftskip, \linewidth\the\linewidth. }%
+						\ifdim\predisplaysize=\maxdimen % mixed R and L; call the line full
 							\message{Mixed R and L, so line is full. }%
 							\CurrentLineWidth\linewidth
 						\else
@@ -47,14 +47,14 @@
 								\advance\CurrentLineWidth -\leftskip
 							\fi
 						\fi
-							\ifdim\CurrentLineWidth<\z@ \CurrentLineWidth\z@\fi
-							% Enshrine the tab-to position; #1 might reference \CurrentLineWidth
-							\@tempdimb=#1\relax
-							\message{*** Tab to \the\@tempdimb, previous width is \the\CurrentLineWidth. ***}%
-							% Save width for possible return use
-							\xdef\TabPrevPos{\the\CurrentLineWidth}%
-							% Build the action to perform
-							\protected@xdef\TTo@action{%
+						\ifdim\CurrentLineWidth<\z@ \CurrentLineWidth\z@\fi
+						% Enshrine the tab-to position; #1 might reference \CurrentLineWidth
+						\@tempdimb=#1\relax
+						\message{*** Tab to \the\@tempdimb, previous width is \the\CurrentLineWidth. ***}%
+						% Save width for possible return use
+						\xdef\TabPrevPos{\the\CurrentLineWidth}%
+						% Build the action to perform
+						\protected@xdef\TTo@action{%
 							\vrule\@width\z@\@depth\the\prevdepth
 							\ifdim\CurrentLineWidth>\@tempdimb
 								\ifTTo@overlap\else
@@ -64,12 +64,12 @@
 							\protect\nobreak
 							\protect\hskip\the\@tempdimb\relax
 						}%
-							%\message{\string\TTo@action: \meaning \TTo@action. }%
-							% get back to the baseline, regardless of its depth.
-							\vskip-\prevdepth
-							\prevdepth-99\p@
-							\vskip\prevdepth
-						}}%
+						%\message{\string\TTo@action: \meaning \TTo@action. }%
+						% get back to the baseline, regardless of its depth.
+						\vskip-\prevdepth
+						\prevdepth-99\p@
+						\vskip\prevdepth
+					}}%
 			$$
 			% Don't count the display as lines in the paragraph
 			\count@\prevgraf \advance\count@-4 \prevgraf\count@

@@ -105,6 +105,10 @@ cd ../filecontents
 cd ../alignment
 [[ $silentMode == 1 ]] && echo "./alignment/alignment-test-cases.sh"
 ./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# texexchange
+cd ../texexchange
+[[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"
+./texexchange-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
 do 
