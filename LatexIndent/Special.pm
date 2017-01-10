@@ -95,7 +95,7 @@ sub find_special{
 
     # otherwise loop through the special begin/end
     $self->logger("Searching for special begin/end (see specialBeginEnd)");
-    $self->logger(Dumper(\%{$masterSettings{specialBeginEnd}}));
+    $self->logger(Dumper(\%{$masterSettings{specialBeginEnd}})) if $is_tt_switch_active;
 
     # keep looping as long as there is a special match of some kind
     while(${$self}{body} =~ m/$specialAllMatchesRegExp/sx){
