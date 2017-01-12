@@ -11,3 +11,4 @@ documentation/*.run.xml
 documentation/*.toc
 documentation/*.out
 nytprof*
+documentation/*.pyg
