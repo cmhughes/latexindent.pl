@@ -3,3 +3,4 @@ indentPreamble: 1
 verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
+    commandshell: 1
