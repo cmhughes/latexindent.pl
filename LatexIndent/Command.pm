@@ -135,4 +135,10 @@ sub create_unique_id{
     return;
 }
 
+sub align_at_ampersand{
+    # need an empty routine here for commands; see
+    # test-cases/matrix1.tex for example
+    return;
+}
+
 1;

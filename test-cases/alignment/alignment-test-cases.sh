@@ -26,4 +26,7 @@ latexindent.pl -s matrix.tex -o matrix-default.tex
 # legacy environment test case
 latexindent.pl -s environments.tex -o environments-default.tex
 latexindent.pl -s environments.tex -o environments-no-align-double-back-slash.tex -l=align-no-double-back-slash.yaml
+# alignment inside a mandatory argument
+latexindent.pl -s matrix1.tex -o matrix1-default.tex
+latexindent.pl -s matrix1.tex -o matrix1-no-align.tex -l=noMatrixAlign.yaml
 git status

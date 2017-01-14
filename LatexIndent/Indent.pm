@@ -125,11 +125,11 @@ sub indent_body{
             my $bodyFirstLine = $1;
             my $remainingBody = $2;
             $self->logger("first line of body: $bodyFirstLine",'heading') if $is_t_switch_active;
-            $self->logger("remaining body (before indentation): '$remainingBody'") if($is_t_switch_active);
+            $self->logger("remaining body (before indentation):\n'$remainingBody'") if($is_t_switch_active);
     
             # add the indentation to all the body except first line
             $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
-            $self->logger("remaining body (after indentation): '$remainingBody'") if($is_t_switch_active);
+            $self->logger("remaining body (after indentation):\n$remainingBody'") if($is_t_switch_active);
     
             # put the body back together
             ${$self}{body} = $bodyFirstLine."\n".$remainingBody; 
