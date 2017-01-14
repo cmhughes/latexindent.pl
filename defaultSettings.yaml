@@ -13,8 +13,17 @@
 #
 # Please read the manual first to understand what each switch does :)
 
-# Default value of indentation
-defaultIndent: "\t"
+# latexindent can be called without a file extension, 
+# e.g, simply
+#       latexindent myfile
+# in which case the choice of file extension is chosen
+# according to the choices made in fileExtensionPreference
+# Other file extensions can be added.
+fileExtensionPreference:
+    .tex: 1
+    .sty: 2
+    .cls: 3
+    .bib: 4
 
 # default file extension of backup file (if original is overwritten with -w switch)
 # for example, if your .tex file is called
@@ -50,6 +59,36 @@ maxNumberOfBackUps: 0
 # the back up will be written to myfile.bak4
 cycleThroughBackUps: 0
 
+#  verbatim environments- environments specified 
+#  in this hash table will not be changed at all!
+verbatimEnvironments:
+    verbatim: 1
+    lstlisting: 1
+
+#  verbatim commands such as \verb! body !, \lstinline$something else$
+verbatimCommands:
+    verb: 1
+    lstinline: 1
+
+#  no indent blocks (not necessarily verbatim 
+#  environments) which are marked as %\begin{noindent}
+#  or anything else that the user puts in this hash
+#  table
+noIndentBlock:
+    noindent: 1
+    cmhtest: 1
+
+# remove trailing whitespace from all lines 
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1
+
+# \begin{document} and \end{document} are treated differently
+# by latexindent within filecontents environments
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+
 # indent preamble
 indentPreamble: 0
 
@@ -67,10 +106,8 @@ lookForPreamble:
 #    postfoothook=\end{mdframed},
 preambleCommandsBeforeEnvironments: 0
 
-# remove trailing whitespace from all lines 
-removeTrailingWhitespace:
-    beforeProcessing: 0
-    afterProcessing: 1
+# Default value of indentation
+defaultIndent: "\t"
 
 # environments that have tab delimiters, add more 
 # as needed
@@ -99,83 +136,43 @@ lookForAlignDelims:
    dcases: 1
    listabla: 1
 
-# if you have indent rules for particular environments
-# or commands, put them in here; for example, you might just want 
-# to use a space " " or maybe a double tab "\t\t"
-indentRules:
-   myenvironment: "\t\t"
-   anotherenvironment: "\t\t\t\t"
-   chapter: " "
-   section: " "
-   item: "      "
-   myitem: "        "
+# if you want the script to look for \item commands 
+# and format it, as follows (for example),
+#       \begin{itemize}
+#           \item content here
+#                 next line is indented
+#                 next line is indented
+#           \item another item
+#       \end{itemize}
+# then populate indentAfterItems. See also itemNames
+indentAfterItems:
+    itemize: 1
+    enumerate: 1
+    list: 1
 
-# set indentRules globally for codeblocks; these need 
-# to be horizontal spaces, if they are to be used
-indentRulesGlobal:
-    environments: 0
-    commands: 0
-    optionalArguments: 0
-    mandatoryArguments: 0
-    ifElseFi: 0
-    items: 0
-    keyEqualsValuesBraces: 0
-    namedGroupingBracesBrackets: 0
-    UnNamedGroupingBracesBrackets: 0
-    specialBeginEnd: 0
-    afterHeading: 0
-    filecontents: 0
+# if you want to use other names for your items (such as, for example, part)
+# then populate them here- note that you can trick latexindent.pl
+# into indenting all kinds of commands (within environments specified in 
+# indentAfterItems) using this technique.
+itemNames:
+    item: 1
+    myitem: 1
 
-#  verbatim environments- environments specified 
-#  in this hash table will not be changed at all!
-verbatimEnvironments:
-    verbatim: 1
-    lstlisting: 1
-
-#  verbatim commands such as \verb! body !, \lstinline$something else$
-verbatimCommands:
-    verb: 1
-    lstinline: 1
-
-#  no indent blocks (not necessarily verbatim 
-#  environments) which are marked as %\begin{noindent}
-#  or anything else that the user puts in this hash
-#  table
-noIndentBlock:
-    noindent: 1
-    cmhtest: 1
-
-# if you don't want to have additional indentation 
-# in an environment put it in this hash table; note that
-# environments in this hash table will inherit 
-# the *current* level of indentation they just won't
-# get any *additional*.
-noAdditionalIndent:
-    myexample: 1
-    mydefinition: 1
-    problem: 1
-    exercises: 1
-    mysolution: 1
-    foreach: 0
-    widepage: 1
-    comment: 1
-    document: 1
-    frame: 0
-
-# set noAdditionalIndent globally for codeblocks
-noAdditionalIndentGlobal:
-    environments: 0
-    commands: 1
-    optionalArguments: 0
-    mandatoryArguments: 0
-    ifElseFi: 0
-    items: 0
-    keyEqualsValuesBraces: 0
-    namedGroupingBracesBrackets: 0
-    UnNamedGroupingBracesBrackets: 0
-    specialBeginEnd: 0
-    afterHeading: 0
-    filecontents: 0
+# specialBeginEnd is mainly mathmode focus, although
+# there's no restrictions
+specialBeginEnd:
+    displayMath:
+        begin: '\\\['
+        end: '\\\]'
+        lookForThis: 1
+    inlineMath:
+        begin: '(?<!\$)(?<!\\)\$(?!\$)'
+        end: '(?<!\\)\$(?!\$)'
+        lookForThis: 1
+    displayMathTeX:
+        begin: '\$\$'
+        end: '\$\$'
+        lookForThis: 1
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
@@ -211,65 +208,70 @@ indentAfterHeadings:
        indentAfterThisHeading: 0
        level: 7
 
-# if you want the script to look for \item commands 
-# and format it, as follows (for example),
-#       \begin{itemize}
-#           \item content here
-#                 next line is indented
-#                 next line is indented
-#           \item another item
-#       \end{itemize}
-# then populate indentAfterItems. See also itemNames
-indentAfterItems:
-    itemize: 1
-    enumerate: 1
-    list: 1
+# if you have indent rules for particular environments
+# or commands, put them in here; for example, you might just want 
+# to use a space " " or maybe a double tab "\t\t"
+indentRules:
+   myenvironment: "\t\t"
+   anotherenvironment: "\t\t\t\t"
+   chapter: " "
+   section: " "
+   item: "      "
+   myitem: "        "
 
-# if you want to use other names for your items (such as, for example, part)
-# then populate them here- note that you can trick latexindent.pl
-# into indenting all kinds of commands (within environments specified in 
-# indentAfterItems) using this technique.
-itemNames:
-    item: 1
-    myitem: 1
+# set indentRules globally for codeblocks; these need 
+# to be horizontal spaces, if they are to be used
+indentRulesGlobal:
+    environments: 0
+    commands: 0
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+    keyEqualsValuesBraces: 0
+    namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
+    afterHeading: 0
+    filecontents: 0
 
-specialBeginEnd:
-    displayMath:
-        begin: '\\\['
-        end: '\\\]'
-        lookForThis: 1
-    inlineMath:
-        begin: '(?<!\$)(?<!\\)\$(?!\$)'
-        end: '(?<!\\)\$(?!\$)'
-        lookForThis: 1
-    displayMathTeX:
-        begin: '\$\$'
-        end: '\$\$'
-        lookForThis: 1
+# if you don't want to have additional indentation 
+# in an environment put it in this hash table; note that
+# environments in this hash table will inherit 
+# the *current* level of indentation they just won't
+# get any *additional*.
+noAdditionalIndent:
+    myexample: 1
+    mydefinition: 1
+    problem: 1
+    exercises: 1
+    mysolution: 1
+    foreach: 0
+    widepage: 1
+    comment: 1
+    document: 1
+    frame: 0
 
-# latexindent can be called without a file extension, 
-# e.g, simply
-#       latexindent myfile
-# in which case the choice of file extension is chosen
-# according to the choices made in fileExtensionPreference
-# Other file extensions can be added.
-fileExtensionPreference:
-    .tex: 1
-    .sty: 2
-    .cls: 3
-    .bib: 4
+# set noAdditionalIndent globally for codeblocks
+noAdditionalIndentGlobal:
+    environments: 0
+    commands: 1
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+    keyEqualsValuesBraces: 0
+    namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
+    afterHeading: 0
+    filecontents: 0
 
 # preferences for information displayed in the log file
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 0
     endLogFileWith: '--------------' 
-
-# \begin{document} and \end{document} are treated differently
-# by latexindent within filecontents environments
-fileContentsEnvironments:
-    filecontents: 1
-    filecontents*: 1
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
