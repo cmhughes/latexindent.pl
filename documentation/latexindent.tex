@@ -212,10 +212,11 @@ parbox=false,
 \newtcbox{yamltitlebox}[1][]{colframe=black!50!white,boxrule=.5pt,sharp corners,#1}
 
 \newcommand{\flagbox}[1]{%
+    \par
 	\makebox[30pt][l]{%
 		\hspace{-2cm}%
 		\ttfamily\fontseries{b}\selectfont #1
-	}
+	}%
 }
 
 \NewDocumentCommand{\yamltitle}{O{} m s m}{%
@@ -576,6 +577,7 @@ If you wish to have backup files and \texttt{indent.log} written to a directory
 other than the current working directory, then you can send these `cruft' files
 to another directory.
 % this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
+
 \flagbox{-g, --logfile}
 \begin{commandshell}
 latexindent.pl -g=other.log myfile.tex
@@ -732,7 +734,8 @@ won't try to operate on the preamble (as \texttt{indentPreamble} is set to \text
 by default), but if you'd like \texttt{latexindent.pl} to try then change \texttt{indentPreamble} to \texttt{1}.
 
 \yamltitle{lookForPreamble}*{fields}
-This is the first example of a field in \texttt{defaultSettings.yaml} that has more than one line, see \cref{lst:lookForPreamble}.
+This is the first example of a field in \texttt{defaultSettings.yaml} that has more than one line, and 
+contains fields which each have their own setting as shown in \cref{lst:lookForPreamble}.
 \begin{yaml}[firstnumber=57]{lookForPreamble}{lst:lookForPreamble}
 lookForPreamble:
     .tex: 1
@@ -759,7 +762,8 @@ postfoothook=\end{mdframed},
 \yamltitle{removeTrailingWhitespace}*{fields}
 
 Trailing white space can be removed both \emph{before} and \emph{after} processing 
-the document, as detailed in \cref{lst:removeTrailingWhitespace}. 
+the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields 
+can take the values \texttt{0} or \texttt{1}.
 \begin{yaml}[firstnumber=71]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
 removeTrailingWhitespace:
     beforeProcessing: 0
@@ -767,13 +771,14 @@ removeTrailingWhitespace:
 \end{yaml}
 Thanks to \cite{vosskuhle} for providing this feature.
 
-\end{document}
-\item[\verbitem{lookForAlignDelims}] ; \cref{lst:aligndelims:basic}
-shows more details. In fact, the fields in \verbitem{lookForAlignDelims} can actually
+\yamltitle{lookForAlignDelims}*{fields}
+This contains a list of environments and/or commands that 
+are operated upon in a special way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}).
+In fact, the fields in \texttt{lookForAlignDelims} can actually
 take two different forms: the \emph{basic} version is shown in \cref{lst:aligndelims:basic}
 and the \emph{advanced} version in \cref{lst:aligndelims:advanced}; we will discuss each in turn.
 
-\begin{cmhlistings}[style=yaml]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
+\begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}{lst:aligndelims:basic}
 lookForAlignDelims:
    tabular: 1
    tabularx: 1
@@ -791,36 +796,27 @@ lookForAlignDelims:
    dcases: 1
    pmatrix: 1
    listabla: 1
-	\end{cmhlistings}
+	\end{yaml}
 
 The environments specified in this field will be operated on in a special way  by \texttt{latexindent.pl}. In particular, it will try and align each column by its alignment
 tabs. It does have some limitations (discussed further in \cref{sec:knownlimitations}),
 but in many cases it will produce results such as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
 
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} before}{lst:tabularbefore:basic}
-\begin{tabular}{cccc}
-1&	2 &3       &4\\
-5& &6       &\\
-\end{tabular}
-		\end{cmhlistings}
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before}{lst:tabularbefore:basic}
 \end{minipage}%
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} after (basic)}{lst:tabularafter:basic}
-\begin{tabular}{cccc}
- 1 & 2 & 3 & 4 \\
- 5 &   & 6 &   \\
-\end{tabular}
-		\end{cmhlistings}
-\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-default.tex}{\texttt{tabular} after (basic)}{lst:tabularafter:basic}
+\end{minipage}%
 
 If you find that \texttt{latexindent.pl} does not perform satisfactorily on such
-environments then you can either remove them from \texttt{lookForAlignDelims} altogether, or set the relevant key to \texttt{0}, for example \texttt{tabular: 0}, or if you just want to ignore \emph{specific}
+environments then you can set the relevant key to \texttt{0}, for example \texttt{tabular: 0}; alternatively, if you just want to ignore \emph{specific}
 instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \cref{lst:noIndentBlock}).
 
-If you wish to remove the alignment of the \texttt{\\} within a delimiter-aligned block, then the
+If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
 advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
-\begin{cmhlistings}[style=yaml]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
+\begin{yaml}[firstnumber=77]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 lookForAlignDelims:
    tabular: 
       delims: 1
@@ -829,61 +825,48 @@ lookForAlignDelims:
    tabularx:
       delims: 1
    longtable: 1
-	\end{cmhlistings}
+	\end{yaml}
 
 Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
 are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive up to 3 fields:
 \begin{itemize}
 	\item \texttt{delims}: switch equivalent to simply specifying, for example, \texttt{tabular: 1} in
 	      the basic version shown in \cref{lst:aligndelims:basic} (default: 1);
-	\item \texttt{alignDoubleBackSlash}: switch to determine if \texttt{\\} should be aligned (default: 1);
+	\item \texttt{alignDoubleBackSlash}: switch to determine if \lstinline!\\! should be aligned (default: 1);
 	\item \texttt{spacesBeforeDoubleBackSlash}: optionally, specifies the number of spaces to be inserted
-	      before (non-aligned) \texttt{\\}. In order to use this field, \texttt{alignDoubleBackSlash} needs
+	      before (non-aligned) \lstinline!\\!. In order to use this field, \texttt{alignDoubleBackSlash} needs
 	      to be set to 0 (default: 0).
 \end{itemize}
 
-With the settings shown in \cref{lst:aligndelims:advanced} we receive the before-and-after results shown in
+Assuming that you have the settings in \cref{lst:aligndelims:advanced} saved in \texttt{mysettings.yaml}, and the code 
+from \cref{lst:tabularbefore:basic} in \texttt{myfile.tex} and you run
+\begin{commandshell}
+latexindent.pl -l mysettings.yaml myfile.tex 
+\end{commandshell}
+then you should receive the before-and-after results shown in
 \cref{lst:tabularbefore:advanced,lst:tabularafter:advanced}; note that the ampersands have been aligned, but
-the \texttt{\\} have not (compare the alignment of \texttt{\\} in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
+the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
 
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} before }{lst:tabularbefore:advanced}
-\begin{tabular}{cccc}
-1&	2 &3       &4\\
-5& &6       &\\
-\end{tabular}
-		\end{cmhlistings}
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before }{lst:tabularbefore:advanced}
 \end{minipage}%
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} after (advanced)}{lst:tabularafter:advanced}
-\begin{tabular}{cccc}
- 1 & 2 & 3 & 4\\
- 5 &   & 6 &\\
-\end{tabular}
-		\end{cmhlistings}
-\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced.tex}{\texttt{tabular} after (advanced)}{lst:tabularafter:advanced}
+\end{minipage}%
 
 Using  \texttt{spacesBeforeDoubleBackSlash: 3} gives \cref{lst:tabularbefore:spacing,lst:tabularafter:spacing},
-note the spacing before the \texttt{\\} in \cref{lst:tabularafter:spacing}.
+note the spacing before the \lstinline!\\! in \cref{lst:tabularafter:spacing}.
 
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} before}{lst:tabularbefore:spacing}
-\begin{tabular}{cccc}
-1&	2 &3       &4\\
-5& &6       &\\
-\end{tabular}
-		\end{cmhlistings}
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before}{lst:tabularbefore:spacing}
 \end{minipage}%
-\begin{minipage}{.5\textwidth}
-	\begin{cmhlistings}[style=demo,columns=fixed]{\texttt{tabular} after (spacing)}{lst:tabularafter:spacing}
-\begin{tabular}{cccc}
- 1 & 2 & 3 & 4   \\
- 5 &   & 6 &   \\
-\end{tabular}
-		\end{cmhlistings}
-\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular} after (spacing)}{lst:tabularafter:spacing}
+\end{minipage}%
 
-
+\end{document}
 
 
 If you have blocks of code that you wish to align at the \&  character that
