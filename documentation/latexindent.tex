@@ -4,7 +4,7 @@
 % !arara: pdflatex
 % !arara: pdflatex
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
-\documentclass[8pt]{article}
+\documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
 %   the Free Software Foundation, either version 3 of the License, or
@@ -276,7 +276,10 @@ parbox=false,
 
 % headers and footers
 \fancyhf{} % delete current header and footer
-\fancyhead[R]{\bfseries\thepage}
+\fancyhead[R]{\bfseries\thepage%
+\tikz[remember picture,overlay] {
+\node at (1,0){\includegraphics{logo-bw}}; }
+}
 \fancyheadoffset[L]{3cm}
 \pagestyle{fancy}
 
@@ -287,7 +290,7 @@ parbox=false,
 	\renewcommand{\footrulewidth}{0pt}}
 
 % sidebyside environment
-\newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{1cm}}{\end{adjustwidth}}
+\newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{0cm}}{\end{adjustwidth}}
 
 % gitinfo2 settings
 \renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}
@@ -308,8 +311,7 @@ parbox=false,
 % and you should see gitHeadInfo.gin
 \begin{document}
 % \begin{noindent}
-	\title{\lstinline[basicstyle=\huge\ttfamily]!latexindent.pl!\\[1cm]
-		Version 3.0}
+\title{\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.0}
 % \end{noindent}
 \author{Chris Hughes \footnote{and contributors! (See \vref{sec:contributors}.) For
 		all communication, please visit \cite{latexindent-home}.}}
@@ -365,7 +367,7 @@ There is certainly no malicious intent in releasing this script, and I do hope
 that it works as you expect it to; if it does not, please first of all
 make sure that you have the correct settings, and then feel free to let me know (\cite{latexindent-home}) with a
 complete minimum working example as I would like to improve the code as much as possible.
-
+%\end{document}
 \begin{warning}
 	Before you try the script on anything important (like your thesis), test it
 	out on the sample files in the \texttt{test-case} directory (\cite{latexindent-home}).
@@ -394,24 +396,24 @@ environment or \texttt{noIndentBlock} is specified -- more on this in \cref{sec:
 
 \begin{sidebyside}
 	\centering
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/filecontents1.tex}{\texttt{filecontents} before}{lst:filecontentsbefore}
 	\end{minipage}\hfill
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/filecontents1-default.tex}{\texttt{filecontents} after}{lst:filecontentsafter}
 	\end{minipage}%
 
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/tikzset.tex}{\texttt{tikzset} before}{lst:tikzsetbefore}
 	\end{minipage}\hfill
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/tikzset-default.tex}{\texttt{tikzset} after}{lst:tikzsetafter}
 	\end{minipage}%
 
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/pstricks.tex}{\texttt{pstricks} before}{lst:pstricksbefore}
 	\end{minipage}\hfill
-	\begin{minipage}{.55\textwidth}
+	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/pstricks-default.tex}{\texttt{pstricks} after}{lst:pstricksafter}
 	\end{minipage}%
 \end{sidebyside}
@@ -1017,6 +1019,13 @@ A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 \end{minipage}
 
 \yamltitle{itemNames}*{fields} 
+\begin{wrapfigure}[8]{r}[0pt]{5cm}
+\begin{yaml}{\texttt{itemNames}}[width=.8\linewidth,before=\centering]{lst:itemNames}
+indentAfterItems:
+    item: 1
+    myitem: 1
+	\end{yaml}
+\end{wrapfigure}
 If you have your own \texttt{item} commands (perhaps you
 prefer to use \texttt{myitem}, for example)
 then you can put populate them in \texttt{itemNames}.
@@ -1024,12 +1033,6 @@ For example, users of the \texttt{exam} document class might like to add
 \texttt{parts} to \texttt{indentAfterItems} and \texttt{part} to \texttt{itemNames}
 to their user settings--see \vref{sec:indentconfig} for details of how to configure user settings,
 and \vref{lst:mysettings} in particular.\label{page:examsettings}
-
-\begin{yaml}{\texttt{itemNames}}{lst:itemNames}
-indentAfterItems:
-    item: 1
-    myitem: 1
-	\end{yaml}
 
 \yamltitle{specialBeginEnd}*{fields}
 The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but 
@@ -1071,15 +1074,8 @@ will look for this pattern; you can tell \texttt{latexindent.pl} not to look for
 \texttt{lookForThis} to \texttt{0}. 
 
 \yamltitle{indentAfterHeadings}*{fields} 
-This field enables the user to specify
-indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,
-\lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command written in this field. 
-
-This field is slightly different from most
-of the fields that we have considered previously, because each element is
-itself a field which has two elements: \texttt{indent} and \texttt{level}. (Similar
-in structure to the advanced form of  \texttt{lookForAlignDelims} in \cref{lst:aligndelims:advanced}.)
-\begin{yaml}{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
+\begin{wrapfigure}[17]{r}[0pt]{8cm}
+\begin{yaml}{\texttt{indentAfterHeadings}}[width=.8\linewidth,before=\centering]{lst:indentAfterHeadings}
 indentAfterHeadings:
     part:
        indentAfterThisHeading: 0
@@ -1092,6 +1088,16 @@ indentAfterHeadings:
        level: 3
     ...
 	\end{yaml}
+\end{wrapfigure}
+This field enables the user to specify
+indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,
+\lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command written in this field. 
+
+This field is slightly different from most
+of the fields that we have considered previously, because each element is
+itself a field which has two elements: \texttt{indent} and \texttt{level}. (Similar
+in structure to the advanced form of  \texttt{lookForAlignDelims} in \cref{lst:aligndelims:advanced}.)
+
 The default settings do \emph{not} place indentation after a heading, but you
 can easily switch them on by changing \texttt{indentAfterThisHeading: 0} to \texttt{indentAfterThisHeading: 1}.
 The \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
@@ -1131,7 +1137,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 then you should receive the output given in \cref{lst:headings1-mod1}.
 
 \begin{minipage}{.45\textwidth}
-\cmhlistingsfromfile{demonstrations/headings1-mod1.tex}{\texttt{headings1.tex} 1st modification}{lst:headings1-mod1}
+\cmhlistingsfromfile{demonstrations/headings1-mod1.tex}{\texttt{headings1.tex} first modification}{lst:headings1-mod1}
 \end{minipage}%
 \hfill
 \begin{minipage}{.45\textwidth}
@@ -1145,6 +1151,19 @@ latexindent.pl headings1.tex -l=headings1.yaml
 \end{commandshell}
 you should now receive the code given in \cref{lst:headings1-mod2}; notice that
 the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
+
+\subsection{\texttt{noAdditionalIndent} and \texttt{indentRules}}
+
+
+
+% the -m switch
+% the -m switch
+% the -m switch
+\fancyhead[R]{\bfseries\thepage%
+\tikz[remember picture,overlay] {
+\node at (1,0){\includegraphics{logo}};
+}}
+\section{The \texttt{-m} switch}\label{sec:modifylinebreaks}
 \end{document}
 
 
@@ -1198,14 +1217,8 @@ noAdditionalIndent:
     foreach: 0
     widepage: 1
     comment: 1
-    \[: 1
-    \]: 1
     frame: 0
 	\end{cmhlistings}
-Note in particular from \cref{lst:noAdditionalIndent} that if you wish content within
-\texttt{\[}  and \texttt{\]} to receive no additional indentation then
-you have to specify \emph{both} as \texttt{1} (the default is \texttt{0}).
-If you do not specify both as the same value you may get some interesting results!
 
 %    # set noAdditionalIndent globally for codeblocks
 %    noAdditionalIndentGlobal:
@@ -1525,7 +1538,6 @@ A visual representation of this is given in \cref{fig:loadorder}.
 	\label{fig:loadorder}
 \end{figure}
 
-\section{The \texttt{-m} switch}\label{sec:modifylinebreaks}
 \section{Known limitations}\label{sec:knownlimitations}
 
 The following command struggles because of the []
