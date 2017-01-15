@@ -89,6 +89,16 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 			sharp corners,
 			colbacktitle=white!75!black,
 		},
+        yaml-TCB/.style={
+	listing only,
+	listing engine=listings,
+	left=0cm,
+	boxrule=0pt,
+	leftrule=3pt,
+	sharp corners,
+	center title,
+	colbacktitle=white!75!black,
+        }
 }
 
 \newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
@@ -99,11 +109,12 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 	listing engine=listings,
 }
 
-\newtcbinputlisting[use counter=lstlisting]{\cmhlistingsfromfile}[4][]{%
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{O{} m O{} m m}{%
 	cmhlistings,
-	listing options={#1},
 	listing file={#2},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#3},label={#4},
+	listing options={#1},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#4},label={#5},
+    #3,
 }
 
 % command shell
@@ -132,27 +143,30 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 	%xleftmargin=1.5em,
 }%
 \DeclareTCBListing[use counter=lstlisting]{yaml}{O{} m O{} m}{
-	listing only,listing options={style=tcblatex,
+    yaml-TCB,
+    listing options={
+            style=tcblatex,
 			numbers=left,
 			numberstyle=\color{red},
             #1,
 		},
-	listing engine=listings,
-	left=0cm,
-	boxrule=0pt,
-	leftrule=3pt,
-	sharp corners,
-	center title,
-	colbacktitle=white!75!black,
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#4},
     #3,
 }
 
-\lstdefinestyle{demo}{
-	numbers=none,
-	linewidth=1.25\textwidth,
-	columns=fullflexible,
+\lstdefinestyle{yaml-LST}{
+            style=tcblatex,
+			numbers=left,
+			numberstyle=\color{red},
 }
+
+\lstdefinestyle{demo}{
+       numbers=none,
+       linewidth=1.25\textwidth,
+       columns=fullflexible,
+       }
+
+
 
 % stars around contributors
 \pgfdeclaredecoration{stars}{initial}{
@@ -367,7 +381,6 @@ There is certainly no malicious intent in releasing this script, and I do hope
 that it works as you expect it to; if it does not, please first of all
 make sure that you have the correct settings, and then feel free to let me know (\cite{latexindent-home}) with a
 complete minimum working example as I would like to improve the code as much as possible.
-%\end{document}
 \begin{warning}
 	Before you try the script on anything important (like your thesis), test it
 	out on the sample files in the \texttt{test-case} directory (\cite{latexindent-home}).
@@ -694,14 +707,9 @@ specifying the file extension.  For example we can call
 latexindent.pl myfile
 \end{commandshell}
 \begin{wrapfigure}[8]{r}[0pt]{6cm}
-\begin{yaml}[firstnumber=23]{\texttt{fileExtensionPreference}}[width=.8\linewidth,before=\centering]{lst:fileExtensionPreference}
-fileExtensionPreference:
-    .tex: 1
-    .sty: 2
-    .cls: 3
-    .bib: 4
-	\end{yaml}
+\cmhlistingsfromfile[firstnumber=22,linerange={22-26},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
 \end{wrapfigure}
+
 in which case the script will look for \texttt{myfile} with the extensions
 specified in \texttt{fileExtensionPreference} in their numeric order. If
 no match is found, the script will exit. As with all of the fields, you should
@@ -756,17 +764,10 @@ The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
 \yamltitle{verbatimEnvironments}*{fields} 
 
 \begin{wrapfigure}[14]{r}[0pt]{6cm}
-\begin{yaml}{\texttt{verbatimEnvironments}}[width=.8\linewidth,before=\centering]{lst:verbatimEnvironments}
-verbatimEnvironments:
-    verbatim: 1
-    lstlisting: 1
-	\end{yaml}\\
-    \vspace{.2cm}
-\begin{yaml}{\texttt{verbatimCommands}}[width=.8\linewidth,before=\centering]{lst:verbatimCommands}
-verbatimCommands:
-    verb: 1
-    lstinline: 1
-\end{yaml}
+\cmhlistingsfromfile[firstnumber=64,linerange={64-66},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
+
+\vspace{.2cm}
+\cmhlistingsfromfile[firstnumber=69,linerange={69-71},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
 \end{wrapfigure}
 A field that contains a list of environments
 that you would like left completely alone -- no indentation will be performed
@@ -784,11 +785,7 @@ routines (only relevant if the \texttt{-m} is active, see \vref{sec:m-switch}).
 \yamltitle{noIndentBlock}*{fields} 
 
 \begin{wrapfigure}[8]{r}[0pt]{6cm}
-\begin{yaml}{\texttt{noIndentBlock}}[width=.8\linewidth,before=\centering]{lst:noIndentBlock}
-noIndentBlock:
-    noindent: 1
-    cmhtest: 1
-	\end{yaml}
+\cmhlistingsfromfile[firstnumber=77,linerange={77-79},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
 \end{wrapfigure}
 If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if it is \emph{not} a verbatim-like
 environment) then you can wrap it in an environment from \texttt{noIndentBlock};
@@ -813,17 +810,10 @@ example.
 \yamltitle{removeTrailingWhitespace}*{fields}
 
 \begin{wrapfigure}[12]{r}[0pt]{6cm}
-\begin{yaml}[firstnumber=71]{removeTrailingWhitespace}[width=.8\linewidth,before=\centering]{lst:removeTrailingWhitespace}
-removeTrailingWhitespace:
-    beforeProcessing: 0
-    afterProcessing: 1
-\end{yaml}\\
+\cmhlistingsfromfile[firstnumber=82,linerange={82-84},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+
 \vspace{.2cm}
-\begin{yaml}{\texttt{fileContentsEnvironments}}[width=.8\linewidth,before=\centering]{lst:fileContentsEnvironments}
-fileContentsEnvironments:
-    filecontents: 1
-    filecontents*: 1
-  \end{yaml}
+\cmhlistingsfromfile[firstnumber=88,linerange={88-90},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
 \end{wrapfigure}
 Trailing white space can be removed both \emph{before} and \emph{after} processing 
 the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields 
@@ -848,13 +838,7 @@ by default), but if you'd like \texttt{latexindent.pl} to try then change \textt
 \yamltitle{lookForPreamble}*{fields}
 
 \begin{wrapfigure}[8]{r}[0pt]{5cm}
-\begin{yaml}[firstnumber=57]{lookForPreamble}[width=.8\linewidth,before=\centering]{lst:lookForPreamble}
-lookForPreamble:
-    .tex: 1
-    .sty: 0
-    .cls: 0
-    .bib: 0
-\end{yaml}
+\cmhlistingsfromfile[firstnumber=96,linerange={96-100},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
 \end{wrapfigure}
 Not all files contain preamble; for example, \texttt{sty}, \texttt{cls} and \texttt{bib} files typically do \emph{not}. Referencing
 \cref{lst:lookForPreamble}, if you set, for example, \texttt{.tex} to \texttt{0}, then regardless of the setting of the value of \texttt{indentPreamble}, preamble
@@ -918,16 +902,8 @@ instances of the environment, you could wrap them in something from \texttt{noIn
 
 If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
 advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
-\begin{yaml}[firstnumber=77]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
-lookForAlignDelims:
-   tabular: 
-      delims: 1
-      alignDoubleBackSlash: 0
-      spacesBeforeDoubleBackSlash: 0
-   tabularx:
-      delims: 1
-   longtable: 1
-	\end{yaml}
+
+\cmhlistingsfromfile[firstnumber=114,linerange={114-121},style=yaml-LST]{../defaultSettings.yaml}[yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 
 Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
 are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive up to 3 fields:
@@ -1000,14 +976,12 @@ shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by default.
 \fixthis{final check: line numbers in yaml}
 
 \yamltitle{indentAfterItems}*{fields} 
+\begin{wrapfigure}[5]{r}[0pt]{7cm}
+\cmhlistingsfromfile[firstnumber=148,linerange={148-151},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterItems}}{lst:indentafteritems}
+\end{wrapfigure}
 The environments specified in \texttt{indentAfterItems}  tell
 \texttt{latexindent.pl} to look for \lstinline!\item! commands; if these switches are set to \texttt{1}
 then indentation will be performed so as indent the code after each \texttt{item}.
-\begin{yaml}{\texttt{indentAfterItems}}{lst:indentafteritems}
-indentAfterItems:
-    itemize: 1
-    enumerate: 1
-	\end{yaml}
 A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 
 \begin{minipage}{.45\textwidth}
@@ -1019,12 +993,8 @@ A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 \end{minipage}
 
 \yamltitle{itemNames}*{fields} 
-\begin{wrapfigure}[8]{r}[0pt]{5cm}
-\begin{yaml}{\texttt{itemNames}}[width=.8\linewidth,before=\centering]{lst:itemNames}
-indentAfterItems:
-    item: 1
-    myitem: 1
-	\end{yaml}
+\begin{wrapfigure}[5]{r}[0pt]{5cm}
+\cmhlistingsfromfile[firstnumber=157,linerange={157-159},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
 \end{wrapfigure}
 If you have your own \texttt{item} commands (perhaps you
 prefer to use \texttt{myitem}, for example)
@@ -1038,21 +1008,8 @@ and \vref{lst:mysettings} in particular.\label{page:examsettings}
 The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but 
 there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the 
 default settings of \texttt{specialBeginEnd}.
-\begin{yaml}{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
-specialBeginEnd:
-    displayMath:
-        begin: '\\\['
-        end: '\\\]'
-        lookForThis: 1
-    inlineMath:
-        begin: '(?<!\$)(?<!\\)\$(?!\$)'
-        end: '(?<!\\)\$(?!\$)'
-        lookForThis: 1
-    displayMathTeX:
-        begin: '\$\$'
-        end: '\$\$'
-        lookForThis: 1
-	\end{yaml}
+
+\cmhlistingsfromfile[firstnumber=163,linerange={163-175},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
     The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath} represents
     \lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!. You can, of course, 
@@ -1062,11 +1019,11 @@ specialBeginEnd:
     A demonstration of the before-and-after results are shown in \cref{lst:specialbefore,lst:specialafter}.
 
 \begin{minipage}{.45\textwidth}
-\cmhlistingsfromfile{demonstrations/special1.tex}{\texttt{special} before}{lst:specialbefore}
+\cmhlistingsfromfile{demonstrations/special1.tex}{\texttt{special1.tex} before}{lst:specialbefore}
 \end{minipage}%
 \hfill
 \begin{minipage}{.45\textwidth}
-\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special} after}{lst:specialafter}
+\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special1.tex} after}{lst:specialafter}
 \end{minipage}
 
 For each field, the \texttt{lookForThis} is set to \texttt{1} by default, which means that \texttt{latexindent.pl}
@@ -1075,19 +1032,7 @@ will look for this pattern; you can tell \texttt{latexindent.pl} not to look for
 
 \yamltitle{indentAfterHeadings}*{fields} 
 \begin{wrapfigure}[17]{r}[0pt]{8cm}
-\begin{yaml}{\texttt{indentAfterHeadings}}[width=.8\linewidth,before=\centering]{lst:indentAfterHeadings}
-indentAfterHeadings:
-    part:
-       indentAfterThisHeading: 0
-       level: 1
-    chapter:
-       indentAfterThisHeading: 0
-       level: 2
-    section:
-       indentAfterThisHeading: 0
-       level: 3
-    ...
-	\end{yaml}
+\cmhlistingsfromfile[firstnumber=185,linerange={185-194},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
 \end{wrapfigure}
 This field enables the user to specify
 indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,
@@ -1115,15 +1060,7 @@ you have the code in \cref{lst:headings1} saved into \texttt{headings1.yaml},
 and that you have the text from \cref{lst:headings1} saved into \texttt{headings1.tex}. 
 
 \begin{minipage}{.45\textwidth}
-\begin{yaml}{\texttt{headings1.yaml}}{lst:headings1}
-indentAfterHeadings:
-    subsection:
-       indentAfterThisHeading: 1
-       level: 1
-    paragraph:
-       indentAfterThisHeading: 1
-       level: 2
-\end{yaml}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1}
 \end{minipage}%
 \hfill
 \begin{minipage}{.45\textwidth}
@@ -1153,8 +1090,51 @@ you should now receive the code given in \cref{lst:headings1-mod2}; notice that
 the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
 \subsection{\texttt{noAdditionalIndent} and \texttt{indentRules}}
+\fixthis{need an introduction}
+\subsubsection{Environments and their arguments}
+There are a few different YAML switches governing the indentation of environments; let's start 
+with the simple sample code shown in \cref{lst:myenvtex}.
 
+\cmhlistingsfromfile{demonstrations/myenvironment-simple.tex}{\texttt{myenv.tex}}{lst:myenvtex}
 
+If we do not wish \texttt{myenv} to receive any additional indentation, we have a few choices available to us, 
+as demonstrated in \cref{lst:myenv-noAdd1,lst:myenv-noAdd2}.
+
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd1.yaml}}{lst:myenv-noAdd1}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd2.yaml}}{lst:myenv-noAdd2}
+\end{minipage}
+
+On applying either of the following commands,
+\begin{commandshell}
+latexindent.pl myenv.tex -l myenv-noAdd1.yaml  
+latexindent.pl myenv.tex -l myenv-noAdd2.yaml  
+\end{commandshell}
+we obtain the output given in \cref{lst:myenv-output}; note in particular that the environment \texttt{myenv} 
+has not received any \emph{additional} indentation, but that the \texttt{outer} environment \emph{has} still 
+received indentation.
+
+\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex output}}{lst:myenv-output}
+
+Upon changing the YAML files to those shown in \cref{lst:myenv-noAdd3,lst:myenv-noAdd4}, and running either
+\begin{commandshell}
+latexindent.pl myenv.tex -l myenv-noAdd3.yaml  
+latexindent.pl myenv.tex -l myenv-noAdd4.yaml  
+\end{commandshell}
+we obtain the output given in \cref{lst:myenv-output-4}. 
+
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd3.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd3.yaml}}{lst:myenv-noAdd3}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd4.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd4.yaml}}{lst:myenv-noAdd4}
+\end{minipage}
+
+\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3,lst:myenv-noAdd4})}{lst:myenv-output-4}
 
 % the -m switch
 % the -m switch

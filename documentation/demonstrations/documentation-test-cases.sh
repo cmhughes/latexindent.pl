@@ -2,7 +2,7 @@
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
 loopmax=0
-. ../common.sh
+. ../../test-cases/common.sh
 
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
@@ -27,5 +27,10 @@ latexindent.pl -s headings1.tex -o headings1-mod1.tex -l=headings1.yaml
 latexindent.pl -s headings1.tex -o headings1-mod2.tex -l=headings2.yaml
 # previously important example
 latexindent.pl -s previously-important-example.tex -o previously-important-example-default.tex
+# noAdditionalIndent, environment
+latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body1.tex -l myenv-noAdd1.yaml
+latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body2.tex -l myenv-noAdd2.yaml
+latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body3.tex -l myenv-noAdd3.yaml
+latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body4.tex -l myenv-noAdd4.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
