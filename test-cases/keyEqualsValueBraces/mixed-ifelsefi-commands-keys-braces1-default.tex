@@ -41,12 +41,12 @@
 
 
 \preto\chapter{%
- \ifnum\value{chapter}>0
-	 \immediate\write\@auxout{%
-		 \string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
-	 }
- \fi
-}
+  \ifnum\value{chapter}>0
+	  \immediate\write\@auxout{%
+		  \string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
+	  }
+  \fi
+ }
 
 \AtEndDocument{%
 	\immediate\write\@auxout{%

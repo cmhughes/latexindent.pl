@@ -191,13 +191,7 @@ sub get_indentation_settings_for_this_object{
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = ($self->get_indentation_information(about=>"noAdditionalIndent"))
-                                     ?
-                                     q()
-                                     :
-                          ($self->get_indentation_information(about=>"indentRules")
-                                     ||
-                          $masterSettings{defaultIndent});
+        my $indentation = $self->get_indentation_information;
 
         # check for alignment at ampersand settings
         $self->alignment_at_ampersand_settings;
@@ -334,32 +328,15 @@ sub get_every_or_custom_value{
 
 sub get_indentation_information{
     my $self = shift;
-    my %input = @_;
-    my $indentationAbout = ${input}{about};
 
-    # gather information
-    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+    #**************************************
+    # SEARCHING ORDER:
+    #   noAdditionalIndent *per-name* basis
+    #   indentRules *per-name* basis
+    #   noAdditionalIndentGlobal
+    #   indentRulesGlobal
+    #**************************************
 
-    # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
-    my $globalInformation = $indentationAbout."Global";
-    if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
-        $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
-        return ${$masterSettings{$globalInformation}}{$YamlName};
-    } elsif($globalInformation eq "indentRulesGlobal") {
-        if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
-            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
-            return ${$masterSettings{$globalInformation}}{$YamlName};
-        } else {
-            $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
-      }
-    }
-
-    # if we make it this far, then it means that neither 
-    # noAdditionalIndentGlobal nor indentRulesGlobal are valid, so we 
-    # look for information in noAdditionalIndent and then indentRules
-    # on a *per name* basis.
-    #
-    #
     # noAdditionalIndent can be a scalar or a hash, e.g
     #
     #   noAdditionalIndent:
@@ -395,24 +372,56 @@ sub get_indentation_information{
 
     # if the YamlName is, for example, optionalArguments, mandatoryArguments, heading, then we'll be looking for information about the *parent*
     my $name = (defined ${$self}{nameForIndentationSettings}) ? ${$self}{nameForIndentationSettings} : ${$self}{name};
-    return unless ${$masterSettings{$indentationAbout}}{$name}; 
 
     # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
-    $YamlName = $self->get_object_attribute_for_indentation_settings;
+    my $YamlName = $self->get_object_attribute_for_indentation_settings;
 
     my $indentationInformation;
-    if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
-        $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)");
-        $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
-        if(defined $indentationInformation and $indentationInformation ne ''){
-            $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") ;
-         }
-    } else {
-        $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
-        $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)");
+    foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
+        # check that the 'thing' is defined
+        if(defined ${$masterSettings{$indentationAbout}}{$name}){
+            if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
+                $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)");
+                $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
+            } else {
+                $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
+                $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)");
+            }
+            # return, after performing an integrity check
+            if(defined $indentationInformation){
+                if($indentationAbout eq "noAdditionalIndent" and $indentationInformation == 1){
+                        $self->logger("Found! Using '' (see $indentationAbout)") ;
+                        return q();
+                } elsif($indentationAbout eq "indentRules" and $indentationInformation=~m/^\h*$/){
+                        $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") ;
+                        return $indentationInformation ;
+                }
+            }
+        }
     }
 
-    return $indentationInformation;
+    # gather information
+    $YamlName = ${$self}{modifyLineBreaksYamlName};
+
+    foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
+        # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
+        my $globalInformation = $indentationAbout."Global";
+        if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
+            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+            return q();
+        } elsif($globalInformation eq "indentRulesGlobal") {
+            if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
+                $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+                return ${$masterSettings{$globalInformation}}{$YamlName};
+            } else {
+                $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
+          }
+        }
+    }
+
+    # return defaultIndent, by default
+    $self->logger("Using defaultIndent for $name");
+    return $masterSettings{defaultIndent};
 }
 
 sub get_object_attribute_for_indentation_settings{

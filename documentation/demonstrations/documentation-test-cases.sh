@@ -27,6 +27,9 @@ latexindent.pl -s headings1.tex -o headings1-mod1.tex -l=headings1.yaml
 latexindent.pl -s headings1.tex -o headings1-mod2.tex -l=headings2.yaml
 # previously important example
 latexindent.pl -s previously-important-example.tex -o previously-important-example-default.tex
+##### ENVIRONMENTS ######
+##### ENVIRONMENTS ######
+##### ENVIRONMENTS ######
 # noAdditionalIndent, environment
 latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body1.tex -l myenv-noAdd1.yaml
 latexindent.pl -s myenvironment-simple.tex -o myenvironment-simple-noAdd-body2.tex -l myenv-noAdd2.yaml
@@ -43,5 +46,7 @@ latexindent.pl -s myenvironment-simple.tex -l myenv-rules2.yaml -o myenv-rules2.
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1.tex -l myenv-rules1.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules3.tex -l myenv-rules3.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules4.tex -l myenv-rules4.yaml
+# noAdditionalIndentGlobal
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

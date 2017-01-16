@@ -401,10 +401,10 @@
 	\dimen0 \linewidth%
 	\divide\dimen0 by #2\relax%
 	\def\item{\hfil\egroup\penalty50 \hfill%
-	      \refstepcounter{enumi}%
-	      \def\baselinestretch{#1}%
-	      \@currsize
-	      \leavevmode\hbox to \dimen0 \bgroup\protect\makebox[0.7cm][l]{\textbf{\Alph{enumi}}}\space }%
+		\refstepcounter{enumi}%
+		\def\baselinestretch{#1}%
+		\@currsize
+		\leavevmode\hbox to \dimen0 \bgroup\protect\makebox[0.7cm][l]{\textbf{\Alph{enumi}}}\space }%
 	% Hack to allow "blank" slots at end of final line (or wherever)
 	\def\noitem{\hfil\egroup\penalty50 \hfill%
 		\leavevmode\hbox to \dimen0 \bgroup}%

@@ -70,8 +70,8 @@ latexindent.pl -s items11.tex -w
 latexindent.pl -s items12.tex -o=items12-mod0.tex -l=../environments/env-all-on.yaml
 latexindent.pl -s items12.tex -m -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,env-mod-lines1.yaml -o=items12-mod1.tex
 # noAdditionalIndent
-latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml
+latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml,resetItem.yaml
 # indentRules
-latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml
+latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml,resetItem.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
