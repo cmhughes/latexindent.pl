@@ -47,6 +47,10 @@ latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1.tex -l mye
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules3.tex -l myenv-rules3.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules4.tex -l myenv-rules4.yaml
 # noAdditionalIndentGlobal
-latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal1.tex -l env-noAdditionalGlobal.yaml
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal2.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
+# indentRules
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules1.tex -l env-indentRules.yaml
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules2.tex -l myenv-rules1.yaml,env-indentRules.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

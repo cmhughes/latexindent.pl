@@ -47,13 +47,13 @@ we obtain the output given in \cref{lst:myenv-output-4}.
 
 \cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3,lst:myenv-noAdd4})}{lst:myenv-output-4}
 
-If we now allow \texttt{myenv} to have some optional and mandatory arguments, as in \cref{lst:myenv-args},
+Let's now allow \texttt{myenv} to have some optional and mandatory arguments, as in \cref{lst:myenv-args}.
 \cmhlistingsfromfile{demonstrations/myenvironment-args.tex}{\texttt{myenv-args.tex}}{lst:myenv-args}
-then running
+Upon running
 \begin{commandshell}
 latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex  
 \end{commandshell}
-gives the output shown in \cref{lst:myenv-args-noAdd1}; note that the optional argument, mandatory argument and body \emph{all} 
+we obtain the output shown in \cref{lst:myenv-args-noAdd1}; note that the optional argument, mandatory argument and body \emph{all} 
 have received no additional indent. This is because, when \texttt{noAdditionalIndent} is specified in `scalar' form (as in \cref{lst:myenv-noAdd1}), 
 then \emph{all} parts of the environment (body, optional and mandatory arguments) are assumed to want no additional indent.
 \cmhlistingsfromfile{demonstrations/myenvironment-args-noAdd-body1.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-noAdd1}}{lst:myenv-args-noAdd1}
@@ -148,3 +148,56 @@ has received the default (tab) indentation; the environment body has received th
 
 In \cref{lst:myenv-args-rules4}, the optional argument has received the default (tab) indentation, the mandatory argument has received two tabs
 of indentation, and the body has received three spaces of indentation.
+
+\yamltitle{noAdditionalIndentGlobal}*{fields}
+\begin{wrapfigure}[6]{r}[0pt]{7cm}
+\cmhlistingsfromfile[firstnumber=240,linerange={240-241},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{env-noAdditionalGlobal.yaml}}{lst:noAdditionalIndentGlobal:environments}
+\end{wrapfigure}
+Assuming that your environment name is not found within neither \texttt{noAdditionalIndent} nor \texttt{indentRules}, the next
+place that \texttt{latexindent.pl} will look is \texttt{noAdditionalIndentGlobal}, and in particular \emph{for the environments} key
+(see \cref{lst:noAdditionalIndentGlobal:environments}). Let's say that you change
+the value of \texttt{environments} to \texttt{1} in \cref{lst:noAdditionalIndentGlobal:environments}, and that you run
+
+\begin{sidebyside}
+\begin{commandshell}
+latexindent.pl myenv-args.tex -l env-noAdditionalGlobal.yaml
+latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
+\end{commandshell}
+\end{sidebyside}
+
+The respective output from these two commands are in \cref{lst:myenv-args-no-add-global1,lst:myenv-args-no-add-global2}; in \cref{lst:myenv-args-no-add-global1} notice that \emph{both}
+environments receive no additional indentation but that the arguments of \texttt{myenv} still \emph{do} receive indentation. In \cref{lst:myenv-args-no-add-global2}
+notice that the \emph{outer} environment does not receive additional indentation, but because of the settings from \texttt{myenv-rules1.yaml}, the \texttt{myenv}
+environment still \emph{does} receive indentation.
+
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile{demonstrations/myenvironment-args-rules1-noAddGlobal1.tex}{\texttt{myenv-args.tex}}{lst:myenv-args-no-add-global1}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile{demonstrations/myenvironment-args-rules1-noAddGlobal2.tex}{\texttt{myenv-args.tex}}{lst:myenv-args-no-add-global2}
+\end{minipage}
+
+\yamltitle{indentRulesGlobal}*{fields}
+\begin{wrapfigure}[4]{r}[0pt]{7cm}
+\cmhlistingsfromfile[firstnumber=256,linerange={256-257},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{env-indentRulesGlobal.yaml}}{lst:indentRulesGlobal:environments}
+\end{wrapfigure}
+The final check that \texttt{latexindent.pl} will make is to look for \texttt{indentRules} as detailed in \cref{lst:indentRulesGlobal:environments}; if you change the \texttt{environments}
+field to anything involving horizontal space, say \lstinline!" "!, and then run the following commands
+
+\begin{commandshell}
+latexindent.pl  myenv-args.tex -l env-indentRules.yaml
+latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
+\end{commandshell}
+then the respective output is shown in \cref{lst:myenv-args-indent-rules-global1,lst:myenv-args-indent-rules-global2}. Note that 
+in \cref{lst:myenv-args-indent-rules-global1}, both the environment blocks have received a single-space indentation, whereas in 
+\cref{lst:myenv-args-indent-rules-global2} the \texttt{outer} environment has received single-space indentation (specified by \texttt{indentRulesGlobal}),
+but \texttt{myenv} has received \lstinline!"   "!, as specified by \vref{lst:myenv-rules1}.
+
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules1.tex}{\texttt{myenv-args.tex}}{lst:myenv-args-indent-rules-global1}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\textwidth}
+\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules2.tex}{\texttt{myenv-args.tex}}{lst:myenv-args-indent-rules-global2}
+\end{minipage}
