@@ -1,4 +1,5 @@
 % arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 % !arara: bibtex
 % !arara: pdflatex
 % !arara: pdflatex
@@ -343,12 +344,15 @@ parbox=false,
 \tableofcontents
 \lstlistoflistings
 
-% \input{sec-introduction}
-% \input{sec-demonstration}
-% \input{sec-how-to-use}
-% \input{sec-default-user-local}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-default-user-local}
 \input{subsec-noAdditionalIndent-indentRules}
-% \input{sec-the-m-switch}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+%\input{sec-the-m-switch}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks
@@ -360,8 +364,7 @@ parbox=false,
 %        ifElseFi: 0
 %        items: 0
 
-This specifies noAdditionalIndent globally for code blocks; if this is specified as $1$,
-then noAdditionalIndent and indentRules will be ignored for these code blocks.
+This specifies noAdditionalIndent globally for code blocks; 
 
 %# set indentRules globally for codeblocks; these need 
 %# to be horizontal spaces, if they are to be used
@@ -373,27 +376,7 @@ then noAdditionalIndent and indentRules will be ignored for these code blocks.
 %    ifElseFi: 0
 %    items: 0
 
-\item[\verbitem{indentRules}] If\label{page:indentRules} you would prefer to specify
-individual rules for certain environments or commands, just
-populate \texttt{indentRules}; see \cref{lst:indentRules}
-
-\begin{cmhlistings}[style=yaml]{\texttt{indentRules}}{lst:indentRules}
-indentRules:
-   myenvironment: "\t\t"
-   anotherenvironment: "\t\t\t\t"
-   \[: "\t"
-	\end{cmhlistings}      %%%%%\] just here to stop vim from colouring the rest of my code
-Note that in contrast to \texttt{noAdditionalIndent} you do \emph{not}
-need to specify both \texttt{\[} and \texttt{\]} in this field.
-
-If you put an environment in both \texttt{noAdditionalIndent} and in
-\texttt{indentRules} then \texttt{latexindent.pl} will resolve the conflict
-by ignoring \texttt{indentRules} and prioritizing \texttt{noAdditionalIndent}.
-You will get a warning message in \texttt{indent.log}; note that you will only
-get one warning message per command or environment. Further discussion
-is given in \cref{sec:fieldhierachy}.
-
-In summary, The hierachy is
+The hierachy is
 \begin{enumerate}
 	\item noAdditionalIndent (on a per-name basis)
 	\item indentRules (on a per-name basis)

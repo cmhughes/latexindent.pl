@@ -47,10 +47,35 @@ latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1.tex -l mye
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules3.tex -l myenv-rules3.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules4.tex -l myenv-rules4.yaml
 # noAdditionalIndentGlobal
+# body
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal1.tex -l env-noAdditionalGlobal.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal2.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
+# arguments
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal3.tex -l opt-args-no-add-glob.yaml
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-rules1-noAddGlobal4.tex -l mand-args-no-add-glob.yaml
 # indentRules
+# body
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules1.tex -l env-indentRules.yaml
 latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules2.tex -l myenv-rules1.yaml,env-indentRules.yaml
+# arguments
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules3.tex -l opt-args-indent-rules-glob.yaml
+latexindent.pl -s myenvironment-args.tex -o myenvironment-args-global-rules4.tex -l mand-args-indent-rules-glob.yaml
+# items
+latexindent.pl -s items1.tex -o items1-noAdd1.tex -local item-noAdd1.yaml
+latexindent.pl -s items1.tex -o items1-rules1.tex -local item-rules1.yaml
+# global rules
+latexindent.pl -s items1.tex -o items1-no-add-global.tex -local items-noAdditionalGlobal.yaml
+latexindent.pl -s items1.tex -o items1-rules-global.tex -local items-indentRulesGlobal.yaml
+##### COMMANDS ######
+##### COMMANDS ######
+##### COMMANDS ######
+latexindent.pl -s mycommand.tex -o mycommand-default.tex
+# noAdditionalIndent
+latexindent.pl -s mycommand.tex -o mycommand-noAdd1.tex -local mycommand-noAdd1.yaml
+latexindent.pl -s mycommand.tex -o mycommand-noAdd2.tex -local mycommand-noAdd2.yaml
+latexindent.pl -s mycommand.tex -o mycommand-noAdd3.tex -local mycommand-noAdd3.yaml
+latexindent.pl -s mycommand.tex -o mycommand-noAdd4.tex -local mycommand-noAdd4.yaml
+latexindent.pl -s mycommand.tex -o mycommand-noAdd5.tex -local mycommand-noAdd5.yaml
+latexindent.pl -s mycommand.tex -o mycommand-noAdd6.tex -local mycommand-noAdd6.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
