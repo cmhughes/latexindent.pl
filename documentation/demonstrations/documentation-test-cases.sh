@@ -77,5 +77,20 @@ latexindent.pl -s mycommand.tex -o mycommand-noAdd3.tex -local mycommand-noAdd3.
 latexindent.pl -s mycommand.tex -o mycommand-noAdd4.tex -local mycommand-noAdd4.yaml
 latexindent.pl -s mycommand.tex -o mycommand-noAdd5.tex -local mycommand-noAdd5.yaml
 latexindent.pl -s mycommand.tex -o mycommand-noAdd6.tex -local mycommand-noAdd6.yaml
+##### ifElseFi ######
+##### ifElseFi ######
+##### ifElseFi ######
+latexindent.pl -s ifelsefi1.tex -o ifelsefi1-default.tex
+latexindent.pl -s ifelsefi1.tex -o ifelsefi1-noAdd.tex -local ifnum-noAdd.yaml
+latexindent.pl -s ifelsefi1.tex -o ifelsefi1-indent-rules.tex -local ifnum-indent-rules.yaml
+latexindent.pl -s ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml -o ifelsefi1-noAdd-glob.tex 
+latexindent.pl -s ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml -o ifelsefi1-indent-rules-global.tex 
+##### special ######
+##### special ######
+##### special ######
+latexindent.pl -s special1.tex -o special1-noAdd.tex -local displayMath-noAdd.yaml
+latexindent.pl -s special1.tex -o special1-indent-rules.tex -local displayMath-indent-rules.yaml
+latexindent.pl -s special1.tex -local special-noAdd-glob.yaml -o special1-noAdd-glob.tex 
+latexindent.pl -s special1.tex -l special-indent-rules-global.yaml -o special1-indent-rules-global.tex 
 [[ $noisyMode == 1 ]] && makenoise
 git status
