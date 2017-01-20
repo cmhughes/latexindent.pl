@@ -39,7 +39,7 @@ sub modify_line_breaks_body_and_end{
                 $self->logger("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.");
             }
           } 
-       } elsif (${$self}{BodyStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{begin}){
+       } elsif (${$self}{BodyStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
           $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
           ${$self}{begin} =~ s/\R*$//sx;
@@ -69,7 +69,7 @@ sub modify_line_breaks_body_and_end{
                 ${$self}{body} .= "$trailingCommentToken\n";
                 ${$self}{linebreaksAtEnd}{body} = 1;
               }
-          } elsif (${$self}{EndStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{body}){
+          } elsif (${$self}{EndStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
 
               # check to see that body does *not* finish with blank-line-token, 

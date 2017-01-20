@@ -67,7 +67,7 @@ sub indent{
 
     # line break checks *after* \end{statement}
     if (defined ${$self}{EndFinishesWithLineBreak}
-        and ${$self}{EndFinishesWithLineBreak}==0 
+        and ${$self}{EndFinishesWithLineBreak}==-1 
         ) {
         # add a single horizontal space after the child id, otherwise we can end up 
         # with things like
@@ -190,7 +190,7 @@ sub check_for_else_statement{
               $self->logger("Adding a linebreak before the \\else statement (see ElseStartsOnOwnLine)");
               ${$self}{body} =~ s/\\else/\n\\else/s;
               ${$self}{linebreaksAtEnd}{ifbody} = 1;
-          } elsif (${$self}{ElseStartsOnOwnLine}==0 and ${$self}{linebreaksAtEnd}{ifbody}){
+          } elsif (${$self}{ElseStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{ifbody}){
               # remove line break *after* ifbody, if appropriate
               $self->logger("Removing linebreak before \\else statement (see ElseStartsOnOwnLine)");
               ${$self}{body} =~ s/\R*(\h*)\\else/$1\\else/sx;
@@ -205,7 +205,7 @@ sub check_for_else_statement{
               $self->logger("Adding a linebreak after the \\else statement (see ElseFinishesWithLineBreak)");
               ${$self}{body} =~ s/\\else\h*/\\else\n/s;
               ${$self}{linebreaksAtEnd}{else} = 1;
-          } elsif (${$self}{ElseFinishesWithLineBreak}==0 and ${$self}{linebreaksAtEnd}{else}){
+          } elsif (${$self}{ElseFinishesWithLineBreak}==-1 and ${$self}{linebreaksAtEnd}{else}){
               # remove line break *after* else, if appropriate, 
               # note the space so that, for example,
               #     \else

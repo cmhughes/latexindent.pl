@@ -1,7 +1,7 @@
 modifyLineBreaks:
     ifElseFi:
         IfStartsOnOwnLine: 1
-        BodyStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: -1
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 1

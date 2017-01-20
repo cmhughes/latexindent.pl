@@ -2,4 +2,4 @@
 modifyLineBreaks:
     items:
         ItemStartsOnOwnLine: 2
-        ItemFinishesWithLineBreak: 0
+        ItemFinishesWithLineBreak: -1

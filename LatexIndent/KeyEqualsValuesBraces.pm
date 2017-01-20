@@ -72,7 +72,7 @@ sub check_linebreaks_before_equals{
 
     # linebreaks *infront* of = symbol
     if(${$self}{begin} =~ /\R\h*=/s){
-          if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==0){
+          if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==-1){
             $self->logger("Removing linebreak before = symbol in ${$self}{name} (see EqualsStartsOnOwnLine)");
             ${$self}{begin} =~ s/(\R|\h)*=/=/s;
           }

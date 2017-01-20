@@ -11,4 +11,4 @@ modifyLineBreaks:
         ElseStartsOnOwnLine: 1
         ElseFinishesWithLineBreak: 1
         FiStartsOnOwnLine: 1
-        FiFinishesWithLineBreak: 0
+        FiFinishesWithLineBreak: -1

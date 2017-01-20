@@ -2,10 +2,10 @@ modifyLineBreaks:
     preserveBlankLines: 0
     condenseMultipleBlankLinesInto: 1
     commands:
-        CommandStartsOnOwnLine: 0
+        CommandStartsOnOwnLine: -1
         emph:
-            CommandStartsOnOwnLine: -1
+            CommandStartsOnOwnLine: 0
     mandatoryArguments:
         RCuBFinishesWithLineBreak: 1
         emph:
-            RCuBFinishesWithLineBreak: -1
+            RCuBFinishesWithLineBreak: 0

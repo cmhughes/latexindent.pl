@@ -2,5 +2,5 @@ modifyLineBreaks:
     specialBeginEnd:
         SpecialBeginStartsOnOwnLine: 1
         SpecialBodyStartsOnOwnLine: 1
-        SpecialEndStartsOnOwnLine: 0
-        SpecialEndFinishesWithLineBreak: 0
+        SpecialEndStartsOnOwnLine: -1
+        SpecialEndFinishesWithLineBreak: -1

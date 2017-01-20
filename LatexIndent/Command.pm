@@ -60,11 +60,11 @@ sub tasks_particular_to_each_object{
     # EndFinishesWithLineBreaks = 0 (see test-cases/commands/just-one-command-mod10.tex)
     if(${${$self}{linebreaksAtEnd}}{end} == 1 
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
-        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 0
+        and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == -1
         ){
           $self->logger("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0") if $is_t_switch_active;
           ${${$self}{linebreaksAtEnd}}{end} = 0;
-          ${$self}{EndFinishesWithLineBreak} = 0;
+          ${$self}{EndFinishesWithLineBreak} = -1;
         }
     
     # if the last argument finishes with a linebreak, it won't get interpreted at 
@@ -88,7 +88,7 @@ sub tasks_particular_to_each_object{
         # update the last mandatory/optional argument
         $self->logger("Adjusting last argument in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
-        ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = 0;
+        ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = -1;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText} =~ s/\R$//s;
 
         # output to log file

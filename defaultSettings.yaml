@@ -284,12 +284,12 @@ logFilePreferences:
 #           will be changed to
 #               some text some text 
 #               \begin{myenvironment}
-#       when set to 0, e.g 
+#       when set to -1, e.g 
 #               some text some text 
 #               \begin{myenvironment}
 #           will be changed to
 #               some text some text \begin{myenvironment}
-#       when set to -1, the switch is ignored
+#       when set to 0, the switch is ignored
 #
 #    BodyStartsOnOwnLine: 1
 #       if body does not already start on its own line, then with 
@@ -300,12 +300,12 @@ logFilePreferences:
 #           will be changed to
 #               \begin{myenv}
 #                   body text body text
-#       when set to 0, e.g 
+#       when set to -1, e.g 
 #               \begin{myenv}
 #                   body text body text
 #           will be changed to
 #               \begin{myenv}body text body text
-#       when set to -1, the switch is ignored
+#       when set to 0, the switch is ignored
 #
 #    EndStartsOnOwnLine: 1
 #       if an end statement is not already on its own line,
@@ -316,12 +316,12 @@ logFilePreferences:
 #           will be changed to
 #               some text some text 
 #               \end{myenvironment}
-#       when set to 0, e.g 
+#       when set to -1, e.g 
 #               some text some text 
 #               \end{myenvironment}
 #           will be changed to
 #               some text some text \end{myenvironment}
-#       when set to -1, the switch is ignored
+#       when set to 0, the switch is ignored
 #
 #    EndFinishesWithLineBreak: 1
 #       this switch adjusts line breaks immmediately 
@@ -332,12 +332,12 @@ logFilePreferences:
 #           will be changed to
 #                   \end{myenvironment}
 #                   some text some text 
-#       when set to 0, e.g 
+#       when set to -1, e.g 
 #               \end{myenvironment}
 #               some text some text 
 #           will be changed to
 #                   \end{myenvironment}some text some text 
-#       when set to -1, the switch is ignored
+#       when set to 0, the switch is ignored
 #
 # Naturally, you can specify settings for individual environments,
 # commands, headings, etc, populate as you wish.
@@ -345,54 +345,54 @@ modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
     environments:
-        BeginStartsOnOwnLine: -1
-        BodyStartsOnOwnLine: -1
-        EndStartsOnOwnLine: -1
-        EndFinishesWithLineBreak: -1
+        BeginStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
         equation*:
-            BeginStartsOnOwnLine: -1
-            BodyStartsOnOwnLine: -1
-            EndStartsOnOwnLine: -1
-            EndFinishesWithLineBreak: -1
+            BeginStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: 0
+            EndStartsOnOwnLine: 0
+            EndFinishesWithLineBreak: 0
     commands:
-        CommandStartsOnOwnLine: -1
-        CommandNameFinishesWithLineBreak: -1
+        CommandStartsOnOwnLine: 0
+        CommandNameFinishesWithLineBreak: 0
     ifElseFi:
-        IfStartsOnOwnLine: -1
-        BodyStartsOnOwnLine: -1
-        ElseStartsOnOwnLine: -1
-        ElseFinishesWithLineBreak: -1
-        FiStartsOnOwnLine: -1
-        FiFinishesWithLineBreak: -1
+        IfStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        ElseStartsOnOwnLine: 0
+        ElseFinishesWithLineBreak: 0
+        FiStartsOnOwnLine: 0
+        FiFinishesWithLineBreak: 0
         ifnum:
-            IfStartsOnOwnLine: -1
-            BodyStartsOnOwnLine: -1
-            ElseStartsOnOwnLine: -1
-            ElseFinishesWithLineBreak: -1
-            FiStartsOnOwnLine: -1
-            FiFinishesWithLineBreak: -1
+            IfStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: 0
+            ElseStartsOnOwnLine: 0
+            ElseFinishesWithLineBreak: 0
+            FiStartsOnOwnLine: 0
+            FiFinishesWithLineBreak: 0
     optionalArguments:
-        LSqBStartsOnOwnLine: -1
-        OptArgBodyStartsOnOwnLine: -1
-        RSqBStartsOnOwnLine: -1
-        RSqBFinishesWithLineBreak: -1
+        LSqBStartsOnOwnLine: 0
+        OptArgBodyStartsOnOwnLine: 0
+        RSqBStartsOnOwnLine: 0
+        RSqBFinishesWithLineBreak: 0
     mandatoryArguments:
-        LCuBStartsOnOwnLine: -1
-        MandArgBodyStartsOnOwnLine: -1
-        RCuBStartsOnOwnLine: -1
-        RCuBFinishesWithLineBreak: -1
+        LCuBStartsOnOwnLine: 0
+        MandArgBodyStartsOnOwnLine: 0
+        RCuBStartsOnOwnLine: 0
+        RCuBFinishesWithLineBreak: 0
     keyEqualsValuesBraces:
-        KeyStartsOnOwnLine: -1
-        EqualsStartsOnOwnLine: -1
-        EqualsFinishesWithLineBreak: -1
+        KeyStartsOnOwnLine: 0
+        EqualsStartsOnOwnLine: 0
+        EqualsFinishesWithLineBreak: 0
     items:
-        ItemStartsOnOwnLine: -1
-        ItemFinishesWithLineBreak: -1
+        ItemStartsOnOwnLine: 0
+        ItemFinishesWithLineBreak: 0
     namedGroupingBracesBrackets:
-        NameStartsOnOwnLine: -1
-        NameFinishesWithLineBreak: -1
+        NameStartsOnOwnLine: 0
+        NameFinishesWithLineBreak: 0
     specialBeginEnd:
-        SpecialBeginStartsOnOwnLine: -1
-        SpecialBodyStartsOnOwnLine: -1
-        SpecialEndStartsOnOwnLine: -1
-        SpecialEndFinishesWithLineBreak: -1
+        SpecialBeginStartsOnOwnLine: 0
+        SpecialBodyStartsOnOwnLine: 0
+        SpecialEndStartsOnOwnLine: 0
+        SpecialEndFinishesWithLineBreak: 0

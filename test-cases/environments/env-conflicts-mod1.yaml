@@ -2,6 +2,6 @@ modifyLineBreaks:
     preserveBlankLines: 0
     environments:
         BeginStartsOnOwnLine: 1
-        BodyStartsOnOwnLine: -1
-        EndStartsOnOwnLine: -1
-        EndFinishesWithLineBreak: 0
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: -1

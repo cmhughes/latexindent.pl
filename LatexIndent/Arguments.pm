@@ -104,20 +104,20 @@ sub find_opt_mand_arguments{
           }
 
         # examine *first* child
-        #   situation: parent BodyStartsOnOwnLine == 0, but first child has BeginStartsOnOwnLine == 1
+        #   situation: parent BodyStartsOnOwnLine == -1, but first child has BeginStartsOnOwnLine == 1
         #   problem: the *body* of parent actually starts after the arguments
         #   solution: add a linebreak at the end of the begin statement of the parent so that
         #              the child settings are obeyed.
         #              BodyStartsOnOwnLine == 0 will actually be controlled by the last arguments' 
         #              settings of EndFinishesWithLineBreak
         if( ${$self}{linebreaksAtEnd}{begin} == 0
-           and ((defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==0) 
+           and ((defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==-1) 
                     or !(defined ${$self}{BodyStartsOnOwnLine})) 
               ){
             if(defined ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine} and ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}>=1){
                 my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                 my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                my $BodyValue = (defined ${$self}{BodyStartsOnOwnLine}) ? ${$self}{BodyStartsOnOwnLine} : "-1";
+                my $BodyValue = (defined ${$self}{BodyStartsOnOwnLine}) ? ${$self}{BodyStartsOnOwnLine} : "0";
                 $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
 
                 # possibly add a comment at the end of the begin statement

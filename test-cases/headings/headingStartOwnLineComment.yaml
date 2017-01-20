@@ -4,8 +4,8 @@ modifyLineBreaks:
     commands:
         CommandStartsOnOwnLine: 2
         emph:
-            CommandStartsOnOwnLine: -1
+            CommandStartsOnOwnLine: 0
     mandatoryArguments:
         RCuBFinishesWithLineBreak: 1
         emph:
-            RCuBFinishesWithLineBreak: -1
+            RCuBFinishesWithLineBreak: 0

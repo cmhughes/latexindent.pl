@@ -1,4 +1,4 @@
 modifyLineBreaks:
     keyEqualsValuesBraces:
-        KeyStartsOnOwnLine: 0
-        EqualsFinishesWithLineBreak: 0
+        KeyStartsOnOwnLine: -1
+        EqualsFinishesWithLineBreak: -1

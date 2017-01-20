@@ -1,13 +1,13 @@
 modifyLineBreaks:
     environments:
-        BeginStartsOnOwnLine: -1
-        BodyStartsOnOwnLine: -1
-        EndStartsOnOwnLine: -1
-        EndFinishesWithLineBreak: -1
+        BeginStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
         equation*:
-            BeginStartsOnOwnLine: -1
-            BodyStartsOnOwnLine: -1
-            EndStartsOnOwnLine: 0
+            BeginStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: 0
+            EndStartsOnOwnLine: -1
             EndFinishesWithLineBreak: 1
 logFilePreferences:
     showEveryYamlRead: 1

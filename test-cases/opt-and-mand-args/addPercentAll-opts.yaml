@@ -5,4 +5,4 @@ modifyLineBreaks:
         RSqBStartsOnOwnLine: 2
         RSqBFinishesWithLineBreak: 2
     environments:
-        BodyStartsOnOwnLine: -1
+        BodyStartsOnOwnLine: 0

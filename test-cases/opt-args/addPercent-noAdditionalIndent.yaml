@@ -6,6 +6,6 @@ modifyLineBreaks:
         RSqBFinishesWithLineBreak: 2
     environments:
         one:
-            BodyStartsOnOwnLine: -1
+            BodyStartsOnOwnLine: 0
 noAdditionalIndent:
    one: 1 

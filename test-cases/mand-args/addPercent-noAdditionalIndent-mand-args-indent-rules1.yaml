@@ -6,7 +6,7 @@ modifyLineBreaks:
         RCuBFinishesWithLineBreak: 2
     environments:
         one:
-            BodyStartsOnOwnLine: -1
+            BodyStartsOnOwnLine: 0
 indentRules:
    one:
         body: "\t"

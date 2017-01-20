@@ -315,10 +315,10 @@ sub get_every_or_custom_value{
   # check for the *custom* value
   if (defined $customValue){
       $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
-      ${$self}{$toBeAssignedTo} = $customValue >=0 ? $customValue : undef;
+      ${$self}{$toBeAssignedTo} = $customValue !=0 ? $customValue : undef;
    } else {
       # check for the *every* value
-      if (defined $everyValue and $everyValue >= 0){
+      if (defined $everyValue and $everyValue != 0){
           $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
           ${$self}{$toBeAssignedTo} = $everyValue;
       }

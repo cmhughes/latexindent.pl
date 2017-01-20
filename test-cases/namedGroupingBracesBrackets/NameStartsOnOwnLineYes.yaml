@@ -3,4 +3,4 @@ modifyLineBreaks:
     condenseMultipleBlankLinesInto: 1
     namedGroupingBracesBrackets:
         NameStartsOnOwnLine: 1
-        NameFinishesWithLineBreak: -1
+        NameFinishesWithLineBreak: 0

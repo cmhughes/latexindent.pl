@@ -135,9 +135,9 @@ sub find_commands_or_key_equals_values_braces{
                                                 beginningbit=>$1.($2?$2:q()),
                                                 endImmediatelyFollowedByComment=>$6?0:($7?1:0),
                                                 # begin statements
-                                                BeginStartsOnOwnLine=>-1,
+                                                BeginStartsOnOwnLine=>0,
                                                 # body statements
-                                                BodyStartsOnOwnLine=>-1,
+                                                BodyStartsOnOwnLine=>0,
                                               );
 
         # the settings and storage of most objects has a lot in common

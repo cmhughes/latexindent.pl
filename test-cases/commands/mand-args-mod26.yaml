@@ -3,4 +3,4 @@ modifyLineBreaks:
         LCuBStartsOnOwnLine: 2
         MandArgBodyStartsOnOwnLine: 2
         RCuBStartsOnOwnLine: 2
-        RCuBFinishesWithLineBreak: 0
+        RCuBFinishesWithLineBreak: -1

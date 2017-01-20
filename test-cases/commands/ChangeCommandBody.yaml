@@ -1,7 +1,7 @@
 modifyLineBreaks:
     commands:
-        CommandStartsOnOwnLine: -1
-        CommandNameFinishesWithLineBreak: 0
+        CommandStartsOnOwnLine: 0
+        CommandNameFinishesWithLineBreak: -1
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 1

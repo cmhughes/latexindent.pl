@@ -260,7 +260,7 @@ sub indent_children_recursively{
 
                 # line break checks *after* <end statement>
                 if (defined ${$child}{EndFinishesWithLineBreak}
-                    and ${$child}{EndFinishesWithLineBreak}==0 
+                    and ${$child}{EndFinishesWithLineBreak}==-1 
                     and $IDFollowedImmediatelyByLineBreak) {
                     # remove line break *after* <end statement>, if appropriate
                     my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
@@ -299,7 +299,7 @@ sub indent_children_recursively{
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
-                    } elsif (${$child}{BeginStartsOnOwnLine}==0 and $IDFirstNonWhiteSpaceCharacter){
+                    } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){

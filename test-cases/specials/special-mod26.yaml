@@ -3,4 +3,4 @@ modifyLineBreaks:
         SpecialBeginStartsOnOwnLine: 2
         SpecialBodyStartsOnOwnLine: 2
         SpecialEndStartsOnOwnLine: 2
-        SpecialEndFinishesWithLineBreak: 0
+        SpecialEndFinishesWithLineBreak: -1
