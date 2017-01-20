@@ -38,7 +38,7 @@ sub construct_key_equals_values_regexp{
                   )                                                     # $1 pre-key bit: could be { OR , OR [                                 
                   (\\)?                                                 # $2 possible backslash
                   (
-                   [a-zA-Z@\*0-9_\/.\h\{\}:\#]+?                               # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                   [a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?                               # lowercase|uppercase letters, @, *, numbers, forward slash, dots
                   )                                                     # $3 name
                   (
                     (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*

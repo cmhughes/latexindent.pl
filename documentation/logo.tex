@@ -12,9 +12,9 @@
 \definecolor{bakeoffgreen}{cmyk}{0.30, 0.00, 0.20, 0.29} %80b692
 \definecolor{burntorange}{cmyk}{0.00, 0.41, 1.00, 0.04}
 \begin{document}
-\begin{tikzpicture}[logo/.style={draw=blue,circle}]
+\begin{tikzpicture}[logo/.style={draw=blue,circle,fill=white}]
   \matrix{
-  \node[logo,densely dotted,thick,purple!75!white]{}; & \node[logo,burntorange]{}; \\
+  \node[logo,densely dotted,thick,draw=purple!75!white]{}; & \node[logo,draw=burntorange]{}; \\
   \node[logo,fill,draw=bakeoffgreen,fill=bakeoffblue]{}; & \node[logo,double,draw=cmhgold,fill=harvestgold]{};\\};
 \end{tikzpicture}
 \end{document}

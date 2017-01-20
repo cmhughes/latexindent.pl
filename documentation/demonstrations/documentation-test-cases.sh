@@ -92,5 +92,18 @@ latexindent.pl -s special1.tex -o special1-noAdd.tex -local displayMath-noAdd.ya
 latexindent.pl -s special1.tex -o special1-indent-rules.tex -local displayMath-indent-rules.yaml
 latexindent.pl -s special1.tex -local special-noAdd-glob.yaml -o special1-noAdd-glob.tex 
 latexindent.pl -s special1.tex -l special-indent-rules-global.yaml -o special1-indent-rules-global.tex 
+
+# -m switch #
+# -m switch #
+# -m switch #
+latexindent.pl -s -m mlb1.tex -o mlb1-out.tex
+for (( i=1 ; i <= 8 ; i++ )) 
+do 
+latexindent.pl -s -m env-mlb.tex -l env-mlb$i.yaml -o env-mlb-mod$i.tex
+latexindent.pl -s -m env-mlb2.tex -l env-mlb$i.yaml -o env-mlb2-mod$i.tex
+done
+latexindent.pl -s -m env-mlb3.tex -l env-mlb2.yaml -o env-mlb3-mod2.tex
+latexindent.pl -s -m env-mlb3.tex -l env-mlb4.yaml -o env-mlb3-mod4.tex
+
 [[ $noisyMode == 1 ]] && makenoise
 git status

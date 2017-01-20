@@ -354,9 +354,6 @@ modifyLineBreaks:
             BodyStartsOnOwnLine: 0
             EndStartsOnOwnLine: 0
             EndFinishesWithLineBreak: 0
-    commands:
-        CommandStartsOnOwnLine: 0
-        CommandNameFinishesWithLineBreak: 0
     ifElseFi:
         IfStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0
@@ -371,6 +368,9 @@ modifyLineBreaks:
             ElseFinishesWithLineBreak: 0
             FiStartsOnOwnLine: 0
             FiFinishesWithLineBreak: 0
+    commands:
+        CommandStartsOnOwnLine: 0
+        CommandNameFinishesWithLineBreak: 0
     optionalArguments:
         LSqBStartsOnOwnLine: 0
         OptArgBodyStartsOnOwnLine: 0
