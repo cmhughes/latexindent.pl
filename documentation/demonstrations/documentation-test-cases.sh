@@ -1,7 +1,7 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=0
+loopmax=8
 . ../../test-cases/common.sh
 
 # if silentMode is not active, verbose
@@ -97,13 +97,24 @@ latexindent.pl -s special1.tex -l special-indent-rules-global.yaml -o special1-i
 # -m switch #
 # -m switch #
 latexindent.pl -s -m mlb1.tex -o mlb1-out.tex
-for (( i=1 ; i <= 8 ; i++ )) 
+for (( i=$loopmin; i <= $loopmax ; i++ )) 
 do 
 latexindent.pl -s -m env-mlb.tex -l env-mlb$i.yaml -o env-mlb-mod$i.tex
 latexindent.pl -s -m env-mlb2.tex -l env-mlb$i.yaml -o env-mlb2-mod$i.tex
 done
 latexindent.pl -s -m env-mlb3.tex -l env-mlb2.yaml -o env-mlb3-mod2.tex
 latexindent.pl -s -m env-mlb3.tex -l env-mlb4.yaml -o env-mlb3-mod4.tex
+# remove line breaks
+latexindent.pl -s -m env-mlb4.tex -l env-mlb9.yaml -o env-mlb4-mod9.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb10.yaml -o env-mlb4-mod10.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb11.yaml -o env-mlb4-mod11.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb12.yaml -o env-mlb4-mod12.tex
+# trailing white space demo
+latexindent.pl -s env-mlb5.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml -o env-mlb5-modAll.tex
+latexindent.pl -s env-mlb5.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,removeTWS-before.yaml -o env-mlb5-modAll-remove-WS.tex
+# blank lines
+latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml -o env-mlb6-modAll.tex
+latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,UnpreserveBlankLines.yaml -o env-mlb6-modAll-un-Preserve-Blank-Lines.tex
 
 [[ $noisyMode == 1 ]] && makenoise
 git status

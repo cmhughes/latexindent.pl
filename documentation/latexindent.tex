@@ -98,10 +98,14 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 			listing engine=listings,
 			left=0cm,
 			boxrule=0pt,
-			leftrule=3pt,
+			%leftrule=3pt,
 			sharp corners,
 			center title,
-			colbacktitle=white!75!black,
+            %colbacktitle=white!75!black,
+			colbacktitle=white,
+			colframe=white!25!black,colback=white,
+            toprule=2pt,
+            titlerule=2pt,
 		},
     MLB-TCB/.style={
             enhanced,
@@ -123,10 +127,10 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 
 \newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
 	cmhlistings,
-	listing options={#1},
 	center title,
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
 	listing engine=listings,
+	listing options={#1},
 }
 
 \DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{O{} m O{} m m}{%

@@ -4,3 +4,13 @@ verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
     commandshell: 1
+indentAfterHeadings:
+    section:
+       indentAfterThisHeading: 1
+       level: 1
+    subsection:
+       indentAfterThisHeading: 1
+       level: 1
+    yamltitle:
+       indentAfterThisHeading: 1
+       level: 1

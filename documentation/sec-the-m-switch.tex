@@ -49,20 +49,20 @@ greater than \texttt{0}, discussed next.
 
 \yamltitle{condenseMultipleBlankLinesInto}*{integer $\geq 0$}
 Assuming that this switch takes an integer value greater than \texttt{0}, \texttt{latexindent.pl} will condense multiple blank lines into
-the number of blank lines illustrated by this switch. As an example, \cref{lst:mlb1} shows a sample file 
+the number of blank lines illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file 
 with blank lines; upon running
 \begin{commandshell}
 latexindent.pl myfile.tex -m  
 \end{commandshell}
-the output is shown in \cref{lst:mlb1-out}; note that the multiple blank lines have been 
+the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines have been 
 condensed into one blank line, and note also that we have used the \texttt{-m} switch!
 
 \begin{minipage}{.45\textwidth}
-\cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb1}
+\cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb-bl}
 \end{minipage}%
 \hfill
 \begin{minipage}{.45\textwidth}
-\cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1.tex} out output}{lst:mlb1-out}
+\cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1.tex} out output}{lst:mlb-bl-out}
 \end{minipage}
 
 \subsection{Poly-switches}
@@ -81,16 +81,16 @@ All poly-switches are \emph{off} by default; \texttt{latexindent.pl} searches fi
 \subsection{modifyLineBreaks for environments}
 We start by viewing a snippet of \texttt{defaultSettings.yaml} in \cref{lst:environments-mlb}; note that it contains \emph{global} settings (immediately
 after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings 
-for \texttt{equation*} have been specified. 
+for \texttt{equation*} have been specified. Note that all poly-switches are \emph{off} by default.
 
 \cmhlistingsfromfile[firstnumber=347,linerange={347-356},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
 \subsubsection{Adding line breaks (poly-switches set to $1$ or $2$)}
-Let's begin with the simple example given in \cref{lst:env-mlb1}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$, 
+Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$, 
 $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, these will be related to fields specified in \cref{lst:environments-mlb}.
 
-\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1}
-before words (*@$\BeginStartsOnOwnLine$@*)\begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
+\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1-tex}
+before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
 Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular, 
@@ -123,9 +123,9 @@ the output is as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}.
 
 There are a couple of points to note:
 \begin{itemize}
-  \item in \cref{lst:env-mlb-mod1} a line break has been added at the point denoted by $\BeginStartsOnOwnLine$ in \cref{lst:env-mlb1}; no 
+  \item in \cref{lst:env-mlb-mod1} a line break has been added at the point denoted by $\BeginStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; no 
     other line breaks have been changed;
-  \item in \cref{lst:env-mlb-mod2} a line break has been added at the point denoted by $\BodyStartsOnOwnLine$ in \cref{lst:env-mlb1}; 
+  \item in \cref{lst:env-mlb-mod2} a line break has been added at the point denoted by $\BodyStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; 
     furthermore, note that the \emph{body} of \texttt{myenv} has received the appropriate (default) indentation.
 \end{itemize}
 
@@ -186,9 +186,9 @@ the output is as in \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
 
 There are a couple of points to note:
 \begin{itemize}
-  \item in \cref{lst:env-mlb-mod5} a line break has been added at the point denoted by $\EndStartsOnOwnLine$ in \vref{lst:env-mlb1}; no 
+  \item in \cref{lst:env-mlb-mod5} a line break has been added at the point denoted by $\EndStartsOnOwnLine$ in \vref{lst:env-mlb1-tex}; no 
     other line breaks have been changed and the \lstinline!\end{myenv}! statement has \emph{not} received indentation (as intended);
-  \item in \cref{lst:env-mlb-mod6} a line break has been added at the point denoted by $\EndFinishesWithLineBreak$ in \vref{lst:env-mlb1}; 
+  \item in \cref{lst:env-mlb-mod6} a line break has been added at the point denoted by $\EndFinishesWithLineBreak$ in \vref{lst:env-mlb1-tex}. 
 \end{itemize}
 
 Let's now change each of the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are $2$ and 
@@ -219,7 +219,7 @@ has been added before adding the line break; in both cases, trailing horizontal
 space has been stripped before doing so.
 
 If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment) using a poly-switch value of $1$ (or $2$),
-it will only do so if necessary. For example, if you process the file in \cref{lst:env-mlb2} using any of the YAML 
+it will only do so if necessary. For example, if you process the file in \vref{lst:env-mlb2} using any of the YAML 
 files presented so far in this section, it will be left unchanged.
 
 \begin{minipage}{.45\linewidth}
@@ -236,7 +236,7 @@ the \lstinline!\begin{myenv}! has been moved to the next line, as \texttt{BodySt
   is set to \texttt{1}. In \cref{lst:env-mlb3-mod4} you'll see that the comment has been accounted 
   for correctly, and that, because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, 
   the comment symbol has \emph{not} been moved to its own line. You're encouraged to experiment 
-  with \cref{lst:mlb3} and the other poly-switches considered so far.
+  with \cref{lst:mlb3} and by setting the other poly-switches considered so far to \texttt{2} in turn.
 
 \begin{minipage}{.45\linewidth}
 \cmhlistingsfromfile{demonstrations/env-mlb3-mod2.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb2}}{lst:env-mlb3-mod2}
@@ -250,35 +250,151 @@ The details of the discussion in this section have concerned \emph{global} poly-
 each switch can also be specified on a \emph{per-name} basis, which would take priority over the global values; with 
 reference to \vref{lst:environments-mlb}, an example is shown for the \texttt{equation*} environment.
 
-\subsubsection{Removing line breaks (poly-switches set to $0$)}
-Setting poly-switches to $0$ tells \texttt{latexindent.pl} to remove line breaks, if necessary. We will consider the
-example codes given in \cref{lst:mlb4,lst:mlb5}, noting in particular the positions of 
+\subsubsection{Removing line breaks (poly-switches set to $-1$)}
+Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider the
+example code given in \cref{lst:mlb4}, noting in particular the positions of 
 the line break highlighters, $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$
-and $\EndFinishesWithLineBreak$.
+and $\EndFinishesWithLineBreak$, together with the associated YAML files in \crefrange{lst:env-mlb9}{lst:env-mlb12}.
 
 \begin{minipage}{.45\linewidth}
 \begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
-before words (*@$\BeginStartsOnOwnLine$@*)
-\begin{myenv}  %(*@$\BodyStartsOnOwnLine$@*)
-body of myenv%(*@$\EndStartsOnOwnLine$@*)
-\end{myenv}% (*@$\EndFinishesWithLineBreak$@*)
+before words(*@$\BeginStartsOnOwnLine$@*)
+\begin{myenv}(*@$\BodyStartsOnOwnLine$@*)
+body of myenv(*@$\EndStartsOnOwnLine$@*)
+\end{myenv}(*@$\EndFinishesWithLineBreak$@*)
+after words
+\end{cmhlistings}
+\end{minipage}%
+\hfill
+\begin{minipage}{.51\textwidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
+
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
+
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
+
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
+\end{minipage}
+
+After running the commands
+\begin{commandshell}
+latexindent.pl -m env-mlb4.tex -l env-mlb9.yaml
+latexindent.pl -m env-mlb4.tex -l env-mlb10.yaml
+latexindent.pl -m env-mlb4.tex -l env-mlb11.yaml
+latexindent.pl -m env-mlb4.tex -l env-mlb12.yaml
+\end{commandshell}
+
+we obtain the output in \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}.
+
+\begin{minipage}{.45\linewidth}
+\cmhlistingsfromfile{demonstrations/env-mlb4-mod9.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb9}}{lst:env-mlb4-mod9}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\linewidth}
+\cmhlistingsfromfile{demonstrations/env-mlb4-mod10.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb10}}{lst:env-mlb4-mod10}
+\end{minipage}
+
+\begin{minipage}{.45\linewidth}
+\cmhlistingsfromfile{demonstrations/env-mlb4-mod11.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb11}}{lst:env-mlb4-mod11}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\linewidth}
+\cmhlistingsfromfile{demonstrations/env-mlb4-mod12.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb12}}{lst:env-mlb4-mod12}
+\end{minipage}
+
+Notice that in 
+\begin{itemize}
+  \item \cref{lst:env-mlb4-mod9} the line break denoted by $\BeginStartsOnOwnLine$ has been removed;
+  \item \cref{lst:env-mlb4-mod10} the line break denoted by $\BodyStartsOnOwnLine$ has been removed;
+  \item \cref{lst:env-mlb4-mod11} the line break denoted by $\EndStartsOnOwnLine$ has been removed;
+  \item \cref{lst:env-mlb4-mod12} the line break denoted by $\EndFinishesWithLineBreak$ has been removed.
+\end{itemize}
+We examined each of these cases separately for clarity of explanation, but you can combine all of the YAML
+settings in \crefrange{lst:env-mlb9}{lst:env-mlb12} into one file; alternatively, you could tell \texttt{latexindent.pl}
+to load them all by using the following command, for example
+\begin{sidebyside}
+\begin{commandshell}
+latexindent.pl -m env-mlb4.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml
+\end{commandshell}
+\end{sidebyside}
+which gives the output in \vref{lst:env-mlb1-tex}.
+
+\paragraph{About trailing horizontal space}
+Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field \texttt{removeTrailingWhitespace}, 
+and that it has two (binary) switches to determine if horizontal space should be removed \texttt{beforeProcessing} and \texttt{afterProcessing}.
+The \texttt{beforeProcessing} is particularly relevant when considering the \texttt{-m} switch; let's consider the 
+file shown in \cref{lst:mlb5}, which highlights trailing spaces.
+
+\begin{minipage}{.45\linewidth}
+\begin{cmhlistings}[showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
+before words   (*@$\BeginStartsOnOwnLine$@*) 
+\begin{myenv}           (*@$\BodyStartsOnOwnLine$@*)
+body of myenv      (*@$\EndStartsOnOwnLine$@*) 
+\end{myenv}     (*@$\EndFinishesWithLineBreak$@*)
+after words
+\end{cmhlistings}
+\end{minipage}
+\hfill
+\begin{minipage}{.45\linewidth}
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
+\end{minipage}
+
+The output from the following commands 
+\begin{sidebyside}
+\begin{commandshell}
+latexindent.pl -m env-mlb5.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml
+latexindent.pl -m env-mlb5.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,removeTWS-before.yaml
+\end{commandshell}
+\end{sidebyside}
+is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that 
+the trailing horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while 
+in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in \cref{lst:removeTWS-before}.
+
+\cmhlistingsfromfile{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb5-modAll}
+
+\cmhlistingsfromfile{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
+
+\paragraph{Blank lines}
+Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
+
+\begin{minipage}{.45\linewidth}
+\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
+before words(*@$\BeginStartsOnOwnLine$@*)
+
+
+\begin{myenv}(*@$\BodyStartsOnOwnLine$@*)
+
+
+body of myenv(*@$\EndStartsOnOwnLine$@*)
+
+
+\end{myenv}(*@$\EndFinishesWithLineBreak$@*)
+
 after words
 \end{cmhlistings}
 \end{minipage}%
 \hfill
 \begin{minipage}{.45\linewidth}
-\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:mlb5}
-before words (*@$\BeginStartsOnOwnLine$@*)
+\cmhlistingsfromfile[style=yaml-LST]{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
+\end{minipage}
 
+Upon running the following commands
+\begin{sidebyside}
+\begin{commandshell}
+latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml
+latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,UnpreserveBlankLines.yaml
+\end{commandshell}
+\end{sidebyside}
+we receive the respective outputs in \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In 
+\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed into one blank line, 
+but that blank lines have \emph{not} been removed by the poly-switches -- this is because, by default, \texttt{preserveBlankLines}
+is set to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed
+the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to \texttt{0}.
 
-\begin{myenv}  %(*@$\BodyStartsOnOwnLine$@*)
-
-
-body of myenv%(*@$\EndStartsOnOwnLine$@*)
-
-
-\end{myenv}% (*@$\EndFinishesWithLineBreak$@*)
-
-after words
-\end{cmhlistings}
-\end{minipage}%
+\begin{minipage}{.30\linewidth}
+\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb6-modAll}
+\end{minipage}
+\hfill
+\begin{minipage}{.7\linewidth}
+  \cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
+\end{minipage}
