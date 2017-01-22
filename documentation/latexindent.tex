@@ -34,6 +34,8 @@
 \usepackage[charter]{mathdesign}                     % changes font
 \usepackage[expansion=false,kerning=true]{microtype} % better kerning
 \usepackage{enumitem}                                % custom lists
+\usepackage{longtable}
+\usepackage{array}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
 % tcolorbox libraries
@@ -339,6 +341,9 @@ parbox=false,
 \newcommand{\BodyStartsOnOwnLine}{\color{red}\heartsuit}
 \newcommand{\EndStartsOnOwnLine}{\color{red}\diamondsuit}
 \newcommand{\EndFinishesWithLineBreak}{\color{red}\clubsuit}
+\newcommand{\ElseStartsOnOwnLine}{\color{red}\bigstar}
+\newcommand{\ElseFinishesWithLineBreak}{\color{red}\square}
+\newcommand{\EqualsStartsOnOwnLine}{\color{red}\bullet}
 
 % gitinfo2 settings
 \renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}

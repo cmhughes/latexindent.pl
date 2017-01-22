@@ -4,6 +4,7 @@ verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
     commandshell: 1
+    lstlisting: 1
 indentAfterHeadings:
     section:
        indentAfterThisHeading: 1
@@ -14,3 +15,6 @@ indentAfterHeadings:
     yamltitle:
        indentAfterThisHeading: 1
        level: 1
+    subsubsection:
+       indentAfterThisHeading: 1
+       level: 2
