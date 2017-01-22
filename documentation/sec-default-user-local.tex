@@ -116,10 +116,10 @@ copy myfile.bak4 to myfile.bak3
 
 	Of course, you don't want to have to specify these as null environments
 	in your code, so you use them with a comment symbol, \lstinline!%!, followed
-by as many spaces (possibly none) as you like; see \cref{lst:noIndentBlockdemo} for
-example.
+	by as many spaces (possibly none) as you like; see \cref{lst:noIndentBlockdemo} for
+	example.
 
-\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\texttt{noIndentBlock} demonstration}{lst:noIndentBlockdemo}
+	\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\texttt{noIndentBlock} demonstration}{lst:noIndentBlockdemo}
 %(*@@*) \begin{noindent}
         this code
                 won't
@@ -129,49 +129,49 @@ example.
 %(*@@*)\end{noindent}
 	\end{cmhlistings}
 
-    \yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
+\yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
-\begin{wrapfigure}[12]{r}[0pt]{6cm}
-\cmhlistingsfromfile[firstnumber=82,linerange={82-84},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+	\begin{wrapfigure}[12]{r}[0pt]{6cm}
+		\cmhlistingsfromfile[firstnumber=82,linerange={82-84},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
 
-\vspace{.2cm}
-\cmhlistingsfromfile[firstnumber=88,linerange={88-90},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
-\end{wrapfigure}
-Trailing white space can be removed both \emph{before} and \emph{after} processing 
-the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields 
-can take the values \texttt{0} or \texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} 
-for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
+		\vspace{.2cm}
+		\cmhlistingsfromfile[firstnumber=88,linerange={88-90},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
+	\end{wrapfigure}
+	Trailing white space can be removed both \emph{before} and \emph{after} processing
+	the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields
+	can take the values \texttt{0} or \texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}
+	for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
 
 \yamltitle{fileContentsEnvironments}*{field}
 
-Before \texttt{latexindent.pl} determines the difference between preamble (if any) and the main document,
-it first searches for any of the environments specified in \texttt{fileContentsEnvironments}, see
-\cref{lst:fileContentsEnvironments}.
-  The behaviour of \texttt{latexindent.pl} on these environments is determined by their location (preamble or not), and 
-  the value \texttt{indentPreamble}, discussed next.
+	Before \texttt{latexindent.pl} determines the difference between preamble (if any) and the main document,
+	it first searches for any of the environments specified in \texttt{fileContentsEnvironments}, see
+	\cref{lst:fileContentsEnvironments}.
+	The behaviour of \texttt{latexindent.pl} on these environments is determined by their location (preamble or not), and
+	the value \texttt{indentPreamble}, discussed next.
 
 \yamltitle{indentPreamble}{0|1}
 
-The preamble of a document can sometimes contain some trickier code
-for \texttt{latexindent.pl} to operate upon. By default, \texttt{latexindent.pl}
-won't try to operate on the preamble (as \texttt{indentPreamble} is set to \texttt{0},
-by default), but if you'd like \texttt{latexindent.pl} to try then change \texttt{indentPreamble} to \texttt{1}.
+	The preamble of a document can sometimes contain some trickier code
+	for \texttt{latexindent.pl} to operate upon. By default, \texttt{latexindent.pl}
+	won't try to operate on the preamble (as \texttt{indentPreamble} is set to \texttt{0},
+	by default), but if you'd like \texttt{latexindent.pl} to try then change \texttt{indentPreamble} to \texttt{1}.
 
 \yamltitle{lookForPreamble}*{fields}
 
-\begin{wrapfigure}[8]{r}[0pt]{5cm}
-\cmhlistingsfromfile[firstnumber=96,linerange={96-100},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
-\end{wrapfigure}
-Not all files contain preamble; for example, \texttt{sty}, \texttt{cls} and \texttt{bib} files typically do \emph{not}. Referencing
-\cref{lst:lookForPreamble}, if you set, for example, \texttt{.tex} to \texttt{0}, then regardless of the setting of the value of \texttt{indentPreamble}, preamble
-will not be assumed when operating upon \texttt{.tex} files.
+	\begin{wrapfigure}[8]{r}[0pt]{5cm}
+		\cmhlistingsfromfile[firstnumber=96,linerange={96-100},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
+	\end{wrapfigure}
+	Not all files contain preamble; for example, \texttt{sty}, \texttt{cls} and \texttt{bib} files typically do \emph{not}. Referencing
+	\cref{lst:lookForPreamble}, if you set, for example, \texttt{.tex} to \texttt{0}, then regardless of the setting of the value of \texttt{indentPreamble}, preamble
+	will not be assumed when operating upon \texttt{.tex} files.
 \yamltitle{preambleCommandsBeforeEnvironments}{0|1}
-Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a document,
-when this switch is set to \texttt{0} then environment code blocks will be sought first, 
-and then command code blocks. When this switch is set to \texttt{1}, commands 
-will be sought first. The example that first motivated this switch contained the code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
+	Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a document,
+	when this switch is set to \texttt{0} then environment code blocks will be sought first,
+	and then command code blocks. When this switch is set to \texttt{1}, commands
+	will be sought first. The example that first motivated this switch contained the code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
 
-\begin{cmhlistings}{Motivating \texttt{preambleCommandsBeforeEnvironments}}{lst:motivatepreambleCommandsBeforeEnvironments}
+	\begin{cmhlistings}{Motivating \texttt{preambleCommandsBeforeEnvironments}}{lst:motivatepreambleCommandsBeforeEnvironments}
 ...
 preheadhook={\begin{mdframed}[style=myframedstyle]},
 postfoothook=\end{mdframed},
@@ -179,14 +179,12 @@ postfoothook=\end{mdframed},
 \end{cmhlistings}
 
 \yamltitle{defaultIndent}*{horizontal space}
-This is the default indentation (\lstinline!\t! means a tab, and is the default value) used in the absence of other details
+	This is the default indentation (\lstinline!\t! means a tab, and is the default value) used in the absence of other details
 	for the command or environment we are working with; see \texttt{indentRules}
 	for more details (\cpageref{page:indentRules}).
 
 	If you're interested in experimenting with \texttt{latexindent.pl} then you
 	can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}
-
-
 
 \yamltitle{lookForAlignDelims}*{fields}
 	\begin{wrapfigure}[12]{r}[0pt]{5cm}
@@ -278,7 +276,6 @@ latexindent.pl -l mysettings.yaml myfile.tex
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1-default.tex}{\texttt{matrix} after}{lst:matrixafter}
 	\end{minipage}%
-
 
 	\fixthis{need to resolve alignment outside of environments}
 	%If you have blocks of code that you wish to align at the \&  character that

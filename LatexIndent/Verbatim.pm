@@ -9,7 +9,7 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
@@ -129,7 +129,11 @@ sub find_verbatim_environments{
 sub find_verbatim_commands{
     my $self = shift;
 
-    # verbatim commands
+    # verbatim commands need to be treated separately to verbatim environments;
+    # note that, for example, we could quite reasonably have \lstinline!%!, which 
+    # would need to be found *before* trailing comments have been removed. Similarly, 
+    # verbatim commands need to be put back in *after* trailing comments have been put 
+    # back in
     $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading');
     $self->logger(Dumper(\%{$masterSettings{verbatimCommands}})) if($is_t_switch_active);
     while( my ($verbCommand,$yesno)= each %{$masterSettings{verbatimCommands}}){
@@ -159,9 +163,9 @@ sub find_verbatim_commands{
                               .*?
                             )                                                   # body into $4
                             \3
-                        /sx;
+                        /mx;
 
-            while( ${$self}{body} =~ m/$verbatimCommandRegExp/sx){
+            while( ${$self}{body} =~ m/$verbatimCommandRegExp/){
 
               # create a new Environment object
               my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($2?$2:q()).$3,
@@ -177,7 +181,7 @@ sub find_verbatim_commands{
               $self->logger(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
 
               # verbatim children go in special hash
-              ${$self}{verbatim}{${$verbatimCommand}{id}}=$verbatimCommand;
+              ${$self}{verbatimCommands}{${$verbatimCommand}{id}}=$verbatimCommand;
 
               # log file output
               $self->logger("VERBATIM command found: $verbCommand");
@@ -227,6 +231,43 @@ sub  put_verbatim_back_in {
     # logfile info
     $self->logger("Number of children:",'heading');
     $self->logger(scalar keys %{%{$self}{verbatim}});
+    $self->logger('Post-processed body:','heading') if $is_t_switch_active;
+    $self->logger(${$self}{body}) if($is_t_switch_active);
+    return;
+}
+
+sub  put_verbatim_commands_back_in {
+    my $self = shift;
+
+    # if there are no verbatim children, return
+    return unless(%{$self}{verbatimCommands});
+
+    # search for environments/commands
+    $self->logger('Putting verbatim commands back in, here is the pre-processed body:','heading') if $is_t_switch_active;
+    $self->logger(${$self}{body}) if($is_t_switch_active);
+
+    # loop through document children hash
+    while( (scalar keys %{%{$self}{verbatimCommands}})>0 ){
+          while( my ($key,$child)= each %{%{$self}{verbatimCommands}}){
+            if(${$self}{body} =~ m/${$child}{id}/mx){
+
+                # replace ids with body
+                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+
+                # log file info
+                $self->logger('Body now looks like:','heading') if $is_tt_switch_active;
+                $self->logger(${$self}{body},'ttrace') if($is_tt_switch_active);
+
+                # delete the hash so it won't be operated upon again
+                delete ${$self}{verbatimCommands}{${$child}{id}};
+                $self->logger("deleted key");
+              }
+            }
+    }
+
+    # logfile info
+    $self->logger("Number of children:",'heading');
+    $self->logger(scalar keys %{%{$self}{verbatimCommands}});
     $self->logger('Post-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body}) if($is_t_switch_active);
     return;

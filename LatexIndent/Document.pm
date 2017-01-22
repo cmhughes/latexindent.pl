@@ -19,7 +19,7 @@ use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children upd
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
@@ -55,9 +55,9 @@ sub operate_on_file{
     $self->token_check;
     $self->construct_regular_expressions;
     $self->find_noindent_block;
+    $self->find_verbatim_commands;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
-    $self->find_verbatim_commands;
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
@@ -71,6 +71,7 @@ sub operate_on_file{
     $self->unprotect_blank_lines;
     $self->put_verbatim_back_in;
     $self->put_trailing_comments_back_in;
+    $self->put_verbatim_commands_back_in;
     $self->output_indented_text;
     $self->output_logfile;
     return

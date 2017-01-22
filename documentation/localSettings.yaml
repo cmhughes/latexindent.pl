@@ -15,6 +15,9 @@ indentAfterHeadings:
     yamltitle:
        indentAfterThisHeading: 1
        level: 1
+    flagbox:
+       indentAfterThisHeading: 1
+       level: 1
     subsubsection:
        indentAfterThisHeading: 1
-       level: 2
+       level: 1
