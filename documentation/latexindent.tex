@@ -102,10 +102,12 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 			sharp corners,
 			center title,
             %colbacktitle=white!75!black,
-			colbacktitle=white,
-			colframe=white!25!black,colback=white,
+			colbacktitle=white!75!blue,
+			colframe=white!25!blue,
+            colback=white,
             toprule=2pt,
             titlerule=2pt,
+            bottomrule=1pt,
 		},
     MLB-TCB/.style={
             enhanced,
@@ -121,6 +123,7 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
             toprule=2pt,
             width=0.9\linewidth,
             before=\centering,
+            bottomrule=1pt,
             %overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=8mm]frame.north east) {\includegraphics[width=8mm]{logo}}; }
     }
 }
@@ -170,7 +173,7 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 	yaml-TCB,
 	listing options={
 			style=tcblatex,
-			numbers=left,
+			numbers=none,
 			numberstyle=\color{red},
 			#1,
 		},
@@ -385,6 +388,7 @@ parbox=false,
 %\input{subsubsec-ifelsefi}
 %\input{subsubsec-special}
 \input{sec-the-m-switch}
+%\input{sec-indent-config-and-settings.tex}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks
@@ -422,241 +426,16 @@ The hierachy is
 of which can be customised by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
 \begin{cmhlistings}[style=yaml]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 	logFilePreferences:
-	logFileName: "indent.log"
 	showEveryYamlRead: 1
 	showAmalgamatedSettings: 0
 	endLogFileWith: '--------------'
 \end{cmhlistings}
-You can customize the name of your logfile to anything you like by changing \texttt{logFileName}.
 If you load your own user settings (see \vref{sec:indentconfig}) then \texttt{latexindent.pl} will
 detail them in \texttt{indent.log}; you can choose not to have the details logged by switching
 \texttt{showEveryYamlRead} to \texttt{0}. Once all of your settings have
 been loaded, you can see the amalgamated settings by switching \texttt{showAmalgamatedSettings}
 to \texttt{1}, if you wish. The log file will end with the characters
 given in \texttt{endLogFileWith}.
-
-\subsubsection{Hierarchy of fields}\label{sec:fieldhierachy}
-After reading the previous section, it should sound reasonable that
-\texttt{noAdditionalIndent}, \texttt{indentRules}, and
-\texttt{verbatim} all serve mutually exclusive tasks. Naturally, you may
-well wonder what happens if you choose to ask \texttt{latexindent.pl} to
-prioritize one above the other.
-
-For example, let's say that (after reading \cref{sec:indentconfig}) you put the fields in \cref{lst:conflict} into
-one of your settings files.
-\begin{cmhlistings}[style=yaml]{Conflicting ideas}{lst:conflict}
-	indentRules:
-	myenvironment: "\t\t"
-	noAdditionalIndent:
-	myenvironment: 1
-\end{cmhlistings}
-
-Clearly these fields conflict: first of all
-you are telling \texttt{latexindent.pl} that \texttt{myenvironment} should
-receive two tabs of indentation, and then you are telling it
-not to put any indentation in the environment. \texttt{latexindent.pl}
-will always make the decision to prioritize \texttt{noAdditionalIndent} above
-\texttt{indentRules} regardless of the order that you load them in
-your settings file. The first
-time it encounters \texttt{myenvironment} it will put a warning in \texttt{indent.log}
-and delete the offending key from \texttt{indentRules} so that any future
-conflicts will not have to be addressed.
-
-Let's consider another conflicting example in \cref{lst:bigconflict}
-\begin{cmhlistings}[style=yaml]{More conflicting ideas}{lst:bigconflict}
-	lookForAlignDelims:
-	myenvironment: 1
-	verbatimEnvironments:
-	myenvironment: 1
-\end{cmhlistings}
-This is quite a significant conflict--we are first of all telling \texttt{latexindent.pl}
-to look for alignment delimiters in \texttt{myenvironment} and then
-telling it that actually we would like \texttt{myenvironment} to be considered
-as a \texttt{verbatim}-like environment. Regardless of the order that we
-state \cref{lst:bigconflict} the \texttt{verbatim} instruction will always win.
-As in \cref{lst:conflict} you will only receive a warning in \texttt{indent.log} the
-first time \texttt{latexindent.pl} encounters \texttt{myenvironment} as the
-offending key is deleted from \texttt{lookForAlignDelims}.
-
-To summarize, \texttt{latexindent.pl} will prioritize the various fields in the
-following order:
-\begin{enumerate}
-	\item \texttt{verbatimEnvironments}
-	\item \texttt{noAdditionalIndent}
-	\item \texttt{indentRules}
-\end{enumerate}
-\subsection{\texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml} (for user settings)}\label{sec:indentconfig}
-Editing \texttt{defaultSettings.yaml} is not ideal as it may be overwritten when
-updating your distribution--a better way to customize the settings to your liking
-is to set up your own settings file,
-\texttt{mysettings.yaml} (or any name you like, provided it ends with \texttt{.yaml}).
-The only thing you have to do is tell \texttt{latexindent.pl} where to find it.
-
-\texttt{latexindent.pl} will always check your home directory for \texttt{indentconfig.yaml}
-and  \texttt{.indentconfig.yaml} (unless
-it is called with the \texttt{-d} switch),
-which is a plain text file you can create that contains the \emph{absolute}
-paths for any settings files that you wish \texttt{latexindent.pl} to load. There is no difference
-between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the
-fact that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to \cite{jacobo-diaz-hidden-config}
-for providing this feature. In what follows, we will use \texttt{indentconfig.yaml}, but it
-is understood that this equally represents \texttt{.indentconfig.yaml} as well. If you
-have both files in existence,  \texttt{indentconfig.yaml} takes priority.
-
-For Mac and Linux users, their home directory is \texttt{~/username} while
-Windows (Vista onwards) is \texttt{C:\Users\username} \footnote{If you're not sure
-	where to put \texttt{indentconfig.yaml}, don't
-	worry \texttt{latexindent.pl} will tell you in the log file exactly where to
-	put it assuming it doesn't exist already.}
-\Cref{lst:indentconfig} shows a sample \texttt{indentconfig.yaml} file.
-
-\begin{cmhlistings}[style=yaml]{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
-	# Paths to user settings for latexindent.pl
-	#
-	# Note that the settings will be read in the order you
-	# specify here- each successive settings file will overwrite
-	# the variables that you specify
-
-	paths:
-	- /home/cmhughes/Documents/yamlfiles/mysettings.yaml
-	- /home/cmhughes/folder/othersettings.yaml
-	- /some/other/folder/anynameyouwant.yaml
-	- C:\Users\chughes\Documents\mysettings.yaml
-	- C:\Users\chughes\Desktop\test spaces\more spaces.yaml
-\end{cmhlistings}
-
-Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml}
-will be loaded in the order that you write them in. Each file doesn't have
-to have every switch from \texttt{defaultSettings.yaml}; in fact, I recommend
-that you only keep the switches that you want to \emph{change} in these
-settings files.
-
-To get started with your own settings file, you might like to save a copy of
-\texttt{defaultSettings.yaml} in another directory and call it, for
-example, \texttt{mysettings.yaml}. Once you have added the path to \texttt{indentconfig.yaml}
-feel free to start changing the switches and adding more environments to it
-as you see fit--have a look at \cref{lst:mysettings} for an example
-that uses four tabs for the default indent, adds the \texttt{tabbing}
-environment to the list of environments that contains alignment delimiters,
-and adds the changes we described on \cpageref{page:examsettings}.
-
-\begin{cmhlistings}[style=yaml]{\texttt{mysettings.yaml} (example)}{lst:mysettings}
-	# Default value of indentation
-	defaultIndent: "\t\t\t\t"
-
-	# environments that have tab delimiters, add more
-	# as needed
-	lookForAlignDelims:
-	tabbing: 1
-
-	# If you use the exam documentclass, you might
-	# like the following settings
-	# environments that have \item commands
-	indentAfterItems:
-	parts: 1
-
-	# commands to be treated like \item
-	itemNames:
-	part: 1
-\end{cmhlistings}
-
-You can make sure that your settings are loaded by checking \texttt{indent.log}
-for details--if you have specified a path that \texttt{latexindent.pl} doesn't
-recognize then you'll get a warning, otherwise you'll get confirmation that
-\texttt{latexindent.pl} has read your settings file \footnote{Windows users
-	may find that they have to end \texttt{.yaml} files with a blank line}.
-
-\begin{warning}
-	When editing \texttt{.yaml} files it is \emph{extremely} important
-	to remember how sensitive they are to spaces. I highly recommend copying
-	and pasting from \texttt{defaultSettings.yaml} when you create your
-	first \texttt{whatevernameyoulike.yaml} file.
-
-	If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it
-	will tell you so in \texttt{indent.log}.
-\end{warning}
-
-\subsection{\texttt{localSettings.yaml}}\label{sec:localsettings}
-You may remember on \cpageref{page:localswitch} we discussed the \texttt{-l} switch
-that tells \texttt{latexindent.pl} to look for \texttt{localSettings.yaml} in the
-\emph{same directory} as \texttt{myfile.tex}. This settings file will
-be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
-user settings.
-
-The \emph{local} settings file may be called \texttt{localSettings.yaml}, and
-it can contain any switches that you'd
-like to change--a sample is shown in \cref{lst:localSettings}.
-
-\begin{cmhlistings}[style=yaml]{\texttt{localSettings.yaml} (example)}{lst:localSettings}
-	# Default value of indentation
-	defaultIndent: " "
-
-	# environments that have tab delimiters, add more
-	# as needed
-	lookForAlignDelims:
-	tabbing: 0
-
-	#  verbatim environments- environments specified
-	#  in this hash table will not be changed at all!
-	verbatimEnvironments:
-	cmhenvironment: 0
-\end{cmhlistings}
-
-\fixthis{expand on this!}
-
-You can make sure that your local settings are loaded by checking \texttt{indent.log}
-for details--if \texttt{localSettings.yaml} can not be read then you will
-get a warning, otherwise you'll get confirmation that
-\texttt{latexindent.pl} has read \texttt{localSettings.yaml}.
-
-If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say, \texttt{myyaml.yaml}) then
-you can call \texttt{latexindent.pl} using, for example, \lstinline[breaklines=true]!latexindent.pl -l=myyaml.yaml myfile.tex!.
-
-\subsection{Settings load order}\label{sec:loadorder}
-\texttt{latexindent.pl} loads the settings files in the following order:
-\begin{enumerate}
-	\item \texttt{defaultSettings.yaml} is always loaded, and can not be renamed;
-	\item \texttt{anyUserSettings.yaml} and any other arbitrarily-named files specified in \texttt{indentconfig.yaml};
-	\item \texttt{localSettings.yaml} but only if found in the same directory as \texttt{myfile.tex} and called
-	      with \texttt{-l} switch; this file can be renamed, provided that the call to \texttt{latexindent.pl} is adjusted
-	      accordingly (see \cref{sec:localsettings}).
-\end{enumerate}
-A visual representation of this is given in \cref{fig:loadorder}.
-
-\begin{figure}
-	\centering
-	\begin{tikzpicture}[
-			needed/.style={very thick, draw=blue,fill=blue!20,
-					text centered, minimum height=2.5em,rounded corners=1ex},
-			optional/.style={draw=black, very thick,scale=0.8,
-					text centered, minimum height=2.5em,rounded corners=1ex},
-			optionalfill/.style={fill=black!10},
-			connections/.style={draw=black!30,dotted,line width=3pt,text=red},
-		]
-		% Draw diagram elements
-		\node (latexindent) [needed,circle]  {\texttt{latexindent.pl}};
-		\node (default) [needed,above right=.5cm of latexindent]  {\texttt{defaultSettings.yaml}};
-		\node (indentconfig) [optional,right=of latexindent]  {\texttt{indentconfig.yaml}};
-		\node (any) [optional,optionalfill,above right=of indentconfig]  {\texttt{any.yaml}};
-		\node (name) [optional,optionalfill,right=of indentconfig]  {\texttt{name.yaml}};
-		\node (you) [optional,optionalfill,below right=of indentconfig]  {\texttt{you.yaml}};
-		\node (want) [optional,optionalfill,below=of indentconfig]  {\texttt{want.yaml}};
-		\node (local) [optional,below=of latexindent]  {\texttt{localSettings.yaml}};
-		% Draw arrows between elements
-		\draw[connections,solid] (latexindent) to[in=-90]node[pos=0.5,anchor=north]{1} (default.south) ;
-		\draw[connections,optional] (latexindent) -- node[pos=0.5,anchor=north]{2} (indentconfig) ;
-		\draw[connections,optional] (indentconfig) to[in=-90] (any.south) ;
-		\draw[connections,optional] (indentconfig) -- (name) ;
-		\draw[connections,optional] (indentconfig) to[out=-45,in=90] (you) ;
-		\draw[connections,optional] (indentconfig) -- (want) ;
-		\draw[connections,optional] (latexindent) -- node[pos=0.5,anchor=west]{3} (local) ;
-	\end{tikzpicture}
-	\caption{Schematic of the load order described in \cref{sec:loadorder}; solid lines represent
-		mandatory files, dotted lines represent optional files. \texttt{indentconfig.yaml} can
-		contain as many files as you like--the files will be loaded in order; if you specify
-		settings for the same field in more than one file, the most recent takes priority. }
-	\label{fig:loadorder}
-\end{figure}
 
 \section{Known limitations}\label{sec:knownlimitations}
 
@@ -705,8 +484,7 @@ in the meantime, consider using a \texttt{noIndentBlock} (see \cpageref{lst:noIn
 I hope that this script is useful to some; if you find an example where the
 script does not behave as you think it should, the best way to contact me is to
 report an issue on \cite{latexindent-home}; otherwise, feel free to find me on
-the \url{http://tex.stackexchange.com} site; I'm often around
-and in the chat room.
+the \url{http://tex.stackexchange.com}.
 
 \nocite{*}
 \section{References}
@@ -730,7 +508,6 @@ need to install the missing modules.
 	use File::Basename;
 	use Getopt::Long;
 	use File::HomeDir;
-	use Data::UUID;
 
 	print "hello world";
 	exit;
@@ -748,7 +525,7 @@ sudo perl -MCPAN -e 'install "File::HomeDir"'
 
 Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
 options follow for Ubuntu (other distributions will need slightly different commands).
-\begin{lstlisting}[numbers=none]
+\begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew install perl-5.20.1
 perlbrew switch perl-5.20.1
@@ -756,8 +533,7 @@ sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
 cpanm File::HomeDir
-use Data::UUID;
-\end{lstlisting}
+\end{commandshell}
 
 Strawberry Perl users on Windows might use
 \texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
@@ -875,25 +651,6 @@ latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environme
 environments-first-opt-args.tex, see all of the different examples in test-cases.sh
 environments-second-opt-args.tex provides some interesting cases too
 
-removeTrailingWhitespace:
-beforeProcessing: 0
-afterProcessing: 1
-
-there is a difference between these two, especially when it comes to modifying line breaks.
-
-For example, let's say that you have
-
-%\end{something}****
-my text
-
-and you tell latexindent not to finish something with a linebreak; with beforeProcessing set to 0, then you'll receive:
-
-%\end{something}****my text
-
-and if you set beforeProcessing to 1, then you'll receive
-
-%\end{something}my text
-
 The \texttt{\fi} command knows to insert a space, so as to give, for example, \texttt{\fi} text, and avoid things such as \texttt{\fitext}
 
 from yaml
@@ -995,6 +752,3 @@ from yaml
 %    part:
 %       indentAfterThisHeading: 0
 %       level: 1
-
-
-\end{document}

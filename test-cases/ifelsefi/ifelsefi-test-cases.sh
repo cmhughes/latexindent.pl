@@ -37,7 +37,7 @@ latexindent.pl ifelsefi-first-mod-F.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-m
 latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines16.yaml -o=ifelsefi-first-mod-E-mod16.tex
 latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines17.yaml -o=ifelsefi-first-mod-E-mod17.tex
 # removing line breaks
-latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines18.yaml -o=ifelsefi-nested-blank-lines-mod18.tex
+latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines18.yaml,removeTWS-before.yaml -o=ifelsefi-nested-blank-lines-mod18.tex
 # testing a nested, one-line example
 latexindent.pl ifelsefi-one-line.tex -s -m -o=ifelsefi-one-line-mod1.tex -l=ifelsefi-all-on.yaml
 # first mixed example

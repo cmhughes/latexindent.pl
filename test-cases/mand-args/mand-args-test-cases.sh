@@ -28,7 +28,7 @@ do
    latexindent.pl environments-second-mand-args.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml -s -o=environments-second-mand-args-mod$i.tex 
    latexindent.pl environments-second-mand-args-remove-linebreaks1.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml -s -o=environments-second-mand-args-remove-linebreaks1-mod$i.tex 
    latexindent.pl environments-second-mand-args-remove-linebreaks1.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml -s -o=environments-second-mand-args-remove-linebreaks1-mod-unprotect$i.tex 
-   latexindent.pl environments-second-mand-args-remove-linebreaks1.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml -s -o=environments-second-mand-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
+   latexindent.pl environments-second-mand-args-remove-linebreaks1.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml,../ifelsefi/removeTWS-before.yaml -s -o=environments-second-mand-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
    # three, ah ah ah
    latexindent.pl environments-third-mand-args-remove-linebreaks1-trailing-comments.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml -s -o=environments-third-mand-args-remove-linebreaks1-trailing-comments-mod$i.tex
    latexindent.pl environments-third-mand-args.tex -m -l=../environments/env-all-on.yaml,mand-args-mod$i.yaml,addPercentAfterBegin.yaml -s -o=environments-third-mand-args-mod$i.tex -g=other.log

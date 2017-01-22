@@ -304,7 +304,7 @@ sub indent_children_recursively{
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
                             $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
-                            ${$self}{body} =~ s/(\R*|\h*)+${$child}{id}/${$child}{id}/s;
+                            ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{id}/$1${$child}{id}/s;
                         } else {
                             $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)");
                         }

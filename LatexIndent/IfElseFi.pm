@@ -46,6 +46,20 @@ sub indent{
     # determine the surrounding and current indentation
     $self->determine_total_indentation;
 
+    # line break checks after \if statement, can get messy if we 
+    # have, for example
+    #       \ifnum
+    #               something
+    # which might be changed into
+    #       \ifnumsomething
+    # which is undeserible
+    if (defined ${$self}{BodyStartsOnOwnLine}
+        and ${$self}{BodyStartsOnOwnLine}==-1 
+        and ${$self}{body} !~ m/^(\h|\\|(?:!-!))/s
+    ){
+        ${$self}{begin} .= " ";
+    }
+
     # indent the body
     $self->indent_body;
 
