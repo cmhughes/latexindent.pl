@@ -355,12 +355,8 @@ latexindent.pl -l mysettings.yaml myfile.tex
 	\end{wrapfigure}
 	This field enables the user to specify
 	indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!,
-	\lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command written in this field.
-
-	This field is slightly different from most
-	of the fields that we have considered previously, because each element is
-	itself a field which has two elements: \texttt{indent} and \texttt{level}. (Similar
-	in structure to the advanced form of  \texttt{lookForAlignDelims} in \cref{lst:aligndelims:advanced}.)
+    \lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command written in this field.\footnote{There is a slight
+    difference in interface for this field when comparing Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
 
 	The default settings do \emph{not} place indentation after a heading, but you
 	can easily switch them on by changing \texttt{indentAfterThisHeading: 0} to \texttt{indentAfterThisHeading: 1}.

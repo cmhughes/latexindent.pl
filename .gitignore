@@ -2,6 +2,8 @@ success/*.log
 *.bak*
 *.log
 *.swp
+*.bbl
+*.blg
 documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing

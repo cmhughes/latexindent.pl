@@ -1,12 +1,12 @@
 #!/bin/bash
-loopmax=0
+loopmax=4
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
 
 # table-based test cases
 latexindent.pl -s table1.tex -o table1-default.tex
-for (( i=1 ; i <= 4 ; i++ )) 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
     # basic tests
     latexindent.pl -s table1.tex -o table1-mod$i.tex -l=tabular$i.yaml
@@ -29,4 +29,6 @@ latexindent.pl -s environments.tex -o environments-no-align-double-back-slash.te
 # alignment inside a mandatory argument
 latexindent.pl -s matrix1.tex -o matrix1-default.tex
 latexindent.pl -s matrix1.tex -o matrix1-no-align.tex -l=noMatrixAlign.yaml
+# nested
+latexindent.pl nested-align1.tex -s -l=indentPreamble.yaml  -m -o nested-align1-mod0.tex
 git status
