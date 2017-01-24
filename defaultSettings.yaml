@@ -59,6 +59,13 @@ maxNumberOfBackUps: 0
 # the back up will be written to myfile.bak4
 cycleThroughBackUps: 0
 
+# preferences for information displayed in the log file
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 0
+    endLogFileWith: '--------------' 
+    showGitHubInfoFooter: 1
+
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!
 verbatimEnvironments:
@@ -266,12 +273,6 @@ indentRulesGlobal:
     specialBeginEnd: 0
     afterHeading: 0
     filecontents: 0
-
-# preferences for information displayed in the log file
-logFilePreferences:
-    showEveryYamlRead: 1
-    showAmalgamatedSettings: 0
-    endLogFileWith: '--------------' 
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active

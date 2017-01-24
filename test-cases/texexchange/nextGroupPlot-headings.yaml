@@ -1,0 +1,5 @@
+defaultIndent: " "
+indentAfterHeadings:
+    nextgroupplot:
+       indentAfterThisHeading: 1
+       level: 1

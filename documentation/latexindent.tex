@@ -361,6 +361,8 @@ parbox=false,
 \newcommand{\ElseFinishesWithLineBreak}{\color{red}\square}
 \newcommand{\EqualsStartsOnOwnLine}{\color{red}\bullet}
 
+% table rules
+\setlength\heavyrulewidth{0.25ex}
 % gitinfo2 settings
 \renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}
 
@@ -398,20 +400,20 @@ parbox=false,
 \tableofcontents
 \lstlistoflistings
 
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
 \input{sec-the-m-switch}
-\input{sec-indent-config-and-settings.tex}
-\input{references}
-\input{appendices}
+%\input{sec-indent-config-and-settings.tex}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks
@@ -443,22 +445,6 @@ The hierachy is
 	\item indentRulesGlobal
 	\item defaultIndent
 \end{enumerate}
-
-\item[\verbitem{logFilePreferences}]
-\texttt{latexindent.pl} writes information to \texttt{indent.log}, some
-of which can be customised by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
-\begin{cmhlistings}[style=yaml]{\texttt{logFilePreferences}}{lst:logFilePreferences}
-	logFilePreferences:
-	showEveryYamlRead: 1
-	showAmalgamatedSettings: 0
-	endLogFileWith: '--------------'
-\end{cmhlistings}
-If you load your own user settings (see \vref{sec:indentconfig}) then \texttt{latexindent.pl} will
-detail them in \texttt{indent.log}; you can choose not to have the details logged by switching
-\texttt{showEveryYamlRead} to \texttt{0}. Once all of your settings have
-been loaded, you can see the amalgamated settings by switching \texttt{showAmalgamatedSettings}
-to \texttt{1}, if you wish. The log file will end with the characters
-given in \texttt{endLogFileWith}.
 
 \section{Known limitations}\label{sec:knownlimitations}
 

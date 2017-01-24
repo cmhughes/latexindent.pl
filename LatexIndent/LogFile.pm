@@ -128,6 +128,10 @@ sub output_logfile{
   # put the final line in the logfile
   $self->logger("${$masterSettings{logFilePreferences}}{endLogFileWith}",'heading');
 
+  # github info line
+  $self->logger("Please direct all communication/issues to: ",'heading') if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+  $self->logger("https://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+
   # output the logfile
   foreach my $line (@logFileNotes){
         if(${$line}{level} eq 'heading'){
