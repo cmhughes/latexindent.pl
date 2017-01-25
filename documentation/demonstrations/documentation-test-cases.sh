@@ -92,6 +92,13 @@ latexindent.pl -s special1.tex -o special1-noAdd.tex -local displayMath-noAdd.ya
 latexindent.pl -s special1.tex -o special1-indent-rules.tex -local displayMath-indent-rules.yaml
 latexindent.pl -s special1.tex -local special-noAdd-glob.yaml -o special1-noAdd-glob.tex 
 latexindent.pl -s special1.tex -l special-indent-rules-global.yaml -o special1-indent-rules-global.tex 
+##### headings ######
+##### headings ######
+##### headings ######
+for (( i=3; i <= 9 ; i++ )) 
+do 
+latexindent.pl -s headings2.tex -l headings$i.yaml -o headings2-mod$i.tex
+done
 
 # -m switch #
 # -m switch #

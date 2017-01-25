@@ -4,6 +4,7 @@ success/*.log
 *.swp
 *.bbl
 *.blg
+*.ptc
 documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing

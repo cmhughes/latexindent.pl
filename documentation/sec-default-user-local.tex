@@ -385,11 +385,11 @@ latexindent.pl -l mysettings.yaml myfile.tex
 	(once \texttt{indent} is set to \texttt{1} for \texttt{chapter}).
 
 	For example, assuming that you have read \vref{sec:localsettings}, say that
-	you have the code in \cref{lst:headings1} saved into \texttt{headings1.yaml},
+	you have the code in \cref{lst:headings1yaml} saved into \texttt{headings1.yaml},
 	and that you have the text from \cref{lst:headings1} saved into \texttt{headings1.tex}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
@@ -403,14 +403,14 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	then you should receive the output given in \cref{lst:headings1-mod1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/headings1-mod1.tex}{\texttt{headings1.tex} first modification}{lst:headings1-mod1}
+		\cmhlistingsfromfile{demonstrations/headings1-mod1.tex}{\texttt{headings1.tex} using \cref{lst:headings1yaml}}{lst:headings1-mod1}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/headings1-mod2.tex}{\texttt{headings1.tex} second modification}{lst:headings1-mod2}
 	\end{minipage}
 
-	Now say that you modify the \texttt{YAML} from \cref{lst:headings1} so that the \texttt{paragraph} \texttt{level} is \texttt{1}; after
+	Now say that you modify the \texttt{YAML} from \cref{lst:headings1yaml} so that the \texttt{paragraph} \texttt{level} is \texttt{1}; after
 	running
 	\begin{commandshell}
 latexindent.pl headings1.tex -l=headings1.yaml
@@ -418,7 +418,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	you should now receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
-\subsubsection{The code blocks known \texttt{latexindent.pl}}
+    \subsubsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 

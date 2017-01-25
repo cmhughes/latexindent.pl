@@ -1,0 +1,6 @@
+indentAfterHeadings:
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 1
+noAdditionalIndentGlobal:
+    afterHeading: 1

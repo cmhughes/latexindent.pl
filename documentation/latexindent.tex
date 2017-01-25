@@ -1,6 +1,6 @@
 % arara: pdflatex: {shell: yes}
 % !arara: bibtex
-% !arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
@@ -23,6 +23,7 @@
 \usepackage{booktabs}                                % beautiful tables
 \usepackage{listings}                                % nice verbatim environments
 \usepackage{titlesec}                                % customize headings
+\usepackage{titletoc}                                % customize headings
 \usepackage{changepage}                              % adjust width of page
 \usepackage{fancyhdr}                                % headers & footers
 \usepackage{wrapfig}
@@ -86,6 +87,7 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
 			center title,
 			listing engine=minted,
 			minted style=colorful,
+            minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=true},
 			addtolol,
 			boxrule=0pt,
 			toprule=1pt,bottomrule=1pt,
@@ -111,18 +113,11 @@ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includeg
             %bottomrule=1pt,
 		},
     MLB-TCB/.style={
-            enhanced,
-			listing only,
-			listing engine=listings,
-			left=0cm,
-			boxrule=0pt,
-			sharp corners,
-			center title,
+            yaml-TCB,
+            center title,
             colframe=cmhgold,
 			colbacktitle=harvestgold,
-            colback=white!90!harvestgold,
-            titlerule=2pt,
-            toprule=2pt,
+            colback=white!60!cmhgold,
             width=0.9\linewidth,
             before=\centering,
             %bottomrule=1pt,
@@ -400,20 +395,22 @@ parbox=false,
 \tableofcontents
 \lstlistoflistings
 
-%\input{sec-introduction}
-%\input{sec-demonstration}
-%\input{sec-how-to-use}
-%\input{sec-default-user-local}
-%\input{subsec-noAdditionalIndent-indentRules}
-%\input{subsubsec-environments-and-their-arguments}
-%\input{subsubsec-environments-with-items}
-%\input{subsubsec-commands-with-arguments}
-%\input{subsubsec-ifelsefi}
-%\input{subsubsec-special}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-default-user-local}
+\input{subsec-noAdditionalIndent-indentRules}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+\input{subsubsec-ifelsefi}
+\input{subsubsec-special}
+\input{subsubsec-headings}
+\stopcontents[noAdditionalIndent]
 \input{sec-the-m-switch}
-%\input{sec-indent-config-and-settings.tex}
-%\input{references}
-%\input{appendices}
+\input{sec-indent-config-and-settings.tex}
+\input{references}
+\input{appendices}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks

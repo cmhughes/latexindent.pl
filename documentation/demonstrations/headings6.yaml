@@ -1,0 +1,9 @@
+indentAfterHeadings:
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 1
+noAdditionalIndent:
+    paragraph: 
+        body: 0
+        mandatoryArguments: 0
+        afterHeading: 1
