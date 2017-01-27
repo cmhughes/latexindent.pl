@@ -45,5 +45,8 @@ latexindent.pl -s special-nested.tex -o special-nested-default.tex
 latexindent.pl -s special-nested.tex -o special-nested-mod1.tex -m -l special-mod1.yaml
 # mixed test case
 latexindent.pl -s tabdo.sty -o tabdo-default.sty
+# new specials test-cases
+latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW.tex -local new-specials.yaml
+latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW1.tex -local new-specials1.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

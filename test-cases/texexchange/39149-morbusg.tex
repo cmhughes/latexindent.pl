@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{scopes,svg.path,shapes.geometric,shadows}
+\begin{document}
+\begin{tikzpicture}[
+  mystar/.style={star, minimum size=2cm, star point ratio=2.5, shade, thick,
+    line join=round, color=yellow!80!black, draw=red!20!black,
+    top color=yellow!80!white, bottom color=yellow!60!black},
+  mytree/.style={scale=0.5, rotate=180, draw=green!60!black, thick,
+    line join=round, inner color=green!60!yellow, outer color=green!50!black},
+  myball/.style={shade, ball color=#1, circular drop shadow={
+    shadow xshift=0pt, shadow yshift=-.5ex, fill=green!40!black}}
+  ]
+  {[mytree]
+  \shadedraw svg "M355,430
+    q90,10 105,-85 30,0 50,-30 20,30 50,30 50,-20 100,0 10,88 105,85
+    -45,90 -205,25 Q400,520 355,430";
+  \shadedraw svg "M380,325
+    q83,10 105,-80 25,0 35,-30 20,25 40,30 20,-10 35,-25 20,20 40,25
+    25,90 105,82 -15,50 -120,15 -30,-2 -60,12 -30,0 -52,-28
+    C490,370 380,360 380,325";
+  \shadedraw svg "M435,225
+    q65,-8 90,-70 35,40 70,0 25,60 90,70 -30,52 -90,5 -36,48 -73,-3
+    C520,254 445,265 435,225";
+  \shadedraw svg "M470,139
+    q50,5 90,-80 50,90 90,80 -30,30 -50,20 -40,45 -78,0
+    Q500,170 470,139";
+  }
+  %\shadedraw svg[scale=0.5,rotate=180]
+  %"M460,532 q50,-8 q77,-45 v-20 a20,13 0 1 1 48,0 v20 q30,40 77,45";
+  %pgf/tikz doesn't like the arc operation, as stated in manual
+
+  \node[mystar] at (-9.85,-1) {$\lambda$};
+
+  \shade[myball=blue]   (-9.7,-2.2)   circle (.2cm);
+  \shade[myball=red]    (-9.2,-3.8)   circle (.2cm);
+  \shade[myball=green]  (-10.3,-4)    circle (.4cm);
+  \shade[myball=yellow] (-8.95,-5.4)  circle (.4cm);
+  \shade[myball=red]    (-10.7,-6.1)  circle (.4cm);
+  \shade[myball=blue]   (-10.8,-5)    circle (.2cm);
+  \shade[myball=yellow] (-9.5,-6.7)   circle (.2cm);
+  \shade[myball=green]  (-8.3,-7.6)   circle (.4cm);
+  \shade[myball=yellow] (-11.7,-7.6)  circle (.4cm);
+  \shade[myball=blue]   (-10.5,-7.8)  circle (.2cm);
+\end{tikzpicture}
+\end{document}

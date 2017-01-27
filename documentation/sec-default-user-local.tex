@@ -1,5 +1,5 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\section{default, user, and local settings}\label{sec:defuseloc}
+\section{default}\label{sec:defuseloc}
  \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}
  (rhymes with camel). The idea is to separate the behaviour of the script
  from the internal working -- this is very similar to the way that we separate content
@@ -116,7 +116,7 @@ copy myfile.bak4 to myfile.bak3
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
 	\lstinline|\lstinline|; any commands populated in this field are protected from line breaking
-	routines (only relevant if the \texttt{-m} is active, see \vref{sec:m-switch}).
+	routines (only relevant if the \texttt{-m} is active, see \vref{sec:modifylinebreaks}).
 
 \yamltitle{noIndentBlock}*{fields}
 
@@ -194,8 +194,8 @@ postfoothook=\end{mdframed},
 
 \yamltitle{defaultIndent}*{horizontal space}
 	This is the default indentation (\lstinline!\t! means a tab, and is the default value) used in the absence of other details
-	for the command or environment we are working with; see \texttt{indentRules}
-	for more details (\cpageref{page:indentRules}).
+	for the command or environment we are working with; see \texttt{indentRules} in \vref{sec:noadd-indent-rules}
+	for more details.
 
 	If you're interested in experimenting with \texttt{latexindent.pl} then you
 	can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}

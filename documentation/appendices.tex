@@ -114,10 +114,14 @@ echo %path%
 	 \begin{commandshell}
 latexindent.pl -o myfile.tex outputfile.tex
  \end{commandshell}
-	 whereas in Version 3.0 you would run
+	 whereas in Version 3.0 you would run any of the following, for example,
 	 \begin{commandshell}
 latexindent.pl -o=outputfile.tex myfile.tex
 latexindent.pl -o outputfile.tex myfile.tex
+latexindent.pl myfile.tex -o outputfile.tex 
+latexindent.pl myfile.tex -o=outputfile.tex 
+latexindent.pl myfile.tex -outputfile=outputfile.tex 
+latexindent.pl myfile.tex -outputfile outputfile.tex 
  \end{commandshell}
 	 noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 

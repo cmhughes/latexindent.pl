@@ -9,8 +9,9 @@ silentMode=0
 silentModeFlag=''
 showCounterFlag=''
 noisyModeFlag=''
+benchmarkMode=0
 # check flags, and change defaults appropriately
-while getopts "sco:n" OPTION
+while getopts "bsco:n" OPTION
 do
  case $OPTION in 
   s)    
@@ -18,6 +19,10 @@ do
    silentModeFlag='-s'
    silentMode=1
    ;;
+  b)
+    # bench mark mode
+    benchmarkMode=1
+    ;;
   c)    
    echo "Show counter mode active!"
    showCounterFlag='-c'
@@ -109,6 +114,9 @@ cd ../alignment
 cd ../texexchange
 [[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"
 ./texexchange-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# benchmark mode, if appropriate
+cd ../benchmarks
+[[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

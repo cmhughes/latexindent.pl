@@ -5,6 +5,7 @@ success/*.log
 *.bbl
 *.blg
 *.ptc
+documentation/_minted-latexindent/
 documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing

@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{%
+	lindenmayersystems,
+	decorations.pathmorphing,
+	decorations.markings,
+	shapes.geometric,
+	calc%
+}
+\tikzset{
+	tinsel/.style={
+			#1,
+			rounded corners=10mm,
+			ultra thin,
+			decorate,
+			decoration={
+					snake,
+					amplitude=.1mm,
+					segment length=10,
+				}
+		},
+	baubles/.style={
+			decorate,
+			decoration={
+					markings,
+					mark=between positions .3 and 1 step 2cm
+					with
+						{
+							\pgfmathsetmacro{\brad}{2 + .5 * rand}
+							\path[shading=ball,ball color=#1] (0,0) circle[radius=\brad mm];
+						}
+				}
+		},
+	lights/.style={
+			decorate,
+			decoration={
+					markings,
+					mark=between positions 0 and 1 step 1cm
+					with
+						{
+							\pgfmathparse{rand > 0 ? "dart" : "kite"}
+							\let\lshape\pgfmathresult
+							\pgfmathsetmacro{\tint}{100*rnd}
+							\node[rotate=90,\lshape,shading=ball,inner sep=1pt,ball color=red!\tint!yellow] {};
+						}
+				}
+		}
+}
+
+\begin{document}
+\begin{center}
+	\tikz[remember picture,overlay] \coordinate (star) at (0,-1);
+\end{center}
+
+\lstinputlisting[
+	breaklines=true,
+	language=TeX,
+	basicstyle=\tiny,
+	firstline=63,
+	lastline=103]{\jobname.tex}
+
+\begin{tikzpicture}[overlay,remember picture]
+	\path (star) +(-50:7) coordinate (rhs) +(-130:7) coordinate (lhs);
+	\draw[brown!50!black,line width=5mm,line cap=round] (star) ++(-90:6.8) -- ++(0,-1) coordinate (base);
+	\node[scale=-1,trapezium,fill=black,minimum size=1cm] at (base) {};
+	\foreach \height/\colour in {%
+			.2/blue,
+			.4/yellow,
+			.6/red,
+			.8/orange,
+			1/pink%
+		} {
+			\draw[tinsel=\colour] ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+	\path (star);
+	\pgfgetlastxy{\starx}{\stary}
+	\begin{scope}[xshift=\starx,yshift=\stary,yshift=-7cm]
+		\draw[color=green!50!black, l-system={rule set={S -> [+++G][---G]TS,  G -> +H[-G]L, H -> -G[+H]L, T -> TL, L -> [-FFF][+FFF]F}, step=4pt, angle=18, axiom=+++++SLFFF, order=11}] lindenmayer system -- cycle;
+	\end{scope}
+	\foreach \height/\colour in {%
+			.1/pink,
+			.3/red,
+			.5/yellow,
+			.7/blue,
+			.9/orange%
+		} {
+			\draw[tinsel=\colour] ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+	\foreach \height in {.15,.35,...,1} {
+			\draw[lights]  ($(star)!\height!(lhs)$) to[bend right] ($(star)!\height!(rhs)$);
+		}
+	\foreach \angle/\colour in {
+			-50/red,
+			-70/yellow,
+			-90/blue,
+			-110/pink,
+			-130/purple%
+		} {
+			\draw[baubles=\colour] (star) -- ++(\angle:7);
+		}
+	\node[star,star point ratio=2.5,fill=yellow,minimum size=1cm] at (star) {};
+\end{tikzpicture}
+\end{document}
