@@ -1,6 +1,6 @@
 % arara: pdflatex: {shell: yes}
 % !arara: bibtex
-% arara: pdflatex: {shell: yes}
+% !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
@@ -24,6 +24,7 @@
 \usepackage{listings}                                % nice verbatim environments
 \usepackage{titlesec}                                % customize headings
 \usepackage{titletoc}                                % customize headings
+\usepackage{multicol}
 \usepackage{changepage}                              % adjust width of page
 \usepackage{fancyhdr}                                % headers & footers
 \usepackage{wrapfig}
@@ -318,6 +319,16 @@ parbox=false,
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
 \titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
 
+% list of listings
+\contentsuse{lstlisting}{lol}
+\titlecontents{lstlisting}[2em]
+              {\addvspace{0.25pc}}
+              {\textbf{Code \thecontentslabel} }
+              {}
+              {\titlerule*[0.5em]{$\cdot$}\contentspage}
+              []
+\AtBeginDocument{\addtocontents{lol}{\protect\begin{sidebyside}\protect\begin{multicols}{2}}}
+\AtEndDocument{\addtocontents{lol}{\protect\end{multicols}\protect\end{sidebyside}}}
 
 % cleveref settings
 \crefname{table}{Table}{Tables}
@@ -393,7 +404,9 @@ parbox=false,
 	comment symbols.
 \end{abstract}
 \tableofcontents
+{\small
 \lstlistoflistings
+}
 
 \input{sec-introduction}
 \input{sec-demonstration}

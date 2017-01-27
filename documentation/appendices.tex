@@ -54,39 +54,7 @@ cpanm File::HomeDir
 latexindent.exe -t myfile.tex
  \end{dosprompt}
 
-	\section{The \texttt{arara} rule}
-	 The \texttt{arara} rule (\texttt{indent.yaml}) contains lines such as those
-	 given in \cref{lst:arararule}. With this setup, the user \emph{always} has
-	 to specify whether or not they want (in this example) to use the \texttt{trace}
-	 identifier.
-	 \begin{yaml}[style=yaml-LST,numbers=none]{The \texttt{arara} rule}{lst:arararule}
-...
-arguments:
-- identifier: trace
-flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
-...
-\end{yaml}
-
-	 If you would like to have the \texttt{trace} option on by default every time you
-	 call \texttt{latexindent.pl} from \texttt{arara} (without having to write \lstinline!% arara: indent: {trace: yes}!), then simply
-	 amend \cref{lst:arararule} so that it looks like \cref{lst:arararulemod}.
-	 \begin{yaml}[style=yaml-LST,numbers=none]{The \texttt{arara} rule (modified)}{lst:arararulemod}
-...
-arguments:
-- identifier: trace
-flag: <arara> @{ isTrue( parameters.trace, "-t" ) }
-default: "-t"
-...
-\end{yaml}
-
-	 With this modification in place, you now simply to write \lstinline!% arara: indent! and
-	 \texttt{trace} mode will be activated by default. If you wish to turn off \texttt{trace}
-	 mode then you can write \lstinline!% arara: indent: {trace: off}!.
-
-	 Of course, you can apply these types of modifications to \emph{any} of the identifiers,
-	 but proceed with caution if you intend to do this for \texttt{overwrite}.
-
-	\section{Updating the \texttt{path} variable}\label{sec:updating-path}
+\section{Updating the \texttt{path} variable}\label{sec:updating-path}
 	 \texttt{latexindent.pl} ships with a few scripts that can update the \texttt{path} variables
 	 \footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
 	 on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.

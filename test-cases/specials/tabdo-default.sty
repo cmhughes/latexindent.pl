@@ -97,13 +97,13 @@
 }
 
 \def\TTo@nexttabstop #1,{%
-		\ifdim#1<\CurrentLineWidth
-			\expandafter\TTo@nexttabstop
-		\else
-			\ifdim#1<0.9999\linewidth#1\else\z@\fi
-			\expandafter\strip@prefix
-		\fi
-	}
+	\ifdim#1<\CurrentLineWidth
+		\expandafter\TTo@nexttabstop
+	\else
+		\ifdim#1<0.9999\linewidth#1\else\z@\fi
+		\expandafter\strip@prefix
+	\fi
+}
 \def\TTo@foundtabstop#1>{}
 
 \newcommand\TabPositions[1]{\def\TabStopList{\z@,#1}}

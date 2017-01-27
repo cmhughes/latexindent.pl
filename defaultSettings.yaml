@@ -253,7 +253,7 @@ noAdditionalIndentGlobal:
     items: 0
     keyEqualsValuesBraces: 0
     namedGroupingBracesBrackets: 0
-    UnNamedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 1
     specialBeginEnd: 0
     afterHeading: 0
     filecontents: 0

@@ -188,8 +188,8 @@
 \def\@cutoff{\@cutofftext\ #1}
 {\large \textbf{\@assignmentname\ #2} \hfill\textbf{\@cutofftext}#1}
 \@ifnextchar[{\@assignmentsubtitle}{
-		\par\addvspace{\bigskipamount}
-	}
+	\par\addvspace{\bigskipamount}
+}
 }
 
 \def\@assignmentnocutoff#1{%
