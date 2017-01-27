@@ -112,6 +112,16 @@ sub tasks_particular_to_each_object{
         $self->logger("Adjusting argument object in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body}=~s/\R$//s;
+    } 
+
+    # the arguments body might finish with horizontal space, in which case, we need to transfer this 
+    # to the parent object replacement text.
+    #
+    # see ../test-cases/texexchange/5461.tex which was the first example to demonstrate the need for this
+    if(!${${${$self}{children}}[0]}{endImmediatelyFollowedByComment} and ${${${$self}{children}}[0]}{body} =~ m/\h*$/ and ${$self}{replacementText} !~ m/\R$/){
+        $self->logger("${$self}{name}: trailling horizontal space found in arguments -- removing it from arguments, adding to replacement text") if $is_t_switch_active;
+        ${${${$self}{children}}[0]}{body} =~ s/(\h*)$//s; 
+        ${$self}{replacementText} .= "$1";
     }
 
     # search for ifElseFi blocks

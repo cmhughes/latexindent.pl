@@ -34,8 +34,8 @@ our $environmentRegExp = qr/
             )                             # environment body captured into $4
             (
                 \\end\{\2\}               # \end{<something>} statement
-                (\h*)?                    # possibly followed by horizontal space
             )                             # captured into $6
+            (\h*)?                        # possibly followed by horizontal space
             (\R)?                         # possibly followed by a line break 
             /sx;
 
@@ -60,6 +60,7 @@ sub find_environments{
                                               modifyLineBreaksYamlName=>"environments",
                                               regexp=>$environmentRegExp,
                                               endImmediatelyFollowedByComment=>$8?0:($9?1:0),
+                                              horizontalTrailingSpace=>$7?$7:q(),
                                             );
 
       # if the environment is empty, we may need to update linebreaksAtEnd{body}

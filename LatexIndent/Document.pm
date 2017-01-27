@@ -272,6 +272,9 @@ sub adjust_replacement_text_line_breaks_at_end{
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
     $self->logger("Putting linebreak after replacementText for ${$self}{name}") if($is_t_switch_active);
+    if(defined ${$self}{horizontalTrailingSpace}){
+        ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace} unless(!${$self}{endImmediatelyFollowedByComment} and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==2);
+    }
     ${$self}{replacementText} .= "\n" if(${$self}{linebreaksAtEnd}{end});
 
 }

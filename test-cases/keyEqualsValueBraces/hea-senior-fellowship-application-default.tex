@@ -426,20 +426,20 @@
 
 % map command
 \newcommand{\map}[1]{%
-% #1 is a comma separated list
-% with
-%	a/b/c, a1/b1/c1, etc
-% a: practice/knowledge/value
-% b: A1--A6, K1--K6, etc
-% c: explain/demonstrate/critically evaluate, etc
-(\foreach \practice/\principle/\explain [count=\ni] in {#1}{%
-\index[\practice]{\principle!\explain}%
-\ifnum\ni=1% first entry does not get preceeding commas
-\else% subsequent entries do
-	\nobreak,\,\nobreak
-\fi%
-\gls{\practice:\principle}%
-})%
+	% #1 is a comma separated list
+	% with
+	%	a/b/c, a1/b1/c1, etc
+	% a: practice/knowledge/value
+	% b: A1--A6, K1--K6, etc
+	% c: explain/demonstrate/critically evaluate, etc
+	(\foreach \practice/\principle/\explain [count=\ni] in {#1}{%
+			\index[\practice]{\principle!\explain}%
+			\ifnum\ni=1% first entry does not get preceeding commas
+			\else% subsequent entries do
+				\nobreak,\,\nobreak
+			\fi%
+			\gls{\practice:\principle}%
+		})%
 }
 
 % graphics path

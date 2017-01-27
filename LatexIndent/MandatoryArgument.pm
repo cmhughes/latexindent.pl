@@ -20,7 +20,7 @@ sub find_mandatory_arguments{
     while(${$self}{body} =~ m/$mandArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
         # log file output
         $self->logger("Mandatory argument found, body in ${$self}{name}",'heading');
-        $self->logger("(last argument)") if($8 eq '');
+        $self->logger("(last argument)") if($9 eq '');
 
         # create a new Mandatory Argument object
         my $mandatoryArg = LatexIndent::MandatoryArgument->new(begin=>$1,
@@ -32,7 +32,7 @@ sub find_mandatory_arguments{
                                                 linebreaksAtEnd=>{
                                                   begin=>$2?1:0,
                                                   body=>$4?1:0,
-                                                  end=>$6?1:0,
+                                                  end=>$7?1:0,
                                                 },
                                                 aliases=>{
                                                   # begin statements
@@ -44,10 +44,11 @@ sub find_mandatory_arguments{
                                                   # after end statements
                                                   EndFinishesWithLineBreak=>"RCuBFinishesWithLineBreak",
                                                 },
+                                                horizontalTrailingSpace=>$6?$6:q(),
                                                 modifyLineBreaksYamlName=>"mandatoryArguments",
                                                 regexp=>$mandArgRegExp,
-                                                # the last argument (determined by $8 eq '') needs information from the argument container object
-                                                endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
+                                                # the last argument (determined by $9 eq '') needs information from the argument container object
+                                                endImmediatelyFollowedByComment=>($9 eq '')?${$self}{endImmediatelyFollowedByComment}:($8?1:0),
                                               );
 
         # the settings and storage of most objects has a lot in common
@@ -83,8 +84,8 @@ sub get_mand_arg_reg_exp{
                                    (?<!\\)     # not immediately pre-ceeded by \
                                    (
                                     \}         # {mandatory arguments}
-                                    \h*
                                    )           # } into $5
+                                   (\h*)
                                    (\R)?       # linebreaks after } into $6
                                /sx;
 

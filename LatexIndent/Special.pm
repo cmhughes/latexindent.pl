@@ -63,8 +63,8 @@ sub construct_special_begin{
                                   )                       
                                   (
                                     ${$BeginEnd}{end}
-                                    \h*
                                   )
+                                  (\h*)
                                   (\R)?
                                /sx
 
@@ -127,7 +127,7 @@ sub find_special{
                                                         linebreaksAtEnd=>{
                                                           begin=>$2?1:0,
                                                           body=>$4?1:0,
-                                                          end=>$6?1:0,
+                                                          end=>$7?1:0,
                                                         },
                                                         aliases=>{
                                                           # begin statements
@@ -141,7 +141,8 @@ sub find_special{
                                                         },
                                                         modifyLineBreaksYamlName=>"specialBeginEnd",
                                                         regexp=>$specialRegExp,
-                                                        endImmediatelyFollowedByComment=>$6?0:($7?1:0),
+                                                        endImmediatelyFollowedByComment=>$7?0:($8?1:0),
+                                                        horizontalTrailingSpace=>$6?$6:q(),
                                                       );
 
                 # the settings and storage of most objects has a lot in common

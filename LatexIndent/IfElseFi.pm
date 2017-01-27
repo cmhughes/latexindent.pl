@@ -34,8 +34,8 @@ our $ifElseFiRegExp = qr/
                 (\R*)                       # linebreaks after body
                 (
                     \\fi(?![a-zA-Z])                    # \fi statement 
-                    \h*                     # 0 or more horizontal spaces
                 )
+                (\h*)                       # 0 or more horizontal spaces
                 (\R)?                       # linebreaks after \fi
 /sx;
 
@@ -113,7 +113,7 @@ sub find_ifelsefi{
                                               linebreaksAtEnd=>{
                                                 begin=>(($4 eq "\n")||$3)?1:0,
                                                 body=>$6?1:0,
-                                                end=>$8?1:0,
+                                                end=>$9?1:0,
                                               },
                                               aliases=>{
                                                 # begin statements
@@ -127,7 +127,8 @@ sub find_ifelsefi{
                                               modifyLineBreaksYamlName=>"ifElseFi",
                                               additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
                                               regexp=>$ifElseFiRegExp,
-                                              endImmediatelyFollowedByComment=>$8?0:($9?1:0),
+                                              endImmediatelyFollowedByComment=>$9?0:($10?1:0),
+                                              horizontalTrailingSpace=>$8?$8:q(),
                                             );
 
       # the settings and storage of most objects has a lot in common

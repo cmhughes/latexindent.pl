@@ -22,8 +22,8 @@ our $optArgRegExp = qr/
                                (?<!\\)     # not immediately pre-ceeded by \
                                (
                                 \]          # [optional arguments]
-                                \h*
                                )
+                               (\h*)
                                (\R)?
                            /sx;
 
@@ -34,7 +34,7 @@ sub find_optional_arguments{
     while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
         # log file output
         $self->logger("Optional argument found, body in ${$self}{name}",'heading');
-        $self->logger("(last argument)") if($8 eq '');
+        $self->logger("(last argument)") if($9 eq '');
 
         # create a new Optional Argument object
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>$1,
@@ -46,7 +46,7 @@ sub find_optional_arguments{
                                                 linebreaksAtEnd=>{
                                                   begin=>$2?1:0,
                                                   body=>$4?1:0,
-                                                  end=>$6?1:0,
+                                                  end=>$7?1:0,
                                                 },
                                                 aliases=>{
                                                   # begin statements
@@ -60,8 +60,9 @@ sub find_optional_arguments{
                                                 },
                                                 modifyLineBreaksYamlName=>"optionalArguments",
                                                 regexp=>$optArgRegExp,
-                                                # the last argument (determined by $8 eq '') needs information from the argument container object
-                                                endImmediatelyFollowedByComment=>($8 eq '')?${$self}{endImmediatelyFollowedByComment}:($7?1:0),
+                                                # the last argument (determined by $9 eq '') needs information from the argument container object
+                                                endImmediatelyFollowedByComment=>($9 eq '')?${$self}{endImmediatelyFollowedByComment}:($8?1:0),
+                                                horizontalTrailingSpace=>$6?$6:q(),
                                               );
 
         # the settings and storage of most objects has a lot in common
