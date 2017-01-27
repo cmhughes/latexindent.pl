@@ -64,7 +64,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
-    $self->logger("Custom replacement text routine for ${$self}{name}");
+    $self->logger("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
 
     # the un-named object is a little special, as it doesn't have a name; as such, if there are blank lines before
     # the braces/brackets, we have to insert them

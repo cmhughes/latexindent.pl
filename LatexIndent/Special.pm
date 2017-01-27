@@ -69,7 +69,7 @@ sub construct_special_begin{
                                /sx
 
         } else {
-            $self->logger("The special regexps won't include anything from $specialName (see lookForThis)",'heading');
+            $self->logger("The special regexps won't include anything from $specialName (see lookForThis)",'heading') if $is_t_switch_active ;
         }
     }
 
@@ -94,7 +94,7 @@ sub find_special{
     return if($specialBegins eq "");
 
     # otherwise loop through the special begin/end
-    $self->logger("Searching for special begin/end (see specialBeginEnd)");
+    $self->logger("Searching for special begin/end (see specialBeginEnd)") if $is_t_switch_active ;
     $self->logger(Dumper(\%{$masterSettings{specialBeginEnd}})) if $is_tt_switch_active;
 
     # keep looping as long as there is a special match of some kind
@@ -105,9 +105,9 @@ sub find_special{
 
             # log file
             if(${$BeginEnd}{lookForThis}){
-                $self->logger("Looking for $specialName",'heading');
+                $self->logger("Looking for $specialName",'heading') if $is_t_switch_active ;
             } else {
-                $self->logger("Not looking for $specialName (see lookForThis)",'heading');
+                $self->logger("Not looking for $specialName (see lookForThis)",'heading') if $is_t_switch_active ;
                 next;
             }
 
@@ -117,7 +117,7 @@ sub find_special{
             while(${$self}{body} =~ m/$specialRegExp\h*($trailingCommentRegExp)?/){
 
                 # log file output
-                $self->logger("special found: $specialName",'heading');
+                $self->logger("special found: $specialName",'heading') if $is_t_switch_active;
 
                 # create a new special object
                 my $specialObject = LatexIndent::Special->new(begin=>$1,

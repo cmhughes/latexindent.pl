@@ -83,7 +83,7 @@ sub align_at_ampersand{
     }
 
     # output some of the info so far to the log file
-    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @columnSizes");
+    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @columnSizes") if $is_t_switch_active;
 
     # README: printf( formatting, expression)
     #

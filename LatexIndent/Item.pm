@@ -7,6 +7,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -55,13 +56,13 @@ sub find_items{
     return unless ${$masterSettings{indentAfterItems}}{${$self}{name}};
 
     # otherwise loop through the item names
-    $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)");
-    $self->logger(Dumper(\%{$masterSettings{itemNames}}));
+    $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
+    $self->logger(Dumper(\%{$masterSettings{itemNames}})) if $is_t_switch_active;
 
     while(${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/){
 
         # log file output
-        $self->logger("Item found: $2",'heading');
+        $self->logger("Item found: $2",'heading') if $is_t_switch_active;
 
         # create a new Item object
         my $itemObject = LatexIndent::Item->new(begin=>$1,
@@ -105,19 +106,15 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # search for ifElseFi blocks
-    $self->logger('looking for IFELSEFI');
     $self->find_ifelsefi;
 
     # search for headings (part, chapter, section, setc)
-    $self->logger('looking for HEADINGS (chapter, section, part, etc)');
     $self->find_heading;
     
     # search for commands with arguments
-    $self->logger('looking for COMMANDS and key = {value}');
     $self->find_commands_or_key_equals_values_braces;
 
     # search for special begin/end
-    $self->logger('looking for SPECIAL begin/end');
     $self->find_special;
 
 }

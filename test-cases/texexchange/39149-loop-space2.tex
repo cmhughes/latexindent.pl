@@ -1,0 +1,231 @@
+\documentclass[
+%  handout, % use this to see the final construction
+  xcolor=svgnames
+]{beamer}
+%\url{http://tex.stackexchange.com/q/142210/86}
+%\url{http://tex.stackexchange.com/q/39149/86}
+\usepackage{tikz}
+
+\usetikzlibrary{decorations.text}
+
+\usepackage[
+%  draft
+]{rulercompass}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{background canvas}{bg=Beige}
+
+\pgfdeclarelayer{picture}
+\pgfdeclarelayer{points}
+\pgfsetlayers{picture,main,points}
+
+\begin{document}
+\begin{frame}[plain]
+\hfill%
+\begin{tikzpicture}[
+    stop jumping,
+    max size={\textwidth}{\textheight},
+    pot/.style={
+      draw=brown,
+      on layer=picture,
+      ultra thick
+    },
+    trunk/.style={
+      draw=brown!50!black,
+      on layer=picture,
+      ultra thick
+    },
+    tree/.style={
+      draw=green!50!black,
+      on layer=picture,
+      ultra thick
+    },
+    bauble/.style={
+      fill=yellow,
+      ultra thick,
+      on layer=picture,
+    },
+    star/.style={
+      draw=yellow,
+      fill=red!50!black,
+      on layer=picture
+    },
+    ruler compass,
+    draft label/.style={
+      reset label anchor,
+      above,
+      font=\tiny
+    },
+    every segment/.style={
+    },
+    every compass/.style={
+      overlay,
+    },
+    every point/.style={
+      node on layer=points,
+      minimum size=1mm,
+    },
+    every arc/.style={
+      on layer=picture,
+      ultra thick
+    },
+    construction in use/.style={
+      draw=gray!50,
+    },
+    construction not in use/.style={
+      draw=gray!50,
+    },
+  ]
+\path (0,0) node[name=0,ruler compass/point=red];
+\path (0,1) node[name=1,ruler compass/point=red];
+\pause
+\ruler<+->[ruler compass/ruler length=40]{0}{1}
+\compass<+->{0}{1}
+\point<.->{r-0-1}{c-0-1}{2}
+\compass<+->{1}{a}
+\point<.->{r-0-1}{c-1-a}{1}
+\compass<+->{a}{1}
+\point<.->{c-a-1}{c-1-a}{1}
+\point<.->{c-a-1}{c-1-a}{2}
+\compass<+->{b}{c}
+\compass<+->{b}{a}
+\point<.->{c-b-a}{r-0-1}{1}
+\compass<+->{e}{b}
+\point<.->{c-e-b}{c-b-a}{1}
+\point<.->{c-e-b}{c-b-a}{2}
+\point<.->{c-e-b}{r-0-1}{1}
+\ruler<+->{c}{g}
+\ruler<.->{d}{f}
+\compass<+->{h}{g}
+\compass<+->{a}{g}
+\ruler<+->{c}{d}
+\point<.->{r-c-d}{c-0-1}{1}
+\point<.->{r-c-d}{c-0-1}{2}
+\compass<+->{b}{1}
+\point<.->{c-b-1}{r-0-1}{1}
+\compass<+->{b}{0}
+\point<.->{c-b-0}{r-0-1}{1}
+\ruler<+->{f}{g}
+\compass<+->{k}{l}
+\point<.->{c-k-l}{r-f-g}{1}
+\point<.->{c-k-l}{r-f-g}{2}
+\ruler<+->{i}{m}
+\ruler<+->{j}{n}
+\point<.->{r-j-n}{c-h-g}{2}
+\point<.->{r-i-m}{c-h-g}{2}
+\point<.->{r-j-n}{c-a-g}{1}
+\point<.->{r-i-m}{c-a-g}{1}
+\compass<+->{q}{o}
+\compass<.->{r}{p}
+\point<.->{c-q-o}{r-j-n}{1}
+\point<.->{c-r-p}{r-i-m}{1}
+\draw<.->[pot] (g) arc[centred arc to={a}{q}]
+ (f) arc[arc flip,centred arc to={a}{r}];
+\draw<.->[trunk] (o) -- (s) (p) -- (t);
+\draw<.->[pot] (d) arc[centred arc to={b}{c}] -- (g) arc[arc flip,centred arc to={h}{f}] -- cycle;
+\point<.->{c-h-g}{r-0-1}{1}
+\compass<+->{u}{s}
+\point<.->{c-u-s}{r-0-1}{1}
+\compass<+->{v}{s}
+\compass<+->{v}{u}
+\point<.->{c-v-u}{r-0-1}{1}
+\compass<+->{u}{w}
+\compass<+->{w}{u}
+\point<.->{c-u-w}{c-w-u}{1}
+\point<.->{c-u-w}{c-w-u}{2}
+\compass<+->{x}{v}
+\compass<+->{y}{v}
+\point<.->{c-x-v}{c-v-s}{2}
+\point<.->{c-y-v}{c-v-s}{2}
+\draw<.->[tree]
+  (v)
+  arc[centred arc to={x}{z}]
+  arc[arc flip,centred arc to={v}{aa}]
+  arc[centred arc to={y}{v}]
+;
+\compass<+->{v}{h}
+\point<.->{c-v-h}{c-y-v}{2}
+\point<.->{c-v-u}{c-y-v}{2}
+\point<.->{c-v-u}{c-x-v}{2}
+\point<.->{c-v-h}{c-x-v}{2}
+\ruler<+->{ab}{ad}
+\compass<+->{ab}{ad}
+\compass<+->{ad}{ab}
+\point<.->{c-ab-ad}{c-ad-ab}{1}
+\compass<+->{af}{ab}
+\point<.->{c-v-h}{r-i-m}{2}
+\compass<+->{h}{ag}
+\point<.->{c-v-h}{c-h-ag}{2}
+\compass<+->{ag}{h}
+\point<.->{c-v-h}{c-ag-h}{1}
+\compass<+->{ai}{ag}
+\point<.->{c-v-h}{c-ai-ag}{1}
+\foreach[remember=\tpt as \ppt (initially i)] \tpt in {j,...,o}
+{
+  \compass <+-> 
+  {a\tpt}{a\ppt}
+  \point<.->{c-v-h}{c-a\tpt-a\ppt}{1}
+}
+\compass<+->{ah}{h}
+\point<.->{c-v-h}{c-ah-h}{2}
+\compass<+->{aq}{ah}
+\point<.->{c-v-h}{c-aq-ah}{1}
+\foreach[remember=\tpt as \ppt (initially q)] \tpt in {r,...,w}
+{
+  \compass<+->{a\tpt}{a\ppt}
+  \point<.->{c-v-h}{c-a\tpt-a\ppt}{1}
+}
+\point<.->{c-v-u}{r-i-m}{2}
+\compass<+->{u}{ay}
+\compass<.->{ay}{u}
+\point<.->{c-v-u}{c-ay-u}{1}
+\compass<+->{az}{ay}
+\point<.->{c-v-u}{c-az-ay}{1}
+\point<.->{c-v-u}{c-u-ay}{2}
+\compass<+->{bb}{u}
+\point<.->{c-v-u}{c-bb-u}{2}
+\compass<+->{bc}{bb}
+\point<.->{c-v-u}{c-bc-bb}{1}
+\compass<+->{bd}{bc}
+\point<.->{c-bd-bc}{c-af-ab}{2}
+\foreach[remember=\tpt as \ppt (initially d)] \tpt in {e,...,n}
+{
+  \compass<+->{b\tpt}{b\ppt}
+  \point<.->{c-af-ab}{c-b\tpt-b\ppt}{2}
+}
+\foreach \bctr/\brad in {
+  h/ag,
+  aj/ai,
+  am/al,
+  ap/ao,
+  ar/aq,
+  au/at,
+  ax/aw,
+  ba/az,
+  u/ay,
+  bd/bc,
+  bg/bf,
+  bj/bi,
+  bm/bl%
+}
+{
+  \path<.->[bauble] (\bctr) to[circle through] (\brad);
+}
+\point<.->{c-ad-ab}{r-0-1}{1}
+\compass<+->{v}{bp}
+\compass<+->{bp}{v}
+\point<.->{c-v-bp}{r-0-1}{2}
+\compass<+->{bq}{v}
+\point<.->{c-v-bp}{c-bp-v}{1}
+\point<.->{c-v-bp}{c-bp-v}{2}
+\point<.->{c-v-bp}{c-bq-v}{1}
+\point<.->{c-v-bp}{c-bq-v}{2}
+\fill<.->[star] (bp) -- (bu) -- (bt) -- cycle (bs) -- (br) -- (bq) -- cycle;
+\compass<+->{b}{y}
+{\huge
+\path<+->[decorate,decoration={text along path,text align=center,text={Have a Constructive Christmas}}] (y) arc[arc flip,centred arc to={b}{x}];
+}
+\end{tikzpicture}%
+\hspace*{\fill}%
+\end{frame}
+\end{document}

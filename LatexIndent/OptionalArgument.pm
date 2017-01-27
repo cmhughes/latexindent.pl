@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_optional_arguments/;
@@ -33,8 +34,8 @@ sub find_optional_arguments{
     # pick out the optional arguments
     while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
         # log file output
-        $self->logger("Optional argument found, body in ${$self}{name}",'heading');
-        $self->logger("(last argument)") if($9 eq '');
+        $self->logger("Optional argument found, body in ${$self}{name}",'heading') if $is_t_switch_active;
+        $self->logger("(last argument)") if($9 eq '' and $is_t_switch_active);
 
         # create a new Optional Argument object
         my $optionalArg = LatexIndent::OptionalArgument->new(begin=>$1,

@@ -17,6 +17,7 @@ latexindent.pl -s 39149-alain.tex -outputfile 39149-alain-default.tex -l indentP
 latexindent.pl -s 39149-alain.tex -outputfile 39149-alain-draw.tex -l indentPreamble.yaml,draw.yaml
 latexindent.pl -s 39149-loop-space.tex -outputfile 39149-loop-space-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-loop-space.tex -outputfile 39149-loop-space-no-add-named.tex -l indentPreamble.yaml,no-add-named-braces.yaml
+latexindent.pl -s 39149-loop-space2.tex -outputfile 39149-loop-space2-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-jake.tex -outputfile 39149-jake-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-morbusg.tex -outputfile 39149-morbusg-default.tex -l indentPreamble.yaml
 # =======  latex3 tag  =========

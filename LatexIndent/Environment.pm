@@ -45,7 +45,7 @@ sub find_environments{
 
     while( ${$self}{body} =~ m/$environmentRegExp\h*($trailingCommentRegExp)?/){
       # log file output
-      $self->logger("environment found: $2",'heading');
+      $self->logger("environment found: $2",'heading') if $is_t_switch_active;
 
       # create a new Environment object
       my $env = LatexIndent::Environment->new(begin=>$1,

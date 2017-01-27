@@ -6,6 +6,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/construct_grouping_braces_brackets_regexp $grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
@@ -50,7 +51,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
-    $self->logger("Custom replacement text routine for ${$self}{name}");
+    $self->logger("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
     ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
     delete ${$self}{beginningbit};
 }

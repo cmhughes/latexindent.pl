@@ -180,7 +180,7 @@ sub get_indentation_settings_for_this_object{
     my $self = shift;
 
     # create a name for previously found settings
-    my $storageName = ${$self}{name};
+    my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName};
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
@@ -381,19 +381,19 @@ sub get_indentation_information{
         # check that the 'thing' is defined
         if(defined ${$masterSettings{$indentationAbout}}{$name}){
             if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
-                $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)");
+                $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)") if $is_t_switch_active ;
                 $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
             } else {
                 $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
-                $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)");
+                $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active ;
             }
             # return, after performing an integrity check
             if(defined $indentationInformation){
                 if($indentationAbout eq "noAdditionalIndent" and $indentationInformation == 1){
-                        $self->logger("Found! Using '' (see $indentationAbout)") ;
+                        $self->logger("Found! Using '' (see $indentationAbout)") if $is_t_switch_active;
                         return q();
                 } elsif($indentationAbout eq "indentRules" and $indentationInformation=~m/^\h*$/){
-                        $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") ;
+                        $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active;
                         return $indentationInformation ;
                 }
             }
@@ -407,20 +407,20 @@ sub get_indentation_information{
         # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
         my $globalInformation = $indentationAbout."Global";
         if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
-            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
             return q();
         } elsif($globalInformation eq "indentRulesGlobal") {
             if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
-                $self->logger("$globalInformation specified for $YamlName (see $globalInformation)");
+                $self->logger("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
                 return ${$masterSettings{$globalInformation}}{$YamlName};
             } else {
-                $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
+                $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one") if $is_t_switch_active;
           }
         }
     }
 
     # return defaultIndent, by default
-    $self->logger("Using defaultIndent for $name");
+    $self->logger("Using defaultIndent for $name") if $is_t_switch_active;
     return $masterSettings{defaultIndent};
 }
 

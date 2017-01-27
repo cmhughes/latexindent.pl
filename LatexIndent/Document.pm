@@ -180,7 +180,7 @@ sub find_objects{
 
 sub tasks_particular_to_each_object{
     my $self = shift;
-    $self->logger("There are no tasks particular to ${$self}{name}");
+    $self->logger("There are no tasks particular to ${$self}{name}") if $is_t_switch_active;
 }
 
 sub get_settings_and_store_new_object{
@@ -307,7 +307,7 @@ sub wrap_up_tasks{
     $self->adjust_line_breaks_end_parent;
 
     $self->logger(Dumper(\%{$child})) if($is_t_switch_active);
-    $self->logger("replaced with ID: ${$child}{id}");
+    $self->logger("replaced with ID: ${$child}{id}") if $is_t_switch_active;
 
 }
 

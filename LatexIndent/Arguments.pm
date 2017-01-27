@@ -25,14 +25,14 @@ sub construct_arguments_regexp{
 
 sub indent{
     my $self = shift;
-    $self->logger("Arguments object doesn't receive any direct indentation, but its children will...",'heading');
+    $self->logger("Arguments object doesn't receive any direct indentation, but its children will...",'heading') if $is_t_switch_active;
     return;
 }
 
 sub find_opt_mand_arguments{
     my $self = shift;
 
-    $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading');
+    $self->logger("Searching ${$self}{name} for optional and mandatory arguments",'heading') if $is_t_switch_active;
 
     # blank line token
     my $blankLineToken = $tokens{blanklines};
@@ -65,14 +65,14 @@ sub find_opt_mand_arguments{
         ${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s;
 
         if($1 eq "\["){
-            $self->logger("Searching for optional arguments, and then mandatory (optional found first)");
+            $self->logger("Searching for optional arguments, and then mandatory (optional found first)") if $is_t_switch_active;
             # look for optional arguments
             $arguments->find_optional_arguments;
 
             # look for mandatory arguments
             $arguments->find_mandatory_arguments;
         } else {
-            $self->logger("Searching for mandatory arguments, and then optional (mandatory found first)");
+            $self->logger("Searching for mandatory arguments, and then optional (mandatory found first)") if $is_t_switch_active;
             # look for mandatory arguments
             $arguments->find_mandatory_arguments;
 
@@ -89,8 +89,8 @@ sub find_opt_mand_arguments{
                     and ${$self}{body} !~ m/^$blankLineToken/){
                 my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                 my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
-                $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)");
-                $self->logger("Removing line breaks at the end of ${$self}{begin}");
+                $self->logger("$BodyStringLogFile = 1 (in ${$self}{name}), but first argument should not begin on its own line (see $BeginStringLogFile)") if $is_t_switch_active;
+                $self->logger("Removing line breaks at the end of ${$self}{begin}") if $is_t_switch_active;
                 ${$self}{begin} =~ s/\R*$//s;
                 ${$self}{linebreaksAtEnd}{begin} = 0;
             }
@@ -99,7 +99,7 @@ sub find_opt_mand_arguments{
         # situation: preserveBlankLines is active, so the body may well begin with a blank line token
         #            which means that ${$self}{linebreaksAtEnd}{begin} *should be* 1
         if(${${${$arguments}{children}}[0]}{body} =~ m/^($blankLineToken)/){
-            $self->logger("Updating {linebreaksAtEnd}{begin} for ${$self}{name} as $blankLineToken or blank line found at beginning of argument child");
+            $self->logger("Updating {linebreaksAtEnd}{begin} for ${$self}{name} as $blankLineToken or blank line found at beginning of argument child") if $is_t_switch_active;
             ${$self}{linebreaksAtEnd}{begin} = 1 
           }
 
@@ -118,16 +118,16 @@ sub find_opt_mand_arguments{
                 my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
                 my $BeginStringLogFile = ${${${$arguments}{children}}[0]}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
                 my $BodyValue = (defined ${$self}{BodyStartsOnOwnLine}) ? ${$self}{BodyStartsOnOwnLine} : "0";
-                $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)");
+                $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)") if $is_t_switch_active;
 
                 # possibly add a comment at the end of the begin statement
                 my $trailingCommentToken = q();
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==1){
-                    $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})");
+                    $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})") if $is_t_switch_active;
                 } elsif(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==2){
-                    $self->logger("Adding a % at the end of begin, ${$self}{begin} followed by a linebreak ($BeginStringLogFile == 2)");
+                    $self->logger("Adding a % at the end of begin, ${$self}{begin} followed by a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
                     $trailingCommentToken = "%".$self->add_comment_symbol;
-                    $self->logger("Removing trailing space on ${$self}{begin}");
+                    $self->logger("Removing trailing space on ${$self}{begin}") if $is_t_switch_active;
                     ${$self}{begin} =~ s/\h*$//s;
                 }
 
@@ -142,7 +142,7 @@ sub find_opt_mand_arguments{
 
         # children need to receive ancestor information, see test-cases/commands/commands-triple-nested.tex
         foreach (@{${$arguments}{children}}){
-            $self->logger("Updating argument children of ${$self}{name} to include ${$self}{id} in ancestors");
+            $self->logger("Updating argument children of ${$self}{name} to include ${$self}{id} in ancestors") if $is_t_switch_active;
             push(@{${$_}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>"natural"});
         }
 
@@ -150,7 +150,7 @@ sub find_opt_mand_arguments{
         # did not add one at the end, and if BodyStartsOnOwnLine >= 1
         if( (defined ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak} and ${${${$arguments}{children}}[-1]}{EndFinishesWithLineBreak}<1)
             and (defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}>=1) ){
-            $self->logger("Updating replacementtext to include a linebreak for arguments in ${$self}{name}");
+            $self->logger("Updating replacementtext to include a linebreak for arguments in ${$self}{name}") if $is_t_switch_active;
             ${$arguments}{replacementText} .= "\n" if(${$arguments}{linebreaksAtEnd}{end});
         }
 
@@ -164,9 +164,9 @@ sub find_opt_mand_arguments{
         delete ${${${$self}{children}}[-1]}{regexp};
 
         $self->logger(Dumper(\%{$arguments}),'ttrace') if($is_tt_switch_active);
-        $self->logger("replaced with ID: ${$arguments}{id}");
+        $self->logger("replaced with ID: ${$arguments}{id}") if $is_t_switch_active;
     } else {
-        $self->logger("... no arguments found");
+        $self->logger("... no arguments found") if $is_t_switch_active;
     }
 
 }
@@ -201,11 +201,14 @@ sub get_arguments_regexp{
     # for example #1 #2, etc
     my $numberedArgRegExp = $self->get_numbered_arg_regexp;
 
+    # beamer special
+    my $beamerRegExp = qr/\<.*?\>/;
+
     # arguments regexp
     return qr/
                           (                          # capture into $1
                              (?:                  
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)* 
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)* 
                                 (?:
                                      (?:
                                          \h*         # 0 or more spaces
@@ -238,7 +241,7 @@ sub get_arguments_regexp{
                              # NOT followed by
                              (?!
                                (?:
-                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
                                    (?:
                                      (?:(?<!\\)\[)
                                      |

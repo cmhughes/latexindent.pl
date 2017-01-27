@@ -36,7 +36,7 @@ sub indent{
 
 sub wrap_up_statement{
     my $self = shift;
-    $self->logger("Finished indenting ${$self}{name}",'heading');
+    $self->logger("Finished indenting ${$self}{name}",'heading') if $is_t_switch_active;
     return $self;
   }
 
@@ -214,7 +214,7 @@ sub indent_children_recursively{
     my $self = shift;
 
     unless(defined ${$self}{children}) {
-        $self->logger("No child objects (${$self}{name})");
+        $self->logger("No child objects (${$self}{name})") if $is_t_switch_active;
         return;
     }
 
@@ -224,12 +224,12 @@ sub indent_children_recursively{
     # send the children through this indentation routine recursively
     if(defined ${$self}{children}){
         foreach my $child (@{${$self}{children}}){
-            $self->logger("Indenting child objects on ${$child}{name}");
+            $self->logger("Indenting child objects on ${$child}{name}") if $is_t_switch_active;
             $child->indent_children_recursively;
         }
     } 
 
-    $self->logger("Replacing ids with begin, body, and end statements:",'heading');
+    $self->logger("Replacing ids with begin, body, and end statements:",'heading') if $is_t_switch_active;
 
     # loop through document children hash
     while( scalar (@{${$self}{children}}) > 0 ){
@@ -255,7 +255,7 @@ sub indent_children_recursively{
 
                 # log file info
                 $self->logger("${$child}{id} found!") if($is_t_switch_active);
-                $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading');
+                $self->logger("Indenting  ${$child}{name} (id: ${$child}{id})",'heading') if $is_t_switch_active;
                 $self->logger("looking up indentation scheme for ${$child}{name}") if($is_t_switch_active);
 
                 # line break checks *after* <end statement>
@@ -264,7 +264,7 @@ sub indent_children_recursively{
                     and $IDFollowedImmediatelyByLineBreak) {
                     # remove line break *after* <end statement>, if appropriate
                     my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)");
+                    $self->logger("Removing linebreak after ${$child}{end} (see $EndStringLogFile)") if $is_t_switch_active;
                     ${$self}{body} =~ s/${$child}{id}(\h*)?(\R|\h)*/${$child}{id}$1/s;
                     ${$child}{linebreaksAtEnd}{end} = 0;
                 }
@@ -285,12 +285,12 @@ sub indent_children_recursively{
                         # by default, assume that no trailing comment token is needed
                         my $trailingCommentToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
-                            $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)");
+                            $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
-                            $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)");
+                            $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             $trailingCommentToken = "%".$self->add_comment_symbol;
                         } else {
-                            $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)");
+                            $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
                         }
 
                         # the trailing comment/linebreak magic
@@ -303,10 +303,10 @@ sub indent_children_recursively{
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
-                            $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)");
+                            $self->logger("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)") if $is_t_switch_active;
                             ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{id}/$1${$child}{id}/s;
                         } else {
-                            $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)");
+                            $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
                         }
                     }
                 }
@@ -338,8 +338,8 @@ sub indent_children_recursively{
     }
 
     # logfile info
-    $self->logger("${$self}{name} has this many children:",'heading');
-    $self->logger(scalar @{${$self}{children}});
+    $self->logger("${$self}{name} has this many children:",'heading') if $is_t_switch_active;
+    $self->logger(scalar @{${$self}{children}}) if $is_t_switch_active;
     $self->logger("Post-processed body (${$self}{name}):") if($is_t_switch_active);
     $self->logger(${$self}{body}) if($is_t_switch_active);
 
