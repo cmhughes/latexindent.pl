@@ -30,6 +30,7 @@ our %tokens = (
                 filecontents=>$beginningToken."FILECONTENTS",
                 preamble=>$beginningToken."preamble",
                 beginOfToken=>$beginningToken,
+                doubleBackSlash=>$beginningToken."DOUBLEBACKSLASH",
                 endOfToken=>"-END",
               );
 

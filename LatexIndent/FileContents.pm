@@ -177,6 +177,7 @@ sub find_file_contents_environments_and_preamble{
     }
 
     if($needToStorePreamble){
+        $preamble->dodge_double_backslash;
         $preamble->remove_leading_space;
         $preamble->find_commands_or_key_equals_values_braces if($masterSettings{preambleCommandsBeforeEnvironments});
         $preamble->tasks_particular_to_each_object;

@@ -74,8 +74,7 @@ latexindent.pl -s tikz2.tex -o tikz2-default.tex
 # hea files
 latexindent.pl -s heabib.bib -o heabib-default.bib
 latexindent.pl -s hea-senior-fellowship-application.tex -o hea-senior-fellowship-application-default.tex -l=../filecontents/indentPreambleYes.yaml
-#### NEED just key=value option (no braces) #####
-#### NEED just key=value option (no braces) #####
-#### NEED just key=value option (no braces) #####
+# double back slash dodge, motivated by texexchange/29293-christian-feuersanger.tex
+latexindent.pl -s dodge-double-back-slash.tex -o dodge-double-back-slash-default.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise

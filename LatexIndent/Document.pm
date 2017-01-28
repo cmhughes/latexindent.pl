@@ -17,6 +17,7 @@ use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation 
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
+use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
@@ -61,14 +62,15 @@ sub operate_on_file{
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
+    $self->dodge_double_backslash;
     $self->remove_leading_space;
     # find alignment environments
     $self->process_body_of_text;
     # process alignment environments
-    # PREVIOUSLY FOUND SETTINGS: need another check, e.g if environment shares same name as (e.g) command
     $self->remove_trailing_whitespace(when=>"after");
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;
+    $self->un_dodge_double_backslash;
     $self->put_verbatim_back_in;
     $self->put_trailing_comments_back_in;
     $self->put_verbatim_commands_back_in;
