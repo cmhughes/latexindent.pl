@@ -1,0 +1,17 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[3d box,xmin=-5,xmax=5,ymin=-5,ymax=5,width=9cm,height=9.25cm,grid=both, minor z tick num=1]
+\addplot3 graphics[points={%
+(-4.4449,4.6547,0) => (110.814,167.827)
+(-4.633,-4.5186,0) => (264.187,74.679)
+(4.5829,-4.5216,0) => (470.558,145.343)
+(-0.45821,-0.43355,1157) => (287.474,379.016)
+}]
+{3dcolumnchart.png};
+\node at (axis cs:-1.5,0.5,490) [inner sep=0pt, pin={[pin edge={thick,black},align=left]145:Interesting\\Data Point}] {};
+\end{axis}
+\end{tikzpicture}
+\end{document}

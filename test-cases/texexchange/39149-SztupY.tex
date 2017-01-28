@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{calc, lindenmayersystems,shapes,decorations,decorations.shapes}
+\begin{document}
+
+\def\pointlistleft{}
+\def\pointlistright{}
+\pgfmathsetseed{\year * 6}
+\makeatletter
+\pgfdeclarelindenmayersystem{Christmas tree}{
+    \symbol{C}{\pgfgettransform{\t} \expandafter\g@addto@macro\expandafter\pointlistleft\expandafter{\expandafter{\t}}}
+    \symbol{c}{\pgfgettransform{\t} \expandafter\g@addto@macro\expandafter\pointlistright\expandafter{\expandafter{\t}}}
+    \rule{S -> [+++G][---g]TS}
+    \rule{G -> +H[-G]CL}
+    \rule{H -> -G[+H]CL}
+    \rule{g -> +h[-g]cL}
+    \rule{h -> -g[+h]cL}
+    \rule{T -> TL}
+    \rule{L -> [-FFF][+FFF]F}
+}
+\makeatother
+
+\begin{tikzpicture}[rotate=90]
+\draw [color=brown!50!black,line width=2.5pt] (0,0) -- (170pt,0);
+\draw [color=green!50!black,l-system={Christmas tree,step=4pt,angle=16,axiom=LLLLLLSLFFF,order=10,randomize angle percent=20}] lindenmayer system -- cycle;
+
+\pgfmathdeclarerandomlist{pointsleft}{\pointlistleft}
+\pgfmathdeclarerandomlist{pointsright}{\pointlistright}
+\pgfmathdeclarerandomlist{colors}{{red}{blue}{yellow}}
+
+\foreach \i in {0,1,...,5}
+{
+    \pgfmathrandomitem{\c}{pointsleft}
+    \pgfsettransform{\c}
+    \pgfgettransformentries{\a}{\b}{\c}{\d}{\xx}{\yy}
+    \pgfmathrandomitem{\c}{pointsright}
+    \pgfsettransform{\c}
+    \pgfgettransformentries{\a}{\b}{\c}{\d}{\XX}{\YY}
+    \pgftransformreset
+
+    \pgfmathsetmacro\calcy{min(\yy,\YY)-max((abs(\yy-\YY))/3,25pt)}
+
+    \draw[draw=orange!50!black, fill=orange!50, decorate, decoration={shape backgrounds, shape=star, shape sep=3pt, shape size=4pt}, star points=5] (\xx,\yy) .. controls (\xx,\calcy pt) and (\XX,\calcy pt) .. (\XX,\YY);
+}
+
+\foreach \i in {0,1,...,15}
+{
+    \pgfmathrandomitem{\c}{pointsleft}
+    \pgfsettransform{\c}
+    \pgftransformresetnontranslations
+    \draw[color=black] (0,0) -- (0,-4pt);
+    \pgfmathrandomitem{\c}{colors}
+    \shadedraw[ball color=\c] (0,-8pt) circle [radius=4pt];
+}
+
+\foreach \i in {0,1,...,15}
+{
+    \pgfmathrandomitem{\c}{pointsright}
+    \pgfsettransform{\c}
+    \pgftransformresetnontranslations
+    \draw[color=black] (0,0) -- (0,-4pt);
+    \pgfmathrandomitem{\c}{colors}
+    \shadedraw[ball color=\c] (0,-8pt) circle [radius=4pt];
+}
+
+\end{tikzpicture}
+\end{document}
