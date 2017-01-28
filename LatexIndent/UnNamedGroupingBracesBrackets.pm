@@ -68,8 +68,11 @@ sub get_replacement_text{
 
     # the un-named object is a little special, as it doesn't have a name; as such, if there are blank lines before
     # the braces/brackets, we have to insert them
-    #${$self}{replacementText} = ${$self}{beginningbit}.(${${$self}{linebreaksAtEnd}}{begin}?"\n":q()).${$self}{id};
-    ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
+    #
+    # also, the argument reg-exp can pick up a leading comment (with line break), which needs to be put
+    # into the replacement text (see documentation/demonstrations/pstricks.tex and test-cases/unnamed-braces/unnamed.tex for example)
+    ${$self}{body} =~ s/(.*?)(\{|\[)/$2/s;
+    ${$self}{replacementText} = ${$self}{beginningbit}.($1 ne ''?$1:q()).${$self}{id};
 
     # but now turn off the switch for linebreaksAtEnd{begin}, otherwise the first brace gets too much indentation
     # (see, for example, test-cases/namedGroupingBracesBrackets/special-characters-minimal.tex)

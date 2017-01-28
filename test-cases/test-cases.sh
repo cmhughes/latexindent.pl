@@ -94,6 +94,9 @@ cd ../cruftdirectory/
 cd ../namedGroupingBracesBrackets
 [[ $silentMode == 1 ]] && echo "./namedGroupingBracesBrackets/named-grouping-test-cases.sh"
 ./named-grouping-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# unnamed grouping braces
+cd ../unnamed-braces && echo "./unnamed-braces/un-named-grouping-braces.sh"
+./un-named-grouping-braces.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # specials
 cd ../specials
 [[ $silentMode == 1 ]] && echo "./specials/specials-test-cases.sh"
