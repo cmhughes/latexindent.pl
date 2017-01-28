@@ -30,5 +30,9 @@ latexindent.pl -s special-characters-minimal-blank-lines.tex -o special-characte
 # m switch active
 latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch.tex -l=noCondenseBlankLines.yaml -g=two.log
 latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch-condense.tex
+# legacy test case
+latexindent.pl -s tikz3.tex -o tikz3-default.tex
+latexindent.pl -s tikz4.tex -o tikz4-default.tex -l ../texexchange/indentPreamble.yaml
+latexindent.pl -s tikz4.tex -o tikz4-no-add-global.tex -l ../texexchange/indentPreamble.yaml,noAddGlobNamed.yaml
 git status
 [[ $noisyMode == 1 ]] && makenoise

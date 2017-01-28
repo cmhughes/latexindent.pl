@@ -183,7 +183,7 @@ sub create_unique_id{
 sub get_numbered_arg_regexp{
 
     # for example #1 #2, etc
-    my $numberedArgRegExp = qr/(?:#\d\h*)+/;
+    my $numberedArgRegExp = qr/(?:#\d\h*;?)+/;
     return $numberedArgRegExp;
 }
 
