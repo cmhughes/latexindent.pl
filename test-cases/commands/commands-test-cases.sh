@@ -99,5 +99,7 @@ latexindent.pl -s -w testcls.cls
 latexindent.pl -s -w ifelsefiONE.tex
 # legacy test case, lots of commands, comments, line breaks
 latexindent.pl -s  bigTest.tex -o  bigTest-default.tex
+# from the documentation
+latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

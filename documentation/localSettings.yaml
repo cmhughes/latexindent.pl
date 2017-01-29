@@ -25,3 +25,9 @@ indentAfterHeadings:
     subsubsection:
        indentAfterThisHeading: 1
        level: 2
+indentRules:
+   titleformat:
+       body: "  " 
+   titlecontents:
+       body: "  " 
+preambleCommandsBeforeEnvironments: 1

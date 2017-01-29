@@ -23,7 +23,7 @@ sub construct_command_regexp{
     $commandRegExp = qr/
               (\\|@)   
               (
-               [a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
+               [+a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?

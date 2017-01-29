@@ -1,0 +1,25 @@
+\newtcolorbox{stars}{%
+enhanced jigsaw,
+breakable, % allow page breaks
+left=0cm,
+top=0cm,
+before skip=0.2cm,
+boxsep=0cm,
+frame style={draw=none,fill=none}, % hide the default frame
+colback=white,
+overlay={
+\draw[inner sep=0,minimum size=rnd*15pt+2pt]
+decorate[decoration={stars,segment length=2cm}] {
+decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.4cm]frame.north west)
+}};
+\draw[inner sep=0,minimum size=rnd*15pt+2pt]
+decorate[decoration={stars,segment length=2cm}] {
+decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+([xshift=.75cm,yshift=0.1cm]frame.south east) --  ([xshift=.75cm,yshift=0.6cm]frame.north east)
+}};
+\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
+},
+% paragraph skips obeyed within tcolorbox
+parbox=false,
+}

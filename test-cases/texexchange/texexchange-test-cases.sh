@@ -34,6 +34,12 @@ latexindent.pl -s 52987-jake.tex -outputfile 52987-jake-default.tex -l indentPre
 latexindent.pl -s 52987-anton.tex -outputfile 52987-anton-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 46422-michi.tex -outputfile 46422-michi-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 29293-christian-feuersanger.tex -outputfile 29293-christian-feuersanger-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 29359-jake.tex -outputfile 29359-jake-default.tex -l indentPreamble.yaml
+latexindent.pl -s 29359-marco-daniel.tex -outputfile 29359-marco-daniel-default.tex -l indentPreamble.yaml
+latexindent.pl -s 29359-christian-feuersanger.tex -outputfile 29359-christian-feuersanger-default.tex -l indentPreamble.yaml
+latexindent.pl -s 31276-peter-grill.tex -outputfile 31276-peter-grill-default.tex -l indentPreamble.yaml
+latexindent.pl -s 11368-jake.tex -outputfile 11368-jake-default.tex -l indentPreamble.yaml
+latexindent.pl -s 127375-jake.tex -outputfile 127375-jake-default.tex -l indentPreamble.yaml  -tt -g one.log
 
 # =======  latex3 tag  =========
 # =======  latex3 tag  =========

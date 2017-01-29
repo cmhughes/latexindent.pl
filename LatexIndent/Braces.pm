@@ -119,7 +119,7 @@ sub find_commands_or_key_equals_values_braces{
         $self->get_settings_and_store_new_object($grouping_braces);
     } elsif (${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/) {
         # log file output
-        $self->logger("UNnamed grouping braces found (no name, by definition!)",'heading') if $is_t_switch_active ;
+        $self->logger("UNnamed grouping braces found: (no name, by definition!)",'heading') if $is_t_switch_active ;
 
         # create a new Un-named-grouping-braces-brackets object
         my $un_named_grouping_braces = LatexIndent::UnNamedGroupingBracesBrackets->new(
