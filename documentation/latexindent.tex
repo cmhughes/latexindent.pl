@@ -28,6 +28,7 @@
 \usepackage{changepage}                              % adjust width of page
 \usepackage{fancyhdr}                                % headers & footers
 \usepackage{wrapfig}
+\usepackage{fontawesome}
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
 \usepackage{tcolorbox}                                % framed environments
@@ -245,6 +246,7 @@ decorate[decoration={stars,segment length=2cm}] {
 decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
 ([xshift=.75cm,yshift=0.1cm]frame.south east) --  ([xshift=.75cm,yshift=0.6cm]frame.north east)
 }};
+\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
 },
 % paragraph skips obeyed within tcolorbox
 parbox=false,
@@ -408,22 +410,22 @@ parbox=false,
 \lstlistoflistings
 }
 
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\stopcontents[noAdditionalIndent]
-\input{sec-the-m-switch}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-indent-config-and-settings.tex}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\stopcontents[noAdditionalIndent]
+%\input{sec-the-m-switch}
 \input{references}
-\input{appendices}
+%\input{appendices}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks
