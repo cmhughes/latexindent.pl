@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{pgfplots}
+\usetikzlibrary{decorations.markings}
+\makeatletter
+\tikzset{
+    nomorepostaction/.code={\let\tikz@postactions\pgfutil@empty},
+    plotlabel/.style 2 args={
+        every path/.append style={
+            postaction={
+                nomorepostaction,
+                decorate,
+                decoration={
+                    markings,
+                    mark=at position #1 with {
+                        \pgftransformresetnontranslations
+           \pgfsetlinewidth{0.4pt}
+           \pgfsetstrokecolor{black}
+           \pgfpathmoveto{\pgfpointorigin}
+           \pgfpathlineto{\pgfpoint{-0.3cm}{0.6cm}}
+           \pgfusepath{stroke}
+           \pgftransformshift{\pgfpoint{-0.3cm}{0.6cm}}
+                        \pgfnode{rectangle}{east}{#2}{}{}
+                    }
+                }
+            }
+        }
+    }
+}
+\makeatother
+
+\begin{document}
+\begin{tikzpicture}
+
+ \begin{axis}[
+        axis y line=center,
+        axis x line=middle, 
+        axis on top=true,
+        xmin=-7,
+        xmax=7,
+        ymin=-4,
+        ymax=4,
+        clip=false
+] 
+
+\addplot[
+    mark=none,
+    domain=-4:6,
+    samples=80,
+    red,
+    thick,
+    plotlabel={0.1}{\color{purple}$f(x)=-2$},
+    plotlabel={0.6}{\color{blue}$f(x)=x$},
+    plotlabel={0.9}{\color{green!70!black}$f(x)=3$}
+] {(x<-2)*-2 + (!(x<-2) && (x<3))*x + (!(x<3)) * 3};%
+\end{axis}
+\end{tikzpicture}
+\end{document}

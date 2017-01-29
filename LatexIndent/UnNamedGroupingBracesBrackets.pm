@@ -40,7 +40,7 @@ sub construct_unnamed_grouping_braces_brackets_regexp{
                   # END of NOT
                   (
                      (?:
-                        \{|\[|,|&|\)|\( # starting with { OR [ OR , OR & OR ) or (
+                        \{|\[|,|&|\)|\(|\$ # starting with { OR [ OR , OR & OR ) OR ( OR $
                      )
                      \h*
                   )                     # $1 into beginning bit

@@ -40,7 +40,11 @@ latexindent.pl -s 29359-christian-feuersanger.tex -outputfile 29359-christian-fe
 latexindent.pl -s 31276-peter-grill.tex -outputfile 31276-peter-grill-default.tex -l indentPreamble.yaml
 latexindent.pl -s 11368-jake.tex -outputfile 11368-jake-default.tex -l indentPreamble.yaml
 latexindent.pl -s 127375-jake.tex -outputfile 127375-jake-default.tex -l indentPreamble.yaml
-latexindent.pl -s 127375-thomas.tex -outputfile 127375-thomas-default.tex -l indentPreamble.yaml  -tt -g one.log
+latexindent.pl -s 127375-thomas.tex -outputfile 127375-thomas-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 12207-christian-feuersanger.tex -o 12207-christian-feuersanger-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 12207-christian-feuersanger.tex -o 12207-christian-feuersanger-pin-mlb1.tex -m -l mlb-pin.yaml,indentPreamble.yaml  
+latexindent.pl -s 12207-jake.tex -o 12207-jake-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 155194-andrew-swan.tex -o 155194-andrew-swan-default.tex -l indentPreamble.yaml  -tt -g one.log
 
 # =======  latex3 tag  =========
 # =======  latex3 tag  =========

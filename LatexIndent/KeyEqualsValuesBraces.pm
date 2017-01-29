@@ -44,6 +44,7 @@ sub construct_key_equals_values_regexp{
                   (
                     (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*
                     =\h*
+                    (?:\d*\:?)
                   )                                                     # $4 = symbol
                   (\R*)?                                                # $5 linebreak after =
                   ($optAndMandRegExp)                                   # $6 opt|mand arguments
