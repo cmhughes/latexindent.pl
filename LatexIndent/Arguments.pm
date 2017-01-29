@@ -208,7 +208,7 @@ sub get_arguments_regexp{
     return qr/
                           (                          # capture into $1
                              (?:                  
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)* 
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^)* 
                                 (?:
                                      (?:
                                          \h*         # 0 or more spaces

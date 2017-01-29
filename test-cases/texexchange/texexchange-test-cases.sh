@@ -10,7 +10,7 @@ loopmax=0
 latexindent.pl -s 74878.tex -o 74878-default.tex
 latexindent.pl -s -l indentPreamble.yaml 350144.tex -o 350144-default.tex
 latexindent.pl -s -l indentPreamble.yaml,nextGroupPlot.yaml 350144.tex -o 350144-default-ngp.tex 
-latexindent.pl -s -l indentPreamble.yaml,nextGroupPlot-headings.yaml 350144.tex -o 350144-default-ngp-headings.tex -g=ngp.log -tt
+latexindent.pl -s -l indentPreamble.yaml,nextGroupPlot-headings.yaml 350144.tex -o 350144-default-ngp-headings.tex 
 latexindent.pl -s 5461.tex -o 5461-default.tex
 # christmas tree
 latexindent.pl -s 39149-alain.tex -outputfile 39149-alain-default.tex -l indentPreamble.yaml
@@ -39,7 +39,8 @@ latexindent.pl -s 29359-marco-daniel.tex -outputfile 29359-marco-daniel-default.
 latexindent.pl -s 29359-christian-feuersanger.tex -outputfile 29359-christian-feuersanger-default.tex -l indentPreamble.yaml
 latexindent.pl -s 31276-peter-grill.tex -outputfile 31276-peter-grill-default.tex -l indentPreamble.yaml
 latexindent.pl -s 11368-jake.tex -outputfile 11368-jake-default.tex -l indentPreamble.yaml
-latexindent.pl -s 127375-jake.tex -outputfile 127375-jake-default.tex -l indentPreamble.yaml  -tt -g one.log
+latexindent.pl -s 127375-jake.tex -outputfile 127375-jake-default.tex -l indentPreamble.yaml
+latexindent.pl -s 127375-thomas.tex -outputfile 127375-thomas-default.tex -l indentPreamble.yaml  -tt -g one.log
 
 # =======  latex3 tag  =========
 # =======  latex3 tag  =========

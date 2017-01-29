@@ -144,6 +144,7 @@ sub find_file_contents_environments_and_preamble{
         } else {
             # indentPreamble set to 0
             $self->logger("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (see indentPreamble)");
+            $preamble->unprotect_blank_lines;
             ${$self}{verbatim}{${$preamble}{id}} = $preamble;
         }
     }

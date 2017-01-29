@@ -512,19 +512,19 @@
 
 	\cs_new_protected:Npn \strip_marks:n #1
 	{
-	\tl_set:Nn \l_solution_text_tl { #1 }
-	\l_solution_text_tl % Send token list to normal output unmodified 
-	%\tl_show_analysis:n { \l_solution_text_tl } % for debugging
-	% Remove all instances of \marks{} commands
-	\regex_replace_all:nnN { \c{marks}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{marks} \w } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{solnmarksplus}\cB\{ [^\}]* \cE\} \cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{solnmarksplus} ^[\}|\{] } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{mk}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{mk} \w } {  } \l_solution_text_tl
-	\regex_replace_all:nnN { \c{remark}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
-	\iow_now:Nx \g_solution_stream {Solution~to~Question~\thequestion}
-	\iow_now:NV \g_solution_stream \l_solution_text_tl % Send modified token list to stream.
+		\tl_set:Nn \l_solution_text_tl { #1 }
+		\l_solution_text_tl % Send token list to normal output unmodified 
+		%\tl_show_analysis:n { \l_solution_text_tl } % for debugging
+		% Remove all instances of \marks{} commands
+		\regex_replace_all:nnN { \c{marks}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{marks} \w } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{solnmarksplus}\cB\{ [^\}]* \cE\} \cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{solnmarksplus} ^[\}|\{] } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{mk}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{mk} \w } {  } \l_solution_text_tl
+		\regex_replace_all:nnN { \c{remark}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
+		\iow_now:Nx \g_solution_stream {Solution~to~Question~\thequestion}
+		\iow_now:NV \g_solution_stream \l_solution_text_tl % Send modified token list to stream.
 	}
 	\cs_generate_variant:Nn \strip_marks:n { V }
 
