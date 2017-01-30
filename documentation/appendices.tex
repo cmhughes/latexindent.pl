@@ -1,7 +1,7 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \appendix
 	\section{Required \texttt{Perl} modules}\label{sec:requiredmodules}
-	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules--if you can run the
+	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules -- if you can run the
 	 minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may
 	 need to install the missing modules.
 
@@ -55,13 +55,13 @@ latexindent.exe -t myfile.tex
  \end{dosprompt}
 
 \section{Updating the \texttt{path} variable}\label{sec:updating-path}
-	 \texttt{latexindent.pl} ships with a few scripts that can update the \texttt{path} variables
+\texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables
 	 \footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
 	 on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.
 	\subsection{Add to path for Linux}
 		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
 		\begin{enumerate}
-			\item download  \texttt{latexindent.pl}, \texttt{defaultSettings.yaml} and its associated modules,
+			\item download  \texttt{latexindent.pl} and its associated modules, \texttt{defaultSettings.yaml},
 			      to your chosen directory from \cite{latexindent-home} ;
 			\item within your directory, create a directory called \texttt{path-helper-files} and
 			      download \texttt{CMakeLists.txt} and \lstinline!cmake_uninstall.cmake.in!

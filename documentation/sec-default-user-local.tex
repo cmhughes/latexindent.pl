@@ -1,11 +1,10 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\section{default}\label{sec:defuseloc}
+\section{defaultSettings.yaml}\label{sec:defuseloc}
  \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}
  (rhymes with camel). The idea is to separate the behaviour of the script
  from the internal working -- this is very similar to the way that we separate content
  from form when writing our documents in \LaTeX.
 
-\subsection{defaultSettings.yaml}
 	If you look in \texttt{defaultSettings.yaml} you'll find the switches
 	that govern the behaviour of \texttt{latexindent.pl}. If you're not sure where
 	\texttt{defaultSettings.yaml} resides on your computer, don't worry as \texttt{indent.log}
@@ -15,11 +14,6 @@
 	value is given in each case; whenever you see \emph{integer} in \emph{this}
 	section, assume that it must be greater than or equal to \texttt{0} unless
 	otherwise stated.
-
-	You can certainly feel free to edit \texttt{defaultSettings.yaml}, but
-	this is not ideal as it may be overwritten when you update your \TeX{} distribution --
-	all of your hard work tweaking the script would be undone! Don't worry,
-	there's a solution, feel free to peek ahead to \cref{sec:indentconfig} if you like.
 
 \yamltitle{fileExtensionPreference}*{fields}
 	\texttt{latexindent.pl} can be called to
@@ -39,7 +33,8 @@ latexindent.pl myfile
 
 	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in \cref{lst:fileExtensionPreference}
 	means that the script will first look for \texttt{myfile.tex}, then \texttt{myfile.sty}, \texttt{myfile.cls},
-	and finally \texttt{myfile.bib} in order.
+    and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings with line numbers represent code
+    taken directly from \texttt{defaultSettings.yaml}.}.
 
 \yamltitle{backupExtension}*{extension name}
 
@@ -227,17 +222,17 @@ lookForAlignDelims:
 	instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \cref{lst:noIndentBlock}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before}{lst:tabularbefore:basic}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-default.tex}{\texttt{tabular} after (basic)}{lst:tabularafter:basic}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
 	\end{minipage}%
 
 	If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
 	advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
 
-	\cmhlistingsfromfile[firstnumber=121,linerange={121-128},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
 	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive up to 3 fields:
@@ -250,45 +245,53 @@ lookForAlignDelims:
 		      to be set to 0 (default: 0).
 	\end{itemize}
 
-	Assuming that you have the settings in \cref{lst:aligndelims:advanced} saved in \texttt{mysettings.yaml}, and the code
-	from \cref{lst:tabularbefore:basic} in \texttt{myfile.tex} and you run
+	Assuming that you have the settings in \cref{lst:aligndelims:advanced} saved in \texttt{tabular.yaml}, and the code
+	from \cref{lst:tabularbefore:basic} in \texttt{tabular1.tex} and you run
 	\begin{commandshell}
-latexindent.pl -l mysettings.yaml myfile.tex 
+latexindent.pl -l tabular.yaml tabular1.tex 
 \end{commandshell}
 	then you should receive the before-and-after results shown in
 	\cref{lst:tabularbefore:advanced,lst:tabularafter:advanced}; note that the ampersands have been aligned, but
 	the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before }{lst:tabularbefore:advanced}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced.tex}{\texttt{tabular} after (advanced)}{lst:tabularafter:advanced}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
 	\end{minipage}%
 
-	Using  \texttt{spacesBeforeDoubleBackSlash: 3} gives \cref{lst:tabularbefore:spacing,lst:tabularafter:spacing},
-	note the spacing before the \lstinline!\\! in \cref{lst:tabularafter:spacing}.
+    Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
+	\begin{commandshell}
+latexindent.pl -l tabular1.yaml tabular1.tex 
+\end{commandshell}
+    gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular} before}{lst:tabularbefore:spacing}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
 	\end{minipage}%
 	\hfill
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular} after (spacing)}{lst:tabularafter:spacing}
+	\begin{minipage}{.54\textwidth}
+	    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular1.yaml}[yaml-TCB]{\texttt{tabular1.yaml}}{lst:tabular1YAML}
 	\end{minipage}%
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks
 	(see \fixthis{need a reference to special section!}); for example, assuming that you have a command called \lstinline!\matrix!
-	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), then the before-and-after results
+	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you 
+    run the command
+    \begin{commandshell}
+latexindent.pl -l matrix1.tex 
+    \end{commandshell}
+    then the before-and-after results
 	shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by default.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1.tex}{\texttt{matrix} before}{lst:matrixbefore}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1.tex}{\texttt{matrix1.tex}}{lst:matrixbefore}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1-default.tex}{\texttt{matrix} after}{lst:matrixafter}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
 	\end{minipage}%
 
 	\fixthis{need to resolve alignment outside of environments}
@@ -312,17 +315,17 @@ latexindent.pl -l mysettings.yaml myfile.tex
 	\begin{wrapfigure}[5]{r}[0pt]{7cm}
 		\cmhlistingsfromfile[firstnumber=155,linerange={155-158},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterItems}}{lst:indentafteritems}
 	\end{wrapfigure}
-	The environments specified in \texttt{indentAfterItems}  tell
+	The environment names specified in \texttt{indentAfterItems}  tell
 	\texttt{latexindent.pl} to look for \lstinline!\item! commands; if these switches are set to \texttt{1}
 	then indentation will be performed so as indent the code after each \texttt{item}.
 	A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/items1.tex}{\texttt{items} before}{lst:itemsbefore}
+		\cmhlistingsfromfile{demonstrations/items1.tex}{\texttt{items1.tex}}{lst:itemsbefore}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/items1-default.tex}{\texttt{items} after}{lst:itemsafter}
+		\cmhlistingsfromfile{demonstrations/items1-default.tex}{\texttt{items1.tex} default output}{lst:itemsafter}
 	\end{minipage}
 
 \yamltitle{itemNames}*{fields}
@@ -334,8 +337,8 @@ latexindent.pl -l mysettings.yaml myfile.tex
 	then you can put populate them in \texttt{itemNames}.
 	For example, users of the \texttt{exam} document class might like to add
 	\texttt{parts} to \texttt{indentAfterItems} and \texttt{part} to \texttt{itemNames}
-	to their user settings--see \vref{sec:indentconfig} for details of how to configure user settings,
-	and \vref{lst:mysettings} in particular.\label{page:examsettings}
+	to their user settings (see \vref{sec:indentconfig} for details of how to configure user settings,
+	and \vref{lst:mysettings} in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}
 	The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
@@ -418,7 +421,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	you should now receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
-    \subsubsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
+    \subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 

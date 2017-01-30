@@ -51,8 +51,7 @@
 	you can change the switches and add more code-block names to it
 	as you see fit -- have a look at \cref{lst:mysettings} for an example
 	that uses four tabs for the default indent, adds the \texttt{tabbing}
-	environment to the list of environments that contains alignment delimiters,
-	and adds the changes we described on \cpageref{page:examsettings}; you might also like to
+	environment/command to the list of environments that contains alignment delimiters; you might also like to
 	refer to the many YAML files detailed throughout the rest of this documentation.
 
 	\begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
@@ -63,16 +62,6 @@
 	# as needed
 	lookForAlignDelims:
 	tabbing: 1
-
-	# If you use the exam documentclass, you might
-	# like the following settings
-	# environments that have \item commands
-	indentAfterItems:
-	parts: 1
-
-	# commands to be treated like \item
-	itemNames:
-	part: 1
 \end{yaml}
 
 	You can make sure that your settings are loaded by checking \texttt{indent.log}
@@ -92,8 +81,7 @@
 	\end{warning}
 
 \subsection{\texttt{localSettings.yaml}}\label{sec:localsettings}
-	Throughout this manual, we have discussed the \texttt{-l} switch
-	that tells \texttt{latexindent.pl} either to look for \texttt{localSettings.yaml} in the
+	The \texttt{-l} switch tells \texttt{latexindent.pl} either to look for \texttt{localSettings.yaml} in the
 	\emph{same directory} as \texttt{myfile.tex}; alternatively, it may look for any
 	other specified YAML file. Any settings file(s) specified in this way will
 	be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
@@ -104,14 +92,6 @@
 	like to change; a sample is shown in \cref{lst:localSettings}.
 
 	\begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
-	# Default value of indentation
-	defaultIndent: " "
-
-	# environments that have tab delimiters, add more
-	# as needed
-	lookForAlignDelims:
-	tabbing: 0
-
 	#  verbatim environments- environments specified
 	#  in this hash table will not be changed at all!
 	verbatimEnvironments:
@@ -139,7 +119,7 @@ latexindent.pl -l=myyaml.yaml myfile.tex
 		\item \texttt{localSettings.yaml} but only if found in the same directory as \texttt{myfile.tex} and called
 		      with \texttt{-l} switch; this file can be renamed, provided that the call to \texttt{latexindent.pl} is adjusted
 		      accordingly (see \cref{sec:localsettings}). You may specify relative \fixthis{and absolute??!} paths to other
-		      YAML files using the \texttt{-l} switch, separating files using commas.
+		      YAML files using the \texttt{-l} switch, separating multiple files using commas.
 	\end{enumerate}
 	A visual representation of this is given in \cref{fig:loadorder}.
 

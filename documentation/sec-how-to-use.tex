@@ -2,7 +2,7 @@
 \section{How to use the script}
  \texttt{latexindent.pl} ships as part of the \TeX Live distribution for
  Linux and Mac users; \texttt{latexindent.exe} ships as part of the \TeX Live
- and MiK\TeX distributions for Windows users. These files are also available
+ and MiK\TeX{} distributions for Windows users. These files are also available
  from github \cite{latexindent-home} should you wish to use them without
  a \TeX{} distribution; in this case, you may like to read \vref{sec:updating-path}
  which details how the \texttt{path} variable can be updated.
@@ -19,12 +19,12 @@
  \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows
  users, so that you can use the script with or without a Perl distribution.
  If you plan to use \texttt{latexindent.pl} (i.e, the original Perl script) then you will
- need a few standard Perl modules--see \vref{sec:requiredmodules} for details.
+ need a few standard Perl modules -- see \vref{sec:requiredmodules} for details.
 
 \subsection{From the command line}\label{sec:commandline}
 	\texttt{latexindent.pl} has a number of different switches/flags/options, which
 	can be combined in any way that you like, either in short or long form as detailed below.
-	\texttt{latexindent.pl}  produces a \texttt{.log} file, \texttt{indent.log} every time it
+	\texttt{latexindent.pl}  produces a \texttt{.log} file, \texttt{indent.log}, every time it
 	is run; the name of the log file can be customised, but we will
 	refer to the log file as \texttt{indent.log} throughout this document.
 	There is a base of information that is written to \texttt{indent.log},
@@ -50,7 +50,8 @@ latexindent.pl -h
 latexindent.pl myfile.tex
       \end{commandshell}
 
-	This will operate on \texttt{myfile.tex}, but will simply output to your terminal; \texttt{myfile.tex} will	not be changed in any way using this command.
+	This will operate on \texttt{myfile.tex}, but will simply output to your terminal; \texttt{myfile.tex} will	not be changed 
+    by \texttt{latexindent.pl} in any way using this command.
 
 \flagbox{-w, --overwrite}
 	\begin{commandshell}
@@ -108,7 +109,7 @@ latexindent.pl myfile.tex -t
 	is useful if \texttt{latexindent.pl} has made a mistake and you're
 	trying to find out where and why. You might also be interested in learning
 	about \texttt{latexindent.pl}'s thought process -- if so, this
-	switch is for you although it should be noted that, especially for large files, this does affect
+	switch is for you, although it should be noted that, especially for large files, this does affect
 	performance of the script.
 
 \flagbox{-tt, --ttrace}
@@ -132,8 +133,7 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
       \end{commandshell}
 
 	\label{page:localswitch}
-	Local settings: you might like to read \cref{sec:defuseloc} before
-	using this switch. \texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml}
+	\texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml}
 	and if it is called with the \texttt{-l} switch and it finds \texttt{localSettings.yaml}
 	in the same directory as \texttt{myfile.tex} then these settings will be
 	added to the indentation scheme. Information will be given in \texttt{indent.log} on
@@ -141,9 +141,11 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 
 	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a \texttt{yaml} file(s)
 	that resides in the same directory as \texttt{myfile.tex}; you can use this option if you would
-	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
+	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}. 
+    In fact, you can specify \emph{relative} path names to the current directory, but \emph{not} 
+    absolute paths -- for absolute paths, see \vref{sec:indentconfig}.
+    Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
 
-	\fixthis{local settings can accept relative paths -- how about absolute paths?}
 \flagbox{-d, --onlydefault}
 	\begin{commandshell}
 latexindent.pl -d myfile.tex
@@ -175,8 +177,8 @@ latexindent.pl --logfile other.log myfile.tex
 latexindent.pl myfile.tex -g other.log 
       \end{commandshell}
 
-	By default, \texttt{latexindent.pl} reports information to \texttt{indent.log}, but if you wish to change this, simply
-	call the script with your chosen name after the \texttt{-g} switch.
+	By default, \texttt{latexindent.pl} reports information to \texttt{indent.log}, but if you wish to change the 
+    name of this file, simply call the script with your chosen name after the \texttt{-g} switch as demonstrated above.
 
 \flagbox{-m, --modifylinebreaks}
 	\begin{commandshell}
@@ -194,15 +196,11 @@ latexindent.pl -modifylinebreaks myfile.tex
 
 \subsection{From \texttt{arara}}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
-	others may find it easier to use from \texttt{arara}. \texttt{latexindent.pl}
-	ships with an \texttt{arara} rule, \texttt{indent.yaml}, which can be copied
-	to the directory of
-	your other \texttt{arara} rules; otherwise  you can add the directory in which \texttt{latexindent.pl}
-	resides to your \texttt{araraconfig.yaml} file.
+    others may find it easier to use from \texttt{arara}. \texttt{arara} ships with 
+    a rule, \texttt{indent.yaml}, but in case you do not have this rule, you can find it at \cite{paulo}.
 
-	Once you have told \texttt{arara} where to find your \texttt{indent} rule,
-	you can use it any of the ways described in \cref{lst:arara} (or combinations thereof).
-	In fact, \texttt{arara} allows yet greater flexibility--you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
+	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
+	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
 	\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\texttt{arara} sample usage}{lst:arara}
 %(*@@*) arara: indent
 %(*@@*) arara: indent: {overwrite: yes}

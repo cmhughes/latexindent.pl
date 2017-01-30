@@ -1,7 +1,7 @@
 % arara: pdflatex: {shell: yes}
-% !arara: bibtex
+% arara: bibtex
 % arara: pdflatex: {shell: yes}
-% !arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 \documentclass[10pt]{article}
@@ -324,8 +324,8 @@
   {}
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
   []
-\AtBeginDocument{\addtocontents{lol}{\protect\begin{sidebyside}\protect\begin{multicols}{2}}}
-\AtEndDocument{\addtocontents{lol}{\protect\end{multicols}\protect\end{sidebyside}}}
+\AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
+\AtEndDocument{\addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}}
 
 % cleveref settings
 \crefname{table}{Table}{Tables}
@@ -352,8 +352,8 @@
 	\renewcommand{\headrulewidth}{0pt}
 	\renewcommand{\footrulewidth}{0pt}}
 
-% sidebyside environment
-\newenvironment{sidebyside}{\begin{adjustwidth}{-3cm}{0cm}}{\end{adjustwidth}}
+% widepage environment
+\newenvironment{widepage}{\begin{adjustwidth}{-3cm}{0cm}}{\end{adjustwidth}}
 
 % symbols for the m switch
 \newcommand{\BeginStartsOnOwnLine}{\color{red}\spadesuit}
@@ -388,37 +388,38 @@
 \author{Chris Hughes \footnote{and contributors! (See \vref{sec:contributors}.) For
 		all communication, please visit \cite{latexindent-home}.}}
 \maketitle
-\begin{abstract}
+\begin{adjustwidth}{1cm}{1cm}
+  \small
 	\texttt{latexindent.pl} is a \texttt{Perl} script that indents \texttt{.tex} (and other)
 	files according to an indentation scheme that the user can modify to suit their
 	taste. Environments, including those with alignment delimiters (such as \texttt{tabular}),
 	and commands, including those that can split braces and brackets across lines,
 	are \emph{usually} handled correctly by the script. Options for \texttt{verbatim}-like
-	environments and indentation after headings (such as \lstinline!chapter!, \lstinline!section!, etc)
+	environments and commands, together with indentation after headings (such as \lstinline!chapter!, \lstinline!section!, etc)
 	are also available. The script also has the ability to modifiy line breaks, and add
-	comment symbols.
-\end{abstract}
+	comment symbols. All user options are customisable via the switches in the YAML interface.
+\end{adjustwidth}
 \tableofcontents
 {\small
 	\lstlistoflistings
 }
 
-%\input{sec-introduction}
-%\input{sec-demonstration}
-%\input{sec-how-to-use}
-%\input{sec-indent-config-and-settings.tex}
-%\input{sec-default-user-local}
-%\input{subsec-noAdditionalIndent-indentRules}
-%\input{subsubsec-environments-and-their-arguments}
-%\input{subsubsec-environments-with-items}
-%\input{subsubsec-commands-with-arguments}
-%\input{subsubsec-ifelsefi}
-%\input{subsubsec-special}
-%\input{subsubsec-headings}
-%\stopcontents[noAdditionalIndent]
-%\input{sec-the-m-switch}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-indent-config-and-settings.tex}
+\input{sec-default-user-local}
+\input{subsec-noAdditionalIndent-indentRules}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+\input{subsubsec-ifelsefi}
+\input{subsubsec-special}
+\input{subsubsec-headings}
+\stopcontents[noAdditionalIndent]
+\input{sec-the-m-switch}
 \input{references}
-%\input{appendices}
+\input{appendices}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks

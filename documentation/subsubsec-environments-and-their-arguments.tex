@@ -26,7 +26,7 @@ we obtain the output given in \cref{lst:myenv-output}; note in particular that t
 has not received any \emph{additional} indentation, but that the \texttt{outer} environment \emph{has} still 
 received indentation.
 
-\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-noAdd1,lst:myenv-noAdd2})}}{lst:myenv-output}
+\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-noAdd1} or \cref{lst:myenv-noAdd2})}}{lst:myenv-output}
 
 Upon changing the YAML files to those shown in \cref{lst:myenv-noAdd3,lst:myenv-noAdd4}, and running either
 \begin{commandshell}
@@ -43,7 +43,7 @@ we obtain the output given in \cref{lst:myenv-output-4}.
 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd4.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd4.yaml}}{lst:myenv-noAdd4}
 \end{minipage}
 
-\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3,lst:myenv-noAdd4})}{lst:myenv-output-4}
+\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3} or \cref{lst:myenv-noAdd4})}{lst:myenv-output-4}
 
 Let's now allow \texttt{myenv} to have some optional and mandatory arguments, as in \cref{lst:myenv-args}.
 \cmhlistingsfromfile{demonstrations/myenvironment-args.tex}{\texttt{myenv-args.tex}}{lst:myenv-args}
@@ -104,11 +104,11 @@ we obtain the output given in \cref{lst:myenv-rules-output}; note in particular 
 has not received any \emph{additional} indentation, but that the \texttt{outer} environment \emph{has} still 
 received indentation.
 
-\cmhlistingsfromfile{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1,lst:myenv-rules2})}}{lst:myenv-rules-output}
+\cmhlistingsfromfile{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}}{lst:myenv-rules-output}
 
 If you specify a field in \texttt{indentRules} using anything other than horizontal space, it will be ignored.
 
-Let's now return to the example in \cref{lst:myenv-args} that contains optional and mandatory arguments. Upon using \cref{lst:myenv-rules1} as in
+Returning to the example in \cref{lst:myenv-args} that contains optional and mandatory arguments. Upon using \cref{lst:myenv-rules1} as in
 \begin{commandshell}
 latexindent.pl myenv-args.tex -l=myenv-rules1.yaml  
 \end{commandshell}
@@ -156,12 +156,12 @@ place that \texttt{latexindent.pl} will look is \texttt{noAdditionalIndentGlobal
 (see \cref{lst:noAdditionalIndentGlobal:environments}). Let's say that you change
 the value of \texttt{environments} to \texttt{1} in \cref{lst:noAdditionalIndentGlobal:environments}, and that you run
 
-\begin{sidebyside}
+\begin{widepage}
 \begin{commandshell}
 latexindent.pl myenv-args.tex -l env-noAdditionalGlobal.yaml
 latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
 \end{commandshell}
-\end{sidebyside}
+\end{widepage}
 
 The respective output from these two commands are in \cref{lst:myenv-args-no-add-global1,lst:myenv-args-no-add-global2}; in \cref{lst:myenv-args-no-add-global1} notice that \emph{both}
 environments receive no additional indentation but that the arguments of \texttt{myenv} still \emph{do} receive indentation. In \cref{lst:myenv-args-no-add-global2}
@@ -208,7 +208,7 @@ has not received any additional indentation.
 \begin{wrapfigure}[4]{r}[0pt]{7cm}
 \cmhlistingsfromfile[firstnumber=263,linerange={263-264},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{env-indentRulesGlobal.yaml}}{lst:indentRulesGlobal:environments}
 \end{wrapfigure}
-The final check that \texttt{latexindent.pl} will make is to look for \texttt{indentRules} as detailed in \cref{lst:indentRulesGlobal:environments}; if you change the \texttt{environments}
+The final check that \texttt{latexindent.pl} will make is to look for \texttt{indentRulesGlobal} as detailed in \cref{lst:indentRulesGlobal:environments}; if you change the \texttt{environments}
 field to anything involving horizontal space, say \lstinline!" "!, and then run the following commands
 
 \begin{commandshell}
