@@ -399,7 +399,9 @@ latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,en
 
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for
-	all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}.
+	all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}. Note also that, 
+    by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be 
+    modified using \texttt{latexindent.pl}.
 
 	\begin{longtable}{m{.2\textwidth}@{\hspace{.75cm}}m{.35\textwidth}@{}m{.4\textwidth}}
 		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}\\

@@ -18,6 +18,7 @@ latexindent.pl -s tabular1.tex --outputfile tabular1-default.tex -logfile cmh.lo
 latexindent.pl -s -l tabular.yaml tabular1.tex --outputfile tabular1-advanced.tex 
 latexindent.pl -s -l tabular1.yaml tabular1.tex --outputfile tabular1-advanced-3spaces.tex 
 latexindent.pl -s matrix1.tex -o matrix1-default.tex
+latexindent.pl -s align-block.tex -o align-block-default.tex
 # items
 latexindent.pl -s items1.tex -o items1-default.tex
 # special

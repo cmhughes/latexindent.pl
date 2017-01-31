@@ -31,6 +31,7 @@ our %tokens = (
                 preamble=>$beginningToken."preamble",
                 beginOfToken=>$beginningToken,
                 doubleBackSlash=>$beginningToken."DOUBLEBACKSLASH",
+                alignmentBlock=>$beginningToken."ALIGNMENTBLOCK",
                 endOfToken=>"-END",
               );
 

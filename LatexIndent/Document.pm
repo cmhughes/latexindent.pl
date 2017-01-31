@@ -16,7 +16,7 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
-use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand/;
+use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
@@ -49,6 +49,15 @@ sub new{
     return $self;
 }
 
+sub latexindent{
+    my $self = shift;
+    $self->storeSwitches;
+    $self->processSwitches;
+    $self->readSettings;
+    $self->file_extension_check;
+    $self->operate_on_file;
+}
+
 sub operate_on_file{
     my $self = shift;
 
@@ -57,6 +66,7 @@ sub operate_on_file{
     $self->construct_regular_expressions;
     $self->find_noindent_block;
     $self->find_verbatim_commands;
+    $self->find_aligned_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     $self->protect_blank_lines;
@@ -64,9 +74,7 @@ sub operate_on_file{
     $self->find_file_contents_environments_and_preamble;
     $self->dodge_double_backslash;
     $self->remove_leading_space;
-    # find alignment environments
     $self->process_body_of_text;
-    # process alignment environments
     $self->remove_trailing_whitespace(when=>"after");
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;

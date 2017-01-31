@@ -1,7 +1,7 @@
 % arara: pdflatex: {shell: yes}
-% arara: bibtex
-% arara: pdflatex: {shell: yes}
-% arara: pdflatex: {shell: yes}
+% !arara: bibtex
+% !arara: pdflatex: {shell: yes}
+% !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 \documentclass[10pt]{article}
@@ -404,22 +404,22 @@
 	\lstlistoflistings
 }
 
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-indent-config-and-settings.tex}
 \input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\stopcontents[noAdditionalIndent]
-\input{sec-the-m-switch}
-\input{references}
-\input{appendices}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\stopcontents[noAdditionalIndent]
+%\input{sec-the-m-switch}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 %    # set noAdditionalIndent globally for codeblocks

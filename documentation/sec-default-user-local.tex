@@ -294,22 +294,23 @@ latexindent.pl -l matrix1.tex
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
 	\end{minipage}%
 
-	\fixthis{need to resolve alignment outside of environments}
-	%If you have blocks of code that you wish to align at the \&  character that
-	%are \emph{not} wrapped in, for example, \texttt{\begin{tabular}\ldots\end{tabular}}, then you use the mark up
-	%  illustrated in \cref{lst:alignmentmarkup}. Note that the \texttt{%*} must be next to
-	%  each other, but that there can be any number of spaces (possibly none) between the
-	%  \texttt{*} and \texttt{\begin{tabular}}; note also that you may use any
-	%    environment name that you have specified in \texttt{lookForAlignDelims}.
-	%    \begin{cmhlistings}[style=demo,columns=fixed]{Mark up for aligning delimiters outside of environments}{lst:alignmentmarkup}
-	%      \matrix{%
-	%      %* \begin{tabular}
-	%         1 & 2 & 3 & 4 \\
-	%         5 &   & 6 &   \\
-	%        %* \end{tabular}
-	%        }
+	If you have blocks of code that you wish to align at the \&  character that
+	are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots \lstinline!\end{tabular}!, then you can use the mark up
+	  illustrated in \cref{lst:alignmentmarkup}; the default output is shown in \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to
+	  each other, but that there can be any number of spaces (possibly none) between the
+	  \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
+	    environment name that you have specified in \texttt{lookForAlignDelims}.
 
-	\fixthis{final check: line numbers in yaml}
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block-default.tex}{\texttt{matrix1.tex} default output}{lst:alignmentmarkup-default}
+	\end{minipage}%
+
+    With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of \texttt{noAdditionalIndent} and \texttt{indentRules}
+    (see \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered \texttt{environments}.
 
 \yamltitle{indentAfterItems}*{fields}
 	\begin{wrapfigure}[5]{r}[0pt]{7cm}
@@ -382,7 +383,7 @@ latexindent.pl -l matrix1.tex
 	and \texttt{subsection} set with \texttt{level: 3} because you do not want the indentation to go too deep.
 
 	You can add any of your own custom heading commands to this field, specifying the \texttt{level}
-	as appropriate.  You can also specify your own indentation in \texttt{indentRules} \fixthis{need a reference to indentRules};
+	as appropriate.  You can also specify your own indentation in \texttt{indentRules} (see \vref{sec:noadd-indent-rules});
 	you will find the default \texttt{indentRules} contains \lstinline!chapter: " "! which
 	tells \texttt{latexindent.pl} simply to use a space character after \texttt{\chapter} headings
 	(once \texttt{indent} is set to \texttt{1} for \texttt{chapter}).

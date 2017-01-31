@@ -5,9 +5,99 @@ use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Tokens qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/align_at_ampersand/;
+our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block/;
+our $alignmentBlockCounter;
+
+sub find_aligned_block{
+    my $self = shift;
+
+    return unless (${$self}{body} =~ m/(?!<\\)%\*\h*\\begin\{/s);
+
+    # aligned block
+	#      %* \begin{tabular}
+	#         1 & 2 & 3 & 4 \\
+	#         5 &   & 6 &   \\
+	#        %* \end{tabular}
+    $self->logger('looking for ALIGNED blocks marked by comments','heading')if($is_t_switch_active);
+    $self->logger(Dumper(\%{$masterSettings{lookForAlignDelims}})) if($is_t_switch_active);
+    while( my ($alignmentBlock,$yesno)= each %{$masterSettings{lookForAlignDelims}}){
+        if(ref $yesno eq "HASH"){
+              $yesno = (defined ${$yesno}{delims} ) ? ${$yesno}{delims} : 1;
+            }
+        if($yesno){
+            $self->logger("looking for $alignmentBlock:$yesno environments");
+
+            my $noIndentRegExp = qr/
+                            (
+                                (?!<\\)
+                                %
+                                \*
+                                \h*                     # possible horizontal spaces
+                                \\begin\{
+                                        $alignmentBlock  # environment name captured into $2
+                                       \}               # %* \begin{alignmentBlock} statement
+                            )
+                            (
+                                .*?
+                            )
+                            \R
+                            \h*
+                            (
+                                (?!<\\)
+                                %\*                     # %
+                                \h*                     # possible horizontal spaces
+                                \\end\{$alignmentBlock\} # \end{alignmentBlock}
+                            )                           # %* \end{<something>} statement
+                            #\R
+                        /sx;
+
+            while( ${$self}{body} =~ m/$noIndentRegExp/sx){
+
+              # create a new Environment object
+              my $alignmentBlock = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
+                                                    body=>$2,
+                                                    end=>$3,
+                                                    name=>$alignmentBlock,
+                                                    modifyLineBreaksYamlName=>"environments",
+                                                    regexp=>$noIndentRegExp,
+                                                    linebreaksAtEnd=>{
+                                                      begin=>1,
+                                                      body=>1,
+                                                      end=>0,
+                                                    },
+                                                    );
+            
+              # the settings and storage of most objects has a lot in common
+              $self->get_settings_and_store_new_object($alignmentBlock);
+            } 
+      } else {
+            $self->logger("*not* looking for $alignmentBlock as $alignmentBlock:$yesno");
+      }
+    }
+    return;
+}
+
+sub modify_line_breaks_settings{
+    return;
+}
+
+sub tasks_particular_to_each_object{
+    my $self = shift;
+#    $self->remove_leading_space;
+}
+
+sub create_unique_id{
+    my $self = shift;
+
+    $alignmentBlockCounter++;
+    ${$self}{id} = "$tokens{alignmentBlock}$alignmentBlockCounter";
+    return;
+}
 
 sub align_at_ampersand{
     my $self = shift;
