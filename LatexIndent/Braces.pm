@@ -72,7 +72,7 @@ sub find_commands_or_key_equals_values_braces{
                                                   begin=>$5?1:0,
                                                   end=>$9?1:0,                # $9 is linebreak before comment check
                                                 },
-                                                modifyLineBreaksYamlName=>"keyEqualsValuesBraces",
+                                                modifyLineBreaksYamlName=>"keyEqualsValuesBracesBrackets",
                                                 regexp=>($9?$key_equals_values_bracesRegExp:$key_equals_values_bracesRegExpTrailingComment),
                                                 beginningbit=>$1,
                                                 endImmediatelyFollowedByComment=>$9?0:($10?1:0),
