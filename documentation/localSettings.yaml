@@ -34,3 +34,5 @@ indentRules:
        body: "  " 
    titlecontents:
        body: "  " 
+noAdditionalIndent:
+    widepage: 0

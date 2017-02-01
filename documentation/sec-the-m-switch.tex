@@ -389,17 +389,19 @@ latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,en
 	is set to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed
 	the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to \texttt{0}.
 
+    \begin{widepage}
 	\begin{minipage}{.30\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb6-modAll}
 	\end{minipage}
 	\hfill
-	\begin{minipage}{.7\linewidth}
+	\begin{minipage}{.65\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
 	\end{minipage}
+    \end{widepage}
 
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for
-	all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}. Note also that, 
+    all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}, i.e, set to \texttt{0}. Note also that, 
     by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be 
     modified using \texttt{latexindent.pl}.
 
@@ -506,7 +508,7 @@ myname(*@$\BodyStartsOnOwnLine$@*)
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		keyEqualsValuesBracesBrackets &
+		keyEqualsValuesBraces\newline Brackets &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={key},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 key(*@$\EqualsStartsOnOwnLine$@*)=(*@$\BodyStartsOnOwnLine$@*)

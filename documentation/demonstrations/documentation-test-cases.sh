@@ -136,5 +136,18 @@ latexindent.pl -s env-mlb5.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml
 latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml -o env-mlb6-modAll.tex
 latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,UnpreserveBlankLines.yaml -o env-mlb6-modAll-un-Preserve-Blank-Lines.tex
 
+# partnering poly-switches
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb1.yaml -outputfile=mycommand1-mlb1.tex
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb2.yaml -outputfile=mycommand1-mlb2.tex
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb3.yaml -outputfile=mycommand1-mlb3.tex
+
+# conflicting poly-switches, sequential
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb4.yaml -outputfile=mycommand1-mlb4.tex
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb5.yaml -outputfile=mycommand1-mlb5.tex
+latexindent.pl -s -m mycommand1.tex -l=mycom-mlb6.yaml -outputfile=mycommand1-mlb6.tex
+# conflicting poly-switches, nested
+latexindent.pl -s -m nested-env.tex -l=nested-env-mlb1.yaml -outputfile=nested-env-mlb1.tex
+latexindent.pl -s -m nested-env.tex -l=nested-env-mlb2.yaml -outputfile=nested-env-mlb2.tex
+
 [[ $noisyMode == 1 ]] && makenoise
 git status

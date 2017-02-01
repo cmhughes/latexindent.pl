@@ -52,8 +52,8 @@
 		\end{minipage}%
 
 		In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and \texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{
-			You may like to verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }. 
-            Referencing \cref{lst:child1:default},
+			You may like to verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }.
+		Referencing \cref{lst:child1:default},
 		note that the maximum indentation is two tabs, and these come from:
 		\begin{itemize}
 			\item the \lstinline!child!'s mandatory argument;
@@ -94,17 +94,16 @@
 
 	\paragraph{\texttt{filecontents}} code blocks behave just as \texttt{environments}, except that neither arguments nor items are sought.
 
-
 \subsubsection{Summary}
-Having considered all of the different types of code blocks, the functions of the fields given in 
-\cref{lst:noAdditionalIndentGlobal,lst:indentRulesGlobal} should now make sense.
+	Having considered all of the different types of code blocks, the functions of the fields given in
+	\cref{lst:noAdditionalIndentGlobal,lst:indentRulesGlobal} should now make sense.
 
-\begin{widepage}
-		\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile[firstnumber=247,linerange={247-259},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal}
+	\begin{widepage}
+		\begin{minipage}{.47\linewidth}
+			\cmhlistingsfromfile[firstnumber=247,linerange={247-259},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal}
 		\end{minipage}%
-        \hfill
-		\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile[firstnumber=263,linerange={263-275},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal}
+		\hfill
+		\begin{minipage}{.47\linewidth}
+			\cmhlistingsfromfile[firstnumber=263,linerange={263-275},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal}
 		\end{minipage}%
-\end{widepage}
+	\end{widepage}

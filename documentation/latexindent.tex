@@ -416,33 +416,14 @@
 %\input{subsubsec-ifelsefi}
 %\input{subsubsec-special}
 %\input{subsubsec-headings}
-\input{subsubsec-no-add-remaining-code-blocks}
+%\input{subsubsec-no-add-remaining-code-blocks}
 %\stopcontents[noAdditionalIndent]
 %\input{sec-the-m-switch}
+%\input{subsec-partnering-poly-switches}
+\input{subsec-conflicting-poly-switches}
 %\input{references}
 %\input{appendices}
 \end{document}
-
-%    # set noAdditionalIndent globally for codeblocks
-%    noAdditionalIndentGlobal:
-%        environments: 0
-%        commands: 1
-%        optionalArguments: 0
-%        mandatoryArguments: 0
-%        ifElseFi: 0
-%        items: 0
-
-This specifies noAdditionalIndent globally for code blocks;
-
-%# set indentRules globally for codeblocks; these need 
-%# to be horizontal spaces, if they are to be used
-%indentRulesGlobal:
-%    environments: 0
-%    commands: 0
-%    optionalArguments: 0
-%    mandatoryArguments: 0
-%    ifElseFi: 0
-%    items: 0
 
 \section{Known limitations}\label{sec:knownlimitations}
 
@@ -490,25 +471,7 @@ This specifies noAdditionalIndent globally for code blocks;
  report an issue on \cite{latexindent-home}; otherwise, feel free to find me on
  the \url{http://tex.stackexchange.com}.
 
-\section{The \texttt{-m} switch}\label{sec:m-switch}
 \subsection{The phases of \texttt{latexindent.pl}}
-	latexindent.pl essentially has 3 phases:
-	\begin{enumerate}
-		\item packing, in which code blocks are replaced with unique ids; if the -m switch is active, then during this phase,
-		      \begin{itemize}
-			      \item line breaks at the beginning of the \emph{body} can be added (BodyStartsOnOwnLine: 1) or removed (BodyStartsOnOwnLine: 0);
-			      \item line breaks at the end of the body can be added (see EndStartsOnOwnLine: 1) or removed (see EndStartsOnOwnLine: 0);
-			      \item NOTE: let's say that any key (such as, for example, BeginStartsOnOwnLine) is set to 1, and the
-			            appropriate <thing> does already begin on its own line and is immediately preceeded by one or more blank line; in this situation,
-			            the blank lines will \emph{not} be removed
-		      \end{itemize}
-		\item indentation, in which white space is added to the begin, body, and end statements;
-		\item unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
-		      \begin{itemize}
-			      \item line breaks before \emph{begin} statements can be added or removed (if BeginStartsOnOwnLine==0);
-			      \item line breaks after \emph{end} statements can be removed but \emph{NOT} added (see EndFinishesWithLineBreak).
-		      \end{itemize}
-	\end{enumerate}
 	With these rules in mind, let's study a few test cases:
 
 	\fixthis{go into details about each of the following}

@@ -1,0 +1,111 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{Conflicting poly-switches: sequential code blocks}
+It is very easy to have conflicting poly-switches; if we use the example from \vref{lst:mycommand1}, 
+and consider the YAML settings given in \cref{lst:mycom-mlb4}. The output from running
+\begin{commandshell}
+latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
+\end{commandshell}
+is given in \cref{lst:mycom-mlb4}.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb4.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb4}}{lst:mycommand1-mlb4}
+	\end{minipage}
+    \hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb4.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb4.yaml}}{lst:mycom-mlb4}
+	\end{minipage}
+
+    Studying \cref{lst:mycom-mlb4}, we see that the two poly-switches are at opposition with one another:
+    \begin{itemize}
+      \item on the one hand, \texttt{LCuBStartsOnOwnLine} should \emph{not} start on its own line (as poly-switch is set to $-1$);
+      \item on the other hand, \texttt{RCuBFinishesWithLineBreak} \emph{should} finish with a line break.
+    \end{itemize}
+    So, which should win the conflict? As demonstrated in \cref{lst:mycommand1-mlb4}, it is clear that \texttt{LCuBStartsOnOwnLine} won 
+    this conflict, and the reason is that \emph{the second argument was processed after the first} -- in general, the most recently-processed
+    code block and associated poly-switch takes prioirty.
+
+    We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5}; upon runnning the command
+\begin{commandshell}
+latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
+\end{commandshell}
+    we obtain the output given in \cref{lst:mycommand1-mlb5}.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb5.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb5}}{lst:mycommand1-mlb5}
+	\end{minipage}
+    \hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
+	\end{minipage}
+
+    As previously, the most-recently-processed code block takes prioirty -- as before, the second (i.e, \emph{last}) argument. Exploring this
+    further, we consider the YAML settings in \cref{lst:mycom-mlb6}, which give associated output in \cref{lst:mycommand1-mlb6}.
+    
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb6.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb6}}{lst:mycommand1-mlb6}
+	\end{minipage}
+    \hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb6.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb6.yaml}}{lst:mycom-mlb6}
+	\end{minipage}
+
+    Note that a \lstinline!%! \emph{has} been added to the trailing first \lstinline!}!; this is because:
+    \begin{itemize}
+      \item while processing the \emph{first} argument, the trailing line break has been removed (\texttt{RCuBFinishesWithLineBreak} set to $-1$);
+      \item while processing the \emph{second} argument, \texttt{latexindent.pl} finds that it does \emph{not} begin on its own line, and so
+        because \texttt{LCuBStartsOnOwnLine} is set to $2$, it adds a comment, followed by a line break.
+    \end{itemize}
+
+\subsection{Conflicting poly-switches: nested code blocks}
+Now let's consider an example when nested code blocks have conflicting poly-switches; we'll use the code in \cref{lst:nested-env}, 
+noting that it contains nested environments.
+
+		\cmhlistingsfromfile{demonstrations/nested-env.tex}{\texttt{nested-env.tex}}{lst:nested-env}
+
+        Let's use the YAML settings given in \cref{lst:nested-env-mlb1}, which upon running the command
+        \begin{commandshell}
+latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
+        \end{commandshell}
+        gives the output in \cref{lst:nested-env-mlb1}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/nested-env-mlb1.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb1}}{lst:nested-env-mlb1}
+	\end{minipage}
+    \hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1}
+	\end{minipage}
+
+    In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have received the appropriate (default) indentation; secondly, 
+    note that the poly-switch \texttt{EndStartsOnOwnLine} appears to have won the conflict, as \lstinline!\end{one}! has had its leading line break removed.
+
+    To understand it, let's talk about the three basic phases of \texttt{latexindent.pl}:
+	\begin{enumerate}
+      \item Phase 1: packing, in which code blocks are replaced with unique ids, working from \emph{the inside to the outside} -- for example, in 
+        \cref{lst:nested-env}, the \texttt{two} environment is found \emph{before} the \texttt{one} environment; if the -m switch is active, then during this phase:
+		      \begin{itemize}
+                \item line breaks at the beginning of the \emph{body} can be added (\texttt{BodyStartsOnOwnLine: 1/2}) or removed (\texttt{BodyStartsOnOwnLine}: $-1$);
+                \item line breaks at the end of the body can be added (see \texttt{EndStartsOnOwnLine} 1/2) or removed (see \texttt{EndStartsOnOwnLine}: $-1$);
+		      \end{itemize}
+		\item Phase 2: indentation, in which white space is added to the begin, body, and end statements;
+		\item Phase 3: unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
+		      \begin{itemize}
+                \item line breaks before \emph{begin} statements can be added or removed (if \texttt{BeginStartsOnOwnLine}: $-1$);
+                \item line breaks after \emph{end} statements can be removed but \emph{NOT} added (see \texttt{EndFinishesWithLineBreak}).
+		      \end{itemize}
+	\end{enumerate}
+
+    With reference to \cref{lst:nested-env-mlb1}, this means that during Phase 1, the line break ahead of both of the \lstinline!\end! statements has been 
+    removed, first of all by the \texttt{two} environment, and then the \texttt{one} environment.
+
+    We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}, which give the output in \cref{lst:nested-env-mlb2}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2}
+	\end{minipage}
+    \hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
+	\end{minipage}
+
+    During phase \fixthis{finish this}
