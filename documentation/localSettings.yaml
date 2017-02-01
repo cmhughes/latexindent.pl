@@ -1,5 +1,6 @@
 onlyOneBackUp: 1
 indentPreamble: 1
+preambleCommandsBeforeEnvironments: 1
 verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
@@ -25,9 +26,11 @@ indentAfterHeadings:
     subsubsection:
        indentAfterThisHeading: 1
        level: 2
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 3
 indentRules:
    titleformat:
        body: "  " 
    titlecontents:
        body: "  " 
-preambleCommandsBeforeEnvironments: 1

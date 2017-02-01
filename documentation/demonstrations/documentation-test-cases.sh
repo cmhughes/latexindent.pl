@@ -100,6 +100,18 @@ for (( i=3; i <= 9 ; i++ ))
 do 
 latexindent.pl -s headings2.tex -l headings$i.yaml -o headings2-mod$i.tex
 done
+##### keyequalsvalue ######
+##### keyequalsvalue ######
+##### keyequalsvalue ######
+latexindent.pl -s pgfkeys1.tex -o=pgfkeys1-default.tex
+##### namedbraces ######
+##### namedbraces ######
+##### namedbraces ######
+latexindent.pl -s child1.tex -o=child1-default.tex
+##### unnamedbraces ######
+##### unnamedbraces ######
+##### unnamedbraces ######
+latexindent.pl -s psforeach1.tex -o=psforeach1-default.tex
 
 # -m switch #
 # -m switch #

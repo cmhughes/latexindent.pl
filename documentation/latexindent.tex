@@ -1,6 +1,6 @@
 % arara: pdflatex: {shell: yes}
 % !arara: bibtex
-% !arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
@@ -408,7 +408,7 @@
 %\input{sec-demonstration}
 %\input{sec-how-to-use}
 %\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
+%\input{sec-default-user-local}
 %\input{subsec-noAdditionalIndent-indentRules}
 %\input{subsubsec-environments-and-their-arguments}
 %\input{subsubsec-environments-with-items}
@@ -416,6 +416,7 @@
 %\input{subsubsec-ifelsefi}
 %\input{subsubsec-special}
 %\input{subsubsec-headings}
+\input{subsubsec-no-add-remaining-code-blocks}
 %\stopcontents[noAdditionalIndent]
 %\input{sec-the-m-switch}
 %\input{references}
@@ -443,15 +444,6 @@ This specifies noAdditionalIndent globally for code blocks;
 %    ifElseFi: 0
 %    items: 0
 
-The hierachy is
-\begin{enumerate}
-	\item noAdditionalIndent (on a per-name basis)
-	\item indentRules (on a per-name basis)
-	\item noAdditionalIndentGlobal
-	\item indentRulesGlobal
-	\item defaultIndent
-\end{enumerate}
-
 \section{Known limitations}\label{sec:knownlimitations}
 
  The following command struggles because of the []
@@ -471,9 +463,6 @@ The hierachy is
 
  The main limitation is to do with the alignment routine of environments that contain
  delimiters--in other words, environments that are entered in \texttt{lookForAlignDelims}.
- Indeed, this is the only part of the script that can \emph{potentially} remove
- lines from \texttt{myfile.tex}. Note that \texttt{indent.log} will always
- finish with a comparison of line counts before and after.
 
  The routine works well for `standard' blocks of code that have the same number of \texttt{&}
  per line, but it will not do anything for lines that do not--such examples
