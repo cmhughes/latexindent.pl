@@ -84,9 +84,6 @@ sub find_items{
                                                 endImmediatelyFollowedByComment=>$5?0:($6?1:0),
                                               );
 
-        # the item body could hoover up line breaks; we do an additional check
-        ${${$itemObject}{linebreaksAtEnd}}{body}=1 if(${$itemObject}{body} =~ m/\R+$/s );
-
         # the settings and storage of most objects has a lot in common
         $self->get_settings_and_store_new_object($itemObject);
     }
@@ -104,6 +101,9 @@ sub create_unique_id{
 
 sub tasks_particular_to_each_object{
     my $self = shift;
+
+    # the item body could hoover up line breaks; we do an additional check
+    ${${$self}{linebreaksAtEnd}}{body}=1 if(${$self}{body} =~ m/\R+$/s );
 
     # search for ifElseFi blocks
     $self->find_ifelsefi;

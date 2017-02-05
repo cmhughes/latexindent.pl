@@ -63,12 +63,6 @@ sub find_environments{
                                               horizontalTrailingSpace=>$7?$7:q(),
                                             );
 
-      # if the environment is empty, we may need to update linebreaksAtEnd{body}
-      if(${$env}{body} =~ m/^\h*$/s and ${${$env}{linebreaksAtEnd}}{begin}){
-            $self->logger("empty environment body (${$env}{name}), updating linebreaksAtEnd{body} to be 1") if($is_t_switch_active);
-            ${${$env}{linebreaksAtEnd}}{body} = 1;
-      }
-
       # the settings and storage of most objects has a lot in common
       $self->get_settings_and_store_new_object($env);
     } 
@@ -77,6 +71,12 @@ sub find_environments{
 
 sub tasks_particular_to_each_object{
     my $self = shift;
+
+    # if the environment is empty, we may need to update linebreaksAtEnd{body}
+    if(${$self}{body} =~ m/^\h*$/s and ${${$self}{linebreaksAtEnd}}{begin}){
+          $self->logger("empty environment body (${$self}{name}), updating linebreaksAtEnd{body} to be 1") if($is_t_switch_active);
+          ${${$self}{linebreaksAtEnd}}{body} = 1;
+    }
 
     # search for items as the first order of business
     $self->find_items;
