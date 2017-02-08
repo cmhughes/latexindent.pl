@@ -230,6 +230,10 @@ sub align_at_ampersand{
 
     # update the body
     ${$self}{body} .= ${$_}{row}."\n" for @formattedBody;
+
+    # if the \end{} statement didn't originally have a line break before it, we need to remove the final 
+    # line break added by the above
+    ${$self}{body} =~ s/\h*\R$//s if !${$self}{linebreaksAtEnd}{body};
 }
 
 1;

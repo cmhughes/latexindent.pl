@@ -42,4 +42,8 @@ latexindent.pl -s matrix1.tex -o matrix1-no-align.tex -l=noMatrixAlign.yaml
 latexindent.pl nested-align1.tex -s -l=indentPreamble.yaml  -m -o nested-align1-mod0.tex
 # using comments
 latexindent.pl -s alignmentoutsideEnvironmentsCommands.tex -o alignmentoutsideEnvironmentsCommands-default.tex
+# end statement not on own line
+latexindent.pl -s end-not-on-own-line.tex -o end-not-on-own-line-default.tex
+latexindent.pl -s end-not-on-own-line1.tex -o end-not-on-own-line1-default.tex
+latexindent.pl -s end-not-on-own-line1.tex -o end-not-on-own-line1-mod1.tex -m -l=env-mod-lines1.yaml
 git status
