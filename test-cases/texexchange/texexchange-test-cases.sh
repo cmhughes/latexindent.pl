@@ -44,7 +44,13 @@ latexindent.pl -s 127375-thomas.tex -outputfile 127375-thomas-default.tex -l ind
 latexindent.pl -s 12207-christian-feuersanger.tex -o 12207-christian-feuersanger-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 12207-christian-feuersanger.tex -o 12207-christian-feuersanger-pin-mlb1.tex -m -l mlb-pin.yaml,indentPreamble.yaml  
 latexindent.pl -s 12207-jake.tex -o 12207-jake-default.tex -l indentPreamble.yaml 
-latexindent.pl -s 155194-andrew-swan.tex -o 155194-andrew-swan-default.tex -l indentPreamble.yaml  -tt -g one.log
+latexindent.pl -s 155194-andrew-swan.tex -o 155194-andrew-swan-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 352549.tex -o 352549-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 351457-CarLaTeX.tex -o 351457-CarLaTeX-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 351457-Andrew.tex -o 351457-Andrew-default.tex -l indentPreamble.yaml,preambleCommandsBeforeEnvironments.yaml
+latexindent.pl -s 352502.tex -o 352502-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 352495.tex -o 352495-default.tex -l indentPreamble.yaml 
+latexindent.pl -s 352396-Zarko1.tex -o 352396-Zarko1-default.tex -l indentPreamble.yaml
 
 # =======  latex3 tag  =========
 # =======  latex3 tag  =========

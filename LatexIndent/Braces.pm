@@ -67,13 +67,13 @@ sub find_commands_or_key_equals_values_braces{
 
       } elsif (${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/){
 
-        # log file output
-        $self->logger("key_equals_values_braces found: $3",'heading') if $is_t_switch_active ;
-
         # global substitution
         ${$self}{body} =~ s/
                               $key_equals_values_bracesRegExpTrailingComment
                            /
+                           # log file output
+                           $self->logger("key_equals_values_braces found: $3",'heading') if $is_t_switch_active ;
+
                            # create a new key_equals_values_braces object
                            my $key_equals_values_braces = LatexIndent::KeyEqualsValuesBraces->new(
                                                                    begin=>($2?$2:q()).$3.$4.($5?$5:q()),
@@ -104,13 +104,13 @@ sub find_commands_or_key_equals_values_braces{
                     
       } elsif (${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/){
 
-        # log file output
-        $self->logger("named grouping braces found: $2",'heading') if $is_t_switch_active ;
-
         # global substitution
         ${$self}{body} =~ s/
                             $grouping_braces_regexpTrailingComment
                             /
+                            # log file output
+                            $self->logger("named grouping braces found: $2",'heading') if $is_t_switch_active ;
+
                             # create a new key_equals_values_braces object
                             my $grouping_braces = LatexIndent::NamedGroupingBracesBrackets->new(
                                                                     begin=>$2.($3?$3:q()).($4?$4:q()),
@@ -139,13 +139,13 @@ sub find_commands_or_key_equals_values_braces{
                            /xseg;
 
     } elsif (${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/) {
-        # log file output
-        $self->logger("UNnamed grouping braces found: (no name, by definition!)",'heading') if $is_t_switch_active ;
-
         # global substitution
         ${$self}{body} =~ s/
                             $un_named_grouping_braces_RegExp_trailing_comment
                           /
+                            # log file output
+                            $self->logger("UNnamed grouping braces found: (no name, by definition!)",'heading') if $is_t_switch_active ;
+
                             # create a new Un-named-grouping-braces-brackets object
                             my $un_named_grouping_braces = LatexIndent::UnNamedGroupingBracesBrackets->new(
                                                                     begin=>q(),

@@ -1,0 +1,19 @@
+\documentclass{article}
+\usepackage{pgfplots}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}
+  [symbolic y coords={a small bar,a medium bar,a large bar},
+   ytick=data,
+   xbar,
+   y=0.7cm,
+   enlarge y limits={abs=0.5cm},
+  ]
+  \addplot[fill=blue] coordinates
+    {(42,a small bar)
+     (50,a medium bar)
+     (80,a large bar)
+    };
+\end{axis}
+\end{tikzpicture}
+\end{document}
