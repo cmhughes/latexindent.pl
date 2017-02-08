@@ -208,8 +208,6 @@ sub get_settings_and_store_new_object{
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
 
-    # wrap_up_tasks
-    $self->wrap_up_tasks;
 }
 
 sub tasks_common_to_each_object{
@@ -307,16 +305,10 @@ sub wrap_up_tasks{
     # most recent child object
     my $child = @{${$self}{children}}[-1];
 
-    # remove the environment block, and replace with unique ID
-    ${$self}{body} =~ s/${$child}{regexp}/${$child}{replacementText}/;
-
-    # there's no need to store the regexp, and it makes the logfile unnecessarily big
-    delete ${${${$self}{children}}[-1]}{regexp};
-
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent;
 
-    $self->logger(Dumper(\%{$child})) if($is_t_switch_active);
+    $self->logger(Dumper(\%{$child})) if($is_tt_switch_active);
     $self->logger("replaced with ID: ${$child}{id}") if $is_t_switch_active;
 
 }

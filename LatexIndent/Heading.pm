@@ -5,7 +5,7 @@ package LatexIndent::Heading;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_m_switch_active/;
+use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
@@ -25,7 +25,7 @@ sub construct_headings_levels{
     # delete the values that have indentAfterThisHeading set to 0
     while( my ($headingName,$headingInfo)= each %headingsLevels){
         if(!${$headingsLevels{$headingName}}{indentAfterThisHeading}){
-            $self->logger("Not indenting after $headingName (see indentAfterThisHeading)",'heading');
+            $self->logger("Not indenting after $headingName (see indentAfterThisHeading)",'heading') if $is_t_switch_active;
             delete $headingsLevels{$headingName};
         } else {
             # *all heading* regexp, remembering put starred headings at the front of the regexp
@@ -107,26 +107,31 @@ sub find_heading{
             # log file output
             $self->logger("heading found: $2",'heading');
 
-            # create a new heading object
-            my $headingObject = LatexIndent::Heading->new(begin=>q(),
-                                                    body=>$1.$3,
-                                                    end=>q(),
-                                                    afterbit=>($4?$4:q()).($5?$5:q()),
-                                                    name=>$2.":heading",
-                                                    parent=>$2,
-                                                    nameForIndentationSettings=>$2,
-                                                    linebreaksAtEnd=>{
-                                                      begin=>0,
-                                                      body=>0,
-                                                      end=>0,
-                                                    },
-                                                    modifyLineBreaksYamlName=>"afterHeading",
-                                                    regexp=>$headingRegExp,
-                                                    endImmediatelyFollowedByComment=>0,
-                                                  );
+            ${$self}{body} =~ s/
+                                $headingRegExp
+                               /
+                                # create a new heading object
+                                my $headingObject = LatexIndent::Heading->new(begin=>q(),
+                                                                        body=>$1.$3,
+                                                                        end=>q(),
+                                                                        afterbit=>($4?$4:q()).($5?$5:q()),
+                                                                        name=>$2.":heading",
+                                                                        parent=>$2,
+                                                                        nameForIndentationSettings=>$2,
+                                                                        linebreaksAtEnd=>{
+                                                                          begin=>0,
+                                                                          body=>0,
+                                                                          end=>0,
+                                                                        },
+                                                                        modifyLineBreaksYamlName=>"afterHeading",
+                                                                        regexp=>$headingRegExp,
+                                                                        endImmediatelyFollowedByComment=>0,
+                                                                      );
 
-            # the settings and storage of most objects has a lot in common
-            $self->get_settings_and_store_new_object($headingObject);
+                                # the settings and storage of most objects has a lot in common
+                                $self->get_settings_and_store_new_object($headingObject);
+                                ${@{${$self}{children}}[-1]}{replacementText};
+                              /xse;
         }
      }
 }

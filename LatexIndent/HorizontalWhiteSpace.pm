@@ -13,10 +13,10 @@ sub remove_trailing_whitespace{
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){
         return unless(${$masterSettings{removeTrailingWhitespace}}{beforeProcessing});
-        $self->logger("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)",'heading');
+        $self->logger("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)",'heading') if $is_t_switch_active;
     } elsif($input{when} eq "after"){
         return unless(${$masterSettings{removeTrailingWhitespace}}{afterProcessing});
-        $self->logger("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)",'heading');
+        $self->logger("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)",'heading') if $is_t_switch_active;
     } else {
         return;
     }
@@ -33,7 +33,7 @@ sub remove_trailing_whitespace{
 
 sub remove_leading_space{
     my $self = shift;
-    $self->logger("Removing leading space from ${$self}{name} (verbatim/noindentblock already accounted for)",'heading');
+    $self->logger("Removing leading space from ${$self}{name} (verbatim/noindentblock already accounted for)",'heading') if $is_t_switch_active;
     ${$self}{body} =~ s/
                         (   
                             ^           # beginning of the line

@@ -114,39 +114,47 @@ sub find_special{
             # the regexp
             my $specialRegExp = $individualSpecialRegExps{$specialName};
             
-            while(${$self}{body} =~ m/$specialRegExp\h*($trailingCommentRegExp)?/){
+            while(${$self}{body} =~ m/$specialRegExp(\h*)($trailingCommentRegExp)?/){
 
-                # log file output
-                $self->logger("special found: $specialName",'heading') if $is_t_switch_active;
+                # global substitution
+                ${$self}{body} =~ s/
+                                    $specialRegExp(\h*)($trailingCommentRegExp)?
+                                   /
+                                    # log file output
+                                    $self->logger("special found: $specialName",'heading') if $is_t_switch_active;
 
-                # create a new special object
-                my $specialObject = LatexIndent::Special->new(begin=>$1,
-                                                        body=>$3,
-                                                        end=>$5,
-                                                        name=>$specialName,
-                                                        linebreaksAtEnd=>{
-                                                          begin=>$2?1:0,
-                                                          body=>$4?1:0,
-                                                          end=>$7?1:0,
-                                                        },
-                                                        aliases=>{
-                                                          # begin statements
-                                                          BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
-                                                          # body statements
-                                                          BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
-                                                          # end statements
-                                                          EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
-                                                          # after end statements
-                                                          EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
-                                                        },
-                                                        modifyLineBreaksYamlName=>"specialBeginEnd",
-                                                        regexp=>$specialRegExp,
-                                                        endImmediatelyFollowedByComment=>$7?0:($8?1:0),
-                                                        horizontalTrailingSpace=>$6?$6:q(),
-                                                      );
+                                    # create a new special object
+                                    my $specialObject = LatexIndent::Special->new(begin=>$1,
+                                                                            body=>$3,
+                                                                            end=>$5,
+                                                                            name=>$specialName,
+                                                                            linebreaksAtEnd=>{
+                                                                              begin=>$2?1:0,
+                                                                              body=>$4?1:0,
+                                                                              end=>$7?1:0,
+                                                                            },
+                                                                            aliases=>{
+                                                                              # begin statements
+                                                                              BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
+                                                                              # body statements
+                                                                              BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
+                                                                              # end statements
+                                                                              EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
+                                                                              # after end statements
+                                                                              EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
+                                                                            },
+                                                                            modifyLineBreaksYamlName=>"specialBeginEnd",
+                                                                            regexp=>$specialRegExp,
+                                                                            endImmediatelyFollowedByComment=>$7?0:($9?1:0),
+                                                                            horizontalTrailingSpace=>$6?$6:q(),
+                                                                          );
 
-                # the settings and storage of most objects has a lot in common
-                $self->get_settings_and_store_new_object($specialObject);
+                                    # the settings and storage of most objects has a lot in common
+                                    $self->get_settings_and_store_new_object($specialObject);
+                                    ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q());
+                                    /xseg;
+
+    $self->wrap_up_tasks;
             }
          }
      }

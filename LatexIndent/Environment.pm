@@ -44,27 +44,35 @@ sub find_environments{
 
 
     while( ${$self}{body} =~ m/$environmentRegExp\h*($trailingCommentRegExp)?/){
-      # log file output
-      $self->logger("environment found: $2",'heading') if $is_t_switch_active;
 
-      # create a new Environment object
-      my $env = LatexIndent::Environment->new(begin=>$1,
-                                              name=>$2,
-                                              body=>$4,
-                                              end=>$6,
-                                              linebreaksAtEnd=>{
-                                                begin=>$3?1:0,
-                                                body=>$5?1:0,
-                                                end=>$8?1:0,
-                                              },
-                                              modifyLineBreaksYamlName=>"environments",
-                                              regexp=>$environmentRegExp,
-                                              endImmediatelyFollowedByComment=>$8?0:($9?1:0),
-                                              horizontalTrailingSpace=>$7?$7:q(),
-                                            );
+      # global substitution
+      ${$self}{body} =~ s/
+                $environmentRegExp(\h*)($trailingCommentRegExp)?
+             /
+                # log file output
+                $self->logger("environment found: $2",'heading') if $is_t_switch_active;
 
-      # the settings and storage of most objects has a lot in common
-      $self->get_settings_and_store_new_object($env);
+                # create a new Environment object
+                my $env = LatexIndent::Environment->new(begin=>$1,
+                                                        name=>$2,
+                                                        body=>$4,
+                                                        end=>$6,
+                                                        linebreaksAtEnd=>{
+                                                          begin=>$3?1:0,
+                                                          body=>$5?1:0,
+                                                          end=>$8?1:0,
+                                                        },
+                                                        modifyLineBreaksYamlName=>"environments",
+                                                        regexp=>$environmentRegExp,
+                                                        endImmediatelyFollowedByComment=>$8?0:($10?1:0),
+                                                        horizontalTrailingSpace=>$7?$7:q(),
+                                                      );
+
+                # the settings and storage of most objects has a lot in common
+                $self->get_settings_and_store_new_object($env);
+                ${@{${$self}{children}}[-1]}{replacementText}.($9?$9:q()).($10?$10:q());
+                /xseg;
+    $self->adjust_line_breaks_end_parent;
     } 
     return;
 }
@@ -95,7 +103,6 @@ sub tasks_particular_to_each_object{
 
     # search for special begin/end
     $self->find_special;
-
 }
 
 sub create_unique_id{

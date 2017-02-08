@@ -51,7 +51,7 @@ sub construct_key_equals_values_regexp{
                   (\R)?                                                 # $9 linebreak at end
                 /sx;
 
-    $key_equals_values_bracesRegExpTrailingComment = qr/$key_equals_values_bracesRegExp\h*((?:$trailingCommentRegExp\h*)*)?/;
+    $key_equals_values_bracesRegExpTrailingComment = qr/$key_equals_values_bracesRegExp(\h*)((?:$trailingCommentRegExp\h*)*)?/;
 }
 
 sub indent_begin{

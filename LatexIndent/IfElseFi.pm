@@ -101,38 +101,44 @@ sub find_ifelsefi{
     my $self = shift;
 
     while( ${$self}{body} =~ m/$ifElseFiRegExp\h*($trailingCommentRegExp)?/){
-      # log file output
-      $self->logger("IfElseFi found: $2",'heading');
 
-      # create a new IfElseFi object
-      my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1.(($4 eq "\n" and !$3)?"\n":q()),
-                                              name=>$2,
-                                              # if $4 is a line break, don't count it twice (it will already be in 'begin')
-                                              body=>($4 eq "\n") ? $5.$6 : $4.$5.$6,
-                                              end=>$7,
-                                              linebreaksAtEnd=>{
-                                                begin=>(($4 eq "\n")||$3)?1:0,
-                                                body=>$6?1:0,
-                                                end=>$9?1:0,
-                                              },
-                                              aliases=>{
-                                                # begin statements
-                                                BeginStartsOnOwnLine=>"IfStartsOnOwnLine",
-                                                # end statements
-                                                EndStartsOnOwnLine=>"FiStartsOnOwnLine",
-                                                # after end statements
-                                                EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
-                                              },
-                                              elsePresent=>0,
-                                              modifyLineBreaksYamlName=>"ifElseFi",
-                                              additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
-                                              regexp=>$ifElseFiRegExp,
-                                              endImmediatelyFollowedByComment=>$9?0:($10?1:0),
-                                              horizontalTrailingSpace=>$8?$8:q(),
-                                            );
+      ${$self}{body} =~ s/
+                $ifElseFiRegExp(\h*)($trailingCommentRegExp)?
+                    /
+                        # log file output
+                        $self->logger("IfElseFi found: $2",'heading')if $is_t_switch_active;
+           
+                        # create a new IfElseFi object
+                        my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1.(($4 eq "\n" and !$3)?"\n":q()),
+                                                                name=>$2,
+                                                                # if $4 is a line break, don't count it twice (it will already be in 'begin')
+                                                                body=>($4 eq "\n") ? $5.$6 : $4.$5.$6,
+                                                                end=>$7,
+                                                                linebreaksAtEnd=>{
+                                                                  begin=>(($4 eq "\n")||$3)?1:0,
+                                                                  body=>$6?1:0,
+                                                                  end=>$9?1:0,
+                                                                },
+                                                                aliases=>{
+                                                                  # begin statements
+                                                                  BeginStartsOnOwnLine=>"IfStartsOnOwnLine",
+                                                                  # end statements
+                                                                  EndStartsOnOwnLine=>"FiStartsOnOwnLine",
+                                                                  # after end statements
+                                                                  EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
+                                                                },
+                                                                elsePresent=>0,
+                                                                modifyLineBreaksYamlName=>"ifElseFi",
+                                                                additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
+                                                                regexp=>$ifElseFiRegExp,
+                                                                endImmediatelyFollowedByComment=>$9?0:($11?1:0),
+                                                                horizontalTrailingSpace=>$8?$8:q(),
+                                                              );
+                        # the settings and storage of most objects has a lot in common
+                        $self->get_settings_and_store_new_object($ifElseFi);
+                        ${@{${$self}{children}}[-1]}{replacementText}.($10?$10:q()).($11?$11:q());
+                        /xse;
 
-      # the settings and storage of most objects has a lot in common
-      $self->get_settings_and_store_new_object($ifElseFi);
     } 
     return;
 }

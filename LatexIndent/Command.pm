@@ -32,7 +32,7 @@ sub construct_command_regexp{
             /sx;
 
     # command regexp with trailing comment
-    $commandRegExpTrailingComment = qr/$commandRegExp\h*((?:$trailingCommentRegExp\h*)*)/;
+    $commandRegExpTrailingComment = qr/$commandRegExp(\h*)((?:$trailingCommentRegExp\h*)*)/;
 
 }
 

@@ -37,37 +37,42 @@ sub find_optional_arguments{
         $self->logger("Optional argument found, body in ${$self}{name}",'heading') if $is_t_switch_active;
         $self->logger("(last argument)") if($9 eq '' and $is_t_switch_active);
 
-        # create a new Optional Argument object
-        my $optionalArg = LatexIndent::OptionalArgument->new(begin=>$1,
-                                                name=>${$self}{name}.":optionalArgument",
-                                                nameForIndentationSettings=>${$self}{parent},
-                                                parent=>${$self}{parent},
-                                                body=>$3.($4?$4:q()),
-                                                end=>$5,
-                                                linebreaksAtEnd=>{
-                                                  begin=>$2?1:0,
-                                                  body=>$4?1:0,
-                                                  end=>$7?1:0,
-                                                },
-                                                aliases=>{
-                                                  # begin statements
-                                                  BeginStartsOnOwnLine=>"LSqBStartsOnOwnLine",
-                                                  # body statements
-                                                  BodyStartsOnOwnLine=>"OptArgBodyStartsOnOwnLine",
-                                                  # end statements
-                                                  EndStartsOnOwnLine=>"RSqBStartsOnOwnLine",
-                                                  # after end statements
-                                                  EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
-                                                },
-                                                modifyLineBreaksYamlName=>"optionalArguments",
-                                                regexp=>$optArgRegExp,
-                                                # the last argument (determined by $9 eq '') needs information from the argument container object
-                                                endImmediatelyFollowedByComment=>($9 eq '')?${$self}{endImmediatelyFollowedByComment}:($8?1:0),
-                                                horizontalTrailingSpace=>$6?$6:q(),
-                                              );
+        ${$self}{body} =~ s/
+                            $optArgRegExp(\h*)($trailingCommentRegExp)*(.*)
+                           /
+                            # create a new Optional Argument object
+                            my $optionalArg = LatexIndent::OptionalArgument->new(begin=>$1,
+                                                                    name=>${$self}{name}.":optionalArgument",
+                                                                    nameForIndentationSettings=>${$self}{parent},
+                                                                    parent=>${$self}{parent},
+                                                                    body=>$3.($4?$4:q()),
+                                                                    end=>$5,
+                                                                    linebreaksAtEnd=>{
+                                                                      begin=>$2?1:0,
+                                                                      body=>$4?1:0,
+                                                                      end=>$7?1:0,
+                                                                    },
+                                                                    aliases=>{
+                                                                      # begin statements
+                                                                      BeginStartsOnOwnLine=>"LSqBStartsOnOwnLine",
+                                                                      # body statements
+                                                                      BodyStartsOnOwnLine=>"OptArgBodyStartsOnOwnLine",
+                                                                      # end statements
+                                                                      EndStartsOnOwnLine=>"RSqBStartsOnOwnLine",
+                                                                      # after end statements
+                                                                      EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
+                                                                    },
+                                                                    modifyLineBreaksYamlName=>"optionalArguments",
+                                                                    regexp=>$optArgRegExp,
+                                                                    # the last argument (determined by $10 eq '') needs information from the argument container object
+                                                                    endImmediatelyFollowedByComment=>($10 eq '')?${$self}{endImmediatelyFollowedByComment}:($9?1:0),
+                                                                    horizontalTrailingSpace=>$6?$6:q(),
+                                                                  );
 
-        # the settings and storage of most objects has a lot in common
-        $self->get_settings_and_store_new_object($optionalArg);
+                            # the settings and storage of most objects has a lot in common
+                            $self->get_settings_and_store_new_object($optionalArg);
+                            ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q()).($10?$10:q());
+                            /xseg;
         }
   }
 

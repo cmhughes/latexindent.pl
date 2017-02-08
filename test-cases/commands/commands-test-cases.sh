@@ -70,6 +70,7 @@ do
    latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml  -g=fig.log
    [[ $silentMode == 0 ]] && set +x 
 done
+[[ $silentMode == 0 ]] && set -x 
 # testing the linebreak immediately before, e.g, \mycommand
 latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod1.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod1.yaml
 latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod2.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod2.yaml

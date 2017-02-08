@@ -64,28 +64,33 @@ sub find_items{
         # log file output
         $self->logger("Item found: $2",'heading') if $is_t_switch_active;
 
-        # create a new Item object
-        my $itemObject = LatexIndent::Item->new(begin=>$1,
-                                                body=>$4,
-                                                end=>q(),
-                                                name=>$2,
-                                                linebreaksAtEnd=>{
-                                                  begin=>$3?1:0,
-                                                  body=>$5?1:0,
-                                                },
-                                                aliases=>{
-                                                  # begin statements
-                                                  BeginStartsOnOwnLine=>"ItemStartsOnOwnLine",
-                                                  # body statements
-                                                  BodyStartsOnOwnLine=>"ItemFinishesWithLineBreak",
-                                                },
-                                                modifyLineBreaksYamlName=>"items",
-                                                regexp=>$itemRegExp,
-                                                endImmediatelyFollowedByComment=>$5?0:($6?1:0),
-                                              );
+        ${$self}{body} =~ s/
+                            $itemRegExp(\h*)($trailingCommentRegExp)?
+                           /
+                            # create a new Item object
+                            my $itemObject = LatexIndent::Item->new(begin=>$1,
+                                                                    body=>$4,
+                                                                    end=>q(),
+                                                                    name=>$2,
+                                                                    linebreaksAtEnd=>{
+                                                                      begin=>$3?1:0,
+                                                                      body=>$5?1:0,
+                                                                    },
+                                                                    aliases=>{
+                                                                      # begin statements
+                                                                      BeginStartsOnOwnLine=>"ItemStartsOnOwnLine",
+                                                                      # body statements
+                                                                      BodyStartsOnOwnLine=>"ItemFinishesWithLineBreak",
+                                                                    },
+                                                                    modifyLineBreaksYamlName=>"items",
+                                                                    regexp=>$itemRegExp,
+                                                                    endImmediatelyFollowedByComment=>$5?0:($7?1:0),
+                                                                  );
 
-        # the settings and storage of most objects has a lot in common
-        $self->get_settings_and_store_new_object($itemObject);
+                            # the settings and storage of most objects has a lot in common
+                            $self->get_settings_and_store_new_object($itemObject);
+                            ${@{${$self}{children}}[-1]}{replacementText}.($6?$6:q()).($7?$7:q());
+                           /xseg;
     }
 }
 

@@ -23,37 +23,43 @@ sub find_mandatory_arguments{
         $self->logger("Mandatory argument found, body in ${$self}{name}",'heading') if $is_t_switch_active;
         $self->logger("(last argument)") if($9 eq '' and $is_t_switch_active);
 
-        # create a new Mandatory Argument object
-        my $mandatoryArg = LatexIndent::MandatoryArgument->new(begin=>$1,
-                                                name=>${$self}{name}.":mandatoryArgument",
-                                                nameForIndentationSettings=>${$self}{parent},
-                                                parent=>${$self}{parent},
-                                                body=>$3.($4?$4:q()),
-                                                end=>$5,
-                                                linebreaksAtEnd=>{
-                                                  begin=>$2?1:0,
-                                                  body=>$4?1:0,
-                                                  end=>$7?1:0,
-                                                },
-                                                aliases=>{
-                                                  # begin statements
-                                                  BeginStartsOnOwnLine=>"LCuBStartsOnOwnLine",
-                                                  # body statements
-                                                  BodyStartsOnOwnLine=>"MandArgBodyStartsOnOwnLine",
-                                                  # end statements
-                                                  EndStartsOnOwnLine=>"RCuBStartsOnOwnLine",
-                                                  # after end statements
-                                                  EndFinishesWithLineBreak=>"RCuBFinishesWithLineBreak",
-                                                },
-                                                horizontalTrailingSpace=>$6?$6:q(),
-                                                modifyLineBreaksYamlName=>"mandatoryArguments",
-                                                regexp=>$mandArgRegExp,
-                                                # the last argument (determined by $9 eq '') needs information from the argument container object
-                                                endImmediatelyFollowedByComment=>($9 eq '')?${$self}{endImmediatelyFollowedByComment}:($8?1:0),
-                                              );
+        ${$self}{body} =~ s/
+                            $mandArgRegExp(\h*)($trailingCommentRegExp)*(.*)
+                           /
+                            # create a new Mandatory Argument object
+                            my $mandatoryArg = LatexIndent::MandatoryArgument->new(begin=>$1,
+                                                                    name=>${$self}{name}.":mandatoryArgument",
+                                                                    nameForIndentationSettings=>${$self}{parent},
+                                                                    parent=>${$self}{parent},
+                                                                    body=>$3.($4?$4:q()),
+                                                                    end=>$5,
+                                                                    linebreaksAtEnd=>{
+                                                                      begin=>$2?1:0,
+                                                                      body=>$4?1:0,
+                                                                      end=>$7?1:0,
+                                                                    },
+                                                                    aliases=>{
+                                                                      # begin statements
+                                                                      BeginStartsOnOwnLine=>"LCuBStartsOnOwnLine",
+                                                                      # body statements
+                                                                      BodyStartsOnOwnLine=>"MandArgBodyStartsOnOwnLine",
+                                                                      # end statements
+                                                                      EndStartsOnOwnLine=>"RCuBStartsOnOwnLine",
+                                                                      # after end statements
+                                                                      EndFinishesWithLineBreak=>"RCuBFinishesWithLineBreak",
+                                                                    },
+                                                                    horizontalTrailingSpace=>$6?$6:q(),
+                                                                    modifyLineBreaksYamlName=>"mandatoryArguments",
+                                                                    regexp=>$mandArgRegExp,
+                                                                    # the last argument (determined by $10 eq '') needs information from the argument container object
+                                                                    endImmediatelyFollowedByComment=>($10 eq '')?${$self}{endImmediatelyFollowedByComment}:($9?1:0),
+                                                                  );
 
-        # the settings and storage of most objects has a lot in common
-        $self->get_settings_and_store_new_object($mandatoryArg);
+                            # the settings and storage of most objects has a lot in common
+                            $self->get_settings_and_store_new_object($mandatoryArg);
+                            ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q()).($10?$10:q());
+                            /xseg;
+    $self->wrap_up_tasks;
         }
   }
 

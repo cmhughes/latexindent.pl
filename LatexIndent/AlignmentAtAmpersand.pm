@@ -58,22 +58,27 @@ sub find_aligned_block{
 
             while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
-              # create a new Environment object
-              my $alignmentBlock = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
-                                                    body=>$2,
-                                                    end=>$3,
-                                                    name=>$alignmentBlock,
-                                                    modifyLineBreaksYamlName=>"environments",
-                                                    regexp=>$noIndentRegExp,
-                                                    linebreaksAtEnd=>{
-                                                      begin=>1,
-                                                      body=>1,
-                                                      end=>0,
-                                                    },
-                                                    );
+              ${$self}{body} =~ s/
+                                    $noIndentRegExp
+                                /
+                                    # create a new Environment object
+                                    my $alignmentBlock = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
+                                                                          body=>$2,
+                                                                          end=>$3,
+                                                                          name=>$alignmentBlock,
+                                                                          modifyLineBreaksYamlName=>"environments",
+                                                                          regexp=>$noIndentRegExp,
+                                                                          linebreaksAtEnd=>{
+                                                                            begin=>1,
+                                                                            body=>1,
+                                                                            end=>0,
+                                                                          },
+                                                                          );
             
-              # the settings and storage of most objects has a lot in common
-              $self->get_settings_and_store_new_object($alignmentBlock);
+                                    # the settings and storage of most objects has a lot in common
+                                    $self->get_settings_and_store_new_object($alignmentBlock);
+                                    ${@{${$self}{children}}[-1]}{replacementText};
+                              /xseg;
             } 
       } else {
             $self->logger("*not* looking for $alignmentBlock as $alignmentBlock:$yesno");

@@ -49,7 +49,7 @@ sub construct_unnamed_grouping_braces_brackets_regexp{
                   (\R)?                 # $6 linebreak 
                 /sx;
 
-    $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp\h*((?:$trailingCommentRegExp\h*)*)?/; 
+    $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp(\h*)((?:$trailingCommentRegExp\h*)*)?/; 
 }
 
 sub create_unique_id{
