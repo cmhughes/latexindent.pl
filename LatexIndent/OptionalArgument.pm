@@ -63,7 +63,6 @@ sub find_optional_arguments{
                                                                       EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
                                                                     },
                                                                     modifyLineBreaksYamlName=>"optionalArguments",
-                                                                    regexp=>$optArgRegExp,
                                                                     # the last argument (determined by $10 eq '') needs information from the argument container object
                                                                     endImmediatelyFollowedByComment=>($10 eq '')?${$self}{endImmediatelyFollowedByComment}:($9?1:0),
                                                                     horizontalTrailingSpace=>$6?$6:q(),

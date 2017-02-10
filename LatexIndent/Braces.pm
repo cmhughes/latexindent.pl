@@ -50,7 +50,6 @@ sub find_commands_or_key_equals_values_braces{
                                                                       end=>$8?1:0,            # $8 is linebreak before comment check, $10 is after
                                                                     },
                                                                     modifyLineBreaksYamlName=>"commands",
-                                                                    #regexp=>($8?$commandRegExp:$commandRegExpTrailingComment),
                                                                     endImmediatelyFollowedByComment=>$8?0:($10?1:0),
                                                                     aliases=>{
                                                                       # begin statements
@@ -85,7 +84,6 @@ sub find_commands_or_key_equals_values_braces{
                                                                      end=>$9?1:0,                # $9 is linebreak before comment check
                                                                    },
                                                                    modifyLineBreaksYamlName=>"keyEqualsValuesBracesBrackets",
-                                                                   #regexp=>($9?$key_equals_values_bracesRegExp:$key_equals_values_bracesRegExpTrailingComment),
                                                                    beginningbit=>$1,
                                                                    endImmediatelyFollowedByComment=>$9?0:($11?1:0),
                                                                    aliases=>{
@@ -122,7 +120,6 @@ sub find_commands_or_key_equals_values_braces{
                                                                       end=>$8?1:0,
                                                                     },
                                                                     modifyLineBreaksYamlName=>"namedGroupingBracesBrackets",
-                                                                    regexp=>($8?$grouping_braces_regexp:$grouping_braces_regexpTrailingComment),
                                                                     beginningbit=>$1,
                                                                     endImmediatelyFollowedByComment=>$8?0:($9?1:0),
                                                                     aliases=>{
@@ -157,7 +154,6 @@ sub find_commands_or_key_equals_values_braces{
                                                                       end=>$6?1:0,
                                                                     },
                                                                     modifyLineBreaksYamlName=>"UnNamedGroupingBracesBrackets",
-                                                                    regexp=>($6?$un_named_grouping_braces_RegExp:$un_named_grouping_braces_RegExp_trailing_comment),
                                                                     beginningbit=>$1.($2?$2:q()),
                                                                     endImmediatelyFollowedByComment=>$6?0:($8?1:0),
                                                                     # begin statements

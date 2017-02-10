@@ -67,7 +67,6 @@ sub find_aligned_block{
                                                                           end=>$3,
                                                                           name=>$alignmentBlock,
                                                                           modifyLineBreaksYamlName=>"environments",
-                                                                          regexp=>$noIndentRegExp,
                                                                           linebreaksAtEnd=>{
                                                                             begin=>1,
                                                                             body=>1,

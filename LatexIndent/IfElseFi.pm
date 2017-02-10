@@ -130,7 +130,6 @@ sub find_ifelsefi{
                                                                 elsePresent=>0,
                                                                 modifyLineBreaksYamlName=>"ifElseFi",
                                                                 additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
-                                                                regexp=>$ifElseFiRegExp,
                                                                 endImmediatelyFollowedByComment=>$9?0:($11?1:0),
                                                                 horizontalTrailingSpace=>$8?$8:q(),
                                                               );

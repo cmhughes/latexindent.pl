@@ -63,7 +63,6 @@ sub find_environments{
                                                           end=>$8?1:0,
                                                         },
                                                         modifyLineBreaksYamlName=>"environments",
-                                                        regexp=>$environmentRegExp,
                                                         endImmediatelyFollowedByComment=>$8?0:($10?1:0),
                                                         horizontalTrailingSpace=>$7?$7:q(),
                                                       );

@@ -120,7 +120,6 @@ sub find_file_contents_environments_and_preamble{
                                                 end=>0,
                                               },
                                               afterbit=>($2?$2:q())."\\begin{document}",
-                                              regexp=>$preambleRegExp,
                                               modifyLineBreaksYamlName=>"preamble",
                                               );
 

@@ -144,7 +144,6 @@ sub find_special{
                                                                               EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
                                                                             },
                                                                             modifyLineBreaksYamlName=>"specialBeginEnd",
-                                                                            regexp=>$specialRegExp,
                                                                             endImmediatelyFollowedByComment=>$7?0:($9?1:0),
                                                                             horizontalTrailingSpace=>$6?$6:q(),
                                                                           );

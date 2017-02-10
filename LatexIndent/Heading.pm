@@ -124,7 +124,6 @@ sub find_heading{
                                                                           end=>0,
                                                                         },
                                                                         modifyLineBreaksYamlName=>"afterHeading",
-                                                                        regexp=>$headingRegExp,
                                                                         endImmediatelyFollowedByComment=>0,
                                                                       );
 

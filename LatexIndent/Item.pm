@@ -83,7 +83,6 @@ sub find_items{
                                                                       BodyStartsOnOwnLine=>"ItemFinishesWithLineBreak",
                                                                     },
                                                                     modifyLineBreaksYamlName=>"items",
-                                                                    regexp=>$itemRegExp,
                                                                     endImmediatelyFollowedByComment=>$5?0:($7?1:0),
                                                                   );
 
