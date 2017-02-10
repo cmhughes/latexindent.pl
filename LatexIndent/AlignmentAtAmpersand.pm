@@ -123,15 +123,15 @@ sub align_at_ampersand{
 
     # now loop back through the body, and store the maximum column size
     foreach(split("\n",${$self}{body})){
+        # remove \\ and anything following it
+        my $endPiece;
+        if($_ =~ m/(\\\\.*)/){
+            $_ =~ s/(\\\\.*)//;
+            $endPiece = $1;
+        }
+
         my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
         if($numberOfAmpersands == $maximumNumberOfAmpersands){
-            # remove \\ and anything following it
-            my $endPiece;
-            if($_ =~ m/(\\\\.*)/){
-                $_ =~ s/(\\\\.*)//;
-                $endPiece = $1;
-            }
-
             # remove any trailing comments
             my $trailingComments;
             if($_ =~ m/$trailingCommentRegExp/ ){
@@ -172,7 +172,7 @@ sub align_at_ampersand{
         } else {
             # otherwise simply store the row
             push(@formattedBody,{
-                                row=>$_,
+                                row=>$_.($endPiece ? $endPiece : q() ),
                                 format=>0});
         }
     }
