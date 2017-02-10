@@ -38,6 +38,8 @@ latexindent.pl -s 39149-morbusg.tex -outputfile 39149-morbusg-default.tex -l ind
 latexindent.pl -s 39149-mark-wibrow1.tex -outputfile 39149-mark-wibrow1-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-mark-wibrow2.tex -outputfile 39149-mark-wibrow2-default.tex -l indentPreamble.yaml
 #latexindent.pl -s 39149-SztupY.tex -outputfile 39149-SztupY-default.tex -l indentPreamble.yaml
+latexindent.pl -s 103863-kiss-my-armpit1.tex -o=103863-kiss-my-armpit1-default.tex -l indentPreamble.yaml
+latexindent.pl -s 135683-kiss-my-armpit1.tex -o=135683-kiss-my-armpit1-default.tex -l indentPreamble.yaml
 
 # =======  pgfplots tag  =========
 # =======  pgfplots tag  =========

@@ -106,5 +106,8 @@ latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.t
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
+# round brackets ( )
+latexindent.pl -s brackets1.tex -o brackets1-default.tex
+latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/indentPreamble.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

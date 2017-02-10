@@ -204,11 +204,24 @@ sub get_arguments_regexp{
     # beamer special
     my $beamerRegExp = qr/\<.*?\>/;
 
+    # a few authors use () in their command definition
+    my $bracketRegExp = qr/
+                (?<!\\)
+                \(
+                      (?:
+                          (?!
+                              (?:(?<!\\)\[|(?<!\\)\{|(?<!\\)\() 
+                          ).
+                      )*?     # not including [ OR { OR (  but \[ \{ \( are ok
+                (?<!\\)
+                \) 
+                /xs;
+
     # arguments regexp
     return qr/
                           (                          # capture into $1
                              (?:                  
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^)* 
+                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$bracketRegExp)* 
                                 (?:
                                      (?:
                                          \h*         # 0 or more spaces
@@ -241,13 +254,11 @@ sub get_arguments_regexp{
                              # NOT followed by
                              (?!
                                (?:
-                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|$bracketRegExp)*  # 0 or more h-space, blanklines, trailing comments
                                    (?:
                                      (?:(?<!\\)\[)
                                      |
                                      (?:(?<!\\)\{)
-                                     #|
-                                     #=
                                    )
                                )
                              )
