@@ -1,6 +1,6 @@
 % arara: pdflatex: {shell: yes}
 % !arara: bibtex
-% arara: pdflatex: {shell: yes}
+% !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
@@ -122,7 +122,8 @@
 			width=0.9\linewidth,
 			before=\centering,
 			%bottomrule=1pt,
-			%overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=8mm]frame.north east) {\includegraphics[width=8mm]{logo}}; }
+            enhanced,
+            overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
 		}
 }
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=0
+loopmax=32
 . ../common.sh
 
 # if silentMode is not active, verbose
@@ -68,5 +68,19 @@ latexindent.pl -s -l=env-all-on.yaml,indentRulesGlobal.yaml environments-ifelsef
 latexindent.pl -s -l=env-all-on.yaml,indentRulesGlobal.yaml,noAdditionalIndentGlobal.yaml  environments-simple.tex -o=environments-simple-indent-rules-global-conflict.tex
 # special characters
 latexindent.pl -s environments-special-characters.tex -o environments-special-characters-default.tex
+# loop! this file was the first test-case file I created, and I hadn't yet explored looping. better late than never
+# modifyLineBreaks experiments
+[[ $silentMode == 0 ]] && set +x 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+   [[ $silentMode == 0 ]] && set -x 
+   latexindent.pl -s env-single-line.tex -o env-single-line-mod$i.tex -m -l=env-mod$i.yaml
+   [[ $silentMode == 0 ]] && set +x 
+done
+
+[[ $silentMode == 0 ]] && set -x 
+
+
 [[ $noisyMode == 1 ]] && makenoise
 git status
