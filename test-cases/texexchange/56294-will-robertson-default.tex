@@ -1,0 +1,96 @@
+\documentclass{article}
+\usepackage{expl3}
+\begin{document}
+\ExplSyntaxOn
+
+\cs_if_free:NT \group_insert_after:N
+{
+	\cs_set_eq:NN \group_insert_after:N \group_execute_after:N
+}
+
+\cs_generate_variant:Nn \tl_if_empty:nT {v}
+\cs_generate_variant:Nn \group_insert_after:N {c}
+
+\cs_new:Nn \group_after_insert:nn
+{
+	\cs_if_exist:cF { g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+	{
+		\tl_new:c { g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+	}
+
+	% first time the function is executed inside the group:
+	\tl_if_empty:vT { g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+	{
+		% set up the aftergroup execution:
+		\group_insert_after:c
+		{ g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+
+		% reset the material for aftergroup execution:
+		\tl_gset:cx { g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+		{
+			\tl_gclear:c { g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+		}
+	}
+
+	% append the new material to the aftergroup execution:
+	\tl_gput_right:cx
+	{ g_aftergroup_ \int_use:N \etex_currentgrouplevel:D _tl }
+	{
+		\exp_not:n { #1 {#2} }
+	}
+}
+
+\cs_generate_variant:Nn \group_after_insert:nn {nV}
+
+\cs_new:Npn \group_var_return:NN #1 #2
+{
+	\group_after_insert:nV { #1 #2  } { #2 }
+}
+
+\int_new:N \y
+\int_new:N \yy
+
+\cs_generate_variant:Nn \tl_if_eq:nnF {V}
+\cs_new:Nn \assert:Nn
+{
+	\tl_if_eq:VnF #1 {#2} {[ERROR:\tl_to_str:n{#1~!=~#2}]}
+}
+
+\group_begin:
+\tl_set:Nn \x {xx}
+\tl_set:Nn \xx {x}
+\group_after_insert:nV { \tl_set:Nn \x  } { \x  }
+\group_after_insert:nV { \tl_set:Nn \xx } { \xx }
+\assert:Nn \x {xx}
+\assert:Nn \xx {x}
+\group_begin:
+\int_set:Nn \y {3}
+\int_set:Nn \yy {2}
+\group_var_return:NN \int_set:Nn \y
+\group_var_return:NN \int_set:Nn \yy
+\assert:Nn \y  {3}
+\assert:Nn \yy {2}
+\group_end:
+\assert:Nn \x {xx}
+\assert:Nn \xx {x}
+\assert:Nn \y  {3}
+\assert:Nn \yy {2}
+
+% check repeated doesn't break anything:
+\group_begin:
+\int_set:Nn \y  {6}
+\int_set:Nn \yy {5}
+\group_end:
+\assert:Nn \x {xx}
+\assert:Nn \xx {x}
+\assert:Nn \y  {3}
+\assert:Nn \yy {2}
+\group_end:
+
+\assert:Nn \x {xx}
+\assert:Nn \xx {x}
+\assert:Nn \y  {0}
+\assert:Nn \yy {0}
+
+\ExplSyntaxOff
+\end{document}

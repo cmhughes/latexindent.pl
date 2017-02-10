@@ -52,8 +52,31 @@ latexindent.pl -s 352502.tex -o 352502-default.tex -l indentPreamble.yaml
 latexindent.pl -s 352495.tex -o 352495-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 352396-Zarko1.tex -o 352396-Zarko1-default.tex -l indentPreamble.yaml
 
-# =======  latex3 tag  =========
-# =======  latex3 tag  =========
-# =======  latex3 tag  =========
+# =======  latex3/expl3 tag  =========
+# =======  latex3/expl3 tag  =========
+# =======  latex3/expl3 tag  =========
+latexindent.pl -s 350642 -o 350642-default.tex 
+latexindent.pl -s 353035 -o 353035-default.tex -l indentPreamble.yaml
 latexindent.pl -s 253693 -o 253693-default.tex
+latexindent.pl -s 253693-Sean-Allred.tex -o 253693-Sean-Allred-default.tex -local=indentPreamble.yaml
+latexindent.pl -s -m 253693-Sean-Allred.tex -o 253693-Sean-Allred-mod1.tex -local=indentPreamble.yaml,253693.yaml,groupBeginEnd.yaml
+latexindent.pl -s 253693-John-Kormylo -o 253693-John-Kormylo-default.tex -l indentPreamble.yaml
+latexindent.pl -s 253693-Manuel -o 253693-Manuel-default.tex -local indentPreamble.yaml
+latexindent.pl -s 96768-A-Ellett.tex -o 96768-A-Ellett-default.tex 
+latexindent.pl -s 96768-A-Ellett.tex -o 96768-A-Ellett-always-un-named.tex -l always-un-named.yaml
+latexindent.pl -s 96768-egreg.tex -o 96768-egreg-default.tex 
+latexindent.pl -s 96768-egreg.tex -o 96768-egreg-always-un-named.tex -l always-un-named.yaml
+latexindent.pl -s 56294-will-robertson.tex -outputfile=56294-will-robertson-default.tex
+latexindent.pl -s 56294-will-robertson.tex -outputfile=56294-will-robertson-groupBegEnd.tex -l=groupBeginEnd.yaml
+latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-default.tex -l indentPreamble.yaml
+latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-groupBegEnd.tex -l indentPreamble.yaml,groupBeginEnd.yaml
+latexindent.pl -s 56294-Ahmed-Musa2.tex -o 56294-Ahmed-Musa2-default.tex -tt
+
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+
+# =======  beamer tag  =========
+# =======  beamer tag  =========
+# =======  beamer tag  =========
 git status

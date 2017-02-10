@@ -1,0 +1,19 @@
+\hbox{%
+  \def\classlist{David/Salomon, Michael/Downes, Frank/Mittelbach, David/Carlisle, 
+    David/Kastrup, Heiko/Oberdiek, Till/Tantau, Donald/Arseneau, Joseph/Wright, 
+    Hans/Hagen, Taco/Hoekwater, Hartmut/Henkel, Robin/Fairbain, Ulrike/Fischer, 
+    Ulrich/Diez}
+  % Let Will's processing function be \do:
+  \def\do#1/#2,{%
+    \ifx\do#1\else
+      \noexpand\elt{\cpttrimspace{#1}}{\cpttrimspace{#2}}%
+      \expandafter\do
+    \fi
+  }%
+  \edef\classlist{\expandafter\do\classlist,\do/,}%
+  \aftergroupexecute{\def\includelater{Will Robertson}}
+  \expandafter\aftergroupexecute\expandafter{\expandafter\def\expandafter
+  \somemasters\expandafter{\classlist}}
+}
+%\show\includelater
+\show\somemasters

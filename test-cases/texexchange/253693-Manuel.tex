@@ -1,0 +1,14 @@
+\documentclass{scrartcl}
+\usepackage{xintgcd,xintfrac}
+
+\newcommand*\reducedfrac[2]
+  {\begingroup
+     \edef\gcd{\xintGCD{#1}{#2}}%
+     \frac{\xintNum{\xintDiv{#1}{\gcd}}}{\xintNum{\xintDiv{#2}{\gcd}}}%
+   \endgroup}
+
+\begin{document}
+\[
+  \frac{278922}{74088} = \reducedfrac{278922}{74088}
+\]
+\end{document}

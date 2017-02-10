@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        int_compare:nTF:
+            LCuBStartsOnOwnLine: -1
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0

@@ -1,0 +1,51 @@
+\documentclass{article}
+\usepackage{xparse,graphicx}
+\begin{document}
+\ExplSyntaxOn
+\tl_new:N \l_pre_graphics_tl
+\tl_new:N \g_pre_img_options_tl
+\tl_new:N \g_pre_img_tl
+\cs_new_protected_nopar:Nn \pre_key_tl_save:Nn
+{
+  \tl_if_empty:cF {l_pre_#2_tl}
+    {
+      \tl_gput_right:No #1 { #2 = }
+      \tl_gput_right:NV #1 \c_left_brace_str
+      \tl_gput_right:Nv #1 { l_pre_#2_tl }
+      \tl_gput_right:NV #1 \c_right_brace_str
+      \tl_gput_right:Nn #1 { , }
+    }
+}
+\cs_generate_variant:Nn \tl_gput_right:Nn {Nv}
+% includegraphics bit courtesy of egreg (chat 2015-01-08)
+\cs_new:Npn \pre_includegraphics:nn #1 #2
+ {
+  \includegraphics[#1]{#2}
+ }
+\cs_generate_variant:Nn \pre_includegraphics:nn { VV }
+\keys_define:nn { pre / img }
+{
+  graphics .tl_set:N = \l_pre_graphics_tl,
+}
+\NewDocumentCommand \incimg { o m }
+{
+  \group_begin:
+    \tl_if_empty:NF \g_pre_img_options_tl
+    {
+      \keys_set:nV { pre / img } \g_pre_img_options_tl
+    }
+    \IfValueT{#1}{ \keys_set:nn { pre / img } { #1 } }
+    \pre_key_tl_save:Nn \g_pre_img_options_tl { graphics }
+    \tl_set:Nn \g_pre_img_tl { #2 }
+    \pre_includegraphics:VV \l_pre_graphics_tl \g_pre_img_tl
+  \group_end:
+}
+\ExplSyntaxOff
+
+\incimg[
+  graphics={width=\textwidth},
+]{example-image-a}
+\incimg[
+  graphics={width=\textwidth},
+]{example-image-a}
+\end{document}

@@ -1,0 +1,40 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\newcount{\numerator}
+\newcount{\denominator}
+\newcount{\gcd}
+
+% compute \gcd and returns reduced \numerator and \denominator
+\newcommand{\reduce}[2]% #1=numerator, #2=denominator
+{\numerator=#1\relax
+ \denominator=#2\relax
+ \loop
+ \ifnum\numerator<\denominator
+   \advance\denominator by -\numerator
+   \gcd=\denominator
+ \else
+   \advance\numerator by -\denominator
+   \gcd=\numerator% swap
+ \fi
+ \ifnum\gcd>1 \repeat
+ \ifnum\gcd=0 \gcd=\denominator\fi
+ \numerator=#1\relax
+ \divide\numerator by \gcd
+ \denominator=#2\relax
+ \divide\denominator by \gcd
+}
+
+\begin{document}
+
+For example, I would like the fraction
+\begin{equation*}
+  \frac{278922}{74088}
+\end{equation*}
+to be reduced to\reduce{278922}{74088}
+\begin{equation*}
+  \frac{\the\numerator}{\the\denominator} =
+  \frac{6641}{1764}
+\end{equation*}
+
+\end{document}
