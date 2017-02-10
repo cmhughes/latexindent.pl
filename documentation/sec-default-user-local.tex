@@ -277,7 +277,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	\end{minipage}%
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks
-	(see \fixthis{need a reference to special section!}); for example, assuming that you have a command called \lstinline!\matrix!
+    (see \texttt{specialBeginEnd} on \cpageref{yaml:specialBeginEnd}); for example, assuming that you have a command called \lstinline!\matrix!
 	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you 
     run the command
     \begin{commandshell}
@@ -341,7 +341,7 @@ latexindent.pl -l matrix1.tex
 	to their user settings (see \vref{sec:indentconfig} for details of how to configure user settings,
 	and \vref{lst:mysettings} in particular \label{page:examsettings}.)
 
-\yamltitle{specialBeginEnd}*{fields}
+    \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.

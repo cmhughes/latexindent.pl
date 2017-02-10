@@ -122,8 +122,8 @@
 			width=0.9\linewidth,
 			before=\centering,
 			%bottomrule=1pt,
-            enhanced,
-            overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
+			enhanced,
+			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
 		}
 }
 
@@ -390,7 +390,7 @@
 		all communication, please visit \cite{latexindent-home}.}}
 \maketitle
 \begin{adjustwidth}{1cm}{1cm}
-  \small
+	\small
 	\texttt{latexindent.pl} is a \texttt{Perl} script that indents \texttt{.tex} (and other)
 	files according to an indentation scheme that the user can modify to suit their
 	taste. Environments, including those with alignment delimiters (such as \texttt{tabular}),
@@ -405,34 +405,28 @@
 	\lstlistoflistings
 }
 
-%\input{sec-introduction}
-%\input{sec-demonstration}
-%\input{sec-how-to-use}
-%\input{sec-indent-config-and-settings.tex}
-%\input{sec-default-user-local}
-%\input{subsec-noAdditionalIndent-indentRules}
-%\input{subsubsec-environments-and-their-arguments}
-%\input{subsubsec-environments-with-items}
-%\input{subsubsec-commands-with-arguments}
-%\input{subsubsec-ifelsefi}
-%\input{subsubsec-special}
-%\input{subsubsec-headings}
-%\input{subsubsec-no-add-remaining-code-blocks}
-%\stopcontents[noAdditionalIndent]
-%\input{sec-the-m-switch}
-%\input{subsec-partnering-poly-switches}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-indent-config-and-settings.tex}
+\input{sec-default-user-local}
+\input{subsec-noAdditionalIndent-indentRules}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+\input{subsubsec-ifelsefi}
+\input{subsubsec-special}
+\input{subsubsec-headings}
+\input{subsubsec-no-add-remaining-code-blocks}
+\stopcontents[noAdditionalIndent]
+\input{sec-the-m-switch}
+\input{subsec-partnering-poly-switches}
 \input{subsec-conflicting-poly-switches}
-%\input{references}
-%\input{appendices}
+\input{references}
+\input{appendices}
 \end{document}
 
 \section{Known limitations}\label{sec:knownlimitations}
-
- The following command struggles because of the []
- %\strip_marks:n #1
- %	{
- %	\regex_replace_all:nnN { \c{marks}\cB\{ [^\}]* \cE\} } {  } \l_solution_text_tl
- %	}
 
  The following struggles:
 
