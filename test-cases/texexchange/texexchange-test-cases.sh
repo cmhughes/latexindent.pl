@@ -3,6 +3,20 @@ loopmax=0
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+latexindent.pl -s  2441-Bernard.tex -o  2441-Bernard-default.tex
+latexindent.pl -s 31672-Werner.tex -o 31672-Werner-default.tex
+latexindent.pl -s 31672-s1l3n0.tex -o 31672-s1l3n0-default.tex
+latexindent.pl -s 31672-Bernard.tex -o 31672-Bernard-default.tex -l indentPreamble.yaml
+latexindent.pl -s 112343-Tom-Bombadil.tex -o 112343-Tom-Bombadil-default.tex
+latexindent.pl -s 112343-dcmst.tex -o 112343-dcmst-default.tex -l indentPreamble.yaml,tcolorboxAlignDelims.yaml
+latexindent.pl -s 112343-jon.tex -o 112343-jon-default.tex -l indentPreamble.yaml -m 
+latexindent.pl -s 112343-gekkostate.tex -o 112343-gekkostate-default.tex -l indentPreamble.yaml
+latexindent.pl -s 112343-morbusg.tex -o 112343-morbusg-default.tex -l indentPreamble.yaml,halignDelims.yaml
+latexindent.pl -s 112343-gonzalo.tex -o 112343-gonzalo-default.tex -l indentPreamble.yaml
+latexindent.pl -s 112343-quinmars.tex -o 112343-quinmars-default.tex -l indentPreamble.yaml -m
 
 # =======  tikz tag  ========= 
 # =======  tikz tag  =========
@@ -71,10 +85,6 @@ latexindent.pl -s 56294-will-robertson.tex -outputfile=56294-will-robertson-grou
 latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-default.tex -l indentPreamble.yaml
 latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-groupBegEnd.tex -l indentPreamble.yaml,groupBeginEnd.yaml
 latexindent.pl -s 56294-Ahmed-Musa2.tex -o 56294-Ahmed-Musa2-default.tex -tt
-
-# =======  tabular tag  =========
-# =======  tabular tag  =========
-# =======  tabular tag  =========
 
 # =======  beamer tag  =========
 # =======  beamer tag  =========

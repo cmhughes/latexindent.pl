@@ -1,0 +1,119 @@
+\documentclass[a4,portrait,semrot]{seminar}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage[skip=4pt]{caption}
+\usepackage{booktabs}
+\usepackage{dcolumn}
+\usepackage{units}
+\usepackage{array}
+
+\pagestyle{empty}
+\renewcommand{\printlandscape}{\special{landscape}}
+\slideframe{none}
+\centerslidesfalse
+\slidesmag{3}
+\setlength{\slideheight}{183mm}
+\setlength{\slidewidth}{264mm}
+
+\makeatletter
+\newcommand{\armultirow}[3]{%
+  \multicolumn{#1}{#2}{%
+    \begin{picture}(0,0)%
+      \put(0,0){%
+        \begin{tabular}[t]{@{}#2@{}}%
+          #3%
+        \end{tabular}%
+      }%
+    \end{picture}%
+  }%
+}%
+
+\newcolumntype{f}{>{$}l<{$}}
+\newcolumntype{n}{l}
+\newcolumntype{N}{>{\scriptsize}l}
+\newcolumntype{v}[1]{>{\raggedright\hspace{0pt}}p{#1}}
+\newcolumntype{V}[1]{>{\scriptsize\raggedright\hspace{0pt}}p{#1}}
+%
+% array.sty, dcolumn.sty
+\newcolumntype{B}[1]{>{\boldmath\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{d}[1]{>{\DC@{.}{,}{#1}}l<{\DC@end}}
+\newcolumntype{i}[1]{>{\DC@{.}{,}{#1}\mathnormal\bgroup}l<{\egroup\DC@end}}
+\newcolumntype{s}[1]{>{\DC@{.}{,}{#1}\mathsf\bgroup}l<{\egroup\DC@end}}
+%
+% array.sty, rotating.sty
+\newcolumntype{R}[1]{%
+  >{\begin{turn}{90}\begin{minipage}{#1}\scriptsize\raggedright\hspace{0pt}}l%
+  <{\end{minipage}\end{turn}}%
+}
+%
+% array.sty, tabularx.sty
+\newcolumntype{x}{>{\scriptsize\raggedright\hspace{0pt}}X}
+\makeatother
+\begin{document}
+
+\begin{slide*}
+  \begin{table}
+    \centering
+    \caption{Minuskelziffern}
+    \label{tab:minuskelziffern}
+    \begin{tabular}{@{}v{7em}i{4.0}i{3.0}i{5.0}n@{}}
+      \toprule
+        &
+        \multicolumn{4}{N@{}}{Diese also Sachen} \          \cmidrule(l){2-5}
+        &
+        \multicolumn{1}{V{5.5em}}{Blick linken sonst endlich} &
+        \multicolumn{1}{V{5.5em}}{auf nicht weit Soll des} &
+        \multicolumn{1}{V{5em}}{gleich man kann ist} &
+        \multicolumn{1}{V{5em}@{}}{weil Sache zu einem} \            &
+        &
+        \multicolumn{1}{N}{\unit{\%}} \          \cmidrule(r){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}%
+        \cmidrule(l){5-5}
+        \armultirow{1}{@{}v{7em}}{Um hier sonst damit Platz ist gegeben} &
+          1991 & 20 & 45637 & \oldstylenums{657} unter  \            & 1992 & 47 & 47916 & \oldstylenums{645} linken \            & 1993 & 65 & 22848 & \oldstylenums{347} nein   \          \addlinespace
+        \armultirow{1}{@{}v{7em}}{Durch gehört wollen und} &
+          1994 &  87 & 46475 & \oldstylenums{957} einem  \            & 1995 &  95 & 94356 & \oldstylenums{8363} Sache \            & 1996 & 100 & 84646 & \oldstylenums{93635} nein \          \cmidrule(r){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}%
+        \cmidrule(l){5-5}
+        &
+        \multicolumn{4}{N@{}}{Gerade langt hinauf sonst nicht gleich
+          man} \          \cmidrule(r){1-1}\cmidrule(l){2-5}
+        \armultirow{1}{@{}v{7em}}{Um hier damit Platz hat} &
+          1796 &   4 & 46032 & \oldstylenums{56} scheidet \            & 1896 &  25 & 38937 & \oldstylenums{746} linken  \            & 1996 & 100 & 83458 & \oldstylenums{48746} eine  \          \bottomrule
+    \end{tabular}
+  \end{table}
+\end{slide*}
+
+\begin{slide*}
+  \begin{table}
+    \centering
+    \footnotesize
+    \caption{Kathodenfallableiter}
+    \label{tab:kathoden}
+    \begin{tabular}{@{}nd{1.1}*{3}{d{1.2}}d{1.1}d{3.2}@{}}
+      \toprule
+        \multicolumn{1}{@{}N}{Typenbezeichnung} &
+        \multicolumn{5}{N}{Spannungsschutz für Netze} &
+        \multicolumn{1}{N@{}}{Preis} \            &
+        \multicolumn{5}{N}{Leiterspannung an der Einbaustelle} \          \cmidrule(lr){2-6}
+        &
+        \multicolumn{2}{V{6.5em}}{Nicht geerdeter Sternpunkt} &
+        \multicolumn{2}{V{6.5em}}{Starr geerdeter Sternpunkt} &
+        \multicolumn{1}{V{4em}}{Nenn"-spannung} \          \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+        &
+        \multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
+        \multicolumn{1}{V{4.5em}}{Zulässiger Bereich} &
+        \multicolumn{1}{V{4.5em}}{Normale Leiterspannung} &
+        \multicolumn{1}{V{4.5em}}{Zulässiger Bereich} \            &
+        \multicolumn{1}{N}{\unit{kV}} &
+        \multicolumn{1}{N}{\unit{kV}} &
+        \multicolumn{1}{N}{\unit{kV}} &
+        \multicolumn{1}{N}{\unit{kV}} &
+        \multicolumn{1}{N}{\unit{kV}} &
+        \multicolumn{1}{N}{DM} \          \cmidrule(r){1-1}\cmidrule(lr){2-2}\cmidrule(lr){3-3}\cmidrule(lr){4-4}%
+        \cmidrule(lr){5-5}\cmidrule(lr){6-6}\cmidrule(l){7-7}
+        H 484--1   & 1   & 1.15 & 1.25 & 1.45 & 1   & 220.$---$ \            H 484--1,5 & 1.5 & 1.8  & 1.9  & 2.2  & 1.5 & 233.$---$ \            H 484--2   & 2   & 2.3  & 2.5  & 2.9  & 2   & 252.$---$ \            H 484--2,5 & 3   & 2.9  & 3.1  & 3.6  & 2.5 & 261.$---$ \            H 484--3   & 3.5 & 3.5  & 3.8  & 4.3  & 3   & 264.$---$ \          \bottomrule
+    \end{tabular}
+  \end{table}
+\end{slide*}
+
+\end{document}

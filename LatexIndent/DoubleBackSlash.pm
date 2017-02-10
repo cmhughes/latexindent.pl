@@ -15,7 +15,7 @@ our @EXPORT_OK = qw/dodge_double_backslash un_dodge_double_backslash/;
 sub dodge_double_backslash{
     my $self = shift;
 
-    ${$self}{body} =~ s/(?:\\\\(\{|\[|\}|\]))/$tokens{doubleBackSlash}$1/sg;
+    ${$self}{body} =~ s/(?:\\\\(\{|\}|\]))/$tokens{doubleBackSlash}$1/sg;
     return;
 }
 

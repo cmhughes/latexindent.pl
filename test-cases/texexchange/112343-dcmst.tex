@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\tcbuselibrary{skins}
+
+\newcolumntype{Y}{>{\raggedleft\arraybackslash}X}
+
+\tcbset{tab1/.style={fonttitle=\bfseries\large,fontupper=\normalsize\sffamily,
+colback=yellow!10!white,colframe=red!75!black,colbacktitle=Salmon!40!white,
+coltitle=black,center title,freelance,frame code={
+\foreach \n in {north east,north west,south east,south west}
+{\path [fill=red!75!black] (interior.\n) circle (3mm); };},}}
+
+\tcbset{tab2/.style={enhanced,fonttitle=\bfseries,fontupper=\normalsize\sffamily,
+colback=yellow!10!white,colframe=red!50!black,colbacktitle=Salmon!40!white,
+coltitle=black,center title}}
+
+\begin{document}
+
+\begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y||Y}]
+Group & One     & Two     & Three    & Four     & Sum      \\\hline\hline
+Red&1000.00&2000.00&3000.00&4000.00&10000.00\\\hline
+Green&2000.00&3000.00&4000.00&5000.00&14000.00\\\hline
+Blue&3000.00&4000.00&5000.00&6000.00&18000.00\\\hline\hline
+Sum&6000.00&9000.00&12000.00&15000.00&42000.00
+\end{tcolorbox}
+
+\begin{tcolorbox}[tab2,tabularx={X||Y|Y|Y|Y||Y},title=My table,boxrule=0.5pt]
+Group&One&Two&Three&Four&Sum\\\hline\hline
+Red&1000.00&2000.00&3000.00&4000.00&10000.00
+\Green&2000.00&3000.00&4000.00&5000.00&14000.00
+\Blue&3000.00&4000.00&5000.00&6000.00&18000.00\\\hline\hline
+Sum&6000.00&9000.00&12000.00&15000.00&42000.00
+\end{tcolorbox}
+
+\begin{tcolorbox}[tab1,tabularx={X||YYYY||Y}]
+Group&One&Two&Three&Four&Sum\\\hline\hline
+Red&1000.00&2000.00&3000.00&4000.00&10000.00
+\Green&2000.00&3000.00&4000.00&5000.00&14000.00
+\Blue&3000.00&4000.00&5000.00&6000.00&18000.00\\\hline\hline
+Sum&6000.00&9000.00&12000.00&15000.00&42000.00
+\end{tcolorbox}
+
+\end{document}

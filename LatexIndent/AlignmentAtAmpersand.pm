@@ -152,6 +152,10 @@ sub align_at_ampersand{
                 # remove trailing space
                 $column =~ s/\h*$//; 
 
+                # if a column has finished with a \ then we need to add a trailing space, 
+                # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
+                $column .= ($column =~ m/\\$/ ? " ": q());
+
                 # store the column size
                 $columnSizes[$columnCount] = length($column) if(length($column)>$columnSizes[$columnCount]);
 

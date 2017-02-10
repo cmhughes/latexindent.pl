@@ -1,0 +1,119 @@
+\documentclass[12pt, oneside, landscape]{memoir}
+
+\newif\ifblackandwhite
+% \blackandwhitetrue
+
+\usepackage{fontspec}%
+\defaultfontfeatures{Ligatures=TeX}%
+\setmainfont[%
+	Numbers        = OldStyle ,
+	ItalicFont     = LinLibertineOI ,
+	BoldItalicFont = LinLibertineOBI ,
+	BoldFont       = LinLibertineOB ,
+]{LinLibertineO}%
+
+\usepackage[hmargin=2cm,vmargin=2.5cm]{geometry}
+\usepackage{etoolbox}
+\usepackage{longtable}%
+\AtBeginEnvironment{longtable}{%
+	\addfontfeature{RawFeature=+tnum;-onum}%  <--- requires LuaTeX
+}
+
+\usepackage{pdflscape}
+\usepackage[svgnames]{xcolor}
+\usepackage{colortbl}%
+\newcommand{\myrowcolour}{\rowcolor[gray]{0.925}}
+\usepackage{booktabs}
+
+\ifblackandwhite
+	\newcommand{\cheading}[2]{\textbf{#1\hfill #2}}
+	\newcommand{\highest}[1]{\textbf{#1}}% == highest score for question
+\else
+	\newcommand{\cheading}[2]{\textcolor{Maroon}{\textbf{#1\hfill #2}}}
+	\newcommand{\highest}[1]{\textcolor{Maroon}{\textbf{#1}}}%
+\fi
+
+\begin{document}
+\thispagestyle{empty}
+\parindent0pt
+%
+
+\cheading{Fake Course Evaluation Summary for \textsc{course
+		1234y}}{Sept.\ 2010 --- May 2011}
+
+\begin{longtable}{@{}l rr rr rr rr rr rr}
+	% pairs: absolute number (percentage)
+
+	\toprule%
+	\centering%
+	& \multicolumn{2}{c}{{{\bfseries Excellent}}}
+	& \multicolumn{2}{c}{{{\bfseries Very Good}}}
+	& \multicolumn{2}{c}{{{\bfseries Good}}}
+	& \multicolumn{2}{c}{{{\bfseries Average}}}
+	& \multicolumn{2}{c}{{{\bfseries Poor}}}
+	& \multicolumn{2}{c}{{{\bfseries Very Poor}}} \
+
+	\cmidrule[0.4pt](r{0.125em}){1-1}%
+	\cmidrule[0.4pt](lr{0.125em}){2-3}%
+	\cmidrule[0.4pt](lr{0.125em}){4-5}%
+	\cmidrule[0.4pt](lr{0.125em}){6-7}%
+	\cmidrule[0.4pt](lr{0.125em}){8-9}%
+	\cmidrule[0.4pt](lr{0.125em}){10-11}%
+	\cmidrule[0.4pt](l{0.25em}){12-13}%
+	% \midrule
+	\endhead
+
+	Some question about the Instructor or Course & 2 & (7.14) & 4 &
+	(14.29) & \highest{12} & \highest{(42.86)} & 4
+	& (14.29) & 6 & (21.43) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & 3 & (10.71) &
+	\highest{15} & \highest{(53.57)} & 5 & (17.86) & 5 & (17.86) & 0 &
+	(0.00) & 0 & (0.00) \
+	Some question about the Instructor or Course & 4 & (14.29) & 8 &
+	(28.57) & \highest{15}
+	& \highest{(53.57)} & 1 & (3.57) & 0 & (0.00) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & 3 & (10.71) & 8 &
+	(28.57) & \highest{10} & \highest{(35.71)}
+	& 5 & (17.86) & 2 & (7.14) & 0 & (0.00) \
+	Some question about the Instructor or Course & 6 & (21.43) &
+	\highest{9} & \highest{(32.14)}
+	& 4 & (14.29) & \highest{9} & \highest{(32.14)} & 0 & (0.00) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & \highest{10} &
+	\highest{(35.71)} & \highest{10} & \highest{(35.71)}
+	& 3 & (10.71) & 5 & (17.86) & 0 & (0.00) & 0 & (0.00) \
+	Some question about the Instructor or Course & \highest{12} &
+	\highest{(42.86)} & \highest{12} & \highest{(42.86)} & 3
+	& (10.71) & 1 & (3.57) & 0 & (0.00) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & \highest{12} &
+	\highest{(42.86)} & 3 & (10.71) & 7
+	& (25.00) & 5 & (17.86) & 1 & (3.57) & 0 & (0.00) \
+	Some question about the Instructor or Course & \highest{10} &
+	\highest{(35.71)} & 6 & (21.43) & 6 & (21.43) & 6 & (21.43)
+	& 1 & (3.57) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & 5 & (17.86) & 5 &
+	(17.86) & \highest{12} & \highest{(42.86)} & 2 & (7.14)
+	& 3 & (10.71) & 1 & (3.57)\
+	Some question about the Instructor or Course & 3 & (10.71) & 8 &
+	(28.57) & \highest{11} & \highest{(39.29)} & 3 & (10.71) & 3 & (10.71)
+	& 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & \highest{18} &
+	\highest{(64.29)}
+	  & 5 & (17.86) & 3 & (10.71) & 1 & (3.57) & 1 & (3.57) & 0 & (0.00) \
+	Some question about the Instructor or Course & \highest{15} &
+	\highest{(53.57)}
+	  & 7 & (25.00) & 2 & (7.14)  & 2 & (7.14) & 2 & (7.14) & 0 & (0.00) \
+	\myrowcolour%
+	Some question about the Instructor or Course & 3 & (10.71) &
+	\highest{13} & \highest{(46.43)} & 4 & (14.29) & 6 & (21.43) & 2
+	& (7.14) & 0 & (0.00) \
+	\bottomrule
+
+\end{longtable}
+
+\end{document}
