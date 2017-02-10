@@ -51,4 +51,6 @@ latexindent.pl -s pmatrix.tex -outputfile=pmatrix-default.tex
 latexindent.pl -s pmatrix.tex -o pmatrix-special-mod1.tex -m -l=../specials/special-mod1.yaml
 latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-mod1.tex -m -l=pmatrix-mod1.yaml
 latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-special-mod1.tex -m -l=pmatrix-mod1.yaml,../specials/special-mod1.yaml
+# special
+latexindent.pl -s special1.tex -o special1-aligned.tex -l special-align.yaml
 git status

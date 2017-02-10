@@ -102,5 +102,9 @@ latexindent.pl -s -w ifelsefiONE.tex
 latexindent.pl -s  bigTest.tex -o  bigTest-default.tex
 # from the documentation
 latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
+# sub and super scripts
+latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
+latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
+latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
