@@ -47,10 +47,10 @@ latexindent.pl -s end-not-on-own-line.tex -o end-not-on-own-line-default.tex
 latexindent.pl -s end-not-on-own-line1.tex -o end-not-on-own-line1-default.tex
 latexindent.pl -s end-not-on-own-line1.tex -o end-not-on-own-line1-mod1.tex -m -l=env-mod-lines1.yaml
 # pmatrix
-latexindent.pl -s pmatrix.tex -outputfile=pmatrix-default.tex
-latexindent.pl -s pmatrix.tex -o pmatrix-special-mod1.tex -m -l=../specials/special-mod1.yaml
-latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-mod1.tex -m -l=pmatrix-mod1.yaml
-latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-special-mod1.tex -m -l=pmatrix-mod1.yaml,../specials/special-mod1.yaml
+latexindent.pl -s pmatrix.tex -outputfile=pmatrix-default.tex -l=noRoundParenthesisInArgs.yaml
+latexindent.pl -s pmatrix.tex -o pmatrix-special-mod1.tex -m -l=../specials/special-mod1.yaml,noRoundParenthesisInArgs.yaml
+latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-mod1.tex -m -l=pmatrix-mod1.yaml,noRoundParenthesisInArgs.yaml
+latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-special-mod1.tex -m -l=pmatrix-mod1.yaml,../specials/special-mod1.yaml,noRoundParenthesisInArgs.yaml
 # special
 latexindent.pl -s special1.tex -o special1-aligned.tex -l special-align.yaml
 git status

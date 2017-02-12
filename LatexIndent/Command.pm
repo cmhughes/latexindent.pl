@@ -7,6 +7,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -21,9 +22,16 @@ our $optAndMandAndRoundBracketsRegExpLineBreaks;
 sub construct_command_regexp{
     my $self = shift;
 
-    $optAndMandAndRoundBracketsRegExp = $self->get_arguments_regexp(roundBrackets=>1);
-    $optAndMandAndRoundBracketsRegExpLineBreaks = $self->get_arguments_regexp(roundBrackets=>1,mode=>"lineBreaksAtEnd");
-    #print $optAndMandRegExp,"\n" ;
+    $optAndMandAndRoundBracketsRegExp = $self->get_arguments_regexp(
+                                                                    roundBrackets=>${$masterSettings{commandCodeBlocks}}{roundParenthesesAllowed},
+                                                                    stringBetweenArguments=>1);
+
+    $optAndMandAndRoundBracketsRegExpLineBreaks = $self->get_arguments_regexp(
+                                                                    roundBrackets=>${$masterSettings{commandCodeBlocks}}{roundParenthesesAllowed},
+                                                                    mode=>"lineBreaksAtEnd",
+                                                                    stringBetweenArguments=>1);
+
+    # construct the command regexp
     $commandRegExp = qr/
               (\\|@)   
               (

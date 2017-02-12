@@ -214,21 +214,25 @@ sub get_arguments_regexp{
     # beamer special
     my $beamerRegExp = qr/\<.*?\>/;
 
-    # grab the strings allowed between arguments
-    my %stringsAllowedBetweenArguments = %{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
-
+    # commands are allowed strings between arguments, e.g node, decoration, etc, specified in stringsAllowedBetweenArguments
     my $stringsBetweenArguments = q();
-    while( my ($allowedStringName,$allowedStringValue)= each %stringsAllowedBetweenArguments){
-        # change + and - to escaped characters
-        $allowedStringName =~ s/\+/\\+/g;
-        $allowedStringName =~ s/\-/\\-/g;
 
-        # form the regexp
-        $stringsBetweenArguments .= ($stringsBetweenArguments eq '' ? q() : "|").$allowedStringName if $allowedStringValue; 
-    }
+    if(defined ${input}{stringBetweenArguments} and ${input}{stringBetweenArguments}==1){
+        # grab the strings allowed between arguments
+        my %stringsAllowedBetweenArguments = %{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
 
-    # report to log file
-    $self->logger("Strings allowed between arguments $stringsBetweenArguments (see stringsAllowedBetweenArguments)",'heading') if $is_t_switch_active;
+        while( my ($allowedStringName,$allowedStringValue)= each %stringsAllowedBetweenArguments){
+            # change + and - to escaped characters
+            $allowedStringName =~ s/\+/\\+/g;
+            $allowedStringName =~ s/\-/\\-/g;
+
+            # form the regexp
+            $stringsBetweenArguments .= ($stringsBetweenArguments eq '' ? q() : "|").$allowedStringName if $allowedStringValue; 
+        }
+
+        # report to log file
+        $self->logger("Strings allowed between arguments $stringsBetweenArguments (see stringsAllowedBetweenArguments)",'heading') if $is_t_switch_active;
+     }
 
     if(defined ${input}{roundBrackets} and ${input}{roundBrackets}==1){
             # arguments regexp
@@ -261,6 +265,20 @@ sub get_arguments_regexp{
                                                      )*?     # not including {, but \{ ok
                                                  (?<!\\)     # not immediately pre-ceeded by \
                                                  \}          # {mandatory arguments}
+                                             )
+                                             |               # OR
+                                             (?:
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \(\$
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\$) 
+                                                         ).
+                                                     )*?     # not including $
+                                                 \$
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \)          # {mandatory arguments}
                                              )
                                              |               # OR
                                              (?:
@@ -299,7 +317,7 @@ sub get_arguments_regexp{
             return qr/
                                   (                          # capture into $1
                                      (?:                  
-                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^)* 
+                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$stringsBetweenArguments)* 
                                         (?:
                                              (?:
                                                  \h*         # 0 or more spaces

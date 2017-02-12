@@ -40,8 +40,13 @@ latexindent.pl -s 39149-mark-wibrow2.tex -outputfile 39149-mark-wibrow2-default.
 #latexindent.pl -s 39149-SztupY.tex -outputfile 39149-SztupY-default.tex -l indentPreamble.yaml
 latexindent.pl -s 103863-kiss-my-armpit1.tex -o=103863-kiss-my-armpit1-default.tex -l indentPreamble.yaml
 latexindent.pl -s 135683-kiss-my-armpit1.tex -o=135683-kiss-my-armpit1-default.tex -l indentPreamble.yaml
-latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-default.tex
-latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-mod5.tex -m -l=348.yaml
+latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-default.tex -l=indentPreamble.yaml
+latexindent.pl -s 348-cmhughes2.tex -o=348-cmhughes2-default.tex -l=indentPreamble.yaml
+latexindent.pl -s 348-cmhughes2.tex -o=348-cmhughes2-addplot-indent-rules.tex -l addplot3.yaml,indentPreamble.yaml
+latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-mod5.tex -m -l=348.yaml,indentPreamble.yaml
+latexindent.pl -s 43884.tex -o=43884-default.tex -l indentPreamble.yaml
+latexindent.pl -s 104498.tex -o=104498-default.tex -l indentPreamble.yaml
+latexindent.pl -s 353493.tex -o=353493-default.tex -l indentPreamble.yaml
 
 # =======  pgfplots tag  =========
 # =======  pgfplots tag  =========
