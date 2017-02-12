@@ -7,6 +7,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -37,7 +38,10 @@ sub find_opt_mand_arguments{
     # blank line token
     my $blankLineToken = $tokens{blanklines};
 
-    if(${$self}{body} =~ m/^$optAndMandRegExpWithLineBreaks\h*($trailingCommentRegExp)?/){
+    # the command object allows () 
+    my $objectDependentOptAndMandRegExp = (defined ${$self}{optAndMandArgsRegExp} ? ${$self}{optAndMandArgsRegExp} : $optAndMandRegExpWithLineBreaks);
+
+    if(${$self}{body} =~ m/^$objectDependentOptAndMandRegExp\h*($trailingCommentRegExp)?/){
         $self->logger("Optional/Mandatory arguments found in ${$self}{name}: $1",'heading') if $is_t_switch_active;
 
         # create a new Arguments object
@@ -54,7 +58,7 @@ sub find_opt_mand_arguments{
                                                   end=>$2?1:0,
                                                 },
                                                 end=>"",
-                                                regexp=>$optAndMandRegExpWithLineBreaks,
+                                                regexp=>$objectDependentOptAndMandRegExp,
                                                 endImmediatelyFollowedByComment=>$2?0:($3?1:0),
                                               );
 
@@ -62,22 +66,28 @@ sub find_opt_mand_arguments{
         $arguments->create_unique_id;
 
         # determine which comes first, optional or mandatory
-        ${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s;
+        if(${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s){
 
-        if($1 eq "\["){
-            $self->logger("Searching for optional arguments, and then mandatory (optional found first)") if $is_t_switch_active;
-            # look for optional arguments
-            $arguments->find_optional_arguments;
+            if($1 eq "\["){
+                $self->logger("Searching for optional arguments, and then mandatory (optional found first)") if $is_t_switch_active;
+                # look for optional arguments
+                $arguments->find_optional_arguments;
 
-            # look for mandatory arguments
-            $arguments->find_mandatory_arguments;
+                # look for mandatory arguments
+                $arguments->find_mandatory_arguments;
+            } else {
+                $self->logger("Searching for mandatory arguments, and then optional (mandatory found first)") if $is_t_switch_active;
+                # look for mandatory arguments
+                $arguments->find_mandatory_arguments;
+
+                # look for optional arguments
+                $arguments->find_optional_arguments;
+            }
+
         } else {
-            $self->logger("Searching for mandatory arguments, and then optional (mandatory found first)") if $is_t_switch_active;
-            # look for mandatory arguments
-            $arguments->find_mandatory_arguments;
-
-            # look for optional arguments
-            $arguments->find_optional_arguments;
+                $self->logger("Searching for round brackets ONLY") if $is_t_switch_active;
+                # look for round brackets
+                $arguments->find_round_brackets;
         }
 
         # examine *first* child
@@ -204,68 +214,137 @@ sub get_arguments_regexp{
     # beamer special
     my $beamerRegExp = qr/\<.*?\>/;
 
-    # a few authors use () in their command definition
-    my $bracketRegExp = qr/
-                (?<!\\)
-                \(
-                      (?:
-                          (?!
-                              (?:(?<!\\)\[|(?<!\\)\{|(?<!\\)\() 
-                          ).
-                      )*?     # not including [ OR { OR (  but \[ \{ \( are ok
-                (?<!\\)
-                \) 
-                /xs;
+    # grab the strings allowed between arguments
+    my %stringsAllowedBetweenArguments = %{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
 
-    # arguments regexp
-    return qr/
-                          (                          # capture into $1
-                             (?:                  
-                                (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$bracketRegExp)* 
-                                (?:
-                                     (?:
-                                         \h*         # 0 or more spaces
-                                         (?<!\\)     # not immediately pre-ceeded by \
-                                         \[
+    my $stringsBetweenArguments = q();
+    while( my ($allowedStringName,$allowedStringValue)= each %stringsAllowedBetweenArguments){
+        # change + and - to escaped characters
+        $allowedStringName =~ s/\+/\\+/g;
+        $allowedStringName =~ s/\-/\\-/g;
+
+        # form the regexp
+        $stringsBetweenArguments .= ($stringsBetweenArguments eq '' ? q() : "|").$allowedStringName if $allowedStringValue; 
+    }
+
+    # report to log file
+    $self->logger("Strings allowed between arguments $stringsBetweenArguments (see stringsAllowedBetweenArguments)",'heading') if $is_t_switch_active;
+
+    if(defined ${input}{roundBrackets} and ${input}{roundBrackets}==1){
+            # arguments regexp
+            return qr/
+                                  (                          # capture into $1
+                                     (?:                  
+                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$stringsBetweenArguments)* 
+                                        (?:
                                              (?:
-                                                 (?!
-                                                     (?:(?<!\\)\[|(?<!\\)\{) 
-                                                 ).
-                                             )*?     # not including [, but \[ ok
-                                         (?<!\\)     # not immediately pre-ceeded by \
-                                         \]          # [optional arguments]
-                                     )
-                                     |               # OR
-                                     (?:
-                                         \h*         # 0 or more spaces
-                                         (?<!\\)     # not immediately pre-ceeded by \
-                                         \{
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \[
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\[|(?<!\\)\{) 
+                                                         ).
+                                                     )*?     # not including [, but \[ ok
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \]          # [optional arguments]
+                                             )
+                                             |               # OR
                                              (?:
-                                                 (?!
-                                                     (?:(?<!\\)\{|(?<!\\)\[) 
-                                                 ).
-                                             )*?     # not including {, but \{ ok
-                                         (?<!\\)     # not immediately pre-ceeded by \
-                                         \}          # {mandatory arguments}
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \{
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\{|(?<!\\)\[) 
+                                                         ).
+                                                     )*?     # not including {, but \{ ok
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \}          # {mandatory arguments}
+                                             )
+                                             |               # OR
+                                             (?:
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \(
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\[(?<!\\)\{|(?<!\\)\() 
+                                                         ).
+                                                     )*?     # not including {, but \{ ok
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \)          # {mandatory arguments}
+                                             )
+                                        )
                                      )
-                                )
-                             )
-                             +                       # at least one of the above
-                             # NOT followed by
-                             (?!
-                               (?:
-                                   (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|$bracketRegExp)*  # 0 or more h-space, blanklines, trailing comments
-                                   (?:
-                                     (?:(?<!\\)\[)
-                                     |
-                                     (?:(?<!\\)\{)
-                                   )
-                               )
-                             )
-                             \h*
-                             ($lineBreaksAtEnd)
-                          )                  
-                          /sx;
+                                     +                       # at least one of the above
+                                     # NOT followed by
+                                     (?!
+                                       (?:
+                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                           (?:
+                                             (?:(?<!\\)\[)
+                                             |
+                                             (?:(?<!\\)\{)
+                                             |
+                                             (?:(?<!\\)\()
+                                           )
+                                       )
+                                     )
+                                     \h*
+                                     ($lineBreaksAtEnd)
+                                  )                  
+                                  /sx;
+        } else {
+            return qr/
+                                  (                          # capture into $1
+                                     (?:                  
+                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^)* 
+                                        (?:
+                                             (?:
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \[
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\[|(?<!\\)\{) 
+                                                         ).
+                                                     )*?     # not including [, but \[ ok
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \]          # [optional arguments]
+                                             )
+                                             |               # OR
+                                             (?:
+                                                 \h*         # 0 or more spaces
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \{
+                                                     (?:
+                                                         (?!
+                                                             (?:(?<!\\)\{|(?<!\\)\[) 
+                                                         ).
+                                                     )*?     # not including {, but \{ ok
+                                                 (?<!\\)     # not immediately pre-ceeded by \
+                                                 \}          # {mandatory arguments}
+                                             )
+                                        )
+                                     )
+                                     +                       # at least one of the above
+                                     # NOT followed by
+                                     (?!
+                                       (?:
+                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                           (?:
+                                             (?:(?<!\\)\[)
+                                             |
+                                             (?:(?<!\\)\{)
+                                           )
+                                       )
+                                     )
+                                     \h*
+                                     ($lineBreaksAtEnd)
+                                  )                  
+                                  /sx;
+        }
 }
 
 1;

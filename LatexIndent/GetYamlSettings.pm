@@ -406,6 +406,7 @@ sub get_indentation_information{
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
         # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
         my $globalInformation = $indentationAbout."Global";
+        next if(!(defined ${$masterSettings{$globalInformation}}{$YamlName})); 
         if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
             $self->logger("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
             return q();

@@ -5,7 +5,7 @@ package LatexIndent::Braces;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Command qw/$commandRegExp $commandRegExpTrailingComment/;
+use LatexIndent::Command qw/$commandRegExp $commandRegExpTrailingComment $optAndMandAndRoundBracketsRegExpLineBreaks/;
 use LatexIndent::KeyEqualsValuesBraces qw/$key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
 use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
@@ -57,6 +57,7 @@ sub find_commands_or_key_equals_values_braces{
                                                                       # body statements
                                                                       BodyStartsOnOwnLine=>"CommandNameFinishesWithLineBreak",
                                                                     },
+                                                                    optAndMandArgsRegExp=>$optAndMandAndRoundBracketsRegExpLineBreaks,
                                                                   );
 
                             # the settings and storage of most objects has a lot in common

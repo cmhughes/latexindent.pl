@@ -26,6 +26,7 @@ use LatexIndent::IfElseFi qw/find_ifelsefi/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
+use LatexIndent::RoundBrackets qw/find_round_brackets/;
 use LatexIndent::Item qw/find_items construct_list_of_items/;
 use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
 use LatexIndent::Command qw/construct_command_regexp/;

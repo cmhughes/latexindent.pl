@@ -20,6 +20,7 @@ our %tokens = (
                 arguments=>$beginningToken."ARGUMENTS",
                 optionalArgument=>$beginningToken."OPTIONAL-ARGUMENT",
                 mandatoryArgument=>$beginningToken."MANDATORY-ARGUMENT",
+                roundBracket=>$beginningToken."ROUND-BRACKET",
                 verbatim=>$beginningToken."VERBATIM",
                 command=>$beginningToken."COMMAND",
                 key_equals_values_braces=>$beginningToken."KEY-VALUE-BRACES",

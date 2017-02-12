@@ -258,6 +258,17 @@ noAdditionalIndentGlobal:
     afterHeading: 0
     filecontents: 0
 
+# command code block details
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+        node: 1
+        at: 1
+        to: 1
+        decoration: 1
+        ++: 1
+        --: 1
+
 # set indentRules globally for codeblocks; these need 
 # to be horizontal spaces, if they are to be used
 indentRulesGlobal:

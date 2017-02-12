@@ -10,16 +10,20 @@ use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/construct_command_regexp $commandRegExp $commandRegExpTrailingComment/;
+our @EXPORT_OK = qw/construct_command_regexp $commandRegExp $commandRegExpTrailingComment $optAndMandAndRoundBracketsRegExpLineBreaks/;
 our $commandCounter;
 our $commandRegExp;
 our $commandRegExpTrailingComment; 
+our $optAndMandAndRoundBracketsRegExp; 
+our $optAndMandAndRoundBracketsRegExpLineBreaks; 
 
 # store the regular expresssion for matching and replacing 
 sub construct_command_regexp{
     my $self = shift;
 
-    my $optAndMandRegExp = $self->get_arguments_regexp;
+    $optAndMandAndRoundBracketsRegExp = $self->get_arguments_regexp(roundBrackets=>1);
+    $optAndMandAndRoundBracketsRegExpLineBreaks = $self->get_arguments_regexp(roundBrackets=>1,mode=>"lineBreaksAtEnd");
+    #print $optAndMandRegExp,"\n" ;
     $commandRegExp = qr/
               (\\|@)   
               (
@@ -27,7 +31,7 @@ sub construct_command_regexp{
               )                
               (\h*)
               (\R*)?
-              ($optAndMandRegExp)
+              ($optAndMandAndRoundBracketsRegExp)
               (\R)?
             /sx;
 
