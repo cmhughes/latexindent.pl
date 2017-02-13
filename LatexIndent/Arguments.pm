@@ -287,7 +287,7 @@ sub get_arguments_regexp{
                                                  \(
                                                      (?:
                                                          (?!
-                                                             (?:(?<!\\)\[(?<!\\)\{|(?<!\\)\() 
+                                                             (?:(?<!\\)\() 
                                                          ).
                                                      )*?     # not including {, but \{ ok
                                                  (?<!\\)     # not immediately pre-ceeded by \
@@ -299,7 +299,7 @@ sub get_arguments_regexp{
                                      # NOT followed by
                                      (?!
                                        (?:
-                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|$stringsBetweenArguments)*  # 0 or more h-space, blanklines, trailing comments
                                            (?:
                                              (?:(?<!\\)\[)
                                              |

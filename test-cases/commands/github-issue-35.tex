@@ -1,0 +1,12 @@
+% arara: indent: {overwrite: yes, trace: on}
+% https://github.com/cmhughes/latexindent.pl/issues/35
+\parbox{
+\node [scale=8,
+    text=black,
+    inner sep=0pt,] at ([xshift=-1cm,yshift=-1cm]frame.north west){``}; 
+
+        here is some text
+        here is some text
+        here is some text
+        here is some text
+        }

@@ -95,6 +95,14 @@ latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-default.tex -l indent
 latexindent.pl -s 56294-Ahmed-Musa.tex -o 56294-Ahmed-Musa-groupBegEnd.tex -l indentPreamble.yaml,groupBeginEnd.yaml
 latexindent.pl -s 56294-Ahmed-Musa2.tex -o 56294-Ahmed-Musa2-default.tex -tt
 
+# =======  macros tag  =========
+# =======  macros tag  =========
+# =======  macros tag  =========
+latexindent.pl -s 353559-james-fennell.tex -o 353559-james-fennell-default.tex -l indentPreamble.yaml
+latexindent.pl -s 353559-werner.tex -o 353559-werner-default.tex -l indentPreamble.yaml
+latexindent.pl -s 353559-egreg.tex -o 353559-egreg-default.tex -l indentPreamble.yaml
+latexindent.pl -s 353559-egreg-1.tex -o 353559-egreg-1-default.tex -l indentPreamble.yaml
+
 # =======  beamer tag  =========
 # =======  beamer tag  =========
 # =======  beamer tag  =========

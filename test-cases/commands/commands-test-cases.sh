@@ -109,5 +109,8 @@ latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex 
 # round brackets ( )
 latexindent.pl -s brackets1.tex -o brackets1-default.tex
 latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/indentPreamble.yaml
+# github issue
+latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
+latexindent.pl -s github-issue-35.tex -o github-issue-35-no-at.tex -l no-at-between-args.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

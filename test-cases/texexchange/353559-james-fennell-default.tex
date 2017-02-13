@@ -1,0 +1,20 @@
+\documentclass[11pt,letterpaper]{article}
+
+\makeatletter
+\newcommand\ifmember[2]{%
+	\in@{,#1,}{,#2,}%
+	\ifin@
+		\expandafter\@firstoftwo
+	\else
+		\expandafter\@secondoftwo
+	\fi
+}
+\makeatother
+
+\begin{document}
+
+\ifmember{3}{3,4}{True}{False}
+\newcommand{\foo}{3,4}
+\ifmember{3}{\foo}{True}{False}
+
+\end{document}

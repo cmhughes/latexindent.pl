@@ -5,19 +5,19 @@
 \begin{tikzpicture}
 	\begin{axis}
 		\addplot {x^2} node [pos=0.75,%
-				pin%
-				=%
-					{%
-						-10:$x^2$%
-					}%
-				,inner sep=0pt] {};
+			pin%
+			=%
+				{%
+					-10:$x^2$%
+				}%
+			,inner sep=0pt] {};
 		\addplot {1.5*x^2} node [pos=0.75,%
-				pin%
-				=%
-					{%
-						170:$1.5 x^2$%
-					}%
-				,inner sep=0pt] {};
+			pin%
+			=%
+				{%
+					170:$1.5 x^2$%
+				}%
+			,inner sep=0pt] {};
 	\end{axis}
 \end{tikzpicture}
 
@@ -41,26 +41,26 @@
 			thick,
 		] {(x<-2)*-2 + (!(x<-2) && (x<3))*x + (!(x<3)) * 3}
 		node[pos=0.1,%
-				pin%
-				=135:%
-					{%
-						\color{purple}$f(x)=-2$%
-					}%
-			] {}
+			pin%
+			=135:%
+				{%
+					\color{purple}$f(x)=-2$%
+				}%
+		] {}
 		node[pos=0.6,%
-				pin%
-				=135:%
-					{%
-						\color{blue}$f(x)=x$%
-					}%
-			] {}
+			pin%
+			=135:%
+				{%
+					\color{blue}$f(x)=x$%
+				}%
+		] {}
 		node[pos=0.9,%
-				pin%
-				=135:%
-					{%
-						\color{green!70!black}$f(x)=3$%
-					}%
-			] {}
+			pin%
+			=135:%
+				{%
+					\color{green!70!black}$f(x)=3$%
+				}%
+		] {}
 		;
 	\end{axis}
 \end{tikzpicture}
