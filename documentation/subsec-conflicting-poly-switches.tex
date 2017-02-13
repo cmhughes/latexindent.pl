@@ -128,11 +128,11 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
 	During Phase 1:
 	\begin{itemize}
 		\item the \texttt{two} environment is found first, and
-		      the line break ahead of the \lstinline!\end{two}! statement is not changed because \texttt{EndStartsOnOwnLine} is set to $1$. 
-              Importantly, because, \emph{at this stage}, \lstinline!\end{two}! \emph{does} finish with a line break, \texttt{EndFinishesWithLineBreak} causes
+		      the line break ahead of the \lstinline!\end{two}! statement is not changed because \texttt{EndStartsOnOwnLine} is set to $1$.
+		      Importantly, because, \emph{at this stage}, \lstinline!\end{two}! \emph{does} finish with a line break, \texttt{EndFinishesWithLineBreak} causes
 		      no action.
 		\item next, the \texttt{one} environment is found; the line break ahead of \lstinline!\end{one}! is already present, and no action is needed.
 	\end{itemize}
-    The indentation is done in Phase 2, and then in Phase 3, the \texttt{one} environment is found and processed first, followed by 
-    the \texttt{two} environment. \emph{At this stage}, the \texttt{two} environment finds \texttt{EndFinishesWithLineBreak} is $-1$, so it removes
-    the trailing line break; remember, at this point, \texttt{latexindent.pl} has completely finished with the \texttt{one} environment.
+	The indentation is done in Phase 2, and then in Phase 3, the \texttt{one} environment is found and processed first, followed by
+	the \texttt{two} environment. \emph{At this stage}, the \texttt{two} environment finds \texttt{EndFinishesWithLineBreak} is $-1$, so it removes
+	the trailing line break; remember, at this point, \texttt{latexindent.pl} has completely finished with the \texttt{one} environment.

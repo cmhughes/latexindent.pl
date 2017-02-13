@@ -1,8 +1,8 @@
 % arara: pdflatex: {shell: yes}
-% !arara: bibtex
-% !arara: pdflatex: {shell: yes}
-% !arara: pdflatex: {shell: yes}
-% !arara: pdflatex: {shell: yes}
+% arara: bibtex
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 % !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
@@ -80,7 +80,7 @@
 			%	width=\linewidth,
 			%breakable,
 			colback=blue!5!white,
-			colframe=white!85!black,
+			colframe=white!25!black,colback=white,
 			top=0cm,
 			bottom=0cm,
 			left=0mm,
@@ -93,9 +93,10 @@
 			boxrule=0pt,
 			toprule=1pt,bottomrule=1pt,
 			titlerule=1pt,
-			colframe=white!70!black,colback=white,
+			colframe=white!40!black,
+			colback=white,
 			sharp corners,
-			colbacktitle=white!90!black,
+			colbacktitle=white!75!black
 		},
 	yaml-TCB/.style={
 			listing only,
@@ -296,22 +297,22 @@
 }
 % custom section
 \titleformat{\section}
-  {\normalfont\Large\bfseries}
-  {\llap{\thesection\hskip.5cm}}
-  {0pt}
-  {}
+{\normalfont\Large\bfseries}
+{\llap{\thesection\hskip.5cm}}
+{0pt}
+{}
 % custom subsection
 \titleformat{\subsection}
-  {\normalfont\bfseries}
-  {\llap{\thesubsection\hskip.5cm}}
-  {0pt}
-  {}
+{\normalfont\bfseries}
+{\llap{\thesubsection\hskip.5cm}}
+{0pt}
+{}
 % custom subsubsection
 \titleformat{\subsubsection}
-  {\normalfont\bfseries}
-  {\llap{\thesubsubsection\hskip.5cm}}
-  {0pt}
-  {}
+{\normalfont\bfseries}
+{\llap{\thesubsubsection\hskip.5cm}}
+{0pt}
+{}
 
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-5pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
@@ -405,11 +406,11 @@
 	\lstlistoflistings
 }
 
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-indent-config-and-settings.tex}
+%\input{sec-default-user-local}
 %\input{subsec-noAdditionalIndent-indentRules}
 %\input{subsubsec-environments-and-their-arguments}
 %\input{subsubsec-environments-with-items}
@@ -419,6 +420,7 @@
 %\input{subsubsec-headings}
 %\input{subsubsec-no-add-remaining-code-blocks}
 %\stopcontents[noAdditionalIndent]
+\input{subsec-commands-and-their-options}
 %\input{sec-the-m-switch}
 %\input{subsec-partnering-poly-switches}
 %\input{subsec-conflicting-poly-switches}

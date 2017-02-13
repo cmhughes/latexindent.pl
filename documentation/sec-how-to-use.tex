@@ -50,8 +50,8 @@ latexindent.pl -h
 latexindent.pl myfile.tex
       \end{commandshell}
 
-	This will operate on \texttt{myfile.tex}, but will simply output to your terminal; \texttt{myfile.tex} will	not be changed 
-    by \texttt{latexindent.pl} in any way using this command.
+	This will operate on \texttt{myfile.tex}, but will simply output to your terminal; \texttt{myfile.tex} will	not be changed
+	by \texttt{latexindent.pl} in any way using this command.
 
 \flagbox{-w, --overwrite}
 	\begin{commandshell}
@@ -88,8 +88,8 @@ latexindent.pl --outputfile output.tex myfile.tex
 	\begin{commandshell}
 latexindent.pl myfile.tex > output.tex
 \end{commandshell}
-    See \vref{app:differences} for details of how the interface has changed
-    from Version 2.2 to Version 3.0 for this flag.
+	See \vref{app:differences} for details of how the interface has changed
+	from Version 2.2 to Version 3.0 for this flag.
 \flagbox{-s, --silent}
 	\begin{commandshell}
 latexindent.pl -s myfile.tex
@@ -141,10 +141,10 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 
 	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a \texttt{yaml} file(s)
 	that resides in the same directory as \texttt{myfile.tex}; you can use this option if you would
-	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}. 
-    In fact, you can specify \emph{relative} path names to the current directory, but \emph{not} 
-    absolute paths -- for absolute paths, see \vref{sec:indentconfig}.
-    Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
+	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
+	In fact, you can specify \emph{relative} path names to the current directory, but \emph{not}
+	absolute paths -- for absolute paths, see \vref{sec:indentconfig}.
+	Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
 
 \flagbox{-d, --onlydefault}
 	\begin{commandshell}
@@ -177,8 +177,8 @@ latexindent.pl --logfile other.log myfile.tex
 latexindent.pl myfile.tex -g other.log 
       \end{commandshell}
 
-	By default, \texttt{latexindent.pl} reports information to \texttt{indent.log}, but if you wish to change the 
-    name of this file, simply call the script with your chosen name after the \texttt{-g} switch as demonstrated above.
+	By default, \texttt{latexindent.pl} reports information to \texttt{indent.log}, but if you wish to change the
+	name of this file, simply call the script with your chosen name after the \texttt{-g} switch as demonstrated above.
 
 \flagbox{-m, --modifylinebreaks}
 	\begin{commandshell}
@@ -196,8 +196,8 @@ latexindent.pl -modifylinebreaks myfile.tex
 
 \subsection{From \texttt{arara}}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
-    others may find it easier to use from \texttt{arara}. \texttt{arara} ships with 
-    a rule, \texttt{indent.yaml}, but in case you do not have this rule, you can find it at \cite{paulo}.
+	others may find it easier to use from \texttt{arara}. \texttt{arara} ships with
+	a rule, \texttt{indent.yaml}, but in case you do not have this rule, you can find it at \cite{paulo}.
 
 	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
 	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.

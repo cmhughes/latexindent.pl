@@ -149,5 +149,13 @@ latexindent.pl -s -m mycommand1.tex -l=mycom-mlb6.yaml -outputfile=mycommand1-ml
 latexindent.pl -s -m nested-env.tex -l=nested-env-mlb1.yaml -outputfile=nested-env-mlb1.tex
 latexindent.pl -s -m nested-env.tex -l=nested-env-mlb2.yaml -outputfile=nested-env-mlb2.tex
 
+# commands with round brackets
+latexindent.pl -s pstricks1.tex -o pstricks1-default.tex
+latexindent.pl -s pstricks1.tex -o pstricks1-nrp.tex -l noRoundParentheses.yaml
+latexindent.pl -s pstricks1.tex -o pstricks1-indent-rules.tex -l defFunction.yaml
+# string between args
+latexindent.pl -s tikz-node1.tex -o tikz-node1-default.tex
+latexindent.pl -s tikz-node1.tex -o tikz-node1-draw.tex -l=draw.yaml
+latexindent.pl -s tikz-node1.tex -o tikz-node1-no-to.tex -l=no-to.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

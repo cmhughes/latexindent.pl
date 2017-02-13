@@ -1,30 +1,30 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{User, local settings, \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}}\label{sec:indentconfig}
-	Editing \texttt{defaultSettings.yaml} is not ideal as it may be overwritten when
-	updating your distribution--a better way to customize the settings to your liking
-	is to set up your own settings file,
-	\texttt{mysettings.yaml} (or any name you like, provided it ends with \texttt{.yaml}).
-	The only thing you have to do is tell \texttt{latexindent.pl} where to find it.
+ Editing \texttt{defaultSettings.yaml} is not ideal as it may be overwritten when
+ updating your distribution--a better way to customize the settings to your liking
+ is to set up your own settings file,
+ \texttt{mysettings.yaml} (or any name you like, provided it ends with \texttt{.yaml}).
+ The only thing you have to do is tell \texttt{latexindent.pl} where to find it.
 
-	\texttt{latexindent.pl} will always check your home directory for \texttt{indentconfig.yaml}
-	and  \texttt{.indentconfig.yaml} (unless
-	it is called with the \texttt{-d} switch),
-	which is a plain text file you can create that contains the \emph{absolute}
-	paths for any settings files that you wish \texttt{latexindent.pl} to load. There is no difference
-	between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the
-	fact that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to \cite{jacobo-diaz-hidden-config}
-	for providing this feature. In what follows, we will use \texttt{indentconfig.yaml}, but it
-	is understood that this equally represents \texttt{.indentconfig.yaml} as well. If you
-	have both files in existence,  \texttt{indentconfig.yaml} takes priority.
+ \texttt{latexindent.pl} will always check your home directory for \texttt{indentconfig.yaml}
+ and  \texttt{.indentconfig.yaml} (unless
+ it is called with the \texttt{-d} switch),
+ which is a plain text file you can create that contains the \emph{absolute}
+ paths for any settings files that you wish \texttt{latexindent.pl} to load. There is no difference
+ between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the
+ fact that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to \cite{jacobo-diaz-hidden-config}
+ for providing this feature. In what follows, we will use \texttt{indentconfig.yaml}, but it
+ is understood that this equally represents \texttt{.indentconfig.yaml} as well. If you
+ have both files in existence,  \texttt{indentconfig.yaml} takes priority.
 
-	For Mac and Linux users, their home directory is \texttt{~/username} while
-	Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure
-		where to put \texttt{indentconfig.yaml}, don't
-		worry \texttt{latexindent.pl} will tell you in the log file exactly where to
-		put it assuming it doesn't exist already.}
-	\Cref{lst:indentconfig} shows a sample \texttt{indentconfig.yaml} file.
+ For Mac and Linux users, their home directory is \texttt{~/username} while
+ Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure
+	 where to put \texttt{indentconfig.yaml}, don't
+	 worry \texttt{latexindent.pl} will tell you in the log file exactly where to
+	 put it assuming it doesn't exist already.}
+ \Cref{lst:indentconfig} shows a sample \texttt{indentconfig.yaml} file.
 
-	\begin{yaml}{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
+ \begin{yaml}{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
 	# Paths to user settings for latexindent.pl
 	#
 	# Note that the settings will be read in the order you
@@ -39,22 +39,22 @@
 	- C:\Users\chughes\Desktop\test spaces\more spaces.yaml
 \end{yaml}
 
-	Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml}
-	will be loaded in the order that you write them in. Each file doesn't have
-	to have every switch from \texttt{defaultSettings.yaml}; in fact, I recommend
-	that you only keep the switches that you want to \emph{change} in these
-	settings files.
+ Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml}
+ will be loaded in the order that you write them in. Each file doesn't have
+ to have every switch from \texttt{defaultSettings.yaml}; in fact, I recommend
+ that you only keep the switches that you want to \emph{change} in these
+ settings files.
 
-	To get started with your own settings file, you might like to save a copy of
-	\texttt{defaultSettings.yaml} in another directory and call it, for
-	example, \texttt{mysettings.yaml}. Once you have added the path to \texttt{indentconfig.yaml}
-	you can change the switches and add more code-block names to it
-	as you see fit -- have a look at \cref{lst:mysettings} for an example
-	that uses four tabs for the default indent, adds the \texttt{tabbing}
-	environment/command to the list of environments that contains alignment delimiters; you might also like to
-	refer to the many YAML files detailed throughout the rest of this documentation.
+ To get started with your own settings file, you might like to save a copy of
+ \texttt{defaultSettings.yaml} in another directory and call it, for
+ example, \texttt{mysettings.yaml}. Once you have added the path to \texttt{indentconfig.yaml}
+ you can change the switches and add more code-block names to it
+ as you see fit -- have a look at \cref{lst:mysettings} for an example
+ that uses four tabs for the default indent, adds the \texttt{tabbing}
+ environment/command to the list of environments that contains alignment delimiters; you might also like to
+ refer to the many YAML files detailed throughout the rest of this documentation.
 
-	\begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
+ \begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
 	# Default value of indentation
 	defaultIndent: "\t\t\t\t"
 
@@ -64,21 +64,21 @@
 	tabbing: 1
 \end{yaml}
 
-	You can make sure that your settings are loaded by checking \texttt{indent.log}
-	for details -- if you have specified a path that \texttt{latexindent.pl} doesn't
-	recognize then you'll get a warning, otherwise you'll get confirmation that
-	\texttt{latexindent.pl} has read your settings file \footnote{Windows users
-		may find that they have to end \texttt{.yaml} files with a blank line}.
+ You can make sure that your settings are loaded by checking \texttt{indent.log}
+ for details -- if you have specified a path that \texttt{latexindent.pl} doesn't
+ recognize then you'll get a warning, otherwise you'll get confirmation that
+ \texttt{latexindent.pl} has read your settings file \footnote{Windows users
+	 may find that they have to end \texttt{.yaml} files with a blank line}.
 
-	\begin{warning}
-		When editing \texttt{.yaml} files it is \emph{extremely} important
-		to remember how sensitive they are to spaces. I highly recommend copying
-		and pasting from \texttt{defaultSettings.yaml} when you create your
-		first \texttt{whatevernameyoulike.yaml} file.
+ \begin{warning}
+	 When editing \texttt{.yaml} files it is \emph{extremely} important
+	 to remember how sensitive they are to spaces. I highly recommend copying
+	 and pasting from \texttt{defaultSettings.yaml} when you create your
+	 first \texttt{whatevernameyoulike.yaml} file.
 
-		If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it
-		will tell you so in \texttt{indent.log}.
-	\end{warning}
+	 If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it
+	 will tell you so in \texttt{indent.log}.
+ \end{warning}
 
 \subsection{\texttt{localSettings.yaml}}\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} either to look for \texttt{localSettings.yaml} in the

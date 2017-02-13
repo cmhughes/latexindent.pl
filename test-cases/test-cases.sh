@@ -120,10 +120,14 @@ cd ../texexchange
 # benchmark mode, if appropriate
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
-# documentation
+# documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"
 ./documentation-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# documentation
+cd ../
+[[ $silentMode == 1 ]] && echo "./latex-indent.sh"
+./latex-indent.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # play sounds
 for i in {1..5}
 do 

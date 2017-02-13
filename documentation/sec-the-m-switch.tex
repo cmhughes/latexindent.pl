@@ -4,20 +4,20 @@
 % the -m switch
 
 \fancyhead[R]{\bfseries\thepage%
-\tikz[remember picture,overlay] {
-\node at (1,0){\includegraphics{logo}};
-}}
+	\tikz[remember picture,overlay] {
+		\node at (1,0){\includegraphics{logo}};
+	}}
 \section{The \texttt{-m} (\texttt{modifylinebreaks}) switch}\label{sec:modifylinebreaks}
  All features described in this section will only be relevant if the \texttt{-m} switch
  is used.
 
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
-	\cmhlistingsfromfile[firstnumber=345,linerange={345-347},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
-\end{wrapfigure}
+		\cmhlistingsfromfile[firstnumber=345,linerange={345-347},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
+	\end{wrapfigure}
 	\makebox[0pt][r]{%
-	\raisebox{-\totalheight}[0pt][0pt]{%
-	\tikz\node[opacity=1] at (0,0) {\includegraphics[width=4cm]{logo}};}}%	
+		\raisebox{-\totalheight}[0pt][0pt]{%
+			\tikz\node[opacity=1] at (0,0) {\includegraphics[width=4cm]{logo}};}}%	
 	One of the most exciting features of Version 3.0 is the \texttt{-m} switch, which
 	permits \texttt{latexindent.pl} to modify line breaks, according to the
 	specifications in the \texttt{modifyLineBreaks} field. \emph{The settings
@@ -315,48 +315,48 @@ latexindent.pl -m env-mlb4.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,en
 	which gives the output in \vref{lst:env-mlb1-tex}.
 
 	\paragraph{About trailing horizontal space}
-	Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field \texttt{removeTrailingWhitespace},
-	and that it has two (binary) switches to determine if horizontal space should be removed \texttt{beforeProcessing} and \texttt{afterProcessing}.
-	The \texttt{beforeProcessing} is particularly relevant when considering the \texttt{-m} switch; let's consider the
-	file shown in \cref{lst:mlb5}, which highlights trailing spaces.
+		Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field \texttt{removeTrailingWhitespace},
+		and that it has two (binary) switches to determine if horizontal space should be removed \texttt{beforeProcessing} and \texttt{afterProcessing}.
+		The \texttt{beforeProcessing} is particularly relevant when considering the \texttt{-m} switch; let's consider the
+		file shown in \cref{lst:mlb5}, which highlights trailing spaces.
 
-	\begin{minipage}{.45\linewidth}
-		\begin{cmhlistings}[showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
+		\begin{minipage}{.45\linewidth}
+			\begin{cmhlistings}[showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
 before words   (*@$\BeginStartsOnOwnLine$@*) 
 \begin{myenv}           (*@$\BodyStartsOnOwnLine$@*)
 body of myenv      (*@$\EndStartsOnOwnLine$@*) 
 \end{myenv}     (*@$\EndFinishesWithLineBreak$@*)
 after words
 \end{cmhlistings}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
-	\end{minipage}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.45\linewidth}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
+		\end{minipage}
 
-	The output from the following commands
-	\begin{widepage}
-		\begin{commandshell}
+		The output from the following commands
+		\begin{widepage}
+			\begin{commandshell}
 latexindent.pl -m env-mlb5.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml
 latexindent.pl -m env-mlb5.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,removeTWS-before.yaml
 \end{commandshell}
-	\end{widepage}
-	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that
-	the trailing horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while
-	in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in \cref{lst:removeTWS-before}.
+		\end{widepage}
+		is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that
+		the trailing horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while
+		in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in \cref{lst:removeTWS-before}.
 
-    \begin{widepage}
-	\cmhlistingsfromfile{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb5-modAll}
+		\begin{widepage}
+			\cmhlistingsfromfile{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb5-modAll}
 
-	\cmhlistingsfromfile{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
-    \end{widepage}
+			\cmhlistingsfromfile{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
+		\end{widepage}
 
 
 	\paragraph{Blank lines}
-	Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
+		Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
 
-	\begin{minipage}{.45\linewidth}
-		\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
+		\begin{minipage}{.45\linewidth}
+			\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
 before words(*@$\BeginStartsOnOwnLine$@*)
 
 
@@ -370,40 +370,40 @@ body of myenv(*@$\EndStartsOnOwnLine$@*)
 
 after words
 \end{cmhlistings}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
-	\end{minipage}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}{.45\linewidth}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
+		\end{minipage}
 
-	Upon running the following commands
-	\begin{widepage}
-		\begin{commandshell}
+		Upon running the following commands
+		\begin{widepage}
+			\begin{commandshell}
 latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml
 latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,UnpreserveBlankLines.yaml
 \end{commandshell}
-	\end{widepage}
-	we receive the respective outputs in \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In
-	\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed into one blank line,
-	but that blank lines have \emph{not} been removed by the poly-switches -- this is because, by default, \texttt{preserveBlankLines}
-	is set to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed
-	the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to \texttt{0}.
+		\end{widepage}
+		we receive the respective outputs in \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In
+		\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed into one blank line,
+		but that blank lines have \emph{not} been removed by the poly-switches -- this is because, by default, \texttt{preserveBlankLines}
+		is set to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed
+		the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to \texttt{0}.
 
-    \begin{widepage}
-	\begin{minipage}{.30\linewidth}
-		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb6-modAll}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.65\linewidth}
-		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
-	\end{minipage}
-    \end{widepage}
+		\begin{widepage}
+			\begin{minipage}{.30\linewidth}
+				\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12}}{lst:env-mlb6-modAll}
+			\end{minipage}
+			\hfill
+			\begin{minipage}{.65\linewidth}
+				\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
+			\end{minipage}
+		\end{widepage}
 
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for
-    all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}, i.e, set to \texttt{0}. Note also that, 
-    by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be 
-    modified using \texttt{latexindent.pl}.
+	all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}, i.e, set to \texttt{0}. Note also that,
+	by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be
+	modified using \texttt{latexindent.pl}.
 
 	\begin{longtable}{m{.2\textwidth}@{\hspace{.75cm}}m{.35\textwidth}@{}m{.4\textwidth}}
 		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}\\

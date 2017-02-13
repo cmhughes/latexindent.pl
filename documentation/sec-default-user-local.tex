@@ -5,15 +5,15 @@
  from the internal working -- this is very similar to the way that we separate content
  from form when writing our documents in \LaTeX.
 
-	If you look in \texttt{defaultSettings.yaml} you'll find the switches
-	that govern the behaviour of \texttt{latexindent.pl}. If you're not sure where
-	\texttt{defaultSettings.yaml} resides on your computer, don't worry as \texttt{indent.log}
-	will tell you where to find it.
-	\texttt{defaultSettings.yaml} is commented,
-	but here is a description of what each switch is designed to do. The default
-	value is given in each case; whenever you see \emph{integer} in \emph{this}
-	section, assume that it must be greater than or equal to \texttt{0} unless
-	otherwise stated.
+ If you look in \texttt{defaultSettings.yaml} you'll find the switches
+ that govern the behaviour of \texttt{latexindent.pl}. If you're not sure where
+ \texttt{defaultSettings.yaml} resides on your computer, don't worry as \texttt{indent.log}
+ will tell you where to find it.
+ \texttt{defaultSettings.yaml} is commented,
+ but here is a description of what each switch is designed to do. The default
+ value is given in each case; whenever you see \emph{integer} in \emph{this}
+ section, assume that it must be greater than or equal to \texttt{0} unless
+ otherwise stated.
 
 \yamltitle{fileExtensionPreference}*{fields}
 	\texttt{latexindent.pl} can be called to
@@ -33,8 +33,8 @@ latexindent.pl myfile
 
 	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in \cref{lst:fileExtensionPreference}
 	means that the script will first look for \texttt{myfile.tex}, then \texttt{myfile.sty}, \texttt{myfile.cls},
-    and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings with line numbers represent code
-    taken directly from \texttt{defaultSettings.yaml}.}.
+	and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings with line numbers represent code
+		taken directly from \texttt{defaultSettings.yaml}.}.
 
 \yamltitle{backupExtension}*{extension name}
 
@@ -262,28 +262,28 @@ latexindent.pl -l tabular.yaml tabular1.tex
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
 	\end{minipage}%
 
-    Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
+	Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
 	\begin{commandshell}
 latexindent.pl -l tabular1.yaml tabular1.tex 
 \end{commandshell}
-    gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
+	gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.54\textwidth}
-	    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular1.yaml}[yaml-TCB]{\texttt{tabular1.yaml}}{lst:tabular1YAML}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular1.yaml}[yaml-TCB]{\texttt{tabular1.yaml}}{lst:tabular1YAML}
 	\end{minipage}%
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks
-    (see \texttt{specialBeginEnd} on \cpageref{yaml:specialBeginEnd}); for example, assuming that you have a command called \lstinline!\matrix!
-	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you 
-    run the command
-    \begin{commandshell}
+	(see \texttt{specialBeginEnd} on \cpageref{yaml:specialBeginEnd}); for example, assuming that you have a command called \lstinline!\matrix!
+	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you
+	run the command
+	\begin{commandshell}
 latexindent.pl -l matrix1.tex 
     \end{commandshell}
-    then the before-and-after results
+	then the before-and-after results
 	shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by default.
 
 	\begin{minipage}{.45\textwidth}
@@ -296,10 +296,10 @@ latexindent.pl -l matrix1.tex
 
 	If you have blocks of code that you wish to align at the \&  character that
 	are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots \lstinline!\end{tabular}!, then you can use the mark up
-	  illustrated in \cref{lst:alignmentmarkup}; the default output is shown in \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to
-	  each other, but that there can be any number of spaces (possibly none) between the
-	  \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
-	    environment name that you have specified in \texttt{lookForAlignDelims}.
+	illustrated in \cref{lst:alignmentmarkup}; the default output is shown in \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to
+	each other, but that there can be any number of spaces (possibly none) between the
+	\lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
+	environment name that you have specified in \texttt{lookForAlignDelims}.
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
@@ -309,8 +309,8 @@ latexindent.pl -l matrix1.tex
 		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block-default.tex}{\texttt{align-block.tex} default output}{lst:alignmentmarkup-default}
 	\end{minipage}%
 
-    With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of \texttt{noAdditionalIndent} and \texttt{indentRules}
-    (see \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered \texttt{environments}.
+	With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of \texttt{noAdditionalIndent} and \texttt{indentRules}
+	(see \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered \texttt{environments}.
 
 \yamltitle{indentAfterItems}*{fields}
 	\begin{wrapfigure}[5]{r}[0pt]{7cm}
@@ -341,7 +341,7 @@ latexindent.pl -l matrix1.tex
 	to their user settings (see \vref{sec:indentconfig} for details of how to configure user settings,
 	and \vref{lst:mysettings} in particular \label{page:examsettings}.)
 
-    \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
+\yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.
@@ -422,14 +422,14 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	you should now receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
-    \subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
+\subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 
 	\begin{longtable}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{}m{.2\linewidth}}
 		\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}\\
 		\toprule
-		Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                    \\
+		Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
 		\midrule
 		environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
 		\begin{lstlisting}[,nolol=true,]
@@ -452,9 +452,9 @@ mand arg text
 }
   \end{lstlisting}
 		\\\cmidrule{2-3}
-		commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                               \\\cmidrule{2-3}
-		keyEqualsValuesBracesBrackets         & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                               \\\cmidrule{2-3}
-		namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                               \\\cmidrule{2-3}
+		commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+		keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+		namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
 		UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
 		ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
 		\begin{lstlisting}[,nolol=true,]
@@ -491,4 +491,4 @@ mand arg text
 		\bottomrule
 	\end{longtable}
 
-    We will refer to these code blocks in what follows.
+	We will refer to these code blocks in what follows.
