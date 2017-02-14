@@ -190,7 +190,11 @@ latexindent.pl -modifylinebreaks myfile.tex
 	see \vref{sec:modifylinebreaks}
 
 	\texttt{latexindent.pl} can also be called on a file without the file extension, for
-	example \lstinline[breaklines=true,breakatwhitespace=true,]!latexindent.pl myfile! and in which case, you can specify
+	example
+	\begin{commandshell}
+latexindent.pl myfile
+    \end{commandshell}
+	and in which case, you can specify
 	the order in which extensions are searched for; see \vref{lst:fileExtensionPreference}
 	for full details.
 

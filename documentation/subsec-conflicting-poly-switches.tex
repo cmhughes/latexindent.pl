@@ -22,9 +22,9 @@ latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 	\end{itemize}
 	So, which should win the conflict? As demonstrated in \cref{lst:mycommand1-mlb4}, it is clear that \texttt{LCuBStartsOnOwnLine} won
 	this conflict, and the reason is that \emph{the second argument was processed after the first} -- in general, the most recently-processed
-	code block and associated poly-switch takes prioirty.
+	code block and associated poly-switch takes priority.
 
-	We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5}; upon runnning the command
+	We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5}; upon running the command
 	\begin{commandshell}
 latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 \end{commandshell}
@@ -38,7 +38,7 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
 	\end{minipage}
 
-	As previously, the most-recently-processed code block takes prioirty -- as before, the second (i.e, \emph{last}) argument. Exploring this
+	As previously, the most-recently-processed code block takes priority -- as before, the second (i.e, \emph{last}) argument. Exploring this
 	further, we consider the YAML settings in \cref{lst:mycom-mlb6}, which give associated output in \cref{lst:mycommand1-mlb6}.
 
 	\begin{minipage}{.4\linewidth}

@@ -1,8 +1,9 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between}
 	The \texttt{command} code blocks will always look for optional (square bracketed) and
-	mandatory (curly braced) arguments; there are switches that can allow them to contain
-	other strings.
+	mandatory (curly braced) arguments which can contain comments, line breaks and
+	`beamer' commands \lstinline!<.*?>!  between them. There are switches that can allow them to contain
+	other strings, which we discuss next.
 
 \yamltitle{commandCodeBlocks}*{fields}
 
@@ -28,10 +29,12 @@
 
 	By default, because \texttt{roundParenthesesAllowed} is set to $1$ in \cref{lst:commandCodeBlocks}, then \texttt{latexindent.pl}
 	will allow round parenthesis between optional and mandatory arguments. In the case of the code in \cref{lst:pstricks1},
-	\texttt{latexindent.pl} finds \emph{all} the arguments appropriately.
+	\texttt{latexindent.pl} finds \emph{all} the arguments of \lstinline!defFunction!, both before and after \lstinline!(u,v)!.
 
-	The default output from running \texttt{latexindent.pl} on \cref{lst:pstricks1} actually leaves it unchanged (see \cref{lst:pstricks1-default}). Upon
-	using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
+	The default output from running \texttt{latexindent.pl} on \cref{lst:pstricks1} actually leaves it unchanged (see \cref{lst:pstricks1-default});
+	note in particular, this is because of \texttt{noAdditionalIndentGlobal} as discussed on \cpageref{page:command:noAddGlobal}.
+
+	Upon using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
         \end{commandshell}
@@ -83,7 +86,8 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 	\begin{quote}
 		to, node, ++
 	\end{quote}
-	are all allowed to appear between arguments, as they are each set to $1$. This means that when \texttt{latexindent.pl}
+	are all allowed to appear between arguments, as they are each set to $1$; importantly, you are encouraged to add further names
+	to this field as necessary. This means that when \texttt{latexindent.pl}
 	processes \cref{lst:tikz-node1}, it consumes:
 	\begin{itemize}
 		\item the optional argument \lstinline![thin]!
@@ -127,7 +131,7 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-to.yaml}[yaml-TCB]{\texttt{no-to.yaml}}{lst:no-to}
 	\end{minipage}
 
-	In this case, \texttt{latexindent.pl} sees that
+	In this case, \texttt{latexindent.pl} sees that:
 	\begin{itemize}
 		\item the \lstinline!\draw! command finishes after the \lstinline!(c)! as (\texttt{stringsAllowedBetweenArguments} has \texttt{to} set to $0$)
 		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see \vref{tab:code-blocks}) \emph{with} argument \lstinline![in=110,out=-90]!

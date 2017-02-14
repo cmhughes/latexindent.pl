@@ -1,0 +1,5 @@
+indentAfterItems:
+    tikzpicture: 1
+
+itemNames:
+    pause: 1
