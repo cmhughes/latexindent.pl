@@ -203,15 +203,15 @@ sub  put_verbatim_back_in {
     my $self = shift;
 
     # if there are no verbatim children, return
-    return unless(%{$self}{verbatim});
+    return unless(${$self}{verbatim});
 
     # search for environments/commands
     $self->logger('Putting verbatim back in, here is the pre-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body}) if($is_t_switch_active);
 
     # loop through document children hash
-    while( (scalar keys %{%{$self}{verbatim}})>0 ){
-          while( my ($key,$child)= each %{%{$self}{verbatim}}){
+    while( (scalar keys %{${$self}{verbatim}})>0 ){
+          while( my ($key,$child)= each %{${$self}{verbatim}}){
             if(${$self}{body} =~ m/${$child}{id}/mx){
 
                 # replace ids with body
@@ -230,7 +230,7 @@ sub  put_verbatim_back_in {
 
     # logfile info
     $self->logger("Number of children:",'heading') if $is_t_switch_active;
-    $self->logger(scalar keys %{%{$self}{verbatim}}) if $is_t_switch_active;
+    $self->logger(scalar keys %{${$self}{verbatim}}) if $is_t_switch_active;
     $self->logger('Post-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body}) if($is_t_switch_active);
     return;
@@ -240,15 +240,15 @@ sub  put_verbatim_commands_back_in {
     my $self = shift;
 
     # if there are no verbatim children, return
-    return unless(%{$self}{verbatimCommands});
+    return unless(${$self}{verbatimCommands});
 
     # search for environments/commands
     $self->logger('Putting verbatim commands back in, here is the pre-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body}) if($is_t_switch_active);
 
     # loop through document children hash
-    while( (scalar keys %{%{$self}{verbatimCommands}})>0 ){
-          while( my ($key,$child)= each %{%{$self}{verbatimCommands}}){
+    while( (scalar keys %{${$self}{verbatimCommands}})>0 ){
+          while( my ($key,$child)= each %{${$self}{verbatimCommands}}){
             if(${$self}{body} =~ m/${$child}{id}/mx){
 
                 # replace ids with body
@@ -267,7 +267,7 @@ sub  put_verbatim_commands_back_in {
 
     # logfile info
     $self->logger("Number of children:",'heading');
-    $self->logger(scalar keys %{%{$self}{verbatimCommands}});
+    $self->logger(scalar keys %{${$self}{verbatimCommands}});
     $self->logger('Post-processed body:','heading') if $is_t_switch_active;
     $self->logger(${$self}{body}) if($is_t_switch_active);
     return;

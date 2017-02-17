@@ -173,7 +173,7 @@ sub find_objects{
     $self->find_special;
 
     # if there are no children, return
-    if(%{$self}{children}){
+    if(${$self}{children}){
         $self->logger("Objects have been found.",'heading');
     } else {
         $self->logger("No objects found.");

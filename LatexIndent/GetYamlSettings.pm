@@ -8,23 +8,39 @@ use warnings;
 use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
+use File::HomeDir;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 
 # Read in defaultSettings.YAML file
-our $defaultSettings = YAML::Tiny->new;
-$defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) or die "Could not open defaultSettings.yaml";
+our $defaultSettings;
 
 # master yaml settings is a hash, global to this module
-our %masterSettings = %{$defaultSettings->[0]};
+our %masterSettings;
 
 # previously found settings is a hash, global to this module
 our %previouslyFoundSettings;
 
 sub readSettings{
   my $self = shift;
+  
+  $defaultSettings = YAML::Tiny->new;
+  $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
   $self->logger("YAML settings read",'heading');
   $self->logger("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
+  
+  # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
+  # the same directory as it; we need to navigate to it
+  if(!$defaultSettings) {
+    $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
+    $self->logger("Reading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
+  }
+
+  # need to exit if we can't get defaultSettings.yaml
+  die "Could not open defaultSettings.yaml" if(!$defaultSettings);
+   
+  # master yaml settings is a hash, global to this module
+  our %masterSettings = %{$defaultSettings->[0]};
 
   # scalar to read user settings
   my $userSettings;
