@@ -1,0 +1,7 @@
+indentAfterHeadings:
+    subsection:
+       indentAfterThisHeading: 1
+       level: 1
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 1

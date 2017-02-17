@@ -1,0 +1,24 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{fourier} 
+\usepackage{array}
+\usepackage{makecell}
+
+\renewcommand\theadalign{cb}
+\renewcommand\theadfont{\bfseries}
+\renewcommand\theadgape{\Gape[4pt]}
+\renewcommand\cellgape{\Gape[4pt]}
+
+\begin{document}
+
+\begin{center}
+	\begin{tabular}{ | c | c | c |}
+		\hline
+		\thead{A Head} & \thead{A Second \\ Head} & \thead{A Third \\ Head} \\
+		\hline
+		Some text &  \makecell{Some really \\ longer text}  & Text text text  \\
+		\hline
+	\end{tabular}
+\end{center}
+
+\end{document}

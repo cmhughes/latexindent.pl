@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{xparse}
+
+\ExplSyntaxOn
+\tl_new:N \l__dai_temp_tl
+
+\keys_define:nn { daikeys } {
+	foo .tl_set:c = { l_dai_ \tl_use:N \l__dai_temp_tl _tl },
+}
+
+\keys_define:nn { daikeys } {
+	foo .code:n =
+		{
+			\tl_clear_new:c { l_dai_ \tl_use:N \l__dai_temp_tl _tl }
+			\tl_set:cn { l_dai_ \tl_use:N \l__dai_temp_tl _tl } {#1}
+		},
+}
+
+\NewDocumentCommand \MyCommand { m  m } {
+	\tl_set:Nn \l__dai_temp_tl { #1 }
+	\keys_set:nn { daikeys } { #2 }
+}
+\ExplSyntaxOff
+
+\begin{document}
+\MyCommand{bar}{foo=foobar}
+
+\ExplSyntaxOn
+\l_dai_bar_tl
+\l_dai__tl
+\ExplSyntaxOff
+
+\end{document}

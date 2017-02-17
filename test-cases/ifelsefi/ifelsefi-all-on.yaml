@@ -1,0 +1,15 @@
+modifyLineBreaks:
+    ifElseFi:
+        IfStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
+        ElseStartsOnOwnLine: 1
+        ElseFinishesWithLineBreak: 1
+        FiStartsOnOwnLine: 1
+        FiFinishesWithLineBreak: 1
+        ifnum:
+            IfStartsOnOwnLine: 1
+            BodyStartsOnOwnLine: 1
+            ElseStartsOnOwnLine: 1
+            ElseFinishesWithLineBreak: 1
+            FiStartsOnOwnLine: 1
+            FiFinishesWithLineBreak: 1

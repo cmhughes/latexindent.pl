@@ -1,0 +1,9 @@
+# try changing the following and running
+#   latexindent.pl -l=spaces-follow-tabs.yaml debug-indentation.tex
+# I believe it demonstrates that the following two 
+# statements are different:
+#   spaces followed by TABS
+#   TABS followed by spaces
+indentRules:
+   one: "\t"
+   two: "     " 

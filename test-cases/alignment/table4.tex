@@ -1,0 +1,22 @@
+% arara: indent: {overwrite: true, silent: on, localSettings: on}
+\documentclass{article}
+\usepackage{siunitx}
+
+\begin{document}
+\begin{tabular}{%
+	l
+	S[table-format=3.0]
+	S[table-format=3.2]
+	S[table-format=2.2]
+	S[table-format=3.2]
+	S[table-format=-2.2]
+	S[table-format=3.2]
+	}
+	Latex        & 360 & 101.77 & 10.71 & 101.86 & 64.60  & 127.20 \\
+	Manufacturing      & 360 & -7.33  & 12.59 & -7.24  & -49.00 & 22.00\\
+	Cons                  & 360 & -17.19 & 23.4  &-17.22 & -79.00 & 43.00  \\
+	Apple and Orange & 360 & 3.38   & 13.84 & 3.60   & -47.00 & 29.00 \\
+	Services and Harry & 104& -4.96& 20.8 & -4.81  & -57.00 & 30.00  \\
+	Manchester    & 360 &-9.29  & 8.64  &-9.26  & -35.00 & 8.00   \\
+\end{tabular}
+\end{document}

@@ -1,0 +1,47 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{Partnering \texttt{BodyStartsOnOwnLine} with argument-based poly-switches}
+	Some poly-switches need to be partnered together; in particular, when line breaks involving the \emph{first} argument
+	of a code block need to be accounted for using both \texttt{BodyStartsOnOwnLine} (or its equivalent, see \vref{tab:poly-switch-mapping})
+	and \texttt{LCuBStartsOnOwnLine} for mandatory arguments, and \texttt{LSqBStartsOnOwnLine} for optional arguments.
+
+	Let's begin with the code in \cref{lst:mycommand1} and the YAML settings in \cref{lst:mycom-mlb1}; with reference
+	to \vref{tab:poly-switch-mapping}, the key \texttt{CommandNameFinishesWithLineBreak} is an alias for \texttt{BodyStartsOnOwnLine}.
+
+	\cmhlistingsfromfile{demonstrations/mycommand1.tex}{\texttt{mycommand1.tex}}{lst:mycommand1}
+
+	Upon running the command
+	\begin{commandshell}
+latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
+\end{commandshell}
+	we obtain \cref{lst:mycommand1-mlb1}; note that the \emph{second} mandatory argument beginning brace \lstinline!{! has had
+	its leading line break removed, but that the \emph{first} brace has not.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb1.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb1}}{lst:mycommand1-mlb1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb1.yaml}}{lst:mycom-mlb1}
+	\end{minipage}
+
+	Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb2}; upon running the analogous command to that given above,
+	we obtain \cref{lst:mycommand1-mlb2}; both beginning braces \lstinline!{! have had their leading line breaks removed.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb2.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb2}}{lst:mycommand1-mlb2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb2.yaml}}{lst:mycom-mlb2}
+	\end{minipage}
+
+	Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb3}; upon running the analogous command to that given above,
+	we obtain \cref{lst:mycommand1-mlb3}.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile{demonstrations/mycommand1-mlb3.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb3}}{lst:mycommand1-mlb3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb3.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb3.yaml}}{lst:mycom-mlb3}
+	\end{minipage}

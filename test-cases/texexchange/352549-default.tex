@@ -1,0 +1,54 @@
+\begin{filecontents*}{data.csv}
+	name,threads,time,standard dev <= columns meaning
+	data1,1,1.12,0.007
+	data1,2,0.6,0.0030
+	data1,4,0.6,0.0031
+	other,1,6,0.01
+	other,2,3,0.003
+	other,4,3,0.003
+\end{filecontents*}
+\documentclass[border=5pt]{standalone}
+\usepackage{pgfplots}
+% borrowed styles from Jake's answer at
+% <http://tex.stackexchange.com/a/301991/95441>
+\pgfplotsset{
+	% filter symbolic values
+	discard if not symbolic/.style 2 args={
+			x filter/.append code={
+					\edef\tempa{\thisrow{#1}}
+					\edef\tempb{#2}
+					\ifx\tempa\tempb
+					\else
+						\def\pgfmathresult{NaN}
+					\fi
+				},
+		},
+	%        % filter numerical values
+	%        % (not needed here, but just for completeness)
+	%        discard if not/.style 2 args={
+	%            x filter/.append code={
+	%                \ifdim\thisrow{#1} pt=#2pt
+	%                \else
+	%                    \def\pgfmathresult{NaN}
+	%                \fi
+	%            },
+	%        },
+}
+\begin{document}
+\begin{tikzpicture}
+	\begin{axis}
+		\foreach \i in {
+				data1,
+				other%
+			} {
+				\addplot+ [
+					discard if not symbolic={name}{\i},
+				] table [
+						col sep=comma,
+						x=threads,
+						y=time,
+					] {data.csv};
+			}
+	\end{axis}
+\end{tikzpicture}
+\end{document}

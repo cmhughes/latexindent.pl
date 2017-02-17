@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{verbatim}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+	here is some
+	other
+	and some more
+	and
+	again
+	\end{document}
+\end{filecontents}
+
+\begin{document}
+
+\begin{verbatim}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+	\end{document}
+        \end{filecontents}
+\end{verbatim}
+
+\end{document}

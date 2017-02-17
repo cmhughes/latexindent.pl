@@ -1,0 +1,38 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\section{Conclusions and known limitations}\label{sec:knownlimitations}
+ There are a number of known limitations of the script, and almost certainly quite a
+ few that are \emph{unknown}!
+
+ For example, \texttt{latexindent.pl} will not indent the following code correctly,
+ because of the unmatched \lstinline![!. I'm hopeful to be able to resolve this
+ issue in a future version.
+
+ \begin{lstlisting}[,nolol=true,]
+\parbox{
+\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
+}
+\end{lstlisting}
+
+ The main other limitation is to do with the alignment routine of environments/commands that contain
+ delimiters which are specified in \texttt{lookForAlignDelims}.
+
+ The routine works well for `standard' blocks of code that have the same number of \lstinline!&!
+ per line, but it will not do anything for lines that do not -- such examples
+ include \texttt{tabular} environments that use \lstinline!\multicolumn! or
+ perhaps spread cell contents across multiple lines.  For each alignment block (\texttt{tabular},
+ \texttt{align}, etc) \texttt{latexindent.pl} first of all makes a record
+ of the maximum number of \lstinline!&!; if each row does not have that
+ number of \lstinline!&! then it will not try to format that row. Details
+ will be given in \texttt{indent.log} assuming that \texttt{trace} mode
+ is active.
+
+ You can run \texttt{latexindent} on \texttt{.sty}, \texttt{.cls} and any file types
+ that you specify in \lstinline[breaklines=true]!fileExtensionPreference! (see \vref{lst:fileExtensionPreference});
+ if you find a case in which the script struggles, please feel free
+ to report it at \cite{latexindent-home}, and
+ in the meantime, consider using a \texttt{noIndentBlock} (see \cpageref{lst:noIndentBlockdemo}).
+
+ I hope that this script is useful to some; if you find an example where the
+ script does not behave as you think it should, the best way to contact me is to
+ report an issue on \cite{latexindent-home}; otherwise, feel free to find me on
+ the \url{http://tex.stackexchange.com/users/6621/cmhughes}.

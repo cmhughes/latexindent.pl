@@ -1,0 +1,18 @@
+before text
+\newlevel{          % 4
+	body goes here
+	\mycommand{         % 2
+		argument text
+		argument text
+		argument text
+		\nested[        % 1
+			first opt-arg]
+		{
+			first mand arg}
+	} after text
+	\anothercommand{    % 3
+		another argument text
+		another argument text
+		another argument text
+	}% after text
+}

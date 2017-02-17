@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage[landscape]{geometry}% http://ctan.org/pkg/geometry
+\usepackage{array}% http://ctan.org/pkg/array
+\begin{document}
+
+% =========== FACTOR approach ===========
+{\renewcommand{\arraystretch}{2}%
+\begin{tabular}{|l|l|}
+	\hline
+	column 1                      & column 2 \      \hline
+	I really would like this less & crammed \      \hline
+\end{tabular}} \quad
+% =========== LENGTH approaches ===========
+\begin{tabular}{|l|l|}
+	\hline
+	column 1                      & column 2 \\[4ex]
+	\hline
+	I really would like this less & crammed  \\[5pt]
+	\hline
+\end{tabular} \quad
+{\setlength{\extrarowheight}{20pt}%
+	\begin{tabular}{|l|l|}
+		\hline
+		column 1                      & column 2 \      \hline
+		I really would like this less & crammed \      \hline
+	\end{tabular}}
+\end{document}

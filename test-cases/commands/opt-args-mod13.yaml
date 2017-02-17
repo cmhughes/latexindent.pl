@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    optionalArguments:
+        LSqBStartsOnOwnLine: 1
+        OptArgBodyStartsOnOwnLine: -1
+        RSqBStartsOnOwnLine: -1
+        RSqBFinishesWithLineBreak: 1

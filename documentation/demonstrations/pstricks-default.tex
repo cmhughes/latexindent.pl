@@ -1,0 +1,11 @@
+\def\Picture#1{%
+	\def\stripH{#1}%
+	\begin{pspicture}[showgrid}
+		\psforeach{\row}{%
+			{{3,2.8,2.7,3,3.1}},%
+			{2.8,1,1.2,2,3},%
+			...
+		}{%
+			\expandafter...
+		}
+	\end{pspicture}}

@@ -1,0 +1,37 @@
+\documentclass[border=0.125cm]{standalone}
+\usepackage{tikz}
+\pagecolor{black}
+\usetikzlibrary{shapes.geometric,decorations}
+\pgfmathdeclarerandomlist{colors}{{red}{yellow}{pink}{green}{orange}{purple}{blue}{white}}
+
+\newcommand\drawstar[1][]{%
+  \pgfmathsetmacro\s{rnd*2+2}
+    \pgfmathsetmacro\t{rnd*.5cm+0.5cm}
+    \pgfmathsetmacro\y{rand*0.125cm}
+    \pgfmathsetmacro\r{rand*180}
+    \pgfmathrandomitem{\c}{colors}
+    \node [star, fill=\c, star point ratio=\s, rotate=\r, minimum size=\t, inner sep=0pt, every star/.try, #1] at (0cm,\y pt) {};
+}
+\pgfdeclaredecoration{stars}{start}{
+  \state{start}[width=rnd*.5cm+.25cm]{\drawstar}
+  \state{final}{\drawstar}
+}
+
+\begin{document}
+
+\begin{tikzpicture}[line cap=round, x=1cm,y=1cm,]
+
+\draw [every star/.style={opacity=0.125}, decoration=stars, decorate] 
+  \foreach \i in {0,...,5}{ 
+ plot [domain=\i*360:\i*360+180, samples=100] (\x/300*cos \x, -\x/150+\x/900*sin \x) };
+
+
+\draw [every star/.style={opacity=0.5}, decoration=stars, decorate] 
+\foreach \i in {0,...,5}{ 
+  plot [domain=\i*360+180:\i*360+360, samples=100] (\x/300*cos \x, -\x/150+\x/900*sin \x) };
+
+\drawstar[fill=yellow, minimum size=1.5cm]
+
+\end{tikzpicture}
+
+\end{document}

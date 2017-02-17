@@ -1,0 +1,3 @@
+noAdditionalIndent:
+   nested:
+        optionalArguments: "1"

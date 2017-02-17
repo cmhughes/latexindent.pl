@@ -1,0 +1,139 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between}
+	The \texttt{command} code blocks will always look for optional (square bracketed) and
+	mandatory (curly braced) arguments which can contain comments, line breaks and
+	`beamer' commands \lstinline!<.*?>!  between them. There are switches that can allow them to contain
+	other strings, which we discuss next.
+
+\yamltitle{commandCodeBlocks}*{fields}
+
+	The \texttt{commandCodeBlocks} field contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+
+	\cmhlistingsfromfile[firstnumber=278,linerange={278-286},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+
+\yamltitle{roundParenthesesAllowed}{0|1}
+
+	The need for this field was mostly motivated by commands found in code used to generate images in \texttt{PSTricks} and \texttt{tikz}; for example,
+	let's consider the code given in \cref{lst:pstricks1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/pstricks1.tex}{\texttt{pstricks1.tex}}{lst:pstricks1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/pstricks1-default.tex}{\texttt{pstricks1} default output}{lst:pstricks1-default}
+	\end{minipage}
+
+	Notice that the \lstinline!\defFunction! command has an optional argument, followed by a
+	mandatory argument, followed by a round-parenthesis argument, $(u,v)$.
+
+	By default, because \texttt{roundParenthesesAllowed} is set to $1$ in \cref{lst:commandCodeBlocks}, then \texttt{latexindent.pl}
+	will allow round parenthesis between optional and mandatory arguments. In the case of the code in \cref{lst:pstricks1},
+	\texttt{latexindent.pl} finds \emph{all} the arguments of \lstinline!defFunction!, both before and after \lstinline!(u,v)!.
+
+	The default output from running \texttt{latexindent.pl} on \cref{lst:pstricks1} actually leaves it unchanged (see \cref{lst:pstricks1-default});
+	note in particular, this is because of \texttt{noAdditionalIndentGlobal} as discussed on \cpageref{page:command:noAddGlobal}.
+
+	Upon using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
+	\begin{commandshell}
+latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
+        \end{commandshell}
+	we obtain the output given in  \cref{lst:pstricks1-nrp}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/pstricks1-nrp.tex}{\texttt{pstricks1.tex} using \cref{lst:noRoundParentheses}}{lst:pstricks1-nrp}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
+	\end{minipage}
+
+	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp}; in particular, in \cref{lst:pstricks1-nrp}, because
+	round parentheses are \emph{not} allowed, \texttt{latexindent.pl} finds that the \lstinline!\defFunction! command finishes at the first opening
+	round parenthesis. As such, the remaining braced, mandatory, arguments are found to be \texttt{UnNamedGroupingBracesBrackets} (see \vref{tab:code-blocks})
+	which, by default, assume indentation for their body, and hence the tabbed indentation in \cref{lst:pstricks1-nrp}.
+
+	Let's explore this using the YAML given in \cref{lst:defFunction} and run the command
+	\begin{commandshell}
+latexindent.pl pstricks1.tex -l defFunction.yaml
+        \end{commandshell}
+	then the output is as in \cref{lst:pstricks1-indent-rules}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/pstricks1-indent-rules.tex}{\texttt{pstricks1.tex} using \cref{lst:defFunction}}{lst:pstricks1-indent-rules}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
+	\end{minipage}
+
+	Notice in \cref{lst:pstricks1-indent-rules} that the \emph{body} of the \lstinline!defFunction! command i.e, the subsequent lines
+	containing arguments after the command name, have received the single space of indentation specified by \cref{lst:defFunction}.
+
+\yamltitle{stringsAllowedBetweenArguments}*{fields}
+	\texttt{tikz} users may well specify code such as that given in \cref{lst:tikz-node1}; processing this code using
+	\texttt{latexindent.pl} gives the default output in \cref{lst:tikz-node1-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
+	\end{minipage}
+
+	With reference to \vref{lst:commandCodeBlocks}, we see that the strings
+	\begin{quote}
+		to, node, ++
+	\end{quote}
+	are all allowed to appear between arguments, as they are each set to $1$; importantly, you are encouraged to add further names
+	to this field as necessary. This means that when \texttt{latexindent.pl}
+	processes \cref{lst:tikz-node1}, it consumes:
+	\begin{itemize}
+		\item the optional argument \lstinline![thin]!
+		\item the round-bracketed argument \lstinline!(c)! because \texttt{roundParenthesesAllowed} is $1$ by default
+		\item the string \lstinline!to! (specified in \texttt{stringsAllowedBetweenArguments})
+		\item the optional argument \lstinline![in=110,out=-90]!
+		\item the string \lstinline!++! (specified in \texttt{stringsAllowedBetweenArguments})
+		\item the round-bracketed argument \lstinline!(0,-0.5cm)! because \texttt{roundParenthesesAllowed} is $1$ by default
+		\item the string \lstinline!node! (specified in \texttt{stringsAllowedBetweenArguments})
+		\item the optional argument \lstinline![below,align=left,scale=0.5]!
+	\end{itemize}
+
+	We can explore this further, for example using \cref{lst:draw} and running the command
+	\begin{commandshell}
+latexindent.pl tikz-node1.tex -l draw.yaml  
+\end{commandshell}
+	we receive the output given in \cref{lst:tikz-node1-draw}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/tikz-node1-draw.tex}{\texttt{tikz-node1.tex} using \cref{lst:draw}}{lst:tikz-node1-draw}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
+	\end{minipage}
+
+	Notice that each line after the \lstinline!\draw! command (its `body') in \cref{lst:tikz-node1-draw} has been given the
+	appropriate two-spaces worth of indentation specified in \cref{lst:draw}.
+
+	Let's compare this with the output from using the YAML settings in \cref{lst:no-to}, and running the command
+	\begin{commandshell}
+latexindent.pl tikz-node1.tex -l no-to.yaml  
+\end{commandshell}
+	given in \cref{lst:tikz-node1-no-to}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/tikz-node1-no-to.tex}{\texttt{tikz-node1.tex} using \cref{lst:no-to}}{lst:tikz-node1-no-to}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-to.yaml}[yaml-TCB]{\texttt{no-to.yaml}}{lst:no-to}
+	\end{minipage}
+
+	In this case, \texttt{latexindent.pl} sees that:
+	\begin{itemize}
+		\item the \lstinline!\draw! command finishes after the \lstinline!(c)! as (\texttt{stringsAllowedBetweenArguments} has \texttt{to} set to $0$)
+		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see \vref{tab:code-blocks}) \emph{with} argument \lstinline![in=110,out=-90]!
+		\item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node} with argument \lstinline![below,align=left,scale=0.5]!
+	\end{itemize}

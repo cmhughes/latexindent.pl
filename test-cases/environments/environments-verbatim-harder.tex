@@ -1,0 +1,24 @@
+before minipage
+\begin{fig}
+	\begin{minipage}
+		\begin{verbatim}
+  to be nested to be nested
+          to be nested to be nested
+to be nested to be nested 
+
+		\end{verbatim}
+	\end{minipage}
+	\begin{minipage}
+		\begin{lstlisting}
+    here is some more verbatim
+            and a child environment
+         something else
+         \begin{myenv}
+            shouldn't
+       be
+                    touched
+            \end{myenv}
+		\end{lstlisting}
+	\end{minipage}
+\end{fig}
+after verbatim

@@ -1,0 +1,24 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{\texttt{noAdditionalIndent} and \texttt{indentRules}}\label{sec:noadd-indent-rules}
+	\texttt{latexindent.pl} operates on files by looking for code blocks, as detailed in \vref{subsubsec:code-blocks};
+	for each type of code block  in \vref{tab:code-blocks} (which we will call a \emph{$\langle$thing$\rangle$} in what follows)
+	it searches YAML fields for information in the following order:
+	\begin{enumerate}
+		\item \texttt{noAdditionalIndent} for the \emph{name} of the current \emph{$\langle$thing$\rangle$};
+		\item \texttt{indentRules} for the \emph{name} of the current \emph{$\langle$thing$\rangle$};
+		\item \texttt{noAdditionalIndentGlobal} for the \emph{type} of the current \emph{$\langle$thing$\rangle$};
+		\item \texttt{indentRulesGlobal} for the \emph{type} of the current \emph{$\langle$thing$\rangle$}.
+	\end{enumerate}
+
+	Using the above list, the first piece of information to be found will be used; failing that,
+	the value of \texttt{defaultIndent} is used.
+	If information is found in multiple fields, the first one according to the list above will be used; for example,
+	if information is present in both \texttt{indentRules} and in \texttt{noAdditionalIndentGlobal}, then the information from \texttt{indentRules}
+	takes priority.
+
+	We now present details for the different type of code blocks known to \texttt{latexindent.pl}, as detailed in \vref{tab:code-blocks}; for
+	reference, there follows a list of the code blocks covered.
+
+	\startcontents[noAdditionalIndent]
+	\printcontents[noAdditionalIndent]{}{0}{}

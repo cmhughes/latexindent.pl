@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    ifElseFi:
+        IfStartsOnOwnLine: 1
+    environments:
+        BodyStartsOnOwnLine: 1
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 1
+

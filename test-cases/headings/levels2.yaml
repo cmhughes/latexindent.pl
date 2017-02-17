@@ -1,0 +1,7 @@
+indentAfterHeadings:
+    chapter: 
+       indentAfterThisHeading: 1
+       level: 1
+    section:
+       indentAfterThisHeading: 1
+       level: 2

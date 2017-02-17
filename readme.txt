@@ -20,7 +20,7 @@
 
 *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+
 
-FOR COMPLETE DETAILS, PLEASE SEE documentation/manual.pdf
+FOR COMPLETE DETAILS, PLEASE SEE documentation/latexindent.pdf
 
 Note: latexindent.exe was created using 
 
@@ -34,6 +34,7 @@ USAGE
     You'll need
 
         latexindent.pl
+        LatexIndent/*.pm
         defaultSettings.yaml
 
     in the same directory. Windows users might prefer to grab latexindent.exe
@@ -49,5 +50,6 @@ I recommend both using the following:
     - a visual check, at the very least, make sure that 
       each file has the same number of lines
     - a check using latexdiff inputfile.tex outputfile.tex
+    - git status myfile.tex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

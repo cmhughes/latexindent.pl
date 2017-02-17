@@ -1,0 +1,60 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsubsection{\texttt{specialBeginEnd} code blocks}
+	Let's use the example from \vref{lst:specialbefore} which has default output shown in
+	\vref{lst:specialafter}.
+
+	It is recommended to specify \texttt{noAdditionalIndent} and \texttt{indentRules} in the `scalar' form
+	for these type of code blocks, although the `field' form would work, assuming that \texttt{body} was specified.
+	Examples are shown in \cref{lst:displayMath-noAdd,lst:displayMath-indent-rules}.
+
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/displayMath-noAdd.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-noAdd.yaml}}{lst:displayMath-noAdd}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/displayMath-indent-rules.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-indent-rules.yaml}}{lst:displayMath-indent-rules}
+	\end{minipage}
+
+	After running the following commands,
+	\begin{commandshell}
+latexindent.pl special1.tex -local displayMath-noAdd.yaml  
+latexindent.pl special1.tex -l displayMath-indent-rules.yaml  
+\end{commandshell}
+	we receive the respective output given in \cref{lst:special1-output-noAdd,lst:special1-output-indent-rules}; note that
+	in \cref{lst:special1-output-noAdd}, the \texttt{displayMath} code block has \emph{not} received any additional indentation,
+	while in \cref{lst:special1-output-indent-rules}, the \texttt{displayMath} code block has received three tabs worth of indentation.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1-noAdd.tex}{\texttt{special1.tex} using \cref{lst:displayMath-noAdd}}{lst:special1-output-noAdd}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1-indent-rules.tex}{\texttt{special1.tex} using \cref{lst:displayMath-indent-rules}}{lst:special1-output-indent-rules}
+	\end{minipage}
+
+	We may specify \texttt{noAdditionalIndentGlobal} and \texttt{indentRulesGlobal} as in \cref{lst:special-noAdd-glob,lst:special-indent-rules-global}.
+
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-noAdd-glob.yaml}}{lst:special-noAdd-glob}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-indent-rules-global.yaml}}{lst:special-indent-rules-global}
+	\end{minipage}
+
+	Upon running the following commands
+	\begin{commandshell}
+latexindent.pl special1.tex -local special-noAdd-glob.yaml  
+latexindent.pl special1.tex -l special-indent-rules-global.yaml  
+\end{commandshell}
+	we receive the outputs in \cref{lst:special1-output-noAdd-glob,lst:special1-output-indent-rules-global}; notice that  in
+	\cref{lst:special1-output-noAdd-glob} neither of the \texttt{special} code blocks have received indentation, while in
+	\cref{lst:special1-output-indent-rules-global} both code blocks have received a single space of indentation.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1-noAdd-glob.tex}{\texttt{special1.tex} using \cref{lst:special-noAdd-glob}}{lst:special1-output-noAdd-glob}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1-indent-rules-global.tex}{\texttt{special1.tex} using \cref{lst:special-indent-rules-global}}{lst:special1-output-indent-rules-global}
+	\end{minipage}

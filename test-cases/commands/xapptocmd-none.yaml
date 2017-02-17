@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        xapptocmd:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0

@@ -1,0 +1,15 @@
+% arara: indent: {overwrite: on, silent: yes}
+\documentclass{article}
+\usepackage{pst-solides3d}
+\begin{document}
+
+\begin{pspicture}(-3,-4)(3,6)
+	\psset{viewpoint=20 40 40 rtp2xyz,Decran=30,lightsrc=20 10 10}
+	\defFunction[algebraic]{torus}(u,v){(2+cos(u))*cos(v+\Pi)}{(2+cos(u))*sin(v+\Pi)}{sin(u)}
+	\psSolid[object=surfaceparametree,
+		base=-10 10 0 6.28,fillcolor=black!70,incolor=orange,
+		function=torus,ngrid=60 0.4,
+		opacity=0.25]
+\end{pspicture}
+
+\end{document}

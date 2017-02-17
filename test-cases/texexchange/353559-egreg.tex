@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage{xparse}
+
+\ExplSyntaxOn
+\NewDocumentCommand{\ifmember}{smmmm}
+ {
+  \IfBooleanTF{#1}
+   {% explicit argument
+    \clist_if_in:nnTF { #3 } { #2 } { #4 } { #5 }
+   }
+   {% implicit argument
+    \clist_if_in:VnTF #3 { #2 } { #4 } { #5 }
+   }
+ }
+\cs_generate_variant:Nn \clist_if_in:nnTF { V }
+\ExplSyntaxOff
+
+\begin{document}
+
+\ifmember*{3}{3,4}{True}{False} (expected: True)
+
+\ifmember*{3}{ 3 ,4}{True}{False} (expected: True)
+
+\newcommand{\foo}{3,4}
+\ifmember{3}{\foo}{True}{False} (expected: True)
+
+\renewcommand{\foo}{3, 4}
+
+\ifmember{4}{\foo}{True}{False} (expected: True)
+
+\ifmember{foo}{\foo}{True}{False} (expected: False)
+
+\end{document}

@@ -1,0 +1,64 @@
+% http://tex.stackexchange.com/questions/344353/table-cut-off-when-using-pgfplotstable#344353
+\documentclass[12pt]{article}
+
+\usepackage{booktabs}
+\usepackage{pgfplotstable}
+\usepackage{colortbl}
+
+\begin{filecontents*}{rawdata.dat}
+	{2013 EOY} {2014 EOY} 04/15 05/15   06/15   07/15   08/15   09/15   10/15   11/15
+	26.075  9.4189737 12.717323  1.8988949  7.9996209 11.5243905 10.9160107  1.389448  2.8652920  1.42878541
+	11.166478 25.5374925  6.662897  2.9245013 13.5448818 12.0201447  1.2621673 19.217686  3.8883882  3.00943306
+	22.315490  9.8708633 10.965354  0.8984676  1.1459839  3.8454883 15.4547797  9.402878 11.7026024  5.47339668
+	11.874096  0.4823746 15.911913  6.1727927 15.1162651 34.2306360 10.3890439  2.205675  6.7049603 22.56286746
+	3.320455 25.8995833  4.139036  2.2546034 12.6317242  6.8379476  8.2967574 22.880100  2.6998974  8.76554784
+	10.742752  1.1641779  2.921571  3.5143500  1.7125639  2.0757867  6.2450910 15.189848  0.5610844  2.13485778
+	15.162232  3.2194334  3.368766  8.5433378 15.0155505 10.7678579  2.2994006  7.680461 15.1313005  1.29770248
+	3.142244  0.8621933  3.589560  1.3426351  7.6149833  0.9031139  8.3498388 10.337712 21.8489050  2.59146735
+	19.911731  5.1214246  1.928850  8.3029705  6.6282564 15.6325715 24.4529297 10.528238  4.5189110  6.80297890
+	7.091692 15.0789856 14.061697  2.6505780 19.6282942  3.4523669  0.4425993 14.456910 10.4345100  2.15112929
+	2.943245  1.1240063  3.323045  1.1879055  0.3924865 11.9174661 12.1291137 32.115301 12.6307365  1.16558044
+	3.455690 37.7236906  2.911425 22.8336110 11.2459661 21.0664441 10.5629633 26.626076 17.7553881  1.63495051
+	1.543219  2.6222850 33.359461  0.3653793  0.9214781 37.7775433 25.1749934  7.062679  6.1265833 30.66471547
+	3.166661 14.8145643  1.911507 21.1688017  3.7155312 28.5108371  2.8972420  9.858501 18.9646412  0.03856634
+	30.285687  0.5059537 10.184070 32.2728897  5.3188059  0.8016338  2.3232517  8.902755  2.6835381  1.61584320
+\end{filecontents*}
+
+
+\begin{document}
+\setlength{\aboverulesep}{0pt}
+\setlength{\belowrulesep}{0pt}
+\setlength{\extrarowheight}{.75ex}
+
+\pgfplotstabletypeset[
+	create on use/firstcol/.style={
+			create col/set list= {\textbf{Outstanding Loan Portfolio},,\textbf{Repossessed Loan Portfolio},,\textbf{Repossession ratio eop}, \textbf{Repossession ratio},,\textbf{PAR1},,,\textbf{PAR30},,,\textbf{PAR60},}
+		},
+	create on use/secondcol/.style={
+			create col/set list={\textbf{USD},\textbf{\#},\textbf{USD},\textbf{\#},,,\textbf{USD},\textbf{\%},\textbf{\#},\textbf{USD},\textbf{\%},\textbf{\#},\textbf{USD},\textbf{\%},\textbf{\#}}
+		},
+	columns/firstcol/.style={column name=,string type,column type/.add={>{\columncolor[gray]{.9}}}{}},
+	columns/secondcol/.style={column name=,string type,column type=r},
+	columns/{2013 EOY}/.style={column name=\textbf{2013 EOY},string type,column type/.add={>{\columncolor[gray]{.9}}}{}},
+	columns/{2014 EOY}/.style={column name=\textbf{2014 EOY},string type,column type/.add={>{\columncolor[gray]{.9}}}{}},
+	columns/{04/15}/.style={column name=\textbf{04/15}},
+	columns/{05/15}/.style={column name=\textbf{05/15}},
+	columns/{06/15}/.style={column name=\textbf{06/15}},
+	columns/{07/15}/.style={column name=\textbf{07/15}},
+	columns/{08/15}/.style={column name=\textbf{08/15}},
+	columns/{09/15}/.style={column name=\textbf{09/15}},
+	columns/{10/15}/.style={column name=\textbf{10/15}},
+	columns/{11/15}/.style={column name=\textbf{11/15}},
+	columns={firstcol,secondcol,{2013 EOY}, {2014 EOY}, 04/15,  05/15,  06/15,  07/15,  08/15,  09/15,  10/15,  11/15},
+	header=true,
+	every head row/.style={before row={\toprule},after row={\midrule}},
+	every last row/.style={after row=\bottomrule},
+	every row no 2/.style={before row=\midrule},
+	every row no 4/.style={before row=\midrule},
+	every row no 6/.style={before row=\midrule},
+	every row no 9/.style={before row=\midrule},
+	every row no 12/.style={before row=\midrule},
+	outfile=example_out.tex
+]{rawdata.dat}
+
+\end{document}

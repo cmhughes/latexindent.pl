@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    environments:
+        one:
+            BodyStartsOnOwnLine: -1
+    mandatoryArguments:
+        LCuBStartsOnOwnLine: 2

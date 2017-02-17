@@ -1,0 +1,5 @@
+noAdditionalIndent:
+    mycommand:
+        body: 0
+        optionalArguments: 1
+        mandatoryArguments: 0

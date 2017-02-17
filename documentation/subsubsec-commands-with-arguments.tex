@@ -1,0 +1,100 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsubsection{Commands with arguments}\label{subsubsec:commands-arguments}
+	Let's begin with the simple example in \cref{lst:mycommand}; when \texttt{latexindent.pl} operates
+	on this file, the default output is shown in \cref{lst:mycommand-default}. \footnote{The command code blocks
+		have quite a few subtleties, described in \vref{subsec:commands-string-between}.}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand.tex}{\texttt{mycommand.tex}}{lst:mycommand}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-default.tex}{\texttt{mycommand.tex} default output}{lst:mycommand-default}
+	\end{minipage}
+
+	As in the environment-based case (see \vref{lst:myenv-noAdd1,lst:myenv-noAdd2}) we may specify \texttt{noAdditionalIndent}
+	either in `scalar' form, or in `field' form, as shown in \cref{lst:mycommand-noAdd1,lst:mycommand-noAdd2}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd1.yaml}}{lst:mycommand-noAdd1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd2.yaml}}{lst:mycommand-noAdd2}
+	\end{minipage}
+
+	After running the following commands,
+	\begin{commandshell}
+latexindent.pl mycommand.tex -l mycommand-noAdd1.yaml  
+latexindent.pl mycommand.tex -l mycommand-noAdd2.yaml  
+\end{commandshell}
+	we receive the respective output given in \cref{lst:mycommand-output-noAdd1,lst:mycommand-output-noAdd2}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd1.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd1}}{lst:mycommand-output-noAdd1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd2.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd2}}{lst:mycommand-output-noAdd2}
+	\end{minipage}
+
+	Note that in \cref{lst:mycommand-output-noAdd1} that the `body', optional argument \emph{and} mandatory argument have \emph{all} received
+	no additional indentation, while in \cref{lst:mycommand-output-noAdd2}, only the `body' has not received any additional indentation. We define
+	the `body' of a command as any lines following the command name that include its optional or mandatory arguments.
+
+	We may further customise \texttt{noAdditionalIndent} for \texttt{mycommand} as we did in \vref{lst:myenv-noAdd5,lst:myenv-noAdd6}; explicit examples
+	are given in \cref{lst:mycommand-noAdd3,lst:mycommand-noAdd4}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd3.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd3.yaml}}{lst:mycommand-noAdd3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd4.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd4.yaml}}{lst:mycommand-noAdd4}
+	\end{minipage}
+
+	After running the following commands,
+	\begin{commandshell}
+latexindent.pl mycommand.tex -l mycommand-noAdd3.yaml  
+latexindent.pl mycommand.tex -l mycommand-noAdd4.yaml  
+\end{commandshell}
+	we receive the respective output given in \cref{lst:mycommand-output-noAdd3,lst:mycommand-output-noAdd4}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd3.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd3}}{lst:mycommand-output-noAdd3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd4.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd4}}{lst:mycommand-output-noAdd4}
+	\end{minipage}
+
+	Attentive readers will note that the body of \texttt{mycommand} in both \cref{lst:mycommand-output-noAdd3,lst:mycommand-output-noAdd4}
+	has received no additional indent, even though \texttt{body} is explicitly set to \texttt{0} in both \cref{lst:mycommand-noAdd3,lst:mycommand-noAdd4}.
+	This is because, by default, \texttt{noAdditionalIndentGlobal} for \texttt{commands} is set to \texttt{1} by default; this can be easily
+	fixed as in \cref{lst:mycommand-noAdd5,lst:mycommand-noAdd6}.\label{page:command:noAddGlobal}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd5.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd5.yaml}}{lst:mycommand-noAdd5}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycommand-noAdd6.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mycommand-noAdd6.yaml}}{lst:mycommand-noAdd6}
+	\end{minipage}
+
+	After running the following commands,
+	\begin{commandshell}
+latexindent.pl mycommand.tex -l mycommand-noAdd5.yaml  
+latexindent.pl mycommand.tex -l mycommand-noAdd6.yaml  
+\end{commandshell}
+	we receive the respective output given in \cref{lst:mycommand-output-noAdd5,lst:mycommand-output-noAdd6}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd5.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd5}}{lst:mycommand-output-noAdd5}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mycommand-noAdd6.tex}{\texttt{mycommand.tex} using \cref{lst:mycommand-noAdd6}}{lst:mycommand-output-noAdd6}
+	\end{minipage}
+
+	Both \texttt{indentRules} and \texttt{indentRulesGlobal} can be adjusted as they were for \emph{environment} code blocks, as in
+	\vref{lst:myenv-rules3,lst:myenv-rules4} and \vref{lst:indentRulesGlobal:environments,lst:opt-args-indent-rules-glob,lst:mand-args-indent-rules-glob}.

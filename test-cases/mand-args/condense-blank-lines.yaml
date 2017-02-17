@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    condenseMultipleBlankLinesInto: 1
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1

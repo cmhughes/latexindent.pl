@@ -1,5 +1,5 @@
 # 
-# defaultSettings.yaml for latexindent.pl,
+# defaultSettings.yaml for latexindent.pl, version 3.0
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -13,8 +13,17 @@
 #
 # Please read the manual first to understand what each switch does :)
 
-# Default value of indentation
-defaultIndent: "\t"
+# latexindent can be called without a file extension, 
+# e.g, simply
+#       latexindent myfile
+# in which case the choice of file extension is chosen
+# according to the choices made in fileExtensionPreference
+# Other file extensions can be added.
+fileExtensionPreference:
+    .tex: 1
+    .sty: 2
+    .cls: 3
+    .bib: 4
 
 # default file extension of backup file (if original is overwritten with -w switch)
 # for example, if your .tex file is called
@@ -50,19 +59,62 @@ maxNumberOfBackUps: 0
 # the back up will be written to myfile.bak4
 cycleThroughBackUps: 0
 
+# preferences for information displayed in the log file
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 0
+    endLogFileWith: '--------------' 
+    showGitHubInfoFooter: 1
+
+#  verbatim environments- environments specified 
+#  in this hash table will not be changed at all!
+verbatimEnvironments:
+    verbatim: 1
+    lstlisting: 1
+
+#  verbatim commands such as \verb! body !, \lstinline$something else$
+verbatimCommands:
+    verb: 1
+    lstinline: 1
+
+#  no indent blocks (not necessarily verbatim 
+#  environments) which are marked as %\begin{noindent}
+#  or anything else that the user puts in this hash
+#  table
+noIndentBlock:
+    noindent: 1
+    cmhtest: 1
+
+# remove trailing whitespace from all lines 
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1
+
+# \begin{document} and \end{document} are treated differently
+# by latexindent within filecontents environments
+fileContentsEnvironments:
+    filecontents: 1
+    filecontents*: 1
+
 # indent preamble
 indentPreamble: 0
 
-# always look for split { }, which means that the user doesn't
-# have to complete checkunmatched, checkunmatchedELSE
-alwaysLookforSplitBraces: 1
+# assume no preamble in cls, sty, by default
+lookForPreamble:
+    .tex: 1
+    .sty: 0
+    .cls: 0
+    .bib: 0
 
-# always look for split [ ], which means that the user doesn't
-# have to complete checkunmatchedbracket
-alwaysLookforSplitBrackets: 1
+# some preambles can contain \begin and \end statements
+# that are not in their 'standard environment block', for example,
+# consider the following key = values:
+#    preheadhook={\begin{mdframed}[style=myframedstyle]},
+#    postfoothook=\end{mdframed},
+preambleCommandsBeforeEnvironments: 0
 
-# remove trailing whitespace from all lines 
-removeTrailingWhitespace: 0
+# Default value of indentation
+defaultIndent: "\t"
 
 # environments that have tab delimiters, add more 
 # as needed
@@ -91,83 +143,6 @@ lookForAlignDelims:
    dcases: 1
    listabla: 1
 
-# if you have indent rules for particular environments
-# or commands, put them in here; for example, you might just want 
-# to use a space " " or maybe a double tab "\t\t"
-indentRules:
-   myenvironment: "\t\t"
-   anotherenvironment: "\t\t\t\t"
-   chapter: " "
-   section: " "
-   item: "      "
-
-#  verbatim environments- environments specified 
-#  in this hash table will not be changed at all!
-verbatimEnvironments:
-    verbatim: 1
-    lstlisting: 1
-
-#  no indent blocks (not necessarily verbatim 
-#  environments) which are marked as %\begin{noindent}
-#  or anything else that the user puts in this hash
-#  table
-noIndentBlock:
-    noindent: 1
-    cmhtest: 1
-
-# if you don't want to have additional indentation 
-# in an environment put it in this hash table; note that
-# environments in this hash table will inherit 
-# the *current* level of indentation they just won't
-# get any *additional*.
-noAdditionalIndent:
-    myexample: 1
-    mydefinition: 1
-    problem: 1
-    exercises: 1
-    mysolution: 1
-    foreach: 0
-    widepage: 1
-    comment: 1
-    \[: 0
-    \]: 0
-    document: 1
-    frame: 0
-
-# if you want to add indentation after
-# a heading, such as \part, \chapter, etc
-# then populate it in here - you can add 
-# an indent rule to indentRules if you would 
-# like something other than defaultIndent
-#
-# you can also change the level if you like, 
-# or add your own title command
-indentAfterHeadings:
-    part:
-       indent: 0
-       level: 1
-    chapter: 
-       indent: 0
-       level: 2
-    section:
-       indent: 0
-       level: 3
-    subsection:
-       indent: 0
-       level: 4
-    subsection*:
-       indent: 0
-       level: 4
-    subsubsection:
-       indent: 0
-       level: 5
-    paragraph:
-       indent: 0
-       level: 6
-    subparagraph:
-       indent: 0
-       level: 7
-
 # if you want the script to look for \item commands 
 # and format it, as follows (for example),
 #       \begin{itemize}
@@ -190,93 +165,246 @@ itemNames:
     item: 1
     myitem: 1
 
-# if you want to indent if, else, fi constructs such as, for example,
+# specialBeginEnd is mainly mathmode focus, although
+# there's no restrictions
+specialBeginEnd:
+    displayMath:
+        begin: '\\\['
+        end: '\\\]'
+        lookForThis: 1
+    inlineMath:
+        begin: '(?<!\$)(?<!\\)\$(?!\$)'
+        end: '(?<!\\)\$(?!\$)'
+        lookForThis: 1
+    displayMathTeX:
+        begin: '\$\$'
+        end: '\$\$'
+        lookForThis: 1
+
+# if you want to add indentation after
+# a heading, such as \part, \chapter, etc
+# then populate it in here - you can add 
+# an indent rule to indentRules if you would 
+# like something other than defaultIndent
 #
-#       \ifnum#1=2
-#               something
-#       \else
-#               something else
-#       \fi
+# you can also change the level if you like, 
+# or add your own title command
+indentAfterHeadings:
+    part:
+       indentAfterThisHeading: 0
+       level: 1
+    chapter: 
+       indentAfterThisHeading: 0
+       level: 2
+    section:
+       indentAfterThisHeading: 0
+       level: 3
+    subsection:
+       indentAfterThisHeading: 0
+       level: 4
+    subsection*:
+       indentAfterThisHeading: 0
+       level: 4
+    subsubsection:
+       indentAfterThisHeading: 0
+       level: 5
+    paragraph:
+       indentAfterThisHeading: 0
+       level: 6
+    subparagraph:
+       indentAfterThisHeading: 0
+       level: 7
+
+# if you don't want to have additional indentation 
+# in an environment put it in this hash table; note that
+# environments in this hash table will inherit 
+# the *current* level of indentation they just won't
+# get any *additional*.
+noAdditionalIndent:
+    myexample: 1
+    mydefinition: 1
+    problem: 1
+    exercises: 1
+    mysolution: 1
+    foreach: 0
+    widepage: 1
+    comment: 1
+    document: 1
+    frame: 0
+
+# if you have indent rules for particular environments
+# or commands, put them in here; for example, you might just want 
+# to use a space " " or maybe a double tab "\t\t"
+indentRules:
+   myenvironment: "\t\t"
+   anotherenvironment: "\t\t\t\t"
+   chapter: " "
+   section: " "
+   item: "      "
+   myitem: "        "
+
+# set noAdditionalIndent globally for codeblocks
+noAdditionalIndentGlobal:
+    environments: 0
+    commands: 1
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+    keyEqualsValuesBracesBrackets: 0
+    namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
+    afterHeading: 0
+    filecontents: 0
+
+# set indentRules globally for codeblocks; these need 
+# to be horizontal spaces, if they are to be used
+indentRulesGlobal:
+    environments: 0
+    commands: 0
+    optionalArguments: 0
+    mandatoryArguments: 0
+    ifElseFi: 0
+    items: 0
+    keyEqualsValuesBracesBrackets: 0
+    namedGroupingBracesBrackets: 0
+    UnNamedGroupingBracesBrackets: 0
+    specialBeginEnd: 0
+    afterHeading: 0
+    filecontents: 0
+
+# command code block details
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+        node: 1
+        at: 1
+        to: 1
+        decoration: 1
+        ++: 1
+        --: 1
+
+# modifyLineBreaks will only be searched if the -m 
+# switch is active
+#    BeginStartsOnOwnLine: 1
+#       if a begin statement is not already on its own line,
+#       then, with -m active, it will be moved to its own line.
 #
-# then populate them in constructIfElseFi
-constructIfElseFi:
-    ifnum: 1
-    ifdim: 1
-    ifodd: 1
-    ifvmode: 1
-    ifhmode: 1
-    ifmmode: 1
-    ifinner: 1
-    if: 1
-    ifcat: 1
-    ifx: 1
-    ifvoid: 1
-    ifeof: 1
-    iftrue: 1
-    ifcase: 1
-
-# latexindent can be called without a file extension, 
-# e.g, simply
-#       latexindent myfile
-# in which case the choice of file extension is chosen
-# according to the choices made in fileExtensionPreference
-# Other file extensions can be added.
-fileExtensionPreference:
-    .tex: 1
-    .sty: 2
-    .cls: 3
-    .bib: 4
-
-# preferences for information displayed in the log file
-logFilePreferences:
-    showEveryYamlRead: 1
-    showAlmagamatedSettings: 0
-    endLogFileWith: '--------------' 
-    traceModeIncreaseIndent: '>>'
-    traceModeAddCurrentIndent: '||'
-    traceModeDecreaseIndent: '<<'
-    traceModeBetweenLines: "\n"
-
-# \begin{document} and \end{document} are treated differently
-# by latexindent within filecontents environments
-fileContentsEnvironments:
-    filecontents: 1
-    filecontents*: 1
-
-    
-# *** NOTE ***
-# If you have specified alwaysLookforSplitBraces: 1
-# and alwaysLookforSplitBrackets: 1 then you don't need
-# to worry about completing
+#       when set to 1, e.g 
+#               some text some text \begin{myenvironment}
+#           will be changed to
+#               some text some text 
+#               \begin{myenvironment}
+#       when set to -1, e.g 
+#               some text some text 
+#               \begin{myenvironment}
+#           will be changed to
+#               some text some text \begin{myenvironment}
+#       when set to 0, the switch is ignored
 #
-#       checkunmatched
-#       checkunmatchedELSE
-#       checkunmatchedbracket
+#    BodyStartsOnOwnLine: 1
+#       if body does not already start on its own line, then with 
+#       -m active, it will be moved to its own line.
 #
-# in other words, you don't really need to edit anything 
-# below this line- it used to be necessary for older 
-# versions of the script, but not anymore :)
-#***      ***
-
-# commands that might split {} across lines
-# such as \parbox, \marginpar, etc
-checkunmatched:
-    parbox: 1
-    vbox: 1
-
-# very similar to %checkunmatched except these 
-# commands might have an else construct
-checkunmatchedELSE:
-    pgfkeysifdefined: 1
-    DTLforeach: 1
-    ifthenelse: 1
-
-# commands that might split []  across lines
-# such as \pgfplotstablecreatecol, etc
-checkunmatchedbracket:
-    pgfplotstablecreatecol: 1
-    pgfplotstablesave: 1
-    pgfplotstabletypeset: 1
-    mycommand: 1
-    psSolid: 1
-
+#       when set to 1, e.g 
+#               \begin{myenv}body text body text
+#           will be changed to
+#               \begin{myenv}
+#                   body text body text
+#       when set to -1, e.g 
+#               \begin{myenv}
+#                   body text body text
+#           will be changed to
+#               \begin{myenv}body text body text
+#       when set to 0, the switch is ignored
+#
+#    EndStartsOnOwnLine: 1
+#       if an end statement is not already on its own line,
+#       then, with -m active, it will be moved to its own line.
+#
+#       when set to 1, e.g 
+#               some text some text \end{myenvironment}
+#           will be changed to
+#               some text some text 
+#               \end{myenvironment}
+#       when set to -1, e.g 
+#               some text some text 
+#               \end{myenvironment}
+#           will be changed to
+#               some text some text \end{myenvironment}
+#       when set to 0, the switch is ignored
+#
+#    EndFinishesWithLineBreak: 1
+#       this switch adjusts line breaks immmediately 
+#       after an end statement (with -m active)
+#       
+#       when set to 1, e.g 
+#               \end{myenvironment}some text some text 
+#           will be changed to
+#                   \end{myenvironment}
+#                   some text some text 
+#       when set to -1, e.g 
+#               \end{myenvironment}
+#               some text some text 
+#           will be changed to
+#                   \end{myenvironment}some text some text 
+#       when set to 0, the switch is ignored
+#
+# Naturally, you can specify settings for individual environments,
+# commands, headings, etc, populate as you wish.
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    environments:
+        BeginStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
+        equation*:
+            BeginStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: 0
+            EndStartsOnOwnLine: 0
+            EndFinishesWithLineBreak: 0
+    ifElseFi:
+        IfStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        ElseStartsOnOwnLine: 0
+        ElseFinishesWithLineBreak: 0
+        FiStartsOnOwnLine: 0
+        FiFinishesWithLineBreak: 0
+        ifnum:
+            IfStartsOnOwnLine: 0
+            BodyStartsOnOwnLine: 0
+            ElseStartsOnOwnLine: 0
+            ElseFinishesWithLineBreak: 0
+            FiStartsOnOwnLine: 0
+            FiFinishesWithLineBreak: 0
+    commands:
+        CommandStartsOnOwnLine: 0
+        CommandNameFinishesWithLineBreak: 0
+    optionalArguments:
+        LSqBStartsOnOwnLine: 0
+        OptArgBodyStartsOnOwnLine: 0
+        RSqBStartsOnOwnLine: 0
+        RSqBFinishesWithLineBreak: 0
+    mandatoryArguments:
+        LCuBStartsOnOwnLine: 0
+        MandArgBodyStartsOnOwnLine: 0
+        RCuBStartsOnOwnLine: 0
+        RCuBFinishesWithLineBreak: 0
+    keyEqualsValuesBracesBrackets:
+        KeyStartsOnOwnLine: 0
+        EqualsStartsOnOwnLine: 0
+        EqualsFinishesWithLineBreak: 0
+    items:
+        ItemStartsOnOwnLine: 0
+        ItemFinishesWithLineBreak: 0
+    namedGroupingBracesBrackets:
+        NameStartsOnOwnLine: 0
+        NameFinishesWithLineBreak: 0
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: 0
+        SpecialBodyStartsOnOwnLine: 0
+        SpecialEndStartsOnOwnLine: 0
+        SpecialEndFinishesWithLineBreak: 0

@@ -1,0 +1,491 @@
+% dos2unix hea-senior-fellow.tex
+% arara: pdflatex: {shell: on}
+% arara: bibtex
+% arara: makeglossaries
+% arara: pdflatex: {shell: on}
+% arara: pdflatex: {shell: on}
+% !arara: indent: {overwrite: yes, trace: on}
+\documentclass[11pt,twoside]{article}
+\usepackage[headheight=14pt,left=4.5cm,right=2.0cm,showframe=false,
+	top=2cm,bottom=1.5cm,asymmetric=true,bindingoffset=0cm]{geometry}
+\usepackage{parskip}
+\usepackage{titlesec}                   % customize headings
+\usepackage{titletoc}                   % customize tableofcontents
+\usepackage{fancyhdr}                   % headers and footers
+\usepackage[charter]{mathdesign}        % font choice
+\usepackage{microtype}                  % better kerning
+\usepackage[backend=bibtex,maxnames=99]{biblatex}   % bibliography
+\usepackage[splitindex,nonewpage]{imakeidx}
+\usepackage{tcolorbox}
+
+\tcbuselibrary{breakable,skins}
+\usepackage{booktabs}
+\usepackage{pdfpages}
+%\usepackage[mark,grumpy]{gitinfo2}
+\usepackage{varioref}                   % good for referencing things 'far away'
+\usepackage{hyperref}                   % hyperlinks
+\usepackage[numbered]{bookmark}
+% load after hyperref: http://tex.stackexchange.com/questions/1863/which-packages-should-be-loaded-after-hyperref-instead-of-before
+\usepackage{cleveref}                   % allows \cref and friends
+\usepackage[section=subsection,toc,]{glossaries}
+\usepackage{glossary-longragged}
+\usepackage[numbered]{bookmark}
+
+% gitinfo2 settings
+%\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate}
+
+% hyperlink setup
+\hypersetup{
+	pdfauthor={Chris Hughes},
+	pdftitle={Senior Fellowship of HEA application},
+	pdfkeywords={HEA;senior fellowship},
+	bookmarksnumbered,
+	bookmarksopen,
+	linktocpage,
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=black,
+}
+
+% tcolorbox stuff
+\tcbset{
+	tocstyle/.style={
+			% used to surround the tocs (main and appendix)
+			breakable,enhanced,fonttitle=\bfseries\Large,
+			colback=gray!10,colframe=gray,%colframe=red!50!black,
+			before=\par\bigskip\noindent,
+			pad at break=3mm,
+			%left=0.75cm,
+			%enlargepage=2\baselineskip,
+			drop fuzzy shadow,
+		}
+}
+
+% bibliography settings
+\addbibresource{heabib}
+
+% cleveref settings
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{chapter}{Section}{Sections}
+\Crefname{chapter}{Section}{Sections}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+\Crefname{appendix}{Appendix}{Appendices}
+
+% index stuff
+% index stuff
+% index stuff
+% see http://tex.stackexchange.com/questions/130169/how-can-i-prevent-a-column-break-before-the-first-sub-entry-in-the-index
+\makeatletter
+% we don't want a page break before a subitem
+\renewcommand\subitem{\@idxitem\nobreak\hspace*{20\p@}}
+\makeindex
+\indexsetup{level=\section*,toclevel=subsection,noclearpage}
+\makeindex[intoc,name=practice,title=Practice -- what do we do]
+\makeindex[intoc,name=knowledge,title=Knowledge -- what we need to know]
+\makeindex[intoc,name=values,title=Values -- being professional]
+\makeindex[intoc,name=assessment,title=Senior Fellowship Assessment criteria]
+
+% glossaries settings
+% use longragged style, based on longtable
+\setglossarystyle{longragged}
+% widen description column
+\setlength{\glsdescwidth}{0.8\linewidth}
+% make entries bold and black
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand*{\glstextformat}[1]{\textcolor{red}{#1}}
+
+% multiple glossaries, see http://texblog.org/2014/04/01/multiple-glossaries-in-latex/
+% practice -- what we do
+% practice -- what we do
+% practice -- what we do
+%	explain:	Where in my claim do I explain what I do?
+%	demonstrate: Where in my claim do I demonstrate how my expertise led me to choose these particular approaches to practice?
+%	critically evaluated: Where in my claim have I explained how I have critically evaluated these practices and, if appropriate, discussed how they could be further developed?
+\newglossary[prac-log]{practice}{practice-gls}{practice-glo}{Practice -- what we do}
+\newglossaryentry{practice:A1}{%
+	type=practice,
+	name=A1,
+	description={Design and plan learning activities and/or programmes of study}
+}
+\newglossaryentry{practice:A2}{%
+	type=practice,
+	name=A2,
+	description={Teach at a distance and/or support
+			distance and open learning}
+}
+\newglossaryentry{practice:A3}{%
+	type=practice,
+	name=A3,
+	description={Assess and give feedback to
+			learners}
+}
+\newglossaryentry{practice:A4}{%
+	type=practice,
+	name=A4,
+	description={Develop learning environments
+			that support open and distance
+			students to succeed}
+}
+\newglossaryentry{practice:A5}{%
+	type=practice,
+	name=A5,
+	description={Develop our understanding of our
+			subjects and how to teach them at a
+			distance, incorporating appropriate
+			subject research, professional
+			updating, educational scholarship and
+			reflection on our practice}
+}
+\newglossaryentry{practice:A6}{%
+	type=practice,
+	name=A6,
+	description={Work collaboratively within the
+			distributed OU community to support
+			the learning of students, our
+			colleagues and ourselves}
+}
+
+% knowledge -- what we need to know
+% knowledge -- what we need to know
+% knowledge -- what we need to know
+%	critically evaluate: Where in my claim do I critically evaluate how I have applied this knowledge in my practice?
+%	scholarship: Where in my claim have I explained how I have used scholarship (mine and others’) to develop my knowledge over time and the difference this has made to my practice?
+\newglossary[know-log]{knowledge}{know-gls}{know-glo}{Knowledge -- what we need to know}
+\newglossaryentry{knowledge:K1}{%
+	type=knowledge,
+	name=K1,
+	description={A sound grasp of the subjects or
+			topics we teach}
+}
+\newglossaryentry{knowledge:K2}{%
+	type=knowledge,
+	name=K2,
+	description={How to teach our subjects
+			effectively to support open and
+			distance learning}
+}
+\newglossaryentry{knowledge:K3}{%
+	type=knowledge,
+	name=K3,
+	description={How students learn at a distance,
+			both generally and within our subject}
+}
+\newglossaryentry{knowledge:K4}{%
+	type=knowledge,
+	name=K4,
+	description={How technologies can facilitate and
+			enhance distance and open learning}
+}
+\newglossaryentry{knowledge:K5}{%
+	type=knowledge,
+	name=K5,
+	description={How to evaluate our practice and
+			the learner experience, and the
+			effectiveness of teaching}
+}
+\newglossaryentry{knowledge:K6}{%
+	type=knowledge,
+	name=K6,
+	description={Why quality assurance and quality
+			enhancement matter for our work and
+			for the learner experience}
+}
+% values -- being professional
+% values -- being professional
+% values -- being professional
+%	inform: Where in my claim have I explained with examples how professional values inform my practice, enhance the learner experience and have affected the ways I work with and influence colleagues?
+\newglossary[values-log]{values}{values-gls}{values-glo}{Values -- being professional}
+\newglossaryentry{values:V1}{%
+	type=values,
+	name=V1,
+	description={ Putting students first, by respecting
+			individual learners and valuing diverse
+			and distributed learning communities}
+}
+\newglossaryentry{values:V2}{%
+	type=values,
+	name=V2,
+	description={Promoting participation in higher
+			education and equality of opportunity
+			by making learning accessible in open,
+			distance and virtual learning
+			environments}
+}
+\newglossaryentry{values:V3}{%
+	type=values,
+	name=V3,
+	description={Using evidence from research,
+			scholarship and our professional
+			development to underpin our
+			approaches to teaching and supporting
+			learning}
+}
+\newglossaryentry{values:V4}{%
+	type=values,
+	name=V4,
+	description={Recognising in our practice how
+			changing professional, cultural,
+			national and global factors affect
+			learners, as individuals, as citizens and
+			as employees}
+}
+% values -- being professional
+% values -- being professional
+% values -- being professional
+\newglossary[assessment-log]{assessment}{assessment-gls}{assessment-glo}{Senior Fellowship Assessment criteria}
+\newglossaryentry{assessment:D3.I.}{%
+	type=assessment,
+	name=D3.I.,
+	description={Successful engagement with each of the six Areas of Practice}
+}
+\newglossaryentry{assessment:D3.II.}{%
+	type=assessment,
+	name=D3.II.,
+	description={Your knowledge and understanding each of the six Knowledge elements}
+}
+\newglossaryentry{assessment:D3.III.}{%
+	type=assessment,
+	name=D3.III.,
+	description={Your commitment to all four Values in working with colleagues and facilitating learning}
+}
+\newglossaryentry{assessment:D3.IV.}{%
+	type=assessment,
+	name=D3.IV.,
+	description={Your successful engagement in appropriate teaching related to the Areas of Practice}
+}
+\newglossaryentry{assessment:D3.V.}{%
+	type=assessment,
+	name=D3.V.,
+	description={How professional practice, subject research and your own scholarly educational enquiry have shaped your approaches to teaching and supporting learning, as part of an integrated approach to academic practice}
+}
+\newglossaryentry{assessment:D3.VI.}{%
+	type=assessment,
+	name=D3.VI.,
+	description={Your successful engagement with appropriate professional development activity related to teaching, learning, assessment and other relevant responsibilities, and plans for your ongoing development}
+}
+\newglossaryentry{assessment:D3.VII.}{%
+	type=assessment,
+	name=D3.VII.,
+	description={Your successful co-ordination, support, supervision, management and/or mentoring of others (whether individuals or teams) in relation to teaching and learning }
+}
+\newglossaryentry{fix}{%
+	type=assessment,
+	name=fix,
+	description={\huge\color{red} !!!FIXTHIS present!!!}
+}
+% main glossary
+\newglossaryentry{SEaM}{%
+	type=main,
+	name=SEaM,
+	description={Student Experience on a Module}
+}
+\newglossaryentry{TMA}{%
+	type=main,
+	name=TMA,
+	description={Tutor Marked Assignments}
+}
+\newglossaryentry{eTMA}{%
+	type=main,
+	name=eTMA,
+	description={electronic Tutor Marked Assignments}
+}
+\newglossaryentry{iCMA}{%
+	type=main,
+	name=iCMA,
+	description={interactive Computer Marked Assignment}
+}
+\newglossaryentry{OU}{%
+	type=main,
+	name=OU,
+	description={The Open University}
+}
+\newglossaryentry{CDSA}{%
+	type=main,
+	name=CDSA,
+	description={Career Development and Staffing Appraisal}
+}
+\newglossaryentry{AL}{%
+	type=main,
+	name=AL,
+	description={Associate Lecturer (synonymous with tutor)}
+}
+\newglossaryentry{STEM}{%
+	type=main,
+	name=STEM,
+	description={Science Technology Engineering and Maths}
+}
+\newglossaryentry{LTS}{%
+	type=main,
+	name=LTS,
+	description={Learning and Teaching Solutions},
+}
+\newglossaryentry{PT3}{%
+	type=main,
+	name=PT3,
+	description={Form upon which tutors give summary feedback to students}
+}
+\newglossaryentry{SRPP}{%
+	type=main,
+	name=SRPP,
+	description={Student Research Project Panel},
+}
+\newglossaryentry{ALSD}{%
+	type=main,
+	name=ALSD,
+	description={AL Staff Development},
+}
+\newglossaryentry{APPLAuD}{%
+	type=main,
+	name=APPLAuD,
+	description={Accrediting \& Promoting Professional Learning \& Academic Development },
+}
+
+\makeglossaries
+
+% Define fix command
+% 	- it puts a comment in the margin
+% 	- it writes to a file with a list of things that need fixing
+\newcommand{\fixthis}[1]
+{%
+	\marginpar{\huge \color{red}FIX!}%
+	\typeout{FIXTHIS: p\thepage : #1^^J}%
+	\gls{fix}
+}
+
+% heading settings
+% heading settings
+% heading settings
+
+% from the titlesec package
+%\titleformat{ command }
+%             [ shape ]
+%             { format }{ label }{ sep }{ before-code }[ after-code ]
+% custom section
+\titleformat{\section}
+{\normalfont\Large\bfseries}
+{\makebox[0pt][r]{\thesection\hspace{.5cm}}}
+{0pt}
+{}
+
+% custom subsection
+\titleformat{\subsection}
+{\normalfont\large\bfseries}
+{\makebox[0pt][r]{\thesubsection\hspace{.5cm}}}
+{0pt}
+{}
+
+% custom subsubsection
+\titleformat{\subsubsection}
+{\normalfont\bfseries}
+{\makebox[0pt][r]{\thesubsubsection\hspace{.5cm}}}
+{0pt}
+{}
+
+% custom paragraph heading
+\titleformat{\paragraph}[leftmargin]
+{\normalfont
+	\scshape\filleft}
+{}
+{0pt}
+{}
+
+% spacing around headings
+% From the titlesec package
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+% spacing: how to read {12pt plus 4pt minus 2pt}
+%           12pt is what we would like the spacing to be
+%           plus 4pt means that TeX can stretch it by at most 4pt
+%           minus 2pt means that TeX can shrink it by at most 2pt
+%       This is one example of the concept of, 'glue', in TeX
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{-3pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing{\paragraph}{6pc}{1.5ex plus .1ex minus .2ex}{1pc}
+
+% toc settings
+\titlecontents*{paragraph}% <paragaph>
+[3cm]% <left>
+{\small\itshape}% <above-code>
+{}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
+{}% <numberless-entry-format>
+{\ \thecontentspage}% <filler-page-format>
+[,\ ]% <separator>
+[]% <end>
+
+% headers and footers
+\fancyhf{} % delete current header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO,RE]{\leftmark}
+\fancyheadoffset[LE,LO]{3cm}
+\pagestyle{fancy}
+
+% map command
+\newcommand{\map}[1]{%
+	% #1 is a comma separated list
+	% with
+	%	a/b/c, a1/b1/c1, etc
+	% a: practice/knowledge/value
+	% b: A1--A6, K1--K6, etc
+	% c: explain/demonstrate/critically evaluate, etc
+	(\foreach \practice/\principle/\explain [count=\ni] in {#1}{%
+			\index[\practice]{\principle!\explain}%
+			\ifnum\ni=1% first entry does not get preceeding commas
+			\else% subsequent entries do
+				\nobreak,\,\nobreak
+			\fi%
+			\gls{\practice:\principle}%
+		})%
+}
+
+% graphics path
+\graphicspath{{./images/}}
+
+
+\begin{document}
+
+% add a bookmark for the toc
+\subpdfbookmark{Title page}{Title Page}
+\includepdf{images/titlepage}
+
+% add a bookmark for the toc
+\currentpdfbookmark{\contentsname{} and glossaries}{Contents}
+\setcounter{tocdepth}{5}
+\begin{tcolorbox}[tocstyle,
+		title={Contents},
+		%watermark text={\bfseries\Large Contents},
+		%watermark color=yellow!75!red!25!white,
+	]
+	\makeatletter
+	\@starttoc{toc}
+	\makeatother
+\end{tcolorbox}
+
+\printglossary[type=main]
+\subsection*{\gls{APPLAuD} Principles -- Dimensions of Practice}
+Each of the following principles will be referenced throughout the document that follows; page references (which are hyper-links when viewed on screen) are given by each principle.
+\printglossary[type=practice]
+\printglossary[type=knowledge]
+\clearpage
+\printglossary[type=values]
+\printglossary[type=assessment]
+
+\input{primary-evidence}
+\input{cpd-plan}
+
+\printbibliography[title={References},notkeyword=institution,notkeyword=link,heading=bibintoc]
+\printbibliography[title={Links},keyword=link,heading=bibintoc]
+\printbibliography[title={Institutions at which I have worked},keyword=institution,heading=bibintoc]
+
+\clearpage
+%\currentpdfbookmark{Mapping tool}{Indices}
+\addcontentsline{toc}{section}{Mapping tool}
+\printindex[practice]
+\printindex[knowledge]
+\printindex[values]
+\printindex[assessment]
+\end{document}

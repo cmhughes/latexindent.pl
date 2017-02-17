@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+      y tick label style={/pgf/number format/.cd,%
+          scaled y ticks = false,
+          set thousands separator={},
+          fixed},
+      x tick label style={/pgf/number format/.cd,%
+          scaled x ticks = false,
+          set decimal separator={,},
+          fixed}%
+     ]
+  \addplot coordinates {
+  (0.1,1000)
+  (0.2,1100)
+  (0.3,1200)
+  };    
+\end{axis}
+\end{tikzpicture}
+\end{document}

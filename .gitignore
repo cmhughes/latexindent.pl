@@ -1,7 +1,10 @@
-success/*.log
 *.bak*
 *.log
 *.swp
+*.bbl
+*.blg
+*.ptc
+documentation/_minted-latexindent/
 documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing
@@ -10,6 +13,8 @@ documentation/*.out
 documentation/*.run.xml
 documentation/*.toc
 documentation/*.out
+nytprof*
+documentation/*.pyg
 documentation/*.bbl
 documentation/*.blg
 *.out
