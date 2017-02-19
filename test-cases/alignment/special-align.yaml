@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   displayMath: 
+      delims: 1
+      alignDoubleBackSlash: 1
+      spacesBeforeDoubleBackSlash: 2

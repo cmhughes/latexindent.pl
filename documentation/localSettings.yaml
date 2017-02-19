@@ -1,0 +1,38 @@
+onlyOneBackUp: 1
+indentPreamble: 1
+preambleCommandsBeforeEnvironments: 1
+verbatimEnvironments:
+    cmhlistings: 1
+    yaml: 1
+    commandshell: 1
+    dosprompt: 1
+    lstlisting: 1
+indentAfterHeadings:
+    appendix:
+       indentAfterThisHeading: 1
+       level: 1
+    section:
+       indentAfterThisHeading: 1
+       level: 2
+    subsection:
+       indentAfterThisHeading: 1
+       level: 2
+    yamltitle:
+       indentAfterThisHeading: 1
+       level: 2
+    flagbox:
+       indentAfterThisHeading: 1
+       level: 2
+    subsubsection:
+       indentAfterThisHeading: 1
+       level: 2
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 3
+indentRules:
+   titleformat:
+       body: "  " 
+   titlecontents:
+       body: "  " 
+noAdditionalIndent:
+    widepage: 0

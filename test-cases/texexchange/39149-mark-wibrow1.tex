@@ -1,0 +1,27 @@
+\documentclass[border=5]{standalone}
+\usepackage{tikz}
+\newbox\stereogrambox
+\pgfmathdeclarerandomlist{colors}{{red}{green!50!black}{green}{white}{blue}}
+\begin{document}
+\setbox\stereogrambox=\hbox{%
+\begin{tikzpicture}[x=1/2pt,y=1/2pt]
+\foreach \x in {0,...,95}
+  \foreach \y in {0,...,119}{
+    \pgfmathrandomitem\c{colors}
+    \fill [fill=\c] (\x,\y) rectangle ++(1,1);
+  }
+\end{tikzpicture}}%
+\begin{tikzpicture}[x=1pt,y=1pt,
+stereogram node/.style={inner sep=0, outer sep=0,
+  anchor=south, fill=white, execute at begin node=\copy\stereogrambox
+}]
+\foreach \x in {0,...,1}
+  \node [stereogram node] at (\x*52, 0) {};
+\clip [shift={(0, 4)}] 
+ (0,0) -- (-4,0) -- (-4,4) -- (-18,4) -- (0,52) --
+ (18,4) -- (4,4) -- (4,0) -- cycle;
+\node [stereogram node] at (2, 0) {};
+\end{tikzpicture}
+\end{document}
+
+enter image description here

@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    commands:
+        CommandStartsOnOwnLine: 2

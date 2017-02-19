@@ -1,0 +1,6 @@
+indentAfterHeadings:
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 1
+indentRules:
+    paragraph: "\t\t\t"

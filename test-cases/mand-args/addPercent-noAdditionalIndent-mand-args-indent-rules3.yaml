@@ -1,0 +1,15 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        LCuBStartsOnOwnLine: 2
+        MandArgBodyStartsOnOwnLine: 2
+        RCuBStartsOnOwnLine: 2
+        RCuBFinishesWithLineBreak: 2
+    environments:
+        one:
+            BodyStartsOnOwnLine: 0
+noAdditionalIndent:
+   one:
+        body: 1
+indentRules:
+   one:
+        mandatoryArguments: "\t\t"

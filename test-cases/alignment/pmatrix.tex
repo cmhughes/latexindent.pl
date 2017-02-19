@@ -1,0 +1,26 @@
+\[h(\mathbf{x})=\mathbf{x}-\begin{pmatrix}\phantom{-} 1\\-21\end{pmatrix},\quad
+g(\mathbf{x})=\begin{pmatrix}
+98&-1\\1&\phantom{-} 98
+\end{pmatrix}\mathbf{x},\quad
+h^{-1}(\mathbf{x})=\mathbf{x}+\begin{pmatrix}\phantom{-}1\\-21\end{pmatrix}.\solnmarksplus{2}{1 for formulas for \(h\) and \(h^{-1}\),\\ 1 for formula for \(g\)\\ (can be implicit in working)}\]
+
+Hence
+\begin{align*}k(\mathbf{x})&=(h^{-1}\circ g \circ h)(\mathbf{x})\\&=h^{-1}(g(h(\mathbf{x})))\\
+%line3
+&=h^{-1}\left( g \left(\mathbf{x}-\begin{pmatrix}\phantom{-} 1\\-21\end{pmatrix}\right)\right)\\
+%line4
+&=h^{-1}\left(\begin{pmatrix}
+98&-1\\1&\phantom{-} 98
+\end{pmatrix}\left(\mathbf{x}-\begin{pmatrix} \phantom{-} 1\\-21\end{pmatrix}\right)\right)\solnmarksplus{1}{substituting formulas in correctly}\\
+%line5
+&=h^{-1}\left(\begin{pmatrix}
+98&-1\\1&\phantom{-} 98
+\end{pmatrix}\mathbf{x}-\begin{pmatrix}
+98&-1\\1& \phantom{-} 98
+\end{pmatrix}\begin{pmatrix} \phantom{-} 1\\-21\end{pmatrix}\right)\\
+%line6
+&=h^{-1}\left(\begin{pmatrix}
+98&-1\\1& \phantom{-} 98
+\end{pmatrix}\mathbf{x}-\begin{pmatrix}3\\1\end{pmatrix}\right)\solnmarksplus{1}{product of matrix and vector}\\
+%line7
+\end{align*}

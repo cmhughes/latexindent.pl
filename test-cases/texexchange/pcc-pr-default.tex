@@ -1,0 +1,717 @@
+% arara: pdflatex
+% arara: bibtex
+% arara: makeglossaries
+% arara: pdflatex
+% arara: pdflatex
+% !arara: indent: {overwrite: yes, trace: on}
+\documentclass[11pt,twoside]{report}
+%= == == == == == == == == == == =
+%
+% Document details: Program review for the mathematics department
+%       at Portland Community College, Portland OR
+%
+%       Prepared in Fall 2013, Winter 2014
+%
+%= == == == == == == == == == == =
+% binding offset was originally set to 1cm- killed it to 0cm as 
+% we were told that most folks won't print it.
+\usepackage[headheight=14pt,left=3.5cm,right=2.0cm,showframe=false,
+	top=2cm,bottom=1.5cm,asymmetric=true,bindingoffset=0cm]{geometry}
+\usepackage{parskip}
+\usepackage{titlesec}                   % customize headings
+\usepackage{titletoc}                   % customize tableofcontents
+\usepackage{multirow}                   % multirows in tables
+\usepackage{booktabs}                   % beautiful tables
+\usepackage{multicol}		% multicols environment
+\usepackage[super]{nth}			% \nth{1} etc for 1st etc
+\usepackage{flafter}                    % floats won't appear until after they appear in the code
+\usepackage[figuresright]{rotating}     % sideways table
+\usepackage{longtable}                  % tables that can break across pages
+\usepackage{tabularx}
+\usepackage{fancyhdr}                   % headers and footers
+\usepackage{standalone}                 % maintain graphs and tables in separate files
+\usepackage{pdfpages}                   % include separate pdf documents
+\usepackage{enumitem}                   % customization of list environments
+\usepackage{changepage}                 % adjust margins for selected portions
+\usepackage{tablefootnote}              % footnotes within tables
+\usepackage[sc,hang]{caption}           % customize captions of tables and figures
+\usepackage{subcaption}                 % subfigures and subtables
+\usepackage[charter]{mathdesign}        % font choice
+\usepackage{microtype}                  % better kerning
+\usepackage{siunitx}                    % elegant handling of units
+\usepackage{pgfplotstable}              % typeset tables intelligently
+\usetikzlibrary{shapes}
+\usetikzlibrary{positioning}
+\usepackage{afterpage}			%helps with rotating the pdf by 90 deg for sideways tables
+\usepackage{colortbl}										% row colours in tables
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\usepackage{epigraph}                   % for inspirational quotes
+\usepackage[backend=bibtex,maxnames=99]{biblatex}   % bibliography
+\usepackage{varioref}                   % good for referencing things 'far away'
+\usepackage{hyperref}                   % hyperlinks
+\usepackage{pdfcomment}		% for inserting of tooltips, like with fix this items
+\usepackage[numbered]{bookmark}
+\usepackage{cleveref}                   % allows \cref and friends
+% fairwell refcheck- you have served us well
+%\usepackage{refcheck}                   % checks if labels have been used remove once the document is completed
+%\usepackage[left]{showlabels}
+%\showlabels{hypertarget}
+%\showlabels{hyperlink}
+
+% tcolorbox libraries
+\tcbuselibrary{breakable,skins}
+
+% hyperlink setup
+\hypersetup{colorlinks=true,
+	linkcolor=blue,
+	citecolor=black,
+}
+
+% bibliography settings
+\addbibresource{pccbib}
+
+% cleveref settings
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{chapter}{Section}{Sections}
+\Crefname{chapter}{Section}{Sections}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+\Crefname{appendix}{Appendix}{Appendices}
+
+% graphics path
+\graphicspath{{./graphics/}}
+
+% axis style, ticks, etc
+\pgfplotsset{every axis/.append style={
+			legend cell align=left,       % otherwise width won't be as intended: http://tex.stackexchange.com/questions/36297/pgfplots-how-can-i-scale-to-text-width
+		}}
+
+% percentage style for tables
+\pgfplotstableset{percentstyle/.style={
+			preproc/expr={##1*100},
+			dec sep align,fixed,fixed zerofill,
+			postproc cell content/.append code={
+					\ifx\\##1\\% check if ##1 is empty
+					\else
+					\ifnum1=\pgfplotstablepartno
+					\pgfkeysalso{@cell content/.add={}{\,\%}}%
+					\fi
+					\fi
+				},
+			precision=0,
+		},
+	sectionFTPT/.style={
+			every head row/.style={
+					before row={%
+							\toprule
+						},
+					after row=\midrule},
+			every last row/.style={after row=\bottomrule},
+			columns/campus/.style={string type,column name={},column type=l},
+			columns/status/.style={string type,column name={},column type=l},
+			columns/below100/.style={column name={Below 100 level},column type=r},
+			columns/b100percent/.style={column name={\%},percentstyle},
+			columns/above100/.style={column name={Above 100 level},column type=r},
+			columns/a100percent/.style={column name={\%},percentstyle},
+			columns/totpercent/.style={column name={\%},percentstyle},
+			columns/total/.style={column name={Total},column type=r},
+		},
+	demographic/.style={
+			every row no 2/.style={before row=\rowcolor{lightgray!50}},
+			every row no 6/.style={before row=\rowcolor{lightgray!50}},
+			every row no 8/.style={before row=\rowcolor{lightgray!50}},
+			every row no 10/.style={before row=\rowcolor{lightgray!50}},
+			every row no 12/.style={before row=\rowcolor{lightgray!50}},
+			every row no 16/.style={before row=\rowcolor{lightgray!50}},
+			every row no 18/.style={before row=\rowcolor{lightgray!50}},
+			every row no 20/.style={before row=\rowcolor{lightgray!50}},
+		}
+}
+
+% for the section counters for each chapter
+\newcommand{\numbertotext}[1]{%
+	\ifcase#1
+		zero%
+		\or
+		one%
+		\or
+		two%
+		\or
+		three%
+		\or
+		four%
+		\or
+		five%
+		\or
+		six%
+	\else
+		% we don't care about the number of sections in chapters greater than 6
+		unimportant
+	\fi
+}
+
+% empty column type- very useful for big tables that ignore columns
+\newcolumntype{H}{>{\setbox0=\hbox\bgroup}c<{\egroup}@{}}
+
+% centered columns for tabularx in the appendix
+\newcolumntype{Y}{>{\centering\arraybackslash}X}
+
+% right-justified columns for tabularx 
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+
+% glossaries settings- load after hyperref: http://tex.stackexchange.com/questions/1863/which-packages-should-be-loaded-after-hyperref-instead-of-before
+\usepackage[nonumberlist,section=chapter,toc,]{glossaries}
+% use longragged style, based on longtable
+\usepackage{glossary-longragged}
+\setglossarystyle{longragged}
+% widen description column
+\setlength{\glsdescwidth}{0.8\linewidth}
+% make entries bold and black
+\renewcommand{\glsnamefont}[1]{\textbf{#1}}
+\renewcommand*{\glstextformat}[1]{\textcolor{black}{#1}}
+% basic vocab
+\newglossaryentry{ACCEPT}{name=ACCEPT,description={Addressing the Collective Climate and Experience of Part-Timers}}
+\newglossaryentry{ADA}{name=ADA,description={Americans with Disabilities Act}}
+\newglossaryentry{ALC}{name=ALC,description={Alternative Learning Center. A former name for the SLC. Several self-paced courses in Math and English have this subject prefix}}
+\newglossaryentry{ALEKS}{name=ALEKS,description={ {\bfseries A}ssessment and {\bfseries LE}arning in {\bfseries K}nowledge {\bfseries S}paces interactive computer-based math-learning program owned by McGraw-Hill \url{http://www.aleks.com/}}}
+\newglossaryentry{AMP}{name=AMP,description={Accelerated Mathematics Program}}
+\newglossaryentry{AY}{name=AY,description={Academic Year}}
+\newglossaryentry{CIC}{name=CIC,description={Completion Investment Council}}
+\newglossaryentry{CTE}{name=CTE,description={Career Technical Education}}
+\newglossaryentry{OSD}{name=OSD,description={Office of Students with Disabilities}}
+\newglossaryentry{CCOG}{name=CCOG,description={Course Curriculum and Outcome Guide}}
+\newglossaryentry{DL}{name=DL,description={Distance Learning}}
+\newglossaryentry{DOI}{name=DOI,description={Deans Of Instruction}}
+\newglossaryentry{F2F}{name=F2F,description={Face-to-face}}
+\newglossaryentry{FT}{name=FT,description={Full-time (usually in reference to faculty)}}
+\newglossaryentry{LAC}{name=LAC,description={Learning Assessment Council}}
+\newglossaryentry{LAS}{name=LAS,description={Learning Assessment Subcommittee (of the LAC)}}
+\newglossaryentry{LDC}{name=LDC,description={Lower Division Collegiate}}
+\newglossaryentry{MML}{name=MML,description={MyMathLab: a commercial computer-based homework management system owned and distributed by Pearson \url{http://www.pearsonmylabandmastering.com/northamerica/mymathlab/}}}
+\newglossaryentry{MSL}{name=MSL,description={MyStatLab: a commercial computer-based homework management system owned and distributed by Pearson \url{http://www.pearsonmylabandmastering.com/northamerica/mystatlab/}}}
+\newglossaryentry{PT}{name=PT,description={Part-time (usually in reference to faculty)}}
+\newglossaryentry{SAC}{name=SAC,description={Subject Area Committee}}
+\newglossaryentry{SLC}{name=SLC,description={Student Learning Center. An informal, open study area, with the added benefit of tutoring assistance}}
+\newglossaryentry{STEM}{name=STEM,description={Science, Technology, Engineering, and Mathematics}}
+\newglossaryentry{WRC}{name=WRC,description={Women's Resource Center}}
+\makeglossaries
+
+% to do: (bash scripts/logfilecheck.sh)
+%   - address all fixthis issues (check output and .log file) Chris
+%   - check for undefined references, multiply defined labels- grep log file Chris
+%   - check functionality in various browsers, OSs
+
+% Define fix command
+% 	- it puts a comment in the margin
+% 	- it writes to a file with a list of things that need fixing
+\newcommand{\fixthis}[1]
+{%
+	\marginpar{\huge \color{red} \pdftooltip{\framebox{FIX}}{#1}}%
+	\typeout{FIXTHIS: Section \thechapter:  p\thepage : #1^^J}%
+}
+
+% for the section pictures
+\makeatletter
+\newcommand{\cmh}[2]{%
+	% we need the first argument to be a number
+	% http://tex.stackexchange.com/questions/50111/how-to-check-if-the-value-of-a-parameter-is-a-number
+	\if\relax\detokenize\expandafter{\romannumeral-0#1}\relax
+		\@ifundefined{c@totalsections@\numbertotext{#1}}%
+		{%
+			\newcounter{totalsections@\numbertotext{#1}}
+			\setcounter{totalsections@\numbertotext{#1}}{#2}
+			\typeout{Defining a new counter: totalsections@\numbertotext{#1}}
+		}%
+		{%
+			\ifnum\value{totalsections@\numbertotext{#1}}=#2
+				\typeout{Total sections for Chapter #1 match auxilary file (#2)}
+			\else
+				\typeout{Warning: total sections for Chapter #1 updated from \the\value{totalsections@\numbertotext{#1}} to #2-- recompile to fix}
+			\fi
+			\setcounter{totalsections@\numbertotext{#1}}{#2}
+		}%
+	\else
+	\fi
+}
+
+% custom petal shape
+% custom petal shape
+% custom petal shape
+% http://tex.stackexchange.com/questions/151962/rotating-a-custom-shape-independently-of-the-text/151978?noredirect=1#151978
+\pgfkeys{/pgf/shape border rotate/.initial=0}
+
+\pgfdeclareshape{petal}
+{
+	\inheritsavedanchors[from=circle] % this is nearly a circle
+	\inheritanchorborder[from=circle]
+	\inheritanchor[from=circle]{center}
+	\inheritanchor[from=circle]{base}
+	\savedmacro\petalparameters{%
+		\pgfmathsetmacro\shapeborderrotate{\pgfkeysvalueof{/pgf/shape border rotate}}%
+		\addtosavedmacro\shapeborderrotate%
+	}
+	\backgroundpath{
+		% origin
+		\petalparameters%
+		{% Make sure transformations are  inside group.
+			\pgftransformshift{\centerpoint}%
+			\pgftransformrotate{\shapeborderrotate}%
+			\pgfutil@tempdima=\radius%
+			\pgfpathmoveto{\pgfqpoint{\pgfutil@tempdima}{0pt}}%
+			\pgfpatharc{0}{180}{\pgfutil@tempdima}%
+			\pgfpathcurveto{\pgfqpoint{-\pgfutil@tempdima}{-.5\pgfutil@tempdima}}%
+			{\pgfqpoint{-.5\pgfutil@tempdima}{-.75\pgfutil@tempdima}}%
+			{\pgfqpoint{0pt}{-1.5\pgfutil@tempdima}}
+			\pgfpathcurveto{\pgfqpoint{0pt}{-.75\pgfutil@tempdima}}%
+			{\pgfqpoint{\pgfutil@tempdima}{-.75\pgfutil@tempdima}}%
+			{\pgfqpoint{\pgfutil@tempdima}{0pt}}%
+		}%
+	}
+}
+
+% boolean switch to tell if we're in the appendix or not
+\newbool{inappendix}
+
+% make epigraph italic
+\let\oldepigraph\epigraph
+\renewcommand{\epigraph}[2]{\oldepigraph{\itshape #1}{#2}}
+
+% write to the auxilary file before each \chapter command
+\preto\chapter{%
+  \ifnum\value{chapter}>0
+	  \immediate\write\@auxout{%
+		  \string\cmh\string{\thechapter\string}\string{\the\value{section}\string}
+	  }
+  \fi
+ }
+
+% ... and the appendix- the above command won't work because the appendix
+% command resets the chapter counter
+\preto\appendix{%
+	\booltrue{inappendix}
+	\immediate\write\@auxout{%
+		\string\cmh\string{\thechapter\string}\string{\the\value{section}\string}
+	}
+}
+
+% colorbox settings
+\tcbset{
+	pccstyle/.style={
+			% used in chapter headings and toc headings
+			enhanced,flushright upper,
+			boxrule=1.4pt,
+			colback=white,colframe=black!50!yellow,
+			drop fuzzy midday shadow=black!50!yellow
+		},
+	tocstyle/.style={
+			% used to surround the tocs (main and appendix)
+			breakable,enhanced,fonttitle=\bfseries\Large,
+			colback=gray!10,colframe=gray,%colframe=red!50!black,
+			before=\par\bigskip\noindent,
+			pad at break=3mm,
+			%left=0.75cm,
+			%enlargepage=2\baselineskip,
+			drop fuzzy shadow,
+		}
+}
+
+% heading settings
+% heading settings
+% heading settings
+
+% from the titlesec package
+%\titleformat{ command }
+%             [ shape ]
+%             { format }{ label }{ sep }{ before-code }[ after-code ]
+% custom chapter
+\titleformat{\chapter}
+{\normalfont\Large\filleft\bfseries}                    % format applied to label+text
+{}                                                      % label
+{1pc}                                                   % horizontal separation between label and title body
+{%
+	% add heading recommendation file
+	\ifbool{inappendix}{}{%
+		\ifnum\value{chapter}<7
+			\ifnum\value{chapter}>0
+				\addcontentsline{toc}{pcctitle}{Recommendations for section \thechapter}%
+			\fi
+		\fi
+	}%
+	% draw a box around the chapter number
+	\begin{tcolorbox}[pccstyle,width=2.8cm]
+		\resizebox{2cm}{!}{\color{gray!80}\thechapter}%
+	\end{tcolorbox}\Huge} % before the title body
+%\resizebox{2cm}{!}{\color{gray!80}\thechapter}\\\Huge} % before the title body
+[]                                                      % after the title body
+
+% \chapter*
+\titleformat{name=\chapter,numberless}
+{\normalfont\huge\bfseries}{}{-20pt}{\Huge}
+
+% custom section
+\titleformat{\section}
+{%
+	\hypertarget{section:petal:\thechapter:\thesection}%
+	\large\bfseries%
+}
+{%
+	% original line- maybe we'll just use it after all :)
+	%\llap{\vbox to 5pt{\hbox{\resizebox{1cm}{!}{\normalfont\thesection.}}}\hskip 9pt}
+	% new stuff
+	\@ifundefined{c@totalsections@\numbertotext{\thechapter}}%
+	{% if the total number of sections for this chapter is undefined
+		\llap{\vbox to 5pt{\hbox{\resizebox{1cm}{!}{\normalfont\thesection.}}}\hskip 9pt}
+	}%
+	{% if the total number of sections for this chapter is DEFINED
+		%Defined \thechapter: total sections: \thetotalsections@one 
+		\llap{\vbox to 0pt{\vss\hbox{%
+						\begin{tikzpicture}[
+								scale=0.8,
+								every node/.style={draw,
+										petal,
+										double,
+										minimum width=0.5cm,
+										shape border rotate=-(\i-1)*360/\mymax,
+									}]
+							\def\mymax{\the\value{totalsections@\numbertotext{\thechapter}}}
+							% define the radius dependent on the total petals
+							\ifnum\mymax=6
+								\def\myradius{1.0cm}
+							\else
+								\def\myradius{0.9cm}
+							\fi
+							\foreach \i in {1,2,...,\mymax}
+								{
+									\pgfmathparse{90-(\i-1)*360/\mymax}
+									\ifnum\i=\the\value{section}
+										\node[fill=red!70] at (\pgfmathresult:\myradius)  {\bfseries\@Alph{\i}};
+									\else
+										\node[draw=gray!50,fill=gray!50] at (\pgfmathresult:\myradius)  {\hypersetup{linkcolor=gray}\hyperlink{section:petal:\thechapter:\@Alph{\i}}{\@Alph{\i}}};
+									\fi
+								}
+						\end{tikzpicture}%
+						\hskip 9pt
+					}%
+					\vss%
+				}%
+		}%
+	}%
+}
+{0pt}
+{}
+
+% custom paragraph heading
+\titleformat{\paragraph}[leftmargin]
+{\normalfont
+	\scshape\filleft}
+{}
+{0pt}
+{}
+
+% spacing around headings
+% From the titlesec package
+% \titlespacing{command}{left spacing}{before spacing}{after spacing}[right]
+% spacing: how to read {12pt plus 4pt minus 2pt}
+%           12pt is what we would like the spacing to be
+%           plus 4pt means that TeX can stretch it by at most 4pt
+%           minus 2pt means that TeX can shrink it by at most 2pt
+%       This is one example of the concept of, 'glue', in TeX
+\titlespacing{\chapter}{0pt}{0pt}{0.1cm}
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{-3pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing{\paragraph}{4pc}{1.5ex plus .1ex minus .2ex}{1pc}
+
+% secnumdepth dictates which headings get enumerated- setting it 
+% to 1 means that chapters and sections get enumerated, but 
+% no headings below them will (such as subsection, subsubsection, paragraph, etc)
+\setcounter{secnumdepth}{1}
+
+% toc settings
+% toc settings
+% toc settings
+%
+% \titlecontents{<heading>}
+%   [] % left margin
+%   {} % before code
+%   {} % formatting for numbered entries of this type
+%   {} % formatting for UNnumbered entries of this type
+%   {} % filler page format
+\titlecontents{chapter}%
+[0pc]       % left margin
+{\vspace{.5cm}}
+{%          % numbered format
+	\llap{\vbox to 10pt{%
+				\hbox{%
+					%    \resizebox{1cm}{!}{\color{gray}\thecontentslabel}\hskip 0.5cm
+					\begin{tcolorbox}[pccstyle,width=1.8cm]
+						\resizebox{1cm}{!}{\color{gray}\thecontentslabel}\hskip 1.5cm
+					\end{tcolorbox}
+				}%
+			}%
+	}\color{blue!40}\large\sc\bfseries%
+}
+{\large\sc}          % unnumbered format
+{\titlerule*[.5pc]{.}\large\sc Page \bfseries\contentspage}%
+
+% indented subsection (in toc)
+\titlecontents{subsection}
+[2.0cm]             % left margin
+{}                  % above code
+{%                  % numbered format
+	{\thecontentslabel\hskip .5cm}%
+}%
+{}         % unnumbered format
+{\titlerule*[.5pc]{.}\contentspage}%
+
+% headers and footers
+\fancyhf{} % delete current header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO,RE]{\leftmark}
+\fancyheadoffset[LE,LO]{3cm}
+\pagestyle{fancy}
+
+% remove the word Chapter from the header
+\def\chaptermark#1{\markboth{\textsc{\thechapter. \  #1}}{}}
+
+%%%%% make refcheck and cleveref play nicely together (not needed once the document is complete): 
+%%% http://tex.stackexchange.com/questions/87610/making-refcheck-work-with-cleveref
+%%\makeatletter
+%%\newcommand{\refcheckize}[1]{%
+%%\expandafter\let\csname @@\string#1\endcsname#1%
+%%\expandafter\DeclareRobustCommand\csname relax\string#1\endcsname[1]{%
+%%\csname @@\string#1\endcsname{##1}\wrtusdrf{##1}}%
+%%\expandafter\let\expandafter#1\csname relax\string#1\endcsname
+%%}
+%%% Now we add the reference commands we want refcheck to be aware of
+%%\refcheckize{\vref}
+%%\refcheckize{\cref}
+%%\refcheckize{\Cref}
+%%\refcheckize{\cpageref}
+%%%%%
+
+% wide page for side by side figures, tables, etc
+\newlength{\offsetpage}
+\setlength{\offsetpage}{3.0cm}
+\newenvironment{widepage}{\begin{adjustwidth}{-\offsetpage}{}%{-.5\offsetpage}%
+		\addtolength{\textwidth}{2\offsetpage}}%
+		{\end{adjustwidth}}
+
+% renew the quote environment to make it italic
+\let\oldquote\quote
+\let\oldendquote\endquote
+\renewenvironment{quote}{\oldquote \itshape}{\oldendquote}
+
+% for quotations with an attributed source
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+			\hbox{}\nobreak\hfil#1%
+			\parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+{\savebox\mybox{#1}\begin{quote}}
+		{\signed{\usebox\mybox}\end{quote}}
+
+% recommendations
+% recommendations
+% recommendations
+
+% this creates a 'dummy' heading level after paragraph, which we can exploit
+% to read in the recommendations from the toc
+\titleclass{\pcctitle}{straight}[\paragraph]
+\titleformat{\pcctitle}{}{}{}{}
+\titlecontents{pcctitle}
+[3.8cm]             % left margin
+{}                  % above code
+{% numbered format
+	\raisebox{0pt}[0pt][0pt]{\llap{\begin{minipage}[t]{6cm}
+				\bfseries\raggedleft\thecontentslabel\end{minipage}~~}}%
+}%                  
+{\scshape\hypersetup{linkcolor=black}}         % unnumbered format
+{\titlerule*[.5pc]{.}\contentspage}%
+
+% need to set the toclevel here, otherwise the recommendations appear in bookmarks
+% http://tex.stackexchange.com/questions/123575/how-to-suppress-the-author-bookmark-generated-by-svmult-with-bookmark-package-wi
+\makeatletter
+\providecommand*{\toclevel@pcctitle}{7}
+
+% command to output recommendation on the page, and also add it
+% to the list of recommendations
+\newcommand{\recommendation}[2][]{%
+	\raisebox{0pt}[0pt][0pt]{\llap{%
+			\tikz[baseline=(X.base)] \node[star,fill=yellow,draw=orange,scale=0.65] (X){R};\hskip .5cm%
+		}}%
+	\phantomsection
+	#2%
+	\ifx\\#1\\% if the first argument is empty then use the second (default)
+		\addcontentsline{toc}{pcctitle}{#2}%
+	\else % if we want to put something else in the list of recommendations
+		\addcontentsline{toc}{pcctitle}{\protect\numberline{\protect#1} #2}%
+	\fi%
+}
+
+%\includeonly{Overview}
+%\includeonly{OutcomesAndAssessment,appendices/coreOutcomesMapping}
+%\includeonly{OtherCurricularIssues}
+%\includeonly{NeedsOfStudentsAndCommunity}
+%\includeonly{FacultyReflection}
+%\includeonly{FacilitiesAndSupport}
+%\includeonly{appendices/dlSuccessfulCompletion}
+%\includeonly{Recommendations}
+%\includeonly{colophon}
+%\includeonly{appendices/enrollmentSummaries}
+%\includeonly{appendices/tutoringHours}
+%\includeonly{colophon}
+%\includeonly{appendices/pathways}
+%\includeonly{appendices/professionalDevelopment}
+
+% special characters in url in footnote: http://tex.stackexchange.com/questions/12230/getting-percent-sign-into-an-url-in-a-footnote
+\urldef\awardsurl\url{http://www.pcc.edu/resources/academic/learning-assessment/sac-resources.html#assessmentwin}
+
+\begin{document}
+
+% add a bookmark for the toc
+\pdfbookmark{Title page}{Title Page}
+
+% title page
+\includepdf{graphics/titlePage}
+
+% add a bookmark for the toc
+\pdfbookmark{\contentsname}{Contents}
+
+% this bit puts a tcolorbox around the toc
+\begin{tcolorbox}[tocstyle,
+		title={Contents},
+		%watermark text={\bfseries\Large Contents},
+		%watermark color=yellow!75!red!25!white,
+	]
+	\makeatletter
+	\@starttoc{toc}
+	\makeatother
+\end{tcolorbox}
+
+\glsaddall
+\printglossary
+
+% needed for the recommendation toc
+\startcontents
+
+%= == == == == == == == == == == =
+% main chapters
+%= == == == == == == == == == == =
+\renewcommand{\thesection}{\Alph{section}}
+\include{Overview}
+\include{OutcomesAndAssessment}
+\include{OtherCurricularIssues}
+\include{NeedsOfStudentsAndCommunity}
+\include{FacultyReflection}
+\include{FacilitiesAndSupport}
+% I don't like doing this, but there is no chapter 7
+\makeatletter
+\immediate\write\@auxout{%
+	\string\cmh\string{\thechapter\string}\string{\the\value{section}\string}
+}
+\makeatother
+\refstepcounter{chapter}
+\include{Recommendations}
+
+%= == == == == == == == == == == =
+% bibliography
+% bibliography
+% bibliography
+%= == == == == == == == == == == =
+\setcounter{biburllcpenalty}{100}
+\printbibliography[heading=bibintoc]
+
+%= == == == == == == == == == == =
+% appendices
+% appendices
+% appendices
+%= == == == == == == == == == == =
+\appendix
+% add the word Appendix to the header
+\def\chaptermark#1{\markboth{\textsc{Appendix \thechapter. \  #1}}{}}
+% custom section
+\titleformat{\section}
+{\Large\bfseries}
+{\llap{\thesection\hskip.5cm}}
+{0pt}
+{}
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-5pt plus 2pt minus 2pt}
+
+% need to change the chapter formatting for the appendices
+\titlecontents{chapter}
+[0pc]             % left margin
+{\vskip.25cm}    % above code
+{%                  % numbered format
+	{\hskip.5cm\color{black}\large\thecontentslabel\hskip .2cm}\large\sc%
+}%
+{\large\sc}         % unnumbered format
+{\titlerule*[.5pc]{.}\large\sc\bfseries \contentspage}%
+
+% need to change the section formatting for the appendices
+\titlecontents{section}
+[1cm]               % left margin
+{}                  % above code
+{%                  % numbered format
+	{\thecontentslabel\hskip .5cm}%
+}%
+{}         % unnumbered format
+{\titlerule*[.5pc]{.}\contentspage}%
+
+\titlecontents{subsection}
+[1.7cm]               % left margin
+{}                  % above code
+{%                  % numbered format
+	{\thecontentslabel\hskip .5cm}%
+}%
+{}         % unnumbered format
+{\titlerule*[.5pc]{.}\contentspage}%
+
+\renewcommand{\thesection}{\arabic{section}}
+% start a partial tableofcontents for the appendix
+\clearpage
+\thispagestyle{plain}
+\phantomsection
+\addcontentsline{toc}{chapter}{Appendices}
+\startcontents[appendixtoc]
+\begin{tcolorbox}[tocstyle,title={Appendices}]
+	\printcontents[appendixtoc]{}{0}{}
+\end{tcolorbox}
+\include{appendices/pathways}
+\include{appendices/changeinALCcourses}
+\include{appendices/socialJustice}
+\include{appendices/coreOutcomesMapping}
+\include{appendices/dlSuccessfulCompletion}
+\include{appendices/demographicData}
+\include{appendices/onlineHwStudy}
+\include{appendices/ALEKSpilot}
+\include{appendices/ampData}
+\include{appendices/effectivenessALC}
+\include{appendices/enrollmentSummaries}
+\include{appendices/classSize}
+\include{appendices/accessibilitysummary}
+\include{appendices/sectionsTaughtPTFT}
+\include{appendices/facultyDegrees}
+\include{appendices/instructorQualifications}
+\include{appendices/memberships}
+\include{appendices/professionalDevelopment}
+\include{appendices/resourcesurvey}
+\include{appendices/tutoringHours}
+\include{appendices/courseScheduling}
+
+%= == == == == == == == == == == =
+% colophon
+% colophon
+% colophon
+%= == == == == == == == == == == =
+\pdfbookmark{Colophon}{Colophon}
+\include{colophon}
+
+\end{document}
+

@@ -1,0 +1,103 @@
+% !arara: pdflatex
+% arara: indent: {overwrite: yes, trace: yes, localSettings: yes}
+\documentclass{report}
+\usepackage{etoolbox}
+\usepackage{pgfplots}
+\usepackage{lipsum}
+
+\makeatletter
+\newcommand{\totalchapters}[1]{%
+	\@ifundefined{c@totalchapters}
+	{%
+		\newcounter{totalchapters}
+		\setcounter{totalchapters}{#1}
+		\typeout{Defining a new counter: totalchapters (#1)}
+	}%
+	{%
+		\ifodd\value{totalchapters}=#1
+			\typeout{Total Chapters match auxilary file (#1)}
+		\else
+			\typeout{Warning: total Chapter count updated from \the\value{totalchapters} to #1-- recompile to fix}
+		\fi
+		\setcounter{totalchapters}{#1}
+	}%
+}
+\newcommand{\definetotalpagecount}[2]{%
+	\@ifundefined{c@totalpages\@roman{#1}}%
+	{%
+		\newcounter{totalpages\@roman{#1}}
+		\setcounter{totalpages\@roman{#1}}{#2}
+		\typeout{Defining a new counter: totalpages\@roman{#1}}
+	}%
+	{%
+		\ifnum\value{totalpages\@roman{#1}}=#2
+			\typeout{Total pages for Chapter #1 match auxilary file (#2)}
+		\else
+			\typeout{Warning: total pages for Chapter #1 updated from \the\value{totalpages\@roman{#1}} to #2-- recompile to fix}
+		\fi
+		\setcounter{totalpages\@roman{#1}}{#2}
+	}%
+}
+
+
+\preto\chapter{%
+  \ifnum\value{chapter}>0
+	  \immediate\write\@auxout{%
+		  \string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
+	  }
+  \fi
+ }
+
+\AtEndDocument{%
+	\immediate\write\@auxout{%
+		\string\definetotalpagecount\string{\thechapter\string}\string{\the\value{page}\string}
+		\string\totalchapters\string{\thechapter\string}%
+	}
+}
+
+\newcommand{\drawPageChart}{%
+	\begin{tikzpicture}
+		\begin{axis}[
+				xbar stacked,
+				xmin=-0.1,
+				%ymin=0,ymax=1,
+				bar width=40pt,
+				nodes near coords,
+				axis lines=none,
+				nodes near coords align={horizontal},
+				visualization depends on=x \as \myxcoord,
+				nodes near coords={\pgfmathprintnumber\myxcoord},
+				every node near coord/.append style={
+						anchor=east},
+			]
+			\@ifundefined{c@totalchapters}
+			{}
+			{%
+				\foreach \i in {1,...,\thetotalchapters}{%
+						\addplot coordinates {(\the\value{totalpages\@roman{\i}},0)};
+					}
+			}
+		\end{axis}
+	\end{tikzpicture}
+}
+\begin{document}
+
+\begin{figure}[!htb]
+	\centering
+	\drawPageChart
+	\caption{Blueprint of my thesis}
+\end{figure}
+
+
+\chapter{}
+\lipsum
+\chapter{}
+\lipsum
+\lipsum
+\chapter{}
+\lipsum
+\lipsum
+\lipsum
+\lipsum
+\lipsum
+\end{document}

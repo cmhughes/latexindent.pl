@@ -1,0 +1,31 @@
+% arara: indent: {trace: on, overwrite: on}
+\hypersetup{%
+	pdfstartview={%
+			FitH \hypercalcbp{\paperheight-\topmargin-0in
+				-\headheight-\headsep }%
+		}%
+	%---------------------------------------------------------------------------
+}
+
+some other text
+some other text
+some other text
+
+\hypersetup{%
+	pdfstartview={%
+			FitH \hypercalcbp{\paperheight-\topmargin-0in
+				-\headheight-\headsep }}%
+}
+
+some other text
+some other text
+some other text
+
+\hypersetup{%
+	pdfstartview={\someothercommand{here}%
+			FitH \hypercalcbp{\paperheight-\topmargin-0in
+				-\headheight-\headsep }}}
+
+some other text
+some other text
+some other text

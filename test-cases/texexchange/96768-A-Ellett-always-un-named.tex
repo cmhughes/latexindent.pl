@@ -1,0 +1,9 @@
+\usepackage{xparse}
+\usepackage{xstring}
+\NewDocumentCommand{\tangentcount}{ m }
+{%
+	\IfEqCase{#1}{%
+		{2}{exactly two}%
+		{1}{exactly one}%
+	}[no]%
+}

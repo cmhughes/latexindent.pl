@@ -1,0 +1,68 @@
+% arara: indent: {overwrite: true, trace: true, localSettings: off}
+\documentclass[pstricks,border=12pt]{standalone}
+\usepackage{pst-eucl}
+\usepackage[nomessages]{fp}
+
+\definecolor{myblue}{RGB}{37,111,197}
+\definecolor{mybrown}{RGB}{211,200,134}
+
+\def\rOne{0.75}
+\def\rTwo{0.75}
+\def\tOne{20}
+\def\tTwo{-45}
+\FPset\RowMaxIndex{4}% because zero based index
+\FPset\ColMaxIndex{4}% because zero based index
+
+
+\psset
+{
+	PointName=none,
+	PointSymbol=none,
+	fillstyle=solid,
+	linejoin=1,
+}
+
+\def\Bar(#1,#2)#3{%
+	\rput(!#2 \rTwo\space mul \tTwo\space PtoC){%
+		\rput(!#1 \rOne\space mul \tOne\space 180 add PtoC){%
+			\pstGeonode{O}(\rOne;\tOne){One}(\rTwo;\tTwo){Two}
+			\pstTranslation{O}{Two}{One}[Three]
+			\pnode(0,\stripH){O'}
+			\pstTranslation{O}{O'}{One,Two,Three}
+			\pnode(0,#3){O''}
+			\pstTranslation{O}{O''}{One,Two,Three}[One'',Two'',Three'']
+			\psset{fillcolor=mybrown}
+			\pspolygon(O'')(O)(Two)(Two'')
+			\pspolygon(Two'')(Two)(Three)(Three'')
+			\pspolygon(One'')(O'')(Two'')(Three'')
+			\psset{fillcolor=myblue,opacity=0.75,linestyle=none,linewidth=0}
+			\FPifeq{#1}{\RowMaxIndex}\pspolygon(O')(O)(Two)(Two')\fi
+			\FPifeq{#2}{\ColMaxIndex}\pspolygon(Two')(Two)(Three)(Three')\fi
+			\FPiflt{#3}{\stripH}\pspolygon(One')(O')(Two')(Three')\fi
+		}%
+	}%
+}
+
+\newcount\OuterIndex
+\def\SaveListContents#1\relax{\def\Contents{#1}}
+
+\def\Picture#1{%
+	\def\stripH{#1}%
+	\begin{pspicture}[showgrid=false](-2.5,-3.35)(3.05,3.05)
+		\psforeach{\row}{%
+			{{3,2.8,2.7,3,3.1}},% <=== Only this row must use double curly braces. It is a feature!
+			{2.8,1,1.2,2,3},%
+			{2.8,1,1.2,2,2.8},%
+			{2.6,1.6,1.8,1.9,1.8},%
+			{2.4,1.5,1.7,1.9,1.5}%
+		}{%
+			\expandafter\SaveListContents\row\relax
+			\OuterIndex=\psLoopIndex\relax
+			\psforeach{\col}{\Contents}{\Bar(\the\OuterIndex,\the\psLoopIndex){\col}}%
+			\psLoopIndex=\OuterIndex\relax
+		}
+	\end{pspicture}}
+
+\begin{document}
+\multido{\n=0.0+0.2}{17}{\Picture{\n}}
+\end{document}

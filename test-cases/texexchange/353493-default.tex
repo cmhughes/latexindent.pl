@@ -1,0 +1,18 @@
+\documentclass[tikz]{standalone}
+\usepackage{tikz}
+
+\begin{document}
+\foreach \n [remember=\n as \previous (initially 0)] in {1,...,7,0} {
+		\begin{tikzpicture}[main_node/.style={circle,fill=blue!20,draw,minimum size=2em,inner sep=3pt]}]
+			\node[main_node] (8) at (0:0.5) {b};
+			\node[main_node] (9) at (180:0.5) {t};
+			\foreach \x in {0,1,...,7}
+			\node[main_node] (\x) at (360/8*\x:2) {$a_{\x}$};
+			\path[draw,thick] (\n) edge (8);
+			\path[draw,thick] (\n) edge (9);
+			\path[draw,thick] (\previous) edge (8);
+			\path[draw,thick] (\previous) edge (9);
+			\path[draw,thick] (\n) edge (\previous);
+		\end{tikzpicture}
+	}
+\end{document}

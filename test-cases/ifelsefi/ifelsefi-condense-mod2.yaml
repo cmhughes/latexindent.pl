@@ -1,0 +1,2 @@
+modifyLineBreaks:
+    condenseMultipleBlankLinesInto: 3

@@ -1,0 +1,75 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[textheight = 24cm]{geometry}
+\usepackage[font = sf, justification=raggedright]{caption}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage[math]{cellspace}
+\cellspacetoplimit 4pt
+\cellspacebottomlimit 4pt
+
+\begin{document}
+
+\begin{table}
+	\begin{minipage}[b]{0.35\textwidth}
+		\mbox{}\par
+		\caption{Cellspace solution\hfill\vspace{2.5\baselineskip}}
+		\begin{tabular}[b]{ >{\bfseries}l|*{6}{| >{$}Sc <{$}}}
+			0 & \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4}  & \textbf{5}  & \textbf{6}  \\
+			\hhline{=::======}
+			1 & \frac{1}{1} & \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6} \\
+			\hhline{-||------}
+			2 & \frac{2}{1} & \frac{2}{2} & \frac{2}{3} & \frac{2}{4} & \frac{2}{5} & \frac{2}{6} \\
+			\hhline{-||------}
+			3 & \frac{3}{1} & \frac{3}{2} & \frac{3}{3} & \frac{3}{4} & \frac{3}{5} & \frac{3}{6} \\
+			\hhline{-||------}
+			4 & \frac{4}{1} & \frac{4}{2} & \frac{4}{3} & \frac{4}{4} & \frac{4}{5} & \frac{4}{6} \\
+			\hhline{-||------}
+			5 & \frac{5}{1} & \frac{5}{2} & \frac{5}{3} & \frac{5}{4} & \frac{5}{5} & \frac{5}{6} \\
+			\hhline{-||------}
+			6 & \frac{6}{1} & \frac{6}{2} & \frac{6}{3} & \frac{6}{4} & \frac{6}{5} & \frac{6}{6} \\
+		\end{tabular}
+	\end{minipage}
+	\everymath{\displaystyle}
+	\begin{tabular}[b]{ >{\bfseries}l|*{6}{| >{$}Sc <{$}}}
+		0 & \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4}  & \textbf{5}  & \textbf{6}  \\
+		\hhline{=::======}
+		1 & \frac{1}{1} & \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6} \\
+		\hhline{-||------}
+		2 & \frac{2}{1} & \frac{2}{2} & \frac{2}{3} & \frac{2}{4} & \frac{2}{5} & \frac{2}{6} \\
+		\hhline{-||------}
+		3 & \frac{3}{1} & \frac{3}{2} & \frac{3}{3} & \frac{3}{4} & \frac{3}{5} & \frac{3}{6} \\
+		\hhline{-||------}
+		4 & \frac{4}{1} & \frac{4}{2} & \frac{4}{3} & \frac{4}{4} & \frac{4}{5} & \frac{4}{6} \\
+		\hhline{-||------}
+		5 & \frac{5}{1} & \frac{5}{2} & \frac{5}{3} & \frac{5}{4} & \frac{5}{5} & \frac{5}{6} \\
+		\hhline{-||------}
+		6 & \frac{6}{1} & \frac{6}{2} & \frac{6}{3} & \frac{6}{4} & \frac{6}{5} & \frac{6}{6} \\
+	\end{tabular}
+\end{table}
+\mbox{}
+\begin{table}
+	\begin{minipage}[b]{0.3\textwidth}
+		\mbox{}\par
+		\caption{Arraystretch solution\hfill\vspace{6pt}}
+		\renewcommand{\arraystretch}{1.667}
+		\begin{tabular}[b]{ >{\bfseries}l|*{6}{| >{$}c <{$}}}
+			0 & \textbf{1}  & \textbf{2}  & \textbf{3}  & \textbf{4}  & \textbf{5}  & \textbf{6}  \\
+			\hhline{=::======}
+			1 & \frac{1}{1} & \frac{1}{2} & \frac{1}{3} & \frac{1}{4} & \frac{1}{5} & \frac{1}{6} \\
+			\hhline{-||------}
+			2 & \frac{2}{1} & \frac{2}{2} & \frac{2}{3} & \frac{2}{4} & \frac{2}{5} & \frac{2}{6} \\
+			\hhline{-||------}
+			3 & \frac{3}{1} & \frac{3}{2} & \frac{3}{3} & \frac{3}{4} & \frac{3}{5} & \frac{3}{6} \\
+			\hhline{-||------}
+			4 & \frac{4}{1} & \frac{4}{2} & \frac{4}{3} & \frac{4}{4} & \frac{4}{5} & \frac{4}{6} \\
+			\hhline{-||------}
+			5 & \frac{5}{1} & \frac{5}{2} & \frac{5}{3} & \frac{5}{4} & \frac{5}{5} & \frac{5}{6} \\
+			\hhline{-||------}
+			6 & \frac{6}{1} & \frac{6}{2} & \frac{6}{3} & \frac{6}{4} & \frac{6}{5} & \frac{6}{6} \\
+		\end{tabular}
+
+	\end{minipage}
+\end{table}
+\end{document}

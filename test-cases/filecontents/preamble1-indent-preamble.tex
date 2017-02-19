@@ -1,0 +1,29 @@
+% arara: indent: {trace: on, overwrite: yes}
+\documentclass[10pt,twoside]{report}
+\newenvironment{widepage}{\begin{adjustwidth}{-\offsetpage}{}%
+	\addtolength{\textwidth}{\offsetpage}}%
+{\end{adjustwidth}}
+
+% Define fix command
+% 	- it puts a comment in the margin
+% 	- it writes to a file with a list of things that need fixing
+\newcommand{\fixthis}[1]
+{%
+	\marginpar{\huge \color{red} \framebox{FIX}}%
+	\typeout{FIXTHIS: p\thepage : #1^^J}%
+}
+
+% Define pccname command
+% 	- it writes to the log file with a detail of the name-
+%     this is useful for tracking names for diversity purposes
+\newcommand{\pccname}[1]
+{%
+	#1%
+	\typeout{PCCNAME: p\thepage : #1}%
+}
+
+\begin{document}
+
+some text
+
+\end{document}

@@ -1,0 +1,3 @@
+indentRules:
+    addplot3:
+        body: "  "

@@ -1,0 +1,13 @@
+\NewDocumentCommand{\tangentcount}{ m }
+{
+	\ellett_tangentcount:n { #1 }
+}
+\cs_new:Npn \ellett_tangentcount:n #1
+{
+	\int_case:nnn { #1 }
+	{
+		{ 1 } { exactly ~ one }
+		{ 2 } { exactly ~ two }
+	}
+	{ no }
+}

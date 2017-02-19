@@ -1,0 +1,14 @@
+\newcommand{\totalchapters}[1]{%
+	\@ifundefined{c@totalchapters}
+	{%
+		something
+	}%
+	{%
+		\ifodd\value{totalchapters}=#1
+			something
+		\else
+			something else
+		\fi
+		after if
+	}%
+}

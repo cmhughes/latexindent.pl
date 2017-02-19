@@ -1,0 +1,135 @@
+% arara: indent: {overwrite: yes}
+% http://tex.stackexchange.com/questions/106244/using-a-lot-of-marginpars
+\ProvidesPackage{tabto}[2013/03/25 \space v 1.3 \space
+	Another tabbing mechanism]\relax
+
+\newdimen\CurrentLineWidth
+\let\TabPrevPos\z@
+
+\newcommand\tabto[1]{%
+	\leavevmode
+	\begingroup
+	\def\@tempa{*}\def\@tempb{#1}%
+	\ifx\@tempa\@tempb % \tab*
+		\endgroup
+		\TTo@overlaptrue % ... set a flag and re-issue \tabto to get argument
+		\expandafter\tabto
+	\else
+		\ifinner % in a \hbox, so ignore
+		\else % unrestricted horizontal mode
+			\null% \predisplaysize will tell the position of this box (must be box)
+			\parfillskip\fill
+			\everydisplay{}\everymath{}%
+			\predisplaypenalty\@M \postdisplaypenalty\@M
+			$$% math display so we can test \predisplaysize
+				\lineskiplimit=-999pt % so we get pure \baselineskip
+				\abovedisplayskip=-\baselineskip \abovedisplayshortskip=-\baselineskip
+				\belowdisplayskip\z@skip \belowdisplayshortskip\z@skip
+				\halign{##\cr\noalign{%
+						% get the width of the line above
+						%\message{>>> Line \the\inputlineno\space -- \predisplaydirection\the\predisplaydirection, \predisplaysize\the\predisplaysize, \displayindent\the\displayindent, \leftskip\the\leftskip, \linewidth\the\linewidth. }%
+						\ifdim\predisplaysize=\maxdimen % mixed R and L; call the line full
+							\message{Mixed R and L, so line is full. }%
+							\CurrentLineWidth\linewidth
+						\else
+							\ifdim\predisplaysize=-\maxdimen % impossible, in vmode; call the line empty
+								\message{Not in paragraph, so line is empty. }%
+								\CurrentLineWidth\z@
+							\else
+								\ifnum\TTo@Direction<\z@
+									\CurrentLineWidth\linewidth \advance\CurrentLineWidth\predisplaysize
+								\else
+									\CurrentLineWidth\predisplaysize
+								\fi
+								% Correct the 2em offset
+								\advance\CurrentLineWidth -2em
+								\advance\CurrentLineWidth -\displayindent
+								\advance\CurrentLineWidth -\leftskip
+							\fi
+						\fi
+						\ifdim\CurrentLineWidth<\z@ \CurrentLineWidth\z@\fi
+						% Enshrine the tab-to position; #1 might reference \CurrentLineWidth
+						\@tempdimb=#1\relax
+						\message{*** Tab to \the\@tempdimb, previous width is \the\CurrentLineWidth. ***}%
+						% Save width for possible return use
+						\xdef\TabPrevPos{\the\CurrentLineWidth}%
+						% Build the action to perform
+						\protected@xdef\TTo@action{%
+							\vrule\@width\z@\@depth\the\prevdepth
+							\ifdim\CurrentLineWidth>\@tempdimb
+								\ifTTo@overlap\else
+									\protect\newline \protect\null
+								\fi
+							\fi
+							\protect\nobreak
+							\protect\hskip\the\@tempdimb\relax
+						}%
+						%\message{\string\TTo@action: \meaning \TTo@action. }%
+						% get back to the baseline, regardless of its depth.
+						\vskip-\prevdepth
+						\prevdepth-99\p@
+						\vskip\prevdepth
+					}}%
+			$$
+			% Don't count the display as lines in the paragraph
+			\count@\prevgraf \advance\count@-4 \prevgraf\count@
+			\TTo@action
+			%%   \penalty\@m % to allow a penalized line break
+		\fi
+		\endgroup
+		\TTo@overlapfalse
+		\ignorespaces
+	\fi
+}
+
+% \tab -- to the next position
+% \hskip so \tab\tab moves two positions
+% Allow a (penalized but flexible) line-break right after the tab.
+%
+\newcommand\tab{\leavevmode\hskip2sp\tabto{\NextTabStop}%
+	\nobreak\hskip\z@\@plus 30\p@\penalty4000\hskip\z@\@plus-30\p@\relax}
+
+
+% Expandable macro to select the next tab position from the list
+
+\newcommand\NextTabStop{%
+	\expandafter \TTo@nexttabstop \TabStopList,\maxdimen,>%
+}
+
+\def\TTo@nexttabstop #1,{%
+	\ifdim#1<\CurrentLineWidth
+		\expandafter\TTo@nexttabstop
+	\else
+		\ifdim#1<0.9999\linewidth#1\else\z@\fi
+		\expandafter\strip@prefix
+	\fi
+}
+\def\TTo@foundtabstop#1>{}
+
+\newcommand\TabPositions[1]{\def\TabStopList{\z@,#1}}
+
+\newcommand\NumTabs[1]{%
+	\def\TabStopList{}%
+	\@tempdimb\linewidth
+	\divide\@tempdimb by#1\relax
+	\advance\@tempdimb 1sp % counteract rounding-down by \divide
+	\CurrentLineWidth\z@
+	\@whiledim\CurrentLineWidth<\linewidth\do {%
+		\edef\TabStopList{\TabStopList\the\CurrentLineWidth,}%
+		\advance\CurrentLineWidth\@tempdimb
+	}%
+	\edef\TabStopList{\TabStopList\linewidth}%
+}
+
+% default setting of tab positions:
+\TabPositions{\parindent,.5\linewidth}
+
+\newif\ifTTo@overlap \TTo@overlapfalse
+
+\@ifundefined{predisplaydirection}{
+	\let\TTo@Direction\predisplaysize
+	\let\predisplaydirection\@undefined
+}
+{
+	\let\TTo@Direction\predisplaydirection
+}

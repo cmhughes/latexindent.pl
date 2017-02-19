@@ -1,0 +1,148 @@
+% http://tex.stackexchange.com/questions/342544/is-there-a-program-for-managing-glossary-tags
+\newglossaryentry{Perl}{name=\texttt{Perl},
+	sort=Perl, % need a sort key because name contains a command
+	description=A scripting language}
+
+\newglossaryentry{glossary}{name=glossary,
+	description={\nopostdesc},
+	plural={glossaries}}
+
+\newglossaryentry{glossarycol}{
+	description={collection of glosses},
+	sort={2},
+	parent={glossary}}
+
+\newglossaryentry{glossarylist}{
+	description={list of technical words},
+	sort={1},
+	parent={glossary}}
+
+\newglossaryentry{pagelist}{name=page list,
+	% description value has to be enclosed in braces
+	% because it contains commas
+	description={a list of individual pages or page ranges
+			(e.g.\ 1,2,4,7-9)}}
+
+\newglossaryentry{mtrx}{name=matrix,
+	description={rectangular array of quantities},
+	% plural is not simply obtained by appending an s, so specify
+	plural=matrices}
+
+% entry with a paragraph break in the description
+
+\newglossaryentry{par}{name=paragraph,
+	description={distinct section of piece of
+			writing.\glspar Beginning on new, usually indented, line}}
+
+% entry with two types of plural. Set the plural form to the
+% form most likely to be used. If you want to use a different
+% plural, you will need to explicity specify it in \glslink
+\newglossaryentry{cow}{name=cow,
+	% this isn't necessary, as this form (appending an s) is
+	% the default
+	plural=cows,
+	% description:
+	description={(\emph{pl.}\ cows, \emph{archaic} kine) an adult
+			female of any bovine animal}}
+
+\newglossaryentry{bravo}{name={bravo},
+	description={\nopostdesc}}
+
+\newglossaryentry{bravo1}{description={cry of approval (pl.\ bravos)},
+	sort={1},
+	plural={bravos},
+	parent=bravo}
+
+\newglossaryentry{bravo2}{description={hired ruffian or killer (pl.\ bravoes)},
+	sort={2},
+	plural={bravoes},
+	parent=bravo}
+
+\newglossaryentry{seal}{%
+	name=seal,%
+	description={sea mammal with flippers that eats fish}
+}
+
+\newglossaryentry{sealion}{%
+	name={sea lion},%
+	description={large seal}%
+}
+
+\newglossaryentry{M}{name={$M$},
+	sort=M,
+	description={mass},
+	symbol=kg}
+
+\newglossaryentry{svm}{
+	% how the entry name should appear in the glossary
+	name={Support vector machine (SVM)},
+	% how the description should appear in the glossary
+	description={Statistical pattern recognition
+			technique~\cite{svm}},
+	% how the entry should appear in the document text
+	text={svm},
+	% how the entry should appear the first time it is
+	% used in the document text
+	first={support vector machine (svm)}}
+
+\newglossaryentry{ksvm}{
+	name={Kernel support vector machine (KSVM)},
+	description={Statistical pattern recognition technique
+			using the ``kernel trick'' (see also SVM)},
+	text={ksvm},
+	first={kernel support vector machine}}
+
+\newglossaryentry{ident}{name=identity matrix,
+	description=diagonal matrix with 1s along the leading diagonal,
+	plural=identity matrices}
+
+
+% These are special characters or protected characters. glossaries knows how to handle these.
+\newglossaryentry{quote}{name={"},
+	description={the double quote symbol}}
+
+\newglossaryentry{at}{name={@},
+	description={the ``at'' symbol}}
+
+\newglossaryentry{excl}{name={!},
+	description={the exclamation mark symbol}}
+
+\newglossaryentry{bar}{name={\ensuremath{|}},
+	description={the vertical bar symbol}}
+
+\newglossaryentry{hash}{name={\#},
+	description={the hash symbol}}
+
+\newglossaryentry{emigre}{%
+	name={{é}migré},
+	description={person who has emigrated to another country,
+			especially for political reasons}
+}
+
+\newglossaryentry{not:set}{type=notation, % glossary type
+	name={$\mathcal{S}$},
+	description={A set},
+	sort={S}}
+
+%If one wants to use \gls call in a formula, he'd used the \ensuremath command
+\newglossaryentry{Gamma}{name=\ensuremath{\Gamma(z)},
+	description=Gamma function,
+	sort=Gamma}
+
+\newglossaryentry{Phi}{name={\ensuremath{\Phi(\alpha,\gamma;z)}},
+	description=confluent hypergeometric function,sort=Pagz}
+
+\newglossaryentry{knu}{name=\ensuremath{k_\nu(x)},
+	description=Bateman's function,sort=kv}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% typical acronym definitions
+
+%the typical definition of an acronym is this, that is not quite similar to the name={field}... This could pose a challange for tweaking a program such as jabref...
+
+\newacronym{svm1}% label
+{svm1}% abbreviation
+{support vector machine one}% long form
+
+\newacronym{laser}{laser}{light amplification by stimulated
+	emission of radiation}

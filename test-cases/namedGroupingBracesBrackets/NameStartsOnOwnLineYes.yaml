@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    preserveBlankLines: 0
+    condenseMultipleBlankLinesInto: 1
+    namedGroupingBracesBrackets:
+        NameStartsOnOwnLine: 1
+        NameFinishesWithLineBreak: 0

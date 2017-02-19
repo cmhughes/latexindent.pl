@@ -1,0 +1,49 @@
+\begin{enumerate}                                       % env-5
+	\item one                                           % items-4
+	      enumerate text
+	      enumerate text
+	      enumerate text
+	\item two                                           % items-5
+	      enumerate text
+	      enumerate text
+	      enumerate text
+	      \begin{itemize}                               % env-4
+		      \item first bullet                        % items-2
+		            itemize text
+		            itemize text
+		            itemize text
+		      \item second bullet                       % items-3
+		            itemize text
+		            itemize text
+		            itemize text
+		            \begin{myenv}                       % env-3
+			            body text
+			            body text
+			            body text
+			            \begin{itemize}                 % env-2
+				            \item item body text        % items-1
+				                  item body text
+				                  item body text
+				                  \begin{anotherenv}    % env-1
+					                  another env body
+					                  another env body
+					                  another env body
+					                  \begin{another}[optional arg text%
+							                  \if
+								                  something
+							                  \else
+								                  something else
+							                  \fi
+							                  optional arg text
+							                  optional arg text]{mand arg
+						                  }
+						                  yet more text
+						                  yet more text
+						                  yet more text
+					                  \end{another}
+				                  \end{anotherenv}
+			            \end{itemize}
+		            \end{myenv}
+	      \end{itemize}
+	      some text
+\end{enumerate}

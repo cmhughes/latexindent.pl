@@ -1,0 +1,34 @@
+% arara: indent: {overwrite: yes}
+\documentclass[professionalfont, fleqn]{beamer}
+\mode<presentation>
+\usetheme{Warsaw}
+\usetheme{CambridgeUS}
+
+\usepackage{pgfplots}
+\usetikzlibrary{arrows,shapes,positioning}
+\graphicspath{{graphics/}}
+
+\begin{document}
+\frame
+{
+	\frametitle{Frame Title}
+	\begin{tikzpicture}
+		\begin{axis}
+			[
+				axis x line  = bottom,
+				axis y line  = left,
+				width        = 1.01\textwidth,
+				height       = .63\textwidth,          % Adjusted
+				ymax         = 93,
+				ymin         = 27,
+				ytick        = {30,40,...,90},
+				xmax         = 1993,
+				xmin         = 1967,
+				xtick        = {1970, 1980, ..., 1990},
+			]
+			\node[anchor=west] at (axis cs:1968.5,89.5){%
+				\textbullet\ Comment here about data
+			};
+		\end{axis}
+	\end{tikzpicture}
+}

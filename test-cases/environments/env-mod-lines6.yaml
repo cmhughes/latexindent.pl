@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    environments:
+        BeginStartsOnOwnLine: 1
+        BodyStartsOnOwnLine: 1
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 1
+        two:
+            EndStartsOnOwnLine: -1
+

@@ -1,0 +1,26 @@
+% arara: indent: {overwrite: true, silent: on}
+\documentclass[pstricks]{standalone}
+\usepackage{pstricks,multido}
+
+\def\Bottle#1{{\pscustom[linewidth=2pt]{%
+				\rotate{#1}
+				\psline(-1,3.5)(-1,4)(1,4)(1,3.5)
+				\pscurve(3,2)(1,0)\psline(-1,0)
+				\pscurve(-3,2)(-1,3.5)}}}
+
+\def\BottleWithWater(#1)#2{%
+	\rput[c]{#2}(#1){%
+		\rput{*0}(0,0){%
+			\psclip{\Bottle{#2}}
+			\psframe*[linecolor=gray](-6,-2)(6,2)
+			\endpsclip}\rput{*0}(0,0){\Bottle{#2}}}}
+
+\begin{document}
+
+\multido{\iA=-45+5}{19}{%
+	\begin{pspicture}(-2.5,-0.5)(6,5.5)
+		\BottleWithWater(1.5,1){\iA}
+	\end{pspicture}
+}
+
+\end{document}

@@ -1,0 +1,41 @@
+\documentclass{article}
+\begin{filecontents}{mybib.bib}
+	\begin{document}
+	here is some text
+        more text 
+ here
+	\end{document}
+\end{filecontents}
+\begin{filecontents*}{another.bib}
+	\begin{document}
+    some more text
+        more text 
+ here
+	\end{document}
+\end{filecontents*}
+
+\begin{document}
+\begin{myotherenvironment}
+	some text goes here
+	some text goes here
+	some text goes here
+	some text goes here
+\end{myotherenvironment}
+
+\begin{filecontents}{another.bib}
+	\begin{document}
+    some more text
+        more text 
+ here
+	\end{document}
+\end{filecontents}
+
+\begin{filecontents*}{another.bib}
+	\begin{document}
+    some more text
+        more text 
+ here
+	\end{document}
+\end{filecontents*}
+
+\end{document}

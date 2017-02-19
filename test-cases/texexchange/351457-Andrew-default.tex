@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta}
+
+% Using pgfkeys makes it easier to use key-value settings for the graph
+\pgfkeys{/mygraph/.is family, /mygraph,
+	xmin/.initial = -3,    % defaults for xmin, xmax, ymin,ymax
+	xmax/.initial =  3,
+	ymin/.initial = -3,
+	ymax/.initial =  3,
+	ylabel/.initial = f(x),% default function name
+	scale/.initial = 0.9,  % tikzpicture scale
+	xtics/.initial = {1},  % list of marked coordinates on x-axis
+	ytics/.initial = {1},   % list of marked coordinates on y-axis
+}
+
+% shortcut to access values of /mygraph
+\newcommand\Gval[1]{\pgfkeysvalueof{/mygraph/#1}}
+
+% graph environment with optional argument for changing defaults
+\newenvironment{Mygraph}[1][]%
+{\pgfkeys{/mygraph, #1}% process settings
+	\begin{tikzpicture}[scale=\Gval{scale},
+		draw/.append style={very thick, blue}]
+	\draw[help lines](\Gval{xmin},\Gval{ymin}) grid (\Gval{xmax},\Gval{ymax});
+	\draw[thin, black] [<->] (\Gval{xmin}-0.3,0) -- (\Gval{xmax}+0.3,0);
+	\draw[thin, black] [<->] (0,\Gval{ymin}-0.3) -- (0,\Gval{ymax}+0.3);
+	\node at (0,\Gval{ymax} + .6) {$\Gval{ylabel}$};
+	\node at (\Gval{xmax} + .6,0) {$x$};
+	\node at (-2, 1.5) {$y = \Gval{ylabel}$};
+	\xdef\xtics{\Gval{xtics}}% for reasons unknown can't use this directly
+	\foreach \x in \xtics { \draw[black](\x,0)node[below]{\small$\x$}; }
+	\xdef\ytics{\Gval{ytics}}
+	\foreach \y in \ytics { \draw[black](0,\y)node[left]{\small$\y$}; }
+}
+{\end{tikzpicture}}
+
+\begin{document}
+
+\begin{Mygraph}
+	\draw[domain=-1.828:1, smooth,-{Circle[blue]}] plot ({\x}, {-0.5*(\x-1)^2 + 2});
+	\draw[domain=1:2.732, smooth, -{Circle[open, fill=white]}] plot ({\x}, {-1*(\x-1)^2 + 1});
+\end{Mygraph}
+
+\begin{Mygraph}[ylabel=g(x), xmin=-4, xmax=4, scale=0.5, xtics={1,2,3}, ytics={1,3}]
+	\draw[domain=-1.828:1, smooth,-{Circle[blue]}] plot ({\x}, {-0.5*(\x-1)^2 + 2});
+	\draw[domain=1:2.732, smooth, {Circle[open,fill=white]}-] plot ({\x}, {-1*(\x-1)^2 + 1});
+\end{Mygraph}
+
+\end{document}
