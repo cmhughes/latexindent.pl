@@ -133,13 +133,13 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
       \end{commandshell}
 
 	\label{page:localswitch}
-	\texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml}
+	\texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml} (rhymes with camel)
 	and if it is called with the \texttt{-l} switch and it finds \texttt{localSettings.yaml}
 	in the same directory as \texttt{myfile.tex} then these settings will be
 	added to the indentation scheme. Information will be given in \texttt{indent.log} on
 	the success or failure of loading \texttt{localSettings.yaml}.
 
-	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a \texttt{yaml} file(s)
+	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a YAML file(s)
 	that resides in the same directory as \texttt{myfile.tex}; you can use this option if you would
 	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
 	In fact, you can specify \emph{relative} path names to the current directory, but \emph{not}

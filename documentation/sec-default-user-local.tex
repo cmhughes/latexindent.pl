@@ -1,7 +1,6 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{defaultSettings.yaml}\label{sec:defuseloc}
- \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}
- (rhymes with camel). The idea is to separate the behaviour of the script
+ \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}. The idea is to separate the behaviour of the script
  from the internal working -- this is very similar to the way that we separate content
  from form when writing our documents in \LaTeX.
 
@@ -41,7 +40,7 @@ latexindent.pl myfile
 	If you call \texttt{latexindent.pl} with the \texttt{-w} switch (to overwrite
 	\texttt{myfile.tex}) then it will create a backup file before doing
 	any indentation; the default extension is \texttt{.bak}, so, for example, \texttt{myfile.bak0}
-	would be created when calling \texttt{latexindent.pl myfile.tex}.
+	would be created when calling \texttt{latexindent.pl myfile.tex}  for the first time.
 
 	By default, every time you subsequently call \texttt{latexindent.pl} with
 	the \texttt{-w} to act upon \texttt{myfile.tex}, it will create successive back up files: \texttt{myfile.bak1}, \texttt{myfile.bak2},
@@ -104,9 +103,9 @@ copy myfile.bak4 to myfile.bak3
 	that you would like left completely alone -- no indentation will be performed
 	on environments that you have specified in this field, see \cref{lst:verbatimEnvironments}.
 
-	Note that if  you put an environment in \texttt{verbatimEnvironments}
+	Note that if  you put an environment in \\ \texttt{verbatimEnvironments}
 	and in other fields such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent}
-	then \texttt{latexindent.pl} will \emph{always} prioritize \texttt{verbatimEnvironments}.
+	then \texttt{latexindent.pl} will \emph{always} prioritize \\ \texttt{verbatimEnvironments}.
 
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
@@ -193,7 +192,7 @@ postfoothook=\end{mdframed},
 	for more details.
 
 	If you're interested in experimenting with \texttt{latexindent.pl} then you
-	can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}
+	can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
 
 \yamltitle{lookForAlignDelims}*{fields}
 	\begin{wrapfigure}[12]{r}[0pt]{5cm}
@@ -281,7 +280,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you
 	run the command
 	\begin{commandshell}
-latexindent.pl -l matrix1.tex 
+latexindent.pl matrix1.tex 
     \end{commandshell}
 	then the before-and-after results
 	shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by default.
@@ -339,7 +338,7 @@ latexindent.pl -l matrix1.tex
 	For example, users of the \texttt{exam} document class might like to add
 	\texttt{parts} to \texttt{indentAfterItems} and \texttt{part} to \texttt{itemNames}
 	to their user settings (see \vref{sec:indentconfig} for details of how to configure user settings,
-	and \vref{lst:mysettings} in particular \label{page:examsettings}.)
+	and \vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
@@ -360,10 +359,10 @@ latexindent.pl -l matrix1.tex
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special1.tex} after}{lst:specialafter}
+		\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special1.tex} default output}{lst:specialafter}
 	\end{minipage}
 
-	For each field, the \texttt{lookForThis} is set to \texttt{1} by default, which means that \texttt{latexindent.pl}
+	For each field, \texttt{lookForThis} is set to \texttt{1} by default, which means that \texttt{latexindent.pl}
 	will look for this pattern; you can tell \texttt{latexindent.pl} not to look for the pattern, by setting
 	\texttt{lookForThis} to \texttt{0}.
 
@@ -377,7 +376,7 @@ latexindent.pl -l matrix1.tex
 		difference in interface for this field when comparing Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
 
 	The default settings do \emph{not} place indentation after a heading, but you
-	can easily switch them on by changing \texttt{indentAfterThisHeading: 0} to \texttt{indentAfterThisHeading: 1}.
+	can easily switch them on by changing \\ \texttt{indentAfterThisHeading: 0} to \\ \texttt{indentAfterThisHeading: 1}.
 	The \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
 	structure in your document. You might, for example, like to have both \texttt{section}
 	and \texttt{subsection} set with \texttt{level: 3} because you do not want the indentation to go too deep.
@@ -388,8 +387,7 @@ latexindent.pl -l matrix1.tex
 	tells \texttt{latexindent.pl} simply to use a space character after \texttt{\chapter} headings
 	(once \texttt{indent} is set to \texttt{1} for \texttt{chapter}).
 
-	For example, assuming that you have read \vref{sec:localsettings}, say that
-	you have the code in \cref{lst:headings1yaml} saved into \texttt{headings1.yaml},
+	For example, assuming that you have the code in \cref{lst:headings1yaml} saved into \texttt{headings1.yaml},
 	and that you have the text from \cref{lst:headings1} saved into \texttt{headings1.tex}.
 
 	\begin{minipage}{.45\textwidth}
@@ -419,7 +417,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	\begin{commandshell}
 latexindent.pl headings1.tex -l=headings1.yaml
 \end{commandshell}
-	you should now receive the code given in \cref{lst:headings1-mod2}; notice that
+	you should receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
 \subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}

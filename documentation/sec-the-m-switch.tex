@@ -13,7 +13,7 @@
 
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[firstnumber=345,linerange={345-347},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
+		\cmhlistingsfromfile[firstnumber=356,linerange={356-358},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 	\end{wrapfigure}
 	\makebox[0pt][r]{%
 		\raisebox{-\totalheight}[0pt][0pt]{%
@@ -62,7 +62,7 @@ latexindent.pl myfile.tex -m
 
 \subsection{Poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
-	one of four integer values\footnote{visual learners might like to associate one of the four circles in the logo with one of the four given values}:
+	one of four integer values\footnote{You might like to associate one of the four circles in the logo with one of the four given values}:
 	\begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is set to \texttt{0});
 		\item[0] \emph{off mode}: line breaks will not be modified for the \emph{<part of thing>} under consideration;
@@ -78,7 +78,7 @@ latexindent.pl myfile.tex -m
 	after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings
 	for \texttt{equation*} have been specified. Note that all poly-switches are \emph{off} by default.
 
-	\cmhlistingsfromfile[firstnumber=348,linerange={348-357},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
+	\cmhlistingsfromfile[firstnumber=359,linerange={359-368},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
 \subsubsection{Adding line breaks (poly-switches set to $1$ or $2$)}
 	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$,

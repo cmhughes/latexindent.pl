@@ -110,15 +110,14 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 	by the \texttt{two} environment. If the \texttt{two} environment were to add a line break after the \lstinline!\end{two}! statement, then
 	\texttt{latexindent.pl} would have no way of knowing how much indentation to add to the subsequent text (in this case, \lstinline!\end{one}!).
 
-	We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}, which give the output in \cref{lst:nested-env-mlb2};
-	upon running the command
+	We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}; upon running the command
 	\begin{commandshell}
 latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
         \end{commandshell}
-	we obtain the output given in \cref{lst:nested-env-mlb2}.
+	we obtain the output given in \cref{lst:nested-env-mlb2-output}.
 
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2}
+		\cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.55\linewidth}

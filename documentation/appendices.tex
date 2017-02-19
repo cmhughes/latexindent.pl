@@ -14,8 +14,9 @@
 	use YAML::Tiny;
 	use File::Copy;
 	use File::Basename;
-	use Getopt::Long;
 	use File::HomeDir;
+	use Getopt::Long;
+    use Data::Dumper;
 
 	print "hello world";
 	exit;
@@ -55,9 +56,7 @@ latexindent.exe -t myfile.tex
  \end{dosprompt}
 
 	\section{Updating the \texttt{path} variable}\label{sec:updating-path}
-	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables
-	 \fixthis{need to update the code for this before merging!}
-	 \footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
+	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables\footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
 	 on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.
 	\subsection{Add to path for Linux}
 		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
@@ -84,7 +83,7 @@ sudo make install
 			      \begin{commandshell}
 ls /usr/local/bin
           \end{commandshell}
-			      again to check that \texttt{latexindent.pl} and \texttt{defaultSettings.yaml} have been added.
+			      again to check that \texttt{latexindent.pl}, its modules and \texttt{defaultSettings.yaml} have been added.
 		\end{enumerate}
 		To \emph{remove} the files, run
 		\begin{commandshell}
@@ -95,7 +94,7 @@ sudo make uninstall}.
 		\begin{enumerate}
 			\item download  \texttt{latexindent.exe}, \texttt{defaultSettings.yaml},  \texttt{add-to-path.bat}
 			      from \cite{latexindent-home} to your chosen directory;
-			\item open a command prompt and run to see what is \emph{currently} in your \lstinline!%path%! variable;
+			\item open a command prompt and run the following command to see what is \emph{currently} in your \lstinline!%path%! variable;
 			      \begin{dosprompt}
 echo %path%
           \end{dosprompt}

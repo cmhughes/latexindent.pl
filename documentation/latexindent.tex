@@ -345,6 +345,7 @@
 	\tikz[remember picture,overlay] {
 		\node at (1,0){\includegraphics{logo-bw}}; }
 }
+\fancyhead[L]{\rightmark}
 \fancyheadoffset[L]{3cm}
 \pagestyle{fancy}
 
@@ -385,7 +386,17 @@
 %   git checkout develop
 %   ls .git
 % and you should see gitHeadInfo.gin
+
+% http://tex.stackexchange.com/questions/233843/textasteriskcentered-invisible-with-garamondmathdesign
+% remove the definition of \textasteriskcentered for TS1 encoding
+\UndeclareTextCommand{\textasteriskcentered}{TS1}
+% reinstate a default encoding
+\DeclareTextSymbolDefault{\textasteriskcentered}{OT1}
+% suitably define the command
+\DeclareTextCommand{\textasteriskcentered}{OT1}{\raisebox{-.7ex}[1ex][0pt]{*}}
+
 \begin{document}
+\renewcommand*{\thefootnote}{\arabic{footnote}}
 \title{%
 	\begin{tcolorbox}[
 			width=5.2cm,
@@ -399,7 +410,7 @@
 		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.0
 	\end{tcolorbox}
 }
-\author{Chris Hughes \footnote{and contributors! (See \vref{sec:contributors}.) For
+\author{Chris Hughes \thanks{and contributors! See \vref{sec:contributors}. For
 		all communication, please visit \cite{latexindent-home}.}}
 \maketitle
 \begin{adjustwidth}{1cm}{1cm}

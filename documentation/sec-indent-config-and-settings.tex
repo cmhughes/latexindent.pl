@@ -18,7 +18,7 @@
  have both files in existence,  \texttt{indentconfig.yaml} takes priority.
 
  For Mac and Linux users, their home directory is \texttt{~/username} while
- Windows (Vista onwards) is \lstinline!C:\Users\username! \footnote{If you're not sure
+ Windows (Vista onwards) is \lstinline!C:\Users\username!\footnote{If you're not sure
 	 where to put \texttt{indentconfig.yaml}, don't
 	 worry \texttt{latexindent.pl} will tell you in the log file exactly where to
 	 put it assuming it doesn't exist already.}
@@ -55,13 +55,13 @@
  refer to the many YAML files detailed throughout the rest of this documentation.
 
  \begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
-	# Default value of indentation
-	defaultIndent: "\t\t\t\t"
+# Default value of indentation
+defaultIndent: "\t\t\t\t"
 
-	# environments that have tab delimiters, add more
-	# as needed
-	lookForAlignDelims:
-	tabbing: 1
+# environments that have tab delimiters, add more
+# as needed
+lookForAlignDelims:
+    tabbing: 1
 \end{yaml}
 
  You can make sure that your settings are loaded by checking \texttt{indent.log}
@@ -81,33 +81,30 @@
  \end{warning}
 
 \subsection{\texttt{localSettings.yaml}}\label{sec:localsettings}
-	The \texttt{-l} switch tells \texttt{latexindent.pl} either to look for \texttt{localSettings.yaml} in the
-	\emph{same directory} as \texttt{myfile.tex}; alternatively, it may look for any
-	other specified YAML file. Any settings file(s) specified in this way will
-	be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
-	user settings from \texttt{indentconfig.yaml}.
-
-	The \emph{local} settings file may be called \texttt{localSettings.yaml}, and
-	it can contain any switches that you'd
-	like to change; a sample is shown in \cref{lst:localSettings}.
-
-	\begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
-	#  verbatim environments- environments specified
-	#  in this hash table will not be changed at all!
-	verbatimEnvironments:
-	cmhenvironment: 0
-\end{yaml}
-
-	You can make sure that your local settings are loaded by checking \texttt{indent.log}
-	for details; if \texttt{localSettings.yaml} can not be read then you will
-	get a warning, otherwise you'll get confirmation that
-	\texttt{latexindent.pl} has read \texttt{localSettings.yaml}.
-
-	If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say, \texttt{myyaml.yaml}) then
+	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for \texttt{localSettings.yaml} in the
+	\emph{same directory} as \texttt{myfile.tex}.  If you'd prefer to name your \texttt{localSettings.yaml} file something 
+    different, (say, \texttt{myyaml.yaml}) then
 	you can call \texttt{latexindent.pl} using, for example,
 	\begin{commandshell}
 latexindent.pl -l=myyaml.yaml myfile.tex
 \end{commandshell}
+
+Any settings file(s) specified using the \texttt{-l} switch will be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
+	user settings from \texttt{indentconfig.yaml}.
+
+	Your settings file can contain any switches that you'd
+	like to change; a sample is shown in \cref{lst:localSettings}, and you'll find plenty of further examples throughout this manual.
+
+	\begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
+#  verbatim environments- environments specified
+#  in this hash table will not be changed at all!
+verbatimEnvironments:
+    cmhenvironment: 0
+\end{yaml}
+
+	You can make sure that your settings file has been loaded by checking \texttt{indent.log}
+	for details; if it can not be read then you receive a warning, otherwise you'll get confirmation that
+	\texttt{latexindent.pl} has read your settings file.
 
 \subsection{Settings load order}\label{sec:loadorder}
 	\texttt{latexindent.pl} loads the settings files in the following order:

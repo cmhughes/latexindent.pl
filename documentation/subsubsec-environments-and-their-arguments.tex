@@ -1,7 +1,7 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \subsubsection{Environments and their arguments}\label{subsubsec:env-and-their-args}
 	There are a few different YAML switches governing the indentation of environments; let's start
-	with the simple sample code shown in \cref{lst:myenvtex}.
+	with the code shown in \cref{lst:myenvtex}.
 
 	\cmhlistingsfromfile{demonstrations/myenvironment-simple.tex}{\texttt{myenv.tex}}{lst:myenvtex}
 
@@ -101,8 +101,7 @@ latexindent.pl myenv.tex -l myenv-rules1.yaml
 latexindent.pl myenv.tex -l myenv-rules2.yaml  
 \end{commandshell}
 	we obtain the output given in \cref{lst:myenv-rules-output}; note in particular that the environment \texttt{myenv}
-	has not received any \emph{additional} indentation, but that the \texttt{outer} environment \emph{has} still
-	received indentation.
+    has received one tab (from the \texttt{outer} environment) plus three spaces from \cref{lst:myenv-rules1} or \ref{lst:myenv-rules2}.
 
 	\cmhlistingsfromfile{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}}{lst:myenv-rules-output}
 
