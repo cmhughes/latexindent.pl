@@ -21,10 +21,10 @@ use Exporter qw/import/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-our @EXPORT_OK = qw/modify_line_breaks_body_and_end adjust_line_breaks_end_parent/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin/;
 our @allObjects;
 
-sub modify_line_breaks_body_and_end{
+sub modify_line_breaks_body{
     my $self = shift;
 
     # add a line break after \begin{statement} if appropriate
@@ -56,11 +56,21 @@ sub modify_line_breaks_body_and_end{
           } 
        } elsif (${$self}{BodyStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
-          $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
-          ${$self}{begin} =~ s/\R*$//sx;
-          ${$self}{linebreaksAtEnd}{begin} = 0;
+          $self->remove_line_breaks_begin;
        }
     }
+  }
+
+sub remove_line_breaks_begin{
+    my $self = shift;
+    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    ${$self}{begin} =~ s/\R*$//sx;
+    ${$self}{linebreaksAtEnd}{begin} = 0;
+}
+
+sub modify_line_breaks_end{
+    my $self = shift;
 
     # possibly modify line break *before* \end{statement}
     if(defined ${$self}{EndStartsOnOwnLine}){

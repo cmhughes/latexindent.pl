@@ -60,6 +60,8 @@ do
     [[ $silentMode == 0 ]] && set +x 
 done
 [[ $silentMode == 0 ]] && set -x 
+latexindent.pl -s items13.tex -m -l=items-mod2.yaml -o items13-mod2.tex
+latexindent.pl -s items13.tex -m -l=items-mod2.yaml,removeTWS-before.yaml -o items13-remove-before-mod2.tex
 # ifelsefi within an item
 latexindent.pl -s items8.tex -o=items8-mod0.tex -l=../environments/env-all-on.yaml
 latexindent.pl -s items9.tex -o=items9-mod0.tex -l=../environments/env-all-on.yaml

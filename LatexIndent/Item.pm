@@ -134,4 +134,16 @@ sub tasks_particular_to_each_object{
     $self->find_special;
 
 }
+
+sub remove_line_breaks_begin{
+    # the \item command can need a trailing white space if the line breaks have been removed after it and
+    # there is no white space
+    my $self = shift;
+    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    ${$self}{begin} =~ s/\R*$//sx;
+    ${$self}{begin} .= " " unless(${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
+    ${$self}{linebreaksAtEnd}{begin} = 0;
+}
+
 1;

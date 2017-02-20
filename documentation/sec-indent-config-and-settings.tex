@@ -82,14 +82,14 @@ lookForAlignDelims:
 
 \subsection{\texttt{localSettings.yaml}}\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for \texttt{localSettings.yaml} in the
-	\emph{same directory} as \texttt{myfile.tex}.  If you'd prefer to name your \texttt{localSettings.yaml} file something 
-    different, (say, \texttt{myyaml.yaml}) then
+	\emph{same directory} as \texttt{myfile.tex}.  If you'd prefer to name your \texttt{localSettings.yaml} file something
+	different, (say, \texttt{myyaml.yaml}) then
 	you can call \texttt{latexindent.pl} using, for example,
 	\begin{commandshell}
 latexindent.pl -l=myyaml.yaml myfile.tex
 \end{commandshell}
 
-Any settings file(s) specified using the \texttt{-l} switch will be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
+	Any settings file(s) specified using the \texttt{-l} switch will be read \emph{after} \texttt{defaultSettings.yaml} and, assuming they exist,
 	user settings from \texttt{indentconfig.yaml}.
 
 	Your settings file can contain any switches that you'd

@@ -25,7 +25,7 @@ use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body_and_end adjust_line_breaks_end_parent/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
@@ -274,7 +274,10 @@ sub tasks_common_to_each_object{
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_body_and_end;
+    $self->modify_line_breaks_body;
+
+    # modify line breaks end statements
+    $self->modify_line_breaks_end;
 
     # check the body for current children
     $self->check_for_hidden_children;
