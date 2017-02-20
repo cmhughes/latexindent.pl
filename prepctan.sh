@@ -1,18 +1,21 @@
 #!/bin/bash
 # A little script to help me prepare the bundle for ctan
 
+# script
 mkdir latexindent
-mkdir latexindent/documentation
-mkdir latexindent/success
 cp latexindent.pl latexindent
 cp latexindent.exe latexindent
 cp defaultSettings.yaml latexindent
-cp indent.yaml latexindent
+# modules
+mkdir latexindent/LatexIndent
+cp LatexIndent/*.pm latexindent/LatexIndent
+# readme
 cp readme.txt latexindent/README
-cp documentation/latexindent.tex latexindent/documentation
+# documentation
+mkdir latexindent/documentation
+cp documentation/*.tex latexindent/documentation
 cp documentation/latexindent.pdf latexindent/documentation
-cp success/*.tex latexindent/success
-cp success/*.cls latexindent/success
+# zip it
 zip -r latexindent.zip latexindent
 mv latexindent.zip ~/Desktop
 echo ""
