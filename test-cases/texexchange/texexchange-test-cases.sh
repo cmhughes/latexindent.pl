@@ -74,6 +74,7 @@ latexindent.pl -s 351457-Andrew.tex -o 351457-Andrew-default.tex -l indentPreamb
 latexindent.pl -s 352502.tex -o 352502-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 352495.tex -o 352495-default.tex -l indentPreamble.yaml 
 latexindent.pl -s 352396-Zarko1.tex -o 352396-Zarko1-default.tex -l indentPreamble.yaml
+latexindent.pl -s 354010.tex -o=354010-default.tex -l indentPreamble.yaml
 
 # =======  latex3/expl3 tag  =========
 # =======  latex3/expl3 tag  =========

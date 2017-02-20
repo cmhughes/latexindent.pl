@@ -146,14 +146,14 @@ sub readSettings{
                                 # if masterSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
                                 if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
-                                    $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar");
+                                    $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                     delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
                                         if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
-                                            $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar");
+                                            $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                             delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }
                                         while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {

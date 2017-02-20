@@ -33,25 +33,25 @@ sub modify_line_breaks_body{
       if(${$self}{BodyStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{begin}){
           if(${$self}{BodyStartsOnOwnLine}==1){
             # modify the begin statement
-            $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)");
+            $self->logger("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{begin} .= "\n";       
             ${$self}{linebreaksAtEnd}{begin} = 1;
-            $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)");
+            $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{body} =~ s/^\h*//;       
           } elsif(${$self}{BodyStartsOnOwnLine}==2){
             # by default, assume that no trailing comment token is needed
             my $trailingCommentToken = q();
             if(${$self}{body} !~ m/^\h*$trailingCommentRegExp/s){
                 # modify the begin statement
-                $self->logger("Adding a % at the end of begin, ${$self}{begin}, followed by a linebreak ($BodyStringLogFile == 2)");
+                $self->logger("Adding a % at the end of begin, ${$self}{begin}, followed by a linebreak ($BodyStringLogFile == 2)") if $is_t_switch_active;
                 $trailingCommentToken = "%".$self->add_comment_symbol;
                 ${$self}{begin} =~ s/\h*$//;       
                 ${$self}{begin} .= "$trailingCommentToken\n";       
                 ${$self}{linebreaksAtEnd}{begin} = 1;
-                $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)");
+                $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
                 ${$self}{body} =~ s/^\h*//;       
             } else {
-                $self->logger("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.");
+                $self->logger("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.") if $is_t_switch_active;
             }
           } 
        } elsif (${$self}{BodyStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{begin}){
@@ -64,7 +64,7 @@ sub modify_line_breaks_body{
 sub remove_line_breaks_begin{
     my $self = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)") if $is_t_switch_active;
     ${$self}{begin} =~ s/\R*$//sx;
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
@@ -77,12 +77,12 @@ sub modify_line_breaks_end{
           my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
           if(${$self}{EndStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{body}){
               # add a line break after body, if appropriate
-              $self->logger("Adding a linebreak at the end of body (see $EndStringLogFile)");
+              $self->logger("Adding a linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
 
               # by default, assume that no trailing comment token is needed
               my $trailingCommentToken = q();
               if(${$self}{EndStartsOnOwnLine}==2){
-                $self->logger("Adding a % immediately after body of ${$self}{name} ($EndStringLogFile==2)");
+                $self->logger("Adding a % immediately after body of ${$self}{name} ($EndStringLogFile==2)") if $is_t_switch_active;
                 $trailingCommentToken = "%".$self->add_comment_symbol;
                 ${$self}{body} =~ s/\h*$//s;
               }
@@ -100,11 +100,11 @@ sub modify_line_breaks_end{
               # check to see that body does *not* finish with blank-line-token, 
               # if so, then don't remove that final line break
               if(${$self}{body} !~ m/$tokens{blanklines}$/s){
-                $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)");
+                $self->logger("Removing linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
                 ${$self}{body} =~ s/\R*$//sx;
                 ${$self}{linebreaksAtEnd}{body} = 0;
               } else {
-                $self->logger("Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}");
+                $self->logger("Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}") if $is_t_switch_active;
               }
           }
     }
@@ -115,7 +115,7 @@ sub modify_line_breaks_end{
        and !${$self}{linebreaksAtEnd}{end}){
               my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
               if(${$self}{EndFinishesWithLineBreak}==1){
-                $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)");
+                $self->logger("Adding a linebreak at the end of ${$self}{end} (see $EndStringLogFile)") if $is_t_switch_active;
                 ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
@@ -123,10 +123,10 @@ sub modify_line_breaks_end{
               } elsif(${$self}{EndFinishesWithLineBreak}==2){
                 if(${$self}{endImmediatelyFollowedByComment}){
                   # no need to add a % if one already exists
-                  $self->logger("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.");
+                  $self->logger("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.") if $is_t_switch_active;
                 } else {
                   # otherwise, create a trailing comment, and tack it on 
-                  $self->logger("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)");
+                  $self->logger("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)") if $is_t_switch_active;
                   my $trailingCommentToken = "%".$self->add_comment_symbol;
                   ${$self}{end} =~ s/\h*$//s;
                   ${$self}{replacementText} .= "$trailingCommentToken\n";

@@ -315,7 +315,7 @@ sub count_body_line_breaks{
     my $bodyLineBreaks = 0;
     $bodyLineBreaks++ while(${$self}{body} =~ m/\R/sxg);
     ${$self}{bodyLineBreaks} = $bodyLineBreaks;
-    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}")  if(${$self}{bodyLineBreaks} != $oldBodyLineBreaks);
+    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}")  if((${$self}{bodyLineBreaks} != $oldBodyLineBreaks) and  $is_t_switch_active);
 }
 
 sub wrap_up_tasks{
