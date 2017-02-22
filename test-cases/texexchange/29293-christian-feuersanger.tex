@@ -1,0 +1,159 @@
+% This is an experiment with a sparkline implementation based on
+% pgfplots.
+%
+\documentclass[a4paper]{article}
+
+\usepackage{pgfplots}
+
+
+% BEGIN OF STYLE DEFINITION FOR sparkline:
+\makeatletter
+\usetikzlibrary{positioning}
+\colorlet{sparkcolor}{red!80!black}
+\colorlet{minmaxcolor}{blue!80!black}
+\pgfplotsset{
+    every spark line/.style={
+        hide axis,
+        clip=false,
+        bar width=2pt,
+        cycle list={blue,mark=none\\},
+        height=0.8\baselineskip,
+        anchor=south west,
+        width=5\baselineskip,
+        scale only axis,
+        filter point/.code={%
+            \xdef\sparklinex{\pgfkeysvalueof{/data point/x}}%
+            \xdef\sparkliney{\pgfkeysvalueof{/data point/y}}%
+            \pgfplotscoordmath{default}{parsenumber}{\sparklinex}%
+            \let\sparklinex@=\pgfmathresult
+            \pgfplotscoordmath{default}{parsenumber}{\sparkliney}%
+            \let\sparkliney@=\pgfmathresult
+            \ifnum\coordindex=0
+                \global\let\sparklineSTARTx\sparklinex
+                \global\let\sparklineSTARTy\sparkliney
+                \global\let\sparklineMINx\sparklinex
+                \global\let\sparklineMINy\sparkliney
+                \global\let\sparklineMINy@\sparkliney@
+                %
+                \global\let\sparklineMAXx\sparklinex
+                \global\let\sparklineMAXy\sparkliney
+                \global\let\sparklineMAXy@\sparkliney@
+            \else
+                \pgfplotscoordmath{default}{if less than}{\sparkliney@}{\sparklineMINy@}{%
+                    \global\let\sparklineMINx\sparklinex
+                    \global\let\sparklineMINy\sparkliney
+                    \global\let\sparklineMINy@\sparkliney@
+                }{}%
+                \pgfplotscoordmath{default}{if less than}{\sparklineMAXy@}{\sparkliney@}{%
+                    \global\let\sparklineMAXx\sparklinex
+                    \global\let\sparklineMAXy\sparkliney
+                    \global\let\sparklineMAXy@\sparkliney@
+                }{}%
+            \fi
+            \global\let\sparklineENDx\sparklinex
+            \global\let\sparklineENDy\sparkliney
+        },
+        extra description/.code={%
+            \node[begin node description]  {\pgfkeysvalueof{/pgfplots/begin node text}};
+            \node[end node description]    {\pgfkeysvalueof{/pgfplots/end node text}};
+        },
+    },
+    spark std max/.initial=,
+    spark std min/.initial=,
+    /tikz/spark std region/.style={fill=gray!10},
+    begin node text/.initial=\pgfmathprintnumber{\sparklineSTARTy},
+    end node text/.initial=  \pgfmathprintnumber{\sparklineENDy},
+    /tikz/begin node description/.style={
+        text width=3em,align=right,
+        base left,sparkcolor,
+        /pgf/number format/fixed,
+        /pgf/number format/fixed zerofill,
+        /pgf/number format/showpos,
+        at={(current axis.south west)},
+    },
+    /tikz/end node description/.style={
+        base right,sparkcolor,
+        /pgf/number format/fixed,
+        /pgf/number format/fixed zerofill,
+        /pgf/number format/showpos,
+        at={(current axis.south east)},
+    },
+    sparkline nodes/.initial={%
+        node[begin node] at (axis cs:\sparklineSTARTx,\sparklineSTARTy) {}
+        node[end node]   at (axis cs:\sparklineENDx,\sparklineENDy) {}
+        node[min node]   at (axis cs:\sparklineMINx,\sparklineMINy) {}
+        node[max node]   at (axis cs:\sparklineMAXx,\sparklineMAXy) {}
+    },
+    /tikz/spark marker/.style={
+        circle,
+        inner sep=1pt,
+    },
+    /tikz/begin node/.style={
+        spark marker,
+        fill=sparkcolor,
+    },
+    /tikz/end node/.style={
+        spark marker,
+        fill=sparkcolor,
+    },
+    /tikz/min node/.style={
+        spark marker,
+        fill=minmaxcolor,
+    },
+    /tikz/max node/.style={
+        spark marker,
+        fill=minmaxcolor,
+    },
+}
+
+\def\sparkline{\pgfutil@ifnextchar[{\sparkline@opt}{\sparkline@opt[]}}%
+\long\def\sparkline@opt[#1]#2;{%
+    \begin{tikzpicture}[baseline]
+    \begin{axis}[every spark line,#1]
+        \begin{scope}[yshift=-0.2\baselineskip]
+        \pgfplotsextra{
+            \pgfkeysgetvalue{/pgfplots/spark std min}\sparkstdmin
+            \pgfkeysgetvalue{/pgfplots/spark std max}\sparkstdmax
+            \ifx\sparkstdmin\empty
+            \else
+                \ifx\sparkstdmax\empty
+                \else
+                    \fill[spark std region]
+                         (axis cs:\sparklineSTARTx,\sparkstdmax) rectangle (axis cs:\sparklineENDx,\sparkstdmin);
+                \fi
+            \fi
+        }
+        \addplot #2 \pgfkeysvalueof{/pgfplots/sparkline nodes};
+        \end{scope}
+    \end{axis}
+    \end{tikzpicture}%
+}
+
+\makeatother
+% END OF STYLE DEFINITIONS
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\pgfplotsset{
+    spark std min=-0.5,
+    spark std max=0.5,
+    /pgf/number format/fixed,
+    /pgf/number format/fixed zerofill,
+    /pgf/number format/showpos,
+}
+
+Stock A \sparkline {rand} ; 
+min = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMINy}, max = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMAXy}
+
+Stock B \sparkline {rand} ;
+min = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMINy}, max = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMAXy}
+
+Stock C \sparkline table[row sep=\\] {
+x y\    0 0\    0.1 0.1\    0.2 0.6\    0.3 -0.3\    0.4 -1.5\    0.5 -0.4\    0.6 0\    };
+min = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMINy}, max = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMAXy}
+
+Stock D \sparkline[ybar,samples=15] {rand} ; 
+min = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMINy}, max = \textcolor{minmaxcolor}{\pgfmathprintnumber\sparklineMAXy}
+\end{document}

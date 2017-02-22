@@ -1,0 +1,23 @@
+\pgfkeys{/tikz/.cd,
+	vertical factor/.initial=0.5,
+	vertical factor/.get=\vertfactor,
+	vertical factor/.store in=\vertfactor,
+	start coordinate/.initial={0,\vertfactor%
+	},
+	start coordinate/.get=\startcoord,
+	start coordinate/.store in=\startcoord,
+	sample color/.initial=black,
+	sample color/.get=\samplecol,
+	sample color/.store in=\samplecol,
+	sample size/.initial=1pt,
+	sample size/.get=\samplesize,
+	sample size/.store in=\samplesize,
+	sample line width/.initial=very thick,
+	start coordinate/.initial ={ another/. style={0,\vertfactor}%
+	},
+	sample line width/.get=\samplelinewidth,
+	sample line width/.store in=\samplelinewidth,
+	start coordinate/.initial={0,\vertfactor%
+	}{something else%
+	},
+}

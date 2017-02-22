@@ -1,0 +1,14 @@
+modifyLineBreaks:
+    environments:
+        BeginStartsOnOwnLine: 0
+        BodyStartsOnOwnLine: 0
+        EndStartsOnOwnLine: 0
+        EndFinishesWithLineBreak: 0
+        equation*:
+            BeginStartsOnOwnLine: -1
+            BodyStartsOnOwnLine: 0
+            EndStartsOnOwnLine: 1
+            EndFinishesWithLineBreak: 0
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 0

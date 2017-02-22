@@ -1,0 +1,192 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\appendix
+	\section{Required \texttt{Perl} modules}\label{sec:requiredmodules}
+	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules -- if you can run the
+	 minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may
+	 need to install the missing modules.
+
+	 \begin{cmhlistings}[language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
+	#!/usr/bin/perl
+
+	use strict;
+	use warnings;
+	use FindBin;
+	use YAML::Tiny;
+	use File::Copy;
+	use File::Basename;
+	use File::HomeDir;
+	use Getopt::Long;
+    use Data::Dumper;
+
+	print "hello world";
+	exit;
+\end{cmhlistings}
+	 My default installation on Ubuntu 12.04 did \emph{not} come
+	 with all of these modules as standard, but Strawberry Perl for Windows \cite{strawberryperl}
+	 did.
+
+	 Installing the modules given in \cref{lst:helloworld} will vary depending on your
+	 operating system and \texttt{Perl} distribution. For example, Ubuntu users
+	 might visit the software center, or else run
+	 \begin{commandshell}
+sudo perl -MCPAN -e 'install "File::HomeDir"'
+ \end{commandshell}
+
+	 Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
+	 options follow for Ubuntu (other distributions will need slightly different commands).
+	 \begin{commandshell}
+sudo apt-get install perlbrew
+perlbrew install perl-5.20.1
+perlbrew switch perl-5.20.1
+sudo apt-get install curl
+curl -L http://cpanmin.us | perl - App::cpanminus
+cpanm YAML::Tiny
+cpanm File::HomeDir
+\end{commandshell}
+
+	 Strawberry Perl users on Windows might use
+	 \texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
+
+	 \texttt{indent.log} will contain details of the location
+	 of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone
+	 executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
+	 wish to see where they are cached, use the  \texttt{trace} option, e.g
+	 \begin{dosprompt}
+latexindent.exe -t myfile.tex
+ \end{dosprompt}
+
+	\section{Updating the \texttt{path} variable}\label{sec:updating-path}
+	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables\footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
+	 on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.
+	\subsection{Add to path for Linux}
+		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
+		\begin{enumerate}
+			\item download  \texttt{latexindent.pl} and its associated modules, \texttt{defaultSettings.yaml},
+			      to your chosen directory from \cite{latexindent-home} ;
+			\item within your directory, create a directory called \texttt{path-helper-files} and
+			      download \texttt{CMakeLists.txt} and \lstinline!cmake_uninstall.cmake.in!
+			      from \cite{latexindent-home}/path-helper-files to this directory;
+			\item run
+			      \begin{commandshell}
+ls /usr/local/bin
+          \end{commandshell}
+			      to see what is \emph{currently} in there;
+			\item run the following commands
+			      \begin{commandshell}
+sudo apt-get install cmake
+sudo apt-get update && sudo apt-get install build-essential
+mkdir build && cd build
+cmake ../path-helper-files
+sudo make install
+\end{commandshell}
+			\item run
+			      \begin{commandshell}
+ls /usr/local/bin
+          \end{commandshell}
+			      again to check that \texttt{latexindent.pl}, its modules and \texttt{defaultSettings.yaml} have been added.
+		\end{enumerate}
+		To \emph{remove} the files, run
+		\begin{commandshell}
+sudo make uninstall}.
+    \end{commandshell}
+	\subsection{Add to path for Windows}
+		To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
+		\begin{enumerate}
+			\item download  \texttt{latexindent.exe}, \texttt{defaultSettings.yaml},  \texttt{add-to-path.bat}
+			      from \cite{latexindent-home} to your chosen directory;
+			\item open a command prompt and run the following command to see what is \emph{currently} in your \lstinline!%path%! variable;
+			      \begin{dosprompt}
+echo %path%
+          \end{dosprompt}
+			\item right click on \texttt{add-to-path.bat} and \emph{Run as administrator};
+			\item log out, and log back in;
+			\item open a command prompt and run
+			      \begin{dosprompt}
+echo %path%
+          \end{dosprompt}
+			      to check that the appropriate directory has been added to your \lstinline!%path%!.
+		\end{enumerate}
+		To \emph{remove} the directory from your \lstinline!%path%!, run \texttt{remove-from-path.bat} as administrator.
+
+	\section{Differences from Version 2.2 to 3.0}\label{app:differences}
+	 There are a few (small) changes to the interface when comparing Version 2.2 to Version 3.0.
+	 Explicitly, in previous versions you might have run, for example,
+	 \begin{commandshell}
+latexindent.pl -o myfile.tex outputfile.tex
+ \end{commandshell}
+	 whereas in Version 3.0 you would run any of the following, for example,
+	 \begin{commandshell}
+latexindent.pl -o=outputfile.tex myfile.tex
+latexindent.pl -o outputfile.tex myfile.tex
+latexindent.pl myfile.tex -o outputfile.tex 
+latexindent.pl myfile.tex -o=outputfile.tex 
+latexindent.pl myfile.tex -outputfile=outputfile.tex 
+latexindent.pl myfile.tex -outputfile outputfile.tex 
+ \end{commandshell}
+	 noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
+
+	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0
+	 onwards.
+	 \begin{yaml}[style=yaml-LST,numbers=none]{Obsolete YAML fields from Version 3.0}[colframe=white!25!red,colbacktitle=white!75!red,colback=white!90!red,]{lst:obsoleteYaml}
+alwaysLookforSplitBrackets
+alwaysLookforSplitBrackets
+checkunmatched
+checkunmatchedELSE
+checkunmatchedbracket
+constructIfElseFi
+\end{yaml}
+
+	 There is a slight difference when specifying indentation after headings; specifically,
+	 we now write \texttt{indentAfterThisHeading} instead of \texttt{indent}. See \cref{lst:indentAfterThisHeadingOld,lst:indentAfterThisHeadingNew}
+
+	 \begin{minipage}{.45\textwidth}
+		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
+indentAfterHeadings:
+    part:
+       indent: 0
+       level: 1
+\end{yaml}
+	 \end{minipage}%
+	 \hfill
+	 \begin{minipage}{.45\textwidth}
+		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
+indentAfterHeadings:
+    part:
+       indentAfterThisHeading: 0
+       level: 1
+\end{yaml}
+	 \end{minipage}%
+
+	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you would write YAML
+	 as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would write YAML as in \cref{lst:indentAfterThisHeadingNew1}
+	 or, if you're using \texttt{-m} switch, \cref{lst:indentAfterThisHeadingNew2}.
+
+	 \begin{minipage}{.45\textwidth}
+		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
+noAdditionalIndent:
+    \[: 0
+    \]: 0
+\end{yaml}
+	 \end{minipage}%
+	 \hfill
+	 \begin{minipage}{.45\textwidth}
+		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
+specialBeginEnd:
+    displayMath:
+        begin: '\\\['
+        end: '\\\]'
+        lookForThis: 0
+\end{yaml}
+
+		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} for \texttt{displayMath}  in Version 3.0}{lst:indentAfterThisHeadingNew2}
+noAdditionalIndent:
+    displayMath: 1
+\end{yaml}
+	 \end{minipage}%
+
+	 \mbox{}\hfill     \begin{minipage}{.25\textwidth}
+		 \hrule
+
+		 \hfill\itshape End
+
+	 \end{minipage}

@@ -1,0 +1,5 @@
++ latexindent.pl -s sampleBEFORE-smaller.tex
+
+real	0m1.623s
+user	0m1.300s
+sys	0m0.040s

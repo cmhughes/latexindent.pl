@@ -1,0 +1,299 @@
+\ProvidesPackage{rulercompass}
+\usepackage{alphalph}
+\usetikzlibrary{intersections,calc}
+
+\newif\ifrc@draft
+\newif\ifrc@beamer
+\newif\ifrc@fliparc
+
+\@ifclassloaded{beamer}{%
+  \rc@beamertrue
+}{}
+
+\DeclareOption{draft}{%
+  \rc@drafttrue
+}
+
+\DeclareOption{beamer}{%
+  \rc@beamertrue
+}
+
+\ProcessOptions
+
+\newcounter{pointlabels}
+\setcounter{pointlabels}{0}
+\resetcounteronoverlays{pointlabels}
+
+\ifrc@beamer
+\tikzset{
+  onslide/.code args={<#1>#2}{%
+    \only<#1>{\pgfkeysalso{#2}}%
+  },
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}%
+  },
+  alt if exist/.code args={#1#2#3}{%
+    \@ifundefined{path@#1}{%
+      \pgfkeysalso{#2}%
+    }{
+      \alt<.-\csname path@#1\endcsname>{%
+        \pgfkeysalso{#2}%
+      }{
+        \pgfkeysalso{#3}%
+      }%
+    }%
+  },
+  intersection/save/.code={%
+    \begingroup
+    \only<.>{%
+    \tikz@intersect@path@names@parse#1\tikz@stop
+    \protected@write\pgfutil@auxout{}{%
+        \string\global\string\@namedef{path@\tikz@intersect@path@a}{\the\beamer@slideinframe}%
+        \string\global\string\@namedef{path@\tikz@intersect@path@b}{\the\beamer@slideinframe}%
+    }%
+    }%
+    \endgroup
+  }
+}
+
+\newcommand<>\compass[3][]{%
+  \draw#4[#1,ruler compass/compass={#2}{#3}];
+}
+
+\newcommand<>\ruler[3][]{%
+  \draw#4[#1,ruler compass/ruler={#2}{#3}];
+}
+
+\newcommand<>\point[4][]{%
+  \path#5 [name intersections={use=#2 and #3}] (intersection-#4) node[ruler compass/point,#1];
+}
+
+\else
+
+\tikzset{
+  alt if exist/.code args={#1#2#3}{%
+    \pgfkeysalso{#2}%
+  },
+  onslide/.code args={<#1>#2}{%
+    \pgfkeysalso{#2}%
+  },
+  intersection/save/.code={%
+    \begingroup
+    \tikz@intersect@path@names@parse#1\tikz@stop
+    \protected@write\pgfutil@auxout{}{%
+        \string\global\string\@namedef{path@\tikz@intersect@path@a}{\the\beamer@slideinframe}%
+        \string\global\string\@namedef{path@\tikz@intersect@path@b}{\the\beamer@slideinframe}%
+    }%
+    \endgroup
+  }
+}
+
+\newcommand\compass[2]{%
+  \draw[ruler compass/compass={#1}{#2}];
+}
+
+\newcommand\ruler[2]{%
+  \draw[ruler compass/ruler={#1}{#2}];
+}
+
+\newcommand\point[4][]{%
+  \path [name intersections={use=#2 and #3}] (intersection-#4) node[ruler compass/point,#1];
+}
+
+\fi    
+
+\tikzset{
+  intersection/use/.style={%
+    of=#1,
+    save=#1,
+  },
+  circle through/.style={
+    to path={
+      \pgfextra{
+        \tikz@scan@one@point\pgfutil@firstofone(\tikztostart)\relax
+        \pgf@xa=\pgf@x
+        \pgf@ya=\pgf@y
+        \tikz@scan@one@point\pgfutil@firstofone(\tikztotarget)\relax
+        \pgfmathsetmacro\rc@radius{veclen(\pgf@x - \pgf@xa,\pgf@y - \pgf@ya)}%
+      }
+      circle[radius=\rc@radius pt] (\tikztotarget)
+    }
+  },
+  arc flip/.is if=
+rc@fliparc,
+  centred arc to/.code 2 args={%
+    \tikz@scan@one@point\pgfutil@firstofone(#1)\relax
+    \pgfmathsetmacro\rc@radius{veclen(\tikz@lastx-\pgf@x,\tikz@lasty-\pgf@y)}%
+    \pgfmathsetmacro\rc@sangle{atan2(\tikz@lasty - \pgf@y,\tikz@lastx - \pgf@x)}%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
+    \tikz@scan@one@point\pgfutil@firstofone(#2)\relax
+    \pgfmathsetmacro\rc@eangle{atan2(\pgf@y - \pgf@ya,\pgf@x - \pgf@xa)}%
+    \pgfmathsetmacro\rc@eangle{\rc@eangle < \rc@sangle ? \rc@eangle +       360 : \rc@eangle}%
+    \ifrc@fliparc
+    \pgfmathsetmacro\rc@eangle{\rc@eangle - 360}%
+    \fi
+    \pgfkeysalso{start angle=\rc@sangle, end angle=\rc@eangle, radius=\rc@radius pt}
+  },
+  ruler compass/.is family,
+  ruler compass/.cd,
+  construction in use/.style={
+    draw=blue
+  },
+  construction not in use/.style={
+    draw=gray!75,
+  },
+  compass/.style 2 args={
+    alt if exist={c-#1-#2}{
+      ruler compass/construction in use/.try,
+    }{
+      ruler compass/construction not in use/.try
+    },
+    name path=c-#1-#2,
+    ruler compass/every construction path/.try,
+    ruler compass/every compass/.try,
+    insert path={
+      (#1) to[circle through] (#2)
+      node[name=c-#1-#2-centre,ruler compass/aux point={#1}]
+      node[name=c-#1-#2-rim,ruler compass/aux point={#2}]
+    },
+  },
+  ruler/.style 2 args={
+    overlay,
+    alt if exist={r-#1-#2}{
+      ruler compass/construction in use/.try
+    }{
+      ruler compass/construction not in use/.try
+    },
+    name path=r-#1-#2,
+    ruler compass/every construction path/.try,
+    ruler compass/every ruler/.try,
+    insert path={
+      ($(#1)!\pgfkeysvalueof{/tikz/ruler compass/ruler length}!(#2)$) -- ($(#2)!\pgfkeysvalueof{/tikz/ruler compass/ruler length}!(#1)$)
+      node[name=r-#1-#2-start,ruler compass/aux point={#1}]
+      node[name=r-#1-#2-end,ruler compass/aux point={#2}]
+    },
+  },
+  ruler length/.initial=20,
+  aux point/.style={
+    circle,
+    minimum width=4mm,
+    onslide=<.|handout:0>{draw=red},
+    node contents={},
+    at={(#1)},
+    ruler compass/every aux point/.try
+  },
+  point/.style={
+    ruler compass/name it,
+    coordinate,
+    node contents={},
+    ruler compass/every point/.try,
+    insert path={
+      node[
+        fill=#1,
+        circle,
+        minimum width=1mm,
+        inner sep=0mm,
+        reset label anchor,
+        anchor=center,
+        node contents={}
+        ]
+    }
+  },
+  name it/.code={%
+    \ifx\tikz@fig@name\pgfutil@empty
+    \stepcounter{pointlabels}%
+    \pgfkeysalso{name=\alphalph{\value{pointlabels}}}%
+    \ifrc@draft
+    \pgfkeysalso{label={[ruler compass/draft label/.try]\alphalph{\value{pointlabels}}}}%
+    \fi
+    \fi
+  },
+  point/.default=black,
+}
+
+\newcounter{jumping}
+\resetcounteronoverlays{jumping}
+\def\rc@scale{1}
+
+\def\jump@setbb#1#2#3{%
+  \@ifundefined{jump@#1@maxbb}{%
+    \expandafter\gdef\csname jump@#1@maxbb\endcsname{#3}%
+  }{%
+    \csname jump@#1@maxbb\endcsname
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
+    #3
+    \pgfmathsetlength\pgf@x{max(\pgf@x,\pgf@xa)}%
+    \pgfmathsetlength\pgf@y{max(\pgf@y,\pgf@ya)}%
+    \expandafter\xdef\csname jump@#1@maxbb\endcsname{\noexpand\pgfpoint{\the\pgf@x}{\the\pgf@y}}%
+  }
+  \@ifundefined{jump@#1@minbb}{%
+    \expandafter\gdef\csname jump@#1@minbb\endcsname{#2}%
+  }{%
+    \csname jump@#1@minbb\endcsname
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
+    #2
+    \pgfmathsetlength\pgf@x{min(\pgf@x,\pgf@xa)}%
+    \pgfmathsetlength\pgf@y{min(\pgf@y,\pgf@ya)}%
+    \expandafter\xdef\csname jump@#1@minbb\endcsname{\noexpand\pgfpoint{\the\pgf@x}{\the\pgf@y}}%
+  }
+}
+
+\tikzset{
+  stop jumping/.style={
+    execute at end picture={%
+      \stepcounter{jumping}%
+      \pgfmathsetlength\pgf@xa{\pgf@picminx/\rc@scale}%
+      \pgfmathsetlength\pgf@ya{\pgf@picminy/\rc@scale}%
+      \pgfmathsetlength\pgf@xb{\pgf@picmaxx/\rc@scale}%
+      \pgfmathsetlength\pgf@yb{\pgf@picmaxy/\rc@scale}%
+      \immediate\write\pgfutil@auxout{%
+        \noexpand\jump@setbb{\the\value{jumping}}{\noexpand\pgfpoint{\the\pgf@xa}{\the\pgf@ya}}{\noexpand\pgfpoint{\the\pgf@xb}{\the\pgf@yb}}
+      },
+      \csname jump@\the\value{jumping}@maxbb\endcsname
+      \path (\the\pgf@x,\the\pgf@y);
+      \csname jump@\the\value{jumping}@minbb\endcsname
+      \path (\the\pgf@x,\the\pgf@y);
+    },
+  },
+  max size/.code 2 args={%
+    \addtocounter{jumping}{1}%
+    \pgfutil@ifundefined{jump@\the\value{jumping}@maxbb}{}{%
+      \csname jump@\the\value{jumping}@maxbb\endcsname
+      \pgf@xa=\pgf@x
+      \pgf@ya=\pgf@y
+      \csname jump@\the\value{jumping}@minbb\endcsname
+      \advance\pgf@xa by -\pgf@x
+      \advance\pgf@ya by -\pgf@y
+      \pgfmathsetmacro\rc@xratio{\pgf@xa > #1 ? \pgf@xa/#1 : 1}%
+      \pgfmathsetmacro\rc@yratio{\pgf@ya > #2 ? \pgf@ya/#2 : 1}%
+      \pgfmathsetmacro\rc@scale{1/max(\rc@xratio,\rc@yratio)}%
+      \pgfkeysalso{scale=\rc@scale}%
+    }
+    \addtocounter{jumping}{-1}%
+  }
+}
+
+\tikzset{
+  on layer/.code={
+    \pgfonlayer{#1}\begingroup
+    \aftergroup\endpgfonlayer
+    \aftergroup\endgroup
+  },
+  node on layer/.code={
+    \gdef\node@@on@layer{%
+      \setbox\tikz@tempbox=\hbox\bgroup\pgfonlayer{#1}\unhbox\tikz@tempbox\endpgfonlayer\egroup}
+    \aftergroup\node@on@layer
+  },
+  reset label anchor/.code={%
+    \let\tikz@auto@anchor=\pgfutil@empty
+    \def\tikz@anchor{#1}
+  },
+  reset label anchor/.default=center
+}
+
+\def\node@on@layer{\aftergroup\node@@on@layer}
+
+\endinput

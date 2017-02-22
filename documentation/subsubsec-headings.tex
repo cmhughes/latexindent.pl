@@ -1,0 +1,93 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsubsection{\texttt{afterHeading} code blocks}\label{subsubsec-headings-no-add-indent-rules}
+	Let's use the example \cref{lst:headings2} for demonstration throughout this \namecref{subsubsec-headings-no-add-indent-rules}.
+	As discussed on \cpageref{lst:headings1}, by default \texttt{latexindent.pl} will not add indentation after headings.
+
+	\cmhlistingsfromfile{demonstrations/headings2.tex}{\texttt{headings2.tex}}{lst:headings2}
+
+	On using the YAML file in \cref{lst:headings3yaml} by running the command
+	\begin{commandshell}
+latexindent.pl headings2.tex -l headings3.yaml      
+    \end{commandshell}
+	we obtain the output in \cref{lst:headings2-mod3}. Note that the argument of \texttt{paragraph} has received (default) indentation,
+	and that the body after the heading statement has received (default) indentation.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod3.tex}{\texttt{headings2.tex} using \cref{lst:headings3yaml}}{lst:headings2-mod3}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings3.yaml}[yaml-TCB]{\texttt{headings3.yaml}}{lst:headings3yaml}
+	\end{minipage}
+
+	If we specify \texttt{noAdditionalIndent} as in \cref{lst:headings4yaml} and run the command
+	\begin{commandshell}
+latexindent.pl headings2.tex -l headings4.yaml      
+    \end{commandshell}
+	then we receive the output in \cref{lst:headings2-mod4}. Note that the arguments \emph{and} the body after the heading
+	of \texttt{paragraph} has received no additional indentation, because we have specified \texttt{noAdditionalIndent} in scalar form.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod4.tex}{\texttt{headings2.tex} using \cref{lst:headings4yaml}}{lst:headings2-mod4}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings4.yaml}[yaml-TCB]{\texttt{headings4.yaml}}{lst:headings4yaml}
+	\end{minipage}
+
+	Similarly, if we specify \texttt{indentRules} as in \cref{lst:headings5yaml} and run analogous commands to those above,
+	we receive the output in \cref{lst:headings2-mod5}; note that the \emph{body}, \emph{mandatory argument} and content
+	\emph{after the heading} of \texttt{paragraph} have \emph{all} received three tabs worth of indentation.
+
+	\begin{minipage}{.55\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod5.tex}{\texttt{headings2.tex} using \cref{lst:headings5yaml}}{lst:headings2-mod5}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.42\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings5.yaml}[yaml-TCB]{\texttt{headings5.yaml}}{lst:headings5yaml}
+	\end{minipage}
+
+	We may, instead, specify \texttt{noAdditionalIndent} in `field' form, as in \cref{lst:headings6yaml} which gives the output in \cref{lst:headings2-mod6}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod6.tex}{\texttt{headings2.tex} using \cref{lst:headings6yaml}}{lst:headings2-mod6}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings6.yaml}[yaml-TCB]{\texttt{headings6.yaml}}{lst:headings6yaml}
+	\end{minipage}
+
+	Analogously, we may specify \texttt{indentRules} as in \cref{lst:headings7yaml} which gives the output in \cref{lst:headings2-mod7};
+	note that mandatory argument text has only received a single space of indentation, while the body after the heading has
+	received three tabs worth of indentation.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod7.tex}{\texttt{headings2.tex} using \cref{lst:headings7yaml}}{lst:headings2-mod7}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings7.yaml}[yaml-TCB]{\texttt{headings7.yaml}}{lst:headings7yaml}
+	\end{minipage}
+
+	Finally, let's consider \texttt{noAdditionalIndentGlobal} and \texttt{indentRulesGlobal} shown in \cref{lst:headings8yaml,lst:headings9yaml}
+	respectively, with respective output in \cref{lst:headings2-mod8,lst:headings2-mod9}. Note that in \cref{lst:headings8yaml} the
+	\emph{mandatory argument} of \texttt{paragraph} has received a (default) tab's worth of indentation, while the body after the
+	heading has received \emph{no additional indentation}. Similarly, in \cref{lst:headings2-mod9}, the \emph{argument} has received both a
+	(default) tab plus two spaces of indentation (from the global rule specified in \cref{lst:headings9yaml}), and the remaining body
+	after \texttt{paragraph} has received just two spaces of indentation.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod8.tex}{\texttt{headings2.tex} using \cref{lst:headings8yaml}}{lst:headings2-mod8}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings8.yaml}[yaml-TCB]{\texttt{headings8.yaml}}{lst:headings8yaml}
+	\end{minipage}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings2-mod9.tex}{\texttt{headings2.tex} using \cref{lst:headings9yaml}}{lst:headings2-mod9}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings9.yaml}[yaml-TCB]{\texttt{headings9.yaml}}{lst:headings9yaml}
+	\end{minipage}

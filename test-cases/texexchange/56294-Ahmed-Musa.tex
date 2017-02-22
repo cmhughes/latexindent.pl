@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage{catoptions}
+\makeatletter
+% The star (*) variant executes code #1 within the group. #1 must be 
+% executable in this case. The un-starred version simply takes the 
+% material outside the group.
+\robust@def*\aftergroupexecute{\cpt@testst\cpt@aftergroupexecute}
+\robust@def\cpt@aftergroupexecute#1{%
+  \ifboolTF{cpt@st}{#1}{}%
+  % \ag@elt is local to current group:
+  \def\ag@elt{aftergroup@execute@\romannumeral\currentgrouplevel}%
+  \ifcsndefTF\ag@elt{}{%
+    \aftercsname\aftergroup\ag@elt
+    % for post \aftergroup resetting:
+    \csn@xdef\ag@elt{\gundefcsn{\ag@elt}}%
+  }%
+  \csn@xdef\ag@elt{\expandcsnonce\ag@elt\unexpanded{#1}}%
+}    
+\makeatother
+% Tests
+\begin{document}
+\def\x{FOO}
+\def\y{ZOO}
+\begingroup
+  \begingroup
+    \hbox{%
+      \vbox to 5cm{%
+        $
+          \aftergroupexecute{\def\x{foo}}%
+          \aftergroupexecute{\def\y{zoo}}%
+        $
+        %\show\x
+        \show\y
+      }%
+      \show\x
+    }%
+    \show\x
+  \endgroup
+  \show\x
+\endgroup
+\show\x
+\end{document}

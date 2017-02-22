@@ -1,0 +1,6 @@
+\ifodd\radius
+	\ifnum\radius<14
+	\pgfmathparse{100-(\radius)*4};
+	\else
+	\pgfmathparse{200-(\radius)*3};
+	\fi\fi

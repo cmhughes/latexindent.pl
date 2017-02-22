@@ -1,0 +1,27 @@
+% arara: indent: {overwrite: true, silent: on}
+\documentclass{article}
+
+% in the preamble
+% nothing
+% should happend
+\foreach \x in {0,1,2,3,4}{
+	\foreach \y in {0,1,2,3,4}{
+		\foreach \z in {0,1,2,3,4}{
+			\fill[black] (\x, \y, \z) circle (0.1);
+		}
+	}
+};
+\usepackage{tikz}
+
+\begin{document}
+\begin{tikzpicture}
+	\foreach \x in {0,1,2,3,4}{
+		\foreach \y in {0,1,2,3,4}{
+			\foreach \z in {0,1,2,3,4}{
+				\fill[black] (\x, \y, \z) circle (0.1);
+			}
+		}
+	};
+\end{tikzpicture}
+\end{document}
+

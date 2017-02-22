@@ -1,0 +1,293 @@
+% arara: indent: {trace: true, overwrite: yes}
+\documentclass[10pt,twoside]{report}
+\begin{document}
+
+% needed for the mini-tableofcontents
+\dominitoc
+\faketableofcontents
+
+\fancyhf{} % delete current header and footer
+\fancyhead[LE,RO]{\bfseries\thepage}
+\fancyhead[LO,RE]{\tiny\rightmark}
+\fancyheadoffset[LE,LO]{4cm}
+
+\pagestyle{fancy}
+%\include{coverpage}
+\include{functions}
+%\include{exponentialfunctions}
+%\include{functions2}
+%\include{logarithms}
+%\include{polyrat}
+%\include{ideas}
+
+%=======================
+%   BEGIN SOLUTIONS
+%=======================
+
+% change the page geometry using \newgeometry
+%\cleardoublepage
+\clearpage
+%\setbool{@twoside}{false}
+\fancyheadoffset[RE,RO]{2cm}
+\fancyheadoffset[LE,LO]{1cm}
+\renewcommand{\rightmark}{Solutions to Section \thesection}
+\fancyhead[LO,RE]{\rightmark}
+\newgeometry{left=4cm,right=4cm,showframe=true,
+	marginratio=1:1,
+	top=1.5cm,bottom=1.5cm,bindingoffset=0cm}
+
+% finish the php file
+\Writetofile{crossrefsWEB}{?>}
+
+% close the solutions files
+\Closesolutionfile{shortsolutions}
+\Closesolutionfile{longsolutions}
+%\Closesolutionfile{hints}
+\Closesolutionfile{crossrefsWEB}
+
+% when itemized lists are used in the solutions, they
+% are actually at 2nd depth because the solution environment
+% uses an \itemize environment to get the indendation correct
+\setlist[itemize,2]{label=\textbullet}
+
+% SHORT solution to problem (show only odd, even, all)
+% Note: this renewenvironment needs to go here
+%       so that the answers package can still
+%       display correctly to the page if needed
+\newbool{oddproblemnumber}
+\renewenvironment{shortSoln}[1]{%
+	\exploregroups % needed to ignore {}
+	% before the environment starts - this is a stretchable space
+	\vskip 0.1cm plus 2cm minus 0.1cm%
+	\fullexpandarg % need this line so that '.' are counted
+	%
+	% either problems, or subproblems, e.g: 3.1 or 3.1.4 respectively
+	% determine which one by counting the '.'
+	\StrCount{#1}{.}[\numberofdecimals]
+	%
+	% find the problem number by splitting the string
+	\ifnumequal{\numberofdecimals}{0}%
+	{%
+		% problems, such as 4, 5, 6, ...
+		\def\problemnumber{#1}%
+	}%
+	{}%
+	\ifnumequal{\numberofdecimals}{1}%
+	{%
+		% subproblems, such as 4.3, 1.2, 10.5
+		\StrBefore{#1}{.}[\problemnumber]%
+	}%
+	{}%
+	\ifnumequal{\numberofdecimals}{2}%
+	{%
+		% subproblems such as 1.3.1, 1.2.4, 7.5.6
+		% note that these aren't currently used, but maybe someday
+		\StrBehind{#1}{.}[\newbit]%
+		\StrBefore{\newbit}{.}[\problemnumber]%
+	}%
+	{}%
+	%
+	% determine if the problem number is odd or even
+	% and depending on our choices above, display or not
+	\ifnumodd{\problemnumber}%
+	{%
+		% set a boolean that says the problem number is odd (used later)
+		\setbool{oddproblemnumber}{true}%
+		% display or not
+		\ifbool{showoddsolns}%
+		{%
+			% if we want to show the odd problems
+			\ifbool{coreproblemYesNo}%
+			{%  Core problem
+				\expandafter\itemize[label=\llap{$\bigstar$ }\bfseries \hyperlink{prob:#1:\thechapter:\thesection}{#1}.]\item%
+			}%
+			{%  NOT Core problem
+				\expandafter\itemize[label=\bfseries \hyperlink{prob:#1:\thechapter:\thesection}{#1}.]\item%
+			}%
+		}%
+		{%
+			% otherwise don't show them!
+			\expandafter\comment%
+		}%
+	}%
+	{%
+		% even numbered problem, set the boolean (used later)
+		\setbool{oddproblemnumber}{false}%
+		\ifbool{showevensolns}%
+		{%
+			% if we want to show the even problems
+			\ifbool{coreproblemYesNo}%
+			{%  Core problem
+				\expandafter\itemize[label=\llap{$\bigstar$ }\itshape \hyperlink{prob:#1:\thechapter:\thesection}{#1}.]\item%
+			}%
+			{%  NOT Core problem
+				\expandafter\itemize[label=\itshape \hyperlink{prob:#1:\thechapter:\thesection}{#1}.]\item%
+			}%
+		}%
+		{%
+			% otherwise don't show them!
+			\expandafter\comment%
+		}%
+	}%
+}%
+{%
+	% after the environment finishes
+	\ifbool{oddproblemnumber}%
+	{%
+		% odd numbered problems
+		\ifbool{showoddsolns}%
+		{%
+			% if we want to show the odd problems
+			% then the environment is finished
+			\enditemize%
+		}%
+		{%
+			% otherwise we need to finish the comment
+			\expandafter\endcomment%
+		}%
+	}%
+	{%
+		% even numbered problems
+		\ifbool{showevensolns}%
+		{%
+			% if we want to show the even problems
+			% then the environment is finished
+			\enditemize%
+		}%
+		{%
+			% otherwise we need to finish the comment
+			\expandafter\endcomment%
+		}%
+	}%
+}
+
+% LONG solution to problem (show only odd, even, all)
+% Note: this renewenvironment needs to go here
+%       so that the answers package can still
+%       display correctly to the page if needed
+\renewenvironment{longSoln}[1]{%
+	\exploregroups % needed to ignore {}
+	% before the environment starts - this is a stretchable space
+	\vskip 0.1cm plus 2cm minus 0.1cm%
+	\fullexpandarg % need this line so that '.' are counted
+	%
+	% either problems, or subproblems, e.g: 3.1 or 3.1.4 respectively
+	% determine which one by counting the '.'
+	\StrCount{#1}{.}[\numberofdecimals]
+	%
+	% find the problem number by splitting the string
+	\ifnumequal{\numberofdecimals}{0}%
+	{%
+		% problems, such as 4, 5, 6, ...
+		\def\problemnumber{#1}%
+	}%
+	{}%
+	\ifnumequal{\numberofdecimals}{1}%
+	{%
+		% problems, such as 4.3, 1.2, 10.5
+		\StrBefore{#1}{.}[\problemnumber]%
+	}%
+	{}%
+	\ifnumequal{\numberofdecimals}{2}%
+	{%
+		% subproblems such as 1.3.1, 1.2.4, 7.5.6
+		\StrBehind{#1}{.}[\newbit]%
+		\StrBefore{\newbit}{.}[\problemnumber]%
+	}%
+	{}%
+	%
+	% determine if the problem number is odd or even
+	% and depending on our choices above, display or not
+	\ifnumodd{\problemnumber}%
+	{%
+		% set a boolean that says the problem number is odd (used later)
+		\setbool{oddproblemnumber}{true}%
+		% display or not
+		\ifbool{showoddsolns}%
+		{%
+			% if we want to show the odd problems
+			{\bfseries \hyperlink{prob:#1:\thechapter:\thesection}{#1}.}%
+		}%
+		{%
+			% otherwise don't show them!
+			\expandafter\comment%
+		}%
+	}%
+	{%
+		% even numbered problem, set the boolean (used later)
+		\setbool{oddproblemnumber}{false}%
+		\ifbool{showevensolns}%
+		{%
+			% if we want to show the even problems
+			{\itshape \hyperlink{prob:#1:\thechapter:\thesection}{#1}.}%
+		}%
+		{%
+			% otherwise don't show them!
+			\expandafter\comment%
+		}%
+	}%
+}%
+{%
+	% after the environment finishes
+	\ifbool{oddproblemnumber}%
+	{%
+		% odd numbered problems
+		\ifbool{showoddsolns}%
+		{%
+			% if we want to show the odd problems
+			% then the environment is finished
+		}%
+		{%
+			% otherwise we need to finish the comment
+			\expandafter\endcomment%
+		}%
+	}%
+	{%
+		% even numbered problems
+		\ifbool{showevensolns}%
+		{%
+			% if we want to show the even problems
+			% then the environment is finished
+		}%
+		{%
+			% otherwise we need to finish the comment
+			\expandafter\endcomment%
+		}%
+	}%
+}
+
+% renew tikzpicture environment to make it use valign=t
+% on every one, which fixes vertical alignment of tikzpicture
+% with the solution label: http://tex.stackexchange.com/questions/30367/aligning-enumerate-labels-to-top-of-image
+\BeforeBeginEnvironment{tikzpicture}{\begin{adjustbox}{valign=t}}
+		\AfterEndEnvironment{tikzpicture}{\end{adjustbox}}
+
+% do the same for the tabular environment
+\BeforeBeginEnvironment{tabular}{\begin{adjustbox}{valign=t}}
+		\AfterEndEnvironment{tabular}{\end{adjustbox}}
+
+% set every picture in the solutions to have \solutionfigurewidth
+\pgfplotsset{
+	every axis/.append style={%
+			width=\solutionfigurewidth}}
+
+% input the SHORT solutions file
+\IfFileExists{shortsolutions.tex}{\input{shortsolutions.tex}}{}
+
+\clearpage
+% input the LONG solutions file
+%\IfFileExists{longsolutions.tex}{\input{longsolutions.tex}}{}
+
+\clearpage
+% input the HINTS file
+%\IfFileExists{hints.tex}{\input{hints.tex}}{}
+%=======================
+%   END SOLUTIONS
+%=======================
+
+%=======================
+%   INDEX
+%=======================
+\printindex
+
+\end{document}

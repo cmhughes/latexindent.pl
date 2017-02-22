@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{xparse}
+
+\ExplSyntaxOn
+\cs_new:Nn \svend_gcd:nn
+{
+	\int_compare:nNnTF {#2} = { 0 } {#1}
+		{ \svend_gcd:ff {#2} { \int_mod:nn {#1} {#2} } }
+}
+\cs_generate_variant:Nn \svend_gcd:nn { ff }
+
+\int_new:N \l__svend_tmp_int
+\cs_new:Nn \svend_reduced:nn
+{
+	\int_set:Nn \l__svend_tmp_int { \svend_gcd:nn {#1} {#2} }
+	\frac { \svend_reduced_wrap:n { \int_eval:n { #1 / \l__svend_tmp_int } } }
+	{ \svend_reduced_wrap:n { \int_eval:n { #2 / \l__svend_tmp_int } } }
+}
+\cs_new:Nn \svend_reduced_use_wrapper:N
+{ \cs_set_eq:NN \svend_reduced_wrap:n #1 }
+\svend_reduced_use_wrapper:N \use:n
+
+%%% Interface
+
+\msg_new:nnn { svend } { malformed-fraction }
+{
+	The~input~you~have~provided~is~malformed.~
+	Please~provide~input~in~the~form~of~`p/q'.
+}
+
+\NewDocumentCommand \ReducedFractionWrapper { m }
+{ \svend_reduced_use_wrapper:N #1 }
+
+\NewDocumentCommand \ReducedFraction { o > { \SplitList { / } } m }
+{
+	\group_begin:
+		\IfValueT{#1}{\ReducedFractionWrapper{#1}}
+		\int_compare:nTF { \tl_count:n {#2} = 2 }{ \svend_reduced:nn #2 }{ \msg_error:nn { svend } { malformed-fraction } }
+	\group_end:
+}
+\ExplSyntaxOff
+
+\usepackage{siunitx}
+\begin{document}
+\[ \ReducedFraction[\num]{278922/74088} \]
+
+\ReducedFractionWrapper{\num}
+
+\[ \ReducedFraction{27892/74088} \]
+\end{document}

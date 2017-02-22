@@ -1,0 +1,14 @@
+specialBeginEnd:
+    cmhMath:
+        lookForThis: 1
+        begin: '\\<'
+        end: '\\>'
+lookForAlignDelims:
+    cmhMath: 1
+modifyLineBreaks:
+    specialBeginEnd:
+        cmhMath:
+            SpecialBeginStartsOnOwnLine: 1
+            SpecialBodyStartsOnOwnLine: 1
+            SpecialEndStartsOnOwnLine: 1
+            SpecialEndFinishesWithLineBreak: 1

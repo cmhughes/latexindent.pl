@@ -1,0 +1,42 @@
+\documentclass{article}
+\usepackage{array} % Thanks to Heiko for catching the redundant package loading
+\newcolumntype{M}{>{$}c<{$}}
+
+\begin{document}
+
+\begin{table}%
+	\centering
+	\begin{tabular}{M|MMMMMMMMM}
+		& A_1 & A_2 & A_3 & A_4 & A_5 & A_6 & A_7 & A_8 & A_9 \\\hline
+		A_1 & 0   &     &     & && &     &     & \\
+		A_2 &     & 0   &     &     &     & &     &  & \\
+		A_3 &     &     & 0   &     &   &     &     &  &  \\
+		A_4 &     &  & & 0   &     &     &    &    &     \\
+		A_5 &     &     &     &  & 0   &     &     &     &     \\
+		A_6 &     &     &   &    &     & 0   &     &     &     \\
+		A_7 & &     &     &     &     &     & 0   &   &\\
+		A_8 &   &&     &     &     &     &     & 0   &\\
+		A_9 &                     &  &  & &   &     &     &     & 0\\
+	\end{tabular}
+	\caption{Some caption}
+	\label{table:mytable}
+\end{table}
+\begin{table}%
+	\centering
+	\begin{tabular}{M|MMMMMMMMM}
+		& A_1 & A_2 & A_3 & A_4 & A_5 & A_6 & A_7 & A_8 & A_9 \\\hline
+		A_1 & 0   &     &     & && &     &     & \\
+		A_2 &     & 0   &     &     &     & &     &  & \\
+		A_3 &     &     & 0   &     &   &     &     &  &  \\
+		A_4 &     &  & & 0   &     &     &    &    &     \\
+		A_5 &     &     &     &  & 0   &     &     &     &     \\
+		A_6 &     &     &   &    &     & 0   &     &     &     \\
+		A_7 & &     &     &     &     &     & 0   &   &\\
+		A_8 &   &&     &     &     &     &     & 0   &\\
+		A_9 &                     &  &  & &   &     &     &     & 0\\
+	\end{tabular}
+	\caption{Some caption}
+	\label{table:mytable}
+\end{table}
+\end{document}
+

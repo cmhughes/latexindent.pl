@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage{multirow}
+
+\begin{document}
+\begin{figure*}
+	\centering
+	\begin{tabular}{|c|c|c c c c|c|}
+		\hline
+		\multicolumn{2}{|c|}{\multirow{2}{*}{$V_{\rm rot}/{\sigma}$}}&\multicolumn{4}{c|}{W1}\\
+		\cline{3-6}
+		\multicolumn{2}{|c|}{}&3&6&9&12\\
+		\hline
+		\multirow{6}{*}{W2} & \multirow{3}{*}{3} & $0.090475\pm 0.011115$ & \multirow{3}{*}{21} & \multirow{3}{*}{6} & \multirow{3}{*}{3} \\
+&                    & $0.14861\pm 0.03562$   &                     &                    & \\
+       & & $0.1861 \pm 0.01728$   &                     &                    &          \\
+		         & 6   & 8                      & 14                  & 5                  & 2        \\
+     & 9  & 8  & 14 & 5     & 2 \\
+   & 12      & 8         & 14                  & 5                  & 2\\
+		\hline
+	\end{tabular}
+	\caption{Multirow in multirow}
+	\label{ta.Multirow}
+\end{figure*}
+\end{document}

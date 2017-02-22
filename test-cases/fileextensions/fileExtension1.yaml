@@ -1,0 +1,6 @@
+fileExtensionPreference:
+    .tex: 1
+    .sty: 2
+    .cls: 3
+    .bib: 4
+    .cmh: 5

@@ -1,0 +1,61 @@
+% arara: indent: {overwrite: true, silent: on}
+% http://tex.stackexchange.com/questions/104528/tikz-shade-also-the-border-of-a-node
+\documentclass[tikz,border=10pt,png]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\begin{document}
+\tikzset{
+	shrink inner sep/.code={
+			\pgfkeysgetvalue{/pgf/inner xsep}{\currentinnerxsep}
+			\pgfkeysgetvalue{/pgf/inner ysep}{\currentinnerysep}
+			\pgfkeyssetvalue{/pgf/inner xsep}{\currentinnerxsep - 0.5\pgflinewidth}
+			\pgfkeyssetvalue{/pgf/inner ysep}{\currentinnerysep - 0.5\pgflinewidth}
+		}
+}
+
+\tikzset{horizontal shaded border/.style args={#1 and #2}{
+			append after command={
+					\pgfextra{%
+						\begin{pgfinterruptpath}
+							\path[rounded corners,left color=#1,right color=#2]
+							($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$)
+							rectangle
+							($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);
+						\end{pgfinterruptpath}
+					}
+				}
+		},
+	vertical shaded border/.style args={#1 and #2}{
+			append after command={
+					\pgfextra{%
+						\begin{pgfinterruptpath}
+							\path[rounded corners,top color=#1,bottom color=#2]
+							($(\tikzlastnode.south west)+(-\pgflinewidth,-\pgflinewidth)$)
+							rectangle
+							($(\tikzlastnode.north east)+(\pgflinewidth,\pgflinewidth)$);
+						\end{pgfinterruptpath}
+					}
+				}
+		}
+}
+\begin{tikzpicture}
+	\draw (0,0) node[rectangle,
+		rounded corners,
+		thick,
+		outer sep=0pt,
+		shrink inner sep,
+		left color=red!50!white,
+		right color=green!50!white,
+		horizontal shaded border=red and green
+	](A){abcabc abc};
+	\draw (2.5,0) node[rectangle,
+		rounded corners,
+		thick,
+		outer sep=0pt,
+		shrink inner sep,
+		top color=cyan!50,
+		bottom color=orange!50,
+		vertical shaded border=blue and orange
+	](A){abcabc abc};
+\end{tikzpicture}
+\end{document}

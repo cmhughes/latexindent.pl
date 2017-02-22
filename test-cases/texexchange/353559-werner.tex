@@ -1,0 +1,29 @@
+\documentclass{article}
+
+\makeatletter
+\newcommand\ifmember[2]{%
+  \begingroup
+  \edef\x{\endgroup\noexpand\in@{,#1,}{,#2,}}\x%
+  \ifin@
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi
+}
+\makeatother
+
+\begin{document}
+
+\ifmember{3}{3,4}{True}{False}
+
+\newcommand{\foo}{3,4}%
+\ifmember{3}{\foo}{True}{False}
+
+\ifmember{44}{\foo}{True}{False}
+
+\ifmember{\foo}{\foo}{True}{False}
+
+\newcommand{\baz}{4}%
+\ifmember{\baz}{\foo}{True}{False}
+
+\end{document}

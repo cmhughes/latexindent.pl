@@ -1,0 +1,53 @@
+% arara: indent: {overwrite: true, silent: on}
+\documentclass[11pt]{article}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+
+\begin{document}
+
+\tikzset{
+	photon/.style={decorate, decoration={snake}, draw=red},
+	particle/.style={draw=blue, postaction={decorate},
+			decoration={markings,mark=at position .5 with {\arrow[draw=blue]{>}}}},
+	antiparticle/.style={draw=blue, postaction={decorate},
+			decoration={markings,mark=at position .5 with {\arrow[draw=blue]{<}}}},
+	gluon/.style={decorate, draw=black,
+			decoration={coil,amplitude=4pt, segment length=5pt}}
+}
+
+\begin{tikzpicture}[
+		thick,
+		% Set the overall layout of the tree
+		level/.style={level distance=1.5cm},
+		level 2/.style={sibling distance=3.5cm},
+	]
+	\coordinate
+	child[grow=down]{
+			edge from parent [antiparticle]
+			child {
+					node{$E$}
+					edge from parent [particle]
+				}
+			child {
+					node{$D$}
+					edge from parent [gluon]
+				}
+			node [above=3pt] {$C$}
+		}
+	% I have to insert a dummy child to get the tree to grow
+	% correctly to the right.
+	child[grow=right, level distance=0pt] {
+			child {
+					node{$A$}
+					edge from parent [gluon]
+				}
+			child {
+					node{$B$}
+					edge from parent [particle]
+				}
+		};
+\end{tikzpicture}
+
+\end{document}

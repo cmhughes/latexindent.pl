@@ -1,0 +1,41 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\input{arrowsnew}
+
+\tikzset{options/.code={\tikzset{#1}}} % just to compact the code
+
+\begin{document}
+\begin{tikzpicture}
+	\draw [red] (2,-24.2) -- (2,0.2) node [above right, black] {1 cm};
+	\draw [red] (3,-24.2) -- (3,0.2);
+	\foreach \x [count=\i from 0] in {
+			{latex-latexnew},
+			{latex-latexnew, arrowhead=1cm},
+			{latex-latexnew, arrowhead=1cm, line width=1pt},
+			{latex reversed-latexnew reversed, arrowhead=1cm, line width=1pt},
+			{latex'-latex'new},
+			{latex'-latex'new, arrowhead=1cm},
+			{latex'-latex'new, arrowhead=1cm, line width=2pt},
+			{latex' reversed-latex'new reversed, arrowhead=1cm, line width=2pt},
+			{o-onew},
+			{o-onew, arrowhead=1cm},
+			{o-onew, arrowhead=1cm, line width=2pt},
+			{square-squarenew},
+			{square-squarenew, arrowhead=1cm},
+			{square-squarenew, arrowhead=1cm, ultra thick},
+			{stealth-stealthnew},
+			{stealth-stealthnew, arrowhead=1cm},
+			{stealth-stealthnew, arrowhead=1cm, ultra thick},
+			{stealth reversed-stealthnew reversed, arrowhead=1cm, ultra thick},
+			{to-tonew},
+			{to-tonew, arrowhead=1cm}
+		}
+		{
+			\draw [options/.expand once=\x] (0,-1.2*\i) -- (3,-1.2*\i) node [right] {\x};
+		}
+	\draw [<->new, arrowhead=0.25in, line width=4pt] (0,-24) -- (3,-24)
+	node [right] {\verb!<->!new, arrowhead=0.25in, line width=4pt};
+	\draw [red] (3,-23.2) ++ (-0.25in,0) -- ++(0,-1.6) node [below,black] {0.25 in};
+\end{tikzpicture}
+\end{document}

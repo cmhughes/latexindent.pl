@@ -1,0 +1,33 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        documentclass:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0
+        usepackage:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0
+        sbox:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0
+        NewEnviron:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0
+        newsavebox:
+            LCuBStartsOnOwnLine: 0
+            MandArgBodyStartsOnOwnLine: 0
+            RCuBStartsOnOwnLine: 0
+            RCuBFinishesWithLineBreak: 0
+    optionalArguments:
+        usepackage:
+            LSqBStartsOnOwnLine: 0
+            OptArgBodyStartsOnOwnLine: 0
+            RSqBStartsOnOwnLine: 0
+            RSqBFinishesWithLineBreak: 0

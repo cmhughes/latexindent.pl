@@ -1,0 +1,47 @@
+\section{Introduction}
+\subsection{Thanks}
+	I first created \texttt{latexindent.pl} to help me format chapter files
+	in a big project. After I blogged about it on the
+	\TeX{} stack exchange \cite{cmhblog} I received some positive feedback and
+	follow-up feature requests. A big thank you to Harish Kumar who
+	helped to develop and test the initial versions of the script.
+
+	The \texttt{YAML}-based interface of \texttt{latexindent.pl} was inspired
+	by the wonderful \texttt{arara} tool; any similarities are deliberate, and
+	I hope that it is perceived as the compliment that it is. Thank you to Paulo Cereda and the
+	team for releasing this awesome tool; I initially worried that I was going to
+	have to make a GUI for \texttt{latexindent.pl}, but the release of \texttt{arara}
+	has meant there is no need.
+
+	There have been several contributors to the project so far (and hopefully more in
+	the future!); thank you very much to the people detailed in \vref{sec:contributors}
+	for their valued contributions, and thank you to those who report bugs and request features
+	at \cite{latexindent-home}.
+
+\subsection{License}
+	\texttt{latexindent.pl} is free and open source, and it always will be.
+	Before you start using it on any important files, bear in mind that \texttt{latexindent.pl} has the option to overwrite your \texttt{.tex} files.
+	It will always make at least one backup (you can choose how many it makes, see \cpageref{page:onlyonebackup})
+	but you should still be careful when using it. The script has been tested on many
+	files, but there are some known limitations (see \cref{sec:knownlimitations}).
+	You, the user, are responsible for ensuring that you maintain backups of your files
+	before running \texttt{latexindent.pl} on them. I think it is important at this
+	stage to restate an important part of the license here:
+	\begin{quote}\itshape
+		This program is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		GNU General Public License for more details.
+	\end{quote}
+	There is certainly no malicious intent in releasing this script, and I do hope
+	that it works as you expect it to; if it does not, please first of all
+	make sure that you have the correct settings, and then feel free to let me know at \cite{latexindent-home} with a
+	complete minimum working example as I would like to improve the code as much as possible.
+	\begin{warning}
+		Before you try the script on anything important (like your thesis), test it
+		out on the sample files in the \texttt{test-case} directory \cite{latexindent-home}.
+	\end{warning}
+
+	\emph{If you have used any version 2.* of \texttt{latexindent.pl}, there
+		are a few changes to the interface; see \vref{app:differences} and the comments
+		throughout this document for details}.

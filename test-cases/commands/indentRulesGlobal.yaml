@@ -1,0 +1,6 @@
+indentRulesGlobal:
+    commands: " "
+noAdditionalIndentGlobal:
+    commands: 0
+indentRules:
+   mycommand: "\t\t\t"

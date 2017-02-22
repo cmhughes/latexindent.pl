@@ -1,0 +1,25 @@
+indentAfterHeadings:
+    part:
+       indentAfterThisHeading: 1
+       level: 7
+    chapter: 
+       indentAfterThisHeading: 1
+       level: 6
+    section:
+       indentAfterThisHeading: 1
+       level: 5
+    subsection:
+       indentAfterThisHeading: 1
+       level: 4
+    subsection*:
+       indentAfterThisHeading: 1
+       level: 4
+    subsubsection:
+       indentAfterThisHeading: 1
+       level: 3
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 2
+    subparagraph:
+       indentAfterThisHeading: 1
+       level: 1

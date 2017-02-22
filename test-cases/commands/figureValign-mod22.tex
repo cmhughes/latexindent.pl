@@ -1,0 +1,183 @@
+% arara: pdflatex
+% !arara: indent: {overwrite: yes}
+\documentclass{article}
+\usepackage{lipsum}
+\usepackage{graphicx}
+\usepackage{environ}
+\usepackage[showframe=true]{geometry}
+
+\newsavebox{\vabox}
+
+\NewEnviron{verticallyaligned}{%
+	% temporarily set \vamaxheight to nothing during the measurements
+	\let\vamaxheight\relax
+	% measure the height of the body
+	\begin{lrbox}{\vabox%
+		}
+		\BODY%
+	\end{lrbox}
+	%
+	% set the height of the minipage box
+	\newlength{\vamaxheight%
+	}\setlength{\vamaxheight%
+	}{\ht\vabox%
+	}% output the body, which now contains the new height :)
+	\noindent\makebox[\linewidth][c]{\mbox{%
+		}\hfill\BODY\hfill\mbox{%
+		}%
+	}%
+}
+
+\begin{document}
+
+\sbox{\vabox}{%
+	\begin{minipage}[b][][b]{.10\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-a%
+		}
+	\end{minipage}
+	%
+	\begin{minipage}[b][][t]{.15\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-b%
+		}
+	\end{minipage}
+	%
+	\begin{minipage}[b][][t]{.20\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-c%
+		}
+	\end{minipage}
+	%
+	\begin{minipage}[b][][c]{.10\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image%
+		}
+	\end{minipage}
+	%
+	\begin{minipage}[b][][t]{.20\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image%
+		}
+	\end{minipage}
+	%
+}%
+
+\noindent
+\begin{minipage}[b][\ht\vabox][b]{.10\textwidth%
+	}
+	\centering
+	\includegraphics[width=\textwidth]{example-image-a%
+	}
+\end{minipage}
+%
+\hfill
+\begin{minipage}[b][\ht\vabox][t]{.15\textwidth%
+	}
+	\centering
+	\includegraphics[width=\textwidth]{example-image-b%
+	}
+\end{minipage}
+%
+\hfill
+\begin{minipage}[b][\ht\vabox][t]{.20\textwidth%
+	}
+	\centering
+	\includegraphics[width=\textwidth]{example-image-c%
+	}
+\end{minipage}
+%
+\hfill
+\begin{minipage}[b][\ht\vabox][c]{.10\textwidth%
+	}
+	\centering
+	\includegraphics[width=\textwidth]{example-image%
+	}
+\end{minipage}
+%
+\hfill
+\begin{minipage}[b][\ht\vabox][t]{.20\textwidth%
+	}
+	\centering
+	\includegraphics[width=\textwidth]{example-image%
+	}
+\end{minipage}
+%
+\par\lipsum
+
+\begin{verticallyaligned}
+	\noindent
+	\begin{minipage}[b][\vamaxheight][b]{.30\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-a%
+		}
+	\end{minipage}
+	%
+	\hfill
+	\begin{minipage}[b][\vamaxheight][t]{.10\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-b%
+		}
+	\end{minipage}
+	%
+	\hfill
+	\begin{minipage}[b][\vamaxheight][t]{.20\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image-c%
+		}
+	\end{minipage}
+	%
+	\hfill
+	\begin{minipage}[b][\vamaxheight][c]{.20\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image%
+		}
+	\end{minipage}
+	%
+	\hfill
+	\begin{minipage}[b][\vamaxheight][t]{.20\textwidth%
+		}
+		\centering
+		\includegraphics[width=\textwidth]{example-image%
+		}
+	\end{minipage}
+	%
+\end{verticallyaligned}
+
+\lipsum[1]
+
+\begin{figure}
+	\begin{verticallyaligned}
+		\noindent
+		\begin{minipage}[b][\vamaxheight][c]{.50\textwidth%
+			}
+			\centering
+			\includegraphics[width=\textwidth]{example-image%
+			}\caption{%
+			}
+		\end{minipage}
+		%
+		\hfill
+		\begin{minipage}[b][\vamaxheight][t]{.40\textwidth%
+			}
+			\centering
+			\includegraphics[width=\textwidth]{example-image%
+			}\caption{%
+			}
+		\end{minipage}
+		%
+	\end{verticallyaligned}
+	\caption{%
+	}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,5 @@
+
+modifyLineBreaks:
+    items:
+        ItemStartsOnOwnLine: 2
+        ItemFinishesWithLineBreak: 2

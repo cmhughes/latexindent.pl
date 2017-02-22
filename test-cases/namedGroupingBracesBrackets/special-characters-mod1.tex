@@ -1,0 +1,71 @@
+\documentclass
+{
+	article
+}
+\usepackage
+{
+	array
+}
+\newcolumntype
+{
+	R
+}
+{
+	>
+		{
+			\displaystyle
+		}
+	r
+}
+% automatically in display math style
+\newcolumntype
+{
+	O
+}
+{
+	>
+		{
+			{
+				}
+		}
+	c<
+		{
+			{
+				}
+		}
+}
+% "O" for "operator" ...
+\begin{document}
+\[
+	\setlength\arraycolsep
+	{
+		0pt
+	}
+	% no need for extra intercolumn whitespace
+	\begin{array}
+		{
+			*
+				{
+					11
+				}
+				{
+					RO
+				}
+			R@
+				{
+				}
+			@
+				{
+				}
+		}
+		  & - & \frac
+		{
+			1
+		}
+		{
+			10
+		}
+		  & + & \cdots \\[2.5ex]
+	\end{array}
+\]
+\end{document} `

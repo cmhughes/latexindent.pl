@@ -1,0 +1,41 @@
+\documentclass{minimal}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.groupplots}
+
+\begin{document}
+\pgfplotsset{
+	% override style for non-boxed plots
+	% which is the case for both sub-plots
+	every non boxed x axis/.style={}
+}
+\begin{tikzpicture}
+	\begin{groupplot}[
+			group style={
+					group name=my fancy plots,
+					group size=1 by 2,
+					xticklabels at=edge bottom,
+					vertical sep=0pt
+				},
+			width=8.5cm,
+			xmin=-6, xmax=6
+		]
+
+		\nextgroupplot[ymin=45,ymax=80,
+			ytick={60,80},
+			axis x line=top,
+			axis y discontinuity=parallel,
+			height=4.5cm]
+		\addplot {x*0};
+		\addplot {x^2+50};
+
+		\nextgroupplot[ymin=0,ymax=5,
+			ytick={0},
+			axis x line=bottom,
+			height=2.0cm]
+		\addplot {x*0};
+		\addplot {x^2+50};
+	\end{groupplot}
+\end{tikzpicture}
+
+\end{document}

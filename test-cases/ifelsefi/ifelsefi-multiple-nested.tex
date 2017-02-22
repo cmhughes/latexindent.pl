@@ -1,0 +1,18 @@
+here is a nested test
+\ifcat
+	\ifnum\value{totalpages\@roman{#1}}=#2
+		ifbody 1
+		ifbody 1
+		ifbody 1
+		\typeout{Total pages for Chapter #1 match auxilary file (#2)}
+		\ifnum\something\else\other\fi
+	\else
+		\ifodd\value{totalchapters}=#1
+			ifbody 2
+			ifbody 2
+			ifbody 2
+		\fi
+		\typeout{Warning: total pages for Chapter #1 updated from \the\value{totalpages\@roman{#1}} to #2-- recompile to fix}
+	\fi
+\fi
+\ifcat\ifnum\value{totalpages\@roman{#1}}=#2\fi\fi

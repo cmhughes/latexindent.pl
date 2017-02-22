@@ -1,0 +1,33 @@
+\pgfplotsset{
+	every spark line/.style={
+			hide axis,
+			clip=false,
+			bar width=2pt,
+			cycle list={blue,mark=none\\},
+			height=0.8\baselineskip,
+			anchor=south west,
+			width=5\baselineskip,
+			scale only axis,
+			filter point/.code={%
+					\xdef\sparklinex{\pgfkeysvalueof{/data point/x}}%
+					\global\let\sparklineENDy\sparkliney
+				},
+			extra description/.code={%
+					\node[begin node description]  {\pgfkeysvalueof{/pgfplots/begin node text}};
+					\node[end node description]    {\pgfkeysvalueof{/pgfplots/end node text}};
+				},
+		},
+	spark std max/.initial=,
+	spark std min/.initial=,
+	/tikz/spark std region/.style={fill=gray!10},
+	begin node text/.initial=\pgfmathprintnumber{\sparklineSTARTy},
+	end node text/.initial=  \pgfmathprintnumber{\sparklineENDy},
+	/tikz/begin node description/.style={
+			text width=3em,align=right,
+			base left,sparkcolor,
+			/pgf/number format/fixed,
+			/pgf/number format/fixed zerofill,
+			/pgf/number format/showpos,
+			at={(current axis.south west)},
+		},
+}

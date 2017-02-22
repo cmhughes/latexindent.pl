@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   tabular: 
+      delims: 0
+      alignDoubleBackSlash: 0
+      spacesBeforeDoubleBackSlash: 2

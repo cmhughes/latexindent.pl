@@ -1,0 +1,59 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsubsection{Environments with items}
+	With reference to \vref{lst:indentafteritems,lst:itemNames}, some commands
+	may contain \texttt{item} commands; for the purposes of this discussion,
+	we will use the code from \vref{lst:itemsbefore}.
+
+	Assuming that you've populated \texttt{itemNames} with the name of your
+	\texttt{item}, you can put the item name into \texttt{noAdditionalIndent}
+	as in \cref{lst:item-noAdd1}, although a more efficient approach may be
+	to change the relevant field in \texttt{itemNames} to \texttt{0}. Similarly,
+	you can customise the indentation that your \texttt{item} receives using
+	\texttt{indentRules}, as in \cref{lst:item-rules1}
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-noAdd1.yaml}[yaml-TCB]{\texttt{item-noAdd1.yaml}}{lst:item-noAdd1}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules1.yaml}[yaml-TCB]{\texttt{item-rules1.yaml}}{lst:item-rules1}
+	\end{minipage}
+
+	Upon running the following commands
+	\begin{commandshell}
+latexindent.pl items1.tex -local item-noAdd1.yaml  
+latexindent.pl items1.tex -local item-rules1.yaml  
+\end{commandshell}
+	the respective outputs are given in \cref{lst:items1-noAdd1,lst:items1-rules1}; note that in \cref{lst:items1-noAdd1}
+	that the text after each \texttt{item} has not received any additional indentation, and in \cref{lst:items1-rules1},
+	the text after each \texttt{item} has received a single space of indentation, specified by \cref{lst:item-rules1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/items1-noAdd1.tex}{\texttt{items1.tex} using \cref{lst:item-noAdd1}}{lst:items1-noAdd1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/items1-rules1.tex}{\texttt{items1.tex} using \cref{lst:item-rules1}}{lst:items1-rules1}
+	\end{minipage}
+
+	Alternatively, you might like to populate \texttt{noAdditionalIndentGlobal} or \texttt{indentRulesGlobal} using the \texttt{items}
+	key, as demonstrated in \cref{lst:items-noAdditionalGlobal,lst:items-indentRulesGlobal}. Note that there is a need to
+	`reset/remove' the \texttt{item} field from \texttt{indentRules} in both cases (see the hierarchy description given on \cpageref{sec:noadd-indent-rules})
+	as the \texttt{item} command is a member of \texttt{indentRules} by default.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-noAdditionalGlobal.yaml}[yaml-TCB]{\texttt{items-noAdditionalGlobal.yaml}}{lst:items-noAdditionalGlobal}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-indentRulesGlobal.yaml}[yaml-TCB]{\texttt{items-indentRulesGlobal.yaml}}{lst:items-indentRulesGlobal}
+	\end{minipage}
+
+	Upon running the following commands,
+	\begin{commandshell}
+latexindent.pl items1.tex -local items-noAdditionalGlobal.yaml
+latexindent.pl items1.tex -local items-indentRulesGlobal.yaml
+\end{commandshell}
+	the respective outputs from \cref{lst:items1-noAdd1,lst:items1-rules1} are obtained; note, however, that
+	\emph{all} such \texttt{item} commands without their own individual \texttt{noAdditionalIndent} or \texttt{indentRules}
+	settings would behave as in these listings.

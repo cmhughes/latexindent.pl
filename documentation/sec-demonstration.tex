@@ -1,0 +1,40 @@
+\section{Demonstration: before and after}
+ Let's give a demonstration of some before and after code -- after all, you probably
+ won't want to try the script if you don't much like the results. You might also
+ like to watch the video demonstration I made on youtube \cite{cmh:videodemo}
+
+ As you look at \crefrange{lst:filecontentsbefore}{lst:pstricksafter}, remember
+ that \texttt{latexindent.pl} is just following its rules, and there is nothing
+ particular about these code snippets. All of the rules can be modified
+ so that you can personalize your indentation scheme.
+
+ In each of the samples given in \crefrange{lst:filecontentsbefore}{lst:pstricksafter}
+ the `before' case is a `worst case scenario' with no effort to make indentation. The `after'
+ result would be the same, regardless of the leading white space at the beginning of
+ each line which is stripped by \texttt{latexindent.pl} (unless a \texttt{verbatim}-like
+ environment or \texttt{noIndentBlock} is specified -- more on this in \cref{sec:defuseloc}).
+
+ \begin{widepage}
+	 \centering
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/filecontents1.tex}{\texttt{filecontents1.tex}}{lst:filecontentsbefore}
+	 \end{minipage}\hfill
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/filecontents1-default.tex}{\texttt{filecontents1.tex} default output}{lst:filecontentsafter}
+	 \end{minipage}%
+
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/tikzset.tex}{\texttt{tikzset.tex}}{lst:tikzsetbefore}
+	 \end{minipage}\hfill
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/tikzset-default.tex}{\texttt{tikzset.tex} default output}{lst:tikzsetafter}
+	 \end{minipage}%
+
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/pstricks.tex}{\texttt{pstricks.tex}}{lst:pstricksbefore}
+	 \end{minipage}\hfill
+	 \begin{minipage}{.45\linewidth}
+		 \cmhlistingsfromfile{demonstrations/pstricks-default.tex}{\texttt{pstricks.tex} default output}{lst:pstricksafter}
+	 \end{minipage}%
+ \end{widepage}
+

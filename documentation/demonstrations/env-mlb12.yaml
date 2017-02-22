@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    environments:
+        EndFinishesWithLineBreak: -1

@@ -1,0 +1,7 @@
+noAdditionalIndent:
+    mycommand:
+        body: 0
+        optionalArguments: 0
+        mandatoryArguments: 1
+noAdditionalIndentGlobal:
+    commands: 0

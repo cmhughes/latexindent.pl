@@ -1,0 +1,5 @@
+specialBeginEnd:
+    inlineMath:
+        begin: '(?<!\$)\$(?!\$)'
+        end: '\$(?!\$)'
+        lookForThis: 0

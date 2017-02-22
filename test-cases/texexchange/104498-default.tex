@@ -1,0 +1,88 @@
+% arara: indent: {overwrite: true, silent: on}
+\documentclass[png,border=10pt,tikz]{standalone}
+\usepackage{xstring}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\pgfkeys{/tikz/.cd,
+	vertical factor/.initial=0.5,
+	vertical factor/.get=\vertfactor,
+	vertical factor/.store in=\vertfactor,
+	start coordinate/.initial={0,\vertfactor},
+	start coordinate/.get=\startcoord,
+	start coordinate/.store in=\startcoord,
+	sample color/.initial=black,
+	sample color/.get=\samplecol,
+	sample color/.store in=\samplecol,
+	sample size/.initial=1pt,
+	sample size/.get=\samplesize,
+	sample size/.store in=\samplesize,
+	sample line width/.initial=very thick,
+	sample line width/.get=\samplelinewidth,
+	sample line width/.store in=\samplelinewidth,
+}
+
+
+\newcommand{\samplepath}[1]{%
+	\coordinate (start) at (\startcoord) ;
+	\foreach \samples[count=\xi from 1] in {#1}{%
+			\StrCut{\samples}{|}{\vertdir}{\hordir}
+			\ifnum\xi=1
+				\draw[\samplelinewidth,\samplecol](start)
+				--++(\hordir,0) coordinate (start);
+			\else
+				\IfStrEq{\vertdir}{+}{%true
+					\draw[\samplelinewidth,\samplecol]($(start)+(0,\vertfactor)$)
+					--++(\hordir,0)coordinate(start);
+				}{%false
+					\relax
+				}
+				\IfStrEq{\vertdir}{-}{%true
+					\draw[\samplelinewidth,\samplecol]($(start)+(0,-\vertfactor)$)
+					--++(\hordir,0)coordinate(start);
+				}{%false
+					\relax
+				}
+			\fi
+		}
+}
+
+\tikzset{sample/.style={
+			circle,
+			inner sep=\samplesize,
+			fill=\samplecol,
+		}
+}
+
+\newcommand{\discretesamplepath}[1]{%
+	\coordinate (start) at (\startcoord) ;
+	\foreach \samples[count=\xi from 1] in {#1}{%
+			\StrCut{\samples}{|}{\vertdir}{\hordir}
+			\ifnum\xi=1
+				\path(start)node[sample]{}
+				--++(\hordir,0) coordinate (start);
+			\else
+				\IfStrEq{\vertdir}{+}{%true
+					\path($(start)+(0,\vertfactor)$)node[sample]{}
+					--++(\hordir,0)coordinate(start);
+				}{%false
+					\relax
+				}
+				\IfStrEq{\vertdir}{-}{%true
+					\path($(start)+(0,-\vertfactor)$)node[sample]{}
+					--++(\hordir,0)coordinate(start);
+				}{%false
+					\relax
+				}
+			\fi
+		}
+}
+
+\begin{document}
+\begin{tikzpicture}
+	% axis
+	\draw[-stealth] (0,-1)--(0,4) node[left]{$X(t)$};
+	\draw[-stealth] (-1,0)--(5,0) node[below]{$t$};
+	\samplepath{+|0.5,+|0.25,-|1.5,+|1,+|0.5,+|0.75}
+\end{tikzpicture}
+\end{document}

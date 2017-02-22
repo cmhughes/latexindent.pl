@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    mandatoryArguments:
+        start coordinate/.initial:
+            LCuBStartsOnOwnLine: 2
+            MandArgBodyStartsOnOwnLine: 2
+            RCuBStartsOnOwnLine: -1
+            RCuBFinishesWithLineBreak: 2

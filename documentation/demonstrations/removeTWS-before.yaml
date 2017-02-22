@@ -1,0 +1,2 @@
+removeTrailingWhitespace:
+    beforeProcessing: 1

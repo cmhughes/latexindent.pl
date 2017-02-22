@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: -1
+        SpecialBodyStartsOnOwnLine: -1
+        SpecialEndStartsOnOwnLine: 1
+        SpecialEndFinishesWithLineBreak: -1

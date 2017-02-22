@@ -1,0 +1,5 @@
+onlyOneBackUp: 1
+cycleThroughBackUps: 1
+maxNumberOfBackUps: 3
+logFilePreferences:
+    showEveryYamlRead: 1

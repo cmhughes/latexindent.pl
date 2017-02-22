@@ -1,0 +1,5 @@
+specialBeginEnd:
+    inlineMathLatex:
+        begin: '\\\('
+        end: '\\\)'
+        lookForThis: 1

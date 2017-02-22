@@ -1,0 +1,28 @@
+\documentclass{article}
+
+\usepackage{pgfplotstable, booktabs,ifthen}
+\pgfplotsset{compat=1.7}
+
+\begin{document}
+\pgfplotstableread[col sep= semicolon]{
+A;B;C;ID 
+1;4;2;0 
+2;1;6;1 
+3;6;1;1 
+4;2;3;1 
+5;1;9;0 
+6;4;2;0
+}\mytable
+
+\pgfplotstabletypeset[
+    sci zerofill,
+    every column/.style=
+     {assign cell content/.code=
+       {\pgfplotstablegetelem{\pgfplotstablerow}{[index]3}\of{\mytable}%
+        \ifthenelse{\equal{\pgfplotsretval}{1}}%
+          {\pgfkeyssetvalue{/pgfplots/table/@cell content}{\bfseries##1}}%
+          {\pgfkeyssetvalue{/pgfplots/table/@cell content}{##1}}%
+       }
+     }
+]{\mytable}
+\end{document}

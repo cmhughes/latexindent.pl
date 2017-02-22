@@ -1,0 +1,7 @@
+indentRules:
+   three: " "
+noAdditionalIndent:
+   one: 1
+   two: 0
+logFilePreferences:
+    showEveryYamlRead: 1
