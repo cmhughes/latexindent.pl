@@ -41,7 +41,7 @@ sub add_comment_symbol{
     push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>q()});
 
     # log file info
-    $self->logger("Updating trailing comment array",'heading');
+    $self->logger("Updating trailing comment array",'heading')if $is_t_switch_active;
     $self->logger(Dumper(\@trailingComments),'ttrace') if($is_tt_switch_active);
 
     # the returned value
@@ -50,7 +50,7 @@ sub add_comment_symbol{
 
 sub remove_trailing_comments{
     my $self = shift;
-    $self->logger("Storing trailing comments",'heading');
+    $self->logger("Storing trailing comments",'heading')if $is_t_switch_active;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -82,7 +82,7 @@ sub put_trailing_comments_back_in{
     my $self = shift;
     return unless( @trailingComments > 0 );
 
-    $self->logger("Returning trailing comments to body",'heading');
+    $self->logger("Returning trailing comments to body",'heading')if $is_t_switch_active;
 
     # loop through trailing comments in reverse so that, for example, 
     # latexindenttrailingcomment1 doesn't match the first 
@@ -99,7 +99,7 @@ sub put_trailing_comments_back_in{
                               )                # captured into $1
                               (\h*)?$                
                           /mx and $1 ne ''){
-          $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line");
+          $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
           ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;

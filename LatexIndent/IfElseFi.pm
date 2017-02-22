@@ -80,7 +80,7 @@ sub indent{
     my $surroundingIndentation = ${$self}{surroundingIndentation}?${$self}{surroundingIndentation}:q();
 
     if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
-            $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')");
+            $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')")if $is_t_switch_active;
             ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
             $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}") if $is_t_switch_active;
     }
@@ -217,10 +217,17 @@ sub check_for_else_statement{
 
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseStartsOnOwnLine}){
-          if(${$self}{ElseStartsOnOwnLine}==1 and !${$self}{linebreaksAtEnd}{ifbody}){
+          if(${$self}{ElseStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{ifbody}){
+              # by default, assume that no trailing comment token is needed
+              my $trailingCommentToken = q();
+              if(${$self}{ElseStartsOnOwnLine}==2){
+                $self->logger("Adding a % immediately before else statement of ${$self}{name} (ElseStartsOnOwnLine==2)") if $is_t_switch_active;
+                $trailingCommentToken = "%".$self->add_comment_symbol;
+              }
+
               # add a line break after ifbody, if appropriate
               $self->logger("Adding a linebreak before the \\else statement (see ElseStartsOnOwnLine)");
-              ${$self}{body} =~ s/\\else/\n\\else/s;
+              ${$self}{body} =~ s/\\else/$trailingCommentToken\n\\else/s;
               ${$self}{linebreaksAtEnd}{ifbody} = 1;
           } elsif (${$self}{ElseStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{ifbody}){
               # remove line break *after* ifbody, if appropriate
@@ -232,10 +239,18 @@ sub check_for_else_statement{
 
       # possibly modify line break *before* \else statement
       if(defined ${$self}{ElseFinishesWithLineBreak}){
-          if(${$self}{ElseFinishesWithLineBreak}==1 and !${$self}{linebreaksAtEnd}{else}){
+          if(${$self}{ElseFinishesWithLineBreak}>=1 and !${$self}{linebreaksAtEnd}{else}){
+              # by default, assume that no trailing comment token is needed
+              my $trailingCommentToken = q();
+              if(${$self}{ElseFinishesWithLineBreak}==2){
+                return if(${$self}{body} =~ m/\\else\h*$trailingCommentRegExp/s);
+                $self->logger("Adding a % immediately after else statement of ${$self}{name} (ElseFinishesWithLineBreak==2)") if $is_t_switch_active;
+                $trailingCommentToken = "%".$self->add_comment_symbol;
+              }
+
               # add a line break after else, if appropriate
-              $self->logger("Adding a linebreak after the \\else statement (see ElseFinishesWithLineBreak)");
-              ${$self}{body} =~ s/\\else\h*/\\else\n/s;
+              $self->logger("Adding a linebreak after the \\else statement (see ElseFinishesWithLineBreak)")if $is_t_switch_active;
+              ${$self}{body} =~ s/\\else\h*/\\else$trailingCommentToken\n/s;
               ${$self}{linebreaksAtEnd}{else} = 1;
           } elsif (${$self}{ElseFinishesWithLineBreak}==-1 and ${$self}{linebreaksAtEnd}{else}){
               # remove line break *after* else, if appropriate, 
@@ -246,7 +261,7 @@ sub check_for_else_statement{
               #     \else some text
               # and not
               #     \elsesome text
-              $self->logger("Removing linebreak after \\else statement (see ElseFinishesWithLineBreak)");
+              $self->logger("Removing linebreak after \\else statement (see ElseFinishesWithLineBreak)")if $is_t_switch_active;
               ${$self}{body} =~ s/\\else\h*\R*/\\else /sx;
               ${$self}{linebreaksAtEnd}{else} = 0;
           }

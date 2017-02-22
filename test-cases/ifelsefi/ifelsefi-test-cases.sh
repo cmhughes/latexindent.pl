@@ -53,6 +53,8 @@ latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsef
 latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod9.yaml -o=env-ifelsefi-mixed-mod9.tex
 latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod10.yaml -o=env-ifelsefi-mixed-mod10.tex
 latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod11.yaml -o=env-ifelsefi-mixed-mod11.tex
+# remove all example
+latexindent.pl -s ifelsefi-remove-line-breaks.tex -m -l env-ifelsefi-mixed-mod1.yaml -o ifelsefi-remove-line-breaks-mod1.tex 
 # recursive object examples
 latexindent.pl env-ifelsefi-mixed-recursive.tex -s -m -o=env-ifelsefi-mixed-recursive-mod1.tex -l=ifelsefi-all-on.yaml
 latexindent.pl env-ifelsefi-mixed-recursive.tex -s -m -o=env-ifelsefi-mixed-recursive-mod2.tex -l=ifelsefi-all-on.yaml,env-conflicts-mod2.yaml
@@ -66,6 +68,7 @@ latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentBeforeBegin.yaml
 latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterBegin.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBegin.tex 
 latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterBody.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBody.tex 
 latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterEnd.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterEnd.tex 
+latexindent.pl -s -m -l=ifelsefi-add-comments-all.yaml ifelsefi-one-line-mk1.tex -o ifelsefi-one-line-mk1-all-comments.tex
 # noAdditionalIndent
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditionalIndentGlobal.yaml -o=ifelsefi-multiple-nested-global.tex
 # indentRules
