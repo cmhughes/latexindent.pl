@@ -16,9 +16,12 @@ package LatexIndent::FileExtension;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use utf8;
+use PerlIO::encoding;
+use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check{

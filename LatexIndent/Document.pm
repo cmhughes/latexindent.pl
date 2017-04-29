@@ -17,6 +17,8 @@ package LatexIndent::Document;
 use strict;
 use warnings;
 use Data::Dumper;
+use utf8;
+use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;

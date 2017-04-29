@@ -16,13 +16,14 @@ package LatexIndent::AlignmentAtAmpersand;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use Text::CharWidth qw(mbwidth mbswidth mblen);
+use utf8;
+use Unicode::GCString;
+use Data::Dumper;
+use Exporter qw/import/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
-use Data::Dumper;
-use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/align_at_ampersand find_aligned_block/;
 our $alignmentBlockCounter;
@@ -171,10 +172,13 @@ sub align_at_ampersand{
                 $column .= ($column =~ m/\\$/ ? " ": q());
 
                 # store the column size
-                $columnSizes[$columnCount] = mbswidth($column) if(mbswidth($column)>$columnSizes[$columnCount]);
+                # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
+                my $gcs  = Unicode::GCString->new($column);
+                my $columnWidth = $gcs->columns();
+                $columnSizes[$columnCount] = $columnWidth if($columnWidth > $columnSizes[$columnCount]);
 
                 # put the row back together, using " " if the column is empty
-                $strippedRow .= ($columnCount>0 ? "&" : q() ).(mbswidth($column)>0 ? $column: " ");
+                $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
                 # move on to the next column
                 $columnCount++;
@@ -222,9 +226,14 @@ sub align_at_ampersand{
             my $columnCount=0;
             my $tmpRow = q();
             foreach my $column (split(/(?<!\\)&/,${$_}{row})){
+                # grab the column width
+                my $gcs  = Unicode::GCString->new($column);
+                my $columnWidth = $gcs->columns();
+
+                # reset the padding
                 my $padding = q();
-                if(mbswidth($column) < $columnSizes[$columnCount]){
-                   $padding = " " x ($columnSizes[$columnCount] - mbswidth($column));
+                if($columnWidth  < $columnSizes[$columnCount]){
+                   $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
                 }
                 $tmpRow .= $column.$padding." & ";
                 $columnCount++;
