@@ -41,7 +41,7 @@ sub processSwitches{
     my $self = shift;
 
     # details of the script to log file
-    $self->logger("$FindBin::Script version 3.0, a script to indent .tex files",'heading');
+    $self->logger("$FindBin::Script version 3.0.1, a script to indent .tex files",'heading');
     $self->logger("$FindBin::Script lives here: $FindBin::RealBin/");
 
     # time the script is used
@@ -50,7 +50,7 @@ sub processSwitches{
 
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
     print <<ENDQUOTE
-latexindent.pl version 3.0
+latexindent.pl version 3.0.1
 usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
       -h, --help
           help (see the documentation for detailed instructions and examples)
@@ -118,7 +118,7 @@ ENDQUOTE
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
-        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir');
+        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir','Unicode::GCString');
         $self->logger("Perl modules are being loaded from the following directories:",'heading');
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;

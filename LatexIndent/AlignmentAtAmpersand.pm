@@ -16,12 +16,14 @@ package LatexIndent::AlignmentAtAmpersand;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use utf8;
+use Unicode::GCString;
+use Data::Dumper;
+use Exporter qw/import/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
-use Data::Dumper;
-use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/align_at_ampersand find_aligned_block/;
 our $alignmentBlockCounter;
@@ -170,10 +172,13 @@ sub align_at_ampersand{
                 $column .= ($column =~ m/\\$/ ? " ": q());
 
                 # store the column size
-                $columnSizes[$columnCount] = length($column) if(length($column)>$columnSizes[$columnCount]);
+                # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
+                my $gcs  = Unicode::GCString->new($column);
+                my $columnWidth = $gcs->columns();
+                $columnSizes[$columnCount] = $columnWidth if($columnWidth > $columnSizes[$columnCount]);
 
                 # put the row back together, using " " if the column is empty
-                $strippedRow .= ($columnCount>0 ? "&" : q() ).(length($column)>0 ? $column: " ");
+                $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
                 # move on to the next column
                 $columnCount++;
@@ -217,8 +222,31 @@ sub align_at_ampersand{
     # finally, reformat the body
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
+
+            my $columnCount=0;
+            my $tmpRow = q();
+            foreach my $column (split(/(?<!\\)&/,${$_}{row})){
+                # grab the column width
+                my $gcs  = Unicode::GCString->new($column);
+                my $columnWidth = $gcs->columns();
+
+                # reset the padding
+                my $padding = q();
+                if($columnWidth  < $columnSizes[$columnCount]){
+                   $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+                }
+                $tmpRow .= $column.$padding." & ";
+                $columnCount++;
+            }
+
+            # remove the final &
+            $tmpRow =~ s/\s&\s$/ /;
+
+            # replace the row with the formatted row
+            ${$_}{row} = $tmpRow;
+
             # format the row, and put the trailing \\ and trailing comments back into the row
-            ${$_}{row} = sprintf($fmtstring,split(/(?<!\\)&/,${$_}{row})).(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
 
             # possibly remove space ahead of \\
             ${$_}{row} =~ s/\h*\\\\/\\\\/ if(!${$self}{alignDoubleBackSlash});

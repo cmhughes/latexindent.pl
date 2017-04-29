@@ -53,4 +53,9 @@ latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-mod1.tex -m -l=pmatrix-mod1.yam
 latexindent.pl -s pmatrix.tex -o pmatrix-pmatrix-special-mod1.tex -m -l=pmatrix-mod1.yaml,../specials/special-mod1.yaml,noRoundParenthesisInArgs.yaml
 # special
 latexindent.pl -s special1.tex -o special1-aligned.tex -l special-align.yaml
+# uni code
+for (( i=1 ; i <= 6 ; i++ )) 
+do 
+    latexindent.pl -s uni-code1.tex -o uni-code1-mod$i.tex -l=tabular$i.yaml
+done
 git status

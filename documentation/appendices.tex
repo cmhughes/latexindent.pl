@@ -6,20 +6,24 @@
 	 need to install the missing modules.
 
 	 \begin{cmhlistings}[language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
-	#!/usr/bin/perl
+#!/usr/bin/perl
 
-	use strict;
-	use warnings;
-	use FindBin;
-	use YAML::Tiny;
-	use File::Copy;
-	use File::Basename;
-	use File::HomeDir;
-	use Getopt::Long;
-    use Data::Dumper;
+use strict;
+use warnings;
+use utf8;
+use PerlIO::encoding;
+use Unicode::GCString;
+use open ':std', ':encoding(UTF-8)';
+use FindBin;
+use YAML::Tiny;
+use File::Copy;
+use File::Basename;
+use File::HomeDir;
+use Getopt::Long;
+use Data::Dumper;
 
-	print "hello world";
-	exit;
+print "hello world";
+exit;
 \end{cmhlistings}
 	 My default installation on Ubuntu 12.04 did \emph{not} come
 	 with all of these modules as standard, but Strawberry Perl for Windows \cite{strawberryperl}
