@@ -22,7 +22,7 @@ For complete details, please see documentation/latexindent.pdf
 
 Note: `latexindent.exe` was created using 
 
-      pp -o latexindent.exe latexindent.pl
+      perl ppp.pl -u -o latexindent.exe latexindent.pl
 
 using the `Par::Packer` perl module.
 
