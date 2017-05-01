@@ -3,7 +3,6 @@
 % arara: pdflatex: {shell: yes}
 % arara: pdflatex: {shell: yes}
 % arara: pdflatex: {shell: yes}
-% !arara: indent: {overwrite: yes, trace: yes, localSettings: yes, silent: yes}
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -172,17 +171,11 @@
 
 \lstset{%
 	basicstyle=\small\ttfamily,language={[LaTeX]TeX},
-	%	numbers=left,
 	numberstyle=\ttfamily%\small,
 	breaklines=true,
-	%   frame=single,framexleftmargin=8mm, xleftmargin=8mm,
-	%	prebreak = \raisebox{0ex}[0ex][0ex]{\ensuremath{\hookrightarrow}},
-	%	backgroundcolor=\color{green!5},frameround=fttt,
-	%	rulecolor=\color{blue!70!black},
 	keywordstyle=\color{blue},                    % keywords
 	commentstyle=\color{purple},    % comments
 	tabsize=3,
-	%xleftmargin=1.5em,
 }%
 \DeclareTCBListing[use counter=lstlisting]{yaml}{O{} m O{} m}{
 	yaml-TCB,
@@ -199,7 +192,6 @@
 \lstdefinestyle{yaml-LST}{
 	style=tcblatex,
 	numbers=none,
-	%numbers=left,
 	numberstyle=\color{red},
 }
 
@@ -207,6 +199,112 @@
 	numbers=none,
 	linewidth=1.25\textwidth,
 	columns=fullflexible,
+}
+
+\lstdefinestyle{fileExtensionPreference}{
+	style=yaml-LST,
+	firstnumber=38,linerange={38-42},
+	numbers=left,
+}
+
+\lstdefinestyle{logFilePreferences}{
+	style=yaml-LST,
+	firstnumber=79,linerange={79-83},numbers=left
+}
+
+\lstdefinestyle{verbatimEnvironments}{
+	style=yaml-LST,
+	firstnumber=87,linerange={87-89},numbers=left
+}
+
+\lstdefinestyle{verbatimCommands}{
+	style=yaml-LST,
+	firstnumber=92,linerange={92-94},numbers=left
+}
+
+\lstdefinestyle{noIndentBlock}{
+	style=yaml-LST,
+	firstnumber=100,linerange={100-102},numbers=left
+}
+
+\lstdefinestyle{removeTrailingWhitespace}{
+	style=yaml-LST,
+	firstnumber=105,linerange={105-107},numbers=left
+}
+
+\lstdefinestyle{fileContentsEnvironments}{
+	style=yaml-LST,
+	firstnumber=111,linerange={111-113},numbers=left
+}
+
+\lstdefinestyle{lookForPreamble}{
+	style=yaml-LST,
+	firstnumber=119,linerange={119-123},numbers=left
+}
+
+\lstdefinestyle{indentAfterItems}{
+	style=yaml-LST,
+	firstnumber=171,linerange={171-174},numbers=left
+}
+
+\lstdefinestyle{itemNames}{
+	style=yaml-LST,
+	firstnumber=180,linerange={180-182},numbers=left
+}
+
+\lstdefinestyle{specialBeginEnd}{
+	style=yaml-LST,
+	firstnumber=186,linerange={186-198},numbers=left
+}
+
+\lstdefinestyle{indentAfterHeadings}{
+	style=yaml-LST,
+	firstnumber=208,linerange={208-217},numbers=left
+}
+
+\lstdefinestyle{noAdditionalIndentGlobalEnv}{
+	style=yaml-LST,
+	firstnumber=263,linerange={263-264},numbers=left
+}
+
+\lstdefinestyle{noAdditionalIndentGlobal}{
+	style=yaml-LST,
+	firstnumber=263,linerange={263-275},numbers=left
+}
+
+\lstdefinestyle{indentRulesGlobalEnv}{
+	style=yaml-LST,
+	firstnumber=279,linerange={279-280},numbers=left
+}
+
+\lstdefinestyle{indentRulesGlobal}{
+	style=yaml-LST,
+	firstnumber=279,linerange={279-291},numbers=left
+}
+
+\lstdefinestyle{commandCodeBlocks}{
+	style=yaml-LST,
+	firstnumber=294,linerange={294-302},numbers=left
+}
+
+\lstdefinestyle{modifylinebreaks}{
+	style=yaml-LST,
+	firstnumber=372,linerange={372-374},numbers=left
+}
+
+\lstdefinestyle{modifylinebreaksEnv}{
+	style=yaml-LST,
+	firstnumber=378,linerange={378-387},numbers=left
+}
+
+\lstdefinestyle{textWrapOptions}{
+	style=yaml-LST,
+	firstnumber=375,linerange={375-376},numbers=left
+}
+
+\lstdefinestyle{textWrapOptionsAll}{
+	style=yaml-LST,
+	firstnumber=375,linerange={375-377},numbers=left
 }
 
 % stars around contributors
@@ -407,7 +505,7 @@
 			sharp corners,
 			enhanced,
 			overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=3cm,yshift=4mm]frame.north east) {\includegraphics[width=3cm]{logo}}; }]
-		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.0.1
+		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.1
 	\end{tcolorbox}
 }
 \author{Chris Hughes \thanks{and contributors! See \vref{sec:contributors}. For

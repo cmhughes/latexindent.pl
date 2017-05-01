@@ -14,6 +14,7 @@ use utf8;
 use PerlIO::encoding;
 use Unicode::GCString;
 use open ':std', ':encoding(UTF-8)';
+use Text::Wrap;
 use FindBin;
 use YAML::Tiny;
 use File::Copy;
@@ -25,10 +26,6 @@ use Data::Dumper;
 print "hello world";
 exit;
 \end{cmhlistings}
-	 My default installation on Ubuntu 12.04 did \emph{not} come
-	 with all of these modules as standard, but Strawberry Perl for Windows \cite{strawberryperl}
-	 did.
-
 	 Installing the modules given in \cref{lst:helloworld} will vary depending on your
 	 operating system and \texttt{Perl} distribution. For example, Ubuntu users
 	 might visit the software center, or else run

@@ -1,9 +1,13 @@
 #!/bin/bash
 
 # A little script to help me run through test cases
-
-#echo latexindent.pl -w -l=table5.yaml -s table5
-#latexindent.pl -w -l=table5.yaml -s table5
+# Sample usage
+#   ./test-cases.sh 
+#   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
+#   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
+#   ./test-cases.sh -c              # show the counter within loops
+#   ./test-cases.sh -b              # do the benchmark test cases
+#   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
 
 silentMode=0
 silentModeFlag=''
@@ -113,6 +117,10 @@ cd ../filecontents
 cd ../alignment
 [[ $silentMode == 1 ]] && echo "./alignment/alignment-test-cases.sh"
 ./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# long line text wrapping
+cd ../maxLineChars
+[[ $silentMode == 1 ]] && echo "./maxLineChars/longlines-test-cases.sh"
+./longlines-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # texexchange
 cd ../texexchange
 [[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"

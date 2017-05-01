@@ -18,10 +18,12 @@ use strict;
 use warnings;
 use Data::Dumper;
 use Exporter qw/import/;
+use Text::Wrap;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line/;
 our @allObjects;
 
 sub modify_line_breaks_body{
@@ -169,6 +171,20 @@ sub adjust_line_breaks_end_parent{
         ${$child}{linebreaksAtEnd}{body}=1;
     }
 
+}
+
+sub max_char_per_line{
+    return unless $is_m_switch_active;
+
+    my $self = shift;
+    return unless ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1;
+
+    # call the text wrapping routine
+    $Text::Wrap::columns=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+    if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
+        $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
+    }
+    ${$self}{body} = wrap('','',${$self}{body});
 }
 
 1;

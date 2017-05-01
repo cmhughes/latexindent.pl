@@ -13,12 +13,12 @@
 
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[firstnumber=356,linerange={356-358},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
+		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 	\end{wrapfigure}
 	\makebox[0pt][r]{%
 		\raisebox{-\totalheight}[0pt][0pt]{%
 			\tikz\node[opacity=1] at (0,0) {\includegraphics[width=4cm]{logo}};}}%	
-	One of the most exciting features of Version 3.0 is the \texttt{-m} switch, which
+	As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m} switch, which
 	permits \texttt{latexindent.pl} to modify line breaks, according to the
 	specifications in the \texttt{modifyLineBreaks} field. \emph{The settings
 		in this field will only be considered if the \texttt{-m} switch has been used}.
@@ -60,6 +60,97 @@ latexindent.pl myfile.tex -m
 		\cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1.tex} out output}{lst:mlb-bl-out}
 	\end{minipage}
 
+\yamltitle{textWrapOptions}*{fields}
+	\begin{wrapfigure}[6]{r}[0pt]{8cm}
+		\cmhlistingsfromfile[style=textWrapOptions]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
+	\end{wrapfigure}
+	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to wrap text using the options
+	specified in the \texttt{textWrapOptions} field, see \cref{lst:textWrapOptions}. The value of
+	\texttt{columns} specifies the column at which the text should be wrapped.
+	By default, the value of \texttt{columns} is \texttt{0}, so \texttt{latexindent.pl}
+	will \emph{not} wrap text; if you change it to a value of \texttt{2} or more, then
+	text will be wrapped after the character in the specified column.
+
+	For example, consider the file give in \cref{lst:textwrap1}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap1.tex}{\texttt{textwrap1.tex}}{lst:textwrap1}
+	\end{widepage}
+
+	Using the file \texttt{textwrap1.yaml} in \cref{lst:textwrap1-yaml}, and running the command
+	\begin{commandshell}
+latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	we obtain the output in \cref{lst:textwrap1-mod1}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
+	\end{minipage}
+
+	The text wrapping routine is performed \emph{after} verbatim environments have been stored, so verbatim
+	environments and verbatim commands are exempt from the routine. For example, using the file in
+	\cref{lst:textwrap2},
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap2.tex}{\texttt{textwrap2.tex}}{lst:textwrap2}
+	\end{widepage}
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from \cref{lst:textwrap1-yaml},
+	\begin{commandshell}
+latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	then the output is as in \cref{lst:textwrap2-mod1}.
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap2-mod1.tex}{\texttt{textwrap2-mod1.tex}}{lst:textwrap2-mod1}
+	\end{widepage}
+	Furthermore, the text wrapping routine is performed after the trailing comments have been
+	stored, and they are also exempt from text wrapping. For example, using the file in \cref{lst:textwrap3}
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap3.tex}{\texttt{textwrap3.tex}}{lst:textwrap3}
+	\end{widepage}
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from \cref{lst:textwrap1-yaml},
+	\begin{commandshell}
+latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	then the output is as in \cref{lst:textwrap3-mod1}.
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap3-mod1.tex}{\texttt{textwrap3-mod1.tex}}{lst:textwrap3-mod1}
+	\end{widepage}
+
+	\begin{wrapfigure}[6]{r}[0pt]{8cm}
+		\cmhlistingsfromfile[style=textWrapOptionsAll]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+	\end{wrapfigure}
+	The text wrapping routine of \texttt{latexindent.pl} is performed by the \texttt{Text::Wrap} module, which provides a
+	\texttt{separator} feature to separate lines with characters other than a new line (see \cite{textwrap}). By default,
+	the separator is empty (see \cref{lst:textWrapOptionsAll}), but you can change it as you see fit.
+
+	For example starting with the file in \cref{lst:textwrap4}
+
+	\cmhlistingsfromfile{demonstrations/textwrap4.tex}{\texttt{textwrap4.tex}}{lst:textwrap4}
+	and using \texttt{textwrap2.yaml} from \cref{lst:textwrap2-yaml} with the following command
+	\begin{commandshell}
+latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
+\end{commandshell}
+	then we obtain the output in \cref{lst:textwrap4-mod2}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2.tex}{\texttt{textwrap4-mod2.tex}}{lst:textwrap4-mod2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/textwrap2.yaml}[MLB-TCB]{\texttt{textwrap2.yaml}}{lst:textwrap2-yaml}
+	\end{minipage}
+
+	\paragraph{Summary of text wrapping}
+		It is important to note the following:
+		\begin{itemize}
+			\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
+			\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
+			\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
+			      will likely exceed any maximum value set in the \texttt{columns} field.
+		\end{itemize}
 \subsection{Poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
 	one of four integer values\footnote{You might like to associate one of the four circles in the logo with one of the four given values}:
@@ -78,7 +169,7 @@ latexindent.pl myfile.tex -m
 	after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings
 	for \texttt{equation*} have been specified. Note that all poly-switches are \emph{off} by default.
 
-	\cmhlistingsfromfile[firstnumber=359,linerange={359-368},style=yaml-LST,numbers=left,]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
+	\cmhlistingsfromfile[style=modifylinebreaksEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
 \subsubsection{Adding line breaks (poly-switches set to $1$ or $2$)}
 	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$,
@@ -350,7 +441,6 @@ latexindent.pl -m env-mlb5.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,en
 
 			\cmhlistingsfromfile{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod9}{lst:env-mlb4-mod12} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
 		\end{widepage}
-
 
 	\paragraph{Blank lines}
 		Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
