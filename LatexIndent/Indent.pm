@@ -120,6 +120,9 @@ sub indent_body{
     # some objects can format their body to align at the & character
     $self->align_at_ampersand if ${$self}{lookForAlignDelims};
 
+    # possibly remove paragraph line breaks
+    $self->paragraphs_on_one_line if $is_m_switch_active;
+
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
         if(${$self}{body} =~ m/^\h*$/s){

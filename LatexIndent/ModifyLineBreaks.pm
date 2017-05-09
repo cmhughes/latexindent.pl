@@ -23,7 +23,7 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line/;
 our @allObjects;
 
 sub modify_line_breaks_body{
@@ -185,6 +185,50 @@ sub max_char_per_line{
         $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
     }
     ${$self}{body} = wrap('','',${$self}{body});
+}
+
+sub paragraphs_on_one_line{
+    return unless $is_m_switch_active;
+    my $self = shift;
+    return unless ${$self}{removeParagraphLineBreaks};
+    $self->logger("Checking ${$self}{name} for paragraphs") if $is_t_switch_active;
+
+    #print "---------------\n",${$self}{name},"\n*****************\n";
+    #print ${$self}{body},"\n==============\n";
+    my $paragraphCounter;
+    my @paragraphStorage;
+    ${$self}{body} =~ s/    
+                        ^
+                        (?!$tokens{blanklines})
+                        (\w
+                            (?:
+                                (?!
+                                    (?:$tokens{blanklines}|\\|\/) 
+                                ).
+                            )*?
+                         )
+                         (
+                            (?:
+                                ^(?:(?:\h*\R)|$tokens{blanklines}|$tokens{beginOfToken})
+                            )
+                            |
+                            \z
+                         )/
+                            $paragraphCounter++;
+                            push(@paragraphStorage,{id=>$tokens{paragraph}.$paragraphCounter.$tokens{endOfToken},value=>$1});
+
+                            #print "---------\nparagraph match: ",$1,"\n";
+                            #print "boundary match: ",$2,"\n===========\n";
+                            # replace comment with dummy text
+                            $tokens{paragraph}.$paragraphCounter.$tokens{endOfToken}."\n".$2;
+                        /xsmeg;
+
+    while( my $paragraph = pop @paragraphStorage){
+      my $paragraphID = ${$paragraph}{id};
+      my $paragraphValue = ${$paragraph}{value};
+      $paragraphValue =~ s/\R/ /sg;
+      ${$self}{body} =~ s/$paragraphID/$paragraphValue/; 
+    }
 }
 
 1;

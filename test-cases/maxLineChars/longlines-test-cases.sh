@@ -25,5 +25,8 @@ done
 
 # verbatim
 latexindent.pl -s -m verbatim-long-lines.tex -o verbatim-long-lines-mod1.tex -l=text-wrap-1.yaml
+
+# remove paragraph line breaks
+latexindent.pl -m jowens-short-multi-line.tex -l removeBodyLineBreaks.yaml -o jowens-short-multi-line-one.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise

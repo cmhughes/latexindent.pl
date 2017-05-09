@@ -234,6 +234,7 @@ sub get_indentation_settings_for_this_object{
                         BodyStartsOnOwnLine=>${$self}{BodyStartsOnOwnLine},
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
+                        removeParagraphLineBreaks=>${$self}{removeParagraphLineBreaks},
                       );
 
         # don't forget alignment settings!
@@ -315,6 +316,9 @@ sub modify_line_breaks_settings{
                                     toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
       }
+
+    # paragraph line break settings
+    ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all};
     return;
 }
 
