@@ -188,13 +188,10 @@ sub max_char_per_line{
 }
 
 sub paragraphs_on_one_line{
-    return unless $is_m_switch_active;
     my $self = shift;
     return unless ${$self}{removeParagraphLineBreaks};
-    $self->logger("Checking ${$self}{name} for paragraphs") if $is_t_switch_active;
+    $self->logger("Checking ${$self}{name} for paragraphs (see removeParagraphLineBreaks)") if $is_t_switch_active;
 
-    #print "---------------\n",${$self}{name},"\n*****************\n";
-    #print ${$self}{body},"\n==============\n";
     my $paragraphCounter;
     my @paragraphStorage;
     ${$self}{body} =~ s/    
@@ -203,31 +200,28 @@ sub paragraphs_on_one_line{
                         (\w
                             (?:
                                 (?!
-                                    (?:$tokens{blanklines}|\\|\/) 
+                                    (?:$tokens{blanklines}|\\par) 
                                 ).
                             )*?
                          )
                          (
                             (?:
-                                ^(?:(?:\h*\R)|$tokens{blanklines}|$tokens{beginOfToken})
+                                ^(?:(\h*\R)|\\par|$tokens{blanklines}|$tokens{beginOfToken})
                             )
                             |
-                            \z
+                            \z      # end of string
                          )/
                             $paragraphCounter++;
                             push(@paragraphStorage,{id=>$tokens{paragraph}.$paragraphCounter.$tokens{endOfToken},value=>$1});
 
-                            #print "---------\nparagraph match: ",$1,"\n";
-                            #print "boundary match: ",$2,"\n===========\n";
                             # replace comment with dummy text
-                            $tokens{paragraph}.$paragraphCounter.$tokens{endOfToken}."\n".$2;
+                            $tokens{paragraph}.$paragraphCounter.$tokens{endOfToken}.$2;
                         /xsmeg;
 
     while( my $paragraph = pop @paragraphStorage){
-      my $paragraphID = ${$paragraph}{id};
-      my $paragraphValue = ${$paragraph}{value};
-      $paragraphValue =~ s/\R/ /sg;
-      ${$self}{body} =~ s/$paragraphID/$paragraphValue/; 
+      # remove all line breaks from paragraph, except for any at the very end
+      ${$paragraph}{value} =~ s/\R(?!\z)/ /sg; 
+      ${$self}{body} =~ s/${$paragraph}{id}/${$paragraph}{value}/; 
     }
 }
 

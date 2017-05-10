@@ -377,6 +377,14 @@ modifyLineBreaks:
         separator: ""
     removeParagraphLineBreaks:
         all: 0
+        environments: 
+            quotation: 0
+        ifElseFi: 0
+        optionalArguments: 0
+        mandatoryArguments: 0
+        items: 0
+        specialBeginEnd: 0
+        masterDocument: 0
     environments:
         BeginStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0

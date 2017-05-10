@@ -67,6 +67,6 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
     $switches{readLocalSettings} = 'localSettings.yaml';
 }
 
-my $document = LatexIndent::Document->new(name=>"masterdocument",fileName=>$ARGV[0],switches=>\%switches);
+my $document = LatexIndent::Document->new(name=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches);
 $document->latexindent;
 exit(0);

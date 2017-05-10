@@ -23,7 +23,7 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/logger output_logfile processSwitches/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -196,6 +196,12 @@ sub find_objects{
     } else {
         $self->logger("No objects found.");
         return;
+    }
+
+    # documents without preamble need a manual call to the paragraph_one_line routine
+    if ($is_m_switch_active and !${$self}{preamblePresent}){
+        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
+        $self->paragraphs_on_one_line ; 
     }
 
     # logfile information
