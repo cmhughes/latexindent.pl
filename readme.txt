@@ -1,4 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    latexindent.pl, version 3.0.2, 2017-05-12
+
     PERL script to indent code within environments, and align delimited 
     environments in .tex files.
 
@@ -24,7 +26,7 @@ FOR COMPLETE DETAILS, PLEASE SEE documentation/latexindent.pdf
 
 Note: latexindent.exe was created using 
 
-      pp -o latexindent.exe latexindent.pl
+      perl ppp.pl -u -o latexindent.exe latexindent.pl
 
       using the Par::Packer perl module.
 

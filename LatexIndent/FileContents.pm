@@ -109,7 +109,7 @@ sub find_file_contents_environments_and_preamble{
     # that the body has a preamble
     my $preambleRegExp = qr/
                         (.*?)
-                        (\R*)?            # linebreaks at end of body into $2
+                        (\R*\h*)?            # linebreaks at end of body into $2
                         \\begin\{document\}
                 /sx;
     my $preamble = q();

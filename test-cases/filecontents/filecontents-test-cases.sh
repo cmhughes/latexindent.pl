@@ -4,6 +4,8 @@ loopmax=0
 
 [[ $silentMode == 0 ]] && set -x 
 
+# simplest preamble
+latexindent.pl -s simplest.tex -o simplest-out.tex
 # first test case
 latexindent.pl -s filecontents1.tex -o filecontents1-default.tex
 latexindent.pl -s filecontents1.tex -o filecontents1-indent-preamble.tex -l=indentPreambleYes.yaml
