@@ -2,6 +2,7 @@
 # A little script to help me prepare the bundle for ctan
 
 # script
+cd ../
 mkdir latexindent
 cp latexindent.pl latexindent
 cp latexindent.exe latexindent
