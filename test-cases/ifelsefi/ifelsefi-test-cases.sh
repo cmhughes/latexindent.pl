@@ -73,6 +73,8 @@ latexindent.pl -s -m -l=ifelsefi-add-comments-all.yaml ifelsefi-one-line-mk1.tex
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditionalIndentGlobal.yaml -o=ifelsefi-multiple-nested-global.tex
 # indentRules
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
+# ifx
+latexindent.pl -s ifx-bug.tex -o ifx-bug-out.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit
