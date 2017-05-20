@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        paragraphsStopAt:
+            heading: 1

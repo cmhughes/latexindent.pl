@@ -23,8 +23,10 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line/;
-our @allObjects;
+use LatexIndent::Item qw/$listOfItems/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
+our $paragraphRegExp = q();
+
 
 sub modify_line_breaks_body{
     my $self = shift;
@@ -187,14 +189,30 @@ sub max_char_per_line{
     ${$self}{body} = wrap('','',${$self}{body});
 }
 
-sub paragraphs_on_one_line{
+sub construct_paragraph_reg_exp{
     my $self = shift;
-    return unless ${$self}{removeParagraphLineBreaks};
-    $self->logger("Checking ${$self}{name} for paragraphs (see removeParagraphLineBreaks)") if $is_t_switch_active;
 
-    my $paragraphCounter;
-    my @paragraphStorage;
-    ${$self}{body} =~ s/    
+    my $stopAtRegExp = q();
+    while( my ($paragraphStopAt,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{paragraphsStopAt}}){
+        if($yesNo){
+            # the headings (chapter, section, etc) need a slightly special treatment
+            $paragraphStopAt = "afterHeading" if($paragraphStopAt eq "heading");
+
+            # output to log file
+            $self->logger("The paragraph-stop regexp WILL include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if $is_t_switch_active ;
+
+            # update the regexp
+            if($paragraphStopAt eq "items"){
+                $stopAtRegExp .= "|(?:\\\\(?:".$listOfItems."))";
+            } else {
+                $stopAtRegExp .= "|(?:".$tokens{$paragraphStopAt}."\\d+)";
+            }
+        } else {
+            $self->logger("The paragraph-stop regexp won't include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if $is_t_switch_active ;
+        }
+    }
+
+    $paragraphRegExp = qr/
                         ^
                         (?!$tokens{blanklines})
                         (\w
@@ -206,11 +224,29 @@ sub paragraphs_on_one_line{
                          )
                          (
                             (?:
-                                ^(?:(\h*\R)|\\par|$tokens{blanklines}|$tokens{beginOfToken})
+                                ^(?:(\h*\R)|\\par|$tokens{blanklines}$stopAtRegExp)
                             )
                             |
                             \z      # end of string
-                         )/
+                         )/sxm;
+
+    $self->logger("The paragraph-stop-regexp is:",'heading') if $is_tt_switch_active ;
+    $self->logger($paragraphRegExp) if $is_tt_switch_active ;
+}
+
+sub paragraphs_on_one_line{
+    my $self = shift;
+    return unless ${$self}{removeParagraphLineBreaks};
+
+    # alignment at ampersand can take priority
+    return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{alignAtAmpersandTakesPriority});
+
+    $self->logger("Checking ${$self}{name} for paragraphs (see removeParagraphLineBreaks)") if $is_t_switch_active;
+
+    my $paragraphCounter;
+    my @paragraphStorage;
+
+    ${$self}{body} =~ s/$paragraphRegExp/
                             $paragraphCounter++;
                             push(@paragraphStorage,{id=>$tokens{paragraph}.$paragraphCounter.$tokens{endOfToken},value=>$1});
 

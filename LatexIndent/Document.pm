@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
@@ -117,7 +117,7 @@ sub construct_regular_expressions{
     $self->construct_key_equals_values_regexp;
     $self->construct_grouping_braces_brackets_regexp;
     $self->construct_unnamed_grouping_braces_brackets_regexp;
-
+    $self->construct_paragraph_reg_exp if $is_m_switch_active;
 }
 
 sub output_indented_text{
@@ -190,18 +190,18 @@ sub find_objects{
     $self->logger('looking for SPECIAL begin/end');
     $self->find_special;
 
+    # documents without preamble need a manual call to the paragraph_one_line routine
+    if ($is_m_switch_active and !${$self}{preamblePresent}){
+        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
+        $self->paragraphs_on_one_line ; 
+    }
+
     # if there are no children, return
     if(${$self}{children}){
         $self->logger("Objects have been found.",'heading');
     } else {
         $self->logger("No objects found.");
         return;
-    }
-
-    # documents without preamble need a manual call to the paragraph_one_line routine
-    if ($is_m_switch_active and !${$self}{preamblePresent}){
-        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
-        $self->paragraphs_on_one_line ; 
     }
 
     # logfile information

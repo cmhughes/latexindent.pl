@@ -62,7 +62,7 @@ implementation of PPR using the graph primitives and functors we design. We upda
 \begin{equation}
 	\textit{PPR}(v_i) = \left\{
 	\begin{array}{l l}
-		(1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in 	\textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} &
+		(1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in \textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} &
 		\text{$v_i$ is seed}\\
 		\delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)}
 		\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                                                                                  & \text{otherwise}
@@ -77,10 +77,8 @@ The PPR algorithm starts by initializing problem data (line~\ref{alg:ppr:problem
 	\begin{algorithmic}[1]
 		\Procedure{Set\_Problem\_Data}{$G, P, \textit{seed}, \textit{delta}$}
 		\label{alg:ppr:problemdata}
-		\State $P.\textit{ranks\_curr}[1..G.\textit{verts}] \gets
-			\frac{1}{N}$
-		\State $P.\textit{src} \gets \textit{seed}, P.\textit{delta} \gets
-			\textit{delta}$
+		\State $P.\textit{ranks\_curr}[1..G.\textit{verts}] \gets \frac{1}{N}$
+		\State $P.\textit{src} \gets \textit{seed}, P.\textit{delta} \gets \textit{delta}$
 		\State $P.\textit{frontier.Insert}(G.\textit{nodes})$
 		\EndProcedure
 
@@ -91,22 +89,16 @@ The PPR algorithm starts by initializing problem data (line~\ref{alg:ppr:problem
 		\EndProcedure
 
 		\Procedure{UpdatePPRValue}{$\textit{node}\_\textit{id}, P$}
-		\State $P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]
-			\gets (P.\textit{delta} \cdot
-			P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]) +
-			(P.\textit{src} == \textit{node}\_\textit{id}) ? (1.0 - P.\textit{delta}) :
-			0$ \label{alg:ppr:seed}
-		\State $\textit{diff} \gets
-			\textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr
+		\State $P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}] \gets (P.\textit{delta} \cdot
+			P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]) + (P.\textit{src} == \textit{node}\_\textit{id}) ? (1.0 - P.\textit{delta}) : 0$ \label{alg:ppr:seed}
+		\State $\textit{diff} \gets \textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr
 			}[\textit{node}\_\textit{id}])$
 		\State \textbf{return} $\textit{diff} > P.\textit{threshold}$
 		\label{alg:ppr:filter}
 		\EndProcedure
 
-		\Procedure{Compute\_PPR}{$G,P,\textit{seed}, \textit{delta},
-				\textit{max\_iter}$}
-		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed},
-				\textit{delta}$}
+		\Procedure{Compute\_PPR}{$G,P,\textit{seed}, \textit{delta}, \textit{max\_iter}$}
+		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed}, \textit{delta}$}
 		\While {$P.\textit{frontier.Size}() > 0$}
 		\State \Call {GraphTraversal}{$G,P,\textit{DistributePPRValue}$}
 		\State \Call {Filtering}{$G,P,\textit{UpdatePPRValue}$}
@@ -137,12 +129,10 @@ In the Money algorithm, we also initialize problem data first (line~\ref{alg:mon
 \begin{algorithm}
 	\caption{Twitter's Money Algorithm} \label{alg:money}
 	\begin{algorithmic}[1]
-		\Procedure{Set\_Problem\_Data}{$G, P, \textit{seed},
-				\textit{alpha}$}\label{alg:money:problemdata}
+		\Procedure{Set\_Problem\_Data}{$G, P, \textit{seed}, \textit{alpha}$}\label{alg:money:problemdata}
 		\State $P.\textit{relevance\_curr}[1..G.\textit{verts}] \gets 0$
 		\State $P.\textit{sim\_curr}[1..G.\textit{verts}] \gets 0$
-		\State $P.\textit{src} \gets \textit{seed}, P.\textit{alpha} \gets
-			\textit{alpha}$
+		\State $P.\textit{src} \gets \textit{seed}, P.\textit{alpha} \gets \textit{alpha}$
 		\State $P.\textit{sim\_curr}[\textit{seed}] \gets 1$
 		\State $P.\textit{frontier.Insert}(G.\textit{cot\_queue})$
 		\EndProcedure
@@ -154,18 +144,14 @@ In the Money algorithm, we also initialize problem data first (line~\ref{alg:mon
 		\EndProcedure
 
 		\Procedure{DistributeSim}{$s\_id, d\_id, P$}
-		\State $val \gets (1-P.\textit{alpha}) \cdot
-			\frac{P.\textit{relevance\_curr}[d\_\textit{id}]}{P.\textit{in\_degree}[d\_
-					\textit{id}]} + (P.\textit{src} == s\_\textit{id}) ?
-			(\frac{P.\textit{alpha}}{P.\textit{out\_degree}[s\_\textit{id}]}) : 0$
+		\State $val \gets (1-P.\textit{alpha}) \cdot \frac{P.\textit{relevance\_curr}[d\_\textit{id}]}{P.\textit{in\_degree}[d\_ \textit{id}]} + (P.\textit{src} == s\_\textit{id}) ? (\frac{P.\textit{alpha}}{P.\textit{out\_degree}[s\_\textit{id}]}) : 0$
 		\label{alg:money:similarity}
 		\State $\textit{atomicAdd}(P.\textit{sim\_next}[d\_\textit{id}],
 			\textit{val})$
 		\EndProcedure
 
 		\Procedure{Compute\_Money}{$G,P,\textit{seed}, \textit{alpha}$}
-		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed},
-				\textit{alpha}$}
+		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed}, \textit{alpha}$}
 		\For {$iter\text{\raisebox{.4ex}{\tiny{++}}} < 1/\textit{alpha}$}
 		\State \Call {GraphTraversal}{$G,P,\textit{DistributeRelevance}$}
 		\State $swap(P.\textit{relevance\_next}, P.\textit{relevance\_curr})$ \label{alg:money:swaprel}
@@ -186,7 +172,10 @@ We ran all experiments in this paper on a Linux workstation with 2 $\times$ 2.53
 	\begin{tabular}{*{6}{l}}
 		\toprule Dataset   & Vertices & Edges  \\
 		\midrule wiki-Vote & 7.1k     & 103.7k \\
-		twitter-SNAP       & 81.3k    & 2.4M   \\ gplus-SNAP         & 107.6k   & 30.5M  \\ twitter09          & 30.7M    & 680M   \\ \bottomrule
+		twitter-SNAP       & 81.3k    & 2.4M   \\
+		gplus-SNAP         & 107.6k   & 30.5M  \\
+		twitter09          & 30.7M    & 680M   \\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -198,7 +187,10 @@ We ran all experiments in this paper on a Linux workstation with 2 $\times$ 2.53
 	\begin{tabular}{*{6}{r}}
 		\toprule Time (ms) & wiki-Vote & twitter & gplus & twitter09 \\
 		\midrule PPR       & 0.45      & 0.84    & 4.74  & 832.69    \\
-		CoT                & 0.54      & 1.28    & 2.11  & 51.61     \\ Money              & 2.70      & 5.16    & 18.56 & 158.37    \\ Total              & 4.37      & 8.36    & 26.57 & 1044.99   \\ \bottomrule
+		CoT                & 0.54      & 1.28    & 2.11  & 51.61     \\
+		Money              & 2.70      & 5.16    & 18.56 & 158.37    \\
+		Total              & 4.37      & 8.36    & 26.57 & 1044.99   \\
+		\bottomrule
 	\end{tabular}
 \end{table}
 
@@ -220,7 +212,15 @@ We chose to use the Cassovary graph library for our CPU performance comparison. 
 		\midrule Step (runtime) & Cassovary & GPU & Cassovary & GPU & Cassovary
 		& GPU & Cassovary & GPU\\
 		\midrule PPR (ms) & 418  & 0.45 & 480  & 0.84 & 463   & 4.74  & 884   &
-		832.69\\ CoT (ms)          & 262  & 0.54 & 2173 & 1.28 & 25616 & 2.11  & 2192  & 51.61 \\ Money/SALSA (ms)  & 357  & 2.70 & 543  & 5.16 & 2023  & 18.56 & 11216 &        158.37\\ Total (ms)        & 1037 & 4.37 & 3196 & 8.36 & 28102 & 26.57 & 14292 &        1044.99\\ Speedup & \multicolumn{2}{r}{235.7} & \multicolumn{2}{r}{380.5} & \multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}\\ \bottomrule
+		832.69\\
+		CoT (ms)          & 262  & 0.54 & 2173 & 1.28 & 25616 & 2.11  & 2192  & 51.61 \\
+		Money/SALSA (ms)  & 357  & 2.70 & 543  & 5.16 & 2023  & 18.56 & 11216 &
+		158.37\\
+		Total (ms)        & 1037 & 4.37 & 3196 & 8.36 & 28102 & 26.57 & 14292 &
+		1044.99\\
+		Speedup & \multicolumn{2}{r}{235.7} & \multicolumn{2}{r}{380.5} &
+		\multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}\\
+		\bottomrule
 	\end{tabular}
 \end{table*}
 

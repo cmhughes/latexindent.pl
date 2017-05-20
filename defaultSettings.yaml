@@ -377,6 +377,7 @@ modifyLineBreaks:
         separator: ""
     removeParagraphLineBreaks:
         all: 0
+        alignAtAmpersandTakesPriority: 1
         environments: 
             quotation: 0
         ifElseFi: 0
@@ -384,7 +385,17 @@ modifyLineBreaks:
         mandatoryArguments: 0
         items: 0
         specialBeginEnd: 0
+        afterHeading: 0
+        filecontents: 0
         masterDocument: 0
+        paragraphsStopAt:
+            environments: 1
+            commands: 0
+            ifElseFi: 0
+            items: 0
+            specialBeginEnd: 0
+            heading: 0
+            filecontents: 0
     environments:
         BeginStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0

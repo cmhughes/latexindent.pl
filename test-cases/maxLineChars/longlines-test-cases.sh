@@ -66,5 +66,23 @@ latexindent.pl -m -s unnamed-group-braces.tex -l removeParaLineBreaks0.yaml -o u
 
 # the file that started this issue
 latexindent.pl -m -s jowens-long-mod-4.tex -l removeParaLineBreaks0.yaml -o jowens-long-para0.tex
+
+# test paragraph stop routine
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml -o jowens-short-multi-line-stop-mod0.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtCommands.yaml -o jowens-short-multi-line-stop-mod1.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,noStopParaAtEnvironments.yaml -o jowens-short-multi-line-stop-mod2.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtIfElseFi.yaml -o jowens-short-multi-line-stop-mod4.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtItem.yaml -o jowens-short-multi-line-stop-mod5.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtSpecial.yaml -o jowens-short-multi-line-stop-mod6.tex
+# headings
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,../headings/levels1.yaml -o jowens-short-multi-line-stop-mod7.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,../headings/levels1.yaml,stopParaAtHeadings.yaml -o jowens-short-multi-line-stop-mod8.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,../headings/levels1.yaml,stopParaAtHeadings.yaml,removeParaLineBreaks17.yaml   -o jowens-short-multi-line-stop-mod9.tex
+# file contents
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtFileContents.yaml -o jowens-short-multi-line-stop-mod10.tex
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtFileContents.yaml,removeParaLineBreaks16.yaml  -o jowens-short-multi-line-stop-mod11.tex
+# double back slash
+latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,alignmentNotPriority.yaml -o jowens-short-multi-line-stop-mod12.tex
+
 git status
 [[ $noisyMode == 1 ]] && makenoise

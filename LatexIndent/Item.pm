@@ -23,7 +23,7 @@ use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_items construct_list_of_items/;
+our @EXPORT_OK = qw/find_items construct_list_of_items $listOfItems/;
 our $itemCounter;
 our $listOfItems = q();
 our $itemRegExp; 
