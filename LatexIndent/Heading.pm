@@ -161,7 +161,7 @@ sub create_unique_id{
 
     $headingCounter++;
 
-    ${$self}{id} = "$tokens{heading}$headingCounter";
+    ${$self}{id} = "$tokens{afterHeading}$headingCounter";
     return;
 }
 

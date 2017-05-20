@@ -111,7 +111,7 @@ sub create_unique_id{
 
     $itemCounter++;
 
-    ${$self}{id} = "$tokens{item}$itemCounter";
+    ${$self}{id} = "$tokens{items}$itemCounter";
     return;
 }
 

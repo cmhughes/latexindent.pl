@@ -55,7 +55,7 @@ sub create_unique_id{
     my $self = shift;
 
     $groupingBracesCounter++;
-    ${$self}{id} = "$tokens{groupingBraces}$groupingBracesCounter";
+    ${$self}{id} = "$tokens{namedGroupingBracesBrackets}$groupingBracesCounter";
     return;
 }
 
