@@ -198,6 +198,9 @@ sub construct_paragraph_reg_exp{
             # the headings (chapter, section, etc) need a slightly special treatment
             $paragraphStopAt = "afterHeading" if($paragraphStopAt eq "heading");
 
+            # the comment need a slightly special treatment
+            $paragraphStopAt = "trailingComment" if($paragraphStopAt eq "comments");
+
             # output to log file
             $self->logger("The paragraph-stop regexp WILL include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if $is_t_switch_active ;
 
@@ -205,7 +208,7 @@ sub construct_paragraph_reg_exp{
             if($paragraphStopAt eq "items"){
                 $stopAtRegExp .= "|(?:\\\\(?:".$listOfItems."))";
             } else {
-                $stopAtRegExp .= "|(?:".$tokens{$paragraphStopAt}."\\d+)";
+                $stopAtRegExp .= "|(?:".($paragraphStopAt eq "trailingComment" ? "%" : q() ).$tokens{$paragraphStopAt}."\\d+)";
             }
         } else {
             $self->logger("The paragraph-stop regexp won't include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if $is_t_switch_active ;
@@ -214,7 +217,7 @@ sub construct_paragraph_reg_exp{
 
     $paragraphRegExp = qr/
                         ^
-                        (?!$tokens{blanklines})
+                        (?!$tokens{beginOfToken})
                         (\w
                             (?:
                                 (?!

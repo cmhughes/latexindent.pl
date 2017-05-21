@@ -83,6 +83,10 @@ latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.y
 latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,stopParaAtFileContents.yaml,removeParaLineBreaks16.yaml  -o jowens-short-multi-line-stop-mod11.tex
 # double back slash
 latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml,alignmentNotPriority.yaml -o jowens-short-multi-line-stop-mod12.tex
+# heading
+latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml -o jowens-follow-ups-mod0.tex
+latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml -o jowens-follow-ups-mod1.tex
+latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml,stopParaAtComments.yaml -o jowens-follow-ups-mod2.tex
 
 git status
 [[ $noisyMode == 1 ]] && makenoise

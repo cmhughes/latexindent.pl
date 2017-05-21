@@ -396,6 +396,7 @@ modifyLineBreaks:
             specialBeginEnd: 0
             heading: 0
             filecontents: 0
+            comments: 0
     environments:
         BeginStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0

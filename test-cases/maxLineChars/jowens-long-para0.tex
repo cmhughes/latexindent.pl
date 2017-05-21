@@ -66,7 +66,8 @@ implementation of PPR using the graph primitives and functors we design. We upda
 		\text{$v_i$ is seed}\\
 		\delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)}
 		\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                                                                                  & \text{otherwise}
-	\end{array} \right.
+	\end{array}
+	\right.
 \end{equation}
 where $\delta$ is a constant damping factor (typically set to 0.85), $d_\text{OUT}(v_j)$ is the number of outbound edges on vertex $v_j$, and $N$ is the total number of vertices in the graph.
 
@@ -91,7 +92,8 @@ The PPR algorithm starts by initializing problem data (line~\ref{alg:ppr:problem
 		\Procedure{UpdatePPRValue}{$\textit{node}\_\textit{id}, P$}
 		\State $P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}] \gets (P.\textit{delta} \cdot
 			P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]) + (P.\textit{src} == \textit{node}\_\textit{id}) ? (1.0 - P.\textit{delta}) : 0$ \label{alg:ppr:seed}
-		\State $\textit{diff} \gets \textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr
+		\State $\textit{diff} \gets
+			\textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr
 			}[\textit{node}\_\textit{id}])$
 		\State \textbf{return} $\textit{diff} > P.\textit{threshold}$
 		\label{alg:ppr:filter}
