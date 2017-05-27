@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in/;
@@ -236,6 +236,15 @@ sub  put_verbatim_back_in {
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatim}{${$child}{id}};
                 $self->logger("deleted key") if $is_t_switch_active;
+              } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
+                $self->logger("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+
+                # search for a version of the verbatim ID that may have line breaks 
+                my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
+                my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;  
+
+                # replace the line-broken verbatim ID with a non-broken verbatim ID
+                ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
               }
             }
     }
@@ -273,6 +282,15 @@ sub  put_verbatim_commands_back_in {
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatimCommands}{${$child}{id}};
                 $self->logger("deleted key") if $is_t_switch_active;
+              } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
+                $self->logger("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+
+                # search for a version of the verbatim ID that may have line breaks 
+                my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
+                my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;  
+
+                # replace the line-broken verbatim ID with a non-broken verbatim ID
+                ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
               }
             }
     }

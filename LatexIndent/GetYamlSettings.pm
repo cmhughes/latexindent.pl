@@ -234,6 +234,7 @@ sub get_indentation_settings_for_this_object{
                         BodyStartsOnOwnLine=>${$self}{BodyStartsOnOwnLine},
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
+                        removeParagraphLineBreaks=>${$self}{removeParagraphLineBreaks},
                       );
 
         # don't forget alignment settings!
@@ -275,12 +276,6 @@ sub alignment_at_ampersand_settings{
     #         spacesBeforeDoubleBackSlash: 2
     return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
 
-    ## check, for example,
-    ##   lookForAlignDelims:
-    ##      tabular:
-    ##         body: 1
-    #return unless $self->get_object_attribute_for_indentation_settings;
-    
     if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
       ${$self}{lookForAlignDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} : 1;
       ${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
@@ -308,13 +303,43 @@ sub modify_line_breaks_settings{
     # the following will *definitley* be in the array, so let's add them
     push(@toBeAssignedTo,("BeginStartsOnOwnLine","BodyStartsOnOwnLine","EndStartsOnOwnLine","EndFinishesWithLineBreak"));
 
-    # we can effeciently loop through the following
+    # we can efficiently loop through the following
     foreach (@toBeAssignedTo){
                     $self->get_every_or_custom_value(
                                     toBeAssignedTo=>$_,
                                     toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
       }
+
+    # paragraph line break settings
+    ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all};
+
+    return if(${$self}{removeParagraphLineBreaks});
+
+    # the removeParagraphLineBreaks can contain fields that are hashes or scalar, for example:
+    # 
+    # removeParagraphLineBreaks:
+    #     all: 0
+    #     environments: 0
+    # or
+    # removeParagraphLineBreaks:
+    #     all: 0
+    #     environments: 
+    #         quotation: 0
+
+    # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
+    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+
+    # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+    my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+
+    if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName} eq "HASH"){
+        $self->logger("$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
+        ${$self}{removeParagraphLineBreaks} = ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}}{$name}||0;
+    } else {
+        $self->logger("$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
+        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
+    }
     return;
 }
 

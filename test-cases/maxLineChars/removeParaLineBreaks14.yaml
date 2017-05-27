@@ -1,0 +1,8 @@
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        all: 0
+        masterDocument: 1
+    environments:
+        BeginStartsOnOwnLine: -1
+        myenv:
+            EndStartsOnOwnLine: -1

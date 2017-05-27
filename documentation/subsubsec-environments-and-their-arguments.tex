@@ -148,7 +148,7 @@ latexindent.pl myenv-args.tex -l myenv-rules4.yaml
 
 \yamltitle{noAdditionalIndentGlobal}*{fields}
 	\begin{wrapfigure}[6]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[firstnumber=247,linerange={247-248},style=yaml-LST,numbers=left]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{env-noAdditionalGlobal.yaml}}{lst:noAdditionalIndentGlobal:environments}
+		\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
 	\end{wrapfigure}
 	Assuming that your environment name is not found within neither \texttt{noAdditionalIndent} nor \texttt{indentRules}, the next
 	place that \texttt{latexindent.pl} will look is \texttt{noAdditionalIndentGlobal}, and in particular \emph{for the environments} key
@@ -205,7 +205,7 @@ latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
 
 \yamltitle{indentRulesGlobal}*{fields}
 	\begin{wrapfigure}[4]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[firstnumber=263,linerange={263-264},style=yaml-LST]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{env-indentRulesGlobal.yaml}}{lst:indentRulesGlobal:environments}
+		\cmhlistingsfromfile[style=indentRulesGlobalEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
 	\end{wrapfigure}
 	The final check that \texttt{latexindent.pl} will make is to look for \texttt{indentRulesGlobal} as detailed in \cref{lst:indentRulesGlobal:environments}; if you change the \texttt{environments}
 	field to anything involving horizontal space, say \lstinline!" "!, and then run the following commands

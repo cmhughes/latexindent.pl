@@ -106,7 +106,7 @@ sub create_unique_id{
     my $self = shift;
 
     $key_equals_values_braces_Counter++;
-    ${$self}{id} = "$tokens{key_equals_values_braces}$key_equals_values_braces_Counter";
+    ${$self}{id} = "$tokens{keyEqualsValuesBracesBrackets}$key_equals_values_braces_Counter";
     return;
 }
 

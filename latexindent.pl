@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.0.2, 2017-05-12
+#   latexindent.pl, version 3.1, 2017-05-27
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -67,6 +67,6 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
     $switches{readLocalSettings} = 'localSettings.yaml';
 }
 
-my $document = LatexIndent::Document->new(name=>"masterdocument",fileName=>$ARGV[0],switches=>\%switches);
+my $document = LatexIndent::Document->new(name=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches);
 $document->latexindent;
 exit(0);

@@ -1,0 +1,30 @@
+\paragraph{Datasets}
+We summarize the datasets we use for evaluation in Table~\ref{tab:dataset}. Soc-orkut (soc-ork), soc-livejournal1 (soc-lj), and hollywood-09 (h09) are three social graphs; indochina-04 (i04) is a crawled hyperlink graph from indochina web domains; rmat\_s22\_e64 (rmat-22), rmat\_s23\_e32 (rmat-23), and rmat\_s24\_e16
+(rmat-24) are three generated R-MAT graphs with similar vertex counts. All seven datasets are scale-free graphs with diameters of less than 30 and unevenly distributed node degrees (80\% of nodes have degree less than 64). Both rgg\_n\_24 (rgg) and roadnet\_USA (roadnet) datasets have large diameters with small and evenly distributed node degrees (most nodes have degree less than 12). soc-ork is from the Stanford Network Repository; soc-lj, i04, h09, and roadnet are from the UF Sparse Matrix Collection; rmat-22, rmat-23, rmat-24, and rgg are R-MAT and random geometric graphs we generated. For R-MAT, we use 16 as the edge factor, and the initiator parameters for the Kronecker graph generator are: $a=0.57,b=0.19,c=0.19,d=0.05$. This setting is the same as in the Graph 500 Benchmark. For random geometric graphs, we set the threshold parameter to 0.000548. The edge weight values (used in SSSP) for each dataset are uniform random values between 1 and 64.
+
+\begin{tabular}
+
+\end{tabular}
+\caption[Dataset description table.]{Dataset Description Table. Graph types are: r: real-world, g: generated, s: scale-free, and m: mesh-like. All datasets have been converted to undirected graphs. Self-loops and duplicated edges are removed.\label{tab:dataset}}
+
+\begin{description}
+	\item[vs.\ MapGraph] MapGraph is faster than Medusa on all but one
+	      test~\cite{Fu:2014:MAH} and Gunrock is faster than MapGraph on all tests: the geometric mean of Gunrock's speedups over MapGraph on BFS, SSSP, PageRank, and CC are 4.679, 12.85, 3.076, and 5.69, respectively.
+	\item[vs.\ CuSha] Gunrock outperforms CuSha on BFS and SSSP\@. For
+	      PageRank, Gunrock achieves comparable performance with no preprocessing when compared to CuSha's G-Shard data preprocessing, which serves as the main load-balancing module in CuSha.
+\end{description}
+
+\begin{table}
+	body
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Bucket identification}
+The choice of bucket identification directly impacts performance results of any multisplit method, including ours. We support user-defined bucket identifiers. These can be as simple as unary functions, or complicated functors with arbitrary local arguments. For example, one could utilize a functor which determines whether a key is prime or not. Our implementation is simple enough to let users easily change the bucket identifiers as they please.
+
+The main obstacles in achieving the speed of light performance are 1)~non-coalesced memory writes and 2)~the non-negligible cost that we have to pay to sweep through all elements and compute permutations. The more registers and shared memory that we have (fast local storage as opposed to the global memory), the easier it is to break the whole problem into larger subproblems and localize required computations as much as possible. This is particularly clear from our results on the GeForce GTX 1080 compared to the Tesla K40c, where our performance improvement is proportionally more than just the GTX 1080's global memory bandwidth improvement (presumably because of more available shared memory per SM).
+% \john{Important comment about previous sentence.}
+% Our achieved rates significantly outperform regular 32-bit radix sort (Table~\ref{table:reference}).
+\input{tex/tables/multisplit_rates}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Performance on different GPU microarchitectures}\label{subsec:perf_architecture}
+In our design we have not used any (micro)architecture-dependent optimizations and hence we do not expect radically different behavior on different GPUs, other than possible speedup differences based on the device's capability. Here, we briefly discuss some of the issues related to hardware differences that we observed in our experiments.

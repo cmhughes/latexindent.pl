@@ -165,7 +165,7 @@ sub create_unique_id{
     my $self = shift;
 
     $commandCounter++;
-    ${$self}{id} = "$tokens{command}$commandCounter";
+    ${$self}{id} = "$tokens{commands}$commandCounter";
     return;
 }
 

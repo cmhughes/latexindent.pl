@@ -97,7 +97,7 @@ sub create_unique_id{
     my $self = shift;
 
     $optionalArgumentCounter++;
-    ${$self}{id} = "$tokens{optionalArgument}$optionalArgumentCounter";
+    ${$self}{id} = "$tokens{optionalArguments}$optionalArgumentCounter";
     return;
 }
 

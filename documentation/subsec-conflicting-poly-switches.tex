@@ -105,7 +105,7 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 		\item next, the \texttt{one} environment is found; the line break ahead of \lstinline!\end{one}! is removed because \texttt{EndStartsOnOwnLine}
 		      is set to $-1$.
 	\end{itemize}
-	The indentation is done in Phase 2, and then in Phase 3, \emph{there is no option to add a line break after the \lstinline!end! statements}.
+	The indentation is done in Phase 2; in Phase 3 \emph{there is no option to add a line break after the \lstinline!end! statements}.
 	We can justify this by remembering that during Phase 3, the \texttt{one} environment will be found and processed first, followed
 	by the \texttt{two} environment. If the \texttt{two} environment were to add a line break after the \lstinline!\end{two}! statement, then
 	\texttt{latexindent.pl} would have no way of knowing how much indentation to add to the subsequent text (in this case, \lstinline!\end{one}!).

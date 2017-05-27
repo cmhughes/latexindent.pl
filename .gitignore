@@ -17,4 +17,5 @@ nytprof*
 documentation/*.pyg
 documentation/*.bbl
 documentation/*.blg
+documentation/latexindent.pdf
 *.out

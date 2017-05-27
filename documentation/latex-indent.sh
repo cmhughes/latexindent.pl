@@ -7,6 +7,6 @@ loopmax=1
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
 
-find . -maxdepth 1 -name "*.tex" -exec latexindent.pl -l -w -s {} \;
-find . -maxdepth 1 -name "*.bib" -exec latexindent.pl -l -w -s {} \;
+find . -maxdepth 1 -name "*.tex" -exec latexindent.pl -l -w -m -s {} \;
+find . -maxdepth 1 -name "*.bib" -exec latexindent.pl -l -w -m -s {} \;
 git status
