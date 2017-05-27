@@ -2,6 +2,9 @@
 # A little script to help me prepare the bundle for ctan
 
 # script
+git checkout master
+cd ../documentation
+arara latexindent
 cd ../
 mkdir latexindent
 cp latexindent.pl latexindent

@@ -93,17 +93,16 @@ copy myfile.bak4 to myfile.bak3
 
 \yamltitle{verbatimEnvironments}*{fields}
 
-
 	A field that contains a list of environments
 	that you would like left completely alone -- no indentation will be performed
 	on environments that you have specified in this field, see \cref{lst:verbatimEnvironments}.
 
-\begin{minipage}{.45\textwidth}
+	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
-\end{minipage}%
-\begin{minipage}{.45\textwidth}
+	\end{minipage}%
+	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
-\end{minipage}%
+	\end{minipage}%
 
 	Note that if  you put an environment in  \texttt{verbatimEnvironments}
 	and in other fields such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent}
