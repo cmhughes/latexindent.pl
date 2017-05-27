@@ -1,17 +1,33 @@
-# 
-# defaultSettings.yaml for latexindent.pl, version 3.0
+# defaultSettings.yaml for latexindent.pl, version 3.1, 2017-05-27
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
 # (or latexindent.exe if you're on Windows)
 #
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# See http://www.gnu.org/licenses/.
+# 
+# Chris Hughes, 2017
+# 
+# For all communication, please visit: https://github.com/cmhughes/latexindent.pl
+
+
 # You're welcome to change anything you like in here, but 
 # it would probably be better to have your own user settings 
 # files somewhere else- remember that this file may be overwritten
 # anytime that you update your distribution. Please see the manual
 # for details of how to setup your own settings files.
 #
-# Please read the manual first to understand what each switch does :)
+# Please read the manual first to understand what each switch does.
 
 # latexindent can be called without a file extension, 
 # e.g, simply
@@ -71,6 +87,7 @@ logFilePreferences:
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
+    minted: 1
 
 #  verbatim commands such as \verb! body !, \lstinline$something else$
 verbatimCommands:
@@ -155,6 +172,7 @@ lookForAlignDelims:
 indentAfterItems:
     itemize: 1
     enumerate: 1
+    description: 1
     list: 1
 
 # if you want to use other names for your items (such as, for example, part)
@@ -356,6 +374,31 @@ commandCodeBlocks:
 modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
+    textWrapOptions:
+        columns: 0
+        separator: ""
+    removeParagraphLineBreaks:
+        all: 0
+        alignAtAmpersandTakesPriority: 1
+        environments: 
+            quotation: 0
+        ifElseFi: 0
+        optionalArguments: 0
+        mandatoryArguments: 0
+        items: 0
+        specialBeginEnd: 0
+        afterHeading: 0
+        filecontents: 0
+        masterDocument: 0
+        paragraphsStopAt:
+            environments: 1
+            commands: 0
+            ifElseFi: 0
+            items: 0
+            specialBeginEnd: 0
+            heading: 0
+            filecontents: 0
+            comments: 0
     environments:
         BeginStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0

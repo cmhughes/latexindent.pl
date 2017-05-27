@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        all: 0
+        environments: 
+            document: 1
+        specialBeginEnd: 1

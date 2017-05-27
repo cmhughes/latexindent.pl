@@ -120,7 +120,7 @@ sub create_unique_id{
     my $self = shift;
 
     $environmentCounter++;
-    ${$self}{id} = "$tokens{environment}$environmentCounter";
+    ${$self}{id} = "$tokens{environments}$environmentCounter";
     return;
 }
 

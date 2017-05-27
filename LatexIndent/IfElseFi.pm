@@ -182,7 +182,7 @@ sub create_unique_id{
 
     $ifElseFiCounter++;
 
-    ${$self}{id} = "$tokens{ifelsefi}$ifElseFiCounter";
+    ${$self}{id} = "$tokens{ifElseFi}$ifElseFiCounter";
     return;
 }
 

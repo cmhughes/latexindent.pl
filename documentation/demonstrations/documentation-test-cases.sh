@@ -157,5 +157,25 @@ latexindent.pl -s pstricks1.tex -o pstricks1-indent-rules.tex -l defFunction.yam
 latexindent.pl -s tikz-node1.tex -o tikz-node1-default.tex
 latexindent.pl -s tikz-node1.tex -o tikz-node1-draw.tex -l=draw.yaml
 latexindent.pl -s tikz-node1.tex -o tikz-node1-no-to.tex -l=no-to.yaml
+
+# text wrap demonstration
+latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m
+latexindent.pl -s textwrap2.tex -o textwrap2-mod1.tex -l=textwrap1.yaml -m
+latexindent.pl -s textwrap3.tex -o textwrap3-mod1.tex -l=textwrap1.yaml -m
+latexindent.pl -s textwrap4.tex -o textwrap4-mod2.tex -l=textwrap2.yaml -m
+
+# remove paragraph line breaks
+latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m
+latexindent.pl -s shortlines.tex -o shortlines1-tws.tex -l=remove-para1.yaml,removeTWS-before.yaml  -m
+latexindent.pl -s shortlines-mand.tex -o shortlines-mand1.tex -l=remove-para1.yaml -m
+latexindent.pl -s shortlines-opt.tex -o shortlines-opt1.tex -l=remove-para1.yaml -m
+latexindent.pl -s shortlines-envs.tex -o shortlines-envs2.tex -l=remove-para2.yaml -m
+latexindent.pl -s shortlines-envs.tex -o shortlines-envs3.tex -l=remove-para3.yaml -m
+latexindent.pl -s shortlines-md.tex -o shortlines-md4.tex -l=remove-para4.yaml -m
+
+# paragraph stops at routine
+latexindent.pl -s sl-stop.tex -o sl-stop4.tex -l=remove-para4.yaml -m
+latexindent.pl -s sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml -m
+latexindent.pl -s sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml -m
 [[ $noisyMode == 1 ]] && makenoise
 git status

@@ -17,7 +17,8 @@ package LatexIndent::TrailingComments;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp/;
@@ -90,6 +91,24 @@ sub put_trailing_comments_back_in{
     while( my $comment = pop @trailingComments){
       my $trailingcommentID = ${$comment}{id};
       my $trailingcommentValue = ${$comment}{value};
+
+      # the -m switch can modify max characters per line, and trailing comment IDs can 
+      # be split across lines
+      if($is_m_switch_active and ${$self}{body} !~ m/%$trailingcommentID/m){
+            $self->logger("$trailingcommentID not found in body using /m matching, assuming it has been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+            my $trailingcommentIDwithLineBreaks;
+            
+            # construct a reg exp that contains possible line breaks in between each character
+            if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
+                $trailingcommentIDwithLineBreaks = join("\\".${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator}."?",split(//,$trailingcommentID));
+            } else {
+                $trailingcommentIDwithLineBreaks = join("\\R?",split(//,$trailingcommentID));
+            }
+            my $trailingcommentIDwithLineBreaksRegExp = qr/$trailingcommentIDwithLineBreaks/s;  
+
+            # replace the line-broken trailing comment ID with a non-broken trailing comment ID
+            ${$self}{body} =~ s/%$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
+      }
       if(${$self}{body} =~ m/%$trailingcommentID
                               (
                                   (?!          # not immediately preceeded by 

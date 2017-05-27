@@ -34,6 +34,9 @@ sub construct_headings_levels{
     # grab the heading levels
     my %headingsLevels = %{$masterSettings{indentAfterHeadings}};
 
+    # output to log file
+    $self->logger("Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)") if $is_t_switch_active ;
+
     # delete the values that have indentAfterThisHeading set to 0
     while( my ($headingName,$headingInfo)= each %headingsLevels){
         if(!${$headingsLevels{$headingName}}{indentAfterThisHeading}){
@@ -42,10 +45,10 @@ sub construct_headings_levels{
         } else {
             # *all heading* regexp, remembering put starred headings at the front of the regexp
             if($headingName =~ m/\*/){
-                 $self->logger("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *");
+                 $self->logger("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *") if $is_t_switch_active ;
                  $allHeadingsRegexp = $headingName.($allHeadingsRegexp eq '' ?q():"|$allHeadingsRegexp");
             } else {
-                 $self->logger("Putting $headingName at the END of the allHeadings regexp, as it contains a *");
+                 $self->logger("Putting $headingName at the END of the allHeadings regexp, as it contains a *") if $is_t_switch_active ;
                  $allHeadingsRegexp .= ($allHeadingsRegexp eq '' ?q():"|").$headingName ;
             }
         }
@@ -60,8 +63,8 @@ sub construct_headings_levels{
     # it could be that @sortedByLevels is empty;
     return if !@sortedByLevels;
 
-    $self->logger("All headings regexp: $allHeadingsRegexp",'heading'); 
-    $self->logger("Now to construct headings regexp for each level:",'heading'); 
+    $self->logger("All headings regexp: $allHeadingsRegexp",'heading') if $is_t_switch_active; 
+    $self->logger("Now to construct headings regexp for each level:",'heading') if $is_t_switch_active; 
 
     # loop through the levels, and create a regexp for each (min and max values are the first and last values respectively from sortedByLevels)
     for(my $i = ${$headingsLevels{$sortedByLevels[0]}}{level}; $i <= ${$headingsLevels{$sortedByLevels[-1]}}{level}; $i++ ){
@@ -72,10 +75,10 @@ sub construct_headings_levels{
             foreach(@tmp){
                # put starred headings at the front of the regexp
                if($_ =~ m/\*/){
-                    $self->logger("Putting $_ at the beginning of this regexp, as it contains a *");
+                    $self->logger("Putting $_ at the beginning of this regexp, as it contains a *") if $is_t_switch_active;
                     $headingsAtThisLevel = $_.($headingsAtThisLevel eq '' ?q():"|$headingsAtThisLevel");
                } else {
-                    $self->logger("Putting $_ at the END of this regexp, as it contains a *");
+                    $self->logger("Putting $_ at the END of this regexp, as it contains a *") if $is_t_switch_active;
                     $headingsAtThisLevel .= ($headingsAtThisLevel eq '' ?q():"|").$_ ;
                }
             }
@@ -161,7 +164,7 @@ sub create_unique_id{
 
     $headingCounter++;
 
-    ${$self}{id} = "$tokens{heading}$headingCounter";
+    ${$self}{id} = "$tokens{afterHeading}$headingCounter";
     return;
 }
 

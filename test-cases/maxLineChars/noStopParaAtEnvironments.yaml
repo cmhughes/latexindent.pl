@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        paragraphsStopAt:
+            environments: 0

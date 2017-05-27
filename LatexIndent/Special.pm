@@ -177,7 +177,7 @@ sub create_unique_id{
 
     $specialCounter++;
 
-    ${$self}{id} = "$tokens{special}$specialCounter";
+    ${$self}{id} = "$tokens{specialBeginEnd}$specialCounter";
     return;
 }
 

@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        all: 0
+        environments: 
+            document: 0
+        mandatoryArguments: 
+            mycommand: 1

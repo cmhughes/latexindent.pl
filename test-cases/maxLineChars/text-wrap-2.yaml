@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 4
+        separator: ""

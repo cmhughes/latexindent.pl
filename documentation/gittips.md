@@ -113,3 +113,9 @@ git add abc.pdf
 git commit -m "pdf now has correct gitinfo"
 
 ```
+combining last n commits
+=
+for example, to combine the last *two* commits:
+```
+git reset --soft HEAD~2 && git commit --edit -m"$(git log --format=%B --reverse HEAD..HEAD@{1})"
+```

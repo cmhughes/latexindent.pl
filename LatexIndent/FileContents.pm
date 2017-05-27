@@ -158,6 +158,8 @@ sub find_file_contents_environments_and_preamble{
             $preamble->unprotect_blank_lines;
             ${$self}{verbatim}{${$preamble}{id}} = $preamble;
         }
+    } else {
+        ${$self}{preamblePresent} = 0;
     }
 
     # loop through the fileContents array, check if it's in the preamble

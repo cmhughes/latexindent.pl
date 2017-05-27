@@ -23,11 +23,11 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/logger output_logfile processSwitches/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
@@ -87,6 +87,7 @@ sub operate_on_file{
     $self->find_aligned_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
+    $self->max_char_per_line;
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
@@ -116,7 +117,7 @@ sub construct_regular_expressions{
     $self->construct_key_equals_values_regexp;
     $self->construct_grouping_braces_brackets_regexp;
     $self->construct_unnamed_grouping_braces_brackets_regexp;
-
+    $self->construct_paragraph_reg_exp if $is_m_switch_active;
 }
 
 sub output_indented_text{
@@ -188,6 +189,12 @@ sub find_objects{
     # search for special begin/end
     $self->logger('looking for SPECIAL begin/end');
     $self->find_special;
+
+    # documents without preamble need a manual call to the paragraph_one_line routine
+    if ($is_m_switch_active and !${$self}{preamblePresent}){
+        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
+        $self->paragraphs_on_one_line ; 
+    }
 
     # if there are no children, return
     if(${$self}{children}){
