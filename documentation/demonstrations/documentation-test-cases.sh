@@ -173,5 +173,9 @@ latexindent.pl -s shortlines-envs.tex -o shortlines-envs2.tex -l=remove-para2.ya
 latexindent.pl -s shortlines-envs.tex -o shortlines-envs3.tex -l=remove-para3.yaml -m
 latexindent.pl -s shortlines-md.tex -o shortlines-md4.tex -l=remove-para4.yaml -m
 
+# paragraph stops at routine
+latexindent.pl -s sl-stop.tex -o sl-stop4.tex -l=remove-para4.yaml -m
+latexindent.pl -s sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml -m
+latexindent.pl -s sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml -m
 [[ $noisyMode == 1 ]] && makenoise
 git status

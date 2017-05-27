@@ -82,7 +82,7 @@ copy myfile.bak4 to myfile.bak3
 		\cmhlistingsfromfile[style=logFilePreferences,]{../defaultSettings.yaml}[width=.85\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 	\end{wrapfigure}
 	\texttt{latexindent.pl} writes information to \texttt{indent.log}, some
-	of which can be customised by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
+	of which can be customized by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
 	If you load your own user settings (see \vref{sec:indentconfig}) then \texttt{latexindent.pl} will
 	detail them in \texttt{indent.log}; you can choose not to have the details logged by switching
 	\texttt{showEveryYamlRead} to \texttt{0}. Once all of your settings have
@@ -93,19 +93,21 @@ copy myfile.bak4 to myfile.bak3
 
 \yamltitle{verbatimEnvironments}*{fields}
 
-	\begin{wrapfigure}[14]{r}[0pt]{6cm}
-		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
 
-		\vspace{.2cm}
-		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
-	\end{wrapfigure}
 	A field that contains a list of environments
 	that you would like left completely alone -- no indentation will be performed
 	on environments that you have specified in this field, see \cref{lst:verbatimEnvironments}.
 
-	Note that if  you put an environment in \\ \texttt{verbatimEnvironments}
+\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
+\end{minipage}%
+\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
+\end{minipage}%
+
+	Note that if  you put an environment in  \texttt{verbatimEnvironments}
 	and in other fields such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent}
-	then \texttt{latexindent.pl} will \emph{always} prioritize \\ \texttt{verbatimEnvironments}.
+	then \texttt{latexindent.pl} will \emph{always} prioritize  \texttt{verbatimEnvironments}.
 
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
@@ -350,7 +352,7 @@ latexindent.pl matrix1.tex
 	The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath} represents
 	\lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!. You can, of course,
 	rename these in your own YAML files (see \vref{sec:localsettings}); indeed, you
-	might like to set up your own specil begin and end statements.
+	might like to set up your own special begin and end statements.
 
 	A demonstration of the before-and-after results are shown in \cref{lst:specialbefore,lst:specialafter}.
 

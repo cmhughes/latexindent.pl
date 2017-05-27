@@ -1,7 +1,7 @@
 `PERL` script to indent code within environments, and align delimited 
 environments in `.tex`files.
 
-    latexindent.pl, version 3.0.2, 2017-05-12
+    latexindent.pl, version 3.1, 2017-05-27
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.1
+# defaultSettings.yaml for latexindent.pl, version 3.1, 2017-05-27
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -87,6 +87,7 @@ logFilePreferences:
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
+    minted: 1
 
 #  verbatim commands such as \verb! body !, \lstinline$something else$
 verbatimCommands:
@@ -171,6 +172,7 @@ lookForAlignDelims:
 indentAfterItems:
     itemize: 1
     enumerate: 1
+    description: 1
     list: 1
 
 # if you want to use other names for your items (such as, for example, part)
