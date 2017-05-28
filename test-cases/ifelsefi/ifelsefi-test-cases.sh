@@ -74,7 +74,7 @@ latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditio
 # indentRules
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
 # ifx
-latexindent.pl -s ifx-bug.tex -o ifx-bug-out.tex
+latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit
