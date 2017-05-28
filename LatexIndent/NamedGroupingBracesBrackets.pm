@@ -35,7 +35,7 @@ sub construct_grouping_braces_brackets_regexp{
     # store the regular expresssion for matching and replacing 
     $grouping_braces_regexp = qr/
                   (
-                     \h|\R|\{|\[|\$|\)
+                     \h|\R|\{|\[|\$|\)|\(
                   )
                   (
                    [0-9a-zA-Z@\*><]+?  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
