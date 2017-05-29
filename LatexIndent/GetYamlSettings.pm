@@ -14,7 +14,6 @@ package LatexIndent::GetYamlSettings;
 #	Chris Hughes, 2017
 #
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use strict;
 use warnings;
 use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -241,6 +240,7 @@ sub get_indentation_settings_for_this_object{
         ${${previouslyFoundSettings}{$storageName}}{lookForAlignDelims} = ${$self}{lookForAlignDelims} if(defined ${$self}{lookForAlignDelims});
         ${${previouslyFoundSettings}{$storageName}}{alignDoubleBackSlash} = ${$self}{alignDoubleBackSlash} if(defined ${$self}{alignDoubleBackSlash});
         ${${previouslyFoundSettings}{$storageName}}{spacesBeforeDoubleBackSlash} = ${$self}{spacesBeforeDoubleBackSlash} if(defined ${$self}{spacesBeforeDoubleBackSlash});
+        ${${previouslyFoundSettings}{$storageName}}{multiColumnGrouping} = ${$self}{multiColumnGrouping} if(defined ${$self}{multiColumnGrouping});
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -280,10 +280,12 @@ sub alignment_at_ampersand_settings{
       ${$self}{lookForAlignDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} : 1;
       ${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
       ${$self}{spacesBeforeDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} : -1;
+      ${$self}{multiColumnGrouping} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} : 0;
     } else {
       ${$self}{lookForAlignDelims} = 1;
       ${$self}{alignDoubleBackSlash} = 1;
       ${$self}{spacesBeforeDoubleBackSlash} = -1;
+      ${$self}{multiColumnGrouping} = 0;
     }
     return;
 }

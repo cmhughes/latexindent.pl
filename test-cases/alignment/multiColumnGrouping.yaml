@@ -1,0 +1,12 @@
+lookForAlignDelims:
+   tabular: 
+      delims: 1
+      alignDoubleBackSlash: 1
+      spacesBeforeDoubleBackSlash: 2
+      multiColumnGrouping: 1
+
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 1
+    endLogFileWith: '--------------' 
+    showGitHubInfoFooter: 0

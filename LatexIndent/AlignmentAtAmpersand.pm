@@ -201,24 +201,6 @@ sub align_at_ampersand{
     # output some of the info so far to the log file
     $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @columnSizes") if $is_t_switch_active;
 
-    # README: printf( formatting, expression)
-    #
-    #   formatting has the form %-50s & %-20s & %-19s
-    #   (the numbers have been made up for example)
-    #       the - symbols mean that each column should be left-aligned
-    #       the numbers represent how wide each column is
-    #       the s represents string
-    #       the & needs to be inserted
-
-    # join up the maximum string lengths using "s %-"
-    my $fmtstring = join("s & %-",@columnSizes);
-
-    # add %- to the beginning and an s to the end
-    $fmtstring = "%-".$fmtstring."s ";
-
-    # log file info
-    $self->logger("Formatting string is: $fmtstring",'heading') if $is_t_switch_active;
-
     # finally, reformat the body
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
@@ -226,7 +208,7 @@ sub align_at_ampersand{
             my $columnCount=0;
             my $tmpRow = q();
             foreach my $column (split(/(?<!\\)&/,${$_}{row})){
-                # grab the column width
+                # calculate the column width
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
 
@@ -256,10 +238,89 @@ sub align_at_ampersand{
                 my $horizontalSpaceToInsert = " "x (${$self}{spacesBeforeDoubleBackSlash});
                 ${$_}{row} =~ s/\h*\\\\/$horizontalSpaceToInsert\\\\/;
             }
-        }
+        } elsif(${$_}{row} =~ m/^\h*$/){
+            # if we have an empty row, it's possible that it originally had an end piece (e.g \\) and/or trailing comments
+            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+        } elsif(${$_}{row} =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping}){
+            # multiColumnGrouping
+            $self->logger("multiColumnGrouping specified for ${$self}{name}") if $is_t_switch_active;
 
-        # if we have an empty row, it's possible that it originally had an end piece (e.g \\) and/or trailing comments
-        if(${$_}{row} =~ m/^\h*$/){
+            # remove any trailing comments
+            if(${$_}{row} =~ m/$trailingCommentRegExp/ ){
+                ${$_}{row} =~ s/($trailingCommentRegExp)//;
+                ${$_}{trailingComment} = $1; 
+            }
+
+            # remove \\ and anything following it
+            if(${$_}{row} =~ m/(\\\\.*)/){
+                ${$_}{row} =~ s/(\\\\.*)//;
+                ${$_}{endPiece} = $1;
+            }
+
+            my $columnCount = 0;
+            my $tmpRow = q();
+            foreach my $column (split(/(?<!\\)&/,${$_}{row})){
+              #print "COLUMN: ",$column,"\n";
+                if($column =~ m/\\multicolumn\{(\d+)\}/){
+                    my $multiColSpan = $1;
+
+                    # remove leading space
+                    $column =~ s/^\h*//;
+
+                    # remove trailing space
+                    $column =~ s/\h*$//; 
+
+                    # calculate multicolumn width
+                    my $gcs  = Unicode::GCString->new($column);
+                    my $columnWidth = $gcs->columns();
+
+                    #print "multicolumn span: $multiColSpan, width: $columnWidth\n";
+                    my $columnMin = $columnCount;
+                    my $columnMax = $columnCount+$multiColSpan-1;
+                    my $groupingWidth = 0;
+                    foreach ($columnMin..$columnMax){
+                        $groupingWidth += $columnSizes[$_];
+                        #print "column index: $_, column max width: $columnSizes[$_]\n"
+                    }
+                    $groupingWidth += ($multiColSpan-1)*3;
+
+                    #print "grouping width: $groupingWidth\n";
+                    #print "multicolumn width: $columnWidth\n";
+                    # reset the padding
+                    my $padding = q();
+                    if($columnWidth  <= $groupingWidth){
+                       $padding = " " x ($groupingWidth - $columnWidth);
+                       #print "HERE: $column, padding: '$padding'\n";
+                    } elsif ($columnWidth > $groupingWidth){
+                       $columnSizes[$columnMax] += ($columnWidth - $groupingWidth);
+                    }
+                    $tmpRow .= $column.$padding." & ";
+
+                    $columnCount += $multiColSpan;
+                } else {
+                  #print "HERE HERE: $column\n";
+                    # calculate the column width
+                    my $gcs  = Unicode::GCString->new($column);
+                    my $columnWidth = $gcs->columns();
+
+                    # reset the padding
+                    my $padding = q();
+                    if($columnWidth  < $columnSizes[$columnCount]){
+                       $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+                    }
+
+                    $tmpRow .= $column.$padding." & ";
+                    $columnCount++;
+                }
+            }
+
+            # remove the final &
+            $tmpRow =~ s/\s&\s$/ /;
+
+            # replace the row with the formatted row
+            ${$_}{row} = $tmpRow;
+
+            # format the row, and put the trailing \\ and trailing comments back into the row
             ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
         }
     }

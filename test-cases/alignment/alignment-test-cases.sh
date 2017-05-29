@@ -58,4 +58,6 @@ for (( i=1 ; i <= 6 ; i++ ))
 do 
     latexindent.pl -s uni-code1.tex -o uni-code1-mod$i.tex -l=tabular$i.yaml
 done
+# multiColumnGrouping
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out.tex -l multiColumnGrouping.yaml
 git status
