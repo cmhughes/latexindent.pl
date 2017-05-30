@@ -158,7 +158,7 @@ sub align_at_ampersand{
 
         # remove space at the beginning of a row, surrounding &, and at the end of the row
         if(($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping){
-                $_ =~ s/\h*(?<!\\)&\h*/&/g;
+                $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
                 $_ =~ s/^\h*//g;
                 $_ =~ s/\h*$//g;
         }
