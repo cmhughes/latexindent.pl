@@ -155,29 +155,28 @@ sub align_at_ampersand{
 
         # switch for multiColumGrouping
         my $multiColumnGrouping = ($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping});
-
-        # remove space at the beginning of a row, surrounding &, and at the end of the row
-        if(($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping){
-                $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
-                $_ =~ s/^\h*//g;
-                $_ =~ s/\h*$//g;
-        }
-
-        # by default, assume that the current row will not be formatted
-        my $formatThisRow = 0;
+        my $alignRowsWithoutMaxDelims = ${$self}{alignRowsWithoutMaxDelims};
 
         # by default, the stripped row is simply the current row
         my $strippedRow = $_;
 
-        # measure column width if current number is equal to the maximum number
-        if($numberOfAmpersands == $maximumNumberOfAmpersands){
+        # loop through the columns
+        my $columnCount = 0;
+
+        # format switch off by default
+        my $formatRow = 0;
+
+        # need to have at least one ampersand
+        if($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) ){
+            # remove space at the beginning of a row, surrounding &, and at the end of the row
+            $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
+            $_ =~ s/^\h*//g;
+            $_ =~ s/\h*$//g;
 
             # if the line finishes with an &, then add an empty space,
             # otherwise the column count is off
             $_ .= ($_ =~ m/(?<!\\)&$/ ? " ":q());
 
-            # loop through the columns
-            my $columnCount = 0;
             $strippedRow = '';
             foreach my $column (split(/(?<!\\)&/,$_)){
                 # if a column has finished with a \ then we need to add a trailing space, 
@@ -188,23 +187,30 @@ sub align_at_ampersand{
                 # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
+                $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
                 $columnSizes[$columnCount] = $columnWidth if($columnWidth > $columnSizes[$columnCount]);
 
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
                 # move on to the next column
-                $columnCount++;
+                if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
+                    # update the columnCount to account for the multiColSpan
+                    # subtract 1 because of 0 array index in perl
+                    $columnCount += $1 - 1; 
+                } else {
+                    $columnCount++;
+                }
             }
 
-            # trigger the format switch
-            $formatThisRow = 1;
-        } 
+            # toggle the formatting switch
+            $formatRow = 1;
+        }
 
         # store the information
         push(@formattedBody,{
                             row=>$strippedRow,
-                            format=>$formatThisRow||$multiColumnGrouping,
+                            format=>$formatRow,
                             multiColumnGrouping=>$multiColumnGrouping,
                             endPiece=>($endPiece ? $endPiece :q() ),
                             trailingComment=>($trailingComments ? $trailingComments :q() )});
@@ -259,9 +265,15 @@ sub align_at_ampersand{
                     $columnCount += $multiColSpan - 1;
                 } else {
                     # compare the *current* column width with the *maximum* column width
-                    if($columnWidth  < $columnSizes[$columnCount]){
+                    if($columnWidth  <= $columnSizes[$columnCount]){
+                       $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+                    } else {
+                       # columns from a row in which there's not the $maximumNumberOfAmpersands 
+                       # should be accounted for at this stage
+                       $columnSizes[$columnCount] = $columnWidth;
                        $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
                     }
+
                 }
 
                 # either way, the row is formed of "COLUMN + PADDING"

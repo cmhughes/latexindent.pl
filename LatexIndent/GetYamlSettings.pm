@@ -241,6 +241,7 @@ sub get_indentation_settings_for_this_object{
         ${${previouslyFoundSettings}{$storageName}}{alignDoubleBackSlash} = ${$self}{alignDoubleBackSlash} if(defined ${$self}{alignDoubleBackSlash});
         ${${previouslyFoundSettings}{$storageName}}{spacesBeforeDoubleBackSlash} = ${$self}{spacesBeforeDoubleBackSlash} if(defined ${$self}{spacesBeforeDoubleBackSlash});
         ${${previouslyFoundSettings}{$storageName}}{multiColumnGrouping} = ${$self}{multiColumnGrouping} if(defined ${$self}{multiColumnGrouping});
+        ${${previouslyFoundSettings}{$storageName}}{alignRowsWithoutMaxDelims} = ${$self}{alignRowsWithoutMaxDelims} if(defined ${$self}{alignRowsWithoutMaxDelims});
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -281,11 +282,13 @@ sub alignment_at_ampersand_settings{
       ${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
       ${$self}{spacesBeforeDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} : -1;
       ${$self}{multiColumnGrouping} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} : 0;
+      ${$self}{alignRowsWithoutMaxDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} : 0;
     } else {
       ${$self}{lookForAlignDelims} = 1;
       ${$self}{alignDoubleBackSlash} = 1;
       ${$self}{spacesBeforeDoubleBackSlash} = -1;
       ${$self}{multiColumnGrouping} = 0;
+      ${$self}{alignRowsWithoutMaxDelims} = 0;
     }
     return;
 }

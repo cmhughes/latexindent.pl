@@ -4,6 +4,7 @@ lookForAlignDelims:
       alignDoubleBackSlash: 1
       spacesBeforeDoubleBackSlash: 2
       multiColumnGrouping: 1
+      alignRowsWithoutMaxDelims: 1
 
 logFilePreferences:
     showEveryYamlRead: 1
