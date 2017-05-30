@@ -106,8 +106,7 @@ sub modify_line_breaks_settings{
 }
 
 sub tasks_particular_to_each_object{
-    my $self = shift;
-#    $self->remove_leading_space;
+    return;
 }
 
 sub create_unique_id{
@@ -154,6 +153,16 @@ sub align_at_ampersand{
         # count the number of ampersands in the current row
         my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
 
+        # switch for multiColumGrouping
+        my $multiColumnGrouping = ($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping});
+
+        # remove space at the beginning of a row, surrounding &, and at the end of the row
+        if(($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping){
+                $_ =~ s/\h*(?<!\\)&\h*/&/g;
+                $_ =~ s/^\h*//g;
+                $_ =~ s/\h*$//g;
+        }
+
         # by default, assume that the current row will not be formatted
         my $formatThisRow = 0;
 
@@ -171,12 +180,6 @@ sub align_at_ampersand{
             my $columnCount = 0;
             $strippedRow = '';
             foreach my $column (split(/(?<!\\)&/,$_)){
-                # remove leading space
-                $column =~ s/^\h*//;
-
-                # remove trailing space
-                $column =~ s/\h*$//; 
-
                 # if a column has finished with a \ then we need to add a trailing space, 
                 # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
                 $column .= ($column =~ m/\\$/ ? " ": q());
@@ -201,8 +204,8 @@ sub align_at_ampersand{
         # store the information
         push(@formattedBody,{
                             row=>$strippedRow,
-                            format=>$formatThisRow||($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping}),
-                            multiColumnGrouping=>($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping}),
+                            format=>$formatThisRow||$multiColumnGrouping,
+                            multiColumnGrouping=>$multiColumnGrouping,
                             endPiece=>($endPiece ? $endPiece :q() ),
                             trailingComment=>($trailingComments ? $trailingComments :q() )});
     }
@@ -214,9 +217,15 @@ sub align_at_ampersand{
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
+            # set a columnCount, which will vary depending on multiColumnGrouping settings or not
             my $columnCount=0;
             my $tmpRow = q();
+
+            # loop through the columns
             foreach my $column (split(/(?<!\\)&/,${$_}{row})){
+                # calculate the width of the current column 
+                my $gcs  = Unicode::GCString->new($column);
+                my $columnWidth = $gcs->columns();
 
                 # reset the column padding
                 my $padding = q();
@@ -225,42 +234,37 @@ sub align_at_ampersand{
                 if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/){
                     my $multiColSpan = $1;
 
-                    # remove leading space
-                    $column =~ s/^\h*//;
-
-                    # remove trailing space
-                    $column =~ s/\h*$//; 
-
-                    # calculate the curren column width
-                    my $gcs  = Unicode::GCString->new($column);
-                    my $columnWidth = $gcs->columns();
-
+                    # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
+                    # the maximum column needs to account for this (subtract 1 because of 0 index in perl arrays)
                     my $columnMax = $columnCount+$multiColSpan-1;
+
+                    # groupingWidth contains the total width of column sizes grouped 
+                    # underneath the \multicolumn{} statement
                     my $groupingWidth = 0;
                     foreach ($columnCount..$columnMax){
                         $groupingWidth += $columnSizes[$_];
                     }
+
+                    # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
                     $groupingWidth += ($multiColSpan-1)*3;
 
+                    # set the padding
                     if($columnWidth  <= $groupingWidth){
                        $padding = " " x ($groupingWidth - $columnWidth);
-                    } elsif ($columnWidth > $groupingWidth){
+                    } else {
                        $columnSizes[$columnMax] += ($columnWidth - $groupingWidth);
                     }
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
                 } else {
-                    # calculate the curren column width
-                    my $gcs  = Unicode::GCString->new($column);
-                    my $columnWidth = $gcs->columns();
-
                     # compare the *current* column width with the *maximum* column width
                     if($columnWidth  < $columnSizes[$columnCount]){
                        $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
                     }
                 }
 
+                # either way, the row is formed of "COLUMN + PADDING"
                 $tmpRow .= $column.$padding." & ";
                 $columnCount++;
             }
