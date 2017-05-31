@@ -188,7 +188,7 @@ sub align_at_ampersand{
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
                 $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
-                $columnSizes[$columnCount] = $columnWidth if($columnWidth > $columnSizes[$columnCount]);
+                $columnSizes[$columnCount] = $columnWidth if( defined $columnSizes[$columnCount] and ($columnWidth > $columnSizes[$columnCount]) );
 
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
@@ -248,7 +248,7 @@ sub align_at_ampersand{
                     # underneath the \multicolumn{} statement
                     my $groupingWidth = 0;
                     foreach ($columnCount..$columnMax){
-                        $groupingWidth += $columnSizes[$_];
+                        $groupingWidth += $columnSizes[$_] if(defined $columnSizes[$_]);
                     }
 
                     # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
@@ -283,6 +283,11 @@ sub align_at_ampersand{
 
             # remove the final &
             $tmpRow =~ s/\s&\s$/ /;
+
+            # rows that don't contain the $maximumNumberOfAmpersands need extra padding
+            if( $columnCount != ($maximumNumberOfAmpersands+1) ){
+                $tmpRow .= " " x ($columnSizes[$_]+3) foreach ($columnCount..$#columnSizes);
+            }
 
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;

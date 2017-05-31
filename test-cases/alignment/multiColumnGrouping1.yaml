@@ -1,4 +1,4 @@
 lookForAlignDelims:
    tabular: 
-      multiColumnGrouping: 1
+      multiColumnGrouping: 0
       alignRowsWithoutMaxDelims: 1

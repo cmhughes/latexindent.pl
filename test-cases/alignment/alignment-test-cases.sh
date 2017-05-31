@@ -59,5 +59,13 @@ do
     latexindent.pl -s uni-code1.tex -o uni-code1-mod$i.tex -l=tabular$i.yaml
 done
 # multiColumnGrouping
+latexindent.pl -s tabular-karl.tex -o tabular-karl-default.tex
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out1.tex -l multiColumnGrouping1.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out2.tex -l multiColumnGrouping2.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s multicol-broken.tex -o multicol-broken-out.tex -l multiColumnGrouping.yaml
+[[ $silentMode == 0 ]] && set -x 
 git status
+[[ $noisyMode == 1 ]] && makenoise
