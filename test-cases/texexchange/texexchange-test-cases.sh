@@ -110,6 +110,11 @@ latexindent.pl -s 353559-egreg-1.tex -o 353559-egreg-1-default.tex -l indentPrea
 latexindent.pl -s 158638-cmhughes.tex -o=158638-cmhughes-default.tex -l indentPreamble.yaml
 latexindent.pl -s 158638-cmhughes.tex -o=158638-cmhughes-items.tex -l indentPreamble.yaml,158638-cmhughes.yaml
 
+# =======  multicolumn tag  =========
+# =======  multicolumn tag  =========
+# =======  multicolumn tag  =========
+latexindent.pl -s 372580.tex -o=372580-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========

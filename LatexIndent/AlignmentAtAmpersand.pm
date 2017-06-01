@@ -129,7 +129,7 @@ sub align_at_ampersand{
     }
 
     # create an array of zeros
-    my @columnSizes = (0) x ($maximumNumberOfAmpersands+1); 
+    my @maximumColumnWidth = (0) x ($maximumNumberOfAmpersands+1); 
 
     # array for the new body
     my @formattedBody;
@@ -166,6 +166,9 @@ sub align_at_ampersand{
         # format switch off by default
         my $formatRow = 0;
 
+        # store the column sizes for multicolumn measuring
+        my @columnSizes = ();
+
         # need to have at least one ampersand
         if($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) ){
             # remove space at the beginning of a row, surrounding &, and at the end of the row
@@ -188,10 +191,12 @@ sub align_at_ampersand{
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
                 $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
-                $columnSizes[$columnCount] = $columnWidth if( defined $columnSizes[$columnCount] and ($columnWidth > $columnSizes[$columnCount]) );
+                $maximumColumnWidth[$columnCount] = $columnWidth if( defined $maximumColumnWidth[$columnCount] and ($columnWidth > $maximumColumnWidth[$columnCount]) );
 
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
+
+                push(@columnSizes,$columnWidth); 
 
                 # move on to the next column
                 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
@@ -212,12 +217,13 @@ sub align_at_ampersand{
                             row=>$strippedRow,
                             format=>$formatRow,
                             multiColumnGrouping=>$multiColumnGrouping,
+                            columnSizes=>\@columnSizes,
                             endPiece=>($endPiece ? $endPiece :q() ),
                             trailingComment=>($trailingComments ? $trailingComments :q() )});
     }
 
     # output some of the info so far to the log file
-    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @columnSizes") if $is_t_switch_active;
+    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
 
     # finally, reformat the body
     foreach(@formattedBody){
@@ -247,10 +253,27 @@ sub align_at_ampersand{
                     # groupingWidth contains the total width of column sizes grouped 
                     # underneath the \multicolumn{} statement
                     my $groupingWidth = 0;
-                    foreach ($columnCount..$columnMax){
-                        $groupingWidth += $columnSizes[$_] if(defined $columnSizes[$_]);
+                    foreach my $j ($columnCount..$columnMax){
+                        my $maxValue = 0;
+                        foreach (@formattedBody){
+                            if(  defined @{${$_}{columnSizes}}[$j] 
+                                         and 
+                                 @{${$_}{columnSizes}}[$j] > $maxValue 
+                                         and
+                                     ${$_}{format} 
+                                         and 
+                                !${$_}{multiColumnGrouping}
+                                      ){
+                                $maxValue = @{${$_}{columnSizes}}[$j];
+#print "HERE: ",@{${$_}{columnSizes}}[$j],"\n" if();
+                            }
+                        }
+
+                        $maximumColumnWidth[$j] = $maxValue;
+                        $groupingWidth += $maxValue;
                     }
 
+#print "column: $column, columnWidth: $columnWidth, groupingWidth: $groupingWidth\n";
                     # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
                     $groupingWidth += ($multiColSpan-1)*3;
 
@@ -258,24 +281,28 @@ sub align_at_ampersand{
                     if($columnWidth  <= $groupingWidth){
                        $padding = " " x ($groupingWidth - $columnWidth);
                     } else {
-                       $columnSizes[$columnMax] += ($columnWidth - $groupingWidth);
+                      $maximumColumnWidth[$columnMax] += ($columnWidth - $groupingWidth);
                     }
+
+#print "padding: '$padding'\n";
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
                 } else {
+#print "column: $column, columnWidth: $columnWidth\n";
                     # compare the *current* column width with the *maximum* column width
-                    if($columnWidth  <= $columnSizes[$columnCount]){
-                       $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+                    if($columnWidth  <= $maximumColumnWidth[$columnCount]){
+                       $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
                     } else {
                        # columns from a row in which there's not the $maximumNumberOfAmpersands 
                        # should be accounted for at this stage
-                       $columnSizes[$columnCount] = $columnWidth;
-                       $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+                       $maximumColumnWidth[$columnCount] = $columnWidth;
+                       $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
                     }
 
                 }
 
+#print "padding: '$padding'\n";
                 # either way, the row is formed of "COLUMN + PADDING"
                 $tmpRow .= $column.$padding." & ";
                 $columnCount++;
@@ -286,7 +313,7 @@ sub align_at_ampersand{
 
             # rows that don't contain the $maximumNumberOfAmpersands need extra padding
             if( $columnCount != ($maximumNumberOfAmpersands+1) ){
-                $tmpRow .= " " x ($columnSizes[$_]+3) foreach ($columnCount..$#columnSizes);
+                $tmpRow .= " " x ($maximumColumnWidth[$_]+3) foreach ($columnCount..$#maximumColumnWidth);
             }
 
             # replace the row with the formatted row
