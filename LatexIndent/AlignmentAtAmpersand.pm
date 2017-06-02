@@ -196,13 +196,17 @@ sub align_at_ampersand{
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
-                push(@columnSizes,$columnWidth); 
+                $columnSizes[$columnCount] = $columnWidth; 
 
                 # move on to the next column
                 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
                     # update the columnCount to account for the multiColSpan
                     # subtract 1 because of 0 array index in perl
-                    $columnCount += $1 - 1; 
+                    for my $i (($columnCount+1)..($columnCount+$1)){
+#print "here: $i, 1 is $1\n";
+                        $columnSizes[$i] = -1; 
+                    }
+                    $columnCount += $1; 
                 } else {
                     $columnCount++;
                 }
@@ -255,38 +259,56 @@ sub align_at_ampersand{
                     # groupingWidth contains the total width of column sizes grouped 
                     # underneath the \multicolumn{} statement
                     my $groupingWidth = 0;
-                    foreach my $j ($columnCount..$columnMax){
-                        my $maxValue = 0;
-                        foreach (@formattedBody){
+                    my $maxGroupingWidth = 0;
+                    foreach (@formattedBody){
+                       $groupingWidth = 0;
+#print "----------\nrow: ${$_}{row}\ncolumn Sizes: ",join(":",@{${$_}{columnSizes}}),"\n===========\n";
+                        foreach my $j ($columnCount..$columnMax){
+#print "===========\ncolumnCount: $columnCount, j: $j, columnMax: $columnMax, column Sizes: ",join(": ",@{${$_}{columnSizes}}),"\n----------\n";
                             if(  defined @{${$_}{columnSizes}}[$j] 
                                          and 
-                                 @{${$_}{columnSizes}}[$j] > $maxValue 
+                                 @{${$_}{columnSizes}}[$j] >= 0
                                          and
                                      ${$_}{format} 
-                                         and 
-                                !${$_}{multiColumnGrouping}
+                                     #   and 
+                                     # !${$_}{multiColumnGrouping}
                                       ){
-                                $maxValue = @{${$_}{columnSizes}}[$j];
-#print "HERE: ",@{${$_}{columnSizes}}[$j],"\n" if();
+                                $groupingWidth += $maximumColumnWidth[$j]; 
+#print "------------\nrow ${$_}{row}\n columnSizes: @{${$_}{columnSizes}}[$j]\n============\n";
+                            } else {
+                                $groupingWidth = 0;
                             }
                         }
 
-                        $maximumColumnWidth[$j] = $maxValue;
-                        $groupingWidth += $maxValue;
+                        $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
+
+                        if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] > 0){
+                            @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
+#print "----------\nrow: ${$_}{row}\nmaximumColumnWidth: @maximumColumnWidth\ngrouping width: $groupingWidth\ncolumn sizes: @{${$_}{columnSizes}}\ncolumnWidth: $columnWidth\nmulti Col Padding: ",join(":",@{${$_}{multiColPadding}}),"\n";
+                        }
+
+
+                        #$maximumColumnWidth[$j] = $groupingWidth;
+                        #$groupingWidth += $totalSpannedWidth;
                     }
 
 #print "column: $column, columnWidth: $columnWidth, groupingWidth: $groupingWidth\n";
                     # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
-                    $groupingWidth += ($multiColSpan-1)*3;
+                    $maxGroupingWidth += ($multiColSpan-1)*3;
 
+#print "row: ${$_}{row}, grouping width: $groupingWidth\n ";
                     # set the padding
-                    if($columnWidth  <= $groupingWidth){
-                       $padding = " " x ($groupingWidth - $columnWidth);
+                    if($columnWidth  <= $maxGroupingWidth){
+                       $padding = " " x ($maxGroupingWidth - $columnWidth);
                     } else {
-                      $maximumColumnWidth[$columnMax] += ($columnWidth - $groupingWidth);
+                      #$maximumColumnWidth[$columnMax] += ($columnWidth - $groupingWidth);
                     }
 
-#print "padding: '$padding'\n";
+print "-------------\npadding: '$padding'\n";
+print "column: $column\n";
+print "columnWidth: $columnWidth\n";
+print "maxGroupingWidth: $maxGroupingWidth\n";
+print "max col width: ",join(":",@maximumColumnWidth),"\n*****************\n";
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
@@ -298,7 +320,7 @@ sub align_at_ampersand{
                     } else {
                        # columns from a row in which there's not the $maximumNumberOfAmpersands 
                        # should be accounted for at this stage
-                       $maximumColumnWidth[$columnCount] = $columnWidth;
+                       #$maximumColumnWidth[$columnCount] = $columnWidth;
                        $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
                     }
 
@@ -306,7 +328,7 @@ sub align_at_ampersand{
 
 #print "padding: '$padding'\n";
                 # either way, the row is formed of "COLUMN + PADDING"
-                $tmpRow .= $column.$padding." & ";
+                $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q())." & ";
                 $columnCount++;
             }
 
