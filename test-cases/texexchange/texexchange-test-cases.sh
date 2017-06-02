@@ -114,6 +114,8 @@ latexindent.pl -s 158638-cmhughes.tex -o=158638-cmhughes-items.tex -l indentPrea
 # =======  multicolumn tag  =========
 # =======  multicolumn tag  =========
 latexindent.pl -s 372580.tex -o=372580-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol1.tex -l ../alignment/multiColumnGrouping1.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol15.tex -l ../alignment/multiColumnGrouping1.yaml,../alignment/tabular5.yaml
 
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========

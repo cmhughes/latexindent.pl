@@ -225,6 +225,8 @@ sub align_at_ampersand{
     # output some of the info so far to the log file
     $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
 
+    my $maximumRowWidth = 0;
+
     # finally, reformat the body
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
@@ -309,28 +311,41 @@ sub align_at_ampersand{
             }
 
             # remove the final &
-            $tmpRow =~ s/\s&\s$/ /;
+            $tmpRow =~ s/\h&\h*$/ /;
+            $tmpRow =~ s/\h*$/ /;
 
-            # rows that don't contain the $maximumNumberOfAmpersands need extra padding
-            if( $columnCount != ($maximumNumberOfAmpersands+1) ){
-                $tmpRow .= " " x ($maximumColumnWidth[$_]+3) foreach ($columnCount..$#maximumColumnWidth);
-            }
+            my $gcs  = Unicode::GCString->new($tmpRow);
+            ${$_}{rowWidth} = $gcs->columns();
 
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;
 
-            # format the row, and put the trailing \\ and trailing comments back into the row
-            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+            $maximumRowWidth = ${$_}{rowWidth} if(${$_}{rowWidth} >  $maximumRowWidth);
+        } 
+    }
 
-            # possibly remove space ahead of \\
-            ${$_}{row} =~ s/\h*\\\\/\\\\/ if(!${$self}{alignDoubleBackSlash});
+    # final loop through to get \\ aligned
+    foreach (@formattedBody){
+        if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
+            my $padding;
+
+            # remove trailing horizontal space if ${$self}{alignDoubleBackSlash} is set to 0
+            ${$_}{row} =~ s/\h*$// if (!${$self}{alignDoubleBackSlash});
+            
+#print "------------\nrow: '${$_}{row}'\n${$self}{alignDoubleBackSlash}\nspacesBeforeDoubleBackSlash: ${$self}{spacesBeforeDoubleBackSlash}\n===========\n";
             # possibly insert spaces infront of \\
-            if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
-                my $horizontalSpaceToInsert = " "x (${$self}{spacesBeforeDoubleBackSlash});
-                ${$_}{row} =~ s/\h*\\\\/$horizontalSpaceToInsert\\\\/;
+            if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}<0 and !${$self}{alignDoubleBackSlash}){
+                $padding = q();
+            } elsif(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
+                $padding = " " x (${$self}{spacesBeforeDoubleBackSlash});
+            } else {
+                $padding = " " x ($maximumRowWidth - ${$_}{rowWidth});
             }
-        } else{
+
+            # format the row, and put the trailing \\ and trailing comments back into the row
+            ${$_}{row} .= $padding.(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+        } else {
             # otherwise, it's possible that the row originally had an end piece (e.g \\) and/or trailing comments
             ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
         } 
