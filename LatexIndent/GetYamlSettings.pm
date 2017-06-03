@@ -282,13 +282,13 @@ sub alignment_at_ampersand_settings{
       ${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
       ${$self}{spacesBeforeDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} : -1;
       ${$self}{multiColumnGrouping} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} : 0;
-      ${$self}{alignRowsWithoutMaxDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} : 0;
+      ${$self}{alignRowsWithoutMaxDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} : 1;
     } else {
       ${$self}{lookForAlignDelims} = 1;
       ${$self}{alignDoubleBackSlash} = 1;
       ${$self}{spacesBeforeDoubleBackSlash} = -1;
       ${$self}{multiColumnGrouping} = 0;
-      ${$self}{alignRowsWithoutMaxDelims} = 0;
+      ${$self}{alignRowsWithoutMaxDelims} = 1;
     }
     return;
 }
