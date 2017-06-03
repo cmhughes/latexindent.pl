@@ -130,6 +130,7 @@ sub align_at_ampersand{
 
     # create an array of zeros
     my @maximumColumnWidth = (0) x ($maximumNumberOfAmpersands+1); 
+    my @maximumColumnWidthMC = (0) x ($maximumNumberOfAmpersands+1); 
 
     # array for the new body
     my @formattedBody;
@@ -190,7 +191,14 @@ sub align_at_ampersand{
                 # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
-                $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
+
+                # multicolumn cells need a bit of special care
+                if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
+                    $maximumColumnWidthMC[$columnCount] = $columnWidth if( defined $maximumColumnWidthMC[$columnCount] and ($columnWidth > $maximumColumnWidthMC[$columnCount]) );
+                    $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
+                }
+
+                # store the maximum column width
                 $maximumColumnWidth[$columnCount] = $columnWidth if( defined $maximumColumnWidth[$columnCount] and ($columnWidth > $maximumColumnWidth[$columnCount]) );
 
                 # put the row back together, using " " if the column is empty
@@ -270,8 +278,6 @@ sub align_at_ampersand{
                                  @{${$_}{columnSizes}}[$j] >= 0
                                          and
                                      ${$_}{format} 
-                                     #   and 
-                                     # !${$_}{multiColumnGrouping}
                                       ){
                                 $groupingWidth += $maximumColumnWidth[$j]; 
 #print "------------\nrow ${$_}{row}\n columnSizes: @{${$_}{columnSizes}}[$j]\n============\n";
@@ -282,48 +288,49 @@ sub align_at_ampersand{
 
                         $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
 
+                        # the cells that receit multicolumn grouping need extra padding
                         if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] > 0){
                             @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
+
+                            if($maximumColumnWidthMC[$columnCount]>$columnWidth){
+                                @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
+                            }
+#print "column width: $columnWidth, max-col-width-mc: $maximumColumnWidthMC[$columnCount]\n"
 #print "----------\nrow: ${$_}{row}\nmaximumColumnWidth: @maximumColumnWidth\ngrouping width: $groupingWidth\ncolumn sizes: @{${$_}{columnSizes}}\ncolumnWidth: $columnWidth\nmulti Col Padding: ",join(":",@{${$_}{multiColPadding}}),"\n";
                         }
-
-
-                        #$maximumColumnWidth[$j] = $groupingWidth;
-                        #$groupingWidth += $totalSpannedWidth;
                     }
 
-#print "column: $column, columnWidth: $columnWidth, groupingWidth: $groupingWidth\n";
                     # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
                     $maxGroupingWidth += ($multiColSpan-1)*3;
 
+#print "maximum is: ",$maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount],"\n";
 #print "row: ${$_}{row}, grouping width: $groupingWidth\n ";
                     # set the padding
                     if($columnWidth  <= $maxGroupingWidth){
-                       $padding = " " x ($maxGroupingWidth - $columnWidth);
-                    } else {
-                      #$maximumColumnWidth[$columnMax] += ($columnWidth - $groupingWidth);
+                      #$padding = " " x ($maxGroupingWidth - $columnWidth);
+                    } 
+
+                    if($maximumColumnWidthMC[$columnCount]>$columnWidth){
+                      #$padding .= " " x ($maximumColumnWidthMC[$columnCount]-$columnWidth);
+#print "column: $column, columnWidth: $columnWidth, groupingWidth: $groupingWidth, maxGroupingWidth: $maxGroupingWidth, maximumColumnWidthMC: $maximumColumnWidthMC[$columnCount]\n";
                     }
 
-print "-------------\npadding: '$padding'\n";
-print "column: $column\n";
-print "columnWidth: $columnWidth\n";
-print "maxGroupingWidth: $maxGroupingWidth\n";
-print "max col width: ",join(":",@maximumColumnWidth),"\n*****************\n";
+                    $padding = " " x ( ($maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount]) - $columnWidth);
+
+#print "-------------\npadding: '$padding'\n";
+#print "column: $column\n";
+#print "columnWidth: $columnWidth\n";
+#print "maxGroupingWidth: $maxGroupingWidth\n";
+#print "column sizes: @{${$_}{columnSizes}}\n";
+#print "MC max col width: ",join(":",@maximumColumnWidthMC),"\n";
+#print "max col width: ",join(":",@maximumColumnWidth),"\n*****************\n";
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
                 } else {
 #print "column: $column, columnWidth: $columnWidth\n";
                     # compare the *current* column width with the *maximum* column width
-                    if($columnWidth  <= $maximumColumnWidth[$columnCount]){
-                       $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
-                    } else {
-                       # columns from a row in which there's not the $maximumNumberOfAmpersands 
-                       # should be accounted for at this stage
-                       #$maximumColumnWidth[$columnCount] = $columnWidth;
-                       $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
-                    }
-
+                    $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
                 }
 
 #print "padding: '$padding'\n";
