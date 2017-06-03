@@ -167,7 +167,7 @@ sub align_at_ampersand{
         # format switch off by default
         my $formatRow = 0;
 
-        # store the column sizes for multicolumn measuring
+        # store the column sizes for measuring and comparison purposes
         my @columnSizes = ();
 
         # need to have at least one ampersand
@@ -204,16 +204,16 @@ sub align_at_ampersand{
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
+                # store the column width
                 $columnSizes[$columnCount] = $columnWidth; 
 
                 # move on to the next column
                 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
-                    # update the columnCount to account for the multiColSpan
-                    # subtract 1 because of 0 array index in perl
+                    # columns that are within the multiCol statement receive a width of -1
                     for my $i (($columnCount+1)..($columnCount+$1)){
-#print "here: $i, 1 is $1\n";
                         $columnSizes[$i] = -1; 
                     }
+                    # update the columnCount to account for the multiColSpan
                     $columnCount += $1; 
                 } else {
                     $columnCount++;
@@ -237,6 +237,7 @@ sub align_at_ampersand{
     # output some of the info so far to the log file
     $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
 
+    # the maximum row width will be used in aligning (or not) the \\
     my $maximumRowWidth = 0;
 
     # finally, reformat the body
@@ -270,70 +271,60 @@ sub align_at_ampersand{
                     my $maxGroupingWidth = 0;
                     foreach (@formattedBody){
                        $groupingWidth = 0;
-#print "----------\nrow: ${$_}{row}\ncolumn Sizes: ",join(":",@{${$_}{columnSizes}}),"\n===========\n";
+
+                        # loop through the columns covered by the multicolumn statement
                         foreach my $j ($columnCount..$columnMax){
-#print "===========\ncolumnCount: $columnCount, j: $j, columnMax: $columnMax, column Sizes: ",join(": ",@{${$_}{columnSizes}}),"\n----------\n";
                             if(  defined @{${$_}{columnSizes}}[$j] 
                                          and 
                                  @{${$_}{columnSizes}}[$j] >= 0
                                          and
                                      ${$_}{format} 
                                       ){
-                                $groupingWidth += $maximumColumnWidth[$j]; 
-#print "------------\nrow ${$_}{row}\n columnSizes: @{${$_}{columnSizes}}[$j]\n============\n";
+                                $groupingWidth += (defined $maximumColumnWidth[$j] ? $maximumColumnWidth[$j] : 0); 
                             } else {
                                 $groupingWidth = 0;
                             }
                         }
 
+                        # update the maximum grouping width
                         $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
 
-                        # the cells that receit multicolumn grouping need extra padding
+                        # the cells that receive multicolumn grouping need extra padding; in particular
+                        # the *last* cell of the multicol group receives the padding, hence the
+                        # use of $columnMax below 
                         if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] > 0){
                             @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
 
+                            # also need to account for maximum column width *including* other multicolumn statements
                             if($maximumColumnWidthMC[$columnCount]>$columnWidth){
                                 @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
                             }
-#print "column width: $columnWidth, max-col-width-mc: $maximumColumnWidthMC[$columnCount]\n"
-#print "----------\nrow: ${$_}{row}\nmaximumColumnWidth: @maximumColumnWidth\ngrouping width: $groupingWidth\ncolumn sizes: @{${$_}{columnSizes}}\ncolumnWidth: $columnWidth\nmulti Col Padding: ",join(":",@{${$_}{multiColPadding}}),"\n";
                         }
                     }
 
                     # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
                     $maxGroupingWidth += ($multiColSpan-1)*3;
 
-#print "maximum is: ",$maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount],"\n";
-#print "row: ${$_}{row}, grouping width: $groupingWidth\n ";
-                    # set the padding
-                    if($columnWidth  <= $maxGroupingWidth){
-                      #$padding = " " x ($maxGroupingWidth - $columnWidth);
-                    } 
-
-                    if($maximumColumnWidthMC[$columnCount]>$columnWidth){
-                      #$padding .= " " x ($maximumColumnWidthMC[$columnCount]-$columnWidth);
-#print "column: $column, columnWidth: $columnWidth, groupingWidth: $groupingWidth, maxGroupingWidth: $maxGroupingWidth, maximumColumnWidthMC: $maximumColumnWidthMC[$columnCount]\n";
+                    # set the padding; we need
+                    #       maximum( $maxGroupingWidth, $maximumColumnWidthMC[$columnCount] )
+                    # rather than load another module to give the 'max' function, I use the ternary operator
+                    my $maxValueToUse = 0;
+                    if(defined $maximumColumnWidthMC[$columnCount]){
+                        $maxValueToUse = ($maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount]);
+                    } else {
+                        $maxValueToUse = $maxGroupingWidth;
                     }
 
-                    $padding = " " x ( ($maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount]) - $columnWidth);
-
-#print "-------------\npadding: '$padding'\n";
-#print "column: $column\n";
-#print "columnWidth: $columnWidth\n";
-#print "maxGroupingWidth: $maxGroupingWidth\n";
-#print "column sizes: @{${$_}{columnSizes}}\n";
-#print "MC max col width: ",join(":",@maximumColumnWidthMC),"\n";
-#print "max col width: ",join(":",@maximumColumnWidth),"\n*****************\n";
+                    # calculate the padding
+                    $padding = " " x ( $maxValueToUse  >= $columnWidth ? $maxValueToUse  - $columnWidth : 0 );
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
                 } else {
-#print "column: $column, columnWidth: $columnWidth\n";
                     # compare the *current* column width with the *maximum* column width
-                    $padding = " " x ($maximumColumnWidth[$columnCount] - $columnWidth);
+                    $padding = " " x ($maximumColumnWidth[$columnCount] >= $columnWidth ? $maximumColumnWidth[$columnCount] - $columnWidth : 0);
                 }
 
-#print "padding: '$padding'\n";
                 # either way, the row is formed of "COLUMN + PADDING"
                 $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q())." & ";
                 $columnCount++;
@@ -349,6 +340,7 @@ sub align_at_ampersand{
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;
 
+            # update the maximum row width
             $maximumRowWidth = ${$_}{rowWidth} if(${$_}{rowWidth} >  $maximumRowWidth);
         } 
     }
@@ -357,12 +349,12 @@ sub align_at_ampersand{
     foreach (@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
-            my $padding;
+            # reset the padding
+            my $padding = q();
 
             # remove trailing horizontal space if ${$self}{alignDoubleBackSlash} is set to 0
             ${$_}{row} =~ s/\h*$// if (!${$self}{alignDoubleBackSlash});
             
-#print "------------\nrow: '${$_}{row}'\n${$self}{alignDoubleBackSlash}\nspacesBeforeDoubleBackSlash: ${$self}{spacesBeforeDoubleBackSlash}\n===========\n";
             # possibly insert spaces infront of \\
             if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}<0 and !${$self}{alignDoubleBackSlash}){
                 $padding = q();

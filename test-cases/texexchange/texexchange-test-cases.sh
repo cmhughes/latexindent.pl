@@ -118,6 +118,17 @@ latexindent.pl -s 371998.tex -o=371998-multicol.tex -l ../alignment/multiColumnG
 latexindent.pl -s 371998.tex -o=371998-multicol5.tex -l ../alignment/multiColumnGrouping.yaml,../alignment/tabular5.yaml
 latexindent.pl -s 371998.tex -o=371998-multicol1.tex -l ../alignment/multiColumnGrouping1.yaml
 latexindent.pl -s 371998.tex -o=371998-multicol15.tex -l ../alignment/multiColumnGrouping1.yaml,../alignment/tabular5.yaml
+latexindent.pl -s 371998-heiko.tex -o=371998-heiko-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 371319.tex -o=371319-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 369242.tex -o=369242-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 368176.tex -o=368176-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 367696.tex -o=367696-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 367278.tex -o=367278-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+latexindent.pl -s 248166.tex -o=248166-out.tex 
 
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========

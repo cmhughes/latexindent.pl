@@ -65,7 +65,8 @@ latexindent.pl -s tabular-karl.tex -o tabular-karl-out1.tex -l multiColumnGroupi
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out2.tex -l multiColumnGrouping2.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
-latexindent.pl -s multicol-broken.tex -o multicol-broken-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s multicol.tex -o multicol-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s unicode-multicol.tex -o unicode-multicol-out.tex -l multiColumnGrouping.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

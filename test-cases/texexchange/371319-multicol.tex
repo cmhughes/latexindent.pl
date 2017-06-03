@@ -1,0 +1,33 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{adjustbox}
+\usepackage{makecell}
+\usepackage{amssymb}
+\usepackage{array}
+\newcolumntype{?}{!{\vrule width 2pt}}
+\newcolumntype{M}[1]{>{\raggedleft\arraybackslash}m{#1}}
+
+\begin{document}
+\renewcommand{\arraystretch}{0.66}
+\begin{table}[htbp]
+	\centering
+	\caption{Review of methods and ...}
+	\begin{adjustbox}{center}
+		\setlength\tabcolsep{2pt}
+		\begin{tabular}{|c?c|c?c|c|c|c|c?c|c|c|}
+			\hline
+			       & \multicolumn{2}{c?}{\centering Bugs' info}                                                                                             & \multicolumn{5}{c?}{Expertise info}                                                                                                                                                                                                                                                                                                                                       & \multicolumn{3}{c|}{Based on}                                                                                                                                                                                            \\
+			\hline
+			Method & \parbox{1.7cm}{\linespread{1}\selectfont{}\centering Title + description} & \parbox{0.8cm}{\linespread{1}\selectfont{}\centering Meta} & \parbox{1.9cm}{\linespread{0}\selectfont{}\centering Bug fixing; title / description} & \parbox{1.6cm}{\linespread{1}\selectfont{}\centering Being a committer} & \parbox{1.1cm}{\linespread{1}\selectfont{}\centering Tossing history} & \parbox{0.8cm}{\linespread{1}\selectfont{}\centering Meta} & \parbox{1.3cm}{\linespread{1}\selectfont{}\centering Changed code} & \parbox{1.6cm}{\linespread{1}\selectfont{}\centering Final committer} & \parbox{1.3cm}{\linespread{1}\selectfont{}\centering Closer / resolver} & \parbox{1.3cm}{\linespread{1}\selectfont{}\centering Drafted assignee} \\
+			%     \hline
+			\Xhline{6\arrayrulewidth}
+			AA     & \checkmark                                                                &                                                            & \checkmark                                                                            &                                                                         &                                                                       &                                                            &                                                                    & \checkmark                                                            & \checkmark                                                              &                                                                        \\\hline
+			BB     & \checkmark                                                                &                                                            & \checkmark                                                                            &                                                                         &                                                                       &                                                            &                                                                    & \checkmark                                                            & \checkmark                                                              &                                                                        \\\hline
+			CC     & \checkmark                                                                & \checkmark                                                 & \checkmark                                                                            &                                                                         & \checkmark                                                            & \checkmark                                                 &                                                                    & \checkmark                                                            & \checkmark                                                              &                                                                        \\\hline
+		\end{tabular}%
+	\end{adjustbox}
+	\label{tab:previousMethods}%
+\end{table}%
+\end{document}

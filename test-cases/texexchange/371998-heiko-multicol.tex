@@ -1,0 +1,35 @@
+\documentclass{article}
+\usepackage{booktabs}
+\begin{document}
+\begin{center}
+	\begin{tabular}{llll}
+		\toprule
+		Type            & \multicolumn{2}{l}{Register} & Purpose           \\
+		\midrule
+		General Purpose & ax & ah                      & Arithmetic        \\
+		                &    & al                      &                   \\
+		\addlinespace % \cmidrule{2-4}
+		                & bx & bh                      & Base              \\
+		                &    & bl                      &                   \\
+		\addlinespace
+		                & cx & ch                      & Counter           \\
+		                &    & cl                      &                   \\
+		\addlinespace
+		                & dx & dh                      & Data              \\
+		                &    & dl                      &                   \\
+		\cmidrule{2-4}
+		                & \multicolumn{2}{l}{sp}       & Stack Pointer     \\
+		                & \multicolumn{2}{l}{bp}       & Base Pointer      \\
+		                & \multicolumn{2}{l}{si}       & Source Index      \\
+		                & \multicolumn{2}{l}{di}       & Destination Index \\
+		\midrule
+		Segment         & \multicolumn{2}{l}{ss}       & Stack Segment     \\
+		                & \multicolumn{2}{l}{cs}       & Code Segment      \\
+		                & \multicolumn{2}{l}{ds}       & Data Segment      \\
+		                & \multicolumn{2}{l}{es}       & Extra Segment     \\
+		                & \multicolumn{2}{l}{fs}       & Extra Segment     \\
+		                & \multicolumn{2}{l}{gs}       & Extra Segment     \\
+		\bottomrule
+	\end{tabular}
+\end{center}
+\end{document}
