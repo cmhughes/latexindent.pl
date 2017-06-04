@@ -235,7 +235,8 @@ lookForAlignDelims:
 	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
-	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive up to 3 fields:
+	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
+	(but does not have to) receive any of the following fields:
 	\begin{itemize}
 		\item \texttt{delims}: switch equivalent to simply specifying, for example, \texttt{tabular: 1} in
 		      the basic version shown in \cref{lst:aligndelims:basic} (default: 1);
@@ -243,6 +244,10 @@ lookForAlignDelims:
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally, specifies the number of spaces to be inserted
 		      before (non-aligned) \lstinline!\\!. In order to use this field, \texttt{alignDoubleBackSlash} needs
 		      to be set to 0 (default: 0).
+		\item \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns
+		      underneath a \lstinline!\multicolumn! command (default: 0);
+		\item \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the
+		      maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1).
 	\end{itemize}
 
 	Assuming that you have the settings in \cref{lst:aligndelims:advanced} saved in \texttt{tabular.yaml}, and the code
@@ -275,6 +280,43 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	\begin{minipage}{.54\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular1.yaml}[yaml-TCB]{\texttt{tabular1.yaml}}{lst:tabular1YAML}
 	\end{minipage}%
+
+	Now consider the file \texttt{tabular2.tex} in \cref{lst:tabular2}, which contains a \lstinline!\multicolumn! command, and
+	the YAML files in \cref{lst:tabular2YAML,lst:tabular3YAML}.
+
+	\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular2.yaml}[yaml-TCB]{\texttt{tabular2.yaml}}{lst:tabular2YAML}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular3.yaml}[yaml-TCB]{\texttt{tabular3.yaml}}{lst:tabular3YAML}
+	\end{minipage}%
+
+	On running the commands
+	\begin{commandshell}
+latexindent.pl tabular2.tex 
+latexindent.pl -s tabular2.tex -l tabular2.yaml
+latexindent.pl -s tabular2.tex -l tabular3.yaml
+        \end{commandshell}
+	we obtain the respective outputs given in \cref{lst:tabular2-default,lst:tabular2-mc,lst:tabular2-no-max}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
+	\end{widepage}
+
+	Notice in particular:
+	\begin{itemize}
+		\item in both \cref{lst:tabular2-default,lst:tabular2-mc} rows~1 and~4 have been aligned at the ampersand, even
+		      though they do not contain the maximum number of ampersands (3 in this case);
+		\item in \cref{lst:tabular2-default} the columns have been aligned at the ampersand;
+		\item in \cref{lst:tabular2-mc} the \lstinline!\multicolumn! command has grouped the $2$ columns beneath it,
+		      because \texttt{multiColumnGrouping} is set to $1$ in \cref{lst:tabular2YAML};
+		\item in \cref{lst:tabular2-no-max} rows~1 and~4 have \emph{not} been aligned at the ampersand, because
+		      \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in \cref{lst:tabular3YAML}.
+	\end{itemize}
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks
 	(see \texttt{specialBeginEnd} on \cpageref{yaml:specialBeginEnd}); for example, assuming that you have a command called \lstinline!\matrix!
