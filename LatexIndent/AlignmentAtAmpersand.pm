@@ -235,7 +235,7 @@ sub align_at_ampersand{
     }
 
     # output some of the info so far to the log file
-    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
+    $self->logger("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
 
     # the maximum row width will be used in aligning (or not) the \\
     my $maximumRowWidth = 0;
@@ -292,7 +292,7 @@ sub align_at_ampersand{
                         # the cells that receive multicolumn grouping need extra padding; in particular
                         # the *last* cell of the multicol group receives the padding, hence the
                         # use of $columnMax below 
-                        if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] > 0){
+                        if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
                             @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
 
                             # also need to account for maximum column width *including* other multicolumn statements
@@ -347,29 +347,29 @@ sub align_at_ampersand{
 
     # final loop through to get \\ aligned
     foreach (@formattedBody){
+        # reset the padding
+        my $padding = q();
+
+        # possibly adjust the padding
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
-
-            # reset the padding
-            my $padding = q();
-
             # remove trailing horizontal space if ${$self}{alignDoubleBackSlash} is set to 0
             ${$_}{row} =~ s/\h*$// if (!${$self}{alignDoubleBackSlash});
             
-            # possibly insert spaces infront of \\
+            # format spacing infront of \\
             if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}<0 and !${$self}{alignDoubleBackSlash}){
+                # zero spaces (possibly resulting in un-aligned \\)
                 $padding = q();
             } elsif(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
+                # specified number of spaces (possibly resulting in un-aligned \\)
                 $padding = " " x (${$self}{spacesBeforeDoubleBackSlash});
             } else {
+                # aligned \\
                 $padding = " " x ($maximumRowWidth - ${$_}{rowWidth});
             }
+        }
 
-            # format the row, and put the trailing \\ and trailing comments back into the row
-            ${$_}{row} .= $padding.(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
-        } else {
-            # otherwise, it's possible that the row originally had an end piece (e.g \\) and/or trailing comments
-            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
-        } 
+        # format the row, and put the trailing \\ and trailing comments back into the row
+        ${$_}{row} .= $padding.(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
     }
 
     # to the log file
