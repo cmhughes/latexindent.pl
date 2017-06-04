@@ -19,7 +19,7 @@ cp defaultSettings.yaml latexindent
 mkdir latexindent/LatexIndent
 cp LatexIndent/*.pm latexindent/LatexIndent
 # readme
-cp readme.txt latexindent/README
+cp documentation/readme.txt latexindent/README
 # documentation
 mkdir latexindent/documentation
 cp documentation/*.tex latexindent/documentation
