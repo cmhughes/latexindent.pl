@@ -124,11 +124,13 @@ latexindent.pl -s 369242.tex -o=369242-multicol.tex -l ../alignment/multiColumnG
 latexindent.pl -s 368176.tex -o=368176-multicol.tex -l ../alignment/multiColumnGrouping.yaml
 latexindent.pl -s 367696.tex -o=367696-multicol.tex -l ../alignment/multiColumnGrouping.yaml
 latexindent.pl -s 367278.tex -o=367278-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 366841-zarko.tex -o 366841-zarko-out.tex -l=longtabu.yaml
 
 # =======  tabular tag  =========
 # =======  tabular tag  =========
 # =======  tabular tag  =========
 latexindent.pl -s 248166.tex -o=248166-out.tex 
+latexindent.pl -s 141087.tex -o=141087-out.tex -l=pgfplotstableread.yaml
 
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========

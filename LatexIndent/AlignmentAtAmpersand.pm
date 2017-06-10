@@ -170,8 +170,13 @@ sub align_at_ampersand{
         # store the column sizes for measuring and comparison purposes
         my @columnSizes = ();
 
-        # need to have at least one ampersand
-        if($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) ){
+        # we will store the columns in each row
+        my @columns;
+
+        # need to have at least one ampersand, or contain a \multicolumn command
+        if( ($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) )
+                                                or
+                            ($multiColumnGrouping and $alignRowsWithoutMaxDelims) ){
             # remove space at the beginning of a row, surrounding &, and at the end of the row
             $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
             $_ =~ s/^\h*//g;
@@ -181,8 +186,14 @@ sub align_at_ampersand{
             # otherwise the column count is off
             $_ .= ($_ =~ m/(?<!\\)&$/ ? " ":q());
 
+            # store the columns, which are either split by & 
+            # or otherwise simply the current line, if for example, the current line simply
+            # contains \multicolumn{8}... \\  (see test-cases/texexchange/366841-zarko.tex, for example)
+            @columns = ($_ =~ m/(?<!\\)&/ ? split(/(?<!\\)&/,$_) : $_);
+
+            # empty the white-space-stripped row
             $strippedRow = '';
-            foreach my $column (split(/(?<!\\)&/,$_)){
+            foreach my $column (@columns){
                 # if a column has finished with a \ then we need to add a trailing space, 
                 # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
                 $column .= ($column =~ m/\\$/ ? " ": q());
@@ -230,12 +241,18 @@ sub align_at_ampersand{
                             format=>$formatRow,
                             multiColumnGrouping=>$multiColumnGrouping,
                             columnSizes=>\@columnSizes,
+                            columns=>\@columns,
                             endPiece=>($endPiece ? $endPiece :q() ),
                             trailingComment=>($trailingComments ? $trailingComments :q() )});
     }
 
     # output some of the info so far to the log file
     $self->logger("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
+    $self->logger("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
+    $self->logger("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
+    $self->logger("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
+    $self->logger("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
+    $self->logger("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
 
     # the maximum row width will be used in aligning (or not) the \\
     my $maximumRowWidth = 0;
@@ -249,7 +266,7 @@ sub align_at_ampersand{
             my $tmpRow = q();
 
             # loop through the columns
-            foreach my $column (split(/(?<!\\)&/,${$_}{row})){
+            foreach my $column (@{${$_}{columns}}){
                 # calculate the width of the current column 
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
