@@ -233,6 +233,11 @@ sub align_at_ampersand{
 
             # toggle the formatting switch
             $formatRow = 1;
+        } elsif($endPiece and ${$self}{alignDoubleBackSlash}){
+            # otherwise a row could contain no ampersands, but would still desire
+            # the \\ to be aligned, see test-cases/alignment/multicol-no-ampersands.tex
+            @columns = $_;
+            $formatRow = 1;
         }
 
         # store the information

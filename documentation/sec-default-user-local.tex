@@ -315,7 +315,8 @@ latexindent.pl -s tabular2.tex -l tabular3.yaml
 		\item in \cref{lst:tabular2-mc} the \lstinline!\multicolumn! command has grouped the $2$ columns beneath it,
 		      because \texttt{multiColumnGrouping} is set to $1$ in \cref{lst:tabular2YAML};
 		\item in \cref{lst:tabular2-no-max} rows~1 and~4 have \emph{not} been aligned at the ampersand, because
-		      \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in \cref{lst:tabular3YAML}.
+		      \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in \cref{lst:tabular3YAML}; however, 
+              the \lstinline!\\! \emph{have} still been aligned.
 	\end{itemize}
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks
@@ -468,7 +469,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	of these are shown in \cref{tab:code-blocks}.
 
 	\begin{longtable}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{}m{.2\linewidth}}
-		\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}\\
+		\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}                                                                                                                                                                                                                                                                                                                \\
 		\toprule
 		Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
 		\midrule
@@ -504,31 +505,31 @@ mand arg text
 \else
 ...
 \fi
-  \end{lstlisting}\\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 		items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
 		\begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...
 \end{enumerate}
-  \end{lstlisting}\\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 		specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
 		\begin{lstlisting}[,nolol=true,]
 \[
   ...
 \]
-  \end{lstlisting}\\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 		afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
 		\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
-  \end{lstlisting}\\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 		filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
 		\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
-  \end{lstlisting}\\
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\
 		\bottomrule
 	\end{longtable}
 

@@ -62,7 +62,7 @@ implementation of PPR using the graph primitives and functors we design. We upda
 	\textit{PPR}(v_i) = \left\{
 	\begin{array}{l l}
 		(1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in \textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} &
-		\text{$v_i$ is seed}\\
+		\text{$v_i$ is seed}                                                                                                                            \\
 		\delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)}
 		\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                                                                                  & \text{otherwise}
 	\end{array}
@@ -213,12 +213,12 @@ We chose to use the Cassovary graph library for our CPU performance comparison. 
 		\midrule Step (runtime)    & Cassovary                     & GPU                           & Cassovary & GPU  & Cassovary
 		                           & GPU                           & Cassovary                     & GPU                                                  \\
 		\midrule PPR (ms)          & 418                           & 0.45                          & 480       & 0.84 & 463       & 4.74  & 884   &
-		832.69\\
+		832.69                                                                                                                                            \\
 		CoT (ms)                   & 262                           & 0.54                          & 2173      & 1.28 & 25616     & 2.11  & 2192  & 51.61 \\
 		Money/SALSA (ms)           & 357                           & 2.70                          & 543       & 5.16 & 2023      & 18.56 & 11216 &
-		158.37\\
+		158.37                                                                                                                                            \\
 		Total (ms)                 & 1037                          & 4.37                          & 3196      & 8.36 & 28102     & 26.57 & 14292 &
-		1044.99\\
+		1044.99                                                                                                                                           \\
 		Speedup                    & \multicolumn{2}{r}{235.7}     & \multicolumn{2}{r}{380.5}     &
 		\multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}                                                                                             \\
 		\bottomrule

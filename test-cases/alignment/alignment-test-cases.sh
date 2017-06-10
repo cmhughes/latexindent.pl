@@ -64,6 +64,7 @@ latexindent.pl -s tabular-karl.tex -o tabular-karl-default.tex
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out1.tex -l multiColumnGrouping1.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out2.tex -l multiColumnGrouping2.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out3.tex -l multiColumnGrouping3.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
 latexindent.pl -s tabular-karl.tex -o tabular-karl-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
 latexindent.pl -s multicol.tex -o multicol-out.tex -l multiColumnGrouping.yaml
