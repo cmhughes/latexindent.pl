@@ -1,0 +1,25 @@
+\documentclass{book}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark, calc}
+\usepackage{array}
+\usepackage{multirow}
+\setlength{\extrarowheight}{2pt}
+
+\begin{document}
+    \begin{tabular}{|c|c|c|}
+        \hline
+        foo & bar & baz \\
+        \hline 
+        \multicolumn{2}{|c|}{\tikzmark{smc}\hfill double\hfill\tikzmark{emc}} & B \\
+        \hline
+        C & D & \tikzmark{smr}\multirow{2}{*}{$\delta$}\tikzmark{smr} \\
+        E & F & \\
+        \hline
+    \end{tabular}
+    \begin{tikzpicture}[overlay,remember picture]
+        \draw ($(pic cs:smc)-(\tabcolsep,3.6pt)$) -- ($(pic cs:emc)+(\tabcolsep,10.4pt)$);
+        \draw ($(pic cs:smr)-(16pt,17.6pt)$) -- ($(pic cs:emr)+(-3.7pt,2.2pt)$);
+    \end{tikzpicture}
+\end{document}
+
+enter image description here

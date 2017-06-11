@@ -127,6 +127,15 @@ latexindent.pl -s 367278.tex -o=367278-multicol.tex -l ../alignment/multiColumnG
 latexindent.pl -s 366841-zarko.tex -o 366841-zarko-out.tex -l=longtabu.yaml
 latexindent.pl -s 365928.tex -o=365928-default.tex 
 latexindent.pl -s 365928.tex -o=365928-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 365901.tex -o=365901-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 365620.tex -o=365620-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 364871.tex -o=364871-default.tex -m
+# perhaps the script should do better with the next one? I'm not sure...
+latexindent.pl -s 364871.tex -o=364871-multicol.tex -m -l ../alignment/multiColumnGrouping.yaml 
+latexindent.pl -s 364071.tex -o=364071-default.tex -l ../filecontents/indentPreambleYes.yaml
+latexindent.pl -s 364071.tex -o=364071-multicol.tex -l tabu.yaml,../filecontents/indentPreambleYes.yaml
+latexindent.pl -s 359791.tex -o=359791-default.tex 
+latexindent.pl -s 359791.tex -o=359791-multicol.tex -l longtable.yaml
 
 # =======  tabular tag  =========
 # =======  tabular tag  =========
@@ -139,4 +148,5 @@ latexindent.pl -s 141087.tex -o=141087-out.tex -l=pgfplotstableread.yaml
 # =======  not from tex exchange, but seemed appropriate here  =========
 latexindent.pl -s pcc-pr.tex -o=pcc-pr-default.tex -l indentPreamble.yaml
 latexindent.pl -s pcc-pr-presentation.tex -o=pcc-pr-presentation-default.tex -l indentPreamble.yaml
+[[ $noisyMode == 1 ]] && makenoise
 git status

@@ -1,0 +1,15 @@
+\documentclass{book}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark, calc}
+\usepackage{array}
+\usepackage{multirow}
+\renewcommand{\arraystretch}{1.4}
+\begin{document}
+\begin{tabular}{ccc}
+	\multicolumn{2}{c}{\tikzmark{cmc}\hfill A and B\hfill\null} & C\tikzmark{dmc} \\
+	D wider & E                                                 & F               \\
+\end{tabular}
+\begin{tikzpicture}[overlay,remember picture]
+	\draw (pic cs:cmc) -- (pic cs:dmc);
+\end{tikzpicture}
+\end{document}
