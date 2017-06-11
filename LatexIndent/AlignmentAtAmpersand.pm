@@ -204,7 +204,7 @@ sub align_at_ampersand{
                 my $columnWidth = $gcs->columns();
 
                 # multicolumn cells need a bit of special care
-                if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
+                if($multiColumnGrouping and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
                     $maximumColumnWidthMC[$columnCount] = $columnWidth if( defined $maximumColumnWidthMC[$columnCount] and ($columnWidth > $maximumColumnWidthMC[$columnCount]) );
                     $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
                 }
@@ -280,7 +280,7 @@ sub align_at_ampersand{
                 my $padding = q();
 
                 # check for multiColumnGrouping
-                if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/){
+                if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
                     my $multiColSpan = $1;
 
                     # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
@@ -344,7 +344,7 @@ sub align_at_ampersand{
                     $columnCount += $multiColSpan - 1;
                 } else {
                     # compare the *current* column width with the *maximum* column width
-                    $padding = " " x ($maximumColumnWidth[$columnCount] >= $columnWidth ? $maximumColumnWidth[$columnCount] - $columnWidth : 0);
+                    $padding = " " x (defined $maximumColumnWidth[$columnCount] and $maximumColumnWidth[$columnCount] >= $columnWidth ? $maximumColumnWidth[$columnCount] - $columnWidth : 0);
                 }
 
                 # either way, the row is formed of "COLUMN + PADDING"

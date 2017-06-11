@@ -125,6 +125,8 @@ latexindent.pl -s 368176.tex -o=368176-multicol.tex -l ../alignment/multiColumnG
 latexindent.pl -s 367696.tex -o=367696-multicol.tex -l ../alignment/multiColumnGrouping.yaml
 latexindent.pl -s 367278.tex -o=367278-multicol.tex -l ../alignment/multiColumnGrouping.yaml
 latexindent.pl -s 366841-zarko.tex -o 366841-zarko-out.tex -l=longtabu.yaml
+latexindent.pl -s 365928.tex -o=365928-default.tex 
+latexindent.pl -s 365928.tex -o=365928-multicol.tex -l ../alignment/multiColumnGrouping.yaml
 
 # =======  tabular tag  =========
 # =======  tabular tag  =========
