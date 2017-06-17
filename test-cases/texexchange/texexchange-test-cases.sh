@@ -136,6 +136,7 @@ latexindent.pl -s 364071.tex -o=364071-default.tex -l ../filecontents/indentPrea
 latexindent.pl -s 364071.tex -o=364071-multicol.tex -l tabu.yaml,../filecontents/indentPreambleYes.yaml
 latexindent.pl -s 359791.tex -o=359791-default.tex 
 latexindent.pl -s 359791.tex -o=359791-multicol.tex -l longtable.yaml
+latexindent.pl -s 359294.tex -o=359294-multicol.tex -l tabularx.yaml
 
 # =======  tabular tag  =========
 # =======  tabular tag  =========

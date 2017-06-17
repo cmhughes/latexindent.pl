@@ -1,0 +1,20 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{longtable}
+\usepackage{arydshln}
+
+\begin{document}
+
+\renewcommand{\arraystretch}{2.3}
+\begin{longtable}{l:l}
+	\textbf{Amplitude}                        & \textbf{Amplitude*}    \\ \hline
+	$\displaystyle \frac{i}{p^2 + i\epsilon}$ &
+	$\qquad \displaystyle -\frac{i}{p^2 - i\epsilon}$                  \\
+	$\displaystyle \frac{i}{p^2 + i\epsilon}$ &
+	$\qquad \displaystyle -\frac{i}{p^2 - i\epsilon}$                  \\
+	\multicolumn{2}{c}{$something$}                                    \\
+	\multicolumn{2}{c}{$something$}                                    \\
+	$-ie \gamma^\mu$                          & $\qquad ie \gamma^\mu$ \\
+	$-ie \gamma^\mu$                          & $\qquad ie \gamma^\mu$ \\
+\end{longtable}
+
+\end{document}

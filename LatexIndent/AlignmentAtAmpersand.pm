@@ -259,10 +259,80 @@ sub align_at_ampersand{
     $self->logger("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
     $self->logger("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
 
+    # acount for multicolumn grouping, if the appropriate switch is set
+    if(${$self}{multiColumnGrouping}){
+        foreach(@formattedBody){
+            if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
+
+                # set a columnCount, which will vary depending on multiColumnGrouping settings or not
+                my $columnCount=0;
+
+                # loop through the columns
+                foreach my $column (@{${$_}{columns}}){
+                    # calculate the width of the current column 
+                    my $gcs  = Unicode::GCString->new($column);
+                    my $columnWidth = $gcs->columns();
+
+                    # check for multiColumnGrouping
+                    if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
+                        my $multiColSpan = $1;
+
+                        # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
+                        # the maximum column needs to account for this (subtract 1 because of 0 index in perl arrays)
+                        my $columnMax = $columnCount+$multiColSpan-1;
+
+                        # groupingWidth contains the total width of column sizes grouped 
+                        # underneath the \multicolumn{} statement
+                        my $groupingWidth = 0;
+                        my $maxGroupingWidth = 0;
+                        foreach (@formattedBody){
+                           $groupingWidth = 0;
+
+                            # loop through the columns covered by the multicolumn statement
+                            foreach my $j ($columnCount..$columnMax){
+                                if(  defined @{${$_}{columnSizes}}[$j] 
+                                             and 
+                                     @{${$_}{columnSizes}}[$j] >= 0
+                                             and
+                                         ${$_}{format} 
+                                          ){
+                                    $groupingWidth += (defined $maximumColumnWidth[$j] ? $maximumColumnWidth[$j] : 0); 
+                                } else {
+                                    $groupingWidth = 0;
+                                }
+                            }
+
+                            # update the maximum grouping width
+                            $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
+
+                            # the cells that receive multicolumn grouping need extra padding; in particular
+                            # the *last* cell of the multicol group receives the padding, hence the
+                            # use of $columnMax below 
+                            if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
+                                @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
+
+                                # also need to account for maximum column width *including* other multicolumn statements
+                                if($maximumColumnWidthMC[$columnCount]>$columnWidth){
+                                    @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
+                                }
+                            }
+                        }
+
+                        # update the columnCount to account for the multiColSpan
+                        $columnCount += $multiColSpan - 1;
+                    } 
+
+                    # increase the column count
+                    $columnCount++;
+                }
+            } 
+        }
+    }
+
     # the maximum row width will be used in aligning (or not) the \\
     my $maximumRowWidth = 0;
 
-    # finally, reformat the body
+    # now that the multicolumn widths have been accounted for, loop through the body
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
@@ -356,13 +426,12 @@ sub align_at_ampersand{
             $tmpRow =~ s/\h&\h*$/ /;
             $tmpRow =~ s/\h*$/ /;
 
-            my $gcs  = Unicode::GCString->new($tmpRow);
-            ${$_}{rowWidth} = $gcs->columns();
-
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;
 
             # update the maximum row width
+            my $gcs  = Unicode::GCString->new($tmpRow);
+            ${$_}{rowWidth} = $gcs->columns();
             $maximumRowWidth = ${$_}{rowWidth} if(${$_}{rowWidth} >  $maximumRowWidth);
         } 
     }
