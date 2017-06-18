@@ -317,6 +317,11 @@ sub align_at_ampersand{
                                 }
                             }
                         }
+                        # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
+                        $maxGroupingWidth += ($multiColSpan-1)*3;
+
+                        # store the maxGroupingWidth for use in the next loop
+                        @{${$_}{maxGroupingWidth}}[$columnCount] = $maxGroupingWidth; 
 
                         # update the columnCount to account for the multiColSpan
                         $columnCount += $multiColSpan - 1;
@@ -353,49 +358,9 @@ sub align_at_ampersand{
                 if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
                     my $multiColSpan = $1;
 
-                    # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
-                    # the maximum column needs to account for this (subtract 1 because of 0 index in perl arrays)
-                    my $columnMax = $columnCount+$multiColSpan-1;
-
                     # groupingWidth contains the total width of column sizes grouped 
                     # underneath the \multicolumn{} statement
-                    my $groupingWidth = 0;
-                    my $maxGroupingWidth = 0;
-                    foreach (@formattedBody){
-                       $groupingWidth = 0;
-
-                        # loop through the columns covered by the multicolumn statement
-                        foreach my $j ($columnCount..$columnMax){
-                            if(  defined @{${$_}{columnSizes}}[$j] 
-                                         and 
-                                 @{${$_}{columnSizes}}[$j] >= 0
-                                         and
-                                     ${$_}{format} 
-                                      ){
-                                $groupingWidth += (defined $maximumColumnWidth[$j] ? $maximumColumnWidth[$j] : 0); 
-                            } else {
-                                $groupingWidth = 0;
-                            }
-                        }
-
-                        # update the maximum grouping width
-                        $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
-
-                        # the cells that receive multicolumn grouping need extra padding; in particular
-                        # the *last* cell of the multicol group receives the padding, hence the
-                        # use of $columnMax below 
-                        if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
-                            @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
-
-                            # also need to account for maximum column width *including* other multicolumn statements
-                            if($maximumColumnWidthMC[$columnCount]>$columnWidth){
-                                @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
-                            }
-                        }
-                    }
-
-                    # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
-                    $maxGroupingWidth += ($multiColSpan-1)*3;
+                    my $maxGroupingWidth = ${${$_}{maxGroupingWidth}}[$columnCount];
 
                     # set the padding; we need
                     #       maximum( $maxGroupingWidth, $maximumColumnWidthMC[$columnCount] )
