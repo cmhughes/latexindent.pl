@@ -137,6 +137,29 @@ latexindent.pl -s 364071.tex -o=364071-multicol.tex -l tabu.yaml,../filecontents
 latexindent.pl -s 359791.tex -o=359791-default.tex 
 latexindent.pl -s 359791.tex -o=359791-multicol.tex -l longtable.yaml
 latexindent.pl -s 359294.tex -o=359294-multicol.tex -l tabularx.yaml
+latexindent.pl -s 349480.tex -o=349480-default.tex
+latexindent.pl -s 349480.tex -o=349480-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 348102.tex -o=348102-default.tex
+latexindent.pl -s 348102.tex -o=348102-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 348102-mod.tex -o=348102-mod-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 347155.tex -o=347155-default.tex
+latexindent.pl -s 347155.tex -o=347155-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 345211.tex -o=345211-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342914.tex -o=342914-default.tex 
+latexindent.pl -s 342914.tex -o=342914-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342697.tex -o=342697-default.tex 
+latexindent.pl -s 342697.tex -o=342697-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342679.tex -o=342679-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342288.tex -o=342288-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 340141.tex -o=340141-multicol.tex -l tabularx.yaml
+latexindent.pl -s 335633.tex -o=335633-default.tex
+latexindent.pl -s 335633.tex -o=335633-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 333469.tex -o=333469-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 333469.tex -o=333469-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 331415.tex -o=331415-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 330385.tex -o=330385-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 329346.tex -o=329346-multicol.tex -l tabularstar.yaml -m
+# page 7 of multicolumn tag below here
 
 # =======  tabular tag  =========
 # =======  tabular tag  =========

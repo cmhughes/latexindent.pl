@@ -1,0 +1,18 @@
+\documentclass{article}
+
+\usepackage{multirow}
+
+\begin{document}
+\begin{tabular}{| l | l | c | c |}
+  \hline 
+  \multicolumn{2}{|l|}{Header1}    & Header2 & Header3  \\
+  \hline
+  \multicolumn{2}{|l|}{text11}      & text12 & text13   \\
+  \hline
+  \multicolumn{2}{|l|}{text21}     & text22 & text23   \\
+  \hline
+  \multirow{2}*{text31}      & t311 &text312 & text313  \\
+       & t312 & text322 & text323 \\
+  \hline 
+\end{tabular}
+\end{document}

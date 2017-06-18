@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{booktabs,makecell,multirow,tabularx}
+\renewcommand\theadfont{\bfseries\normalsize}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\usepackage{geometry}
+
+\begin{document}
+    \begin{table}[ht]
+\centering
+\begin{tabularx}{\textwidth}{c L c L c L c }
+    \toprule
+\multirow{2}{*}{\thead{Atlas\\ Resolution}}
+    &   \multicolumn{2}{c}{\thead{Variant-1}}
+        &   \multicolumn{2}{c}{\thead{Variant-2}}
+            &   \multicolumn{2}{c}{\thead{Variant-3}}    \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
+    &   \thead[b]{Average\\ Render\\ Time (ms)}  &   \thead[b]{IFPS}
+        &   \thead[b]{Average\\ Render\\ Time (ms)}  &   \thead[b]{IFPS}
+            &   \thead[b]{Average\\ Render\\ Time (ms)}  &   \thead[b]{IFPS}                \\
+    \midrule
+512$\times$512      &  &  &  &  &  &  \\
+1024$\times$1024    &  &  &  &  &  &  \\
+    \addlinespace[2pt]
+18432$\times$18432  &  &  &  &  &  &  \\
+19456$\times$19456  &  &  &  &  &  &  \\
+    \bottomrule
+\end{tabularx}
+    \caption{List of sizes for various resolution of Dataset-I, compressed variant Dataset-II and different slices variant Dataset-II}
+    \label{tab:1}
+\end{table}
+\end{document}
+
+enter image description here
