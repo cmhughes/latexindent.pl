@@ -15,10 +15,10 @@ do
  esac 
 done
 
-oldVersion='3.0.2'
-newVersion='3.1'
-oldDate='2017-05-12'
-newDate='2017-05-27'
+oldVersion='3.1'
+newVersion='3.2'
+oldDate='2017-05-27'
+newDate='2017-06-19'
 
 cd ../
 sed -i.bak "s/version $oldVersion/version $newVersion/" LatexIndent/LogFile.pm
