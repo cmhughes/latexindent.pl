@@ -74,6 +74,8 @@ latexindent.pl -s multicol-no-ampersands -o multicol-no-ampersands-default.tex
 latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
 latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s longcells.tex -o longcells-default.tex
+latexindent.pl -s longcells.tex -o longcells-multicol.tex -l multiColumnGrouping.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
