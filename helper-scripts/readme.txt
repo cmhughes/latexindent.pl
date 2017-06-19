@@ -1,0 +1,13 @@
+Typical running order of these helper scripts:
+    - perl documentation-default-settings-update.pl
+    - <change update-version appropriately>
+    - update-version.sh
+    - copy-to-usb.sh
+    - <reboot to Windows>
+    - create-windows-executable.bat
+    - <reboot to Ubuntu>
+    - <add latexindent.exe to directory>
+    - <commit changes and push>
+    - <pull request to master>
+    - <pull from master>
+    - prepctan.sh

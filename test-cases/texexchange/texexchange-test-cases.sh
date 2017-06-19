@@ -110,9 +110,67 @@ latexindent.pl -s 353559-egreg-1.tex -o 353559-egreg-1-default.tex -l indentPrea
 latexindent.pl -s 158638-cmhughes.tex -o=158638-cmhughes-default.tex -l indentPreamble.yaml
 latexindent.pl -s 158638-cmhughes.tex -o=158638-cmhughes-items.tex -l indentPreamble.yaml,158638-cmhughes.yaml
 
+# =======  multicolumn tag  =========
+# =======  multicolumn tag  =========
+# =======  multicolumn tag  =========
+latexindent.pl -s 372580.tex -o=372580-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol5.tex -l ../alignment/multiColumnGrouping.yaml,../alignment/tabular5.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol1.tex -l ../alignment/multiColumnGrouping1.yaml
+latexindent.pl -s 371998.tex -o=371998-multicol15.tex -l ../alignment/multiColumnGrouping1.yaml,../alignment/tabular5.yaml
+latexindent.pl -s 371998-heiko.tex -o=371998-heiko-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 371319.tex -o=371319-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 369242.tex -o=369242-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 368176.tex -o=368176-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 367696.tex -o=367696-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 367278.tex -o=367278-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 366841-zarko.tex -o 366841-zarko-out.tex -l=longtabu.yaml
+latexindent.pl -s 365928.tex -o=365928-default.tex 
+latexindent.pl -s 365928.tex -o=365928-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 365901.tex -o=365901-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 365620.tex -o=365620-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 364871.tex -o=364871-default.tex -m
+# perhaps the script should do better with the next one? I'm not sure...
+latexindent.pl -s 364871.tex -o=364871-multicol.tex -m -l ../alignment/multiColumnGrouping.yaml 
+latexindent.pl -s 364071.tex -o=364071-default.tex -l ../filecontents/indentPreambleYes.yaml
+latexindent.pl -s 364071.tex -o=364071-multicol.tex -l tabu.yaml,../filecontents/indentPreambleYes.yaml
+latexindent.pl -s 359791.tex -o=359791-default.tex 
+latexindent.pl -s 359791.tex -o=359791-multicol.tex -l longtable.yaml
+latexindent.pl -s 359294.tex -o=359294-multicol.tex -l tabularx.yaml
+latexindent.pl -s 349480.tex -o=349480-default.tex
+latexindent.pl -s 349480.tex -o=349480-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 348102.tex -o=348102-default.tex
+latexindent.pl -s 348102.tex -o=348102-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 348102-mod.tex -o=348102-mod-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 347155.tex -o=347155-default.tex
+latexindent.pl -s 347155.tex -o=347155-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 345211.tex -o=345211-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342914.tex -o=342914-default.tex 
+latexindent.pl -s 342914.tex -o=342914-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342697.tex -o=342697-default.tex 
+latexindent.pl -s 342697.tex -o=342697-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342679.tex -o=342679-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 342288.tex -o=342288-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 340141.tex -o=340141-multicol.tex -l tabularx.yaml
+latexindent.pl -s 335633.tex -o=335633-default.tex
+latexindent.pl -s 335633.tex -o=335633-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 333469.tex -o=333469-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 333469.tex -o=333469-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 331415.tex -o=331415-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 330385.tex -o=330385-multicol.tex -l ../alignment/multiColumnGrouping.yaml
+latexindent.pl -s 329346.tex -o=329346-multicol.tex -l tabularstar.yaml -m
+# page 7 of multicolumn tag below here
+
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+# =======  tabular tag  =========
+latexindent.pl -s 248166.tex -o=248166-out.tex 
+latexindent.pl -s 141087.tex -o=141087-out.tex -l=pgfplotstableread.yaml
+
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========
 latexindent.pl -s pcc-pr.tex -o=pcc-pr-default.tex -l indentPreamble.yaml
 latexindent.pl -s pcc-pr-presentation.tex -o=pcc-pr-presentation-default.tex -l indentPreamble.yaml
+[[ $noisyMode == 1 ]] && makenoise
 git status

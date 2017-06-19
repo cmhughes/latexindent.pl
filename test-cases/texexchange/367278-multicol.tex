@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{multirow,graphics,graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+
+\begin{document}
+\begin{table}
+	\centering
+	\caption{My caption}
+	\label{my-label}
+	\begin{tabular}{c|l}
+		MR &
+		\begin{tabular}[t]{@{}p{1cm}p{2cm}p{2cm}@{}}GS & Typ & Sym\end{tabular}
+		\\ \midrule
+		1  &
+		\begin{tabular}{@{}m{1cm}m{2cm}m{2cm}@{}}
+			\includegraphics[width=1cm]{example-image} & Tria & \\
+			\includegraphics[width=1cm]{example-image} & Obl  & \\
+			\includegraphics[width=1cm]{example-image} & Sq   & \\
+			\includegraphics[width=1cm]{example-image} & Rec  &
+		\end{tabular}
+		\\ \midrule
+		2  &
+		\begin{tabular}{@{}m{1cm}m{2cm}m{2cm}@{}}
+			\includegraphics[width=1cm]{example-image} & SqSnSq & \\
+			\includegraphics[width=1cm]{example-image} & TrHex  &
+		\end{tabular}
+		\\ \midrule
+		3  &
+		\begin{tabular}{@{}m{1cm}m{2cm}m{2cm}@{}}
+			\includegraphics[width=1cm]{example-image} & TrKag   & \\
+			\includegraphics[width=1cm]{example-image} & RecShSq &
+		\end{tabular}
+		\\ \bottomrule
+	\end{tabular}
+\end{table}
+
+\end{document}

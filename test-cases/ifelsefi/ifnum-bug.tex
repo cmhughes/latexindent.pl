@@ -1,0 +1,6 @@
+\ifx\\##1\\% check if ##1 is empty
+\else
+\ifnum1=\pgfplotstablepartno
+\pgfkeysalso{@cell content/.add={}{\,\%}}%
+\fi
+\fi

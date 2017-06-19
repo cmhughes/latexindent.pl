@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\usepackage{multirow}
+\begin{document}
+
+\begin{table}[!h]
+	\centering\renewcommand\arraystretch{1.2}
+	\begin{tabular}{c|c|c}
+		\hline
+		Topic 1 & \multicolumn{2}{c}{Topic 2}    \\
+		\hline
+		33333   & 44444 & \multirow{2}{*}{55555} \\
+		\cline{1-2}
+		aaaaa   & bbbbb                          \\
+		\hline
+	\end{tabular}
+	\caption{}
+	\label{table:example-app}
+\end{table}
+
+\end{document}

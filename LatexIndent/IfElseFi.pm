@@ -36,7 +36,7 @@ our $ifElseFiRegExp = qr/
                     (\R*)
                 )                           # begin statement, e.g \ifnum, \ifodd
                 (
-                    \\(?!if)|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                    \\(?!if)|[0-9]|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
                 )                           # part of the tokens used for latexindent
                 (
                     (?: 

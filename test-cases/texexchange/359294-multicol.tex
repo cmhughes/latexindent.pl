@@ -1,0 +1,22 @@
+\documentclass{standalone}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+\newcommand\mcbf[1]{\multicolumn{2}{c}{\textbf{#1}}}
+
+\begin{document}
+\begin{tabularx}{\linewidth}{>{\bfseries}r*{10}{C}}
+	\toprule
+	            & \mcbf{Labial} & \mcbf{Alveolar} & \mcbf{Palatal}
+	            & \mcbf{Velar}  & \mcbf{Glottal}                                                    \\
+	Nasal       & mh            & m               & nh             & n    &   &   &    &   &    &   \\
+	Stop        & p             & b               & t              & d    &   &   & k  & g &    &   \\
+	Sibilant    &               &                 & \multicolumn{2}{c}{s} &   &   &    &   &    &   \\
+	Fricative   & f             & v               & th             & dh   & c &   &    &   & xh & x \\
+	Approximant &               &                 &                &      &   & j & wh & w &    &   \\
+	Lateral     &               &                 & lh             & l    &   &   &    &   &    &   \\
+	Trill       &               &                 & rh             & r    &   &   &    &   &    &   \\
+	\bottomrule
+\end{tabularx}
+\end{document}

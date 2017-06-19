@@ -9,16 +9,16 @@ latexindent.pl -s table1.tex -o table1-default.tex
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
     # basic tests
-    latexindent.pl -s table1.tex -o table1-mod$i.tex -l=tabular$i.yaml
+    latexindent.pl -s table1.tex -o table1-mod$i.tex -l=tabular$i.yaml,multiColumnGrouping2.yaml
     latexindent.pl -s table2.tex -o table2-mod$i.tex -l=tabular$i.yaml
     latexindent.pl -s table3.tex -o table3-mod$i.tex -l=tabular$i.yaml
     latexindent.pl -s table4.tex -o table4-mod$i.tex -l=tabular$i.yaml
     latexindent.pl -s table5.tex -o table5-mod$i.tex -l=tabular$i.yaml
     # tests with \\ not aligned
-    latexindent.pl -s table1.tex -o table1-mod$((i+4)).tex -l=tabular$i.yaml,tabular5.yaml
+    latexindent.pl -s table1.tex -o table1-mod$((i+4)).tex -l=tabular$i.yaml,tabular5.yaml,multiColumnGrouping2.yaml
     latexindent.pl -s table2.tex -o table2-mod$((i+4)).tex -l=tabular$i.yaml,tabular5.yaml
     # tests with \\ not aligned, and with spaces before \\
-    latexindent.pl -s table1.tex -o table1-mod$((i+8)).tex -l=tabular$i.yaml,tabular6.yaml
+    latexindent.pl -s table1.tex -o table1-mod$((i+8)).tex -l=tabular$i.yaml,tabular6.yaml,multiColumnGrouping2.yaml
     latexindent.pl -s table2.tex -o table2-mod$((i+8)).tex -l=tabular$i.yaml,tabular6.yaml
     # alignment inside commented block
     latexindent.pl -s alignmentoutsideEnvironmentsCommands.tex -o alignmentoutsideEnvironmentsCommands-mod$i.tex -l tabular$i.yaml
@@ -29,6 +29,7 @@ do
     latexindent.pl -s alignmentoutsideEnvironmentsCommands.tex -o alignmentoutsideEnvironmentsCommands-indent-rules-2-mod$i.tex -l tabular$i.yaml,indentRules2.yaml
     latexindent.pl -s alignmentoutsideEnvironmentsCommands.tex -o alignmentoutsideEnvironmentsCommands-indent-rules-3-mod$i.tex -l tabular$i.yaml,indentRules3.yaml
 done
+latexindent.pl -s table1.tex -o table1-mod3.tex -l=tabular3.yaml
 # legacy matrix test case
 latexindent.pl -s matrix.tex -o matrix-default.tex
 # legacy environment test case
@@ -58,4 +59,23 @@ for (( i=1 ; i <= 6 ; i++ ))
 do 
     latexindent.pl -s uni-code1.tex -o uni-code1-mod$i.tex -l=tabular$i.yaml
 done
+# multiColumnGrouping
+latexindent.pl -s tabular-karl.tex -o tabular-karl-default.tex
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out1.tex -l multiColumnGrouping1.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out2.tex -l multiColumnGrouping2.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out3.tex -l multiColumnGrouping3.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s multicol.tex -o multicol-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s unicode-multicol.tex -o unicode-multicol-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s table3.tex -o table3-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s multicol-no-ampersands -o multicol-no-ampersands-default.tex
+latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
+latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s longcells.tex -o longcells-default.tex
+latexindent.pl -s longcells.tex -o longcells-multicol.tex -l multiColumnGrouping.yaml
+[[ $silentMode == 0 ]] && set -x 
 git status
+[[ $noisyMode == 1 ]] && makenoise

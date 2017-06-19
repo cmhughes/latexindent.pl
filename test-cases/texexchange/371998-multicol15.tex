@@ -1,0 +1,53 @@
+\documentclass[11pt,a5paper,footinclude=true,headinclude=true]{scrbook} % KOMA-Script book
+\usepackage{multirow}
+
+\begin{document}
+
+\begin{center}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		Type                              & \multicolumn{2}{c|}{Register}            & Purpose\\\hline\hline
+		\multirow{16}{*}{General Purpose} & \multirow{2}{*}{ax}                      & ah                                 & \multirow{2}{*}{Arithmetic}\\
+		\cline{3-3}
+		                                  &                                          & al                                 &\\
+		\cline{2-4}
+		                                  & \multirow{2}{*}{bx}                      & bh                                 & \multirow{2}{*}{Base}\\
+		\cline{3-3}
+		                                  &                                          & bl                                 &\\
+		\cline{2-4}
+		                                  & \multirow{2}{*}{cx}                      & ch                                 & \multirow{2}{*}{Counter}\\
+		\cline{3-3}
+		                                  &                                          & cl                                 &\\
+		\cline{2-4}
+		                                  & \multirow{2}{*}{dx}                      & dh                                 & \multirow{2}{*}{Data}\\
+		\cline{3-3}
+		                                  &                                          & dl                                 &\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{\multirow{2}{*}{sp}} & \multirow{2}{*}{Stack Pointer}\\
+		                                  & \multicolumn{2}{c|}{}                    &\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{\multirow{2}{*}{bp}} & \multirow{2}{*}{Base Pointer}\\
+		                                  & \multicolumn{2}{c|}{}                    &\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{\multirow{2}{*}{si}} & \multirow{2}{*}{Source Index}\\
+		                                  & \multicolumn{2}{c|}{}                    &\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{\multirow{2}{*}{di}} & \multirow{2}{*}{Destination Index}\\
+		                                  & \multicolumn{2}{c|}{}                    &\\
+		\hline
+		\multirow{6}{*}{Segment}          & \multicolumn{2}{c|}{ss}                  & Stack Segment\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{cs}                  & Code Segment\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{ds}                  & Data Segment\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{es}                  & Extra Segment\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{fs}                  & Extra Segment\\
+		\cline{2-4}
+		                                  & \multicolumn{2}{c|}{gs}                  & Extra Segment\\
+		\hline
+	\end{tabular}
+\end{center}
+
+\end{document}

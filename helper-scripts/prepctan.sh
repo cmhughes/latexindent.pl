@@ -1,11 +1,16 @@
 #!/bin/bash
 # A little script to help me prepare the bundle for ctan
 
-# script
+# make sure to be on the master branch
 git checkout master
+# re-compile the documentation
 cd ../documentation
 arara latexindent
+egrep 'undefined' latexindent.log
+egrep 'multiply-defined' latexindent.log
+nohup evince latexindent.pdf
 cd ../
+# create a folder
 mkdir latexindent
 cp latexindent.pl latexindent
 cp latexindent.exe latexindent
@@ -14,7 +19,7 @@ cp defaultSettings.yaml latexindent
 mkdir latexindent/LatexIndent
 cp LatexIndent/*.pm latexindent/LatexIndent
 # readme
-cp readme.txt latexindent/README
+cp documentation/readme.txt latexindent/README
 # documentation
 mkdir latexindent/documentation
 cp documentation/*.tex latexindent/documentation

@@ -19,15 +19,22 @@ latexindent.pl -s -l tabular.yaml tabular1.tex --outputfile tabular1-advanced.te
 latexindent.pl -s -l tabular1.yaml tabular1.tex --outputfile tabular1-advanced-3spaces.tex 
 latexindent.pl -s matrix1.tex -o matrix1-default.tex
 latexindent.pl -s align-block.tex -o align-block-default.tex
+latexindent.pl -s tabular2.tex -o tabular2-default.tex
+latexindent.pl -s tabular2.tex -o tabular2-mc.tex -l tabular2.yaml
+latexindent.pl -s tabular2.tex -o tabular2-no-max.tex -l tabular3.yaml
+
 # items
 latexindent.pl -s items1.tex -o items1-default.tex
+
 # special
 latexindent.pl -s special1.tex -o special1-default.tex
+
 # headings
 latexindent.pl -s headings1.tex -o headings1-mod1.tex -l=headings1.yaml
 latexindent.pl -s headings1.tex -o headings1-mod2.tex -l=headings2.yaml
 # previously important example
 latexindent.pl -s previously-important-example.tex -o previously-important-example-default.tex
+
 ##### ENVIRONMENTS ######
 ##### ENVIRONMENTS ######
 ##### ENVIRONMENTS ######
@@ -67,6 +74,7 @@ latexindent.pl -s items1.tex -o items1-rules1.tex -local item-rules1.yaml
 # global rules
 latexindent.pl -s items1.tex -o items1-no-add-global.tex -local items-noAdditionalGlobal.yaml
 latexindent.pl -s items1.tex -o items1-rules-global.tex -local items-indentRulesGlobal.yaml
+
 ##### COMMANDS ######
 ##### COMMANDS ######
 ##### COMMANDS ######
@@ -78,6 +86,7 @@ latexindent.pl -s mycommand.tex -o mycommand-noAdd3.tex -local mycommand-noAdd3.
 latexindent.pl -s mycommand.tex -o mycommand-noAdd4.tex -local mycommand-noAdd4.yaml
 latexindent.pl -s mycommand.tex -o mycommand-noAdd5.tex -local mycommand-noAdd5.yaml
 latexindent.pl -s mycommand.tex -o mycommand-noAdd6.tex -local mycommand-noAdd6.yaml
+
 ##### ifElseFi ######
 ##### ifElseFi ######
 ##### ifElseFi ######
@@ -86,6 +95,7 @@ latexindent.pl -s ifelsefi1.tex -o ifelsefi1-noAdd.tex -local ifnum-noAdd.yaml
 latexindent.pl -s ifelsefi1.tex -o ifelsefi1-indent-rules.tex -local ifnum-indent-rules.yaml
 latexindent.pl -s ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml -o ifelsefi1-noAdd-glob.tex 
 latexindent.pl -s ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml -o ifelsefi1-indent-rules-global.tex 
+
 ##### special ######
 ##### special ######
 ##### special ######
@@ -93,6 +103,7 @@ latexindent.pl -s special1.tex -o special1-noAdd.tex -local displayMath-noAdd.ya
 latexindent.pl -s special1.tex -o special1-indent-rules.tex -local displayMath-indent-rules.yaml
 latexindent.pl -s special1.tex -local special-noAdd-glob.yaml -o special1-noAdd-glob.tex 
 latexindent.pl -s special1.tex -l special-indent-rules-global.yaml -o special1-indent-rules-global.tex 
+
 ##### headings ######
 ##### headings ######
 ##### headings ######
@@ -100,14 +111,17 @@ for (( i=3; i <= 9 ; i++ ))
 do 
 latexindent.pl -s headings2.tex -l headings$i.yaml -o headings2-mod$i.tex
 done
+
 ##### keyequalsvalue ######
 ##### keyequalsvalue ######
 ##### keyequalsvalue ######
 latexindent.pl -s pgfkeys1.tex -o=pgfkeys1-default.tex
+
 ##### namedbraces ######
 ##### namedbraces ######
 ##### namedbraces ######
 latexindent.pl -s child1.tex -o=child1-default.tex
+
 ##### unnamedbraces ######
 ##### unnamedbraces ######
 ##### unnamedbraces ######

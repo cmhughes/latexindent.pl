@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\renewcommand{\arraystretch}{2.0}
+
+\begin{document}
+
+\begin{tabular}{|>{\bfseries}C{5cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|C{1cm}|}
+    \hline
+    Bandwidth (MHz) & 1.25 & 2.5 & 5.0 & 10.0 & 15.0 & 20.0 \\
+    \hline
+    Subcarrier bandwidth (kHz) & \multicolumn{6}{c|}{15} \\
+    \hline
+    Physical resource block (PRB) bandwidth (kHz) & \multicolumn{6}{c|}{180} \\
+    \hline
+    Number of available PRBs & 6 & 12 & 25 & 50 & 75 & 100 \\
+    \hline
+\end{tabular}
+
+\end{document}

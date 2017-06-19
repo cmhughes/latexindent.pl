@@ -1,0 +1,95 @@
+\documentclass{article}
+\usepackage{subcaption}
+
+\usepackage{pgfplots}
+
+\begin{document}
+
+\pgfplotstableread[row sep=\\,col sep=&]{
+    interval & carT  & carD    & carR    &  busT    & busD    & busR    &  walkT    & walkD    & walkR    & totalT     & totalD     & totalR     \\
+    0--2   &  1.2 &  0.1 &  0.2 &  3.5 & 0.4 & 0.0 &  0.2 & 0.0 & 0.0 & 16.8 &  0.6 &  0.2 \\
+    2--5   & 12.8 &  3.8 &  4.9 &  5.9 & 1.4 & 0.1 &  4.8 & 1.5 & 0.5 & 28.3 &  8.1 &  5.6 \\
+    5--10  & 15.5 & 10.4 & 13.4 &  0.4 & 0.3 & 0.0 &  3.8 & 2.5 & 0.9 & 23.4 & 15.7 & 14.6 \\
+    10--20 & 14.0 & 17.3 & 22.2 &  0.7 & 0.8 & 0.0 &  0.9 & 1.1 & 0.4 & 17.7 & 21.7 & 23.0 \\
+    20--50 &  7.9 & 21.1 & 27.0 &  0.0 & 0.0 & 0.0 &  0.3 & 0.8 & 0.3 & 10.0 & 26.5 & 27.7 \\
+    50+    &  3.0 & 22.3 & 28.6 &  0.0 & 0.0 & 0.0 &  0.0 & 0.0 & 0.0 &  3.8 & 27.5 & 28.8 \\
+    }\mydata
+
+\begin{figure}[!htb]
+    \begin{subfigure}{\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    ybar,
+                    bar width=.5cm,
+                    width=\textwidth,
+                    height=.5\textwidth,
+                    legend style={at={(0.5,1)},
+                        anchor=north,legend columns=-1},
+                    symbolic x coords={0--2,2--5,5--10,10--20,20--50,50+},
+                    xtick=data,
+                    nodes near coords,
+                    nodes near coords align={vertical},
+                    ymin=0,ymax=35,
+                    %xlabel={Car},
+                    ylabel={\%},
+                ]
+                \addplot table[x=interval,y=carT]{\mydata};
+                \addplot table[x=interval,y=carD]{\mydata};
+                \addplot table[x=interval,y=carR]{\mydata};
+                \legend{Trips, Distance, Energy}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Car}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    ybar,
+                    bar width=.5cm,
+                    width=\textwidth,
+                    height=.5\textwidth,
+                    legend style={at={(0.5,1)},
+                        anchor=north,legend columns=-1},
+                    symbolic x coords={0--2,2--5,5--10,10--20,20--50,50+},
+                    xtick=data,
+                    nodes near coords,
+                    nodes near coords align={vertical},
+                    ymin=0,ymax=35,
+                    %xlabel={Bus},
+                    ylabel={\%},
+                ]
+                \addplot table[x=interval,y=busT]{\mydata};
+                \addplot table[x=interval,y=busD]{\mydata};
+                \addplot table[x=interval,y=busR]{\mydata};
+                \legend{Trips, Distance, Energy}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Bus}
+    \end{subfigure}
+    \begin{subfigure}{\textwidth}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    ybar,
+                    bar width=.5cm,
+                    width=\textwidth,
+                    height=.5\textwidth,
+                    legend style={at={(0.5,1)},
+                        anchor=north,legend columns=-1},
+                    symbolic x coords={0--2,2--5,5--10,10--20,20--50,50+},
+                    xtick=data,
+                    nodes near coords,
+                    nodes near coords align={vertical},
+                    ymin=0,ymax=35,
+                    %xlabel={Walk},
+                    ylabel={\%},
+                ]
+                \addplot table[x=interval,y=walkT]{\mydata};
+                \addplot table[x=interval,y=walkD]{\mydata};
+                \addplot table[x=interval,y=walkR]{\mydata};
+                \legend{Trips, Distance, Energy}
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Walk}
+    \end{subfigure}
+\end{figure}
+\end{document}

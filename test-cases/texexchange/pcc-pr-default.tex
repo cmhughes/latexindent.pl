@@ -98,9 +98,9 @@
 			postproc cell content/.append code={
 					\ifx\\##1\\% check if ##1 is empty
 					\else
-					\ifnum1=\pgfplotstablepartno
-					\pgfkeysalso{@cell content/.add={}{\,\%}}%
-					\fi
+						\ifnum1=\pgfplotstablepartno
+							\pgfkeysalso{@cell content/.add={}{\,\%}}%
+						\fi
 					\fi
 				},
 			precision=0,
