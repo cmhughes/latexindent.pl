@@ -135,12 +135,14 @@
 	listing options={#1},
 }
 
-\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{O{} m O{} m m}{%
+% \cmhlistingsfromfile uses listings library
+% \cmhlistingsfromfile* uses minted library
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} m O{} m m}{%
 	cmhlistings,
-	listing file={#2},
-	listing options={#1},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#4},label={#5},
-	#3,
+	listing file={#3},
+	IfBooleanTF={#1}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
+	#4,
 }
 
 % command shell
@@ -552,7 +554,6 @@
 \input{subsubsec-no-add-remaining-code-blocks}
 \stopcontents[noAdditionalIndent]
 \input{subsec-commands-and-their-options}
-\clearpage
 \input{sec-the-m-switch}
 \input{subsec-partnering-poly-switches}
 \input{subsec-conflicting-poly-switches}
@@ -560,17 +561,3 @@
 \input{references}
 \input{appendices}
 \end{document}
-
-\subsection{The phases of \texttt{latexindent.pl}}
-	With these rules in mind, let's study a few test cases:
-
-	latexindent.pl environments-line-break-conflict.tex -s -t -m -o environments-line-break-conflict-mod1.tex -l=env-conflicts-mod1.yaml
-	latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-2.tex -l=env-conflicts-mod2.yaml
-	latexindent.pl environments-line-break-conflict-nested.tex -s -t -m -o environments-line-break-conflict-nested-mod-3.tex -l=env-conflicts-mod3.yaml
-	environments-first-opt-args.tex, see all of the different examples in test-cases.sh
-	environments-second-opt-args.tex provides some interesting cases too
-
-	The \lstinline!\fi! command knows to insert a space, so as to give, for example, \lstinline!\fi! text, and avoid things such as \lstinline!\fitext!
-
-	from yaml
-

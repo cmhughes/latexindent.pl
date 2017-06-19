@@ -251,7 +251,7 @@ update PPR using the following equation:
 	\begin{array}{l l}
 		(1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in
 		\textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} &
-		\text{$v_i$ is seed}\\
+		\text{$v_i$ is seed}                                                                   \\
 		\delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)}
 		\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                         & \text{otherwise}
 	\end{array}
@@ -331,7 +331,7 @@ our implementation:
 	\begin{array}{l l}
 		\alpha + (1-\alpha) \cdot \sum\limits_{(x,y) \in E}
 		\frac{\textit{relevance}(y)}{d_\text{IN}(y)} & \text{$x$ \textrm{is
-				seed}}\\
+				seed}}                                                              \\
 		(1-\alpha) \cdot \sum\limits_{(x,y) \in E}
 		\frac{\textit{relevance}(y)}{d_\text{IN}(y)} & \text{otherwise}
 	\end{array} \right.
@@ -483,19 +483,19 @@ calls for this implementation can be found in the Appendix.
 	\centering
 	\caption{Runtime comparison to Cassovary.\label{tab:cassovary}}
 	\begin{tabular}{*{10}{r}}
-		\toprule & \multicolumn{2}{c}{wiki-Vote} & \multicolumn{2}{c}{twitter}
-		& \multicolumn{2}{c}{gplus} & \multicolumn{2}{c}{twitter09} \\
-		\midrule Step (runtime) & Cassovary & GPU & Cassovary & GPU & Cassovary
-		& GPU & Cassovary & GPU\\
-		\midrule PPR (ms) & 418  & 0.45 & 480  & 0.84 & 463   & 4.74  & 884   &
-		832.69\\
-		CoT (ms)          & 262  & 0.54 & 2173 & 1.28 & 25616 & 2.11  & 2192  & 51.61 \\
-		Money/SALSA (ms)  & 357  & 2.70 & 543  & 5.16 & 2023  & 18.56 & 11216 &
-		158.37\\
-		Total (ms)        & 1037 & 4.37 & 3196 & 8.36 & 28102 & 26.57 & 14292 &
-		1044.99\\
-		Speedup & \multicolumn{2}{r}{235.7} & \multicolumn{2}{r}{380.5} &
-		\multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}\\
+		\toprule                   & \multicolumn{2}{c}{wiki-Vote} & \multicolumn{2}{c}{twitter}
+		                           & \multicolumn{2}{c}{gplus}     & \multicolumn{2}{c}{twitter09}                                                        \\
+		\midrule Step (runtime)    & Cassovary                     & GPU                           & Cassovary & GPU  & Cassovary
+		                           & GPU                           & Cassovary                     & GPU                                                  \\
+		\midrule PPR (ms)          & 418                           & 0.45                          & 480       & 0.84 & 463       & 4.74  & 884   &
+		832.69                                                                                                                                            \\
+		CoT (ms)                   & 262                           & 0.54                          & 2173      & 1.28 & 25616     & 2.11  & 2192  & 51.61 \\
+		Money/SALSA (ms)           & 357                           & 2.70                          & 543       & 5.16 & 2023      & 18.56 & 11216 &
+		158.37                                                                                                                                            \\
+		Total (ms)                 & 1037                          & 4.37                          & 3196      & 8.36 & 28102     & 26.57 & 14292 &
+		1044.99                                                                                                                                           \\
+		Speedup                    & \multicolumn{2}{r}{235.7}     & \multicolumn{2}{r}{380.5}     &
+		\multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}                                                                                             \\
 		\bottomrule
 	\end{tabular}
 \end{table*}

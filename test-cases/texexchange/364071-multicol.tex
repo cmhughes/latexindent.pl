@@ -1,0 +1,23 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{siunitx}
+\usepackage{tabu}
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{multirow}
+\begin{document}
+\begin{table}
+	\centering
+	\begin{tabu} to 1.1\textwidth{| X[l] | X[l] | X[l] | X[l] | X[c] | X[c] |}
+		\cline{2-6}
+		\multicolumn{1}{c|}{}         & \multicolumn{3}{c|}{Voltage measured (V)} & \multirow{2}{*}{\thead{Mean               \\ voltage (V)}} & \multirow{2}{*}{\thead{Standard\\ deviation}}\\
+		\cline{1-4}
+		Temperature (\SI{}{\degree}C) & Replicate 1 & Replicate 2 & Replicate 3   &                                 &         \\
+		\hline
+		10                            & 1.79        & 1.78        & 1.79          & $\frac{1.79+1.78+1.79}{3}=1.78$ & 0.00577 \\
+		\hline
+	\end{tabu}
+\end{table}
+\end{document}

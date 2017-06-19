@@ -106,8 +106,7 @@ sub modify_line_breaks_settings{
 }
 
 sub tasks_particular_to_each_object{
-    my $self = shift;
-#    $self->remove_leading_space;
+    return;
 }
 
 sub create_unique_id{
@@ -130,7 +129,8 @@ sub align_at_ampersand{
     }
 
     # create an array of zeros
-    my @columnSizes = (0) x ($maximumNumberOfAmpersands+1); 
+    my @maximumColumnWidth = (0) x ($maximumNumberOfAmpersands+1); 
+    my @maximumColumnWidthMC = (0) x ($maximumNumberOfAmpersands+1); 
 
     # array for the new body
     my @formattedBody;
@@ -144,29 +144,56 @@ sub align_at_ampersand{
             $endPiece = $1;
         }
 
+        # remove any trailing comments
+        my $trailingComments;
+        if($_ =~ m/$trailingCommentRegExp/ ){
+            $_ =~ s/($trailingCommentRegExp)//;
+            $trailingComments = $1; 
+        }
+
+        # count the number of ampersands in the current row
         my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
-        if($numberOfAmpersands == $maximumNumberOfAmpersands){
-            # remove any trailing comments
-            my $trailingComments;
-            if($_ =~ m/$trailingCommentRegExp/ ){
-                $_ =~ s/($trailingCommentRegExp)//;
-                $trailingComments = $1; 
-            }
+
+        # switch for multiColumGrouping
+        my $multiColumnGrouping = ($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping});
+        my $alignRowsWithoutMaxDelims = ${$self}{alignRowsWithoutMaxDelims};
+
+        # by default, the stripped row is simply the current row
+        my $strippedRow = $_;
+
+        # loop through the columns
+        my $columnCount = 0;
+
+        # format switch off by default
+        my $formatRow = 0;
+
+        # store the column sizes for measuring and comparison purposes
+        my @columnSizes = ();
+
+        # we will store the columns in each row
+        my @columns;
+
+        # need to have at least one ampersand, or contain a \multicolumn command
+        if( ($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) )
+                                                or
+                            ($multiColumnGrouping and $alignRowsWithoutMaxDelims) ){
+            # remove space at the beginning of a row, surrounding &, and at the end of the row
+            $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
+            $_ =~ s/^\h*//g;
+            $_ =~ s/\h*$//g;
 
             # if the line finishes with an &, then add an empty space,
             # otherwise the column count is off
             $_ .= ($_ =~ m/(?<!\\)&$/ ? " ":q());
 
-            # loop through the columns
-            my $columnCount = 0;
-            my $strippedRow = '';
-            foreach my $column (split(/(?<!\\)&/,$_)){
-                # remove leading space
-                $column =~ s/^\h*//;
+            # store the columns, which are either split by & 
+            # or otherwise simply the current line, if for example, the current line simply
+            # contains \multicolumn{8}... \\  (see test-cases/texexchange/366841-zarko.tex, for example)
+            @columns = ($_ =~ m/(?<!\\)&/ ? split(/(?<!\\)&/,$_) : $_);
 
-                # remove trailing space
-                $column =~ s/\h*$//; 
-
+            # empty the white-space-stripped row
+            $strippedRow = '';
+            foreach my $column (@columns){
                 # if a column has finished with a \ then we need to add a trailing space, 
                 # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
                 $column .= ($column =~ m/\\$/ ? " ": q());
@@ -175,93 +202,230 @@ sub align_at_ampersand{
                 # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
-                $columnSizes[$columnCount] = $columnWidth if($columnWidth > $columnSizes[$columnCount]);
+
+                # multicolumn cells need a bit of special care
+                if($multiColumnGrouping and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
+                    $maximumColumnWidthMC[$columnCount] = $columnWidth if( defined $maximumColumnWidthMC[$columnCount] and ($columnWidth > $maximumColumnWidthMC[$columnCount]) );
+                    $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
+                }
+
+                # store the maximum column width
+                $maximumColumnWidth[$columnCount] = $columnWidth if( defined $maximumColumnWidth[$columnCount] and ($columnWidth > $maximumColumnWidth[$columnCount]) );
 
                 # put the row back together, using " " if the column is empty
                 $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
 
+                # store the column width
+                $columnSizes[$columnCount] = $columnWidth; 
+
                 # move on to the next column
-                $columnCount++;
+                if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
+                    # columns that are within the multiCol statement receive a width of -1
+                    for my $i (($columnCount+1)..($columnCount+$1)){
+                        $columnSizes[$i] = -1; 
+                    }
+                    # update the columnCount to account for the multiColSpan
+                    $columnCount += $1; 
+                } else {
+                    $columnCount++;
+                }
             }
 
-            # store the information
-            push(@formattedBody,{
-                                row=>$strippedRow,
-                                format=>1,
-                                endPiece=>($endPiece ? $endPiece :q() ),
-                                trailingComment=>($trailingComments ? $trailingComments :q() )});
-        } else {
-            # otherwise simply store the row
-            push(@formattedBody,{
-                                row=>$_.($endPiece ? $endPiece : q() ),
-                                format=>0});
+            # toggle the formatting switch
+            $formatRow = 1;
+        } elsif($endPiece and ${$self}{alignDoubleBackSlash}){
+            # otherwise a row could contain no ampersands, but would still desire
+            # the \\ to be aligned, see test-cases/alignment/multicol-no-ampersands.tex
+            @columns = $_;
+            $formatRow = 1;
         }
+
+        # store the information
+        push(@formattedBody,{
+                            row=>$strippedRow,
+                            format=>$formatRow,
+                            multiColumnGrouping=>$multiColumnGrouping,
+                            columnSizes=>\@columnSizes,
+                            columns=>\@columns,
+                            endPiece=>($endPiece ? $endPiece :q() ),
+                            trailingComment=>($trailingComments ? $trailingComments :q() )});
     }
 
     # output some of the info so far to the log file
-    $self->logger("Column sizes of horizontally stripped formatted block (${$self}{name}): @columnSizes") if $is_t_switch_active;
+    $self->logger("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
+    $self->logger("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
+    $self->logger("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
+    $self->logger("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
+    $self->logger("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
+    $self->logger("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
 
-    # README: printf( formatting, expression)
-    #
-    #   formatting has the form %-50s & %-20s & %-19s
-    #   (the numbers have been made up for example)
-    #       the - symbols mean that each column should be left-aligned
-    #       the numbers represent how wide each column is
-    #       the s represents string
-    #       the & needs to be inserted
+    # acount for multicolumn grouping, if the appropriate switch is set
+    if(${$self}{multiColumnGrouping}){
+        foreach(@formattedBody){
+            if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
-    # join up the maximum string lengths using "s %-"
-    my $fmtstring = join("s & %-",@columnSizes);
+                # set a columnCount, which will vary depending on multiColumnGrouping settings or not
+                my $columnCount=0;
 
-    # add %- to the beginning and an s to the end
-    $fmtstring = "%-".$fmtstring."s ";
+                # loop through the columns
+                foreach my $column (@{${$_}{columns}}){
+                    # calculate the width of the current column 
+                    my $gcs  = Unicode::GCString->new($column);
+                    my $columnWidth = $gcs->columns();
 
-    # log file info
-    $self->logger("Formatting string is: $fmtstring",'heading') if $is_t_switch_active;
+                    # check for multiColumnGrouping
+                    if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
+                        my $multiColSpan = $1;
 
-    # finally, reformat the body
+                        # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
+                        # the maximum column needs to account for this (subtract 1 because of 0 index in perl arrays)
+                        my $columnMax = $columnCount+$multiColSpan-1;
+
+                        # groupingWidth contains the total width of column sizes grouped 
+                        # underneath the \multicolumn{} statement
+                        my $groupingWidth = 0;
+                        my $maxGroupingWidth = 0;
+                        foreach (@formattedBody){
+                           $groupingWidth = 0;
+
+                            # loop through the columns covered by the multicolumn statement
+                            foreach my $j ($columnCount..$columnMax){
+                                if(  defined @{${$_}{columnSizes}}[$j] 
+                                             and 
+                                     @{${$_}{columnSizes}}[$j] >= 0
+                                             and
+                                         ${$_}{format} 
+                                          ){
+                                    $groupingWidth += (defined $maximumColumnWidth[$j] ? $maximumColumnWidth[$j] : 0); 
+                                } else {
+                                    $groupingWidth = 0;
+                                }
+                            }
+
+                            # update the maximum grouping width
+                            $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
+
+                            # the cells that receive multicolumn grouping need extra padding; in particular
+                            # the *last* cell of the multicol group receives the padding, hence the
+                            # use of $columnMax below 
+                            if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
+                                @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
+
+                                # also need to account for maximum column width *including* other multicolumn statements
+                                if($maximumColumnWidthMC[$columnCount]>$columnWidth){
+                                    @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
+                                }
+                            }
+                        }
+                        # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
+                        $maxGroupingWidth += ($multiColSpan-1)*3;
+
+                        # store the maxGroupingWidth for use in the next loop
+                        @{${$_}{maxGroupingWidth}}[$columnCount] = $maxGroupingWidth; 
+
+                        # update the columnCount to account for the multiColSpan
+                        $columnCount += $multiColSpan - 1;
+                    } 
+
+                    # increase the column count
+                    $columnCount++;
+                }
+            } 
+        }
+    }
+
+    # the maximum row width will be used in aligning (or not) the \\
+    my $maximumRowWidth = 0;
+
+    # now that the multicolumn widths have been accounted for, loop through the body
     foreach(@formattedBody){
         if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
 
+            # set a columnCount, which will vary depending on multiColumnGrouping settings or not
             my $columnCount=0;
             my $tmpRow = q();
-            foreach my $column (split(/(?<!\\)&/,${$_}{row})){
-                # grab the column width
+
+            # loop through the columns
+            foreach my $column (@{${$_}{columns}}){
+                # calculate the width of the current column 
                 my $gcs  = Unicode::GCString->new($column);
                 my $columnWidth = $gcs->columns();
 
-                # reset the padding
+                # reset the column padding
                 my $padding = q();
-                if($columnWidth  < $columnSizes[$columnCount]){
-                   $padding = " " x ($columnSizes[$columnCount] - $columnWidth);
+
+                # check for multiColumnGrouping
+                if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
+                    my $multiColSpan = $1;
+
+                    # groupingWidth contains the total width of column sizes grouped 
+                    # underneath the \multicolumn{} statement
+                    my $maxGroupingWidth = ${${$_}{maxGroupingWidth}}[$columnCount];
+
+                    # set the padding; we need
+                    #       maximum( $maxGroupingWidth, $maximumColumnWidthMC[$columnCount] )
+                    # rather than load another module to give the 'max' function, I use the ternary operator
+                    my $maxValueToUse = 0;
+                    if(defined $maximumColumnWidthMC[$columnCount]){
+                        $maxValueToUse = ($maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount]);
+                    } else {
+                        $maxValueToUse = $maxGroupingWidth;
+                    }
+
+                    # calculate the padding
+                    $padding = " " x ( $maxValueToUse  >= $columnWidth ? $maxValueToUse  - $columnWidth : 0 );
+
+                    # update the columnCount to account for the multiColSpan
+                    $columnCount += $multiColSpan - 1;
+                } else {
+                    # compare the *current* column width with the *maximum* column width
+                    $padding = " " x (defined $maximumColumnWidth[$columnCount] and $maximumColumnWidth[$columnCount] >= $columnWidth ? $maximumColumnWidth[$columnCount] - $columnWidth : 0);
                 }
-                $tmpRow .= $column.$padding." & ";
+
+                # either way, the row is formed of "COLUMN + PADDING"
+                $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q())." & ";
                 $columnCount++;
             }
 
             # remove the final &
-            $tmpRow =~ s/\s&\s$/ /;
+            $tmpRow =~ s/\h&\h*$/ /;
+            $tmpRow =~ s/\h*$/ /;
 
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;
 
-            # format the row, and put the trailing \\ and trailing comments back into the row
-            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
+            # update the maximum row width
+            my $gcs  = Unicode::GCString->new($tmpRow);
+            ${$_}{rowWidth} = $gcs->columns();
+            $maximumRowWidth = ${$_}{rowWidth} if(${$_}{rowWidth} >  $maximumRowWidth);
+        } 
+    }
 
-            # possibly remove space ahead of \\
-            ${$_}{row} =~ s/\h*\\\\/\\\\/ if(!${$self}{alignDoubleBackSlash});
+    # final loop through to get \\ aligned
+    foreach (@formattedBody){
+        # reset the padding
+        my $padding = q();
 
-            # possibly insert spaces infront of \\
-            if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
-                my $horizontalSpaceToInsert = " "x (${$self}{spacesBeforeDoubleBackSlash});
-                ${$_}{row} =~ s/\h*\\\\/$horizontalSpaceToInsert\\\\/;
+        # possibly adjust the padding
+        if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
+            # remove trailing horizontal space if ${$self}{alignDoubleBackSlash} is set to 0
+            ${$_}{row} =~ s/\h*$// if (!${$self}{alignDoubleBackSlash});
+            
+            # format spacing infront of \\
+            if(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}<0 and !${$self}{alignDoubleBackSlash}){
+                # zero spaces (possibly resulting in un-aligned \\)
+                $padding = q();
+            } elsif(defined ${$self}{spacesBeforeDoubleBackSlash} and ${$self}{spacesBeforeDoubleBackSlash}>=0 and !${$self}{alignDoubleBackSlash}){
+                # specified number of spaces (possibly resulting in un-aligned \\)
+                $padding = " " x (${$self}{spacesBeforeDoubleBackSlash});
+            } else {
+                # aligned \\
+                $padding = " " x ($maximumRowWidth - ${$_}{rowWidth});
             }
         }
 
-        # if we have an empty row, it's possible that it originally had an end piece (e.g \\) and/or trailing comments
-        if(${$_}{row} =~ m/^\h*$/){
-            ${$_}{row} .= (${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
-        }
+        # format the row, and put the trailing \\ and trailing comments back into the row
+        ${$_}{row} .= $padding.(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
     }
 
     # to the log file

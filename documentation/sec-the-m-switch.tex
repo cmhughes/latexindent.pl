@@ -670,11 +670,11 @@ latexindent.pl -m env-mlb6.tex -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,en
 	modified using \texttt{latexindent.pl}.
 
 	\begin{longtable}{m{.2\textwidth}@{\hspace{.75cm}}m{.35\textwidth}@{}m{.4\textwidth}}
-		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}\\
+		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping} \\
 		\toprule
-		Code block & Sample & Poly-switch mapping \\
+		Code block                             & Sample & Poly-switch mapping                  \\
 		\midrule
-		environment &
+		environment                            &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)
@@ -682,7 +682,7 @@ body of myenv(*@$\EndStartsOnOwnLine$@*)
 \end{myenv}(*@$\EndFinishesWithLineBreak$@*)
 after words
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$     & BeginStartsOnOwnLine     \\
 			$\BodyStartsOnOwnLine$      & BodyStartsOnOwnLine      \\
@@ -691,7 +691,7 @@ after words
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		ifelsefi &
+		ifelsefi                               &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \if...(*@$\BodyStartsOnOwnLine$@*)
@@ -701,7 +701,7 @@ body of else statement(*@$\EndStartsOnOwnLine$@*)
 \fi(*@$\EndFinishesWithLineBreak$@*)
 after words
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$      & IfStartsOnOwnLine         \\
 			$\BodyStartsOnOwnLine$       & BodyStartsOnOwnLine       \\
@@ -712,7 +712,7 @@ after words
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		optionalArguments &
+		optionalArguments                      &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 ...(*@$\BeginStartsOnOwnLine$@*)
 [(*@$\BodyStartsOnOwnLine$@*)
@@ -720,7 +720,7 @@ body of opt arg(*@$\EndStartsOnOwnLine$@*)
 ](*@$\EndFinishesWithLineBreak$@*)
 ...
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$     & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
 			$\BodyStartsOnOwnLine$      & OptArgBodyStartsOnOwnLine                                         \\
@@ -729,7 +729,7 @@ body of opt arg(*@$\EndStartsOnOwnLine$@*)
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		mandatoryArguments &
+		mandatoryArguments                     &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 ...(*@$\BeginStartsOnOwnLine$@*)
 {(*@$\BodyStartsOnOwnLine$@*)
@@ -737,7 +737,7 @@ body of mand arg(*@$\EndStartsOnOwnLine$@*)
 }(*@$\EndFinishesWithLineBreak$@*)
 ...
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$     & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace} \\
 			$\BodyStartsOnOwnLine$      & MandArgBodyStartsOnOwnLine                                     \\
@@ -746,26 +746,26 @@ body of mand arg(*@$\EndStartsOnOwnLine$@*)
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		commands &
+		commands                               &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={mycommand},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \mycommand(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{arguments}$\rangle$@*)
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$ & CommandStartsOnOwnLine           \\
 			$\BodyStartsOnOwnLine$  & CommandNameFinishesWithLineBreak \\
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		namedGroupingBraces Brackets &
+		namedGroupingBraces Brackets           &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={myname},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 myname(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{braces/brackets}$\rangle$@*)
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$ & NameStartsOnOwnLine       \\
 			$\BodyStartsOnOwnLine$  & NameFinishesWithLineBreak \\
@@ -778,7 +778,7 @@ before words(*@$\BeginStartsOnOwnLine$@*)
 key(*@$\EqualsStartsOnOwnLine$@*)=(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{braces/brackets}$\rangle$@*)
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$  & KeyStartsOnOwnLine          \\
 			$\EqualsStartsOnOwnLine$ & EqualsStartsOnOwnLine       \\
@@ -786,20 +786,20 @@ key(*@$\EqualsStartsOnOwnLine$@*)=(*@$\BodyStartsOnOwnLine$@*)
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		items &
+		items                                  &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \item(*@$\BodyStartsOnOwnLine$@*)
 ...
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$ & ItemStartsOnOwnLine       \\
 			$\BodyStartsOnOwnLine$  & ItemFinishesWithLineBreak \\
 		\end{tabular}
 		\\
 		\cmidrule{2-3}
-		specialBeginEnd &
+		specialBeginEnd                        &
 		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \[(*@$\BodyStartsOnOwnLine$@*)
@@ -807,7 +807,7 @@ body of special(*@$\EndStartsOnOwnLine$@*)
 \](*@$\EndFinishesWithLineBreak$@*)
 after words
   \end{lstlisting}
-		&
+		                                       &
 		\begin{tabular}[t]{c@{~}l@{}}
 			$\BeginStartsOnOwnLine$     & SpecialBeginStartsOnOwnLine     \\
 			$\BodyStartsOnOwnLine$      & SpecialBodyStartsOnOwnLine      \\

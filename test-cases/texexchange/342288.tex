@@ -1,0 +1,28 @@
+\documentclass{article}
+
+\usepackage{booktabs}
+\usepackage{dcolumn}
+
+\newcolumntype{d}{D{.}{.}{5.5}}
+\newcolumntype{C}{>{\centering}p}
+
+\begin{document}
+
+\begin{table}[htp]
+\caption{}
+\centering
+\begin{center}
+    \begin{tabular}{p{1.25in}ddd}
+    \toprule
+    \multicolumn{1}{C{1in}}{\shortstack{Group}} & \multicolumn{1}{C{0.75in}}{\shortstack{Weight\\(g)}} &    \multicolumn{1}{C{1in}}{\shortstack{Glucose\\(mg/l)}} & \multicolumn{1}{C{2in}} {\shortstack{Glycosylated protein\\(nmol/mg protein)}}\\
+    \midrule
+    Control & 544.5 & 908.0 & 17.8\\
+    Diabetic & 331.2{$^{***}$} & 5736.0{$^{***}$} & 32.10{$^{***}$}\\
+    Diabetic+GT & 343.9{$^{***}$} & 4037.0{$^{***}\dagger\dagger$ } &   24.87{$^{***}$}\\
+    \bottomrule
+    \end{tabular}
+\end{center}
+\label{tbl:results}\\
+\end{table}
+
+\end{document}

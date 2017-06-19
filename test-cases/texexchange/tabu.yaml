@@ -1,0 +1,4 @@
+lookForAlignDelims:
+    tabu:
+      multiColumnGrouping: 1
+      alignRowsWithoutMaxDelims: 1

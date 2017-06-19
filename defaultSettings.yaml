@@ -140,6 +140,8 @@ lookForAlignDelims:
       delims: 1
       alignDoubleBackSlash: 1
       spacesBeforeDoubleBackSlash: 2
+      multiColumnGrouping: 0
+      alignRowsWithoutMaxDelims: 1
    tabularx:
       delims: 1
    longtable: 1
