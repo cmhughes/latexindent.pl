@@ -14,4 +14,11 @@ latexindent.pl -w -s  myfile -g=myfile.log
 latexindent.pl -w -s  myfile -l=style-file-first.yaml -g=myfile-sty.log
 # won't work, as it will look for another.tex, another.cls, another.bib, another.sty
 latexindent.pl -w -s  another -g=one.log
+# the -l switch can accept a + symbol:
+latexindent.pl  tabular-karl -tt -l=+../alignment/multiColumnGrouping.yaml -s -o=tabular-karl1.tex 
+latexindent.pl  tabular-karl -tt -l="   +../alignment/multiColumnGrouping.yaml" -s -o=tabular-karl2.tex 
+latexindent.pl  tabular-karl -tt -l="   +   ../alignment/multiColumnGrouping.yaml" -s -o=tabular-karl3.tex 
+latexindent.pl  tabular-karl -tt -l=../alignment/multiColumnGrouping.yaml+ -s -o=tabular-karl4.tex 
+latexindent.pl  tabular-karl -tt -l="../alignment/multiColumnGrouping.yaml    +" -s -o=tabular-karl5.tex -g=one.log
 git status
+[[ $noisyMode == 1 ]] && makenoise

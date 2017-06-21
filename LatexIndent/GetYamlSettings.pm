@@ -104,11 +104,34 @@ sub readSettings{
   # get information about LOCAL settings, assuming that $readLocalSettings exists
   my $directoryName = dirname (${$self}{fileName});
   
+  my @localSettings;
+
+  # local settings can be called with a + symbol, for example
+  #     -l=+myfile.yaml
+  #     -l "+ myfile.yaml"
+  #     -l=myfile.yaml+
+  # which translates to, respectively
+  #     -l=localSettings.yaml,myfile.yaml
+  #     -l=myfile.yaml,localSettings.yaml
+  # Note: the following is *not allowed*:
+  #     -l+myfile.yaml
+  # and
+  #     -l + myfile.yaml
+  # will *only* load localSettings.yaml, and myfile.yaml will be ignored
+  if($switches{readLocalSettings} =~ m/\+/){
+        $self->logger("+ found in call for -l switch: will add localSettings.yaml");
+
+        # + can be either at the beginning or the end, which determines if where the comma should go
+        my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
+        my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
+        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
+        $self->logger("New value of -l switch: $switches{readLocalSettings}");
+  }
+
   # local settings can be separated by ,
   # e.g  
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
-  my @localSettings;
   if($switches{readLocalSettings} =~ m/,/){
         $self->logger("Multiple localSettings found, separated by commas:",'heading');
         @localSettings = split(/,/,$switches{readLocalSettings});
