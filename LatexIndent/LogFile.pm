@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Version qw/$versionNumber/;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
@@ -41,16 +42,22 @@ sub processSwitches{
     my $self = shift;
 
     # details of the script to log file
-    $self->logger("$FindBin::Script version 3.2, a script to indent .tex files",'heading');
+    $self->logger("$FindBin::Script version $versionNumber, a script to indent .tex files",'heading');
     $self->logger("$FindBin::Script lives here: $FindBin::RealBin/");
 
     # time the script is used
     my $time = localtime();
     $self->logger("$time");
 
+    # -v switch is just to show the version number
+    if($switches{version}) {
+        print $versionNumber,"\n";
+        exit(2);
+    }
+
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
     print <<ENDQUOTE
-latexindent.pl version 3.2
+latexindent.pl version $versionNumber
 usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
       -h, --help
           help (see the documentation for detailed instructions and examples)

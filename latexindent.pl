@@ -30,6 +30,7 @@ use LatexIndent::Document;
 my %switches = (readLocalSettings=>0);
 
 GetOptions (
+    "version|v"=>\$switches{version},
     "silent|s"=>\$switches{silentMode},
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},
