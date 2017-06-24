@@ -22,6 +22,7 @@ newDate='2017-06-19'
 
 cd ../
 sed -i.bak "s/\$versionNumber = $oldVersion/\$versionNumber = $newVersion/" LatexIndent/Version.pm
+sed -i.bak "s/\$versionDate = $oldDate/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
 sed -i.bak "s/version $oldVersion/version $newVersion/" readme.md

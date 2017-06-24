@@ -17,7 +17,8 @@ package LatexIndent::Version;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/$versionNumber/;
+our @EXPORT_OK = qw/$versionNumber $versionDate/;
 
 our $versionNumber = 3.2;
+our $versionDate = '2017-06-19';
 1
