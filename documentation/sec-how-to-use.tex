@@ -84,10 +84,22 @@ latexindent.pl --outputfile output.tex myfile.tex
 	be ignored and \texttt{-o} will take priority (this seems safer than the
 	other way round).
 
-	Note that using \texttt{-o} is equivalent to using
+	Note that using \texttt{-o} as above is equivalent to using
 	\begin{commandshell}
 latexindent.pl myfile.tex > output.tex
 \end{commandshell}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
+You can call the \texttt{-o} switch with the name of a file \emph{without} an extension; in 
+this case, \texttt{latexindent.pl} will use the extension from the original file. For example, 
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=output
+\end{commandshell}
+will be interpreted in the same way as
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=output.tex
+\end{commandshell}
+
 	See \vref{app:differences} for details of how the interface has changed
 	from Version 2.2 to Version 3.0 for this flag.
 \flagbox{-s, --silent}

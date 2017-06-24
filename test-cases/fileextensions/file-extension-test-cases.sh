@@ -22,5 +22,11 @@ latexindent.pl  tabular-karl -tt -l=../alignment/multiColumnGrouping.yaml+ -s -o
 latexindent.pl  tabular-karl -tt -l="../alignment/multiColumnGrouping.yaml    +" -s -o=tabular-karl5.tex -g=one.log
 # no yaml extension
 latexindent.pl  tabular-karl -tt -l=+../alignment/multiColumnGrouping -s -o=tabular-karl6.tex 
+# no extension for output file
+latexindent.pl -s cmh.tex -tt -o one -g=one.log
+latexindent.pl -s cmh -tt -o two -g=two.log
+latexindent.pl -s cmh -tt -o three. -g=three.log
+latexindent.pl -s cmh.bib -tt -o one -g=four.log
+latexindent.pl -s cmh.bib -tt -o two. -g=five.log
 git status
 [[ $noisyMode == 1 ]] && makenoise

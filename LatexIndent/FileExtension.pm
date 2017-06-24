@@ -22,6 +22,7 @@ use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/%switches/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check{
@@ -89,6 +90,24 @@ sub file_extension_check{
 
     # store the file extension
     ${$self}{fileExtension} = $ext;
+
+    # check to see if -o switch is active
+    if($switches{outputToFile}){
+
+        my $strippedFileExtension = ${$self}{fileExtension};
+        $strippedFileExtension =~ s/\.//; 
+
+        # grab the name, directory, and extension of the output file
+        my ($name, $dir, $ext) = fileparse($switches{outputToFile}, $strippedFileExtension);
+
+        # if there is no extension, then add the extension from the file to be operated upon
+        if(!$ext){
+            $self->logger("Output file check",'heading');
+            $self->logger("-o switch called with file name without extension: $switches{outputToFile}");
+            $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
+            $self->logger("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
+        }
+    }
 
     # read the file into the Document body
     my @lines;
