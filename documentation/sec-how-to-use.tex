@@ -89,22 +89,53 @@ latexindent.pl --outputfile output.tex myfile.tex
 latexindent.pl myfile.tex > output.tex
 \end{commandshell}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
-You can call the \texttt{-o} switch with the name of the output file \emph{without} an extension; in 
-this case, \texttt{latexindent.pl} will use the extension from the original file. For example, 
-the following two calls to \texttt{latexindent.pl} are equivalent:
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
+	You can call the \texttt{-o} switch with the name of the output file \emph{without} an extension; in
+	this case, \texttt{latexindent.pl} will use the extension from the original file. For example,
+	the following two calls to \texttt{latexindent.pl} are equivalent:
 	\begin{commandshell}
 latexindent.pl myfile.tex -o=output
 latexindent.pl myfile.tex -o=output.tex
 \end{commandshell}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
-You can call the \texttt{-o} switch using a \texttt{+} symbol at the beginning, if you 
-wish to concacenate the name of the input file and the text given to the \texttt{-o} switch.
-For example, the following two calls to \texttt{latexindent.pl} are equivalent:
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
+	You can call the \texttt{-o} switch using a \texttt{+} symbol at the beginning; this will 
+    concacenate the name of the input file and the text given to the \texttt{-o} switch.
+	For example, the following two calls to \texttt{latexindent.pl} are equivalent:
 	\begin{commandshell}
 latexindent.pl myfile.tex -o=+new
 latexindent.pl myfile.tex -o=myfilenew.tex
+\end{commandshell}
+
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
+	You can call the \texttt{-o} switch using a \texttt{++} symbol at the end of the name 
+    of your output file; this tells \texttt{latexindent.pl} to search successively for 
+    the name of your output file concancaenated with $0, 1, \ldots$ while the name of the 
+    output file exists.  For example, 
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=output++
+\end{commandshell}
+tells \texttt{latexindent.pl} to output to \texttt{output0.tex}, but if it exists then 
+output to \texttt{output1.tex}, and so on.
+
+Calling \texttt{latexindent.pl} with simply
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=++
+\end{commandshell}
+tells it to output to \texttt{myfile0.tex}, but if it exists then output to \texttt{myfile1.tex}
+and so on.
+
+The \texttt{+} and \texttt{++} feature of the \texttt{-o} switch can be combined; for example, calling
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=+out++
+\end{commandshell}
+tells \texttt{latexindent.pl} to output to \texttt{myfileout0.tex}, but if it exists, then 
+try \texttt{myfileout1.tex}, and so on.
+
+There is no need to specify a file extension when using the \texttt{++} feature, but if you wish to, 
+then you should include it \emph{after} the \texttt{++} symbols, for example
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=+out++.tex
 \end{commandshell}
 
 	See \vref{app:differences} for details of how the interface has changed

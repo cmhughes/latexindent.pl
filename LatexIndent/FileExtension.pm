@@ -98,7 +98,7 @@ sub file_extension_check{
         $self->logger("Output file check",'heading');
 
         # the -o file name might begin with a + symbol
-        if($switches{outputToFile} =~ m/^\+(.*)/){
+        if($switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+"){
             $self->logger("-o switch called with + symbol at the beginning: $switches{outputToFile}");
             $switches{outputToFile} = ${$self}{baseName}.$1;
             $self->logger("output file is now: $switches{outputToFile}");
@@ -115,6 +115,25 @@ sub file_extension_check{
             $self->logger("-o switch called with file name without extension: $switches{outputToFile}");
             $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
             $self->logger("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
+        }
+
+        # the -o file name might end with ++ in which case we wish to search for existence, 
+        # and then increment accordingly
+        $name =~ s/\.$//;
+        if($name =~ m/\+\+$/){
+            $self->logger("-o switch called with file name ending with ++: $switches{outputToFile}");
+            $name =~ s/\+\+$//;
+            $name = ${$self}{baseName} if ($name eq "");
+            my $outputFileCounter = 0;
+            my $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+            $self->logger("will search for exisitence and increment counter, starting with $fileName");
+            while( -e $fileName ){
+                $self->logger("$fileName exists, incrementing counter");
+                $outputFileCounter++;
+                $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+            }
+            $self->logger("$fileName does not exist, and will be the output file");
+            $switches{outputToFile} = $fileName;
         }
     }
 

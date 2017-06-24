@@ -35,6 +35,17 @@ latexindent.pl -s cmh.bib -tt -o two. -g=five.log
 #       latexindent.pl cmh.tex -o=cmhone.tex
 latexindent.pl -s cmh.tex -tt -o +one -g=six.log
 latexindent.pl -s cmh.tex -tt -o +two.tex -g=seven.log
-
+# test the ++ routine:
+#       latexindent.pl myfile.tex -o=++
+# says that latexindent should output to myfile0.tex; if myfile0.tex exists, it should use myfile1.tex, and so on.
+#       latexindent.pl myfile.tex -o=output++
+# says that latexindent should output to output0.tex; if output0.tex exists, it should use output1.tex, and so on.
+#       latexindent.pl myfile.tex -o=+output++
+# says that latexindent should myfileoutput to myfileoutput0.tex; if myfileoutput0.tex exists, it should use myfileoutput1.tex, and so on.
+latexindent.pl cmh.tex -o=++ -s
+latexindent.pl cmh.tex -o=output++ -s
+latexindent.pl cmh.tex -o +output++ -s
+latexindent.pl cmh.tex -o +myfile++.tex -s
+latexindent.pl cmh.tex -o myfile++.tex -s
 git status
 [[ $noisyMode == 1 ]] && makenoise
