@@ -146,28 +146,33 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	absolute paths -- for absolute paths, see \vref{sec:indentconfig}.
 	Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
 
-    As of Version 3.2.1, you can call the \texttt{-l} switch with a `+' symbol either before or after
-    another YAML file; for example:
-    \begin{commandshell}
+	You can call the \texttt{-l} switch with a `+' symbol either before or after
+	another YAML file; for example:
+	\begin{commandshell}
 latexindent.pl -l=+myyaml.yaml  myfile.tex
 latexindent.pl -l "+ myyaml.yaml" myfile.tex
 latexindent.pl -l=myyaml.yaml+  myfile.tex
     \end{commandshell}
-   which translate, respectively, to
-    \begin{commandshell}
+	which translate, respectively, to
+	\begin{commandshell}
 latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
 latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
 latexindent.pl -l=myyaml.yaml,localSettings.yaml myfile.tex
     \end{commandshell}
-    Note that the following is \emph{not} allowed:
-    \begin{commandshell}
+	Note that the following is \emph{not} allowed:
+	\begin{commandshell}
 latexindent.pl -l+myyaml.yaml myfile.tex
     \end{commandshell}
-   and
-    \begin{commandshell}
+	and
+	\begin{commandshell}
 latexindent.pl -l + myyaml.yaml myfile.tex
     \end{commandshell}
-    will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be ignored.
+	will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be ignored.
+
+	You may also choose to omit the \texttt{yaml} extension, such as
+	\begin{commandshell}
+latexindent.pl -l=localSettings,myyaml myfile.tex
+    \end{commandshell}
 \flagbox{-d, --onlydefault}
 	\begin{commandshell}
 latexindent.pl -d myfile.tex

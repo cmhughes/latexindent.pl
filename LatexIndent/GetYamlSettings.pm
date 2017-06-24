@@ -35,7 +35,6 @@ our %previouslyFoundSettings;
 sub readSettings{
   my $self = shift;
   
-  $defaultSettings = YAML::Tiny->new;
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
   $self->logger("YAML settings read",'heading');
   $self->logger("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
@@ -141,6 +140,13 @@ sub readSettings{
 
   # add local settings to the paths, if appropriate
   foreach (@localSettings) {
+    # check for an extension (.yaml)
+    my ($dir, $name, $ext) = fileparse($_, "yaml");
+
+    # if no extension is found, append the current localSetting with .yaml
+    $_ = $_.($_=~m/\.\z/ ? q() : ".")."yaml" if(!$ext);
+
+    # check for existence and non-emptiness
     if ( (-e "$directoryName/$_") and !(-z "$directoryName/$_")) {
         $self->logger("Adding $directoryName/$_ to YAML read paths");
         push(@absPaths,"$directoryName/$_");
