@@ -28,5 +28,13 @@ latexindent.pl -s cmh -tt -o two -g=two.log
 latexindent.pl -s cmh -tt -o three. -g=three.log
 latexindent.pl -s cmh.bib -tt -o one -g=four.log
 latexindent.pl -s cmh.bib -tt -o two. -g=five.log
+# the output file can be called with a + sign, e.g
+#       latexindent.pl cmh.tex -o=+one.tex
+#       latexindent.pl cmh.tex -o=+one
+# both of which are equivalent to
+#       latexindent.pl cmh.tex -o=cmhone.tex
+latexindent.pl -s cmh.tex -tt -o +one -g=six.log
+latexindent.pl -s cmh.tex -tt -o +two.tex -g=seven.log
+
 git status
 [[ $noisyMode == 1 ]] && makenoise

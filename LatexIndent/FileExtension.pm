@@ -38,7 +38,8 @@ sub file_extension_check{
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
     
     # get the base file name, allowing for different extensions (possibly no extension)
-    my ($dir, $name, $ext) = fileparse($fileName, @fileExtensions);
+    my ($name, $dir, $ext) = fileparse($fileName, @fileExtensions);
+    ${$self}{baseName} = $name;
 
     # check to make sure given file type is supported
     if( -e $fileName  and !$ext ){
@@ -93,6 +94,15 @@ sub file_extension_check{
 
     # check to see if -o switch is active
     if($switches{outputToFile}){
+        
+        $self->logger("Output file check",'heading');
+
+        # the -o file name might begin with a + symbol
+        if($switches{outputToFile} =~ m/^\+(.*)/){
+            $self->logger("-o switch called with + symbol at the beginning: $switches{outputToFile}");
+            $switches{outputToFile} = ${$self}{baseName}.$1;
+            $self->logger("output file is now: $switches{outputToFile}");
+        }
 
         my $strippedFileExtension = ${$self}{fileExtension};
         $strippedFileExtension =~ s/\.//; 
@@ -102,7 +112,6 @@ sub file_extension_check{
 
         # if there is no extension, then add the extension from the file to be operated upon
         if(!$ext){
-            $self->logger("Output file check",'heading');
             $self->logger("-o switch called with file name without extension: $switches{outputToFile}");
             $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
             $self->logger("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");

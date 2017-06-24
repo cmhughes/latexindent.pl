@@ -90,14 +90,21 @@ latexindent.pl myfile.tex > output.tex
 \end{commandshell}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
-You can call the \texttt{-o} switch with the name of a file \emph{without} an extension; in 
+You can call the \texttt{-o} switch with the name of the output file \emph{without} an extension; in 
 this case, \texttt{latexindent.pl} will use the extension from the original file. For example, 
+the following two calls to \texttt{latexindent.pl} are equivalent:
 	\begin{commandshell}
 latexindent.pl myfile.tex -o=output
-\end{commandshell}
-will be interpreted in the same way as
-	\begin{commandshell}
 latexindent.pl myfile.tex -o=output.tex
+\end{commandshell}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\announce{NEW}
+You can call the \texttt{-o} switch using a \texttt{+} symbol at the beginning, if you 
+wish to concacenate the name of the input file and the text given to the \texttt{-o} switch.
+For example, the following two calls to \texttt{latexindent.pl} are equivalent:
+	\begin{commandshell}
+latexindent.pl myfile.tex -o=+new
+latexindent.pl myfile.tex -o=myfilenew.tex
 \end{commandshell}
 
 	See \vref{app:differences} for details of how the interface has changed
