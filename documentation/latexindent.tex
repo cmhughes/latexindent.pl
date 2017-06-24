@@ -1,8 +1,8 @@
 % arara: pdflatex: {shell: yes}
-% arara: bibtex
-% arara: pdflatex: {shell: yes}
-% arara: pdflatex: {shell: yes}
-% arara: pdflatex: {shell: yes}
+% !arara: bibtex
+% !arara: pdflatex: {shell: yes}
+% !arara: pdflatex: {shell: yes}
+% !arara: pdflatex: {shell: yes}
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 %
 %   See <http://www.gnu.org/licenses/>.
 \usepackage[left=4.5cm,right=2.5cm,showframe=false,
-	top=2cm,bottom=1.5cm]{geometry}                      % page setup
+	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry}                      % page setup
 \usepackage{lmodern}
 \usepackage{parskip}                                 % paragraph skips
 \usepackage{booktabs}                                % beautiful tables
@@ -31,6 +31,7 @@
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
 \usepackage{tcolorbox}                                % framed environments
+\usepackage{tikz}                                
 \usepackage{xparse}
 \usepackage[charter]{mathdesign}                     % changes font
 \usepackage[expansion=false,kerning=true]{microtype} % better kerning
@@ -39,16 +40,12 @@
 \usepackage{array}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
-% tcolorbox libraries
-\tcbuselibrary{breakable,skins,listings,minted,xparse}
-%\usepackage{varioref}                                % clever referencing
-%\tcbuselibrary{documentation,breakable,skins,minted}
-% tikz libraries
+% tikz, tcolorbox libraries
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
-\usepackage{varioref}                                % clever referencing
-\usepackage{hyperref}
+\usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
+\tcbuselibrary{breakable,minted,xparse,documentation}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -62,6 +59,13 @@
 }
 \usepackage{cleveref}
 
+% customise the \tcbdocnew command
+\tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
+\tcbset{doc marginnote={width=1.6cm}}
+\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
+
+\reversemarginpar
+% bibliographies
 \addbibresource{latex-indent}
 \addbibresource{contributors}
 
@@ -404,7 +408,7 @@
 \newcommand{\flagbox}[1]{%
 	\par
 	\makebox[30pt][l]{%
-		\hspace{-2cm}%
+		\hspace{-1cm}%
 		\ttfamily\fontseries{b}\selectfont #1
 	}%
 }
@@ -564,24 +568,24 @@
 \input{sec-introduction}
 \input{sec-demonstration}
 \input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\input{subsubsec-no-add-remaining-code-blocks}
-\stopcontents[noAdditionalIndent]
-\input{subsec-commands-and-their-options}
-\input{sec-the-m-switch}
-\input{subsec-partnering-poly-switches}
-\input{subsec-conflicting-poly-switches}
-\input{sec-conclusions-know-limitations}
-\input{references}
-\input{appendices}
+%\input{sec-indent-config-and-settings.tex}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\input{subsubsec-no-add-remaining-code-blocks}
+%\stopcontents[noAdditionalIndent]
+%\input{subsec-commands-and-their-options}
+%\input{sec-the-m-switch}
+%\input{subsec-partnering-poly-switches}
+%\input{subsec-conflicting-poly-switches}
+%\input{sec-conclusions-know-limitations}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 version history:
