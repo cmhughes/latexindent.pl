@@ -1,8 +1,8 @@
 % arara: pdflatex: {shell: yes}
-% !arara: bibtex
-% !arara: pdflatex: {shell: yes}
-% !arara: pdflatex: {shell: yes}
-% !arara: pdflatex: {shell: yes}
+% arara: bibtex
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -62,7 +62,15 @@
 % customise the \tcbdocnew command
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
-\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
+%\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
+\NewDocumentCommand{\announce}{ s m }{%
+	\IfBooleanTF{#1}
+	{% \announce*
+		\tcbdocmarginnote[overlay={\node[anchor=north east,text=cmhgold] at ([yshift=3mm,xshift=4mm]frame.north east) {$\bigstar$}; }]{\tcbdocnew{#2}}
+	}
+	{% \announce
+		\tcbdocmarginnote{\tcbdocnew{#2}}
+	}}
 
 \reversemarginpar
 % bibliographies

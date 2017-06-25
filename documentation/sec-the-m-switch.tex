@@ -58,7 +58,7 @@ latexindent.pl myfile.tex -m
 
 \yamltitle{textWrapOptions}*{fields}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to wrap text using the options
-\announce{2017-05-27} 
+	\announce{2017-05-27}
 	specified in the \texttt{textWrapOptions} field, see \cref{lst:textWrapOptions}. The value of
 	\texttt{columns} specifies the column at which the text should be wrapped.
 	By default, the value of \texttt{columns} is \texttt{0}, so \texttt{latexindent.pl}
@@ -149,7 +149,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 \yamltitle{removeParagraphLineBreaks}*{fields}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
-\announce{2017-05-27} 
+	\announce{2017-05-27}
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
 	\cref{lst:removeParagraphLineBreaks}. Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
 
@@ -279,7 +279,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 
 \yamltitle{paragraphsStopAt}*{fields}
 	The paragraph line break routine considers blank lines and the \lstinline|\par| command to be the end of a paragraph;
-\announce{2017-05-27} 
+	\announce{2017-05-27}
 	you can fine tune the behaviour of the routine further by using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
 
 	\cmhlistingsfromfile[style=paragraphsStopAt]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}

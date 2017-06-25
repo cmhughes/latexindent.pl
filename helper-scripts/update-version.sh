@@ -21,6 +21,10 @@ oldDate='2017-05-27'
 newDate='2017-06-19'
 
 cd ../
+cd documentation
+find -name "*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{NEW\}/announce\*\{$newDate\}/g"
+cd ../
+exit
 sed -i.bak "s/\$versionNumber = $oldVersion/\$versionNumber = $newVersion/" LatexIndent/Version.pm
 sed -i.bak "s/\$versionDate = $oldDate/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
