@@ -10,6 +10,7 @@ cp test-windows-small.bat ${destinationDir}
 cd ../
 cp latexindent.pl ${destinationDir}
 cp defaultSettings.yaml ${destinationDir}
+mkdir ${destinationDir}/LatexIndent/
 cp LatexIndent/*.pm ${destinationDir}/LatexIndent/
 
 # a very few small test case

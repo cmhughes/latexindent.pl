@@ -59,6 +59,8 @@ sub processSwitches{
     print <<ENDQUOTE
 latexindent.pl version $versionNumber, $versionDate
 usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
+      -v, --version
+          displays the version number and date of release
       -h, --help
           help (see the documentation for detailed instructions and examples)
       -o, --outputfile
@@ -79,7 +81,7 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
                 latexindent.pl -l=some.yaml,another.yaml myfile.tex 
       -d, --onlydefault
           ONLY use defaultSettings.yaml, ignore ALL (yaml) user files
-      -g, --logfile
+      -g, --logfile=<name of log file>
           used to specify the name of logfile (default is indent.log)
       -c, --cruft=<cruft directory> 
           used to specify the location of backup files and indent.log
