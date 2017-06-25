@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Version qw/$versionNumber $versionDate/;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
@@ -41,17 +42,25 @@ sub processSwitches{
     my $self = shift;
 
     # details of the script to log file
-    $self->logger("$FindBin::Script version 3.2, a script to indent .tex files",'heading');
+    $self->logger("$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files",'heading');
     $self->logger("$FindBin::Script lives here: $FindBin::RealBin/");
 
     # time the script is used
     my $time = localtime();
     $self->logger("$time");
 
+    # -v switch is just to show the version number
+    if($switches{version}) {
+        print $versionNumber,", ",$versionDate,"\n";
+        exit(2);
+    }
+
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
     print <<ENDQUOTE
-latexindent.pl version 3.2
+latexindent.pl version $versionNumber, $versionDate
 usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
+      -v, --version
+          displays the version number and date of release
       -h, --help
           help (see the documentation for detailed instructions and examples)
       -o, --outputfile
@@ -72,7 +81,7 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
                 latexindent.pl -l=some.yaml,another.yaml myfile.tex 
       -d, --onlydefault
           ONLY use defaultSettings.yaml, ignore ALL (yaml) user files
-      -g, --logfile
+      -g, --logfile=<name of log file>
           used to specify the name of logfile (default is indent.log)
       -c, --cruft=<cruft directory> 
           used to specify the location of backup files and indent.log

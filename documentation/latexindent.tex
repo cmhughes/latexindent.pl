@@ -16,7 +16,7 @@
 %
 %   See <http://www.gnu.org/licenses/>.
 \usepackage[left=4.5cm,right=2.5cm,showframe=false,
-	top=2cm,bottom=1.5cm]{geometry}                      % page setup
+	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry}                      % page setup
 \usepackage{lmodern}
 \usepackage{parskip}                                 % paragraph skips
 \usepackage{booktabs}                                % beautiful tables
@@ -31,6 +31,7 @@
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
 \usepackage{tcolorbox}                                % framed environments
+\usepackage{tikz}
 \usepackage{xparse}
 \usepackage[charter]{mathdesign}                     % changes font
 \usepackage[expansion=false,kerning=true]{microtype} % better kerning
@@ -39,16 +40,12 @@
 \usepackage{array}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
-% tcolorbox libraries
-\tcbuselibrary{breakable,skins,listings,minted,xparse}
-%\usepackage{varioref}                                % clever referencing
-%\tcbuselibrary{documentation,breakable,skins,minted}
-% tikz libraries
+% tikz, tcolorbox libraries
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
-\usepackage{varioref}                                % clever referencing
-\usepackage{hyperref}
+\usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
+\tcbuselibrary{breakable,minted,xparse,documentation}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -62,6 +59,21 @@
 }
 \usepackage{cleveref}
 
+% customise the \tcbdocnew command
+\tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
+\tcbset{doc marginnote={width=1.6cm}}
+%\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
+\NewDocumentCommand{\announce}{ s m }{%
+	\IfBooleanTF{#1}
+	{% \announce*
+		\tcbdocmarginnote[overlay={\node[anchor=north east,text=cmhgold] at ([yshift=3mm,xshift=4mm]frame.north east) {$\bigstar$}; }]{\tcbdocnew{#2}}
+	}
+	{% \announce
+		\tcbdocmarginnote{\tcbdocnew{#2}}
+	}}
+
+\reversemarginpar
+% bibliographies
 \addbibresource{latex-indent}
 \addbibresource{contributors}
 
@@ -404,7 +416,7 @@
 \newcommand{\flagbox}[1]{%
 	\par
 	\makebox[30pt][l]{%
-		\hspace{-2cm}%
+		\hspace{-1cm}%
 		\ttfamily\fontseries{b}\selectfont #1
 	}%
 }
@@ -539,7 +551,7 @@
 			sharp corners,
 			enhanced,
 			overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=3cm,yshift=4mm]frame.north east) {\includegraphics[width=3cm]{logo}}; }]
-		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.2
+		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.2.1
 	\end{tcolorbox}
 }
 \author{Chris Hughes \thanks{and contributors! See \vref{sec:contributors}. For
@@ -583,3 +595,48 @@
 \input{references}
 \input{appendices}
 \end{document}
+
+version history:
+
+1.0: first release
+https://www.ctan.org/ctan-ann/id/mailman.278.1369470527.5851.ctan-ann@dante.de
+
+1.1R
+Changed Bin to RealBin so that I hope the script can get bun­dled into TeXLive 2013. Some other up­dates, too, detailed in the documentation.
+https://www.ctan.org/ctan-ann/id/mailman.3048.1384345731.2385.ctan-ann@dante.de
+
+1.11R
+This release updates the script to use $FindBin::RealBin which should help in the TeXLive implementation.
+
+Version 2.0R
+Ver­sion 2.0R of la­texin­dent.pl adds a num­ber of new fea­tures, in­clud­ing: - in­den­ta­tion af­ter \item com­mands - align­ment of de­lim­itered en­vi­ron­ments in com­mands, such as \ma­trix - in­den­ta­tion of \if...\else...\fi state­ments - max­i­mum num­ber of back­ups can cy­cle through back­ups - bet­ter sup­port for .cls and .sty files - and a few other bug fixes
+https://www.ctan.org/ctan-ann/id/mailman.3090.1417864461.4370.ctan-ann@dante.de
+
+Version 2.1R
+in­dent­con­fig.yaml can now be a 'hid­den' file, .in­dent­con­fig.yaml The Win­dows ex­e­cutable file, la­texin­dent.exe, should now work much bet­ter with Win­dows TeXLive.
+https://www.ctan.org/ctan-ann/id/mailman.343.1429509943.4405.ctan-ann@dante.de
+
+Version 2.2
+v2.2 addresses a reg­exp issue, and adds a few enhancements; full details are here: https://github.com/cmhughes/latexindent.pl/pull/49
+https://www.ctan.org/ctan-ann/id/mailman.198.1477655196.4574.ctan-ann@ctan.org
+
+Version 3.0
+latexindent.pl version 3.0: this represents a complete re-build of the script; full details are given here: 
+https://github.com/cmhughes/la­texin­dent.pl/pull/56
+
+V3.0.1 
+pro­vides sup­port for the align­ment at am­per­sands rou­tine for code that con­tains uni­code char­ac­ters; see 
+https://github.com/cmhughes/la­texin­dent.pl/pull/61
+
+V3.0.2
+A mi­nor re­lease to fix a small bug re­lated to in­den­tPream­ble; de­tails given here: 
+https://github.com/cmhughes/la­texin­dent.pl/pull/62
+
+Ver­sion 3.1 of la­texin­dent.pl, 
+in­clud­ing op­tions for text wrap­ping and para­graph line break re­moval. Full de­tails here: 
+https://github.com/cmhughes/la­texin­dent.pl/pull/64
+
+Ver­sion 3.2 
+im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine. 
+More de­tails are given at 
+https://github.com/cmhughes/la­texin­dent.pl/pull/67

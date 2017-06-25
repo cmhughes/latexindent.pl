@@ -22,6 +22,7 @@ use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::Switches qw/%switches/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check{
@@ -37,7 +38,8 @@ sub file_extension_check{
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
     
     # get the base file name, allowing for different extensions (possibly no extension)
-    my ($dir, $name, $ext) = fileparse($fileName, @fileExtensions);
+    my ($name, $dir, $ext) = fileparse($fileName, @fileExtensions);
+    ${$self}{baseName} = $name;
 
     # check to make sure given file type is supported
     if( -e $fileName  and !$ext ){
@@ -89,6 +91,51 @@ sub file_extension_check{
 
     # store the file extension
     ${$self}{fileExtension} = $ext;
+
+    # check to see if -o switch is active
+    if($switches{outputToFile}){
+        
+        $self->logger("Output file check",'heading');
+
+        # the -o file name might begin with a + symbol
+        if($switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+"){
+            $self->logger("-o switch called with + symbol at the beginning: $switches{outputToFile}");
+            $switches{outputToFile} = ${$self}{baseName}.$1;
+            $self->logger("output file is now: $switches{outputToFile}");
+        }
+
+        my $strippedFileExtension = ${$self}{fileExtension};
+        $strippedFileExtension =~ s/\.//; 
+
+        # grab the name, directory, and extension of the output file
+        my ($name, $dir, $ext) = fileparse($switches{outputToFile}, $strippedFileExtension);
+
+        # if there is no extension, then add the extension from the file to be operated upon
+        if(!$ext){
+            $self->logger("-o switch called with file name without extension: $switches{outputToFile}");
+            $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
+            $self->logger("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
+        }
+
+        # the -o file name might end with ++ in which case we wish to search for existence, 
+        # and then increment accordingly
+        $name =~ s/\.$//;
+        if($name =~ m/\+\+$/){
+            $self->logger("-o switch called with file name ending with ++: $switches{outputToFile}");
+            $name =~ s/\+\+$//;
+            $name = ${$self}{baseName} if ($name eq "");
+            my $outputFileCounter = 0;
+            my $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+            $self->logger("will search for exisitence and increment counter, starting with $fileName");
+            while( -e $fileName ){
+                $self->logger("$fileName exists, incrementing counter");
+                $outputFileCounter++;
+                $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+            }
+            $self->logger("$fileName does not exist, and will be the output file");
+            $switches{outputToFile} = $fileName;
+        }
+    }
 
     # read the file into the Document body
     my @lines;

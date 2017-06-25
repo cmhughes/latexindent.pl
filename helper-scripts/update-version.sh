@@ -15,13 +15,17 @@ do
  esac 
 done
 
-oldVersion='3.1'
-newVersion='3.2'
-oldDate='2017-05-27'
-newDate='2017-06-19'
+oldVersion='3.2'
+newVersion='3.2.1'
+oldDate='2017-06-19'
+newDate='2017-06-25'
 
 cd ../
-sed -i.bak "s/version $oldVersion/version $newVersion/" LatexIndent/LogFile.pm
+cd documentation
+find -name "*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{NEW\}/announce\*\{$newDate\}/g"
+cd ../
+sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
+sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
 sed -i.bak "s/version $oldVersion/version $newVersion/" readme.md
@@ -29,6 +33,6 @@ sed -i.bak "s/$oldDate/$newDate/" readme.md
 sed -i.bak "s/version $oldVersion/version $newVersion/" documentation/readme.txt
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/latexindent.tex
-cd documentation
-[[ $generatePDFmode == 1 ]] && arara latexindent
+# possibly generate the pdf
+[[ $generatePDFmode == 1 ]] && cd documentation && arara latexindent
 exit

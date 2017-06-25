@@ -35,7 +35,6 @@ our %previouslyFoundSettings;
 sub readSettings{
   my $self = shift;
   
-  $defaultSettings = YAML::Tiny->new;
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
   $self->logger("YAML settings read",'heading');
   $self->logger("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
@@ -104,11 +103,34 @@ sub readSettings{
   # get information about LOCAL settings, assuming that $readLocalSettings exists
   my $directoryName = dirname (${$self}{fileName});
   
+  my @localSettings;
+
+  # local settings can be called with a + symbol, for example
+  #     -l=+myfile.yaml
+  #     -l "+ myfile.yaml"
+  #     -l=myfile.yaml+
+  # which translates to, respectively
+  #     -l=localSettings.yaml,myfile.yaml
+  #     -l=myfile.yaml,localSettings.yaml
+  # Note: the following is *not allowed*:
+  #     -l+myfile.yaml
+  # and
+  #     -l + myfile.yaml
+  # will *only* load localSettings.yaml, and myfile.yaml will be ignored
+  if($switches{readLocalSettings} =~ m/\+/){
+        $self->logger("+ found in call for -l switch: will add localSettings.yaml");
+
+        # + can be either at the beginning or the end, which determines if where the comma should go
+        my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
+        my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
+        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
+        $self->logger("New value of -l switch: $switches{readLocalSettings}");
+  }
+
   # local settings can be separated by ,
   # e.g  
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
-  my @localSettings;
   if($switches{readLocalSettings} =~ m/,/){
         $self->logger("Multiple localSettings found, separated by commas:",'heading');
         @localSettings = split(/,/,$switches{readLocalSettings});
@@ -118,6 +140,13 @@ sub readSettings{
 
   # add local settings to the paths, if appropriate
   foreach (@localSettings) {
+    # check for an extension (.yaml)
+    my ($dir, $name, $ext) = fileparse($_, "yaml");
+
+    # if no extension is found, append the current localSetting with .yaml
+    $_ = $_.($_=~m/\.\z/ ? q() : ".")."yaml" if(!$ext);
+
+    # check for existence and non-emptiness
     if ( (-e "$directoryName/$_") and !(-z "$directoryName/$_")) {
         $self->logger("Adding $directoryName/$_ to YAML read paths");
         push(@absPaths,"$directoryName/$_");

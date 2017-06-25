@@ -32,7 +32,7 @@ latexindent.pl myfile
 
 	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in \cref{lst:fileExtensionPreference}
 	means that the script will first look for \texttt{myfile.tex}, then \texttt{myfile.sty}, \texttt{myfile.cls},
-	and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings with line numbers represent code
+	and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings shown with line numbers represent code
 		taken directly from \texttt{defaultSettings.yaml}.}.
 
 \yamltitle{backupExtension}*{extension name}
@@ -219,14 +219,14 @@ lookForAlignDelims:
 
 	If you find that \texttt{latexindent.pl} does not perform satisfactorily on such
 	environments then you can set the relevant key to \texttt{0}, for example \texttt{tabular: 0}; alternatively, if you just want to ignore \emph{specific}
-	instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \cref{lst:noIndentBlock}).
+	instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
 	\end{minipage}%
 
 	If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
@@ -244,9 +244,9 @@ lookForAlignDelims:
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally, specifies the number of spaces to be inserted
 		      before (non-aligned) \lstinline!\\!. In order to use this field, \texttt{alignDoubleBackSlash} needs
 		      to be set to 0 (default: 0).
-		\item \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns
+		\item \announce{2017-06-19} \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns
 		      underneath a \lstinline!\multicolumn! command (default: 0);
-		\item \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the
+		\item \announce{2017-06-19} \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the
 		      maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1).
 	\end{itemize}
 
@@ -260,11 +260,11 @@ latexindent.pl -l tabular.yaml tabular1.tex
 	the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
 	\end{minipage}%
 
 	Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
@@ -274,7 +274,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.54\textwidth}
