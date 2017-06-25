@@ -25,6 +25,23 @@ sub remove_trailing_whitespace{
     my $self = shift;
     my %input = @_;
 
+    # removeTrailingWhitespace can be either a hash or a scalar, but if
+    # it's a scalar, we need to fix it
+    if(ref($masterSettings{removeTrailingWhitespace}) ne 'HASH'){
+        $self->logger("removeTrailingWhitespace specified as scalar, will update it to be a hash",'heading') if $is_t_switch_active;
+        # grab the value
+        my $removeTWS = $masterSettings{removeTrailingWhitespace};
+
+        # delete the scalar
+        delete $masterSettings{removeTrailingWhitespace};
+
+        # redefine it as a hash
+        ${$masterSettings{removeTrailingWhitespace}}{beforeProcessing} = $removeTWS; 
+        ${$masterSettings{removeTrailingWhitespace}}{afterProcessing} = $removeTWS; 
+        $self->logger("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
+        $self->logger("removeTrailingWhitespace: afterProcessing is now $removeTWS") if $is_t_switch_active;
+    }
+
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){
         return unless(${$masterSettings{removeTrailingWhitespace}}{beforeProcessing});
