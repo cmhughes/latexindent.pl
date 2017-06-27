@@ -140,19 +140,28 @@ copy myfile.bak4 to myfile.bak3
 
 \yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
-	\begin{wrapfigure}[12]{r}[0pt]{6cm}
+	\begin{wrapfigure}[10]{r}[0pt]{7cm}
 		\cmhlistingsfromfile[style=removeTrailingWhitespace]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
 
-		\vspace{.2cm}
-		\cmhlistingsfromfile[style=fileContentsEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
+        \vspace{.1cm}
+		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[width=.8\linewidth,before=\centering]{lst:removeTrailingWhitespace-alt}
+removeTrailingWhitespace: 1
+\end{yaml}
 	\end{wrapfigure}
 	Trailing white space can be removed both \emph{before} and \emph{after} processing
 	the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields
 	can take the values \texttt{0} or \texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}
 	for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
 
+    You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case, 
+    \announce{NEW}
+    \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify; 
+    see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
 
+	\begin{wrapfigure}[6]{r}[0pt]{6cm}
+		\cmhlistingsfromfile[style=fileContentsEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
+	\end{wrapfigure}
 	Before \texttt{latexindent.pl} determines the difference between preamble (if any) and the main document,
 	it first searches for any of the environments specified in \texttt{fileContentsEnvironments}, see
 	\cref{lst:fileContentsEnvironments}.

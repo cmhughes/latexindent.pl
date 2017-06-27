@@ -292,8 +292,7 @@ latexindent.pl myfile
 
 \subsection{From \texttt{arara}}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
-	others may find it easier to use from \texttt{arara}. \texttt{arara} ships with
-	a rule, \texttt{indent.yaml}, but in case you do not have this rule, you can find it at \cite{paulo}.
+	others may find it easier to use from \texttt{arara}; you can find the arara rule at \cite{paulo}.
 
 	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
 	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
@@ -330,7 +329,7 @@ latexindent.pl myfile
 			\texttt{localSettings}            & \texttt{-l} \\
 			\texttt{onlyDefault}              & \texttt{-d} \\
 			\texttt{cruft}                    & \texttt{-c} \\
-			\texttt{modifylinebreaks}         & \texttt{-m} \\
+			%\texttt{modifylinebreaks}         & \texttt{-m} \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
