@@ -143,7 +143,7 @@ copy myfile.bak4 to myfile.bak3
 	\begin{wrapfigure}[10]{r}[0pt]{7cm}
 		\cmhlistingsfromfile[style=removeTrailingWhitespace]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
 
-        \vspace{.1cm}
+		\vspace{.1cm}
 		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[width=.8\linewidth,before=\centering]{lst:removeTrailingWhitespace-alt}
 removeTrailingWhitespace: 1
 \end{yaml}
@@ -153,10 +153,10 @@ removeTrailingWhitespace: 1
 	can take the values \texttt{0} or \texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}
 	for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
 
-    You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case, 
-    \announce{NEW}
-    \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify; 
-    see \cref{lst:removeTrailingWhitespace-alt}.
+	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case,
+	\announce*{2017-06-28}
+	\texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify;
+	see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
 
 	\begin{wrapfigure}[6]{r}[0pt]{6cm}
