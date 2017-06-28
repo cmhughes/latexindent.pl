@@ -125,6 +125,10 @@ cd ../maxLineChars
 cd ../texexchange
 [[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"
 ./texexchange-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# whitespace
+cd ../horizontalWhiteSpace
+[[ $silentMode == 1 ]] && echo "./horizontalWhiteSpace/whitespace-test-cases.sh"
+./whitespace-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # benchmark mode, if appropriate
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag

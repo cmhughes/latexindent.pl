@@ -1,11 +1,10 @@
 `PERL` script to indent code within environments, and align delimited 
 environments in `.tex`files.
 
-    latexindent.pl, version 3.2.1, 2017-06-25
+    latexindent.pl, version 3.2.2, 2017-06-28
 
 Author: Chris Hughes (cmhughes)
 
----
 ---
 
 For complete details, please see documentation/latexindent.pdf
@@ -16,7 +15,7 @@ Note: `latexindent.exe` was created using
 
 using the `Par::Packer` perl module.
 
-ppp.pl is located in the helper-scripts directory.
+`ppp.pl` is located in the helper-scripts directory.
 
 ---
 
@@ -28,12 +27,12 @@ You'll need
         LatexIndent/*.pm
         defaultSettings.yaml
 
-in the same directory. Windows users might prefer to grab latexindent.exe
+in the same directory. Windows users might prefer to grab `latexindent.exe`
 
 ### Testing
 
 A nice way to test the script is to navigate to the test-cases 
-directory, and then run the command (on Linux/Mac -- sorry, not created a Windows test-case version):
+directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case version is not available):
 
         ./test-cases.sh
 
@@ -44,8 +43,8 @@ recommend comparing the outputfile.tex to make sure that
 nothing has been changed (or removed) in a way that will damage
 your file.
 
-I recommend using both of the following:
+I recommend using each of the following:
 * a visual check, at the very least, make sure that 
       each file has the same number of lines
 * a check using `latexdiff inputfile.tex outputfile.tex`
-* git status myfile.tex
+* `git status` myfile.tex

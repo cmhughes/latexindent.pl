@@ -541,38 +541,7 @@
 
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
-\title{%
-	\begin{tcolorbox}[
-			width=5.2cm,
-			boxrule=0pt,
-			colframe=white!40!black,
-			colback=white,
-			rightrule=2pt,
-			sharp corners,
-			enhanced,
-			overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=3cm,yshift=4mm]frame.north east) {\includegraphics[width=3cm]{logo}}; }]
-		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.2.1
-	\end{tcolorbox}
-}
-\author{Chris Hughes \thanks{and contributors! See \vref{sec:contributors}. For
-		all communication, please visit \cite{latexindent-home}.}}
-\maketitle
-\begin{adjustwidth}{1cm}{1cm}
-	\small
-	\texttt{latexindent.pl} is a \texttt{Perl} script that indents \texttt{.tex} (and other)
-	files according to an indentation scheme that the user can modify to suit their
-	taste. Environments, including those with alignment delimiters (such as \texttt{tabular}),
-	and commands, including those that can split braces and brackets across lines,
-	are \emph{usually} handled correctly by the script. Options for \texttt{verbatim}-like
-	environments and commands, together with indentation after headings (such as \lstinline!chapter!, \lstinline!section!, etc)
-	are also available. The script also has the ability to modifiy line breaks, and add
-	comment symbols. All user options are customisable via the switches in the YAML interface.
-\end{adjustwidth}
-\tableofcontents
-{\small
-	\lstlistoflistings
-}
-
+\input{title.tex}
 \input{sec-introduction}
 \input{sec-demonstration}
 \input{sec-how-to-use}
@@ -621,22 +590,22 @@ v2.2 addresses a reg­exp issue, and adds a few enhancements; full details are h
 https://www.ctan.org/ctan-ann/id/mailman.198.1477655196.4574.ctan-ann@ctan.org
 
 Version 3.0
-latexindent.pl version 3.0: this represents a complete re-build of the script; full details are given here: 
+latexindent.pl version 3.0: this represents a complete re-build of the script; full details are given here:
 https://github.com/cmhughes/la­texin­dent.pl/pull/56
 
-V3.0.1 
-pro­vides sup­port for the align­ment at am­per­sands rou­tine for code that con­tains uni­code char­ac­ters; see 
+V3.0.1
+pro­vides sup­port for the align­ment at am­per­sands rou­tine for code that con­tains uni­code char­ac­ters; see
 https://github.com/cmhughes/la­texin­dent.pl/pull/61
 
 V3.0.2
-A mi­nor re­lease to fix a small bug re­lated to in­den­tPream­ble; de­tails given here: 
+A mi­nor re­lease to fix a small bug re­lated to in­den­tPream­ble; de­tails given here:
 https://github.com/cmhughes/la­texin­dent.pl/pull/62
 
-Ver­sion 3.1 of la­texin­dent.pl, 
-in­clud­ing op­tions for text wrap­ping and para­graph line break re­moval. Full de­tails here: 
+Ver­sion 3.1 of la­texin­dent.pl,
+in­clud­ing op­tions for text wrap­ping and para­graph line break re­moval. Full de­tails here:
 https://github.com/cmhughes/la­texin­dent.pl/pull/64
 
-Ver­sion 3.2 
-im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine. 
-More de­tails are given at 
+Ver­sion 3.2
+im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine.
+More de­tails are given at
 https://github.com/cmhughes/la­texin­dent.pl/pull/67

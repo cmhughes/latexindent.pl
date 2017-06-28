@@ -23,7 +23,7 @@
 
  As you read through this documentation, you'll occasionally see dates shown in the margin
  (for example, next to this paragraph!)
- \announce*{2017-06-25} which detail the date of the version in which the feature was implemented;
+ \announce{2017-06-25} which detail the date of the version in which the feature was implemented;
  the `N' stands for `new as of the date shown'. If you see a $\color{cmhgold}\bigstar$, it
  means that the feature is new as of the release of the current version.
 
@@ -45,7 +45,7 @@ latexindent.pl
 	and available options.
 
 \flagbox{-v, --version}
-	\announce*{2017-06-25}
+	\announce{2017-06-25}
 	\begin{commandshell}
 latexindent.pl -v
       \end{commandshell}
@@ -103,7 +103,7 @@ latexindent.pl myfile.tex > output.tex
 \end{commandshell}
 
 	You can call the \texttt{-o} switch with the name of the output file \emph{without} an extension; in
-	\announce*{2017-06-25}
+	\announce{2017-06-25}
 	this case, \texttt{latexindent.pl} will use the extension from the original file. For example,
 	the following two calls to \texttt{latexindent.pl} are equivalent:
 	\begin{commandshell}
@@ -112,7 +112,7 @@ latexindent.pl myfile.tex -o=output.tex
 \end{commandshell}
 
 	You can call the \texttt{-o} switch using a \texttt{+} symbol at the beginning; this will
-	\announce*{2017-06-25}
+	\announce{2017-06-25}
 	concatenate the name of the input file and the text given to the \texttt{-o} switch.
 	For example, the following two calls to \texttt{latexindent.pl} are equivalent:
 	\begin{commandshell}
@@ -121,7 +121,7 @@ latexindent.pl myfile.tex -o=myfilenew.tex
 \end{commandshell}
 
 	You can call the \texttt{-o} switch using a \texttt{++} symbol at the end of the name
-	\announce*{2017-06-25}
+	\announce{2017-06-25}
 	of your output file; this tells \texttt{latexindent.pl} to search successively for
 	the name of your output file concatenated with $0, 1, \ldots$ while the name of the
 	output file exists.  For example,
@@ -210,7 +210,7 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
 
 	You can call the \texttt{-l} switch with a `+' symbol either before or after
-	\announce*{2017-06-25}
+	\announce{2017-06-25}
 	another YAML file; for example:
 	\begin{commandshell}
 latexindent.pl -l=+myyaml.yaml  myfile.tex
@@ -234,6 +234,7 @@ latexindent.pl -l + myyaml.yaml myfile.tex
 	will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be ignored.
 
 	You may also choose to omit the \texttt{yaml} extension, such as
+	\announce{2017-06-25}
 	\begin{commandshell}
 latexindent.pl -l=localSettings,myyaml myfile.tex
     \end{commandshell}
@@ -291,8 +292,7 @@ latexindent.pl myfile
 
 \subsection{From \texttt{arara}}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
-	others may find it easier to use from \texttt{arara}. \texttt{arara} ships with
-	a rule, \texttt{indent.yaml}, but in case you do not have this rule, you can find it at \cite{paulo}.
+	others may find it easier to use from \texttt{arara}; you can find the arara rule at \cite{paulo}.
 
 	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
 	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
@@ -329,7 +329,7 @@ latexindent.pl myfile
 			\texttt{localSettings}            & \texttt{-l} \\
 			\texttt{onlyDefault}              & \texttt{-d} \\
 			\texttt{cruft}                    & \texttt{-c} \\
-			\texttt{modifylinebreaks}         & \texttt{-m} \\
+			%\texttt{modifylinebreaks}         & \texttt{-m} \\
 			\bottomrule
 		\end{tabular}
 	\end{table}
