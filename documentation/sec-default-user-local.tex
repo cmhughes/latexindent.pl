@@ -100,6 +100,7 @@ copy myfile.bak4 to myfile.bak3
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
 	\end{minipage}%
+	\hfill
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
 	\end{minipage}%
@@ -231,11 +232,11 @@ lookForAlignDelims:
 	instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
 	\end{minipage}%
 
 	If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
@@ -269,11 +270,11 @@ latexindent.pl -l tabular.yaml tabular1.tex
 	the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
 	\end{minipage}%
 
 	Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
@@ -283,7 +284,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.54\textwidth}
@@ -293,7 +294,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	Now consider the file \texttt{tabular2.tex} in \cref{lst:tabular2}, which contains a \lstinline!\multicolumn! command, and
 	the YAML files in \cref{lst:tabular2YAML,lst:tabular3YAML}.
 
-	\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
+	\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular2.yaml}[yaml-TCB]{\texttt{tabular2.yaml}}{lst:tabular2YAML}
 	\end{minipage}%
@@ -311,9 +312,9 @@ latexindent.pl -s tabular2.tex -l tabular3.yaml
 	we obtain the respective outputs given in \cref{lst:tabular2-default,lst:tabular2-mc,lst:tabular2-no-max}.
 
 	\begin{widepage}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
 	\end{widepage}
 
 	Notice in particular:

@@ -59,6 +59,8 @@
 }
 \usepackage{cleveref}
 
+% create my own star style, for re-use at various points
+\tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
 % customise the \tcbdocnew command
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
@@ -66,7 +68,7 @@
 \NewDocumentCommand{\announce}{ s m }{%
 	\IfBooleanTF{#1}
 	{% \announce*
-		\tcbdocmarginnote[overlay={\node[anchor=north east,text=cmhgold] at ([yshift=3mm,xshift=4mm]frame.north east) {$\bigstar$}; }]{\tcbdocnew{#2}}
+		\tcbdocmarginnote[overlay={\node[cmhstar,scale=0.45] at ([yshift=0mm,xshift=1mm]frame.north east) {}; }]{\tcbdocnew{#2}}
 	}
 	{% \announce
 		\tcbdocmarginnote{\tcbdocnew{#2}}
@@ -136,7 +138,11 @@
 			%bottomrule=1pt,
 			enhanced,
 			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
-		}
+		},
+	new-to-this-version/.style={
+			enhanced,
+			overlay={\node[cmhstar,scale=0.65] at ([yshift=0mm,xshift=0mm]frame.north east) {}; },
+		},
 }
 
 \newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
@@ -147,14 +153,27 @@
 	listing options={#1},
 }
 
-% \cmhlistingsfromfile uses listings library
-% \cmhlistingsfromfile* uses minted library
-\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} m O{} m m}{%
+% \cmhlistingsfromfile
+%                   *    no star: not new, star: new
+%                   [ listing/minted options ]
+%                   *    no star: uses listings library star: uses minted library
+%                   {<name of listing file>}
+%                   [<options for tcolorbox>]
+%                   {<title>}
+%                   {<label>}
+%
+% for example,
+%   \cmhlistingsfromfile*[listing options]...  uses listings library and is NEW
+%   \cmhlistingsfromfile[listing options]...   uses listings library
+%   \cmhlistingsfromfile[listing options]*...  uses minted library
+%   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
 	cmhlistings,
-	listing file={#3},
-	IfBooleanTF={#1}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
-	#4,
+	listing file={#4},
+	IfBooleanTF={#3}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
+	IfBooleanTF={#1}{new-to-this-version}{},
+	#5,
 }
 
 % command shell
