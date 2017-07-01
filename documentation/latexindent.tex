@@ -38,6 +38,7 @@
 \usepackage{enumitem}                                % custom lists
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{totalcount}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
 % tikz, tcolorbox libraries
@@ -61,14 +62,19 @@
 
 % create my own star style, for re-use at various points
 \tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
+
+% totalcount
+\DeclareTotalCounter{lstlisting}
+
 % customise the \tcbdocnew command
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
 %\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
-\NewDocumentCommand{\announce}{ s m }{%
+\NewDocumentCommand{\announce}{ s m o }{%
 	\IfBooleanTF{#1}
 	{% \announce*
 		\tcbdocmarginnote[overlay={\node[cmhstar,scale=0.45] at ([yshift=0mm,xshift=1mm]frame.north east) {}; }]{\tcbdocnew{#2}}
+      \addcontentsline{new}{subsection}{#3}%
 	}
 	{% \announce
 		\tcbdocmarginnote{\tcbdocnew{#2}}
@@ -533,7 +539,7 @@
 % table rules
 \setlength\heavyrulewidth{0.25ex}
 % gitinfo2 settings
-\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\faGithub}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\faGithub,\textbullet{}\gitRel}
 
 % setting up gitinfo2:
 %   copy the file post-xxx-sample.txt from http://mirror.ctan.org/macros/latex/contrib/gitinfo2
@@ -558,30 +564,44 @@
 % suitably define the command
 \DeclareTextCommand{\textasteriskcentered}{OT1}{\raisebox{-.7ex}[1ex][0pt]{*}}
 
+% new features list
+%\newcommand{\listOfNewFeatures}{\@starttoc{new}}
+\newcommand{\listOfNewFeatures}{\@starttoc{new}}
+\contentsuse{newfeatures}{new}
+% toc settings
+\titlecontents*{subsection}% <paragaph>
+  [3cm]% <left>
+  {\small\itshape}% <above-code>
+  {}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
+  {}% <numberless-entry-format>
+  {\ \thecontentspage}% <filler-page-format>
+  [,\ ]% <separator>
+  []% <end>
+
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
 \input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\input{subsubsec-no-add-remaining-code-blocks}
-\stopcontents[noAdditionalIndent]
-\input{subsec-commands-and-their-options}
-\input{sec-the-m-switch}
-\input{subsec-partnering-poly-switches}
-\input{subsec-conflicting-poly-switches}
-\input{sec-conclusions-know-limitations}
-\input{references}
-\input{appendices}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-indent-config-and-settings.tex}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\input{subsubsec-no-add-remaining-code-blocks}
+%\stopcontents[noAdditionalIndent]
+%\input{subsec-commands-and-their-options}
+%\input{sec-the-m-switch}
+%\input{subsec-partnering-poly-switches}
+%\input{subsec-conflicting-poly-switches}
+%\input{sec-conclusions-know-limitations}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 version history:

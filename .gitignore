@@ -9,6 +9,7 @@ documentation/latexindent-blx.*
 documentation/*.aux
 documentation/*.listing
 documentation/*.lol
+documentation/*.new
 documentation/*.out
 documentation/*.run.xml
 documentation/*.toc
