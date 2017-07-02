@@ -7,7 +7,7 @@ Author: Chris Hughes (cmhughes)
 
 ---
 
-For complete details, please see documentation/latexindent.pdf
+For complete details, please see http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
 
 Note: `latexindent.exe` was created using 
 

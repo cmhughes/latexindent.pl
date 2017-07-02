@@ -63,6 +63,9 @@
 % create my own star style, for re-use at various points
 \tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
 
+% shortcut command for displaying star in documentation
+\newcommand{\stardemo}{\tikz\node[cmhstar,scale=0.45]{};}
+
 % totalcount
 \DeclareTotalCounter{lstlisting}
 
@@ -95,6 +98,7 @@
 \makeatletter
 \tcbset{
 	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
+	addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
 	cmhlistings/.style={
 			%	width=\linewidth,
 			%breakable,
@@ -108,7 +112,6 @@
 			listing engine=minted,
 			minted style=colorful,
 			minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=true},
-			addtolol,
 			boxrule=0pt,
 			toprule=1pt,bottomrule=1pt,
 			titlerule=1pt,
@@ -148,11 +151,13 @@
 	new-to-this-version/.style={
 			enhanced,
 			overlay={\node[cmhstar,scale=0.65] at ([yshift=0mm,xshift=0mm]frame.north east) {}; },
+            addtololstar,
 		},
 }
 
 \newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
 	cmhlistings,
+    addtolol,
 	center title,
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
 	listing engine=listings,
@@ -178,8 +183,8 @@
 	listing file={#4},
 	IfBooleanTF={#3}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
-	IfBooleanTF={#1}{new-to-this-version}{},
 	#5,
+	IfBooleanTF={#1}{new-to-this-version}{addtolol},
 }
 
 % command shell
@@ -489,10 +494,18 @@
 
 % list of listings
 \contentsuse{lstlisting}{lol}
+\titleclass{\lstlistingstar}{straight}[\section]
+\titleformat{\lstlistingstar}{}{}{}{}
+\titlecontents{lstlistingstar}[2em]
+  {\addvspace{0.25pc}}
+  {}
+  {\llap{\stardemo}\thecontentslabel}
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
+  []
 \titlecontents{lstlisting}[2em]
   {\addvspace{0.25pc}}
-  {\textbf{Code \thecontentslabel} }
-  {}
+  {\thecontentslabel}
+  {\thecontentslabel}
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
   []
 \AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
@@ -565,8 +578,8 @@
 \DeclareTextCommand{\textasteriskcentered}{OT1}{\raisebox{-.7ex}[1ex][0pt]{*}}
 
 % new features list
-\newcommand{\listOfNewFeatures}{\@starttoc{new}}
-\contentsuse{newfeatures}{new}
+\newcommand{\listOfNewFeatures}{\setcounter{tocdepth}{4}\@starttoc{new}}
+\contentsuse{cmhtitle}{new}
 % toc settings
 \titleclass{\cmhtitle}{straight}[\subsection]
 \titleformat{\cmhtitle}{}{}{}{}
@@ -649,3 +662,11 @@ Ver­sion 3.2
 im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine.
 More de­tails are given at
 https://github.com/cmhughes/la­texin­dent.pl/pull/67
+
+Version 3.2.1
+Upgrades to the -o and -l switches
+https://github.com/cmhughes/latexindent.pl/pull/71
+
+Version 3.2.2
+Users can specify removeTrailingWhitespace as a scalar, for example,  removeTrailingWhitespace: 0
+https://github.com/cmhughes/latexindent.pl/pull/72
