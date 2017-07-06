@@ -191,5 +191,9 @@ latexindent.pl -s shortlines-md.tex -o shortlines-md4.tex -l=remove-para4.yaml -
 latexindent.pl -s sl-stop.tex -o sl-stop4.tex -l=remove-para4.yaml -m
 latexindent.pl -s sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml -m
 latexindent.pl -s sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml -m
+
+# maximum indentation
+latexindent.pl -s mult-nested.tex -o=+-default
+latexindent.pl -s mult-nested.tex -l=max-indentation1 -o=+-max-ind1
 [[ $noisyMode == 1 ]] && makenoise
 git status

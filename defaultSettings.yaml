@@ -235,6 +235,9 @@ indentAfterHeadings:
        indentAfterThisHeading: 0
        level: 7
 
+# maximum indentation, off by default
+maximumIndentation: -1
+
 # if you don't want to have additional indentation 
 # in an environment put it in this hash table; note that
 # environments in this hash table will inherit 

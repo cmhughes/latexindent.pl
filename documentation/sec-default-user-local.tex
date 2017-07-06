@@ -474,6 +474,44 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	you should receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
+\yamltitle{maximumIndentation}*{horizontal space}
+	You can control the maximum indentation given to your file by \announce{NEW}[maximumIndentation]
+	specifying the \texttt{maximumIndentation} field as horizontal space (but \emph{not} including tabs).
+	This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and is \emph{off}
+	by default.
+
+	For example, consider the example shown in \cref{lst:mult-nested} together with the default output
+	shown in \cref{lst:mult-nested-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
+	\end{minipage}
+
+	Now say that, for example, you have the \texttt{max-indentation1.yaml} from \cref{lst:max-indentation1yaml} and
+	that you run the following command:
+	\begin{commandshell}
+latexindent.pl mult-nested.tex -l=max-indentation1
+    \end{commandshell}
+	You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
+	\end{minipage}
+
+	Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice that the (default) tabs
+	of indentation have been replaced by a single space.
+
+	In general, when using the \texttt{maximumIndentation} feature, any leading tabs will be replaced by equivalent
+	spaces except, of course, those found in \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
+
 \subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
