@@ -19,6 +19,8 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::HiddenChildren qw/%familyTree/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use Text::Tabs;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
@@ -221,9 +223,26 @@ sub final_indentation_check{
                         $after = "TAB"x$numberOfTABS.$after;
                         $self->logger("Indentation after: '$after'") if($is_t_switch_active);
                         ($indentation = $after) =~s|TAB|\t|g;
+
                         $indentation;
                        /xsmeg;
 
+    return unless($masterSettings{maximumIndentation} =~ m/^\h+$/);
+
+    # maximum indentation check
+    $self->logger("Maximum indentation check",'heading') if($is_t_switch_active);
+
+    # replace any leading tabs with spaces, and update the body
+    my @expanded_lines = expand(${$self}{body});
+    ${$self}{body} = join("",@expanded_lines);
+
+    # grab the maximum indentation
+    my $maximumIndentation = $masterSettings{maximumIndentation};
+    my $maximumIndentationLength = length($maximumIndentation)+1;
+
+    # replace any leading space that is greater than the 
+    # specified maximum indentation with the maximum indentation
+    ${$self}{body} =~ s/^\h{$maximumIndentationLength,}/$maximumIndentation/smg;
 }
 
 sub indent_children_recursively{

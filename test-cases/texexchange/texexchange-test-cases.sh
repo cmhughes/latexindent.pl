@@ -170,7 +170,8 @@ latexindent.pl -s 141087.tex -o=141087-out.tex -l=pgfplotstableread.yaml
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========
 # =======  not from tex exchange, but seemed appropriate here  =========
-latexindent.pl -s pcc-pr.tex -o=pcc-pr-default.tex -l indentPreamble.yaml
+latexindent.pl -s pcc-pr.tex -o=+-default.tex -l indentPreamble.yaml
 latexindent.pl -s pcc-pr-presentation.tex -o=pcc-pr-presentation-default.tex -l indentPreamble.yaml
+latexindent.pl -s pcc-pr.tex -o=+-max-indentation -l indentPreamble.yaml,../environments/max-indentation1.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

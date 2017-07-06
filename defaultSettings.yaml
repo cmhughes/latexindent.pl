@@ -305,6 +305,9 @@ commandCodeBlocks:
         ++: 1
         --: 1
 
+# maximum indentation
+maximumIndentation: -1
+
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
 #    BeginStartsOnOwnLine: 1

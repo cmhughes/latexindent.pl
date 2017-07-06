@@ -74,6 +74,8 @@ latexindent.pl -s tikz2.tex -o tikz2-default.tex
 # hea files
 latexindent.pl -s heabib.bib -o heabib-default.bib
 latexindent.pl -s hea-senior-fellowship-application.tex -o hea-senior-fellowship-application-default.tex -l=../filecontents/indentPreambleYes.yaml
+latexindent.pl -s hea-senior-fellowship-application.tex -o=+-max-indentation -l=../filecontents/indentPreambleYes.yaml,../environments/max-indentation1.yaml
+latexindent.pl -s hea-senior-fellowship-application.tex -o=+-max-indentation5 -l=../filecontents/indentPreambleYes.yaml,../environments/max-indentation5.yaml
 # double back slash dodge, motivated by texexchange/29293-christian-feuersanger.tex
 latexindent.pl -s dodge-double-back-slash.tex -o dodge-double-back-slash-default.tex
 git status

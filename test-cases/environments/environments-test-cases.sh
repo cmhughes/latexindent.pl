@@ -79,6 +79,14 @@ do
    [[ $silentMode == 0 ]] && set +x 
 done
 
+# maximum indentation test cases
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation1.tex -l=max-indentation1.yaml
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation2.tex -l=max-indentation2.yaml
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation3.tex -l=max-indentation3.yaml
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation4.tex -l=max-indentation4.yaml
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation5.tex -l=max-indentation5.yaml
+latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation-mod1.tex -l=max-indentation1,env-mod-lines1 -m 
+
 [[ $silentMode == 0 ]] && set -x 
 
 
