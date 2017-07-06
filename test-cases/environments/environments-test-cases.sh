@@ -86,6 +86,7 @@ latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation3.tex -l=ma
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation4.tex -l=max-indentation4.yaml
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation5.tex -l=max-indentation5.yaml
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation-mod1.tex -l=max-indentation1,env-mod-lines1 -m 
+latexindent.pl -s environments-verbatim-harder.tex -o=+-max-ind1 -l=max-indentation1.yaml
 
 [[ $silentMode == 0 ]] && set -x 
 

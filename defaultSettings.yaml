@@ -235,6 +235,9 @@ indentAfterHeadings:
        indentAfterThisHeading: 0
        level: 7
 
+# maximum indentation, off by default
+maximumIndentation: -1
+
 # if you don't want to have additional indentation 
 # in an environment put it in this hash table; note that
 # environments in this hash table will inherit 
@@ -304,9 +307,6 @@ commandCodeBlocks:
         decoration: 1
         ++: 1
         --: 1
-
-# maximum indentation
-maximumIndentation: -1
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
