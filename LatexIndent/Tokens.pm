@@ -32,6 +32,7 @@ our %tokens = (
                 optionalArguments=>$beginningToken."OPTIONAL-ARGUMENT",
                 mandatoryArguments=>$beginningToken."MANDATORY-ARGUMENT",
                 ifElseFi=>$ifelsefiSpecial.$beginningToken."IFELSEFI", 
+                else=>$beginningToken."ELSE",
                 items=>$beginningToken."ITEMS",
                 keyEqualsValuesBracesBrackets=>$beginningToken."KEY-VALUE-BRACES",
                 namedGroupingBracesBrackets=>$beginningToken."GROUPING-BRACES",

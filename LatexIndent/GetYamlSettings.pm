@@ -236,7 +236,7 @@ sub get_indentation_settings_for_this_object{
     my $self = shift;
 
     # create a name for previously found settings
-    my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName};
+    my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName}.(defined ${$self}{storageNameAppend}?${$self}{storageNameAppend}:q());
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
@@ -371,8 +371,10 @@ sub modify_line_breaks_settings{
         $self->logger("$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
         ${$self}{removeParagraphLineBreaks} = ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}}{$name}||0;
     } else {
-        $self->logger("$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
-        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
+        if(defined ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}){
+            $self->logger("$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
+            ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
+        }
     }
     return;
 }

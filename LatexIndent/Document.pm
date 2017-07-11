@@ -30,7 +30,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
@@ -40,6 +40,7 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
 use LatexIndent::Environment qw/find_environments/;
 use LatexIndent::IfElseFi qw/find_ifelsefi/;
+use LatexIndent::Else qw/check_for_else_statement/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;

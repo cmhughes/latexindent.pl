@@ -211,7 +211,7 @@ sub construct_paragraph_reg_exp{
                 $stopAtRegExp .= "|(?:".($paragraphStopAt eq "trailingComment" ? "%" : q() ).$tokens{$paragraphStopAt}."\\d+)";
             }
         } else {
-            $self->logger("The paragraph-stop regexp won't include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if $is_t_switch_active ;
+            $self->logger("The paragraph-stop regexp won't include $tokens{$paragraphStopAt} (see paragraphsStopAt)",'heading') if ($tokens{$paragraphStopAt} and $is_t_switch_active);
         }
     }
 

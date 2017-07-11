@@ -23,7 +23,7 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use Text::Tabs;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 our %familyTree;
 
 sub indent{
@@ -154,6 +154,8 @@ sub indent_body{
         }
     }
 
+    # some objects need a post-indentation check, e.g ifElseFi
+    $self->post_indentation_check;
     # if the routine check_for_blank_lines_at_beginning has been called, then the following routine
     # puts blank line tokens back in 
     $self->put_blank_lines_back_in_at_beginning if $is_m_switch_active; 
@@ -167,6 +169,10 @@ sub indent_body{
     # output to the logfile
     $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}") if $is_t_switch_active;
     return $self;
+}
+
+sub post_indentation_check{
+    return;
 }
 
 sub check_for_blank_lines_at_beginning{
