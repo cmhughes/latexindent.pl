@@ -50,54 +50,6 @@ our $ifElseFiRegExp = qr/
                 (\R)?                       # linebreaks after \fi
 /sx;
 
-
-sub indent{
-    my $self = shift;
-
-    # determine the surrounding and current indentation
-    $self->determine_total_indentation;
-
-    # line break checks after \if statement, can get messy if we 
-    # have, for example
-    #       \ifnum
-    #               something
-    # which might be changed into
-    #       \ifnumsomething
-    # which is undeserible
-    if (defined ${$self}{BodyStartsOnOwnLine}
-        and ${$self}{BodyStartsOnOwnLine}==-1 
-        and ${$self}{body} !~ m/^(\h|\\|(?:!-!))/s
-    ){
-        ${$self}{begin} .= " ";
-    }
-
-    # indent the body
-    $self->indent_body;
-
-    # indent the end statement
-    $self->indent_end_statement;
-
-    # wrap-up statement
-    $self->wrap_up_statement;
-
-    # line break checks *after* \end{statement}
-    if (defined ${$self}{EndFinishesWithLineBreak}
-        and ${$self}{EndFinishesWithLineBreak}==-1 
-        ) {
-        # add a single horizontal space after the child id, otherwise we can end up 
-        # with things like
-        #       before: 
-        #               \fi
-        #                   text
-        #       after:
-        #               \fitext
-        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
-        ${$self}{end} =${$self}{end}." ";
-    }
-
-    return;
-}
-
 sub find_ifelsefi{
     my $self = shift;
 
@@ -170,6 +122,45 @@ sub tasks_particular_to_each_object{
     $self->find_special;
 
 }
+
+sub indent_begin{
+    my $self = shift;
+    # line break checks after \if statement, can get messy if we 
+    # have, for example
+    #       \ifnum
+    #               something
+    # which might be changed into
+    #       \ifnumsomething
+    # which is undeserible
+    if (defined ${$self}{BodyStartsOnOwnLine}
+        and ${$self}{BodyStartsOnOwnLine}==-1 
+        and ${$self}{body} !~ m/^(\h|\\|(?:!-!))/s
+    ){
+        ${$self}{begin} .= " ";
+    }
+}
+
+sub wrap_up_statement{
+    my $self = shift;
+
+    # line break checks *after* \end{statement}
+    if (defined ${$self}{EndFinishesWithLineBreak}
+        and ${$self}{EndFinishesWithLineBreak}==-1 
+        ) {
+        # add a single horizontal space after the child id, otherwise we can end up 
+        # with things like
+        #       before: 
+        #               \fi
+        #                   text
+        #       after:
+        #               \fitext
+        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
+        ${$self}{end} =${$self}{end}." ";
+    }
+    $self->logger("Finished indenting ${$self}{name}",'heading') if $is_t_switch_active;
+    return $self;
+}
+
 
 sub create_unique_id{
     my $self = shift;
