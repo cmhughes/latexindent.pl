@@ -74,16 +74,6 @@ sub indent{
     # indent the body
     $self->indent_body;
 
-    # calculate and grab the surrounding indentation for the \else statement adjustment
-    $self->get_surrounding_indentation;
-    my $surroundingIndentation = ${$self}{surroundingIndentation}?${$self}{surroundingIndentation}:q();
-
-    if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
-            $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')")if $is_t_switch_active;
-            ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
-            $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}") if $is_t_switch_active;
-    }
-
     # indent the end statement
     $self->indent_end_statement;
 
@@ -138,7 +128,6 @@ sub find_ifelsefi{
                                                                   # after end statements
                                                                   EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
                                                                 },
-                                                                elsePresent=>0,
                                                                 modifyLineBreaksYamlName=>"ifElseFi",
                                                                 endImmediatelyFollowedByComment=>$9?0:($11?1:0),
                                                                 horizontalTrailingSpace=>$8?$8:q(),

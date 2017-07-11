@@ -39,10 +39,8 @@ sub check_for_else_statement{
     my $self = shift;
     $self->logger("Looking for \\else statement (${$self}{name})",'heading') if $is_t_switch_active;
 
-    ${$self}{body} =~ s/
-              $elseRegExp(\h*)($trailingCommentRegExp)?
-                  /
-                      # log file output
+    ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
+                       /   # log file output
                       $self->logger("else found: ${$self}{name}",'heading')if $is_t_switch_active;
          
                       # create a new IfElseFi object
@@ -70,8 +68,6 @@ sub check_for_else_statement{
                       $self->get_settings_and_store_new_object($else);
                       ${@{${$self}{children}}[-1]}{replacementText};
                       /xse;
-
-        ${$self}{elsePresent}=1;
         return;
 }
 
@@ -87,11 +83,7 @@ sub remove_line_breaks_begin{
 }
 
 sub tasks_particular_to_each_object{
-    # we need to remove the most recent ancestor
     my $self = shift;
-    $self->logger("Removing most recent ancestor") if $is_t_switch_active;
-    ${$self}{naturalAncestors} =~ s/---${${${$self}{ancestors}}[-1]}{ancestorID}//s;
-    pop @{${$self}{ancestors}};
 
     # search for headings (important to do this before looking for commands!)
     $self->find_heading;
