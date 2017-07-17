@@ -22,12 +22,15 @@ use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_swit
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_ifelsefi/;
+our @EXPORT_OK = qw/find_ifelsefi construct_ifelsefi_regexp/;
 our $ifElseFiCounter;
+our $ifElseFiRegExp;
 
 # store the regular expresssion for matching and replacing the \if...\else...\fi statements
 # note: we search for \else separately in an attempt to keep this regexp a little more managable
-our $ifElseFiRegExp = qr/
+
+sub construct_ifelsefi_regexp{
+    $ifElseFiRegExp = qr/
                 (
                     \\
                         (@?if[a-zA-Z@]*?)
@@ -35,7 +38,7 @@ our $ifElseFiRegExp = qr/
                     (\R*)
                 )                           # begin statement, e.g \ifnum, \ifodd
                 (
-                    \\(?!if)|[0-9]|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                    \\(?!if)|[0-9]|\R|\h|\#|!-!|$trailingCommentRegExp   # up until a \\, linebreak # or !-!, which is 
                 )                           # part of the tokens used for latexindent
                 (
                     (?: 
@@ -49,6 +52,7 @@ our $ifElseFiRegExp = qr/
                 (\h*)                       # 0 or more horizontal spaces
                 (\R)?                       # linebreaks after \fi
 /sx;
+}
 
 sub find_ifelsefi{
     my $self = shift;

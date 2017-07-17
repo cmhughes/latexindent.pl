@@ -75,6 +75,8 @@ latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditio
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
 # ifx
 latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
+# bug fix from tcbbreakable-small.tex
+latexindent.pl -s tcbbreakable-small.tex -o=+-default
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit
