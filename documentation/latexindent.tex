@@ -46,7 +46,7 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
-\tcbuselibrary{breakable,minted,xparse,documentation}
+\tcbuselibrary{breakable,minted,xparse,documentation,hooks}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -65,10 +65,10 @@
 
 % shortcut command for displaying star in documentation
 \newcommand{\stardemo}[1][]{\begin{tikzpicture}
-  \node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
-  \node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
-  \node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
-\end{tikzpicture}}
+	\node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+	\node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+	\node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+	\end{tikzpicture}}
 
 % totalcount
 \DeclareTotalCounter{lstlisting}
@@ -154,7 +154,7 @@
 		},
 	new-to-this-version/.style={
 			enhanced,
-			overlay={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
+			overlay app={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
 			addtololstar,
 		},
 }
@@ -323,67 +323,67 @@
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-268},
+	firstnumber=270,linerange={270-271},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-279},
+	firstnumber=270,linerange={270-282},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=283,linerange={283-284},
+	firstnumber=286,linerange={286-287},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=283,linerange={283-295},
+	firstnumber=286,linerange={286-298},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=298,linerange={298-306},
+	firstnumber=301,linerange={301-309},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=376,linerange={376-378},
+	firstnumber=379,linerange={379-381},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=379,linerange={379-380},
+	firstnumber=382,linerange={382-383},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=379,linerange={379-381},
+	firstnumber=382,linerange={382-384},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=382,linerange={382-394},
+	firstnumber=385,linerange={385-397},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=395,linerange={395-403},
+	firstnumber=398,linerange={398-406},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=404,linerange={404-413},
+	firstnumber=407,linerange={407-416},
 	numbers=left,
 }
 
