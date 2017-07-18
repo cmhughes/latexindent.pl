@@ -64,7 +64,11 @@
 \tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
 
 % shortcut command for displaying star in documentation
-\newcommand{\stardemo}{\tikz\node[cmhstar,scale=0.45]{};}
+\newcommand{\stardemo}[1][]{\begin{tikzpicture}
+  \node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+  \node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+  \node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+\end{tikzpicture}}
 
 % totalcount
 \DeclareTotalCounter{lstlisting}
@@ -76,7 +80,7 @@
 \NewDocumentCommand{\announce}{ s m o }{%
 	\IfBooleanTF{#1}
 	{% \announce*
-		\tcbdocmarginnote[overlay={\node[cmhstar,scale=0.45] at ([yshift=0mm,xshift=1mm]frame.north east) {}; }]{\tcbdocnew{#2}}
+		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{\tcbdocnew{#2}}
 		\addcontentsline{new}{cmhtitle}{#3}%
 	}
 	{% \announce
@@ -150,7 +154,7 @@
 		},
 	new-to-this-version/.style={
 			enhanced,
-			overlay={\node[cmhstar,scale=0.65] at ([yshift=0mm,xshift=0mm]frame.north east) {}; },
+			overlay={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
 			addtololstar,
 		},
 }
