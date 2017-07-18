@@ -161,8 +161,8 @@ sub indent_body{
     $self->put_blank_lines_back_in_at_beginning if $is_m_switch_active; 
 
     # the final linebreak can be modified by a child object; see test-cases/commands/figureValign-mod5.tex, for example
-    if($is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/){
-        $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)") if($is_t_switch_active);
+    if($is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/ and ${$self}{body} ne ''){
+        $self->logger("Adding a linebreak at end of body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)") if($is_t_switch_active);
         ${$self}{body} .= "\n";
     }
 
