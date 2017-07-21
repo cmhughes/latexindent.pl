@@ -88,11 +88,11 @@ latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation4.tex -l=ma
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation5.tex -l=max-indentation5.yaml
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation-mod1.tex -l=max-indentation1,env-mod-lines1 -m 
 latexindent.pl -s environments-verbatim-harder.tex -o=+-max-ind1 -l=max-indentation1.yaml
-
-
 # empty body environment
 latexindent.pl -s env-no-body -o +-mod1 -l=env-mod1 -m
 latexindent.pl -s env-no-body -o +-mod17 -l=env-mod17 -m
+# new-line polyswitch
+latexindent.pl -s -m aronvgi -l=aronvgi -o=+mod
 [[ $silentMode == 0 ]] && set -x 
 
 
