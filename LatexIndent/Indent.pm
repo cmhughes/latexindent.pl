@@ -322,25 +322,38 @@ sub indent_children_recursively{
                 # line break checks before <begin statement>
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+
+                    # if the child ID is not the first character and BeginStartsOnOwnLine>=1 
+                    # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
                     if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
                         # by default, assume that no trailing comment token is needed
-                        my $trailingCommentToken = q();
+                        my $trailingCharacterToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
                             $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
                             $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            $trailingCommentToken = "%".$self->add_comment_symbol;
+                            $trailingCharacterToken = "%".$self->add_comment_symbol;
+                        } elsif (${$child}{BeginStartsOnOwnLine}==3){
+                            $self->logger("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
+                            $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                         } else {
                             $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
                         }
 
                         # the trailing comment/linebreak magic
-                        ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
+                        ${$child}{begin} = "$trailingCharacterToken\n".${$child}{begin};
                         $child->add_surrounding_indentation_to_begin_statement;
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
+                    } elsif(${$child}{BeginStartsOnOwnLine}==3 and 
+                                ((${$masterSettings{modifyLineBreaks}}{preserveBlankLines} and ${$self}{body} !~ m/$tokens{blanklines}${$child}{id}/s)
+                                        or
+                                 ${$self}{body} !~ m/\R{2,}${$child}{id}/s)){
+                        # if BeginStartsOnOwnLine == 3 then we may need to add another blank line ahead of the ID
+                        ${$child}{begin} = (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n").${$child}{begin};
                     } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
+                        # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
@@ -350,6 +363,19 @@ sub indent_children_recursively{
                             $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
                         }
                     }
+                }
+
+                # blank lines after the <end> statement (only if EndFinishesWithLineBreak==3)
+                if(defined ${$child}{EndFinishesWithLineBreak} 
+                       and ${$child}{EndFinishesWithLineBreak} == 3 
+                       and ${$self}{body} =~ m/${$child}{id}\h*$/sm                     # id at end of line
+                       and ${$self}{body} !~ m/${$child}{id}\h*\R$tokens{blanklines}/s  # not followed by blank line token
+                       and ${$self}{body} !~ m/${$child}{id}\h*\R\h*\R/s                # not followed by two carraige returns
+                       and !(${$self}{body} =~ m/${$child}{id}\h*$/s)                   # not at the end of the document
+                   ){
+                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                    $self->logger("Adding a blank line to the end of ${$child}{name} ($EndStringLogFile ==3)") if $is_t_switch_active;
+                    ${$child}{end} .= "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n");
                 }
 
                 $self->logger(Dumper(\%{$child}),'ttrace') if($is_tt_switch_active);

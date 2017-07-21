@@ -1,0 +1,5 @@
+# copy files within a loop; the following copies
+# env-mod17.yaml to env-mod33.yaml, ..., env-mod32.yaml to env-mod48.yaml
+for i in {17..32}; do cp env-mod$i.yaml env-mod$((i+16)).yaml; done
+
+i=18 && cp env-mod$i.yaml env-mod$((i+16)).yaml && sed -i 's/2/3/' env-mod$((i+16)).yaml && cat env-mod$((i+16)).yaml
