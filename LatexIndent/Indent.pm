@@ -351,7 +351,7 @@ sub indent_children_recursively{
                                         or
                                  ${$self}{body} !~ m/\R{2,}${$child}{id}/s)){
                         # if BeginStartsOnOwnLine == 3 then we may need to add another blank line ahead of the ID
-                        ${$child}{begin} = (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n").${$child}{begin};
+                        ${$child}{begin} = (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n".${$child}{begin};
                     } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
                         # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token

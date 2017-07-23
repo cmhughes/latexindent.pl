@@ -3,3 +3,5 @@
 for i in {17..32}; do cp env-mod$i.yaml env-mod$((i+16)).yaml; done
 
 i=18 && cp env-mod$i.yaml env-mod$((i+16)).yaml && sed -i 's/2/3/' env-mod$((i+16)).yaml && cat env-mod$((i+16)).yaml
+
+for i in {4..48}; do  cp ../environments/env-mod$i.yaml ./ifelsefi-mod$i.yaml && sed -i 's/environments/ifElseFi/' ifelsefi-mod$i.yaml && sed -i 's/Begin/If/' ifelsefi-mod$i.yaml && sed -i 's/End/Fi/g' ifelsefi-mod$i.yaml; done
