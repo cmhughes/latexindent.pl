@@ -104,6 +104,13 @@ sub tasks_particular_to_each_object{
         ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
         ${$self}{replacementText} .= "\n";
 
+        # if the last argument has EndFinishesWithLineBreak == 3
+        if (${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 3 ){
+              my $EndStringLogFile = ${${${${$self}{children}}[0]}{children}[-1]}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+              $self->logger("Adding another blank line to replacement text for ${$self}{name} as last argument has $EndStringLogFile == 3 ") if $is_t_switch_active;
+              ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
+        }
+
         # update the argument object
         $self->logger("Adjusting argument object in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;

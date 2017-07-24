@@ -3,7 +3,7 @@
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
 loopmax=48
 . ../common.sh
-[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33"
+[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33 (an oddity of the ifelsefi loop)"
 [[ $loopmax -lt 33 ]] && loopmax=33 && echo "loopmax set to 33"
 
 # if silentMode is not active, verbose
