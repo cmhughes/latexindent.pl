@@ -91,7 +91,6 @@ do
      [[ $silentMode == 0 ]] && set +x 
     done
 done
-exit
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

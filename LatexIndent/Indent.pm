@@ -346,12 +346,6 @@ sub indent_children_recursively{
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
-                    } elsif(${$child}{BeginStartsOnOwnLine}==3 and 
-                                ((${$masterSettings{modifyLineBreaks}}{preserveBlankLines} and ${$self}{body} !~ m/$tokens{blanklines}${$child}{id}/s)
-                                        or
-                                 ${$self}{body} !~ m/\R{2,}${$child}{id}/s)){
-                        # if BeginStartsOnOwnLine == 3 then we may need to add another blank line ahead of the ID
-                        ${$child}{begin} = (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n".${$child}{begin};
                     } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
                         # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token
@@ -363,19 +357,6 @@ sub indent_children_recursively{
                             $self->logger("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
                         }
                     }
-                }
-
-                # blank lines after the <end> statement (only if EndFinishesWithLineBreak==3)
-                if(defined ${$child}{EndFinishesWithLineBreak} 
-                       and ${$child}{EndFinishesWithLineBreak} == 3 
-                       and ${$self}{body} =~ m/${$child}{id}\h*$/sm                     # id at end of line
-                       and ${$self}{body} !~ m/${$child}{id}\h*\R$tokens{blanklines}/s  # not followed by blank line token
-                       and ${$self}{body} !~ m/${$child}{id}\h*\R\h*\R/s                # not followed by two carraige returns
-                       and !(${$self}{body} =~ m/${$child}{id}\h*$/s)                   # not at the end of the document
-                   ){
-                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-                    $self->logger("Adding a blank line to the end of ${$child}{name} ($EndStringLogFile ==3)") if $is_t_switch_active;
-                    ${$child}{end} .= "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n");
                 }
 
                 $self->logger(Dumper(\%{$child}),'ttrace') if($is_tt_switch_active);

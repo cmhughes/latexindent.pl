@@ -71,13 +71,6 @@ sub modify_line_breaks_body{
             $self->logger("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{body} =~ s/^\h*//;       
           } 
-       } elsif(${$self}{BodyStartsOnOwnLine}==3 and ${$self}{linebreaksAtEnd}{begin}
-           and ((${$masterSettings{modifyLineBreaks}}{preserveBlankLines} and ${$self}{body} !~ m/^\h*$tokens{blanklines}/s)
-                                        or
-                                 ${$self}{body} !~ m/^\h*\R/s)    ){
-            # if BodyStartsOnOwnLine == 3 and the body already starts on its own 
-            # line, then we need to check that it has a blank line at the beginning
-            ${$self}{begin} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n");       
        } elsif (${$self}{BodyStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
           $self->remove_line_breaks_begin;
@@ -126,12 +119,6 @@ sub modify_line_breaks_end{
                 ${$self}{body} .= "$trailingCharacterToken\n";
                 ${$self}{linebreaksAtEnd}{body} = 1;
               }
-          } elsif(${$self}{EndStartsOnOwnLine}==3 and ${$self}{linebreaksAtEnd}{body}
-              and (!(${$masterSettings{modifyLineBreaks}}{preserveBlankLines} and ${$self}{body} =~ m/$tokens{blanklines}\h*$/s))){
-               # if EndStartsOnOwnLine == 3 and the <end> already starts on its own 
-               # line, then we need to check that <body> finishes with a blank line
-               $self->logger("Adding a blank line immediately after body of ${$self}{name} ($EndStringLogFile==3)") if $is_t_switch_active;
-               ${$self}{body} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";       
           } elsif (${$self}{EndStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{body}){
               # remove line break *after* body, if appropriate
 

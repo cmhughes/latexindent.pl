@@ -142,19 +142,23 @@ sub find_opt_mand_arguments{
                 my $BodyValue = (defined ${$self}{BodyStartsOnOwnLine}) ? ${$self}{BodyStartsOnOwnLine} : "0";
                 $self->logger("$BodyStringLogFile = $BodyValue (in ${$self}{name}), but first argument *should* begin on its own line (see $BeginStringLogFile)") if $is_t_switch_active;
 
-                # possibly add a comment at the end of the begin statement
-                my $trailingCommentToken = q();
+                # possibly add a comment or a blank line, depending on if BeginStartsOnOwnLine == 2 or 3 respectively 
+                # at the end of the begin statement
+                my $trailingCharacterToken = q();
                 if(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==1){
                     $self->logger("Adding line breaks at the end of ${$self}{begin} (first argument, see $BeginStringLogFile == ${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine})") if $is_t_switch_active;
                 } elsif(${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==2){
                     $self->logger("Adding a % at the end of begin, ${$self}{begin} followed by a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                    $trailingCommentToken = "%".$self->add_comment_symbol;
+                    $trailingCharacterToken = "%".$self->add_comment_symbol;
                     $self->logger("Removing trailing space on ${$self}{begin}") if $is_t_switch_active;
                     ${$self}{begin} =~ s/\h*$//s;
+                } elsif (${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==3) {
+                  $self->logger("Adding a blank line immediately ${$self}{begin} ($BeginStringLogFile==3)") if $is_t_switch_active;
+                  $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                 }
 
                 # modification
-                ${$self}{begin} .= "$trailingCommentToken\n";
+                ${$self}{begin} .= "$trailingCharacterToken\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
             }
         }
