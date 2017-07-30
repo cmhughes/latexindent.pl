@@ -112,5 +112,7 @@ latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/inden
 # github issue
 latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
 latexindent.pl -s github-issue-35.tex -o github-issue-35-no-at.tex -l no-at-between-args.yaml
+# ifnextchar issue
+latexindent.pl -s ifnextchar.tex -o=+-default.tex -l=com-name-special.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

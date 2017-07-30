@@ -75,16 +75,32 @@
 
 % customise the \tcbdocnew command
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
+\tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
-%\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
-\NewDocumentCommand{\announce}{ s m o }{%
+\NewDocumentCommand{\announce}{ s m s o }{%
 	\IfBooleanTF{#1}
 	{% \announce*
-		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{\tcbdocnew{#2}}
-		\addcontentsline{new}{cmhtitle}{#3}%
+		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
+			\IfBooleanTF{#3}
+            {% \announce*{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}
+			}
+            {% \announce*{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}
+			}
+		}
+		\addcontentsline{new}{cmhtitle}{#4}%
 	}
 	{% \announce
-		\tcbdocmarginnote{\tcbdocnew{#2}}
+		\tcbdocmarginnote{%
+			\IfBooleanTF{#3}
+            {% \announce{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}
+			}
+            {% \announce{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}
+			}
+		}
 	}}
 
 \reversemarginpar
@@ -347,43 +363,43 @@
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=301,linerange={301-309},
+	firstnumber=301,linerange={301-311},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=379,linerange={379-381},
+	firstnumber=381,linerange={381-383},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=382,linerange={382-383},
+	firstnumber=384,linerange={384-385},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=382,linerange={382-384},
+	firstnumber=384,linerange={384-386},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=385,linerange={385-397},
+	firstnumber=387,linerange={387-399},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=398,linerange={398-406},
+	firstnumber=400,linerange={400-408},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=407,linerange={407-416},
+	firstnumber=409,linerange={409-418},
 	numbers=left,
 }
 
