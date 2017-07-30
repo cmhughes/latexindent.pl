@@ -7,9 +7,9 @@
 
 \yamltitle{commandCodeBlocks}*{fields}
 
-	The \texttt{commandCodeBlocks} field contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	The \texttt{commandCodeBlocks} field \announce{new}*[commandCodeBlocks] contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile*[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -137,3 +137,36 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see \vref{tab:code-blocks}) \emph{with} argument \lstinline![in=110,out=-90]!
 		\item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node} with argument \lstinline![below,align=left,scale=0.5]!
 	\end{itemize}
+
+\yamltitle{commandNameSpecial}*{fields}
+	There are some special command names \announce{new}[commandNameSpecial] that do not fit within the names recognized by \texttt{latexindent.pl},
+	the first one of which is \lstinline!\@ifnextchar[!. From the perspective of \texttt{latexindent.pl}, the whole of the
+	text \lstinline!\@ifnextchar[! is is a command, because it is
+	immediately followed by sets of mandatory arguments. However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl}
+	would not be able to label it as such, because the \lstinline![! is, necessarily, not matched by a closing \lstinline!]!.
+
+	For example, consider the sample file in \cref{lst:ifnextchar}, which has default output in \cref{lst:ifnextchar-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/ifnextchar.tex}{\texttt{ifnextchar.tex}}{lst:ifnextchar}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/ifnextchar-default.tex}{\texttt{ifnextchar.tex} default output}{lst:ifnextchar-default}
+	\end{minipage}
+
+	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able to indent its body, because \texttt{latexindent.pl}
+	has successfully found the command \lstinline!\@ifnextchar! first; the pattern-matching of \texttt{latexindent.pl} starts from
+	\emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.  For demonstration, we can compare
+	this output with that given in \cref{lst:ifnextchar-off} in which
+	the settings from \cref{lst:no-ifnextchar} have dictated that \lstinline!\@ifnextchar[! command should not be searched for specially;
+	as such, the \texttt{parbox} command has been \emph{unable} to indent its body successfully, because the \lstinline!\@ifnextchar[!
+	command has not been found.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+	\end{minipage}

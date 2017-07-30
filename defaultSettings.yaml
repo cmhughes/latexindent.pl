@@ -307,6 +307,8 @@ commandCodeBlocks:
         decoration: 1
         ++: 1
         --: 1
+    commandNameSpecial:
+        @ifnextchar[: 1
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active

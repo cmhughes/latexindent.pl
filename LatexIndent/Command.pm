@@ -43,11 +43,28 @@ sub construct_command_regexp{
                                                                     mode=>"lineBreaksAtEnd",
                                                                     stringBetweenArguments=>1);
 
+    # put together a list of the special command names (this was mostly motivated by the \@ifnextchar[ issue)
+    my %commandNameSpecial = %{${$masterSettings{commandCodeBlocks}}{commandNameSpecial}};
+
+    my $commandNameSpecialRegExp = q();
+    while( my ($commandName,$yesNo)= each %commandNameSpecial){
+        # change + and - to escaped characters
+        $commandName =~ s/\+/\\+/g;
+        $commandName =~ s/\-/\\-/g;
+        $commandName =~ s/\[/\\[/g;
+
+        # form the regexp
+        $commandNameSpecialRegExp .= ($commandNameSpecialRegExp eq '' ? q() : "|").$commandName if $yesNo; 
+    }
+
+    # details to log file
+    $self->logger("The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)",'heading') if $is_t_switch_active;
+
     # construct the command regexp
     $commandRegExp = qr/
-              (\\|@)   
+              (\\|\\@|@)   
               (
-               [+a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
+               [+a-zA-Z@\*0-9_\:]+?|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?
