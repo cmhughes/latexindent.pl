@@ -3,7 +3,7 @@
 % arara: pdflatex: {shell: yes}
 % arara: pdflatex: {shell: yes}
 % arara: pdflatex: {shell: yes}
-\documentclass[10pt]{article}
+\documentclass[10pt,draft]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
 %   the Free Software Foundation, either version 3 of the License, or
@@ -206,6 +206,16 @@
 	#5,
 	IfBooleanTF={#1}{new-to-this-version}{addtolol},
 }
+
+\makeatletter
+\@tempswafalse
+\def\@tempa{draft}
+\@for\next:=\@classoptionslist\do
+{\ifx\next\@tempa\@tempswatrue\fi}
+\if@tempswa % draft option is active
+	\RenewDocumentCommand{\cmhlistingsfromfile}{s O{} s m O{} m m}{\captionof{lstlisting}{#6}\label{#7}}
+	\renewcommand{\stardemo}[1][]{$\star$}
+\fi
 
 % command shell
 \newtcblisting{commandshell}{colback=black,colupper=white,colframe=yellow!75!black,
