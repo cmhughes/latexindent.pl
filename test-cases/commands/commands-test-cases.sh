@@ -128,5 +128,7 @@ do
    [[ $silentMode == 0 ]] && set +x 
 done
 [[ $silentMode == 0 ]] && set -x 
+# ifnextchar issue
+latexindent.pl -s ifnextchar.tex -o=+-default.tex -l=com-name-special.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

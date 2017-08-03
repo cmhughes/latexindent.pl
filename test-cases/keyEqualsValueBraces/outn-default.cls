@@ -168,34 +168,34 @@
 \firstassignmenttrue
 
 \def\assignment#1{%
-\def\@assignmentname{#1} %store name of assignment (tma/cma, etc)
-\setcounter{question}{0}
-% Draw a rule under end of previous assignment (if not first assignment)
-\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\newpage\fi
-\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
+	\def\@assignmentname{#1} %store name of assignment (tma/cma, etc)
+	\setcounter{question}{0}
+	% Draw a rule under end of previous assignment (if not first assignment)
+	\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\newpage\fi
+	\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
 }
 
 % Version that doesn't add a new page
 \def\samepageassignment#1{%
-\def\@assignmentname{#1} %store name of assignment (tma/cma, etc)
-\setcounter{question}{0}
-% Draw a rule under end of previous assignment (if not first assignment)
-\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\par\bigskip\fi
-\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
+	\def\@assignmentname{#1} %store name of assignment (tma/cma, etc)
+	\setcounter{question}{0}
+	% Draw a rule under end of previous assignment (if not first assignment)
+	\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\par\bigskip\fi
+	\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
 }
 
 \def\@assignmentwithcutoff[#1]#2{%
-\def\@cutoff{\@cutofftext\ #1}
-{\large \textbf{\@assignmentname\ #2} \hfill\textbf{\@cutofftext}#1}
-\@ifnextchar[{\@assignmentsubtitle}{
+	\def\@cutoff{\@cutofftext\ #1}
+	{\large \textbf{\@assignmentname\ #2} \hfill\textbf{\@cutofftext}#1}
+	\@ifnextchar[{\@assignmentsubtitle}{
 		\par\addvspace{\bigskipamount}
 	}
 }
 
 \def\@assignmentnocutoff#1{%
-\def\@cutoff{\relax}
-{\large \textbf{\@assignmentname\ #1}}%
-\@ifnextchar[{\@assignmentsubtitle}{\par\addvspace{\bigskipamount}}
+	\def\@cutoff{\relax}
+	{\large \textbf{\@assignmentname\ #1}}%
+	\@ifnextchar[{\@assignmentsubtitle}{\par\addvspace{\bigskipamount}}
 }
 
 % This does nothing except add some space, 

@@ -79,7 +79,7 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 	In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have received the appropriate (default) indentation; secondly,
 	note that the poly-switch \texttt{EndStartsOnOwnLine} appears to have won the conflict, as \lstinline!\end{one}! has had its leading line break removed.
 
-	To understand it, let's talk about the three basic phases of \texttt{latexindent.pl}:
+	To understand it, let's talk about the three basic phases \label{page:phases}of \texttt{latexindent.pl}:
 	\begin{enumerate}
 		\item Phase 1: packing, in which code blocks are replaced with unique ids, working from \emph{the inside to the outside}, and then sequentially -- for example, in
 		      \cref{lst:nested-env}, the \texttt{two} environment is found \emph{before} the \texttt{one} environment; if the -m switch is active, then during this phase:

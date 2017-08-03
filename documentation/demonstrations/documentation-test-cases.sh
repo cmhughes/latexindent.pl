@@ -195,5 +195,9 @@ latexindent.pl -s sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 # maximum indentation
 latexindent.pl -s mult-nested.tex -o=+-default
 latexindent.pl -s mult-nested.tex -l=max-indentation1 -o=+-max-ind1
+
+# ifnextchar
+latexindent.pl -s ifnextchar.tex -o=+-default
+latexindent.pl -s ifnextchar.tex -o=+-off -l no-ifnextchar.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
