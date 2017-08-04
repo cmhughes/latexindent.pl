@@ -34,6 +34,7 @@ sed -i.bak "s/$oldDate/$newDate/" readme.md
 sed -i.bak "s/version $oldVersion/version $newVersion/" documentation/readme.txt
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
+sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
 # possibly generate the pdf
 [[ $generatePDFmode == 1 ]] && cd documentation && arara latexindent
 exit
