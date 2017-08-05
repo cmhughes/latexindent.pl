@@ -22,8 +22,8 @@ newDate='2017-06-28'
 
 cd ../
 cd documentation
-find -name "*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/g"
-find -name "*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/g"
+find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/g"
+find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/g"
 cd ../
 sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
 sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
