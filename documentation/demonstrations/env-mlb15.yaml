@@ -1,3 +1,3 @@
 modifyLineBreaks:
     environments:
-        EndFinishesWithLineBreak: 2
+        EndStartsOnOwnLine: -1

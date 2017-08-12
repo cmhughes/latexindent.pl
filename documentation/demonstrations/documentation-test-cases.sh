@@ -1,7 +1,7 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=8
+loopmax=12
 . ../../test-cases/common.sh
 
 # if silentMode is not active, verbose
@@ -139,16 +139,16 @@ done
 latexindent.pl -s -m env-mlb3.tex -l env-mlb2.yaml -o env-mlb3-mod2.tex
 latexindent.pl -s -m env-mlb3.tex -l env-mlb4.yaml -o env-mlb3-mod4.tex
 # remove line breaks
-latexindent.pl -s -m env-mlb4.tex -l env-mlb9.yaml -o env-mlb4-mod9.tex
-latexindent.pl -s -m env-mlb4.tex -l env-mlb10.yaml -o env-mlb4-mod10.tex
-latexindent.pl -s -m env-mlb4.tex -l env-mlb11.yaml -o env-mlb4-mod11.tex
-latexindent.pl -s -m env-mlb4.tex -l env-mlb12.yaml -o env-mlb4-mod12.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb13.yaml -o env-mlb4-mod13.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb14.yaml -o env-mlb4-mod14.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb15.yaml -o env-mlb4-mod15.tex
+latexindent.pl -s -m env-mlb4.tex -l env-mlb16.yaml -o env-mlb4-mod16.tex
 # trailing white space demo
-latexindent.pl -s env-mlb5.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml -o env-mlb5-modAll.tex
-latexindent.pl -s env-mlb5.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,removeTWS-before.yaml -o env-mlb5-modAll-remove-WS.tex
+latexindent.pl -s env-mlb5.tex -m -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml -o env-mlb5-modAll.tex
+latexindent.pl -s env-mlb5.tex -m -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml -o env-mlb5-modAll-remove-WS.tex
 # blank lines
-latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml -o env-mlb6-modAll.tex
-latexindent.pl -s env-mlb6.tex -m -l env-mlb9.yaml,env-mlb10.yaml,env-mlb11.yaml,env-mlb12.yaml,UnpreserveBlankLines.yaml -o env-mlb6-modAll-un-Preserve-Blank-Lines.tex
+latexindent.pl -s env-mlb6.tex -m -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml -o env-mlb6-modAll.tex
+latexindent.pl -s env-mlb6.tex -m -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,UnpreserveBlankLines.yaml -o env-mlb6-modAll-un-Preserve-Blank-Lines.tex
 
 # partnering poly-switches
 latexindent.pl -s -m mycommand1.tex -l=mycom-mlb1.yaml -outputfile=mycommand1-mlb1.tex
