@@ -199,5 +199,9 @@ latexindent.pl -s mult-nested.tex -l=max-indentation1 -o=+-max-ind1
 # ifnextchar
 latexindent.pl -s ifnextchar.tex -o=+-default
 latexindent.pl -s ifnextchar.tex -o=+-off -l no-ifnextchar.yaml
+
+# poly-switch set to 3 with/without unpreserved blank lines
+latexindent.pl -s -m env-mlb7 -o=+-preserve -l=env-mlb12.yaml,env-mlb13.yaml
+latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,UnpreserveBlankLines.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
