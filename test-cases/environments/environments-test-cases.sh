@@ -1,12 +1,11 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=32
+loopmax=48
 . ../common.sh
 
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
-
 latexindent.pl -w -s environments-simple.tex
 latexindent.pl -w -s environments-simple-nested.tex
 latexindent.pl -w -s environments-nested-nested.tex
@@ -69,16 +68,18 @@ latexindent.pl -s -l=env-all-on.yaml,indentRulesGlobal.yaml,noAdditionalIndentGl
 # special characters
 latexindent.pl -s environments-special-characters.tex -o +-default.tex
 # loop! this file was the first test-case file I created, and I hadn't yet explored looping. better late than never
-# modifyLineBreaks experiments
+# modifyLineBreaks test cases
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
    latexindent.pl -s env-single-line.tex -o +-mod$i.tex -m -l=env-mod$i.yaml
+   latexindent.pl -s -o=+-protect-mod$i.tex -m -l=env-mod$i.yaml  environments-modify-multiple-line-breaks.tex
+   latexindent.pl -s -o=+-un-protect-mod$i.tex -m -l=env-mod$i.yaml,unprotect-blank-lines.yaml  environments-modify-multiple-line-breaks.tex
+   latexindent.pl -s env-no-blank-after-end.tex -o +-mod$i.tex -m -l=env-mod$i.yaml 
    [[ $silentMode == 0 ]] && set +x 
 done
-
 # maximum indentation test cases
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation1.tex -l=max-indentation1.yaml
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation2.tex -l=max-indentation2.yaml
@@ -87,10 +88,11 @@ latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation4.tex -l=ma
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation5.tex -l=max-indentation5.yaml
 latexindent.pl -s environments-nested-fourth.tex -o=+-max-indentation-mod1.tex -l=max-indentation1,env-mod-lines1 -m 
 latexindent.pl -s environments-verbatim-harder.tex -o=+-max-ind1 -l=max-indentation1.yaml
-
 # empty body environment
 latexindent.pl -s env-no-body -o +-mod1 -l=env-mod1 -m
 latexindent.pl -s env-no-body -o +-mod17 -l=env-mod17 -m
+# new-line polyswitch
+latexindent.pl -s -m aronvgi -l=aronvgi -o=+mod
 [[ $silentMode == 0 ]] && set -x 
 
 

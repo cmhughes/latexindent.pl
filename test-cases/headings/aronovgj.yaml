@@ -1,0 +1,61 @@
+indentAfterHeadings:
+    part:
+       indentAfterThisHeading: 1
+       level: 1
+    chapter: 
+       indentAfterThisHeading: 1
+       level: 2
+    section:
+       indentAfterThisHeading: 1
+       level: 3
+    subsection:
+       indentAfterThisHeading: 1
+       level: 4
+    subsection*:
+       indentAfterThisHeading: 1
+       level: 4
+    subsubsection:
+       indentAfterThisHeading: 1
+       level: 5
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 6
+    subparagraph:
+       indentAfterThisHeading: 1
+       level: 7
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    commands:
+        CommandStartsOnOwnLine: 1
+        emph:
+            CommandStartsOnOwnLine: 0
+        part:
+            CommandStartsOnOwnLine: 3
+        chapter:
+            CommandStartsOnOwnLine: 3
+        section:
+            CommandStartsOnOwnLine: 3
+        subsection:
+            CommandStartsOnOwnLine: 3
+        subsubsection:
+            CommandStartsOnOwnLine: 3
+    mandatoryArguments:
+        RCuBFinishesWithLineBreak: 1
+        emph:
+            RCuBFinishesWithLineBreak: 0
+        part:
+            RCuBFinishesWithLineBreak: 3
+        chapter:
+            RCuBFinishesWithLineBreak: 3
+        section:
+            RCuBFinishesWithLineBreak: 3
+        subsection:
+            RCuBFinishesWithLineBreak: 3
+        subsubsection:
+            RCuBFinishesWithLineBreak: 3
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: 3
+        SpecialBodyStartsOnOwnLine: 3
+        SpecialEndStartsOnOwnLine: 3
+        SpecialEndFinishesWithLineBreak: 3

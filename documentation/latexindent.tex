@@ -84,11 +84,11 @@
 			\IfBooleanTF{#3}
             {% \announce*{date}*[text] means *updated* as of <date>
 				\tcbdocupdated{#2}
-			}
+			}%
             {% \announce*{date}[text] means *new* as of <date>
 				\tcbdocnew{#2}
-			}
-		}
+			}%
+		}%
 		\addcontentsline{new}{cmhtitle}{#4}%
 	}
 	{% \announce
@@ -96,11 +96,11 @@
 			\IfBooleanTF{#3}
             {% \announce{date}*[text] means *updated* as of <date>
 				\tcbdocupdated{#2}
-			}
+			}%
             {% \announce{date}[text] means *new* as of <date>
 				\tcbdocnew{#2}
-			}
-		}
+			}%
+		}%
 	}}
 
 \reversemarginpar

@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    ifElseFi:
+        IfStartsOnOwnLine: 3
+        BodyStartsOnOwnLine: -1
+        FiStartsOnOwnLine: 3
+        FiFinishesWithLineBreak: 3

@@ -1,5 +1,5 @@
 #!/bin/bash
-loopmax=32
+loopmax=48
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
@@ -39,7 +39,7 @@ do
    latexindent.pl -s pgfkeys-remove-line-breaks-first.tex -m -l=equals-not-finishes-with-line-break.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml -o=pgfkeys-remove-line-breaks-first-unprotect-mod$i.tex -g=three.log
    latexindent.pl -s pgfkeys-remove-line-breaks-first.tex -m -l=equals-not-finishes-with-line-break.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml -o=pgfkeys-remove-line-breaks-first-unprotect-nocondense-mod$i.tex -g=four.log
    # bibliography check
-   latexindent.pl -s contributors.bib -m -l=equals-not-finishes-with-line-break.yaml,mand-args-keywords$i.yaml -o=contributors-mod$i.bib
+   [[ $i -lt 33 ]] && latexindent.pl -s contributors.bib -m -l=equals-not-finishes-with-line-break.yaml,mand-args-keywords$i.yaml -o=contributors-mod$i.bib
    # remove line breaks, with trailing comments
    latexindent.pl pgfkeys-remove-line-breaks-first-tc.tex -s -m -l=equals-not-finishes-with-line-break.yaml,unprotect-blank-lines.yaml,mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-first-tc-mod$i.tex
    latexindent.pl -s pgfkeys-remove-line-breaks.tex -m -l=equals-not-finishes-with-line-break.yaml,mand-args-mod$i.yaml -o=pgfkeys-remove-line-breaks-mod$i.tex -g=one.log
@@ -80,3 +80,4 @@ latexindent.pl -s hea-senior-fellowship-application.tex -o=+-max-indentation5 -l
 latexindent.pl -s dodge-double-back-slash.tex -o dodge-double-back-slash-default.tex
 git status
 [[ $noisyMode == 1 ]] && makenoise
+exit

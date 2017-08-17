@@ -1,5 +1,5 @@
 #!/bin/bash
-loopmax=32
+loopmax=48
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 

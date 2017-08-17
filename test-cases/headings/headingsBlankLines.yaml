@@ -1,0 +1,27 @@
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    commands:
+        CommandStartsOnOwnLine: 1
+        part:
+            CommandStartsOnOwnLine: 3
+        chapter:
+            CommandStartsOnOwnLine: 3
+        section:
+            CommandStartsOnOwnLine: 3
+        subsection:
+            CommandStartsOnOwnLine: 3
+        subsubsection:
+            CommandStartsOnOwnLine: 3
+    mandatoryArguments:
+        RCuBFinishesWithLineBreak: 1
+        part:
+            RCuBFinishesWithLineBreak: 3
+        chapter:
+            RCuBFinishesWithLineBreak: 3
+        section:
+            RCuBFinishesWithLineBreak: 3
+        subsection:
+            RCuBFinishesWithLineBreak: 3
+        subsubsection:
+            RCuBFinishesWithLineBreak: 3

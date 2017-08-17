@@ -322,25 +322,32 @@ sub indent_children_recursively{
                 # line break checks before <begin statement>
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+
+                    # if the child ID is not the first character and BeginStartsOnOwnLine>=1 
+                    # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
                     if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
                         # by default, assume that no trailing comment token is needed
-                        my $trailingCommentToken = q();
+                        my $trailingCharacterToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
                             $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
                             $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            $trailingCommentToken = "%".$self->add_comment_symbol;
+                            $trailingCharacterToken = "%".$self->add_comment_symbol;
+                        } elsif (${$child}{BeginStartsOnOwnLine}==3){
+                            $self->logger("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
+                            $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                         } else {
                             $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
                         }
 
                         # the trailing comment/linebreak magic
-                        ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
+                        ${$child}{begin} = "$trailingCharacterToken\n".${$child}{begin};
                         $child->add_surrounding_indentation_to_begin_statement;
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
                     } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
+                        # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
