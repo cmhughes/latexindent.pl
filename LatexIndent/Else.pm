@@ -88,11 +88,8 @@ sub tasks_particular_to_each_object{
     # search for headings (important to do this before looking for commands!)
     $self->find_heading;
 
-    # search for commands, keys, named grouping braces
-    $self->find_commands_or_key_equals_values_braces;
-
-    # search for special begin/end
-    $self->find_special;
+    # search for commands and special code blocks
+    $self->find_commands_or_key_equals_values_braces_and_special;
     return;
 }
 

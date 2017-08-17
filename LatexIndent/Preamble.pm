@@ -52,12 +52,19 @@ sub tasks_particular_to_each_object{
     # search for ifElseFi blocks
     $self->find_ifelsefi;
 
-    # search for commands with arguments
-    $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
+    if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
+        # search for special begin/end
+        $self->find_special;
 
-    # search for special begin/end
-    $self->find_special;
+        # search for commands with arguments
+        $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
+    } else {
+        # search for commands with arguments
+        $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
 
+        # search for special begin/end
+        $self->find_special;
+      }
 
 }
 

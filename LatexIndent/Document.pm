@@ -183,15 +183,10 @@ sub find_objects{
     # search for headings (part, chapter, section, setc)
     $self->logger('looking for HEADINGS (chapter, section, part, etc)');
     $self->find_heading;
+
+    # the ordering of finding commands and special code blocks can change
+    $self->find_commands_or_key_equals_values_braces_and_special;
     
-    # search for commands with arguments
-    $self->logger('looking for COMMANDS and key = {value}');
-    $self->find_commands_or_key_equals_values_braces;
-
-    # search for special begin/end
-    $self->logger('looking for SPECIAL begin/end');
-    $self->find_special;
-
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
         ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
@@ -212,6 +207,31 @@ sub find_objects{
     $self->logger("Number of children:",'heading');
     $self->logger(scalar (@{${$self}{children}}));
 
+    return;
+}
+
+sub find_commands_or_key_equals_values_braces_and_special{
+    my $self = shift;
+
+    # the order in which we search for specialBeginEnd and commands/key/braces
+    # can change depending upon specialBeforeCommand
+    if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
+        # search for special begin/end
+        $self->logger('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)');
+        $self->find_special;
+
+        # search for commands with arguments
+        $self->logger('looking for COMMANDS and key = {value}');
+        $self->find_commands_or_key_equals_values_braces;
+    } else {
+        # search for commands with arguments
+        $self->logger('looking for COMMANDS and key = {value}');
+        $self->find_commands_or_key_equals_values_braces;
+
+        # search for special begin/end
+        $self->logger('looking for SPECIAL begin/end');
+        $self->find_special;
+    }
     return;
 }
 
