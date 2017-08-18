@@ -34,15 +34,17 @@ sub construct_special_begin{
 
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
-      # only append the regexps if lookForThis is 1
-      $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis});
+      if(ref($BeginEnd) eq "HASH"){
+        # only append the regexps if lookForThis is 1
+        $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis});
+      }
     }
 
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
       # only append the regexps if lookForThis is 1
-      if(${$BeginEnd}{lookForThis}){
+      if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}){
         # the beginning parts
         $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin};
 
@@ -116,10 +118,10 @@ sub find_special{
         while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
             # log file
-            if(${$BeginEnd}{lookForThis}){
+            if((ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}){
                 $self->logger("Looking for $specialName",'heading') if $is_t_switch_active ;
             } else {
-                $self->logger("Not looking for $specialName (see lookForThis)",'heading') if $is_t_switch_active ;
+                $self->logger("Not looking for $specialName (see lookForThis)",'heading') if ($is_t_switch_active and (ref($BeginEnd) eq "HASH"));
                 next;
             }
 
@@ -169,6 +171,19 @@ sub find_special{
             }
          }
      }
+}
+
+sub tasks_particular_to_each_object{
+    my $self = shift;
+
+    return unless(${$masterSettings{specialBeginEnd}}{specialBeforeCommand});
+
+    # search for commands with arguments
+    $self->find_commands_or_key_equals_values_braces;
+
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
 }
 
 

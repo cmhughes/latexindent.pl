@@ -203,5 +203,9 @@ latexindent.pl -s ifnextchar.tex -o=+-off -l no-ifnextchar.yaml
 # poly-switch set to 3 with/without unpreserved blank lines
 latexindent.pl -s -m env-mlb7 -o=+-preserve -l=env-mlb12.yaml,env-mlb13.yaml
 latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,UnpreserveBlankLines.yaml
+
+# special before command
+latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml -o=+-comm-first
+latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.yaml -o=+-special-first
 [[ $noisyMode == 1 ]] && makenoise
 git status

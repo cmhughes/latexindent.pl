@@ -16,7 +16,7 @@ my @namesAndOffsets = (
                         {name=>"lookForPreamble",numberOfLines=>4},
                         {name=>"indentAfterItems",numberOfLines=>4},
                         {name=>"itemNames",numberOfLines=>2},
-                        {name=>"specialBeginEnd",numberOfLines=>12,mustBeAtBeginning=>1},
+                        {name=>"specialBeginEnd",numberOfLines=>13,mustBeAtBeginning=>1},
                         {name=>"indentAfterHeadings",numberOfLines=>9},
                         {name=>"noAdditionalIndentGlobalEnv",numberOfLines=>1,special=>"noAdditionalIndentGlobal"},
                         {name=>"noAdditionalIndentGlobal",numberOfLines=>12},

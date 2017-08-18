@@ -48,5 +48,9 @@ latexindent.pl -s tabdo.sty -o tabdo-default.sty
 # new specials test-cases
 latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW.tex -local new-specials.yaml
 latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW1.tex -local new-specials1.yaml
+# specialBeforeCommand
+latexindent.pl -s specialLeftBracket.tex -o=+-commands-first -l=specialsLeftRight.yaml
+latexindent.pl -s specialLeftBracket.tex -o=+-commands-first-no-paren -l=specialsLeftRight.yaml,commands-no-parenthesis.yaml
+latexindent.pl -s specialLeftBracket.tex -o=+-specials-first -l=specialsLeftRight.yaml,specialBeforeCommand.yaml 
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
