@@ -181,6 +181,9 @@ sub tasks_particular_to_each_object{
     # search for commands with arguments
     $self->find_commands_or_key_equals_values_braces;
 
+    # search for ifElseFi blocks
+    $self->find_ifelsefi;
+
 }
 
 
