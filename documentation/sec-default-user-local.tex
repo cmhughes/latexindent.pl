@@ -556,69 +556,74 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 
-	\begin{longtable}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{}m{.2\linewidth}}
-		\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}                                                                                                                                                                                                                                                                                                                \\
-		\toprule
-		Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
-		\midrule
-		environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
-		\begin{lstlisting}[,nolol=true,]
+	\begin{table}[!htp]
+		\begin{widepage}
+			\centering
+			\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}
+			\begin{tabular}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{\hspace{.25cm}}m{.2\linewidth}}
+				\toprule
+				Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
+				\midrule
+				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
+				\begin{lstlisting}[,nolol=true,]
 \begin{myenv}
 body of myenv
 \end{myenv}
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                        &
+				\begin{lstlisting}[,nolol=true,]
 [
 opt arg text
 ]
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                        &
+				\begin{lstlisting}[,nolol=true,]
 {
 mand arg text
 }
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
-		ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
+				\begin{lstlisting}[,nolol=true,]
 \ifnum...
 ...
 \else
 ...
 \fi
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
-		\begin{lstlisting}[,nolol=true,]
+				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
+				\begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...
 \end{enumerate}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
-		\begin{lstlisting}[,nolol=true,]
+				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
+				\begin{lstlisting}[,nolol=true,]
 \[
   ...
 \]
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
-		\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
+				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
+				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
+				\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\
-		\bottomrule
-	\end{longtable}
+				\bottomrule
+			\end{tabular}
+		\end{widepage}
+	\end{table}
 
 	We will refer to these code blocks in what follows.
