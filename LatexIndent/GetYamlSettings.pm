@@ -100,11 +100,6 @@ sub readSettings{
      }
   }
 
-  # get information about LOCAL settings, assuming that $readLocalSettings exists
-  my $directoryName = dirname (${$self}{fileName});
-  
-  my @localSettings;
-
   # local settings can be called with a + symbol, for example
   #     -l=+myfile.yaml
   #     -l "+ myfile.yaml"
@@ -117,6 +112,8 @@ sub readSettings{
   # and
   #     -l + myfile.yaml
   # will *only* load localSettings.yaml, and myfile.yaml will be ignored
+  my @localSettings;
+
   if($switches{readLocalSettings} =~ m/\+/){
         $self->logger("+ found in call for -l switch: will add localSettings.yaml");
 
@@ -141,18 +138,24 @@ sub readSettings{
   # add local settings to the paths, if appropriate
   foreach (@localSettings) {
     # check for an extension (.yaml)
-    my ($dir, $name, $ext) = fileparse($_, "yaml");
+    my ($name, $dir , $ext) = fileparse($_, "yaml");
 
     # if no extension is found, append the current localSetting with .yaml
     $_ = $_.($_=~m/\.\z/ ? q() : ".")."yaml" if(!$ext);
 
+    # if the -l switch is called on its own, or else with +
+    # and latexindent.pl is called from a different directory, then
+    # we need to account for this
+    if($_ eq "localSettings.yaml"){
+        $_ = dirname (${$self}{fileName})."/".$_;
+    }
+
     # check for existence and non-emptiness
-    if ( (-e "$directoryName/$_") and !(-z "$directoryName/$_")) {
-        $self->logger("Adding $directoryName/$_ to YAML read paths");
-        push(@absPaths,"$directoryName/$_");
-    } elsif ( !(-e "$directoryName/$_") ) {
-          $self->logger("WARNING yaml file not found: $directoryName/$_ not found");
-          $self->logger("Proceeding without it.");
+    if ( (-e $_) and !(-z $_)) {
+        $self->logger("Adding $_ to YAML read paths");
+        push(@absPaths,"$_");
+    } elsif ( !(-e $_) ) {
+          $self->logger("WARNING yaml file not found: $_ not found. Proceeding without it.");
     }
   }
 

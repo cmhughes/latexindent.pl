@@ -199,9 +199,14 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a YAML file(s)
 	that resides in the same directory as \texttt{myfile.tex}; you can use this option if you would
 	like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
-	In fact, you can specify \emph{relative} path names to the current directory, but \emph{not}
-	absolute paths -- for absolute paths, see \vref{sec:indentconfig}.
-	Explicit demonstrations of how to use the \texttt{-l} switch are given throughout this documentation.
+	\announce{NEW}*	In fact, you can specify both \emph{relative} and \emph{absolute paths} for your YAML files;
+	for example
+	\begin{commandshell}
+latexindent.pl -l=../../myyaml.yaml myfile.tex
+latexindent.pl -l=/home/cmhughes/Desktop/myyaml.yaml myfile.tex
+latexindent.pl -l=C:\Users\cmhughes\Desktop\myyaml.yaml myfile.tex
+    \end{commandshell}
+	You will find a lot of other explicit demonstrations of how to use the \texttt{-l} switch throughout this documentation,
 
 	You can call the \texttt{-l} switch with a `+' symbol either before or after
 	\announce{2017-06-25}
@@ -225,7 +230,8 @@ latexindent.pl -l+myyaml.yaml myfile.tex
 	\begin{commandshell}
 latexindent.pl -l + myyaml.yaml myfile.tex
     \end{commandshell}
-	will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be ignored.
+	will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be ignored. If you wish
+	to use spaces between any of the YAML settings, then you must wrap the entire list of YAML files in quotes, as demonstrated above.
 
 	You may also choose to omit the \texttt{yaml} extension, such as
 	\announce{2017-06-25}
@@ -240,7 +246,7 @@ latexindent.pl -d myfile.tex
 	Only \texttt{defaultSettings.yaml}: you might like to read \cref{sec:defuseloc} before
 	using this switch. By default, \texttt{latexindent.pl} will always search for
 	\texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}  in your home directory. If you would prefer it not to do so
-	then (instead of deleting or renaming \texttt{indentconfig.yaml}/\texttt{.indentconfig.yaml}) you can simply
+	then (instead of deleting or renaming \texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}) you can simply
 	call the script with the \texttt{-d} switch; note that this will also tell
 	the script to ignore \texttt{localSettings.yaml} even if it has been called with the
 	\texttt{-l} switch.
