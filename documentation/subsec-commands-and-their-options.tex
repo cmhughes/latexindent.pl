@@ -7,7 +7,7 @@
 
 \yamltitle{commandCodeBlocks}*{fields}
 
-	The \texttt{commandCodeBlocks} field \announce{new}*[commandCodeBlocks] contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	The \texttt{commandCodeBlocks} field \announce{new}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
 	\cmhlistingsfromfile*[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
@@ -139,7 +139,7 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 	\end{itemize}
 
 \yamltitle{commandNameSpecial}*{fields}
-	There are some special command names \announce{new}[commandNameSpecial] that do not fit within the names recognized by \texttt{latexindent.pl},
+	There are some special command names \announce{new}{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
 	the first one of which is \lstinline!\@ifnextchar[!. From the perspective of \texttt{latexindent.pl}, the whole of the
 	text \lstinline!\@ifnextchar[! is is a command, because it is
 	immediately followed by sets of mandatory arguments. However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl}

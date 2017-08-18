@@ -77,7 +77,7 @@
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
 \tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
-\NewDocumentCommand{\announce}{ s m s o }{%
+\NewDocumentCommand{\announce}{ s m s m }{%
 	\IfBooleanTF{#1}
 	{% \announce*
 		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
@@ -89,7 +89,13 @@
 				\tcbdocnew{#2}
 			}%
 		}%
-		\addcontentsline{new}{cmhtitle}{#4}%
+		\IfBooleanTF{#3}
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (U)}%
+		}
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (N)}%
+		}
 	}
 	{% \announce
 		\tcbdocmarginnote{%
