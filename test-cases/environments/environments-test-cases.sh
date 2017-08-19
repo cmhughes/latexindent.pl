@@ -93,6 +93,16 @@ latexindent.pl -s env-no-body -o +-mod1 -l=env-mod1 -m
 latexindent.pl -s env-no-body -o +-mod17 -l=env-mod17 -m
 # new-line polyswitch
 latexindent.pl -s -m aronvgi -l=aronvgi -o=+mod
+# testing the -y switch
+latexindent.pl -s -o=+-yaml-switch0.tex environments-nested-fourth.tex -yaml="defaultIndent: ' '" -d 
+latexindent.pl -s -o=+-yaml-switch1.tex environments-nested-fourth.tex -yaml="defaultIndent: ' '"
+latexindent.pl -s -o=+-yaml-switch1A.tex environments-nested-fourth.tex -y="defaultIndent: ' ',maximumIndentation:' '"
+latexindent.pl -s -o=+-yaml-switch2.tex environments-nested-fourth.tex -y="defaultIndent: '\t\t\t\t'"
+latexindent.pl -s -o=+-yaml-switch3.tex environments-nested-fourth.tex -y='indentRules:one:"\t\t\t\t"'
+latexindent.pl -s -o=+-yaml-switch4.tex environments-nested-fourth.tex -y='indentRules:one:"\t\t\t\t",defaultIndent: " "'
+latexindent.pl -s -o=+-yaml-switch4A.tex environments-nested-fourth.tex -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
+latexindent.pl -s -o=+-yaml-switch5.tex environments-nested-fourth.tex -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
+latexindent.pl -s -o=+-yaml-switch6.tex environments-nested-fourth.tex -y='defaultIndent: "",modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
 [[ $silentMode == 0 ]] && set -x 
 
 

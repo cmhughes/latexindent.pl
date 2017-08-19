@@ -35,6 +35,7 @@ GetOptions (
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},
     "local|l:s"=>\$switches{readLocalSettings},
+    "yaml|y=s"=>\$switches{yaml},
     "onlydefault|d"=>\$switches{onlyDefault},
     "overwrite|w"=>\$switches{overwrite},
     "outputfile|o=s"=>\$switches{outputToFile},

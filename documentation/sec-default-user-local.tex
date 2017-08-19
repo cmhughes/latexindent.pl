@@ -395,7 +395,8 @@ latexindent.pl matrix1.tex
 	and \vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
-	The fields specified \announce{NEW}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
+	The fields specified%
+	\announce{NEW}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.
 
@@ -420,7 +421,8 @@ latexindent.pl matrix1.tex
 	will look for this pattern; you can tell \texttt{latexindent.pl} not to look for the pattern, by setting
 	\texttt{lookForThis} to \texttt{0}.
 
-	There are \announce{NEW}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
+	There are%
+	\announce{NEW}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
 	searching for commands, and the \texttt{specialBeforeCommand} controls this behaviour. For example, consider
 	the file shown in \cref{lst:specialbefore}.
 
@@ -515,7 +517,8 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
 \yamltitle{maximumIndentation}*{horizontal space}
-	You can control the maximum indentation given to your file by \announce{NEW}[maximumIndentation]
+	You can control the maximum indentation given to your file by%
+	\announce{NEW}{maximumIndentation}
 	specifying the \texttt{maximumIndentation} field as horizontal space (but \emph{not} including tabs).
 	This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and is \emph{off}
 	by default.

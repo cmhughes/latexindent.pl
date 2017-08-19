@@ -113,8 +113,11 @@ verbatimEnvironments:
 		\item \texttt{anyUserSettings.yaml} and any other arbitrarily-named files specified in \texttt{indentconfig.yaml};
 		\item \texttt{localSettings.yaml} but only if found in the same directory as \texttt{myfile.tex} and called
 		      with \texttt{-l} switch; this file can be renamed, provided that the call to \texttt{latexindent.pl} is adjusted
-		      accordingly (see \cref{sec:localsettings}). You may specify both relative and absolute\announce{NEW}*{-l absolute paths} paths to other
-		      YAML files using the \texttt{-l} switch, separating multiple files using commas.
+		      accordingly (see \cref{sec:localsettings}). You may specify both relative and absolute%
+		      \announce{NEW}*{-l absolute paths} paths to other
+		      YAML files using the \texttt{-l} switch, separating multiple files using commas;
+		\item any settings%
+		      \announce{NEW}{-y switch load order}  specified in the \texttt{-y} switch (see \cpageref{page:yamlswitch}).
 	\end{enumerate}
 	A visual representation of this is given in \cref{fig:loadorder}.
 
@@ -137,6 +140,7 @@ verbatimEnvironments:
 			\node (you) [optional,optionalfill,below right=of indentconfig]  {\texttt{you.yaml}};
 			\node (want) [optional,optionalfill,below=of indentconfig]  {\texttt{want.yaml}};
 			\node (local) [optional,below=of latexindent]  {\texttt{localSettings.yaml}};
+			\node (yamlswitch) [optional,left=of latexindent]  {\texttt{-y switch}};
 			% Draw arrows between elements
 			\draw[connections,solid] (latexindent) to[in=-90]node[pos=0.5,anchor=north]{1} (default.south) ;
 			\draw[connections,optional] (latexindent) -- node[pos=0.5,anchor=north]{2} (indentconfig) ;
@@ -145,6 +149,7 @@ verbatimEnvironments:
 			\draw[connections,optional] (indentconfig) to[out=-45,in=90] (you) ;
 			\draw[connections,optional] (indentconfig) -- (want) ;
 			\draw[connections,optional] (latexindent) -- node[pos=0.5,anchor=west]{3} (local) ;
+			\draw[connections,optional] (latexindent) -- node[pos=0.5,anchor=north]{4} (yamlswitch) ;
 		\end{tikzpicture}
 		\caption{Schematic of the load order described in \cref{sec:loadorder}; solid lines represent
 			mandatory files, dotted lines represent optional files. \texttt{indentconfig.yaml} can

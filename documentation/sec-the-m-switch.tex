@@ -330,7 +330,8 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 
 \subsection{Poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
-	one of \emph{five}\announce{NEW}*{blank line poly-switch} integer values:
+	one of \emph{five}%
+	\announce{NEW}*{blank line poly-switch} integer values:
 	\begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is set to \texttt{0});
 		\item[0] \emph{off mode}: line breaks will not be modified for the \emph{<part of thing>} under consideration;
@@ -338,7 +339,8 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 		      there is not already a line break before or after the \emph{<part of thing>};
 		\item[2] \emph{comment then add mode}: a comment symbol will be added, followed by a line break before or after the \emph{<part of thing>} under consideration, assuming that
 		      there is not already a comment and line break before or after the \emph{<part of thing>};
-		\item[3] \emph{add then blank line mode}\announce{NEW}{blank line poly-switch}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
+		\item[3] \emph{add then blank line mode}%
+		      \announce{NEW}{blank line poly-switch}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
 		      there is not already a line break before or after the \emph{<part of thing>}, followed by a blank line.
 	\end{itemize}
 	In the above, \emph{<part of thing>} refers to either the \emph{begin statement}, \emph{body} or \emph{end statement} of the
@@ -423,7 +425,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	has been added before adding the line break; in both cases, trailing horizontal
 	space has been stripped before doing so.
 
-	Let's\announce{NEW}{demonstration of blank line poly-switch (3)}  now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
+	Let's%
+	\announce{NEW}{demonstration of blank line poly-switch (3)}  now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
 	save them into \texttt{env-mlb5.yaml} and \texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
 
 	\begin{minipage}{.45\textwidth}
@@ -512,7 +515,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	has been added before adding the line break; in both cases, trailing horizontal
 	space has been stripped before doing so.
 
-	Let's\announce{NEW}{demonstration of blank line poly-switch (3)} now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
+	Let's%
+	\announce{NEW}{demonstration of blank line poly-switch (3)} now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
 	save them into \texttt{env-mlb11.yaml} and \texttt{env-mlb12.yaml} respectively (see \cref{lst:env-mlb11,lst:env-mlb12}).
 
 	\begin{minipage}{.49\textwidth}

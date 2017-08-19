@@ -91,7 +91,9 @@ sub readSettings{
      if($switches{onlyDefault}) {
         $self->logger("Only default settings requested, not reading USER settings from $indentconfig");
         $self->logger("Ignoring $switches{readLocalSettings} (you used the -d switch)") if($switches{readLocalSettings});
+        $self->logger("Ignoring the -y switch: $switches{yaml} (you used the -d switch)") if($switches{yaml});
         $switches{readLocalSettings}=0;
+        $switches{yaml}=0;
      } else {
        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
        $self->logger("Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)");
@@ -222,6 +224,71 @@ sub readSettings{
             $self->logger("specifies $settings but this file does not exist - unable to read settings from this file");
         }
     }
+  }
+
+  # read settings from YAML switch
+  if($switches{yaml}){
+        # report to log file
+        $self->logger("-y|--yaml switch active",'heading');
+
+        # remove any horizontal space before or after , or :
+        $switches{yaml} =~ s/\h*(,|:)\h*/$1/g;
+
+        # store settings, possibly multiple ones split by commas
+        my @yamlSettings;
+        if($switches{yaml} =~ m/,/){
+            @yamlSettings = split(/,/,$switches{yaml});
+        } else {
+            push(@yamlSettings,$switches{yaml});
+        }
+
+        # loop through each of the settings
+        foreach(@yamlSettings){
+            # split each value at semi-colon
+            my (@keysValues) = split(/:/,$_);
+
+            # $value will always be the last element
+            my $value = $keysValues[-1];
+
+            # horizontal space needs special treatment
+            if($value =~ m/^(?:"|')(\h*)(?:"|')$/){
+                # pure horizontal space
+                $value = $1;
+            } elsif($value =~ m/^(?:"|')((?:\\t)*)(?:"|')$/){
+                # tabs
+                $value =~ s/^(?:"|')//;
+                $value =~ s/(?:"|')$//;
+                $value =~ s/\\t/\t/g;
+            }
+
+            if(scalar(@keysValues) == 2){
+                # for example, -y="defaultIndent: ' '"
+                my $key = $keysValues[0];
+                $self->logger("Updating masterSettings with $key: $value");
+                $masterSettings{$key} = $value;
+            } elsif(scalar(@keysValues) == 3){
+                # for example, -y="indentRules: one: '\t\t\t\t'"
+                my $parent = $keysValues[0];
+                my $child = $keysValues[1];
+                $self->logger("Updating masterSettings with $parent: $child: $value");
+                $masterSettings{$parent}{$child} = $value;
+            } elsif(scalar(@keysValues) == 4){
+                # for example, -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
+                my $parent = $keysValues[0];
+                my $child = $keysValues[1];
+                my $grandchild = $keysValues[2];
+                $self->logger("Updating masterSettings with $parent: $child: $grandchild: $value");
+                $masterSettings{$parent}{$child}{$grandchild} = $value;
+            } elsif(scalar(@keysValues) == 5){
+                # for example, -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
+                my $parent = $keysValues[0];
+                my $child = $keysValues[1];
+                my $grandchild = $keysValues[2];
+                my $greatgrandchild = $keysValues[3];
+                $self->logger("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
+                $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
+            }
+          }
   }
 
   # some users may wish to see showAmalgamatedSettings

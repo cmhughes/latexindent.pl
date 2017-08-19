@@ -36,3 +36,7 @@ indentRules:
        body: "  " 
 noAdditionalIndent:
     widepage: 0
+modifyLineBreaks:
+    commands:
+        announce:
+            CommandStartsOnOwnLine: 2
