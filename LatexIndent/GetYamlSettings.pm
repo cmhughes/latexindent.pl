@@ -118,6 +118,11 @@ sub readSettings{
   my @localSettings;
 
   $self->logger("YAML settings read: -l switch",'heading') if $switches{readLocalSettings};
+
+  # remove leading, trailing, and intermediate space
+  $switches{readLocalSettings} =~ s/^\h*//g;
+  $switches{readLocalSettings} =~ s/\h*$//g;
+  $switches{readLocalSettings} =~ s/\h*,\h*/,/g;
   if($switches{readLocalSettings} =~ m/\+/){
         $self->logger("+ found in call for -l switch: will add localSettings.yaml");
 
