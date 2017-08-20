@@ -103,8 +103,12 @@ latexindent.pl -s -o=+-yaml-switch4.tex environments-nested-fourth.tex -y='inden
 latexindent.pl -s -o=+-yaml-switch4A.tex environments-nested-fourth.tex -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
 latexindent.pl -s -o=+-yaml-switch5.tex environments-nested-fourth.tex -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
 latexindent.pl -s -o=+-yaml-switch6.tex environments-nested-fourth.tex -y='defaultIndent: "",modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
-[[ $silentMode == 0 ]] && set -x 
+# testing subfields of -y switch using ;
+latexindent.pl -s -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3; BeginStartsOnOwnLine:3' -t -m env-single-line.tex -o=+-yswitch1
+latexindent.pl -s -y='modifyLineBreaks  :  environments: myenv  : EndStartsOnOwnLine:3; BeginStartsOnOwnLine:3' -t -m env-single-line.tex -o=+-yswitch2
+latexindent.pl -s -y='modifyLineBreaks:environments: myenv:EndStartsOnOwnLine:3; BeginStartsOnOwnLine:3;BodyStartsOnOwnLine:2,modifyLineBreaks:environments:EndFinishesWithLineBreak:1;BodyStartsOnOwnLine:2' -t -m env-single-line.tex -o=+-yswitch3
 
+[[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise
 git status

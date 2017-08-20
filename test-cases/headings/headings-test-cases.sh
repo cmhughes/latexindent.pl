@@ -47,5 +47,7 @@ latexindent.pl -s headings-single-line-many.tex -o +-mod7.tex -l=levels3.yaml,he
 latexindent.pl -s headings-single-line-many.tex -o +-mod8.tex -l=levels3.yaml,headingStartOnOwnLine.yaml,../specials/special-mod33.yaml,headingsBlankLines.yaml -m
 latexindent.pl -s headings-single-line-many.tex -o +-mod9.tex -l=aronovgj.yaml -m
 latexindent.pl -s headings-blank-line.tex -o +-mod2.tex -l=levels3.yaml,headingStartOnOwnLine.yaml,../specials/special-mod33.yaml,headingsBlankLines.yaml -m
+# testing the -y switch
+latexindent.pl -s headings1.tex -o=+-mod1 -y=' indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1 '
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

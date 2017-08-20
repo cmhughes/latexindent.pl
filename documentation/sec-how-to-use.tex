@@ -241,13 +241,17 @@ latexindent.pl -l=localSettings,myyaml myfile.tex
 \flagbox{-y, --yaml=yaml settings}
 	\begin{commandshell}
 latexindent.pl myfile.tex -y="defaultIndent: ' '"
+latexindent.pl myfile.tex -y="defaultIndent: ' ',maximumIndentation:' '"
 latexindent.pl myfile.tex -y="indentRules: one: '\t\t\t\t'"
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:EndStartsOnOwnLine:3' -m
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLine:3' -m
     \end{commandshell}
 	\label{page:yamlswitch}You%
-	\announce{NEW}{the -y switch} can specify YAML settings from the command line using the \texttt{-y} or \texttt{--YAML} switch;
-	sample demonstrations are given above. Any settings specified via this switch will be loaded \emph{after}
+	\announce{NEW}{the -y switch} can specify YAML settings from the command line using the \texttt{-y} or \texttt{--yaml} switch;
+	sample demonstrations are given above.  Note, in particular, that multiple settings can be specified by separating them
+	via commas. There is a further option to use a \texttt{;} to separate fields, which is demonstrated in \vref{sec:yamlswitch}.
+
+	Any settings specified via this switch will be loaded \emph{after}
 	any specified using the \texttt{-l} switch. This is discussed further in \vref{sec:loadorder}.
 \flagbox{-d, --onlydefault}
 	\begin{commandshell}

@@ -226,13 +226,14 @@ sub readSettings{
     }
   }
 
-  # read settings from YAML switch
+  # read settings from -y|--yaml switch
   if($switches{yaml}){
         # report to log file
         $self->logger("-y|--yaml switch active",'heading');
 
-        # remove any horizontal space before or after , or :
-        $switches{yaml} =~ s/\h*(,|:)\h*/$1/g;
+        # remove any horizontal space before or after , OR : OR ; or at the beginning or end of the switch value
+        $switches{yaml} =~ s/\h*(,|:|;)\h*/$1/g;
+        $switches{yaml} =~ s/^\h*//g;
 
         # store settings, possibly multiple ones split by commas
         my @yamlSettings;
@@ -242,7 +243,80 @@ sub readSettings{
             push(@yamlSettings,$switches{yaml});
         }
 
-        # loop through each of the settings
+        # it is possible to specify, for example,
+        #
+        #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+        #   -y=specialBeginEnd:displayMath:begin:'\\\[';end: '\\\]';lookForThis: 1
+        #
+        # which should be translated into
+        #
+        #   indentAfterHeadings:
+        #       paragraph:
+        #           indentAfterThisHeading:1
+        #           level:1
+        #
+        # so we need to loop through the comma separated list and search 
+        # for semi-colons
+        my $settingsCounter=0;
+        my @originalYamlSettings = @yamlSettings;
+        foreach(@originalYamlSettings){
+            # increment the counter
+            $settingsCounter++;
+
+            # check for a match of the ;
+            if($_ =~ m/;/){
+                my (@subfield) = split(/;/,$_);
+
+                # the content up to the first ; is called the 'root'
+                my $root = shift @subfield;
+
+                # split the root at :
+                my (@keysValues) = split(/:/,$root);
+
+                # get rid of the last *two* elements, which will be 
+                #   key: value
+                # for example, in
+                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+                # then @keysValues holds
+                #   indentAfterHeadings:paragraph:indentAfterThisHeading:1
+                # so we need to get rid of both
+                #    1
+                #    indentAfterThisHeading
+                # so that we are in a position to concatenate
+                #   indentAfterHeadings:paragraph
+                # with 
+                #   level:1
+                # to form
+                #   indentAfterHeadings:paragraph:level:1
+                pop(@keysValues);
+                pop(@keysValues);
+
+                # update the appropriate piece of the -y switch, for example:
+                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
+                # needs to be changed to
+                #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1
+                # the 
+                #   indentAfterHeadings:paragraph:level:1
+                # will be added in the next part
+                $yamlSettings[$settingsCounter-1] = $root;
+
+                # reform the root
+                $root = join(":",@keysValues);
+                $self->logger("Sub-field detected (; present) and the root is: $root");
+
+                # now we need to attach the $root back together with any subfields
+                foreach(@subfield){
+                   # splice the new field into @yamlSettings (reference: https://perlmaven.com/splice-to-slice-and-dice-arrays-in-perl)
+                   splice @yamlSettings,$settingsCounter,0,$root.":".$_; 
+                   
+                   # increment the counter
+                   $settingsCounter++;
+                }
+                $self->logger("New value of -y settings: ".join(',',@yamlSettings));
+            }
+        }
+
+        # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
             # split each value at semi-colon
             my (@keysValues) = split(/:/,$_);

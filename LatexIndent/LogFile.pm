@@ -91,7 +91,7 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           used to specify the location of backup files and indent.log
       -m, --modifylinebreaks
           modify linebreaks before, during, and at the end of code blocks; 
-          trailing comments can also be added using this feature
+          trailing comments and blank lines can also be added using this feature
 ENDQUOTE
     ;
     exit(2);
