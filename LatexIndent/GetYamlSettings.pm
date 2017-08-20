@@ -36,7 +36,7 @@ sub readSettings{
   my $self = shift;
   
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
-  $self->logger("YAML settings read",'heading');
+  $self->logger("YAML settings read: defaultSettings.yaml",'heading');
   $self->logger("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
@@ -60,6 +60,7 @@ sub readSettings{
   
   # we'll need the home directory a lot in what follows
   my $homeDir = File::HomeDir->my_home; 
+  $self->logger("YAML settings read: indentconfig.yaml or .indentconfig.yaml",'heading');
   
   # get information about user settings- first check if indentconfig.yaml exists
   my $indentconfig = "$homeDir/indentconfig.yaml";
@@ -116,6 +117,7 @@ sub readSettings{
   # will *only* load localSettings.yaml, and myfile.yaml will be ignored
   my @localSettings;
 
+  $self->logger("YAML settings read: -l switch",'heading') if $switches{readLocalSettings};
   if($switches{readLocalSettings} =~ m/\+/){
         $self->logger("+ found in call for -l switch: will add localSettings.yaml");
 
@@ -131,7 +133,7 @@ sub readSettings{
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
   if($switches{readLocalSettings} =~ m/,/){
-        $self->logger("Multiple localSettings found, separated by commas:",'heading');
+        $self->logger("Multiple localSettings found, separated by commas:");
         @localSettings = split(/,/,$switches{readLocalSettings});
   } else {
     push(@localSettings,$switches{readLocalSettings}) if($switches{readLocalSettings});
@@ -160,6 +162,9 @@ sub readSettings{
           $self->logger("WARNING yaml file not found: $_ not found. Proceeding without it.");
     }
   }
+
+  # heading for the log file
+  $self->logger("YAML settings, reading from the following files:",'heading') if @absPaths;
 
   # read in the settings from each file
   foreach my $settings (@absPaths) {
@@ -229,7 +234,7 @@ sub readSettings{
   # read settings from -y|--yaml switch
   if($switches{yaml}){
         # report to log file
-        $self->logger("-y|--yaml switch active",'heading');
+        $self->logger("YAML settings read: -y switch",'heading');
 
         # remove any horizontal space before or after , OR : OR ; or at the beginning or end of the switch value
         $switches{yaml} =~ s/\h*(,|:|;)\h*/$1/g;
@@ -302,7 +307,7 @@ sub readSettings{
 
                 # reform the root
                 $root = join(":",@keysValues);
-                $self->logger("Sub-field detected (; present) and the root is: $root");
+                $self->logger("Sub-field detected (; present) and the root is: $root") if $is_t_switch_active;
 
                 # now we need to attach the $root back together with any subfields
                 foreach(@subfield){
@@ -312,7 +317,7 @@ sub readSettings{
                    # increment the counter
                    $settingsCounter++;
                 }
-                $self->logger("New value of -y settings: ".join(',',@yamlSettings));
+                $self->logger("-y switch value interpreted as: ".join(',',@yamlSettings));
             }
         }
 

@@ -173,15 +173,15 @@ sub find_objects{
     my $self = shift;
 
     # search for environments
-    $self->logger('looking for ENVIRONMENTS');
+    $self->logger('looking for ENVIRONMENTS') if $is_t_switch_active;
     $self->find_environments;
 
     # search for ifElseFi blocks
-    $self->logger('looking for IFELSEFI');
+    $self->logger('looking for IFELSEFI') if $is_t_switch_active;
     $self->find_ifelsefi;
 
     # search for headings (part, chapter, section, setc)
-    $self->logger('looking for HEADINGS (chapter, section, part, etc)');
+    $self->logger('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
     $self->find_heading;
 
     # the ordering of finding commands and special code blocks can change
@@ -195,7 +195,7 @@ sub find_objects{
 
     # if there are no children, return
     if(${$self}{children}){
-        $self->logger("Objects have been found.",'heading');
+        $self->logger("Objects have been found.",'heading') if $is_t_switch_active;
     } else {
         $self->logger("No objects found.");
         return;
@@ -203,9 +203,8 @@ sub find_objects{
 
     # logfile information
     $self->logger(Dumper(\%{$self}),'ttrace') if($is_tt_switch_active);
-    $self->logger("Operating on: ${$self}{name}",'heading');
-    $self->logger("Number of children:",'heading');
-    $self->logger(scalar (@{${$self}{children}}));
+    $self->logger("Operating on: ${$self}{name}",'heading')if $is_t_switch_active;
+    $self->logger("Number of children: ".scalar (@{${$self}{children}})) if $is_t_switch_active;
 
     return;
 }
@@ -217,19 +216,19 @@ sub find_commands_or_key_equals_values_braces_and_special{
     # can change depending upon specialBeforeCommand
     if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
-        $self->logger('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)');
+        $self->logger('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
         $self->find_special;
 
         # search for commands with arguments
-        $self->logger('looking for COMMANDS and key = {value}');
+        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
         $self->find_commands_or_key_equals_values_braces;
     } else {
         # search for commands with arguments
-        $self->logger('looking for COMMANDS and key = {value}');
+        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
         $self->find_commands_or_key_equals_values_braces;
 
         # search for special begin/end
-        $self->logger('looking for SPECIAL begin/end');
+        $self->logger('looking for SPECIAL begin/end') if $is_t_switch_active;
         $self->find_special;
     }
     return;

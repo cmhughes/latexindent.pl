@@ -146,7 +146,7 @@ sub find_verbatim_commands{
     # would need to be found *before* trailing comments have been removed. Similarly, 
     # verbatim commands need to be put back in *after* trailing comments have been put 
     # back in
-    $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading');
+    $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading') if $is_t_switch_active;
     $self->logger(Dumper(\%{$masterSettings{verbatimCommands}})) if($is_tt_switch_active);
     while( my ($verbCommand,$yesno)= each %{$masterSettings{verbatimCommands}}){
         if($yesno){

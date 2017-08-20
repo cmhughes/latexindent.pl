@@ -34,11 +34,11 @@ sub find_file_contents_environments_and_preamble{
     my @fileContentsStorageArray; 
 
     # fileContents environments
-    $self->logger('looking for FILE CONTENTS environments (see fileContentsEnvironments)','heading');
+    $self->logger('looking for FILE CONTENTS environments (see fileContentsEnvironments)','heading') if $is_t_switch_active;
     $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}})) if($is_t_switch_active);
     while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
         if($yesno){
-            $self->logger("looking for $fileContentsEnv:$yesno environments");
+            $self->logger("looking for $fileContentsEnv:$yesno environments") if $is_t_switch_active;
 
             # the trailing * needs some care
             if($fileContentsEnv =~ m/\*$/){
@@ -119,7 +119,7 @@ sub find_file_contents_environments_and_preamble{
     # try and find the preamble
     if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$masterSettings{lookForPreamble}}{${$self}{fileExtension}}){
 
-        $self->logger("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists");
+        $self->logger("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists",'heading') if $is_t_switch_active ;
 
         # create a preamble object
         $preamble = LatexIndent::Preamble->new( begin=>q(),
@@ -142,19 +142,19 @@ sub find_file_contents_environments_and_preamble{
         $preamble->get_replacement_text;
 
         # log file output
-        $self->logger("preamble found: $preamble");
+        $self->logger("preamble found: $preamble") if $is_t_switch_active;
 
         # remove the environment block, and replace with unique ID
         ${$self}{body} =~ s/$preambleRegExp/${$preamble}{replacementText}/sx;
 
-        $self->logger("replaced with ID: ${$preamble}{replacementText}");
+        $self->logger("replaced with ID: ${$preamble}{replacementText}") if $is_t_switch_active;
         # indentPreamble set to 1
         if($masterSettings{indentPreamble}){
             $self->logger("storing ${$preamble}{id} for indentation (see indentPreamble)");
             $needToStorePreamble = 1;
         } else {
             # indentPreamble set to 0
-            $self->logger("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (see indentPreamble)");
+            $self->logger("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (see indentPreamble)") if $is_t_switch_active;
             $preamble->unprotect_blank_lines;
             ${$self}{verbatim}{${$preamble}{id}} = $preamble;
         }

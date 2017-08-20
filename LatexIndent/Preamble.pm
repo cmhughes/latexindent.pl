@@ -17,6 +17,7 @@ package LatexIndent::Preamble;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Switches qw/$is_t_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $preambleCounter;
@@ -33,7 +34,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for preamble needs to put the \\begin{document} back in
-    $self->logger("Custom replacement text routine for preamble ${$self}{name}");
+    $self->logger("Custom replacement text routine for preamble ${$self}{name}") if $is_t_switch_active;
     ${$self}{replacementText} = ${$self}{id}.${$self}{afterbit};
     delete ${$self}{afterbit};
 }

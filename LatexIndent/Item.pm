@@ -37,7 +37,7 @@ sub construct_list_of_items{
     }
 
     # detail items in the log
-    $self->logger("List of items: $listOfItems (see itemNames)",'heading');
+    $self->logger("List of items: $listOfItems (see itemNames)",'heading') if $is_t_switch_active;
 
     $itemRegExp = qr/
                           (
