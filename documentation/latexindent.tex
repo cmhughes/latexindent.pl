@@ -78,33 +78,33 @@
 \tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
 \NewDocumentCommand{\announce}{ s m s m }{%
-	\IfBooleanTF{#1}
+	\IfBooleanTF{#1}%
 	{% \announce*
 		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
-			\IfBooleanTF{#3}
+			\IfBooleanTF{#3}%
 			{% \announce*{date}*[text] means *updated* as of <date>
-				\tcbdocupdated{#2}
+				\tcbdocupdated{#2}%
 			}%
 			{% \announce*{date}[text] means *new* as of <date>
-				\tcbdocnew{#2}
+				\tcbdocnew{#2}%
 			}%
 		}%
-		\IfBooleanTF{#3}
+		\IfBooleanTF{#3}%
 		{%
 			\addcontentsline{new}{cmhtitle}{#4 (U)}%
-		}
+		}%
 		{%
 			\addcontentsline{new}{cmhtitle}{#4 (N)}%
-		}
-	}
+		}%
+	}%
 	{% \announce
 		\tcbdocmarginnote{%
-			\IfBooleanTF{#3}
+			\IfBooleanTF{#3}%
 			{% \announce{date}*[text] means *updated* as of <date>
-				\tcbdocupdated{#2}
+				\tcbdocupdated{#2}%
 			}%
 			{% \announce{date}[text] means *new* as of <date>
-				\tcbdocnew{#2}
+				\tcbdocnew{#2}%
 			}%
 		}%
 	}}
