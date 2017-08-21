@@ -1,7 +1,7 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=7
+loopmax=10
 . ../common.sh
 
 # if silentMode is not active, verbose

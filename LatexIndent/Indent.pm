@@ -19,9 +19,11 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::HiddenChildren qw/%familyTree/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use Text::Tabs;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
+our @EXPORT_OK = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 our %familyTree;
 
 sub indent{
@@ -152,19 +154,25 @@ sub indent_body{
         }
     }
 
+    # some objects need a post-indentation check, e.g ifElseFi
+    $self->post_indentation_check;
     # if the routine check_for_blank_lines_at_beginning has been called, then the following routine
     # puts blank line tokens back in 
     $self->put_blank_lines_back_in_at_beginning if $is_m_switch_active; 
 
     # the final linebreak can be modified by a child object; see test-cases/commands/figureValign-mod5.tex, for example
-    if($is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/){
-        $self->logger("Updating body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)") if($is_t_switch_active);
+    if($is_m_switch_active and defined ${$self}{linebreaksAtEnd}{body} and ${$self}{linebreaksAtEnd}{body}==1 and ${$self}{body} !~ m/\R$/ and ${$self}{body} ne ''){
+        $self->logger("Adding a linebreak at end of body for ${$self}{name} to contain a linebreak at the end (linebreaksAtEnd is 1, but there isn't currently a linebreak)") if($is_t_switch_active);
         ${$self}{body} .= "\n";
     }
 
     # output to the logfile
     $self->logger("Body (${$self}{name}) after indentation:\n${$self}{body}") if $is_t_switch_active;
     return $self;
+}
+
+sub post_indentation_check{
+    return;
 }
 
 sub check_for_blank_lines_at_beginning{
@@ -221,9 +229,26 @@ sub final_indentation_check{
                         $after = "TAB"x$numberOfTABS.$after;
                         $self->logger("Indentation after: '$after'") if($is_t_switch_active);
                         ($indentation = $after) =~s|TAB|\t|g;
+
                         $indentation;
                        /xsmeg;
 
+    return unless($masterSettings{maximumIndentation} =~ m/^\h+$/);
+
+    # maximum indentation check
+    $self->logger("Maximum indentation check",'heading') if($is_t_switch_active);
+
+    # replace any leading tabs with spaces, and update the body
+    my @expanded_lines = expand(${$self}{body});
+    ${$self}{body} = join("",@expanded_lines);
+
+    # grab the maximum indentation
+    my $maximumIndentation = $masterSettings{maximumIndentation};
+    my $maximumIndentationLength = length($maximumIndentation)+1;
+
+    # replace any leading space that is greater than the 
+    # specified maximum indentation with the maximum indentation
+    ${$self}{body} =~ s/^\h{$maximumIndentationLength,}/$maximumIndentation/smg;
 }
 
 sub indent_children_recursively{
@@ -297,25 +322,32 @@ sub indent_children_recursively{
                 # line break checks before <begin statement>
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
+
+                    # if the child ID is not the first character and BeginStartsOnOwnLine>=1 
+                    # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
                     if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
                         # by default, assume that no trailing comment token is needed
-                        my $trailingCommentToken = q();
+                        my $trailingCharacterToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
                             $self->logger("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
                             $self->logger("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            $trailingCommentToken = "%".$self->add_comment_symbol;
+                            $trailingCharacterToken = "%".$self->add_comment_symbol;
+                        } elsif (${$child}{BeginStartsOnOwnLine}==3){
+                            $self->logger("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
+                            $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                         } else {
                             $self->logger("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
                         }
 
                         # the trailing comment/linebreak magic
-                        ${$child}{begin} = "$trailingCommentToken\n".${$child}{begin};
+                        ${$child}{begin} = "$trailingCharacterToken\n".${$child}{begin};
                         $child->add_surrounding_indentation_to_begin_statement;
 
                         # remove surrounding indentation ahead of %
                         ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
                     } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
+                        # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
                         if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){

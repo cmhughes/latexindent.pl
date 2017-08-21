@@ -86,7 +86,7 @@ sub construct_headings_levels{
             # make the stars escaped correctly
             $headingsAtThisLevel =~ s/\*/\\\*/g;
             push(@headingsRegexpArray,$headingsAtThisLevel);
-            $self->logger("Heading level regexp for level $i will contain: $headingsAtThisLevel");
+            $self->logger("Heading level regexp for level $i will contain: $headingsAtThisLevel") if $is_t_switch_active;
         }
     }
   }
@@ -99,7 +99,7 @@ sub find_heading{
     my $self = shift;
 
     # otherwise loop through the headings regexp
-    $self->logger("Searching for special begin/end (see specialBeginEnd)");
+    $self->logger("Searching for headings ") if $is_t_switch_active;
 
     # loop through each headings match; note that we need to 
     # do it in *reverse* so as to ensure that the lower level headings get matched first of all

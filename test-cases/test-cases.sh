@@ -7,6 +7,8 @@
 #   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
 #   ./test-cases.sh -c              # show the counter within loops
 #   ./test-cases.sh -b              # do the benchmark test cases
+#   ./test-cases.sh -f              # do the file extension test cases
+#   ./test-cases.sh -a              # do *all* test cases (toggles bench mark and file extension switches)
 #   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
 
 silentMode=0
@@ -14,8 +16,9 @@ silentModeFlag=''
 showCounterFlag=''
 noisyModeFlag=''
 benchmarkMode=0
+fileExtensionMode=0
 # check flags, and change defaults appropriately
-while getopts "bsco:n" OPTION
+while getopts "abscfo:n" OPTION
 do
  case $OPTION in 
   s)    
@@ -23,9 +26,18 @@ do
    silentModeFlag='-s'
    silentMode=1
    ;;
+  a)
+    # all mode
+    benchmarkMode=1
+    fileExtensionMode=1
+    ;;
   b)
     # bench mark mode
     benchmarkMode=1
+    ;;
+  f)
+    # file extension test mode
+    fileExtensionMode=1
     ;;
   c)    
    echo "Show counter mode active!"
@@ -84,8 +96,8 @@ cd ../keyEqualsValueBraces/
 ./key-equals-values-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # file extension
 cd ../fileextensions/
-[[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
-./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+[[ $fileExtensionMode == 1 ]] && [[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
+[[ $fileExtensionMode == 1 ]] && ./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # token checks
 cd ../tokenChecks/
 [[ $silentMode == 1 ]] && echo "./tokenChecks/token-checks.sh"

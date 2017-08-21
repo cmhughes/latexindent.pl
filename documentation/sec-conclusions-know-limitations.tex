@@ -3,28 +3,11 @@
  There are a number of known limitations of the script, and almost certainly quite a
  few that are \emph{unknown}!
 
- For example, \texttt{latexindent.pl} will not indent the following code correctly,
- because of the unmatched \lstinline![!. I'm hopeful to be able to resolve this
- issue in a future version.
-
- \begin{lstlisting}[,nolol=true,]
-\parbox{
-\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
-}
-\end{lstlisting}
-
- The main other limitation is to do with the alignment routine of environments/commands that contain
- delimiters which are specified in \texttt{lookForAlignDelims}.
-
- The routine works well for `standard' blocks of code that have the same number of \lstinline!&!
- per line, but it will not do anything for lines that do not -- such examples
- include \texttt{tabular} environments that use \lstinline!\multicolumn! or
- perhaps spread cell contents across multiple lines.  For each alignment block (\texttt{tabular},
- \texttt{align}, etc) \texttt{latexindent.pl} first of all makes a record
- of the maximum number of \lstinline!&!; if each row does not have that
- number of \lstinline!&! then it will not try to format that row. Details
- will be given in \texttt{indent.log} assuming that \texttt{trace} mode
- is active.
+ The main limitation is to do with efficiency, particularly when the \texttt{-m}
+ switch is active, as this adds many checks and processes. The current implementation
+ relies upon finding and storing \emph{every} code block (see the discussion on \cpageref{page:phases});
+ it is hoped that, in a future version, only \emph{nested} code blocks will need
+ to be stored in the `packing' phase, and that this will improve the efficiency of the script.
 
  You can run \texttt{latexindent} on \texttt{.sty}, \texttt{.cls} and any file types
  that you specify in \lstinline[breaklines=true]!fileExtensionPreference! (see \vref{lst:fileExtensionPreference});

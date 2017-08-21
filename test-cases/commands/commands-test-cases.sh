@@ -112,5 +112,23 @@ latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/inden
 # github issue
 latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
 latexindent.pl -s github-issue-35.tex -o github-issue-35-no-at.tex -l no-at-between-args.yaml
+# poly-switch = 3 (add line break experiements)
+[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33"
+[[ $loopmax -lt 48 ]] && loopmax=48 && echo "loopmax set to 48"
+[[ $silentMode == 0 ]] && set +x 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+   [[ $silentMode == 0 ]] && set -x 
+   # multiple commands
+   latexindent.pl commands-nested-multiple.tex -m  -s -o=+-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml -g=one.log -tt
+   latexindent.pl commands-nested-multiple.tex -m  -s -o=+-un-protect-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml -g=two.log -tt
+   # remove line breaks/exisiting blank lines
+   latexindent.pl commands-remove-line-breaks.tex -s -m -o=+-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,command-name-not-finishes-with-line-break.yaml -g=three.log -tt
+   [[ $silentMode == 0 ]] && set +x 
+done
+[[ $silentMode == 0 ]] && set -x 
+# ifnextchar issue
+latexindent.pl -s ifnextchar.tex -o=+-default.tex -l=com-name-special.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

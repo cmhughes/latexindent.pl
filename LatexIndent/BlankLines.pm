@@ -87,19 +87,18 @@ sub unprotect_blank_lines{
     my $blankLineToken = $tokens{blanklines};
 
     # loop through the body, looking for the blank line token
-    while(${$self}{body} =~ m/$blankLineToken/m){
+    while(${$self}{body} =~ m/$blankLineToken/s){
         # when the blank line token occupies the whole line
-        if(${$self}{body} =~ m/^\h*$blankLineToken$/m){
-            $self->logger("Replacing purely blank lines",'heading') if $is_tt_switch_active;
-            ${$self}{body} =~ s/^\h*$blankLineToken$//mg;
-            $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
-        }
-        # otherwise the blank line has been deleted, so we compensate with an extra
-        if(${$self}{body} =~ m/(^\h*)?$blankLineToken/m){
-            $self->logger("Replacing blank line token that doesn't take up whole line",'heading') if $is_tt_switch_active;
-            ${$self}{body} =~ s/(^\h*)?$blankLineToken/$1?"\n".$1:"\n"/me;
-            $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
-        }
+        ${$self}{body} =~ s/^\h*$blankLineToken$//mg;
+
+        # when there's stuff *after* the blank line token
+        ${$self}{body} =~ s/(^\h*)$blankLineToken/"\n".$1/meg;
+
+        # when there is stuff before and after the blank line token
+        ${$self}{body} =~ s/^(.*?)$blankLineToken\h*(.*?)\h*$/$1."\n".($2?"\n".$2:$2)/meg;
+
+        # when there is only stuff *after* the blank line token
+        ${$self}{body} =~ s/^$blankLineToken\h*(.*?)$/$1."\n"/emg;
     }
     $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
     $self->logger("body now looks like ${$self}{body}",'ttrace') if($is_tt_switch_active);

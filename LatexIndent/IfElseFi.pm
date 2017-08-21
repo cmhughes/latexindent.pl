@@ -22,13 +22,15 @@ use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_swit
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_ifelsefi/;
-our %previouslyFoundSettings;
+our @EXPORT_OK = qw/find_ifelsefi construct_ifelsefi_regexp/;
 our $ifElseFiCounter;
+our $ifElseFiRegExp;
 
 # store the regular expresssion for matching and replacing the \if...\else...\fi statements
 # note: we search for \else separately in an attempt to keep this regexp a little more managable
-our $ifElseFiRegExp = qr/
+
+sub construct_ifelsefi_regexp{
+    $ifElseFiRegExp = qr/
                 (
                     \\
                         (@?if[a-zA-Z@]*?)
@@ -36,7 +38,7 @@ our $ifElseFiRegExp = qr/
                     (\R*)
                 )                           # begin statement, e.g \ifnum, \ifodd
                 (
-                    \\(?!if)|[0-9]|\R|\h|\#|!-!   # up until a \\, linebreak # or !-!, which is 
+                    \\(?!if)|[0-9]|\R|\h|\#|!-!|$trailingCommentRegExp   # up until a \\, linebreak # or !-!, which is 
                 )                           # part of the tokens used for latexindent
                 (
                     (?: 
@@ -50,63 +52,6 @@ our $ifElseFiRegExp = qr/
                 (\h*)                       # 0 or more horizontal spaces
                 (\R)?                       # linebreaks after \fi
 /sx;
-
-
-sub indent{
-    my $self = shift;
-
-    # determine the surrounding and current indentation
-    $self->determine_total_indentation;
-
-    # line break checks after \if statement, can get messy if we 
-    # have, for example
-    #       \ifnum
-    #               something
-    # which might be changed into
-    #       \ifnumsomething
-    # which is undeserible
-    if (defined ${$self}{BodyStartsOnOwnLine}
-        and ${$self}{BodyStartsOnOwnLine}==-1 
-        and ${$self}{body} !~ m/^(\h|\\|(?:!-!))/s
-    ){
-        ${$self}{begin} .= " ";
-    }
-
-    # indent the body
-    $self->indent_body;
-
-    # calculate and grab the surrounding indentation for the \else statement adjustment
-    $self->get_surrounding_indentation;
-    my $surroundingIndentation = ${$self}{surroundingIndentation}?${$self}{surroundingIndentation}:q();
-
-    if(${$self}{elsePresent} and ${$self}{linebreaksAtEnd}{ifbody}){
-            $self->logger("Adding surrounding indentation to \\else statement ('$surroundingIndentation')")if $is_t_switch_active;
-            ${$self}{body} =~ s/\h*\\else/$surroundingIndentation\\else/; 
-            $self->logger("Body (${$self}{name}) after \\else adjustment:\n${$self}{body}") if $is_t_switch_active;
-    }
-
-    # indent the end statement
-    $self->indent_end_statement;
-
-    # wrap-up statement
-    $self->wrap_up_statement;
-
-    # line break checks *after* \end{statement}
-    if (defined ${$self}{EndFinishesWithLineBreak}
-        and ${$self}{EndFinishesWithLineBreak}==-1 
-        ) {
-        # add a single horizontal space after the child id, otherwise we can end up 
-        # with things like
-        #       before: 
-        #               \fi
-        #                   text
-        #       after:
-        #               \fitext
-        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
-        ${$self}{end} =${$self}{end}." ";
-    }
-
-    return $self;
 }
 
 sub find_ifelsefi{
@@ -139,9 +84,7 @@ sub find_ifelsefi{
                                                                   # after end statements
                                                                   EndFinishesWithLineBreak=>"FiFinishesWithLineBreak",
                                                                 },
-                                                                elsePresent=>0,
                                                                 modifyLineBreaksYamlName=>"ifElseFi",
-                                                                additionalAssignments=>["ElseStartsOnOwnLine","ElseFinishesWithLineBreak"],
                                                                 endImmediatelyFollowedByComment=>$9?0:($11?1:0),
                                                                 horizontalTrailingSpace=>$8?$8:q(),
                                                               );
@@ -154,6 +97,19 @@ sub find_ifelsefi{
     return;
 }
 
+sub post_indentation_check{
+    # needed to remove leading horizontal space before \else
+    my $self = shift;
+    if(${$self}{body} =~ m/^\h*\\else/sm
+                and
+       !(${$self}{body} =~ m/^\h*\\else/s and ${$self}{linebreaksAtEnd}{begin}==0)
+            ){
+        $self->logger("Adding surrounding indentation to \\else statement ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
+        ${$self}{body} =~ s/^\h*\\else/${$self}{surroundingIndentation}\\else/sm;
+    }
+    return;
+}
+
 sub tasks_particular_to_each_object{
     my $self = shift;
 
@@ -163,19 +119,49 @@ sub tasks_particular_to_each_object{
     # search for headings (important to do this before looking for commands!)
     $self->find_heading;
 
-    # search for commands, keys, named grouping braces
-    $self->find_commands_or_key_equals_values_braces;
-
-    # search for arguments
-    $self->find_opt_mand_arguments;
-
-    # search for ifElseFi blocks
-    $self->find_ifelsefi;
-
-    # search for special begin/end
-    $self->find_special;
+    # search for commands and special code blocks
+    $self->find_commands_or_key_equals_values_braces_and_special;
 
 }
+
+sub indent_begin{
+    my $self = shift;
+    # line break checks after \if statement, can get messy if we 
+    # have, for example
+    #       \ifnum
+    #               something
+    # which might be changed into
+    #       \ifnumsomething
+    # which is undeserible
+    if (defined ${$self}{BodyStartsOnOwnLine}
+        and ${$self}{BodyStartsOnOwnLine}==-1 
+        and ${$self}{body} !~ m/^(\h|\\|(?:!-!))/s
+    ){
+        ${$self}{begin} .= " ";
+    }
+}
+
+sub wrap_up_statement{
+    my $self = shift;
+
+    # line break checks *after* \end{statement}
+    if (defined ${$self}{EndFinishesWithLineBreak}
+        and ${$self}{EndFinishesWithLineBreak}==-1 
+        ) {
+        # add a single horizontal space after the child id, otherwise we can end up 
+        # with things like
+        #       before: 
+        #               \fi
+        #                   text
+        #       after:
+        #               \fitext
+        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
+        ${$self}{end} =${$self}{end}." ";
+    }
+    $self->logger("Finished indenting ${$self}{name}",'heading') if $is_t_switch_active;
+    return $self;
+}
+
 
 sub create_unique_id{
     my $self = shift;
@@ -186,91 +172,5 @@ sub create_unique_id{
     return;
 }
 
-sub check_for_else_statement{
-    my $self = shift;
-    $self->logger("Looking for \\else statement (${$self}{name})",'heading') if $is_t_switch_active;
-    if(${$self}{body} =~ m/
-                            (\R*)   # possible line breaks before \else statement
-                            \\else  
-                            \h*     # possible horizontal space
-                            (\R*)   # possible line breaks after \else statement
-                            /x){
-      $self->logger("found \\else statement, storing line break information:") if($is_t_switch_active);
-
-      # linebreaks *before* \else statement
-      ${$self}{linebreaksAtEnd}{ifbody} = $1?1:0;
-      $self->logger("linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}") if($is_t_switch_active);
-
-      # linebreaks *after* \else statement
-      ${$self}{linebreaksAtEnd}{else} = $2?1:0;
-      $self->logger("linebreaksAtEnd of else: ${$self}{linebreaksAtEnd}{else}") if($is_t_switch_active);
-      ${$self}{elsePresent}=1;
-
-      # check that \else isn't the first thing in body
-      if(${$self}{body} =~ m/^\\else/s and ${$self}{linebreaksAtEnd}{begin}){
-        ${$self}{linebreaksAtEnd}{ifbody} = 1;
-        $self->logger("\\else *begins* the ifbody, linebreaksAtEnd of ifbody: ${$self}{linebreaksAtEnd}{ifbody}") if($is_t_switch_active);
-      }
-
-      # check if -m switch is active
-      return unless $is_m_switch_active;
-
-      # possibly modify line break *before* \else statement
-      if(defined ${$self}{ElseStartsOnOwnLine}){
-          if(${$self}{ElseStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{ifbody}){
-              # by default, assume that no trailing comment token is needed
-              my $trailingCommentToken = q();
-              if(${$self}{ElseStartsOnOwnLine}==2){
-                $self->logger("Adding a % immediately before else statement of ${$self}{name} (ElseStartsOnOwnLine==2)") if $is_t_switch_active;
-                $trailingCommentToken = "%".$self->add_comment_symbol;
-              }
-
-              # add a line break after ifbody, if appropriate
-              $self->logger("Adding a linebreak before the \\else statement (see ElseStartsOnOwnLine)");
-              ${$self}{body} =~ s/\\else/$trailingCommentToken\n\\else/s;
-              ${$self}{linebreaksAtEnd}{ifbody} = 1;
-          } elsif (${$self}{ElseStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{ifbody}){
-              # remove line break *after* ifbody, if appropriate
-              $self->logger("Removing linebreak before \\else statement (see ElseStartsOnOwnLine)");
-              ${$self}{body} =~ s/\R*(\h*)\\else/$1\\else/sx;
-              ${$self}{linebreaksAtEnd}{ifbody} = 0;
-          }
-      }
-
-      # possibly modify line break *before* \else statement
-      if(defined ${$self}{ElseFinishesWithLineBreak}){
-          if(${$self}{ElseFinishesWithLineBreak}>=1 and !${$self}{linebreaksAtEnd}{else}){
-              # by default, assume that no trailing comment token is needed
-              my $trailingCommentToken = q();
-              if(${$self}{ElseFinishesWithLineBreak}==2){
-                return if(${$self}{body} =~ m/\\else\h*$trailingCommentRegExp/s);
-                $self->logger("Adding a % immediately after else statement of ${$self}{name} (ElseFinishesWithLineBreak==2)") if $is_t_switch_active;
-                $trailingCommentToken = "%".$self->add_comment_symbol;
-              }
-
-              # add a line break after else, if appropriate
-              $self->logger("Adding a linebreak after the \\else statement (see ElseFinishesWithLineBreak)")if $is_t_switch_active;
-              ${$self}{body} =~ s/\\else\h*/\\else$trailingCommentToken\n/s;
-              ${$self}{linebreaksAtEnd}{else} = 1;
-          } elsif (${$self}{ElseFinishesWithLineBreak}==-1 and ${$self}{linebreaksAtEnd}{else}){
-              # remove line break *after* else, if appropriate, 
-              # note the space so that, for example,
-              #     \else
-              #             some text
-              # becomes
-              #     \else some text
-              # and not
-              #     \elsesome text
-              $self->logger("Removing linebreak after \\else statement (see ElseFinishesWithLineBreak)")if $is_t_switch_active;
-              ${$self}{body} =~ s/\\else\h*\R*/\\else /sx;
-              ${$self}{linebreaksAtEnd}{else} = 0;
-          }
-      }
-
-      return;
-    } else {
-      $self->logger("\\else statement not found") if($is_t_switch_active);
-    }
-}
 
 1;

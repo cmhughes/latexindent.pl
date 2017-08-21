@@ -1,0 +1,44 @@
+\documentclass[12pt,a4paper]{report}
+\begin{document}
+\begin{equation}
+	\left(
+	\left[
+		\left\{
+			\sqrt{
+			a+b
+			}
+		\right\}
+		\right]
+	\right)
+\end{equation}
+
+\ifnum\x<1
+	\left[
+		\left\{
+			\sqrt{
+				a+b
+			}
+		\right\}
+		\right]
+\fi
+
+\left[
+	\ifnum\x<1
+		\left\{
+			\sqrt{
+				a+b
+			}
+		\right\}
+	\fi
+	\right]
+
+\left[
+	\begin{one}
+		\left\{
+			\sqrt{
+				a+b
+			}
+		\right\}
+	\end{one}
+	\right]
+\end{document}

@@ -38,6 +38,7 @@
 \usepackage{enumitem}                                % custom lists
 \usepackage{longtable}
 \usepackage{array}
+\usepackage{totalcount}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
 % tikz, tcolorbox libraries
@@ -45,7 +46,7 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
-\tcbuselibrary{breakable,minted,xparse,documentation}
+\tcbuselibrary{breakable,minted,xparse,documentation,hooks}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -59,17 +60,53 @@
 }
 \usepackage{cleveref}
 
+% create my own star style, for re-use at various points
+\tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
+
+% shortcut command for displaying star in documentation
+\newcommand{\stardemo}[1][]{\begin{tikzpicture}
+	\node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+	\node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+	\node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+	\end{tikzpicture}}
+
+% totalcount
+\DeclareTotalCounter{lstlisting}
+
 % customise the \tcbdocnew command
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
+\tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
-%\newcommand{\announce}[1]{\tcbdocmarginnote{\tcbdocnew{#1}}}
-\NewDocumentCommand{\announce}{ s m }{%
+\NewDocumentCommand{\announce}{ s m s m }{%
 	\IfBooleanTF{#1}
 	{% \announce*
-		\tcbdocmarginnote[overlay={\node[anchor=north east,text=cmhgold] at ([yshift=3mm,xshift=4mm]frame.north east) {$\bigstar$}; }]{\tcbdocnew{#2}}
+		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
+			\IfBooleanTF{#3}
+			{% \announce*{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}
+			}%
+			{% \announce*{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}
+			}%
+		}%
+		\IfBooleanTF{#3}
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (U)}%
+		}
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (N)}%
+		}
 	}
 	{% \announce
-		\tcbdocmarginnote{\tcbdocnew{#2}}
+		\tcbdocmarginnote{%
+			\IfBooleanTF{#3}
+			{% \announce{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}
+			}%
+			{% \announce{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}
+			}%
+		}%
 	}}
 
 \reversemarginpar
@@ -87,6 +124,7 @@
 \makeatletter
 \tcbset{
 	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
+	addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
 	cmhlistings/.style={
 			%	width=\linewidth,
 			%breakable,
@@ -100,7 +138,6 @@
 			listing engine=minted,
 			minted style=colorful,
 			minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=true},
-			addtolol,
 			boxrule=0pt,
 			toprule=1pt,bottomrule=1pt,
 			titlerule=1pt,
@@ -136,26 +173,55 @@
 			%bottomrule=1pt,
 			enhanced,
 			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
-		}
+		},
+	new-to-this-version/.style={
+			enhanced,
+			overlay app={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
+			addtololstar,
+		},
 }
 
 \newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
 	cmhlistings,
+	addtolol,
 	center title,
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
 	listing engine=listings,
 	listing options={#1},
 }
 
-% \cmhlistingsfromfile uses listings library
-% \cmhlistingsfromfile* uses minted library
-\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} m O{} m m}{%
+% \cmhlistingsfromfile
+%                   *    no star: not new, star: new
+%                   [ listing/minted options ]
+%                   *    no star: uses listings library star: uses minted library
+%                   {<name of listing file>}
+%                   [<options for tcolorbox>]
+%                   {<title>}
+%                   {<label>}
+%
+% for example,
+%   \cmhlistingsfromfile*[listing options]...  uses listings library and is NEW
+%   \cmhlistingsfromfile[listing options]...   uses listings library
+%   \cmhlistingsfromfile[listing options]*...  uses minted library
+%   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
 	cmhlistings,
-	listing file={#3},
-	IfBooleanTF={#1}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
-	#4,
+	listing file={#4},
+	IfBooleanTF={#3}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={#2}},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
+	#5,
+	IfBooleanTF={#1}{new-to-this-version}{addtolol},
 }
+
+\makeatletter
+\@tempswafalse
+\def\@tempa{draft}
+\@for\next:=\@classoptionslist\do
+{\ifx\next\@tempa\@tempswatrue\fi}
+\if@tempswa % draft option is active
+	\RenewDocumentCommand{\cmhlistingsfromfile}{s O{} s m O{} m m}{\captionof{lstlisting}{#6}\label{#7}}
+	\renewcommand{\stardemo}[1][]{$\star$}
+\fi
 
 % command shell
 \newtcblisting{commandshell}{colback=black,colupper=white,colframe=yellow!75!black,
@@ -277,79 +343,79 @@
 
 \lstdefinestyle{specialBeginEnd}{
 	style=yaml-LST,
-	firstnumber=190,linerange={190-202},
+	firstnumber=190,linerange={190-203},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
 	style=yaml-LST,
-	firstnumber=212,linerange={212-221},
+	firstnumber=213,linerange={213-222},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-268},
+	firstnumber=271,linerange={271-272},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-279},
+	firstnumber=271,linerange={271-283},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=283,linerange={283-284},
+	firstnumber=287,linerange={287-288},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=283,linerange={283-295},
+	firstnumber=287,linerange={287-299},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=298,linerange={298-306},
+	firstnumber=302,linerange={302-312},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=376,linerange={376-378},
+	firstnumber=382,linerange={382-384},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=379,linerange={379-380},
+	firstnumber=385,linerange={385-386},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=379,linerange={379-381},
+	firstnumber=385,linerange={385-387},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=382,linerange={382-394},
+	firstnumber=388,linerange={388-400},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=395,linerange={395-403},
+	firstnumber=401,linerange={401-409},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=404,linerange={404-413},
+	firstnumber=410,linerange={410-419},
 	numbers=left,
 }
 
@@ -464,10 +530,18 @@
 
 % list of listings
 \contentsuse{lstlisting}{lol}
+\titleclass{\lstlistingstar}{straight}[\section]
+\titleformat{\lstlistingstar}{}{}{}{}
+\titlecontents{lstlistingstar}[2em]
+  {\addvspace{0.25pc}}
+  {}
+  {\llap{\stardemo}\thecontentslabel}
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
+  []
 \titlecontents{lstlisting}[2em]
   {\addvspace{0.25pc}}
-  {\textbf{Code \thecontentslabel} }
-  {}
+  {\thecontentslabel}
+  {\thecontentslabel}
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
   []
 \AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
@@ -514,7 +588,7 @@
 % table rules
 \setlength\heavyrulewidth{0.25ex}
 % gitinfo2 settings
-\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\faGithub}
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\faGithub\,\textbullet{}\gitRel}
 
 % setting up gitinfo2:
 %   copy the file post-xxx-sample.txt from http://mirror.ctan.org/macros/latex/contrib/gitinfo2
@@ -539,6 +613,22 @@
 % suitably define the command
 \DeclareTextCommand{\textasteriskcentered}{OT1}{\raisebox{-.7ex}[1ex][0pt]{*}}
 
+% new features list
+\newcommand{\listOfNewFeatures}{\setcounter{tocdepth}{4}\@starttoc{new}}
+\contentsuse{cmhtitle}{new}
+% toc settings
+\titleclass{\cmhtitle}{straight}[\subsection]
+\titleformat{\cmhtitle}{}{}{}{}
+\titlecontents*{cmhtitle}% <paragaph>
+[3cm]% <left>
+{\small\itshape}% <above-code>
+{}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
+{}% <numberless-entry-format>
+{\ \thecontentspage}% <filler-page-format>
+[,\ ]% <separator>
+[]% <end>
+
+\setcounter{secnumdepth}{5}
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
@@ -609,3 +699,11 @@ Ver­sion 3.2
 im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine.
 More de­tails are given at
 https://github.com/cmhughes/la­texin­dent.pl/pull/67
+
+Version 3.2.1
+Upgrades to the -o and -l switches
+https://github.com/cmhughes/latexindent.pl/pull/71
+
+Version 3.2.2
+Users can specify removeTrailingWhitespace as a scalar, for example,  removeTrailingWhitespace: 0
+https://github.com/cmhughes/latexindent.pl/pull/72

@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.2.2, 2017-06-28
+# defaultSettings.yaml for latexindent.pl, version 3.3, 2017-08-21
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -200,6 +200,7 @@ specialBeginEnd:
         begin: '\$\$'
         end: '\$\$'
         lookForThis: 1
+    specialBeforeCommand: 0
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc
@@ -234,6 +235,9 @@ indentAfterHeadings:
     subparagraph:
        indentAfterThisHeading: 0
        level: 7
+
+# maximum indentation, off by default
+maximumIndentation: -1
 
 # if you don't want to have additional indentation 
 # in an environment put it in this hash table; note that
@@ -304,6 +308,8 @@ commandCodeBlocks:
         decoration: 1
         ++: 1
         --: 1
+    commandNameSpecial:
+        @ifnextchar[: 1
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active

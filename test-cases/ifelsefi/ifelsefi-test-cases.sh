@@ -1,8 +1,10 @@
 #!/bin/bash
 # set verbose mode, 
 # see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=0
+loopmax=48
 . ../common.sh
+[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33 (an oddity of the ifelsefi loop)"
+[[ $loopmax -lt 33 ]] && loopmax=33 && echo "loopmax set to 33"
 
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
@@ -75,6 +77,20 @@ latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditio
 latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
 # ifx
 latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
+# bug fix from tcbbreakable-small.tex
+latexindent.pl -s tcbbreakable-small.tex -o=+-default
+# modifyLineBreaks loop test cases
+[[ $silentMode == 0 ]] && set +x 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+   for (( j=1 ; j <= 10 ; j++ )) 
+   do 
+     [[ $silentMode == 0 ]] && set -x 
+     latexindent.pl -s ifelsefi-loop-test.tex -o +-mod$i-else$j.tex -m -l=ifelsefi-mod$i.yaml,else-mod$j.yaml
+     [[ $silentMode == 0 ]] && set +x 
+    done
+done
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

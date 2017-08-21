@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    preserveBlankLines: 1
+    condenseMultipleBlankLinesInto: 1
+    commands:
+        CommandStartsOnOwnLine: 1
+        chapter:
+            CommandStartsOnOwnLine: 3
+    mandatoryArguments:
+        RCuBFinishesWithLineBreak: 1
+        chapter:
+            RCuBFinishesWithLineBreak: 3

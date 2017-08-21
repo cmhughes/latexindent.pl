@@ -43,11 +43,28 @@ sub construct_command_regexp{
                                                                     mode=>"lineBreaksAtEnd",
                                                                     stringBetweenArguments=>1);
 
+    # put together a list of the special command names (this was mostly motivated by the \@ifnextchar[ issue)
+    my %commandNameSpecial = %{${$masterSettings{commandCodeBlocks}}{commandNameSpecial}};
+
+    my $commandNameSpecialRegExp = q();
+    while( my ($commandName,$yesNo)= each %commandNameSpecial){
+        # change + and - to escaped characters
+        $commandName =~ s/\+/\\+/g;
+        $commandName =~ s/\-/\\-/g;
+        $commandName =~ s/\[/\\[/g;
+
+        # form the regexp
+        $commandNameSpecialRegExp .= ($commandNameSpecialRegExp eq '' ? q() : "|").$commandName if $yesNo; 
+    }
+
+    # details to log file
+    $self->logger("The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)",'heading') if $is_t_switch_active;
+
     # construct the command regexp
     $commandRegExp = qr/
-              (\\|@)   
+              (\\|\\@|@)   
               (
-               [+a-zA-Z@\*0-9_\:]+? # lowercase|uppercase letters, @, *, numbers
+               [+a-zA-Z@\*0-9_\:]+?|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?
@@ -103,6 +120,13 @@ sub tasks_particular_to_each_object{
         $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}") if $is_t_switch_active;
         ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
         ${$self}{replacementText} .= "\n";
+
+        # if the last argument has EndFinishesWithLineBreak == 3
+        if (${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 3 ){
+              my $EndStringLogFile = ${${${${$self}{children}}[0]}{children}[-1]}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+              $self->logger("Adding another blank line to replacement text for ${$self}{name} as last argument has $EndStringLogFile == 3 ") if $is_t_switch_active;
+              ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
+        }
 
         # update the argument object
         $self->logger("Adjusting argument object in command, ${$self}{name}") if $is_t_switch_active;

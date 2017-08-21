@@ -139,9 +139,9 @@
 \titleformat{\chapter}[block]
 {\normalfont\large\bfseries\centering}
 {\if@mainmatter%
-	\if@isu@capschap\MakeUppercase{\chaptertitlename}%
-	\else\chaptertitlename\fi
-	\thechapter.\quad\fi}
+		\if@isu@capschap\MakeUppercase{\chaptertitlename}%
+		\else\chaptertitlename\fi
+		\thechapter.\quad\fi}
 {0pt}
 {\if@isu@capschap\MakeUppercase\fi}{}
 

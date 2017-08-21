@@ -63,7 +63,7 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           displays the version number and date of release
       -h, --help
           help (see the documentation for detailed instructions and examples)
-      -o, --outputfile
+      -o, --outputfile=<name-of-output-file>
           output to another file; sample usage:
                 latexindent.pl -o outputfile.tex myfile.tex 
                 latexindent.pl -o=outputfile.tex myfile.tex 
@@ -79,6 +79,10 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
                 latexindent.pl -l some.yaml myfile.tex 
                 latexindent.pl -l=another.yaml myfile.tex 
                 latexindent.pl -l=some.yaml,another.yaml myfile.tex 
+      -y, --yaml=<yaml settings>
+          specify YAML settings; sample usage:
+                latexindent.pl -y="defaultIndent:' '" myfile.tex
+                latexindent.pl -y="defaultIndent:' ',maximumIndentation:' '" myfile.tex
       -d, --onlydefault
           ONLY use defaultSettings.yaml, ignore ALL (yaml) user files
       -g, --logfile=<name of log file>
@@ -87,7 +91,7 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           used to specify the location of backup files and indent.log
       -m, --modifylinebreaks
           modify linebreaks before, during, and at the end of code blocks; 
-          trailing comments can also be added using this feature
+          trailing comments and blank lines can also be added using this feature
 ENDQUOTE
     ;
     exit(2);
@@ -106,6 +110,7 @@ ENDQUOTE
     $self->logger('-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)') if($switches{onlyDefault});
     $self->logger("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
     $self->logger("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
+    $self->logger("-y|--yaml: YAML settings specified via command line") if($switches{yaml});
     $self->logger("-o|--outputfile: output to file") if($switches{outputToFile});
     $self->logger("-m|--modifylinebreaks: modify line breaks") if($switches{modifyLineBreaks});
     $self->logger("-g|--logfile: logfile name") if($switches{logFileName});

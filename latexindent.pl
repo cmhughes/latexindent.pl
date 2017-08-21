@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.2.2, 2017-06-28
+#   latexindent.pl, version 3.3, 2017-08-21
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@ GetOptions (
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},
     "local|l:s"=>\$switches{readLocalSettings},
+    "yaml|y=s"=>\$switches{yaml},
     "onlydefault|d"=>\$switches{onlyDefault},
     "overwrite|w"=>\$switches{overwrite},
     "outputfile|o=s"=>\$switches{outputToFile},

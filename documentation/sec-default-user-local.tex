@@ -100,6 +100,7 @@ copy myfile.bak4 to myfile.bak3
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
 	\end{minipage}%
+	\hfill
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
 	\end{minipage}%
@@ -154,7 +155,7 @@ removeTrailingWhitespace: 1
 	for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
 
 	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case,
-	\announce*{2017-06-28}
+	\announce{2017-06-28}{removeTrailingWhitespace}
 	\texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify;
 	see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
@@ -231,11 +232,11 @@ lookForAlignDelims:
 	instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
 	\end{minipage}%
 
 	If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
@@ -253,9 +254,9 @@ lookForAlignDelims:
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally, specifies the number of spaces to be inserted
 		      before (non-aligned) \lstinline!\\!. In order to use this field, \texttt{alignDoubleBackSlash} needs
 		      to be set to 0 (default: 0).
-		\item \announce{2017-06-19} \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns
+		\item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns
 		      underneath a \lstinline!\multicolumn! command (default: 0);
-		\item \announce{2017-06-19} \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the
+		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the
 		      maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1).
 	\end{itemize}
 
@@ -269,11 +270,11 @@ latexindent.pl -l tabular.yaml tabular1.tex
 	the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
 	\end{minipage}%
 
 	Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command
@@ -283,7 +284,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.54\textwidth}
@@ -293,7 +294,7 @@ latexindent.pl -l tabular1.yaml tabular1.tex
 	Now consider the file \texttt{tabular2.tex} in \cref{lst:tabular2}, which contains a \lstinline!\multicolumn! command, and
 	the YAML files in \cref{lst:tabular2YAML,lst:tabular3YAML}.
 
-	\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
+	\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular2.yaml}[yaml-TCB]{\texttt{tabular2.yaml}}{lst:tabular2YAML}
 	\end{minipage}%
@@ -311,9 +312,9 @@ latexindent.pl -s tabular2.tex -l tabular3.yaml
 	we obtain the respective outputs given in \cref{lst:tabular2-default,lst:tabular2-mc,lst:tabular2-no-max}.
 
 	\begin{widepage}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
-		\cmhlistingsfromfile*[showspaces=false,showtabs=false]{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
 	\end{widepage}
 
 	Notice in particular:
@@ -394,11 +395,12 @@ latexindent.pl matrix1.tex
 	and \vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
-	The fields specified in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
+	The fields specified%
+	\announce*{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.
 
-	\cmhlistingsfromfile[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
+	\cmhlistingsfromfile*[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
 	The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath} represents
 	\lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!. You can, of course,
@@ -418,6 +420,47 @@ latexindent.pl matrix1.tex
 	For each field, \texttt{lookForThis} is set to \texttt{1} by default, which means that \texttt{latexindent.pl}
 	will look for this pattern; you can tell \texttt{latexindent.pl} not to look for the pattern, by setting
 	\texttt{lookForThis} to \texttt{0}.
+
+	There are%
+	\announce*{2017-08-21}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
+	searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour. For example, consider
+	the file shown in \cref{lst:specialLRbefore}.
+
+	\cmhlistingsfromfile*{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
+
+	Now consider the YAML files shown in \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}
+
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile*{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile*{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
+	\end{minipage}
+
+	Upon running the following commands
+	\begin{widepage}
+		\begin{commandshell}
+latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
+latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
+    \end{commandshell}
+	\end{widepage}
+	we receive the respective outputs in \cref{lst:specialLR-comm-first-tex,lst:specialLR-special-first-tex}.
+
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile*{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile*{demonstrations/specialLR-special-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}}{lst:specialLR-special-first-tex}
+	\end{minipage}
+
+	Notice that in:
+	\begin{itemize}
+		\item \cref{lst:specialLR-comm-first-tex} the \lstinline!\left! has been treated as a \emph{command}, with one optional argument;
+		\item \cref{lst:specialLR-special-first-tex} the \texttt{specialBeginEnd} pattern in \cref{lst:specialsLeftRight-yaml} has been obeyed
+		      because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be sought \emph{before} commands.
+	\end{itemize}
 
 \yamltitle{indentAfterHeadings}*{fields}
 	\begin{wrapfigure}[17]{r}[0pt]{8cm}
@@ -473,73 +516,117 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	you should receive the code given in \cref{lst:headings1-mod2}; notice that
 	the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
 
+\yamltitle{maximumIndentation}*{horizontal space}
+	You can control the maximum indentation given to your file by%
+	\announce*{2017-08-21}{maximumIndentation}
+	specifying the \texttt{maximumIndentation} field as horizontal space (but \emph{not} including tabs).
+	This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and is \emph{off}
+	by default.
+
+	For example, consider the example shown in \cref{lst:mult-nested} together with the default output
+	shown in \cref{lst:mult-nested-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
+	\end{minipage}
+
+	Now say that, for example, you have the \texttt{max-indentation1.yaml} from \cref{lst:max-indentation1yaml} and
+	that you run the following command:
+	\begin{commandshell}
+latexindent.pl mult-nested.tex -l=max-indentation1
+    \end{commandshell}
+	You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
+	\end{minipage}
+
+	Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice that the (default) tabs
+	of indentation have been replaced by a single space.
+
+	In general, when using the \texttt{maximumIndentation} feature, any leading tabs will be replaced by equivalent
+	spaces except, of course, those found in \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
+
 \subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 
-	\begin{longtable}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{}m{.2\linewidth}}
-		\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}                                                                                                                                                                                                                                                                                                                \\
-		\toprule
-		Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
-		\midrule
-		environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
-		\begin{lstlisting}[,nolol=true,]
+	\begin{table}[!htp]
+		\begin{widepage}
+			\centering
+			\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}
+			\begin{tabular}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{\hspace{.25cm}}m{.2\linewidth}}
+				\toprule
+				Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
+				\midrule
+				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
+				\begin{lstlisting}[,nolol=true,]
 \begin{myenv}
 body of myenv
 \end{myenv}
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                        &
+				\begin{lstlisting}[,nolol=true,]
 [
 opt arg text
 ]
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                        &
+				\begin{lstlisting}[,nolol=true,]
 {
 mand arg text
 }
   \end{lstlisting}
-		\\\cmidrule{2-3}
-		commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-		UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
-		ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
-		\begin{lstlisting}[,nolol=true,]
+				\\\cmidrule{2-3}
+				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
+				\begin{lstlisting}[,nolol=true,]
 \ifnum...
 ...
 \else
 ...
 \fi
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
-		\begin{lstlisting}[,nolol=true,]
+				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
+				\begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...
 \end{enumerate}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
-		\begin{lstlisting}[,nolol=true,]
+				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
+				\begin{lstlisting}[,nolol=true,]
 \[
   ...
 \]
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
-		\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
+				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
+				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-		filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
-		\begin{lstlisting}[,nolol=true,]
+				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
+				\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
   \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\
-		\bottomrule
-	\end{longtable}
+				\bottomrule
+			\end{tabular}
+		\end{widepage}
+	\end{table}
 
 	We will refer to these code blocks in what follows.

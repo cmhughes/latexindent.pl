@@ -30,7 +30,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
-use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement/;
+use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
@@ -39,7 +39,8 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
 use LatexIndent::Environment qw/find_environments/;
-use LatexIndent::IfElseFi qw/find_ifelsefi/;
+use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp/;
+use LatexIndent::Else qw/check_for_else_statement/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
@@ -109,6 +110,7 @@ sub operate_on_file{
 sub construct_regular_expressions{
     my $self = shift;
     $self->construct_trailing_comment_regexp;
+    $self->construct_ifelsefi_regexp;
     $self->construct_list_of_items;
     $self->construct_special_begin;
     $self->construct_headings_levels;
@@ -171,25 +173,20 @@ sub find_objects{
     my $self = shift;
 
     # search for environments
-    $self->logger('looking for ENVIRONMENTS');
+    $self->logger('looking for ENVIRONMENTS') if $is_t_switch_active;
     $self->find_environments;
 
     # search for ifElseFi blocks
-    $self->logger('looking for IFELSEFI');
+    $self->logger('looking for IFELSEFI') if $is_t_switch_active;
     $self->find_ifelsefi;
 
     # search for headings (part, chapter, section, setc)
-    $self->logger('looking for HEADINGS (chapter, section, part, etc)');
+    $self->logger('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
     $self->find_heading;
+
+    # the ordering of finding commands and special code blocks can change
+    $self->find_commands_or_key_equals_values_braces_and_special;
     
-    # search for commands with arguments
-    $self->logger('looking for COMMANDS and key = {value}');
-    $self->find_commands_or_key_equals_values_braces;
-
-    # search for special begin/end
-    $self->logger('looking for SPECIAL begin/end');
-    $self->find_special;
-
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
         ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
@@ -198,7 +195,7 @@ sub find_objects{
 
     # if there are no children, return
     if(${$self}{children}){
-        $self->logger("Objects have been found.",'heading');
+        $self->logger("Objects have been found.",'heading') if $is_t_switch_active;
     } else {
         $self->logger("No objects found.");
         return;
@@ -206,10 +203,34 @@ sub find_objects{
 
     # logfile information
     $self->logger(Dumper(\%{$self}),'ttrace') if($is_tt_switch_active);
-    $self->logger("Operating on: ${$self}{name}",'heading');
-    $self->logger("Number of children:",'heading');
-    $self->logger(scalar (@{${$self}{children}}));
+    $self->logger("Operating on: ${$self}{name}",'heading')if $is_t_switch_active;
+    $self->logger("Number of children: ".scalar (@{${$self}{children}})) if $is_t_switch_active;
 
+    return;
+}
+
+sub find_commands_or_key_equals_values_braces_and_special{
+    my $self = shift;
+
+    # the order in which we search for specialBeginEnd and commands/key/braces
+    # can change depending upon specialBeforeCommand
+    if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
+        # search for special begin/end
+        $self->logger('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
+        $self->find_special;
+
+        # search for commands with arguments
+        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
+        $self->find_commands_or_key_equals_values_braces;
+    } else {
+        # search for commands with arguments
+        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
+        $self->find_commands_or_key_equals_values_braces;
+
+        # search for special begin/end
+        $self->logger('looking for SPECIAL begin/end') if $is_t_switch_active;
+        $self->find_special;
+    }
     return;
 }
 
