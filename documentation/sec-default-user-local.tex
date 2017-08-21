@@ -155,7 +155,7 @@ removeTrailingWhitespace: 1
 	for before and after results.  Thanks to \cite{vosskuhle} for providing this feature.
 
 	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case,
-	\announce*{2017-06-28}{removeTrailingWhitespace}
+	\announce{2017-06-28}{removeTrailingWhitespace}
 	\texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify;
 	see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
@@ -396,7 +396,7 @@ latexindent.pl matrix1.tex
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified%
-	\announce{NEW}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
+	\announce*{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.
 
@@ -422,7 +422,7 @@ latexindent.pl matrix1.tex
 	\texttt{lookForThis} to \texttt{0}.
 
 	There are%
-	\announce{NEW}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
+	\announce*{2017-08-21}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
 	searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour. For example, consider
 	the file shown in \cref{lst:specialLRbefore}.
 
@@ -518,7 +518,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 
 \yamltitle{maximumIndentation}*{horizontal space}
 	You can control the maximum indentation given to your file by%
-	\announce{NEW}{maximumIndentation}
+	\announce*{2017-08-21}{maximumIndentation}
 	specifying the \texttt{maximumIndentation} field as horizontal space (but \emph{not} including tabs).
 	This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and is \emph{off}
 	by default.

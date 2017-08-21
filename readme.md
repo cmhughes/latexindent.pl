@@ -1,7 +1,7 @@
 `PERL` script to indent code within environments, and align delimited 
 environments in `.tex`files.
 
-    latexindent.pl, version 3.2.2, 2017-06-28
+    latexindent.pl, version 3.3, 2017-08-21
 
 Author: Chris Hughes (cmhughes)
 
@@ -19,7 +19,7 @@ using the `Par::Packer` perl module.
 
 ---
 
-### USAGE
+### usage
 
 You'll need
 
@@ -29,14 +29,14 @@ You'll need
 
 in the same directory. Windows users might prefer to grab `latexindent.exe`
 
-### Testing
+### testing
 
 A nice way to test the script is to navigate to the test-cases 
 directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case version is not available):
 
         ./test-cases.sh
 
-## *IMPORTANT*
+## *important*
 
 This script may not work for your style of formatting; I highly 
 recommend comparing the outputfile.tex to make sure that 
@@ -48,3 +48,29 @@ I recommend using each of the following:
       each file has the same number of lines
 * a check using `latexdiff inputfile.tex outputfile.tex`
 * `git status` myfile.tex
+
+### feature requests
+
+I'm happy to review feature requests, but I make no promises as to if they 
+will be implemented; if they can be implemented, I make no promises as to 
+how long it will take to implement -- feel free to post on the issues 
+page of this repository.
+
+### development model
+
+I follow the development model given here: http://nvie.com/posts/a-successful-git-branching-model/
+which means that latexindent.pl always has two branches:
+    
+        master
+        develop
+
+The `master` branch always contains the released version and `develop` contains the 
+development version. When developing a new feature or bug fix, I typically use:
+    
+        git checkout -b feature/name-of-feature
+
+and then I merge it into the `develop` branch.
+
+### perl version
+
+I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.22.1
