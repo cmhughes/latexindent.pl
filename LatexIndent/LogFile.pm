@@ -55,6 +55,8 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           displays the version number and date of release
       -h, --help
           help (see the documentation for detailed instructions and examples)
+      -i, --information
+          information from the log file will also be output to the screen
       -o, --outputfile=<name-of-output-file>
           output to another file; sample usage:
                 latexindent.pl -o outputfile.tex myfile.tex 
@@ -112,13 +114,16 @@ ENDQUOTE
 
     $latexindent_logger->add_appender($appender);
 
-    ## output to screen, if appropriate
-    #my $appender_screen = Log::Log4perl::Appender::Screen->new(
-    #    stderr => 1,
-    #    utf8   => 1,
-    #);
+    # output to screen, if appropriate
+    if($switches{information}){
+        my $appender_screen = Log::Log4perl::Appender->new(
+            "Log::Log4perl::Appender::Screen",
+            stderr => 0,
+            utf8   => 1,
+        );
 
-    #$latexindent_logger->add_appender($appender_screen);
+        $latexindent_logger->add_appender($appender_screen);
+    }
     
     my $logger = get_logger("Document");
 

@@ -43,6 +43,7 @@ GetOptions (
     "logfile|g=s"=>\$switches{logFileName},
     "help|h"=>\$switches{showhelp},
     "cruft|c=s"=>\$switches{cruftDirectory},
+    "information|i"=>\$switches{information},
 );
 
 # check local settings doesn't interfer with reading the file;
