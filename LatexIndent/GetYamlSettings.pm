@@ -20,6 +20,7 @@ use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
+use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
 our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 
@@ -36,14 +37,15 @@ sub readSettings{
   my $self = shift;
   
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
-  $self->logger("YAML settings read: defaultSettings.yaml",'heading');
-  $self->logger("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
+
+  my $logger = get_logger("Document");
+  $logger->info("YAML settings read: defaultSettings.yaml\nReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
   # the same directory as it; we need to navigate to it
   if(!$defaultSettings) {
     $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
-    $self->logger("Reading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
+    $logger->info("Reading defaultSettings.yaml (2nd attempt, TeXLive, Windows) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
   }
 
   # need to exit if we can't get defaultSettings.yaml
@@ -60,7 +62,7 @@ sub readSettings{
   
   # we'll need the home directory a lot in what follows
   my $homeDir = File::HomeDir->my_home; 
-  $self->logger("YAML settings read: indentconfig.yaml or .indentconfig.yaml",'heading');
+  my $logmessage = "YAML settings read: indentconfig.yaml or .indentconfig.yaml";
   
   # get information about user settings- first check if indentconfig.yaml exists
   my $indentconfig = "$homeDir/indentconfig.yaml";
@@ -70,38 +72,44 @@ sub readSettings{
 
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !$switches{onlyDefault}) {
-        $self->logger("Reading path information from $indentconfig");
+        $logmessage .= "Reading path information from $indentconfig";
         # if both indentconfig.yaml and .indentconfig.yaml exist
         if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
-              $self->logger("$homeDir/.indentconfig.yaml has been found, but $indentconfig takes priority");
+              $logmessage .= "$homeDir/.indentconfig.yaml has been found, but $indentconfig takes priority";
         } elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" ) {
-              $self->logger("(Alternatively $homeDir/.indentconfig.yaml can be used)");
+              $logmessage .= "(Alternatively $homeDir/.indentconfig.yaml can be used)";
         } elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" ) {
-              $self->logger("(Alternatively $homeDir/indentconfig.yaml can be used)");
+              $logmessage .= "(Alternatively $homeDir/indentconfig.yaml can be used)";
         }
+        
+        # output the log message
+        $logger->info($logmessage);
 
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read( "$indentconfig" );
 
         # output the contents of indentconfig to the log file
-        $self->logger(Dump \%{$userSettings->[0]});
+        $logger->info(Dump \%{$userSettings->[0]});
 
         # update the absolute paths
         @absPaths = @{$userSettings->[0]->{paths}};
   } else {
      if($switches{onlyDefault}) {
-        $self->logger("Only default settings requested, not reading USER settings from $indentconfig");
-        $self->logger("Ignoring $switches{readLocalSettings} (you used the -d switch)") if($switches{readLocalSettings});
-        $self->logger("Ignoring the -y switch: $switches{yaml} (you used the -d switch)") if($switches{yaml});
+        $logmessage = "Only default settings requested, not reading USER settings from $indentconfig";
+        $logmessage .= "Ignoring $switches{readLocalSettings} (you used the -d switch)" if($switches{readLocalSettings});
+        $logmessage .= "Ignoring the -y switch: $switches{yaml} (you used the -d switch)" if($switches{yaml});
         $switches{readLocalSettings}=0;
         $switches{yaml}=0;
      } else {
        # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
-       $self->logger("Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)");
-       $self->logger("To specify user settings you would put indentconfig.yaml here: $homeDir/indentconfig.yaml");
-       $self->logger("Alternatively, you can use the hidden file .indentconfig.yaml as: $homeDir/.indentconfig.yaml");
+       $logmessage .= "Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)\n
+       To specify user settings you would put indentconfig.yaml here: $homeDir/indentconfig.yaml\n
+       Alternatively, you can use the hidden file .indentconfig.yaml as: $homeDir/.indentconfig.yaml";
      }
+     # output the log message
+     $logger->info($logmessage);
   }
+
 
   # local settings can be called with a + symbol, for example
   #     -l=+myfile.yaml
@@ -117,20 +125,20 @@ sub readSettings{
   # will *only* load localSettings.yaml, and myfile.yaml will be ignored
   my @localSettings;
 
-  $self->logger("YAML settings read: -l switch",'heading') if $switches{readLocalSettings};
+  $logger->info("YAML settings read: -l switch") if $switches{readLocalSettings};
 
   # remove leading, trailing, and intermediate space
   $switches{readLocalSettings} =~ s/^\h*//g;
   $switches{readLocalSettings} =~ s/\h*$//g;
   $switches{readLocalSettings} =~ s/\h*,\h*/,/g;
   if($switches{readLocalSettings} =~ m/\+/){
-        $self->logger("+ found in call for -l switch: will add localSettings.yaml");
+        $logger->info("+ found in call for -l switch: will add localSettings.yaml");
 
         # + can be either at the beginning or the end, which determines if where the comma should go
         my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
         my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
         $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
-        $self->logger("New value of -l switch: $switches{readLocalSettings}");
+        $logger->info("New value of -l switch: $switches{readLocalSettings}");
   }
 
   # local settings can be separated by ,
@@ -138,7 +146,7 @@ sub readSettings{
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
   if($switches{readLocalSettings} =~ m/,/){
-        $self->logger("Multiple localSettings found, separated by commas:");
+        $logger->info("Multiple localSettings found, separated by commas:");
         @localSettings = split(/,/,$switches{readLocalSettings});
   } else {
     push(@localSettings,$switches{readLocalSettings}) if($switches{readLocalSettings});
@@ -161,21 +169,21 @@ sub readSettings{
 
     # check for existence and non-emptiness
     if ( (-e $_) and !(-z $_)) {
-        $self->logger("Adding $_ to YAML read paths");
+        $logger->info("Adding $_ to YAML read paths");
         push(@absPaths,"$_");
     } elsif ( !(-e $_) ) {
-          $self->logger("WARNING yaml file not found: $_ not found. Proceeding without it.");
+          $logger->warn("yaml file not found: $_ not found. Proceeding without it.");
     }
   }
 
   # heading for the log file
-  $self->logger("YAML settings, reading from the following files:",'heading') if @absPaths;
+  $logger->info("YAML settings, reading from the following files:") if @absPaths;
 
   # read in the settings from each file
   foreach my $settings (@absPaths) {
     # check that the settings file exists and that it isn't empty
     if (-e $settings and !(-z $settings)) {
-        $self->logger("Reading USER settings from $settings");
+        $logger->info("Reading USER settings from $settings");
         $userSettings = YAML::Tiny->read( "$settings" );
   
         # if we can read userSettings
@@ -189,14 +197,14 @@ sub readSettings{
                                 # if masterSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
                                 if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
-                                    $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                    $logger->info("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                     delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
                                         if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
-                                            $self->logger("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                            $logger->info("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                             delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }
                                         while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {
@@ -217,21 +225,21 @@ sub readSettings{
 
               # output settings to $logfile
               if($masterSettings{logFilePreferences}{showEveryYamlRead}){
-                  $self->logger(Dump \%{$userSettings->[0]});
+                  $logger->info(Dump \%{$userSettings->[0]});
               } else {
-                  $self->logger("Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).");
+                  $logger->info("Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).");
               }
          } else {
                # otherwise print a warning that we can not read userSettings.yaml
-               $self->logger("WARNING $settings contains invalid yaml format- not reading from it");
+               $logger->warn("WARNING $settings contains invalid yaml format- not reading from it");
          }
     } else {
         # otherwise keep going, but put a warning in the log file
-        $self->logger("WARNING: $homeDir/indentconfig.yaml");
+        $logger->warn("WARNING: $homeDir/indentconfig.yaml");
         if (-z $settings) {
-            $self->logger("specifies $settings but this file is EMPTY -- not reading from it");
+            $logger->info("specifies $settings but this file is EMPTY -- not reading from it");
         } else {
-            $self->logger("specifies $settings but this file does not exist - unable to read settings from this file");
+            $logger->info("specifies $settings but this file does not exist - unable to read settings from this file");
         }
     }
   }
@@ -239,7 +247,7 @@ sub readSettings{
   # read settings from -y|--yaml switch
   if($switches{yaml}){
         # report to log file
-        $self->logger("YAML settings read: -y switch",'heading');
+        $logger->info("YAML settings read: -y switch");
 
         # remove any horizontal space before or after , OR : OR ; or at the beginning or end of the switch value
         $switches{yaml} =~ s/\h*(,|:|;)\h*/$1/g;
@@ -312,7 +320,7 @@ sub readSettings{
 
                 # reform the root
                 $root = join(":",@keysValues);
-                $self->logger("Sub-field detected (; present) and the root is: $root") if $is_t_switch_active;
+                $logger->info("Sub-field detected (; present) and the root is: $root") if $is_t_switch_active;
 
                 # now we need to attach the $root back together with any subfields
                 foreach(@subfield){
@@ -322,7 +330,7 @@ sub readSettings{
                    # increment the counter
                    $settingsCounter++;
                 }
-                $self->logger("-y switch value interpreted as: ".join(',',@yamlSettings));
+                $logger->info("-y switch value interpreted as: ".join(',',@yamlSettings));
             }
         }
 
@@ -348,20 +356,20 @@ sub readSettings{
             if(scalar(@keysValues) == 2){
                 # for example, -y="defaultIndent: ' '"
                 my $key = $keysValues[0];
-                $self->logger("Updating masterSettings with $key: $value");
+                $logger->info("Updating masterSettings with $key: $value");
                 $masterSettings{$key} = $value;
             } elsif(scalar(@keysValues) == 3){
                 # for example, -y="indentRules: one: '\t\t\t\t'"
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
-                $self->logger("Updating masterSettings with $parent: $child: $value");
+                $logger->info("Updating masterSettings with $parent: $child: $value");
                 $masterSettings{$parent}{$child} = $value;
             } elsif(scalar(@keysValues) == 4){
                 # for example, -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
-                $self->logger("Updating masterSettings with $parent: $child: $grandchild: $value");
+                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $value");
                 $masterSettings{$parent}{$child}{$grandchild} = $value;
             } elsif(scalar(@keysValues) == 5){
                 # for example, -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
@@ -369,7 +377,7 @@ sub readSettings{
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
                 my $greatgrandchild = $keysValues[3];
-                $self->logger("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
+                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
                 $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
             }
           }
@@ -379,8 +387,8 @@ sub readSettings{
   # which details the overall state of the settings modified
   # from the default in various user files
   if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
-      $self->logger("Amalgamated/overall settings to be used:",'heading');
-      $self->logger(Dump \%masterSettings);
+      $logger->info("Amalgamated/overall settings to be used:");
+      $logger->info(Dump \%masterSettings);
   }
 
   return;
@@ -392,12 +400,15 @@ sub get_indentation_settings_for_this_object{
     # create a name for previously found settings
     my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName}.(defined ${$self}{storageNameAppend}?${$self}{storageNameAppend}:q());
 
+    # grab the logging object
+    my $logger = get_logger("Document");
+
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
-        $self->logger("Using stored settings for $storageName") if($is_t_switch_active);
+        $logger->info("Using stored settings for $storageName") if($is_t_switch_active);
     } else {
         my $name = ${$self}{name};
-        $self->logger("Storing settings for $storageName") if($is_t_switch_active);
+        $logger->info("Storing settings for $storageName") if($is_t_switch_active);
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
@@ -482,8 +493,11 @@ sub modify_line_breaks_settings{
 
     my $self = shift;
 
+    # grab the logging object
+    my $logger = get_logger("Document");
+
     # details to the log file
-    $self->logger("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ",'heading') if $is_t_switch_active;
+    $logger->info("-m modifylinebreaks switch active, looking for settings for ${$self}{name} ") if $is_t_switch_active;
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
     my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
@@ -522,11 +536,11 @@ sub modify_line_breaks_settings{
     my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
 
     if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName} eq "HASH"){
-        $self->logger("$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
+        $logger->info("$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
         ${$self}{removeParagraphLineBreaks} = ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}}{$name}||0;
     } else {
         if(defined ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}){
-            $self->logger("$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
+            $logger->info("$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
             ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
         }
     }
@@ -540,9 +554,12 @@ sub get_every_or_custom_value{
   my $toBeAssignedTo = $input{toBeAssignedTo};
   my $toBeAssignedToAlias = $input{toBeAssignedToAlias};
 
+  # grab the logging object
+  my $logger = get_logger("Document");
+
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
-        $self->logger("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if($is_t_switch_active);
+        $logger->info("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if($is_t_switch_active);
   }
 
   # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -557,12 +574,12 @@ sub get_every_or_custom_value{
 
   # check for the *custom* value
   if (defined $customValue){
-      $self->logger("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
+      $logger->info("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
       ${$self}{$toBeAssignedTo} = $customValue !=0 ? $customValue : undef;
    } else {
       # check for the *every* value
       if (defined $everyValue and $everyValue != 0){
-          $self->logger("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
+          $logger->info("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
           ${$self}{$toBeAssignedTo} = $everyValue;
       }
    }
@@ -619,24 +636,27 @@ sub get_indentation_information{
     # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
     my $YamlName = $self->get_object_attribute_for_indentation_settings;
 
+    # grab the logging object
+    my $logger = get_logger("Document");
+
     my $indentationInformation;
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
         # check that the 'thing' is defined
         if(defined ${$masterSettings{$indentationAbout}}{$name}){
             if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
-                $self->logger("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)") if $is_t_switch_active ;
+                $logger->info("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)") if $is_t_switch_active ;
                 $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
             } else {
                 $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
-                $self->logger("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active ;
+                $logger->info("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active ;
             }
             # return, after performing an integrity check
             if(defined $indentationInformation){
                 if($indentationAbout eq "noAdditionalIndent" and $indentationInformation == 1){
-                        $self->logger("Found! Using '' (see $indentationAbout)") if $is_t_switch_active;
+                        $logger->info("Found! Using '' (see $indentationAbout)") if $is_t_switch_active;
                         return q();
                 } elsif($indentationAbout eq "indentRules" and $indentationInformation=~m/^\h*$/){
-                        $self->logger("Found! Using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active;
+                        $logger->info("Found! Using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active;
                         return $indentationInformation ;
                 }
             }
@@ -651,20 +671,20 @@ sub get_indentation_information{
         my $globalInformation = $indentationAbout."Global";
         next if(!(defined ${$masterSettings{$globalInformation}}{$YamlName})); 
         if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
-            $self->logger("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
+            $logger->info("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
             return q();
         } elsif($globalInformation eq "indentRulesGlobal") {
             if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
-                $self->logger("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
+                $logger->info("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
                 return ${$masterSettings{$globalInformation}}{$YamlName};
             } else {
-                $self->logger("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one") if $is_t_switch_active;
+                $logger->info("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one") if $is_t_switch_active;
           }
         }
     }
 
     # return defaultIndent, by default
-    $self->logger("Using defaultIndent for $name") if $is_t_switch_active;
+    $logger->info("Using defaultIndent for $name") if $is_t_switch_active;
     return $masterSettings{defaultIndent};
 }
 
