@@ -81,6 +81,10 @@ logFilePreferences:
     showAmalgamatedSettings: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
+    PatternLayout:
+        default: "%p: %m{indent}%n"
+        trace: "%p: %m{indent}%n"
+        ttrace: "%d %p: %F{1}:%L %M - %m{indent}%n"
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!

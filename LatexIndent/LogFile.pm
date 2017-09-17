@@ -22,15 +22,14 @@ use LatexIndent::Version qw/$versionNumber $versionDate/;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Log::Log4perl qw(get_logger :levels);
-use Log::Log4perl::Appender::Screen;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/logger output_logfile processSwitches/;
 our @logFileNotes;
 
-# log file methods
-# log file methods
-# log file methods
-#   reference: http://stackoverflow.com/questions/6736998/help-calling-a-sub-routine-from-a-perl-module-and-printing-to-logfile
+# log file methods, using log4perl; references
+#   pattern layout: http://search.cpan.org/~mschilli/Log-Log4perl-1.32/lib/Log/Log4perl/Layout/PatternLayout.pm
+#   multiple appenders: https://stackoverflow.com/questions/8620347/perl-log4perl-printing-and-logging-at-the-same-time-in-a-line?rq=1
+#   getting started: https://www.perl.com/pub/2002/09/11/log4perl.html 
 
 sub logger{
     shift;
@@ -103,6 +102,12 @@ ENDQUOTE
     die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
 
     my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory} : '').($switches{logFileName}||"indent.log");
+    
+    # layout of the logfile information, for example
+    #
+    #       2017/09/16 11:59:09 INFO: message
+    #       2017/09/16 12:23:53 INFO: LogFile.pm:156 LatexIndent::LogFile::processSwitches - message
+    my $layout = Log::Log4perl::Layout::PatternLayout->new("%p: ".($switches{ttrace} ? "%F{1}:%L %M - ":'')."%m{indent}%n");
 
     # details for the Log4perl logging
     my $appender = Log::Log4perl::Appender->new(
@@ -112,67 +117,67 @@ ENDQUOTE
         utf8     => 1,
     );
 
+    # add the layout
+    $appender->layout($layout);
+
+    # adjust the logger object
     $latexindent_logger->add_appender($appender);
+
+    # appender object for output to screen
+    my $appender_screen = q();
 
     # output to screen, if appropriate
     if($switches{information}){
-        my $appender_screen = Log::Log4perl::Appender->new(
+        $appender_screen = Log::Log4perl::Appender->new(
             "Log::Log4perl::Appender::Screen",
             stderr => 0,
             utf8   => 1,
         );
 
+        $appender_screen->layout($layout);
         $latexindent_logger->add_appender($appender_screen);
     }
     
-    my $logger = get_logger("Document");
-
-    # layout of the first few lines of the logfile information
-    my $layout = Log::Log4perl::Layout::PatternLayout->new("%m%n");
-    $appender->layout($layout);
+    # initiate the log message
+    my $logmessage = q();
 
     # details of the script to log file
-    $logger->info("$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
-    $logger->info("$FindBin::Script lives here: $FindBin::RealBin/");
+    $logmessage = "$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files\n";
+    $logmessage .= "$FindBin::Script lives here: $FindBin::RealBin/\n";
 
     my $time = localtime();
-    $logger->info($time);
+    $logmessage .= $time;
+
+    # get the logger, output the log message
+    my $logger = get_logger("Document");
+    $logger->info($logmessage);
 
     # log the switches from the user
-    $logger->info('Processing switches');
+    $logmessage = "Processing switches:\n";
 
     # check on the trace mode switch (should be turned on if ttrace mode active)
     $switches{trace} = $switches{ttrace} ?  1 : $switches{trace};
     
-    # for the rest of the log file, layout of the logfile information, for example
-    #
-    #       2017/09/16 11:59:09 INFO: message
-    #       2017/09/16 12:23:53 INFO: LogFile.pm:156 LatexIndent::LogFile::processSwitches - message
-    $layout = Log::Log4perl::Layout::PatternLayout->new("%d %p: ".($switches{trace} ? "%F{1}:%L %M - ":'')."%m{indent}%n");
-    $appender->layout($layout);
-
     # output details of switches
-    my $switchMessage = q();
-    $switchMessage .= '-t|--trace: Trace mode active (you have used either -t or --trace)'."\n" if($switches{trace} and !$switches{ttrace});
-    $switchMessage .= '-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)'."\n" if($switches{tracingModeVeryDetailed});
-    $switchMessage .= '-s|--silent: Silent mode active (you have used either -s or --silent)'."\n" if($switches{silentMode});
-    $switchMessage .= '-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)'."\n" if($switches{onlyDefault});
-    $switchMessage .= "-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first"."\n" if($switches{overwrite});
-    $switchMessage .= "-l|--localSettings: Read localSettings YAML file"."\n" if($switches{readLocalSettings});
-    $switchMessage .= "-y|--yaml: YAML settings specified via command line"."\n" if($switches{yaml});
-    $switchMessage .= "-o|--outputfile: output to file"."\n" if($switches{outputToFile});
-    $switchMessage .= "-m|--modifylinebreaks: modify line breaks"."\n" if($switches{modifyLineBreaks});
-    $switchMessage .= "-g|--logfile: logfile name"."\n" if($switches{logFileName});
-    $switchMessage .= "-c|--cruft: cruft directory"."\n" if($switches{cruftDirectory});
+    $logmessage .= '-i|--information: information from the log file will also be output to the screen'."\n" if($switches{information});
+    $logmessage .= '-t|--trace: Trace mode active (you have used either -t or --trace)'."\n" if($switches{trace} and !$switches{ttrace});
+    $logmessage .= '-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)'."\n" if($switches{tracingModeVeryDetailed});
+    $logmessage .= '-s|--silent: Silent mode active (you have used either -s or --silent)'."\n" if($switches{silentMode});
+    $logmessage .= '-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)'."\n" if($switches{onlyDefault});
+    $logmessage .= "-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first"."\n" if($switches{overwrite});
+    $logmessage .= "-l|--localSettings: Read localSettings YAML file"."\n" if($switches{readLocalSettings});
+    $logmessage .= "-y|--yaml: YAML settings specified via command line"."\n" if($switches{yaml});
+    $logmessage .= "-o|--outputfile: output to file"."\n" if($switches{outputToFile});
+    $logmessage .= "-m|--modifylinebreaks: modify line breaks"."\n" if($switches{modifyLineBreaks});
+    $logmessage .= "-g|--logfile: logfile name"."\n" if($switches{logFileName});
+    $logmessage .= "-c|--cruft: cruft directory"."\n" if($switches{cruftDirectory});
 
     # log the switch messages
-    $logger->info($switchMessage);
+    $logger->info($logmessage);
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
-        $logger->info("Options check");
-        $logger->info("You have called latexindent.pl with both -o and -w");
-        $logger->info("-o (output to file) will take priority, and -w (over write) will be ignored");
+        $logger->info("Options check, -w and -o specified\nYou have called latexindent.pl with both -o and -w\noutput to file) will take priority, and -w (over write) will be ignored");
         $switches{overwrite}=0;
     }
 
@@ -181,31 +186,66 @@ ENDQUOTE
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
         my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir','Unicode::GCString','Log::Log4perl');
-        $logger->info("Perl modules are being loaded from the following directories:");
+        $logmessage = "Perl modules are being loaded from the following directories:\n";
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;
-                require $file . '.pm';
-                $logger->info($INC{$file .'.pm'});
+                $logmessage .= $INC{$file .'.pm'}."\n";
               }
-        $logger->info("Latex Indent perl modules are being loaded from, for example:");
+        $logger->info($logmessage);
+        $logmessage = "Latex Indent perl modules are being loaded from, for example:\n";
                 (my $file = 'LatexIndent::Document') =~ s|::|/|g;
-                require $file . '.pm';
-                $logger->info($INC{$file .'.pm'});
+                $logmessage .= $INC{$file .'.pm'};
+        $logger->info($logmessage);
     }
+
+    # read the YAML settings
+    $self->readSettings;
+    
+    # the user may have specified their own settings for the rest of the log file,
+    # for example:
+    #
+    #   logFilePreferences:
+    #       PatternLayout:
+    #           default: "%p: %m{indent}%n"
+    #           trace: "%p: %m{indent}%n"
+    #           ttrace: "%d %p: %F{1}:%L %M - %m{indent}%n"
+    #
+    # e.g, default mode:
+    #       2017/09/16 11:59:09 INFO: message
+    # or trace mode:
+    #       2017/09/16 11:59:09 INFO: message
+    # or in trace mode:
+    #       2017/09/16 12:23:53 INFO: LogFile.pm:156 LatexIndent::LogFile::processSwitches - message
+    my $pattern = q();
+    if($switches{ttrace}){
+      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{ttrace};
+    } elsif($switches{trace}){
+      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{trace};
+    } else {
+      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{default};
+    }
+    $layout = Log::Log4perl::Layout::PatternLayout->new($pattern);
+    $appender->layout($layout);
+
+    $appender_screen->layout($layout) if $switches{information};
     return;
 }
 
 sub output_logfile{
   my $logger = get_logger("Document");
 
+  # initiate the log message
+  my $logmessage = q();
+
   # github info line
-  $logger->info("Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+  $logmessage .= "Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl\n" if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
   
   # put the final line in the logfile
-  $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}");
+  $logmessage .= "${$masterSettings{logFilePreferences}}{endLogFileWith}";
 
+  # output the log message
+  $logger->info($logmessage);
 
 }
-
 
 1;

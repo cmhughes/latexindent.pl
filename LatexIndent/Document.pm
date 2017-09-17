@@ -72,7 +72,6 @@ sub latexindent{
     my $self = shift;
     $self->storeSwitches;
     $self->processSwitches;
-    $self->readSettings;
     $self->file_extension_check;
     $self->operate_on_file;
 }

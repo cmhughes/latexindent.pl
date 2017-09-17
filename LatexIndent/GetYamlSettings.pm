@@ -62,7 +62,7 @@ sub readSettings{
   
   # we'll need the home directory a lot in what follows
   my $homeDir = File::HomeDir->my_home; 
-  my $logmessage = "YAML settings read: indentconfig.yaml or .indentconfig.yaml";
+  my $logmessage = "YAML settings read: indentconfig.yaml or .indentconfig.yaml\n";
   
   # get information about user settings- first check if indentconfig.yaml exists
   my $indentconfig = "$homeDir/indentconfig.yaml";
@@ -72,24 +72,24 @@ sub readSettings{
 
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !$switches{onlyDefault}) {
-        $logmessage .= "Reading path information from $indentconfig";
+        $logmessage .= "Reading path information from $indentconfig\n";
         # if both indentconfig.yaml and .indentconfig.yaml exist
         if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
               $logmessage .= "$homeDir/.indentconfig.yaml has been found, but $indentconfig takes priority";
         } elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" ) {
-              $logmessage .= "(Alternatively $homeDir/.indentconfig.yaml can be used)";
+              $logmessage .= "(Alternatively $homeDir/.indentconfig.yaml can be used)\n";
         } elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" ) {
-              $logmessage .= "(Alternatively $homeDir/indentconfig.yaml can be used)";
+              $logmessage .= "(Alternatively $homeDir/indentconfig.yaml can be used)\n";
         }
         
-        # output the log message
-        $logger->info($logmessage);
-
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read( "$indentconfig" );
 
         # output the contents of indentconfig to the log file
-        $logger->info(Dump \%{$userSettings->[0]});
+        $logmessage .= Dump \%{$userSettings->[0]};
+        
+        # output the log message
+        $logger->info($logmessage);
 
         # update the absolute paths
         @absPaths = @{$userSettings->[0]->{paths}};
@@ -125,20 +125,20 @@ sub readSettings{
   # will *only* load localSettings.yaml, and myfile.yaml will be ignored
   my @localSettings;
 
-  $logger->info("YAML settings read: -l switch") if $switches{readLocalSettings};
+  $logmessage = "YAML settings read: -l switch\n" if $switches{readLocalSettings};
 
   # remove leading, trailing, and intermediate space
   $switches{readLocalSettings} =~ s/^\h*//g;
   $switches{readLocalSettings} =~ s/\h*$//g;
   $switches{readLocalSettings} =~ s/\h*,\h*/,/g;
   if($switches{readLocalSettings} =~ m/\+/){
-        $logger->info("+ found in call for -l switch: will add localSettings.yaml");
+        $logmessage .= "+ found in call for -l switch: will add localSettings.yaml\n";
 
         # + can be either at the beginning or the end, which determines if where the comma should go
         my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
         my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
         $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
-        $logger->info("New value of -l switch: $switches{readLocalSettings}");
+        $logmessage .= "New value of -l switch: $switches{readLocalSettings}\n";
   }
 
   # local settings can be separated by ,
@@ -146,8 +146,9 @@ sub readSettings{
   #     -l = myyaml1.yaml,myyaml2.yaml
   # and in which case, we need to read them all
   if($switches{readLocalSettings} =~ m/,/){
-        $logger->info("Multiple localSettings found, separated by commas:");
+        $logmessage .= "Multiple localSettings found, separated by commas:\n";
         @localSettings = split(/,/,$switches{readLocalSettings});
+        $logmessage .= join(', ',@localSettings);
   } else {
     push(@localSettings,$switches{readLocalSettings}) if($switches{readLocalSettings});
   }
@@ -169,21 +170,24 @@ sub readSettings{
 
     # check for existence and non-emptiness
     if ( (-e $_) and !(-z $_)) {
-        $logger->info("Adding $_ to YAML read paths");
+        $logmessage .= "Adding $_ to YAML read paths\n";
+        $logger->info($logmessage);
         push(@absPaths,"$_");
     } elsif ( !(-e $_) ) {
-          $logger->warn("yaml file not found: $_ not found. Proceeding without it.");
+        $logger->info($logmessage) if $logmessage ne "";
+        $logger->warn("yaml file not found: $_ not found. Proceeding without it.");
+        $logmessage = q();
     }
   }
 
   # heading for the log file
-  $logger->info("YAML settings, reading from the following files:") if @absPaths;
+  $logmessage = "YAML settings, reading from the following files:\n" if @absPaths;
 
   # read in the settings from each file
   foreach my $settings (@absPaths) {
     # check that the settings file exists and that it isn't empty
     if (-e $settings and !(-z $settings)) {
-        $logger->info("Reading USER settings from $settings");
+        $logmessage .= "Reading USER settings from $settings\n";
         $userSettings = YAML::Tiny->read( "$settings" );
   
         # if we can read userSettings
@@ -197,14 +201,14 @@ sub readSettings{
                                 # if masterSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
                                 if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
-                                    $logger->info("masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                    $logmessage .= "masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar\n" if($is_t_switch_active);
                                     delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
                                         if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
-                                            $logger->info("masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                            $logmessage .= "masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar\n" if($is_t_switch_active);
                                             delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }
                                         while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {
@@ -225,32 +229,40 @@ sub readSettings{
 
               # output settings to $logfile
               if($masterSettings{logFilePreferences}{showEveryYamlRead}){
-                  $logger->info(Dump \%{$userSettings->[0]});
+                  $logmessage .= Dump \%{$userSettings->[0]};
               } else {
-                  $logger->info("Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).");
+                  $logmessage .= "Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).\n";
               }
          } else {
                # otherwise print a warning that we can not read userSettings.yaml
+               $logger->info($logmessage);
                $logger->warn("WARNING $settings contains invalid yaml format- not reading from it");
+               $logmessage = q();
          }
     } else {
         # otherwise keep going, but put a warning in the log file
-        $logger->warn("WARNING: $homeDir/indentconfig.yaml");
+        $logger->info($logmessage);
+        $logmessage = "WARNING: $homeDir/indentconfig.yaml\n";
         if (-z $settings) {
-            $logger->info("specifies $settings but this file is EMPTY -- not reading from it");
+            $logmessage .= "specifies $settings but this file is EMPTY -- not reading from it\n";
         } else {
-            $logger->info("specifies $settings but this file does not exist - unable to read settings from this file");
+            $logmessage .= "specifies $settings but this file does not exist - unable to read settings from this file\n";
         }
+        $logger->warn($logmessage);
+        $logmessage = q();
     }
   }
+
+  # output the log message
+  $logger->info($logmessage) if $logmessage ne "";
 
   # read settings from -y|--yaml switch
   if($switches{yaml}){
         # report to log file
-        $logger->info("YAML settings read: -y switch");
+        $logmessage = "YAML settings read: -y switch\n";
 
         # remove any horizontal space before or after , OR : OR ; or at the beginning or end of the switch value
-        $switches{yaml} =~ s/\h*(,|:|;)\h*/$1/g;
+        $switches{yaml} =~ s/\h*(,|(?<!\\):|;)\h*/$1/g;
         $switches{yaml} =~ s/^\h*//g;
 
         # store settings, possibly multiple ones split by commas
@@ -283,7 +295,7 @@ sub readSettings{
 
             # check for a match of the ;
             if($_ =~ m/;/){
-                my (@subfield) = split(/;/,$_);
+                my (@subfield) = split(/(?<!\\);/,$_);
 
                 # the content up to the first ; is called the 'root'
                 my $root = shift @subfield;
@@ -320,7 +332,7 @@ sub readSettings{
 
                 # reform the root
                 $root = join(":",@keysValues);
-                $logger->info("Sub-field detected (; present) and the root is: $root") if $is_t_switch_active;
+                $logmessage .= "Sub-field detected (; present) and the root is: $root\n" if $is_t_switch_active;
 
                 # now we need to attach the $root back together with any subfields
                 foreach(@subfield){
@@ -330,17 +342,21 @@ sub readSettings{
                    # increment the counter
                    $settingsCounter++;
                 }
-                $logger->info("-y switch value interpreted as: ".join(',',@yamlSettings));
+                $logmessage .= "-y switch value interpreted as: ".join(',',@yamlSettings)."\n";
             }
         }
 
         # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
             # split each value at semi-colon
-            my (@keysValues) = split(/:/,$_);
+            my (@keysValues) = split(/(?<!\\):/,$_);
 
             # $value will always be the last element
             my $value = $keysValues[-1];
+
+            # it's possible that the 'value' will contain an escaped
+            # semi-colon, so we replace it with just a semi-colon
+            $value =~ s/\\:/:/;
 
             # horizontal space needs special treatment
             if($value =~ m/^(?:"|')(\h*)(?:"|')$/){
@@ -356,20 +372,20 @@ sub readSettings{
             if(scalar(@keysValues) == 2){
                 # for example, -y="defaultIndent: ' '"
                 my $key = $keysValues[0];
-                $logger->info("Updating masterSettings with $key: $value");
+                $logmessage .= "Updating masterSettings with $key: $value\n";
                 $masterSettings{$key} = $value;
             } elsif(scalar(@keysValues) == 3){
                 # for example, -y="indentRules: one: '\t\t\t\t'"
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
-                $logger->info("Updating masterSettings with $parent: $child: $value");
+                $logmessage .= "Updating masterSettings with $parent: $child: $value\n";
                 $masterSettings{$parent}{$child} = $value;
             } elsif(scalar(@keysValues) == 4){
                 # for example, -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
-                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $value");
+                $logmessage .= "Updating masterSettings with $parent: $child: $grandchild: $value\n";
                 $masterSettings{$parent}{$child}{$grandchild} = $value;
             } elsif(scalar(@keysValues) == 5){
                 # for example, -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
@@ -377,10 +393,13 @@ sub readSettings{
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
                 my $greatgrandchild = $keysValues[3];
-                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
+                $logmessage .= "Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value\n";
                 $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
             }
           }
+
+          # output the log message
+          $logger->info($logmessage);
   }
 
   # some users may wish to see showAmalgamatedSettings
