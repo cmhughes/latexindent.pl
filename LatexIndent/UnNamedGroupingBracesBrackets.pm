@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/construct_unnamed_grouping_braces_brackets_regexp $un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
@@ -76,7 +77,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
-    $self->logger("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
+    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
 
     # the un-named object is a little special, as it doesn't have a name; as such, if there are blank lines before
     # the braces/brackets, we have to insert them
@@ -89,7 +90,7 @@ sub get_replacement_text{
     # but now turn off the switch for linebreaksAtEnd{begin}, otherwise the first brace gets too much indentation
     # (see, for example, test-cases/namedGroupingBracesBrackets/special-characters-minimal.tex)
     ${${$self}{linebreaksAtEnd}}{begin} = 0;
-    $self->logger("Beginning bit is: ${$self}{beginningbit}") if($is_t_switch_active);
+    $logger->trace("Beginning bit is: ${$self}{beginningbit}") if($is_t_switch_active);
     delete ${$self}{beginningbit};
 }
 

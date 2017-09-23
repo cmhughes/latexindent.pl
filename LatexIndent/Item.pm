@@ -20,6 +20,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -37,7 +38,7 @@ sub construct_list_of_items{
     }
 
     # detail items in the log
-    $self->logger("List of items: $listOfItems (see itemNames)",'heading') if $is_t_switch_active;
+    $logger->trace("*List of items: $listOfItems (see itemNames)") if $is_t_switch_active;
 
     $itemRegExp = qr/
                           (
@@ -68,13 +69,13 @@ sub find_items{
     return unless ${$masterSettings{indentAfterItems}}{${$self}{name}};
 
     # otherwise loop through the item names
-    $self->logger("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
-    $self->logger(Dumper(\%{$masterSettings{itemNames}})) if $is_t_switch_active;
+    $logger->trace("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$masterSettings{itemNames}})) if $is_tt_switch_active;
 
     while(${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/){
 
         # log file output
-        $self->logger("Item found: $2",'heading') if $is_t_switch_active;
+        $logger->trace("*Item found: $2") if $is_t_switch_active;
 
         ${$self}{body} =~ s/
                             $itemRegExp(\h*)($trailingCommentRegExp)?
@@ -137,7 +138,7 @@ sub remove_line_breaks_begin{
     # there is no white space
     my $self = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)");
     ${$self}{begin} =~ s/\R*$//sx;
     ${$self}{begin} .= " " unless(${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
     ${$self}{linebreaksAtEnd}{begin} = 0;
