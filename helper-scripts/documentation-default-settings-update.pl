@@ -7,7 +7,7 @@ use warnings;
 # store the names of each field
 my @namesAndOffsets = (
                         {name=>"fileExtensionPreference",numberOfLines=>4},
-                        {name=>"logFilePreferences",numberOfLines=>4},
+                        {name=>"logFilePreferences",numberOfLines=>10},
                         {name=>"verbatimEnvironments",numberOfLines=>3},
                         {name=>"verbatimCommands",numberOfLines=>2},
                         {name=>"noIndentBlock",numberOfLines=>2},

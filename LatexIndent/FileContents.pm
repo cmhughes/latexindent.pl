@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
@@ -34,11 +35,11 @@ sub find_file_contents_environments_and_preamble{
     my @fileContentsStorageArray; 
 
     # fileContents environments
-    $self->logger('looking for FILE CONTENTS environments (see fileContentsEnvironments)','heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%{$masterSettings{fileContentsEnvironments}})) if($is_t_switch_active);
+    $logger->trace('*Searching for FILE CONTENTS environments (see fileContentsEnvironments)') if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$masterSettings{fileContentsEnvironments}})) if($is_tt_switch_active);
     while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
         if($yesno){
-            $self->logger("looking for $fileContentsEnv:$yesno environments") if $is_t_switch_active;
+            $logger->trace("looking for $fileContentsEnv environments") if $is_t_switch_active;
 
             # the trailing * needs some care
             if($fileContentsEnv =~ m/\*$/){
@@ -93,15 +94,15 @@ sub find_file_contents_environments_and_preamble{
               push(@fileContentsStorageArray,$fileContentsBlock);
 
               # log file output
-              $self->logger("FILECONTENTS environment found: $fileContentsEnv");
+              $logger->trace("FILECONTENTS environment found: $fileContentsEnv");
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
 
-              $self->logger("replaced with ID: ${$fileContentsBlock}{id}");
+              $logger->trace("replaced with ID: ${$fileContentsBlock}{id}") if $is_tt_switch_active;
             } 
       } else {
-            $self->logger("*not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
+            $logger->trace("*not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
       }
     }
 
@@ -119,7 +120,7 @@ sub find_file_contents_environments_and_preamble{
     # try and find the preamble
     if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$masterSettings{lookForPreamble}}{${$self}{fileExtension}}){
 
-        $self->logger("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists",'heading') if $is_t_switch_active ;
+        $logger->trace("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists",'heading') if $is_t_switch_active ;
 
         # create a preamble object
         $preamble = LatexIndent::Preamble->new( begin=>q(),
@@ -142,19 +143,19 @@ sub find_file_contents_environments_and_preamble{
         $preamble->get_replacement_text;
 
         # log file output
-        $self->logger("preamble found: $preamble") if $is_t_switch_active;
+        $logger->trace("preamble found: preamble") if $is_t_switch_active;
 
         # remove the environment block, and replace with unique ID
         ${$self}{body} =~ s/$preambleRegExp/${$preamble}{replacementText}/sx;
 
-        $self->logger("replaced with ID: ${$preamble}{replacementText}") if $is_t_switch_active;
+        $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
         # indentPreamble set to 1
         if($masterSettings{indentPreamble}){
-            $self->logger("storing ${$preamble}{id} for indentation (see indentPreamble)");
+            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)");
             $needToStorePreamble = 1;
         } else {
             # indentPreamble set to 0
-            $self->logger("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (see indentPreamble)") if $is_t_switch_active;
+            $logger->trace("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)") if $is_t_switch_active;
             $preamble->unprotect_blank_lines;
             ${$self}{verbatim}{${$preamble}{id}} = $preamble;
         }
@@ -167,18 +168,18 @@ sub find_file_contents_environments_and_preamble{
               my $indentThisChild = 0;
               # verbatim children go in special hash
               if($preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/){
-                $self->logger("filecontents (${$_}{id}) is within preamble");
+                $logger->trace("filecontents (${$_}{id}) is within preamble");
                 # indentPreamble set to 1
                 if($masterSettings{indentPreamble}){
-                    $self->logger("storing ${$_}{id} for indentation (indentPreamble is 1)");
+                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)");
                     $indentThisChild = 1;
                 } else {
                     # indentPreamble set to 0
-                    $self->logger("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)");
+                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)");
                     ${$self}{verbatim}{${$_}{id}}=$_;
                 }
               } else {
-                    $self->logger("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)");
+                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)");
                     $indentThisChild = 1;
               }
               # store the child, if necessary
@@ -187,6 +188,9 @@ sub find_file_contents_environments_and_preamble{
                     $_->get_indentation_settings_for_this_object;
                     $_->tasks_particular_to_each_object;
                     push(@{${$self}{children}},$_);
+              
+                    # possible decoration in log file 
+                    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
               }
     }
 

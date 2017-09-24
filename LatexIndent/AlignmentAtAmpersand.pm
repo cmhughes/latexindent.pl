@@ -24,6 +24,7 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::LogFile qw/$logger/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/align_at_ampersand find_aligned_block/;
 our $alignmentBlockCounter;
@@ -38,16 +39,16 @@ sub find_aligned_block{
 	#         1 & 2 & 3 & 4 \\
 	#         5 &   & 6 &   \\
 	#        %* \end{tabular}
-    $self->logger('looking for ALIGNED blocks marked by comments','heading')if($is_t_switch_active);
-    $self->logger(Dumper(\%{$masterSettings{lookForAlignDelims}})) if($is_t_switch_active);
+    $logger->trace('*Searching for ALIGNED blocks marked by comments')if($is_t_switch_active);
+    $logger->trace(Dumper(\%{$masterSettings{lookForAlignDelims}})) if($is_tt_switch_active);
     while( my ($alignmentBlock,$yesno)= each %{$masterSettings{lookForAlignDelims}}){
         if(ref $yesno eq "HASH"){
               $yesno = (defined ${$yesno}{delims} ) ? ${$yesno}{delims} : 1;
             }
         if($yesno){
-            $self->logger("looking for $alignmentBlock:$yesno environments");
+            $logger->trace("looking for %*\\begin\{$alignmentBlock\} environments");
 
-            my $noIndentRegExp = qr/
+            my $alignmentRegExp = qr/
                             (
                                 (?!<\\)
                                 %
@@ -71,13 +72,13 @@ sub find_aligned_block{
                             #\R
                         /sx;
 
-            while( ${$self}{body} =~ m/$noIndentRegExp/sx){
+            while( ${$self}{body} =~ m/$alignmentRegExp/sx){
 
               ${$self}{body} =~ s/
-                                    $noIndentRegExp
+                                    $alignmentRegExp
                                 /
                                     # create a new Environment object
-                                    my $alignmentBlock = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
+                                    my $alignmentBlockObj = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
                                                                           body=>$2,
                                                                           end=>$3,
                                                                           name=>$alignmentBlock,
@@ -89,13 +90,17 @@ sub find_aligned_block{
                                                                           },
                                                                           );
             
+                                    # log file output
+                                    $logger->trace("*Alignment block found: %*\\begin\{$alignmentBlock\}") if $is_t_switch_active;
+
                                     # the settings and storage of most objects has a lot in common
-                                    $self->get_settings_and_store_new_object($alignmentBlock);
+                                    $self->get_settings_and_store_new_object($alignmentBlockObj);
+                                    
                                     ${@{${$self}{children}}[-1]}{replacementText};
                               /xseg;
             } 
       } else {
-            $self->logger("*not* looking for $alignmentBlock as $alignmentBlock:$yesno");
+            $logger->trace("*not* looking for $alignmentBlock as $alignmentBlock:$yesno");
       }
     }
     return;
@@ -252,12 +257,13 @@ sub align_at_ampersand{
     }
 
     # output some of the info so far to the log file
-    $self->logger("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
-    $self->logger("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
-    $self->logger("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
-    $self->logger("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
-    $self->logger("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
-    $self->logger("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
+    $logger->trace("*Alignment at ampersand routine") if $is_t_switch_active;
+    $logger->trace("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
+    $logger->trace("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
+    $logger->trace("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
+    $logger->trace("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
+    $logger->trace("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
+    $logger->trace("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
 
     # acount for multicolumn grouping, if the appropriate switch is set
     if(${$self}{multiColumnGrouping}){
@@ -430,7 +436,7 @@ sub align_at_ampersand{
 
     # to the log file
     if($is_tt_switch_active){    
-        $self->logger(${$_}{row},'ttrace') for @formattedBody;
+        $logger->trace(${$_}{row}) for @formattedBody;
     }
 
     # delete the original body

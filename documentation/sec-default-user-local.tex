@@ -78,18 +78,30 @@ copy myfile.bak4 to myfile.bak3
 	The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
 
 \yamltitle{logFilePreferences}*{fields}
-	\begin{wrapfigure}[10]{r}[0pt]{9cm}
-		\cmhlistingsfromfile[style=logFilePreferences,]{../defaultSettings.yaml}[width=.85\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
-	\end{wrapfigure}
 	\texttt{latexindent.pl} writes information to \texttt{indent.log}, some
 	of which can be customized by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
 	If you load your own user settings (see \vref{sec:indentconfig}) then \texttt{latexindent.pl} will
 	detail them in \texttt{indent.log}; you can choose not to have the details logged by switching
 	\texttt{showEveryYamlRead} to \texttt{0}. Once all of your settings have
 	been loaded, you can see the amalgamated settings in the log file by switching \texttt{showAmalgamatedSettings}
-	to \texttt{1}, if you wish. The log file will end with the characters
+	to \texttt{1}, if you wish.
+
+	\cmhlistingsfromfile*[style=logFilePreferences,]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+
+	When%
+	\announce{NEW}{showDecorationStartCodeBlockTrace} either of the \texttt{trace} modes (see \cpageref{page:traceswitch})
+	are active, you will receive detailed information in \texttt{indent.log}. You can specify character strings
+	to appear before and after the notification of a found code block using, respectively, \texttt{showDecorationStartCodeBlockTrace}
+	and \texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in \vref{app:logfile-demo}.
+
+	The log file will end with the characters
 	given in \texttt{endLogFileWith}, and will report the \texttt{GitHub} address
 	of \texttt{latexindent.pl} to the log file if \texttt{showGitHubInfoFooter} is set to \texttt{1}.
+
+	\texttt{latexindent.pl}%
+	\announce{NEW}{log file pattern layout} uses the \texttt{log4perl} module \cite{log4perl}
+	to handle the creation of the logfile. You can specify the layout of the information given in the logfile
+	using any of the \texttt{Log Layouts} detailed at \cite{log4perl}.
 
 \yamltitle{verbatimEnvironments}*{fields}
 
@@ -400,7 +412,7 @@ latexindent.pl matrix1.tex
 	there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the
 	default settings of \texttt{specialBeginEnd}.
 
-	\cmhlistingsfromfile*[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
+	\cmhlistingsfromfile[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
 	The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath} represents
 	\lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!. You can, of course,
@@ -426,16 +438,16 @@ latexindent.pl matrix1.tex
 	searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour. For example, consider
 	the file shown in \cref{lst:specialLRbefore}.
 
-	\cmhlistingsfromfile*{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
+	\cmhlistingsfromfile{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
 
 	Now consider the YAML files shown in \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}
 
 	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile*{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
+		\cmhlistingsfromfile{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile*{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
+		\cmhlistingsfromfile{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
 	\end{minipage}
 
 	Upon running the following commands
@@ -448,11 +460,11 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 	we receive the respective outputs in \cref{lst:specialLR-comm-first-tex,lst:specialLR-special-first-tex}.
 
 	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile*{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
+		\cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile*{demonstrations/specialLR-special-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}}{lst:specialLR-special-first-tex}
+		\cmhlistingsfromfile{demonstrations/specialLR-special-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}}{lst:specialLR-special-first-tex}
 	\end{minipage}
 
 	Notice that in:
@@ -527,11 +539,11 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	shown in \cref{lst:mult-nested-default}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
+		\cmhlistingsfromfile{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
+		\cmhlistingsfromfile{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
 	\end{minipage}
 
 	Now say that, for example, you have the \texttt{max-indentation1.yaml} from \cref{lst:max-indentation1yaml} and
@@ -542,11 +554,11 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 	You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
+		\cmhlistingsfromfile{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
 	\end{minipage}
 
 	Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice that the (default) tabs

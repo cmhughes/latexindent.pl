@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -62,9 +63,6 @@ sub find_ifelsefi{
       ${$self}{body} =~ s/
                 $ifElseFiRegExp(\h*)($trailingCommentRegExp)?
                     /
-                        # log file output
-                        $self->logger("IfElseFi found: $2",'heading')if $is_t_switch_active;
-           
                         # create a new IfElseFi object
                         my $ifElseFi = LatexIndent::IfElseFi->new(begin=>$1.(($4 eq "\n" and !$3)?"\n":q()),
                                                                 name=>$2,
@@ -88,6 +86,9 @@ sub find_ifelsefi{
                                                                 endImmediatelyFollowedByComment=>$9?0:($11?1:0),
                                                                 horizontalTrailingSpace=>$8?$8:q(),
                                                               );
+                        # log file output
+                        $logger->trace("*IfElseFi found: $2")if $is_t_switch_active;
+           
                         # the settings and storage of most objects has a lot in common
                         $self->get_settings_and_store_new_object($ifElseFi);
                         ${@{${$self}{children}}[-1]}{replacementText}.($10?$10:q()).($11?$11:q());
@@ -104,7 +105,7 @@ sub post_indentation_check{
                 and
        !(${$self}{body} =~ m/^\h*\\else/s and ${$self}{linebreaksAtEnd}{begin}==0)
             ){
-        $self->logger("Adding surrounding indentation to \\else statement ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
+        $logger->trace("*Adding surrounding indentation to \\else statement ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
         ${$self}{body} =~ s/^\h*\\else/${$self}{surroundingIndentation}\\else/sm;
     }
     return;
@@ -155,10 +156,10 @@ sub wrap_up_statement{
         #                   text
         #       after:
         #               \fitext
-        $self->logger("Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)",'heading') if $is_t_switch_active;
+        $logger->trace("*Adding a single space after \\fi statement (otherwise \\fi can be comined with next line of text in an unwanted way)") if $is_t_switch_active;
         ${$self}{end} =${$self}{end}." ";
     }
-    $self->logger("Finished indenting ${$self}{name}",'heading') if $is_t_switch_active;
+    $logger->trace("*Finished indenting ${$self}{name}") if $is_t_switch_active;
     return $self;
 }
 

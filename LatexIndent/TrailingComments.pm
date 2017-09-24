@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp/;
@@ -42,8 +43,8 @@ sub add_comment_symbol{
     push(@trailingComments,{id=>$tokens{trailingComment}.$commentCounter.$tokens{endOfToken},value=>q()});
 
     # log file info
-    $self->logger("Updating trailing comment array",'heading')if $is_t_switch_active;
-    $self->logger(Dumper(\@trailingComments),'ttrace') if($is_tt_switch_active);
+    $logger->trace("*Updating trailing comment array")if $is_t_switch_active;
+    $logger->trace(Dumper(\@trailingComments),'ttrace') if($is_tt_switch_active);
 
     # the returned value
     return $tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
@@ -51,7 +52,7 @@ sub add_comment_symbol{
 
 sub remove_trailing_comments{
     my $self = shift;
-    $self->logger("Storing trailing comments",'heading')if $is_t_switch_active;
+    $logger->trace("*Storing trailing comments")if $is_t_switch_active;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -71,10 +72,10 @@ sub remove_trailing_comments{
                             "%".$tokens{trailingComment}.$commentCounter.$tokens{endOfToken};
                        /xsmeg;
     if(@trailingComments){
-        $self->logger("Trailing comments stored in:") if($is_t_switch_active);
-        $self->logger(Dumper(\@trailingComments)) if($is_t_switch_active);
+        $logger->trace("Trailing comments stored in:") if($is_tt_switch_active);
+        $logger->trace(Dumper(\@trailingComments)) if($is_tt_switch_active);
     } else {
-        $self->logger("No trailing comments found") if($is_t_switch_active);
+        $logger->trace("No trailing comments found") if($is_t_switch_active);
     }
     return;
 }
@@ -83,7 +84,7 @@ sub put_trailing_comments_back_in{
     my $self = shift;
     return unless( @trailingComments > 0 );
 
-    $self->logger("Returning trailing comments to body",'heading')if $is_t_switch_active;
+    $logger->trace("*Returning trailing comments to body")if $is_t_switch_active;
 
     # loop through trailing comments in reverse so that, for example, 
     # latexindenttrailingcomment1 doesn't match the first 
@@ -95,7 +96,7 @@ sub put_trailing_comments_back_in{
       # the -m switch can modify max characters per line, and trailing comment IDs can 
       # be split across lines
       if($is_m_switch_active and ${$self}{body} !~ m/%$trailingcommentID/m){
-            $self->logger("$trailingcommentID not found in body using /m matching, assuming it has been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+            $logger->trace("$trailingcommentID not found in body using /m matching, assuming it has been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
             my $trailingcommentIDwithLineBreaks;
             
             # construct a reg exp that contains possible line breaks in between each character
@@ -118,12 +119,12 @@ sub put_trailing_comments_back_in{
                               )                # captured into $1
                               (\h*)?$                
                           /mx and $1 ne ''){
-          $self->logger("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
+          $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
           ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }
-      $self->logger("replace %$trailingcommentID with %$trailingcommentValue") if($is_t_switch_active);
+      $logger->trace("replace %$trailingcommentID with %$trailingcommentValue") if($is_tt_switch_active);
     }
     return;
 }

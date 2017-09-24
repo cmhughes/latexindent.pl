@@ -20,6 +20,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -83,7 +84,7 @@ sub construct_special_begin{
                                /sx
 
         } else {
-            $self->logger("The special regexps won't include anything from $specialName (see lookForThis)",'heading') if $is_t_switch_active ;
+            $logger->trace("*The special regexps won't include anything from $specialName (see lookForThis)") if $is_t_switch_active ;
         }
     }
 
@@ -94,10 +95,12 @@ sub construct_special_begin{
     }
 
     # info to the log file
-    $self->logger("The special beginnings regexp is: $specialBegins (see specialBeginEnd)",'heading') if $is_t_switch_active;
+    $logger->trace("*The special beginnings regexp is: (see specialBeginEnd)") if $is_tt_switch_active;
+    $logger->trace($specialBegins) if $is_tt_switch_active; 
 
     # overall special regexp
-    $self->logger("The overall special regexp is: $specialAllMatchesRegExp(see specialBeginEnd)",'heading') if $is_t_switch_active;
+    $logger->trace("*The overall special regexp is: (see specialBeginEnd)") if $is_tt_switch_active;
+    $logger->trace($specialAllMatchesRegExp) if $is_tt_switch_active;
 
   }
 
@@ -108,8 +111,8 @@ sub find_special{
     return if($specialBegins eq "");
 
     # otherwise loop through the special begin/end
-    $self->logger("Searching for special begin/end (see specialBeginEnd)") if $is_t_switch_active ;
-    $self->logger(Dumper(\%{$masterSettings{specialBeginEnd}})) if $is_tt_switch_active;
+    $logger->trace("*Searching ${$self}{name} for special begin/end (see specialBeginEnd)") if $is_t_switch_active ;
+    $logger->trace(Dumper(\%{$masterSettings{specialBeginEnd}})) if $is_tt_switch_active;
 
     # keep looping as long as there is a special match of some kind
     while(${$self}{body} =~ m/$specialAllMatchesRegExp/sx){
@@ -119,9 +122,9 @@ sub find_special{
 
             # log file
             if((ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}){
-                $self->logger("Looking for $specialName",'heading') if $is_t_switch_active ;
+                $logger->trace("Looking for $specialName") if $is_t_switch_active ;
             } else {
-                $self->logger("Not looking for $specialName (see lookForThis)",'heading') if ($is_t_switch_active and (ref($BeginEnd) eq "HASH"));
+                $logger->trace("Not looking for $specialName (see lookForThis)") if ($is_t_switch_active and (ref($BeginEnd) eq "HASH"));
                 next;
             }
 
@@ -134,9 +137,6 @@ sub find_special{
                 ${$self}{body} =~ s/
                                     $specialRegExp(\h*)($trailingCommentRegExp)?
                                    /
-                                    # log file output
-                                    $self->logger("special found: $specialName",'heading') if $is_t_switch_active;
-
                                     # create a new special object
                                     my $specialObject = LatexIndent::Special->new(begin=>$1,
                                                                             body=>$3,
@@ -161,6 +161,9 @@ sub find_special{
                                                                             endImmediatelyFollowedByComment=>$7?0:($9?1:0),
                                                                             horizontalTrailingSpace=>$6?$6:q(),
                                                                           );
+
+                                    # log file output
+                                    $logger->trace("*Special found: $specialName",'heading') if $is_t_switch_active;
 
                                     # the settings and storage of most objects has a lot in common
                                     $self->get_settings_and_store_new_object($specialObject);

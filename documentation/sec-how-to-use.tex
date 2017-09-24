@@ -278,7 +278,7 @@ latexindent.pl -c=/path/to/directory/ myfile.tex
 	to another directory.
 	% this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
 
-\flagbox{-g, --logfile}
+\flagbox{-g, --logfile=<name of log file>}
 	\begin{commandshell}
 latexindent.pl -g=other.log myfile.tex
 latexindent.pl -g other.log myfile.tex
@@ -288,6 +288,14 @@ latexindent.pl myfile.tex -g other.log
 
 	By default, \texttt{latexindent.pl} reports information to \texttt{indent.log}, but if you wish to change the
 	name of this file, simply call the script with your chosen name after the \texttt{-g} switch as demonstrated above.
+
+\flagbox{-sl, --screenlog}
+	\begin{commandshell}
+latexindent.pl -sl myfile.tex
+latexindent.pl -screenlog myfile.tex
+      \end{commandshell}
+	\announce{NEW}{screenlog} Using this option tells \texttt{latexindent.pl} to output the log file to the screen, as well
+	as to your chosen log file.
 
 \flagbox{-m, --modifylinebreaks}
 	\begin{commandshell}

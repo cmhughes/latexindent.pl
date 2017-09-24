@@ -20,6 +20,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -58,7 +59,7 @@ sub construct_command_regexp{
     }
 
     # details to log file
-    $self->logger("The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)",'heading') if $is_t_switch_active;
+    $logger->trace("*The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)") if $is_t_switch_active;
 
     # construct the command regexp
     $commandRegExp = qr/
@@ -92,7 +93,7 @@ sub tasks_particular_to_each_object{
     if(${${$self}{linebreaksAtEnd}}{end} == 1 
       and ${${${$self}{children}}[0]}{body} =~ m/\R$/s
       and !${$self}{endImmediatelyFollowedByComment}){
-        $self->logger("Removing linebreak from argument container of ${$self}{name}") if $is_t_switch_active;
+        $logger->trace("Removing linebreak from argument container of ${$self}{name}") if $is_t_switch_active;
         ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
     }
@@ -103,7 +104,7 @@ sub tasks_particular_to_each_object{
         and defined ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} 
         and ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == -1
         ){
-          $self->logger("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0") if $is_t_switch_active;
+          $logger->trace("Switching linebreaksAtEnd{end} to be 0 in command ${$self}{name} as last argument specifies EndFinishesWithLineBreak == 0") if $is_t_switch_active;
           ${${$self}{linebreaksAtEnd}}{end} = 0;
           ${$self}{EndFinishesWithLineBreak} = -1;
         }
@@ -117,30 +118,30 @@ sub tasks_particular_to_each_object{
         and !${$self}{endImmediatelyFollowedByComment}){
 
         # update the Command object
-        $self->logger("Adjusting linebreaksAtEnd in command ${$self}{name}") if $is_t_switch_active;
+        $logger->trace("Adjusting linebreaksAtEnd in command ${$self}{name}") if $is_t_switch_active;
         ${${$self}{linebreaksAtEnd}}{end} = ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end};
         ${$self}{replacementText} .= "\n";
 
         # if the last argument has EndFinishesWithLineBreak == 3
         if (${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 3 ){
               my $EndStringLogFile = ${${${${$self}{children}}[0]}{children}[-1]}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-              $self->logger("Adding another blank line to replacement text for ${$self}{name} as last argument has $EndStringLogFile == 3 ") if $is_t_switch_active;
+              $logger->trace("Adding another blank line to replacement text for ${$self}{name} as last argument has $EndStringLogFile == 3 ") if $is_t_switch_active;
               ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
         }
 
         # update the argument object
-        $self->logger("Adjusting argument object in command, ${$self}{name}") if $is_t_switch_active;
+        $logger->trace("Adjusting argument object in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body} =~ s/\R$//s;
 
         # update the last mandatory/optional argument
-        $self->logger("Adjusting last argument in command, ${$self}{name}") if $is_t_switch_active;
+        $logger->trace("Adjusting last argument in command, ${$self}{name}") if $is_t_switch_active;
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
         ${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} = -1;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText} =~ s/\R$//s;
 
         # output to log file
-        $self->logger(Dumper(${${${$self}{children}}[0]}{children}[-1])) if $is_t_switch_active;
+        $logger->trace(Dumper(${${${$self}{children}}[0]}{children}[-1])) if $is_tt_switch_active;
     }
 
     # situation: ${${$self}{linebreaksAtEnd}}{end} == 1 and the last argument has added 
@@ -152,12 +153,12 @@ sub tasks_particular_to_each_object{
         and !${$self}{endImmediatelyFollowedByComment}){
     
         # last argument adjustment
-        $self->logger("Adjusting last argument in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
+        $logger->trace("Adjusting last argument in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{children}[-1]}{replacementText}=~s/\R$//s;
         ${${${${${$self}{children}}[0]}{children}[-1]}{linebreaksAtEnd}}{end} = 0;
 
         # argument object adjustment
-        $self->logger("Adjusting argument object in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
+        $logger->trace("Adjusting argument object in command, ${$self}{name} to avoid double line break") if $is_t_switch_active;
         ${${${${$self}{children}}[0]}{linebreaksAtEnd}}{body} = 0;
         ${${${$self}{children}}[0]}{body}=~s/\R$//s;
     } 
@@ -167,7 +168,7 @@ sub tasks_particular_to_each_object{
     #
     # see ../test-cases/texexchange/5461.tex which was the first example to demonstrate the need for this
     if(!${${${$self}{children}}[0]}{endImmediatelyFollowedByComment} and ${${${$self}{children}}[0]}{body} =~ m/\h*$/ and ${$self}{replacementText} !~ m/\R$/){
-        $self->logger("${$self}{name}: trailling horizontal space found in arguments -- removing it from arguments, adding to replacement text") if $is_t_switch_active;
+        $logger->trace("${$self}{name}: trailling horizontal space found in arguments -- removing it from arguments, adding to replacement text") if $is_t_switch_active;
         ${${${$self}{children}}[0]}{body} =~ s/(\h*)$//s; 
         ${$self}{replacementText} .= "$1";
     }

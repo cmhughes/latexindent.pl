@@ -22,7 +22,7 @@ use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/logger output_logfile processSwitches/;
+use LatexIndent::LogFile qw/output_logfile processSwitches $logger/;
 use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
@@ -64,6 +64,7 @@ sub new{
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
     my $self = {@_};
+    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace};
     bless ($self,$class);
     return $self;
 }
@@ -72,7 +73,6 @@ sub latexindent{
     my $self = shift;
     $self->storeSwitches;
     $self->processSwitches;
-    $self->readSettings;
     $self->file_extension_check;
     $self->operate_on_file;
 }
@@ -103,7 +103,6 @@ sub operate_on_file{
     $self->put_trailing_comments_back_in;
     $self->put_verbatim_commands_back_in;
     $self->output_indented_text;
-    $self->output_logfile;
     return
 }
 
@@ -125,25 +124,28 @@ sub construct_regular_expressions{
 sub output_indented_text{
     my $self = shift;
 
-    # output to screen, unless silent mode
-    print ${$self}{body} unless $switches{silentMode};
-
-    $self->logger("Output routine",'heading');
+    $logger->info("*Output routine:");
 
     # if -overwrite is active then output to original fileName
     if($switches{overwrite}) {
-        $self->logger("Overwriting file ${$self}{fileName}");
+        $logger->info("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } elsif($switches{outputToFile}) {
-        $self->logger("Outputting to file $switches{outputToFile}");
+        $logger->info("Outputting to file $switches{outputToFile}");
         open(OUTPUTFILE,">",$switches{outputToFile});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } else {
-        $self->logger("Not outputting to file; see -w and -o switches for more options.");
+        $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
+
+    $self->output_logfile;
+    
+    # output to screen, unless silent mode
+    print ${$self}{body} unless $switches{silentMode};
+
     return;
 }
 
@@ -151,19 +153,19 @@ sub process_body_of_text{
     my $self = shift;
 
     # find objects recursively
-    $self->logger('Phase 1: searching for objects','heading');
+    $logger->info('*Phase 1: searching for objects');
     $self->find_objects;
 
     # find all hidden child
-    $self->logger('Phase 2: finding surrounding indentation','heading');
+    $logger->info('*Phase 2: finding surrounding indentation');
     $self->find_surrounding_indentation_for_children;
 
     # indentation recursively
-    $self->logger('Phase 3: indenting objects','heading');
+    $logger->info('*Phase 3: indenting objects');
     $self->indent_children_recursively;
 
     # final indentation check
-    $self->logger('Phase 4: final indentation check','heading');
+    $logger->info('*Phase 4: final indentation check');
     $self->final_indentation_check;
 
     return;
@@ -173,15 +175,15 @@ sub find_objects{
     my $self = shift;
 
     # search for environments
-    $self->logger('looking for ENVIRONMENTS') if $is_t_switch_active;
+    $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
     $self->find_environments;
 
     # search for ifElseFi blocks
-    $self->logger('looking for IFELSEFI') if $is_t_switch_active;
+    $logger->trace('looking for IFELSEFI') if $is_t_switch_active;
     $self->find_ifelsefi;
 
     # search for headings (part, chapter, section, setc)
-    $self->logger('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
+    $logger->trace('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
     $self->find_heading;
 
     # the ordering of finding commands and special code blocks can change
@@ -195,16 +197,14 @@ sub find_objects{
 
     # if there are no children, return
     if(${$self}{children}){
-        $self->logger("Objects have been found.",'heading') if $is_t_switch_active;
+        $logger->trace("*Objects have been found.") if $is_t_switch_active;
     } else {
-        $self->logger("No objects found.");
+        $logger->trace("No objects found.");
         return;
     }
 
     # logfile information
-    $self->logger(Dumper(\%{$self}),'ttrace') if($is_tt_switch_active);
-    $self->logger("Operating on: ${$self}{name}",'heading')if $is_t_switch_active;
-    $self->logger("Number of children: ".scalar (@{${$self}{children}})) if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$self})) if($is_tt_switch_active);
 
     return;
 }
@@ -216,19 +216,19 @@ sub find_commands_or_key_equals_values_braces_and_special{
     # can change depending upon specialBeforeCommand
     if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
-        $self->logger('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
+        $logger->trace('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
         $self->find_special;
 
         # search for commands with arguments
-        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
+        $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
         $self->find_commands_or_key_equals_values_braces;
     } else {
         # search for commands with arguments
-        $self->logger('looking for COMMANDS and key = {value}') if $is_t_switch_active;
+        $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
         $self->find_commands_or_key_equals_values_braces;
 
         # search for special begin/end
-        $self->logger('looking for SPECIAL begin/end') if $is_t_switch_active;
+        $logger->trace('looking for SPECIAL begin/end') if $is_t_switch_active;
         $self->find_special;
     }
     return;
@@ -236,7 +236,7 @@ sub find_commands_or_key_equals_values_braces_and_special{
 
 sub tasks_particular_to_each_object{
     my $self = shift;
-    $self->logger("There are no tasks particular to ${$self}{name}") if $is_t_switch_active;
+    $logger->trace("There are no tasks particular to ${$self}{name}") if $is_t_switch_active;
 }
 
 sub get_settings_and_store_new_object{
@@ -254,6 +254,8 @@ sub get_settings_and_store_new_object{
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
 
+    # possible decoration in log file 
+    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
 }
 
 sub tasks_common_to_each_object{
@@ -264,12 +266,12 @@ sub tasks_common_to_each_object{
 
     # update/create the ancestor information
     if($parent{ancestors}){
-      $self->logger("Ancestors *have* been found for ${$self}{name}") if($is_t_switch_active);
+      $logger->trace("Ancestors *have* been found for ${$self}{name}") if($is_t_switch_active);
       push(@{${$self}{ancestors}},@{$parent{ancestors}});
     } else {
-      $self->logger("No ancestors found for ${$self}{name}") if($is_t_switch_active);
+      $logger->trace("No ancestors found for ${$self}{name}") if($is_t_switch_active);
       if(defined $parent{id} and $parent{id} ne ''){
-        $self->logger("Creating ancestors with $parent{id} as the first one") if($is_t_switch_active);
+        $logger->trace("Creating ancestors with $parent{id} as the first one") if($is_t_switch_active);
         push(@{${$self}{ancestors}},{ancestorID=>$parent{id},ancestorIndentation=>\$parent{indentation},type=>"natural",name=>${$self}{name}});
       }
     }
@@ -328,7 +330,7 @@ sub adjust_replacement_text_line_breaks_at_end{
 
     # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
     # so we compensate for it here
-    $self->logger("Putting linebreak after replacementText for ${$self}{name}") if($is_t_switch_active);
+    $logger->trace("Putting linebreak after replacementText for ${$self}{name}") if($is_t_switch_active);
     if(defined ${$self}{horizontalTrailingSpace}){
         ${$self}{replacementText} .= ${$self}{horizontalTrailingSpace} unless(!${$self}{endImmediatelyFollowedByComment} and defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==2);
     }
@@ -345,7 +347,7 @@ sub count_body_line_breaks{
     my $bodyLineBreaks = 0;
     $bodyLineBreaks++ while(${$self}{body} =~ m/\R/sxg);
     ${$self}{bodyLineBreaks} = $bodyLineBreaks;
-    $self->logger("bodyLineBreaks ${$self}{bodyLineBreaks}")  if((${$self}{bodyLineBreaks} != $oldBodyLineBreaks) and  $is_t_switch_active);
+    $logger->trace("bodyLineBreaks ${$self}{bodyLineBreaks}")  if((${$self}{bodyLineBreaks} != $oldBodyLineBreaks) and  $is_t_switch_active);
 }
 
 sub wrap_up_tasks{
@@ -357,8 +359,8 @@ sub wrap_up_tasks{
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent;
 
-    $self->logger(Dumper(\%{$child})) if($is_tt_switch_active);
-    $self->logger("replaced with ID: ${$child}{id}") if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$child})) if($is_tt_switch_active);
+    $logger->trace("replaced with ID: ${$child}{id}") if $is_t_switch_active;
 
 }
 

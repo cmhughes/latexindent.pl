@@ -79,8 +79,14 @@ cycleThroughBackUps: 0
 logFilePreferences:
     showEveryYamlRead: 1
     showAmalgamatedSettings: 0
+    showDecorationStartCodeBlockTrace: 0
+    showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
+    PatternLayout:
+        default: "%A%n"
+        trace: "%A%n"
+        ttrace: "%A%n"
 
 #  verbatim environments- environments specified 
 #  in this hash table will not be changed at all!

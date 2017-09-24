@@ -69,7 +69,10 @@ development version. When developing a new feature or bug fix, I typically use:
     
         git checkout -b feature/name-of-feature
 
-and then I merge it into the `develop` branch.
+and then I merge it into the `develop` branch using
+
+        git checkout develop
+        git merge feature/name-of-feature --no-ff
 
 ### perl version
 

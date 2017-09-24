@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
+use LatexIndent::LogFile qw/$logger/;
 use File::Basename;             # to get the filename and directory path
 use File::Copy;                 # to copy the original file to backup (if overwrite option set)
 use Exporter qw/import/;
@@ -31,7 +32,7 @@ sub create_back_up_file{
     return unless($switches{overwrite});
 
     # if we want to over write the current file create a backup first
-    $self->logger("Backup procedure (-w flag active):",'heading');
+    $logger->info("*Backup procedure (-w flag active):");
 
     my $fileName = ${$self}{fileName};
 
@@ -56,8 +57,8 @@ sub create_back_up_file{
     # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have
     # a conflict- er on the side of caution and turn off onlyOneBackUp
     if($onlyOneBackUp and $maxNumberOfBackUps>1) {
-        $self->logger("WARNING: onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps: $maxNumberOfBackUps");
-        $self->logger("setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps back ups");
+        $logger->warn("*onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps: $maxNumberOfBackUps");
+        $logger->warn("setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps back ups");
         $onlyOneBackUp = 0;
     }
     
@@ -65,7 +66,7 @@ sub create_back_up_file{
     # they only want one backup
     if($maxNumberOfBackUps==1) {
         $onlyOneBackUp=1 ;
-        $self->logger("FYI: you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 ");
+        $logger->info("you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 ");
     } elsif($maxNumberOfBackUps<=0 and !$onlyOneBackUp) {
         $onlyOneBackUp=0 ;
         $maxNumberOfBackUps=-1;
@@ -75,8 +76,8 @@ sub create_back_up_file{
     # be overwritten each time
     if($onlyOneBackUp) {
         $backupFile .= $backupExtension;
-        $self->logger("copying $fileName to $backupFile");
-        $self->logger("$backupFile was overwritten (see onlyOneBackUp)") if (-e $backupFile);
+        $logger->info("copying $fileName to $backupFile");
+        $logger->info("$backupFile was overwritten (see onlyOneBackUp)") if (-e $backupFile);
     } else {
         # start with a backup file .bak0 (or whatever $backupExtension is present)
         my $backupCounter = 0;
@@ -85,7 +86,7 @@ sub create_back_up_file{
         # if it exists, then keep going: .bak0, .bak1, ...
         while (-e $backupFile or $maxNumberOfBackUps>1) {
             if($backupCounter==$maxNumberOfBackUps) {
-                $self->logger("maxNumberOfBackUps reached ($maxNumberOfBackUps, see maxNumberOfBackUps)");
+                $logger->info("maxNumberOfBackUps reached ($maxNumberOfBackUps, see maxNumberOfBackUps)");
     
                 # some users may wish to cycle through back up files, e.g:
                 #    copy myfile.bak1 to myfile.bak0
@@ -94,7 +95,7 @@ sub create_back_up_file{
                 #
                 #    current back up is stored in myfile.bak4
                 if($cycleThroughBackUps) {
-                    $self->logger("cycleThroughBackUps detected (see cycleThroughBackUps) ");
+                    $logger->info("cycleThroughBackUps detected (see cycleThroughBackUps) ");
                     for(my $i=1;$i<=$maxNumberOfBackUps;$i++) {
                         # remove number from backUpFile
                         my $oldBackupFile = $backupFile;
@@ -107,7 +108,7 @@ sub create_back_up_file{
     
                         # check that the oldBackupFile exists
                         if(-e $oldBackupFile){
-                        $self->logger(" copying $oldBackupFile to $newBackupFile ");
+                        $logger->info(" copying $oldBackupFile to $newBackupFile ");
                             copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
                         }
                     }
@@ -120,16 +121,16 @@ sub create_back_up_file{
                 $maxNumberOfBackUps=1;
                 last; # break out of the loop
             }
-            $self->logger(" $backupFile already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)");
+            $logger->info("$backupFile already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)");
             $backupCounter++;
             $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;
         }
-        $self->logger("copying $fileName to $backupFile");
+        $logger->info("copying $fileName to $backupFile");
     }
     
     # output these lines to the log file
-    $self->logger("Backup file: ",$backupFile,"");
-    $self->logger("Overwriting file: ",$fileName,"");
+    $logger->info("Backup file: $backupFile");
+    $logger->info("$fileName will be overwritten after indentation");
     copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
 }
 1;
