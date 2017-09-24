@@ -22,7 +22,7 @@ use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/output_logfile processSwitches $logger/;
+use LatexIndent::LogFile qw/processSwitches $logger/;
 use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
@@ -140,8 +140,12 @@ sub output_indented_text{
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-
-    $self->output_logfile;
+    
+    # github info line
+    $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+    
+    # put the final line in the logfile
+    $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}");
     
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};

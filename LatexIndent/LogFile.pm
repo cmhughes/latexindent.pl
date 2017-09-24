@@ -23,7 +23,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
-our @EXPORT_OK = qw/output_logfile processSwitches $logger/;
+our @EXPORT_OK = qw/processSwitches $logger/;
 our @logFileNotes;
 our $logger = get_logger("Document");
 
@@ -227,16 +227,6 @@ ENDQUOTE
 
     $appender_screen->layout($layout) if $switches{screenlog};
     return;
-}
-
-sub output_logfile{
-
-  # github info line
-  $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
-  
-  # put the final line in the logfile
-  $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}");
-
 }
 
 1;
