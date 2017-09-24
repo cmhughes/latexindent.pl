@@ -10,7 +10,7 @@
 	The \texttt{commandCodeBlocks} field%
 	\announce*{2017-08-21}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile*[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -150,11 +150,11 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 	For example, consider the sample file in \cref{lst:ifnextchar}, which has default output in \cref{lst:ifnextchar-default}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/ifnextchar.tex}{\texttt{ifnextchar.tex}}{lst:ifnextchar}
+		\cmhlistingsfromfile{demonstrations/ifnextchar.tex}{\texttt{ifnextchar.tex}}{lst:ifnextchar}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/ifnextchar-default.tex}{\texttt{ifnextchar.tex} default output}{lst:ifnextchar-default}
+		\cmhlistingsfromfile{demonstrations/ifnextchar-default.tex}{\texttt{ifnextchar.tex} default output}{lst:ifnextchar-default}
 	\end{minipage}
 
 	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able to indent its body, because \texttt{latexindent.pl}
@@ -166,9 +166,9 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 	command has not been found.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
+		\cmhlistingsfromfile{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{minipage}

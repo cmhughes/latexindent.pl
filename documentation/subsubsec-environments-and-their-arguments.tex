@@ -246,10 +246,12 @@ latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
 	argument in \cref{lst:myenv-args-indent-rules-global3} has received two tabs worth of indentation, while the \emph{mandatory} argument has
 	done so in \cref{lst:myenv-args-indent-rules-global4}.
 
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:opt-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:mand-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global4}
-	\end{minipage}
+	\begin{widepage}
+		\begin{minipage}{.55\textwidth}
+			\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:opt-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global3}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.55\textwidth}
+			\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:mand-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global4}
+		\end{minipage}
+	\end{widepage}

@@ -47,8 +47,8 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           displays the version number and date of release
       -h, --help
           help (see the documentation for detailed instructions and examples)
-      -i, --information
-          information from the log file will also be output to the screen
+      -sl, --screenlog
+          log file will also be output to the screen
       -o, --outputfile=<name-of-output-file>
           output to another file; sample usage:
                 latexindent.pl -o outputfile.tex myfile.tex 
@@ -135,7 +135,7 @@ ENDQUOTE
     my $appender_screen = q();
 
     # output to screen, if appropriate
-    if($switches{information}){
+    if($switches{screenlog}){
         $appender_screen = Log::Log4perl::Appender->new(
             "Log::Log4perl::Appender::Screen",
             stderr => 0,
@@ -153,6 +153,8 @@ ENDQUOTE
     my $time = localtime();
     $logger->info($time);
 
+    $logger->info("Filename: ${$self}{fileName}");
+
     # log the switches from the user
     $logger->info("*Processing switches:");
 
@@ -160,7 +162,7 @@ ENDQUOTE
     $switches{trace} = $switches{ttrace} ?  1 : $switches{trace};
     
     # output details of switches
-    $logger->info("-i|--information: information from the log file will also be output to the screen") if($switches{information});
+    $logger->info("-sl|--screenlog: log file will also be output to the screen") if($switches{screenlog});
     $logger->info("-t|--trace: Trace mode active (you have used either -t or --trace)") if($switches{trace} and !$switches{ttrace});
     $logger->info("-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)") if($switches{ttrace});
     $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)") if($switches{silentMode});
@@ -223,7 +225,7 @@ ENDQUOTE
     $layout = Log::Log4perl::Layout::PatternLayout->new($pattern);
     $appender->layout($layout);
 
-    $appender_screen->layout($layout) if $switches{information};
+    $appender_screen->layout($layout) if $switches{screenlog};
     return;
 }
 

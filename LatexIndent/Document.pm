@@ -103,7 +103,6 @@ sub operate_on_file{
     $self->put_trailing_comments_back_in;
     $self->put_verbatim_commands_back_in;
     $self->output_indented_text;
-    $self->output_logfile;
     return
 }
 
@@ -125,10 +124,7 @@ sub construct_regular_expressions{
 sub output_indented_text{
     my $self = shift;
 
-    # output to screen, unless silent mode
-    print ${$self}{body} unless $switches{silentMode};
-
-    $logger->info("*Output routine");
+    $logger->info("*Output routine:");
 
     # if -overwrite is active then output to original fileName
     if($switches{overwrite}) {
@@ -144,6 +140,12 @@ sub output_indented_text{
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
+
+    $self->output_logfile;
+    
+    # output to screen, unless silent mode
+    print ${$self}{body} unless $switches{silentMode};
+
     return;
 }
 
