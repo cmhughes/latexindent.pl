@@ -413,6 +413,18 @@ modifyLineBreaks:
             heading: 0
             filecontents: 0
             comments: 0
+    oneSentencePerLine:
+        manipulateSentences: 0     
+        sentencesFollow:
+            par: 1
+            blankLine: 1
+            fullStop: 1
+            rightBracket: 1
+            other: 0
+        sentencesEndWith:
+            fullStop: 1
+            exclamationMark: 1
+            questionMark: 1
     environments:
         BeginStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0

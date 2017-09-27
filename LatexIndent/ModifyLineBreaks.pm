@@ -25,7 +25,7 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
 our $paragraphRegExp = q();
 
 
@@ -296,6 +296,89 @@ sub paragraphs_on_one_line{
       ${$paragraph}{value} =~ s/\R(?!\z)/ /sg; 
       ${$self}{body} =~ s/${$paragraph}{id}/${$paragraph}{value}/; 
     }
+}
+
+sub one_sentence_per_line{
+    my $self = shift;
+
+    return unless ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences};
+    $logger->trace("*One sentence per line regular expression construction: (see oneSentencePerLine)") if $is_t_switch_active;
+
+    my $sentencesFollow = qr/(?:\A(?!(?:\R*$tokens{blanklines})))|(?:\G(?!(?:\R*$tokens{blanklines})))/s;
+
+    while( my ($sentencesFollowEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}){
+        if($yesNo){
+            if($sentencesFollowEachPart eq "par"){
+                $sentencesFollowEachPart = qr/\\par/s;
+            } elsif ($sentencesFollowEachPart eq "blankLine"){
+                $sentencesFollowEachPart = qr/(?:(?:\R$tokens{blanklines}\R)|\R{2,})/s;
+            } elsif ($sentencesFollowEachPart eq "fullStop"){
+                $sentencesFollowEachPart = qr/\./s;
+            } elsif ($sentencesFollowEachPart eq "rightBracket"){
+                $sentencesFollowEachPart = qr/\)/s;
+            }
+            $sentencesFollow .= "|".$sentencesFollowEachPart;
+        }
+    }
+    $sentencesFollow = qr/$sentencesFollow/s;
+
+    $sentencesFollow = qr/(?:\A$tokens{blanklines}\R)
+                                |
+                        (?:\G$tokens{blanklines}\R)
+                                |
+                        (?:$tokens{blanklines}\h*\R)
+                                |
+                                \G
+                                |
+                                \.
+                                |
+                                \)
+                                |
+                                \?
+                                |
+                                !
+                        /sx;
+
+    $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
+    $logger->trace($sentencesFollow) if $is_tt_switch_active;
+
+    my $sentencesEndWith = q();
+
+    while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
+        if($yesNo){
+            if($sentencesEndWithEachPart eq "fullStop"){
+                $sentencesEndWithEachPart = qr/\./;
+            } elsif ($sentencesEndWithEachPart eq "exclamationMark"){
+                $sentencesEndWithEachPart = qr/!/;
+            } elsif ($sentencesEndWithEachPart eq "questionMark"){
+                $sentencesEndWithEachPart = qr/\?/;
+            }
+            $sentencesEndWith .= ($sentencesEndWith eq "" ? q(): "|" ).$sentencesEndWithEachPart;
+        }
+    }
+    $sentencesEndWith = qr/$sentencesEndWith/;
+
+    $logger->trace("Sentences end with regexp:") if $is_tt_switch_active;
+    $logger->trace($sentencesEndWith) if $is_tt_switch_active;
+
+    $logger->trace("Finding sentences") if $is_t_switch_active;
+
+    ${$self}{body} =~ s/($sentencesFollow)
+                            \h*
+                            (?!$trailingCommentRegExp)
+                            (.*?)
+                            ($sentencesEndWith)
+                            \h*
+                            \R?
+                            /
+                            my $beginning = $1;
+                            my $middle    = $2;
+                            my $end       = $3;
+                            # remove line breaks from within a sentence
+                            $middle =~ s|\R(\h*)|$1?$1:" ";|esgx;
+                            # reconstruct the sentence
+                            $beginning.$middle.$end."\n";
+                            /xsge;
 }
 
 1;
