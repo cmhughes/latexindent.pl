@@ -142,11 +142,11 @@ sub output_indented_text{
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
     
+    # put the final line in the logfile
+    $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}") if ${$masterSettings{logFilePreferences}}{endLogFileWith};
+    
     # github info line
     $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
-    
-    # put the final line in the logfile
-    $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}");
     
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};
