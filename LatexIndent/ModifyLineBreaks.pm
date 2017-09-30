@@ -328,6 +328,8 @@ sub one_sentence_per_line{
                                 |
                         (?:$tokens{blanklines}\h*\R)
                                 |
+                                \R{2,}
+                                |
                                 \G
                                 |
                                 \.
@@ -369,13 +371,15 @@ sub one_sentence_per_line{
                             (.*?)
                             ($sentencesEndWith)
                             \h*
-                            \R?
-                            /
+                            \R?/
                             my $beginning = $1;
                             my $middle    = $2;
                             my $end       = $3;
                             # remove line breaks from within a sentence
-                            $middle =~ s|\R(\h*)|$1?$1:" ";|esgx;
+                            $middle =~ s|
+                                            (?!\A)      # not at the *beginning* of a match
+                                            (\h*)\R     # possible horizontal space, then line break
+                                        |$1?$1:" ";|esgx;
                             # reconstruct the sentence
                             $beginning.$middle.$end."\n";
                             /xsge;
