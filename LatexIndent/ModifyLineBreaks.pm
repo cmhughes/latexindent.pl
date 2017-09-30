@@ -302,7 +302,7 @@ sub one_sentence_per_line{
     my $self = shift;
 
     return unless ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences};
-    $logger->trace("*One sentence per line regular expression construction: (see oneSentencePerLine)") if $is_t_switch_active;
+    $logger->trace("*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)") if $is_t_switch_active;
 
     my $sentencesFollow = qr/(?:\A(?!(?:\R*$tokens{blanklines})))|(?:\G(?!(?:\R*$tokens{blanklines})))/s;
 
@@ -349,21 +349,27 @@ sub one_sentence_per_line{
     while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
         if($yesNo){
             if($sentencesEndWithEachPart eq "fullStop"){
+                $logger->trace("sentence ENDS with full stop (see oneSentencePerLine:sentencesEndWith:fullStop)") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/\./;
             } elsif ($sentencesEndWithEachPart eq "exclamationMark"){
+                $logger->trace("sentence ENDS with exclamation mark (see oneSentencePerLine:sentencesEndWith:exclamationMark)") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/!/;
             } elsif ($sentencesEndWithEachPart eq "questionMark"){
+                $logger->trace("sentence ENDS with question mark (see oneSentencePerLine:sentencesEndWith:questionMark)") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/\?/;
+            } elsif ($sentencesEndWithEachPart eq "other"){
+                $logger->trace("sentence ENDS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesEndWith:other)") if $is_t_switch_active;
+                $sentencesEndWithEachPart = qr/$yesNo/;
             }
             $sentencesEndWith .= ($sentencesEndWith eq "" ? q(): "|" ).$sentencesEndWithEachPart;
         }
     }
     $sentencesEndWith = qr/$sentencesEndWith/;
 
-    $logger->trace("Sentences end with regexp:") if $is_tt_switch_active;
+    $logger->trace("Overall sentences end with regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesEndWith) if $is_tt_switch_active;
 
-    $logger->trace("Finding sentences") if $is_t_switch_active;
+    $logger->trace("Finding sentences...") if $is_t_switch_active;
 
     ${$self}{body} =~ s/($sentencesFollow)
                             \h*

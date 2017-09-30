@@ -279,7 +279,7 @@ sub readSettings{
             $settingsCounter++;
 
             # check for a match of the ;
-            if($_ =~ m/;/){
+            if($_ =~ m/(?<!\\);/){
                 my (@subfield) = split(/(?<!\\);/,$_);
 
                 # the content up to the first ; is called the 'root'
