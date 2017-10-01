@@ -37,6 +37,8 @@ latexindent.pl -s sentences-across-blocks.tex -m -o=+mod0 -l=manipulateSentences
 # tex book snippet
 latexindent.pl -s texbook-snippet.tex -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:manipulateSentences:1"
 latexindent.pl -s texbook-snippet.tex -m -o=+mod2 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\,|\:"
+# verbatim block
+latexindent.pl -s verbatim-test.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 
 [[ $silentMode == 0 ]] && set -x 
 
