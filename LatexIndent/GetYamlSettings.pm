@@ -252,8 +252,8 @@ sub readSettings{
 
         # store settings, possibly multiple ones split by commas
         my @yamlSettings;
-        if($switches{yaml} =~ m/,/){
-            @yamlSettings = split(/,/,$switches{yaml});
+        if($switches{yaml} =~ m/(?<!\\),/){
+            @yamlSettings = split(/(?<!\\),/,$switches{yaml});
         } else {
             push(@yamlSettings,$switches{yaml});
         }

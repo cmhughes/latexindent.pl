@@ -415,10 +415,13 @@ modifyLineBreaks:
             comments: 0
     oneSentencePerLine:
         manipulateSentences: 0     
+        removeSentenceLineBreaks: 1
         sentencesFollow:
             par: 1
             blankLine: 1
             fullStop: 1
+            exclamationMark: 1
+            questionMark: 1
             rightBracket: 1
             other: 0
         sentencesEndWith:

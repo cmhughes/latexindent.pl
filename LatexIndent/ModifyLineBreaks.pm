@@ -304,46 +304,57 @@ sub one_sentence_per_line{
     return unless ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences};
     $logger->trace("*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)") if $is_t_switch_active;
 
-    my $sentencesFollow = qr/(?:\A(?!(?:\R*$tokens{blanklines})))|(?:\G(?!(?:\R*$tokens{blanklines})))/s;
+    # sentences FOLLOW
+    # sentences FOLLOW
+    # sentences FOLLOW
+    my $sentencesFollow = q();
 
     while( my ($sentencesFollowEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}){
         if($yesNo){
             if($sentencesFollowEachPart eq "par"){
-                $sentencesFollowEachPart = qr/\\par/s;
+                $sentencesFollowEachPart = qr/\R?\\par/s;
             } elsif ($sentencesFollowEachPart eq "blankLine"){
-                $sentencesFollowEachPart = qr/(?:(?:\R$tokens{blanklines}\R)|\R{2,})/s;
-            } elsif ($sentencesFollowEachPart eq "fullStop"){
-                $sentencesFollowEachPart = qr/\./s;
-            } elsif ($sentencesFollowEachPart eq "rightBracket"){
-                $sentencesFollowEachPart = qr/\)/s;
-            }
-            $sentencesFollow .= "|".$sentencesFollowEachPart;
-        }
-    }
-    $sentencesFollow = qr/$sentencesFollow/s;
-
-    $sentencesFollow = qr/(?:\A$tokens{blanklines}\R)
-                                |
-                        (?:\G$tokens{blanklines}\R)
-                                |
-                        (?:$tokens{blanklines}\h*\R)
+                $sentencesFollowEachPart = qr/
+                        (?:\A(?:$tokens{blanklines}\R)+)     # the order of each of these 
+                                |                            # is important, as (like always) the first
+                        (?:\G(?:$tokens{blanklines}\R)+)     # thing to be matched will 
+                                |                            # be accepted
+                        (?:(?:$tokens{blanklines}\h*\R)+)
                                 |
                                 \R{2,}
                                 |
                                 \G
-                                |
-                                \.
-                                |
-                                \)
-                                |
-                                \?
-                                |
-                                !
                         /sx;
+            } elsif ($sentencesFollowEachPart eq "fullStop"){
+                $sentencesFollowEachPart = qr/\./s;
+            } elsif ($sentencesFollowEachPart eq "exclamationMark"){
+                $sentencesFollowEachPart = qr/\!/s;
+            } elsif ($sentencesFollowEachPart eq "questionMark"){
+                $sentencesFollowEachPart = qr/\?/s;
+            } elsif ($sentencesFollowEachPart eq "rightBracket"){
+                $sentencesFollowEachPart = qr/\)/s;
+            }
+            $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").qr/$sentencesFollowEachPart/sx;
+        }
+    }
+
+    # if blankLine is not active from sentencesFollow then we need to set up the 
+    # beginning of the string, but make sure that it is *not* followed by a 
+    # blank line token, or a blank line
+    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+            $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").
+                                    qr/
+                                        \G
+                                        (?!$tokens{blanklines})
+                                    /sx;
+    }
 
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesFollow) if $is_tt_switch_active;
 
+    # sentences END with
+    # sentences END with
+    # sentences END with
     my $sentencesEndWith = q();
 
     while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
@@ -366,28 +377,53 @@ sub one_sentence_per_line{
     }
     $sentencesEndWith = qr/$sentencesEndWith/;
 
+    # the OVERALL sentence regexp
+    # the OVERALL sentence regexp
+    # the OVERALL sentence regexp
     $logger->trace("Overall sentences end with regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesEndWith) if $is_tt_switch_active;
 
     $logger->trace("Finding sentences...") if $is_t_switch_active;
 
+    my $notWithinSentence = qr/$trailingCommentRegExp/s;
+
+    # if 
+    #
+    #   modifyLineBreaks
+    #       oneSentencePerLine
+    #           sentencesFollow
+    #               blankLine
+    #
+    # is set to 0 then we need to *exclude* the $tokens{blanklines} from the sentence routine,
+    # otherwise we could begin a sentence with $tokens{blanklines}.
+    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+        $notWithinSentence .= "|".qr/(?:\h*\R?$tokens{blanklines})/s;
+    }
+
+    # similarly for \par
+    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{par}){
+        $notWithinSentence .= "|".qr/(?:\R?\\par)/s;
+    }
+
+    # make the sentence manipulation
     ${$self}{body} =~ s/($sentencesFollow)
-                            \h*
-                            (?!$trailingCommentRegExp)
+                            (\h*)
+                            (?!$notWithinSentence) 
                             (.*?)
                             ($sentencesEndWith)
                             \h*
                             \R?/
                             my $beginning = $1;
-                            my $middle    = $2;
-                            my $end       = $3;
+                            my $h_space   = ($2?$2:q());
+                            my $middle    = $3;
+                            my $end       = $4;
                             # remove line breaks from within a sentence
                             $middle =~ s|
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
                                         |$1?$1:" ";|esgx;
                             # reconstruct the sentence
-                            $beginning.$middle.$end."\n";
+                            $beginning.$h_space.$middle.$end."\n";
                             /xsge;
 }
 
