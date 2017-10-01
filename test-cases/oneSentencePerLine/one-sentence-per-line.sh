@@ -23,6 +23,7 @@ latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod2 -l=manipulateSentence
 latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod3 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesFollow:blankLine: 0;fullStop:0"
 latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod4 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesFollow:blankLine: 0;exclamationMark:0"
 latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod5 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesFollow:blankLine: 0;questionMark:0"
+latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod6 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
 # other punctuation
 latexindent.pl -s other-punctuation.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 latexindent.pl -s other-punctuation.tex -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;"

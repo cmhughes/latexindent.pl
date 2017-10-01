@@ -421,7 +421,7 @@ sub one_sentence_per_line{
                             $middle =~ s|
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
-                                        |$1?$1:" ";|esgx;
+                                        |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
                             # reconstruct the sentence
                             $beginning.$h_space.$middle.$end."\n";
                             /xsge;
