@@ -6,6 +6,7 @@ destinationDir="/media/D8B4-3FFC/latexindent/"
 cp create-windows-executable.bat ${destinationDir}
 cp test-windows-small.bat ${destinationDir}
 cp ppp.pl ${destinationDir}
+cp latexindent-module-installer.pl ${destinationDir}
 
 # from the one above
 cd ../

@@ -13,6 +13,7 @@ cd ../
 # create a folder
 mkdir latexindent
 cp latexindent.pl latexindent
+cp helper-scripts/latexindent-module-installer.pl latexindent
 cp latexindent.exe latexindent
 cp defaultSettings.yaml latexindent
 # modules

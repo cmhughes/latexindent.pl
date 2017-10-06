@@ -5,6 +5,17 @@
 	 minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may
 	 need to install the missing modules.
 
+     \announce{NEW}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
+     on your system; if you run
+     \begin{commandshell}
+perl latexindent-module-installer.pl
+     \end{commandshell}
+     or
+	 \begin{dosprompt}
+perl latexindent-module-installer.pl
+ \end{dosprompt}
+    then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
+
 	 \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
 #!/usr/bin/perl
 
