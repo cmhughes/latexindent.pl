@@ -44,6 +44,10 @@ latexindent.pl -s verbatim-test.tex -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s more-code-blocks.tex -m -o=+mod1 -l=manipulateSentences.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 latexindent.pl -s more-code-blocks.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml,item.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
+# webwork guide
+latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml
+latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop
+
 
 [[ $silentMode == 0 ]] && set -x 
 
