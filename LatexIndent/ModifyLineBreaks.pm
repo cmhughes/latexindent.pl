@@ -331,8 +331,10 @@ sub one_sentence_per_line{
                 $sentencesFollowEachPart = qr/\!/s;
             } elsif ($sentencesFollowEachPart eq "questionMark"){
                 $sentencesFollowEachPart = qr/\?/s;
-            } elsif ($sentencesFollowEachPart eq "rightBracket"){
-                $sentencesFollowEachPart = qr/\)/s;
+            } elsif ($sentencesFollowEachPart eq "rightBrace"){
+                $sentencesFollowEachPart = qr/\}/s;
+            } elsif ($sentencesFollowEachPart eq "other"){
+                $sentencesFollowEachPart = qr/$yesNo/;
             }
             $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").qr/$sentencesFollowEachPart/sx;
         }
@@ -349,8 +351,34 @@ sub one_sentence_per_line{
                                     /sx;
     }
 
+    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+        $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h|\R)*/sx );
+    } else {
+        $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h*\R?)/sx );
+    }
+
+
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesFollow) if $is_tt_switch_active;
+    
+    # sentences BEGIN with
+    # sentences BEGIN with
+    # sentences BEGIN with
+    my $sentencesBeginWith = q();
+
+    while( my ($sentencesBeginWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesBeginWith}}){
+        if($yesNo){
+            if($sentencesBeginWithEachPart eq "A-Z"){
+                $logger->trace("sentence BEGINS with capital letters (see oneSentencePerLine:sentencesBeginWith:A-Z)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/(?!$tokens{blanklines})[A-Z]/;
+            } elsif ($sentencesBeginWithEachPart eq "a-z"){
+                $logger->trace("sentence BEGINS with lower-case letters (see oneSentencePerLine:sentencesBeginWith:a-z)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/[a-z]/;
+            }
+            $sentencesBeginWith .= ($sentencesBeginWith eq "" ? q(): "|" ).$sentencesBeginWithEachPart;
+        }
+    }
+    $sentencesBeginWith = qr/$sentencesBeginWith/;
 
     # sentences END with
     # sentences END with
@@ -406,7 +434,7 @@ sub one_sentence_per_line{
     }
 
     # make the sentence manipulation
-    ${$self}{body} =~ s/($sentencesFollow)
+    ${$self}{body} =~ s/((?:$sentencesFollow)(?:$sentencesBeginWith))
                             (\h*)
                             (?!$notWithinSentence) 
                             (.*?)
@@ -422,6 +450,9 @@ sub one_sentence_per_line{
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
                                         |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+                            $logger->trace("beginning: $beginning") if $is_tt_switch_active;
+                            $logger->trace("middle: $middle") if $is_tt_switch_active;
+                            $logger->trace("end: $end") if $is_tt_switch_active;
                             # reconstruct the sentence
                             $beginning.$h_space.$middle.$end."\n";
                             /xsge;

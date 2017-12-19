@@ -422,7 +422,11 @@ modifyLineBreaks:
             fullStop: 1
             exclamationMark: 1
             questionMark: 1
+            rightBrace: 1
             other: 0
+        sentencesBeginWith:
+            A-Z: 1
+            a-z: 0
         sentencesEndWith:
             fullStop: 1
             exclamationMark: 1

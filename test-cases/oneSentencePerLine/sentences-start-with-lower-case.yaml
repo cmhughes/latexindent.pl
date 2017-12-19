@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        sentencesBeginWith:
+            a-z: 1

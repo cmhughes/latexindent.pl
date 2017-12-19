@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        sentencesFollow:
+            other: '\\item'
