@@ -35,8 +35,9 @@ latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod1 -l=manipulateSent
 # sentences across code blocks
 latexindent.pl -s sentences-across-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 # tex book snippet
-latexindent.pl -s texbook-snippet.tex -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:manipulateSentences:1"
+latexindent.pl -s texbook-snippet.tex -m -o=+mod1 -l=manipulateSentences.yaml
 latexindent.pl -s texbook-snippet.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\,|\:"
+latexindent.pl -s texbook-snippet.tex -m -o=+mod3 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesFollow:commentOnPreviousLine:0"
 # verbatim block
 latexindent.pl -s verbatim-test.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 # more code blocks

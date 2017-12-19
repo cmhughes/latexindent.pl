@@ -333,13 +333,14 @@ sub one_sentence_per_line{
                 $sentencesFollowEachPart = qr/\?/s;
             } elsif ($sentencesFollowEachPart eq "rightBrace"){
                 $sentencesFollowEachPart = qr/\}/s;
+            } elsif ($sentencesFollowEachPart eq "commentOnPreviousLine"){
+                $sentencesFollowEachPart = qr/$trailingCommentRegExp\h*\R/s;
             } elsif ($sentencesFollowEachPart eq "other"){
                 $sentencesFollowEachPart = qr/$yesNo/;
             }
             $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").qr/$sentencesFollowEachPart/sx;
         }
     }
-
     # if blankLine is not active from sentencesFollow then we need to set up the 
     # beginning of the string, but make sure that it is *not* followed by a 
     # blank line token, or a blank line
@@ -433,14 +434,16 @@ sub one_sentence_per_line{
         $notWithinSentence .= "|".qr/(?:\R?\\par)/s;
     }
 
+    # initiate the sentence counter
+    my $sentenceCounter;
+    my @sentenceStorage;
+
     # make the sentence manipulation
-    ${$self}{body} =~ s/((?:$sentencesFollow)(?:$sentencesBeginWith))
+    ${$self}{body} =~ s/((?:$sentencesFollow))
                             (\h*)
                             (?!$notWithinSentence) 
-                            (.*?)
-                            ($sentencesEndWith)
-                            \h*
-                            \R?/
+                            ((?:$sentencesBeginWith).*?)
+                            ($sentencesEndWith)/
                             my $beginning = $1;
                             my $h_space   = ($2?$2:q());
                             my $middle    = $3;
@@ -454,8 +457,24 @@ sub one_sentence_per_line{
                             $logger->trace("middle: $middle") if $is_tt_switch_active;
                             $logger->trace("end: $end") if $is_tt_switch_active;
                             # reconstruct the sentence
-                            $beginning.$h_space.$middle.$end."\n";
+                            $sentenceCounter++;
+                            push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end});
+                            $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken};
                             /xsge;
+
+    # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
+    # before and after appropriately
+    while( my $sentence = pop @sentenceStorage){
+      my $sentenceStorageID = ${$sentence}{id};
+      my $sentenceStorageValue = ${$sentence}{value};
+      # sentence at the very END
+      ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
+      # sentence at the very BEGINNING
+      ${$self}{body} =~ s/^$sentenceStorageID\R?/$sentenceStorageValue\n/s;
+      # all other sentences
+      ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
+    }
+
 }
 
 1;

@@ -423,6 +423,7 @@ modifyLineBreaks:
             exclamationMark: 1
             questionMark: 1
             rightBrace: 1
+            commentOnPreviousLine: 1
             other: 0
         sentencesBeginWith:
             A-Z: 1
