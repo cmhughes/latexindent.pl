@@ -448,6 +448,12 @@ sub one_sentence_per_line{
                             my $h_space   = ($2?$2:q());
                             my $middle    = $3;
                             my $end       = $4;
+                            my $trailingComments = q();
+                            # remove trailing comments from within the body of the sentence
+                            while($middle =~ m|$trailingCommentRegExp|){
+                                $middle =~ s|\h*($trailingCommentRegExp)||s;
+                                $trailingComments .= $1;
+                            }
                             # remove line breaks from within a sentence
                             $middle =~ s|
                                             (?!\A)      # not at the *beginning* of a match
@@ -459,7 +465,7 @@ sub one_sentence_per_line{
                             # reconstruct the sentence
                             $sentenceCounter++;
                             push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end});
-                            $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken};
+                            $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments;
                             /xsge;
 
     # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks

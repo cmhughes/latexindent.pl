@@ -47,7 +47,9 @@ latexindent.pl -s more-code-blocks.tex -m -o=+mod2 -l=manipulateSentences.yaml,s
 # webwork guide
 latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop
-
+# trailing comments
+latexindent.pl -s trailing-comments -m -o=+mod0 -l=manipulateSentences.yaml
+latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
 
 [[ $silentMode == 0 ]] && set -x 
 
