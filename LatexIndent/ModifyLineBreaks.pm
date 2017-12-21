@@ -375,6 +375,9 @@ sub one_sentence_per_line{
             } elsif ($sentencesBeginWithEachPart eq "a-z"){
                 $logger->trace("sentence BEGINS with lower-case letters (see oneSentencePerLine:sentencesBeginWith:a-z)") if $is_t_switch_active;
                 $sentencesBeginWithEachPart = qr/[a-z]/;
+            } elsif ($sentencesBeginWithEachPart eq "other"){
+                $logger->trace("sentence BEGINS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesBeginWith:other)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/$yesNo/;
             }
             $sentencesBeginWith .= ($sentencesBeginWith eq "" ? q(): "|" ).$sentencesBeginWithEachPart;
         }
@@ -459,9 +462,9 @@ sub one_sentence_per_line{
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
                                         |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
-                            $logger->trace("beginning: $beginning") if $is_tt_switch_active;
-                            $logger->trace("middle: $middle") if $is_tt_switch_active;
-                            $logger->trace("end: $end") if $is_tt_switch_active;
+                            $logger->trace("follows: $beginning") if $is_tt_switch_active;
+                            $logger->trace("sentence: $middle") if $is_tt_switch_active;
+                            $logger->trace("ends with: $end") if $is_tt_switch_active;
                             # reconstruct the sentence
                             $sentenceCounter++;
                             push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end});
@@ -476,7 +479,7 @@ sub one_sentence_per_line{
       # sentence at the very END
       ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
       # sentence at the very BEGINNING
-      ${$self}{body} =~ s/^$sentenceStorageID\R?/$sentenceStorageValue\n/s;
+      ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
       # all other sentences
       ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
     }

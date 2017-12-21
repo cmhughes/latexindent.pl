@@ -50,6 +50,10 @@ latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full
 # trailing comments
 latexindent.pl -s trailing-comments -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
+# sentences beginning with 'other'
+latexindent.pl -s other-begins -m -o=+mod0 -l=manipulateSentences.yaml
+latexindent.pl -s other-begins -m -o=+mod1 -l=manipulateSentences.yaml,other-begins.yaml
+
 
 [[ $silentMode == 0 ]] && set -x 
 

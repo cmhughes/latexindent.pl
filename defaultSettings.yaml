@@ -428,6 +428,7 @@ modifyLineBreaks:
         sentencesBeginWith:
             A-Z: 1
             a-z: 0
+            other: 0
         sentencesEndWith:
             fullStop: 1
             exclamationMark: 1
