@@ -371,7 +371,7 @@ sub one_sentence_per_line{
         if($yesNo){
             if($sentencesBeginWithEachPart eq "A-Z"){
                 $logger->trace("sentence BEGINS with capital letters (see oneSentencePerLine:sentencesBeginWith:A-Z)") if $is_t_switch_active;
-                $sentencesBeginWithEachPart = qr/(?!$tokens{blanklines})[A-Z]/;
+                $sentencesBeginWithEachPart = qr/(?!(?:$tokens{blanklines}|$tokens{verbatim}|$tokens{preamble}))[A-Z]/;
             } elsif ($sentencesBeginWithEachPart eq "a-z"){
                 $logger->trace("sentence BEGINS with lower-case letters (see oneSentencePerLine:sentencesBeginWith:a-z)") if $is_t_switch_active;
                 $sentencesBeginWithEachPart = qr/[a-z]/;
@@ -462,6 +462,7 @@ sub one_sentence_per_line{
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
                                         |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+                            $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;
                             $logger->trace("follows: $beginning") if $is_tt_switch_active;
                             $logger->trace("sentence: $middle") if $is_tt_switch_active;
                             $logger->trace("ends with: $end") if $is_tt_switch_active;

@@ -1,0 +1,504 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\section{defaultSettings.yaml}
+ \label{sec:defuseloc}
+ \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}.
+ The idea is to separate the behaviour of the script from the internal working -- this is very similar to the way that we separate content from form when writing our documents in \LaTeX.
+
+ If you look in \texttt{defaultSettings.yaml} you'll find the switches that govern the behaviour of \texttt{latexindent.pl}.
+ If you're not sure where \texttt{defaultSettings.yaml} resides on your computer, don't worry as \texttt{indent.log} will tell you where to find it.
+ \texttt{defaultSettings.yaml} is commented, but here is a description of what each switch is designed to do.
+ The default value is given in each case; whenever you see \emph{integer} in \emph{this} section, assume that it must be greater than or equal to \texttt{0} unless otherwise stated.
+
+\yamltitle{fileExtensionPreference}*{fields}
+	\texttt{latexindent.pl} can be called to act on a file without specifying the file extension.
+	For example we can call \begin{commandshell}
+latexindent.pl myfile
+\end{commandshell} \begin{wrapfigure}[8]{r}[0pt]{6cm} \cmhlistingsfromfile[style=fileExtensionPreference]{.
+			./defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
+	\end{wrapfigure}
+
+	in which case the script will look for \texttt{myfile} with the extensions
+	specified in \texttt{fileExtensionPreference} in their numeric order.
+	If no match is found, the script will exit.
+	As with all of the fields, you should change and/or add to this as necessary.
+
+	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in \cref{lst:fileExtensionPreference} means that the script will first look for \texttt{myfile.tex}, then \texttt{myfile.sty}, \texttt{myfile.cls}, and finally \texttt{myfile.bib} in order\footnote{Throughout this manual, listings shown with line numbers represent code taken directly from \texttt{defaultSettings.yaml}.}.
+
+\yamltitle{backupExtension}*{extension name}
+
+	If you call \texttt{latexindent.pl} with the \texttt{-w} switch (to overwrite \texttt{myfile.tex}) then it will create a backup file before doing any indentation; the default extension is \texttt{.bak}, so, for example, \texttt{myfile.bak0} would be created when calling \texttt{latexindent.pl myfile.tex}  for the first time.
+
+	By default, every time you subsequently call \texttt{latexindent.pl} with the \texttt{-w} to act upon \texttt{myfile.tex}, it will create successive back up files: \texttt{myfile.bak1}, \texttt{myfile.bak2}, etc.
+
+\yamltitle{onlyOneBackUp}*{integer}
+	\label{page:onlyonebackup}
+	If you don't want a backup for every time that you call \texttt{latexindent.pl} (so you don't want \texttt{myfile.bak1}, \texttt{myfile.bak2}, etc) and you simply want \texttt{myfile.bak} (or whatever you chose \texttt{backupExtension} to be) then change \texttt{onlyOneBackUp} to \texttt{1}; the default value of \texttt{onlyOneBackUp} is \texttt{0}.
+
+\yamltitle{maxNumberOfBackUps}*{integer}
+	Some users may only want a finite number of backup files, say at most $3$, in which case, they can change this switch.
+	The smallest value of \texttt{maxNumberOfBackUps} is $0$ which will \emph{not} prevent backup files being made; in this case, the behaviour will be dictated entirely by \texttt{onlyOneBackUp}.
+	The default value of \texttt{maxNumberOfBackUps} is \texttt{0}.
+
+\yamltitle{cycleThroughBackUps}*{integer}
+	Some users may wish to cycle through backup files, by deleting the oldest backup file and keeping only the most recent; for example, with \texttt{maxNumberOfBackUps: 4}, and \texttt{cycleThroughBackUps} set to \texttt{1}  then the \texttt{copy} procedure given below would be obeyed.
+
+	\begin{commandshell}
+copy myfile.bak1 to myfile.bak0
+copy myfile.bak2 to myfile.bak1
+copy myfile.bak3 to myfile.bak2
+copy myfile.bak4 to myfile.bak3
+	\end{commandshell}
+	The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
+
+\yamltitle{logFilePreferences}*{fields}
+	\texttt{latexindent.pl} writes information to \texttt{indent.log}, some of which can be customized by changing \texttt{logFilePreferences}; see \cref{lst:logFilePreferences}.
+	If you load your own user settings (see \vref{sec:indentconfig}) then \texttt{latexindent.pl} will detail them in \texttt{indent.log}; you can choose not to have the details logged by switching \texttt{showEveryYamlRead} to \texttt{0}.
+	Once all of your settings have been loaded, you can see the amalgamated settings in the log file by switching \texttt{showAmalgamatedSettings} to \texttt{1}, if you wish.
+
+	\cmhlistingsfromfile*[style=logFilePreferences,]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+
+	When%
+	\announce{NEW}{showDecorationStartCodeBlockTrace} either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive detailed information in \texttt{indent.log}.
+	%
+	You can specify character strings to appear before and after the notification of a found code block using, respectively, \texttt{showDecorationStartCodeBlockTrace} and \texttt{showDecorationFinishCodeBlockTrace}.
+	A demonstration is given in \vref{app:logfile-demo}.
+
+	The log file will end with the characters given in \texttt{endLogFileWith}, and will report the \texttt{GitHub} address of \texttt{latexindent.pl} to the log file if \texttt{showGitHubInfoFooter} is set to \texttt{1}.
+
+	\texttt{latexindent.pl}%
+	\announce{NEW}{log file pattern layout} uses the \texttt{log4perl} module \cite{log4perl} to handle the creation of the logfile.
+	%
+	You can specify the layout of the information given in the logfile using any of the \texttt{Log Layouts} detailed at \cite{log4perl}.
+
+\yamltitle{verbatimEnvironments}*{fields}
+
+	A field that contains a list of environments that you would like left completely alone -- no indentation will be performed on environments that you have specified in this field, see \cref{lst:verbatimEnvironments}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=verbatimEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
+	\end{minipage}%
+
+	Note that if  you put an environment in  \texttt{verbatimEnvironments} and in other fields such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then \texttt{latexindent.pl} will \emph{always} prioritize  \texttt{verbatimEnvironments}.
+
+\yamltitle{verbatimCommands}*{fields}
+	A field that contains a list of commands that are verbatim commands, for example \lstinline|\lstinline|; any commands populated in this field are protected from line breaking routines (only relevant if the \texttt{-m} is active, see \vref{sec:modifylinebreaks}).
+
+\yamltitle{noIndentBlock}*{fields}
+
+	\begin{wrapfigure}[8]{r}[0pt]{6cm}
+		\cmhlistingsfromfile[style=noIndentBlock]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
+	\end{wrapfigure}
+	If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if it is \emph{not} a verbatim-like environment) then you can wrap it in an environment from \texttt{noIndentBlock}; you can use any name you like for this, provided you populate it as demonstrate in \cref{lst:noIndentBlock}.
+
+	Of course, you don't want to have to specify these as null environments in your code, so you use them with a comment symbol, \lstinline!%!, followed by as many spaces (possibly none) as you like; see \cref{lst:noIndentBlockdemo} for example.
+
+	\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\texttt{noIndentBlock} demonstration}{lst:noIndentBlockdemo}
+%(*@@*) \begin{noindent}
+        this code
+                won't
+     be touched
+                    by
+             latexindent.pl!
+%(*@@*)\end{noindent}
+	\end{cmhlistings}
+
+\yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
+
+	\begin{wrapfigure}[10]{r}[0pt]{7cm}
+		\cmhlistingsfromfile[style=removeTrailingWhitespace]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+
+		\vspace{.1cm}
+		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[width=.8\linewidth,before=\centering]{lst:removeTrailingWhitespace-alt}
+removeTrailingWhitespace: 1
+\end{yaml}
+	\end{wrapfigure}
+	Trailing white space can be removed both \emph{before} and \emph{after} processing the document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields can take the values \texttt{0} or \texttt{1}.
+	See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results.
+	Thanks to \cite{vosskuhle} for providing this feature.
+
+	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or \texttt{1}, if you wish; in this case,%
+	\announce{2017-06-28}{removeTrailingWhitespace} \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing} to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
+\yamltitle{fileContentsEnvironments}*{field}
+
+	\begin{wrapfigure}[6]{r}[0pt]{6cm}
+		\cmhlistingsfromfile[style=fileContentsEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
+	\end{wrapfigure}
+	Before \texttt{latexindent.pl} determines the difference between preamble (if any) and the main document, it first searches for any of the environments specified in \texttt{fileContentsEnvironments}, see \cref{lst:fileContentsEnvironments}.
+	The behaviour of \texttt{latexindent.pl} on these environments is determined by their location (preamble or not), and the value \texttt{indentPreamble}, discussed next.
+
+\yamltitle{indentPreamble}{0|1}
+
+	The preamble of a document can sometimes contain some trickier code for \texttt{latexindent.pl} to operate upon.
+	By default, \texttt{latexindent.pl} won't try to operate on the preamble (as \texttt{indentPreamble} is set to \texttt{0}, by default), but if you'd like \texttt{latexindent.pl} to try then change \texttt{indentPreamble} to \texttt{1}.
+
+\yamltitle{lookForPreamble}*{fields}
+
+	\begin{wrapfigure}[8]{r}[0pt]{5cm}
+		\cmhlistingsfromfile[style=lookForPreamble]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
+	\end{wrapfigure}
+	Not all files contain preamble; for example, \texttt{sty}, \texttt{cls} and \texttt{bib} files typically do \emph{not}.
+	Referencing \cref{lst:lookForPreamble}, if you set, for example, \texttt{.tex} to \texttt{0}, then regardless of the setting of the value of \texttt{indentPreamble}, preamble will not be assumed when operating upon \texttt{.tex} files.
+\yamltitle{preambleCommandsBeforeEnvironments}{0|1}
+	Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a document, when this switch is set to \texttt{0} then environment code blocks will be sought first, and then command code blocks.
+	When this switch is set to \texttt{1}, commands will be sought first.
+	The example that first motivated this switch contained the code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
+
+	\begin{cmhlistings}{Motivating \texttt{preambleCommandsBeforeEnvironments}}{lst:motivatepreambleCommandsBeforeEnvironments}
+...
+preheadhook={\begin{mdframed}[style=myframedstyle]},
+postfoothook=\end{mdframed},
+...
+\end{cmhlistings}
+
+\yamltitle{defaultIndent}*{horizontal space}
+	This is the default indentation (\lstinline!\t! means a tab, and is the default value) used in the absence of other details for the command or environment we are working with; see \texttt{indentRules} in \vref{sec:noadd-indent-rules} for more details.
+
+	If you're interested in experimenting with \texttt{latexindent.pl} then you can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
+
+\yamltitle{lookForAlignDelims}*{fields}
+	\begin{wrapfigure}[12]{r}[0pt]{5cm}
+		\begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
+lookForAlignDelims:
+   tabular: 1
+   tabularx: 1
+   longtable: 1
+   array: 1
+   matrix: 1
+   ...
+	\end{yaml}
+	\end{wrapfigure}
+	This contains a list of environments and/or commands that are operated upon in a special way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}).
+	In fact, the fields in \texttt{lookForAlignDelims} can actually take two different forms: the \emph{basic} version is shown in \cref{lst:aligndelims:basic} and the \emph{advanced} version in \cref{lst:aligndelims:advanced}; we will discuss each in turn.
+
+	The environments specified in this field will be operated on in a special way  by \texttt{latexindent.pl}.
+	In particular, it will try and align each column by its alignment tabs.
+	It does have some limitations (discussed further in \cref{sec:knownlimitations}), but in many cases it will produce results such as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
+
+	If you find that \texttt{latexindent.pl} does not perform satisfactorily on such environments then you can set the relevant key to \texttt{0}, for example \texttt{tabular: 0}; alternatively, if you just want to ignore \emph{specific} instances of the environment, you could wrap them in something from \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
+	\end{minipage}%
+
+	If you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
+
+	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
+
+	Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx} are advanced and \texttt{longtable} is basic.
+	When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive any of the following fields: \begin{itemize} \item \texttt{delims}: switch equivalent to simply specifying, for example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic} (default: 1);
+		\item \texttt{alignDoubleBackSlash}: switch to determine if \lstinline!\\! should be aligned (default: 1);
+		\item \texttt{spacesBeforeDoubleBackSlash}: optionally, specifies the number of spaces to be inserted before (non-aligned) \lstinline!\\!.
+		      In order to use this field, \texttt{alignDoubleBackSlash} needs to be set to 0 (default: 0).
+		\item \announce{2017-06-19}{multiColumnGrouping}
+		      \texttt{multiColumnGrouping}: details if \texttt{latexindent.pl} should group columns underneath a \lstinline!\multicolumn! command (default: 0);
+		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: details if rows that do not contain the maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1).
+	\end{itemize}
+
+	Assuming that you have the settings in \cref{lst:aligndelims:advanced} saved in \texttt{tabular.yaml}, and the code from \cref{lst:tabularbefore:basic} in \texttt{tabular1.tex} and you run \begin{commandshell}
+latexindent.pl -l tabular.yaml tabular1.tex 
+\end{commandshell} then you should receive the before-and-after results shown in \cref{lst:tabularbefore:advanced,lst:tabularafter:advanced}; note that the ampersands have been aligned, but the \lstinline!\\! have not (compare the alignment of \lstinline!\\! in \cref{lst:tabularafter:basic,lst:tabularafter:advanced}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:advanced}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced.tex}{\texttt{tabular1.tex} using \cref{lst:aligndelims:advanced}}{lst:tabularafter:advanced}
+	\end{minipage}%
+
+	Saving \cref{lst:aligndelims:advanced} into \texttt{tabular1.yaml} as in \cref{lst:tabular1YAML}, and running the command \begin{commandshell}
+latexindent.pl -l tabular1.yaml tabular1.tex 
+\end{commandshell} gives \cref{lst:tabularafter:spacing}; note the spacing before the \lstinline!\\!.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular1-advanced-3spaces.tex}{\texttt{tabular1.tex} using \cref{lst:tabular1YAML}}{lst:tabularafter:spacing}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.54\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular1.yaml}[yaml-TCB]{\texttt{tabular1.yaml}}{lst:tabular1YAML}
+	\end{minipage}%
+
+	Now consider the file \texttt{tabular2.tex} in \cref{lst:tabular2}, which contains a \lstinline!\multicolumn! command, and the YAML files in \cref{lst:tabular2YAML,lst:tabular3YAML}.
+
+	\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular2.yaml}[yaml-TCB]{\texttt{tabular2.yaml}}{lst:tabular2YAML}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabular3.yaml}[yaml-TCB]{\texttt{tabular3.yaml}}{lst:tabular3YAML}
+	\end{minipage}%
+
+	On running the commands \begin{commandshell}
+latexindent.pl tabular2.tex 
+latexindent.pl -s tabular2.tex -l tabular2.yaml
+latexindent.pl -s tabular2.tex -l tabular3.yaml
+        \end{commandshell} we obtain the respective outputs given in \cref{lst:tabular2-default,lst:tabular2-mc,lst:tabular2-no-max}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-default.tex}{\texttt{tabular2-default.tex}}{lst:tabular2-default}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-mc.tex}{\texttt{tabular2-mc.tex}}{lst:tabular2-mc}
+		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-no-max.tex}{\texttt{tabular2-no-max.tex}}{lst:tabular2-no-max}
+	\end{widepage}
+
+	Notice in particular: \begin{itemize} \item in both \cref{lst:tabular2-default,lst:tabular2-mc} all rows have been aligned at the ampersand, even those that do not contain the maximum number of ampersands (3 ampersands, in this case);
+		\item in \cref{lst:tabular2-default} the columns have been aligned at the ampersand;
+		\item in \cref{lst:tabular2-mc} the \lstinline!\multicolumn! command has grouped the $2$ columns beneath \emph{and} above it, because \texttt{multiColumnGrouping} is set to $1$ in \cref{lst:tabular2YAML};
+		\item in \cref{lst:tabular2-no-max} rows~3 and~6 have \emph{not} been aligned at the ampersand, because \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in \cref{lst:tabular3YAML}; however, the \lstinline!\\! \emph{have} still been aligned.
+	\end{itemize}
+
+	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks (see \texttt{specialBeginEnd} on \cpageref{yaml:specialBeginEnd}); for example, assuming that you have a command called \lstinline!\matrix! and that it is populated within \texttt{lookForAlignDelims} (which it is, by default), and that you run the command \begin{commandshell}
+latexindent.pl matrix1.tex 
+    \end{commandshell} then the before-and-after results shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by default.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1.tex}{\texttt{matrix1.tex}}{lst:matrixbefore}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
+	\end{minipage}%
+
+	If you have blocks of code that you wish to align at the \&  character that are \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots \lstinline!\end{tabular}!, then you can use the mark up illustrated in \cref{lst:alignmentmarkup}; the default output is shown in \cref{lst:alignmentmarkup-default}.
+	Note that the \lstinline!%*! must be next to each other, but that there can be any number of spaces (possibly none) between the \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any environment name that you have specified in \texttt{lookForAlignDelims}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/align-block-default.tex}{\texttt{align-block.tex} default output}{lst:alignmentmarkup-default}
+	\end{minipage}%
+
+	With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of \texttt{noAdditionalIndent} and \texttt{indentRules} (see \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered \texttt{environments}.
+
+\yamltitle{indentAfterItems}*{fields}
+	\begin{wrapfigure}[5]{r}[0pt]{7cm}
+		\cmhlistingsfromfile[style=indentAfterItems]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterItems}}{lst:indentafteritems}
+	\end{wrapfigure}
+	The environment names specified in \texttt{indentAfterItems}  tell \texttt{latexindent.pl} to look for \lstinline!\item! commands; if these switches are set to \texttt{1} then indentation will be performed so as indent the code after each \texttt{item}.
+	A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter} 
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/items1.tex}{\texttt{items1.tex}}{lst:itemsbefore}
+	\end{minipage} \hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/items1-default.tex}{\texttt{items1.tex} default output}{lst:itemsafter}
+	\end{minipage} 
+
+\yamltitle{itemNames}*{fields} \begin{wrapfigure}[5]{r}[0pt]{5cm} \cmhlistingsfromfile[style=itemNames]{.
+			./defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}%
+	\end{wrapfigure}
+	If you have your own \texttt{item} commands (perhaps you prefer to use \texttt{myitem}, for example) then you can put populate them in \texttt{itemNames}.
+	For example, users of the \texttt{exam} document class might like to add \texttt{parts} to \texttt{indentAfterItems} and \texttt{part} to \texttt{itemNames} to their user settings (see \vref{sec:indentconfig} for details of how to configure user settings, and \vref{lst:mysettings} \\ in particular \label{page:examsettings}.
+	)
+
+\yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
+	The fields specified \announce*{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end statements, but there is no requirement for this to be the case; \cref{lst:specialBeginEnd} shows the default settings of \texttt{specialBeginEnd}.
+	%
+
+	\cmhlistingsfromfile[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
+
+	The field \texttt{displayMath} represents \lstinline!\[...\]!, \texttt{inlineMath} represents \lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!.
+	You can, of course, rename these in your own YAML files (see \vref{sec:localsettings}); indeed, you might like to set up your own special begin and end statements.
+
+	A demonstration of the before-and-after results are shown in \cref{lst:specialbefore,lst:specialafter}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1.tex}{\texttt{special1.tex} before}{lst:specialbefore}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special1.tex} default output}{lst:specialafter}
+	\end{minipage}
+
+	For each field, \texttt{lookForThis} is set to \texttt{1} by default, which means that \texttt{latexindent.pl} will look for this pattern; you can tell \texttt{latexindent.pl} not to look for the pattern, by setting \texttt{lookForThis} to \texttt{0}.
+
+	There are \announce*{2017-08-21}{specialBeforeCommand} examples in which it is advantageous to search for \texttt{specialBeginEnd} fields \emph{before} searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour.
+	%
+	For example, consider the file shown in \cref{lst:specialLRbefore}.
+
+	\cmhlistingsfromfile{demonstrations/specialLR.tex}{\texttt{specialLR.tex}}{lst:specialLRbefore}
+
+	Now consider the YAML files shown in \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml} 
+
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
+	\end{minipage} \hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
+	\end{minipage} 
+
+	Upon running the following commands \begin{widepage} \begin{commandshell}
+latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
+latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
+    \end{commandshell} \end{widepage} we receive the respective outputs in \cref{lst:specialLR-comm-first-tex,lst:specialLR-special-first-tex}.
+
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/specialLR-comm-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml}}{lst:specialLR-comm-first-tex}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/specialLR-special-first.tex}{\texttt{specialLR.tex} using \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}}{lst:specialLR-special-first-tex}
+	\end{minipage}
+
+	Notice that in: \begin{itemize} \item \cref{lst:specialLR-comm-first-tex} the \lstinline!\left! has been treated as a \emph{command}, with one optional argument;
+		\item \cref{lst:specialLR-special-first-tex} the \texttt{specialBeginEnd} pattern in \cref{lst:specialsLeftRight-yaml} has been obeyed because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be sought \emph{before} commands.
+	\end{itemize}
+
+\yamltitle{indentAfterHeadings}*{fields}
+	\begin{wrapfigure}[17]{r}[0pt]{8cm}
+		\cmhlistingsfromfile[style=indentAfterHeadings]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
+	\end{wrapfigure}
+	This field enables the user to specify indentation rules that take effect after heading commands such as \lstinline!\part!, \lstinline!\chapter!, \lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command written in this field.
+	\footnote{There is a slight
+		difference in interface for this field when comparing Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
+
+	The default settings do \emph{not} place indentation after a heading, but you can easily switch them on by changing \\ \texttt{indentAfterThisHeading: 0} to \\ \texttt{indentAfterThisHeading: 1}.
+	The \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading structure in your document.
+	You might, for example, like to have both \texttt{section} and \texttt{subsection} set with \texttt{level: 3} because you do not want the indentation to go too deep.
+
+	You can add any of your own custom heading commands to this field, specifying the \texttt{level} as appropriate.
+	You can also specify your own indentation in \texttt{indentRules} (see \vref{sec:noadd-indent-rules}); you will find the default \texttt{indentRules} contains \lstinline!chapter: " "! which tells \texttt{latexindent.pl} simply to use a space character after \texttt{\chapter} headings (once \texttt{indent} is set to \texttt{1} for \texttt{chapter}).
+
+	For example, assuming that you have the code in \cref{lst:headings1yaml} saved into \texttt{headings1.yaml}, and that you have the text from \cref{lst:headings1} saved into \texttt{headings1.tex}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings1.tex}{\texttt{headings1.tex}}{lst:headings1}
+	\end{minipage}
+
+	If you run the command \begin{commandshell}
+latexindent.pl headings1.tex -l=headings1.yaml
+\end{commandshell} then you should receive the output given in \cref{lst:headings1-mod1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings1-mod1.tex}{\texttt{headings1.tex} using \cref{lst:headings1yaml}}{lst:headings1-mod1}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/headings1-mod2.tex}{\texttt{headings1.tex} second modification}{lst:headings1-mod2}
+	\end{minipage}
+
+	Now say that you modify the \texttt{YAML} from \cref{lst:headings1yaml} so that the \texttt{paragraph} \texttt{level} is \texttt{1}; after running \begin{commandshell}
+latexindent.pl headings1.tex -l=headings1.yaml
+\end{commandshell} you should receive the code given in \cref{lst:headings1-mod2}; notice that the \texttt{paragraph} and \texttt{subsection} are at the same indentation level.
+
+\yamltitle{maximumIndentation}*{horizontal space}
+	You can control the maximum indentation given to your file by \announce*{2017-08-21}{maximumIndentation} specifying the \texttt{maximumIndentation} field as horizontal space (but \emph{not} including tabs).
+	%
+	This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and is \emph{off} by default.
+
+	For example, consider the example shown in \cref{lst:mult-nested} together with the default output shown in \cref{lst:mult-nested-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
+	\end{minipage}
+
+	Now say that, for example, you have the \texttt{max-indentation1.yaml} from \cref{lst:max-indentation1yaml} and that you run the following command: \begin{commandshell}
+latexindent.pl mult-nested.tex -l=max-indentation1
+    \end{commandshell} You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
+	\end{minipage}
+
+	Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice that the (default) tabs of indentation have been replaced by a single space.
+
+	In general, when using the \texttt{maximumIndentation} feature, any leading tabs will be replaced by equivalent spaces except, of course, those found in \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
+
+\subsection{The code blocks known \texttt{latexindent.pl}}
+	\label{subsubsec:code-blocks}
+	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each of these are shown in \cref{tab:code-blocks}.
+
+	\begin{table}[!htp]
+		\begin{widepage}
+			\centering
+			\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}
+			\begin{tabular}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{\hspace{.25cm}}m{.2\linewidth}}
+				\toprule
+				Code block                    & characters allowed in name                                                                                                                                                                                                                  & example                                                      \\
+				\midrule
+				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                                                                                                                                                     &
+				\begin{lstlisting}[,nolol=true,]
+\begin{myenv}
+body of myenv
+\end{myenv}
+  \end{lstlisting}
+				\\\cmidrule{2-3}
+				optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                                                                                                                                                     &
+				\begin{lstlisting}[,nolol=true,]
+[
+opt arg text
+]
+  \end{lstlisting}
+				\\\cmidrule{2-3}
+				mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                                                                                                                                                     &
+				\begin{lstlisting}[,nolol=true,]
+{
+mand arg text
+}
+  \end{lstlisting}
+				\\\cmidrule{2-3}
+				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                                                                                                                                                     & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                                                                                                                                                     & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                                                                                                                                                     & \lstinline!in!$\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				UnNamedGroupingBracesBrackets & \centering\emph{No name!
+				}                             & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$                                                                \\\cmidrule{2-3}
+				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if!                                                                                                                              &
+				\begin{lstlisting}[,nolol=true,]
+\ifnum...
+...
+\else
+...
+\fi
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                    \\\cmidrule{2-3}
+				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                                                                                                                                               &
+				\begin{lstlisting}[,nolol=true,]
+\begin{enumerate}
+  \item ...
+\end{enumerate}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                    \\\cmidrule{2-3}
+				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                                                                                                                                              &
+				\begin{lstlisting}[,nolol=true,]
+\[
+  ...
+\]
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                    \\\cmidrule{2-3}
+				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                                                                                                                                                          &
+				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
+\chapter{title}
+  ...
+\section{title}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                    \\\cmidrule{2-3}
+				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                                                                                                                                                     &
+				\begin{lstlisting}[,nolol=true,]
+\begin{filecontents}
+...
+\end{filecontents}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                    \\
+				\bottomrule
+			\end{tabular}
+		\end{widepage}
+	\end{table}
+
+	We will refer to these code blocks in what follows.
