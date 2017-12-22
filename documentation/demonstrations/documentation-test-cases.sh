@@ -207,5 +207,19 @@ latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,
 # special before command
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml -o=+-comm-first
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.yaml -o=+-special-first
+
+# one sentence per line
+latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences -m -l=keep-sen-line-breaks.yaml -o=+-mod2
+latexindent.pl -s multiple-sentences -m -l=sentences-follow1.yaml -o=+-mod3
+latexindent.pl -s multiple-sentences -m -l=sentences-end1.yaml -o=+-mod4
+latexindent.pl -s multiple-sentences -m -l=sentences-end2.yaml -o=+-mod5
+latexindent.pl -s multiple-sentences1 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml -o=+-mod2
+latexindent.pl -s multiple-sentences2 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1 -o=+-mod2
+latexindent.pl -s multiple-sentences3 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences4 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences4 -m -l=keep-sen-line-breaks.yaml -o=+-mod2
 [[ $noisyMode == 1 ]] && makenoise
 git status

@@ -413,9 +413,33 @@
 	numbers=left,
 }
 
+\lstdefinestyle{oneSentencePerLine}{
+	style=yaml-LST,
+	firstnumber=416,linerange={416-436},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesFollow}{
+	style=yaml-LST,
+	firstnumber=419,linerange={419-427},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesBeginWith}{
+	style=yaml-LST,
+	firstnumber=428,linerange={428-431},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesEndWith}{
+	style=yaml-LST,
+	firstnumber=432,linerange={432-436},
+	numbers=left,
+}
+
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=416,linerange={416-425},
+	firstnumber=437,linerange={437-446},
 	numbers=left,
 }
 
@@ -631,28 +655,28 @@
 \setcounter{secnumdepth}{5}
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
-\input{title.tex}
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
-\input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\input{subsubsec-no-add-remaining-code-blocks}
-\stopcontents[noAdditionalIndent]
-\input{subsec-commands-and-their-options}
+%\input{title.tex}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
+%\input{sec-indent-config-and-settings.tex}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\input{subsubsec-no-add-remaining-code-blocks}
+%\stopcontents[noAdditionalIndent]
+%\input{subsec-commands-and-their-options}
 \input{sec-the-m-switch}
-\input{subsec-partnering-poly-switches}
-\input{subsec-conflicting-poly-switches}
-\input{sec-conclusions-know-limitations}
-\input{references}
-\input{appendices}
+%\input{subsec-partnering-poly-switches}
+%\input{subsec-conflicting-poly-switches}
+%\input{sec-conclusions-know-limitations}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 version history:
@@ -707,3 +731,15 @@ https://github.com/cmhughes/latexindent.pl/pull/71
 Version 3.2.2
 Users can specify removeTrailingWhitespace as a scalar, for example,  removeTrailingWhitespace: 0
 https://github.com/cmhughes/latexindent.pl/pull/72
+
+Version 3.3
+- maximum indentation: https://github.com/cmhughes/latexindent.pl/issues/50
+- blank line poly-switch: https://github.com/cmhughes/latexindent.pl/issues/57
+- ifnextchar issue: https://github.com/cmhughes/latexindent.pl/issues/73
+- the -y/yaml switch: https://github.com/cmhughes/latexindent.pl/issues/79
+- absolute paths for the -l switch: https://github.com/cmhughes/latexindent.pl/issues/82
+bug fixes:
+- an ifelsefi bug: https://github.com/cmhughes/latexindent.pl/issues/76
+- empty environment bug: https://github.com/cmhughes/latexindent.pl/issues/78
+- a command/special bug: https://github.com/cmhughes/latexindent.pl/issues/80
+https://github.com/cmhughes/latexindent.pl/releases/tag/V3.3

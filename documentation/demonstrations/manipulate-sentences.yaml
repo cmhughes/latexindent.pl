@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
