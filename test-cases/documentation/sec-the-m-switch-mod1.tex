@@ -388,6 +388,35 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular, in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a sentence, because we have not instructed \texttt{latexindent.pl} to begin sentences with lower case letters.
 	We have changed this by using the settings in \cref{lst:sentences-end2-yaml}, and the associated output in \cref{lst:multiple-sentences-mod5} reflects this.
+
+	You might need to tweak the default behaviour of the script if, for example, your \texttt{.tex} file includes any urls.
+	For example, consider the file shown in \cref{lst:url}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+
+	Upon running the following commands \begin{commandshell}
+latexindent.pl url -m -l=manipulate-sentences.yaml
+\end{commandshell} we obtain the output given in \cref{lst:url-mod1}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+
+	You will, of course, notice that the first full-stop/period in the URL has been interpreted as the end of a sentence; this is to be expected, but is not ideal.
+	We can fix this by using the \texttt{other} field, which we have done in \cref{lst:alt-full-stop1-yaml}; this instructs \texttt{latexindent.pl} to end sentences with a full-stop/period, but only if it is \emph{not} immediately followed by a lower case letter.
+	The output from the following command is shown in \cref{lst:url-mod2}.
+	\begin{commandshell}
+latexindent.pl url -m -l=alt-full-stop1.yaml
+\end{commandshell}
+
+	\begin{adjustwidth}{-3.5cm}{-1.5cm}
+		\begin{minipage}{.6\linewidth}
+			\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.4\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
 \subsubsection{Features of the \texttt{oneSentencePerLine} routine}
 	The sentence manipulation routine takes place \emph{after} verbatim environments and trailing comments have been accounted for; this means that any characters within these two types of code blocks will not be part of the sentence definition routine.
 
@@ -398,7 +427,7 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
 	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
-	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the command \begin{commandshell}
+	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands \begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	\end{commandshell} then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.

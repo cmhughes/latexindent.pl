@@ -221,5 +221,7 @@ latexindent.pl -s multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-
 latexindent.pl -s multiple-sentences3 -m -l=manipulate-sentences.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences4 -m -l=manipulate-sentences.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences4 -m -l=keep-sen-line-breaks.yaml -o=+-mod2
+latexindent.pl -s url.tex -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s url.tex -m -l=alt-full-stop1 -o=+-mod2
 [[ $noisyMode == 1 ]] && makenoise
 git status
