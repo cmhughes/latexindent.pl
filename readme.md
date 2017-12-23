@@ -67,6 +67,7 @@ which means that latexindent.pl always has two branches:
 The `master` branch always contains the released version and `develop` contains the 
 development version. When developing a new feature or bug fix, I typically use:
     
+        git checkout develop
         git checkout -b feature/name-of-feature
 
 and then I merge it into the `develop` branch using
@@ -76,4 +77,4 @@ and then I merge it into the `develop` branch using
 
 ### perl version
 
-I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.22.1
+I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.26.0
