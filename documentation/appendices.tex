@@ -3,18 +3,7 @@
 	\section{Required \texttt{Perl} modules}\label{sec:requiredmodules}
 	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules -- if you can run the
 	 minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may
-	 need to install the missing modules.
-
-     \announce{NEW}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
-     on your system; if you run
-     \begin{commandshell}
-perl latexindent-module-installer.pl
-     \end{commandshell}
-     or
-	 \begin{dosprompt}
-perl latexindent-module-installer.pl
- \end{dosprompt}
-    then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
+	 need to install the missing modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
 
 	 \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
 #!/usr/bin/perl
@@ -39,7 +28,21 @@ use Log::Log4perl qw(get_logger :levels);
 print "hello world";
 exit;
 \end{cmhlistings}
-	 Installing the modules given in \cref{lst:helloworld} will vary depending on your
+
+\subsection{Module installer script}\label{sec:module-installer}
+     \announce{NEW}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
+     on your system; if you run
+     \begin{commandshell}
+perl latexindent-module-installer.pl
+     \end{commandshell}
+     or
+	 \begin{dosprompt}
+perl latexindent-module-installer.pl
+ \end{dosprompt}
+    then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
+
+\subsection{Manually installed modules}\label{sec:manual-module-instal}
+	 Manually installing the modules given in \cref{lst:helloworld} will vary depending on your
 	 operating system and \texttt{Perl} distribution. For example, Ubuntu users
 	 might visit the software center, or else run
 	 \begin{commandshell}
