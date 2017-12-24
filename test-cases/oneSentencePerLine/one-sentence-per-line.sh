@@ -1,5 +1,5 @@
 #!/bin/bash
-loopmax=0
+loopmax=6
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
@@ -53,7 +53,15 @@ latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="
 # sentences beginning with 'other'
 latexindent.pl -s other-begins -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s other-begins -m -o=+mod1 -l=manipulateSentences.yaml,other-begins.yaml
-
+# pcc program review test cases (https://github.com/PCCMathSAC/PCCMathProgramReview2014)
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do
+    [[ $showCounter == 1 ]] && echo $i of $loopmax
+    [[ $silentMode == 0 ]] && set -x 
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod1 -l=manipulateSentences.yaml
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod2 -l=manipulateSentences.yaml,item,pcc-program-review
+    [[ $silentMode == 0 ]] && set +x 
+done
 
 [[ $silentMode == 0 ]] && set -x 
 
