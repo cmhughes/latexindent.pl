@@ -350,7 +350,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	Upon running the following commands \begin{widepage} \begin{commandshell}
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
-	\end{commandshell} \end{widepage} then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
+	\end{commandshell} \end{widepage} then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
 	\begin{minipage}{.55\linewidth}
@@ -418,7 +418,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 	\end{adjustwidth}
 
 \subsubsection{Features of the \texttt{oneSentencePerLine} routine}
-	The sentence manipulation routine takes place \emph{after} verbatim environments and trailing comments have been accounted for; this means that any characters within these two types of code blocks will not be part of the sentence definition routine.
+	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have been accounted for; this means that any characters within these types of code blocks will not be part of the sentence manipulation routine.
 
 	For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3}, and run the command \begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
@@ -436,7 +436,19 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml} and the command \begin{commandshell}
+latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
+	\end{commandshell} the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+	\end{minipage}
 \subsection{Poly-switches}
+	\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take one of \emph{five} \announce*{2017-08-21}*{blank line poly-switch} integer values: \begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is set to \texttt{0});
 		\item[0] \emph{off mode}: line breaks will not be modified for the \emph{<part of thing>} under consideration;
