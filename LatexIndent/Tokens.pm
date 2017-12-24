@@ -53,6 +53,7 @@ our %tokens = (
                 doubleBackSlash=>$beginningToken."DOUBLEBACKSLASH",
                 alignmentBlock=>$beginningToken."ALIGNMENTBLOCK",
                 paragraph=>$beginningToken."PARA",
+                sentence=>$beginningToken."SENTENCE",
                 endOfToken=>"-END",
               );
 

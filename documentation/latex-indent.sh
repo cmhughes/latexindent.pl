@@ -8,5 +8,7 @@ loopmax=1
 [[ $silentMode == 0 ]] && set -x 
 
 find . -maxdepth 1 -name "*.tex" -exec latexindent.pl -l -w -m -s {} \;
+find . -maxdepth 1 -name "*.tex" -exec latexindent.pl -l=+oneSentencePerLine.yaml -o=+-mod1 -m -s {} \;
+mv *mod1*.tex ../test-cases/documentation/
 find . -maxdepth 1 -name "*.bib" -exec latexindent.pl -l -w -m -s {} \;
 git status

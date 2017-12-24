@@ -328,7 +328,257 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 	\cmhlistingsfromfile{demonstrations/sl-stop4-command.tex}{\texttt{sl-stop4-command.tex}}{lst:sl-stop4-command}
 	\cmhlistingsfromfile{demonstrations/sl-stop4-comment.tex}{\texttt{sl-stop4-comment.tex}}{lst:sl-stop4-comment}
 
-\subsection{Poly-switches}
+\subsection{\texttt{oneSentencePerLine}}
+	You can instruct \texttt{latexindent.pl} to format%
+	\announce{NEW}{one sentence per line} your file so that it puts one sentence
+	per line. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
+	all of which we discuss next.
+
+	\cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+
+\yamltitle{manipulateSentences}{0|1}
+	This is a binary switch that details if \texttt{latexindent.pl} should perform the sentence manipulation routine; it
+	is \emph{off} (set to \texttt{0}) by default, and you will need to turn it on (by setting it to \texttt{1}) if you want the script
+	to modify line breaks surrounding and within sentences.
+
+\yamltitle{removeSentenceLineBreaks}{0|1}
+	When operating upon sentences \texttt{latexindent.pl} will, by default, remove internal linebreaks as \texttt{removeSentenceLineBreaks}
+	is set to \texttt{1}. Setting this switch to \texttt{0} instructs \texttt{latexindent.pl} not to do so.
+
+	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
+
+	If we use the YAML files in \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
+	\begin{widepage}
+		\begin{commandshell}
+latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
+latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
+	\end{commandshell}
+	\end{widepage}
+	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+	\end{minipage}
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+	\end{minipage}
+
+	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have
+	been removed in \cref{lst:multiple-sentences-mod1}, but have not been removed in \cref{lst:multiple-sentences-mod2}.
+
+	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct \texttt{latexindent.pl} on how to define
+	a sentence. From the perpesctive of \texttt{latexindent.pl} a sentence must:
+	\begin{itemize}
+		\item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line,
+		      a full stop/period (.), exclamation mark (!), question mark (?) right brace (\}) or a comment
+		      on the previous line;
+		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by default, this is only capital letters;
+		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by default, these are
+		      full stop/period (.), exclamation mark (!) and question mark (?).
+	\end{itemize}
+	In each case, you can specify the \texttt{other} field to include any pattern that you would like; you can specify anything in
+	this field using the language of regular expressions.
+
+	\begin{adjustwidth}{-3.5cm}{-2.5cm}
+		\begin{minipage}{.36\linewidth}
+			\cmhlistingsfromfile*[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.31\linewidth}
+			\cmhlistingsfromfile*[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.31\linewidth}
+			\cmhlistingsfromfile*[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+		\end{minipage}
+	\end{adjustwidth}
+
+\subsubsection{\texttt{sentencesFollow}}
+	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with \vref{lst:multiple-sentences}, and use the YAML
+	settings given in \cref{lst:sentences-follow1-yaml}. Using the command
+	\begin{commandshell}
+latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
+\end{commandshell}
+	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+	\end{minipage}
+
+	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl} will not seek sentences following a blank line,
+	and so the fourth sentence has not been accounted for.
+
+	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
+
+	Upon running the following commands
+	\begin{widepage}
+		\begin{commandshell}
+latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
+latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
+	\end{commandshell}
+	\end{widepage}
+	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
+
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+	\end{minipage}
+
+	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the \texttt{)} has not been accounted for, but that
+	following the inclusion of \cref{lst:sentences-follow2-yaml}, the output given in \cref{lst:multiple-sentences1-mod2} demonstrates that
+	the sentence \emph{has} been accounted for correctly.
+
+\subsubsection{\texttt{sentencesBeginWith}}
+	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper case letters \texttt{A-Z}; you can instruct the
+	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
+	to define sentences to begin with other characters.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
+
+	Upon running the following commands
+	\begin{widepage}
+		\begin{commandshell}
+latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
+latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
+	\end{commandshell}
+	\end{widepage}
+	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+	\end{minipage}
+	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but that the subsequent sentences
+	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
+	in \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$! or any numeric digit, \texttt{0} to \texttt{9}.
+
+\subsubsection{\texttt{sentencesEndWith}}
+	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in which \texttt{latexindent.pl} will operate on the
+	sentences in this file in \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any character that we wish;
+	for example, using the YAML specified in \cref{lst:sentences-end1-yaml} and the command
+	\begin{commandshell}
+latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
+latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
+\end{commandshell}
+	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+	\end{minipage}
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+	\end{minipage}
+
+	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular,
+	in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a sentence, because we have not instructed
+	\texttt{latexindent.pl} to begin sentences with lower case letters. We have changed this by using the settings in \cref{lst:sentences-end2-yaml},
+	and the associated output in \cref{lst:multiple-sentences-mod5} reflects this.
+
+	You might need to tweak the default behaviour of the script if, for example, your \texttt{.tex}
+	file includes any urls. For example, consider the file shown in \cref{lst:url}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+
+	Upon running the following commands
+	\begin{commandshell}
+latexindent.pl url -m -l=manipulate-sentences.yaml
+\end{commandshell}
+	we obtain the output given in \cref{lst:url-mod1}.
+
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+
+	You will, of course, notice that the first full-stop/period in the URL has been interpreted as the end of a sentence;
+	this is to be expected, but is not ideal. We can fix this by using the \texttt{other} field, which we have done in
+	\cref{lst:alt-full-stop1-yaml}; this instructs \texttt{latexindent.pl} to end sentences with a full-stop/period, but only
+	if it is \emph{not} immediately followed by a lower case letter. The output from the following command is shown in \cref{lst:url-mod2}.
+	\begin{commandshell}
+latexindent.pl url -m -l=alt-full-stop1.yaml
+\end{commandshell}
+
+	\begin{adjustwidth}{-3.5cm}{-1.5cm}
+		\begin{minipage}{.6\linewidth}
+			\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+		\end{minipage}
+		\hfill
+		\begin{minipage}{.4\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
+\subsubsection{Features of the \texttt{oneSentencePerLine} routine}
+	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have
+	been accounted for; this means that any characters within these types of code blocks will not be part
+	of the sentence manipulation routine.
+
+	For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3}, and run the command
+	\begin{commandshell}
+latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
+	\end{commandshell}
+	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+
+	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
+	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
+	\begin{commandshell}
+latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
+latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
+	\end{commandshell}
+	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+	\begin{widepage}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
+	\end{widepage}
+	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks
+	by using the YAML in \cref{lst:item-rules2-yaml} and the command
+	\begin{commandshell}
+latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
+	\end{commandshell}
+	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+	\end{minipage}
+\subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
 	one of \emph{five}%
 	\announce*{2017-08-21}*{blank line poly-switch} integer values:

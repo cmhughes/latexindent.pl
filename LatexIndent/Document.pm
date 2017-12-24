@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
@@ -94,6 +94,7 @@ sub operate_on_file{
     $self->find_file_contents_environments_and_preamble;
     $self->dodge_double_backslash;
     $self->remove_leading_space;
+    $self->one_sentence_per_line if $is_m_switch_active;
     $self->process_body_of_text;
     $self->remove_trailing_whitespace(when=>"after");
     $self->condense_blank_lines;

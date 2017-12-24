@@ -1,0 +1,33 @@
+modifyLineBreaks:
+    commands:
+        announce:
+            CommandStartsOnOwnLine: 2
+        section:
+            CommandStartsOnOwnLine: 1
+        subsection:
+            CommandStartsOnOwnLine: 1
+    mandatoryArguments:
+        section:
+            RCuBFinishesWithLineBreak: 1
+        subsection:
+            RCuBFinishesWithLineBreak: 1
+        minipage:
+            RCuBFinishesWithLineBreak: 1
+    environments:
+        enumerate:
+            BeginStartsOnOwnLine: 1
+            BodyStartsOnOwnLine: 1
+            EndStartsOnOwnLine: 1
+        minipage:
+            BeginStartsOnOwnLine: 1
+            BodyStartsOnOwnLine: 1
+            EndStartsOnOwnLine: 1
+    items:
+        ItemStartsOnOwnLine: 1
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesBeginWith:
+            other: "\\\\texttt\{"
+        sentencesEndWith:
+            fullStop: 0
+            other: "\.(?!(?:[a-z]|\*|[0-9]|\}))"

@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        sentencesBeginWith:
+            A-Z: 1
+            a-z: 0
+            other: "[0-9]|\$"

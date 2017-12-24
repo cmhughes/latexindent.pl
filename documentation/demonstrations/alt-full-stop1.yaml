@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesEndWith:
+            fullStop: 0
+            other: "\.(?!(?:[a-z]))"

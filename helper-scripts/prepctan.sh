@@ -6,8 +6,9 @@ git checkout master
 # re-compile the documentation
 cd ../documentation
 arara latexindent
-egrep 'undefined' latexindent.log
-egrep 'multiply-defined' latexindent.log
+egrep 'undefined' latexindent.log && read -p "Does the above look ok?"
+egrep 'multiply-defined' latexindent.log && read -p "Does the above look ok?"
+egrep -i 'fixthis' latexindent.log && read -p "Does the above look ok?"
 nohup evince latexindent.pdf
 cd ../
 # create a folder

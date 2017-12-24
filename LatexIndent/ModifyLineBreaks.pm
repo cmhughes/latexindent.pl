@@ -25,7 +25,7 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
 our $paragraphRegExp = q();
 
 
@@ -296,6 +296,195 @@ sub paragraphs_on_one_line{
       ${$paragraph}{value} =~ s/\R(?!\z)/ /sg; 
       ${$self}{body} =~ s/${$paragraph}{id}/${$paragraph}{value}/; 
     }
+}
+
+sub one_sentence_per_line{
+    my $self = shift;
+
+    return unless ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences};
+    $logger->trace("*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)") if $is_t_switch_active;
+
+    # sentences FOLLOW
+    # sentences FOLLOW
+    # sentences FOLLOW
+    my $sentencesFollow = q();
+
+    while( my ($sentencesFollowEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}){
+        if($yesNo){
+            if($sentencesFollowEachPart eq "par"){
+                $sentencesFollowEachPart = qr/\R?\\par/s;
+            } elsif ($sentencesFollowEachPart eq "blankLine"){
+                $sentencesFollowEachPart = qr/
+                        (?:\A(?:$tokens{blanklines}\R)+)     # the order of each of these 
+                                |                            # is important, as (like always) the first
+                        (?:\G(?:$tokens{blanklines}\R)+)     # thing to be matched will 
+                                |                            # be accepted
+                        (?:(?:$tokens{blanklines}\h*\R)+)
+                                |
+                                \R{2,}
+                                |
+                                \G
+                        /sx;
+            } elsif ($sentencesFollowEachPart eq "fullStop"){
+                $sentencesFollowEachPart = qr/\./s;
+            } elsif ($sentencesFollowEachPart eq "exclamationMark"){
+                $sentencesFollowEachPart = qr/\!/s;
+            } elsif ($sentencesFollowEachPart eq "questionMark"){
+                $sentencesFollowEachPart = qr/\?/s;
+            } elsif ($sentencesFollowEachPart eq "rightBrace"){
+                $sentencesFollowEachPart = qr/\}/s;
+            } elsif ($sentencesFollowEachPart eq "commentOnPreviousLine"){
+                $sentencesFollowEachPart = qr/$trailingCommentRegExp\h*\R/s;
+            } elsif ($sentencesFollowEachPart eq "other"){
+                $sentencesFollowEachPart = qr/$yesNo/;
+            }
+            $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").qr/$sentencesFollowEachPart/sx;
+        }
+    }
+    # if blankLine is not active from sentencesFollow then we need to set up the 
+    # beginning of the string, but make sure that it is *not* followed by a 
+    # blank line token, or a blank line
+    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+            $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").
+                                    qr/
+                                        \G
+                                        (?!$tokens{blanklines})
+                                    /sx;
+    }
+
+    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+        $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h|\R)*/sx );
+    } else {
+        $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h*\R?)/sx );
+    }
+
+
+    $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
+    $logger->trace($sentencesFollow) if $is_tt_switch_active;
+    
+    # sentences BEGIN with
+    # sentences BEGIN with
+    # sentences BEGIN with
+    my $sentencesBeginWith = q();
+
+    while( my ($sentencesBeginWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesBeginWith}}){
+        if($yesNo){
+            if($sentencesBeginWithEachPart eq "A-Z"){
+                $logger->trace("sentence BEGINS with capital letters (see oneSentencePerLine:sentencesBeginWith:A-Z)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/(?!(?:$tokens{blanklines}|$tokens{verbatim}|$tokens{preamble}))[A-Z]/;
+            } elsif ($sentencesBeginWithEachPart eq "a-z"){
+                $logger->trace("sentence BEGINS with lower-case letters (see oneSentencePerLine:sentencesBeginWith:a-z)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/[a-z]/;
+            } elsif ($sentencesBeginWithEachPart eq "other"){
+                $logger->trace("sentence BEGINS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesBeginWith:other)") if $is_t_switch_active;
+                $sentencesBeginWithEachPart = qr/$yesNo/;
+            }
+            $sentencesBeginWith .= ($sentencesBeginWith eq "" ? q(): "|" ).$sentencesBeginWithEachPart;
+        }
+    }
+    $sentencesBeginWith = qr/$sentencesBeginWith/;
+
+    # sentences END with
+    # sentences END with
+    # sentences END with
+    my $sentencesEndWith = q();
+
+    while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
+        if($yesNo){
+            if($sentencesEndWithEachPart eq "fullStop"){
+                $logger->trace("sentence ENDS with full stop (see oneSentencePerLine:sentencesEndWith:fullStop)") if $is_t_switch_active;
+                $sentencesEndWithEachPart = qr/\./;
+            } elsif ($sentencesEndWithEachPart eq "exclamationMark"){
+                $logger->trace("sentence ENDS with exclamation mark (see oneSentencePerLine:sentencesEndWith:exclamationMark)") if $is_t_switch_active;
+                $sentencesEndWithEachPart = qr/!/;
+            } elsif ($sentencesEndWithEachPart eq "questionMark"){
+                $logger->trace("sentence ENDS with question mark (see oneSentencePerLine:sentencesEndWith:questionMark)") if $is_t_switch_active;
+                $sentencesEndWithEachPart = qr/\?/;
+            } elsif ($sentencesEndWithEachPart eq "other"){
+                $logger->trace("sentence ENDS with other $yesNo (reg exp) (see oneSentencePerLine:sentencesEndWith:other)") if $is_t_switch_active;
+                $sentencesEndWithEachPart = qr/$yesNo/;
+            }
+            $sentencesEndWith .= ($sentencesEndWith eq "" ? q(): "|" ).$sentencesEndWithEachPart;
+        }
+    }
+    $sentencesEndWith = qr/$sentencesEndWith/;
+
+    # the OVERALL sentence regexp
+    # the OVERALL sentence regexp
+    # the OVERALL sentence regexp
+    $logger->trace("Overall sentences end with regexp:") if $is_tt_switch_active;
+    $logger->trace($sentencesEndWith) if $is_tt_switch_active;
+
+    $logger->trace("Finding sentences...") if $is_t_switch_active;
+
+    my $notWithinSentence = qr/$trailingCommentRegExp/s;
+
+    # if 
+    #
+    #   modifyLineBreaks
+    #       oneSentencePerLine
+    #           sentencesFollow
+    #               blankLine
+    #
+    # is set to 0 then we need to *exclude* the $tokens{blanklines} from the sentence routine,
+    # otherwise we could begin a sentence with $tokens{blanklines}.
+    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+        $notWithinSentence .= "|".qr/(?:\h*\R?$tokens{blanklines})/s;
+    }
+
+    # similarly for \par
+    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{par}){
+        $notWithinSentence .= "|".qr/(?:\R?\\par)/s;
+    }
+
+    # initiate the sentence counter
+    my $sentenceCounter;
+    my @sentenceStorage;
+
+    # make the sentence manipulation
+    ${$self}{body} =~ s/((?:$sentencesFollow))
+                            (\h*)
+                            (?!$notWithinSentence) 
+                            ((?:$sentencesBeginWith).*?)
+                            ($sentencesEndWith)/
+                            my $beginning = $1;
+                            my $h_space   = ($2?$2:q());
+                            my $middle    = $3;
+                            my $end       = $4;
+                            my $trailingComments = q();
+                            # remove trailing comments from within the body of the sentence
+                            while($middle =~ m|$trailingCommentRegExp|){
+                                $middle =~ s|\h*($trailingCommentRegExp)||s;
+                                $trailingComments .= $1;
+                            }
+                            # remove line breaks from within a sentence
+                            $middle =~ s|
+                                            (?!\A)      # not at the *beginning* of a match
+                                            (\h*)\R     # possible horizontal space, then line break
+                                        |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+                            $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;
+                            $logger->trace("follows: $beginning") if $is_tt_switch_active;
+                            $logger->trace("sentence: $middle") if $is_tt_switch_active;
+                            $logger->trace("ends with: $end") if $is_tt_switch_active;
+                            # reconstruct the sentence
+                            $sentenceCounter++;
+                            push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end});
+                            $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments;
+                            /xsge;
+
+    # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
+    # before and after appropriately
+    while( my $sentence = pop @sentenceStorage){
+      my $sentenceStorageID = ${$sentence}{id};
+      my $sentenceStorageValue = ${$sentence}{value};
+      # sentence at the very END
+      ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
+      # sentence at the very BEGINNING
+      ${$self}{body} =~ s/^$sentenceStorageID\h*\R?/$sentenceStorageValue\n/s;
+      # all other sentences
+      ${$self}{body} =~ s/\R?\h*$sentenceStorageID\h*\R?/\n$sentenceStorageValue\n/s;
+    }
+
 }
 
 1;
