@@ -415,7 +415,7 @@
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=394,linerange={394-414},
+	firstnumber=394,linerange={394-415},
 	numbers=left,
 }
 
@@ -656,6 +656,8 @@
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
+\tableofcontents
+{\small\lstlistoflistings}
 \input{sec-introduction}
 \input{sec-demonstration}
 \input{sec-how-to-use}
@@ -672,6 +674,7 @@
 \stopcontents[noAdditionalIndent]
 \input{subsec-commands-and-their-options}
 \input{sec-the-m-switch}
+\stopcontents[the-m-switch]
 \input{subsec-partnering-poly-switches}
 \input{subsec-conflicting-poly-switches}
 \input{sec-conclusions-know-limitations}

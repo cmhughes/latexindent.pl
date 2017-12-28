@@ -7,6 +7,9 @@
  All features described in this section will only be relevant if the \texttt{-m} switch
  is used.
 
+	\startcontents[the-m-switch]
+	\printcontents[the-m-switch]{}{0}{}
+
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
 		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
@@ -147,7 +150,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 			      will likely exceed any maximum value set in the \texttt{columns} field.
 		\end{itemize}
 
-\subsection{\texttt{oneSentencePerLine}}
+\subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
 	\announce{NEW}{one sentence per line} your file so that it puts one sentence
 	per line. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
@@ -410,11 +413,13 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
-\yamltitle{removeParagraphLineBreaks}*{fields}
+\subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
 	\announce{2017-05-27}{removeParagraphLineBreaks}
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
 	\cref{lst:removeParagraphLineBreaks}. Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
+\yamltitle{removeParagraphLineBreaks}*{fields}
+This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
 
 	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
@@ -624,7 +629,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
-\subsubsection{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
+\subsubsection[Adding line breaks: \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}]{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
 	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular,
 	let's allow each of them in turn to take a value of $1$.
 
@@ -715,7 +720,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a \emph{blank line}
 	has been added after adding the line break.
 
-\subsubsection{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
+\subsubsection[Adding line breaks: \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}]{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in \cref{lst:env-mlb7,lst:env-mlb8},
 	and in particular, let's allow each of them in turn to take a value of $1$.
 

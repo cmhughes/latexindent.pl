@@ -28,7 +28,7 @@ my @namesAndOffsets = (
                         {name=>"textWrapOptionsAll",numberOfLines=>2,special=>"textWrapOptions"},
                         {name=>"removeParagraphLineBreaks",numberOfLines=>12},
                         {name=>"paragraphsStopAt",numberOfLines=>8},
-                        {name=>"oneSentencePerLine",numberOfLines=>20},
+                        {name=>"oneSentencePerLine",numberOfLines=>21},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
