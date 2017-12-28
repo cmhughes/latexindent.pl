@@ -31,7 +31,7 @@ my @namesAndOffsets = (
                         {name=>"oneSentencePerLine",numberOfLines=>20},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
-                        {name=>"sentencesEndWith",numberOfLines=>4},
+                        {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments"},
                       );
 

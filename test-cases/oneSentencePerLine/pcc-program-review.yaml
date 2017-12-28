@@ -3,7 +3,8 @@ modifyLineBreaks:
         sentencesBeginWith:
             other: "\\\\Cref|\([A-Z]"
         sentencesEndWith:
-            fullStop: 0
+            basicFullStop: 0
+            betterFullStop: 0
             other: "(?:\.\)(?!\h*[a-z]))|(?<!(?:(?:e\.g)))\.(?!(?:[a-z]|[A-Z]|\-|\,|\}|[0-9]))"
     items:
         ItemStartsOnOwnLine: 1
