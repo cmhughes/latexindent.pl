@@ -29,29 +29,29 @@ print "hello world";
 exit;
 \end{cmhlistings}
 
-\subsection{Module installer script}\label{sec:module-installer}
-     \announce{NEW}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
-     on your system; if you run
-     \begin{commandshell}
+	\subsection{Module installer script}\label{sec:module-installer}
+		\announce{NEW}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
+		on your system; if you run
+		\begin{commandshell}
 perl latexindent-module-installer.pl
      \end{commandshell}
-     or
-	 \begin{dosprompt}
+		or
+		\begin{dosprompt}
 perl latexindent-module-installer.pl
  \end{dosprompt}
-    then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
+		then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
 
-\subsection{Manually installed modules}\label{sec:manual-module-instal}
-	 Manually installing the modules given in \cref{lst:helloworld} will vary depending on your
-	 operating system and \texttt{Perl} distribution. For example, Ubuntu users
-	 might visit the software center, or else run
-	 \begin{commandshell}
+	\subsection{Manually installed modules}\label{sec:manual-module-instal}
+		Manually installing the modules given in \cref{lst:helloworld} will vary depending on your
+		operating system and \texttt{Perl} distribution. For example, Ubuntu users
+		might visit the software center, or else run
+		\begin{commandshell}
 sudo perl -MCPAN -e 'install "File::HomeDir"'
  \end{commandshell}
 
-	 Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
-	 options follow for Ubuntu (other distributions will need slightly different commands).
-	 \begin{commandshell}
+		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
+		options follow for Ubuntu (other distributions will need slightly different commands).
+		\begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew install perl-5.22.1
 perlbrew switch perl-5.22.1
@@ -64,14 +64,14 @@ cpanm Log::Log4perl
 cpanm Log::Dispatch
 \end{commandshell}
 
-	 Strawberry Perl users on Windows might use
-	 \texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
+		Strawberry Perl users on Windows might use
+		\texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
 
-	 \texttt{indent.log} will contain details of the location
-	 of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone
-	 executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
-	 wish to see where they are cached, use the  \texttt{trace} option, e.g
-	 \begin{dosprompt}
+		\texttt{indent.log} will contain details of the location
+		of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone
+		executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
+		wish to see where they are cached, use the  \texttt{trace} option, e.g
+		\begin{dosprompt}
 latexindent.exe -t myfile.tex
  \end{dosprompt}
 

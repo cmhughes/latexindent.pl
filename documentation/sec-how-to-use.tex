@@ -19,8 +19,8 @@
  \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows
  users, so that you can use the script with or without a Perl distribution.
  If you plan to use \texttt{latexindent.pl} (i.e, the original Perl script) then you will
- need a few standard Perl modules -- see \vref{sec:requiredmodules} for details; 
- \announce{new}{perl module installer helper script} in particular, note 
+ need a few standard Perl modules -- see \vref{sec:requiredmodules} for details;
+ \announce{new}{perl module installer helper script} in particular, note
  that a module installer helper script is shipped with \texttt{latexindent.pl}.
 
 \subsection{From the command line}\label{sec:commandline}
@@ -32,13 +32,6 @@
 	There is a base of information that is written to \texttt{indent.log},
 	but other additional information will be written depending
 	on which of the following options are used.
-
-	\begin{commandshell}
-latexindent.pl
-      \end{commandshell}
-
-	This will output a welcome message to the terminal, including the version number
-	and available options.
 
 \flagbox{-v, --version}
 	\announce{2017-06-25}{version}
@@ -296,7 +289,8 @@ latexindent.pl myfile.tex -g other.log
 latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
       \end{commandshell}
-	\announce{NEW}{screenlog} Using this option tells \texttt{latexindent.pl} to output the log file to the screen, as well
+	Using this%
+	\announce{NEW}{screenlog} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
 	as to your chosen log file.
 
 \flagbox{-m, --modifylinebreaks}
@@ -316,6 +310,23 @@ latexindent.pl myfile
 	and in which case, you can specify
 	the order in which extensions are searched for; see \vref{lst:fileExtensionPreference}
 	for full details.
+\flagbox{STDIN}
+	\begin{commandshell}
+cat myfile.tex | latexindent.pl
+    \end{commandshell}
+	\texttt{latexindent.pl} will%
+	\announce{NEW}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
+	other commands directly into the script. For example assuming that you have content in \texttt{myfile.tex}, then the above
+	command will output the results of operating upon \texttt{myfile.tex}
+
+	Similarly, if you%
+	\announce{NEW}*{no options/filename updated} simply type \texttt{latexindent.pl}
+	at the command line, then it will expect (STDIN) input from the command line.
+	\begin{commandshell}
+latexindent.pl
+      \end{commandshell}
+
+	Once you have finished typing your input, you can press \texttt{CTRL+D} to signify that your input has finished.
 
 \subsection{From \texttt{arara}}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but

@@ -7,8 +7,8 @@
  All features described in this section will only be relevant if the \texttt{-m} switch
  is used.
 
-	\startcontents[the-m-switch]
-	\printcontents[the-m-switch]{}{0}{}
+ \startcontents[the-m-switch]
+ \printcontents[the-m-switch]{}{0}{}
 
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
@@ -330,8 +330,8 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	\texttt{latexindent.pl} to begin sentences with lower case letters. We have changed this by using the settings in \cref{lst:sentences-end2-yaml},
 	and the associated output in \cref{lst:multiple-sentences-mod5} reflects this.
 
-    Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called \texttt{basicFullStop}, which 
-    is set to \texttt{0}, and that the \texttt{betterFullStop} is set to \texttt{1} by default.
+	Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called \texttt{basicFullStop}, which
+	is set to \texttt{0}, and that the \texttt{betterFullStop} is set to \texttt{1} by default.
 
 	Let's consider the file shown in \cref{lst:url}.
 
@@ -345,18 +345,18 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
-    Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop}, 
-    full stops at the end of sentences have the following properties:
-    \begin{itemize}
-      \item they are ignored within \texttt{e.g.} and \texttt{i.e.};
-      \item they can not be immediately followed by a lower case or upper case letter;
-      \item they can not be immediately followed by a hyphen, comma, right brace, or number.
-    \end{itemize}
-    If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting 
-    it to \texttt{0}, and you can experiment with the \texttt{other} field. 
+	Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop},
+	full stops at the end of sentences have the following properties:
+	\begin{itemize}
+		\item they are ignored within \texttt{e.g.} and \texttt{i.e.};
+		\item they can not be immediately followed by a lower case or upper case letter;
+		\item they can not be immediately followed by a hyphen, comma, right brace, or number.
+	\end{itemize}
+	If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting
+	it to \texttt{0}, and you can experiment with the \texttt{other} field.
 
-    The \texttt{basicFullStop} routine should probably be avoided in most situations, as it does not accomodate the specifications
-    above. For example, using the YAML in \cref{lst:alt-full-stop1-yaml} gives the output from the following command in \cref{lst:url-mod2}.
+	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it does not accomodate the specifications
+	above. For example, using the YAML in \cref{lst:alt-full-stop1-yaml} gives the output from the following command in \cref{lst:url-mod2}.
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -371,7 +371,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 		\end{minipage}
 	\end{adjustwidth}
 
-    Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
+	Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the \texttt{oneSentencePerLine} routine}
 	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have
@@ -419,7 +419,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
 	\cref{lst:removeParagraphLineBreaks}. Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
 \yamltitle{removeParagraphLineBreaks}*{fields}
-This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
+	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
 
 	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 

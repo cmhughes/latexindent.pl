@@ -153,7 +153,11 @@ ENDQUOTE
     my $time = localtime();
     $logger->info($time);
 
-    $logger->info("Filename: ${$self}{fileName}");
+    if (${$self}{fileName} ne "-"){
+        $logger->info("Filename: ${$self}{fileName}");
+    } else {
+        $logger->info("Reading input from STDIN");
+    }
 
     # log the switches from the user
     $logger->info("*Processing switches:");

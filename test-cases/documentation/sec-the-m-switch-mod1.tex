@@ -7,6 +7,9 @@
  \label{sec:modifylinebreaks}
  All features described in this section will only be relevant if the \texttt{-m} switch is used.
 
+ \startcontents[the-m-switch]
+ \printcontents[the-m-switch]{}{0}{}
+
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
 		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
@@ -109,138 +112,8 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 			\item indentation is performed \emph{after} the text wrapping routine; as such, indented code will likely exceed any maximum value set in the \texttt{columns} field.
 		\end{itemize}
 
-\yamltitle{removeParagraphLineBreaks}*{fields}
-	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks%
-	\announce{2017-05-27}{removeParagraphLineBreaks} from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in \cref{lst:removeParagraphLineBreaks}.
-	Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
-
-	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
-
-	This routine can be turned on \emph{globally} for \emph{every} code block type known to \texttt{latexindent.pl} (see \vref{tab:code-blocks}) by using the \texttt{all} switch; by default, this switch is \emph{off}.
-	Assuming that the \texttt{all} switch is off, then the routine can be controlled on a per-code-block-type basis, and within that, on a per-name basis.
-	We will consider examples of each of these in turn, but before we do, let's specify what \texttt{latexindent.pl} considers as a paragraph: \begin{itemize} \item it must begin on its own line with either an alphabetic or numeric character, and not with any of the code-block types detailed in \vref{tab:code-blocks};
-		\item it can include line breaks, but finishes when it meets either a blank line, a \lstinline!\par! command, or any of the user-specified settings in the \texttt{paragraphsStopAt} field, detailed in \vref{lst:paragraphsStopAt}.
-	\end{itemize}
-
-	Let's start with the \texttt{.tex} file in \cref{lst:shortlines}, together with the YAML settings in \cref{lst:remove-para1-yaml}.
-
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile{demonstrations/remove-para1.yaml}[MLB-TCB]{\texttt{remove-para1.yaml}}{lst:remove-para1-yaml}
-	\end{minipage}
-
-	Upon running the command \begin{commandshell}
-latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
-\end{commandshell} then we obtain the output given in \cref{lst:shortlines1}.
-
-	\cmhlistingsfromfile{demonstrations/shortlines1.tex}{\texttt{shortlines1.tex}}{lst:shortlines1}
-
-	Keen readers may notice that some trailing white space must be present in the file in \cref{lst:shortlines} which has crept in to the output in \cref{lst:shortlines1}.
-	This can be fixed using the YAML file in \vref{lst:removeTWS-before} and running, for example, \begin{commandshell}
-latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
-    \end{commandshell} in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double spaces present in \cref{lst:shortlines1} have been addressed.
-
-	\cmhlistingsfromfile{demonstrations/shortlines1-tws.tex}{\texttt{shortlines1-tws.tex}}{lst:shortlines1-tws}
-
-	Keeping with the settings in \cref{lst:remove-para1-yaml}, we note that the \texttt{all} switch applies to \emph{all} code block types.
-	So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt} 
-
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines-mand.tex}{\texttt{shortlines-mand.tex}}{lst:shortlines-mand}
-	\end{minipage} \hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines-opt.tex}{\texttt{shortlines-opt.tex}}{lst:shortlines-opt}
-	\end{minipage} 
-
-	Upon running the commands \begin{widepage} \begin{commandshell}
-latexindent.pl -m shortlines-mand.tex -o shortlines-mand1.tex -l remove-para1.yaml
-latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
-\end{commandshell} \end{widepage} 
-
-	then we obtain the respective output given in \cref{lst:shortlines-mand1,lst:shortlines-opt1}.
-
-	\cmhlistingsfromfile{demonstrations/shortlines-mand1.tex}{\texttt{shortlines-mand1.tex}}{lst:shortlines-mand1}
-	\cmhlistingsfromfile{demonstrations/shortlines-opt1.tex}{\texttt{shortlines-opt1.tex}}{lst:shortlines-opt1}
-
-	Assuming that we turn \emph{off} the \texttt{all} switch (by setting it to \texttt{0}), then we can control the behaviour of \texttt{removeParagraphLineBreaks} either on a per-code-block-type basis, or on a per-name basis.
-
-	For example, let's use the code in \cref{lst:shortlines-envs}, and consider the settings in \cref{lst:remove-para2-yaml,lst:remove-para3-yaml}; note that in \cref{lst:remove-para2-yaml} we specify that \emph{every} environment should receive treatment from the routine, while in \cref{lst:remove-para3-yaml} we specify that \emph{only} the \texttt{one} environment should receive the treatment.
-
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines-envs.tex}{\texttt{shortlines-envs.tex}}{lst:shortlines-envs}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile{demonstrations/remove-para2.yaml}[MLB-TCB]{\texttt{remove-para2.yaml}}{lst:remove-para2-yaml}
-		\cmhlistingsfromfile{demonstrations/remove-para3.yaml}[MLB-TCB]{\texttt{remove-para3.yaml}}{lst:remove-para3-yaml}
-	\end{minipage}
-
-	Upon running the commands \begin{widepage} \begin{commandshell}
-latexindent.pl -m shortlines-envs.tex -o shortlines-envs2.tex -l remove-para2.yaml
-latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.yaml
-\end{commandshell} \end{widepage} then we obtain the respective output given in \cref{lst:shortlines-envs2,lst:shortlines-envs3}.
-
-	\cmhlistingsfromfile{demonstrations/shortlines-envs2.tex}{\texttt{shortlines-envs2.tex}}{lst:shortlines-envs2}
-	\cmhlistingsfromfile{demonstrations/shortlines-envs3.tex}{\texttt{shortlines-envs3.tex}}{lst:shortlines-envs3}
-
-	The remaining code-block types can be customized in analogous ways, although note that \texttt{commands}, \texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets}, \texttt{UnNamedGroupingBracesBrackets} are controlled by the \texttt{optionalArguments} and the \texttt{mandatoryArguments}.
-
-	The only special case is the \texttt{masterDocument} field; this is designed for `chapter'-type files that may contain paragraphs that are not within any other code-blocks.
-	For example, consider the file in \cref{lst:shortlines-md}, with the YAML settings in \cref{lst:remove-para4-yaml}.
-
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile{demonstrations/remove-para4.yaml}[MLB-TCB]{\texttt{remove-para4.yaml}}{lst:remove-para4-yaml}
-	\end{minipage}
-
-	Upon running the following command \begin{widepage} \begin{commandshell}
-latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
-\end{commandshell} \end{widepage} then we obtain the output in \cref{lst:shortlines-md4}.
-	\cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
-
-\yamltitle{paragraphsStopAt}*{fields}
-	The paragraph line break routine considers blank lines and the \lstinline|\par| command to be the end of a paragraph;%
-	\announce{2017-05-27}{paragraphsStopAt} you can fine tune the behaviour of the routine further by using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
-
-	\cmhlistingsfromfile[style=paragraphsStopAt]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
-
-	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to stop the current paragraph when it reaches a line that \emph{begins} with any of the code-block types specified as \texttt{1} in \cref{lst:paragraphsStopAt}.
-	By default, you'll see that the paragraph line break routine will stop when it reaches an environment at the beginning of a line.
-	It is \emph{not} possible to specify these fields on a per-name basis.
-
-	Let's use the \texttt{.tex} file in \cref{lst:sl-stop}; we will, in turn, consider the settings in \cref{lst:stop-command-yaml,lst:stop-comment-yaml}.
-
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/sl-stop.tex}{\texttt{sl-stop.tex}}{lst:sl-stop}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
-		\cmhlistingsfromfile{demonstrations/stop-command.yaml}[MLB-TCB]{\texttt{stop-command.yaml}}{lst:stop-command-yaml}
-
-		\cmhlistingsfromfile{demonstrations/stop-comment.yaml}[MLB-TCB]{\texttt{stop-comment.yaml}}{lst:stop-comment-yaml}
-	\end{minipage}
-
-	Upon using the settings from \vref{lst:remove-para4-yaml} and running the commands \begin{widepage} \begin{commandshell}
-latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
-latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
-latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
-    \end{commandshell} \end{widepage} we obtain the respective outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment}; notice in particular that: \begin{itemize} \item in \cref{lst:sl-stop4} the paragraph line break routine has included commands and comments;
-		\item in \cref{lst:sl-stop4-command} the paragraph line break routine has \emph{stopped} at the \texttt{emph} command, because in \cref{lst:stop-command-yaml} we have specified \texttt{commands} to be \texttt{1}, and \texttt{emph} is at the beginning of a line;
-		\item in \cref{lst:sl-stop4-comment} the paragraph line break routine has \emph{stopped} at the comments, because in \cref{lst:stop-comment-yaml} we have specified \texttt{comments} to be \texttt{1}, and the comment is at the beginning of a line.
-	\end{itemize}
-	In all outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment} we notice that the paragraph line break routine has stopped at \lstinline!\begin{myenv}! because, by default, \texttt{environments} is set to \texttt{1} in \vref{lst:paragraphsStopAt}.
-
-	\cmhlistingsfromfile{demonstrations/sl-stop4.tex}{\texttt{sl-stop4.tex}}{lst:sl-stop4}
-	\cmhlistingsfromfile{demonstrations/sl-stop4-command.tex}{\texttt{sl-stop4-command.tex}}{lst:sl-stop4-command}
-	\cmhlistingsfromfile{demonstrations/sl-stop4-comment.tex}{\texttt{sl-stop4-comment.tex}}{lst:sl-stop4-comment}
-
-\subsection{\texttt{oneSentencePerLine}}
+\subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}
+	\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
 	\announce{NEW}{one sentence per line} your file so that it puts one sentence per line.
 	%
@@ -389,8 +262,9 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular, in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a sentence, because we have not instructed \texttt{latexindent.pl} to begin sentences with lower case letters.
 	We have changed this by using the settings in \cref{lst:sentences-end2-yaml}, and the associated output in \cref{lst:multiple-sentences-mod5} reflects this.
 
-	You might need to tweak the default behaviour of the script if, for example, your \texttt{.tex} file includes any urls.
-	For example, consider the file shown in \cref{lst:url}.
+	Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called \texttt{basicFullStop}, which is set to \texttt{0}, and that the \texttt{betterFullStop} is set to \texttt{1} by default.
+
+	Let's consider the file shown in \cref{lst:url}.
 
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
@@ -400,9 +274,15 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 
 	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
-	You will, of course, notice that the first full-stop/period in the URL has been interpreted as the end of a sentence; this is to be expected, but is not ideal.
-	We can fix this by using the \texttt{other} field, which we have done in \cref{lst:alt-full-stop1-yaml}; this instructs \texttt{latexindent.pl} to end sentences with a full-stop/period, but only if it is \emph{not} immediately followed by a lower case letter.
-	The output from the following command is shown in \cref{lst:url-mod2}.
+	Notice that the full stop within the url has been interpreted correctly.
+	This is because, within the \texttt{betterFullStop}, full stops at the end of sentences have the following properties: \begin{itemize} \item they are ignored within \texttt{e.g.} and \texttt{i.e.};
+		\item they can not be immediately followed by a lower case or upper case letter;
+		\item they can not be immediately followed by a hyphen, comma, right brace, or number.
+	\end{itemize}
+	If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting it to \texttt{0}, and you can experiment with the \texttt{other} field.
+
+	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it does not accomodate the specifications above.
+	For example, using the YAML in \cref{lst:alt-full-stop1-yaml} gives the output from the following command in \cref{lst:url-mod2}.
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -416,6 +296,8 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 		\end{minipage}
 	\end{adjustwidth}
+
+	Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the \texttt{oneSentencePerLine} routine}
 	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have been accounted for; this means that any characters within these types of code blocks will not be part of the sentence manipulation routine.
@@ -447,6 +329,140 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
+
+\subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}
+	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks%
+	\announce{2017-05-27}{removeParagraphLineBreaks} from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in \cref{lst:removeParagraphLineBreaks}.
+	Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
+\yamltitle{removeParagraphLineBreaks}*{fields}
+	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
+
+	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
+
+	This routine can be turned on \emph{globally} for \emph{every} code block type known to \texttt{latexindent.pl} (see \vref{tab:code-blocks}) by using the \texttt{all} switch; by default, this switch is \emph{off}.
+	Assuming that the \texttt{all} switch is off, then the routine can be controlled on a per-code-block-type basis, and within that, on a per-name basis.
+	We will consider examples of each of these in turn, but before we do, let's specify what \texttt{latexindent.pl} considers as a paragraph: \begin{itemize} \item it must begin on its own line with either an alphabetic or numeric character, and not with any of the code-block types detailed in \vref{tab:code-blocks};
+		\item it can include line breaks, but finishes when it meets either a blank line, a \lstinline!\par! command, or any of the user-specified settings in the \texttt{paragraphsStopAt} field, detailed in \vref{lst:paragraphsStopAt}.
+	\end{itemize}
+
+	Let's start with the \texttt{.tex} file in \cref{lst:shortlines}, together with the YAML settings in \cref{lst:remove-para1-yaml}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/remove-para1.yaml}[MLB-TCB]{\texttt{remove-para1.yaml}}{lst:remove-para1-yaml}
+	\end{minipage}
+
+	Upon running the command \begin{commandshell}
+latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
+\end{commandshell} then we obtain the output given in \cref{lst:shortlines1}.
+
+	\cmhlistingsfromfile{demonstrations/shortlines1.tex}{\texttt{shortlines1.tex}}{lst:shortlines1}
+
+	Keen readers may notice that some trailing white space must be present in the file in \cref{lst:shortlines} which has crept in to the output in \cref{lst:shortlines1}.
+	This can be fixed using the YAML file in \vref{lst:removeTWS-before} and running, for example, \begin{commandshell}
+latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
+    \end{commandshell} in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double spaces present in \cref{lst:shortlines1} have been addressed.
+
+	\cmhlistingsfromfile{demonstrations/shortlines1-tws.tex}{\texttt{shortlines1-tws.tex}}{lst:shortlines1-tws}
+
+	Keeping with the settings in \cref{lst:remove-para1-yaml}, we note that the \texttt{all} switch applies to \emph{all} code block types.
+	So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt} 
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/shortlines-mand.tex}{\texttt{shortlines-mand.tex}}{lst:shortlines-mand}
+	\end{minipage} \hfill
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/shortlines-opt.tex}{\texttt{shortlines-opt.tex}}{lst:shortlines-opt}
+	\end{minipage} 
+
+	Upon running the commands \begin{widepage} \begin{commandshell}
+latexindent.pl -m shortlines-mand.tex -o shortlines-mand1.tex -l remove-para1.yaml
+latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
+\end{commandshell} \end{widepage} 
+
+	then we obtain the respective output given in \cref{lst:shortlines-mand1,lst:shortlines-opt1}.
+
+	\cmhlistingsfromfile{demonstrations/shortlines-mand1.tex}{\texttt{shortlines-mand1.tex}}{lst:shortlines-mand1}
+	\cmhlistingsfromfile{demonstrations/shortlines-opt1.tex}{\texttt{shortlines-opt1.tex}}{lst:shortlines-opt1}
+
+	Assuming that we turn \emph{off} the \texttt{all} switch (by setting it to \texttt{0}), then we can control the behaviour of \texttt{removeParagraphLineBreaks} either on a per-code-block-type basis, or on a per-name basis.
+
+	For example, let's use the code in \cref{lst:shortlines-envs}, and consider the settings in \cref{lst:remove-para2-yaml,lst:remove-para3-yaml}; note that in \cref{lst:remove-para2-yaml} we specify that \emph{every} environment should receive treatment from the routine, while in \cref{lst:remove-para3-yaml} we specify that \emph{only} the \texttt{one} environment should receive the treatment.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/shortlines-envs.tex}{\texttt{shortlines-envs.tex}}{lst:shortlines-envs}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/remove-para2.yaml}[MLB-TCB]{\texttt{remove-para2.yaml}}{lst:remove-para2-yaml}
+		\cmhlistingsfromfile{demonstrations/remove-para3.yaml}[MLB-TCB]{\texttt{remove-para3.yaml}}{lst:remove-para3-yaml}
+	\end{minipage}
+
+	Upon running the commands \begin{widepage} \begin{commandshell}
+latexindent.pl -m shortlines-envs.tex -o shortlines-envs2.tex -l remove-para2.yaml
+latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.yaml
+\end{commandshell} \end{widepage} then we obtain the respective output given in \cref{lst:shortlines-envs2,lst:shortlines-envs3}.
+
+	\cmhlistingsfromfile{demonstrations/shortlines-envs2.tex}{\texttt{shortlines-envs2.tex}}{lst:shortlines-envs2}
+	\cmhlistingsfromfile{demonstrations/shortlines-envs3.tex}{\texttt{shortlines-envs3.tex}}{lst:shortlines-envs3}
+
+	The remaining code-block types can be customized in analogous ways, although note that \texttt{commands}, \texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets}, \texttt{UnNamedGroupingBracesBrackets} are controlled by the \texttt{optionalArguments} and the \texttt{mandatoryArguments}.
+
+	The only special case is the \texttt{masterDocument} field; this is designed for `chapter'-type files that may contain paragraphs that are not within any other code-blocks.
+	For example, consider the file in \cref{lst:shortlines-md}, with the YAML settings in \cref{lst:remove-para4-yaml}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/remove-para4.yaml}[MLB-TCB]{\texttt{remove-para4.yaml}}{lst:remove-para4-yaml}
+	\end{minipage}
+
+	Upon running the following command \begin{widepage} \begin{commandshell}
+latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
+\end{commandshell} \end{widepage} then we obtain the output in \cref{lst:shortlines-md4}.
+	\cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
+
+\yamltitle{paragraphsStopAt}*{fields}
+	The paragraph line break routine considers blank lines and the \lstinline|\par| command to be the end of a paragraph;%
+	\announce{2017-05-27}{paragraphsStopAt} you can fine tune the behaviour of the routine further by using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
+
+	\cmhlistingsfromfile[style=paragraphsStopAt]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
+
+	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to stop the current paragraph when it reaches a line that \emph{begins} with any of the code-block types specified as \texttt{1} in \cref{lst:paragraphsStopAt}.
+	By default, you'll see that the paragraph line break routine will stop when it reaches an environment at the beginning of a line.
+	It is \emph{not} possible to specify these fields on a per-name basis.
+
+	Let's use the \texttt{.tex} file in \cref{lst:sl-stop}; we will, in turn, consider the settings in \cref{lst:stop-command-yaml,lst:stop-comment-yaml}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile{demonstrations/sl-stop.tex}{\texttt{sl-stop.tex}}{lst:sl-stop}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile{demonstrations/stop-command.yaml}[MLB-TCB]{\texttt{stop-command.yaml}}{lst:stop-command-yaml}
+
+		\cmhlistingsfromfile{demonstrations/stop-comment.yaml}[MLB-TCB]{\texttt{stop-comment.yaml}}{lst:stop-comment-yaml}
+	\end{minipage}
+
+	Upon using the settings from \vref{lst:remove-para4-yaml} and running the commands \begin{widepage} \begin{commandshell}
+latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
+latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
+latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
+    \end{commandshell} \end{widepage} we obtain the respective outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment}; notice in particular that: \begin{itemize} \item in \cref{lst:sl-stop4} the paragraph line break routine has included commands and comments;
+		\item in \cref{lst:sl-stop4-command} the paragraph line break routine has \emph{stopped} at the \texttt{emph} command, because in \cref{lst:stop-command-yaml} we have specified \texttt{commands} to be \texttt{1}, and \texttt{emph} is at the beginning of a line;
+		\item in \cref{lst:sl-stop4-comment} the paragraph line break routine has \emph{stopped} at the comments, because in \cref{lst:stop-comment-yaml} we have specified \texttt{comments} to be \texttt{1}, and the comment is at the beginning of a line.
+	\end{itemize}
+	In all outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment} we notice that the paragraph line break routine has stopped at \lstinline!\begin{myenv}! because, by default, \texttt{environments} is set to \texttt{1} in \vref{lst:paragraphsStopAt}.
+
+	\cmhlistingsfromfile{demonstrations/sl-stop4.tex}{\texttt{sl-stop4.tex}}{lst:sl-stop4}
+	\cmhlistingsfromfile{demonstrations/sl-stop4-command.tex}{\texttt{sl-stop4-command.tex}}{lst:sl-stop4-command}
+	\cmhlistingsfromfile{demonstrations/sl-stop4-comment.tex}{\texttt{sl-stop4-comment.tex}}{lst:sl-stop4-comment}
+
 \subsection{Poly-switches}
 	\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take one of \emph{five} \announce*{2017-08-21}*{blank line poly-switch} integer values: \begin{itemize}[font=\bfseries]
@@ -473,7 +489,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
-\subsubsection{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
+\subsubsection[Adding line breaks: \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}]{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
 	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular, let's allow each of them in turn to take a value of $1$.
 
 	\begin{minipage}{.45\textwidth}
@@ -552,7 +568,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a \emph{blank line} has been added after adding the line break.
 
-\subsubsection{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
+\subsubsection[Adding line breaks: \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}]{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in \cref{lst:env-mlb7,lst:env-mlb8}, and in particular, let's allow each of them in turn to take a value of $1$.
 
 	\begin{minipage}{.49\textwidth}

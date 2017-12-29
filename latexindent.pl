@@ -70,6 +70,9 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
     $switches{readLocalSettings} = 'localSettings.yaml';
 }
 
+# allow STDIN as input, if a filename is not present
+unshift( @ARGV, '-' ) unless @ARGV;
+
 my $document = bless ({name=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
 $document->latexindent;
 exit(0);

@@ -403,43 +403,43 @@
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=394,linerange={394-406},
+	firstnumber=416,linerange={416-428},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=407,linerange={407-415},
+	firstnumber=429,linerange={429-437},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=416,linerange={416-436},
+	firstnumber=394,linerange={394-415},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=419,linerange={419-427},
+	firstnumber=397,linerange={397-405},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=428,linerange={428-431},
+	firstnumber=406,linerange={406-409},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=432,linerange={432-436},
+	firstnumber=410,linerange={410-415},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=437,linerange={437-446},
+	firstnumber=438,linerange={438-447},
 	numbers=left,
 }
 
@@ -661,28 +661,31 @@
 \setcounter{secnumdepth}{5}
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
-%\input{title.tex}
-%\input{sec-introduction}
-%\input{sec-demonstration}
-%\input{sec-how-to-use}
-%\input{sec-indent-config-and-settings.tex}
-%\input{sec-default-user-local}
-%\input{subsec-noAdditionalIndent-indentRules}
-%\input{subsubsec-environments-and-their-arguments}
-%\input{subsubsec-environments-with-items}
-%\input{subsubsec-commands-with-arguments}
-%\input{subsubsec-ifelsefi}
-%\input{subsubsec-special}
-%\input{subsubsec-headings}
-%\input{subsubsec-no-add-remaining-code-blocks}
-%\stopcontents[noAdditionalIndent]
-%\input{subsec-commands-and-their-options}
+\input{title.tex}
+\tableofcontents
+{\small\lstlistoflistings}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-indent-config-and-settings.tex}
+\input{sec-default-user-local}
+\input{subsec-noAdditionalIndent-indentRules}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+\input{subsubsec-ifelsefi}
+\input{subsubsec-special}
+\input{subsubsec-headings}
+\input{subsubsec-no-add-remaining-code-blocks}
+\stopcontents[noAdditionalIndent]
+\input{subsec-commands-and-their-options}
 \input{sec-the-m-switch}
-%\input{subsec-partnering-poly-switches}
-%\input{subsec-conflicting-poly-switches}
-%\input{sec-conclusions-know-limitations}
-%\input{references}
-%\input{appendices}
+\stopcontents[the-m-switch]
+\input{subsec-partnering-poly-switches}
+\input{subsec-conflicting-poly-switches}
+\input{sec-conclusions-know-limitations}
+\input{references}
+\input{appendices}
 \end{document}
 
 version history:
