@@ -33,6 +33,15 @@ our %masterSettings;
 # previously found settings is a hash, global to this module
 our %previouslyFoundSettings;
 
+# default values for align at ampersand routine
+our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"delims",default=>1},
+                                       {name=>"alignDoubleBackSlash",default=>1},
+                                       {name=>"spacesBeforeDoubleBackSlash",default=>-1},
+                                       {name=>"multiColumnGrouping",default=>0},
+                                       {name=>"alignRowsWithoutMaxDelims",default=>1},
+                                        );
+    
+
 sub readSettings{
   my $self = shift;
   
@@ -432,11 +441,9 @@ sub get_indentation_settings_for_this_object{
                       );
 
         # don't forget alignment settings!
-        ${${previouslyFoundSettings}{$storageName}}{lookForAlignDelims} = ${$self}{lookForAlignDelims} if(defined ${$self}{lookForAlignDelims});
-        ${${previouslyFoundSettings}{$storageName}}{alignDoubleBackSlash} = ${$self}{alignDoubleBackSlash} if(defined ${$self}{alignDoubleBackSlash});
-        ${${previouslyFoundSettings}{$storageName}}{spacesBeforeDoubleBackSlash} = ${$self}{spacesBeforeDoubleBackSlash} if(defined ${$self}{spacesBeforeDoubleBackSlash});
-        ${${previouslyFoundSettings}{$storageName}}{multiColumnGrouping} = ${$self}{multiColumnGrouping} if(defined ${$self}{multiColumnGrouping});
-        ${${previouslyFoundSettings}{$storageName}}{alignRowsWithoutMaxDelims} = ${$self}{alignRowsWithoutMaxDelims} if(defined ${$self}{alignRowsWithoutMaxDelims});
+        foreach (@alignAtAmpersandInformation){
+            ${${previouslyFoundSettings}{$storageName}}{${$_}{name}} = ${$self}{${$_}{name}} if(defined ${$self}{${$_}{name}});
+        } 
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -473,17 +480,25 @@ sub alignment_at_ampersand_settings{
     return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
 
     if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
-      ${$self}{lookForAlignDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{delims} : 1;
-      ${$self}{alignDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignDoubleBackSlash} : 1;
-      ${$self}{spacesBeforeDoubleBackSlash} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeDoubleBackSlash} : -1;
-      ${$self}{multiColumnGrouping} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{multiColumnGrouping} : 0;
-      ${$self}{alignRowsWithoutMaxDelims} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{alignRowsWithoutMaxDelims} : 1;
+      # specified as a hash, e.g
+      #
+      #   lookForAlignDelims:
+      #      tabular: 
+      #         delims: 1
+      #         alignDoubleBackSlash: 1
+      #         spacesBeforeDoubleBackSlash: 2
+      foreach (@alignAtAmpersandInformation){
+          my $yamlname = (defined ${$_}{yamlname} ? ${$_}{yamlname}: ${$_}{name});
+          ${$self}{${$_}{name}} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
+      } 
     } else {
-      ${$self}{lookForAlignDelims} = 1;
-      ${$self}{alignDoubleBackSlash} = 1;
-      ${$self}{spacesBeforeDoubleBackSlash} = -1;
-      ${$self}{multiColumnGrouping} = 0;
-      ${$self}{alignRowsWithoutMaxDelims} = 1;
+      # specified as a scalar, e.g
+      #
+      #   lookForAlignDelims:
+      #      tabular: 1
+      foreach (@alignAtAmpersandInformation){
+          ${$self}{${$_}{name}} = ${$_}{default};
+      } 
     }
     return;
 }
