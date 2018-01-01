@@ -54,8 +54,11 @@ latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="
 latexindent.pl -s other-begins -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s other-begins -m -o=+mod1 -l=manipulateSentences.yaml,other-begins.yaml
 # from the feature request (https://github.com/cmhughes/latexindent.pl/issues/81)
-latexindent.pl -s -m -l=manipulateSentences.yaml mlep -o=+-mod0
-latexindent.pl -s -m -l=manipulateSentences.yaml,basic-full-stop.yaml mlep -o=+-mod1
+latexindent.pl -s -m mlep -o=+-mod0 -l=manipulateSentences.yaml 
+latexindent.pl -s -m mlep -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml 
+latexindent.pl -s -m mlep2 -o=+-mod0 -l=manipulateSentences.yaml
+latexindent.pl -s -m mlep2 -o=+-mod1 -l=manipulateSentences.yaml,mlep2.yaml 
+latexindent.pl -s -m mlep2 -o=+-mod2 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
 # pcc program review test cases (https://github.com/PCCMathSAC/PCCMathProgramReview2014)
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do
