@@ -20,8 +20,12 @@ latexindent.pl -s -l tabular1.yaml tabular1.tex --outputfile tabular1-advanced-3
 latexindent.pl -s matrix1.tex -o matrix1-default.tex
 latexindent.pl -s align-block.tex -o align-block-default.tex
 latexindent.pl -s tabular2.tex -o tabular2-default.tex
-latexindent.pl -s tabular2.tex -o tabular2-mc.tex -l tabular2.yaml
-latexindent.pl -s tabular2.tex -o tabular2-no-max.tex -l tabular3.yaml
+latexindent.pl -s tabular2.tex -o=+-mod2 -l tabular2.yaml
+latexindent.pl -s tabular2.tex -o=+-mod3 -l tabular3.yaml
+latexindent.pl -s tabular2.tex -o=+-mod4 -l tabular2,tabular4.yaml
+latexindent.pl -s tabular2.tex -o=+-mod5 -l tabular2,tabular5.yaml
+latexindent.pl -s tabular2.tex -o=+-mod6 -l tabular2,tabular6.yaml
+latexindent.pl -s tabular2.tex -o=+-mod7 -l tabular2,tabular7.yaml
 
 # items
 latexindent.pl -s items1.tex -o items1-default.tex

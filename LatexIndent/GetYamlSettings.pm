@@ -36,12 +36,13 @@ our %previouslyFoundSettings;
 # default values for align at ampersand routine
 our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"delims",default=>1},
                                        {name=>"alignDoubleBackSlash",default=>1},
-                                       {name=>"spacesBeforeDoubleBackSlash",default=>-1},
+                                       {name=>"spacesBeforeDoubleBackSlash",default=>1},
                                        {name=>"multiColumnGrouping",default=>0},
                                        {name=>"alignRowsWithoutMaxDelims",default=>1},
+                                       {name=>"spacesBeforeAmpersand",default=>1},
+                                       {name=>"spacesAfterAmpersand",default=>1},
                                         );
     
-
 sub readSettings{
   my $self = shift;
   
@@ -450,6 +451,10 @@ sub get_indentation_settings_for_this_object{
         foreach (@{${$self}{additionalAssignments}}){
             ${${previouslyFoundSettings}{$storageName}}{$_} = ${$self}{$_};
         }
+
+        # log file information
+        $logger->trace("Settings for $name (stored for future use):") if $is_tt_switch_active;
+        $logger->trace(Dump \%{${previouslyFoundSettings}{$storageName}}) if $is_tt_switch_active;
 
     }
 

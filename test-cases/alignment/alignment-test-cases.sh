@@ -60,22 +60,30 @@ do
     latexindent.pl -s uni-code1.tex -o uni-code1-mod$i.tex -l=tabular$i.yaml
 done
 # multiColumnGrouping
-latexindent.pl -s tabular-karl.tex -o tabular-karl-default.tex
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out.tex -l multiColumnGrouping.yaml
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out1.tex -l multiColumnGrouping1.yaml
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out2.tex -l multiColumnGrouping2.yaml
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out3.tex -l multiColumnGrouping3.yaml
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
-latexindent.pl -s tabular-karl.tex -o tabular-karl-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
-latexindent.pl -s multicol.tex -o multicol-out.tex -l multiColumnGrouping.yaml
-latexindent.pl -s unicode-multicol.tex -o unicode-multicol-out.tex -l multiColumnGrouping.yaml
-latexindent.pl -s table3.tex -o table3-out.tex -l multiColumnGrouping.yaml
-latexindent.pl -s multicol-no-ampersands -o multicol-no-ampersands-default.tex
-latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out.tex -l multiColumnGrouping.yaml
-latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
-latexindent.pl -s multicol-no-ampersands.tex -o multicol-no-ampersands-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
-latexindent.pl -s longcells.tex -o longcells-default.tex
-latexindent.pl -s longcells.tex -o longcells-multicol.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-karl.tex -o=+-default.tex
+latexindent.pl -s tabular-karl.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-karl.tex -o=+-out1.tex -l multiColumnGrouping1.yaml
+latexindent.pl -s tabular-karl.tex -o=+-out2.tex -l multiColumnGrouping2.yaml
+latexindent.pl -s tabular-karl.tex -o=+-out3.tex -l multiColumnGrouping3.yaml
+latexindent.pl -s tabular-karl.tex -o=+-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
+latexindent.pl -s tabular-karl.tex -o=+-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s unicode-multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s table3.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s multicol-no-ampersands -o=+-default.tex
+latexindent.pl -s multicol-no-ampersands.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s multicol-no-ampersands.tex -o=+-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
+latexindent.pl -s multicol-no-ampersands.tex -o=+-out6.tex -l multiColumnGrouping.yaml,tabular6.yaml
+latexindent.pl -s longcells.tex -o=+-default.tex
+latexindent.pl -s longcells.tex -o=+-multicol.tex -l multiColumnGrouping.yaml
+# spaces before and after ampersands
+latexindent.pl -s table5.tex -o=+-mod7 -l=tabular7
+latexindent.pl -s table5.tex -o=+-mod8 -l=tabular8
+latexindent.pl -s table5.tex -o=+-mod9 -l=tabular9
+latexindent.pl -s table5.tex -o=+-mod10 -l=tabular10
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out9.tex -l multiColumnGrouping.yaml,tabular9.yaml
+latexindent.pl -s tabular-karl.tex -o tabular-karl-out10.tex -l multiColumnGrouping.yaml,tabular10.yaml
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
