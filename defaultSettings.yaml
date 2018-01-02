@@ -150,6 +150,7 @@ lookForAlignDelims:
       alignRowsWithoutMaxDelims: 1
       spacesBeforeAmpersand: 1
       spacesAfterAmpersand: 1
+      justification: "left"
    tabularx:
       delims: 1
    longtable: 1

@@ -217,7 +217,7 @@ postfoothook=\end{mdframed},
 	If you're interested in experimenting with \texttt{latexindent.pl} then you
 	can \emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
 
-\yamltitle{lookForAlignDelims}*{fields}
+\yamltitle{lookForAlignDelims}*{fields}\label{yaml:lookforaligndelims}
 	\begin{wrapfigure}[12]{r}[0pt]{5cm}
 		\begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
 lookForAlignDelims:
@@ -260,23 +260,27 @@ lookForAlignDelims:
 	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
 	(but does not have to) receive any of the following fields:
 	\begin{itemize}
-      \item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for example, \texttt{tabular: 1} in
-		      the basic version shown in \cref{lst:aligndelims:basic} (default: 1);
-            \item \texttt{alignDoubleBackSlash}: binary switch (0 or 1) to determine if \lstinline!\\! should be aligned (default: 1);
-            \item \texttt{spacesBeforeDoubleBackSlash}: optionally,\announce{NEW}*{update to spacesBeforeDoubleBackSlash} specifies the number (integer $\geq$ 0) of spaces to be inserted
-          before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
-        \item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if \texttt{latexindent.pl} should group columns
+		\item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for example, \texttt{tabular: 1} in
+		      the basic version shown in \cref{lst:aligndelims:basic}. If \texttt{delims} is set to \texttt{0} then the align at ampersand routine
+		      will not be called for this code block (default: 1);
+		\item \texttt{alignDoubleBackSlash}: binary switch (0 or 1) to determine if \lstinline!\\! should be aligned (default: 1);
+		\item \texttt{spacesBeforeDoubleBackSlash}: optionally,%
+		      \announce{NEW}*{update to spacesBeforeDoubleBackSlash} specifies the number (integer $\geq$ 0) of spaces to be inserted
+		      before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
+		\item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if \texttt{latexindent.pl} should group columns
 		      above and below a \lstinline!\multicolumn! command (default: 0);
-            \item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows that do not contain the
+		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows that do not contain the
 		      maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1);
-            \item \announce{NEW}{spacesBeforeAmpersand}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of 
-              spaces to be placed \emph{before} ampersands (default: 1);
-            \item \announce{NEW}{spacesAfterAmpersand}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of 
-              spaces to be placed \emph{After} ampersands (default: 1);
+		\item \announce{NEW}{spacesBeforeAmpersand}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of
+		      spaces to be placed \emph{before} ampersands (default: 1);
+		\item \announce{NEW}{spacesAfterAmpersand}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of
+		      spaces to be placed \emph{After} ampersands (default: 1);
+		\item \announce{NEW}{justification}\texttt{justification}: optionally specifies the justification of each cell as either \emph{left}
+		      or \emph{right} (default: left).
 	\end{itemize}
 
-    We will explore each of these features using the file \texttt{tabular2.tex} in \cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command), 
-    and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular7YAML}.
+	We will explore each of these features using the file \texttt{tabular2.tex} in \cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command),
+	and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular8YAML}.
 
 	\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
 	\begin{minipage}{.45\textwidth}
@@ -303,6 +307,10 @@ lookForAlignDelims:
 		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tabular7.yaml}[yaml-TCB]{\texttt{tabular7.yaml}}{lst:tabular7YAML}
 	\end{minipage}%
 
+	\begin{minipage}{.48\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tabular8.yaml}[yaml-TCB]{\texttt{tabular8.yaml}}{lst:tabular8YAML}
+	\end{minipage}%
+
 	On running the commands
 	\begin{commandshell}
 latexindent.pl tabular2.tex 
@@ -312,8 +320,9 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular4.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular5.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular6.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
+latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
         \end{commandshell}
-    we obtain the respective outputs given in \crefrange{lst:tabular2-default}{lst:tabular2-mod5}.
+	we obtain the respective outputs given in \crefrange{lst:tabular2-default}{lst:tabular2-mod8}.
 
 	\begin{widepage}
 		\cmhlistingsfromfile[showspaces=false,showtabs=false]*{demonstrations/tabular2-default.tex}{\texttt{tabular2.tex} default output}{lst:tabular2-default}
@@ -323,6 +332,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
 		\cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/tabular2-mod5.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular5YAML}}{lst:tabular2-mod5}
 		\cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/tabular2-mod6.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular6YAML}}{lst:tabular2-mod6}
 		\cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/tabular2-mod7.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular7YAML}}{lst:tabular2-mod7}
+		\cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/tabular2-mod8.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular8YAML}}{lst:tabular2-mod8}
 	\end{widepage}
 
 	Notice in particular:
@@ -335,16 +345,18 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
 		\item in \cref{lst:tabular2-mod3} rows~3 and~6 have \emph{not} been aligned at the ampersand, because
 		      \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in \cref{lst:tabular3YAML}; however,
 		      the \lstinline!\\! \emph{have} still been aligned;
-            \item in \cref{lst:tabular2-mod4} the columns beneath and above the \lstinline!\multicolumn! commands have been 
-              grouped (because \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces \emph{before} 
-              each aligned ampersand because \texttt{spacesBeforeAmpersand} is set to $4$;
-            \item in \cref{lst:tabular2-mod5} the columns beneath and above the \lstinline!\multicolumn! commands have been 
-              grouped (because \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces \emph{after} 
-              each aligned ampersand because \texttt{spacesAfterAmpersand} is set to $4$;
-            \item in \cref{lst:tabular2-mod6} the \lstinline!\\! have \emph{not} been aligned, because \texttt{alignDoubleBackSlash}
-              is set to \texttt{0}, otherwise the output is the same as \cref{lst:tabular2-mod2};
-            \item in \cref{lst:tabular2-mod7} the \lstinline!\\! \emph{have} been aligned, and because \texttt{spacesBeforeDoubleBackSlash}
-              is set to \texttt{0}, there are no spaces ahead of them; the output is otherwise the same as \cref{lst:tabular2-mod2}.
+		\item in \cref{lst:tabular2-mod4} the columns beneath and above the \lstinline!\multicolumn! commands have been
+		      grouped (because \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces \emph{before}
+		      each aligned ampersand because \texttt{spacesBeforeAmpersand} is set to $4$;
+		\item in \cref{lst:tabular2-mod5} the columns beneath and above the \lstinline!\multicolumn! commands have been
+		      grouped (because \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces \emph{after}
+		      each aligned ampersand because \texttt{spacesAfterAmpersand} is set to $4$;
+		\item in \cref{lst:tabular2-mod6} the \lstinline!\\! have \emph{not} been aligned, because \texttt{alignDoubleBackSlash}
+		      is set to \texttt{0}, otherwise the output is the same as \cref{lst:tabular2-mod2};
+		\item in \cref{lst:tabular2-mod7} the \lstinline!\\! \emph{have} been aligned, and because \texttt{spacesBeforeDoubleBackSlash}
+		      is set to \texttt{0}, there are no spaces ahead of them; the output is otherwise the same as \cref{lst:tabular2-mod2}.
+		\item in \cref{lst:tabular2-mod8} the cells have been \emph{right}-justified; note that cells above and below the \lstinline!\multicol!
+		      statements have still been group correctly, because of the settings in \cref{lst:tabular2YAML}.
 	\end{itemize}
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within commands, and also within `special' code blocks

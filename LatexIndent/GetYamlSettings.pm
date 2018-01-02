@@ -41,6 +41,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"alignRowsWithoutMaxDelims",default=>1},
                                        {name=>"spacesBeforeAmpersand",default=>1},
                                        {name=>"spacesAfterAmpersand",default=>1},
+                                       {name=>"justification",default=>"left"},
                                         );
     
 sub readSettings{
