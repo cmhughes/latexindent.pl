@@ -2,4 +2,4 @@ lookForAlignDelims:
    tabular: 
       delims: 1
       alignDoubleBackSlash: 1
-      spacesBeforeDoubleBackSlash: 2
+      spacesBeforeDoubleBackSlash: 1

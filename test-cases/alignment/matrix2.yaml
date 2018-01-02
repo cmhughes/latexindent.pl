@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   matrix: 
+      spacesBeforeAmpersand: 0
+      spacesAfterAmpersand: 0
+      spacesBeforeDoubleBackSlash: 0

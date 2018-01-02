@@ -5,6 +5,8 @@ lookForAlignDelims:
       spacesBeforeDoubleBackSlash: 0
       multiColumnGrouping: 0
       alignRowsWithoutMaxDelims: 1
+      spacesBeforeAmpersand: 1
+      spacesAfterAmpersand: 1
    tabularx:
       delims: 1
    longtable: 1

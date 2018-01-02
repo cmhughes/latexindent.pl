@@ -20,6 +20,7 @@ use utf8;
 use Unicode::GCString;
 use Data::Dumper;
 use Exporter qw/import/;
+use List::Util qw(max);
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
@@ -264,6 +265,9 @@ sub align_at_ampersand{
     $logger->trace("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
     $logger->trace("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
     $logger->trace("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
+    $logger->trace("spaces before ampersand: ${$self}{spacesBeforeAmpersand}") if $is_t_switch_active;
+    $logger->trace("spaces after ampersand: ${$self}{spacesAfterAmpersand}") if $is_t_switch_active;
+    $logger->trace("justification: ${$self}{justification}") if $is_t_switch_active;
 
     # acount for multicolumn grouping, if the appropriate switch is set
     if(${$self}{multiColumnGrouping}){
@@ -312,19 +316,34 @@ sub align_at_ampersand{
                             $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
 
                             # the cells that receive multicolumn grouping need extra padding; in particular
-                            # the *last* cell of the multicol group receives the padding, hence the
-                            # use of $columnMax below 
-                            if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+3*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
-                                @{${$_}{multiColPadding}}[$columnMax] = $columnWidth-$groupingWidth-3*($multiColSpan-1);
+                            # if the justification is *left*:
+                            #       the *last* cell of the multicol group receives the padding
+                            # if the justification is *right*:
+                            #       the *first* cell of the multicol group receives the padding
+                            #
+                            # this motivates the introduction of $columnOffset, which is 
+                            #       0 if justification is left
+                            #       $multiColSpan if justification is right
+                            my $columnOffset = (${$self}{justification} eq "left") ? $columnMax : $columnCount;
+                            if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand})*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
+                                my $multiColPadding = $columnWidth-$groupingWidth-(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand})*($multiColSpan-1);
+
+                                # it's possible that multiColPadding might already be assigned; in which case, 
+                                # we need to check that the current value of $multiColPadding is greater than the existing one
+                                if(defined @{${$_}{multiColPadding}}[$columnOffset]){
+                                    @{${$_}{multiColPadding}}[$columnOffset] = max($multiColPadding,@{${$_}{multiColPadding}}[$columnOffset]);
+                                } else {
+                                    @{${$_}{multiColPadding}}[$columnOffset] = $multiColPadding;
+                                }
 
                                 # also need to account for maximum column width *including* other multicolumn statements
-                                if($maximumColumnWidthMC[$columnCount]>$columnWidth){
-                                    @{${$_}{multiColPadding}}[$columnMax] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
+                                if($maximumColumnWidthMC[$columnCount]>$columnWidth and $column !~ m/\\multicolumn\{(\d+)\}/){
+                                    @{${$_}{multiColPadding}}[$columnOffset] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
                                 }
                             }
                         }
-                        # update it to account for the ampersands and 1 space either side of ampersands (total of 3)
-                        $maxGroupingWidth += ($multiColSpan-1)*3;
+                        # update it to account for the ampersands and the spacing either side of ampersands
+                        $maxGroupingWidth += ($multiColSpan-1)*(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand});
 
                         # store the maxGroupingWidth for use in the next loop
                         @{${$_}{maxGroupingWidth}}[$columnCount] = $maxGroupingWidth; 
@@ -368,18 +387,48 @@ sub align_at_ampersand{
                     # underneath the \multicolumn{} statement
                     my $maxGroupingWidth = ${${$_}{maxGroupingWidth}}[$columnCount];
 
+                    # it's possible to have situations such as
+                    #
+	                # \multicolumn{3}{l}{one} & \multicolumn{3}{l}{two} & \\ 
+	                # \multicolumn{6}{l}{one}                           & \\
+                    #
+                    # in which case we need to loop through the @maximumColumnWidthMC
+                    my $groupingWidthMC = 0;
+                    my $multicolsEncountered =0;
+                    for ($columnCount..($columnCount + ($multiColSpan-1))){
+                        if(defined $maximumColumnWidthMC[$_]){
+                            $groupingWidthMC += $maximumColumnWidthMC[$_];
+                            $multicolsEncountered++ if $maximumColumnWidthMC[$_]>0;
+                        }
+                    }
+
+                    # need to account for (spacesBeforeAmpersands) + length of ampersands (which is 1) + (spacesAfterAmpersands)
+                    $groupingWidthMC += ($multicolsEncountered-1)*(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand});
+                    
                     # set the padding; we need
                     #       maximum( $maxGroupingWidth, $maximumColumnWidthMC[$columnCount] )
-                    # rather than load another module to give the 'max' function, I use the ternary operator
                     my $maxValueToUse = 0;
                     if(defined $maximumColumnWidthMC[$columnCount]){
-                        $maxValueToUse = ($maxGroupingWidth>$maximumColumnWidthMC[$columnCount]?$maxGroupingWidth:$maximumColumnWidthMC[$columnCount]);
+                        $maxValueToUse = max($maxGroupingWidth,$maximumColumnWidthMC[$columnCount],$groupingWidthMC);
                     } else {
                         $maxValueToUse = $maxGroupingWidth;
                     }
 
                     # calculate the padding
                     $padding = " " x ( $maxValueToUse  >= $columnWidth ? $maxValueToUse  - $columnWidth : 0 );
+
+                    # to the log file
+                    if($is_tt_switch_active){    
+                        $logger->trace("*---------column-------------");
+                        $logger->trace($column);
+                        $logger->trace("multiColSpan: $multiColSpan");
+                        $logger->trace("groupingWidthMC: $groupingWidthMC");
+                        $logger->trace("padding length: ",$maxValueToUse  - $columnWidth);
+                        $logger->trace("multicolsEncountered: $multicolsEncountered");
+                        $logger->trace("maxValueToUse: $maxValueToUse");
+                        $logger->trace("maximumColumnWidth: ",join(",",@maximumColumnWidth));
+                        $logger->trace("maximumColumnWidthMC: ",join(",",@maximumColumnWidthMC));
+                    }
 
                     # update the columnCount to account for the multiColSpan
                     $columnCount += $multiColSpan - 1;
@@ -389,13 +438,19 @@ sub align_at_ampersand{
                 }
 
                 # either way, the row is formed of "COLUMN + PADDING"
-                $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q())." & ";
+                if(${$self}{justification} eq "left"){
+                    $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q()).(" " x ${$self}{spacesBeforeAmpersand})."&".(" " x ${$self}{spacesAfterAmpersand});
+                } else {
+                    $tmpRow .= $padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q()).$column.(" " x ${$self}{spacesBeforeAmpersand})."&".(" " x ${$self}{spacesAfterAmpersand});
+                }
                 $columnCount++;
             }
 
             # remove the final &
-            $tmpRow =~ s/\h&\h*$/ /;
-            $tmpRow =~ s/\h*$/ /;
+            $tmpRow =~ s/\h*&\h*$/ /;
+            my $finalSpacing = q();
+            $finalSpacing = " " x (${$self}{spacesBeforeDoubleBackSlash}) if ${$self}{spacesBeforeDoubleBackSlash}>=1;
+            $tmpRow =~ s/\h*$/$finalSpacing/;
 
             # replace the row with the formatted row
             ${$_}{row} = $tmpRow;
