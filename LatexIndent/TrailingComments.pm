@@ -108,7 +108,7 @@ sub put_trailing_comments_back_in{
             my $trailingcommentIDwithLineBreaksRegExp = qr/$trailingcommentIDwithLineBreaks/s;  
 
             # replace the line-broken trailing comment ID with a non-broken trailing comment ID
-            ${$self}{body} =~ s/%$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
+            ${$self}{body} =~ s/%\R?$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
       }
       if(${$self}{body} =~ m/%$trailingcommentID
                               (
