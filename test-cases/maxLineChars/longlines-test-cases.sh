@@ -87,6 +87,7 @@ latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.y
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml -o jowens-follow-ups-mod0.tex
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml -o jowens-follow-ups-mod1.tex
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml,stopParaAtComments.yaml -o jowens-follow-ups-mod2.tex
-
+# bug reported at https://github.com/cmhughes/latexindent.pl/issues/90
+latexindent.pl -m -s bug1 -o=+-mod0 -y="modifyLineBreaks:textWrapOptions:columns:3"
 git status
 [[ $noisyMode == 1 ]] && makenoise
