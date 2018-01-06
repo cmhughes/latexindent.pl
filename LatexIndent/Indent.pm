@@ -292,7 +292,8 @@ sub indent_children_recursively{
                                                             or 
                                                          ${$self}{body} =~ m/^\h\h*${$child}{id}/m
                                                         ) ?1:0;
-                    $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R*/m) ?1:0;
+                    $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R+/m) ?1:0;
+                    ${$child}{IDFollowedImmediatelyByLineBreak} = $IDFollowedImmediatelyByLineBreak; 
                }
 
                 # log file info

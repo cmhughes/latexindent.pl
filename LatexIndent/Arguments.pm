@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
@@ -39,6 +39,7 @@ sub construct_arguments_regexp{
 
 sub indent{
     my $self = shift;
+    ${$self}{body} =~ s/\R$//s if ($is_m_switch_active and ${$self}{IDFollowedImmediatelyByLineBreak});
     $logger->trace("*Arguments object doesn't receive any direct indentation, but its children will...") if $is_t_switch_active;
     return;
 }
