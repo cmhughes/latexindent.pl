@@ -90,6 +90,9 @@ latexindent.pl -s table5.tex -o=+-mod11 -l=tabular11
 latexindent.pl -s table5.tex -o=+-mod12 -l=tabular11,tabular7,tabular8
 latexindent.pl -s table5.tex -o=+-mod13 -l=tabular11,tabular9
 latexindent.pl -s tabular-karl.tex -o=+-out11.tex -l multiColumnGrouping.yaml,tabular11.yaml
+# issue 95 demo
+latexindent.pl -s issue-95 -o=+-mod0
+latexindent.pl -s issue-95 -o=+-mod1 -l=noMaxDelims.yaml
 
 [[ $silentMode == 0 ]] && set -x 
 git status
