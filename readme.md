@@ -1,23 +1,28 @@
-`PERL` script to indent code within environments, and align delimited 
-environments in `.tex`files.
+### introduction
+
+`latexindent.pl` is a `perl` script to indent (add horizontal leading space to) 
+code within environments, commands, after headings and within special code blocks.
+
+It has the ability to align delimiters in environments and commands, and 
+can modify line breaks.
 
     latexindent.pl, version 3.3, 2017-08-21
 
-Author: Chris Hughes (cmhughes)
+### author 
+Chris Hughes (cmhughes)
 
----
+### documentation
 
 For complete details, please see http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
 
-Note: `latexindent.exe` was created using 
+### Windows executable
+`latexindent.exe` is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
 
 using the `Par::Packer` perl module.
 
 `ppp.pl` is located in the helper-scripts directory.
-
----
 
 ### usage
 
@@ -36,7 +41,7 @@ directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case 
 
         ./test-cases.sh
 
-## *important*
+### *important*
 
 This script may not work for your style of formatting; I highly 
 recommend comparing the outputfile.tex to make sure that 
