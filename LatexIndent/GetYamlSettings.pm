@@ -243,7 +243,7 @@ sub readSettings{
          }
     } else {
         # otherwise keep going, but put a warning in the log file
-        $logger->info("*WARNING: $homeDir/indentconfig.yaml");
+        $logger->warn("*$homeDir/indentconfig.yaml");
         if (-z $settings) {
             $logger->info("specifies $settings but this file is EMPTY -- not reading from it");
         } else {

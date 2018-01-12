@@ -20,6 +20,8 @@ use FindBin;
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 use Log::Log4perl qw(get_logger :levels);
+use Log::Log4perl::Appender::Screen;
+use Log::Dispatch::File;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;

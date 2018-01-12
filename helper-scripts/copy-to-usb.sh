@@ -1,6 +1,6 @@
 #!/bin/bash
 
-destinationDir="/media/D8B4-3FFC/latexindent/"
+destinationDir="/media/cmhughes/D8B4-3FFC/latexindent/"
 
 # from this directory
 cp create-windows-executable.bat ${destinationDir}
