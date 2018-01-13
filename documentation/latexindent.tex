@@ -193,7 +193,7 @@
 % \cmhlistingsfromfile
 %                   *    no star: not new, star: new
 %                   [ listing/minted options ]
-%                   *    no star: uses listings library star: uses minted library
+%                   *    no star: uses minted library, star: uses listings library star: 
 %                   {<name of listing file>}
 %                   [<options for tcolorbox>]
 %                   {<title>}
@@ -207,7 +207,7 @@
 \DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
 	cmhlistings,
 	listing file={#4},
-	IfBooleanTF={#3}{minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=false,#2}}{listing options={style=tcblatex,#2}},
+	IfBooleanTF={#3}{listing options={style=tcblatex,showspaces=false,#2}}{minted options={obeytabs=true,showtabs=false,tabsize=4,showspaces=false,#2}},
 	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
 	#5,
 	IfBooleanTF={#1}{new-to-this-version}{addtolol},
@@ -643,14 +643,12 @@
 % toc settings
 \titleclass{\cmhtitle}{straight}[\subsection]
 \titleformat{\cmhtitle}{}{}{}{}
-\titlecontents*{cmhtitle}% <paragaph>
-[3cm]% <left>
-{\small\itshape}% <above-code>
-{}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
-{}% <numberless-entry-format>
-{\ \thecontentspage}% <filler-page-format>
-[,\ ]% <separator>
-[]% <end>
+\titlecontents{cmhtitle}% <paragaph>
+  [2cm]% <left>
+  {\small\itshape}% <above-code>
+  {}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
+  {}% <numberless-entry-format>
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
 
 \setcounter{secnumdepth}{5}
 \begin{document}
@@ -746,3 +744,11 @@ bug fixes:
 - empty environment bug: https://github.com/cmhughes/latexindent.pl/issues/78
 - a command/special bug: https://github.com/cmhughes/latexindent.pl/issues/80
 https://github.com/cmhughes/latexindent.pl/releases/tag/V3.3
+
+Version 3.4
+- enhancements to alignment at ampersand routine: https://github.com/cmhughes/latexindent.pl/issues/74
+- log4Perl module: https://github.com/cmhughes/latexindent.pl/issues/75
+- one sentence per line: https://github.com/cmhughes/latexindent.pl/issues/81
+- STDIN allowed: https://github.com/cmhughes/latexindent.pl/issues/88
+- textwrap bug fix: https://github.com/cmhughes/latexindent.pl/issues/90
+- polyswitch bug fix: https://github.com/cmhughes/latexindent.pl/issues/94

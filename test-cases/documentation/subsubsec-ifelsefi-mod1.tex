@@ -14,11 +14,11 @@
 	Examples are shown in \cref{lst:ifnum-noAdd,lst:ifnum-indent-rules}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-noAdd.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-noAdd.yaml}}{lst:ifnum-noAdd}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifnum-noAdd.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-noAdd.yaml}}{lst:ifnum-noAdd}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
 	\end{minipage}
 
 	After running the following commands, \begin{commandshell}
@@ -31,17 +31,17 @@ latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\textwidth}
-		\cmhlistingsfromfile{demonstrations/ifelsefi1-indent-rules.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifnum-indent-rules}}{lst:ifelsefi1-output-indent-rules}
+		\cmhlistingsfromfile[showspaces=true,showtabs=true]{demonstrations/ifelsefi1-indent-rules.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifnum-indent-rules}}{lst:ifelsefi1-output-indent-rules}
 	\end{minipage}
 
 	We may specify \texttt{noAdditionalIndentGlobal} and \texttt{indentRulesGlobal} as in \cref{lst:ifelsefi-noAdd-glob,lst:ifelsefi-indent-rules-global}.
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-noAdd-glob.yaml}}{lst:ifelsefi-noAdd-glob}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifelsefi-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-noAdd-glob.yaml}}{lst:ifelsefi-noAdd-glob}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
 	\end{minipage}
 
 	Upon running the following commands \begin{commandshell}
@@ -54,5 +54,5 @@ latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/ifelsefi1-indent-rules-global.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifelsefi-indent-rules-global}}{lst:ifelsefi1-output-indent-rules-global}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/ifelsefi1-indent-rules-global.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifelsefi-indent-rules-global}}{lst:ifelsefi1-output-indent-rules-global}
 	\end{minipage}

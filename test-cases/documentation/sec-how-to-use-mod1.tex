@@ -144,7 +144,7 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	Information will be given in \texttt{indent.log} on the success or failure of loading \texttt{localSettings.yaml}.
 
 	The \texttt{-l} flag can take an \emph{optional} parameter which details the name (or names separated by commas) of a YAML file(s) that resides in the same directory as \texttt{myfile.tex}; you can use this option if you would like to load a settings file in the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
-	\announce*{2017-08-21}*{-l switch absolute paths}
+	\announce{2017-08-21}*{-l switch absolute paths}
 	In fact, you can specify both \emph{relative} and \emph{absolute paths} for your YAML files; for example \begin{commandshell}
 latexindent.pl -l=../../myyaml.yaml myfile.tex
 latexindent.pl -l=/home/cmhughes/Desktop/myyaml.yaml myfile.tex
@@ -176,7 +176,8 @@ latexindent.pl myfile.tex -y="defaultIndent: ' ',maximumIndentation:' '"
 latexindent.pl myfile.tex -y="indentRules: one: '\t\t\t\t'"
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:EndStartsOnOwnLine:3' -m
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLine:3' -m
-    \end{commandshell} \label{page:yamlswitch}You \announce*{2017-08-21}{the -y switch} can specify YAML settings from the command line using the \texttt{-y} or \texttt{--yaml} switch; sample demonstrations are given above.
+    \end{commandshell} \label{page:yamlswitch}You%
+	\announce{2017-08-21}{the -y switch} can specify YAML settings from the command line using the \texttt{-y} or \texttt{--yaml} switch; sample demonstrations are given above.
 	%
 	Note, in particular, that multiple settings can be specified by separating them via commas.
 	There is a further option to use a \texttt{;} to separate fields, which is demonstrated in \vref{sec:yamlswitch}.
@@ -190,7 +191,8 @@ latexindent.pl -d myfile.tex
 
 	Only \texttt{defaultSettings.yaml}: you might like to read \cref{sec:defuseloc} before using this switch.
 	By default, \texttt{latexindent.pl} will always search for \texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}  in your home directory.
-	If you would prefer it not to do so then (instead of deleting or renaming \texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}) you can simply call the script with the \texttt{-d} switch; note that this will also tell the script to ignore \texttt{localSettings.yaml} even if it has been called with the \texttt{-l} switch; \texttt{latexindent.pl} \announce*{2017-08-21}*{updated -d switch} will also ignore any settings specified from the \texttt{-y} switch.
+	If you would prefer it not to do so then (instead of deleting or renaming \texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}) you can simply call the script with the \texttt{-d} switch; note that this will also tell the script to ignore \texttt{localSettings.yaml} even if it has been called with the \texttt{-l} switch; \texttt{latexindent.pl}%
+	\announce{2017-08-21}*{updated -d switch} will also ignore any settings specified from the \texttt{-y} switch.
 	%
 
 \flagbox{-c, --cruft=<directory>}
@@ -217,7 +219,7 @@ latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
       \end{commandshell}
 	Using this%
-	\announce{NEW}{screenlog} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
+	\announce*{2018-01-13}{screenlog switch created} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
 	as to your chosen log file.
 
 \flagbox{-m, --modifylinebreaks}
@@ -236,18 +238,18 @@ latexindent.pl myfile
 cat myfile.tex | latexindent.pl
     \end{commandshell}
 	\texttt{latexindent.pl} will%
-	\announce{NEW}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
+	\announce*{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
 	other commands directly into the script.
 	For example assuming that you have content in \texttt{myfile.tex}, then the above command will output the results of operating upon \texttt{myfile.tex} 
 
-	Similarly, if you%
-	\announce{NEW}*{no options/filename updated} simply type \texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the command line.
+	Similarly, if you \announce*{2018-01-13}*{no options/filename updated} simply type \texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the command line.
 	%
 	\begin{commandshell}
 latexindent.pl
       \end{commandshell}
 
-	Once you have finished typing your input, you can press \texttt{CTRL+D} to signify that your input has finished.
+	Once you have finished typing your input, you can press \begin{itemize} \item \texttt{CTRL+D} on Linux
+		\item \texttt{CTRL+Z} followed by \texttt{ENTER} on Windows \end{itemize} to signify that your input has finished.
 
 \subsection{From \texttt{arara}}
 	\label{sec:arara}

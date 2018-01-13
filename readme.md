@@ -6,7 +6,7 @@ code within environments, commands, after headings and within special code block
 It has the ability to align delimiters in environments and commands, and 
 can modify line breaks.
 
-    latexindent.pl, version 3.3, 2017-08-21
+    latexindent.pl, version 3.4, 2018-01-13
 
 ### author 
 Chris Hughes (cmhughes)

@@ -6,10 +6,10 @@
 	Similarly, you can customise the indentation that your \texttt{item} receives using \texttt{indentRules}, as in \cref{lst:item-rules1} 
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-noAdd1.yaml}[yaml-TCB]{\texttt{item-noAdd1.yaml}}{lst:item-noAdd1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-noAdd1.yaml}[yaml-TCB]{\texttt{item-noAdd1.yaml}}{lst:item-noAdd1}
 	\end{minipage} \hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules1.yaml}[yaml-TCB]{\texttt{item-rules1.yaml}}{lst:item-rules1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules1.yaml}[yaml-TCB]{\texttt{item-rules1.yaml}}{lst:item-rules1}
 	\end{minipage} 
 
 	Upon running the following commands \begin{commandshell}
@@ -23,18 +23,18 @@ latexindent.pl items1.tex -local item-rules1.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/items1-rules1.tex}{\texttt{items1.tex} using \cref{lst:item-rules1}}{lst:items1-rules1}
+		\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/items1-rules1.tex}{\texttt{items1.tex} using \cref{lst:item-rules1}}{lst:items1-rules1}
 	\end{minipage}
 
 	Alternatively, you might like to populate \texttt{noAdditionalIndentGlobal} or \texttt{indentRulesGlobal} using the \texttt{items} key, as demonstrated in \cref{lst:items-noAdditionalGlobal,lst:items-indentRulesGlobal}.
 	Note that there is a need to `reset/remove' the \texttt{item} field from \texttt{indentRules} in both cases (see the hierarchy description given on \cpageref{sec:noadd-indent-rules}) as the \texttt{item} command is a member of \texttt{indentRules} by default.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-noAdditionalGlobal.yaml}[yaml-TCB]{\texttt{items-noAdditionalGlobal.yaml}}{lst:items-noAdditionalGlobal}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/items-noAdditionalGlobal.yaml}[yaml-TCB]{\texttt{items-noAdditionalGlobal.yaml}}{lst:items-noAdditionalGlobal}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-indentRulesGlobal.yaml}[yaml-TCB]{\texttt{items-indentRulesGlobal.yaml}}{lst:items-indentRulesGlobal}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/items-indentRulesGlobal.yaml}[yaml-TCB]{\texttt{items-indentRulesGlobal.yaml}}{lst:items-indentRulesGlobal}
 	\end{minipage}
 
 	Upon running the following commands, \begin{commandshell}

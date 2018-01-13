@@ -12,7 +12,7 @@
 
 \yamltitle{modifylinebreaks}*{fields}
 	\begin{wrapfigure}[7]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
+		\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 	\end{wrapfigure}
 	\makebox[0pt][r]{%
 		\raisebox{-\totalheight}[0pt][0pt]{%
@@ -68,7 +68,7 @@ latexindent.pl myfile.tex -m
 	will \emph{not} wrap text; if you change it to a value of \texttt{2} or more, then
 	text will be wrapped after the character in the specified column.
 
-	\cmhlistingsfromfile[style=textWrapOptions]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
+	\cmhlistingsfromfile[style=textWrapOptions]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
 
 	For example, consider the file give in \cref{lst:textwrap1}.
 
@@ -118,7 +118,7 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 	\cmhlistingsfromfile{demonstrations/textwrap3-mod1.tex}{\texttt{textwrap3-mod1.tex}}{lst:textwrap3-mod1}
 
 	\begin{wrapfigure}[6]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[style=textWrapOptionsAll]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+		\cmhlistingsfromfile[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 	\end{wrapfigure}
 	The text wrapping routine of \texttt{latexindent.pl} is performed by the \texttt{Text::Wrap} module, which provides a
 	\texttt{separator} feature to separate lines with characters other than a new line (see \cite{textwrap}). By default,
@@ -152,11 +152,11 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 \subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
-	\announce{NEW}{one sentence per line} your file so that it puts one sentence
-    per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
+	\announce*{2018-01-13}{one sentence per line} your file so that it puts one sentence
+	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
 	all of which we discuss next.
 
-	\cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+	\cmhlistingsfromfile*[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
 	This is a binary switch that details if \texttt{latexindent.pl} should perform the sentence manipulation routine; it
@@ -169,7 +169,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
 
 	If we use the YAML files in \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
 	\begin{widepage}
@@ -181,19 +181,19 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
 	\end{minipage}
 
 	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have
@@ -214,15 +214,15 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.36\linewidth}
-			\cmhlistingsfromfile*[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+			\cmhlistingsfromfile*[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+			\cmhlistingsfromfile*[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+			\cmhlistingsfromfile*[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 		\end{minipage}
 	\end{adjustwidth}
 
@@ -235,11 +235,11 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
 	\end{minipage}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl} will not seek sentences following a blank line,
@@ -247,7 +247,7 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
 	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -257,14 +257,14 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
 	\end{minipage}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the \texttt{)} has not been accounted for, but that
@@ -276,7 +276,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
 	to define sentences to begin with other characters.
 
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -286,14 +286,14 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
 	\end{minipage}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but that the subsequent sentences
 	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
@@ -310,19 +310,19 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
 	\end{minipage}
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular,
@@ -335,7 +335,7 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	Let's consider the file shown in \cref{lst:url}.
 
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+	\cmhlistingsfromfile*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
 	Upon running the following commands
 	\begin{commandshell}
@@ -343,14 +343,14 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
 	we obtain the output given in \cref{lst:url-mod1}.
 
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+	\cmhlistingsfromfile*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
 	Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop},
 	full stops at the end of sentences have the following properties:
 	\begin{itemize}
 		\item they are ignored within \texttt{e.g.} and \texttt{i.e.};
 		\item they can not be immediately followed by a lower case or upper case letter;
-		\item they can not be immediately followed by a hyphen, comma, right brace, or number.
+		\item they can not be immediately followed by a hyphen, comma, or number.
 	\end{itemize}
 	If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting
 	it to \texttt{0}, and you can experiment with the \texttt{other} field.
@@ -363,11 +363,11 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.6\linewidth}
-			\cmhlistingsfromfile*[showspaces=false]*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+			\cmhlistingsfromfile*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.4\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 		\end{minipage}
 	\end{adjustwidth}
 
@@ -383,8 +383,8 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
 	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
 	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
@@ -393,11 +393,11 @@ latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 	\begin{widepage}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
-	\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
 	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks
 	by using the YAML in \cref{lst:item-rules2-yaml} and the command
 	\begin{commandshell}
@@ -406,11 +406,11 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[showspaces=false]*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
 \subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}
@@ -421,7 +421,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 \yamltitle{removeParagraphLineBreaks}*{fields}
 	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
 
-	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
+	\cmhlistingsfromfile[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
 	This routine can be turned on \emph{globally} for \emph{every} code block type known to \texttt{latexindent.pl}
 	(see \vref{tab:code-blocks}) by using the \texttt{all} switch; by default, this switch is \emph{off}. Assuming
@@ -440,7 +440,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\cref{lst:remove-para1-yaml}.
 
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\linewidth}
@@ -453,7 +453,7 @@ latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 \end{commandshell}
 	then we obtain the output given in \cref{lst:shortlines1}.
 
-	\cmhlistingsfromfile{demonstrations/shortlines1.tex}{\texttt{shortlines1.tex}}{lst:shortlines1}
+	\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines1.tex}{\texttt{shortlines1.tex}}{lst:shortlines1}
 
 	Keen readers may notice that some trailing white space must be present in the file in \cref{lst:shortlines} which
 	has crept in to the output in \cref{lst:shortlines1}. This can be fixed using the YAML file in
@@ -464,7 +464,7 @@ latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,rem
 	in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double spaces present in \cref{lst:shortlines1}
 	have been addressed.
 
-	\cmhlistingsfromfile{demonstrations/shortlines1-tws.tex}{\texttt{shortlines1-tws.tex}}{lst:shortlines1-tws}
+	\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines1-tws.tex}{\texttt{shortlines1-tws.tex}}{lst:shortlines1-tws}
 
 	Keeping with the settings in \cref{lst:remove-para1-yaml}, we note that the \texttt{all} switch applies
 	to \emph{all} code block types. So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt}
@@ -550,7 +550,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\announce{2017-05-27}{paragraphsStopAt}
 	you can fine tune the behaviour of the routine further by using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
 
-	\cmhlistingsfromfile[style=paragraphsStopAt]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
+	\cmhlistingsfromfile[style=paragraphsStopAt]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
 
 	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to stop the current paragraph
 	when it reaches a line that \emph{begins} with any of the code-block types specified as \texttt{1} in \cref{lst:paragraphsStopAt}.
@@ -599,7 +599,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 \subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
 	one of \emph{five}%
-	\announce*{2017-08-21}*{blank line poly-switch} integer values:
+	\announce{2017-08-21}*{blank line poly-switch} integer values:
 	\begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is set to \texttt{0});
 		\item[0] \emph{off mode}: line breaks will not be modified for the \emph{<part of thing>} under consideration;
@@ -608,7 +608,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 		\item[2] \emph{comment then add mode}: a comment symbol will be added, followed by a line break before or after the \emph{<part of thing>} under consideration, assuming that
 		      there is not already a comment and line break before or after the \emph{<part of thing>};
 		\item[3] \emph{add then blank line mode}%
-		      \announce*{2017-08-21}{blank line poly-switch}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
+		      \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
 		      there is not already a line break before or after the \emph{<part of thing>}, followed by a blank line.
 	\end{itemize}
 	In the above, \emph{<part of thing>} refers to either the \emph{begin statement}, \emph{body} or \emph{end statement} of the
@@ -620,12 +620,12 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 	after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings
 	for \texttt{equation*} have been specified. Note that all poly-switches are \emph{off} by default.
 
-	\cmhlistingsfromfile[style=modifylinebreaksEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
+	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
 	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$,
 	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, these will be related to fields specified in \cref{lst:environments-mlb}.
 
-	\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1-tex}
+	\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1-tex}
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
@@ -634,11 +634,11 @@ before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$
 	let's allow each of them in turn to take a value of $1$.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb2.yaml}[MLB-TCB]{\texttt{env-mlb2.yaml}}{lst:env-mlb2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb2.yaml}[MLB-TCB]{\texttt{env-mlb2.yaml}}{lst:env-mlb2}
 	\end{minipage}
 
 	After running the following commands,
@@ -670,11 +670,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	save them into \texttt{env-mlb3.yaml} and \texttt{env-mlb4.yaml} respectively (see \cref{lst:env-mlb3,lst:env-mlb4}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
 	\end{minipage}
 
 	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
@@ -694,15 +694,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	space has been stripped before doing so.
 
 	Let's%
-	\announce*{2017-08-21}{demonstration of blank line poly-switch (3)}  now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}  now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
 	save them into \texttt{env-mlb5.yaml} and \texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
 	\end{minipage}
 
 	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
@@ -725,11 +725,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	and in particular, let's allow each of them in turn to take a value of $1$.
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb8.yaml}[MLB-TCB]{\texttt{env-mlb8.yaml}}{lst:env-mlb8}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb8.yaml}[MLB-TCB]{\texttt{env-mlb8.yaml}}{lst:env-mlb8}
 	\end{minipage}
 
 	After running the following commands,
@@ -760,11 +760,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	save them into \texttt{env-mlb9.yaml} and \texttt{env-mlb10.yaml} respectively (see \cref{lst:env-mlb9,lst:env-mlb10}).
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
 	\end{minipage}
 
 	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
@@ -784,15 +784,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	space has been stripped before doing so.
 
 	Let's%
-	\announce*{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
 	save them into \texttt{env-mlb11.yaml} and \texttt{env-mlb12.yaml} respectively (see \cref{lst:env-mlb11,lst:env-mlb12}).
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
 	\end{minipage}
 
 	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
@@ -850,7 +850,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	and $\EndFinishesWithLineBreak$, together with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
 
 	\begin{minipage}{.45\linewidth}
-		\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
+		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
 before words(*@$\BeginStartsOnOwnLine$@*)
 \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)
 body of myenv(*@$\EndStartsOnOwnLine$@*)
@@ -860,13 +860,13 @@ after words
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.51\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb13.yaml}[MLB-TCB]{\texttt{env-mlb13.yaml}}{lst:env-mlb13}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb13.yaml}[MLB-TCB]{\texttt{env-mlb13.yaml}}{lst:env-mlb13}
 
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb14.yaml}[MLB-TCB]{\texttt{env-mlb14.yaml}}{lst:env-mlb14}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb14.yaml}[MLB-TCB]{\texttt{env-mlb14.yaml}}{lst:env-mlb14}
 
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb15.yaml}[MLB-TCB]{\texttt{env-mlb15.yaml}}{lst:env-mlb15}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb15.yaml}[MLB-TCB]{\texttt{env-mlb15.yaml}}{lst:env-mlb15}
 
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb16.yaml}[MLB-TCB]{\texttt{env-mlb16.yaml}}{lst:env-mlb16}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb16.yaml}[MLB-TCB]{\texttt{env-mlb16.yaml}}{lst:env-mlb16}
 	\end{minipage}
 
 	After running the commands
@@ -919,7 +919,7 @@ latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	file shown in \cref{lst:mlb5}, which highlights trailing spaces.
 
 	\begin{minipage}{.45\linewidth}
-		\begin{cmhlistings}[showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
+		\begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
 before words   (*@$\BeginStartsOnOwnLine$@*) 
 \begin{myenv}           (*@$\BodyStartsOnOwnLine$@*)
 body of myenv      (*@$\EndStartsOnOwnLine$@*) 
@@ -929,7 +929,7 @@ after words
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
 	\end{minipage}
 
 	The output from the following commands
@@ -944,16 +944,16 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in \cref{lst:removeTWS-before}.
 
 	\begin{widepage}
-		\cmhlistingsfromfile{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb5-modAll}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb5-modAll}
 
-		\cmhlistingsfromfile{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
 	\end{widepage}
 
 \subsubsection{poly-switch line break removal and blank lines}
 	Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
 
 	\begin{minipage}{.45\linewidth}
-		\begin{cmhlistings}[escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
+		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
 before words(*@$\BeginStartsOnOwnLine$@*)
 
 
@@ -970,7 +970,7 @@ after words
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
 	\end{minipage}
 
 	Upon running the following commands
@@ -1032,7 +1032,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		Code block                             & Sample & Poly-switch mapping                  \\
 		\midrule
 		environment                            &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)
 body of myenv(*@$\EndStartsOnOwnLine$@*)
@@ -1049,7 +1049,7 @@ after words
 		\\
 		\cmidrule{2-3}
 		ifelsefi                               &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \if...(*@$\BodyStartsOnOwnLine$@*)
 body of if statement(*@$\ElseStartsOnOwnLine$@*)
@@ -1070,7 +1070,7 @@ after words
 		\\
 		\cmidrule{2-3}
 		optionalArguments                      &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 ...(*@$\BeginStartsOnOwnLine$@*)
 [(*@$\BodyStartsOnOwnLine$@*)
 body of opt arg(*@$\EndStartsOnOwnLine$@*)
@@ -1087,7 +1087,7 @@ body of opt arg(*@$\EndStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		mandatoryArguments                     &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 ...(*@$\BeginStartsOnOwnLine$@*)
 {(*@$\BodyStartsOnOwnLine$@*)
 body of mand arg(*@$\EndStartsOnOwnLine$@*)
@@ -1104,7 +1104,7 @@ body of mand arg(*@$\EndStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		commands                               &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={mycommand},nolol=true,]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},morekeywords={mycommand},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \mycommand(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{arguments}$\rangle$@*)
@@ -1117,7 +1117,7 @@ before words(*@$\BeginStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		namedGroupingBraces Brackets           &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={myname},nolol=true,]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},morekeywords={myname},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 myname(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{braces/brackets}$\rangle$@*)
@@ -1130,7 +1130,7 @@ myname(*@$\BodyStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		keyEqualsValuesBraces\newline Brackets &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},morekeywords={key},nolol=true,]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},morekeywords={key},nolol=true,]
 before words(*@$\BeginStartsOnOwnLine$@*)
 key(*@$\EqualsStartsOnOwnLine$@*)=(*@$\BodyStartsOnOwnLine$@*)
 (*@$\langle$\itshape{braces/brackets}$\rangle$@*)
@@ -1144,7 +1144,7 @@ key(*@$\EqualsStartsOnOwnLine$@*)=(*@$\BodyStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		items                                  &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \item(*@$\BodyStartsOnOwnLine$@*)
 ...
@@ -1157,7 +1157,7 @@ before words(*@$\BeginStartsOnOwnLine$@*)
 		\\
 		\cmidrule{2-3}
 		specialBeginEnd                        &
-		\begin{lstlisting}[escapeinside={(*@}{@*)},nolol=true]
+		\begin{lstlisting}[style=tcblatex,escapeinside={(*@}{@*)},nolol=true]
 before words(*@$\BeginStartsOnOwnLine$@*)
 \[(*@$\BodyStartsOnOwnLine$@*)
 body of special(*@$\EndStartsOnOwnLine$@*)

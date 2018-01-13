@@ -10,11 +10,11 @@
 	as demonstrated in \cref{lst:myenv-noAdd1,lst:myenv-noAdd2}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd1.yaml}}{lst:myenv-noAdd1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd1.yaml}}{lst:myenv-noAdd1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd2.yaml}}{lst:myenv-noAdd2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd2.yaml}}{lst:myenv-noAdd2}
 	\end{minipage}
 
 	On applying either of the following commands,
@@ -36,11 +36,11 @@ latexindent.pl myenv.tex -l myenv-noAdd4.yaml
 	we obtain the output given in \cref{lst:myenv-output-4}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd3.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd3.yaml}}{lst:myenv-noAdd3}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd3.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd3.yaml}}{lst:myenv-noAdd3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd4.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd4.yaml}}{lst:myenv-noAdd4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd4.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd4.yaml}}{lst:myenv-noAdd4}
 	\end{minipage}
 
 	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3} or \cref{lst:myenv-noAdd4})}{lst:myenv-output-4}
@@ -59,11 +59,11 @@ latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex
 	We may customise \texttt{noAdditionalIndent} for optional and mandatory arguments of the \texttt{myenv} environment, as shown in, for example, \cref{lst:myenv-noAdd5,lst:myenv-noAdd6}.
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd5.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd5.yaml}}{lst:myenv-noAdd5}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd5.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd5.yaml}}{lst:myenv-noAdd5}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd6.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd6.yaml}}{lst:myenv-noAdd6}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd6.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd6.yaml}}{lst:myenv-noAdd6}
 	\end{minipage}
 
 	Upon running
@@ -88,11 +88,11 @@ latexindent.pl myenv.tex -l myenv-noAdd6.yaml
 	\cref{lst:myenv-rules1,lst:myenv-rules2}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules1.yaml}}{lst:myenv-rules1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules1.yaml}}{lst:myenv-rules1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules2.yaml}}{lst:myenv-rules2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules2.yaml}}{lst:myenv-rules2}
 	\end{minipage}
 
 	On applying either of the following commands,
@@ -103,7 +103,7 @@ latexindent.pl myenv.tex -l myenv-rules2.yaml
 	we obtain the output given in \cref{lst:myenv-rules-output}; note in particular that the environment \texttt{myenv}
 	has received one tab (from the \texttt{outer} environment) plus three spaces from \cref{lst:myenv-rules1} or \ref{lst:myenv-rules2}.
 
-	\cmhlistingsfromfile{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}}{lst:myenv-rules-output}
+	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}}{lst:myenv-rules-output}
 
 	If you specify a field in \texttt{indentRules} using anything other than horizontal space, it will be ignored.
 
@@ -111,18 +111,18 @@ latexindent.pl myenv.tex -l myenv-rules2.yaml
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -l=myenv-rules1.yaml  
 \end{commandshell}
-	we obtain the output in \cref{lst:myenv-args-rules1}; note that the body, optional argument and mandatory argument have \emph{all}
-	received the same customised indentation.
-	\cmhlistingsfromfile{demonstrations/myenvironment-args-rules1.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules1}}{lst:myenv-args-rules1}
+	we obtain the output in \cref{lst:myenv-args-rules1}; note that the body, optional argument and mandatory argument of \texttt{myenv}
+	have \emph{all} received the same customised indentation.
+	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenvironment-args-rules1.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules1}}{lst:myenv-args-rules1}
 
 	You can specify different indentation rules for the different features using, for example, \cref{lst:myenv-rules3,lst:myenv-rules4}
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules3.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules3.yaml}}{lst:myenv-rules3}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules3.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules3.yaml}}{lst:myenv-rules3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules4.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules4.yaml}}{lst:myenv-rules4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules4.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules4.yaml}}{lst:myenv-rules4}
 	\end{minipage}
 
 	After running
@@ -132,13 +132,15 @@ latexindent.pl myenv-args.tex -l myenv-rules4.yaml
 \end{commandshell}
 	then we obtain the respective outputs given in \cref{lst:myenv-args-rules3,lst:myenv-args-rules4}.
 
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules3}}{lst:myenv-args-rules3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules4}}{lst:myenv-args-rules4}
-	\end{minipage}
+	\begin{widepage}
+		\begin{minipage}{.5\textwidth}
+			\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenvironment-args-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules3}}{lst:myenv-args-rules3}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}{.5\textwidth}
+			\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenvironment-args-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules4}}{lst:myenv-args-rules4}
+		\end{minipage}
+	\end{widepage}
 
 	Note that in \cref{lst:myenv-args-rules3}, the optional argument has only received a single space of indentation, while the mandatory argument
 	has received the default (tab) indentation; the environment body has received three spaces of indentation.
@@ -148,7 +150,7 @@ latexindent.pl myenv-args.tex -l myenv-rules4.yaml
 
 \yamltitle{noAdditionalIndentGlobal}*{fields}
 	\begin{wrapfigure}[6]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
+		\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
 	\end{wrapfigure}
 	Assuming that your environment name is not found within neither \texttt{noAdditionalIndent} nor \texttt{indentRules}, the next
 	place that \texttt{latexindent.pl} will look is \texttt{noAdditionalIndentGlobal}, and in particular \emph{for the environments} key
@@ -179,11 +181,11 @@ latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
 	arguments; on referencing \cref{lst:opt-args-no-add-glob,lst:mand-args-no-add-glob}
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/opt-args-no-add-glob.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{opt-args-no-add-glob.yaml}}{lst:opt-args-no-add-glob}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/opt-args-no-add-glob.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{opt-args-no-add-glob.yaml}}{lst:opt-args-no-add-glob}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mand-args-no-add-glob.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-no-add-glob.yaml}}{lst:mand-args-no-add-glob}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mand-args-no-add-glob.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-no-add-glob.yaml}}{lst:mand-args-no-add-glob}
 	\end{minipage}
 
 	we may run the commands
@@ -205,7 +207,7 @@ latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
 
 \yamltitle{indentRulesGlobal}*{fields}
 	\begin{wrapfigure}[4]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=indentRulesGlobalEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
+		\cmhlistingsfromfile[style=indentRulesGlobalEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
 	\end{wrapfigure}
 	The final check that \texttt{latexindent.pl} will make is to look for \texttt{indentRulesGlobal} as detailed in \cref{lst:indentRulesGlobal:environments}; if you change the \texttt{environments}
 	field to anything involving horizontal space, say \lstinline!" "!, and then run the following commands
@@ -220,21 +222,21 @@ latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 	but \texttt{myenv} has received \lstinline!"   "!, as specified by the particular \texttt{indentRules} for \texttt{myenv} \vref{lst:myenv-rules1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules1.tex}{\texttt{myenv-args.tex} using \cref{lst:indentRulesGlobal:environments}}{lst:myenv-args-indent-rules-global1}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/myenvironment-args-global-rules1.tex}{\texttt{myenv-args.tex} using \cref{lst:indentRulesGlobal:environments}}{lst:myenv-args-indent-rules-global1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules2.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules1,lst:indentRulesGlobal:environments}}{lst:myenv-args-indent-rules-global2}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/myenvironment-args-global-rules2.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules1,lst:indentRulesGlobal:environments}}{lst:myenv-args-indent-rules-global2}
 	\end{minipage}
 
 	You can specify \texttt{indentRulesGlobal} for both optional and mandatory arguments, as detailed in \cref{lst:opt-args-indent-rules-glob,lst:mand-args-indent-rules-glob}
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/opt-args-indent-rules-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{opt-args-indent-rules-glob.yaml}}{lst:opt-args-indent-rules-glob}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/opt-args-indent-rules-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{opt-args-indent-rules-glob.yaml}}{lst:opt-args-indent-rules-glob}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mand-args-indent-rules-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-indent-rules-glob.yaml}}{lst:mand-args-indent-rules-glob}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mand-args-indent-rules-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-indent-rules-glob.yaml}}{lst:mand-args-indent-rules-glob}
 	\end{minipage}
 
 	Upon running the following commands
@@ -248,10 +250,10 @@ latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
 
 	\begin{widepage}
 		\begin{minipage}{.55\textwidth}
-			\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:opt-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global3}
+			\cmhlistingsfromfile[showtabs=true]{demonstrations/myenvironment-args-global-rules3.tex}{\texttt{myenv-args.tex} using \cref{lst:opt-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global3}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.55\textwidth}
-			\cmhlistingsfromfile{demonstrations/myenvironment-args-global-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:mand-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global4}
+			\cmhlistingsfromfile[showtabs=true]{demonstrations/myenvironment-args-global-rules4.tex}{\texttt{myenv-args.tex} using \cref{lst:mand-args-indent-rules-glob}}{lst:myenv-args-indent-rules-global4}
 		\end{minipage}
 	\end{widepage}

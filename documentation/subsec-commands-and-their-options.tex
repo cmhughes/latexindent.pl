@@ -8,9 +8,9 @@
 \yamltitle{commandCodeBlocks}*{fields}
 
 	The \texttt{commandCodeBlocks} field%
-	\announce*{2017-08-21}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	\announce{2017-08-21}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -18,11 +18,11 @@
 	let's consider the code given in \cref{lst:pstricks1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/pstricks1.tex}{\texttt{pstricks1.tex}}{lst:pstricks1}
+		\cmhlistingsfromfile{demonstrations/pstricks1.tex}{\texttt{pstricks1.tex}}{lst:pstricks1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/pstricks1-default.tex}{\texttt{pstricks1} default output}{lst:pstricks1-default}
+		\cmhlistingsfromfile{demonstrations/pstricks1-default.tex}{\texttt{pstricks1} default output}{lst:pstricks1-default}
 	\end{minipage}
 
 	Notice that the \lstinline!\defFunction! command has an optional argument, followed by a
@@ -46,7 +46,7 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
 	\end{minipage}
 
 	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp}; in particular, in \cref{lst:pstricks1-nrp}, because
@@ -61,11 +61,11 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 	then the output is as in \cref{lst:pstricks1-indent-rules}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/pstricks1-indent-rules.tex}{\texttt{pstricks1.tex} using \cref{lst:defFunction}}{lst:pstricks1-indent-rules}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/pstricks1-indent-rules.tex}{\texttt{pstricks1.tex} using \cref{lst:defFunction}}{lst:pstricks1-indent-rules}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
 	\end{minipage}
 
 	Notice in \cref{lst:pstricks1-indent-rules} that the \emph{body} of the \lstinline!defFunction! command i.e, the subsequent lines
@@ -76,11 +76,11 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 	\texttt{latexindent.pl} gives the default output in \cref{lst:tikz-node1-default}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
+		\cmhlistingsfromfile[columns=fixed]*{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
+		\cmhlistingsfromfile[columns=fixed]*{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
 	\end{minipage}
 
 	With reference to \vref{lst:commandCodeBlocks}, we see that the strings
@@ -108,11 +108,11 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 	we receive the output given in \cref{lst:tikz-node1-draw}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/tikz-node1-draw.tex}{\texttt{tikz-node1.tex} using \cref{lst:draw}}{lst:tikz-node1-draw}
+		\cmhlistingsfromfile[showspaces=true]{demonstrations/tikz-node1-draw.tex}{\texttt{tikz-node1.tex} using \cref{lst:draw}}{lst:tikz-node1-draw}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
 	\end{minipage}
 
 	Notice that each line after the \lstinline!\draw! command (its `body') in \cref{lst:tikz-node1-draw} has been given the
@@ -129,7 +129,7 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-to.yaml}[yaml-TCB]{\texttt{no-to.yaml}}{lst:no-to}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-to.yaml}[yaml-TCB]{\texttt{no-to.yaml}}{lst:no-to}
 	\end{minipage}
 
 	In this case, \texttt{latexindent.pl} sees that:
@@ -141,7 +141,7 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
-	\announce*{2017-08-21}{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
+	\announce{2017-08-21}{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
 	the first one of which is \lstinline!\@ifnextchar[!. From the perspective of \texttt{latexindent.pl}, the whole of the
 	text \lstinline!\@ifnextchar[! is is a command, because it is
 	immediately followed by sets of mandatory arguments. However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl}
@@ -170,5 +170,5 @@ latexindent.pl tikz-node1.tex -l no-to.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{minipage}

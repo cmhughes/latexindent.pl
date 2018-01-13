@@ -6,11 +6,11 @@
  The main limitation is to do with the alignment routine discussed on \cpageref{yaml:lookforaligndelims}; for example,
  consider the file given in \cref{lst:matrix2}.
 
- \cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/matrix2.tex}{\texttt{matrix2.tex}}{lst:matrix2}
+ \cmhlistingsfromfile*{demonstrations/matrix2.tex}{\texttt{matrix2.tex}}{lst:matrix2}
 
  The default output is given in \cref{lst:matrix2-default}, and it is clear that the alignment routine
  has not worked as hoped, but it is \emph{expected}.
- \cmhlistingsfromfile*[showspaces=false,showtabs=false]*{demonstrations/matrix2-default.tex}{\texttt{matrix2.tex} default output}{lst:matrix2-default}
+ \cmhlistingsfromfile*{demonstrations/matrix2-default.tex}{\texttt{matrix2.tex} default output}{lst:matrix2-default}
 
  The reason for the problem is that when \texttt{latexindent.pl} stores its code blocks (see \vref{tab:code-blocks})
  it uses replacement tokens. The alignment routine is using the \emph{length of the replacement token} in its measuring -- I hope
