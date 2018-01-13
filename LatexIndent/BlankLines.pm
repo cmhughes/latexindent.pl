@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 
@@ -27,11 +28,11 @@ sub protect_blank_lines{
     my $self = shift;
 
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
-        $self->logger("Blank lines will not be protected (preserveBlankLines=0)",'heading') if $is_t_switch_active;
+        $logger->trace("*Blank lines will not be protected (preserveBlankLines=0)") if $is_t_switch_active;
         return
     }
 
-    $self->logger("Protecting blank lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
+    $logger->trace("*Protecting blank lines (see preserveBlankLines)") if $is_t_switch_active;
     ${$self}{body} =~ s/^(\h*)?\R/$tokens{blanklines}\n/mg;
     return;
 }
@@ -43,6 +44,7 @@ sub condense_blank_lines{
 
     my $self = shift;
 
+    $logger->trace("*condense blank lines routine") if $is_t_switch_active;
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
     if(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}==0){
@@ -50,12 +52,12 @@ sub condense_blank_lines{
         ${$masterSettings{modifyLineBreaks}}{preserveBlankLines}=1;
 
         # log file information
-        $self->logger("Updating body to inclued blank line token, this requires preserveBlankLines = 1",'ttrace') if($is_tt_switch_active);
-        $self->logger("(any blanklines that could have been removed, would have done so by this point)",'ttrace') if($is_tt_switch_active);
+        $logger->trace("Updating body to include blank line token, this requires preserveBlankLines = 1") if($is_tt_switch_active);
+        $logger->trace("(any blanklines that could have been removed, would have done so by this point)") if($is_tt_switch_active);
 
         # make the call
         $self->protect_blank_lines ;
-        $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
+        $logger->trace("body now looks like:\n${$self}{body}") if($is_tt_switch_active);
      }
 
     # grab the value from the settings
@@ -65,15 +67,15 @@ sub condense_blank_lines{
     my $blankLineToken = $tokens{blanklines};
 
     # condense!
-    $self->logger("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)",'heading') if $is_t_switch_active;
+    $logger->trace("Condensing multiple blank lines into $condenseMultipleBlankLinesInto (see condenseMultipleBlankLinesInto)") if $is_t_switch_active;
     my $replacementToken = $blankLineToken;
     for (my $i=1; $i<$condenseMultipleBlankLinesInto; $i++ ){
         $replacementToken .= "\n$blankLineToken";
     }
 
-    $self->logger("blank line replacement token: $replacementToken",'ttrace') if($is_tt_switch_active);
+    $logger->trace("blank line replacement token: $replacementToken") if($is_tt_switch_active);
     ${$self}{body} =~ s/($blankLineToken\h*\R*\h*){1,}$blankLineToken/$replacementToken/mgs;
-    $self->logger("body now looks like:\n${$self}{body}",'ttrace') if($is_tt_switch_active);
+    $logger->trace("body now looks like:\n${$self}{body}") if($is_tt_switch_active);
     return;
 }
 
@@ -83,7 +85,7 @@ sub unprotect_blank_lines{
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
     my $self = shift;
 
-    $self->logger("Unprotecting blank lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
+    $logger->trace("Unprotecting blank lines (see preserveBlankLines)") if $is_t_switch_active;
     my $blankLineToken = $tokens{blanklines};
 
     # loop through the body, looking for the blank line token
@@ -100,8 +102,9 @@ sub unprotect_blank_lines{
         # when there is only stuff *after* the blank line token
         ${$self}{body} =~ s/^$blankLineToken\h*(.*?)$/$1."\n"/emg;
     }
-    $self->logger("Finished unprotecting lines (see preserveBlankLines)",'heading') if $is_t_switch_active;
-    $self->logger("body now looks like ${$self}{body}",'ttrace') if($is_tt_switch_active);
+    $logger->trace("Finished unprotecting lines (see preserveBlankLines)") if $is_t_switch_active;
+    $logger->trace("body now looks like:") if($is_tt_switch_active);
+    $logger->trace("${$self}{body}") if($is_tt_switch_active);
 }
 
 1;

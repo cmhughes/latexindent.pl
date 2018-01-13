@@ -20,6 +20,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -35,20 +36,20 @@ sub construct_headings_levels{
     my %headingsLevels = %{$masterSettings{indentAfterHeadings}};
 
     # output to log file
-    $self->logger("Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)") if $is_t_switch_active ;
+    $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)") if $is_t_switch_active ;
 
     # delete the values that have indentAfterThisHeading set to 0
     while( my ($headingName,$headingInfo)= each %headingsLevels){
         if(!${$headingsLevels{$headingName}}{indentAfterThisHeading}){
-            $self->logger("Not indenting after $headingName (see indentAfterThisHeading)",'heading') if $is_t_switch_active;
+            $logger->trace("Not indenting after $headingName (see indentAfterThisHeading)") if $is_t_switch_active;
             delete $headingsLevels{$headingName};
         } else {
-            # *all heading* regexp, remembering put starred headings at the front of the regexp
+            # *all heading* regexp, remembering to put starred headings at the front of the regexp
             if($headingName =~ m/\*/){
-                 $self->logger("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *") if $is_t_switch_active ;
+                 $logger->trace("Putting $headingName at the beginning of the allHeadings regexp, as it contains a *") if $is_t_switch_active ;
                  $allHeadingsRegexp = $headingName.($allHeadingsRegexp eq '' ?q():"|$allHeadingsRegexp");
             } else {
-                 $self->logger("Putting $headingName at the END of the allHeadings regexp, as it contains a *") if $is_t_switch_active ;
+                 $logger->trace("Putting $headingName at the END of the allHeadings regexp") if $is_t_switch_active ;
                  $allHeadingsRegexp .= ($allHeadingsRegexp eq '' ?q():"|").$headingName ;
             }
         }
@@ -63,8 +64,8 @@ sub construct_headings_levels{
     # it could be that @sortedByLevels is empty;
     return if !@sortedByLevels;
 
-    $self->logger("All headings regexp: $allHeadingsRegexp",'heading') if $is_t_switch_active; 
-    $self->logger("Now to construct headings regexp for each level:",'heading') if $is_t_switch_active; 
+    $logger->trace("*All headings regexp: $allHeadingsRegexp") if $is_tt_switch_active; 
+    $logger->trace("*Now to construct headings regexp for each level:") if $is_t_switch_active; 
 
     # loop through the levels, and create a regexp for each (min and max values are the first and last values respectively from sortedByLevels)
     for(my $i = ${$headingsLevels{$sortedByLevels[0]}}{level}; $i <= ${$headingsLevels{$sortedByLevels[-1]}}{level}; $i++ ){
@@ -75,10 +76,10 @@ sub construct_headings_levels{
             foreach(@tmp){
                # put starred headings at the front of the regexp
                if($_ =~ m/\*/){
-                    $self->logger("Putting $_ at the beginning of this regexp, as it contains a *") if $is_t_switch_active;
+                    $logger->trace("Putting $_ at the beginning of this regexp (level $i), as it contains a *") if $is_t_switch_active;
                     $headingsAtThisLevel = $_.($headingsAtThisLevel eq '' ?q():"|$headingsAtThisLevel");
                } else {
-                    $self->logger("Putting $_ at the END of this regexp, as it contains a *") if $is_t_switch_active;
+                    $logger->trace("Putting $_ at the END of this regexp (level $i)") if $is_t_switch_active;
                     $headingsAtThisLevel .= ($headingsAtThisLevel eq '' ?q():"|").$_ ;
                }
             }
@@ -86,7 +87,7 @@ sub construct_headings_levels{
             # make the stars escaped correctly
             $headingsAtThisLevel =~ s/\*/\\\*/g;
             push(@headingsRegexpArray,$headingsAtThisLevel);
-            $self->logger("Heading level regexp for level $i will contain: $headingsAtThisLevel") if $is_t_switch_active;
+            $logger->trace("Heading level regexp for level $i will contain: $headingsAtThisLevel") if $is_t_switch_active;
         }
     }
   }
@@ -99,7 +100,7 @@ sub find_heading{
     my $self = shift;
 
     # otherwise loop through the headings regexp
-    $self->logger("Searching for headings ") if $is_t_switch_active;
+    $logger->trace("*Searching ${$self}{name} for headings ") if $is_t_switch_active;
 
     # loop through each headings match; note that we need to 
     # do it in *reverse* so as to ensure that the lower level headings get matched first of all
@@ -120,7 +121,7 @@ sub find_heading{
         while(${$self}{body} =~ m/$headingRegExp/){
 
             # log file output
-            $self->logger("heading found: $2",'heading');
+            $logger->trace("heading found: $2") if $is_t_switch_active;
 
             ${$self}{body} =~ s/
                                 $headingRegExp
@@ -154,7 +155,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for a heading (chapter, section, etc) needs to put the trailing part back in
-    $self->logger("Custom replacement text routine for heading ${$self}{name}");
+    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
     ${$self}{replacementText} = ${$self}{id}.${$self}{afterbit};
     delete ${$self}{afterbit};
 }
@@ -209,15 +210,15 @@ sub tasks_particular_to_each_object{
     #
     # then we need to transfer this information to the heading object
     if($is_m_switch_active){
-        $self->logger("Searching for linebreak preferences immediately infront of ${$self}{parent}",'heading');
+        $logger->trace("Searching for linebreak preferences immediately infront of ${$self}{parent}") if $is_t_switch_active;
         foreach(@{${$self}{children}}){
             if(${$_}{name} eq ${$self}{parent}){
-                $self->logger("Named child found: ${$_}{name}");
+                $logger->trace("Named child found: ${$_}{name}") if $is_t_switch_active;
                 if(defined ${$_}{BeginStartsOnOwnLine}){
-                    $self->logger("Transferring information from ${$_}{id} (${$_}{name}) to ${$self}{id} (${$self}{name}) for BeginStartsOnOwnLine");
+                    $logger->trace("Transferring information from ${$_}{id} (${$_}{name}) to ${$self}{id} (${$self}{name}) for BeginStartsOnOwnLine") if $is_t_switch_active;
                     ${$self}{BeginStartsOnOwnLine} = ${$_}{BeginStartsOnOwnLine};
                 } else {
-                    $self->logger("No information found in ${$_}{name} for BeginStartsOnOwnLine");
+                    $logger->trace("No information found in ${$_}{name} for BeginStartsOnOwnLine") if $is_t_switch_active;
                 }
                 last;
             }
@@ -235,7 +236,7 @@ sub add_surrounding_indentation_to_begin_statement{
     # but some (e.g HEADING) have their own method
     my $self = shift;
     
-    $self->logger("Adding surrounding indentation after (empty, by design!) begin statement of ${$self}{name} (${$self}{id})");
+    $logger->trace("Adding surrounding indentation after (empty, by design!) begin statement of ${$self}{name} (${$self}{id})") if $is_t_switch_active;
     ${$self}{begin} .= ${$self}{surroundingIndentation};  # add indentation
 
 }

@@ -1,0 +1,26 @@
+\title{%
+	\begin{tcolorbox}[
+			width=5.2cm,
+			boxrule=0pt,
+			colframe=white!40!black,
+			colback=white,
+			rightrule=2pt,
+			sharp corners,
+			enhanced,
+			overlay={\node[anchor=north east,outer sep=2pt] at ([xshift=3cm,yshift=4mm]frame.north east) {\includegraphics[width=3cm]{logo}}; }]
+		\centering\ttfamily\bfseries latexindent.pl\\[1cm] Version 3.4
+	\end{tcolorbox}
+}
+\author{Chris Hughes \thanks{and contributors!
+		See \vref{sec:contributors}.
+		For all communication, please visit \cite{latexindent-home}.
+	}}
+\maketitle
+\begin{adjustwidth}{1cm}{1cm}
+	\small
+	\texttt{latexindent.pl} is a \texttt{Perl} script that indents \texttt{.tex} (and other) files according to an indentation scheme that the user can modify to suit their taste.
+	Environments, including those with alignment delimiters (such as \texttt{tabular}), and commands, including those that can split braces and brackets across lines, are \emph{usually} handled correctly by the script.
+	Options for \texttt{verbatim}-like environments and commands, together with indentation after headings (such as \lstinline!chapter!, \lstinline!section!, etc) are also available.
+	The script also has the ability to modifiy line breaks, and add comment symbols.
+	All user options are customisable via the switches in the YAML interface; you can find a quick start guide in \vref{sec:quickstart}.
+\end{adjustwidth}

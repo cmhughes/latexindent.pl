@@ -1,0 +1,4 @@
+lookForAlignDelims:
+   tabular: 
+      alignRowsWithoutMaxDelims: 0
+      alignDoubleBackSlash: 0

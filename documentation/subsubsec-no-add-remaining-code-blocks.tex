@@ -22,7 +22,7 @@
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.5\textwidth}
-			\cmhlistingsfromfile{demonstrations/pgfkeys1-default.tex}{\texttt{pgfkeys1.tex} default output}{lst:pgfkeys1:default}
+			\cmhlistingsfromfile[showtabs=true]{demonstrations/pgfkeys1-default.tex}{\texttt{pgfkeys1.tex} default output}{lst:pgfkeys1:default}
 		\end{minipage}%
 
 		In \cref{lst:pgfkeys1:default}, note that the maximum indentation is three tabs, and these come from:
@@ -48,7 +48,7 @@
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.5\textwidth}
-			\cmhlistingsfromfile{demonstrations/child1-default.tex}{\texttt{child1.tex} default output}{lst:child1:default}
+			\cmhlistingsfromfile[showtabs=true]{demonstrations/child1-default.tex}{\texttt{child1.tex} default output}{lst:child1:default}
 		\end{minipage}%
 
 		In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and \texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{
@@ -77,7 +77,7 @@
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.5\textwidth}
-			\cmhlistingsfromfile{demonstrations/psforeach1-default.tex}{\texttt{psforeach1.tex} default output}{lst:psforeach:default}
+			\cmhlistingsfromfile[showtabs=true]{demonstrations/psforeach1-default.tex}{\texttt{psforeach1.tex} default output}{lst:psforeach:default}
 		\end{minipage}%
 
 		Referencing \cref{lst:psforeach:default}, there are \emph{three} sets of unnamed braces. Note also that the maximum value
@@ -100,10 +100,10 @@
 
 	\begin{widepage}
 		\begin{minipage}{.47\linewidth}
-			\cmhlistingsfromfile[style=noAdditionalIndentGlobal]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal}
+			\cmhlistingsfromfile[style=noAdditionalIndentGlobal]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal}
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.47\linewidth}
-			\cmhlistingsfromfile[style=indentRulesGlobal]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal}
+			\cmhlistingsfromfile[style=indentRulesGlobal]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal}
 		\end{minipage}%
 	\end{widepage}

@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
 
@@ -25,10 +26,12 @@ sub remove_trailing_whitespace{
     my $self = shift;
     my %input = @_;
 
+    $logger->trace("*Horizontal space removal routine") if $is_t_switch_active;
+
     # removeTrailingWhitespace can be either a hash or a scalar, but if
     # it's a scalar, we need to fix it
     if(ref($masterSettings{removeTrailingWhitespace}) ne 'HASH'){
-        $self->logger("removeTrailingWhitespace specified as scalar, will update it to be a hash",'heading') if $is_t_switch_active;
+        $logger->trace("removeTrailingWhitespace specified as scalar, will update it to be a hash") if $is_t_switch_active;
         # grab the value
         my $removeTWS = $masterSettings{removeTrailingWhitespace};
 
@@ -38,17 +41,17 @@ sub remove_trailing_whitespace{
         # redefine it as a hash
         ${$masterSettings{removeTrailingWhitespace}}{beforeProcessing} = $removeTWS; 
         ${$masterSettings{removeTrailingWhitespace}}{afterProcessing} = $removeTWS; 
-        $self->logger("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
-        $self->logger("removeTrailingWhitespace: afterProcessing is now $removeTWS") if $is_t_switch_active;
+        $logger->trace("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
+        $logger->trace("removeTrailingWhitespace: afterProcessing is now $removeTWS") if $is_t_switch_active;
     }
 
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){
         return unless(${$masterSettings{removeTrailingWhitespace}}{beforeProcessing});
-        $self->logger("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)",'heading') if $is_t_switch_active;
+        $logger->trace("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)") if $is_t_switch_active;
     } elsif($input{when} eq "after"){
         return unless(${$masterSettings{removeTrailingWhitespace}}{afterProcessing});
-        $self->logger("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)",'heading') if $is_t_switch_active;
+        $logger->trace("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)") if $is_t_switch_active;
     } else {
         return;
     }
@@ -58,14 +61,11 @@ sub remove_trailing_whitespace{
                        $    # up to the end of a line
                        //xsmg;
 
-    $self->logger("Processed body, *$input{when}* indentation (${$self}{name}):") if($is_t_switch_active);
-    $self->logger(${$self}{body}) if($is_t_switch_active);
-
 }
 
 sub remove_leading_space{
     my $self = shift;
-    $self->logger("Removing leading space from ${$self}{name} (verbatim/noindentblock already accounted for)",'heading') if $is_t_switch_active;
+    $logger->trace("*Removing leading space from ${$self}{name} (verbatim/noindentblock already accounted for)") if $is_t_switch_active;
     ${$self}{body} =~ s/
                         (   
                             ^           # beginning of the line

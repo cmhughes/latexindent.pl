@@ -1,3 +1,4 @@
 lookForAlignDelims:
    align*: 
       alignDoubleBackSlash: 0
+      spacesBeforeDoubleBackSlash: 0

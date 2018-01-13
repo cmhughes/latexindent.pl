@@ -16,11 +16,12 @@ package LatexIndent::Verbatim;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use Data::Dumper;
+use Exporter qw/import/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use Data::Dumper;
-use Exporter qw/import/;
+use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
@@ -29,11 +30,11 @@ sub find_noindent_block{
     my $self = shift;
 
     # noindent block
-    $self->logger('looking for NOINDENTBLOCk environments (see noIndentBlock)','heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%{$masterSettings{noIndentBlock}})) if($is_t_switch_active);
+    $logger->trace('*Searching for NOINDENTBLOCk environments (see noIndentBlock)') if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$masterSettings{noIndentBlock}})) if($is_tt_switch_active);
     while( my ($noIndentBlock,$yesno)= each %{$masterSettings{noIndentBlock}}){
         if($yesno){
-            $self->logger("looking for $noIndentBlock:$yesno environments") if $is_t_switch_active;
+            $logger->trace("looking for $noIndentBlock:$yesno environments") if $is_t_switch_active;
 
             my $noIndentRegExp = qr/
                             (
@@ -58,28 +59,31 @@ sub find_noindent_block{
             while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
               # create a new Environment object
-              my $noIndentBlock = LatexIndent::Verbatim->new( begin=>$1,
+              my $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$noIndentBlock,
                                                     );
             
               # give unique id
-              $noIndentBlock->create_unique_id;
+              $noIndentBlockObj->create_unique_id;
 
               # verbatim children go in special hash
-              ${$self}{verbatim}{${$noIndentBlock}{id}}=$noIndentBlock;
+              ${$self}{verbatim}{${$noIndentBlockObj}{id}}=$noIndentBlockObj;
 
               # log file output
-              $self->logger("NOINDENTBLOCK environment found: $noIndentBlock") if $is_t_switch_active;
+              $logger->trace("*NOINDENTBLOCK environment found: $noIndentBlock") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlock}{id}/sx;
+              ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlockObj}{id}/sx;
 
-              $self->logger("replaced with ID: ${$noIndentBlock}{id}") if $is_t_switch_active;
+              $logger->trace("replaced with ID: ${$noIndentBlockObj}{id}") if $is_t_switch_active;
+              
+              # possible decoration in log file 
+              $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
             } 
       } else {
-            $self->logger("*not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
+            $logger->trace("*not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
       }
     }
     return;
@@ -89,11 +93,11 @@ sub find_verbatim_environments{
     my $self = shift;
 
     # verbatim environments
-    $self->logger('looking for VERBATIM environments (see verbatimEnvironments)','heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%{$masterSettings{verbatimEnvironments}})) if($is_t_switch_active);
+    $logger->trace('*Searching for VERBATIM environments (see verbatimEnvironments)') if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$masterSettings{verbatimEnvironments}})) if($is_tt_switch_active);
     while( my ($verbEnv,$yesno)= each %{$masterSettings{verbatimEnvironments}}){
         if($yesno){
-            $self->logger("looking for $verbEnv:$yesno environments") if $is_t_switch_active;
+            $logger->trace("looking for $verbEnv:$yesno environments") if $is_t_switch_active;
 
             my $verbatimRegExp = qr/
                             (
@@ -124,15 +128,18 @@ sub find_verbatim_environments{
               ${$self}{verbatim}{${$verbatimBlock}{id}}=$verbatimBlock;
 
               # log file output
-              $self->logger("VERBATIM environment found: $verbEnv") if $is_t_switch_active;
+              $logger->trace("*VERBATIM environment found: $verbEnv") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{id}/sx;
 
-              $self->logger("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
+              $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
+              
+              # possible decoration in log file 
+              $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
             } 
       } else {
-            $self->logger("*not* looking for $verbEnv as $verbEnv:$yesno") if $is_t_switch_active;
+            $logger->trace("*not* looking for $verbEnv as $verbEnv:$yesno") if $is_t_switch_active;
       }
     }
     return;
@@ -146,11 +153,11 @@ sub find_verbatim_commands{
     # would need to be found *before* trailing comments have been removed. Similarly, 
     # verbatim commands need to be put back in *after* trailing comments have been put 
     # back in
-    $self->logger('looking for VERBATIM commands (see verbatimCommands)','heading') if $is_t_switch_active;
-    $self->logger(Dumper(\%{$masterSettings{verbatimCommands}})) if($is_tt_switch_active);
+    $logger->trace('*Searching for VERBATIM commands (see verbatimCommands)') if $is_t_switch_active;
+    $logger->trace(Dumper(\%{$masterSettings{verbatimCommands}})) if($is_tt_switch_active);
     while( my ($verbCommand,$yesno)= each %{$masterSettings{verbatimCommands}}){
         if($yesno){
-            $self->logger("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
+            $logger->trace("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
 
             my $verbatimCommandRegExp = qr/
                             (
@@ -190,21 +197,24 @@ sub find_verbatim_commands{
               $verbatimCommand->create_unique_id;
 
               # output, if desired
-              $self->logger(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
+              $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
 
               # verbatim children go in special hash
               ${$self}{verbatimCommands}{${$verbatimCommand}{id}}=$verbatimCommand;
 
               # log file output
-              $self->logger("VERBATIM command found: $verbCommand") if $is_t_switch_active;
+              $logger->trace("*VERBATIM command found: $verbCommand") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/$verbatimCommandRegExp/${$verbatimCommand}{id}/sx;
 
-              $self->logger("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
+              $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
+              
+              # possible decoration in log file 
+              $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
             } 
       } else {
-            $self->logger("*not* looking for $verbCommand as $verbCommand:$yesno") if $is_t_switch_active;
+            $logger->trace("*not* looking for $verbCommand as $verbCommand:$yesno") if $is_t_switch_active;
       }
     }
     return;
@@ -218,8 +228,8 @@ sub  put_verbatim_back_in {
     return unless(${$self}{verbatim});
 
     # search for environments/commands
-    $self->logger('Putting verbatim back in, here is the pre-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body}) if($is_t_switch_active);
+    $logger->trace('*Putting verbatim back in, here is the pre-processed body:') if $is_tt_switch_active;
+    $logger->trace(${$self}{body}) if($is_tt_switch_active);
 
     # loop through document children hash
     while( (scalar keys %{${$self}{verbatim}})>0 ){
@@ -230,14 +240,13 @@ sub  put_verbatim_back_in {
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','heading') if $is_tt_switch_active;
-                $self->logger(${$self}{body},'ttrace') if($is_tt_switch_active);
+                $logger->trace('Body now looks like:') if $is_tt_switch_active;
+                $logger->trace(${$self}{body},'ttrace') if($is_tt_switch_active);
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatim}{${$child}{id}};
-                $self->logger("deleted key") if $is_t_switch_active;
               } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
-                $self->logger("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+                $logger->trace("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
 
                 # search for a version of the verbatim ID that may have line breaks 
                 my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
@@ -250,10 +259,8 @@ sub  put_verbatim_back_in {
     }
 
     # logfile info
-    $self->logger("Number of children:",'heading') if $is_t_switch_active;
-    $self->logger(scalar keys %{${$self}{verbatim}}) if $is_t_switch_active;
-    $self->logger('Post-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body}) if($is_t_switch_active);
+    $logger->trace('*Post-processed body:') if $is_tt_switch_active;
+    $logger->trace(${$self}{body}) if($is_tt_switch_active);
     return;
 }
 
@@ -264,8 +271,8 @@ sub  put_verbatim_commands_back_in {
     return unless(${$self}{verbatimCommands});
 
     # search for environments/commands
-    $self->logger('Putting verbatim commands back in, here is the pre-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body}) if($is_t_switch_active);
+    $logger->trace('*Putting verbatim commands back in, here is the pre-processed body:') if $is_tt_switch_active;
+    $logger->trace(${$self}{body}) if($is_tt_switch_active);
 
     # loop through document children hash
     while( (scalar keys %{${$self}{verbatimCommands}})>0 ){
@@ -276,14 +283,13 @@ sub  put_verbatim_commands_back_in {
                 ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
-                $self->logger('Body now looks like:','heading') if $is_tt_switch_active;
-                $self->logger(${$self}{body},'ttrace') if($is_tt_switch_active);
+                $logger->trace('Body now looks like:') if $is_tt_switch_active;
+                $logger->trace(${$self}{body},'ttrace') if($is_tt_switch_active);
 
                 # delete the hash so it won't be operated upon again
                 delete ${$self}{verbatimCommands}{${$child}{id}};
-                $self->logger("deleted key") if $is_t_switch_active;
               } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
-                $self->logger("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+                $logger->trace("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
 
                 # search for a version of the verbatim ID that may have line breaks 
                 my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
@@ -296,10 +302,8 @@ sub  put_verbatim_commands_back_in {
     }
 
     # logfile info
-    $self->logger("Number of children:",'heading');
-    $self->logger(scalar keys %{${$self}{verbatimCommands}});
-    $self->logger('Post-processed body:','heading') if $is_t_switch_active;
-    $self->logger(${$self}{body}) if($is_t_switch_active);
+    $logger->trace('*Post-processed body:') if $is_tt_switch_active;
+    $logger->trace(${$self}{body}) if($is_tt_switch_active);
     return;
 }
 

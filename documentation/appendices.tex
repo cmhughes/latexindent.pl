@@ -3,9 +3,9 @@
 	\section{Required \texttt{Perl} modules}\label{sec:requiredmodules}
 	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules -- if you can run the
 	 minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may
-	 need to install the missing modules.
+	 need to install the missing modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
 
-	 \begin{cmhlistings}[language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
+	 \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
 #!/usr/bin/perl
 
 use strict;
@@ -23,42 +23,62 @@ use File::Basename;
 use File::HomeDir;
 use Getopt::Long;
 use Data::Dumper;
+use List::Util qw(max);
+use Log::Log4perl qw(get_logger :levels);
 
 print "hello world";
 exit;
 \end{cmhlistings}
-	 Installing the modules given in \cref{lst:helloworld} will vary depending on your
-	 operating system and \texttt{Perl} distribution. For example, Ubuntu users
-	 might visit the software center, or else run
-	 \begin{commandshell}
+
+	\subsection{Module installer script}\label{sec:module-installer}
+	    \announce*{2018-01-13}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules
+		on your system; if you run
+		\begin{commandshell}
+perl latexindent-module-installer.pl
+     \end{commandshell}
+		or
+		\begin{dosprompt}
+perl latexindent-module-installer.pl
+ \end{dosprompt}
+		then, once you have answered \texttt{Y}, the appropriate modules will be installed onto your distribution.
+
+	\subsection{Manually installed modules}\label{sec:manual-module-instal}
+		Manually installing the modules given in \cref{lst:helloworld} will vary depending on your
+		operating system and \texttt{Perl} distribution. For example, Ubuntu users
+		might visit the software center, or else run
+		\begin{commandshell}
 sudo perl -MCPAN -e 'install "File::HomeDir"'
  \end{commandshell}
 
-	 Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
-	 options follow for Ubuntu (other distributions will need slightly different commands).
-	 \begin{commandshell}
+		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible installation and setup
+		options follow for Ubuntu (other distributions will need slightly different commands).
+		\begin{commandshell}
 sudo apt-get install perlbrew
-perlbrew install perl-5.20.1
-perlbrew switch perl-5.20.1
+perlbrew install perl-5.22.1
+perlbrew switch perl-5.22.1
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
 cpanm File::HomeDir
+cpanm Unicode::GCString
+cpanm Log::Log4perl
+cpanm Log::Dispatch
 \end{commandshell}
 
-	 Strawberry Perl users on Windows might use
-	 \texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
+		Strawberry Perl users on Windows might use
+		\texttt{CPAN client}. All of the modules are readily available on CPAN \cite{cpan}.
 
-	 \texttt{indent.log} will contain details of the location
-	 of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone
-	 executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
-	 wish to see where they are cached, use the  \texttt{trace} option, e.g
-	 \begin{dosprompt}
+		\texttt{indent.log} will contain details of the location
+		of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone
+		executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you
+		wish to see where they are cached, use the  \texttt{trace} option, e.g
+		\begin{dosprompt}
 latexindent.exe -t myfile.tex
  \end{dosprompt}
 
 	\section{Updating the \texttt{path} variable}\label{sec:updating-path}
-	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables\footnote{Thanks to \cite{jasjuang} for this feature!}. If you're
+	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables.
+	 Thank you to \cite{jasjuang} for this feature. If you're
 	 on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.
 	\subsection{Add to path for Linux}
 		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
@@ -109,6 +129,42 @@ echo %path%
 			      to check that the appropriate directory has been added to your \lstinline!%path%!.
 		\end{enumerate}
 		To \emph{remove} the directory from your \lstinline!%path%!, run \texttt{remove-from-path.bat} as administrator.
+
+	\section{\texttt{logFilePreferences}}\label{app:logfile-demo}
+	 \Vref{lst:logFilePreferences} describes the options for customising the information given
+	 to the log file, and we provide a few demonstrations here. Let's say that we start with the code
+	 given in \cref{lst:simple}, and the settings specified in \cref{lst:logfile-prefs1-yaml}.
+
+	 \begin{minipage}{.35\linewidth}
+		 \cmhlistingsfromfile*{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
+	 \end{minipage}
+	 \hfill
+	 \begin{minipage}{.6\linewidth}
+		 \cmhlistingsfromfile*{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
+	 \end{minipage}
+
+	 If we run the following command (noting that \texttt{-t} is active)
+	 \begin{commandshell}
+latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
+ \end{commandshell}
+	 then on inspection of \texttt{indent.log} we will find the snippet given in \cref{lst:indentlog}.
+	 \begin{cmhlistings}[style=tcblatex,morekeywords={TRACE}]{\texttt{indent.log}}{lst:indentlog}
+       +++++
+TRACE: environment found: myenv
+       No ancestors found for myenv
+       Storing settings for myenvenvironments
+       indentRulesGlobal specified (0) for environments, ...
+       Using defaultIndent for myenv
+       Putting linebreak after replacementText for myenv
+       looking for COMMANDS and key = {value}
+TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
+       looking for SPECIAL begin/end
+TRACE: Searching myenv for special begin/end (see specialBeginEnd)
+TRACE: Searching myenv for optional and mandatory arguments
+       ... no arguments found
+       -----
+     \end{cmhlistings}
+	 Notice that the information given about \texttt{myenv} is `framed' using \texttt{+++++} and \lstinline!-----! respectively.
 
 	\section{Differences from Version 2.2 to 3.0}\label{app:differences}
 	 There are a few (small) changes to the interface when comparing Version 2.2 to Version 3.0.
@@ -189,6 +245,6 @@ noAdditionalIndent:
 	 \mbox{}\hfill     \begin{minipage}{.25\textwidth}
 		 \hrule
 
-		 \hfill\itshape End
+		 \hfill\itshape End\\\mbox{}\hfill\mbox{}\rlap{\hfill\includegraphics{logo}}
 
 	 \end{minipage}

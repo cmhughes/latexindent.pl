@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesBeginWith:
+            other: "\$|[0-9]"

@@ -41,6 +41,8 @@ latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-ind
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s
 # modifyLineBreaks experiments
+[[ $loopmin -gt 32 ]] && loopmin=32 && echo "loopmin set to 32"
+[[ $loopmax -gt 32 ]] && loopmax=32 && echo "loopmax set to 32"
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
@@ -113,8 +115,8 @@ latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/inden
 latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
 latexindent.pl -s github-issue-35.tex -o github-issue-35-no-at.tex -l no-at-between-args.yaml
 # poly-switch = 3 (add line break experiements)
-[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33"
-[[ $loopmax -lt 48 ]] && loopmax=48 && echo "loopmax set to 48"
+[[ $loopmin -lt 33 ]] && loopmin=33 && echo "loopmin set to 33" && loopmax=33 && echo "loopmax set to 33"
+[[ $loopmax -gt 48 ]] && loopmax=48 && echo "loopmax set to 48"
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 

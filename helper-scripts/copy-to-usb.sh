@@ -1,11 +1,12 @@
 #!/bin/bash
 
-destinationDir="/media/D8B4-3FFC/latexindent/"
+destinationDir="/media/cmhughes/D8B4-3FFC/latexindent/"
 
 # from this directory
 cp create-windows-executable.bat ${destinationDir}
 cp test-windows-small.bat ${destinationDir}
 cp ppp.pl ${destinationDir}
+cp latexindent-module-installer.pl ${destinationDir}
 
 # from the one above
 cd ../

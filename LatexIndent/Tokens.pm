@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use Exporter qw/import/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/token_check %tokens/;
 
 # each of the tokens begins the same way -- this is exploited during the hidden Children routine
@@ -52,17 +53,18 @@ our %tokens = (
                 doubleBackSlash=>$beginningToken."DOUBLEBACKSLASH",
                 alignmentBlock=>$beginningToken."ALIGNMENTBLOCK",
                 paragraph=>$beginningToken."PARA",
+                sentence=>$beginningToken."SENTENCE",
                 endOfToken=>"-END",
               );
 
 sub token_check{
     my $self = shift;
 
-    $self->logger("Token check",'heading') if $is_t_switch_active;
+    $logger->trace("*Token check") if $is_t_switch_active;
     # we use tokens for trailing comments, environments, commands, etc, so check that they're not in the body
     foreach( keys %tokens){
         while(${$self}{body} =~ m/$tokens{$_}/si){
-            $self->logger("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN") if($is_t_switch_active);
+            $logger->trace("Found $tokens{$_} within body, updating replacement token to $tokens{$_}-LIN") if($is_t_switch_active);
             $tokens{$_} .= "-LIN";
         }
     }

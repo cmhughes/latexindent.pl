@@ -1,23 +1,28 @@
-`PERL` script to indent code within environments, and align delimited 
-environments in `.tex`files.
+### introduction
 
-    latexindent.pl, version 3.3, 2017-08-21
+`latexindent.pl` is a `perl` script to indent (add horizontal leading space to) 
+code within environments, commands, after headings and within special code blocks.
 
-Author: Chris Hughes (cmhughes)
+It has the ability to align delimiters in environments and commands, and 
+can modify line breaks.
 
----
+    latexindent.pl, version 3.4, 2018-01-13
+
+### author 
+Chris Hughes (cmhughes)
+
+### documentation
 
 For complete details, please see http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
 
-Note: `latexindent.exe` was created using 
+### Windows executable
+`latexindent.exe` is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
 
 using the `Par::Packer` perl module.
 
 `ppp.pl` is located in the helper-scripts directory.
-
----
 
 ### usage
 
@@ -36,7 +41,7 @@ directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case 
 
         ./test-cases.sh
 
-## *important*
+### *important*
 
 This script may not work for your style of formatting; I highly 
 recommend comparing the outputfile.tex to make sure that 
@@ -67,10 +72,14 @@ which means that latexindent.pl always has two branches:
 The `master` branch always contains the released version and `develop` contains the 
 development version. When developing a new feature or bug fix, I typically use:
     
+        git checkout develop
         git checkout -b feature/name-of-feature
 
-and then I merge it into the `develop` branch.
+and then I merge it into the `develop` branch using
+
+        git checkout develop
+        git merge feature/name-of-feature --no-ff
 
 ### perl version
 
-I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.22.1
+I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.26.0

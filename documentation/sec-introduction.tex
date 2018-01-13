@@ -58,7 +58,7 @@
 	The different listings are presented using different styles:
 
 	\begin{minipage}{.4\textwidth}
-		\cmhlistingsfromfile*{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
+		\cmhlistingsfromfile{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -66,7 +66,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.4\textwidth}
-		\cmhlistingsfromfile*[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
+		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -76,7 +76,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.55\textwidth}
-		\cmhlistingsfromfile*[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
+		\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -94,3 +94,21 @@
 	not read this document before (and even if you have!), then you can ignore every occurrence of the \stardemo;
 	they are simply there to highlight new and updated features.
 	The new and updated features in this documentation (\gitRel) are on the following pages: \listOfNewFeatures
+
+\subsection{Quick start}\label{sec:quickstart}
+	If you'd like to get started with \texttt{latexindent.pl} then simply type
+	\begin{commandshell}
+latexindent.pl myfile.tex
+    \end{commandshell}
+	from the command line. If you receive an error message such as that given in \cref{lst:poss-errors},
+	then you need to install the missing perl modules.
+	\begin{cmhlistings}[style=tcblatex,language=Perl]{Possible error messages}{lst:poss-errors}
+Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
+BEGIN failed--compilation aborted at helloworld.pl line 10.
+\end{cmhlistings}
+	\texttt{latexindent.pl} ships with a script to help with this process; if you run the following script, you should be prompted
+	to install the appropriate modules.
+	\begin{commandshell}
+perl latexindent-module-installer.pl
+    \end{commandshell}
+	You might also like to see \href{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc}{https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc}, for example, as well as \vref{sec:requiredmodules}.
