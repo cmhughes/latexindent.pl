@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -61,9 +62,6 @@ sub find_environments{
       ${$self}{body} =~ s/
                 $environmentRegExp(\h*)($trailingCommentRegExp)?
              /
-                # log file output
-                $self->logger("environment found: $2",'heading') if $is_t_switch_active;
-
                 # create a new Environment object
                 my $env = LatexIndent::Environment->new(begin=>$1,
                                                         name=>$2,
@@ -79,6 +77,9 @@ sub find_environments{
                                                         horizontalTrailingSpace=>$7?$7:q(),
                                                       );
 
+                # log file output
+                $logger->trace("*environment found: $2") if $is_t_switch_active;
+
                 # the settings and storage of most objects has a lot in common
                 $self->get_settings_and_store_new_object($env);
                 ${@{${$self}{children}}[-1]}{replacementText}.($9?$9:q()).($10?$10:q());
@@ -93,7 +94,7 @@ sub tasks_particular_to_each_object{
 
     # if the environment is empty, we may need to update linebreaksAtEnd{body}
     if(${$self}{body} =~ m/^\h*$/s and ${${$self}{linebreaksAtEnd}}{begin}){
-          $self->logger("empty environment body (${$self}{name}), updating linebreaksAtEnd{body} to be 1") if($is_t_switch_active);
+          $logger->trace("empty environment body (${$self}{name}), updating linebreaksAtEnd{body} to be 1") if($is_t_switch_active);
           ${${$self}{linebreaksAtEnd}}{body} = 1;
     }
 

@@ -1,0 +1,742 @@
+% arara: pdflatex: {shell: yes}
+% arara: bibtex
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes}
+\documentclass[10pt]{article}
+%   This program is free software: you can redistribute it and/or modify
+%   it under the terms of the GNU General Public License as published by
+%   the Free Software Foundation, either version 3 of the License, or
+%   (at your option) any later version.
+%
+%   This program is distributed in the hope that it will be useful,
+%   but WITHOUT ANY WARRANTY; without even the implied warranty of
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   GNU General Public License for more details.
+%
+%   See <http://www.gnu.org/licenses/>.
+\usepackage[left=4.5cm,right=2.5cm,showframe=false,
+	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry}                      % page setup
+\usepackage{lmodern}
+\usepackage{parskip}                                 % paragraph skips
+\usepackage{booktabs}                                % beautiful tables
+\usepackage{listings}                                % nice verbatim environments
+\usepackage{titlesec}                                % customize headings
+\usepackage{titletoc}                                % customize headings
+\usepackage{multicol}
+\usepackage{changepage}                              % adjust width of page
+\usepackage{fancyhdr}                                % headers & footers
+\usepackage{wrapfig}
+\usepackage{fontawesome}
+\usepackage[sc,format=hang,font=small]{caption}      % captions
+\usepackage[backend=bibtex]{biblatex}                % bibliography
+\usepackage{tcolorbox}                                % framed environments
+\usepackage{tikz}
+\usepackage{xparse}
+\usepackage[charter]{mathdesign}                     % changes font
+\usepackage[expansion=false,kerning=true]{microtype} % better kerning
+\usepackage{enumitem}                                % custom lists
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{totalcount}
+% setup gitinfo2, as in the manual, details just above begin{document}
+\usepackage[mark,grumpy]{gitinfo2}
+% tikz, tcolorbox libraries
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations,shapes}
+\usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
+\tcbuselibrary{breakable,minted,xparse,documentation,hooks}
+\hypersetup{
+	pdfauthor={Chris Hughes},
+	pdftitle={latexindent.pl package},
+	pdfkeywords={perl;beautify;indentation},
+	bookmarksnumbered,
+	bookmarksopen,
+	linktocpage,
+	colorlinks=true,
+	linkcolor=blue,
+	citecolor=black,
+}
+\usepackage{cleveref}
+
+% create my own star style, for re-use at various points
+\tikzset{cmhstar/.style={star,star point ratio=2.25,fill=cmhgold,draw=orange,}}
+
+% shortcut command for displaying star in documentation
+\newcommand{\stardemo}[1][]{\begin{tikzpicture}
+	\node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+	\node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+	\node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+	\end{tikzpicture}}
+
+% totalcount
+\DeclareTotalCounter{lstlisting}
+
+% customise the \tcbdocnew command
+\tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
+\tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
+\tcbset{doc marginnote={width=1.6cm}}
+\NewDocumentCommand{\announce}{ s m s m }{%
+	\IfBooleanTF{#1}%
+	{% \announce*
+		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
+			\IfBooleanTF{#3}%
+			{% \announce*{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}%
+			}%
+			{% \announce*{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}%
+			}%
+		}%
+		\IfBooleanTF{#3}%
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (U)}%
+		}%
+		{%
+			\addcontentsline{new}{cmhtitle}{#4 (N)}%
+		}%
+	}%
+	{% \announce
+		\tcbdocmarginnote{%
+			\IfBooleanTF{#3}%
+			{% \announce{date}*[text] means *updated* as of <date>
+				\tcbdocupdated{#2}%
+			}%
+			{% \announce{date}[text] means *new* as of <date>
+				\tcbdocnew{#2}%
+			}%
+		}%
+	}}
+
+\reversemarginpar
+% bibliographies
+\addbibresource{latex-indent}
+\addbibresource{contributors}
+
+% http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
+\newtcolorbox{warning}{parbox=false,breakable,enhanced,arc=0mm,colback=red!5,colframe=red,leftrule=12mm,%
+	overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }
+}
+
+\definecolor{harvestgold}{cmyk}{0.00, 0.05, 0.51, 0.07}  %EDE275
+\definecolor{cmhgold}{cmyk}{0,0.178,0.909,0.008}         %FDD017
+\makeatletter
+\tcbset{
+	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
+	addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
+	cmhlistings/.style={
+			%	width=\linewidth,
+			%breakable,
+			colback=blue!5!white,
+			colframe=white!25!black,colback=white,
+			top=0cm,
+			bottom=0cm,
+			left=0mm,
+			listing only,
+			center title,
+			listing engine=minted,
+			minted style=colorful,
+			minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=true},
+			boxrule=0pt,
+			toprule=1pt,bottomrule=1pt,
+			titlerule=1pt,
+			colframe=white!40!black,
+			colback=white,
+			sharp corners,
+			colbacktitle=white!75!black
+		},
+	yaml-TCB/.style={
+			listing only,
+			listing engine=listings,
+			left=0cm,
+			boxrule=0pt,
+			%leftrule=3pt,
+			sharp corners,
+			center title,
+			%colbacktitle=white!75!black,
+			colbacktitle=white!75!blue,
+			colframe=white!25!blue,
+			colback=white!90!blue,
+			toprule=2pt,
+			titlerule=2pt,
+			%bottomrule=1pt,
+		},
+	MLB-TCB/.style={
+			yaml-TCB,
+			center title,
+			colframe=cmhgold,
+			colbacktitle=harvestgold,
+			colback=white!60!cmhgold,
+			width=0.9\linewidth,
+			before=\centering,
+			%bottomrule=1pt,
+			enhanced,
+			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
+		},
+	new-to-this-version/.style={
+			enhanced,
+			overlay app={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
+			addtololstar,
+		},
+}
+
+\newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
+	cmhlistings,
+	addtolol,
+	center title,
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
+	listing engine=listings,
+	listing options={#1},
+}
+
+% \cmhlistingsfromfile
+%                   *    no star: not new, star: new
+%                   [ listing/minted options ]
+%                   *    no star: uses minted library, star: uses listings library star: 
+%                   {<name of listing file>}
+%                   [<options for tcolorbox>]
+%                   {<title>}
+%                   {<label>}
+%
+% for example,
+%   \cmhlistingsfromfile*[listing options]...  uses listings library and is NEW
+%   \cmhlistingsfromfile[listing options]...   uses listings library
+%   \cmhlistingsfromfile[listing options]*...  uses minted library
+%   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
+	cmhlistings,
+	listing file={#4},
+	IfBooleanTF={#3}{listing options={style=tcblatex,showspaces=false,#2}}{minted options={obeytabs=true,showtabs=false,tabsize=4,showspaces=false,#2}},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
+	#5,
+	IfBooleanTF={#1}{new-to-this-version}{addtolol},
+}
+
+\makeatletter
+\@tempswafalse
+\def\@tempa{draft}
+\@for\next:=\@classoptionslist\do
+{\ifx\next\@tempa\@tempswatrue\fi}
+\if@tempswa % draft option is active
+	\RenewDocumentCommand{\cmhlistingsfromfile}{s O{} s m O{} m m}{\captionof{lstlisting}{#6}\label{#7}}
+	\renewcommand{\stardemo}[1][]{$\star$}
+\fi
+
+% command shell
+\newtcblisting{commandshell}{colback=black,colupper=white,colframe=yellow!75!black,
+	listing only,listing options={style=tcblatex,language=sh,
+			morekeywords={latexindent,pl},
+			keywordstyle=\color{blue!35!white}\bfseries,
+		},
+	listing engine=listings,
+	left=0cm,
+	every listing line={\textcolor{red}{\small\ttfamily\fontseries{b}\selectfont cmh:$\sim$\$ }}}
+
+% dosprompt
+\newtcblisting{dosprompt}{
+	colback=black,
+	colupper=white,
+	colframe=yellow!75!black,
+	listing only,
+	listing options={
+			language=command.com,
+			morekeywords={latexindent,pl},
+			keywordstyle=\color{blue!35!white}\bfseries,
+			basicstyle=\small\color{white}\ttfamily
+		},
+	listing engine=listings,
+	left=0cm,
+	every listing line={\textcolor{white}{\small\ttfamily\fontseries{b}\selectfont C:\textbackslash Users\textbackslash cmh$>$}}}
+
+\lstset{%
+	basicstyle=\small\ttfamily,language={[LaTeX]TeX},
+	numberstyle=\ttfamily%\small,
+	breaklines=true,
+	keywordstyle=\color{blue},                    % keywords
+	commentstyle=\color{purple},    % comments
+	tabsize=3,
+}%
+\DeclareTCBListing[use counter=lstlisting]{yaml}{O{} m O{} m}{
+	yaml-TCB,
+	listing options={
+			style=tcblatex,
+			numbers=none,
+			numberstyle=\color{red},
+			#1,
+		},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#4},
+	#3,
+}
+
+\lstdefinestyle{yaml-LST}{
+	style=tcblatex,
+	numbers=none,
+	numberstyle=\color{red},
+}
+
+\lstdefinestyle{demo}{
+	numbers=none,
+	linewidth=1.25\textwidth,
+	columns=fullflexible,
+}
+
+\lstdefinestyle{fileExtensionPreference}{
+	style=yaml-LST,
+	firstnumber=38,linerange={38-42},
+	numbers=left,
+}
+
+\lstdefinestyle{logFilePreferences}{
+	style=yaml-LST,
+	firstnumber=79,linerange={79-89},
+	numbers=left,
+}
+
+\lstdefinestyle{verbatimEnvironments}{
+	style=yaml-LST,
+	firstnumber=93,linerange={93-96},
+	numbers=left,
+}
+
+\lstdefinestyle{verbatimCommands}{
+	style=yaml-LST,
+	firstnumber=99,linerange={99-101},
+	numbers=left,
+}
+
+\lstdefinestyle{noIndentBlock}{
+	style=yaml-LST,
+	firstnumber=107,linerange={107-109},
+	numbers=left,
+}
+
+\lstdefinestyle{removeTrailingWhitespace}{
+	style=yaml-LST,
+	firstnumber=112,linerange={112-114},
+	numbers=left,
+}
+
+\lstdefinestyle{fileContentsEnvironments}{
+	style=yaml-LST,
+	firstnumber=118,linerange={118-120},
+	numbers=left,
+}
+
+\lstdefinestyle{lookForPreamble}{
+	style=yaml-LST,
+	firstnumber=126,linerange={126-130},
+	numbers=left,
+}
+
+\lstdefinestyle{indentAfterItems}{
+	style=yaml-LST,
+	firstnumber=183,linerange={183-187},
+	numbers=left,
+}
+
+\lstdefinestyle{itemNames}{
+	style=yaml-LST,
+	firstnumber=193,linerange={193-195},
+	numbers=left,
+}
+
+\lstdefinestyle{specialBeginEnd}{
+	style=yaml-LST,
+	firstnumber=199,linerange={199-212},
+	numbers=left,
+}
+
+\lstdefinestyle{indentAfterHeadings}{
+	style=yaml-LST,
+	firstnumber=222,linerange={222-231},
+	numbers=left,
+}
+
+\lstdefinestyle{noAdditionalIndentGlobalEnv}{
+	style=yaml-LST,
+	firstnumber=280,linerange={280-281},
+	numbers=left,
+}
+
+\lstdefinestyle{noAdditionalIndentGlobal}{
+	style=yaml-LST,
+	firstnumber=280,linerange={280-292},
+	numbers=left,
+}
+
+\lstdefinestyle{indentRulesGlobalEnv}{
+	style=yaml-LST,
+	firstnumber=296,linerange={296-297},
+	numbers=left,
+}
+
+\lstdefinestyle{indentRulesGlobal}{
+	style=yaml-LST,
+	firstnumber=296,linerange={296-308},
+	numbers=left,
+}
+
+\lstdefinestyle{commandCodeBlocks}{
+	style=yaml-LST,
+	firstnumber=311,linerange={311-321},
+	numbers=left,
+}
+
+\lstdefinestyle{modifylinebreaks}{
+	style=yaml-LST,
+	firstnumber=391,linerange={391-393},
+	numbers=left,
+}
+
+\lstdefinestyle{textWrapOptions}{
+	style=yaml-LST,
+	firstnumber=394,linerange={394-395},
+	numbers=left,
+}
+
+\lstdefinestyle{textWrapOptionsAll}{
+	style=yaml-LST,
+	firstnumber=394,linerange={394-396},
+	numbers=left,
+}
+
+\lstdefinestyle{removeParagraphLineBreaks}{
+	style=yaml-LST,
+	firstnumber=419,linerange={419-431},
+	numbers=left,
+}
+
+\lstdefinestyle{paragraphsStopAt}{
+	style=yaml-LST,
+	firstnumber=432,linerange={432-440},
+	numbers=left,
+}
+
+\lstdefinestyle{oneSentencePerLine}{
+	style=yaml-LST,
+	firstnumber=397,linerange={397-418},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesFollow}{
+	style=yaml-LST,
+	firstnumber=400,linerange={400-408},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesBeginWith}{
+	style=yaml-LST,
+	firstnumber=409,linerange={409-412},
+	numbers=left,
+}
+
+\lstdefinestyle{sentencesEndWith}{
+	style=yaml-LST,
+	firstnumber=413,linerange={413-418},
+	numbers=left,
+}
+
+\lstdefinestyle{modifylinebreaksEnv}{
+	style=yaml-LST,
+	firstnumber=441,linerange={441-450},
+	numbers=left,
+}
+
+% stars around contributors
+\pgfdeclaredecoration{stars}{initial}{
+	\state{initial}[width=15pt]
+	{
+		\pgfmathparse{round(rnd*100)}
+		\pgfsetfillcolor{yellow!\pgfmathresult!orange}
+		\pgfsetstrokecolor{yellow!\pgfmathresult!red}
+		\pgfnode{star}{center}{}{}{\pgfusepath{stroke,fill}}
+	}
+	\state{final}
+	{
+		\pgfpathmoveto{\pgfpointdecoratedpathlast}
+	}
+}
+
+\newtcolorbox{stars}{%
+	enhanced jigsaw,
+	breakable, % allow page breaks
+	left=0cm,
+	top=0cm,
+	before skip=0.2cm,
+	boxsep=0cm,
+	frame style={draw=none,fill=none}, % hide the default frame
+	colback=white,
+	overlay={
+			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
+			decorate[decoration={stars,segment length=2cm}] {
+					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+							([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.4cm]frame.north west)
+						}};
+			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
+			decorate[decoration={stars,segment length=2cm}] {
+					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+							([xshift=.75cm,yshift=0.1cm]frame.south east) --  ([xshift=.75cm,yshift=0.6cm]frame.north east)
+						}};
+			\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
+		},
+	% paragraph skips obeyed within tcolorbox
+	parbox=false,
+}
+
+% copied from /usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+% the only modification is the \stars and \endstars
+\defbibenvironment{specialbib}
+{\stars\list
+	{\printtext[labelnumberwidth]{%
+			\printfield{prefixnumber}%
+			\printfield{labelnumber}}}
+	{\setlength{\labelwidth}{\labelnumberwidth}%
+		\setlength{\leftmargin}{\labelwidth}%
+		\setlength{\labelsep}{\biblabelsep}%
+		\addtolength{\leftmargin}{\labelsep}%
+		\setlength{\itemsep}{\bibitemsep}%
+		\setlength{\parsep}{\bibparsep}}%
+	\renewcommand*{\makelabel}[1]{\hss##1}}
+{\endlist\endstars}
+{\item}
+
+\newtcbox{yamltitlebox}[1][]{colframe=black!50!white,boxrule=.5pt,sharp corners,#1}
+
+\newcommand{\flagbox}[1]{%
+	\par
+	\makebox[30pt][l]{%
+		\hspace{-1cm}%
+		\ttfamily\fontseries{b}\selectfont #1
+	}%
+}
+
+\NewDocumentCommand{\yamltitle}{O{} m s m}{%
+	\par
+	\makebox[30pt][l]{%
+		\hspace{-2cm}%
+		\yamltitlebox[#1]{%
+			{\ttfamily\fontseries{b}\selectfont{\color{blue!80!white}#2}}: %
+			\IfBooleanTF{#3}
+			{$\langle$\itshape #4$\rangle$}
+			{{\bfseries #4}}
+		}}
+	\par\nobreak%
+}
+
+\newcommand{\fixthis}[1]
+{%
+	\marginpar{\huge \color{red} \framebox{FIX}}%
+	\typeout{FIXTHIS: p\thepage : #1^^J}%
+}
+% custom section
+\titleformat{\section}
+{\normalfont\Large\bfseries}
+{\llap{\thesection\hskip.5cm}}
+{0pt}
+{}
+% custom subsection
+\titleformat{\subsection}
+{\normalfont\bfseries}
+{\llap{\thesubsection\hskip.5cm}}
+{0pt}
+{}
+% custom subsubsection
+\titleformat{\subsubsection}
+{\normalfont\bfseries}
+{\llap{\thesubsubsection\hskip.5cm}}
+{0pt}
+{}
+
+\titlespacing
+\section{0pt}
+ {12pt plus 4pt minus 2pt}
+ {-5pt plus 2pt minus 2pt}
+\titlespacing
+\subsection{0pt}
+{12pt plus 4pt minus 2pt}
+{-6pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+
+% list of listings
+\contentsuse{lstlisting}{lol}
+\titleclass{\lstlistingstar}{straight}[\section]
+\titleformat{\lstlistingstar}{}{}{}{}
+\titlecontents{lstlistingstar}[2em]
+  {\addvspace{0.25pc}}
+  {}
+  {\llap{\stardemo}\thecontentslabel}
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
+  []
+\titlecontents{lstlisting}[2em]
+  {\addvspace{0.25pc}}
+  {\thecontentslabel}
+  {\thecontentslabel}
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
+  []
+\AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
+\AtEndDocument{\addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}}
+
+% cleveref settings
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{figure}{Figure}{Figures}
+\Crefname{figure}{Figure}{Figures}
+\crefname{section}{Section}{Sections}
+\Crefname{section}{Section}{Sections}
+\crefname{listing}{Listing}{Listings}
+\Crefname{listing}{Listing}{Listings}
+
+% headers and footers
+\fancyhf{} % delete current header and footer
+\fancyhead[R]{\bfseries\thepage%
+	\tikz[remember picture,overlay] {
+		\node at (1,0){\includegraphics{logo-bw}}; }
+}
+\fancyhead[L]{\rightmark}
+\fancyheadoffset[L]{3cm}
+\pagestyle{fancy}
+
+% renew plain style
+\fancypagestyle{plain}{%
+	\fancyhf{} % clear all header and footer fields
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}}
+
+% widepage environment
+\newenvironment{widepage}{\begin{adjustwidth}{-3cm}{0cm}}{\end{adjustwidth}}
+
+% symbols for the m switch
+\newcommand{\BeginStartsOnOwnLine}{\color{red}\spadesuit}
+\newcommand{\BodyStartsOnOwnLine}{\color{red}\heartsuit}
+\newcommand{\EndStartsOnOwnLine}{\color{red}\diamondsuit}
+\newcommand{\EndFinishesWithLineBreak}{\color{red}\clubsuit}
+\newcommand{\ElseStartsOnOwnLine}{\color{red}\bigstar}
+\newcommand{\ElseFinishesWithLineBreak}{\color{red}\square}
+\newcommand{\EqualsStartsOnOwnLine}{\color{red}\bullet}
+
+% table rules
+\setlength\heavyrulewidth{0.25ex}
+% gitinfo2 settings
+\renewcommand{\gitMark}{\gitBranch\,@\,\gitAbbrevHash{}\,\textbullet{}\,\gitAuthorDate\,\textbullet{}\faGithub\,\textbullet{}\gitRel}
+
+% setting up gitinfo2:
+%   copy the file post-xxx-sample.txt from http://mirror.ctan.org/macros/latex/contrib/gitinfo2
+%   and put it in .git/hooks/post-checkout
+% then
+%   cd .git/hooks
+%   chmod g+x post-checkout
+%   chmod +x post-checkout
+%   cp post-checkout post-commit
+%   cp post-checkout post-merge
+%   cd ../..
+%   git checkout master
+%   git checkout develop
+%   ls .git
+% and you should see gitHeadInfo.gin
+
+% http://tex.stackexchange.com/questions/233843/textasteriskcentered-invisible-with-garamondmathdesign
+% remove the definition of \textasteriskcentered for TS1 encoding
+\UndeclareTextCommand{\textasteriskcentered}{TS1}
+% reinstate a default encoding
+\DeclareTextSymbolDefault{\textasteriskcentered}{OT1}
+% suitably define the command
+\DeclareTextCommand{\textasteriskcentered}{OT1}{\raisebox{-.7ex}[1ex][0pt]{*}}
+
+% new features list
+\newcommand{\listOfNewFeatures}{\setcounter{tocdepth}{4}\@starttoc{new}}
+\contentsuse{cmhtitle}{new}
+% toc settings
+\titleclass{\cmhtitle}{straight}[\subsection]
+\titleformat{\cmhtitle}{}{}{}{}
+\titlecontents{cmhtitle}% <paragaph>
+  [2cm]% <left>
+  {\small\itshape}% <above-code>
+  {}% <numbered-entry-format>; you could also use {\thecontentslabel. } to show the numbers
+  {}% <numberless-entry-format>
+  {\titlerule*[0.5em]{$\cdot$}\contentspage}
+
+\setcounter{secnumdepth}{5}
+\begin{document}
+\renewcommand*{\thefootnote}{\arabic{footnote}}
+\input{title.tex}
+\tableofcontents
+{\small\lstlistoflistings}
+\input{sec-introduction}
+\input{sec-demonstration}
+\input{sec-how-to-use}
+\input{sec-indent-config-and-settings.tex}
+\input{sec-default-user-local}
+\input{subsec-noAdditionalIndent-indentRules}
+\input{subsubsec-environments-and-their-arguments}
+\input{subsubsec-environments-with-items}
+\input{subsubsec-commands-with-arguments}
+\input{subsubsec-ifelsefi}
+\input{subsubsec-special}
+\input{subsubsec-headings}
+\input{subsubsec-no-add-remaining-code-blocks}
+\stopcontents[noAdditionalIndent]
+\input{subsec-commands-and-their-options}
+\input{sec-the-m-switch}
+\stopcontents[the-m-switch]
+\input{subsec-partnering-poly-switches}
+\input{subsec-conflicting-poly-switches}
+\input{sec-conclusions-know-limitations}
+\input{references}
+\input{appendices}
+\end{document}
+
+version history:
+
+1.0: first release
+https://www.ctan.org/ctan-ann/id/mailman.278.1369470527.5851.ctan-ann@dante.de
+
+1.1R
+Changed Bin to RealBin so that I hope the script can get bun­dled into TeXLive 2013.
+Some other up­dates, too, detailed in the documentation.
+https://www.ctan.org/ctan-ann/id/mailman.3048.1384345731.2385.ctan-ann@dante.de
+
+1.11R
+This release updates the script to use $FindBin::RealBin which should help in the TeXLive implementation.
+
+Version 2.0R Ver­sion 2.0R of la­texin­dent.pl adds a num­ber of new fea­tures, in­clud­ing: - in­den­ta­tion af­ter \item com­mands - align­ment of de­lim­itered en­vi­ron­ments in com­mands, such as \ma­trix - in­den­ta­tion of \if.
+..\else...\fi state­ments - max­i­mum num­ber of back­ups can cy­cle through back­ups - bet­ter sup­port for .cls and .sty files - and a few other bug fixes
+https://www.ctan.org/ctan-ann/id/mailman.3090.1417864461.4370.ctan-ann@dante.de
+
+Version 2.1R in­dent­con­fig.yaml can now be a 'hid­den' file, .in­dent­con­fig.yaml The Win­dows ex­e­cutable file, la­texin­dent.exe, should now work much bet­ter with Win­dows TeXLive.
+https://www.ctan.org/ctan-ann/id/mailman.343.1429509943.4405.ctan-ann@dante.de
+
+Version 2.2 v2.2 addresses a reg­exp issue, and adds a few enhancements; full details are here: https://github.com/cmhughes/latexindent.pl/pull/49 https://www.ctan.org/ctan-ann/id/mailman.198.1477655196.4574.ctan-ann@ctan.org 
+
+Version 3.0 latexindent.pl version 3.0: this represents a complete re-build of the script; full details are given here: https://github.com/cmhughes/la­texin­dent.pl/pull/56 
+
+V3.0.1 pro­vides sup­port for the align­ment at am­per­sands rou­tine for code that con­tains uni­code char­ac­ters; see https://github.com/cmhughes/la­texin­dent.pl/pull/61 
+
+V3.0.2 A mi­nor re­lease to fix a small bug re­lated to in­den­tPream­ble; de­tails given here: https://github.com/cmhughes/la­texin­dent.pl/pull/62 
+
+Ver­sion 3.1 of la­texin­dent.pl, in­clud­ing op­tions for text wrap­ping and para­graph line break re­moval.
+Full de­tails here: https://github.com/cmhughes/la­texin­dent.pl/pull/64 
+
+Ver­sion 3.2 im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine.
+More de­tails are given at
+https://github.com/cmhughes/la­texin­dent.pl/pull/67
+
+Version 3.2.1
+Upgrades to the -o and -l switches
+https://github.com/cmhughes/latexindent.pl/pull/71
+
+Version 3.2.2
+Users can specify removeTrailingWhitespace as a scalar, for example,  removeTrailingWhitespace: 0
+https://github.com/cmhughes/latexindent.pl/pull/72
+
+Version 3.3
+- maximum indentation: https://github.com/cmhughes/latexindent.pl/issues/50
+- blank line poly-switch: https://github.com/cmhughes/latexindent.pl/issues/57
+- ifnextchar issue: https://github.com/cmhughes/latexindent.pl/issues/73
+- the -y/yaml switch: https://github.com/cmhughes/latexindent.pl/issues/79
+- absolute paths for the -l switch: https://github.com/cmhughes/latexindent.pl/issues/82
+bug fixes:
+- an ifelsefi bug: https://github.com/cmhughes/latexindent.pl/issues/76
+- empty environment bug: https://github.com/cmhughes/latexindent.pl/issues/78
+- a command/special bug: https://github.com/cmhughes/latexindent.pl/issues/80
+https://github.com/cmhughes/latexindent.pl/releases/tag/V3.3

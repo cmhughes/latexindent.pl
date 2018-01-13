@@ -22,6 +22,7 @@ use LatexIndent::KeyEqualsValuesBraces qw/$key_equals_values_bracesRegExp $key_e
 use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -32,7 +33,7 @@ sub find_commands_or_key_equals_values_braces{
 
     my $self = shift;
 
-    $self->logger("Searching for commands with optional and/or mandatory arguments AND key = {value}",'heading') if $is_t_switch_active ;
+    $logger->trace("*Searching for commands with optional and/or mandatory arguments AND key = {value}") if $is_t_switch_active ;
 
     # match either a \\command or key={value}
     while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
@@ -49,9 +50,6 @@ sub find_commands_or_key_equals_values_braces{
         ${$self}{body} =~ s/
                             $commandRegExpTrailingComment
                           /
-                            # log file output
-                            $self->logger("command found: $2",'heading') if $is_t_switch_active ;
-
                             # create a new command object
                             my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()).($4?$4:q()),
                                                                     name=>$2,
@@ -71,6 +69,9 @@ sub find_commands_or_key_equals_values_braces{
                                                                     },
                                                                     optAndMandArgsRegExp=>$optAndMandAndRoundBracketsRegExpLineBreaks,
                                                                   );
+                                                                  
+                            # log file output
+                            $logger->trace("*command found: $2") if $is_t_switch_active ;
 
                             # the settings and storage of most objects has a lot in common
                             $self->get_settings_and_store_new_object($command);
@@ -83,9 +84,6 @@ sub find_commands_or_key_equals_values_braces{
         ${$self}{body} =~ s/
                               $key_equals_values_bracesRegExpTrailingComment
                            /
-                           # log file output
-                           $self->logger("key_equals_values_braces found: $3",'heading') if $is_t_switch_active ;
-
                            # create a new key_equals_values_braces object
                            my $key_equals_values_braces = LatexIndent::KeyEqualsValuesBraces->new(
                                                                    begin=>($2?$2:q()).$3.$4.($5?$5:q()),
@@ -107,6 +105,9 @@ sub find_commands_or_key_equals_values_braces{
                                                                    },
                                                                    additionalAssignments=>["EqualsStartsOnOwnLine"],
                                                                  );
+                                                                 
+                           # log file output
+                           $logger->trace("*key_equals_values_braces found: $3") if $is_t_switch_active ;
                     
                            # the settings and storage of most objects has a lot in common
                            $self->get_settings_and_store_new_object($key_equals_values_braces);
@@ -119,9 +120,6 @@ sub find_commands_or_key_equals_values_braces{
         ${$self}{body} =~ s/
                             $grouping_braces_regexpTrailingComment
                             /
-                            # log file output
-                            $self->logger("named grouping braces found: $2",'heading') if $is_t_switch_active ;
-
                             # create a new key_equals_values_braces object
                             my $grouping_braces = LatexIndent::NamedGroupingBracesBrackets->new(
                                                                     begin=>$2.($3?$3:q()).($4?$4:q()),
@@ -142,6 +140,8 @@ sub find_commands_or_key_equals_values_braces{
                                                                       BodyStartsOnOwnLine=>"NameFinishesWithLineBreak",
                                                                     },
                                                                   );
+                            # log file output
+                            $logger->trace("*named grouping braces found: $2") if $is_t_switch_active ;
 
                             # the settings and storage of most objects has a lot in common
                             $self->get_settings_and_store_new_object($grouping_braces);
@@ -153,9 +153,6 @@ sub find_commands_or_key_equals_values_braces{
         ${$self}{body} =~ s/
                             $un_named_grouping_braces_RegExp_trailing_comment
                           /
-                            # log file output
-                            $self->logger("UNnamed grouping braces found: (no name, by definition!)",'heading') if $is_t_switch_active ;
-
                             # create a new Un-named-grouping-braces-brackets object
                             my $un_named_grouping_braces = LatexIndent::UnNamedGroupingBracesBrackets->new(
                                                                     begin=>q(),
@@ -174,6 +171,9 @@ sub find_commands_or_key_equals_values_braces{
                                                                     # body statements
                                                                     BodyStartsOnOwnLine=>0,
                                                                   );
+
+                            # log file output
+                            $logger->trace("*UNnamed grouping braces found: (no name, by definition!)") if $is_t_switch_active ;
 
                             # the settings and storage of most objects has a lot in common
                             $self->get_settings_and_store_new_object($un_named_grouping_braces);

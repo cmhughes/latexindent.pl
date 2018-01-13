@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
@@ -32,8 +33,8 @@ sub find_mandatory_arguments{
     # pick out the mandatory arguments
     while(${$self}{body} =~ m/$mandArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
         # log file output
-        $self->logger("Mandatory argument found, body in ${$self}{name}",'heading') if $is_t_switch_active;
-        $self->logger("(last argument)") if($9 eq '' and $is_t_switch_active);
+        $logger->trace("*Mandatory argument found, body in ${$self}{name}") if $is_t_switch_active;
+        $logger->trace("(last argument)") if($9 eq '' and $is_t_switch_active);
 
         ${$self}{body} =~ s/
                             $mandArgRegExp(\h*)($trailingCommentRegExp)*(.*)

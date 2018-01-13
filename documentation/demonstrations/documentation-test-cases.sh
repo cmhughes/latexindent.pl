@@ -17,11 +17,17 @@ latexindent.pl -s pstricks.tex --outputfile pstricks-default.tex -logfile cmh.lo
 latexindent.pl -s tabular1.tex --outputfile tabular1-default.tex -logfile cmh.log
 latexindent.pl -s -l tabular.yaml tabular1.tex --outputfile tabular1-advanced.tex 
 latexindent.pl -s -l tabular1.yaml tabular1.tex --outputfile tabular1-advanced-3spaces.tex 
-latexindent.pl -s matrix1.tex -o matrix1-default.tex
+latexindent.pl -s matrix1.tex -o=+-default.tex
+latexindent.pl -s matrix2.tex -o=+-default.tex
 latexindent.pl -s align-block.tex -o align-block-default.tex
 latexindent.pl -s tabular2.tex -o tabular2-default.tex
-latexindent.pl -s tabular2.tex -o tabular2-mc.tex -l tabular2.yaml
-latexindent.pl -s tabular2.tex -o tabular2-no-max.tex -l tabular3.yaml
+latexindent.pl -s tabular2.tex -o=+-mod2 -l tabular2.yaml
+latexindent.pl -s tabular2.tex -o=+-mod3 -l tabular3.yaml
+latexindent.pl -s tabular2.tex -o=+-mod4 -l tabular2,tabular4.yaml
+latexindent.pl -s tabular2.tex -o=+-mod5 -l tabular2,tabular5.yaml
+latexindent.pl -s tabular2.tex -o=+-mod6 -l tabular2,tabular6.yaml
+latexindent.pl -s tabular2.tex -o=+-mod7 -l tabular2,tabular7.yaml
+latexindent.pl -s tabular2.tex -o=+-mod8 -l tabular2,tabular8.yaml
 
 # items
 latexindent.pl -s items1.tex -o items1-default.tex
@@ -207,5 +213,22 @@ latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,
 # special before command
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml -o=+-comm-first
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.yaml -o=+-special-first
+
+# one sentence per line
+latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences -m -l=keep-sen-line-breaks.yaml -o=+-mod2
+latexindent.pl -s multiple-sentences -m -l=sentences-follow1.yaml -o=+-mod3
+latexindent.pl -s multiple-sentences -m -l=sentences-end1.yaml -o=+-mod4
+latexindent.pl -s multiple-sentences -m -l=sentences-end2.yaml -o=+-mod5
+latexindent.pl -s multiple-sentences1 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml -o=+-mod2
+latexindent.pl -s multiple-sentences2 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1 -o=+-mod2
+latexindent.pl -s multiple-sentences3 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences4 -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences4 -m -l=keep-sen-line-breaks.yaml -o=+-mod2
+latexindent.pl -s multiple-sentences4 -m -l=item-rules2 -o=+-mod3
+latexindent.pl -s url.tex -m -l=manipulate-sentences.yaml -o=+-mod1
+latexindent.pl -s url.tex -m -l=alt-full-stop1 -o=+-mod2
 [[ $noisyMode == 1 ]] && makenoise
 git status

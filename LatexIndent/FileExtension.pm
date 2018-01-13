@@ -21,12 +21,16 @@ use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
+use Log::Log4perl qw(get_logger :levels);
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check{
     my $self = shift;
+
+    # grab the logger object
+    my $logger = get_logger("Document");
 
     # grab the filename
     my $fileName = ${$self}{fileName};
@@ -44,50 +48,47 @@ sub file_extension_check{
     # check to make sure given file type is supported
     if( -e $fileName  and !$ext ){
         my $message = "The file $fileName exists , but the extension does not correspond to any given in fileExtensionPreference; consinder updating fileExtensionPreference.";
-        $self->logger($message,'heading');
-        $self->output_logfile;
+        $logger->fatal("*$message");
         die($message);
     }
 
     # if no extension, search according to fileExtensionPreference
-    if (!$ext) {
-        $self->logger("File extension work:",'heading');
-        $self->logger("latexindent called to act upon $fileName with an, as yet, unrecognised file extension;");
-        $self->logger("searching for file with an extension in the following order (see fileExtensionPreference):");
-        $self->logger(join("\n",@fileExtensions));
+    if ($fileName ne "-"){
+        if (!$ext) {
+            $logger->info("*File extension work:");
+            $logger->info("latexindent called to act upon $fileName with a file extension;\nsearching for file with an extension in the following order (see fileExtensionPreference):");
+            $logger->info(join("\n",@fileExtensions));
 
-        my $fileFound = 0;
-        # loop through the known file extensions (see @fileExtensions)
-        foreach (@fileExtensions ){
-            if ( -e $fileName.$_ ) {
-               $self->logger("$fileName$_ found!");
-               $fileName .= $_;
-               $self->logger("Updated fileName to $fileName");
-               ${$self}{fileName} = $fileName ;
-               $fileFound = 1;
-               $ext = $_;
-               last;
+            my $fileFound = 0;
+            # loop through the known file extensions (see @fileExtensions)
+            foreach (@fileExtensions ){
+                if ( -e $fileName.$_ ) {
+                   $logger->info("$fileName$_ found!");
+                   $fileName .= $_;
+                   $logger->info("Updated fileName to $fileName");
+                   ${$self}{fileName} = $fileName ;
+                   $fileFound = 1;
+                   $ext = $_;
+                   last;
+                }
             }
-        }
-        unless($fileFound){
-          $self->logger("I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
-          foreach (@fileExtensions ){
-            $self->logger("I searched for $fileName$_");
+            unless($fileFound){
+              $logger->fatal("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
+              foreach (@fileExtensions ){
+                $logger->fatal("I searched for $fileName$_");
+              }
+              $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.\nExiting, no indendation done.");
+              die "I couldn't find a match for $fileName in fileExtensionPreference.\nExiting, no indendation done."; 
+            }
+          } else {
+            # if the file has a recognised extension, check that the file exists
+            unless( -e $fileName ){
+              my $message = "I couldn't find $fileName, are you sure it exists?.\nNo indentation done.\nExiting.";
+              $logger->fatal("*$message");
+              die $message;
+            }
           }
-          $self->logger("but couldn't find any of them.");
-          $self->logger("Consider updating fileExtensionPreference. Error: Exiting, no indendation done.");
-          $self->output_logfile;
-          die "I couldn't find a match for $fileName in fileExtensionPreference.\nExiting, no indendation done."; 
-        }
-      } else {
-        # if the file has a recognised extension, check that the file exists
-        unless( -e $fileName ){
-          my $message = "Error: I couldn't find $fileName, are you sure it exists?. No indentation done. Exiting.";
-          $self->logger($message);
-          $self->output_logfile;
-          die $message;
-        }
-      }
+     }
 
     # store the file extension
     ${$self}{fileExtension} = $ext;
@@ -95,53 +96,62 @@ sub file_extension_check{
     # check to see if -o switch is active
     if($switches{outputToFile}){
         
-        $self->logger("Output file check",'heading');
+        $logger->info("*-o switch active: output file check");
 
+        if ($fileName eq "-" and $switches{outputToFile} =~ m/^\+/){
+            $logger->info("STDIN input mode active, -o switch is removing all + symbols");
+            $switches{outputToFile} =~ s/\+//g;
+        }
         # the -o file name might begin with a + symbol
         if($switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+"){
-            $self->logger("-o switch called with + symbol at the beginning: $switches{outputToFile}");
+            $logger->info("-o switch called with + symbol at the beginning: $switches{outputToFile}");
             $switches{outputToFile} = ${$self}{baseName}.$1;
-            $self->logger("output file is now: $switches{outputToFile}");
+            $logger->info("output file is now: $switches{outputToFile}");
         }
 
         my $strippedFileExtension = ${$self}{fileExtension};
         $strippedFileExtension =~ s/\.//; 
+        $strippedFileExtension = "tex" if ($strippedFileExtension eq "");
 
         # grab the name, directory, and extension of the output file
         my ($name, $dir, $ext) = fileparse($switches{outputToFile}, $strippedFileExtension);
 
         # if there is no extension, then add the extension from the file to be operated upon
         if(!$ext){
-            $self->logger("-o switch called with file name without extension: $switches{outputToFile}");
+            $logger->info("-o switch called with file name without extension: $switches{outputToFile}");
             $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
-            $self->logger("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
+            $logger->info("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
         }
 
         # the -o file name might end with ++ in which case we wish to search for existence, 
         # and then increment accordingly
         $name =~ s/\.$//;
         if($name =~ m/\+\+$/){
-            $self->logger("-o switch called with file name ending with ++: $switches{outputToFile}");
+            $logger->info("-o switch called with file name ending with ++: $switches{outputToFile}");
             $name =~ s/\+\+$//;
             $name = ${$self}{baseName} if ($name eq "");
             my $outputFileCounter = 0;
             my $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
-            $self->logger("will search for exisitence and increment counter, starting with $fileName");
+            $logger->info("will search for existence and increment counter, starting with $fileName");
             while( -e $fileName ){
-                $self->logger("$fileName exists, incrementing counter");
+                $logger->info("$fileName exists, incrementing counter");
                 $outputFileCounter++;
                 $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
             }
-            $self->logger("$fileName does not exist, and will be the output file");
+            $logger->info("$fileName does not exist, and will be the output file");
             $switches{outputToFile} = $fileName;
         }
     }
 
     # read the file into the Document body
     my @lines;
-    open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
-    push(@lines,$_) while(<MAINFILE>);
-    close(MAINFILE);
+    if($fileName ne "-"){
+        open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
+        push(@lines,$_) while(<MAINFILE>);
+        close(MAINFILE);
+    } else {
+            push(@lines,$_) while (<>)
+    }
 
     # the all-important step: update the body
     ${$self}{body} = join("",@lines);

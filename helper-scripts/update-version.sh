@@ -15,10 +15,10 @@ do
  esac 
 done
 
-oldVersion='3.2.2'
-newVersion='3.3'
-oldDate='2017-06-28'
-newDate='2017-08-21'
+oldVersion='3.3'
+newVersion='3.4'
+oldDate='2017-08-21'
+newDate='2018-01-13'
 
 cd ../
 cd documentation

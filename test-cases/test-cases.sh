@@ -106,6 +106,10 @@ cd ../tokenChecks/
 cd ../cruftdirectory/
 [[ $silentMode == 1 ]] && echo "./cruftdirectory/cruft-directory-test-cases.sh"
 ./cruft-directory-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# STDIN
+cd ../STDIN/
+[[ $silentMode == 1 ]] && echo "./STDIN/stdin-test-cases.sh"
+./stdin-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # named grouping braces
 cd ../namedGroupingBracesBrackets
 [[ $silentMode == 1 ]] && echo "./namedGroupingBracesBrackets/named-grouping-test-cases.sh"
@@ -141,6 +145,10 @@ cd ../texexchange
 cd ../horizontalWhiteSpace
 [[ $silentMode == 1 ]] && echo "./horizontalWhiteSpace/whitespace-test-cases.sh"
 ./whitespace-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# one sentence per line
+cd ../oneSentencePerLine
+[[ $silentMode == 1 ]] && echo "./oneSentencePerLine/one-sentence-per-line.sh"
+./one-sentence-per-line.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # benchmark mode, if appropriate
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag

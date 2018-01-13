@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesEndWith:
+            basicFullStop: 1
+            betterFullStop: 0

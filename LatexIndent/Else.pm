@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -37,12 +38,10 @@ our $elseRegExp = qr/
 
 sub check_for_else_statement{
     my $self = shift;
-    $self->logger("Looking for \\else statement (${$self}{name})",'heading') if $is_t_switch_active;
+    $logger->trace("*Looking for \\else statement (${$self}{name})") if $is_t_switch_active;
 
     ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
-                       /   # log file output
-                      $self->logger("else found: ${$self}{name}",'heading')if $is_t_switch_active;
-         
+                       /   
                       # create a new IfElseFi object
                       my $else = LatexIndent::Else->new(begin=>$1,
                                                               name=>${$self}{name},
@@ -64,6 +63,9 @@ sub check_for_else_statement{
                                                               endImmediatelyFollowedByComment=>0,
                                                               horizontalTrailingSpace=>q(),
                                                             );
+                      # log file output
+                      $logger->trace("*else found: ${$self}{name}")if $is_t_switch_active;
+         
                       # the settings and storage of most objects has a lot in common
                       $self->get_settings_and_store_new_object($else);
                       ${@{${$self}{children}}[-1]}{replacementText};
@@ -76,7 +78,7 @@ sub remove_line_breaks_begin{
     # there is no white space
     my $self = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-    $self->logger("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)");
     ${$self}{begin} =~ s/\R*$//sx;
     ${$self}{begin} .= " " unless(${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
     ${$self}{linebreaksAtEnd}{begin} = 0;

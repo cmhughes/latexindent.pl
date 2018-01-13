@@ -18,8 +18,8 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_m_switch_active/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
@@ -73,7 +73,7 @@ sub indent_begin{
     my $blankLineToken = $tokens{blanklines};
 
     if(${$self}{begin} =~ /\R=/s or ${$self}{begin} =~ /$blankLineToken\h*=/s ){
-        $self->logger("= found on own line in ${$self}{name}, adding indentation") if $is_t_switch_active;
+        $logger->trace("= found on own line in ${$self}{name}, adding indentation") if $is_t_switch_active;
         ${$self}{begin} =~ s/=/${$self}{indentation}=/s;
     }
 }
@@ -87,15 +87,15 @@ sub check_linebreaks_before_equals{
     # linebreaks *infront* of = symbol
     if(${$self}{begin} =~ /\R\h*=/s){
           if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==-1){
-            $self->logger("Removing linebreak before = symbol in ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
+            $logger->trace("Removing linebreak before = symbol in ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
             ${$self}{begin} =~ s/(\R|\h)*=/=/s;
           }
     } else {
       if(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==1){
-            $self->logger("Adding a linebreak before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
+            $logger->trace("Adding a linebreak before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
             ${$self}{begin} =~ s/=/\n=/s;
       } elsif(defined ${$self}{EqualsStartsOnOwnLine} and ${$self}{EqualsStartsOnOwnLine}==2){
-            $self->logger("Adding a % linebreak immediately before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
+            $logger->trace("Adding a % linebreak immediately before = symbol for ${$self}{name} (see EqualsStartsOnOwnLine)") if $is_t_switch_active;
             ${$self}{begin} =~ s/\h*=/%\n=/s;
       }
     }
@@ -114,7 +114,7 @@ sub get_replacement_text{
     my $self = shift;
 
     # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
-    $self->logger("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
+    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
     ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
     delete ${$self}{beginningbit};
 }

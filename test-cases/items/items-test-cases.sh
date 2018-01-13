@@ -75,5 +75,7 @@ latexindent.pl -s items12.tex -m -l=../opt-args/opt-args-remove-all.yaml,../envi
 latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml,resetItem.yaml
 # indentRules
 latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml,resetItem.yaml
+# poly-switch bug reported at https://github.com/cmhughes/latexindent.pl/issues/94
+latexindent.pl -s -m bug1.tex -o=+-mod0 -l=bug.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status
