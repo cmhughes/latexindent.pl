@@ -48,7 +48,7 @@ sub readSettings{
   my $self = shift;
   
   # read the default settings
-  $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" );
+  $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) if ( -e "$FindBin::RealBin/defaultSettings.yaml" );
 
   # grab the logger object
   my $logger = get_logger("Document");
