@@ -1,5 +1,6 @@
 ### introduction
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 
 `latexindent.pl` is a `perl` script to indent (add horizontal leading space to) 
 code within environments, commands, after headings and within special code blocks.
@@ -13,9 +14,10 @@ can modify line breaks.
 Chris Hughes (cmhughes)
 
 ### build status
-I use `travis-ci` as a continuous integration service to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
+I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as a continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
 
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 
 ### documentation
 
