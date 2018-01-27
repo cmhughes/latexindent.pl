@@ -16,5 +16,5 @@ install:
  - cpanm Log::Log4perl
  - cpanm Log::Dispatch::File
 script: 
-  - "cd test-cases/travis-ci"
+  - "cd test-cases/continuous-integration"
   - "bash ./test-travis-ci.sh"
