@@ -39,6 +39,7 @@
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{totalcount}
+\usepackage{standalone}
 % setup gitinfo2, as in the manual, details just above begin{document}
 \usepackage[mark,grumpy]{gitinfo2}
 % tikz, tcolorbox libraries
@@ -662,28 +663,28 @@
 \input{title.tex}
 \tableofcontents
 {\small\lstlistoflistings}
-\input{sec-introduction}
-\input{sec-demonstration}
-\input{sec-how-to-use}
+%\input{sec-introduction}
+%\input{sec-demonstration}
+%\input{sec-how-to-use}
 \input{sec-indent-config-and-settings.tex}
-\input{sec-default-user-local}
-\input{subsec-noAdditionalIndent-indentRules}
-\input{subsubsec-environments-and-their-arguments}
-\input{subsubsec-environments-with-items}
-\input{subsubsec-commands-with-arguments}
-\input{subsubsec-ifelsefi}
-\input{subsubsec-special}
-\input{subsubsec-headings}
-\input{subsubsec-no-add-remaining-code-blocks}
-\stopcontents[noAdditionalIndent]
-\input{subsec-commands-and-their-options}
-\input{sec-the-m-switch}
-\stopcontents[the-m-switch]
-\input{subsec-partnering-poly-switches}
-\input{subsec-conflicting-poly-switches}
-\input{sec-conclusions-know-limitations}
-\input{references}
-\input{appendices}
+%\input{sec-default-user-local}
+%\input{subsec-noAdditionalIndent-indentRules}
+%\input{subsubsec-environments-and-their-arguments}
+%\input{subsubsec-environments-with-items}
+%\input{subsubsec-commands-with-arguments}
+%\input{subsubsec-ifelsefi}
+%\input{subsubsec-special}
+%\input{subsubsec-headings}
+%\input{subsubsec-no-add-remaining-code-blocks}
+%\stopcontents[noAdditionalIndent]
+%\input{subsec-commands-and-their-options}
+%\input{sec-the-m-switch}
+%\stopcontents[the-m-switch]
+%\input{subsec-partnering-poly-switches}
+%\input{subsec-conflicting-poly-switches}
+%\input{sec-conclusions-know-limitations}
+%\input{references}
+%\input{appendices}
 \end{document}
 
 version history:
@@ -740,3 +741,11 @@ bug fixes:
 - empty environment bug: https://github.com/cmhughes/latexindent.pl/issues/78
 - a command/special bug: https://github.com/cmhughes/latexindent.pl/issues/80
 https://github.com/cmhughes/latexindent.pl/releases/tag/V3.3
+
+Version 3.4
+- enhancements to alignment at ampersand routine: https://github.com/cmhughes/latexindent.pl/issues/74
+- log4Perl module: https://github.com/cmhughes/latexindent.pl/issues/75
+- one sentence per line: https://github.com/cmhughes/latexindent.pl/issues/81
+- STDIN allowed: https://github.com/cmhughes/latexindent.pl/issues/88
+- textwrap bug fix: https://github.com/cmhughes/latexindent.pl/issues/90
+- polyswitch bug fix: https://github.com/cmhughes/latexindent.pl/issues/94
