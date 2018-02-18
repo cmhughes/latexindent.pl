@@ -41,6 +41,7 @@ sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defa
 sed -i.bak "s/version $oldVersion/version $newVersion/" readme.md
 sed -i.bak "s/$oldDate/$newDate/" readme.md
 sed -i.bak "s/version $oldVersion/version $newVersion/" documentation/readme.txt
+sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
