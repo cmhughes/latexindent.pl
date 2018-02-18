@@ -1,6 +1,7 @@
 ### introduction
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
+[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
 `latexindent.pl` is a `perl` script to indent (add horizontal leading space to) 
 code within environments, commands, after headings and within special code blocks.
@@ -21,7 +22,11 @@ I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integratio
 
 ### documentation
 
-For complete details, please see http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
+For complete details, please see:
+
+- pdf: http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
+- online (beta): http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
+[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
 ### Windows executable
 `latexindent.exe` is created using 
