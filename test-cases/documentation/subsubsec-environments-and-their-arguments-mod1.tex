@@ -20,7 +20,7 @@ latexindent.pl myenv.tex -l myenv-noAdd1.yaml
 latexindent.pl myenv.tex -l myenv-noAdd2.yaml  
 \end{commandshell} we obtain the output given in \cref{lst:myenv-output}; note in particular that the environment \texttt{myenv} has not received any \emph{additional} indentation, but that the \texttt{outer} environment \emph{has} still received indentation.
 
-	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-noAdd1} or \cref{lst:myenv-noAdd2})}}{lst:myenv-output}
+	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex} output (using either \cref{lst:myenv-noAdd1} or \cref{lst:myenv-noAdd2})}{lst:myenv-output}
 
 	Upon changing the YAML files to those shown in \cref{lst:myenv-noAdd3,lst:myenv-noAdd4}, and running either \begin{commandshell}
 latexindent.pl myenv.tex -l myenv-noAdd3.yaml  
@@ -85,7 +85,7 @@ latexindent.pl myenv.tex -l myenv-rules1.yaml
 latexindent.pl myenv.tex -l myenv-rules2.yaml  
 \end{commandshell} we obtain the output given in \cref{lst:myenv-rules-output}; note in particular that the environment \texttt{myenv} has received one tab (from the \texttt{outer} environment) plus three spaces from \cref{lst:myenv-rules1} or \ref{lst:myenv-rules2}.
 
-	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}}{lst:myenv-rules-output}
+	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex} output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}{lst:myenv-rules-output}
 
 	If you specify a field in \texttt{indentRules} using anything other than horizontal space, it will be ignored.
 
