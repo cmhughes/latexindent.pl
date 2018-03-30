@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    ifElseFi:
+        OrStartsOnOwnLine: -1
+        OrFinishesWithLineBreak: 1

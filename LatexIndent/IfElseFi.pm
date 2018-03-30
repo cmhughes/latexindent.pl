@@ -101,12 +101,17 @@ sub find_ifelsefi{
 sub post_indentation_check{
     # needed to remove leading horizontal space before \else
     my $self = shift;
-    if(${$self}{body} =~ m/^\h*\\else/sm
-                and
-       !(${$self}{body} =~ m/^\h*\\else/s and ${$self}{linebreaksAtEnd}{begin}==0)
-            ){
-        $logger->trace("*Adding surrounding indentation to \\else statement ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
-        ${$self}{body} =~ s/^\h*\\else/${$self}{surroundingIndentation}\\else/sm;
+
+    # loop through \else and \or
+    foreach ({regExp=>qr/\\else/,value=>'\\else'},{regExp=>qr/\\or/,value=>'\\or'}){
+        my %else = %{$_};
+        if(${$self}{body} =~ m/^\h*$else{regExp}/sm
+                    and
+           !(${$self}{body} =~ m/^\h*$else{regExp}/s and ${$self}{linebreaksAtEnd}{begin}==0)
+                ){
+            $logger->trace("*Adding surrounding indentation to $else{value} statement(s) ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
+            ${$self}{body} =~ s/^\h*$else{regExp}/${$self}{surroundingIndentation}$else{value}/smg;
+        }
     }
     return;
 }
@@ -115,7 +120,28 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # check for existence of \else statement, and associated line break information
-    $self->check_for_else_statement;
+    $self->check_for_else_statement(
+                                       # else name regexp
+                                       elseNameRegExp=>qr|\\else|,
+                                       # else statements name
+                                       ElseStartsOnOwnLine=>"ElseStartsOnOwnLine",
+                                       # end statements
+                                       ElseFinishesWithLineBreak=>"ElseFinishesWithLineBreak",
+                                       # logfile information
+                                       logName=>"else",
+                                                                );
+                                                                
+    # check for existence of \or statement, and associated line break information
+    $self->check_for_else_statement(
+                                       # else name regexp
+                                       elseNameRegExp=>qr|\\or|,
+                                       # else statements name
+                                       ElseStartsOnOwnLine=>"OrStartsOnOwnLine",
+                                       # end statements
+                                       ElseFinishesWithLineBreak=>"OrFinishesWithLineBreak",
+                                       # logfile information
+                                       logName=>"or",
+                                                                );
 
     # search for headings (important to do this before looking for commands!)
     $self->find_heading;

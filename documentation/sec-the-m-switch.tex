@@ -142,13 +142,13 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	\end{minipage}
 
 	\textbf{Summary of text wrapping}
-		It is important to note the following:
-		\begin{itemize}
-			\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
-			\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
-			\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
-			      will likely exceed any maximum value set in the \texttt{columns} field.
-		\end{itemize}
+	It is important to note the following:
+	\begin{itemize}
+		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
+		\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
+		\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
+		      will likely exceed any maximum value set in the \texttt{columns} field.
+	\end{itemize}
 
 \subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
@@ -1026,57 +1026,57 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be
 	modified using \texttt{latexindent.pl}.
 
-\begin{longtable}{llll}
-		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping} \\
+	\begin{longtable}{llll}
+		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                         \\
 		\toprule
-        Code block                             & Sample & \multicolumn{2}{c}{Poly-switch mapping}                  \\
+		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$ & $\BeginStartsOnOwnLine$     & BeginStartsOnOwnLine     \\
-  & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$      &   $\BodyStartsOnOwnLine$      & BodyStartsOnOwnLine      \\
-& \verb!body of myenv!$\EndStartsOnOwnLine$       &   $\EndStartsOnOwnLine$       & EndStartsOnOwnLine       \\
-& \verb!\end{myenv}!$\EndFinishesWithLineBreak$   &   $\EndFinishesWithLineBreak$ & EndFinishesWithLineBreak \\
-  & \verb!after words!                                &                 &           \\
-  \cmidrule{2-4}
-        ifelsefi                               &  \verb!before words!$\BeginStartsOnOwnLine$            &  $\BeginStartsOnOwnLine$      & IfStartsOnOwnLine         \\
-                                               &  \verb!\if...!$\BodyStartsOnOwnLine$                   &  $\BodyStartsOnOwnLine$       & BodyStartsOnOwnLine       \\
-                                               &  \verb!body of if statement!$\ElseStartsOnOwnLine$     &  $\ElseStartsOnOwnLine$       & ElseStartsOnOwnLine       \\
-                                               &  \verb!\else!$\ElseFinishesWithLineBreak$              &  $\ElseFinishesWithLineBreak$ & ElseFinishesWithLineBreak \\
-                                               &  \verb!body of else statement!$\EndStartsOnOwnLine$    &  $\EndStartsOnOwnLine$        & FiStartsOnOwnLine         \\
-                                               &  \verb!\fi!$\EndFinishesWithLineBreak$                 &  $\EndFinishesWithLineBreak$  & FiFinishesWithLineBreak   \\
-                                               &  \verb!after words!            & & \\
-  \cmidrule{2-4}
-        optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$              &   $\BeginStartsOnOwnLine$     & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
-                                               & \verb![!$\BodyStartsOnOwnLine$                 &   $\BodyStartsOnOwnLine$      & OptArgBodyStartsOnOwnLine                                         \\
-                                               & \verb!body of opt arg!$\EndStartsOnOwnLine$    &   $\EndStartsOnOwnLine$       & RSqBStartsOnOwnLine                                               \\
-                                               & \verb!]!$\EndFinishesWithLineBreak$            &   $\EndFinishesWithLineBreak$ & RSqBFinishesWithLineBreak                                         \\
-                                               & \verb!...!         & & \\
-  \cmidrule{2-4}
-        mandatoryArguments                     &  \verb!...!$\BeginStartsOnOwnLine$              &   $\BeginStartsOnOwnLine$     & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace} \\
-                                               &  \verb!{!$\BodyStartsOnOwnLine$                 &   $\BodyStartsOnOwnLine$      & MandArgBodyStartsOnOwnLine                                     \\
-                                               &  \verb!body of mand arg!$\EndStartsOnOwnLine$   &   $\EndStartsOnOwnLine$       & RCuBStartsOnOwnLine                                            \\
-                                               &  \verb!}!$\EndFinishesWithLineBreak$            &   $\EndFinishesWithLineBreak$ & RCuBFinishesWithLineBreak                                      \\
-                                               &  \verb!...! & & \\
-  \cmidrule{2-4}
-        commands                               & \verb!before words!$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$ & CommandStartsOnOwnLine           \\
-                                               & \verb!\mycommand!$\BodyStartsOnOwnLine$      &  $\BodyStartsOnOwnLine$  & CommandNameFinishesWithLineBreak \\
-                                               & $\langle$\itshape{arguments}$\rangle$ & & \\
-  \cmidrule{2-4}
-        namedGroupingBraces Brackets           &  before words$\BeginStartsOnOwnLine$           & $\BeginStartsOnOwnLine$ & NameStartsOnOwnLine       \\
-                                               &  myname$\BodyStartsOnOwnLine$                  &  $\BodyStartsOnOwnLine$  & NameFinishesWithLineBreak \\
-                                               &  $\langle$\itshape{braces/brackets}$\rangle$ & & \\
+		environment                            & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                       & \verb!after words!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        keyEqualsValuesBraces\newline Brackets & before words$\BeginStartsOnOwnLine$                    &  $\BeginStartsOnOwnLine$  & KeyStartsOnOwnLine          \\
-                                               &  key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$    &   $\EqualsStartsOnOwnLine$ & EqualsStartsOnOwnLine       \\
-                                               &  $\langle$\itshape{braces/brackets}$\rangle$           &   $\BodyStartsOnOwnLine$   & EqualsFinishesWithLineBreak \\
+		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of if statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
+		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
+		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
+		                                       & \verb!\fi!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
+		                                       & \verb!after words!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        items                                  & before words$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$ & ItemStartsOnOwnLine       \\
-      &  \verb!\item!$\BodyStartsOnOwnLine$                                            &  $\BodyStartsOnOwnLine$  & ItemFinishesWithLineBreak \\
-        &                                           \verb!...! & & \\
+		optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
+		                                       & \verb![!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
+		                                       & \verb!body of opt arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
+		                                       & \verb!]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        specialBeginEnd                        &  before words$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$     & SpecialBeginStartsOnOwnLine     \\
-                                               &  \verb!\[!$\BodyStartsOnOwnLine$       &  $\BodyStartsOnOwnLine$      & SpecialBodyStartsOnOwnLine      \\
-                                               &  body of special$\EndStartsOnOwnLine$  &  $\EndStartsOnOwnLine$       & SpecialEndStartsOnOwnLine       \\
-                                               &  \verb!\]!$\EndFinishesWithLineBreak$  &  $\EndFinishesWithLineBreak$ & SpecialEndFinishesWithLineBreak \\
-                                               &  after words                           &  & \\
+		mandatoryArguments                     & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
+		                                       & \verb!{!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
+		                                       & \verb!body of mand arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
+		                                       & \verb!}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		commands                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
+		                                       & \verb!\mycommand!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+		                                       & $\langle$\itshape{arguments}$\rangle$                   &                                         &                                                                   \\
+		\cmidrule{2-4}
+		namedGroupingBraces Brackets           & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
+		                                       & myname$\BodyStartsOnOwnLine$                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+		                                       & $\langle$\itshape{braces/brackets}$\rangle$             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		keyEqualsValuesBraces\newline Brackets & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
+		                                       & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
+		                                       & $\langle$\itshape{braces/brackets}$\rangle$             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
+		\cmidrule{2-4}
+		items                                  & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
+		                                       & \verb!\item!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
+		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
+		                                       & body of special$\EndStartsOnOwnLine$                    & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
+		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
+		                                       & after words                                             &                                         &                                                                   \\
 		\bottomrule
-\end{longtable}
+	\end{longtable}

@@ -63,6 +63,7 @@
 		This type of listing is a \texttt{.yaml} file, but it will only be relevant when the \texttt{-m} switch is active; see \vref{sec:modifylinebreaks} for more details.
 	\end{minipage}%
 
+	% \begin{latexonly}
 	You will occasionally see dates shown in the margin (for example, next to this paragraph!
 	)
 	\announce{2017-06-25}{announce} which detail the date of the version in which the feature was implemented;
@@ -71,12 +72,13 @@
 	If you have not read this document before (and even if you have!
 	), then you can ignore every occurrence of the \stardemo;
 	they are simply there to highlight new and updated features.
-	The new and updated features in this documentation (\gitRel) are on the following pages: \listOfNewFeatures 
+	The new and updated features in this documentation (\gitRel) are on the following pages: \listOfNewFeatures  
 
 \subsection{Quick start}
 	\label{sec:quickstart} If you'd like to get started with \texttt{latexindent.pl} then simply type \begin{commandshell}
 latexindent.pl myfile.tex
     \end{commandshell} from the command line.
+	% \end{latexonly}
 	If you receive an error message such as that given in \cref{lst:poss-errors}, then you need to install the missing perl modules.
 	\begin{cmhlistings}[style=tcblatex,language=Perl]{Possible error messages}{lst:poss-errors}
 Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
