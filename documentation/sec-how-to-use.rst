@@ -430,8 +430,8 @@ to signify that your input has finished.
 
 .. _sec:arara:
 
-From ``arara``
---------------
+From arara
+----------
 
 Using ``latexindent.pl`` from the command line is fine for some folks,
 but others may find it easier to use from ``arara``; you can find the

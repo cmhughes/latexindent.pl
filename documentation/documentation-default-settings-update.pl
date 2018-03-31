@@ -120,9 +120,6 @@ if(!$readTheDocsMode){
         }
     }
 
-    # convert the images
-    system("convert figure-schematic.pdf figure-schematic.png");
-
     # combine the subsec files
     foreach("subsec-noAdditionalIndent-indentRules.tex",
             "subsubsec-environments-and-their-arguments.tex",
@@ -326,6 +323,10 @@ if(!$readTheDocsMode){
 
         system("./pandoc-tex-files.sh $fileName");
     }
+    
+    # convert the images, if necessary
+    system("./convert-figures-to-png.sh");
+
 
 }
 exit; 

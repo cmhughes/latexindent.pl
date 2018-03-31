@@ -831,8 +831,8 @@ found in ``verbatimEnvironments`` (see
 
 .. _subsubsec:code-blocks:
 
-The code blocks known ``latexindent.pl``
-----------------------------------------
+The code blocks known latexindent.pl
+------------------------------------
 
 As of Version 3.0, ``latexindent.pl`` processes documents using code
 blocks; each of these are shown in :numref:`tab:code-blocks`.
@@ -881,8 +881,8 @@ We will refer to these code blocks in what follows.
 
 .. _sec:noadd-indent-rules:
 
-``noAdditionalIndent`` and ``indentRules``
-------------------------------------------
+noAdditionalIndent and indentRules
+----------------------------------
 
 ``latexindent.pl`` operates on files by looking for code blocks, as
 detailed in :numref:`subsubsec:code-blocks`; for each type of code
@@ -1590,8 +1590,8 @@ been indented.
  	:caption: ``ifelsefi2.tex`` default output 
  	:name: lst:ifelsefi2-default
 
-``specialBeginEnd`` code blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+specialBeginEnd code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let’s use the example from :numref:`lst:specialbefore` which has
 default output shown in :numref:`lst:specialafter`.
@@ -1671,8 +1671,8 @@ have received a single space of indentation.
 
 .. _subsubsec-headings-no-add-indent-rules:
 
-``afterHeading`` code blocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+afterHeading code blocks
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let’s use the example :numref:`lst:headings2` for demonstration
 throughout this . As discussed on , by default ``latexindent.pl`` will
@@ -1801,8 +1801,8 @@ these are very similar to the ``commands`` code block type covered
 comprehensively in :numref:`subsubsec:commands-arguments`, but a small
 discussion defining these remaining code blocks is necessary.
 
-``keyEqualsValuesBracesBrackets``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+keyEqualsValuesBracesBrackets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ``latexindent.pl`` defines this type of code block by the following
 criteria:
@@ -1841,8 +1841,8 @@ is three tabs, and these come from:
    is the part controlled by the *body* field for ``noAdditionalIndent``
    and friends from .
 
-``namedGroupingBracesBrackets``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+namedGroupingBracesBrackets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type of code block is mostly motivated by tikz-based code; we
 define this code block as follows:
@@ -1879,8 +1879,8 @@ tabs, and these come from:
    arguments. This is the part controlled by the *body* field for
    ``noAdditionalIndent`` and friends from .
 
-``UnNamedGroupingBracesBrackets``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnNamedGroupingBracesBrackets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 occur in a variety of situations; specifically, we define this type of
 code block as satisfying the following criteria:
@@ -1919,8 +1919,8 @@ Users wishing to customise the mandatory and/or optional arguments on a
 *per-name* basis for the ``UnNamedGroupingBracesBrackets`` should use
 ``always-un-named``.
 
-``filecontents``
-^^^^^^^^^^^^^^^^
+filecontents
+^^^^^^^^^^^^
 
 code blocks behave just as ``environments``, except that neither
 arguments nor items are sought.

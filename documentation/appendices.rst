@@ -5,8 +5,8 @@ Appendices
 
 .. _sec:requiredmodules:
 
-Required ``Perl`` modules
--------------------------
+Required Perl modules
+---------------------
 
 If you intend to use ``latexindent.pl`` and *not* one of the supplied
 standalone executable files, then you will need a few standard Perl
@@ -114,8 +114,8 @@ latexindent.exe -t myfile.tex
 
 .. _sec:updating-path:
 
-Updating the ``path`` variable
-------------------------------
+Updating the path variable
+--------------------------
 
 ``latexindent.pl`` has a few scripts (available at (“Home of
 Latexindent.pl” 2017)) that can update the ``path`` variables. Thank you
@@ -205,8 +205,8 @@ To *remove* the directory from your ``%path%``, run
 
 .. _app:logfile-demo:
 
-``logFilePreferences``
-----------------------
+logFilePreferences
+------------------
 
 :numref:`lst:logFilePreferences` describes the options for customising
 the information given to the log file, and we provide a few

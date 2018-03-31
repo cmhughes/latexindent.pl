@@ -2,16 +2,16 @@
 
 .. _sec:indentconfig:
 
-``indentconfig.yaml``, local settings and the ``-y`` switch 
-============================================================
+indentconfig.yaml, local settings and the -y switch 
+====================================================
 
 The behaviour of ``latexindent.pl`` is controlled from the settings
 specified in any of the YAML files that you tell it to load. By default,
 ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there
 are a few ways that you can tell it to load your own settings files.
 
-``indentconfig.yaml`` and ``.indentconfig.yaml``
-------------------------------------------------
+indentconfig.yaml and .indentconfig.yaml
+----------------------------------------
 
 ``latexindent.pl`` will always check your home directory for
 ``indentconfig.yaml`` and ``.indentconfig.yaml`` (unless it is called
@@ -93,8 +93,8 @@ so in ``indent.log``.
 
 .. _sec:localsettings:
 
-``localSettings.yaml``
-----------------------
+localSettings.yaml
+------------------
 
 The ``-l`` switch tells ``latexindent.pl`` to look for
 ``localSettings.yaml`` in the *same directory* as ``myfile.tex``. For
@@ -142,8 +142,8 @@ read your settings file.
 
 .. _sec:yamlswitch:
 
-The ``-y|yaml`` switch
-----------------------
+The -y\|yaml switch
+-------------------
 
 You may use the ``-y`` switch to load your settings; for example, if you
 wished to specify the settings from :numref:`lst:localSettings` using

@@ -3,7 +3,7 @@
 	\tikz[remember picture,overlay] {
 		\node at (1,0){\includegraphics{logo}};
 	}}
-\section{The \texttt{-m} (\texttt{modifylinebreaks}) switch}\label{sec:modifylinebreaks}
+\section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
  All features described in this section will only be relevant if the \texttt{-m} switch
  is used.
 
@@ -150,7 +150,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 		      will likely exceed any maximum value set in the \texttt{columns} field.
 	\end{itemize}
 
-\subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}\label{sec:onesentenceperline}
+\subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
 	\announce*{2018-01-13}{one sentence per line} your file so that it puts one sentence
 	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
@@ -226,7 +226,7 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 		\end{minipage}
 	\end{adjustwidth}
 
-\subsubsection{\texttt{sentencesFollow}}
+\subsubsection{sentencesFollow}
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with \vref{lst:multiple-sentences}, and use the YAML
 	settings given in \cref{lst:sentences-follow1-yaml}. Using the command
 	\begin{commandshell}
@@ -271,7 +271,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	following the inclusion of \cref{lst:sentences-follow2-yaml}, the output given in \cref{lst:multiple-sentences1-mod2} demonstrates that
 	the sentence \emph{has} been accounted for correctly.
 
-\subsubsection{\texttt{sentencesBeginWith}}
+\subsubsection{sentencesBeginWith}
 	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper case letters \texttt{A-Z}; you can instruct the
 	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
 	to define sentences to begin with other characters.
@@ -299,7 +299,7 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
 	in \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$! or any numeric digit, \texttt{0} to \texttt{9}.
 
-\subsubsection{\texttt{sentencesEndWith}}
+\subsubsection{sentencesEndWith}
 	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in which \texttt{latexindent.pl} will operate on the
 	sentences in this file in \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any character that we wish;
 	for example, using the YAML specified in \cref{lst:sentences-end1-yaml} and the command
@@ -373,7 +373,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 	Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
-\subsubsection{Features of the \texttt{oneSentencePerLine} routine}
+\subsubsection{Features of the oneSentencePerLine routine}
 	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have
 	been accounted for; this means that any characters within these types of code blocks will not be part
 	of the sentence manipulation routine.
@@ -413,7 +413,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
-\subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}
+\subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
 	\announce{2017-05-27}{removeParagraphLineBreaks}
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
@@ -629,7 +629,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
-\subsubsection[Adding line breaks: \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}]{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
+\subsubsection{Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine}
 	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular,
 	let's allow each of them in turn to take a value of $1$.
 
@@ -720,7 +720,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a \emph{blank line}
 	has been added after adding the line break.
 
-\subsubsection[Adding line breaks: \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}]{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
+\subsubsection{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in \cref{lst:env-mlb7,lst:env-mlb8},
 	and in particular, let's allow each of them in turn to take a value of $1$.
 
@@ -1039,7 +1039,9 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\cmidrule{2-4}
 		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
 		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of if statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
+		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$       & $\OrStartsOnOwnLine$                  & OrStartsOnOwnLine                                               \\
+		                                       & \verb!\or!$\OrFinishesWithLineBreak$ & $\OrFinishesWithLineBreak$            & OrFinishesWithLineBreak                                         \\
+		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
 		                                       & \verb!\fi!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
