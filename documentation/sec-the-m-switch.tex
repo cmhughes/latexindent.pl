@@ -156,7 +156,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
 	all of which we discuss next.
 
-	\cmhlistingsfromfile*[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+	\cmhlistingsfromfile[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
 	This is a binary switch that details if \texttt{latexindent.pl} should perform the sentence manipulation routine; it
@@ -169,7 +169,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
 
 	If we use the YAML files in \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
 	\begin{widepage}
@@ -181,19 +181,19 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
 	\end{minipage}
 
 	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have
@@ -214,15 +214,15 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.36\linewidth}
-			\cmhlistingsfromfile*[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+			\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+			\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+			\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 		\end{minipage}
 	\end{adjustwidth}
 
@@ -235,11 +235,11 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
 	\end{minipage}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl} will not seek sentences following a blank line,
@@ -247,7 +247,7 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
 	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -257,14 +257,14 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
 	\end{minipage}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the \texttt{)} has not been accounted for, but that
@@ -276,7 +276,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
 	to define sentences to begin with other characters.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -286,14 +286,14 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
 	\end{minipage}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but that the subsequent sentences
 	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
@@ -310,19 +310,19 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
 	\end{minipage}
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular,
@@ -335,7 +335,7 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	Let's consider the file shown in \cref{lst:url}.
 
-	\cmhlistingsfromfile*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+	\cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
 	Upon running the following commands
 	\begin{commandshell}
@@ -343,7 +343,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
 	we obtain the output given in \cref{lst:url-mod1}.
 
-	\cmhlistingsfromfile*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+	\cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
 	Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop},
 	full stops at the end of sentences have the following properties:
@@ -363,11 +363,11 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.6\linewidth}
-			\cmhlistingsfromfile*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+			\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.4\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 		\end{minipage}
 	\end{adjustwidth}
 
@@ -383,8 +383,8 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
 	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
 	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
@@ -393,11 +393,11 @@ latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 	\begin{widepage}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
 	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks
 	by using the YAML in \cref{lst:item-rules2-yaml} and the command
 	\begin{commandshell}
@@ -406,11 +406,11 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
 \subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}

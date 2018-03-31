@@ -86,7 +86,7 @@ copy myfile.bak4 to myfile.bak3
 	been loaded, you can see the amalgamated settings in the log file by switching \texttt{showAmalgamatedSettings}
 	to \texttt{1}, if you wish.
 
-	\cmhlistingsfromfile*[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
 	When%
 	\announce*{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the \texttt{trace} modes (see \cpageref{page:traceswitch})
@@ -254,7 +254,7 @@ lookForAlignDelims:
 	If, for example, you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
 	advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
 
-	\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
 	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
@@ -292,23 +292,23 @@ lookForAlignDelims:
 	\end{minipage}%
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular4.yaml}[yaml-TCB]{\texttt{tabular4.yaml}}{lst:tabular4YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular4.yaml}[yaml-TCB]{\texttt{tabular4.yaml}}{lst:tabular4YAML}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular5.yaml}[yaml-TCB]{\texttt{tabular5.yaml}}{lst:tabular5YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular5.yaml}[yaml-TCB]{\texttt{tabular5.yaml}}{lst:tabular5YAML}
 	\end{minipage}%
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular6.yaml}[yaml-TCB]{\texttt{tabular6.yaml}}{lst:tabular6YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular6.yaml}[yaml-TCB]{\texttt{tabular6.yaml}}{lst:tabular6YAML}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular7.yaml}[yaml-TCB]{\texttt{tabular7.yaml}}{lst:tabular7YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular7.yaml}[yaml-TCB]{\texttt{tabular7.yaml}}{lst:tabular7YAML}
 	\end{minipage}%
 
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular8.yaml}[yaml-TCB]{\texttt{tabular8.yaml}}{lst:tabular8YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular8.yaml}[yaml-TCB]{\texttt{tabular8.yaml}}{lst:tabular8YAML}
 	\end{minipage}%
 
 	On running the commands
@@ -325,14 +325,14 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 	we obtain the respective outputs given in \crefrange{lst:tabular2-default}{lst:tabular2-mod8}.
 
 	\begin{widepage}
-		\cmhlistingsfromfile*{demonstrations/tabular2-default.tex}{\texttt{tabular2.tex} default output}{lst:tabular2-default}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod2.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML}}{lst:tabular2-mod2}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod3.tex}{\texttt{tabular2.tex} using \cref{lst:tabular3YAML}}{lst:tabular2-mod3}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod4.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular4YAML}}{lst:tabular2-mod4}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod5.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular5YAML}}{lst:tabular2-mod5}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod6.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular6YAML}}{lst:tabular2-mod6}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod7.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular7YAML}}{lst:tabular2-mod7}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod8.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular8YAML}}{lst:tabular2-mod8}
+		\cmhlistingsfromfile{demonstrations/tabular2-default.tex}{\texttt{tabular2.tex} default output}{lst:tabular2-default}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod2.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML}}{lst:tabular2-mod2}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod3.tex}{\texttt{tabular2.tex} using \cref{lst:tabular3YAML}}{lst:tabular2-mod3}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod4.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular4YAML}}{lst:tabular2-mod4}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod5.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular5YAML}}{lst:tabular2-mod5}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod6.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular6YAML}}{lst:tabular2-mod6}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod7.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular7YAML}}{lst:tabular2-mod7}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod8.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular8YAML}}{lst:tabular2-mod8}
 	\end{widepage}
 
 	Notice in particular:

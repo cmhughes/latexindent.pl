@@ -101,6 +101,7 @@ latexindent.pl -s ifelsefi1.tex -o ifelsefi1-noAdd.tex -local ifnum-noAdd.yaml
 latexindent.pl -s ifelsefi1.tex -o ifelsefi1-indent-rules.tex -local ifnum-indent-rules.yaml
 latexindent.pl -s ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml -o ifelsefi1-noAdd-glob.tex 
 latexindent.pl -s ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml -o ifelsefi1-indent-rules-global.tex 
+latexindent.pl -s ifelsefi2.tex -o ifelsefi2-default.tex
 
 ##### special ######
 ##### special ######

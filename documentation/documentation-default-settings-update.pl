@@ -295,9 +295,6 @@ if(!$readTheDocsMode){
         $body =~ s|\(\*@\$\\BeginStartsOnOwnLine\$@\*\)|♠|gs;
         $body =~ s|\$\\BeginStartsOnOwnLine\$|♠|gs;
 
-        $body =~ s|\(\*@\$\\ElseStartsOnOwnLine\$@\*\)|★|gs;
-        $body =~ s|\$\\ElseStartsOnOwnLine\$|★|gs;
-
         $body =~ s|\(\*@\$\\BodyStartsOnOwnLine\$@\*\)|♥|gs;
         $body =~ s|\$\\BodyStartsOnOwnLine\$|♥|gs;
 
@@ -307,8 +304,17 @@ if(!$readTheDocsMode){
         $body =~ s|\(\*@\$\\EndFinishesWithLineBreak\$@\*\)|♣|gs;
         $body =~ s|\$\\EndFinishesWithLineBreak\$|♣|gs;
 
+        $body =~ s|\(\*@\$\\ElseStartsOnOwnLine\$@\*\)|★|gs;
+        $body =~ s|\$\\ElseStartsOnOwnLine\$|★|gs;
+
         $body =~ s|\(\*@\$\\ElseFinishesWithLineBreak\$@\*\)|□|gs;
         $body =~ s|\$\\ElseFinishesWithLineBreak\$|□|gs;
+
+        $body =~ s|\(\*@\$\\OrStartsOnOwnLine\$@\*\)|▲|gs;
+        $body =~ s|\$\\OrStartsOnOwnLine\$|▲|gs;
+
+        $body =~ s|\(\*@\$\\OrFinishesWithLineBreak\$@\*\)|▼|gs;
+        $body =~ s|\$\\OrFinishesWithLineBreak\$|▼|gs;
 
         $body =~ s|\(\*@\$\\EqualsStartsOnOwnLine\$@\*\)|●|gs;
         $body =~ s|\$\\EqualsStartsOnOwnLine\$|●|gs;

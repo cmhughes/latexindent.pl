@@ -1576,6 +1576,20 @@ have received a single space of indentation.
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifelsefi-indent-rules-global` 
  	:name: lst:ifelsefi1-output-indent-rules-global
 
+We can further explore the treatment of ``ifElseFi`` code blocks
+\*updates to ifElseFi code blocks in :numref:`lst:ifelsefi2`, and the
+associated default output given in :numref:`lst:ifelsefi2-default`;
+note, in particular, that the bodies of each of the ‘or statements’ have
+been indented.
+
+ .. literalinclude:: demonstrations/ifelsefi2.tex
+ 	:caption: ``ifelsefi2.tex`` 
+ 	:name: lst:ifelsefi2
+
+ .. literalinclude:: demonstrations/ifelsefi2-default.tex
+ 	:caption: ``ifelsefi2.tex`` default output 
+ 	:name: lst:ifelsefi2-default
+
 ``specialBeginEnd`` code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
