@@ -127,6 +127,8 @@ sub tasks_particular_to_each_object{
                                        ElseStartsOnOwnLine=>"ElseStartsOnOwnLine",
                                        # end statements
                                        ElseFinishesWithLineBreak=>"ElseFinishesWithLineBreak",
+                                       # for the YAML settings storage
+                                       storageNameAppend=>"else",
                                        # logfile information
                                        logName=>"else",
                                                                 );
@@ -139,6 +141,8 @@ sub tasks_particular_to_each_object{
                                        ElseStartsOnOwnLine=>"OrStartsOnOwnLine",
                                        # end statements
                                        ElseFinishesWithLineBreak=>"OrFinishesWithLineBreak",
+                                       # for the YAML settings storage
+                                       storageNameAppend=>"or",
                                        # logfile information
                                        logName=>"or",
                                                                 );

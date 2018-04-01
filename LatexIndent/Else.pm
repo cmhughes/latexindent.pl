@@ -55,7 +55,7 @@ sub check_for_else_statement{
                           # create a new IfElseFi object
                           my $else = LatexIndent::Else->new(begin=>$1,
                                                                   name=>${$self}{name},
-                                                                  storageNameAppend=>"else",
+                                                                  storageNameAppend=>$input{storageNameAppend},
                                                                   body=>$3,
                                                                   end=>q(),
                                                                   linebreaksAtEnd=>{

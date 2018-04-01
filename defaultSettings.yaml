@@ -451,6 +451,8 @@ modifyLineBreaks:
     ifElseFi:
         IfStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0
+        OrStartsOnOwnLine: 0
+        OrFinishesWithLineBreak: 0
         ElseStartsOnOwnLine: 0
         ElseFinishesWithLineBreak: 0
         FiStartsOnOwnLine: 0
@@ -458,6 +460,8 @@ modifyLineBreaks:
         ifnum:
             IfStartsOnOwnLine: 0
             BodyStartsOnOwnLine: 0
+            OrStartsOnOwnLine: 0
+            OrFinishesWithLineBreak: 0
             ElseStartsOnOwnLine: 0
             ElseFinishesWithLineBreak: 0
             FiStartsOnOwnLine: 0
