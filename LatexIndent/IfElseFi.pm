@@ -103,14 +103,14 @@ sub post_indentation_check{
     my $self = shift;
 
     # loop through \else and \or
-    foreach ({regExp=>qr/\\else/,value=>'\\else'},{regExp=>qr/\\or/,value=>'\\or'}){
+    foreach ({regExp=>qr/\\else/},{regExp=>qr/\\or/}){
         my %else = %{$_};
         if(${$self}{body} =~ m/^\h*$else{regExp}/sm
                     and
            !(${$self}{body} =~ m/^\h*$else{regExp}/s and ${$self}{linebreaksAtEnd}{begin}==0)
                 ){
-            $logger->trace("*Adding surrounding indentation to $else{value} statement(s) ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
-            ${$self}{body} =~ s/^\h*$else{regExp}/${$self}{surroundingIndentation}$else{value}/smg;
+            $logger->trace("*Adding surrounding indentation to $else{regExp} statement(s) ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
+            ${$self}{body} =~ s/^\h*($else{regExp})/${$self}{surroundingIndentation}$1/smg;
         }
     }
     return;

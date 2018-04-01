@@ -52,5 +52,8 @@ latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW1.tex -local new-spe
 latexindent.pl -s specialLeftBracket.tex -o=+-commands-first -l=specialsLeftRight.yaml
 latexindent.pl -s specialLeftBracket.tex -o=+-commands-first-no-paren -l=specialsLeftRight.yaml,commands-no-parenthesis.yaml
 latexindent.pl -s specialLeftBracket.tex -o=+-specials-first -l=specialsLeftRight.yaml,specialBeforeCommand.yaml 
+# specialMiddle (see: https://github.com/cmhughes/latexindent.pl/issues/100)
+latexindent.pl -s algpseudocode.tex -o=+-mod1 -l=koppor
+latexindent.pl -s algpseudocode-mk1.tex -o=+-mod1 -l=koppor
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
