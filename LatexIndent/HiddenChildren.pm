@@ -101,48 +101,52 @@ sub update_family_tree{
     # loop through the hash
     $logger->trace("*Updating FamilyTree...") if $is_t_switch_active;
     while( my ($idToSearch,$ancestorToSearch)= each %familyTree){
+          $logger->trace("*current ID: $idToSearch") if($is_t_switch_active);
           foreach(@{${$ancestorToSearch}{ancestors}}){
               my $ancestorID = ${$_}{ancestorID};
-              $logger->trace("current ID: $idToSearch, ancestor: $ancestorID") if($is_t_switch_active);
-              if($familyTree{$ancestorID}){
-                  $logger->trace("$ancestorID is a key within familyTree, grabbing its ancestors") if($is_t_switch_active);
-                  my $naturalAncestors = q();
-                  foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
-                      $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
-                  }
-                  foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
-                      $logger->trace("ancestor of *hidden* child: ${$_}{ancestorID}") if($is_t_switch_active);
-                      my $newAncestorId = ${$_}{ancestorID};
-                      my $type;
-                      if($naturalAncestors =~ m/$ancestorID/){
-                            $type = "natural";
-                      } else {
-                            $type = "adopted";
-                      }
-                      my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
-                      push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type}) unless($matched);
-                  }
-              } else {
-                    my $naturalAncestors = q();
-                    foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
-                        $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
-                    }
-                    $logger->trace("natural ancestors of $ancestorID: $naturalAncestors") if($is_t_switch_active);
-                    foreach(@{${$allChildren{$ancestorID}}{ancestors}}){
-                        my $newAncestorId = ${$_}{ancestorID};
-                        my $type;
-                        if($naturalAncestors =~ m/$newAncestorId/){
-                            $type = "natural";
-                        } else {
-                            $type = "adopted";
+
+              # construct the natural ancestors
+              my $naturalAncestors = q();
+              foreach(@{${$familyTree{$idToSearch}}{ancestors}}){
+                  $naturalAncestors .= "---".${$_}{ancestorID} if(${$_}{type} eq "natural");
+              }
+              
+              # we only need to update the family tree if the $ancestorID is *not* a natural
+              # ancestor, otherwise everything will be taken care of by the natural ancestor
+              if($naturalAncestors !~ m/$ancestorID/){
+                    $logger->trace("ancestor: $ancestorID") if($is_t_switch_active);
+                    if($familyTree{$ancestorID}){
+                        $logger->trace("$ancestorID is a key within familyTree, grabbing its ancestors") if($is_t_switch_active);
+                        foreach(@{${$familyTree{$ancestorID}}{ancestors}}){
+                            $logger->trace("ancestor of *hidden* child: ${$_}{ancestorID}") if($is_t_switch_active);
+                            my $newAncestorId = ${$_}{ancestorID};
+                            my $type;
+                            if($naturalAncestors =~ m/$ancestorID/){
+                                  $type = "natural";
+                            } else {
+                                  $type = "adopted";
+                            }
+                            my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
+                            push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type}) unless($matched);
                         }
-                        my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
-                        unless($matched){
-                            $logger->trace("ancestor of UNHIDDEN child: ${$_}{ancestorID}") if($is_t_switch_active);
-                            push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
-                        }
-                    }
-              } 
+                    } else {
+                          $logger->trace("natural ancestors of $ancestorID: $naturalAncestors") if($is_t_switch_active);
+                          foreach(@{${$allChildren{$ancestorID}}{ancestors}}){
+                              my $newAncestorId = ${$_}{ancestorID};
+                              my $type;
+                              if($naturalAncestors =~ m/$newAncestorId/){
+                                  $type = "natural";
+                              } else {
+                                  $type = "adopted";
+                              }
+                              my $matched = grep { $_->{ancestorID} eq $newAncestorId } @{${$familyTree{$idToSearch}}{ancestors}};
+                              unless($matched){
+                                  $logger->trace("ancestor of UNHIDDEN child: ${$_}{ancestorID}") if($is_t_switch_active);
+                                  push(@{${$familyTree{$idToSearch}}{ancestors}},{ancestorID=>${$_}{ancestorID},ancestorIndentation=>${$_}{ancestorIndentation},type=>$type});
+                              }
+                          }
+                    } 
+               }
           }
     }
 
