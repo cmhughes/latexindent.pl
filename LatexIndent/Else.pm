@@ -103,6 +103,10 @@ sub tasks_particular_to_each_object{
 
     # search for commands and special code blocks
     $self->find_commands_or_key_equals_values_braces_and_special;
+    
+    # search for arguments
+    $self->find_opt_mand_arguments;
+
     return;
 }
 

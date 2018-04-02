@@ -53,5 +53,19 @@ latexindent.pl -s nestedalignment.tex -o nestedalignment-NEW1.tex -local new-spe
 latexindent.pl -s specialLeftBracket.tex -o=+-commands-first -l=specialsLeftRight.yaml
 latexindent.pl -s specialLeftBracket.tex -o=+-commands-first-no-paren -l=specialsLeftRight.yaml,commands-no-parenthesis.yaml
 latexindent.pl -s specialLeftBracket.tex -o=+-specials-first -l=specialsLeftRight.yaml,specialBeforeCommand.yaml 
+# specialMiddle (see: https://github.com/cmhughes/latexindent.pl/issues/100)
+latexindent.pl -s algpseudocode.tex -o=+-mod1 -l=koppor
+latexindent.pl -s algpseudocode-mk1.tex -o=+-mod1 -l=koppor
+latexindent.pl -s algpseudocode-mk2.tex -o=+-mod0 -l=koppor
+latexindent.pl -s algpseudocode-mk2.tex -o=+-mod-array -l=koppor2
+# specialMiddle polyswitch
+[[ $loopmin -gt 10 ]] && loopmin=1 && echo "loopmin set to 1 (special middle polyswitch testing)"
+[[ $loopmax -gt 10 ]] && loopmax=10 && echo "loopmax set to 10 (special middle polyswitch testing)"
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo "$i of $loopmax"
+   latexindent.pl -m -s algpseudocode-mk2 -l=koppor,special-middle$i.yaml -t -o=+-mod$i
+done
+latexindent.pl -s algpseudocode-mk3.tex -o=+-mod1 -l=koppor,koppor1
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status
