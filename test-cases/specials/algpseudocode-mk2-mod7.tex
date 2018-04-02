@@ -1,0 +1,24 @@
+% https://github.com/cmhughes/latexindent.pl/issues/100
+\begin{Algorithmus}
+	\begin{algorithmic}
+		\If{cond1}
+			\If{cond2}
+				\While{cond3}
+					\If{cond4}
+						\State state1
+					\EndIf
+				\EndWhile \ElsIf{cond5} \State something1 \ElsIf{cond6} \State something2 \ElsIf{cond6} \State something3%%%
+			\EndIf
+			\If{cond2}
+				\While{cond3}
+					\If{cond4}
+						\State state1
+					\EndIf
+				\EndWhile \ElsIf{cond5}%
+				\State something1 \ElsIf{cond6}%
+				\State something2 \ElsIf{cond6}%
+				\State something3
+			\EndIf
+		\EndIf
+	\end{algorithmic}
+\end{Algorithmus}
