@@ -34,6 +34,8 @@ latexindent.pl -s items1.tex -o items1-default.tex
 
 # special
 latexindent.pl -s special1.tex -o special1-default.tex
+latexindent.pl -s special2.tex -o=+-mod1 -l=middle.yaml
+latexindent.pl -s special2.tex -o=+-mod2 -l=middle1.yaml
 
 # headings
 latexindent.pl -s headings1.tex -o headings1-mod1.tex -l=headings1.yaml

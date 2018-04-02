@@ -492,6 +492,43 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 		      because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be sought \emph{before} commands.
 	\end{itemize}
 
+	You can,optionally, specify%
+	\announce{new}{update to specialBeginEnd} the \texttt{middle} field for anything that you
+	specify in \texttt{specialBeginEnd}. For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
+
+	\cmhlistingsfromfile*{demonstrations/special2.tex}{\texttt{special2.tex}}{lst:special2}
+
+	Upon saving the YAML settings in \cref{lst:middle-yaml,lst:middle1-yaml} and running the commands
+	\begin{commandshell}
+latexindent.pl special2.tex -l=middle
+latexindent.pl special2.tex -l=middle1
+    \end{commandshell}
+	then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile*{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
+	\end{minipage}
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile*{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
+	\end{minipage}
+
+	We note that:
+	\begin{itemize}
+		\item in \cref{lst:special2-mod1} the bodies of each of the \texttt{Elsif} statements have been indented appropriately;
+		\item the \texttt{Else} statement has \emph{not} been indented appropriately in \cref{lst:special2-mod1} -- read on!
+		\item we have specified multiple settings for the \texttt{middle} field using the syntax demonstrated in
+		      \cref{lst:middle1-yaml} so that the body of the \texttt{Else} statement has been indented appropriately in \cref{lst:special2-mod2}.
+	\end{itemize}
+
 \yamltitle{indentAfterHeadings}*{fields}
 	\begin{wrapfigure}[17]{r}[0pt]{8cm}
 		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}

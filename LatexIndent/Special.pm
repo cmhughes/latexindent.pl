@@ -182,8 +182,23 @@ sub tasks_particular_to_each_object{
 
     if( defined ${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}){
             $logger->trace("middle specified for ${$self}{name} (see specialBeginEnd -> ${$self}{name} -> middle)") if $is_t_switch_active ;
-            my $specialMiddle = qr/${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}/;
-            
+
+            # initiate the middle regexp
+            my $specialMiddle = q();
+
+            # we can specify middle as either an array or a hash
+            if(ref(${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}) eq "ARRAY"){
+                $logger->trace("looping through middle array for ${$self}{name}") if $is_t_switch_active ;
+                foreach(@{${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}}){
+                    $specialMiddle .= ($specialMiddle eq ""?q():"|").$_;
+                }
+                $specialMiddle = qr/$specialMiddle/; 
+            } else {
+                $specialMiddle = qr/${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}/;
+            }
+
+            $logger->trace("overall middle regexp for ${$self}{name}: $specialMiddle") if $is_t_switch_active ;
+
             # store the middle regexp for later
             ${$self}{middleRegExp} = $specialMiddle;
 

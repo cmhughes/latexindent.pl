@@ -56,6 +56,8 @@ latexindent.pl -s specialLeftBracket.tex -o=+-specials-first -l=specialsLeftRigh
 # specialMiddle (see: https://github.com/cmhughes/latexindent.pl/issues/100)
 latexindent.pl -s algpseudocode.tex -o=+-mod1 -l=koppor
 latexindent.pl -s algpseudocode-mk1.tex -o=+-mod1 -l=koppor
+latexindent.pl -s algpseudocode-mk2.tex -o=+-mod0 -l=koppor
+latexindent.pl -s algpseudocode-mk2.tex -o=+-mod-array -l=koppor2
 # specialMiddle polyswitch
 [[ $loopmin -gt 10 ]] && loopmin=1 && echo "loopmin set to 1 (special middle polyswitch testing)"
 [[ $loopmax -gt 10 ]] && loopmax=10 && echo "loopmax set to 10 (special middle polyswitch testing)"
