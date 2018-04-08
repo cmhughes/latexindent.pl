@@ -61,6 +61,8 @@ latexindent.pl environments-third-opt-args-multiple-lines.tex -w -s
 latexindent.pl environments-third-opt-args-mod1.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml -s -o=environments-third-opt-args-mod1-global.tex -tt
 # indentRules
 latexindent.pl environments-third-opt-args-mod1.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml -s -o=environments-third-opt-args-mod1-indent-rules-global.tex -tt
+# forrest syntax bug, see https://github.com/cmhughes/latexindent.pl/issues/107
+latexindent.pl -s forrest -o=+-mod1 -y="defaultIndent:' '"
 [[ $silentMode == 0 ]] && set -x
 git status
 [[ $noisyMode == 1 ]] && makenoise

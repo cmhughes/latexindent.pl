@@ -39,7 +39,7 @@ sub construct_grouping_braces_brackets_regexp{
                      \h|\R|\{|\[|\$|\)|\(
                   )
                   (
-                   [0-9a-zA-Z@\*><]+?  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                   [0-9\.a-zA-Z@\*><]+?  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
                   )                    # $2 name
                   (\h*)                # $3 h-space
                   (\R*)                # $4 linebreaks
