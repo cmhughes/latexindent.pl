@@ -1,0 +1,7 @@
+commandCodeBlocks:
+    stringsAllowedBetweenArguments:
+      - 
+        amalgamate: 1
+      - 'more'
+      - 'strings'
+      - 'here'

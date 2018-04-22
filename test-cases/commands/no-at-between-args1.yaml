@@ -2,7 +2,7 @@ commandCodeBlocks:
     roundParenthesesAllowed: 1
     stringsAllowedBetweenArguments:
       - 
-        amalgamate: 1
+        amalgamate: 0
       - 'at'
       - 'cmh'
 logFilePreferences:

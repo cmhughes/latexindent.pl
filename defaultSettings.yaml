@@ -311,12 +311,14 @@ indentRulesGlobal:
 commandCodeBlocks:
     roundParenthesesAllowed: 1
     stringsAllowedBetweenArguments:
-        node: 1
-        at: 1
-        to: 1
-        decoration: 1
-        ++: 1
-        --: 1
+      - 
+        amalgamate: 1
+      - 'node'
+      - 'at'
+      - 'to'
+      - 'decoration'
+      - '\+\+'
+      - '\-\-'
     commandNameSpecial:
         @ifnextchar[: 1
 

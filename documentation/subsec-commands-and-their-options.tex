@@ -8,9 +8,9 @@
 \yamltitle{commandCodeBlocks}*{fields}
 
 	The \texttt{commandCodeBlocks} field%
-	\announce{2017-08-21}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	\announce{new}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile*[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -87,7 +87,7 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 	\begin{quote}
 		to, node, ++
 	\end{quote}
-	are all allowed to appear between arguments, as they are each set to $1$; importantly, you are encouraged to add further names
+	are all allowed to appear between arguments; importantly, you are encouraged to add further names
 	to this field as necessary. This means that when \texttt{latexindent.pl}
 	processes \cref{lst:tikz-node1}, it consumes:
 	\begin{itemize}
@@ -118,26 +118,83 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 	Notice that each line after the \lstinline!\draw! command (its `body') in \cref{lst:tikz-node1-draw} has been given the
 	appropriate two-spaces worth of indentation specified in \cref{lst:draw}.
 
-	Let's compare this with the output from using the YAML settings in \cref{lst:no-to}, and running the command
+	Let's compare this with the output from using the YAML settings in \cref{lst:no-strings}, and running the command
 	\begin{commandshell}
-latexindent.pl tikz-node1.tex -l no-to.yaml  
+latexindent.pl tikz-node1.tex -l no-strings.yaml  
 \end{commandshell}
-	given in \cref{lst:tikz-node1-no-to}.
+	given in \cref{lst:tikz-node1-no-strings}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile{demonstrations/tikz-node1-no-to.tex}{\texttt{tikz-node1.tex} using \cref{lst:no-to}}{lst:tikz-node1-no-to}
+		\cmhlistingsfromfile{demonstrations/tikz-node1-no-strings.tex}{\texttt{tikz-node1.tex} using \cref{lst:no-strings}}{lst:tikz-node1-no-strings}
 	\end{minipage}
 	\hfill
-	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-to.yaml}[yaml-TCB]{\texttt{no-to.yaml}}{lst:no-to}
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
 	\end{minipage}
 
 	In this case, \texttt{latexindent.pl} sees that:
 	\begin{itemize}
-		\item the \lstinline!\draw! command finishes after the \lstinline!(c)! as (\texttt{stringsAllowedBetweenArguments} has \texttt{to} set to $0$)
+		\item the \lstinline!\draw! command finishes after the \lstinline!(c)!, as \texttt{stringsAllowedBetweenArguments} has been set to $0$
+		      so there are no strings allowed between arguments;
 		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see \vref{tab:code-blocks}) \emph{with} argument \lstinline![in=110,out=-90]!
 		\item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node} with argument \lstinline![below,align=left,scale=0.5]!
 	\end{itemize}
+
+	Referencing \vref{lst:commandCodeBlocks},%
+	\announce{new}*{amalgamate feature in commandCodeBlocks}, we see that the first field in
+	the \texttt{stringsAllowedBetweenArguments} is \texttt{amalgamate} and is set to \texttt{1} by default. This is for users who wish to
+	specify their settings in multiple YAML files. For example, by using the settings in either \cref{lst:amalgamate-demo} or\cref{lst:amalgamate-demo1}
+	is equivalent to using the settings in \cref{lst:amalgamate-demo2}.
+
+	\begin{adjustwidth}{-3.5cm}{-1.5cm}
+		\begin{minipage}{.32\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}{.32\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}{.32\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
+		\end{minipage}
+	\end{adjustwidth}
+	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case any settings loaded prior
+	to those specified, including the default, will be overwritten. For example, using the settings
+	in \cref{lst:amalgamate-demo3} means that only the strings specified in that field will be used.
+
+	\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
+
+	It is important to note that the \texttt{amalgamate} field, if used, must be in the first field,
+	and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
+
+    We may explore this feature further with the code in \cref{lst:for-each}, whose default output is given in \cref{lst:for-each-default}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/for-each-default.tex}{\texttt{for-each} default output}{lst:for-each-default}
+	\end{minipage}
+
+	Let's compare this with the output from using the YAML settings in \cref{lst:foreach}, and running the command
+	\begin{commandshell}
+latexindent.pl for-each.tex -l foreach.yaml  
+\end{commandshell}
+	given in \cref{lst:for-each-mod1}.
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:no-strings}}{lst:for-each-mod1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
+	\end{minipage}
+
+    You might like to compare the output given in \cref{lst:for-each-default} and \cref{lst:for-each-mod1}; in particular, in 
+    \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have \lstinline!\x/\y! and \texttt{in} between 
+    arguments because of the settings given in \cref{lst:foreach}.
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%

@@ -1,9 +1,5 @@
 commandCodeBlocks:
     roundParenthesesAllowed: 1
-    stringsAllowedBetweenArguments:
-      - 
-        amalgamate: 1
-      - 'at'
-      - 'cmh'
+    stringsAllowedBetweenArguments: 0
 logFilePreferences:
     showAmalgamatedSettings: 1

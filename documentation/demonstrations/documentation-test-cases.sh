@@ -179,7 +179,9 @@ latexindent.pl -s pstricks1.tex -o pstricks1-indent-rules.tex -l defFunction.yam
 # string between args
 latexindent.pl -s tikz-node1.tex -o tikz-node1-default.tex
 latexindent.pl -s tikz-node1.tex -o tikz-node1-draw.tex -l=draw.yaml
-latexindent.pl -s tikz-node1.tex -o tikz-node1-no-to.tex -l=no-to.yaml
+latexindent.pl -s tikz-node1.tex -o tikz-node1-no-strings.tex -l=no-strings.yaml
+latexindent.pl -s for-each.tex -o=+-default
+latexindent.pl -s for-each.tex -o=+-mod1 -l=foreach.yaml
 
 # text wrap demonstration
 latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m
