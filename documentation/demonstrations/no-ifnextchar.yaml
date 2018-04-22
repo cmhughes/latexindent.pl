@@ -1,3 +1,2 @@
 commandCodeBlocks:
-    commandNameSpecial:
-        @ifnextchar[: 0
+    commandNameSpecial: 0

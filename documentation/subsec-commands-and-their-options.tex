@@ -168,7 +168,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	It is important to note that the \texttt{amalgamate} field, if used, must be in the first field,
 	and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
 
-    We may explore this feature further with the code in \cref{lst:for-each}, whose default output is given in \cref{lst:for-each-default}.
+	We may explore this feature further with the code in \cref{lst:for-each}, whose default output is given in \cref{lst:for-each-default}.
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile*{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
@@ -185,20 +185,21 @@ latexindent.pl for-each.tex -l foreach.yaml
 	given in \cref{lst:for-each-mod1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:no-strings}}{lst:for-each-mod1}
+		\cmhlistingsfromfile*{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:foreach}}{lst:for-each-mod1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
 	\end{minipage}
 
-    You might like to compare the output given in \cref{lst:for-each-default} and \cref{lst:for-each-mod1}; in particular, in 
-    \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have \lstinline!\x/\y! and \texttt{in} between 
-    arguments because of the settings given in \cref{lst:foreach}.
+	You might like to compare the output given in \cref{lst:for-each-default} and \cref{lst:for-each-mod1}. Note,in particular, in
+    \cref{lst:for-each-default} that the \texttt{foreach} command has not included any of the subsequent strings, and that the braces
+    have been treated as a \texttt{namedGroupingBracesBrackets}. In \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have \lstinline!\x/\y! and \texttt{in} between
+	arguments because of the settings given in \cref{lst:foreach}.
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
-	\announce{2017-08-21}{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
+	\announce{new}*{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
 	the first one of which is \lstinline!\@ifnextchar[!. From the perspective of \texttt{latexindent.pl}, the whole of the
 	text \lstinline!\@ifnextchar[! is is a command, because it is
 	immediately followed by sets of mandatory arguments. However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl}
@@ -216,9 +217,11 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able to indent its body, because \texttt{latexindent.pl}
 	has successfully found the command \lstinline!\@ifnextchar! first; the pattern-matching of \texttt{latexindent.pl} starts from
-	\emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.  For demonstration, we can compare
+	\emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.  
+    
+    For demonstration, we can compare
 	this output with that given in \cref{lst:ifnextchar-off} in which
-	the settings from \cref{lst:no-ifnextchar} have dictated that \lstinline!\@ifnextchar[! command should not be searched for specially;
+	the settings from \cref{lst:no-ifnextchar} have dictated that no special command names, including the \lstinline!\@ifnextchar[! command, should not be searched for specially;
 	as such, the \texttt{parbox} command has been \emph{unable} to indent its body successfully, because the \lstinline!\@ifnextchar[!
 	command has not been found.
 
@@ -227,5 +230,12 @@ latexindent.pl for-each.tex -l foreach.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{minipage}
+
+    The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for \texttt{stringsAllowedBetweenArguments}. The 
+    same condition holds as stated previously, which we state again here:
+    \begin{warning}
+	It is important to note that the \texttt{amalgamate} field, if used, in either \texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the first field,
+	and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
+    \end{warning}

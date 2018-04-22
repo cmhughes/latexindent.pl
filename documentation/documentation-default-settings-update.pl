@@ -29,7 +29,7 @@ my @namesAndOffsets = (
                         {name=>"noAdditionalIndentGlobal",numberOfLines=>12},
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
-                        {name=>"commandCodeBlocks",numberOfLines=>12},
+                        {name=>"commandCodeBlocks",numberOfLines=>14},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks"},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>2,special=>"textWrapOptions"},

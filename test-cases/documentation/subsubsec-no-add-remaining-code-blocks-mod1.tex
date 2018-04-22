@@ -2,7 +2,7 @@
 \subsubsection{The remaining code blocks}
 	Referencing the different types of code blocks in \vref{tab:code-blocks}, we have a few code blocks yet to cover; these are very similar to the \texttt{commands} code block type covered comprehensively in \vref{subsubsec:commands-arguments}, but a small discussion defining these remaining code blocks is necessary.
 
-	\paragraph{\texttt{keyEqualsValuesBracesBrackets}}
+	\paragraph{keyEqualsValuesBracesBrackets}
 		\texttt{latexindent.pl} defines this type of code block by the following criteria: \begin{itemize} \item it must immediately follow either \lstinline!{! OR \lstinline![! OR \lstinline!,! with comments and blank lines allowed;
 			\item then it has a name made up of the characters detailed in \vref{tab:code-blocks};
 			\item then an $=$ symbol;
@@ -24,7 +24,7 @@
 			\item the \lstinline!start coordinate/.initial! key's body, which is defined as any lines following the name of the key that include its arguments.
 			      This is the part controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
-	\paragraph{\texttt{namedGroupingBracesBrackets}}
+	\paragraph{namedGroupingBracesBrackets}
 		This type of code block is mostly motivated by tikz-based code; we define this code block as follows: \begin{itemize} \item it must immediately follow either \emph{horizontal space} OR \emph{one or more line breaks} OR \lstinline!{! OR \lstinline![! OR \lstinline!$! OR \lstinline!)! OR \lstinline!(!;
 			\item the name may contain the characters detailed in \vref{tab:code-blocks};
 			\item then at least one set of curly braces or square brackets (comments and line breaks allowed throughout).
@@ -46,7 +46,7 @@
 			      This is the part controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
 
-	\paragraph{\texttt{UnNamedGroupingBracesBrackets}} occur in a variety of situations; specifically, we define
+	\paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically, we define
 		this type of code block as satisfying the following criteria:
 		\begin{itemize}
 			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR \lstinline!,! OR \lstinline!&! OR \lstinline!)! OR \lstinline!(!
@@ -72,7 +72,7 @@
 		\end{itemize}
 		Users wishing to customise the mandatory and/or optional arguments on a \emph{per-name} basis for the \texttt{UnNamedGroupingBracesBrackets} should use \texttt{always-un-named}.
 
-	\paragraph{\texttt{filecontents}} code blocks behave just as \texttt{environments}, except that neither arguments nor items are sought.
+	\paragraph{filecontents} code blocks behave just as \texttt{environments}, except that neither arguments nor items are sought.
 
 \subsubsection{Summary}
 	Having considered all of the different types of code blocks, the functions of the fields given in \cref{lst:noAdditionalIndentGlobal,lst:indentRulesGlobal} should now make sense.

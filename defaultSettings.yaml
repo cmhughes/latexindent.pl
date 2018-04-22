@@ -320,7 +320,9 @@ commandCodeBlocks:
       - '\+\+'
       - '\-\-'
     commandNameSpecial:
-        @ifnextchar[: 1
+      - 
+        amalgamate: 1
+      - '@ifnextchar\['
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
