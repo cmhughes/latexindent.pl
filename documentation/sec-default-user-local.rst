@@ -19,7 +19,7 @@ to do. The default value is given in each case; whenever you see
 *integer* in *this* section, assume that it must be greater than or
 equal to ``0`` unless otherwise stated.
 
-``fileExtensionPreference``: *fields*
+.. describe:: fileExtensionPreference:fields
 
 ``latexindent.pl`` can be called to act on a file without specifying the
 file extension. For example we can call
@@ -47,7 +47,7 @@ in :numref:`lst:fileExtensionPreference` means that the script will
 first look for ``myfile.tex``, then ``myfile.sty``, ``myfile.cls``, and
 finally ``myfile.bib`` in order [1]_.
 
-``backupExtension``: *extension name*
+.. describe:: backupExtension:extension name
 
 If you call ``latexindent.pl`` with the ``-w`` switch (to overwrite
 ``myfile.tex``) then it will create a backup file before doing any
@@ -59,7 +59,7 @@ By default, every time you subsequently call ``latexindent.pl`` with the
 ``-w`` to act upon ``myfile.tex``, it will create successive back up
 files: ``myfile.bak1``, ``myfile.bak2``, etc.
 
-``onlyOneBackUp``: *integer*
+.. describe:: onlyOneBackUp:integer
 
 .. label follows
 
@@ -71,7 +71,7 @@ etc) and you simply want ``myfile.bak`` (or whatever you chose
 ``backupExtension`` to be) then change ``onlyOneBackUp`` to ``1``; the
 default value of ``onlyOneBackUp`` is ``0``.
 
-``maxNumberOfBackUps``: *integer*
+.. describe:: maxNumberOfBackUps:integer
 
 Some users may only want a finite number of backup files, say at most
 :math:`3`, in which case, they can change this switch. The smallest
@@ -80,7 +80,7 @@ backup files being made; in this case, the behaviour will be dictated
 entirely by ``onlyOneBackUp``. The default value of
 ``maxNumberOfBackUps`` is ``0``.
 
-``cycleThroughBackUps``: *integer*
+.. describe:: cycleThroughBackUps:integer
 
 Some users may wish to cycle through backup files, by deleting the
 oldest backup file and keeping only the most recent; for example, with
@@ -97,7 +97,7 @@ the ``copy`` procedure given below would be obeyed.
 
 The default value of ``cycleThroughBackUps`` is ``0``.
 
-``logFilePreferences``: *fields*
+.. describe:: logFilePreferences:fields
 
 ``latexindent.pl`` writes information to ``indent.log``, some of which
 can be customized by changing ``logFilePreferences``; see
@@ -132,7 +132,7 @@ file if ``showGitHubInfoFooter`` is set to ``1``.
 of the information given in the logfile using any of the ``Log Layouts``
 detailed at (“Log4perl Perl Module” 2017).
 
-``verbatimEnvironments``: *fields*
+.. describe:: verbatimEnvironments:fields
 
 A field that contains a list of environments that you would like left
 completely alone – no indentation will be performed on environments that
@@ -158,14 +158,14 @@ other fields such as ``lookForAlignDelims`` or ``noAdditionalIndent``
 then ``latexindent.pl`` will *always* prioritize
 ``verbatimEnvironments``.
 
-``verbatimCommands``: *fields*
+.. describe:: verbatimCommands:fields
 
 A field that contains a list of commands that are verbatim commands, for
 example ``\verb``; any commands populated in this field are protected
 from line breaking routines (only relevant if the ``-m`` is active, see
 :numref:`sec:modifylinebreaks`).
 
-``noIndentBlock``: *fields*
+.. describe:: noIndentBlock:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``noIndentBlock`` 
@@ -198,7 +198,7 @@ as many spaces (possibly none) as you like; see
     %(*@@*)\end{noindent}
         
 
-``removeTrailingWhitespace``: *fields*
+.. describe:: removeTrailingWhitespace:fields
 
 .. label follows
 
@@ -227,8 +227,8 @@ Thanks to Voßkuhle (2013) for providing this feature.
 You can specify ``removeTrailingWhitespace`` simply as ``0`` or ``1``,
 if you wish; in this case, ``latexindent.pl`` will set both
 ``beforeProcessing`` and ``afterProcessing`` to the value you specify;
-see :numref:`lst:removeTrailingWhitespace-alt`.
-``fileContentsEnvironments``: *field*
+see :numref:`lst:removeTrailingWhitespace-alt`. .. describe::
+fileContentsEnvironments:field
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``fileContentsEnvironments`` 
@@ -244,7 +244,7 @@ environments specified in ``fileContentsEnvironments``, see
 ``latexindent.pl`` on these environments is determined by their location
 (preamble or not), and the value ``indentPreamble``, discussed next.
 
-``indentPreamble``: *0\|1*
+.. describe:: indentPreamble:0\|1
 
 The preamble of a document can sometimes contain some trickier code for
 ``latexindent.pl`` to operate upon. By default, ``latexindent.pl`` won’t
@@ -252,7 +252,7 @@ try to operate on the preamble (as ``indentPreamble`` is set to ``0``,
 by default), but if you’d like ``latexindent.pl`` to try then change
 ``indentPreamble`` to ``1``.
 
-``lookForPreamble``: *fields*
+.. describe:: lookForPreamble:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: lookForPreamble 
@@ -266,7 +266,7 @@ Not all files contain preamble; for example, ``sty``, ``cls`` and
 :numref:`lst:lookForPreamble`, if you set, for example, ``.tex`` to
 ``0``, then regardless of the setting of the value of
 ``indentPreamble``, preamble will not be assumed when operating upon
-``.tex`` files. ``preambleCommandsBeforeEnvironments``: *0\|1*
+``.tex`` files. .. describe:: preambleCommandsBeforeEnvironments:0\|1
 
 Assuming that ``latexindent.pl`` is asked to operate upon the preamble
 of a document, when this switch is set to ``0`` then environment code
@@ -284,7 +284,7 @@ first motivated this switch contained the code given in
     postfoothook=\end{mdframed},
     ...
 
-``defaultIndent``: *horizontal space*
+.. describe:: defaultIndent:horizontal space
 
 This is the default indentation (``\t`` means a tab, and is the default
 value) used in the absence of other details for the command or
@@ -294,7 +294,7 @@ environment we are working with; see ``indentRules`` in
 If you’re interested in experimenting with ``latexindent.pl`` then you
 can *remove* all indentation by setting ``defaultIndent: ""``.
 
-``lookForAlignDelims``: *fields*
+.. describe:: lookForAlignDelims:fields
 
 .. label follows
 
@@ -570,7 +570,7 @@ fields of ``noAdditionalIndent`` and ``indentRules`` (see
 :numref:`sec:noadd-indent-rules`), these comment-marked blocks are
 considered ``environments``.
 
-``indentAfterItems``: *fields*
+.. describe:: indentAfterItems:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``indentAfterItems`` 
@@ -593,7 +593,7 @@ after each ``item``. A demonstration is given in
  	:caption: ``items1.tex`` default output 
  	:name: lst:itemsafter
 
-``itemNames``: *fields*
+.. describe:: itemNames:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``itemNames`` 
@@ -617,7 +617,7 @@ after each ``item``. A demonstration is given in
 
 .)
 
-``specialBeginEnd``: *fields*
+.. describe:: specialBeginEnd:fields
 
 .. label follows
 
@@ -758,7 +758,7 @@ We note that:
    body of the ``Else`` statement has been indented appropriately in
    :numref:`lst:special2-mod2`.
 
-``indentAfterHeadings``: *fields*
+.. describe:: indentAfterHeadings:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``indentAfterHeadings`` 
@@ -829,7 +829,7 @@ you should receive the code given in :numref:`lst:headings1-mod2`;
 notice that the ``paragraph`` and ``subsection`` are at the same
 indentation level.
 
-``maximumIndentation``: *horizontal space*
+.. describe:: maximumIndentation:horizontal space
 
 You can control the maximum indentation given to your file by specifying
 the ``maximumIndentation`` field as horizontal space (but *not*
@@ -975,7 +975,7 @@ environments; let’s start with the code shown in
  	:caption: ``myenv.tex`` 
  	:name: lst:myenvtex
 
-``noAdditionalIndent``: *fields*
+.. describe:: noAdditionalIndent:fields
 
 If we do not wish ``myenv`` to receive any additional indentation, we
 have a few choices available to us, as demonstrated in
@@ -1088,7 +1088,7 @@ not received any additional indentation.
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-noAdd6` 
  	:name: lst:myenv-args-noAdd6
 
-``indentRules``: *fields*
+.. describe:: indentRules:fields
 
 We may also specify indentation rules for environment code blocks using
 the ``indentRules`` field; see, for example,
@@ -1177,7 +1177,7 @@ the default (tab) indentation, the mandatory argument has received two
 tabs of indentation, and the body has received three spaces of
 indentation.
 
-``noAdditionalIndentGlobal``: *fields*
+.. describe:: noAdditionalIndentGlobal:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``noAdditionalIndentGlobal`` 
@@ -1254,7 +1254,7 @@ received any additional indentation.
  	:caption: ``myenv-args.tex`` using :numref:`lst:mand-args-no-add-glob` 
  	:name: lst:myenv-args-no-add-mand
 
-``indentRulesGlobal``: *fields*
+.. describe:: indentRulesGlobal:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``indentRulesGlobal`` 
@@ -2016,7 +2016,7 @@ comments, line breaks and ‘beamer’ commands ``<.*?>`` between them.
 There are switches that can allow them to contain other strings, which
 we discuss next.
 
-``commandCodeBlocks``: *fields*
+.. describe:: commandCodeBlocks:fields
 
 The ``commandCodeBlocks`` field \*commandCodeBlocks contains a few
 switches detailed in :numref:`lst:commandCodeBlocks`.
@@ -2028,7 +2028,7 @@ switches detailed in :numref:`lst:commandCodeBlocks`.
  	:linenos:
  	:lineno-start: 311
 
-``roundParenthesesAllowed``: *0\|1*
+.. describe:: roundParenthesesAllowed:0\|1
 
 The need for this field was mostly motivated by commands found in code
 used to generate images in ``PSTricks`` and ``tikz``; for example, let’s
@@ -2109,7 +2109,7 @@ Notice in :numref:`lst:pstricks1-indent-rules` that the *body* of the
 after the command name, have received the single space of indentation
 specified by :numref:`lst:defFunction`.
 
-``stringsAllowedBetweenArguments``: *fields*
+.. describe:: stringsAllowedBetweenArguments:fields
 
 ``tikz`` users may well specify code such as that given in
 :numref:`lst:tikz-node1`; processing this code using
@@ -2277,7 +2277,7 @@ In :numref:`lst:for-each-mod1` the ``foreach`` command has been
 allowed to have ``\x/\y`` and ``in`` between arguments because of the
 settings given in :numref:`lst:foreach`.
 
-``commandNameSpecial``: *fields*
+.. describe:: commandNameSpecial:fields
 
 There are some special command names \*commandNameSpecial that do not
 fit within the names recognized by ``latexindent.pl``, the first one of

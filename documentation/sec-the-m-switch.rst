@@ -8,7 +8,7 @@ The -m (modifylinebreaks) switch
 All features described in this section will only be relevant if the
 ``-m`` switch is used.
 
-``modifylinebreaks``: *fields*
+.. describe:: modifylinebreaks:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``modifyLineBreaks`` 
@@ -33,7 +33,7 @@ giving it permission to modify line breaks. By default, the only thing
 that will happen is that multiple blank lines will be condensed into one
 blank line; many other settings are possible, discussed next.
 
-``preserveBlankLines``: *0\|1*
+.. describe:: preserveBlankLines:0\|1
 
 This field is directly related to *poly-switches*, discussed below. By
 default, it is set to ``1``, which means that blank lines will be
@@ -41,7 +41,7 @@ protected from removal; however, regardless of this setting, multiple
 blank lines can be condensed if ``condenseMultipleBlankLinesInto`` is
 greater than ``0``, discussed next.
 
-``condenseMultipleBlankLinesInto``: *integer :math:`\geq 0`*
+.. describe:: condenseMultipleBlankLinesInto:positive integer
 
 Assuming that this switch takes an integer value greater than ``0``,
 ``latexindent.pl`` will condense multiple blank lines into the number of
@@ -65,7 +65,7 @@ also that we have used the ``-m`` switch!
  	:caption: ``mlb1.tex`` out output 
  	:name: lst:mlb-bl-out
 
-``textWrapOptions``: *fields*
+.. describe:: textWrapOptions:fields
 
 When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 wrap text using the options specified in the ``textWrapOptions`` field,
@@ -219,14 +219,14 @@ controlled by the switches detailed in
  	:linenos:
  	:lineno-start: 401
 
-``manipulateSentences``: *0\|1*
+.. describe:: manipulateSentences:0\|1
 
 This is a binary switch that details if ``latexindent.pl`` should
 perform the sentence manipulation routine; it is *off* (set to ``0``) by
 default, and you will need to turn it on (by setting it to ``1``) if you
 want the script to modify line breaks surrounding and within sentences.
 
-``removeSentenceLineBreaks``: *0\|1*
+.. describe:: removeSentenceLineBreaks:0\|1
 
 When operating upon sentences ``latexindent.pl`` will, by default,
 remove internal linebreaks as ``removeSentenceLineBreaks`` is set to
@@ -607,8 +607,8 @@ When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 remove line breaks from within paragraphs; the behaviour is controlled
 by the ``removeParagraphLineBreaks`` field, detailed in
 :numref:`lst:removeParagraphLineBreaks`. Thank you to Owens (2017) for
-shaping and assisting with the testing of this feature.
-``removeParagraphLineBreaks``: *fields*
+shaping and assisting with the testing of this feature. .. describe::
+removeParagraphLineBreaks:fields
 
 This feature is considered complimentary to the ``oneSentencePerLine``
 feature described in :numref:`sec:onesentenceperline`.
@@ -782,7 +782,7 @@ then we obtain the output in :numref:`lst:shortlines-md4`.
  	:caption: ``shortlines-md4.tex`` 
  	:name: lst:shortlines-md4
 
-``paragraphsStopAt``: *fields*
+.. describe:: paragraphsStopAt:fields
 
 The paragraph line break routine considers blank lines and the ``\par``
 command to be the end of a paragraph; you can fine tune the behaviour of

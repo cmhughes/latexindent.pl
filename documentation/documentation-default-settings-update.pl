@@ -238,7 +238,7 @@ if(!$readTheDocsMode){
         $body =~ s/\\flagbox/\\texttt/sg;
 
         # yaml title
-        $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/\\texttt\{$1\}: \\textit\{$2\}\n\n/sg;
+        $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/.. describe:: $1:$2\n\n/sg;
 
         # labels
         #
