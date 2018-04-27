@@ -28,10 +28,13 @@ Having read the previous paragraph, it should sound reasonable that, if
 you call ``latexindent.pl`` using the ``-m`` switch, then you give it
 permission to modify line breaks in your file, but let’s be clear:
 
-If you call ``latexindent.pl`` with the ``-m`` switch, then you are
-giving it permission to modify line breaks. By default, the only thing
-that will happen is that multiple blank lines will be condensed into one
-blank line; many other settings are possible, discussed next.
+.. warning::	
+	
+	If you call ``latexindent.pl`` with the ``-m`` switch, then you are
+	giving it permission to modify line breaks. By default, the only thing
+	that will happen is that multiple blank lines will be condensed into one
+	blank line; many other settings are possible, discussed next.
+	 
 
 .. describe:: preserveBlankLines:0\|1
 

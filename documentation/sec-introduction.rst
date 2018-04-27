@@ -53,9 +53,12 @@ to let me know at (“Home of Latexindent.pl” 2017) with a complete
 minimum working example as I would like to improve the code as much as
 possible.
 
-Before you try the script on anything important (like your thesis), test
-it out on the sample files in the ``test-case`` directory (“Home of
-Latexindent.pl” 2017).
+.. warning::	
+	
+	Before you try the script on anything important (like your thesis), test
+	it out on the sample files in the ``test-case`` directory (“Home of
+	Latexindent.pl” 2017).
+	 
 
 *If you have used any version 2.\* of ``latexindent.pl``, there are a
 few changes to the interface; see :numref:`app:differences` and the

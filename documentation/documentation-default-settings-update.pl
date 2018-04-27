@@ -200,6 +200,9 @@ if(!$readTheDocsMode){
         # cpageref for page references
         $body =~ s/\\[cC]pageref\{(.*?)\}/:ref:\\texttt\{page $1 <$1>\}/sg;
 
+        # warning
+        $body =~ s/\\begin\{warning}(.*?)\\end\{warning\}/\\warning\{$1\}\n/sg;
+
         # cross references
         $body =~ s/\\[vVcC]?ref\{(.*?)\}/
                 # check for ,

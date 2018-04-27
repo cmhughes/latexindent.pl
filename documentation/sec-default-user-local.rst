@@ -2326,11 +2326,14 @@ The ``amalgamate`` field can be used for ``commandNameSpecial``, just as
 for ``stringsAllowedBetweenArguments``. The same condition holds as
 stated previously, which we state again here:
 
-It is important to note that the ``amalgamate`` field, if used, in
-either ``commandNameSpecial`` or ``stringsAllowedBetweenArguments`` must
-be in the first field, and specified using the syntax given in
-:numref:`lst:amalgamate-demo1` and :numref:`lst:amalgamate-demo2`
-and :numref:`lst:amalgamate-demo3`.
+.. warning::	
+	
+	It is important to note that the ``amalgamate`` field, if used, in
+	either ``commandNameSpecial`` or ``stringsAllowedBetweenArguments`` must
+	be in the first field, and specified using the syntax given in
+	:numref:`lst:amalgamate-demo1` and :numref:`lst:amalgamate-demo2`
+	and :numref:`lst:amalgamate-demo3`.
+	 
 
 .. raw:: html
 

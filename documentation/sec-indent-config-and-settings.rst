@@ -81,13 +81,16 @@ You can make sure that your settings are loaded by checking
 otherwise you’ll get confirmation that ``latexindent.pl`` has read your
 settings file. [2]_
 
-When editing ``.yaml`` files it is *extremely* important to remember how
-sensitive they are to spaces. I highly recommend copying and pasting
-from ``defaultSettings.yaml`` when you create your first
-``whatevernameyoulike.yaml`` file.
-
-If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you
-so in ``indent.log``.
+.. warning::	
+	
+	When editing ``.yaml`` files it is *extremely* important to remember how
+	sensitive they are to spaces. I highly recommend copying and pasting
+	from ``defaultSettings.yaml`` when you create your first
+	``whatevernameyoulike.yaml`` file.
+	
+	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you
+	so in ``indent.log``.
+	 
 
 .. label follows
 
