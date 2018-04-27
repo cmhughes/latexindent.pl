@@ -380,67 +380,67 @@
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=311,linerange={311-321},
+	firstnumber=311,linerange={311-325},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=391,linerange={391-393},
+	firstnumber=395,linerange={395-397},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=394,linerange={394-395},
+	firstnumber=398,linerange={398-399},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=394,linerange={394-396},
+	firstnumber=398,linerange={398-400},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=419,linerange={419-431},
+	firstnumber=423,linerange={423-435},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=432,linerange={432-440},
+	firstnumber=436,linerange={436-444},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=397,linerange={397-418},
+	firstnumber=401,linerange={401-422},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=400,linerange={400-408},
+	firstnumber=404,linerange={404-412},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=409,linerange={409-412},
+	firstnumber=413,linerange={413-416},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=413,linerange={413-418},
+	firstnumber=417,linerange={417-422},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=441,linerange={441-450},
+	firstnumber=445,linerange={445-454},
 	numbers=left,
 }
 
@@ -608,6 +608,8 @@
 \newcommand{\EndFinishesWithLineBreak}{\color{red}\clubsuit}
 \newcommand{\ElseStartsOnOwnLine}{\color{red}\bigstar}
 \newcommand{\ElseFinishesWithLineBreak}{\color{red}\square}
+\newcommand{\OrStartsOnOwnLine}{\color{red}\blacktriangle}
+\newcommand{\OrFinishesWithLineBreak}{\color{red}\blacktriangledown}
 \newcommand{\EqualsStartsOnOwnLine}{\color{red}\bullet}
 
 % table rules
@@ -629,6 +631,10 @@
 %   git checkout develop
 %   ls .git
 % and you should see gitHeadInfo.gin
+% 
+% Make sure that the 'V' is included in the below!
+%
+% RELTAG=$(git describe --tags --long --always --dirty='-*' --match 'V[0-9]*.*' 2>/dev/null)
 
 % http://tex.stackexchange.com/questions/233843/textasteriskcentered-invisible-with-garamondmathdesign
 % remove the definition of \textasteriskcentered for TS1 encoding
@@ -753,3 +759,12 @@ Version 3.4
 - STDIN allowed: https://github.com/cmhughes/latexindent.pl/issues/88
 - textwrap bug fix: https://github.com/cmhughes/latexindent.pl/issues/90
 - polyswitch bug fix: https://github.com/cmhughes/latexindent.pl/issues/94
+
+Version 3.4.1
+- the reading of defaultSettings.yaml needed addressing
+- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.4.1
+
+Version 3.4.2
+- enhancements to specialBeginEnd: https://github.com/cmhughes/latexindent.pl/issues/100
+- enhancements to commandCodeBlocks: https://github.com/cmhughes/latexindent.pl/issues/105
+- better support for forrest syntax: https://github.com/cmhughes/latexindent.pl/issues/107

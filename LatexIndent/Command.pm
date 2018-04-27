@@ -45,17 +45,20 @@ sub construct_command_regexp{
                                                                     stringBetweenArguments=>1);
 
     # put together a list of the special command names (this was mostly motivated by the \@ifnextchar[ issue)
-    my %commandNameSpecial = %{${$masterSettings{commandCodeBlocks}}{commandNameSpecial}};
-
     my $commandNameSpecialRegExp = q();
-    while( my ($commandName,$yesNo)= each %commandNameSpecial){
-        # change + and - to escaped characters
-        $commandName =~ s/\+/\\+/g;
-        $commandName =~ s/\-/\\-/g;
-        $commandName =~ s/\[/\\[/g;
+    if(ref(${$masterSettings{commandCodeBlocks}}{commandNameSpecial}) eq "ARRAY"){
 
-        # form the regexp
-        $commandNameSpecialRegExp .= ($commandNameSpecialRegExp eq '' ? q() : "|").$commandName if $yesNo; 
+        my @commandNameSpecial = @{${$masterSettings{commandCodeBlocks}}{commandNameSpecial}};
+        $logger->trace("*Looping through array for commandCodeBlocks->commandNameSpecial") if $is_t_switch_active ;
+
+        # note that the zero'th element in this array contains the amalgamate switch, which we don't want!
+        foreach (@commandNameSpecial[1 .. $#commandNameSpecial]) {
+            $logger->trace("$_") if $is_t_switch_active ;
+            $commandNameSpecialRegExp .= ($commandNameSpecialRegExp eq ""?q():"|").$_;
+        }
+
+        # turn the above into a regexp
+        $commandNameSpecialRegExp = qr/$commandNameSpecialRegExp/;
     }
 
     # details to log file

@@ -26,51 +26,62 @@ our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 32
 our @EXPORT_OK = qw/check_for_else_statement/;
 our $elseCounter;
 
-# store the regular expresssion for matching and replacing the \else statements
-our $elseRegExp = qr/
-                  (
-                    \\else  
-                    \h*     # possible horizontal space
-                    (\R*)   # possible line breaks after \else statement
-                  )
-                  (.*?)$
-            /sx;
-
 sub check_for_else_statement{
     my $self = shift;
-    $logger->trace("*Looking for \\else statement (${$self}{name})") if $is_t_switch_active;
 
-    ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
-                       /   
-                      # create a new IfElseFi object
-                      my $else = LatexIndent::Else->new(begin=>$1,
-                                                              name=>${$self}{name},
-                                                              storageNameAppend=>"else",
-                                                              body=>$3,
-                                                              end=>q(),
-                                                              linebreaksAtEnd=>{
-                                                                begin=>$2?1:0,
-                                                                body=>0,
-                                                                end=>0,
-                                                              },
-                                                              aliases=>{
-                                                                # begin statements
-                                                                BeginStartsOnOwnLine=>"ElseStartsOnOwnLine",
-                                                                # end statements
-                                                                BodyStartsOnOwnLine=>"ElseFinishesWithLineBreak",
-                                                              },
-                                                              modifyLineBreaksYamlName=>"ifElseFi",
-                                                              endImmediatelyFollowedByComment=>0,
-                                                              horizontalTrailingSpace=>q(),
-                                                            );
-                      # log file output
-                      $logger->trace("*else found: ${$self}{name}")if $is_t_switch_active;
-         
-                      # the settings and storage of most objects has a lot in common
-                      $self->get_settings_and_store_new_object($else);
-                      ${@{${$self}{children}}[-1]}{replacementText};
-                      /xse;
-        return;
+    # we call the else routine from different places; see IfElseFi.pm and Special.pm
+    my %input = @_;
+
+    # store the regular expresssion for matching and replacing the \else statements
+    my $elseRegExp = qr/
+                      (
+                        $input{elseNameRegExp}
+                        \h*                             # possible horizontal space
+                        (\R*)                           # possible line breaks after \else statement
+                      )
+                      (
+                        (?: 
+                            (?!$input{elseNameRegExp}).
+                        )*?                             # body, which can't include another \else
+                      )
+                      $
+                /sx;
+
+    $logger->trace("*Looking for $input{elseNameRegExp} statement (${$self}{name})") if $is_t_switch_active;
+
+    while(${$self}{body} =~ m/$elseRegExp(\h*)($trailingCommentRegExp)?/){
+        ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
+                           /   
+                          # create a new IfElseFi object
+                          my $else = LatexIndent::Else->new(begin=>$1,
+                                                                  name=>${$self}{name},
+                                                                  storageNameAppend=>$input{storageNameAppend},
+                                                                  body=>$3,
+                                                                  end=>q(),
+                                                                  linebreaksAtEnd=>{
+                                                                    begin=>$2?1:0,
+                                                                    body=>0,
+                                                                    end=>0,
+                                                                  },
+                                                                  aliases=>{
+                                                                    # begin statements
+                                                                    BeginStartsOnOwnLine=>$input{ElseStartsOnOwnLine},
+                                                                    # end statements
+                                                                    BodyStartsOnOwnLine=>$input{ElseFinishesWithLineBreak},
+                                                                  },
+                                                                  modifyLineBreaksYamlName=>${$self}{modifyLineBreaksYamlName},
+                                                                  endImmediatelyFollowedByComment=>0,
+                                                                  horizontalTrailingSpace=>q(),
+                                                                );
+                          # log file output
+                          $logger->trace("*$input{logName} found: ${$self}{name}")if $is_t_switch_active;
+             
+                          # the settings and storage of most objects has a lot in common
+                          $self->get_settings_and_store_new_object($else);
+                          ${@{${$self}{children}}[-1]}{replacementText};
+                          /xse;
+    }
+    return;
 }
 
 sub remove_line_breaks_begin{
@@ -92,6 +103,10 @@ sub tasks_particular_to_each_object{
 
     # search for commands and special code blocks
     $self->find_commands_or_key_equals_values_braces_and_special;
+    
+    # search for arguments
+    $self->find_opt_mand_arguments;
+
     return;
 }
 

@@ -223,7 +223,32 @@ sub readSettings{
                                     }
                                 }
                             } else {
-                                $masterSettings{$firstLevelKey}{$secondLevelKey} = $secondLevelValue;
+                                # settings such as commandCodeBlocks can have arrays, which may wish 
+                                # to be amalgamated, rather than overwritten
+                                if(ref($secondLevelValue) eq "ARRAY" 
+                                    and 
+                                   ${${$masterSettings{$firstLevelKey}{$secondLevelKey}}[0]}{amalgamate}
+                                    and
+                                   !(ref(${$secondLevelValue}[0]) eq "HASH" and defined ${$secondLevelValue}[0]{amalgamate} and !${$secondLevelValue}[0]{amalgamate}) 
+                                 ){
+                                    $logger->trace("*$firstLevelKey -> $secondLevelKey, amalgamate: 1") if($is_t_switch_active);
+                                    foreach (@{$secondLevelValue}){
+                                        $logger->trace("$_") if($is_t_switch_active);
+                                        push (@{$masterSettings{$firstLevelKey}{$secondLevelKey}},$_) unless(ref($_) eq "HASH");
+                                    }
+
+                                    # remove duplicated entries, https://stackoverflow.com/questions/7651/how-do-i-remove-duplicate-items-from-an-array-in-perl
+                                    my %seen = ();
+                                    my @unique = grep { ! $seen{ $_ }++ } @{$masterSettings{$firstLevelKey}{$secondLevelKey}};
+                                    @{$masterSettings{$firstLevelKey}{$secondLevelKey}} = @unique; 
+
+                                    $logger->trace("*master settings for $firstLevelKey -> $secondLevelKey now look like:") if $is_t_switch_active;
+                                    foreach (@{$masterSettings{$firstLevelKey}{$secondLevelKey}}){
+                                        $logger->trace("$_") if($is_t_switch_active);
+                                    }
+                                } else {
+                                    $masterSettings{$firstLevelKey}{$secondLevelKey} = $secondLevelValue;
+                                }
                             }
                           }
                       } else {

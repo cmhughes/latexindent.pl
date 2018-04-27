@@ -1,9 +1,12 @@
-.. cmhdoctest documentation master file, created by
+.. latexindent.pl documentation master file, created by
    sphinx-quickstart on Sat Jan 27 22:44:08 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+   Typical workflow:
+         perl documentation-default-settings-update.pl -r
+         make html
+         firefox build/html/index.html
+   will produce the html files
 
-``latexindent.pl`` documentation
+latexindent.pl documentation
 ======================================
 
 .. toctree::

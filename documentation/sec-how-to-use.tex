@@ -20,7 +20,7 @@
  users, so that you can use the script with or without a Perl distribution.
  If you plan to use \texttt{latexindent.pl} (i.e, the original Perl script) then you will
  need a few standard Perl modules -- see \vref{sec:requiredmodules} for details;
- \announce*{2018-01-13}{perl module installer helper script} in particular, note
+ \announce{2018-01-13}{perl module installer helper script} in particular, note
  that a module installer helper script is shipped with \texttt{latexindent.pl}.
 
 \subsection{From the command line}\label{sec:commandline}
@@ -290,7 +290,7 @@ latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
       \end{commandshell}
 	Using this%
-	\announce*{2018-01-13}{screenlog switch created} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
+	\announce{2018-01-13}{screenlog switch created} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
 	as to your chosen log file.
 
 \flagbox{-m, --modifylinebreaks}
@@ -315,12 +315,12 @@ latexindent.pl myfile
 cat myfile.tex | latexindent.pl
     \end{commandshell}
 	\texttt{latexindent.pl} will%
-	\announce*{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
+	\announce{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
 	other commands directly into the script. For example assuming that you have content in \texttt{myfile.tex}, then the above
 	command will output the results of operating upon \texttt{myfile.tex}
 
 	Similarly, if you%
-	\announce*{2018-01-13}*{no options/filename updated} simply type \texttt{latexindent.pl}
+	\announce{2018-01-13}*{no options/filename updated} simply type \texttt{latexindent.pl}
 	at the command line, then it will expect (STDIN) input from the command line.
 	\begin{commandshell}
 latexindent.pl
@@ -333,7 +333,7 @@ latexindent.pl
 	\end{itemize}
 	to signify that your input has finished.
 
-\subsection{From \texttt{arara}}\label{sec:arara}
+\subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
 	others may find it easier to use from \texttt{arara}; you can find the arara rule at \cite{paulo}.
 

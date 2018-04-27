@@ -3,7 +3,7 @@
 	\tikz[remember picture,overlay] {
 		\node at (1,0){\includegraphics{logo}};
 	}}
-\section{The \texttt{-m} (\texttt{modifylinebreaks}) switch}\label{sec:modifylinebreaks}
+\section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
  All features described in this section will only be relevant if the \texttt{-m} switch
  is used.
 
@@ -41,7 +41,7 @@
 	blank lines can be condensed if \texttt{condenseMultipleBlankLinesInto} is
 	greater than \texttt{0}, discussed next.
 
-\yamltitle{condenseMultipleBlankLinesInto}*{integer $\geq 0$}
+\yamltitle{condenseMultipleBlankLinesInto}*{positive integer}
 	Assuming that this switch takes an integer value greater than \texttt{0}, \texttt{latexindent.pl} will condense multiple blank lines into
 	the number of blank lines illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file
 	with blank lines; upon running
@@ -142,21 +142,21 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	\end{minipage}
 
 	\textbf{Summary of text wrapping}
-		It is important to note the following:
-		\begin{itemize}
-			\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
-			\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
-			\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
-			      will likely exceed any maximum value set in the \texttt{columns} field.
-		\end{itemize}
+	It is important to note the following:
+	\begin{itemize}
+		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
+		\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
+		\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
+		      will likely exceed any maximum value set in the \texttt{columns} field.
+	\end{itemize}
 
-\subsection{\texttt{oneSentencePerLine}: modifying line breaks for sentences}\label{sec:onesentenceperline}
+\subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
-	\announce*{2018-01-13}{one sentence per line} your file so that it puts one sentence
+	\announce{2018-01-13}{one sentence per line} your file so that it puts one sentence
 	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
 	all of which we discuss next.
 
-	\cmhlistingsfromfile*[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+	\cmhlistingsfromfile[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
 	This is a binary switch that details if \texttt{latexindent.pl} should perform the sentence manipulation routine; it
@@ -169,7 +169,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
 
 	If we use the YAML files in \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
 	\begin{widepage}
@@ -181,19 +181,19 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
 	\end{minipage}
 
 	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have
@@ -214,19 +214,19 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.36\linewidth}
-			\cmhlistingsfromfile*[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+			\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+			\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile*[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+			\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 		\end{minipage}
 	\end{adjustwidth}
 
-\subsubsection{\texttt{sentencesFollow}}
+\subsubsection{sentencesFollow}
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with \vref{lst:multiple-sentences}, and use the YAML
 	settings given in \cref{lst:sentences-follow1-yaml}. Using the command
 	\begin{commandshell}
@@ -235,11 +235,11 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
 	\end{minipage}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl} will not seek sentences following a blank line,
@@ -247,7 +247,7 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
 	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -257,26 +257,26 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
 	\end{minipage}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the \texttt{)} has not been accounted for, but that
 	following the inclusion of \cref{lst:sentences-follow2-yaml}, the output given in \cref{lst:multiple-sentences1-mod2} demonstrates that
 	the sentence \emph{has} been accounted for correctly.
 
-\subsubsection{\texttt{sentencesBeginWith}}
+\subsubsection{sentencesBeginWith}
 	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper case letters \texttt{A-Z}; you can instruct the
 	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
 	to define sentences to begin with other characters.
 
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -286,20 +286,20 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
 	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
 	\end{minipage}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but that the subsequent sentences
 	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
 	in \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$! or any numeric digit, \texttt{0} to \texttt{9}.
 
-\subsubsection{\texttt{sentencesEndWith}}
+\subsubsection{sentencesEndWith}
 	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in which \texttt{latexindent.pl} will operate on the
 	sentences in this file in \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any character that we wish;
 	for example, using the YAML specified in \cref{lst:sentences-end1-yaml} and the command
@@ -310,19 +310,19 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
 	\end{minipage}
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
 	\end{minipage}
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular,
@@ -335,7 +335,7 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	Let's consider the file shown in \cref{lst:url}.
 
-	\cmhlistingsfromfile*{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+	\cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
 	Upon running the following commands
 	\begin{commandshell}
@@ -343,7 +343,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
 	we obtain the output given in \cref{lst:url-mod1}.
 
-	\cmhlistingsfromfile*{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+	\cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
 	Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop},
 	full stops at the end of sentences have the following properties:
@@ -363,17 +363,17 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.6\linewidth}
-			\cmhlistingsfromfile*{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+			\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.4\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 		\end{minipage}
 	\end{adjustwidth}
 
 	Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
-\subsubsection{Features of the \texttt{oneSentencePerLine} routine}
+\subsubsection{Features of the oneSentencePerLine routine}
 	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have
 	been accounted for; this means that any characters within these types of code blocks will not be part
 	of the sentence manipulation routine.
@@ -383,8 +383,8 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
 	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
 	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
@@ -393,11 +393,11 @@ latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 	\begin{widepage}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
-	\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
 	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks
 	by using the YAML in \cref{lst:item-rules2-yaml} and the command
 	\begin{commandshell}
@@ -406,14 +406,14 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
-\subsection{\texttt{removeParagraphLineBreaks}: modifying line breaks for paragraphs}
+\subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
 	\announce{2017-05-27}{removeParagraphLineBreaks}
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
@@ -629,7 +629,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
-\subsubsection[Adding line breaks: \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}]{Adding line breaks using \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine}}
+\subsubsection{Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine}
 	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular,
 	let's allow each of them in turn to take a value of $1$.
 
@@ -720,7 +720,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a \emph{blank line}
 	has been added after adding the line break.
 
-\subsubsection[Adding line breaks: \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}]{Adding line breaks using \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak}}
+\subsubsection{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in \cref{lst:env-mlb7,lst:env-mlb8},
 	and in particular, let's allow each of them in turn to take a value of $1$.
 
@@ -1026,57 +1026,63 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be
 	modified using \texttt{latexindent.pl}.
 
-\begin{longtable}{llll}
-		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping} \\
+	\begin{longtable}{llll}
+		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                         \\
 		\toprule
-        Code block                             & Sample & \multicolumn{2}{c}{Poly-switch mapping}                  \\
+		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$ & $\BeginStartsOnOwnLine$     & BeginStartsOnOwnLine     \\
-  & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$      &   $\BodyStartsOnOwnLine$      & BodyStartsOnOwnLine      \\
-& \verb!body of myenv!$\EndStartsOnOwnLine$       &   $\EndStartsOnOwnLine$       & EndStartsOnOwnLine       \\
-& \verb!\end{myenv}!$\EndFinishesWithLineBreak$   &   $\EndFinishesWithLineBreak$ & EndFinishesWithLineBreak \\
-  & \verb!after words!                                &                 &           \\
-  \cmidrule{2-4}
-        ifelsefi                               &  \verb!before words!$\BeginStartsOnOwnLine$            &  $\BeginStartsOnOwnLine$      & IfStartsOnOwnLine         \\
-                                               &  \verb!\if...!$\BodyStartsOnOwnLine$                   &  $\BodyStartsOnOwnLine$       & BodyStartsOnOwnLine       \\
-                                               &  \verb!body of if statement!$\ElseStartsOnOwnLine$     &  $\ElseStartsOnOwnLine$       & ElseStartsOnOwnLine       \\
-                                               &  \verb!\else!$\ElseFinishesWithLineBreak$              &  $\ElseFinishesWithLineBreak$ & ElseFinishesWithLineBreak \\
-                                               &  \verb!body of else statement!$\EndStartsOnOwnLine$    &  $\EndStartsOnOwnLine$        & FiStartsOnOwnLine         \\
-                                               &  \verb!\fi!$\EndFinishesWithLineBreak$                 &  $\EndFinishesWithLineBreak$  & FiFinishesWithLineBreak   \\
-                                               &  \verb!after words!            & & \\
-  \cmidrule{2-4}
-        optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$              &   $\BeginStartsOnOwnLine$     & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
-                                               & \verb![!$\BodyStartsOnOwnLine$                 &   $\BodyStartsOnOwnLine$      & OptArgBodyStartsOnOwnLine                                         \\
-                                               & \verb!body of opt arg!$\EndStartsOnOwnLine$    &   $\EndStartsOnOwnLine$       & RSqBStartsOnOwnLine                                               \\
-                                               & \verb!]!$\EndFinishesWithLineBreak$            &   $\EndFinishesWithLineBreak$ & RSqBFinishesWithLineBreak                                         \\
-                                               & \verb!...!         & & \\
-  \cmidrule{2-4}
-        mandatoryArguments                     &  \verb!...!$\BeginStartsOnOwnLine$              &   $\BeginStartsOnOwnLine$     & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace} \\
-                                               &  \verb!{!$\BodyStartsOnOwnLine$                 &   $\BodyStartsOnOwnLine$      & MandArgBodyStartsOnOwnLine                                     \\
-                                               &  \verb!body of mand arg!$\EndStartsOnOwnLine$   &   $\EndStartsOnOwnLine$       & RCuBStartsOnOwnLine                                            \\
-                                               &  \verb!}!$\EndFinishesWithLineBreak$            &   $\EndFinishesWithLineBreak$ & RCuBFinishesWithLineBreak                                      \\
-                                               &  \verb!...! & & \\
-  \cmidrule{2-4}
-        commands                               & \verb!before words!$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$ & CommandStartsOnOwnLine           \\
-                                               & \verb!\mycommand!$\BodyStartsOnOwnLine$      &  $\BodyStartsOnOwnLine$  & CommandNameFinishesWithLineBreak \\
-                                               & $\langle$\itshape{arguments}$\rangle$ & & \\
-  \cmidrule{2-4}
-        namedGroupingBraces Brackets           &  before words$\BeginStartsOnOwnLine$           & $\BeginStartsOnOwnLine$ & NameStartsOnOwnLine       \\
-                                               &  myname$\BodyStartsOnOwnLine$                  &  $\BodyStartsOnOwnLine$  & NameFinishesWithLineBreak \\
-                                               &  $\langle$\itshape{braces/brackets}$\rangle$ & & \\
+		environment                            & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                       & \verb!after words!                              &                                         &                                                                   \\
 		\cmidrule{2-4}
-        keyEqualsValuesBraces\newline Brackets & before words$\BeginStartsOnOwnLine$                    &  $\BeginStartsOnOwnLine$  & KeyStartsOnOwnLine          \\
-                                               &  key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$    &   $\EqualsStartsOnOwnLine$ & EqualsStartsOnOwnLine       \\
-                                               &  $\langle$\itshape{braces/brackets}$\rangle$           &   $\BodyStartsOnOwnLine$   & EqualsFinishesWithLineBreak \\
+		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                       & \verb!\if...!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
+		                                       & \verb!\or!$\OrFinishesWithLineBreak$    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
+		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
+		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
+		                                       & \verb!\fi!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
+		                                       & \verb!after words!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        items                                  & before words$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$ & ItemStartsOnOwnLine       \\
-      &  \verb!\item!$\BodyStartsOnOwnLine$                                            &  $\BodyStartsOnOwnLine$  & ItemFinishesWithLineBreak \\
-        &                                           \verb!...! & & \\
+		optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
+		                                       & \verb![!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
+		                                       & \verb!body of opt arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
+		                                       & \verb!]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        specialBeginEnd                        &  before words$\BeginStartsOnOwnLine$   &  $\BeginStartsOnOwnLine$     & SpecialBeginStartsOnOwnLine     \\
-                                               &  \verb!\[!$\BodyStartsOnOwnLine$       &  $\BodyStartsOnOwnLine$      & SpecialBodyStartsOnOwnLine      \\
-                                               &  body of special$\EndStartsOnOwnLine$  &  $\EndStartsOnOwnLine$       & SpecialEndStartsOnOwnLine       \\
-                                               &  \verb!\]!$\EndFinishesWithLineBreak$  &  $\EndFinishesWithLineBreak$ & SpecialEndFinishesWithLineBreak \\
-                                               &  after words                           &  & \\
+		mandatoryArguments                     & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
+		                                       & \verb!{!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
+		                                       & \verb!body of mand arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
+		                                       & \verb!}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		commands                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
+		                                       & \verb!\mycommand!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+		                                       & $\langle$\itshape{arguments}$\rangle$                   &                                         &                                                                   \\
+		\cmidrule{2-4}
+		namedGroupingBraces Brackets           & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
+		                                       & myname$\BodyStartsOnOwnLine$                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+		                                       & $\langle$\itshape{braces/brackets}$\rangle$             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		keyEqualsValuesBraces\newline Brackets & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
+		                                       & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
+		                                       & $\langle$\itshape{braces/brackets}$\rangle$             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
+		\cmidrule{2-4}
+		items                                  & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
+		                                       & \verb!\item!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
+		                                       & \verb!...!                             &                                         &                                                                   \\
+		\cmidrule{2-4}
+		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
+		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
+		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
+		\announce*{2018-04-27}{new special code block polyswitches}                                                                                                                                                    \\
+		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
+		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
+		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
+		                                       & after words                                             &                                         &                                                                   \\
 		\bottomrule
-\end{longtable}
+	\end{longtable}

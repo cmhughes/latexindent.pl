@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    specialBeginEnd:
+        SpecialMiddleStartsOnOwnLine: 1
+        SpecialMiddleFinishesWithLineBreak: 1
+    mandatoryArguments:
+        RCuBFinishesWithLineBreak: 1

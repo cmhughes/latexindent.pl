@@ -1,0 +1,8 @@
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+      - 
+        amalgamate: 0
+      - '\\x\/\\y'
+      - 'in'
+      - 'to'

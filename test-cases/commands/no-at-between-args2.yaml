@@ -1,0 +1,7 @@
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+      - 'at'
+      - 'cmh'
+logFilePreferences:
+    showAmalgamatedSettings: 1

@@ -1,0 +1,6 @@
+specialBeginEnd:
+    If:
+        begin: '\\If'
+        middle: '\\ElsIf'
+        end: '\\EndIf'
+        lookForThis: 1

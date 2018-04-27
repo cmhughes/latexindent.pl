@@ -235,19 +235,20 @@ sub get_arguments_regexp{
     # commands are allowed strings between arguments, e.g node, decoration, etc, specified in stringsAllowedBetweenArguments
     my $stringsBetweenArguments = q();
 
-    if(defined ${input}{stringBetweenArguments} and ${input}{stringBetweenArguments}==1){
+    if(defined ${input}{stringBetweenArguments} and ${input}{stringBetweenArguments}==1
+       and ref(${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}) eq "ARRAY"){
         # grab the strings allowed between arguments
-        my %stringsAllowedBetweenArguments = %{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
+        my @stringsAllowedBetweenArguments = @{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
 
-        while( my ($allowedStringName,$allowedStringValue)= each %stringsAllowedBetweenArguments){
-            # change + and - to escaped characters
-            $allowedStringName =~ s/\+/\\+/g;
-            $allowedStringName =~ s/\-/\\-/g;
+        $logger->trace("*Looping through array for commandCodeBlocks->stringsAllowedBetweenArguments") if $is_t_switch_active ;
 
-            # form the regexp
-            $stringsBetweenArguments .= ($stringsBetweenArguments eq '' ? q() : "|").$allowedStringName if $allowedStringValue; 
+        # note that the zero'th element in this array contains the amalgamate switch, which we don't want!
+        foreach (@stringsAllowedBetweenArguments[1 .. $#stringsAllowedBetweenArguments]) {
+            $logger->trace("$_") if $is_t_switch_active ;
+            $stringsBetweenArguments .= ($stringsBetweenArguments eq ""?q():"|").$_;
         }
 
+        $stringsBetweenArguments = qr/$stringsBetweenArguments/;
         # report to log file
         $logger->trace("*Strings allowed between arguments: $stringsBetweenArguments (see stringsAllowedBetweenArguments)") if $is_t_switch_active;
      }

@@ -20,18 +20,19 @@ do
  esac 
 done
 
-oldVersion='3.4'
-newVersion='3.4.1'
-oldDate='2018-01-13'
-newDate='2018-01-18'
+oldVersion='3.4.1'
+newVersion='3.4.2'
+oldDate='2018-01-18'
+newDate='2018-04-27'
 
 cd ../
-if [ minorVersion == 0 ]
+if [ $minorVersion = 0 ]
 then
     cd documentation
-    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/g"
-    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
+    find -name "a*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/gi"
+    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/gi"
     find -name "a*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
+    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
     cd ../
 fi
 sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm

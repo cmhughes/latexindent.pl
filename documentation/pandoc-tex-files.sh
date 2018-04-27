@@ -11,7 +11,7 @@ mainFile=${mainFile/%.tex/}
 
 echo "Processing ${mainFile}.tex"
 pandoc --filter pandoc-citeproc cmhlistings.tex ${mainFile}.tex -o ${mainFile}.rst --bibliography latex-indent.bib --bibliography contributors.bib
-perl -pi -e 's|:numref:``(.*?)``|:numref:`$1`|g' ${mainFile}.rst 
+perl -pi -e 's|:((?:num)?ref):``(.*?)``|:$1:`$2`|g' ${mainFile}.rst 
 # re-align tables, if necessary
 perl -p0i -e 's/^(\|.*\|)/my $table_row = $1; my @cells = split(m!\|!,$table_row); foreach (@cells){ my $matches =0; $matches = () = ($_ =~ m@\:numref\:@g);$_ .= ("  " x $matches); };join("|",@cells)."\|";/mgxe' ${mainFile}.rst
 perl -pi -e 's|^\h*\.\. \\\_|\.\. \_|mg' ${mainFile}.rst 
@@ -29,6 +29,7 @@ perl -p0i -e 's/^\h*(\.\. literalinclude::)\h*\R/$1 /gsm' ${mainFile}.rst
 # caption and number the tables
 perl -p0i -e 's|(\.\. _tab.*?$)(.*?)^Table:(.*?)$|my $label=$1; my $body=$2; my $caption=$3; $body=~s/^/\t/mg; $label."\n\n.. table:: ".$caption."\n\n".$body;|msge' ${mainFile}.rst
 perl -p0i -e 's/^\h*\|\h*$//mg' ${mainFile}.rst
-
+# warnings
+perl -p0i -e 's|\.\.\h*warning::(.*?)\.\.\h*endwarning::|my $body=$1; $body=~s/^/\t/mg; "\.\. warning::$body";|sge' ${mainFile}.rst
 # reset the .tex file
 git checkout ${mainFile}.tex

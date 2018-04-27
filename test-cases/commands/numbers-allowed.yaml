@@ -1,0 +1,8 @@
+commandCodeBlocks:
+    stringsAllowedBetweenArguments:
+      - 
+        amalgamate: 0
+      - '[0-9]'
+      - '\.'
+logFilePreferences:
+    showAmalgamatedSettings: 1

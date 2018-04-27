@@ -130,6 +130,7 @@ sub find_special{
 
             # the regexp
             my $specialRegExp = $individualSpecialRegExps{$specialName};
+            $logger->trace("$specialName regexp: \n$specialRegExp") if $is_tt_switch_active ;
             
             while(${$self}{body} =~ m/$specialRegExp(\h*)($trailingCommentRegExp)?/){
 
@@ -163,7 +164,7 @@ sub find_special{
                                                                           );
 
                                     # log file output
-                                    $logger->trace("*Special found: $specialName",'heading') if $is_t_switch_active;
+                                    $logger->trace("*Special found: $specialName") if $is_t_switch_active;
 
                                     # the settings and storage of most objects has a lot in common
                                     $self->get_settings_and_store_new_object($specialObject);
@@ -179,14 +180,78 @@ sub find_special{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
+    if( defined ${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}){
+            $logger->trace("middle specified for ${$self}{name} (see specialBeginEnd -> ${$self}{name} -> middle)") if $is_t_switch_active ;
+
+            # initiate the middle regexp
+            my $specialMiddle = q();
+
+            # we can specify middle as either an array or a hash
+            if(ref(${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}) eq "ARRAY"){
+                $logger->trace("looping through middle array for ${$self}{name}") if $is_t_switch_active ;
+                foreach(@{${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}}){
+                    $specialMiddle .= ($specialMiddle eq ""?q():"|").$_;
+                }
+                $specialMiddle = qr/$specialMiddle/; 
+            } else {
+                $specialMiddle = qr/${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}/;
+            }
+
+            $logger->trace("overall middle regexp for ${$self}{name}: $specialMiddle") if $is_t_switch_active ;
+
+            # store the middle regexp for later
+            ${$self}{middleRegExp} = $specialMiddle;
+
+            # check for existence of a 'middle' statement, and associated line break information
+            $self->check_for_else_statement(
+                                               # else name regexp
+                                               elseNameRegExp=>$specialMiddle,
+                                               # else statements name
+                                               ElseStartsOnOwnLine=>"SpecialMiddleStartsOnOwnLine",
+                                               # end statements
+                                               ElseFinishesWithLineBreak=>"SpecialMiddleFinishesWithLineBreak",
+                                               # for the YAML settings storage
+                                               storageNameAppend=>"middle",
+                                               # logfile information
+                                               logName=>"special middle",
+                                                                        );
+            
+    
+    }
+
     return unless(${$masterSettings{specialBeginEnd}}{specialBeforeCommand});
 
     # search for commands with arguments
     $self->find_commands_or_key_equals_values_braces;
+    
+    # search for arguments
+    $self->find_opt_mand_arguments;
 
     # search for ifElseFi blocks
     $self->find_ifelsefi;
 
+}
+
+sub post_indentation_check{
+    # needed to remove leading horizontal space before \else
+    my $self = shift;
+
+    return unless ( defined ${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle});
+
+    $logger->trace("post indentation check for ${$self}{name} to account for middle") if $is_t_switch_active ;
+
+    # loop through \else and \or
+    foreach ({regExp=>${$self}{middleRegExp}}){
+        my %else = %{$_};
+        if(${$self}{body} =~ m/^\h*$else{regExp}/sm
+                    and
+           !(${$self}{body} =~ m/^\h*$else{regExp}/s and ${$self}{linebreaksAtEnd}{begin}==0)
+                ){
+            $logger->trace("*Adding surrounding indentation to $else{regExp} statement(s) ('${$self}{surroundingIndentation}')") if $is_t_switch_active;
+            ${$self}{body} =~ s/^\h*($else{regExp})/${$self}{surroundingIndentation}$1/smg;
+        }
+    }
+    return;
 }
 
 

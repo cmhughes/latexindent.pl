@@ -1,10 +1,10 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\section{\texttt{indentconfig.yaml}, local settings and the \texttt{-y} switch }
+\section{indentconfig.yaml, local settings and the -y switch }
  \label{sec:indentconfig}
  The behaviour of \texttt{latexindent.pl} is controlled from the settings specified in any of the YAML files that you tell it to load.
  By default, \texttt{latexindent.pl} will only load \texttt{defaultSettings.yaml}, but there are a few ways that you can tell it to load your own settings files.
 
-\subsection{\texttt{indentconfig.yaml} and \texttt{{.indentconfig.yaml}}}
+\subsection{indentconfig.yaml and .indentconfig.yaml}
 	\texttt{latexindent.pl} will always check your home directory for \texttt{indentconfig.yaml} and  \texttt{.indentconfig.yaml} (unless it is called with the \texttt{-d} switch), which is a plain text file you can create that contains the \emph{absolute} paths for any settings files that you wish \texttt{latexindent.pl} to load.
 	There is no difference between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the fact that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to \cite{jacobo-diaz-hidden-config} for providing this feature.
 	In what follows, we will use \texttt{indentconfig.yaml}, but it is understood that this could equally represent \texttt{.indentconfig.yaml}.
@@ -54,7 +54,7 @@ lookForAlignDelims:
 		If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it will tell you so in \texttt{indent.log}.
 	\end{warning}
 
-\subsection{\texttt{localSettings.yaml}}
+\subsection{localSettings.yaml}
 	\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for \texttt{localSettings.yaml} in the \emph{same directory} as \texttt{myfile.tex}.
 	For example, if you use the following command \begin{commandshell}
@@ -79,7 +79,7 @@ verbatimEnvironments:
 
 	You can make sure that your settings file has been loaded by checking \texttt{indent.log} for details; if it can not be read then you receive a warning, otherwise you'll get confirmation that \texttt{latexindent.pl} has read your settings file.
 
-\subsection{The \texttt{-y|yaml} switch}
+\subsection{The -y|yaml switch}
 	\label{sec:yamlswitch}
 	You%
 	\announce{2017-08-21}{demonstration of the -y switch} may use the \texttt{-y} switch to load your settings;  for example, if you wished to specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch, then you could use the following command: \begin{commandshell}

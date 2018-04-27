@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.4.1, 2018-01-18
+# defaultSettings.yaml for latexindent.pl, version 3.4.2, 2018-04-27
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -311,14 +311,18 @@ indentRulesGlobal:
 commandCodeBlocks:
     roundParenthesesAllowed: 1
     stringsAllowedBetweenArguments:
-        node: 1
-        at: 1
-        to: 1
-        decoration: 1
-        ++: 1
-        --: 1
+      - 
+        amalgamate: 1
+      - 'node'
+      - 'at'
+      - 'to'
+      - 'decoration'
+      - '\+\+'
+      - '\-\-'
     commandNameSpecial:
-        @ifnextchar[: 1
+      - 
+        amalgamate: 1
+      - '@ifnextchar\['
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
@@ -451,6 +455,8 @@ modifyLineBreaks:
     ifElseFi:
         IfStartsOnOwnLine: 0
         BodyStartsOnOwnLine: 0
+        OrStartsOnOwnLine: 0
+        OrFinishesWithLineBreak: 0
         ElseStartsOnOwnLine: 0
         ElseFinishesWithLineBreak: 0
         FiStartsOnOwnLine: 0
@@ -458,6 +464,8 @@ modifyLineBreaks:
         ifnum:
             IfStartsOnOwnLine: 0
             BodyStartsOnOwnLine: 0
+            OrStartsOnOwnLine: 0
+            OrFinishesWithLineBreak: 0
             ElseStartsOnOwnLine: 0
             ElseFinishesWithLineBreak: 0
             FiStartsOnOwnLine: 0

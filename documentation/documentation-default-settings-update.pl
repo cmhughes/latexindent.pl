@@ -29,7 +29,7 @@ my @namesAndOffsets = (
                         {name=>"noAdditionalIndentGlobal",numberOfLines=>12},
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
-                        {name=>"commandCodeBlocks",numberOfLines=>10},
+                        {name=>"commandCodeBlocks",numberOfLines=>14},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks"},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>2,special=>"textWrapOptions"},
@@ -120,9 +120,6 @@ if(!$readTheDocsMode){
         }
     }
 
-    # convert the images
-    system("convert figure-schematic.pdf figure-schematic.png");
-
     # combine the subsec files
     foreach("subsec-noAdditionalIndent-indentRules.tex",
             "subsubsec-environments-and-their-arguments.tex",
@@ -200,6 +197,12 @@ if(!$readTheDocsMode){
         # total listings
         $body =~ s/\\totallstlistings/$crossReferences{totalListings}/s;
 
+        # cpageref for page references
+        $body =~ s/\\[cC]pageref\{(.*?)\}/:ref:\\texttt\{page $1 <$1>\}/sg;
+
+        # warning
+        $body =~ s/\\begin\{warning}(.*?)\\end\{warning\}/\\warning\{$1\}\n/sg;
+
         # cross references
         $body =~ s/\\[vVcC]?ref\{(.*?)\}/
                 # check for ,
@@ -238,7 +241,7 @@ if(!$readTheDocsMode){
         $body =~ s/\\flagbox/\\texttt/sg;
 
         # yaml title
-        $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/\\texttt\{$1\}: \\textit\{$2\}\n\n/sg;
+        $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/.. describe:: $1:$2\n\n/sg;
 
         # labels
         #
@@ -295,9 +298,6 @@ if(!$readTheDocsMode){
         $body =~ s|\(\*@\$\\BeginStartsOnOwnLine\$@\*\)|♠|gs;
         $body =~ s|\$\\BeginStartsOnOwnLine\$|♠|gs;
 
-        $body =~ s|\(\*@\$\\ElseStartsOnOwnLine\$@\*\)|★|gs;
-        $body =~ s|\$\\ElseStartsOnOwnLine\$|★|gs;
-
         $body =~ s|\(\*@\$\\BodyStartsOnOwnLine\$@\*\)|♥|gs;
         $body =~ s|\$\\BodyStartsOnOwnLine\$|♥|gs;
 
@@ -307,8 +307,17 @@ if(!$readTheDocsMode){
         $body =~ s|\(\*@\$\\EndFinishesWithLineBreak\$@\*\)|♣|gs;
         $body =~ s|\$\\EndFinishesWithLineBreak\$|♣|gs;
 
+        $body =~ s|\(\*@\$\\ElseStartsOnOwnLine\$@\*\)|★|gs;
+        $body =~ s|\$\\ElseStartsOnOwnLine\$|★|gs;
+
         $body =~ s|\(\*@\$\\ElseFinishesWithLineBreak\$@\*\)|□|gs;
         $body =~ s|\$\\ElseFinishesWithLineBreak\$|□|gs;
+
+        $body =~ s|\(\*@\$\\OrStartsOnOwnLine\$@\*\)|▲|gs;
+        $body =~ s|\$\\OrStartsOnOwnLine\$|▲|gs;
+
+        $body =~ s|\(\*@\$\\OrFinishesWithLineBreak\$@\*\)|▼|gs;
+        $body =~ s|\$\\OrFinishesWithLineBreak\$|▼|gs;
 
         $body =~ s|\(\*@\$\\EqualsStartsOnOwnLine\$@\*\)|●|gs;
         $body =~ s|\$\\EqualsStartsOnOwnLine\$|●|gs;
@@ -320,6 +329,10 @@ if(!$readTheDocsMode){
 
         system("./pandoc-tex-files.sh $fileName");
     }
+    
+    # convert the images, if necessary
+    system("./convert-figures-to-png.sh");
+
 
 }
 exit; 

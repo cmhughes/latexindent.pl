@@ -2,20 +2,20 @@
 
 .. _sec:modifylinebreaks:
 
-The ``-m`` (``modifylinebreaks``) switch
-========================================
+The -m (modifylinebreaks) switch
+================================
 
 All features described in this section will only be relevant if the
 ``-m`` switch is used.
 
-``modifylinebreaks``: *fields*
+.. describe:: modifylinebreaks:fields
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 391-393
+ 	:lines: 395-397
  	:linenos:
- 	:lineno-start: 391
+ 	:lineno-start: 395
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -28,12 +28,15 @@ Having read the previous paragraph, it should sound reasonable that, if
 you call ``latexindent.pl`` using the ``-m`` switch, then you give it
 permission to modify line breaks in your file, but let’s be clear:
 
-If you call ``latexindent.pl`` with the ``-m`` switch, then you are
-giving it permission to modify line breaks. By default, the only thing
-that will happen is that multiple blank lines will be condensed into one
-blank line; many other settings are possible, discussed next.
+.. warning::	
+	
+	If you call ``latexindent.pl`` with the ``-m`` switch, then you are
+	giving it permission to modify line breaks. By default, the only thing
+	that will happen is that multiple blank lines will be condensed into one
+	blank line; many other settings are possible, discussed next.
+	 
 
-``preserveBlankLines``: *0\|1*
+.. describe:: preserveBlankLines:0\|1
 
 This field is directly related to *poly-switches*, discussed below. By
 default, it is set to ``1``, which means that blank lines will be
@@ -41,7 +44,7 @@ protected from removal; however, regardless of this setting, multiple
 blank lines can be condensed if ``condenseMultipleBlankLinesInto`` is
 greater than ``0``, discussed next.
 
-``condenseMultipleBlankLinesInto``: *integer :math:`\geq 0`*
+.. describe:: condenseMultipleBlankLinesInto:positive integer
 
 Assuming that this switch takes an integer value greater than ``0``,
 ``latexindent.pl`` will condense multiple blank lines into the number of
@@ -65,7 +68,7 @@ also that we have used the ``-m`` switch!
  	:caption: ``mlb1.tex`` out output 
  	:name: lst:mlb-bl-out
 
-``textWrapOptions``: *fields*
+.. describe:: textWrapOptions:fields
 
 When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 wrap text using the options specified in the ``textWrapOptions`` field,
@@ -78,9 +81,9 @@ the character in the specified column.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 394-395
+ 	:lines: 398-399
  	:linenos:
- 	:lineno-start: 394
+ 	:lineno-start: 398
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -151,9 +154,9 @@ then the output is as in :numref:`lst:textwrap3-mod1`.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 394-396
+ 	:lines: 398-400
  	:linenos:
- 	:lineno-start: 394
+ 	:lineno-start: 398
 
 The text wrapping routine of ``latexindent.pl`` is performed by the
 ``Text::Wrap`` module, which provides a ``separator`` feature to
@@ -203,8 +206,8 @@ then we obtain the output in :numref:`lst:textwrap4-mod2`.
 
 .. _sec:onesentenceperline:
 
-``oneSentencePerLine``: modifying line breaks for sentences
------------------------------------------------------------
+oneSentencePerLine: modifying line breaks for sentences
+-------------------------------------------------------
 
 You can instruct ``latexindent.pl`` to format your file so that it puts
 one sentence per line. Thank you to mlep (2017) for helping to shape and
@@ -215,18 +218,18 @@ controlled by the switches detailed in
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 397-418
+ 	:lines: 401-422
  	:linenos:
- 	:lineno-start: 397
+ 	:lineno-start: 401
 
-``manipulateSentences``: *0\|1*
+.. describe:: manipulateSentences:0\|1
 
 This is a binary switch that details if ``latexindent.pl`` should
 perform the sentence manipulation routine; it is *off* (set to ``0``) by
 default, and you will need to turn it on (by setting it to ``1``) if you
 want the script to modify line breaks surrounding and within sentences.
 
-``removeSentenceLineBreaks``: *0\|1*
+.. describe:: removeSentenceLineBreaks:0\|1
 
 When operating upon sentences ``latexindent.pl`` will, by default,
 remove internal linebreaks as ``removeSentenceLineBreaks`` is set to
@@ -301,26 +304,26 @@ language of regular expressions.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 400-408
+ 	:lines: 404-412
  	:linenos:
- 	:lineno-start: 400
+ 	:lineno-start: 404
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 409-412
+ 	:lines: 413-416
  	:linenos:
- 	:lineno-start: 409
+ 	:lineno-start: 413
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 413-418
+ 	:lines: 417-422
  	:linenos:
- 	:lineno-start: 413
+ 	:lineno-start: 417
 
-``sentencesFollow``
-~~~~~~~~~~~~~~~~~~~
+sentencesFollow
+~~~~~~~~~~~~~~~
 
 Let’s explore a few of the switches in ``sentencesFollow``; let’s start
 with :numref:`lst:multiple-sentences`, and use the YAML settings given
@@ -381,8 +384,8 @@ the inclusion of :numref:`lst:sentences-follow2-yaml`, the output
 given in :numref:`lst:multiple-sentences1-mod2` demonstrates that the
 sentence *has* been accounted for correctly.
 
-``sentencesBeginWith``
-~~~~~~~~~~~~~~~~~~~~~~
+sentencesBeginWith
+~~~~~~~~~~~~~~~~~~
 
 By default, ``latexindent.pl`` will only assume that sentences begin
 with the upper case letters ``A-Z``; you can instruct the script to
@@ -425,8 +428,8 @@ have been accounted for, because the ``other`` field in
 :numref:`lst:sentences-begin1-yaml` has defined sentences to begin
 with either ``$`` or any numeric digit, ``0`` to ``9``.
 
-``sentencesEndWith``
-~~~~~~~~~~~~~~~~~~~~
+sentencesEndWith
+~~~~~~~~~~~~~~~~
 
 Let’s return to :numref:`lst:multiple-sentences`; we have already seen
 the default way in which ``latexindent.pl`` will operate on the
@@ -528,8 +531,8 @@ Notice that the full stop within the URL has not been accomodated
 correctly because of the non-default settings in
 :numref:`lst:alt-full-stop1-yaml`.
 
-Features of the ``oneSentencePerLine`` routine
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Features of the oneSentencePerLine routine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The sentence manipulation routine takes place *after* verbatim
 environments, preamble and trailing comments have been accounted for;
@@ -600,15 +603,15 @@ the output of which is shown in
  	:caption: ``item-rules2.yaml`` 
  	:name: lst:item-rules2-yaml
 
-``removeParagraphLineBreaks``: modifying line breaks for paragraphs
--------------------------------------------------------------------
+removeParagraphLineBreaks: modifying line breaks for paragraphs
+---------------------------------------------------------------
 
 When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 remove line breaks from within paragraphs; the behaviour is controlled
 by the ``removeParagraphLineBreaks`` field, detailed in
 :numref:`lst:removeParagraphLineBreaks`. Thank you to Owens (2017) for
-shaping and assisting with the testing of this feature.
-``removeParagraphLineBreaks``: *fields*
+shaping and assisting with the testing of this feature. .. describe::
+removeParagraphLineBreaks:fields
 
 This feature is considered complimentary to the ``oneSentencePerLine``
 feature described in :numref:`sec:onesentenceperline`.
@@ -616,9 +619,9 @@ feature described in :numref:`sec:onesentenceperline`.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 419-431
+ 	:lines: 423-435
  	:linenos:
- 	:lineno-start: 419
+ 	:lineno-start: 423
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -782,7 +785,7 @@ then we obtain the output in :numref:`lst:shortlines-md4`.
  	:caption: ``shortlines-md4.tex`` 
  	:name: lst:shortlines-md4
 
-``paragraphsStopAt``: *fields*
+.. describe:: paragraphsStopAt:fields
 
 The paragraph line break routine considers blank lines and the ``\par``
 command to be the end of a paragraph; you can fine tune the behaviour of
@@ -792,9 +795,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 432-440
+ 	:lines: 436-444
  	:linenos:
- 	:lineno-start: 432
+ 	:lineno-start: 436
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -916,9 +919,9 @@ specified. Note that all poly-switches are *off* by default.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 441-450
+ 	:lines: 445-454
  	:linenos:
- 	:lineno-start: 441
+ 	:lineno-start: 445
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of
@@ -931,8 +934,8 @@ in :numref:`lst:environments-mlb`.
 
     before words♠ \begin{myenv}♥body of myenv◆\end{myenv}♣ after words
 
-Adding line breaks using ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let’s explore ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine`` in
 :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2`, and in
@@ -1033,8 +1036,8 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod1`
 and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been
 added after adding the line break.
 
-Adding line breaks using ``EndStartsOnOwnLine`` and ``EndFinishesWithLineBreak``
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let’s explore ``EndStartsOnOwnLine`` and ``EndFinishesWithLineBreak`` in
 :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8`, and in
@@ -1271,9 +1274,11 @@ which gives the output in :numref:`lst:env-mlb1-tex`.
 About trailing horizontal space
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Recall that on we discussed the YAML field ``removeTrailingWhitespace``,
-and that it has two (binary) switches to determine if horizontal space
-should be removed ``beforeProcessing`` and ``afterProcessing``. The
+Recall that on
+:ref:`page yaml:removeTrailingWhitespace <yaml:removeTrailingWhitespace>`
+we discussed the YAML field ``removeTrailingWhitespace``, and that it
+has two (binary) switches to determine if horizontal space should be
+removed ``beforeProcessing`` and ``afterProcessing``. The
 ``beforeProcessing`` is particularly relevant when considering the
 ``-m`` switch; let’s consider the file shown in :numref:`lst:mlb5`,
 which highlights trailing spaces.
@@ -1432,92 +1437,100 @@ and ‘comment-marked’ code blocks (:numref:`lst:alignmentmarkup`) can
 	
 
 	
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| Code block                      | Sample                          |     |                                    |
-	+=================================+=================================+=====+====================================+
-	| environment                     | ``before words``\ ♠             | ♠   | BeginStartsOnOwnLine               |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\begin{myenv}``\ ♥            | ♥   | BodyStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``body of myenv``\ ◆            | ◆   | EndStartsOnOwnLine                 |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\end{myenv}``\ ♣              | ♣   | EndFinishesWithLineBreak           |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``after words``                 |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| ifelsefi                        | ``before words``\ ♠             | ♠   | IfStartsOnOwnLine                  |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\if...``\ ♥                   | ♥   | BodyStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``body of if statement``\ ★     | ★   | ElseStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\else``\ □                    | □   | ElseFinishesWithLineBreak          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``body of else statement``\ ◆   | ◆   | FiStartsOnOwnLine                  |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\fi``\ ♣                      | ♣   | FiFinishesWithLineBreak            |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``after words``                 |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| optionalArguments               | ``...``\ ♠                      | ♠   | LSqBStartsOnOwnLine [1]_           |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``[``\ ♥                        | ♥   | OptArgBodyStartsOnOwnLine          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``body of opt arg``\ ◆          | ◆   | RSqBStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``]``\ ♣                        | ♣   | RSqBFinishesWithLineBreak          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``...``                         |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| mandatoryArguments              | ``...``\ ♠                      | ♠   | LCuBStartsOnOwnLine [2]_           |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``{``\ ♥                        | ♥   | MandArgBodyStartsOnOwnLine         |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``body of mand arg``\ ◆         | ◆   | RCuBStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``}``\ ♣                        | ♣   | RCuBFinishesWithLineBreak          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``...``                         |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| commands                        | ``before words``\ ♠             | ♠   | CommandStartsOnOwnLine             |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\mycommand``\ ♥               | ♥   | CommandNameFinishesWithLineBreak   |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | <arguments>                     |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| namedGroupingBraces Brackets    | before words♠                   | ♠   | NameStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | myname♥                         | ♥   | NameFinishesWithLineBreak          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | <braces/brackets>               |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| keyEqualsValuesBracesBrackets   | before words♠                   | ♠   | KeyStartsOnOwnLine                 |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | key●=♥                          | ●   | EqualsStartsOnOwnLine              |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | <braces/brackets>               | ♥   | EqualsFinishesWithLineBreak        |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| items                           | before words♠                   | ♠   | ItemStartsOnOwnLine                |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\item``\ ♥                    | ♥   | ItemFinishesWithLineBreak          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``...``                         |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	| specialBeginEnd                 | before words♠                   | ♠   | SpecialBeginStartsOnOwnLine        |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\[``\ ♥                       | ♥   | SpecialBodyStartsOnOwnLine         |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | body of special◆                | ◆   | SpecialEndStartsOnOwnLine          |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | ``\]``\ ♣                       | ♣   | SpecialEndFinishesWithLineBreak    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
-	|                                 | after words                     |     |                                    |
-	+---------------------------------+---------------------------------+-----+------------------------------------+
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| Code block                      | Sample                           |     |                                      |
+	+=================================+==================================+=====+======================================+
+	| environment                     | ``before words``\ ♠              | ♠   | BeginStartsOnOwnLine                 |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\begin{myenv}``\ ♥             | ♥   | BodyStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of myenv``\ ◆             | ◆   | EndStartsOnOwnLine                   |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\end{myenv}``\ ♣               | ♣   | EndFinishesWithLineBreak             |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``after words``                  |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| ifelsefi                        | ``before words``\ ♠              | ♠   | IfStartsOnOwnLine                    |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\if...``\ ♥                    | ♥   | BodyStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of if/or statement``\ ▲   | ▲   | OrStartsOnOwnLine                    |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\or``\ ▼                       | ▼   | OrFinishesWithLineBreak              |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of if/or statement``\ ★   | ★   | ElseStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\else``\ □                     | □   | ElseFinishesWithLineBreak            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of else statement``\ ◆    | ◆   | FiStartsOnOwnLine                    |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\fi``\ ♣                       | ♣   | FiFinishesWithLineBreak              |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``after words``                  |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| optionalArguments               | ``...``\ ♠                       | ♠   | LSqBStartsOnOwnLine [1]_             |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``[``\ ♥                         | ♥   | OptArgBodyStartsOnOwnLine            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of opt arg``\ ◆           | ◆   | RSqBStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``]``\ ♣                         | ♣   | RSqBFinishesWithLineBreak            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``...``                          |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| mandatoryArguments              | ``...``\ ♠                       | ♠   | LCuBStartsOnOwnLine [2]_             |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``{``\ ♥                         | ♥   | MandArgBodyStartsOnOwnLine           |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of mand arg``\ ◆          | ◆   | RCuBStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``}``\ ♣                         | ♣   | RCuBFinishesWithLineBreak            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``...``                          |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| commands                        | ``before words``\ ♠              | ♠   | CommandStartsOnOwnLine               |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\mycommand``\ ♥                | ♥   | CommandNameFinishesWithLineBreak     |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | <arguments>                      |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| namedGroupingBraces Brackets    | before words♠                    | ♠   | NameStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | myname♥                          | ♥   | NameFinishesWithLineBreak            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | <braces/brackets>                |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| keyEqualsValuesBracesBrackets   | before words♠                    | ♠   | KeyStartsOnOwnLine                   |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | key●=♥                           | ●   | EqualsStartsOnOwnLine                |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | <braces/brackets>                | ♥   | EqualsFinishesWithLineBreak          |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| items                           | before words♠                    | ♠   | ItemStartsOnOwnLine                  |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\item``\ ♥                     | ♥   | ItemFinishesWithLineBreak            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``...``                          |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	| specialBeginEnd                 | before words♠                    | ♠   | SpecialBeginStartsOnOwnLine          |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\[``\ ♥                        | ♥   | SpecialBodyStartsOnOwnLine           |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``body of special/middle``\ ★    | ★   | SpecialMiddleStartsOnOwnLine         |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\middle``\ □                   | □   | SpecialMiddleFinishesWithLineBreak   |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | body of special/middle ◆         | ◆   | SpecialEndStartsOnOwnLine            |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | ``\]``\ ♣                        | ♣   | SpecialEndFinishesWithLineBreak      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
+	|                                 | after words                      |     |                                      |
+	+---------------------------------+----------------------------------+-----+--------------------------------------+
 	
 
 
-Partnering ``BodyStartsOnOwnLine`` with argument-based poly-switches
---------------------------------------------------------------------
+Partnering BodyStartsOnOwnLine with argument-based poly-switches
+----------------------------------------------------------------
 
 Some poly-switches need to be partnered together; in particular, when
 line breaks involving the *first* argument of a code block need to be

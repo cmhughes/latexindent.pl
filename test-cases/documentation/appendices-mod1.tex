@@ -1,6 +1,6 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \appendix
-	\section{Required \texttt{Perl} modules}
+	\section{Required Perl modules}
 	 \label{sec:requiredmodules}
 	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied standalone executable files, then you will need a few standard Perl modules -- if you can run the minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run \texttt{latexindent.pl}, otherwise you may need to install the missing modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
 
@@ -31,7 +31,7 @@ exit;
 
 	\subsection{Module installer script}
 		\label{sec:module-installer}
-		\announce*{2018-01-13}{perl module helper script}
+		\announce{2018-01-13}{perl module helper script}
 		\texttt{latexindent.pl} ships with a helper script that will install any missing \texttt{perl} modules on your system; if you run \begin{commandshell}
 perl latexindent-module-installer.pl
      \end{commandshell} or \begin{dosprompt}
@@ -67,7 +67,7 @@ cpanm Log::Dispatch
 latexindent.exe -t myfile.tex
  \end{dosprompt} 
 
-	\section{Updating the \texttt{path} variable}
+	\section{Updating the path variable}
 	 \label{sec:updating-path} \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can update the \texttt{path} variables.
 	 Thank you to \cite{jasjuang} for this feature.
 	 If you're on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from \cite{latexindent-home}.
@@ -108,18 +108,18 @@ echo %path%
 		\end{enumerate}
 		To \emph{remove} the directory from your \lstinline!%path%!, run \texttt{remove-from-path.bat} as administrator.
 
-	\section{\texttt{logFilePreferences}}
+	\section{logFilePreferences}
 	 \label{app:logfile-demo}
 	 \Vref{lst:logFilePreferences} describes the options for customising the information given
 	 to the log file, and we provide a few demonstrations here.
 	 Let's say that we start with the code given in \cref{lst:simple}, and the settings specified in \cref{lst:logfile-prefs1-yaml}.
 
 	 \begin{minipage}{.35\linewidth}
-		 \cmhlistingsfromfile*{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
+		 \cmhlistingsfromfile{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
 	 \end{minipage}
 	 \hfill
 	 \begin{minipage}{.6\linewidth}
-		 \cmhlistingsfromfile*{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
+		 \cmhlistingsfromfile{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
 	 \end{minipage}
 
 	 If we run the following command (noting that \texttt{-t} is active) \begin{commandshell}

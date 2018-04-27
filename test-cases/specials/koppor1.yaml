@@ -1,0 +1,7 @@
+specialBeginEnd:
+    specialBeforeCommand: 1
+    procedure:
+        begin: '\\Procedure'
+        end: '\\EndProcedure'
+        middle: '\\State'
+        lookForThis: 1

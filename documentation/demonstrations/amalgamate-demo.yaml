@@ -1,3 +1,5 @@
 commandCodeBlocks:
     stringsAllowedBetweenArguments:
-        to: 0
+      - 'more'
+      - 'strings'
+      - 'here'

@@ -1,0 +1,6 @@
+commandCodeBlocks:
+    stringsAllowedBetweenArguments:
+      - 
+        amalgamate: 0
+      - '\\x\/\\y'
+      - 'in'

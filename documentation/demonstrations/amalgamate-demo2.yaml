@@ -1,0 +1,13 @@
+commandCodeBlocks:
+    stringsAllowedBetweenArguments:
+      - 
+        amalgamate: 1
+      - 'node'
+      - 'at'
+      - 'to'
+      - 'decoration'
+      - '\+\+'
+      - '\-\-'
+      - 'more'
+      - 'strings'
+      - 'here'

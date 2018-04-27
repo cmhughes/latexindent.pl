@@ -120,7 +120,7 @@ sub find_file_contents_environments_and_preamble{
     # try and find the preamble
     if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$masterSettings{lookForPreamble}}{${$self}{fileExtension}}){
 
-        $logger->trace("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists",'heading') if $is_t_switch_active ;
+        $logger->trace("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists") if $is_t_switch_active ;
 
         # create a preamble object
         $preamble = LatexIndent::Preamble->new( begin=>q(),

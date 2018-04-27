@@ -2,16 +2,16 @@
 
 .. _sec:indentconfig:
 
-``indentconfig.yaml``, local settings and the ``-y`` switch 
-============================================================
+indentconfig.yaml, local settings and the -y switch 
+====================================================
 
 The behaviour of ``latexindent.pl`` is controlled from the settings
 specified in any of the YAML files that you tell it to load. By default,
 ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there
 are a few ways that you can tell it to load your own settings files.
 
-``indentconfig.yaml`` and ``.indentconfig.yaml``
-------------------------------------------------
+indentconfig.yaml and .indentconfig.yaml
+----------------------------------------
 
 ``latexindent.pl`` will always check your home directory for
 ``indentconfig.yaml`` and ``.indentconfig.yaml`` (unless it is called
@@ -81,20 +81,23 @@ You can make sure that your settings are loaded by checking
 otherwise you’ll get confirmation that ``latexindent.pl`` has read your
 settings file. [2]_
 
-When editing ``.yaml`` files it is *extremely* important to remember how
-sensitive they are to spaces. I highly recommend copying and pasting
-from ``defaultSettings.yaml`` when you create your first
-``whatevernameyoulike.yaml`` file.
-
-If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you
-so in ``indent.log``.
+.. warning::	
+	
+	When editing ``.yaml`` files it is *extremely* important to remember how
+	sensitive they are to spaces. I highly recommend copying and pasting
+	from ``defaultSettings.yaml`` when you create your first
+	``whatevernameyoulike.yaml`` file.
+	
+	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you
+	so in ``indent.log``.
+	 
 
 .. label follows
 
 .. _sec:localsettings:
 
-``localSettings.yaml``
-----------------------
+localSettings.yaml
+------------------
 
 The ``-l`` switch tells ``latexindent.pl`` to look for
 ``localSettings.yaml`` in the *same directory* as ``myfile.tex``. For
@@ -142,8 +145,8 @@ read your settings file.
 
 .. _sec:yamlswitch:
 
-The ``-y|yaml`` switch
-----------------------
+The -y\|yaml switch
+-------------------
 
 You may use the ``-y`` switch to load your settings; for example, if you
 wished to specify the settings from :numref:`lst:localSettings` using

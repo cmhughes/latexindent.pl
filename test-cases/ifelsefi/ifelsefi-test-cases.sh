@@ -79,6 +79,8 @@ latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRul
 latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
 # bug fix from tcbbreakable-small.tex
 latexindent.pl -s tcbbreakable-small.tex -o=+-default
+# or test case
+latexindent.pl -s ifelsefi-first-or.tex -o=+-default
 # modifyLineBreaks loop test cases
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
@@ -87,7 +89,10 @@ do
    for (( j=1 ; j <= 10 ; j++ )) 
    do 
      [[ $silentMode == 0 ]] && set -x 
+     # else test cases
      latexindent.pl -s ifelsefi-loop-test.tex -o +-mod$i-else$j.tex -m -l=ifelsefi-mod$i.yaml,else-mod$j.yaml
+     # or test cases
+     latexindent.pl -s ifelsefi-loop-test-or.tex -o +-mod$i-or$j.tex -m -l=ifelsefi-mod$i.yaml,or-mod$j.yaml
      [[ $silentMode == 0 ]] && set +x 
     done
 done

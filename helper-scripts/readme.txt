@@ -1,6 +1,7 @@
 Typical running order of these helper scripts:
     # NOTE: documentation-default-settings-update.pl is now located in documentation folder
     - perl documentation-default-settings-update.pl
+    - perl documentation-default-settings-update.pl -r
     - <change update-version appropriately>
     - update-version.sh
     - copy-to-usb.sh

@@ -34,6 +34,8 @@ latexindent.pl -s items1.tex -o items1-default.tex
 
 # special
 latexindent.pl -s special1.tex -o special1-default.tex
+latexindent.pl -s special2.tex -o=+-mod1 -l=middle.yaml
+latexindent.pl -s special2.tex -o=+-mod2 -l=middle1.yaml
 
 # headings
 latexindent.pl -s headings1.tex -o headings1-mod1.tex -l=headings1.yaml
@@ -101,6 +103,7 @@ latexindent.pl -s ifelsefi1.tex -o ifelsefi1-noAdd.tex -local ifnum-noAdd.yaml
 latexindent.pl -s ifelsefi1.tex -o ifelsefi1-indent-rules.tex -local ifnum-indent-rules.yaml
 latexindent.pl -s ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml -o ifelsefi1-noAdd-glob.tex 
 latexindent.pl -s ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml -o ifelsefi1-indent-rules-global.tex 
+latexindent.pl -s ifelsefi2.tex -o ifelsefi2-default.tex
 
 ##### special ######
 ##### special ######
@@ -176,7 +179,9 @@ latexindent.pl -s pstricks1.tex -o pstricks1-indent-rules.tex -l defFunction.yam
 # string between args
 latexindent.pl -s tikz-node1.tex -o tikz-node1-default.tex
 latexindent.pl -s tikz-node1.tex -o tikz-node1-draw.tex -l=draw.yaml
-latexindent.pl -s tikz-node1.tex -o tikz-node1-no-to.tex -l=no-to.yaml
+latexindent.pl -s tikz-node1.tex -o tikz-node1-no-strings.tex -l=no-strings.yaml
+latexindent.pl -s for-each.tex -o=+-default
+latexindent.pl -s for-each.tex -o=+-mod1 -l=foreach.yaml
 
 # text wrap demonstration
 latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m

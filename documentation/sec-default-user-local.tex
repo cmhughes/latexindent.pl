@@ -86,10 +86,10 @@ copy myfile.bak4 to myfile.bak3
 	been loaded, you can see the amalgamated settings in the log file by switching \texttt{showAmalgamatedSettings}
 	to \texttt{1}, if you wish.
 
-	\cmhlistingsfromfile*[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
 	When%
-	\announce*{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the \texttt{trace} modes (see \cpageref{page:traceswitch})
+	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the \texttt{trace} modes (see \cpageref{page:traceswitch})
 	are active, you will receive detailed information in \texttt{indent.log}. You can specify character strings
 	to appear before and after the notification of a found code block using, respectively, \texttt{showDecorationStartCodeBlockTrace}
 	and \texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in \vref{app:logfile-demo}.
@@ -99,7 +99,7 @@ copy myfile.bak4 to myfile.bak3
 	of \texttt{latexindent.pl} to the log file if \texttt{showGitHubInfoFooter} is set to \texttt{1}.
 
 	\texttt{latexindent.pl}%
-	\announce*{2018-01-13}{log file pattern layout for log file} uses the \texttt{log4perl} module \cite{log4perl}
+	\announce{2018-01-13}{log file pattern layout for log file} uses the \texttt{log4perl} module \cite{log4perl}
 	to handle the creation of the logfile. You can specify the layout of the information given in the logfile
 	using any of the \texttt{Log Layouts} detailed at \cite{log4perl}.
 
@@ -254,7 +254,7 @@ lookForAlignDelims:
 	If, for example, you wish to remove the alignment of the \lstinline!\\! within a delimiter-aligned block, then the
 	advanced form of \texttt{lookForAlignDelims} shown in \cref{lst:aligndelims:advanced} is for you.
 
-	\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in \cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx}
 	are advanced and \texttt{longtable} is basic. When using the advanced form, each field should receive at least 1 sub-field, and \emph{can}
@@ -265,17 +265,17 @@ lookForAlignDelims:
 		      will not be called for this code block (default: 1);
 		\item \texttt{alignDoubleBackSlash}: binary switch (0 or 1) to determine if \lstinline!\\! should be aligned (default: 1);
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally,%
-		      \announce*{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces to be inserted
+		      \announce{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces to be inserted
 		      before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
 		\item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if \texttt{latexindent.pl} should group columns
 		      above and below a \lstinline!\multicolumn! command (default: 0);
 		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows that do not contain the
 		      maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1);
-		\item \announce*{2018-01-13}{spacesBeforeAmpersand in ampersand alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of
+		\item \announce{2018-01-13}{spacesBeforeAmpersand in ampersand alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of
 		      spaces to be placed \emph{before} ampersands (default: 1);
-		\item \announce*{2018-01-13}{spacesAfterAmpersand in ampersand alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of
+		\item \announce{2018-01-13}{spacesAfterAmpersand in ampersand alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of
 		      spaces to be placed \emph{After} ampersands (default: 1);
-		\item \announce*{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of each cell as either \emph{left}
+		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of each cell as either \emph{left}
 		      or \emph{right} (default: left).
 	\end{itemize}
 
@@ -292,23 +292,23 @@ lookForAlignDelims:
 	\end{minipage}%
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular4.yaml}[yaml-TCB]{\texttt{tabular4.yaml}}{lst:tabular4YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular4.yaml}[yaml-TCB]{\texttt{tabular4.yaml}}{lst:tabular4YAML}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular5.yaml}[yaml-TCB]{\texttt{tabular5.yaml}}{lst:tabular5YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular5.yaml}[yaml-TCB]{\texttt{tabular5.yaml}}{lst:tabular5YAML}
 	\end{minipage}%
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular6.yaml}[yaml-TCB]{\texttt{tabular6.yaml}}{lst:tabular6YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular6.yaml}[yaml-TCB]{\texttt{tabular6.yaml}}{lst:tabular6YAML}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular7.yaml}[yaml-TCB]{\texttt{tabular7.yaml}}{lst:tabular7YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular7.yaml}[yaml-TCB]{\texttt{tabular7.yaml}}{lst:tabular7YAML}
 	\end{minipage}%
 
 	\begin{minipage}{.48\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/tabular8.yaml}[yaml-TCB]{\texttt{tabular8.yaml}}{lst:tabular8YAML}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular8.yaml}[yaml-TCB]{\texttt{tabular8.yaml}}{lst:tabular8YAML}
 	\end{minipage}%
 
 	On running the commands
@@ -325,14 +325,14 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 	we obtain the respective outputs given in \crefrange{lst:tabular2-default}{lst:tabular2-mod8}.
 
 	\begin{widepage}
-		\cmhlistingsfromfile*{demonstrations/tabular2-default.tex}{\texttt{tabular2.tex} default output}{lst:tabular2-default}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod2.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML}}{lst:tabular2-mod2}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod3.tex}{\texttt{tabular2.tex} using \cref{lst:tabular3YAML}}{lst:tabular2-mod3}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod4.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular4YAML}}{lst:tabular2-mod4}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod5.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular5YAML}}{lst:tabular2-mod5}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod6.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular6YAML}}{lst:tabular2-mod6}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod7.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular7YAML}}{lst:tabular2-mod7}
-		\cmhlistingsfromfile*{demonstrations/tabular2-mod8.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular8YAML}}{lst:tabular2-mod8}
+		\cmhlistingsfromfile{demonstrations/tabular2-default.tex}{\texttt{tabular2.tex} default output}{lst:tabular2-default}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod2.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML}}{lst:tabular2-mod2}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod3.tex}{\texttt{tabular2.tex} using \cref{lst:tabular3YAML}}{lst:tabular2-mod3}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod4.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular4YAML}}{lst:tabular2-mod4}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod5.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular5YAML}}{lst:tabular2-mod5}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod6.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular6YAML}}{lst:tabular2-mod6}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod7.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular7YAML}}{lst:tabular2-mod7}
+		\cmhlistingsfromfile{demonstrations/tabular2-mod8.tex}{\texttt{tabular2.tex} using \cref{lst:tabular2YAML,lst:tabular8YAML}}{lst:tabular2-mod8}
 	\end{widepage}
 
 	Notice in particular:
@@ -492,6 +492,43 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 		      because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be sought \emph{before} commands.
 	\end{itemize}
 
+	You can,optionally, specify%
+	\announce*{2018-04-27}{update to specialBeginEnd} the \texttt{middle} field for anything that you
+	specify in \texttt{specialBeginEnd}. For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
+
+	\cmhlistingsfromfile*{demonstrations/special2.tex}{\texttt{special2.tex}}{lst:special2}
+
+	Upon saving the YAML settings in \cref{lst:middle-yaml,lst:middle1-yaml} and running the commands
+	\begin{commandshell}
+latexindent.pl special2.tex -l=middle
+latexindent.pl special2.tex -l=middle1
+    \end{commandshell}
+	then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile*{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
+	\end{minipage}
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile*{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
+	\end{minipage}
+
+	We note that:
+	\begin{itemize}
+		\item in \cref{lst:special2-mod1} the bodies of each of the \texttt{Elsif} statements have been indented appropriately;
+		\item the \texttt{Else} statement has \emph{not} been indented appropriately in \cref{lst:special2-mod1} -- read on!
+		\item we have specified multiple settings for the \texttt{middle} field using the syntax demonstrated in
+		      \cref{lst:middle1-yaml} so that the body of the \texttt{Else} statement has been indented appropriately in \cref{lst:special2-mod2}.
+	\end{itemize}
+
 \yamltitle{indentAfterHeadings}*{fields}
 	\begin{wrapfigure}[17]{r}[0pt]{8cm}
 		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
@@ -585,7 +622,7 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 	In general, when using the \texttt{maximumIndentation} feature, any leading tabs will be replaced by equivalent
 	spaces except, of course, those found in \texttt{verbatimEnvironments} (see \vref{lst:verbatimEnvironments}) or \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
-\subsection{The code blocks known \texttt{latexindent.pl}}\label{subsubsec:code-blocks}
+\subsection{The code blocks known latexindent.pl}\label{subsubsec:code-blocks}
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
 	of these are shown in \cref{tab:code-blocks}.
 
@@ -620,7 +657,7 @@ mand arg text
 				\\\cmidrule{2-3}
 				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
 				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-				namedGroupingBracesBrackets   & \lstinline!a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!0-9\.a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
 				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
 				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
 				\begin{lstlisting}[,nolol=true,]
