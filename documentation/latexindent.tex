@@ -631,6 +631,10 @@
 %   git checkout develop
 %   ls .git
 % and you should see gitHeadInfo.gin
+% 
+% Make sure that the 'V' is included in the below!
+%
+% RELTAG=$(git describe --tags --long --always --dirty='-*' --match 'V[0-9]*.*' 2>/dev/null)
 
 % http://tex.stackexchange.com/questions/233843/textasteriskcentered-invisible-with-garamondmathdesign
 % remove the definition of \textasteriskcentered for TS1 encoding
@@ -755,3 +759,12 @@ Version 3.4
 - STDIN allowed: https://github.com/cmhughes/latexindent.pl/issues/88
 - textwrap bug fix: https://github.com/cmhughes/latexindent.pl/issues/90
 - polyswitch bug fix: https://github.com/cmhughes/latexindent.pl/issues/94
+
+Version 3.4.1
+- the reading of defaultSettings.yaml needed addressing
+- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.4.1
+
+Version 3.4.2
+- enhancements to specialBeginEnd: https://github.com/cmhughes/latexindent.pl/issues/100
+- enhancements to commandCodeBlocks: https://github.com/cmhughes/latexindent.pl/issues/105
+- better support for forrest syntax: https://github.com/cmhughes/latexindent.pl/issues/107

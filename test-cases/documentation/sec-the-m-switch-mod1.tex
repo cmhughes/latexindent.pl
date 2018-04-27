@@ -32,7 +32,7 @@
 	This field is directly related to \emph{poly-switches}, discussed below.
 	By default, it is set to \texttt{1}, which means that blank lines will be protected from removal; however, regardless of this setting, multiple blank lines can be condensed if \texttt{condenseMultipleBlankLinesInto} is greater than \texttt{0}, discussed next.
 
-\yamltitle{condenseMultipleBlankLinesInto}*{integer $\geq 0$}
+\yamltitle{condenseMultipleBlankLinesInto}*{positive integer}
 	Assuming that this switch takes an integer value greater than \texttt{0}, \texttt{latexindent.pl} will condense multiple blank lines into the number of blank lines illustrated by this switch.
 	As an example, \cref{lst:mlb-bl} shows a sample file with blank lines; upon running \begin{commandshell}
 latexindent.pl myfile.tex -m  
@@ -114,7 +114,8 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 \subsection{oneSentencePerLine: modifying line breaks for sentences}
 	\label{sec:onesentenceperline}
-	You can instruct \texttt{latexindent.pl} to format \announce*{2018-01-13}{one sentence per line} your file so that it puts one sentence per line.
+	You can instruct \texttt{latexindent.pl} to format%
+	\announce{2018-01-13}{one sentence per line} your file so that it puts one sentence per line.
 	%
 	Thank you to \cite{mlep} for helping to shape and test this feature.
 	The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine}, all of which we discuss next.
@@ -156,8 +157,8 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1}, but have not been removed in \cref{lst:multiple-sentences-mod2}.
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct \texttt{latexindent.pl} on how to define a sentence.
-	From the perpesctive of \texttt{latexindent.pl} a sentence must: \begin{itemize} \item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line, a full stop/period (.
-		      ), exclamation mark (!), question mark (?) right brace (\}) or a comment
+	From the perpesctive of \texttt{latexindent.pl} a sentence must: \begin{itemize} \item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line, a full stop/period (.)
+		      , exclamation mark (!), question mark (?) right brace (\}) or a comment
 		      on the previous line;
 		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by default, this is only capital letters;
 		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by default, these are
@@ -839,7 +840,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
 		                                       & \verb!\if...!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
 		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce{new}{new ifElseFi code block polyswitches}                                                                                                                                                           \\
+		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
 		                                       & \verb!\or!$\OrFinishesWithLineBreak$    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
@@ -878,7 +879,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
 		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
 		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce{new}{new special code block polyswitches}                                                                                                                                                            \\
+		\announce*{2018-04-27}{new special code block polyswitches}                                                                                                                                                    \\
 		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
 		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
 		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\

@@ -8,7 +8,7 @@
 \yamltitle{commandCodeBlocks}*{fields}
 
 	The \texttt{commandCodeBlocks} field%
-	\announce{new}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	\announce*{2018-04-27}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
 	\cmhlistingsfromfile*[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
@@ -141,7 +141,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	\end{itemize}
 
 	Referencing \vref{lst:commandCodeBlocks},%
-	\announce{new}*{amalgamate feature in commandCodeBlocks}, we see that the first field in
+	\announce*{2018-04-27}*{amalgamate feature in commandCodeBlocks}, we see that the first field in
 	the \texttt{stringsAllowedBetweenArguments} is \texttt{amalgamate} and is set to \texttt{1} by default. This is for users who wish to
 	specify their settings in multiple YAML files. For example, by using the settings in either \cref{lst:amalgamate-demo} or\cref{lst:amalgamate-demo1}
 	is equivalent to using the settings in \cref{lst:amalgamate-demo2}.
@@ -193,13 +193,13 @@ latexindent.pl for-each.tex -l foreach.yaml
 	\end{minipage}
 
 	You might like to compare the output given in \cref{lst:for-each-default} and \cref{lst:for-each-mod1}. Note,in particular, in
-    \cref{lst:for-each-default} that the \texttt{foreach} command has not included any of the subsequent strings, and that the braces
-    have been treated as a \texttt{namedGroupingBracesBrackets}. In \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have \lstinline!\x/\y! and \texttt{in} between
+	\cref{lst:for-each-default} that the \texttt{foreach} command has not included any of the subsequent strings, and that the braces
+	have been treated as a \texttt{namedGroupingBracesBrackets}. In \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have \lstinline!\x/\y! and \texttt{in} between
 	arguments because of the settings given in \cref{lst:foreach}.
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
-	\announce{new}*{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
+	\announce*{2018-04-27}*{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl},
 	the first one of which is \lstinline!\@ifnextchar[!. From the perspective of \texttt{latexindent.pl}, the whole of the
 	text \lstinline!\@ifnextchar[! is is a command, because it is
 	immediately followed by sets of mandatory arguments. However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl}
@@ -217,9 +217,9 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able to indent its body, because \texttt{latexindent.pl}
 	has successfully found the command \lstinline!\@ifnextchar! first; the pattern-matching of \texttt{latexindent.pl} starts from
-	\emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.  
-    
-    For demonstration, we can compare
+	\emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.
+
+	For demonstration, we can compare
 	this output with that given in \cref{lst:ifnextchar-off} in which
 	the settings from \cref{lst:no-ifnextchar} have dictated that no special command names, including the \lstinline!\@ifnextchar[! command, should not be searched for specially;
 	as such, the \texttt{parbox} command has been \emph{unable} to indent its body successfully, because the \lstinline!\@ifnextchar[!
@@ -233,9 +233,9 @@ latexindent.pl for-each.tex -l foreach.yaml
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{minipage}
 
-    The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for \texttt{stringsAllowedBetweenArguments}. The 
-    same condition holds as stated previously, which we state again here:
-    \begin{warning}
-	It is important to note that the \texttt{amalgamate} field, if used, in either \texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the first field,
-	and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
-    \end{warning}
+	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for \texttt{stringsAllowedBetweenArguments}. The
+	same condition holds as stated previously, which we state again here:
+	\begin{warning}
+		It is important to note that the \texttt{amalgamate} field, if used, in either \texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the first field,
+		and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
+	\end{warning}

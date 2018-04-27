@@ -9,7 +9,8 @@
  We will discuss how to change the settings and behaviour of the script in \vref{sec:defuseloc}.
 
  \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows users, so that you can use the script with or without a Perl distribution.
- If you plan to use \texttt{latexindent.pl} (i.e, the original Perl script) then you will need a few standard Perl modules -- see \vref{sec:requiredmodules} for details; \announce*{2018-01-13}{perl module installer helper script} in particular, note that a module installer helper script is shipped with \texttt{latexindent.pl}.
+ If you plan to use \texttt{latexindent.pl} (i.e, the original Perl script) then you will need a few standard Perl modules -- see \vref{sec:requiredmodules} for details;%
+ \announce{2018-01-13}{perl module installer helper script} in particular, note that a module installer helper script is shipped with \texttt{latexindent.pl}.
 
 \subsection{From the command line}
 	\label{sec:commandline}
@@ -218,7 +219,7 @@ latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
       \end{commandshell}
 	Using this%
-	\announce*{2018-01-13}{screenlog switch created} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
+	\announce{2018-01-13}{screenlog switch created} option tells \texttt{latexindent.pl} to output the log file to the screen, as well
 	as to your chosen log file.
 
 \flagbox{-m, --modifylinebreaks}
@@ -237,11 +238,12 @@ latexindent.pl myfile
 cat myfile.tex | latexindent.pl
     \end{commandshell}
 	\texttt{latexindent.pl} will%
-	\announce*{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
+	\announce{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
 	other commands directly into the script.
 	For example assuming that you have content in \texttt{myfile.tex}, then the above command will output the results of operating upon \texttt{myfile.tex} 
 
-	Similarly, if you \announce*{2018-01-13}*{no options/filename updated} simply type \texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the command line.
+	Similarly, if you%
+	\announce{2018-01-13}*{no options/filename updated} simply type \texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the command line.
 	%
 	\begin{commandshell}
 latexindent.pl

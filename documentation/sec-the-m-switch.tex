@@ -152,7 +152,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to format%
-	\announce*{2018-01-13}{one sentence per line} your file so that it puts one sentence
+	\announce{2018-01-13}{one sentence per line} your file so that it puts one sentence
 	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
 	all of which we discuss next.
 
@@ -1031,17 +1031,17 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\toprule
 		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                       & \verb!after words!                             &                                         &                                                                   \\
+		environment                            & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                       & \verb!after words!                              &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce{new}{new ifElseFi code block polyswitches}                                                                                                                                                           \\
-		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                       & \verb!\if...!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
+		                                       & \verb!\or!$\OrFinishesWithLineBreak$    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
@@ -1079,7 +1079,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
 		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
 		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce{new}{new special code block polyswitches}                                                                                                                                                            \\
+		\announce*{2018-04-27}{new special code block polyswitches}                                                                                                                                                    \\
 		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
 		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
 		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\

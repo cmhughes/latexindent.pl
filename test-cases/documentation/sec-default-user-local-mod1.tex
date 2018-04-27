@@ -58,14 +58,16 @@ copy myfile.bak4 to myfile.bak3
 
 	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
-	When \announce*{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive detailed information in \texttt{indent.log}.
+	When%
+	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive detailed information in \texttt{indent.log}.
 	%
 	You can specify character strings to appear before and after the notification of a found code block using, respectively, \texttt{showDecorationStartCodeBlockTrace} and \texttt{showDecorationFinishCodeBlockTrace}.
 	A demonstration is given in \vref{app:logfile-demo}.
 
 	The log file will end with the characters given in \texttt{endLogFileWith}, and will report the \texttt{GitHub} address of \texttt{latexindent.pl} to the log file if \texttt{showGitHubInfoFooter} is set to \texttt{1}.
 
-	\texttt{latexindent.pl} \announce*{2018-01-13}{log file pattern layout for log file} uses the \texttt{log4perl} module \cite{log4perl} to handle the creation of the logfile.
+	\texttt{latexindent.pl}%
+	\announce{2018-01-13}{log file pattern layout for log file} uses the \texttt{log4perl} module \cite{log4perl} to handle the creation of the logfile.
 	%
 	You can specify the layout of the information given in the logfile using any of the \texttt{Log Layouts} detailed at \cite{log4perl}.
 
@@ -195,14 +197,15 @@ lookForAlignDelims:
 	When using the advanced form, each field should receive at least 1 sub-field, and \emph{can} (but does not have to) receive any of the following fields: \begin{itemize} \item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic}.
 		      If \texttt{delims} is set to \texttt{0} then the align at ampersand routine will not be called for this code block (default: 1);
 		\item \texttt{alignDoubleBackSlash}: binary switch (0 or 1) to determine if \lstinline!\\! should be aligned (default: 1);
-		\item \texttt{spacesBeforeDoubleBackSlash}: optionally, \announce*{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces to be inserted before \lstinline!\\! (default: 1).
+		\item \texttt{spacesBeforeDoubleBackSlash}: optionally,%
+		      \announce{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces to be inserted before \lstinline!\\! (default: 1).
 		       \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}%
 		\item \announce{2017-06-19}{multiColumnGrouping}
 		      \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if \texttt{latexindent.pl} should group columns above and below a \lstinline!\multicolumn! command (default: 0);
 		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows that do not contain the maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1);
-		\item \announce*{2018-01-13}{spacesBeforeAmpersand in ampersand alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of spaces to be placed \emph{before} ampersands (default: 1);
-		\item \announce*{2018-01-13}{spacesAfterAmpersand in ampersand alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of spaces to be placed \emph{After} ampersands (default: 1);
-		\item \announce*{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of each cell as either \emph{left} or \emph{right} (default: left).
+		\item \announce{2018-01-13}{spacesBeforeAmpersand in ampersand alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$ 0) of spaces to be placed \emph{before} ampersands (default: 1);
+		\item \announce{2018-01-13}{spacesAfterAmpersand in ampersand alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$ 0) of spaces to be placed \emph{After} ampersands (default: 1);
+		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of each cell as either \emph{left} or \emph{right} (default: left).
 	\end{itemize}
 
 	We will explore each of these features using the file \texttt{tabular2.tex} in \cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command), and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular8YAML}.
@@ -371,8 +374,7 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 		\item \cref{lst:specialLR-special-first-tex} the \texttt{specialBeginEnd} pattern in \cref{lst:specialsLeftRight-yaml} has been obeyed because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be sought \emph{before} commands.
 	\end{itemize}
 
-	You can,optionally, specify%
-	\announce{new}{update to specialBeginEnd} the \texttt{middle} field for anything that you specify in \texttt{specialBeginEnd}.
+	You can,optionally, specify \announce*{2018-04-27}{update to specialBeginEnd} the \texttt{middle} field for anything that you specify in \texttt{specialBeginEnd}.
 	%
 	For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
 
