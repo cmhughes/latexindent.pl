@@ -197,6 +197,9 @@ if(!$readTheDocsMode){
         # total listings
         $body =~ s/\\totallstlistings/$crossReferences{totalListings}/s;
 
+        # cpageref for page references
+        $body =~ s/\\[cC]pageref\{(.*?)\}/:ref:\\texttt\{page $1 <$1>\}/sg;
+
         # cross references
         $body =~ s/\\[vVcC]?ref\{(.*?)\}/
                 # check for ,

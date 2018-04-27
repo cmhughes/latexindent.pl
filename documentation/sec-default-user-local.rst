@@ -115,11 +115,12 @@ switching ``showAmalgamatedSettings`` to ``1``, if you wish.
  	:linenos:
  	:lineno-start: 79
 
-When either of the ``trace`` modes (see ) are active, you will receive
-detailed information in ``indent.log``. You can specify character
-strings to appear before and after the notification of a found code
-block using, respectively, ``showDecorationStartCodeBlockTrace`` and
-``showDecorationFinishCodeBlockTrace``. A demonstration is given in
+When either of the ``trace`` modes (see
+:ref:`page page:traceswitch <page:traceswitch>`) are active, you will
+receive detailed information in ``indent.log``. You can specify
+character strings to appear before and after the notification of a found
+code block using, respectively, ``showDecorationStartCodeBlockTrace``
+and ``showDecorationFinishCodeBlockTrace``. A demonstration is given in
 :numref:`app:logfile-demo`.
 
 The log file will end with the characters given in ``endLogFileWith``,
@@ -524,10 +525,11 @@ Notice in particular:
 
 As of Version 3.0, the alignment routine works on mandatory and optional
 arguments within commands, and also within ‘special’ code blocks (see
-``specialBeginEnd`` on ); for example, assuming that you have a command
-called ``\matrix`` and that it is populated within
-``lookForAlignDelims`` (which it is, by default), and that you run the
-command
+``specialBeginEnd`` on
+:ref:`page yaml:specialBeginEnd <yaml:specialBeginEnd>`); for example,
+assuming that you have a command called ``\matrix`` and that it is
+populated within ``lookForAlignDelims`` (which it is, by default), and
+that you run the command
 
 ::
 
@@ -707,6 +709,55 @@ Notice that in:
    because :numref:`lst:specialBeforeCommand-yaml` specifies that the
    ``specialBeginEnd`` should be sought *before* commands.
 
+You can,optionally, specify the ``middle`` field for anything that you
+specify in ``specialBeginEnd``. For example, let’s consider the ``.tex``
+file in :numref:`lst:special2`.
+
+ .. literalinclude:: demonstrations/special2.tex
+ 	:caption: ``special2.tex`` 
+ 	:name: lst:special2
+
+Upon saving the YAML settings in :numref:`lst:middle-yaml` and
+:numref:`lst:middle1-yaml` and running the commands
+
+::
+
+    latexindent.pl special2.tex -l=middle
+    latexindent.pl special2.tex -l=middle1
+        
+
+then we obtain the output given in :numref:`lst:special2-mod1` and
+:numref:`lst:special2-mod2`.
+
+ .. literalinclude:: demonstrations/middle.yaml
+ 	:caption: ``middle.yaml`` 
+ 	:name: lst:middle-yaml
+
+ .. literalinclude:: demonstrations/special2-mod1.tex
+ 	:caption: ``special2.tex`` using :numref:`lst:middle-yaml` 
+ 	:name: lst:special2-mod1
+
+ .. literalinclude:: demonstrations/middle1.yaml
+ 	:caption: ``middle1.yaml`` 
+ 	:name: lst:middle1-yaml
+
+ .. literalinclude:: demonstrations/special2-mod2.tex
+ 	:caption: ``special2.tex`` using :numref:`lst:middle1-yaml` 
+ 	:name: lst:special2-mod2
+
+We note that:
+
+-  in :numref:`lst:special2-mod1` the bodies of each of the ``Elsif``
+   statements have been indented appropriately;
+
+-  the ``Else`` statement has *not* been indented appropriately in
+   :numref:`lst:special2-mod1` – read on!
+
+-  we have specified multiple settings for the ``middle`` field using
+   the syntax demonstrated in :numref:`lst:middle1-yaml` so that the
+   body of the ``Else`` statement has been indented appropriately in
+   :numref:`lst:special2-mod2`.
+
 ``indentAfterHeadings``: *fields*
 
  .. literalinclude:: ../defaultSettings.yaml
@@ -858,7 +909,7 @@ blocks; each of these are shown in :numref:`tab:code-blocks`.
 	+---------------------------------+--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
 	| keyEqualsValuesBracesBrackets   | ``a-zA-Z@\*0-9_\/.\h\{\}:\#-``                                                       | ``my key/.style=``\ <arguments>                                                       |
 	+---------------------------------+--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
-	| namedGroupingBracesBrackets     | ``a-zA-Z@\*><``                                                                      | ``in``\ <arguments>                                                                   |
+	| namedGroupingBracesBrackets     | ``0-9\.a-zA-Z@\*><``                                                                 | ``in``\ <arguments>                                                                   |
 	+---------------------------------+--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
 	| UnNamedGroupingBracesBrackets   | *No name!*                                                                           | ``{`` or ``[`` or ``,`` or ``&`` or ``)`` or ``(`` or ``$`` followed by <arguments>   |
 	+---------------------------------+--------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------+
@@ -1326,8 +1377,9 @@ or ``indentRulesGlobal`` using the ``items`` key, as demonstrated in
 :numref:`lst:items-noAdditionalGlobal` and
 :numref:`lst:items-indentRulesGlobal`. Note that there is a need to
 ‘reset/remove’ the ``item`` field from ``indentRules`` in both cases
-(see the hierarchy description given on ) as the ``item`` command is a
-member of ``indentRules`` by default.
+(see the hierarchy description given on
+:ref:`page sec:noadd-indent-rules <sec:noadd-indent-rules>`) as the
+``item`` command is a member of ``indentRules`` by default.
 
  .. literalinclude:: demonstrations/items-noAdditionalGlobal.yaml
  	:caption: ``items-noAdditionalGlobal.yaml`` 
@@ -1675,8 +1727,9 @@ afterHeading code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let’s use the example :numref:`lst:headings2` for demonstration
-throughout this . As discussed on , by default ``latexindent.pl`` will
-not add indentation after headings.
+throughout this . As discussed on
+:ref:`page lst:headings1 <lst:headings1>`, by default
+``latexindent.pl`` will not add indentation after headings.
 
  .. literalinclude:: demonstrations/headings2.tex
  	:caption: ``headings2.tex`` 
@@ -1839,7 +1892,8 @@ is three tabs, and these come from:
 -  the ``start coordinate/.initial`` key’s body, which is defined as any
    lines following the name of the key that include its arguments. This
    is the part controlled by the *body* field for ``noAdditionalIndent``
-   and friends from .
+   and friends from
+   :ref:`page sec:noadd-indent-rules <sec:noadd-indent-rules>`.
 
 namedGroupingBracesBrackets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1877,7 +1931,8 @@ tabs, and these come from:
 -  the ``child``\ ’s body, which is defined as any lines following the
    name of the ``namedGroupingBracesBrackets`` that include its
    arguments. This is the part controlled by the *body* field for
-   ``noAdditionalIndent`` and friends from .
+   ``noAdditionalIndent`` and friends from
+   :ref:`page sec:noadd-indent-rules <sec:noadd-indent-rules>`.
 
 UnNamedGroupingBracesBrackets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1913,7 +1968,8 @@ tabs, and these come from:
 -  the *first* un-named braces *body*, which we define as any lines
    following the first opening ``{`` or ``[`` that defined the code
    block. This is the part controlled by the *body* field for
-   ``noAdditionalIndent`` and friends from .
+   ``noAdditionalIndent`` and friends from
+   :ref:`page sec:noadd-indent-rules <sec:noadd-indent-rules>`.
 
 Users wishing to customise the mandatory and/or optional arguments on a
 *per-name* basis for the ``UnNamedGroupingBracesBrackets`` should use
@@ -1968,7 +2024,7 @@ switches detailed in :numref:`lst:commandCodeBlocks`.
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 311-321
+ 	:lines: 311-325
  	:linenos:
  	:lineno-start: 311
 
@@ -1999,7 +2055,8 @@ the arguments of ``defFunction``, both before and after ``(u,v)``.
 The default output from running ``latexindent.pl`` on
 :numref:`lst:pstricks1` actually leaves it unchanged (see
 :numref:`lst:pstricks1-default`); note in particular, this is because
-of ``noAdditionalIndentGlobal`` as discussed on .
+of ``noAdditionalIndentGlobal`` as discussed on
+:ref:`page page:command:noAddGlobal <page:command:noAddGlobal>`.
 
 Upon using the YAML settings in :numref:`lst:noRoundParentheses`, and
 running the command
@@ -2072,10 +2129,10 @@ strings
 
     to, node, ++
 
-are all allowed to appear between arguments, as they are each set to
-:math:`1`; importantly, you are encouraged to add further names to this
-field as necessary. This means that when ``latexindent.pl`` processes
-:numref:`lst:tikz-node1`, it consumes:
+are all allowed to appear between arguments; importantly, you are
+encouraged to add further names to this field as necessary. This means
+that when ``latexindent.pl`` processes :numref:`lst:tikz-node1`, it
+consumes:
 
 -  the optional argument ``[thin]``
 
@@ -2117,26 +2174,27 @@ Notice that each line after the ``\draw`` command (its ‘body’) in
 two-spaces worth of indentation specified in :numref:`lst:draw`.
 
 Let’s compare this with the output from using the YAML settings in
-:numref:`lst:no-to`, and running the command
+:numref:`lst:no-strings`, and running the command
 
 ::
 
-    latexindent.pl tikz-node1.tex -l no-to.yaml  
+    latexindent.pl tikz-node1.tex -l no-strings.yaml  
 
-given in :numref:`lst:tikz-node1-no-to`.
+given in :numref:`lst:tikz-node1-no-strings`.
 
- .. literalinclude:: demonstrations/tikz-node1-no-to.tex
- 	:caption: ``tikz-node1.tex`` using :numref:`lst:no-to` 
- 	:name: lst:tikz-node1-no-to
+ .. literalinclude:: demonstrations/tikz-node1-no-strings.tex
+ 	:caption: ``tikz-node1.tex`` using :numref:`lst:no-strings` 
+ 	:name: lst:tikz-node1-no-strings
 
- .. literalinclude:: demonstrations/no-to.yaml
- 	:caption: ``no-to.yaml`` 
- 	:name: lst:no-to
+ .. literalinclude:: demonstrations/no-strings.yaml
+ 	:caption: ``no-strings.yaml`` 
+ 	:name: lst:no-strings
 
 In this case, ``latexindent.pl`` sees that:
 
--  the ``\draw`` command finishes after the ``(c)`` as
-   (``stringsAllowedBetweenArguments`` has ``to`` set to :math:`0`)
+-  the ``\draw`` command finishes after the ``(c)``, as
+   ``stringsAllowedBetweenArguments`` has been set to :math:`0` so there
+   are no strings allowed between arguments;
 
 -  it finds a ``namedGroupingBracesBrackets`` called ``to`` (see
    :numref:`tab:code-blocks`) *with* argument ``[in=110,out=-90]``
@@ -2144,15 +2202,90 @@ In this case, ``latexindent.pl`` sees that:
 -  it finds another ``namedGroupingBracesBrackets`` but this time called
    ``node`` with argument ``[below,align=left,scale=0.5]``
 
+Referencing :numref:`lst:commandCodeBlocks`, \*amalgamate feature in
+commandCodeBlocks, we see that the first field in the
+``stringsAllowedBetweenArguments`` is ``amalgamate`` and is set to ``1``
+by default. This is for users who wish to specify their settings in
+multiple YAML files. For example, by using the settings in either
+:numref:`lst:amalgamate-demo` or:numref:\ ``lst:amalgamate-demo1`` is
+equivalent to using the settings in :numref:`lst:amalgamate-demo2`.
+
+-3.5cm-1.5cm
+
+ .. literalinclude:: demonstrations/amalgamate-demo.yaml
+ 	:caption: ``amalgamate-demo.yaml`` 
+ 	:name: lst:amalgamate-demo
+
+ .. literalinclude:: demonstrations/amalgamate-demo1.yaml
+ 	:caption: ``amalgamate-demo1.yaml`` 
+ 	:name: lst:amalgamate-demo1
+
+ .. literalinclude:: demonstrations/amalgamate-demo2.yaml
+ 	:caption: ``amalgamate-demo2.yaml`` 
+ 	:name: lst:amalgamate-demo2
+
+We specify ``amalgamate`` to be set to ``0`` and in which case any
+settings loaded prior to those specified, including the default, will be
+overwritten. For example, using the settings in
+:numref:`lst:amalgamate-demo3` means that only the strings specified
+in that field will be used.
+
+ .. literalinclude:: demonstrations/amalgamate-demo3.yaml
+ 	:caption: ``amalgamate-demo3.yaml`` 
+ 	:name: lst:amalgamate-demo3
+
+It is important to note that the ``amalgamate`` field, if used, must be
+in the first field, and specified using the syntax given in
+:numref:`lst:amalgamate-demo1` and :numref:`lst:amalgamate-demo2`
+and :numref:`lst:amalgamate-demo3`.
+
+We may explore this feature further with the code in
+:numref:`lst:for-each`, whose default output is given in
+:numref:`lst:for-each-default`.
+
+ .. literalinclude:: demonstrations/for-each.tex
+ 	:caption: ``for-each.tex`` 
+ 	:name: lst:for-each
+
+ .. literalinclude:: demonstrations/for-each-default.tex
+ 	:caption: ``for-each`` default output 
+ 	:name: lst:for-each-default
+
+Let’s compare this with the output from using the YAML settings in
+:numref:`lst:foreach`, and running the command
+
+::
+
+    latexindent.pl for-each.tex -l foreach.yaml  
+
+given in :numref:`lst:for-each-mod1`.
+
+ .. literalinclude:: demonstrations/for-each-mod1.tex
+ 	:caption: ``for-each.tex`` using :numref:`lst:foreach` 
+ 	:name: lst:for-each-mod1
+
+ .. literalinclude:: demonstrations/foreach.yaml
+ 	:caption: ``foreach.yaml`` 
+ 	:name: lst:foreach
+
+You might like to compare the output given in
+:numref:`lst:for-each-default` and :numref:`lst:for-each-mod1`.
+Note,in particular, in :numref:`lst:for-each-default` that the
+``foreach`` command has not included any of the subsequent strings, and
+that the braces have been treated as a ``namedGroupingBracesBrackets``.
+In :numref:`lst:for-each-mod1` the ``foreach`` command has been
+allowed to have ``\x/\y`` and ``in`` between arguments because of the
+settings given in :numref:`lst:foreach`.
+
 ``commandNameSpecial``: *fields*
 
-There are some special command names that do not fit within the names
-recognized by ``latexindent.pl``, the first one of which is
-``\@ifnextchar[``. From the perspective of ``latexindent.pl``, the whole
-of the text ``\@ifnextchar[`` is is a command, because it is immediately
-followed by sets of mandatory arguments. However, without the
-``commandNameSpecial`` field, ``latexindent.pl`` would not be able to
-label it as such, because the ``[`` is, necessarily, not matched by a
+There are some special command names \*commandNameSpecial that do not
+fit within the names recognized by ``latexindent.pl``, the first one of
+which is ``\@ifnextchar[``. From the perspective of ``latexindent.pl``,
+the whole of the text ``\@ifnextchar[`` is is a command, because it is
+immediately followed by sets of mandatory arguments. However, without
+the ``commandNameSpecial`` field, ``latexindent.pl`` would not be able
+to label it as such, because the ``[`` is, necessarily, not matched by a
 closing ``]``.
 
 For example, consider the sample file in :numref:`lst:ifnextchar`,
@@ -2170,13 +2303,16 @@ Notice that in :numref:`lst:ifnextchar-default` the ``parbox`` command
 has been able to indent its body, because ``latexindent.pl`` has
 successfully found the command ``\@ifnextchar`` first; the
 pattern-matching of ``latexindent.pl`` starts from *the inner most
-<thing> and works outwards*, discussed in more detail on . For
-demonstration, we can compare this output with that given in
+<thing> and works outwards*, discussed in more detail on
+:ref:`page page:phases <page:phases>`.
+
+For demonstration, we can compare this output with that given in
 :numref:`lst:ifnextchar-off` in which the settings from
-:numref:`lst:no-ifnextchar` have dictated that ``\@ifnextchar[``
-command should not be searched for specially; as such, the ``parbox``
-command has been *unable* to indent its body successfully, because the
-``\@ifnextchar[`` command has not been found.
+:numref:`lst:no-ifnextchar` have dictated that no special command
+names, including the ``\@ifnextchar[`` command, should not be searched
+for specially; as such, the ``parbox`` command has been *unable* to
+indent its body successfully, because the ``\@ifnextchar[`` command has
+not been found.
 
  .. literalinclude:: demonstrations/ifnextchar-off.tex
  	:caption: ``ifnextchar.tex`` using :numref:`lst:no-ifnextchar` 
@@ -2185,6 +2321,16 @@ command has been *unable* to indent its body successfully, because the
  .. literalinclude:: demonstrations/no-ifnextchar.yaml
  	:caption: ``no-ifnextchar.yaml`` 
  	:name: lst:no-ifnextchar
+
+The ``amalgamate`` field can be used for ``commandNameSpecial``, just as
+for ``stringsAllowedBetweenArguments``. The same condition holds as
+stated previously, which we state again here:
+
+It is important to note that the ``amalgamate`` field, if used, in
+either ``commandNameSpecial`` or ``stringsAllowedBetweenArguments`` must
+be in the first field, and specified using the syntax given in
+:numref:`lst:amalgamate-demo1` and :numref:`lst:amalgamate-demo2`
+and :numref:`lst:amalgamate-demo3`.
 
 .. raw:: html
 

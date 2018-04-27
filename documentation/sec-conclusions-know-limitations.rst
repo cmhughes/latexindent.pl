@@ -8,8 +8,9 @@ Conclusions and known limitations
 There are a number of known limitations of the script, and almost
 certainly quite a few that are *unknown*!
 
-The main limitation is to do with the alignment routine discussed on ;
-for example, consider the file given in :numref:`lst:matrix2`.
+The main limitation is to do with the alignment routine discussed on
+:ref:`page yaml:lookforaligndelims <yaml:lookforaligndelims>`; for
+example, consider the file given in :numref:`lst:matrix2`.
 
  .. literalinclude:: demonstrations/matrix2.tex
  	:caption: ``matrix2.tex`` 
@@ -37,16 +38,18 @@ fail.
 Another limitation is to do with efficiency, particularly when the
 ``-m`` switch is active, as this adds many checks and processes. The
 current implementation relies upon finding and storing *every* code
-block (see the discussion on ); it is hoped that, in a future version,
-only *nested* code blocks will need to be stored in the ‘packing’ phase,
-and that this will improve the efficiency of the script.
+block (see the discussion on :ref:`page page:phases <page:phases>`);
+it is hoped that, in a future version, only *nested* code blocks will
+need to be stored in the ‘packing’ phase, and that this will improve the
+efficiency of the script.
 
 You can run ``latexindent`` on ``.sty``, ``.cls`` and any file types
 that you specify in ``fileExtensionPreference`` (see
 :numref:`lst:fileExtensionPreference`); if you find a case in which
 the script struggles, please feel free to report it at (“Home of
 Latexindent.pl” 2017), and in the meantime, consider using a
-``noIndentBlock`` (see ).
+``noIndentBlock`` (see
+:ref:`page lst:noIndentBlockdemo <lst:noIndentBlockdemo>`).
 
 I hope that this script is useful to some; if you find an example where
 the script does not behave as you think it should, the best way to

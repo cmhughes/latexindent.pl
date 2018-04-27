@@ -33,8 +33,9 @@ released under the GNU General Public License v3.0.
 Before you start using it on any important files, bear in mind that
 ``latexindent.pl`` has the option to overwrite your ``.tex`` files. It
 will always make at least one backup (you can choose how many it makes,
-see ) but you should still be careful when using it. The script has been
-tested on many files, but there are some known limitations (see
+see :ref:`page page:onlyonebackup <page:onlyonebackup>`) but you
+should still be careful when using it. The script has been tested on
+many files, but there are some known limitations (see
 :numref:`sec:knownlimitations`). You, the user, are responsible for
 ensuring that you maintain backups of your files before running
 ``latexindent.pl`` on them. I think it is important at this stage to
@@ -64,7 +65,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 123. This may
+this version of the documentation, there are a total of 25. This may
 seem a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
@@ -92,9 +93,9 @@ given (as here) it means that the snippet is taken directly from
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 391-393
+ 	:lines: 395-397
  	:linenos:
- 	:lineno-start: 391
+ 	:lineno-start: 395
 
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks`
