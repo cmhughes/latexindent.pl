@@ -184,6 +184,13 @@ if(!$readTheDocsMode){
         $body =~ s/\\cmhlistingsfromfile\*?\[/\\cmhlistingsfromfilefour\[/mg;
         $body =~ s/\}\[\h*width=.*?\]\{/\}\{/sg;
         $body =~ s/\}\[\h*yaml-TCB.*?\]\{/\}\{/sg;
+        
+        # get rid of wrapfigure stuff
+        $body =~ s/\\begin\{adjustwidth\}\{.*?\}\{.*?\}//sg;
+        $body =~ s/\\end\{adjustwidth\}//sg;
+
+        # get rid of \announce command
+        $body =~ s/\\announce\*?\{.*?\}\*?\{.*?\}\R*//sg;
 
         # get rid of wrapfigure stuff
         $body =~ s/\\begin\{wrapfigure\}.*$//mg;
@@ -238,7 +245,7 @@ if(!$readTheDocsMode){
         $body =~ s/\$\\langle\$(.*?)\$\\rangle\$/<$1>/sg;
 
         # flagbox switch
-        $body =~ s/\\flagbox/\\texttt/sg;
+        $body =~ s/\\flagbox\{(.*?)\}/\n.. describe:: $1\n\n/sg;
 
         # yaml title
         $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/.. describe:: $1:$2\n\n/sg;

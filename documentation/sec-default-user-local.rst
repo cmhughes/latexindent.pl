@@ -367,10 +367,9 @@ to) receive any of the following fields:
 -  ``alignDoubleBackSlash``: binary switch (0 or 1) to determine if
    ``\\`` should be aligned (default: 1);
 
--  ``spacesBeforeDoubleBackSlash``: optionally, \*update to
-   spacesBeforeDoubleBackSlash in ampersand alignment specifies the
-   number (integer :math:`\geq` 0) of spaces to be inserted before
-   ``\\`` (default: 1). [2]_
+-  ``spacesBeforeDoubleBackSlash``: optionally, specifies the number
+   (integer :math:`\geq` 0) of spaces to be inserted before ``\\``
+   (default: 1). [2]_
 
 -  ``multiColumnGrouping``: binary switch (0 or 1) that details if
    ``latexindent.pl`` should group columns above and below a
@@ -623,11 +622,10 @@ after each ``item``. A demonstration is given in
 
 .. _yaml:specialBeginEnd:
 
-The fields specified \*specialBeginEnd in ``specialBeginEnd`` are, in
-their default state, focused on math mode begin and end statements, but
-there is no requirement for this to be the case;
-:numref:`lst:specialBeginEnd` shows the default settings of
-``specialBeginEnd``.
+The fields specified in ``specialBeginEnd`` are, in their default state,
+focused on math mode begin and end statements, but there is no
+requirement for this to be the case; :numref:`lst:specialBeginEnd`
+shows the default settings of ``specialBeginEnd``.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``specialBeginEnd`` 
@@ -1628,11 +1626,10 @@ have received a single space of indentation.
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifelsefi-indent-rules-global` 
  	:name: lst:ifelsefi1-output-indent-rules-global
 
-We can further explore the treatment of ``ifElseFi`` code blocks
-\*updates to ifElseFi code blocks in :numref:`lst:ifelsefi2`, and the
-associated default output given in :numref:`lst:ifelsefi2-default`;
-note, in particular, that the bodies of each of the ‘or statements’ have
-been indented.
+We can further explore the treatment of ``ifElseFi`` code blocks in
+:numref:`lst:ifelsefi2`, and the associated default output given in
+:numref:`lst:ifelsefi2-default`; note, in particular, that the bodies
+of each of the ‘or statements’ have been indented.
 
  .. literalinclude:: demonstrations/ifelsefi2.tex
  	:caption: ``ifelsefi2.tex`` 
@@ -2018,8 +2015,8 @@ we discuss next.
 
 .. describe:: commandCodeBlocks:fields
 
-The ``commandCodeBlocks`` field \*commandCodeBlocks contains a few
-switches detailed in :numref:`lst:commandCodeBlocks`.
+The ``commandCodeBlocks`` field contains a few switches detailed in
+:numref:`lst:commandCodeBlocks`.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``commandCodeBlocks`` 
@@ -2202,15 +2199,13 @@ In this case, ``latexindent.pl`` sees that:
 -  it finds another ``namedGroupingBracesBrackets`` but this time called
    ``node`` with argument ``[below,align=left,scale=0.5]``
 
-Referencing :numref:`lst:commandCodeBlocks`, \*amalgamate feature in
-commandCodeBlocks, we see that the first field in the
-``stringsAllowedBetweenArguments`` is ``amalgamate`` and is set to ``1``
-by default. This is for users who wish to specify their settings in
-multiple YAML files. For example, by using the settings in either
-:numref:`lst:amalgamate-demo` or:numref:\ ``lst:amalgamate-demo1`` is
-equivalent to using the settings in :numref:`lst:amalgamate-demo2`.
-
--3.5cm-1.5cm
+Referencing :numref:`lst:commandCodeBlocks`, , we see that the first
+field in the ``stringsAllowedBetweenArguments`` is ``amalgamate`` and is
+set to ``1`` by default. This is for users who wish to specify their
+settings in multiple YAML files. For example, by using the settings in
+either :numref:`lst:amalgamate-demo`
+or:numref:\ ``lst:amalgamate-demo1`` is equivalent to using the settings
+in :numref:`lst:amalgamate-demo2`.
 
  .. literalinclude:: demonstrations/amalgamate-demo.yaml
  	:caption: ``amalgamate-demo.yaml`` 
@@ -2279,13 +2274,13 @@ settings given in :numref:`lst:foreach`.
 
 .. describe:: commandNameSpecial:fields
 
-There are some special command names \*commandNameSpecial that do not
-fit within the names recognized by ``latexindent.pl``, the first one of
-which is ``\@ifnextchar[``. From the perspective of ``latexindent.pl``,
-the whole of the text ``\@ifnextchar[`` is is a command, because it is
-immediately followed by sets of mandatory arguments. However, without
-the ``commandNameSpecial`` field, ``latexindent.pl`` would not be able
-to label it as such, because the ``[`` is, necessarily, not matched by a
+There are some special command names that do not fit within the names
+recognized by ``latexindent.pl``, the first one of which is
+``\@ifnextchar[``. From the perspective of ``latexindent.pl``, the whole
+of the text ``\@ifnextchar[`` is a command, because it is immediately
+followed by sets of mandatory arguments. However, without the
+``commandNameSpecial`` field, ``latexindent.pl`` would not be able to
+label it as such, because the ``[`` is, necessarily, not matched by a
 closing ``]``.
 
 For example, consider the sample file in :numref:`lst:ifnextchar`,

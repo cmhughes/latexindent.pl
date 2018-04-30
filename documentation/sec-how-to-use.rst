@@ -41,7 +41,7 @@ throughout this document. There is a base of information that is written
 to ``indent.log``, but other additional information will be written
 depending on which of the following options are used.
 
-``-v, –version``
+.. describe:: -v, –version
 
 ::
 
@@ -50,7 +50,7 @@ depending on which of the following options are used.
 
 This will output only the version number to the terminal.
 
-``-h, –help``
+.. describe:: -h, –help
 
 ::
 
@@ -69,7 +69,7 @@ This will operate on ``myfile.tex``, but will simply output to your
 terminal; ``myfile.tex`` will not be changed by ``latexindent.pl`` in
 any way using this command.
 
-``-w, –overwrite``
+.. describe:: -w, –overwrite
 
 ::
 
@@ -88,7 +88,7 @@ Note that if ``latexindent.pl`` can not create the backup, then it will
 exit without touching your original file; an error message will be given
 asking you to check the permissions of the backup file.
 
-``-o=output.tex,–outputfile=output.tex``
+.. describe:: -o=output.tex,–outputfile=output.tex
 
 ::
 
@@ -171,7 +171,9 @@ feature, but if you wish to, then you should include it *after* the
     latexindent.pl myfile.tex -o=+out++.tex
 
 See :numref:`app:differences` for details of how the interface has
-changed from Version 2.2 to Version 3.0 for this flag. ``-s, –silent``
+changed from Version 2.2 to Version 3.0 for this flag.
+
+.. describe:: -s, –silent
 
 ::
 
@@ -181,7 +183,7 @@ changed from Version 2.2 to Version 3.0 for this flag. ``-s, –silent``
 
 Silent mode: no output will be given to the terminal.
 
-``-t, –trace``
+.. describe:: -t, –trace
 
 .. label follows
 
@@ -200,7 +202,7 @@ find out where and why. You might also be interested in learning about
 although it should be noted that, especially for large files, this does
 affect performance of the script.
 
-``-tt, –ttrace``
+.. describe:: -tt, –ttrace
 
 ::
 
@@ -213,7 +215,7 @@ affect performance of the script.
 so than with ``-t``, especially for large files, performance of the
 script will be affected).
 
-``-l, –local[=myyaml.yaml,other.yaml,...]``
+.. describe:: -l, –local[=myyaml.yaml,other.yaml,...]
 
 .. label follows
 
@@ -240,9 +242,8 @@ The ``-l`` flag can take an *optional* parameter which details the name
 (or names separated by commas) of a YAML file(s) that resides in the
 same directory as ``myfile.tex``; you can use this option if you would
 like to load a settings file in the current working directory that is
-*not* called ``localSettings.yaml``. \*-l switch absolute paths In fact,
-you can specify both *relative* and *absolute paths* for your YAML
-files; for example
+*not* called ``localSettings.yaml``. In fact, you can specify both
+*relative* and *absolute paths* for your YAML files; for example
 
 ::
 
@@ -299,7 +300,7 @@ You may also choose to omit the ``yaml`` extension, such as
     latexindent.pl -l=localSettings,myyaml myfile.tex
         
 
-``-y, –yaml=yaml settings``
+.. describe:: -y, –yaml=yaml settings
 
 .. label follows
 
@@ -322,7 +323,9 @@ which is demonstrated in :numref:`sec:yamlswitch`.
 
 Any settings specified via this switch will be loaded *after* any
 specified using the ``-l`` switch. This is discussed further in
-:numref:`sec:loadorder`. ``-d, –onlydefault``
+:numref:`sec:loadorder`.
+
+.. describe:: -d, –onlydefault
 
 ::
 
@@ -337,10 +340,10 @@ not to do so then (instead of deleting or renaming ``indentconfig.yaml``
 or ``.indentconfig.yaml``) you can simply call the script with the
 ``-d`` switch; note that this will also tell the script to ignore
 ``localSettings.yaml`` even if it has been called with the ``-l``
-switch; ``latexindent.pl`` \*updated -d switch will also ignore any
-settings specified from the ``-y`` switch.
+switch; ``latexindent.pl`` will also ignore any settings specified from
+the ``-y`` switch.
 
-``-c, –cruft=<directory>``
+.. describe:: -c, –cruft=<directory>
 
 ::
 
@@ -350,7 +353,8 @@ settings specified from the ``-y`` switch.
 If you wish to have backup files and ``indent.log`` written to a
 directory other than the current working directory, then you can send
 these ‘cruft’ files to another directory.
-``-g, –logfile=<name of log file>``
+
+.. describe:: -g, –logfile=<name of log file>
 
 ::
 
@@ -364,7 +368,7 @@ By default, ``latexindent.pl`` reports information to ``indent.log``,
 but if you wish to change the name of this file, simply call the script
 with your chosen name after the ``-g`` switch as demonstrated above.
 
-``-sl, –screenlog``
+.. describe:: -sl, –screenlog
 
 ::
 
@@ -375,7 +379,7 @@ with your chosen name after the ``-g`` switch as demonstrated above.
 Using this option tells ``latexindent.pl`` to output the log file to the
 screen, as well as to your chosen log file.
 
-``-m, –modifylinebreaks``
+.. describe:: -m, –modifylinebreaks
 
 ::
 
@@ -397,7 +401,9 @@ extension, for example
 
 and in which case, you can specify the order in which extensions are
 searched for; see :numref:`lst:fileExtensionPreference` for full
-details. ``STDIN``
+details.
+
+.. describe:: STDIN
 
 ::
 
@@ -409,9 +415,8 @@ pipe output from other commands directly into the script. For example
 assuming that you have content in ``myfile.tex``, then the above command
 will output the results of operating upon ``myfile.tex``
 
-Similarly, if you \*no options/filename updated simply type
-``latexindent.pl`` at the command line, then it will expect (STDIN)
-input from the command line.
+Similarly, if you simply type ``latexindent.pl`` at the command line,
+then it will expect (STDIN) input from the command line.
 
 ::
 

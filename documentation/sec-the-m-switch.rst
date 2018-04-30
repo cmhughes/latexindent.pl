@@ -299,8 +299,6 @@ In each case, you can specify the ``other`` field to include any pattern
 that you would like; you can specify anything in this field using the
 language of regular expressions.
 
--3.5cm-2.5cm
-
  .. literalinclude:: ../defaultSettings.yaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
@@ -510,14 +508,14 @@ experiment with the ``other`` field.
 
 The ``basicFullStop`` routine should probably be avoided in most
 situations, as it does not accomodate the specifications above. For
-example, using the YAML in :numref:`lst:alt-full-stop1-yaml` gives the
-output from the following command in :numref:`lst:url-mod2`.
+example, using the following command
 
 ::
 
     latexindent.pl url -m -l=alt-full-stop1.yaml
 
--3.5cm-1.5cm
+and the YAML in :numref:`lst:alt-full-stop1-yaml` gives the output in
+:numref:`lst:url-mod2`.
 
  .. literalinclude:: demonstrations/url-mod2.tex
  	:caption: ``url.tex`` using :numref:`lst:alt-full-stop1-yaml` 
@@ -874,7 +872,7 @@ Poly-switches
 -------------
 
 Every other field in the ``modifyLineBreaks`` field uses poly-switches,
-and can take one of *five* \*blank line poly-switch integer values:
+and can take one of *five* integer values:
 
 -  *remove mode*: line breaks before or after the *<part of thing>* can
    be removed (assuming that ``preserveBlankLines`` is set to ``0``);

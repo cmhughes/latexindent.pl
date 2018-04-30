@@ -195,8 +195,8 @@ Settings load order
    ``myfile.tex`` and called with ``-l`` switch; this file can be
    renamed, provided that the call to ``latexindent.pl`` is adjusted
    accordingly (see :numref:`sec:localsettings`). You may specify both
-   relative and absolute \*-l absolute paths paths to other YAML files
-   using the ``-l`` switch, separating multiple files using commas;
+   relative and absolute paths to other YAML files using the ``-l``
+   switch, separating multiple files using commas;
 
 #. any settings specified in the ``-y`` switch.
 
