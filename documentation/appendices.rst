@@ -215,10 +215,12 @@ demonstrations here. Let’s say that we start with the code given in
 :numref:`lst:logfile-prefs1-yaml`.
 
  .. literalinclude:: demonstrations/simple.tex
+ 	:class: .tex
  	:caption: ``simple.tex`` 
  	:name: lst:simple
 
  .. literalinclude:: demonstrations/logfile-prefs1.yaml
+ 	:class: .baseyaml
  	:caption: ``logfile-prefs1.yaml`` 
  	:name: lst:logfile-prefs1-yaml
 

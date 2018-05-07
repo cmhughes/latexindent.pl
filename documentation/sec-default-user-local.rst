@@ -31,6 +31,7 @@ file extension. For example we can call
 in
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference
  	:lines: 38-42
@@ -109,6 +110,7 @@ been loaded, you can see the amalgamated settings in the log file by
 switching ``showAmalgamatedSettings`` to ``1``, if you wish.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``logFilePreferences`` 
  	:name: lst:logFilePreferences
  	:lines: 79-89
@@ -140,6 +142,7 @@ you have specified in this field, see
 :numref:`lst:verbatimEnvironments`.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``verbatimEnvironments`` 
  	:name: lst:verbatimEnvironments
  	:lines: 93-96
@@ -147,6 +150,7 @@ you have specified in this field, see
  	:lineno-start: 93
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``verbatimCommands`` 
  	:name: lst:verbatimCommands
  	:lines: 99-101
@@ -168,6 +172,7 @@ from line breaking routines (only relevant if the ``-m`` is active, see
 .. describe:: noIndentBlock:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``noIndentBlock`` 
  	:name: lst:noIndentBlock
  	:lines: 107-109
@@ -205,6 +210,7 @@ as many spaces (possibly none) as you like; see
 .. _yaml:removeTrailingWhitespace:
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: removeTrailingWhitespace 
  	:name: lst:removeTrailingWhitespace
  	:lines: 112-114
@@ -231,6 +237,7 @@ see :numref:`lst:removeTrailingWhitespace-alt`. .. describe::
 fileContentsEnvironments:field
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``fileContentsEnvironments`` 
  	:name: lst:fileContentsEnvironments
  	:lines: 118-120
@@ -255,6 +262,7 @@ by default), but if you’d like ``latexindent.pl`` to try then change
 .. describe:: lookForPreamble:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: lookForPreamble 
  	:name: lst:lookForPreamble
  	:lines: 126-130
@@ -336,10 +344,12 @@ example ``tabular: 0``; alternatively, if you just want to ignore
 something from ``noIndentBlock`` (see :numref:`lst:noIndentBlock`).
 
  .. literalinclude:: demonstrations/tabular1.tex
+ 	:class: .tex
  	:caption: ``tabular1.tex`` 
  	:name: lst:tabularbefore:basic
 
  .. literalinclude:: demonstrations/tabular1-default.tex
+ 	:class: .tex
  	:caption: ``tabular1.tex`` default output 
  	:name: lst:tabularafter:basic
 
@@ -349,6 +359,7 @@ delimiter-aligned block, then the advanced form of
 for you.
 
  .. literalinclude:: demonstrations/tabular.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular.yaml`` 
  	:name: lst:aligndelims:advanced
 
@@ -396,34 +407,42 @@ and the YAML files in :numref:`lst:tabular2YAML` –
 :numref:`lst:tabular8YAML`.
 
  .. literalinclude:: demonstrations/tabular2.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` 
  	:name: lst:tabular2
 
  .. literalinclude:: demonstrations/tabular2.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular2.yaml`` 
  	:name: lst:tabular2YAML
 
  .. literalinclude:: demonstrations/tabular3.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular3.yaml`` 
  	:name: lst:tabular3YAML
 
  .. literalinclude:: demonstrations/tabular4.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular4.yaml`` 
  	:name: lst:tabular4YAML
 
  .. literalinclude:: demonstrations/tabular5.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular5.yaml`` 
  	:name: lst:tabular5YAML
 
  .. literalinclude:: demonstrations/tabular6.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular6.yaml`` 
  	:name: lst:tabular6YAML
 
  .. literalinclude:: demonstrations/tabular7.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular7.yaml`` 
  	:name: lst:tabular7YAML
 
  .. literalinclude:: demonstrations/tabular8.yaml
+ 	:class: .baseyaml
  	:caption: ``tabular8.yaml`` 
  	:name: lst:tabular8YAML
 
@@ -445,34 +464,42 @@ we obtain the respective outputs given in
 :numref:`lst:tabular2-default` – :numref:`lst:tabular2-mod8`.
 
  .. literalinclude:: demonstrations/tabular2-default.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` default output 
  	:name: lst:tabular2-default
 
  .. literalinclude:: demonstrations/tabular2-mod2.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` 
  	:name: lst:tabular2-mod2
 
  .. literalinclude:: demonstrations/tabular2-mod3.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular3YAML` 
  	:name: lst:tabular2-mod3
 
  .. literalinclude:: demonstrations/tabular2-mod4.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` and :numref:`lst:tabular4YAML` 
  	:name: lst:tabular2-mod4
 
  .. literalinclude:: demonstrations/tabular2-mod5.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` and :numref:`lst:tabular5YAML` 
  	:name: lst:tabular2-mod5
 
  .. literalinclude:: demonstrations/tabular2-mod6.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` and :numref:`lst:tabular6YAML` 
  	:name: lst:tabular2-mod6
 
  .. literalinclude:: demonstrations/tabular2-mod7.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` and :numref:`lst:tabular7YAML` 
  	:name: lst:tabular2-mod7
 
  .. literalinclude:: demonstrations/tabular2-mod8.tex
+ 	:class: .tex
  	:caption: ``tabular2.tex`` using :numref:`lst:tabular2YAML` and :numref:`lst:tabular8YAML` 
  	:name: lst:tabular2-mod8
 
@@ -539,10 +566,12 @@ then the before-and-after results shown in :numref:`lst:matrixbefore`
 and :numref:`lst:matrixafter` are achievable by default.
 
  .. literalinclude:: demonstrations/matrix1.tex
+ 	:class: .tex
  	:caption: ``matrix1.tex`` 
  	:name: lst:matrixbefore
 
  .. literalinclude:: demonstrations/matrix1-default.tex
+ 	:class: .tex
  	:caption: ``matrix1.tex`` default output 
  	:name: lst:matrixafter
 
@@ -557,10 +586,12 @@ use any environment name that you have specified in
 ``lookForAlignDelims``.
 
  .. literalinclude:: demonstrations/align-block.tex
+ 	:class: .tex
  	:caption: ``align-block.tex`` 
  	:name: lst:alignmentmarkup
 
  .. literalinclude:: demonstrations/align-block-default.tex
+ 	:class: .tex
  	:caption: ``align-block.tex`` default output 
  	:name: lst:alignmentmarkup-default
 
@@ -572,6 +603,7 @@ considered ``environments``.
 .. describe:: indentAfterItems:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
  	:lines: 183-187
@@ -585,16 +617,19 @@ after each ``item``. A demonstration is given in
 :numref:`lst:itemsbefore` and :numref:`lst:itemsafter`
 
  .. literalinclude:: demonstrations/items1.tex
+ 	:class: .tex
  	:caption: ``items1.tex`` 
  	:name: lst:itemsbefore
 
  .. literalinclude:: demonstrations/items1-default.tex
+ 	:class: .tex
  	:caption: ``items1.tex`` default output 
  	:name: lst:itemsafter
 
 .. describe:: itemNames:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
  	:lines: 193-195
@@ -628,6 +663,7 @@ requirement for this to be the case; :numref:`lst:specialBeginEnd`
 shows the default settings of ``specialBeginEnd``.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
  	:lines: 199-212
@@ -644,10 +680,12 @@ A demonstration of the before-and-after results are shown in
 :numref:`lst:specialbefore` and :numref:`lst:specialafter`.
 
  .. literalinclude:: demonstrations/special1.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` before 
  	:name: lst:specialbefore
 
  .. literalinclude:: demonstrations/special1-default.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` default output 
  	:name: lst:specialafter
 
@@ -662,6 +700,7 @@ There are examples in which it is advantageous to search for
 consider the file shown in :numref:`lst:specialLRbefore`.
 
  .. literalinclude:: demonstrations/specialLR.tex
+ 	:class: .tex
  	:caption: ``specialLR.tex`` 
  	:name: lst:specialLRbefore
 
@@ -670,10 +709,12 @@ Now consider the YAML files shown in
 :numref:`lst:specialBeforeCommand-yaml`
 
  .. literalinclude:: demonstrations/specialsLeftRight.yaml
+ 	:class: .tex
  	:caption: ``specialsLeftRight.yaml`` 
  	:name: lst:specialsLeftRight-yaml
 
  .. literalinclude:: demonstrations/specialBeforeCommand.yaml
+ 	:class: .tex
  	:caption: ``specialBeforeCommand.yaml`` 
  	:name: lst:specialBeforeCommand-yaml
 
@@ -690,10 +731,12 @@ we receive the respective outputs in
 :numref:`lst:specialLR-special-first-tex`.
 
  .. literalinclude:: demonstrations/specialLR-comm-first.tex
+ 	:class: .tex
  	:caption: ``specialLR.tex`` using :numref:`lst:specialsLeftRight-yaml` 
  	:name: lst:specialLR-comm-first-tex
 
  .. literalinclude:: demonstrations/specialLR-special-first.tex
+ 	:class: .tex
  	:caption: ``specialLR.tex`` using :numref:`lst:specialsLeftRight-yaml` and :numref:`lst:specialBeforeCommand-yaml` 
  	:name: lst:specialLR-special-first-tex
 
@@ -712,6 +755,7 @@ specify in ``specialBeginEnd``. For example, let’s consider the ``.tex``
 file in :numref:`lst:special2`.
 
  .. literalinclude:: demonstrations/special2.tex
+ 	:class: .tex
  	:caption: ``special2.tex`` 
  	:name: lst:special2
 
@@ -728,18 +772,22 @@ then we obtain the output given in :numref:`lst:special2-mod1` and
 :numref:`lst:special2-mod2`.
 
  .. literalinclude:: demonstrations/middle.yaml
+ 	:class: .baseyaml
  	:caption: ``middle.yaml`` 
  	:name: lst:middle-yaml
 
  .. literalinclude:: demonstrations/special2-mod1.tex
+ 	:class: .tex
  	:caption: ``special2.tex`` using :numref:`lst:middle-yaml` 
  	:name: lst:special2-mod1
 
  .. literalinclude:: demonstrations/middle1.yaml
+ 	:class: .baseyaml
  	:caption: ``middle1.yaml`` 
  	:name: lst:middle1-yaml
 
  .. literalinclude:: demonstrations/special2-mod2.tex
+ 	:class: .tex
  	:caption: ``special2.tex`` using :numref:`lst:middle1-yaml` 
  	:name: lst:special2-mod2
 
@@ -759,6 +807,7 @@ We note that:
 .. describe:: indentAfterHeadings:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
  	:lines: 222-231
@@ -792,10 +841,12 @@ you have the text from :numref:`lst:headings1` saved into
 ``headings1.tex``.
 
  .. literalinclude:: demonstrations/headings1.yaml
+ 	:class: .baseyaml
  	:caption: ``headings1.yaml`` 
  	:name: lst:headings1yaml
 
  .. literalinclude:: demonstrations/headings1.tex
+ 	:class: .tex
  	:caption: ``headings1.tex`` 
  	:name: lst:headings1
 
@@ -809,10 +860,12 @@ then you should receive the output given in
 :numref:`lst:headings1-mod1`.
 
  .. literalinclude:: demonstrations/headings1-mod1.tex
+ 	:class: .tex
  	:caption: ``headings1.tex`` using :numref:`lst:headings1yaml` 
  	:name: lst:headings1-mod1
 
  .. literalinclude:: demonstrations/headings1-mod2.tex
+ 	:class: .tex
  	:caption: ``headings1.tex`` second modification 
  	:name: lst:headings1-mod2
 
@@ -839,10 +892,12 @@ together with the default output shown in
 :numref:`lst:mult-nested-default`.
 
  .. literalinclude:: demonstrations/mult-nested.tex
+ 	:class: .tex
  	:caption: ``mult-nested.tex`` 
  	:name: lst:mult-nested
 
  .. literalinclude:: demonstrations/mult-nested-default.tex
+ 	:class: .tex
  	:caption: ``mult-nested.tex`` default output 
  	:name: lst:mult-nested-default
 
@@ -859,10 +914,12 @@ You should receive the output shown in
 :numref:`lst:mult-nested-max-ind1`.
 
  .. literalinclude:: demonstrations/max-indentation1.yaml
+ 	:class: .baseyaml
  	:caption: ``max-indentation1.yaml`` 
  	:name: lst:max-indentation1yaml
 
  .. literalinclude:: demonstrations/mult-nested-max-ind1.tex
+ 	:class: .tex
  	:caption: ``mult-nested.tex`` using :numref:`lst:max-indentation1yaml` 
  	:name: lst:mult-nested-max-ind1
 
@@ -970,6 +1027,7 @@ environments; let’s start with the code shown in
 :numref:`lst:myenvtex`.
 
  .. literalinclude:: demonstrations/myenvironment-simple.tex
+ 	:class: .tex
  	:caption: ``myenv.tex`` 
  	:name: lst:myenvtex
 
@@ -980,10 +1038,12 @@ have a few choices available to us, as demonstrated in
 :numref:`lst:myenv-noAdd1` and :numref:`lst:myenv-noAdd2`.
 
  .. literalinclude:: demonstrations/myenv-noAdd1.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd1.yaml`` 
  	:name: lst:myenv-noAdd1
 
  .. literalinclude:: demonstrations/myenv-noAdd2.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd2.yaml`` 
  	:name: lst:myenv-noAdd2
 
@@ -1000,6 +1060,7 @@ particular that the environment ``myenv`` has not received any
 received indentation.
 
  .. literalinclude:: demonstrations/myenvironment-simple-noAdd-body1.tex
+ 	:class: .tex
  	:caption: ``myenv.tex`` output (using either :numref:`lst:myenv-noAdd1` or :numref:`lst:myenv-noAdd2`) 
  	:name: lst:myenv-output
 
@@ -1015,14 +1076,17 @@ running either
 we obtain the output given in :numref:`lst:myenv-output-4`.
 
  .. literalinclude:: demonstrations/myenv-noAdd3.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd3.yaml`` 
  	:name: lst:myenv-noAdd3
 
  .. literalinclude:: demonstrations/myenv-noAdd4.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd4.yaml`` 
  	:name: lst:myenv-noAdd4
 
  .. literalinclude:: demonstrations/myenvironment-simple-noAdd-body4.tex
+ 	:class: .tex
  	:caption: ``myenv.tex output`` (using either :numref:`lst:myenv-noAdd3` or :numref:`lst:myenv-noAdd4`) 
  	:name: lst:myenv-output-4
 
@@ -1030,6 +1094,7 @@ Let’s now allow ``myenv`` to have some optional and mandatory arguments,
 as in :numref:`lst:myenv-args`.
 
  .. literalinclude:: demonstrations/myenvironment-args.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` 
  	:name: lst:myenv-args
 
@@ -1048,6 +1113,7 @@ received no additional indent. This is because, when
 additional indent.
 
  .. literalinclude:: demonstrations/myenvironment-args-noAdd-body1.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-noAdd1` 
  	:name: lst:myenv-args-noAdd1
 
@@ -1056,10 +1122,12 @@ arguments of the ``myenv`` environment, as shown in, for example,
 :numref:`lst:myenv-noAdd5` and :numref:`lst:myenv-noAdd6`.
 
  .. literalinclude:: demonstrations/myenv-noAdd5.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd5.yaml`` 
  	:name: lst:myenv-noAdd5
 
  .. literalinclude:: demonstrations/myenv-noAdd6.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-noAdd6.yaml`` 
  	:name: lst:myenv-noAdd6
 
@@ -1079,10 +1147,12 @@ not received any additional indentation; in both cases, the *body* has
 not received any additional indentation.
 
  .. literalinclude:: demonstrations/myenvironment-args-noAdd5.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-noAdd5` 
  	:name: lst:myenv-args-noAdd5
 
  .. literalinclude:: demonstrations/myenvironment-args-noAdd6.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-noAdd6` 
  	:name: lst:myenv-args-noAdd6
 
@@ -1093,10 +1163,12 @@ the ``indentRules`` field; see, for example,
 :numref:`lst:myenv-rules1` and :numref:`lst:myenv-rules2`.
 
  .. literalinclude:: demonstrations/myenv-rules1.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-rules1.yaml`` 
  	:name: lst:myenv-rules1
 
  .. literalinclude:: demonstrations/myenv-rules2.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-rules2.yaml`` 
  	:name: lst:myenv-rules2
 
@@ -1113,6 +1185,7 @@ the ``outer`` environment) plus three spaces from
 :numref:`lst:myenv-rules1` or :numref:`lst:myenv-rules2`.
 
  .. literalinclude:: demonstrations/myenv-rules1.tex
+ 	:class: .tex
  	:caption: ``myenv.tex`` output (using either :numref:`lst:myenv-rules1` or :numref:`lst:myenv-rules2`) 
  	:name: lst:myenv-rules-output
 
@@ -1132,6 +1205,7 @@ body, optional argument and mandatory argument of ``myenv`` have *all*
 received the same customised indentation.
 
  .. literalinclude:: demonstrations/myenvironment-args-rules1.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-rules1` 
  	:name: lst:myenv-args-rules1
 
@@ -1140,10 +1214,12 @@ using, for example, :numref:`lst:myenv-rules3` and
 :numref:`lst:myenv-rules4`
 
  .. literalinclude:: demonstrations/myenv-rules3.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-rules3.yaml`` 
  	:name: lst:myenv-rules3
 
  .. literalinclude:: demonstrations/myenv-rules4.yaml
+ 	:class: .baseyaml
  	:caption: ``myenv-rules4.yaml`` 
  	:name: lst:myenv-rules4
 
@@ -1158,10 +1234,12 @@ then we obtain the respective outputs given in
 :numref:`lst:myenv-args-rules3` and :numref:`lst:myenv-args-rules4`.
 
  .. literalinclude:: demonstrations/myenvironment-args-rules3.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-rules3` 
  	:name: lst:myenv-args-rules3
 
  .. literalinclude:: demonstrations/myenvironment-args-rules4.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-rules4` 
  	:name: lst:myenv-args-rules4
 
@@ -1178,6 +1256,7 @@ indentation.
 .. describe:: noAdditionalIndentGlobal:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
  	:lines: 280-281
@@ -1209,10 +1288,12 @@ settings from ``myenv-rules1.yaml`` (in :numref:`lst:myenv-rules1`),
 the ``myenv`` environment still *does* receive indentation.
 
 .. literalinclude:: demonstrations/myenvironment-args-rules1-noAddGlobal1.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:noAdditionalIndentGlobal:environments` 
  	:name: lst:myenv-args-no-add-global1
 
 .. literalinclude:: demonstrations/myenvironment-args-rules1-noAddGlobal2.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:noAdditionalIndentGlobal:environments` and :numref:`lst:myenv-rules1` 
  	:name: lst:myenv-args-no-add-global2
 
@@ -1222,10 +1303,12 @@ the indentation of optional and mandatory arguments; on referencing
 :numref:`lst:mand-args-no-add-glob`
 
  .. literalinclude:: demonstrations/opt-args-no-add-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``opt-args-no-add-glob.yaml`` 
  	:name: lst:opt-args-no-add-glob
 
  .. literalinclude:: demonstrations/mand-args-no-add-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``mand-args-no-add-glob.yaml`` 
  	:name: lst:mand-args-no-add-glob
 
@@ -1245,16 +1328,19 @@ received any additional indentation, and in
 received any additional indentation.
 
 .. literalinclude:: demonstrations/myenvironment-args-rules1-noAddGlobal3.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:opt-args-no-add-glob` 
  	:name: lst:myenv-args-no-add-opt
 
 .. literalinclude:: demonstrations/myenvironment-args-rules1-noAddGlobal4.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:mand-args-no-add-glob` 
  	:name: lst:myenv-args-no-add-mand
 
 .. describe:: indentRulesGlobal:fields
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
  	:lines: 296-297
@@ -1284,10 +1370,12 @@ specified by the particular ``indentRules`` for ``myenv``
 :numref:`lst:myenv-rules1`.
 
  .. literalinclude:: demonstrations/myenvironment-args-global-rules1.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:indentRulesGlobal:environments` 
  	:name: lst:myenv-args-indent-rules-global1
 
  .. literalinclude:: demonstrations/myenvironment-args-global-rules2.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:myenv-rules1` and :numref:`lst:indentRulesGlobal:environments` 
  	:name: lst:myenv-args-indent-rules-global2
 
@@ -1296,10 +1384,12 @@ arguments, as detailed in :numref:`lst:opt-args-indent-rules-glob` and
 :numref:`lst:mand-args-indent-rules-glob`
 
  .. literalinclude:: demonstrations/opt-args-indent-rules-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``opt-args-indent-rules-glob.yaml`` 
  	:name: lst:opt-args-indent-rules-glob
 
  .. literalinclude:: demonstrations/mand-args-indent-rules-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``mand-args-indent-rules-glob.yaml`` 
  	:name: lst:mand-args-indent-rules-glob
 
@@ -1318,10 +1408,12 @@ has received two tabs worth of indentation, while the *mandatory*
 argument has done so in :numref:`lst:myenv-args-indent-rules-global4`.
 
  .. literalinclude:: demonstrations/myenvironment-args-global-rules3.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:opt-args-indent-rules-glob` 
  	:name: lst:myenv-args-indent-rules-global3
 
  .. literalinclude:: demonstrations/myenvironment-args-global-rules4.tex
+ 	:class: .tex
  	:caption: ``myenv-args.tex`` using :numref:`lst:mand-args-indent-rules-glob` 
  	:name: lst:myenv-args-indent-rules-global4
 
@@ -1341,10 +1433,12 @@ can customise the indentation that your ``item`` receives using
 ``indentRules``, as in :numref:`lst:item-rules1`
 
  .. literalinclude:: demonstrations/item-noAdd1.yaml
+ 	:class: .baseyaml
  	:caption: ``item-noAdd1.yaml`` 
  	:name: lst:item-noAdd1
 
  .. literalinclude:: demonstrations/item-rules1.yaml
+ 	:class: .baseyaml
  	:caption: ``item-rules1.yaml`` 
  	:name: lst:item-rules1
 
@@ -1363,10 +1457,12 @@ received any additional indentation, and in
 a single space of indentation, specified by :numref:`lst:item-rules1`.
 
  .. literalinclude:: demonstrations/items1-noAdd1.tex
+ 	:class: .tex
  	:caption: ``items1.tex`` using :numref:`lst:item-noAdd1` 
  	:name: lst:items1-noAdd1
 
  .. literalinclude:: demonstrations/items1-rules1.tex
+ 	:class: .tex
  	:caption: ``items1.tex`` using :numref:`lst:item-rules1` 
  	:name: lst:items1-rules1
 
@@ -1380,10 +1476,12 @@ or ``indentRulesGlobal`` using the ``items`` key, as demonstrated in
 ``item`` command is a member of ``indentRules`` by default.
 
  .. literalinclude:: demonstrations/items-noAdditionalGlobal.yaml
+ 	:class: .baseyaml
  	:caption: ``items-noAdditionalGlobal.yaml`` 
  	:name: lst:items-noAdditionalGlobal
 
  .. literalinclude:: demonstrations/items-indentRulesGlobal.yaml
+ 	:class: .baseyaml
  	:caption: ``items-indentRulesGlobal.yaml`` 
  	:name: lst:items-indentRulesGlobal
 
@@ -1412,10 +1510,12 @@ Let’s begin with the simple example in :numref:`lst:mycommand`; when
 :numref:`lst:mycommand-default`. [4]_
 
  .. literalinclude:: demonstrations/mycommand.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` 
  	:name: lst:mycommand
 
  .. literalinclude:: demonstrations/mycommand-default.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` default output 
  	:name: lst:mycommand-default
 
@@ -1425,10 +1525,12 @@ either in ‘scalar’ form, or in ‘field’ form, as shown in
 :numref:`lst:mycommand-noAdd1` and :numref:`lst:mycommand-noAdd2`
 
  .. literalinclude:: demonstrations/mycommand-noAdd1.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd1.yaml`` 
  	:name: lst:mycommand-noAdd1
 
  .. literalinclude:: demonstrations/mycommand-noAdd2.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd2.yaml`` 
  	:name: lst:mycommand-noAdd2
 
@@ -1444,10 +1546,12 @@ we receive the respective output given in
 :numref:`lst:mycommand-output-noAdd2`
 
  .. literalinclude:: demonstrations/mycommand-noAdd1.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd1` 
  	:name: lst:mycommand-output-noAdd1
 
  .. literalinclude:: demonstrations/mycommand-noAdd2.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd2` 
  	:name: lst:mycommand-output-noAdd2
 
@@ -1465,10 +1569,12 @@ explicit examples are given in :numref:`lst:mycommand-noAdd3` and
 :numref:`lst:mycommand-noAdd4`.
 
  .. literalinclude:: demonstrations/mycommand-noAdd3.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd3.yaml`` 
  	:name: lst:mycommand-noAdd3
 
  .. literalinclude:: demonstrations/mycommand-noAdd4.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd4.yaml`` 
  	:name: lst:mycommand-noAdd4
 
@@ -1484,10 +1590,12 @@ we receive the respective output given in
 :numref:`lst:mycommand-output-noAdd4`.
 
  .. literalinclude:: demonstrations/mycommand-noAdd3.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd3` 
  	:name: lst:mycommand-output-noAdd3
 
  .. literalinclude:: demonstrations/mycommand-noAdd4.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd4` 
  	:name: lst:mycommand-output-noAdd4
 
@@ -1505,10 +1613,12 @@ This is because, by default, ``noAdditionalIndentGlobal`` for
 .. _page:command:noAddGlobal:
 
  .. literalinclude:: demonstrations/mycommand-noAdd5.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd5.yaml`` 
  	:name: lst:mycommand-noAdd5
 
  .. literalinclude:: demonstrations/mycommand-noAdd6.yaml
+ 	:class: .baseyaml
  	:caption: ``mycommand-noAdd6.yaml`` 
  	:name: lst:mycommand-noAdd6
 
@@ -1524,10 +1634,12 @@ we receive the respective output given in
 :numref:`lst:mycommand-output-noAdd6`.
 
  .. literalinclude:: demonstrations/mycommand-noAdd5.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd5` 
  	:name: lst:mycommand-output-noAdd5
 
  .. literalinclude:: demonstrations/mycommand-noAdd6.tex
+ 	:class: .tex
  	:caption: ``mycommand.tex`` using :numref:`lst:mycommand-noAdd6` 
  	:name: lst:mycommand-output-noAdd6
 
@@ -1548,10 +1660,12 @@ Let’s use the simple example shown in :numref:`lst:ifelsefi1`; when
 has been accounted for correctly.
 
  .. literalinclude:: demonstrations/ifelsefi1.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` 
  	:name: lst:ifelsefi1
 
  .. literalinclude:: demonstrations/ifelsefi1-default.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` default output 
  	:name: lst:ifelsefi1-default
 
@@ -1562,10 +1676,12 @@ are shown in :numref:`lst:ifnum-noAdd` and
 :numref:`lst:ifnum-indent-rules`.
 
  .. literalinclude:: demonstrations/ifnum-noAdd.yaml
+ 	:class: .baseyaml
  	:caption: ``ifnum-noAdd.yaml`` 
  	:name: lst:ifnum-noAdd
 
  .. literalinclude:: demonstrations/ifnum-indent-rules.yaml
+ 	:class: .baseyaml
  	:caption: ``ifnum-indent-rules.yaml`` 
  	:name: lst:ifnum-indent-rules
 
@@ -1585,10 +1701,12 @@ we receive the respective output given in
 has received one tab and two spaces of indentation.
 
  .. literalinclude:: demonstrations/ifelsefi1-noAdd.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifnum-noAdd` 
  	:name: lst:ifelsefi1-output-noAdd
 
  .. literalinclude:: demonstrations/ifelsefi1-indent-rules.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifnum-indent-rules` 
  	:name: lst:ifelsefi1-output-indent-rules
 
@@ -1597,10 +1715,12 @@ in :numref:`lst:ifelsefi-noAdd-glob` and
 :numref:`lst:ifelsefi-indent-rules-global`.
 
  .. literalinclude:: demonstrations/ifelsefi-noAdd-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``ifelsefi-noAdd-glob.yaml`` 
  	:name: lst:ifelsefi-noAdd-glob
 
  .. literalinclude:: demonstrations/ifelsefi-indent-rules-global.yaml
+ 	:class: .baseyaml
  	:caption: ``ifelsefi-indent-rules-global.yaml`` 
  	:name: lst:ifelsefi-indent-rules-global
 
@@ -1619,10 +1739,12 @@ code blocks have received indentation, while in
 have received a single space of indentation.
 
  .. literalinclude:: demonstrations/ifelsefi1-noAdd-glob.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifelsefi-noAdd-glob` 
  	:name: lst:ifelsefi1-output-noAdd-glob
 
  .. literalinclude:: demonstrations/ifelsefi1-indent-rules-global.tex
+ 	:class: .tex
  	:caption: ``ifelsefi1.tex`` using :numref:`lst:ifelsefi-indent-rules-global` 
  	:name: lst:ifelsefi1-output-indent-rules-global
 
@@ -1632,10 +1754,12 @@ We can further explore the treatment of ``ifElseFi`` code blocks in
 of each of the ‘or statements’ have been indented.
 
  .. literalinclude:: demonstrations/ifelsefi2.tex
+ 	:class: .tex
  	:caption: ``ifelsefi2.tex`` 
  	:name: lst:ifelsefi2
 
  .. literalinclude:: demonstrations/ifelsefi2-default.tex
+ 	:class: .tex
  	:caption: ``ifelsefi2.tex`` default output 
  	:name: lst:ifelsefi2-default
 
@@ -1652,10 +1776,12 @@ shown in :numref:`lst:displayMath-noAdd` and
 :numref:`lst:displayMath-indent-rules`.
 
  .. literalinclude:: demonstrations/displayMath-noAdd.yaml
+ 	:class: .baseyaml
  	:caption: ``displayMath-noAdd.yaml`` 
  	:name: lst:displayMath-noAdd
 
  .. literalinclude:: demonstrations/displayMath-indent-rules.yaml
+ 	:class: .baseyaml
  	:caption: ``displayMath-indent-rules.yaml`` 
  	:name: lst:displayMath-indent-rules
 
@@ -1675,10 +1801,12 @@ has *not* received any additional indentation, while in
 block has received three tabs worth of indentation.
 
  .. literalinclude:: demonstrations/special1-noAdd.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` using :numref:`lst:displayMath-noAdd` 
  	:name: lst:special1-output-noAdd
 
  .. literalinclude:: demonstrations/special1-indent-rules.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` using :numref:`lst:displayMath-indent-rules` 
  	:name: lst:special1-output-indent-rules
 
@@ -1687,10 +1815,12 @@ in :numref:`lst:special-noAdd-glob` and
 :numref:`lst:special-indent-rules-global`.
 
  .. literalinclude:: demonstrations/special-noAdd-glob.yaml
+ 	:class: .baseyaml
  	:caption: ``special-noAdd-glob.yaml`` 
  	:name: lst:special-noAdd-glob
 
  .. literalinclude:: demonstrations/special-indent-rules-global.yaml
+ 	:class: .baseyaml
  	:caption: ``special-indent-rules-global.yaml`` 
  	:name: lst:special-indent-rules-global
 
@@ -1709,10 +1839,12 @@ code blocks have received indentation, while in
 have received a single space of indentation.
 
  .. literalinclude:: demonstrations/special1-noAdd-glob.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` using :numref:`lst:special-noAdd-glob` 
  	:name: lst:special1-output-noAdd-glob
 
  .. literalinclude:: demonstrations/special1-indent-rules-global.tex
+ 	:class: .tex
  	:caption: ``special1.tex`` using :numref:`lst:special-indent-rules-global` 
  	:name: lst:special1-output-indent-rules-global
 
@@ -1729,6 +1861,7 @@ throughout this . As discussed on
 ``latexindent.pl`` will not add indentation after headings.
 
  .. literalinclude:: demonstrations/headings2.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` 
  	:name: lst:headings2
 
@@ -1745,10 +1878,12 @@ argument of ``paragraph`` has received (default) indentation, and that
 the body after the heading statement has received (default) indentation.
 
  .. literalinclude:: demonstrations/headings2-mod3.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings3yaml` 
  	:name: lst:headings2-mod3
 
  .. literalinclude:: demonstrations/headings3.yaml
+ 	:class: .baseyaml
  	:caption: ``headings3.yaml`` 
  	:name: lst:headings3yaml
 
@@ -1766,10 +1901,12 @@ received no additional indentation, because we have specified
 ``noAdditionalIndent`` in scalar form.
 
  .. literalinclude:: demonstrations/headings2-mod4.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings4yaml` 
  	:name: lst:headings2-mod4
 
  .. literalinclude:: demonstrations/headings4.yaml
+ 	:class: .baseyaml
  	:caption: ``headings4.yaml`` 
  	:name: lst:headings4yaml
 
@@ -1780,10 +1917,12 @@ we receive the output in :numref:`lst:headings2-mod5`; note that the
 ``paragraph`` have *all* received three tabs worth of indentation.
 
  .. literalinclude:: demonstrations/headings2-mod5.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings5yaml` 
  	:name: lst:headings2-mod5
 
  .. literalinclude:: demonstrations/headings5.yaml
+ 	:class: .baseyaml
  	:caption: ``headings5.yaml`` 
  	:name: lst:headings5yaml
 
@@ -1792,10 +1931,12 @@ We may, instead, specify ``noAdditionalIndent`` in ‘field’ form, as in
 :numref:`lst:headings2-mod6`.
 
  .. literalinclude:: demonstrations/headings2-mod6.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings6yaml` 
  	:name: lst:headings2-mod6
 
  .. literalinclude:: demonstrations/headings6.yaml
+ 	:class: .baseyaml
  	:caption: ``headings6.yaml`` 
  	:name: lst:headings6yaml
 
@@ -1806,10 +1947,12 @@ only received a single space of indentation, while the body after the
 heading has received three tabs worth of indentation.
 
  .. literalinclude:: demonstrations/headings2-mod7.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings7yaml` 
  	:name: lst:headings2-mod7
 
  .. literalinclude:: demonstrations/headings7.yaml
+ 	:class: .baseyaml
  	:caption: ``headings7.yaml`` 
  	:name: lst:headings7yaml
 
@@ -1827,18 +1970,22 @@ remaining body after ``paragraph`` has received just two spaces of
 indentation.
 
  .. literalinclude:: demonstrations/headings2-mod8.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings8yaml` 
  	:name: lst:headings2-mod8
 
  .. literalinclude:: demonstrations/headings8.yaml
+ 	:class: .baseyaml
  	:caption: ``headings8.yaml`` 
  	:name: lst:headings8yaml
 
  .. literalinclude:: demonstrations/headings2-mod9.tex
+ 	:class: .tex
  	:caption: ``headings2.tex`` using :numref:`lst:headings9yaml` 
  	:name: lst:headings2-mod9
 
  .. literalinclude:: demonstrations/headings9.yaml
+ 	:class: .baseyaml
  	:caption: ``headings9.yaml`` 
  	:name: lst:headings9yaml
 
@@ -1872,10 +2019,12 @@ An example is shown in :numref:`lst:pgfkeysbefore`, with the default
 output given in :numref:`lst:pgfkeys1:default`.
 
  .. literalinclude:: demonstrations/pgfkeys1.tex
+ 	:class: .tex
  	:caption: ``pgfkeys1.tex`` 
  	:name: lst:pgfkeysbefore
 
  .. literalinclude:: demonstrations/pgfkeys1-default.tex
+ 	:class: .tex
  	:caption: ``pgfkeys1.tex`` default output 
  	:name: lst:pgfkeys1:default
 
@@ -1911,10 +2060,12 @@ A simple example is given in :numref:`lst:child1`, with default output
 in :numref:`lst:child1:default`.
 
  .. literalinclude:: demonstrations/child1.tex
+ 	:class: .tex
  	:caption: ``child1.tex`` 
  	:name: lst:child1
 
  .. literalinclude:: demonstrations/child1-default.tex
+ 	:class: .tex
  	:caption: ``child1.tex`` default output 
  	:name: lst:child1:default
 
@@ -1947,10 +2098,12 @@ An example is shown in :numref:`lst:psforeach1` with default output
 give in :numref:`lst:psforeach:default`.
 
  .. literalinclude:: demonstrations/psforeach1.tex
+ 	:class: .tex
  	:caption: ``psforeach1.tex`` 
  	:name: lst:psforeach1
 
  .. literalinclude:: demonstrations/psforeach1-default.tex
+ 	:class: .tex
  	:caption: ``psforeach1.tex`` default output 
  	:name: lst:psforeach:default
 
@@ -1987,6 +2140,7 @@ functions of the fields given in
 :numref:`lst:indentRulesGlobal` should now make sense.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
  	:lines: 280-292
@@ -1994,6 +2148,7 @@ functions of the fields given in
  	:lineno-start: 280
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
  	:lines: 296-308
@@ -2019,6 +2174,7 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
 :numref:`lst:commandCodeBlocks`.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
  	:lines: 311-325
@@ -2032,10 +2188,12 @@ used to generate images in ``PSTricks`` and ``tikz``; for example, let’s
 consider the code given in :numref:`lst:pstricks1`.
 
  .. literalinclude:: demonstrations/pstricks1.tex
+ 	:class: .tex
  	:caption: ``pstricks1.tex`` 
  	:name: lst:pstricks1
 
  .. literalinclude:: demonstrations/pstricks1-default.tex
+ 	:class: .tex
  	:caption: ``pstricks1`` default output 
  	:name: lst:pstricks1-default
 
@@ -2066,10 +2224,12 @@ running the command
 we obtain the output given in :numref:`lst:pstricks1-nrp`.
 
  .. literalinclude:: demonstrations/pstricks1-nrp.tex
+ 	:class: .tex
  	:caption: ``pstricks1.tex`` using :numref:`lst:noRoundParentheses` 
  	:name: lst:pstricks1-nrp
 
  .. literalinclude:: demonstrations/noRoundParentheses.yaml
+ 	:class: .baseyaml
  	:caption: ``noRoundParentheses.yaml`` 
  	:name: lst:noRoundParentheses
 
@@ -2094,10 +2254,12 @@ and run the command
 then the output is as in :numref:`lst:pstricks1-indent-rules`.
 
  .. literalinclude:: demonstrations/pstricks1-indent-rules.tex
+ 	:class: .tex
  	:caption: ``pstricks1.tex`` using :numref:`lst:defFunction` 
  	:name: lst:pstricks1-indent-rules
 
  .. literalinclude:: demonstrations/defFunction.yaml
+ 	:class: .baseyaml
  	:caption: ``defFunction.yaml`` 
  	:name: lst:defFunction
 
@@ -2114,10 +2276,12 @@ specified by :numref:`lst:defFunction`.
 :numref:`lst:tikz-node1-default`.
 
  .. literalinclude:: demonstrations/tikz-node1.tex
+ 	:class: .tex
  	:caption: ``tikz-node1.tex`` 
  	:name: lst:tikz-node1
 
  .. literalinclude:: demonstrations/tikz-node1-default.tex
+ 	:class: .tex
  	:caption: ``tikz-node1`` default output 
  	:name: lst:tikz-node1-default
 
@@ -2159,10 +2323,12 @@ running the command
 we receive the output given in :numref:`lst:tikz-node1-draw`.
 
  .. literalinclude:: demonstrations/tikz-node1-draw.tex
+ 	:class: .tex
  	:caption: ``tikz-node1.tex`` using :numref:`lst:draw` 
  	:name: lst:tikz-node1-draw
 
  .. literalinclude:: demonstrations/draw.yaml
+ 	:class: .baseyaml
  	:caption: ``draw.yaml`` 
  	:name: lst:draw
 
@@ -2180,10 +2346,12 @@ Let’s compare this with the output from using the YAML settings in
 given in :numref:`lst:tikz-node1-no-strings`.
 
  .. literalinclude:: demonstrations/tikz-node1-no-strings.tex
+ 	:class: .tex
  	:caption: ``tikz-node1.tex`` using :numref:`lst:no-strings` 
  	:name: lst:tikz-node1-no-strings
 
  .. literalinclude:: demonstrations/no-strings.yaml
+ 	:class: .baseyaml
  	:caption: ``no-strings.yaml`` 
  	:name: lst:no-strings
 
@@ -2208,14 +2376,17 @@ or:numref:\ ``lst:amalgamate-demo1`` is equivalent to using the settings
 in :numref:`lst:amalgamate-demo2`.
 
  .. literalinclude:: demonstrations/amalgamate-demo.yaml
+ 	:class: .baseyaml
  	:caption: ``amalgamate-demo.yaml`` 
  	:name: lst:amalgamate-demo
 
  .. literalinclude:: demonstrations/amalgamate-demo1.yaml
+ 	:class: .baseyaml
  	:caption: ``amalgamate-demo1.yaml`` 
  	:name: lst:amalgamate-demo1
 
  .. literalinclude:: demonstrations/amalgamate-demo2.yaml
+ 	:class: .baseyaml
  	:caption: ``amalgamate-demo2.yaml`` 
  	:name: lst:amalgamate-demo2
 
@@ -2226,6 +2397,7 @@ overwritten. For example, using the settings in
 in that field will be used.
 
  .. literalinclude:: demonstrations/amalgamate-demo3.yaml
+ 	:class: .baseyaml
  	:caption: ``amalgamate-demo3.yaml`` 
  	:name: lst:amalgamate-demo3
 
@@ -2239,10 +2411,12 @@ We may explore this feature further with the code in
 :numref:`lst:for-each-default`.
 
  .. literalinclude:: demonstrations/for-each.tex
+ 	:class: .tex
  	:caption: ``for-each.tex`` 
  	:name: lst:for-each
 
  .. literalinclude:: demonstrations/for-each-default.tex
+ 	:class: .tex
  	:caption: ``for-each`` default output 
  	:name: lst:for-each-default
 
@@ -2256,10 +2430,12 @@ Let’s compare this with the output from using the YAML settings in
 given in :numref:`lst:for-each-mod1`.
 
  .. literalinclude:: demonstrations/for-each-mod1.tex
+ 	:class: .tex
  	:caption: ``for-each.tex`` using :numref:`lst:foreach` 
  	:name: lst:for-each-mod1
 
  .. literalinclude:: demonstrations/foreach.yaml
+ 	:class: .baseyaml
  	:caption: ``foreach.yaml`` 
  	:name: lst:foreach
 
@@ -2287,10 +2463,12 @@ For example, consider the sample file in :numref:`lst:ifnextchar`,
 which has default output in :numref:`lst:ifnextchar-default`.
 
  .. literalinclude:: demonstrations/ifnextchar.tex
+ 	:class: .tex
  	:caption: ``ifnextchar.tex`` 
  	:name: lst:ifnextchar
 
  .. literalinclude:: demonstrations/ifnextchar-default.tex
+ 	:class: .tex
  	:caption: ``ifnextchar.tex`` default output 
  	:name: lst:ifnextchar-default
 
@@ -2310,10 +2488,12 @@ indent its body successfully, because the ``\@ifnextchar[`` command has
 not been found.
 
  .. literalinclude:: demonstrations/ifnextchar-off.tex
+ 	:class: .tex
  	:caption: ``ifnextchar.tex`` using :numref:`lst:no-ifnextchar` 
  	:name: lst:ifnextchar-off
 
  .. literalinclude:: demonstrations/no-ifnextchar.yaml
+ 	:class: .baseyaml
  	:caption: ``no-ifnextchar.yaml`` 
  	:name: lst:no-ifnextchar
 

@@ -175,15 +175,22 @@ if(!$readTheDocsMode){
         $body =~ s/\\begin\{minipage\}\{.*?\}//sg;
         $body =~ s/\\end\{minipage\}.*$//mg;
         $body =~ s/\\hfill.*$//mg;
-        $body =~ s/\\cmhlistingsfromfile(.*)\*/\\cmhlistingsfromfile$1/mg;
-        $body =~ s/\\cmhlistingsfromfile(.*?\})\[.*?\]/\\cmhlistingsfromfile$1/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[style=yaml-LST\]\*?/\\cmhlistingsfromfile/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]\*?/\\cmhlistingsfromfile/mg;
-        $body =~ s/\\cmhlistingsfromfile/\n\n\\cmhlistingsfromfile/sg;
-        $body =~ s/(\\cmhlistingsfromfile.*)/$1\n\n/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[/\\cmhlistingsfromfilefour\[/mg;
-        $body =~ s/\}\[\h*width=.*?\]\{/\}\{/sg;
-        $body =~ s/\}\[\h*yaml-TCB.*?\]\{/\}\{/sg;
+        $body =~ s|\}\h*\[\h*width=.*?\]\h*\{|\}\{|sg;
+        $body =~ s/\\cmhlistingsfromfile(.*)\h*$/
+                    my $listingsbody = $1;
+                    $listingsbody =~ s|\*||sg;
+                    my $rst_class = "tex";
+                    if($listingsbody =~ m|MLB-TCB|s ){
+                        $rst_class = "mlbyaml";
+                    } elsif ($listingsbody =~ m|yaml-TCB|s or $listingsbody =~ m|defaultSettings\.yaml|s or $listingsbody =~ m|yaml-LST|s) {
+                        $rst_class = "baseyaml";
+                    }
+                    $listingsbody =~ s|\}\h*\[.*?\]|\}|s;
+                    $listingsbody =~ s|\[style=yaml-LST\]\*?||sg;
+                    $listingsbody =~ s"\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]""sg;
+                    $listingsbody .= "\{".$rst_class."\}";
+                    my $listingname = ($listingsbody =~ m|^\h*\[|s ? "cmhlistingsfromfilefour": "cmhlistingsfromfile");
+                    "\n\n\\$listingname".$listingsbody."\n\n";/mgex;
         
         # get rid of wrapfigure stuff
         $body =~ s/\\begin\{adjustwidth\}\{.*?\}\{.*?\}//sg;

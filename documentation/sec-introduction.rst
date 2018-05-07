@@ -76,12 +76,14 @@ capable of producing.
 The different listings are presented using different styles:
 
  .. literalinclude:: demonstrations/demo-tex.tex
+ 	:class: .tex
  	:caption: ``demo-tex.tex`` 
  	:name: lst:demo-tex
 
 This type of listing is a ``.tex`` file.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference-demo
  	:lines: 38-42
@@ -94,6 +96,7 @@ given (as here) it means that the snippet is taken directly from
 :numref:`sec:defuseloc`.
 
  .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
  	:lines: 395-397

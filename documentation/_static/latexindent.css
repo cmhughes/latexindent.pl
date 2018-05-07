@@ -1,0 +1,4 @@
+div.baseyaml > div.highlight{background-color: #b3d9ff; border-top: 5px solid #0066cc;}
+/*div.baseyaml > div.highlight > pre > span{color: black; }*/
+div.mlbyaml > div.highlight{background-color: #EDE275;; border-top: 5px solid #FDD017;}
+div.tex > div.highlight{background-color:  #e0e0d1; border-top: 5px solid #adad85;}

@@ -13,6 +13,7 @@ The main limitation is to do with the alignment routine discussed on
 example, consider the file given in :numref:`lst:matrix2`.
 
  .. literalinclude:: demonstrations/matrix2.tex
+ 	:class: .tex
  	:caption: ``matrix2.tex`` 
  	:name: lst:matrix2
 
@@ -21,6 +22,7 @@ is clear that the alignment routine has not worked as hoped, but it is
 *expected*.
 
  .. literalinclude:: demonstrations/matrix2-default.tex
+ 	:class: .tex
  	:caption: ``matrix2.tex`` default output 
  	:name: lst:matrix2-default
 
