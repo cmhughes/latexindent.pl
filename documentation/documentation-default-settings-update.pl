@@ -175,7 +175,6 @@ if(!$readTheDocsMode){
         $body =~ s/\\begin\{minipage\}\{.*?\}//sg;
         $body =~ s/\\end\{minipage\}.*$//mg;
         $body =~ s/\\hfill.*$//mg;
-        $body =~ s|\}\h*\[\h*width=.*?\]\h*\{|\}\{|sg;
         $body =~ s/\\cmhlistingsfromfile(.*)\h*$/
                     my $listingsbody = $1;
                     $listingsbody =~ s|\*||sg;
@@ -191,6 +190,7 @@ if(!$readTheDocsMode){
                     $listingsbody .= "\{".$rst_class."\}";
                     my $listingname = ($listingsbody =~ m|^\h*\[|s ? "cmhlistingsfromfilefour": "cmhlistingsfromfile");
                     "\n\n\\$listingname".$listingsbody."\n\n";/mgex;
+        $body =~ s|\}\h*\[\h*width=.*?\]\h*\{|\}\{|sg;
         
         # get rid of wrapfigure stuff
         $body =~ s/\\begin\{adjustwidth\}\{.*?\}\{.*?\}//sg;
@@ -240,7 +240,7 @@ if(!$readTheDocsMode){
                         (?:\\begin)       # cluster-only (), don't capture
                     ).                    # any character, but not \\begin
                 )*?\\end\{commandshell\})(?:\R|\h)*(\\label\{.*?\})/$2\n\n$1/xsg;
-        $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}/sg;
+        $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}style:commandshell/sg;
         $body =~ s/\\end\{commandshell\}/\\end\{verbatim\}/sg;
         $body =~ s/\\begin\{cmhlistings\}/\\begin\{verbatim\}/sg;
         $body =~ s/\\end\{cmhlistings\}(\[.*?\])?/\\end\{verbatim\}/sg;

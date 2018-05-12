@@ -24,7 +24,8 @@ equal to ``0`` unless otherwise stated.
 ``latexindent.pl`` can be called to act on a file without specifying the
 file extension. For example we can call
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile
 
@@ -88,7 +89,8 @@ oldest backup file and keeping only the most recent; for example, with
 ``maxNumberOfBackUps: 4``, and ``cycleThroughBackUps`` set to ``1`` then
 the ``copy`` procedure given below would be obeyed.
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     copy myfile.bak1 to myfile.bak0
     copy myfile.bak2 to myfile.bak1
@@ -448,7 +450,8 @@ and the YAML files in :numref:`lst:tabular2YAML` –
 
 On running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl tabular2.tex 
     latexindent.pl tabular2.tex -l tabular2.yaml
@@ -557,7 +560,8 @@ assuming that you have a command called ``\matrix`` and that it is
 populated within ``lookForAlignDelims`` (which it is, by default), and
 that you run the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl matrix1.tex 
         
@@ -709,18 +713,19 @@ Now consider the YAML files shown in
 :numref:`lst:specialBeforeCommand-yaml`
 
  .. literalinclude:: demonstrations/specialsLeftRight.yaml
- 	:class: .tex
+ 	:class: .baseyaml
  	:caption: ``specialsLeftRight.yaml`` 
  	:name: lst:specialsLeftRight-yaml
 
  .. literalinclude:: demonstrations/specialBeforeCommand.yaml
- 	:class: .tex
+ 	:class: .baseyaml
  	:caption: ``specialBeforeCommand.yaml`` 
  	:name: lst:specialBeforeCommand-yaml
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
@@ -762,7 +767,8 @@ file in :numref:`lst:special2`.
 Upon saving the YAML settings in :numref:`lst:middle-yaml` and
 :numref:`lst:middle1-yaml` and running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl special2.tex -l=middle
     latexindent.pl special2.tex -l=middle1
@@ -852,7 +858,8 @@ you have the text from :numref:`lst:headings1` saved into
 
 If you run the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl headings1.tex -l=headings1.yaml
 
@@ -872,7 +879,8 @@ then you should receive the output given in
 Now say that you modify the ``YAML`` from :numref:`lst:headings1yaml`
 so that the ``paragraph`` ``level`` is ``1``; after running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl headings1.tex -l=headings1.yaml
 
@@ -905,7 +913,8 @@ Now say that, for example, you have the ``max-indentation1.yaml`` from
 :numref:`lst:max-indentation1yaml` and that you run the following
 command:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl mult-nested.tex -l=max-indentation1
         
@@ -1049,7 +1058,8 @@ have a few choices available to us, as demonstrated in
 
 On applying either of the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv.tex -l myenv-noAdd1.yaml  
     latexindent.pl myenv.tex -l myenv-noAdd2.yaml  
@@ -1068,7 +1078,8 @@ Upon changing the YAML files to those shown in
 :numref:`lst:myenv-noAdd3` and :numref:`lst:myenv-noAdd4`, and
 running either
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv.tex -l myenv-noAdd3.yaml  
     latexindent.pl myenv.tex -l myenv-noAdd4.yaml  
@@ -1100,7 +1111,8 @@ as in :numref:`lst:myenv-args`.
 
 Upon running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex  
 
@@ -1133,7 +1145,8 @@ arguments of the ``myenv`` environment, as shown in, for example,
 
 Upon running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv.tex -l myenv-noAdd5.yaml  
     latexindent.pl myenv.tex -l myenv-noAdd6.yaml  
@@ -1174,7 +1187,8 @@ the ``indentRules`` field; see, for example,
 
 On applying either of the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv.tex -l myenv-rules1.yaml  
     latexindent.pl myenv.tex -l myenv-rules2.yaml  
@@ -1196,7 +1210,8 @@ Returning to the example in :numref:`lst:myenv-args` that contains
 optional and mandatory arguments. Upon using
 :numref:`lst:myenv-rules1` as in
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv-args.tex -l=myenv-rules1.yaml  
 
@@ -1225,7 +1240,8 @@ using, for example, :numref:`lst:myenv-rules3` and
 
 After running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv-args.tex -l myenv-rules3.yaml  
     latexindent.pl myenv-args.tex -l myenv-rules4.yaml  
@@ -1271,7 +1287,8 @@ particular *for the environments* key (see
 you change the value of ``environments`` to ``1`` in
 :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myenv-args.tex -l env-noAdditionalGlobal.yaml
     latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
@@ -1314,7 +1331,8 @@ the indentation of optional and mandatory arguments; on referencing
 
 we may run the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl  myenv-args.tex -local opt-args-no-add-glob.yaml
     latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
@@ -1353,7 +1371,8 @@ The final check that ``latexindent.pl`` will make is to look for
 ``environments`` field to anything involving horizontal space, say
 ``" "``, and then run the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl  myenv-args.tex -l env-indentRules.yaml
     latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
@@ -1395,7 +1414,8 @@ arguments, as detailed in :numref:`lst:opt-args-indent-rules-glob` and
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl  myenv-args.tex -local opt-args-indent-rules-glob.yaml
     latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
@@ -1444,7 +1464,8 @@ can customise the indentation that your ``item`` receives using
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl items1.tex -local item-noAdd1.yaml  
     latexindent.pl items1.tex -local item-rules1.yaml  
@@ -1487,7 +1508,8 @@ or ``indentRulesGlobal`` using the ``items`` key, as demonstrated in
 
 Upon running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl items1.tex -local items-noAdditionalGlobal.yaml
     latexindent.pl items1.tex -local items-indentRulesGlobal.yaml
@@ -1536,7 +1558,8 @@ either in ‘scalar’ form, or in ‘field’ form, as shown in
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl mycommand.tex -l mycommand-noAdd1.yaml  
     latexindent.pl mycommand.tex -l mycommand-noAdd2.yaml  
@@ -1580,7 +1603,8 @@ explicit examples are given in :numref:`lst:mycommand-noAdd3` and
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl mycommand.tex -l mycommand-noAdd3.yaml  
     latexindent.pl mycommand.tex -l mycommand-noAdd4.yaml  
@@ -1624,7 +1648,8 @@ This is because, by default, ``noAdditionalIndentGlobal`` for
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl mycommand.tex -l mycommand-noAdd5.yaml  
     latexindent.pl mycommand.tex -l mycommand-noAdd6.yaml  
@@ -1687,7 +1712,8 @@ are shown in :numref:`lst:ifnum-noAdd` and
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl ifelsefi1.tex -local ifnum-noAdd.yaml  
     latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml  
@@ -1726,7 +1752,8 @@ in :numref:`lst:ifelsefi-noAdd-glob` and
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml  
     latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml  
@@ -1787,7 +1814,8 @@ shown in :numref:`lst:displayMath-noAdd` and
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl special1.tex -local displayMath-noAdd.yaml  
     latexindent.pl special1.tex -l displayMath-indent-rules.yaml  
@@ -1826,7 +1854,8 @@ in :numref:`lst:special-noAdd-glob` and
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl special1.tex -local special-noAdd-glob.yaml  
     latexindent.pl special1.tex -l special-indent-rules-global.yaml  
@@ -1868,7 +1897,8 @@ throughout this . As discussed on
 On using the YAML file in :numref:`lst:headings3yaml` by running the
 command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl headings2.tex -l headings3.yaml      
         
@@ -1890,7 +1920,8 @@ the body after the heading statement has received (default) indentation.
 If we specify ``noAdditionalIndent`` as in :numref:`lst:headings4yaml`
 and run the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl headings2.tex -l headings4.yaml      
         
@@ -2216,7 +2247,8 @@ of ``noAdditionalIndentGlobal`` as discussed on
 Upon using the YAML settings in :numref:`lst:noRoundParentheses`, and
 running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
             
@@ -2246,7 +2278,8 @@ tabbed indentation in :numref:`lst:pstricks1-nrp`.
 Let’s explore this using the YAML given in :numref:`lst:defFunction`
 and run the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl pstricks1.tex -l defFunction.yaml
             
@@ -2316,7 +2349,8 @@ consumes:
 We can explore this further, for example using :numref:`lst:draw` and
 running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl tikz-node1.tex -l draw.yaml  
 
@@ -2339,7 +2373,8 @@ two-spaces worth of indentation specified in :numref:`lst:draw`.
 Let’s compare this with the output from using the YAML settings in
 :numref:`lst:no-strings`, and running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl tikz-node1.tex -l no-strings.yaml  
 
@@ -2423,7 +2458,8 @@ We may explore this feature further with the code in
 Let’s compare this with the output from using the YAML settings in
 :numref:`lst:foreach`, and running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl for-each.tex -l foreach.yaml  
 

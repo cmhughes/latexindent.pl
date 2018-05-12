@@ -43,7 +43,8 @@ depending on which of the following options are used.
 
 .. describe:: -v, –version
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -v
           
@@ -52,7 +53,8 @@ This will output only the version number to the terminal.
 
 .. describe:: -h, –help
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -h
           
@@ -60,7 +62,8 @@ This will output only the version number to the terminal.
 As above this will output a welcome message to the terminal, including
 the version number and available options.
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex
           
@@ -71,7 +74,8 @@ any way using this command.
 
 .. describe:: -w, –overwrite
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -w myfile.tex
     latexindent.pl --overwrite myfile.tex
@@ -90,7 +94,8 @@ asking you to check the permissions of the backup file.
 
 .. describe:: -o=output.tex,–outputfile=output.tex
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -o=output.tex myfile.tex
     latexindent.pl myfile.tex -o=output.tex 
@@ -106,7 +111,8 @@ safer than the other way round).
 
 Note that using ``-o`` as above is equivalent to using
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex > output.tex
 
@@ -115,7 +121,8 @@ You can call the ``-o`` switch with the name of the output file
 extension from the original file. For example, the following two calls
 to ``latexindent.pl`` are equivalent:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=output
     latexindent.pl myfile.tex -o=output.tex
@@ -125,7 +132,8 @@ this will concatenate the name of the input file and the text given to
 the ``-o`` switch. For example, the following two calls to
 ``latexindent.pl`` are equivalent:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=+new
     latexindent.pl myfile.tex -o=myfilenew.tex
@@ -136,7 +144,8 @@ successively for the name of your output file concatenated with
 :math:`0, 1, \ldots` while the name of the output file exists. For
 example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=output++
 
@@ -145,7 +154,8 @@ then output to ``output1.tex``, and so on.
 
 Calling ``latexindent.pl`` with simply
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=++
 
@@ -155,7 +165,8 @@ tells it to output to ``myfile0.tex``, but if it exists then output to
 The ``+`` and ``++`` feature of the ``-o`` switch can be combined; for
 example, calling
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=+out++
 
@@ -166,7 +177,8 @@ There is no need to specify a file extension when using the ``++``
 feature, but if you wish to, then you should include it *after* the
 ``++`` symbols, for example
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -o=+out++.tex
 
@@ -175,7 +187,8 @@ changed from Version 2.2 to Version 3.0 for this flag.
 
 .. describe:: -s, –silent
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -s myfile.tex
     latexindent.pl myfile.tex -s
@@ -189,7 +202,8 @@ Silent mode: no output will be given to the terminal.
 
 .. _page:traceswitch:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -t myfile.tex
     latexindent.pl myfile.tex -t
@@ -204,7 +218,8 @@ affect performance of the script.
 
 .. describe:: -tt, –ttrace
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -tt myfile.tex
     latexindent.pl myfile.tex -tt
@@ -221,7 +236,8 @@ script will be affected).
 
 .. _page:localswitch:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l myfile.tex
     latexindent.pl -l=myyaml.yaml myfile.tex
@@ -245,7 +261,8 @@ like to load a settings file in the current working directory that is
 *not* called ``localSettings.yaml``. In fact, you can specify both
 *relative* and *absolute paths* for your YAML files; for example
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=../../myyaml.yaml myfile.tex
     latexindent.pl -l=/home/cmhughes/Desktop/myyaml.yaml myfile.tex
@@ -258,7 +275,8 @@ You will find a lot of other explicit demonstrations of how to use the
 You can call the ``-l`` switch with a ‘+’ symbol either before or after
 another YAML file; for example:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=+myyaml.yaml  myfile.tex
     latexindent.pl -l "+ myyaml.yaml" myfile.tex
@@ -267,7 +285,8 @@ another YAML file; for example:
 
 which translate, respectively, to
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
     latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
@@ -276,14 +295,16 @@ which translate, respectively, to
 
 Note that the following is *not* allowed:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l+myyaml.yaml myfile.tex
         
 
 and
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l + myyaml.yaml myfile.tex
         
@@ -295,7 +316,8 @@ demonstrated above.
 
 You may also choose to omit the ``yaml`` extension, such as
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=localSettings,myyaml myfile.tex
         
@@ -306,7 +328,8 @@ You may also choose to omit the ``yaml`` extension, such as
 
 .. _page:yamlswitch:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -y="defaultIndent: ' '"
     latexindent.pl myfile.tex -y="defaultIndent: ' ',maximumIndentation:' '"
@@ -327,7 +350,8 @@ specified using the ``-l`` switch. This is discussed further in
 
 .. describe:: -d, –onlydefault
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -d myfile.tex
           
@@ -345,7 +369,8 @@ the ``-y`` switch.
 
 .. describe:: -c, –cruft=<directory>
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -c=/path/to/directory/ myfile.tex
           
@@ -356,7 +381,8 @@ these ‘cruft’ files to another directory.
 
 .. describe:: -g, –logfile=<name of log file>
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -g=other.log myfile.tex
     latexindent.pl -g other.log myfile.tex
@@ -370,7 +396,8 @@ with your chosen name after the ``-g`` switch as demonstrated above.
 
 .. describe:: -sl, –screenlog
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -sl myfile.tex
     latexindent.pl -screenlog myfile.tex
@@ -381,7 +408,8 @@ screen, as well as to your chosen log file.
 
 .. describe:: -m, –modifylinebreaks
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m myfile.tex
     latexindent.pl -modifylinebreaks myfile.tex
@@ -394,7 +422,8 @@ modify line breaks; for full details see
 ``latexindent.pl`` can also be called on a file without the file
 extension, for example
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile
         
@@ -405,7 +434,8 @@ details.
 
 .. describe:: STDIN
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     cat myfile.tex | latexindent.pl
         
@@ -418,7 +448,8 @@ will output the results of operating upon ``myfile.tex``
 Similarly, if you simply type ``latexindent.pl`` at the command line,
 then it will expect (STDIN) input from the command line.
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl
           

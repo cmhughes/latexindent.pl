@@ -53,7 +53,8 @@ blank lines illustrated by this switch. As an example,
 :numref:`lst:mlb-bl` shows a sample file with blank lines; upon
 running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex -m  
 
@@ -99,7 +100,8 @@ For example, consider the file give in :numref:`lst:textwrap1`.
 Using the file ``textwrap1.yaml`` in :numref:`lst:textwrap1-yaml`, and
 running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 
@@ -128,7 +130,8 @@ exempt from the routine. For example, using the file in
 and running the following command and continuing to use
 ``textwrap1.yaml`` from :numref:`lst:textwrap1-yaml`,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
 
@@ -151,7 +154,8 @@ For example, using the file in :numref:`lst:textwrap3`
 and running the following command and continuing to use
 ``textwrap1.yaml`` from :numref:`lst:textwrap1-yaml`,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 
@@ -187,7 +191,8 @@ For example starting with the file in :numref:`lst:textwrap4`
 and using ``textwrap2.yaml`` from :numref:`lst:textwrap2-yaml` with
 the following command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
@@ -263,7 +268,8 @@ For example, consider ``multiple-sentences.tex`` shown in
 If we use the YAML files in :numref:`lst:manipulate-sentences-yaml`
 and :numref:`lst:keep-sen-line-breaks-yaml`, and run the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
@@ -351,7 +357,8 @@ Let’s explore a few of the switches in ``sentencesFollow``; let’s start
 with :numref:`lst:multiple-sentences`, and use the YAML settings given
 in :numref:`lst:sentences-follow1-yaml`. Using the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
@@ -381,7 +388,8 @@ with the ``.tex`` file detailed in :numref:`lst:multiple-sentences1`.
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
@@ -428,7 +436,8 @@ to define sentences to begin with other characters.
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
@@ -470,7 +479,8 @@ can populate the ``other`` field with any character that we wish; for
 example, using the YAML specified in :numref:`lst:sentences-end1-yaml`
 and the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
     latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
@@ -520,7 +530,8 @@ Let’s consider the file shown in :numref:`lst:url`.
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl url -m -l=manipulate-sentences.yaml
 
@@ -550,7 +561,8 @@ The ``basicFullStop`` routine should probably be avoided in most
 situations, as it does not accomodate the specifications above. For
 example, using the following command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl url -m -l=alt-full-stop1.yaml
 
@@ -582,7 +594,8 @@ not be part of the sentence manipulation routine.
 For example, if we begin with the ``.tex`` file in
 :numref:`lst:multiple-sentences3`, and run the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
         
@@ -604,7 +617,8 @@ line breaks internal to the sentence will be removed. For example, if we
 use the ``.tex`` file in :numref:`lst:multiple-sentences4` and run the
 commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
@@ -632,7 +646,8 @@ Once you’ve read :numref:`sec:poly-switches`, you will know that you
 can accomodate the removal of internal sentence line breaks by using the
 YAML in :numref:`lst:item-rules2-yaml` and the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
         
@@ -703,7 +718,8 @@ together with the YAML settings in :numref:`lst:remove-para1-yaml`.
 
 Upon running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 
@@ -719,7 +735,8 @@ in the file in :numref:`lst:shortlines` which has crept in to the
 output in :numref:`lst:shortlines1`. This can be fixed using the YAML
 file in :numref:`lst:removeTWS-before` and running, for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
         
@@ -750,7 +767,8 @@ example, let’s consider the files in :numref:`lst:shortlines-mand` and
 
 Upon running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m shortlines-mand.tex -o shortlines-mand1.tex -l remove-para1.yaml
     latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
@@ -797,7 +815,8 @@ environment should receive the treatment.
 
 Upon running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m shortlines-envs.tex -o shortlines-envs2.tex -l remove-para2.yaml
     latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.yaml
@@ -838,7 +857,8 @@ any other code-blocks. For example, consider the file in
 
 Upon running the following command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 
@@ -894,7 +914,8 @@ turn, consider the settings in :numref:`lst:stop-command-yaml` and
 Upon using the settings from :numref:`lst:remove-para4-yaml` and
 running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
     latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
@@ -988,7 +1009,7 @@ settings (immediately after the ``environments`` field) and that
 specified. Note that all poly-switches are *off* by default.
 
  .. literalinclude:: ../defaultSettings.yaml
- 	:class: .baseyaml
+ 	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
  	:lines: 445-454
@@ -1026,7 +1047,8 @@ particular, let’s allow each of them in turn to take a value of
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb.tex -l env-mlb1.yaml
     latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
@@ -1140,7 +1162,8 @@ particular, let’s allow each of them in turn to take a value of
 
 After running the following commands,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb.tex -l env-mlb7.yaml
     latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
@@ -1323,7 +1346,8 @@ After
 
 running the commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml
     latexindent.pl -m env-mlb4.tex -l env-mlb14.yaml
@@ -1373,7 +1397,8 @@ but you can combine all of the YAML settings in
 alternatively, you could tell ``latexindent.pl`` to load them all by
 using the following command, for example
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
 
@@ -1410,7 +1435,8 @@ The
 
 output from the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
     latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
@@ -1464,7 +1490,8 @@ Upon
 
 running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
     latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,UnpreserveBlankLines.yaml
@@ -1500,7 +1527,8 @@ We can explore this further using the blank-line poly-switch value of
 
 Upon running the following commands
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
     latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
@@ -1668,7 +1696,8 @@ settings in :numref:`lst:mycom-mlb1`; with reference to
 
 Upon running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 
@@ -1722,7 +1751,8 @@ It is very easy to have conflicting poly-switches; if we use the example
 from :numref:`lst:mycommand1`, and consider the YAML settings given in
 :numref:`lst:mycom-mlb4`. The output from running
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 
@@ -1756,7 +1786,8 @@ recently-processed code block and associated poly-switch takes priority.
 We can explore this further by considering the YAML settings in
 :numref:`lst:mycom-mlb5`; upon running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 
@@ -1813,7 +1844,8 @@ that it contains nested environments.
 Let’s use the YAML settings given in
 :numref:`lst:nested-env-mlb1-yaml`, which upon running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
             
@@ -1898,7 +1930,8 @@ indentation to add to the subsequent text (in this case, ``\end{one}``).
 We can explore this further using the poly-switches in
 :numref:`lst:nested-env-mlb2`; upon running the command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
             

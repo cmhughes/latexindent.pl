@@ -103,7 +103,8 @@ The ``-l`` switch tells ``latexindent.pl`` to look for
 ``localSettings.yaml`` in the *same directory* as ``myfile.tex``. For
 example, if you use the following command
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l myfile.tex
 
@@ -114,7 +115,8 @@ If you’d prefer to name your ``localSettings.yaml`` file something
 different, (say, ``mysettings.yaml`` as in :numref:`lst:mysettings`)
 then you can call ``latexindent.pl`` using, for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=mysettings.yaml myfile.tex
 
@@ -152,7 +154,8 @@ You may use the ``-y`` switch to load your settings; for example, if you
 wished to specify the settings from :numref:`lst:localSettings` using
 the ``-y`` switch, then you could use the following command:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
         
@@ -161,7 +164,8 @@ Note the use of ``;`` to specify another field within
 ``verbatimEnvironments``. This is shorthand, and equivalent, to using
 the following command:
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
         
@@ -169,7 +173,8 @@ the following command:
 You may, of course, specify settings using the ``-y`` switch as well as,
 for example, settings loaded using the ``-l`` switch; for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
         

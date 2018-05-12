@@ -116,7 +116,8 @@ Quick start
 
 If you’d like to get started with ``latexindent.pl`` then simply type
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl myfile.tex
         
@@ -136,7 +137,8 @@ missing perl modules.
 run the following script, you should be prompted to install the
 appropriate modules.
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     perl latexindent-module-installer.pl
         

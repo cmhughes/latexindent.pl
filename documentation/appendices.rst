@@ -53,7 +53,8 @@ Module installer script
 ``latexindent.pl`` ships with a helper script that will install any
 missing ``perl`` modules on your system; if you run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     perl latexindent-module-installer.pl
          
@@ -76,7 +77,8 @@ Manually installing the modules given in :numref:`lst:helloworld` will
 vary depending on your operating system and ``Perl`` distribution. For
 example, Ubuntu users might visit the software center, or else run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo perl -MCPAN -e 'install "File::HomeDir"'
      
@@ -85,7 +87,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017);
 possible installation and setup options follow for Ubuntu (other
 distributions will need slightly different commands).
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo apt-get install perlbrew
     perlbrew install perl-5.22.1
@@ -139,7 +142,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        ls /usr/local/bin
                  
@@ -148,7 +152,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run the following commands
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        sudo apt-get install cmake
        sudo apt-get update && sudo apt-get install build-essential
@@ -158,7 +163,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        ls /usr/local/bin
                  
@@ -168,7 +174,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 To *remove* the files, run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo make uninstall}.
         
@@ -226,7 +233,8 @@ demonstrations here. Let’s say that we start with the code given in
 
 If we run the following command (noting that ``-t`` is active)
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
      
@@ -268,14 +276,16 @@ There are a few (small) changes to the interface when comparing Version
 2.2 to Version 3.0. Explicitly, in previous versions you might have run,
 for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -o myfile.tex outputfile.tex
      
 
 whereas in Version 3.0 you would run any of the following, for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -o=outputfile.tex myfile.tex
     latexindent.pl -o outputfile.tex myfile.tex

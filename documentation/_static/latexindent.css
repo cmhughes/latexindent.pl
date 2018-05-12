@@ -9,3 +9,6 @@ div.mlbyaml table.highlighttable td.code div.highlight {background-color: #EDE27
 div.tex > div.highlight{background-color:  #e0e0d1; border-top: 5px solid #adad85;}
 /* make line numbers red */
 td.linenos div.linenodiv pre {color: red;}
+/* command shell */
+div.commandshell div.highlight{background-color: black;}
+div.commandshell div.highlight pre {color: white;}
