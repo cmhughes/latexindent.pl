@@ -21,26 +21,32 @@ each line which is stripped by ``latexindent.pl`` (unless a
 on this in :numref:`sec:defuseloc`).
 
  .. literalinclude:: demonstrations/filecontents1.tex
+ 	:class: .tex
  	:caption: ``filecontents1.tex`` 
  	:name: lst:filecontentsbefore
 
  .. literalinclude:: demonstrations/filecontents1-default.tex
+ 	:class: .tex
  	:caption: ``filecontents1.tex`` default output 
  	:name: lst:filecontentsafter
 
  .. literalinclude:: demonstrations/tikzset.tex
+ 	:class: .tex
  	:caption: ``tikzset.tex`` 
  	:name: lst:tikzsetbefore
 
  .. literalinclude:: demonstrations/tikzset-default.tex
+ 	:class: .tex
  	:caption: ``tikzset.tex`` default output 
  	:name: lst:tikzsetafter
 
  .. literalinclude:: demonstrations/pstricks.tex
+ 	:class: .tex
  	:caption: ``pstricks.tex`` 
  	:name: lst:pstricksbefore
 
  .. literalinclude:: demonstrations/pstricks-default.tex
+ 	:class: .tex
  	:caption: ``pstricks.tex`` default output 
  	:name: lst:pstricksafter
 

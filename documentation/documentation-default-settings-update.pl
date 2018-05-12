@@ -175,15 +175,31 @@ if(!$readTheDocsMode){
         $body =~ s/\\begin\{minipage\}\{.*?\}//sg;
         $body =~ s/\\end\{minipage\}.*$//mg;
         $body =~ s/\\hfill.*$//mg;
-        $body =~ s/\\cmhlistingsfromfile(.*)\*/\\cmhlistingsfromfile$1/mg;
-        $body =~ s/\\cmhlistingsfromfile(.*?\})\[.*?\]/\\cmhlistingsfromfile$1/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[style=yaml-LST\]\*?/\\cmhlistingsfromfile/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]\*?/\\cmhlistingsfromfile/mg;
-        $body =~ s/\\cmhlistingsfromfile/\n\n\\cmhlistingsfromfile/sg;
-        $body =~ s/(\\cmhlistingsfromfile.*)/$1\n\n/mg;
-        $body =~ s/\\cmhlistingsfromfile\*?\[/\\cmhlistingsfromfilefour\[/mg;
-        $body =~ s/\}\[\h*width=.*?\]\{/\}\{/sg;
-        $body =~ s/\}\[\h*yaml-TCB.*?\]\{/\}\{/sg;
+        $body =~ s/\\cmhlistingsfromfile(.*)\h*$/
+                    my $listingsbody = $1;
+                    $listingsbody =~ s|\*||sg;
+                    my $rst_class = "tex";
+                    if($listingsbody =~ m|MLB-TCB|s ){
+                        $rst_class = "mlbyaml";
+                    } elsif ($listingsbody =~ m|yaml-TCB|s or $listingsbody =~ m|defaultSettings\.yaml|s or $listingsbody =~ m|yaml-LST|s) {
+                        $rst_class = "baseyaml";
+                    } elsif ($listingsbody =~ m|yaml-obsolete|s) {
+                        $rst_class = "obsolete";
+                    }
+                    $listingsbody =~ s|\}\h*\[.*?\]|\}|s;
+                    $listingsbody =~ s|\[style=yaml-LST\]\*?||sg;
+                    $listingsbody =~ s"\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]""sg;
+                    $listingsbody .= "\{".$rst_class."\}";
+                    my $listingname = ($listingsbody =~ m|^\h*\[|s ? "cmhlistingsfromfilefour": "cmhlistingsfromfile");
+                    "\n\n\\$listingname".$listingsbody."\n\n";/mgex;
+        $body =~ s|\}\h*\[\h*width=.*?\]\h*\{|\}\{|sg;
+        
+        # get rid of wrapfigure stuff
+        $body =~ s/\\begin\{adjustwidth\}\{.*?\}\{.*?\}//sg;
+        $body =~ s/\\end\{adjustwidth\}//sg;
+
+        # get rid of \announce command
+        $body =~ s/\\announce\*?\{.*?\}\*?\{.*?\}\R*//sg;
 
         # get rid of wrapfigure stuff
         $body =~ s/\\begin\{wrapfigure\}.*$//mg;
@@ -226,7 +242,7 @@ if(!$readTheDocsMode){
                         (?:\\begin)       # cluster-only (), don't capture
                     ).                    # any character, but not \\begin
                 )*?\\end\{commandshell\})(?:\R|\h)*(\\label\{.*?\})/$2\n\n$1/xsg;
-        $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}/sg;
+        $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}style:commandshell/sg;
         $body =~ s/\\end\{commandshell\}/\\end\{verbatim\}/sg;
         $body =~ s/\\begin\{cmhlistings\}/\\begin\{verbatim\}/sg;
         $body =~ s/\\end\{cmhlistings\}(\[.*?\])?/\\end\{verbatim\}/sg;
@@ -238,7 +254,7 @@ if(!$readTheDocsMode){
         $body =~ s/\$\\langle\$(.*?)\$\\rangle\$/<$1>/sg;
 
         # flagbox switch
-        $body =~ s/\\flagbox/\\texttt/sg;
+        $body =~ s/\\flagbox\{(.*?)\}/\n.. describe:: $1\n\n/sg;
 
         # yaml title
         $body =~ s/\\yamltitle\{(.*?)\}\*?\{(.*?)\}/.. describe:: $1:$2\n\n/sg;

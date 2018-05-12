@@ -18,6 +18,8 @@ perl -pi -e 's|^\h*\.\. \\\_|\.\. \_|mg' ${mainFile}.rst
 perl -pi -e 's|^(\h*\.\. _)|.. label follows\n\n$1|mg' ${mainFile}.rst 
 # some code blocks need special treatment
 perl -p0i -e 's/^::(?:\R|\h)*\{(.*?)\}\{((?:(?!(?:\{)).)*?)\}$/\.\. code-block:: latex\n   :caption: $1\n   :name: $2\n/msg' ${mainFile}.rst
+# commandshell code blocks
+perl -p0i -e 's/^(\h*)::(?:\R|\h)*style:commandshell\h*$/$1\.\. code-block:: latex\n$1   :class: .commandshell\n/msg' ${mainFile}.rst
 # and this can lead to \\texttt still being present in .rst
 perl -p0i -e 's/\\texttt\{(.*?)\}/``$1``/sg' ${mainFile}.rst
 # remove line breaks from :alt: text

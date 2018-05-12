@@ -339,19 +339,8 @@ latexindent.pl
 
 	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
 	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
-	\begin{cmhlistings}[style=demo,escapeinside={(*@}{@*)}]{\texttt{arara} sample usage}{lst:arara}
-%(*@@*) arara: indent
-%(*@@*) arara: indent: {overwrite: yes}
-%(*@@*) arara: indent: {output: myfile.tex}
-%(*@@*) arara: indent: {silent: yes}
-%(*@@*) arara: indent: {trace: yes}
-%(*@@*) arara: indent: {localSettings: yes}
-%(*@@*) arara: indent: {onlyDefault: on}
-%(*@@*) arara: indent: { cruft: /home/cmhughes/Desktop }
-\documentclass{article}
-...
-\end{cmhlistings}
-	%(*@@*) arara: indent: { modifylinebreaks: yes }
+
+		\cmhlistingsfromfile{demonstrations/arara-demo.tex}{\texttt{arara} sample usage}{lst:arara}
 
 	Hopefully the use of these rules is fairly self-explanatory, but for completeness
 	\cref{tab:orbsandswitches} shows the relationship between \texttt{arara} directive arguments and the

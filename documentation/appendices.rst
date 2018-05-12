@@ -53,7 +53,8 @@ Module installer script
 ``latexindent.pl`` ships with a helper script that will install any
 missing ``perl`` modules on your system; if you run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     perl latexindent-module-installer.pl
          
@@ -76,7 +77,8 @@ Manually installing the modules given in :numref:`lst:helloworld` will
 vary depending on your operating system and ``Perl`` distribution. For
 example, Ubuntu users might visit the software center, or else run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo perl -MCPAN -e 'install "File::HomeDir"'
      
@@ -85,7 +87,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017);
 possible installation and setup options follow for Ubuntu (other
 distributions will need slightly different commands).
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo apt-get install perlbrew
     perlbrew install perl-5.22.1
@@ -139,7 +142,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        ls /usr/local/bin
                  
@@ -148,7 +152,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run the following commands
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        sudo apt-get install cmake
        sudo apt-get update && sudo apt-get install build-essential
@@ -158,7 +163,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 #. run
 
-   ::
+   .. code-block:: latex
+      :class: .commandshell
 
        ls /usr/local/bin
                  
@@ -168,7 +174,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
 To *remove* the files, run
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     sudo make uninstall}.
         
@@ -215,16 +222,19 @@ demonstrations here. Let’s say that we start with the code given in
 :numref:`lst:logfile-prefs1-yaml`.
 
  .. literalinclude:: demonstrations/simple.tex
+ 	:class: .tex
  	:caption: ``simple.tex`` 
  	:name: lst:simple
 
  .. literalinclude:: demonstrations/logfile-prefs1.yaml
+ 	:class: .baseyaml
  	:caption: ``logfile-prefs1.yaml`` 
  	:name: lst:logfile-prefs1-yaml
 
 If we run the following command (noting that ``-t`` is active)
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
      
@@ -266,14 +276,16 @@ There are a few (small) changes to the interface when comparing Version
 2.2 to Version 3.0. Explicitly, in previous versions you might have run,
 for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -o myfile.tex outputfile.tex
      
 
 whereas in Version 3.0 you would run any of the following, for example,
 
-::
+.. code-block:: latex
+   :class: .commandshell
 
     latexindent.pl -o=outputfile.tex myfile.tex
     latexindent.pl -o outputfile.tex myfile.tex
@@ -288,39 +300,25 @@ noting that the *output* file is given *next to* the ``-o`` switch.
 The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from
 Version 3.0 onwards.
 
-.. code-block:: latex
-   :caption: Obsolete YAML fields from Version 3.0 
-   :name: lst:obsoleteYaml
-
-    alwaysLookforSplitBrackets
-    alwaysLookforSplitBrackets
-    checkunmatched
-    checkunmatchedELSE
-    checkunmatchedbracket
-    constructIfElseFi
+ .. literalinclude:: demonstrations/obsolete.yaml
+ 	:class: .obsolete
+ 	:caption: Obsolete YAML fields from Version 3.0 
+ 	:name: lst:obsoleteYaml
 
 There is a slight difference when specifying indentation after headings;
 specifically, we now write ``indentAfterThisHeading`` instead of
 ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
 :numref:`lst:indentAfterThisHeadingNew`
 
-.. code-block:: latex
-   :caption: ``indentAfterThisHeading`` in Version 2.2 
-   :name: lst:indentAfterThisHeadingOld
+ .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterThisHeading`` in Version 2.2 
+ 	:name: lst:indentAfterThisHeadingOld
 
-    indentAfterHeadings:
-        part:
-           indent: 0
-           level: 1
-
-.. code-block:: latex
-   :caption: ``indentAfterThisHeading`` in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew
-
-    indentAfterHeadings:
-        part:
-           indentAfterThisHeading: 0
-           level: 1
+ .. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterThisHeading`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in
 Version 2.2, you would write YAML as in
@@ -328,30 +326,20 @@ Version 2.2, you would write YAML as in
 write YAML as in :numref:`lst:indentAfterThisHeadingNew1` or, if
 you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
 
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` in Version 2.2 
-   :name: lst:noAdditionalIndentOld
+ .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` in Version 2.2 
+ 	:name: lst:noAdditionalIndentOld
 
-    noAdditionalIndent:
-        \[: 0
-        \]: 0
+ .. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew1
 
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew1
-
-    specialBeginEnd:
-        displayMath:
-            begin: '\\\['
-            end: '\\\]'
-            lookForThis: 0
-
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` for ``displayMath``  in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew2
-
-    noAdditionalIndent:
-        displayMath: 1
+ .. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew2
 
 --------------
 
