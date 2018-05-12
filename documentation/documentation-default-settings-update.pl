@@ -183,6 +183,8 @@ if(!$readTheDocsMode){
                         $rst_class = "mlbyaml";
                     } elsif ($listingsbody =~ m|yaml-TCB|s or $listingsbody =~ m|defaultSettings\.yaml|s or $listingsbody =~ m|yaml-LST|s) {
                         $rst_class = "baseyaml";
+                    } elsif ($listingsbody =~ m|yaml-obsolete|s) {
+                        $rst_class = "obsolete";
                     }
                     $listingsbody =~ s|\}\h*\[.*?\]|\}|s;
                     $listingsbody =~ s|\[style=yaml-LST\]\*?||sg;

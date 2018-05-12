@@ -35,6 +35,8 @@ then
     find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
     cd ../
 fi
+sed -i.bak "s/version = u'$oldVersion'/version = u'$newVersion'/" documentation/conf.py
+sed -i.bak "s/release = u'$oldVersion'/release = u'$newVersion'/" documentation/conf.py
 sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
 sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl

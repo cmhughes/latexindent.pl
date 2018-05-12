@@ -12,3 +12,5 @@ td.linenos div.linenodiv pre {color: red;}
 /* command shell */
 div.commandshell div.highlight{background-color: black;}
 div.commandshell div.highlight pre {color: white;}
+/* obsolete */
+div.obsolete div.highlight{background-color: #ff8080; border-top: 5px solid #ff1a1a;}

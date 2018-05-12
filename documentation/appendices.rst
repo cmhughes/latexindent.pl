@@ -300,39 +300,25 @@ noting that the *output* file is given *next to* the ``-o`` switch.
 The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from
 Version 3.0 onwards.
 
-.. code-block:: latex
-   :caption: Obsolete YAML fields from Version 3.0 
-   :name: lst:obsoleteYaml
-
-    alwaysLookforSplitBrackets
-    alwaysLookforSplitBrackets
-    checkunmatched
-    checkunmatchedELSE
-    checkunmatchedbracket
-    constructIfElseFi
+ .. literalinclude:: demonstrations/obsolete.yaml
+ 	:class: .obsolete
+ 	:caption: Obsolete YAML fields from Version 3.0 
+ 	:name: lst:obsoleteYaml
 
 There is a slight difference when specifying indentation after headings;
 specifically, we now write ``indentAfterThisHeading`` instead of
 ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
 :numref:`lst:indentAfterThisHeadingNew`
 
-.. code-block:: latex
-   :caption: ``indentAfterThisHeading`` in Version 2.2 
-   :name: lst:indentAfterThisHeadingOld
+ .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterThisHeading`` in Version 2.2 
+ 	:name: lst:indentAfterThisHeadingOld
 
-    indentAfterHeadings:
-        part:
-           indent: 0
-           level: 1
-
-.. code-block:: latex
-   :caption: ``indentAfterThisHeading`` in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew
-
-    indentAfterHeadings:
-        part:
-           indentAfterThisHeading: 0
-           level: 1
+ .. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterThisHeading`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in
 Version 2.2, you would write YAML as in
@@ -340,30 +326,20 @@ Version 2.2, you would write YAML as in
 write YAML as in :numref:`lst:indentAfterThisHeadingNew1` or, if
 you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
 
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` in Version 2.2 
-   :name: lst:noAdditionalIndentOld
+ .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` in Version 2.2 
+ 	:name: lst:noAdditionalIndentOld
 
-    noAdditionalIndent:
-        \[: 0
-        \]: 0
+ .. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew1
 
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew1
-
-    specialBeginEnd:
-        displayMath:
-            begin: '\\\['
-            end: '\\\]'
-            lookForThis: 0
-
-.. code-block:: latex
-   :caption: ``noAdditionalIndent`` for ``displayMath``  in Version 3.0 
-   :name: lst:indentAfterThisHeadingNew2
-
-    noAdditionalIndent:
-        displayMath: 1
+ .. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:name: lst:indentAfterThisHeadingNew2
 
 --------------
 
