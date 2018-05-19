@@ -38,21 +38,21 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
-use LatexIndent::Environment qw/find_environments/;
-use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp/;
+use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
+use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets qw/find_round_brackets/;
 use LatexIndent::Item qw/find_items construct_list_of_items/;
-use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces/;
+use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
 use LatexIndent::Command qw/construct_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets qw/construct_grouping_braces_brackets_regexp/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
-use LatexIndent::Special qw/find_special construct_special_begin/;
-use LatexIndent::Heading qw/find_heading construct_headings_levels/;
+use LatexIndent::Special qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
+use LatexIndent::Heading qw/find_heading construct_headings_levels $allHeadingsRegexp/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 
@@ -181,18 +181,18 @@ sub find_objects{
 
     # search for environments
     $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
-    $self->find_environments;
+    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
     # search for ifElseFi blocks
     $logger->trace('looking for IFELSEFI') if $is_t_switch_active;
-    $self->find_ifelsefi;
+    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
     $logger->trace('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
-    $self->find_heading;
+    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # the ordering of finding commands and special code blocks can change
-    $self->find_commands_or_key_equals_values_braces_and_special;
+    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
     
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
@@ -222,19 +222,19 @@ sub find_commands_or_key_equals_values_braces_and_special{
     if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
         $logger->trace('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
-        $self->find_special;
+        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
         # search for commands with arguments
         $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces;
+        $self->find_commands_or_key_equals_values_braces if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
     } else {
         # search for commands with arguments
         $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces;
+        $self->find_commands_or_key_equals_values_braces if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
 
         # search for special begin/end
         $logger->trace('looking for SPECIAL begin/end') if $is_t_switch_active;
-        $self->find_special;
+        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
     }
     return;
 }
@@ -311,10 +311,10 @@ sub tasks_common_to_each_object{
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_body;
+    $self->modify_line_breaks_body if $is_m_switch_active;
 
     # modify line breaks end statements
-    $self->modify_line_breaks_end;
+    $self->modify_line_breaks_end if $is_m_switch_active;
 
     # check the body for current children
     $self->check_for_hidden_children;

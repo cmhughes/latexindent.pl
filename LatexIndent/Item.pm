@@ -21,6 +21,9 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -65,8 +68,6 @@ sub find_items{
     return if($listOfItems eq "");
 
     my $self = shift;
-
-    return unless ${$masterSettings{indentAfterItems}}{${$self}{name}};
 
     # otherwise loop through the item names
     $logger->trace("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
@@ -123,13 +124,13 @@ sub tasks_particular_to_each_object{
     ${${$self}{linebreaksAtEnd}}{body}=1 if(${$self}{body} =~ m/\R+$/s );
 
     # search for ifElseFi blocks
-    $self->find_ifelsefi;
+    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
-    $self->find_heading;
+    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
     
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special;
+    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
 
 }
 
