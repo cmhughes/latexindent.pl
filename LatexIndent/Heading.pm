@@ -21,10 +21,11 @@ use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_swit
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_heading construct_headings_levels/;
+our @EXPORT_OK = qw/find_heading construct_headings_levels $allHeadingsRegexp/;
 our $headingCounter;
 our @headingsRegexpArray;
 our $allHeadingsRegexp = q();
@@ -226,7 +227,7 @@ sub tasks_particular_to_each_object{
     }
 
     # search for special begin/end
-    $self->find_special;
+    $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
     return;
 }

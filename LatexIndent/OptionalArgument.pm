@@ -20,6 +20,8 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_optional_arguments/;
@@ -106,10 +108,10 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # search for ifElseFi blocks
-    $self->find_ifelsefi;
+    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for special begin/end
-    $self->find_special;
+    $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
 }
 
