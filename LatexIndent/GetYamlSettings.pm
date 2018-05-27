@@ -455,7 +455,7 @@ sub get_indentation_settings_for_this_object{
         $self->alignment_at_ampersand_settings;
 
         # check for line break settings
-        $self->modify_line_breaks_settings;
+        $self->modify_line_breaks_settings if $is_m_switch_active;
 
         # store the settings
         %{${previouslyFoundSettings}{$storageName}} = (
@@ -535,9 +535,6 @@ sub alignment_at_ampersand_settings{
 }
 
 sub modify_line_breaks_settings{
-    # return with undefined values unless the -m switch is active
-    return unless $is_m_switch_active;
-
     my $self = shift;
 
     # grab the logging object

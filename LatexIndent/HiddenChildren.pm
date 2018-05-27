@@ -156,9 +156,6 @@ sub check_for_hidden_children{
 
     my $self = shift;
 
-    # if there are no hidden children, then exit
-    return if ${$self}{body} !~ m/$tokens{beginOfToken}/;
-
     # grab the matches
     my @matched = (${$self}{body} =~ /((?:$tokens{ifelsefiSpecial})?$tokens{beginOfToken}.[-a-z0-9]+?$tokens{endOfToken})/ig);
 

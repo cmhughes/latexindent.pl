@@ -317,7 +317,7 @@ sub tasks_common_to_each_object{
     $self->modify_line_breaks_end if $is_m_switch_active;
 
     # check the body for current children
-    $self->check_for_hidden_children;
+    $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
 
     return;
 }
