@@ -99,9 +99,9 @@ given (as here) it means that the snippet is taken directly from
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 395-397
+ 	:lines: 394-396
  	:linenos:
- 	:lineno-start: 395
+ 	:lineno-start: 394
 
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks`

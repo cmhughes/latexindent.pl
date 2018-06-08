@@ -20,6 +20,10 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Environment qw/$environmentBasicRegExp/;
+use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
@@ -216,16 +220,16 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # search for environments
-    $self->find_environments;
+    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
     # search for ifElseFi blocks
-    $self->find_ifelsefi;
+    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
-    $self->find_heading;
+    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
     
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special;
+    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
 }
 
 1;

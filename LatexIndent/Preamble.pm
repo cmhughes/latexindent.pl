@@ -20,6 +20,9 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_t_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Environment qw/$environmentBasicRegExp/;
+use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $preambleCounter;
 
@@ -49,14 +52,14 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # search for environments
-    $self->find_environments;
+    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/;
 
     # search for ifElseFi blocks
-    $self->find_ifelsefi;
+    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
-        $self->find_special;
+        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
         # search for commands with arguments
         $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
@@ -65,7 +68,7 @@ sub tasks_particular_to_each_object{
         $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
 
         # search for special begin/end
-        $self->find_special;
+        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
       }
 
 }

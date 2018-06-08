@@ -610,9 +610,9 @@ considered ``environments``.
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 183-187
+ 	:lines: 182-186
  	:linenos:
- 	:lineno-start: 183
+ 	:lineno-start: 182
 
 The environment names specified in ``indentAfterItems`` tell
 ``latexindent.pl`` to look for ``\item`` commands; if these switches are
@@ -636,9 +636,9 @@ after each ``item``. A demonstration is given in
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 193-195
+ 	:lines: 192-194
  	:linenos:
- 	:lineno-start: 193
+ 	:lineno-start: 192
 
 | If you have your own ``item`` commands (perhaps you prefer to use
   ``myitem``, for example) then you can put populate them in
@@ -670,9 +670,9 @@ shows the default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 199-212
+ 	:lines: 198-211
  	:linenos:
- 	:lineno-start: 199
+ 	:lineno-start: 198
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath``
 represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You
@@ -816,9 +816,9 @@ We note that:
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 222-231
+ 	:lines: 221-230
  	:linenos:
- 	:lineno-start: 222
+ 	:lineno-start: 221
 
 This field enables the user to specify indentation rules that take
 effect after heading commands such as ``\part``, ``\chapter``,
@@ -1275,9 +1275,9 @@ indentation.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 280-281
+ 	:lines: 279-280
  	:linenos:
- 	:lineno-start: 280
+ 	:lineno-start: 279
 
 Assuming that your environment name is not found within neither
 ``noAdditionalIndent`` nor ``indentRules``, the next place that
@@ -1361,9 +1361,9 @@ received any additional indentation.
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 296-297
+ 	:lines: 295-296
  	:linenos:
- 	:lineno-start: 296
+ 	:lineno-start: 295
 
 The final check that ``latexindent.pl`` will make is to look for
 ``indentRulesGlobal`` as detailed in
@@ -2174,17 +2174,17 @@ functions of the fields given in
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 280-292
+ 	:lines: 279-291
  	:linenos:
- 	:lineno-start: 280
+ 	:lineno-start: 279
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 296-308
+ 	:lines: 295-307
  	:linenos:
- 	:lineno-start: 296
+ 	:lineno-start: 295
 
 .. label follows
 
@@ -2208,9 +2208,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 311-325
+ 	:lines: 310-324
  	:linenos:
- 	:lineno-start: 311
+ 	:lineno-start: 310
 
 .. describe:: roundParenthesesAllowed:0\|1
 

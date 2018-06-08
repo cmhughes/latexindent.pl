@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.4.2, 2018-04-27
+# defaultSettings.yaml for latexindent.pl, version 3.4.3, 2018-06-08
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -23,8 +23,8 @@
 
 # You're welcome to change anything you like in here, but 
 # it would probably be better to have your own user settings 
-# files somewhere else- remember that this file may be overwritten
-# anytime that you update your distribution. Please see the manual
+# files somewhere else - remember that this file may be overwritten
+# when you update your distribution. Please see the manual
 # for details of how to setup your own settings files.
 #
 # Please read the manual first to understand what each switch does.
@@ -49,9 +49,9 @@ fileExtensionPreference:
 #       myfileBACKUP.bak
 backupExtension: .bak
 
-# only one backup per file; if onlyOneBackUp is 0 then the
-# number on the extension increments by 1 each time
-# (this is in place as a safety measure) myfile.bak0, myfile.bak1, myfile.bak2
+# only one backup per file; if onlyOneBackUp is 0 then, as a safety measure, 
+# the number on the extension increments by 1 each time:
+#     myfile.bak0, myfile.bak1, myfile.bak2
 #
 # if you set onlyOnebackUp to 1, then the backup file will
 # be overwritten each time (not recommended until you trust the script)
@@ -88,8 +88,8 @@ logFilePreferences:
         trace: "%A%n"
         ttrace: "%A%n"
 
-#  verbatim environments- environments specified 
-#  in this hash table will not be changed at all!
+#  verbatim environments specified 
+#  in this field will not be changed at all!
 verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
@@ -139,8 +139,7 @@ preambleCommandsBeforeEnvironments: 0
 # Default value of indentation
 defaultIndent: "\t"
 
-# environments that have tab delimiters, add more 
-# as needed
+# name of code blocks that should have their body aligned at ampersand delimiters
 lookForAlignDelims:
    tabular: 
       delims: 1
@@ -187,7 +186,7 @@ indentAfterItems:
     list: 1
 
 # if you want to use other names for your items (such as, for example, part)
-# then populate them here- note that you can trick latexindent.pl
+# then populate them here; note that you can trick latexindent.pl
 # into indenting all kinds of commands (within environments specified in 
 # indentAfterItems) using this technique.
 itemNames:
@@ -250,7 +249,7 @@ maximumIndentation: -1
 
 # if you don't want to have additional indentation 
 # in an environment put it in this hash table; note that
-# environments in this hash table will inherit 
+# environments in this field will inherit 
 # the *current* level of indentation they just won't
 # get any *additional*.
 noAdditionalIndent:

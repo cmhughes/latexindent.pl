@@ -20,6 +20,9 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
+use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
@@ -99,13 +102,13 @@ sub tasks_particular_to_each_object{
     my $self = shift;
 
     # search for headings (important to do this before looking for commands!)
-    $self->find_heading;
+    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special;
+    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
     
     # search for arguments
-    $self->find_opt_mand_arguments;
+    $self->find_opt_mand_arguments if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
 
     return;
 }

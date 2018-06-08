@@ -9,7 +9,7 @@ code within environments, commands, after headings and within special code block
 It has the ability to align delimiters in environments and commands, and 
 can modify line breaks.
 
-    latexindent.pl, version 3.4.2, 2018-04-27
+    latexindent.pl, version 3.4.3, 2018-06-08
 
 ### author 
 Chris Hughes (cmhughes)
@@ -29,7 +29,8 @@ For complete details, please see:
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
 ### Windows executable
-`latexindent.exe` is created using 
+`latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent` 
+and is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
 
@@ -71,13 +72,14 @@ I recommend using each of the following:
 
 I'm happy to review feature requests, but I make no promises as to if they 
 will be implemented; if they can be implemented, I make no promises as to 
-how long it will take to implement -- feel free to post on the issues 
+how long it will take to implement them, and in which order I do so -- some 
+features are more difficult than others! Feel free to post on the issues 
 page of this repository.
 
 ### development model
 
 I follow the development model given here: http://nvie.com/posts/a-successful-git-branching-model/
-which means that latexindent.pl always has two branches:
+which means that latexindent.pl always has (at least) two branches:
     
         master
         develop

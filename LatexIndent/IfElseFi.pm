@@ -20,12 +20,14 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_ifelsefi construct_ifelsefi_regexp/;
+our @EXPORT_OK = qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 our $ifElseFiCounter;
 our $ifElseFiRegExp;
+our $ifElseFiBasicRegExp = qr/\\if/;
 
 # store the regular expresssion for matching and replacing the \if...\else...\fi statements
 # note: we search for \else separately in an attempt to keep this regexp a little more managable
@@ -148,7 +150,7 @@ sub tasks_particular_to_each_object{
                                                                 );
 
     # search for headings (important to do this before looking for commands!)
-    $self->find_heading;
+    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # search for commands and special code blocks
     $self->find_commands_or_key_equals_values_braces_and_special;

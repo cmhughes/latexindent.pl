@@ -26,8 +26,9 @@ use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces/;
+our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
 our $commandCounter;
+our $braceBracketRegExpBasic = qr/\{|\[/;
 
 sub find_commands_or_key_equals_values_braces{
 

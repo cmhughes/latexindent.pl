@@ -4,6 +4,7 @@
 *.bbl
 *.blg
 *.ptc
+*.exe
 documentation/_minted-latexindent/
 documentation/latexindent-blx.*
 documentation/*.aux

@@ -21,14 +21,17 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_special construct_special_begin/;
+our @EXPORT_OK = qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
 our $specialCounter;
 our $specialBegins = q();
 our $specialAllMatchesRegExp = q();
 our %individualSpecialRegExps;
+our $specialBeginAndBracesBracketsBasicRegExp;
+our $specialBeginBasicRegExp;
 
 sub construct_special_begin{
     my $self = shift;
@@ -102,6 +105,10 @@ sub construct_special_begin{
     $logger->trace("*The overall special regexp is: (see specialBeginEnd)") if $is_tt_switch_active;
     $logger->trace($specialAllMatchesRegExp) if $is_tt_switch_active;
 
+    # basic special begin regexp
+    $specialBeginBasicRegExp = qr/$specialBegins/;
+    $specialBeginAndBracesBracketsBasicRegExp = $specialBegins."|\\{|\\[";
+    $specialBeginAndBracesBracketsBasicRegExp = qr/$specialBeginAndBracesBracketsBasicRegExp/;
   }
 
 sub find_special{
