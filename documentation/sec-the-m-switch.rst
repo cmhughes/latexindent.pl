@@ -14,9 +14,9 @@ All features described in this section will only be relevant if the
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 395-397
+ 	:lines: 394-396
  	:linenos:
- 	:lineno-start: 395
+ 	:lineno-start: 394
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -86,9 +86,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 398-399
+ 	:lines: 397-398
  	:linenos:
- 	:lineno-start: 398
+ 	:lineno-start: 397
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -170,9 +170,9 @@ then the output is as in :numref:`lst:textwrap3-mod1`.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 398-400
+ 	:lines: 397-399
  	:linenos:
- 	:lineno-start: 398
+ 	:lineno-start: 397
 
 The text wrapping routine of ``latexindent.pl`` is performed by the
 ``Text::Wrap`` module, which provides a ``separator`` feature to
@@ -239,9 +239,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 401-422
+ 	:lines: 400-421
  	:linenos:
- 	:lineno-start: 401
+ 	:lineno-start: 400
 
 .. describe:: manipulateSentences:0\|1
 
@@ -330,25 +330,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 404-412
+ 	:lines: 403-411
  	:linenos:
- 	:lineno-start: 404
+ 	:lineno-start: 403
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 413-416
+ 	:lines: 412-415
  	:linenos:
- 	:lineno-start: 413
+ 	:lineno-start: 412
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 417-422
+ 	:lines: 416-421
  	:linenos:
- 	:lineno-start: 417
+ 	:lineno-start: 416
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -682,9 +682,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 423-435
+ 	:lines: 422-434
  	:linenos:
- 	:lineno-start: 423
+ 	:lineno-start: 422
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -880,9 +880,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 436-444
+ 	:lines: 435-443
  	:linenos:
- 	:lineno-start: 436
+ 	:lineno-start: 435
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -1012,9 +1012,9 @@ specified. Note that all poly-switches are *off* by default.
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 445-454
+ 	:lines: 444-453
  	:linenos:
- 	:lineno-start: 445
+ 	:lineno-start: 444
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of

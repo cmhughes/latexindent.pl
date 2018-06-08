@@ -157,8 +157,8 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1}, but have not been removed in \cref{lst:multiple-sentences-mod2}.
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct \texttt{latexindent.pl} on how to define a sentence.
-	From the perpesctive of \texttt{latexindent.pl} a sentence must: \begin{itemize} \item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line, a full stop/period (.)
-		      , exclamation mark (!), question mark (?) right brace (\}) or a comment
+	From the perpesctive of \texttt{latexindent.pl} a sentence must: \begin{itemize} \item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line, a full stop/period (.
+		      ), exclamation mark (!), question mark (?) right brace (\}) or a comment
 		      on the previous line;
 		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by default, this is only capital letters;
 		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by default, these are
@@ -283,10 +283,9 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting it to \texttt{0}, and you can experiment with the \texttt{other} field.
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it does not accomodate the specifications above.
-	For example, using the YAML in \cref{lst:alt-full-stop1-yaml} gives the output from the following command in \cref{lst:url-mod2}.
-	\begin{commandshell}
+	For example, using the following command \begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
-\end{commandshell}
+\end{commandshell} and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in \cref{lst:url-mod2}.
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.6\linewidth}
@@ -831,17 +830,17 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\toprule
 		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                       & \verb!after words!                              &                                         &                                                                   \\
+		environment                            & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                       & \verb!after words!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                       & \verb!\if...!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
 		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
-		                                       & \verb!\or!$\OrFinishesWithLineBreak$    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\

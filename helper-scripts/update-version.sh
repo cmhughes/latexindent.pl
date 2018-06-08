@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.4.1'
-newVersion='3.4.2'
-oldDate='2018-01-18'
-newDate='2018-04-27'
+oldVersion='3.4.2'
+newVersion='3.4.3'
+oldDate='2018-04-27'
+newDate='2018-06-08'
 
 cd ../
 if [ $minorVersion = 0 ]

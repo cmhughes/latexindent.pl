@@ -177,7 +177,7 @@ To *remove* the files, run
 .. code-block:: latex
    :class: .commandshell
 
-    sudo make uninstall}.
+    sudo make uninstall
         
 
 Add to path for Windows

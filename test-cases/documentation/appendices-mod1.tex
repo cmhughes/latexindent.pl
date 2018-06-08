@@ -91,7 +91,7 @@ ls /usr/local/bin
           \end{commandshell} again to check that \texttt{latexindent.pl}, its modules and \texttt{defaultSettings.yaml} have been added.
 		\end{enumerate}
 		To \emph{remove} the files, run \begin{commandshell}
-sudo make uninstall}.
+sudo make uninstall
     \end{commandshell}
 	\subsection{Add to path for Windows}
 		To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
@@ -158,59 +158,29 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
  \end{commandshell} noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 
 	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
-	 \begin{yaml}[style=yaml-LST,numbers=none]{Obsolete YAML fields from Version 3.0}[colframe=white!25!red,colbacktitle=white!75!red,colback=white!90!red,]{lst:obsoleteYaml}
-alwaysLookforSplitBrackets
-alwaysLookforSplitBrackets
-checkunmatched
-checkunmatchedELSE
-checkunmatchedbracket
-constructIfElseFi
-\end{yaml}
+	 \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
 
 	 There is a slight difference when specifying indentation after headings; specifically, we now write \texttt{indentAfterThisHeading} instead of \texttt{indent}.
 	 See \cref{lst:indentAfterThisHeadingOld,lst:indentAfterThisHeadingNew} 
 
 	 \begin{minipage}{.45\textwidth}
-		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
-indentAfterHeadings:
-    part:
-       indent: 0
-       level: 1
-\end{yaml}
+		 \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingOld.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
 	 \end{minipage} \hfill
 	 \begin{minipage}{.45\textwidth}
-		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
-indentAfterHeadings:
-    part:
-       indentAfterThisHeading: 0
-       level: 1
-\end{yaml}
+		 \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingNew.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
 	 \end{minipage} 
 
 	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would write YAML as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m} switch, \cref{lst:indentAfterThisHeadingNew2}.
 	 %%
 
 	 \begin{minipage}{.45\textwidth}
-		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
-noAdditionalIndent:
-    \[: 0
-    \]: 0
-\end{yaml}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentOld.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
 	 \end{minipage}%
 	 \hfill
 	 \begin{minipage}{.45\textwidth}
-		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
-specialBeginEnd:
-    displayMath:
-        begin: '\\\['
-        end: '\\\]'
-        lookForThis: 0
-\end{yaml}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
 
-		 \begin{yaml}[style=yaml-LST,numbers=none]{\texttt{noAdditionalIndent} for \texttt{displayMath}  in Version 3.0}{lst:indentAfterThisHeadingNew2}
-noAdditionalIndent:
-    displayMath: 1
-\end{yaml}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath}  in Version 3.0}{lst:indentAfterThisHeadingNew2}
 	 \end{minipage}%
 
 	 \mbox{}\hfill

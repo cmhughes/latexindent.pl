@@ -164,7 +164,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names \announce*{2018-04-27}*{commandNameSpecial} that do not fit within the names recognized by \texttt{latexindent.pl}, the first one of which is \lstinline!\@ifnextchar[!.
 	%
-	From the perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[! is is a command, because it is immediately followed by sets of mandatory arguments.
+	From the perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[! is a command, because it is immediately followed by sets of mandatory arguments.
 	However, without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl} would not be able to label it as such, because the \lstinline![! is, necessarily, not matched by a closing \lstinline!]!.
 
 	For example, consider the sample file in \cref{lst:ifnextchar}, which has default output in \cref{lst:ifnextchar-default}.
