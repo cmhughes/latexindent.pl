@@ -112,5 +112,11 @@ latexindent.pl -m -s zoehneto2.tex -l=zoehneto3.yaml -o=+-mod3
 latexindent.pl -m -s environments-nested-fourth.tex -l=env1 -o=+-mod1
 latexindent.pl -m -s dbmrq -l=dbmrq1 -o=+-mod1
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto-config1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto11.yaml -o=+-mod11
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto12.yaml -o=+-mod12
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto13.yaml -o=+-mod13
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto14.yaml -o=+-mod14
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto15.yaml -o=+-mod15
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto16.yaml -o=+-mod16
 git status
 [[ $noisyMode == 1 ]] && makenoise

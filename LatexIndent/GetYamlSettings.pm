@@ -568,7 +568,40 @@ sub modify_line_breaks_settings{
 
         if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
             if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
-                ${$self}{columns} = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+                # assign default value of $columns
+                my $columns;
+                if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+                } else {
+                    $columns = 80;
+                }
+
+                # possibly specify object wrapping on a per-name basis
+                if(ref ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
+                    # for example:
+                    #   modifyLineBreaks:
+                    #       textWrapOptions:
+                    #           columns: 
+                    #               default: 80
+                    #               environments:
+                    #                   default: 80
+                    #                   something: 10
+                    #                   another: 20
+                    if(defined ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
+                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
+                    } elsif (${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
+                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
+                    }
+                } else {
+                    # for example:
+                    #   modifyLineBreaks:
+                    #       textWrapOptions:
+                    #           columns: 
+                    #               default: 80
+                    #               environments: 10
+                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+                }
+                ${$self}{columns} = $columns;
             } else {
                 ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
             }
