@@ -335,37 +335,5 @@ latexindent.pl
 
 \subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but
-	others may find it easier to use from \texttt{arara}; you can find the arara rule at \cite{paulo}.
-
-	You can use the rule in any of the ways described in \cref{lst:arara} (or combinations thereof).
-	In fact, \texttt{arara} allows yet greater flexibility -- you can use \texttt{yes/no}, \texttt{true/false}, or \texttt{on/off} to toggle the various options.
-
-	\cmhlistingsfromfile{demonstrations/arara-demo.tex}{\texttt{arara} sample usage}{lst:arara}
-
-	Hopefully the use of these rules is fairly self-explanatory, but for completeness
-	\cref{tab:orbsandswitches} shows the relationship between \texttt{arara} directive arguments and the
-	switches given in \cref{sec:commandline}.
-
-	\begin{table}[!ht]
-		\centering
-		\caption{\texttt{arara} directive arguments and corresponding switches}
-		\label{tab:orbsandswitches}
-		\begin{tabular}{lc}
-			\toprule
-			\texttt{arara} directive argument & switch      \\
-			\midrule
-			\texttt{overwrite}                & \texttt{-w} \\
-			\texttt{output}                   & \texttt{-o} \\
-			\texttt{silent}                   & \texttt{-s} \\
-			\texttt{trace}                    & \texttt{-t} \\
-			\texttt{localSettings}            & \texttt{-l} \\
-			\texttt{onlyDefault}              & \texttt{-d} \\
-			\texttt{cruft}                    & \texttt{-c} \\
-			%\texttt{modifylinebreaks}         & \texttt{-m} \\
-			\bottomrule
-		\end{tabular}
-	\end{table}
-
-	The \texttt{cruft} directive does not work well when used with
-	directories that contain spaces.
-
+	others may find it easier to use from \texttt{arara}; you can find the arara rule 
+    for \texttt{latexindent.pl} and its associated documentation at \cite{paulo}.
