@@ -465,6 +465,8 @@ sub get_indentation_settings_for_this_object{
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
                         removeParagraphLineBreaks=>${$self}{removeParagraphLineBreaks},
+                        textWrapOptions=>${$self}{textWrapOptions},
+                        columns=>${$self}{columns},
                       );
 
         # don't forget alignment settings!
