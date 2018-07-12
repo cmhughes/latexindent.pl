@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 
+            default: 80
+            environments: 40
+        perCodeBlockBasis: 1
+        environments: 
+            another: 1
+    removeParagraphLineBreaks:
+        all: 1
+        beforeTextWrap: 1

@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
@@ -88,7 +88,7 @@ sub operate_on_file{
     $self->find_aligned_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
-    $self->max_char_per_line;
+    $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
@@ -197,7 +197,30 @@ sub find_objects{
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
         ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
-        $self->paragraphs_on_one_line ; 
+        ${$self}{textWrapOptions} = (   ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}
+                                                and
+                                        (${$masterSettings{modifyLineBreaks}{textWrapOptions}}{all}
+                                                    ||
+                                        ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{masterDocument}
+                                                    ||
+                                                     0)     );
+                                               
+        # textWrapOptions->columns can be a hash
+        if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"
+                    and
+           defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{masterDocument}
+           ){
+            ${$self}{columns} = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{masterDocument};
+          }
+
+        # call the remove_paragraph_line_breaks and text_wrap routines
+        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        } else {
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        }
     }
 
     # if there are no children, return
@@ -302,6 +325,14 @@ sub tasks_common_to_each_object{
 
     # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
     ${$self}{id} .= $tokens{endOfToken};
+
+    # text wrapping can make the ID split across lines
+    ${$self}{idRegExp} = ${$self}{id};
+
+    if($is_m_switch_active){
+        my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$self}{id}));
+        ${$self}{idRegExp} = qr/$IDwithLineBreaks/s;  
+    }
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     $self->get_replacement_text;

@@ -23,6 +23,9 @@ do
    [[ $silentMode == 0 ]] && set +x 
 done
 
+set +x
+[[ $silentMode == 0 ]] && set -x 
+
 # verbatim
 latexindent.pl -s -m verbatim-long-lines.tex -o verbatim-long-lines-mod1.tex -l=text-wrap-1.yaml
 
@@ -89,5 +92,23 @@ latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,descrip
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml,stopParaAtComments.yaml -o jowens-follow-ups-mod2.tex
 # bug reported at https://github.com/cmhughes/latexindent.pl/issues/90
 latexindent.pl -m -s bug1 -o=+-mod0 -y="modifyLineBreaks:textWrapOptions:columns:3"
+# improvement to text wrap routine, requested at https://github.com/cmhughes/latexindent.pl/issues/103
+latexindent.pl -m -s zoehneto.tex -l=zoehneto1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto.tex -l=zoehneto4.yaml -o=+-mod4
+latexindent.pl -m -s zoehneto.tex -l=zoehneto5.yaml -o=+-mod5
+latexindent.pl -m -s zoehneto.tex -l=zoehneto6.yaml -o=+-mod6
+latexindent.pl -m -s zoehneto.tex -l=zoehneto7.yaml -o=+-mod7
+latexindent.pl -m -s zoehneto.tex -l=zoehneto8.yaml -o=+-mod8
+latexindent.pl -m -s zoehneto.tex -l=zoehneto9.yaml -o=+-mod9
+latexindent.pl -m -s zoehneto.tex -l=zoehneto10.yaml -o=+-mod10
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto2.yaml -o=+-mod2
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto4.yaml -o=+-mod4
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto5.yaml -o=+-mod5
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto6.yaml -o=+-mod6
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto7.yaml -o=+-mod7
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto8.yaml -o=+-mod8
+latexindent.pl -m -s zoehneto2.tex -l=zoehneto3.yaml -o=+-mod3
+latexindent.pl -m -s environments-nested-fourth.tex -l=env1 -o=+-mod1
 git status
 [[ $noisyMode == 1 ]] && makenoise

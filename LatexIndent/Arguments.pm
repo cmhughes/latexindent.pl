@@ -78,6 +78,14 @@ sub find_opt_mand_arguments{
 
         # give unique id
         $arguments->create_unique_id;
+        
+        # text wrapping can make the ID split across lines
+        ${$arguments}{idRegExp} = ${$arguments}{id};
+
+        if($is_m_switch_active){
+            my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$arguments}{id}));
+            ${$arguments}{idRegExp} = qr/$IDwithLineBreaks/s;  
+        }
 
         # determine which comes first, optional or mandatory
         if(${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s){

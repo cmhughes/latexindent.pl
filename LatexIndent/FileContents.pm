@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Environment qw/$environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
@@ -83,6 +83,14 @@ sub find_file_contents_environments_and_preamble{
                                                     );
               # give unique id
               $fileContentsBlock->create_unique_id;
+              
+              # text wrapping can make the ID split across lines
+              ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
+
+              if($is_m_switch_active){
+                  my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$fileContentsBlock}{id}));
+                  ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;  
+              }
 
               # the replacement text can be just the ID, but the ID might have a line break at the end of it
               $fileContentsBlock->get_replacement_text;
@@ -142,6 +150,14 @@ sub find_file_contents_environments_and_preamble{
 
         # give unique id
         $preamble->create_unique_id;
+        
+        # text wrapping can make the ID split across lines
+        ${$preamble}{idRegExp} = ${$preamble}{id};
+
+        if($is_m_switch_active){
+            my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$preamble}{id}));
+            ${$preamble}{idRegExp} = qr/$IDwithLineBreaks/s;  
+        }
 
         # get the replacement_text
         $preamble->get_replacement_text;

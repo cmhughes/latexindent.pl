@@ -394,9 +394,6 @@ commandCodeBlocks:
 modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
-    textWrapOptions:
-        columns: 0
-        separator: ""
     oneSentencePerLine:
         manipulateSentences: 0     
         removeSentenceLineBreaks: 1
@@ -419,8 +416,25 @@ modifyLineBreaks:
             exclamationMark: 1
             questionMark: 1
             other: 0
+    textWrapOptions:
+        columns: 0
+        separator: ""
+        perCodeBlockBasis: 0
+        all: 0
+        alignAtAmpersandTakesPriority: 1
+        environments: 
+            quotation: 0
+        ifElseFi: 0
+        optionalArguments: 0
+        mandatoryArguments: 0
+        items: 0
+        specialBeginEnd: 0
+        afterHeading: 0
+        filecontents: 0
+        masterDocument: 0
     removeParagraphLineBreaks:
         all: 0
+        beforeTextWrap: 0
         alignAtAmpersandTakesPriority: 1
         environments: 
             quotation: 0

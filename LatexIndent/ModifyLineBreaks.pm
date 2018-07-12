@@ -25,12 +25,20 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line/;
 our $paragraphRegExp = q();
 
 
 sub modify_line_breaks_body{
     my $self = shift;
+    
+    # removeParagraphLineBreaks and textWrapping fun!
+    if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+    } else {
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+    }
 
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
@@ -208,14 +216,32 @@ sub adjust_line_breaks_end_parent{
 
 }
 
-sub max_char_per_line{
-    return unless $is_m_switch_active;
+sub text_wrap{
 
     my $self = shift;
-    return unless ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1;
+    
+    # alignment at ampersand can take priority
+    return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
 
     # call the text wrapping routine
-    $Text::Wrap::columns=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+    my $columns;
+
+    # columns might have been defined by the user
+    if(defined ${$self}{columns}){
+        $columns = ${$self}{columns};
+    } elsif(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+        if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+        } else {
+            $columns = 80;
+        }
+    } elsif (defined ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}){
+        $columns = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} ;
+    } else {
+        $columns = 80;
+    }
+
+    $Text::Wrap::columns=$columns;
     if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
         $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
     }
@@ -271,7 +297,7 @@ sub construct_paragraph_reg_exp{
     $logger->trace($paragraphRegExp) if $is_tt_switch_active ;
 }
 
-sub paragraphs_on_one_line{
+sub remove_paragraph_line_breaks{
     my $self = shift;
     return unless ${$self}{removeParagraphLineBreaks};
 

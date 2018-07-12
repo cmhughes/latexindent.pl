@@ -557,37 +557,56 @@ sub modify_line_breaks_settings{
                                   );
       }
 
-    # paragraph line break settings
-    ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all};
+    # textWrap and paragraph line break settings
+    foreach ("textWrapOptions","removeParagraphLineBreaks"){
+        ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{all};
 
-    return if(${$self}{removeParagraphLineBreaks});
+        # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
+        my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
-    # the removeParagraphLineBreaks can contain fields that are hashes or scalar, for example:
-    # 
-    # removeParagraphLineBreaks:
-    #     all: 0
-    #     environments: 0
-    # or
-    # removeParagraphLineBreaks:
-    #     all: 0
-    #     environments: 
-    #         quotation: 0
+        if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
+            if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+                ${$self}{columns} = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+            } else {
+                ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+            }
+        }
 
-    # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
-    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+        # in what follows, $_ can be either 
+        #       textWrapOptions
+        #       removeParagraphLineBreaks
+        #
+        if(!${$self}{$_}){
 
-    # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-    my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+            # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar, for example:
+            # 
+            # textWrapOptions/removeParagraphLineBreaks:
+            #     all: 0
+            #     environments: 0
+            #
+            # or, for example,
+            #
+            # textWrapOptions/removeParagraphLineBreaks:
+            #     all: 0
+            #     environments: 
+            #         quotation: 0
 
-    if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName} eq "HASH"){
-        $logger->trace("*$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
-        ${$self}{removeParagraphLineBreaks} = ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}}{$name}||0;
-    } else {
-        if(defined ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}){
-            $logger->trace("*$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
-            ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
+            # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+            my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+
+            if(ref ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
+                $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
+                ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name}||0;
+            } else {
+                if(defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}){
+                    $logger->trace("*$YamlName specified with just a number in $_ ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
+                    ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName};
+                }
+            }
         }
     }
+
+
     return;
 }
 
