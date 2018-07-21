@@ -98,6 +98,12 @@ sub find_opt_mand_arguments{
                 $arguments->find_optional_arguments;
             }
 
+            # it's possible not to have any mandatory or optional arguments, see
+            # https://github.com/cmhughes/latexindent.pl/issues/123
+            if( !(defined ${$arguments}{children}) ){
+                $logger->trace("No optional or mandatory arguments found; searching for matching round parenthesis") if $is_t_switch_active;
+                $arguments->find_round_brackets;
+            }
         } else {
                 $logger->trace("Searching for round brackets ONLY") if $is_t_switch_active;
                 # look for round brackets
