@@ -422,6 +422,7 @@ modifyLineBreaks:
         perCodeBlockBasis: 0
         all: 0
         alignAtAmpersandTakesPriority: 1
+        exceptionsToAll: 0
         environments: 
             quotation: 0
         ifElseFi: 0
@@ -436,6 +437,7 @@ modifyLineBreaks:
         all: 0
         beforeTextWrap: 0
         alignAtAmpersandTakesPriority: 1
+        exceptionsToAll: 0
         environments: 
             quotation: 0
         ifElseFi: 0

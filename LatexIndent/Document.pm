@@ -196,10 +196,33 @@ sub find_objects{
     
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
-        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
+        # removeParagraphLineBreaks
+        # removeParagraphLineBreaks
+        # removeParagraphLineBreaks
+        my $exceptionsToAll = 0;
+        if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll} eq "HASH" 
+                and
+           defined ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll}}{masterDocument}
+            ){
+           $exceptionsToAll = !${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll}}{masterDocument};
+        }
+        ${$self}{removeParagraphLineBreaks} = (${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all} and !$exceptionsToAll)||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
+
+        # textWrapOptions
+        # textWrapOptions
+        # textWrapOptions
+        $exceptionsToAll = 0;
+        if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll} eq "HASH" 
+                and
+           defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll}}{masterDocument}
+            ){
+           $exceptionsToAll = !${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll}}{masterDocument};
+        }
+
         ${$self}{textWrapOptions} = (   ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}
                                                 and
-                                        (${$masterSettings{modifyLineBreaks}{textWrapOptions}}{all}
+                                        (
+                                          (${$masterSettings{modifyLineBreaks}{textWrapOptions}}{all} and !$exceptionsToAll)
                                                     ||
                                         ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{masterDocument}
                                                     ||
@@ -212,6 +235,14 @@ sub find_objects{
            ){
             ${$self}{columns} = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{masterDocument};
           }
+
+        # summary to log file
+        if ($is_t_switch_active){
+            $logger->trace("*textWrapOptions/removeParagraphLineBreaks summary for masterDocument:");
+            $logger->trace("textWrapOptions: ${$self}{textWrapOptions}");
+            $logger->trace("removeParagraphLineBreaks: ${$self}{removeParagraphLineBreaks}");
+            $logger->trace("columns: ${$self}{columns}") if ${$self}{columns};
+        }
 
         # call the remove_paragraph_line_breaks and text_wrap routines
         if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){

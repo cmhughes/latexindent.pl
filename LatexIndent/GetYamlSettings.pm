@@ -543,7 +543,8 @@ sub modify_line_breaks_settings{
     my $logger = get_logger("Document");
 
     # details to the log file
-    $logger->trace("*-m modifylinebreaks switch active, looking for settings for ${$self}{name} ") if $is_t_switch_active;
+    $logger->trace("*-m modifylinebreaks switch active") if $is_t_switch_active;
+    $logger->trace("looking for polyswitch, textWrapOptions, removeParagraphLineBreaks, oneSentencePerLine settings for ${$self}{name} ") if $is_t_switch_active;
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
     my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
@@ -559,8 +560,44 @@ sub modify_line_breaks_settings{
                                   );
       }
 
-    # textWrap and paragraph line break settings
+    # textWrap and removeParagraphLineBreaks settings
     foreach ("textWrapOptions","removeParagraphLineBreaks"){
+
+        # first check for either
+        #
+        # textWrapOptions:
+        #     all: 0
+        #
+        # or
+        #
+        # removeParagraphLineBreaks:
+        #     all: 0
+        #
+        # *IMPORTANT*
+        # even if all is set to 1, then it can still be disabled on either a
+        # 
+        # per-object:
+        #   
+        #   for example
+        #
+        #       textWrapOptions:
+        #           all: 1
+        #           exceptionsToAll:
+        #               environments:0
+        #
+        #   will disable textWrapOptions for *all* environments
+        #
+        # per-name
+        # 
+        #   for example
+        #
+        #       textWrapOptions:
+        #           all: 1
+        #           exceptionsToAll:
+        #              environments:
+        #                  itemize: 0
+        #
+        #   will disable textWrapOptions for itemize
         ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{all};
 
         # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -606,41 +643,89 @@ sub modify_line_breaks_settings{
                 ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
             }
         }
-
-        # in what follows, $_ can be either 
-        #       textWrapOptions
-        #       removeParagraphLineBreaks
+        
+        # move to the next <thing> if
         #
-        if(!${$self}{$_}){
+        #   textWrapOptions/removeParagraphLineBreaks::
+        #       all: 1
+        #       exceptionsToAll: 0
+        #
+        next if(${$self}{$_} 
+                    and 
+                ref ${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll} ne "HASH" 
+                    and 
+                !${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll});
 
-            # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar, for example:
-            # 
-            # textWrapOptions/removeParagraphLineBreaks:
-            #     all: 0
-            #     environments: 0
-            #
-            # or, for example,
-            #
-            # textWrapOptions/removeParagraphLineBreaks:
-            #     all: 0
-            #     environments: 
-            #         quotation: 0
+        # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+        my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
 
-            # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-            my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
-
-            if(ref ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
-                $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
-                ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name}||0;
-            } else {
-                if(defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}){
-                    $logger->trace("*$YamlName specified with just a number in $_ ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
-                    ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName};
+        if(${$self}{$_} and ref ${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll} eq "HASH"){
+                # this clause is only for
+                #
+                #   textWrapOptions/removeParagraphLineBreaks:
+                #       all: 1
+                #
+                # and looks for exceptions specified in exceptionsToAll
+                if( defined ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}
+                        and
+                    ref ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName} eq "HASH"){
+                    # *per-name basis*
+                    # *per-name basis*
+                    # *per-name basis*
+                    #
+                    # for example,
+                    #
+                    # removeParagraphLineBreaks:
+                    #     all: 1
+                    #     exceptionsToAll:
+                    #         environments:
+                    #             itemize: 0
+                    if(defined ${${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}}{$name}){
+                        ${$self}{$_} = ${${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}}{$name};
+                    }
+                } else {
+                    # *per-object basis*
+                    # *per-object basis*
+                    # *per-object basis*
+                    #
+                    # for example,
+                    #
+                    # removeParagraphLineBreaks:
+                    #     all: 1
+                    #     exceptionsToAll:
+                    #         environments: 0
+                    if(defined ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}){
+                        ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName};
+                    }
                 }
+        } else {
+            # 
+            # otherwise exceptionsToAll is specified as a scalar; in which case it is 
+            # ignored there is nothing to be done with
+            #
+            #   exceptionsToAll: 1
+            #
+            # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar
+            # 
+            if(ref ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
+                # textWrapOptions/removeParagraphLineBreaks:
+                #     all: 0
+                #     environments: 
+                #         quotation: 0
+                $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
+                ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name} if (defined ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name});
+            } elsif(defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}){
+                # textWrapOptions/removeParagraphLineBreaks:
+                #     all: 0
+                #     environments: 0
+                $logger->trace("*$YamlName specified with just a number in $_ ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
+                ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} if (defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName});
             }
         }
-    }
 
+        # summary to log file
+        $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
+    }
 
     return;
 }

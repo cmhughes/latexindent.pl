@@ -112,6 +112,10 @@ latexindent.pl -m -s zoehneto2.tex -l=zoehneto3.yaml -o=+-mod3
 latexindent.pl -m -s environments-nested-fourth.tex -l=env1 -o=+-mod1
 latexindent.pl -m -s dbmrq -l=dbmrq1 -o=+-mod1
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto-config1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto17.yaml -o=+-mod17
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto18.yaml -o=+-mod18
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto19.yaml -o=+-mod19
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto20.yaml -o=+-mod20
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto11.yaml -o=+-mod11
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto12.yaml -o=+-mod12
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto13.yaml -o=+-mod13
