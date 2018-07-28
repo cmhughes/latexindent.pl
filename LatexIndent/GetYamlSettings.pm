@@ -22,7 +22,7 @@ use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -558,7 +558,17 @@ sub modify_line_breaks_settings{
                                     toBeAssignedTo=>$_,
                                     toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
-      }
+      };
+
+    $self->get_textwrap_removeparagraphline_breaks;
+    return;
+}
+
+sub get_textwrap_removeparagraphline_breaks{
+    my $self = shift;
+    
+    # grab the logging object
+    my $logger = get_logger("Document");
 
     # textWrap and removeParagraphLineBreaks settings
     foreach ("textWrapOptions","removeParagraphLineBreaks"){
@@ -581,9 +591,9 @@ sub modify_line_breaks_settings{
         #   for example
         #
         #       textWrapOptions:
-        #           all: 1
-        #           exceptionsToAll:
-        #               environments:0
+        #           all:
+        #               except:
+        #                   - environments
         #
         #   will disable textWrapOptions for *all* environments
         #
@@ -592,13 +602,14 @@ sub modify_line_breaks_settings{
         #   for example
         #
         #       textWrapOptions:
-        #           all: 1
-        #           exceptionsToAll:
-        #              environments:
-        #                  itemize: 0
+        #           all: 
+        #               except:
+        #                   - itemize
         #
         #   will disable textWrapOptions for itemize
-        ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{all};
+        
+        # if 'all' is set as a hash, then the default value is 1, to be turned  off (possibly) later
+        ${$self}{$_} = ( ref ${$masterSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$masterSettings{modifyLineBreaks}{$_}}{all});
 
         # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
         my $YamlName = ${$self}{modifyLineBreaksYamlName};
@@ -644,66 +655,62 @@ sub modify_line_breaks_settings{
             }
         }
         
+        # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+        my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+
         # move to the next <thing> if
         #
         #   textWrapOptions/removeParagraphLineBreaks::
         #       all: 1
-        #       exceptionsToAll: 0
         #
-        next if(${$self}{$_} 
+        if(${$self}{$_} 
                     and 
-                ref ${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll} ne "HASH" 
+                ref ${$masterSettings{modifyLineBreaks}{$_}}{all} ne "HASH" 
                     and 
-                !${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll});
+                ${$masterSettings{modifyLineBreaks}{$_}}{all}){
+               $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
+               next;  
+        };
 
-        # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-        my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
-
-        if(${$self}{$_} and ref ${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll} eq "HASH"){
-                # this clause is only for
-                #
-                #   textWrapOptions/removeParagraphLineBreaks:
-                #       all: 1
-                #
-                # and looks for exceptions specified in exceptionsToAll
-                if( defined ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}
-                        and
-                    ref ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName} eq "HASH"){
-                    # *per-name basis*
-                    # *per-name basis*
-                    # *per-name basis*
-                    #
-                    # for example,
-                    #
-                    # removeParagraphLineBreaks:
-                    #     all: 1
-                    #     exceptionsToAll:
-                    #         environments:
-                    #             itemize: 0
-                    if(defined ${${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}}{$name}){
-                        ${$self}{$_} = ${${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}}{$name};
-                    }
-                } else {
-                    # *per-object basis*
-                    # *per-object basis*
-                    # *per-object basis*
-                    #
-                    # for example,
-                    #
-                    # removeParagraphLineBreaks:
-                    #     all: 1
-                    #     exceptionsToAll:
-                    #         environments: 0
-                    if(defined ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName}){
-                        ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{exceptionsToAll}}{$YamlName};
-                    }
-                }
+        # otherwise, look for exceptions, either through
+        #
+        #   textWrapOptions/removeParagraphLineBreaks:
+        #       all:
+        #           except:
+        #               - <*type* of thing or *name* of thing>
+        #
+        # so, for example, the following (per code-block) is acceptable
+        # which makes an exception for all *environments*
+        #
+        #       all:
+        #           except:
+        #               - 'environments'
+        #
+        # the following (per-name) is acceptable 
+        # which only makes an exception for things called itemize
+        #
+        #       all:
+        #           except:
+        #               - 'itemize'
+        #
+        if(${$self}{$_} 
+                and 
+           defined ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} 
+                and 
+           ref ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY"
+         ){
+              my %except = map { $_ => 1 } @{${${$masterSettings{modifyLineBreaks}}{$_}}{all}{except}};
+              if( $except{$name} or $except{$YamlName}){
+                ${$self}{$_} = 0;
+                my $detail = ($except{$name} ? "per-name" : "per-code-block-type");
+                $logger->trace("$_ for $name is ${$self}{$_} (found as exception $detail, see $_:all:except)") if $is_t_switch_active;
+                next;
+              }
         } else {
-            # 
-            # otherwise exceptionsToAll is specified as a scalar; in which case it is 
-            # ignored there is nothing to be done with
+            # or otherwise through, for example
             #
-            #   exceptionsToAll: 1
+            #   all: 0
+            #   ifElseFi: 1
             #
             # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar
             # 

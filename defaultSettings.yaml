@@ -422,7 +422,6 @@ modifyLineBreaks:
         perCodeBlockBasis: 0
         all: 0
         alignAtAmpersandTakesPriority: 1
-        exceptionsToAll: 0
         environments: 
             quotation: 0
         ifElseFi: 0
@@ -431,13 +430,13 @@ modifyLineBreaks:
         items: 0
         specialBeginEnd: 0
         afterHeading: 0
+        preamble: 0
         filecontents: 0
         masterDocument: 0
     removeParagraphLineBreaks:
         all: 0
         beforeTextWrap: 0
         alignAtAmpersandTakesPriority: 1
-        exceptionsToAll: 0
         environments: 
             quotation: 0
         ifElseFi: 0
@@ -446,6 +445,7 @@ modifyLineBreaks:
         items: 0
         specialBeginEnd: 0
         afterHeading: 0
+        preamble: 0
         filecontents: 0
         masterDocument: 0
         paragraphsStopAt:

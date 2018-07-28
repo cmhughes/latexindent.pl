@@ -4,9 +4,8 @@ modifyLineBreaks:
         perCodeBlockBasis: 1
         all: 1
     removeParagraphLineBreaks:
-        all: 1
-        exceptionsToAll:
-            masterDocument: 0
-            environments:
-                itemize: 0
+        all:
+            except:
+                - 'masterDocument'
+                - 'itemize'
         beforeTextWrap: 1

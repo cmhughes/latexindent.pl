@@ -23,7 +23,7 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
+use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -196,53 +196,7 @@ sub find_objects{
     
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
-        # removeParagraphLineBreaks
-        # removeParagraphLineBreaks
-        # removeParagraphLineBreaks
-        my $exceptionsToAll = 0;
-        if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll} eq "HASH" 
-                and
-           defined ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll}}{masterDocument}
-            ){
-           $exceptionsToAll = !${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{exceptionsToAll}}{masterDocument};
-        }
-        ${$self}{removeParagraphLineBreaks} = (${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all} and !$exceptionsToAll)||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
-
-        # textWrapOptions
-        # textWrapOptions
-        # textWrapOptions
-        $exceptionsToAll = 0;
-        if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll} eq "HASH" 
-                and
-           defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll}}{masterDocument}
-            ){
-           $exceptionsToAll = !${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{exceptionsToAll}}{masterDocument};
-        }
-
-        ${$self}{textWrapOptions} = (   ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}
-                                                and
-                                        (
-                                          (${$masterSettings{modifyLineBreaks}{textWrapOptions}}{all} and !$exceptionsToAll)
-                                                    ||
-                                        ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{masterDocument}
-                                                    ||
-                                                     0)     );
-                                               
-        # textWrapOptions->columns can be a hash
-        if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"
-                    and
-           defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{masterDocument}
-           ){
-            ${$self}{columns} = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{masterDocument};
-          }
-
-        # summary to log file
-        if ($is_t_switch_active){
-            $logger->trace("*textWrapOptions/removeParagraphLineBreaks summary for masterDocument:");
-            $logger->trace("textWrapOptions: ${$self}{textWrapOptions}");
-            $logger->trace("removeParagraphLineBreaks: ${$self}{removeParagraphLineBreaks}");
-            $logger->trace("columns: ${$self}{columns}") if ${$self}{columns};
-        }
+        $self->get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
         if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){

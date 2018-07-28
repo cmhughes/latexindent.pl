@@ -1,3 +1,4 @@
+indentPreamble: 1
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
@@ -5,6 +6,6 @@ modifyLineBreaks:
         all: 1
     removeParagraphLineBreaks:
         all:
-            except:
-                - 'environments'
+          except:
+            - 'itemize'
         beforeTextWrap: 1
