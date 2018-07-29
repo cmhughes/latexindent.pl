@@ -25,21 +25,13 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line text_wrap_remove_paragraph_line_breaks/;
 our $paragraphRegExp = q();
 
 
 sub modify_line_breaks_body{
     my $self = shift;
     
-    # removeParagraphLineBreaks and textWrapping fun!
-    if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-        $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-    } else {
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-    }
-
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
@@ -212,6 +204,18 @@ sub adjust_line_breaks_end_parent{
         # make the adjustments
         ${$child}{body} .= "\n";
         ${$child}{linebreaksAtEnd}{body}=1;
+    }
+
+}
+
+sub text_wrap_remove_paragraph_line_breaks{
+    my $self = shift;
+
+    if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+    } else {
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
     }
 
 }

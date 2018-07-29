@@ -246,6 +246,20 @@ sub tasks_particular_to_each_object{
     
     # search for commands and special code blocks
     $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
+    
+    # text wrapping, remove paragraph line breaks
+    if ($is_m_switch_active){
+        $self->get_textwrap_removeparagraphline_breaks;
+
+        # call the remove_paragraph_line_breaks and text_wrap routines
+        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        } else {
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        }
+    }
 }
 
 1;

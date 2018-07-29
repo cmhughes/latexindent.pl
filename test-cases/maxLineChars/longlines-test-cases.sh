@@ -17,6 +17,7 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $silentMode == 0 ]] && set -x 
     # basic tests
+    [[ $showCounter == 1 ]] && echo $i of $loopmax
     latexindent.pl -s long-lines1.tex -o long-lines1-mod-$i.tex -l=text-wrap-$i.yaml -m
     latexindent.pl -s long-lines2.tex -o long-lines2-mod-$i.tex -l=text-wrap-$i.yaml -m
     latexindent.pl -s long-lines3.tex -o long-lines3-mod-$i.tex -l=text-wrap-$i.yaml -m 
@@ -92,6 +93,7 @@ latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,descrip
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml,stopParaAtComments.yaml -o jowens-follow-ups-mod2.tex
 # bug reported at https://github.com/cmhughes/latexindent.pl/issues/90
 latexindent.pl -m -s bug1 -o=+-mod0 -y="modifyLineBreaks:textWrapOptions:columns:3"
+# everything below is to do with the
 # improvement to text wrap routine, requested at https://github.com/cmhughes/latexindent.pl/issues/103
 latexindent.pl -m -s zoehneto.tex -l=zoehneto1.yaml -o=+-mod1
 latexindent.pl -m -s zoehneto.tex -l=zoehneto4.yaml -o=+-mod4
@@ -127,5 +129,15 @@ latexindent.pl -m -s zoehneto3.tex -l=zoehneto20.yaml -o=+-mod20
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto21.yaml -o=+-mod21
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto22.yaml -o=+-mod22
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto23.yaml -o=+-mod23
+# suit of 'all' objects test cases
+loopmax=47
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $silentMode == 0 ]] && set -x 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+latexindent.pl -m -s multi-object-all.tex -l=multi-object$i.yaml -o=+-mod$i
+   [[ $silentMode == 0 ]] && set +x 
+done
+
 git status
 [[ $noisyMode == 1 ]] && makenoise
