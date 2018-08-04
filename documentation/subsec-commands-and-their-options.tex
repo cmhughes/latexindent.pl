@@ -10,7 +10,7 @@
 	The \texttt{commandCodeBlocks} field%
 	\announce*{2018-04-27}*{commandCodeBlocks} contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile*[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -129,7 +129,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
 	\end{minipage}
 
 	In this case, \texttt{latexindent.pl} sees that:
@@ -148,22 +148,22 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
 		\end{minipage}
 	\end{adjustwidth}
 	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case any settings loaded prior
 	to those specified, including the default, will be overwritten. For example, using the settings
 	in \cref{lst:amalgamate-demo3} means that only the strings specified in that field will be used.
 
-	\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
+	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
 
 	It is important to note that the \texttt{amalgamate} field, if used, must be in the first field,
 	and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
@@ -171,11 +171,11 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	We may explore this feature further with the code in \cref{lst:for-each}, whose default output is given in \cref{lst:for-each-default}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
+		\cmhlistingsfromfile{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/for-each-default.tex}{\texttt{for-each} default output}{lst:for-each-default}
+		\cmhlistingsfromfile{demonstrations/for-each-default.tex}{\texttt{for-each} default output}{lst:for-each-default}
 	\end{minipage}
 
 	Let's compare this with the output from using the YAML settings in \cref{lst:foreach}, and running the command
@@ -185,11 +185,11 @@ latexindent.pl for-each.tex -l foreach.yaml
 	given in \cref{lst:for-each-mod1}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:foreach}}{lst:for-each-mod1}
+		\cmhlistingsfromfile{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:foreach}}{lst:for-each-mod1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
 	\end{minipage}
 
 	You might like to compare the output given in \cref{lst:for-each-default} and \cref{lst:for-each-mod1}. Note,in particular, in
@@ -230,7 +230,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{minipage}
 
 	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for \texttt{stringsAllowedBetweenArguments}. The
