@@ -450,6 +450,7 @@ modifyLineBreaks:
         masterDocument: 0
         paragraphsStopAt:
             environments: 1
+            verbatim: 1
             commands: 0
             ifElseFi: 0
             items: 0

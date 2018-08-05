@@ -4,8 +4,8 @@
 		\node at (1,0){\includegraphics{logo}};
 	}}
 \section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
- All features described in this section will only be relevant if the \texttt{-m} switch
- is used.
+ All features described in this section will only be relevant if the
+ \texttt{-m} switch is used.
 
  \startcontents[the-m-switch]
  \printcontents[the-m-switch]{}{0}{}
@@ -17,15 +17,15 @@
 	\makebox[0pt][r]{%
 		\raisebox{-\totalheight}[0pt][0pt]{%
 			\tikz\node[opacity=1] at (0,0) {\includegraphics[width=4cm]{logo}};}}%	
-	As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m} switch, which
-	permits \texttt{latexindent.pl} to modify line breaks, according to the
+	As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m}
+	switch, which permits \texttt{latexindent.pl} to modify line breaks, according to the
 	specifications in the \texttt{modifyLineBreaks} field. \emph{The settings
-		in this field will only be considered if the \texttt{-m} switch has been used}.
-	A snippet of the default settings of this field is shown in \cref{lst:modifylinebreaks}.
+		in this field will only be considered if the \texttt{-m} switch has been used}. A
+	snippet of the default settings of this field is shown in \cref{lst:modifylinebreaks}.
 
-	Having read the previous paragraph, it should sound reasonable that, if you call \texttt{latexindent.pl}
-	using the \texttt{-m} switch, then you give it permission to modify line breaks in your file,
-	but let's be clear:
+	Having read the previous paragraph, it should sound reasonable that, if you call
+	\texttt{latexindent.pl} using the \texttt{-m} switch, then you give
+	it permission to modify line breaks in your file, but let's be clear:
 
 	\begin{warning}
 		If you call \texttt{latexindent.pl} with the \texttt{-m} switch, then you
@@ -35,21 +35,23 @@
 	\end{warning}
 
 \yamltitle{preserveBlankLines}{0|1}
-	This field is directly related to \emph{poly-switches}, discussed below.
-	By default, it is set to \texttt{1}, which means that blank lines will
-	be protected from removal; however, regardless of this setting, multiple
-	blank lines can be condensed if \texttt{condenseMultipleBlankLinesInto} is
-	greater than \texttt{0}, discussed next.
+	This field is directly related to \emph{poly-switches}, discussed below. By
+	default, it is set to \texttt{1}, which means that blank lines will be
+	protected from removal; however, regardless of this setting, multiple blank lines can be
+	condensed if \texttt{condenseMultipleBlankLinesInto} is greater than \texttt{0},
+	discussed next.
 
 \yamltitle{condenseMultipleBlankLinesInto}*{positive integer}
-	Assuming that this switch takes an integer value greater than \texttt{0}, \texttt{latexindent.pl} will condense multiple blank lines into
-	the number of blank lines illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file
-	with blank lines; upon running
+	Assuming that this switch takes an integer value greater than
+	\texttt{0}, \texttt{latexindent.pl} will condense multiple blank
+	lines into the number of blank lines illustrated by this switch. As an example,
+	\cref{lst:mlb-bl} shows a sample file with blank lines; upon running
 	\begin{commandshell}
 latexindent.pl myfile.tex -m  
 \end{commandshell}
-	the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines have been
-	condensed into one blank line, and note also that we have used the \texttt{-m} switch!
+	the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines
+	have been condensed into one blank line, and note also that we have used the
+	\texttt{-m} switch!
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb-bl}
@@ -60,13 +62,15 @@ latexindent.pl myfile.tex -m
 	\end{minipage}
 
 \subsection{textWrapOptions: modifying line breaks by text wrapping}\label{subsec:textwrapping}
-	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to wrap text using the options
-	\announce{2017-05-27}{textWrapOptions}
-	specified in the \texttt{textWrapOptions} field, see \cref{lst:textWrapOptions}. The value of
-	\texttt{columns} specifies the column at which the text should be wrapped.
-	By default, the value of \texttt{columns} is \texttt{0}, so \texttt{latexindent.pl}
-	will \emph{not} wrap text; if you change it to a value of \texttt{2} or more, then
-	text will be wrapped after the character in the specified column.
+	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the
+	ability to wrap text using the options%
+	\announce{2017-05-27}{textWrapOptions} specified in the \texttt{textWrapOptions} field, see
+	\cref{lst:textWrapOptions}. The value of \texttt{columns} specifies the
+	column at which the text should be wrapped. By default, the value of
+	\texttt{columns} is \texttt{0}, so
+	\texttt{latexindent.pl} will \emph{not} wrap text; if you change it
+	to a value of \texttt{2} or more, then text will be wrapped after the
+	character in the specified column.
 
 	\cmhlistingsfromfile[style=textWrapOptions]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
 
@@ -76,7 +80,8 @@ latexindent.pl myfile.tex -m
 		\cmhlistingsfromfile{demonstrations/textwrap1.tex}{\texttt{textwrap1.tex}}{lst:textwrap1}
 	\end{widepage}
 
-	Using the file \texttt{textwrap1.yaml} in \cref{lst:textwrap1-yaml}, and running the command
+	Using the file \texttt{textwrap1.yaml} in \cref{lst:textwrap1-yaml}, and running
+	the command
 	\begin{commandshell}
 latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -90,13 +95,14 @@ latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
 	\end{minipage}
 
-	The text wrapping routine is performed \emph{after} verbatim environments have been stored, so verbatim
-	environments and verbatim commands are exempt from the routine. For example, using the file in
-	\cref{lst:textwrap2},
+	The text wrapping routine is performed \emph{after} verbatim environments
+	have been stored, so verbatim environments and verbatim commands are exempt from the
+	routine. For example, using the file in \cref{lst:textwrap2},
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/textwrap2.tex}{\texttt{textwrap2.tex}}{lst:textwrap2}
 	\end{widepage}
-	and running the following command and continuing to use \texttt{textwrap1.yaml} from \cref{lst:textwrap1-yaml},
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from
+	\cref{lst:textwrap1-yaml},
 	\begin{commandshell}
 latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -105,11 +111,13 @@ latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap2-mod1.tex}{\texttt{textwrap2-mod1.tex}}{lst:textwrap2-mod1}
 	\end{widepage}
 	Furthermore, the text wrapping routine is performed after the trailing comments have been
-	stored, and they are also exempt from text wrapping. For example, using the file in \cref{lst:textwrap3}
+	stored, and they are also exempt from text wrapping. For example, using the file in
+	\cref{lst:textwrap3}
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/textwrap3.tex}{\texttt{textwrap3.tex}}{lst:textwrap3}
 	\end{widepage}
-	and running the following command and continuing to use \texttt{textwrap1.yaml} from \cref{lst:textwrap1-yaml},
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from
+	\cref{lst:textwrap1-yaml},
 	\begin{commandshell}
 latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -117,14 +125,17 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 
 	\cmhlistingsfromfile{demonstrations/textwrap3-mod1.tex}{\texttt{textwrap3-mod1.tex}}{lst:textwrap3-mod1}
 
-	The text wrapping routine of \texttt{latexindent.pl} is performed by the \texttt{Text::Wrap} module, which provides a
-	\texttt{separator} feature to separate lines with characters other than a new line (see \cite{textwrap}). By default,
-	the separator is empty  which means that a new line token will be used, but you can change it as you see fit.
+	The text wrapping routine of \texttt{latexindent.pl} is performed by the
+	\texttt{Text::Wrap} module, which provides a \texttt{separator} feature
+	to separate lines with characters other than a new line (see
+	\cite{textwrap}). By default, the separator is empty  which means that a new
+	line token will be used, but you can change it as you see fit.
 
 	For example starting with the file in \cref{lst:textwrap4}
 
 	\cmhlistingsfromfile{demonstrations/textwrap4.tex}{\texttt{textwrap4.tex}}{lst:textwrap4}
-	and using \texttt{textwrap2.yaml} from \cref{lst:textwrap2-yaml} with the following command
+	and using \texttt{textwrap2.yaml} from \cref{lst:textwrap2-yaml} with the following
+	command
 	\begin{commandshell}
 latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 \end{commandshell}
@@ -139,32 +150,37 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	\end{minipage}
 
 \subsubsection{text wrapping on a per-code-block basis}
-	By default, if the value of \texttt{columns} is greater than 0 and the \texttt{-m} switch is active, then
-	\announce{new}*{updates to textWrapOptions}
-	the text wrapping routine will operate before the code blocks have been searched for. This behaviour
-	is customisable; in particular, you can instead instruct \texttt{latexindent.pl} to apply \texttt{textWrap}
-	on a per-code-block basis. Thanks to \cite{zoehneto} for their help in testing and shaping this feature.
+	By default, if the value of \texttt{columns} is greater than 0 and the
+	\texttt{-m} switch is active, then%
+	\announce{new}*{updates to textWrapOptions} the text wrapping routine will operate before the code blocks
+	have been searched for. This behaviour is customisable; in particular, you can instead
+	instruct \texttt{latexindent.pl} to apply \texttt{textWrap} on a
+	per-code-block basis. Thanks to \cite{zoehneto} for their help in testing and
+	shaping this feature.
 
-	The full details of \texttt{textWrapOptions} are shown in \cref{lst:textWrapOptionsAll}. In particular, note
-	the field \texttt{perCodeBlockBasis: 0}.
+	The full details of \texttt{textWrapOptions} are shown in \cref{lst:textWrapOptionsAll}.
+	In particular, note the field \texttt{perCodeBlockBasis: 0}.
 
 	\cmhlistingsfromfile*[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 
-	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to those detailed in \vref{tab:code-blocks}.
-	The only special case is the \texttt{masterDocument} field; this is designed for `chapter'-type files that
-	may contain paragraphs that are not within any other code-blocks. The same notation is used between this feature and the
-	\texttt{removeParagraphLineBreaks} described in \vref{lst:removeParagraphLineBreaks}; in fact, the two features can
-	even be combined (this is detailed in \vref{subsec:removeparagraphlinebreaks:and:textwrap}).
+	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to
+	those detailed in \vref{tab:code-blocks}. The only special case is the
+	\texttt{masterDocument} field; this is designed for `chapter'-type files that may
+	contain paragraphs that are not within any other code-blocks. The same notation is used
+	between this feature and the \texttt{removeParagraphLineBreaks} described in
+	\vref{lst:removeParagraphLineBreaks}; in fact, the two features can even be combined (this is
+	detailed in \vref{subsec:removeparagraphlinebreaks:and:textwrap}).
 
-	Let's explore these switches with reference to the code given in \cref{lst:textwrap5};
-	the text outside of the environment is considered part of the \texttt{masterDocument}.
+	Let's explore these switches with reference to the code given in
+	\cref{lst:textwrap5}; the text outside of the environment is considered part of
+	the \texttt{masterDocument}.
 
 	\begin{widepage}
 		\cmhlistingsfromfile*{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
 	\end{widepage}
 
-	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}
-	each give the same output.
+	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
+	give the same output.
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.33\linewidth}
@@ -178,15 +194,19 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 		\end{minipage}
 	\end{adjustwidth}
 
-	Let's explore the similarities and differences in the equivalent (with respect to \cref{lst:textwrap5}) syntax specified in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
+	Let's explore the similarities and differences in the equivalent (with respect to
+	\cref{lst:textwrap5}) syntax specified in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
 	\begin{itemize}
 		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that \texttt{columns: 30};
 		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that \texttt{perCodeBlockBasis: 1};
-		\item in \cref{lst:textwrap3-yaml} we have specified \texttt{all: 1} so that the text wrapping will operate upon \emph{all} code blocks;
-		\item in \cref{lst:textwrap4-yaml} we have \emph{not} specified \texttt{all}, and instead, have specified that text wrapping
-		      should be applied to each of \texttt{environments} and \texttt{masterDocument};
-		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for \texttt{masterDocument} and
-		      on a \emph{per-name} basis for \texttt{environments} code blocks.
+		\item in \cref{lst:textwrap3-yaml} we have specified \texttt{all: 1} so that the
+		      text wrapping will operate upon \emph{all} code blocks;
+		\item in \cref{lst:textwrap4-yaml} we have \emph{not} specified
+		      \texttt{all}, and instead, have specified that text wrapping should be
+		      applied to each of \texttt{environments} and \texttt{masterDocument};
+		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for
+		      \texttt{masterDocument} and on a \emph{per-name} basis for
+		      \texttt{environments} code blocks.
 	\end{itemize}
 
 	Upon running the following commands
@@ -199,7 +219,8 @@ latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
 
 	\cmhlistingsfromfile*{demonstrations/textwrap5-mod3.tex}{\texttt{textwrap5-mod3.tex}}{lst:textwrap5-mod3}
 
-	We can explore the idea of per-name text wrapping given in \cref{lst:textwrap5-yaml} by using \cref{lst:textwrap6}.
+	We can explore the idea of per-name text wrapping given in \cref{lst:textwrap5-yaml} by
+	using \cref{lst:textwrap6}.
 
 	\begin{widepage}
 		\cmhlistingsfromfile*{demonstrations/textwrap6.tex}{\texttt{textwrap6.tex}}{lst:textwrap6}
@@ -215,12 +236,13 @@ latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
 		\cmhlistingsfromfile*{demonstrations/textwrap6-mod5.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap5-yaml}}{lst:textwrap6-mod5}
 	\end{widepage}
 
-	Notice that, because \texttt{environments} has been
-	specified only for \texttt{myenv} (in \cref{lst:textwrap5-yaml}) that the environment named \texttt{another} has \emph{not} had text wrapping
-	applied to it.
+	Notice that, because \texttt{environments} has been specified only for
+	\texttt{myenv} (in \cref{lst:textwrap5-yaml}) that the environment named \texttt{another} has
+	\emph{not} had text wrapping applied to it.
 
-	The {all} field can be specified with exceptions which can either be done on a per-code-block or per-name basis;
-	we explore this in relation to \cref{lst:textwrap6} in the settings given in \crefrange{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
+	The {all} field can be specified with exceptions which can either
+	be done on a per-code-block or per-name basis; we explore this in relation to
+	\cref{lst:textwrap6} in the settings given in \crefrange{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.33\linewidth}
@@ -251,17 +273,20 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 
 	Notice that:
 	\begin{itemize}
-		\item in \cref{lst:textwrap6-mod6} the text wrapping routine has not been applied to any \texttt{environments} because
-		      it has been switched off (per-code-block) in \cref{lst:textwrap6-yaml};
-		\item in \cref{lst:textwrap6-mod7} the text wrapping routine has not been applied to \texttt{myenv} because
-		      it has been switched off (per-name) in \cref{lst:textwrap7-yaml};
-		\item in \cref{lst:textwrap6-mod8} the text wrapping routine has not been applied to \texttt{masterDocument}
-		      because of the settings in \cref{lst:textwrap8-yaml}.
+		\item in \cref{lst:textwrap6-mod6} the text wrapping routine has not been applied to any
+		      \texttt{environments} because it has been switched off (per-code-block) in
+		      \cref{lst:textwrap6-yaml};
+		\item in \cref{lst:textwrap6-mod7} the text wrapping routine has not been applied to
+		      \texttt{myenv} because it has been switched off (per-name) in
+		      \cref{lst:textwrap7-yaml};
+		\item in \cref{lst:textwrap6-mod8} the text wrapping routine has not been applied to
+		      \texttt{masterDocument} because of the settings in \cref{lst:textwrap8-yaml}.
 	\end{itemize}
 
-	The \texttt{columns} field has a variety of different ways that it can be specified; we've seen
-	two basic ways already: the default (set to \texttt{0}) and a positive integer (see \vref{lst:textwrap6}, for example).
-	We explore further options in \crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
+	The \texttt{columns} field has a variety of different ways that it can be
+	specified; we've seen two basic ways already: the default (set to
+	\texttt{0}) and a positive integer (see \vref{lst:textwrap6}, for
+	example). We explore further options in \crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.33\linewidth}
@@ -275,7 +300,8 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 		\end{minipage}
 	\end{adjustwidth}
 
-	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running the commands
+	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running
+	the commands
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
@@ -290,50 +316,66 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 	Notice that:
 	\begin{itemize}
-		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{masterDocument} has been wrapped using \texttt{30}
-		      columns, while \texttt{environments} has been wrapped using \texttt{50} columns;
-		\item in \cref{lst:textwrap6-mod11} the text for \texttt{myenv} has been wrapped using \texttt{50} columns, the text
-		      for \texttt{another} has been wrapped using \texttt{15} columns, and \texttt{masterDocument} has been wrapped using
-		      \texttt{30} columns.
+		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{masterDocument} has been
+		      wrapped using \texttt{30} columns, while \texttt{environments} has
+		      been wrapped using \texttt{50} columns;
+		\item in \cref{lst:textwrap6-mod11} the text for \texttt{myenv} has been wrapped
+		      using \texttt{50} columns, the text for \texttt{another} has
+		      been wrapped using \texttt{15} columns, and \texttt{masterDocument}
+		      has been wrapped using \texttt{30} columns.
 	\end{itemize}
-	If you don't specify a \texttt{default} value on per-code-block basis, then the \texttt{default} value from \texttt{columns}
-	will be inherited; if you don't specify a default value for \texttt{columns} then \texttt{80} will be used.
+	If you don't specify a \texttt{default} value on per-code-block basis, then
+	the \texttt{default} value from \texttt{columns} will be inherited;
+	if you don't specify a default value for \texttt{columns} then
+	\texttt{80} will be used.
 
-	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming that text wrapping is occuring
-	on a per-code-block basis, and the current environment/code block
-	is specified within \vref{lst:aligndelims:basic} then text wrapping will be disabled for this code block.
+	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming
+	that text wrapping is occuring on a per-code-block basis, and the current
+	environment/code block is specified within \vref{lst:aligndelims:basic} then text wrapping
+	will be disabled for this code block.
 
-    If you wish to specify \texttt{afterHeading} commands (see \vref{lst:indentAfterHeadings}) on a per-name basis, then you need to 
-append the name with \texttt{:heading}, for example, you might use \texttt{section:heading}.
+	If you wish to specify \texttt{afterHeading} commands (see
+	\vref{lst:indentAfterHeadings}) on a per-name basis, then you need to  append the name with
+	\texttt{:heading}, for example, you might use \texttt{section:heading}.
 
 \subsubsection{Summary of text wrapping}
 	It is important to note the following:
 	\begin{itemize}
-		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
-		\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
+		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands
+		      (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text
+		      wrapping routine (see \vref{lst:textwrap2-mod1});
+		\item comments will \emph{not} be affected by the text wrapping routine (see
+		      \vref{lst:textwrap3-mod1});
 		\item it is possible to wrap text on a per-code-block and a per-name basis;
 		      \announce{new}*{updates to textWrapOptions}
-            \item the text wrapping routine sets \texttt{preserveBlankLines} as \texttt{1};
-		\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
-		      will likely exceed any maximum value set in the \texttt{columns} field.
+		\item the text wrapping routine sets \texttt{preserveBlankLines} as
+		      \texttt{1};
+		\item indentation is performed \emph{after} the text wrapping routine; as such,
+		      indented code will likely exceed any maximum value set in the \texttt{columns}
+		      field.
 	\end{itemize}
 
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
-	You can instruct \texttt{latexindent.pl} to format%
-	\announce{2018-01-13}{one sentence per line} your file so that it puts one sentence
-	per line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour of this part of the script is controlled by the switches detailed in \cref{lst:oneSentencePerLine},
-	all of which we discuss next.
+	You can instruct \texttt{latexindent.pl} to
+	format%%%
+	\announce{2018-01-13}{one sentence per line} your file so that
+	it puts one sentence per line. Thank you to \cite{mlep} for helping to
+	shape and test this feature. The behaviour of this part of the script is controlled by
+	the switches detailed in \cref{lst:oneSentencePerLine}, all of which we discuss next.
 
 	\cmhlistingsfromfile[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
-	This is a binary switch that details if \texttt{latexindent.pl} should perform the sentence manipulation routine; it
-	is \emph{off} (set to \texttt{0}) by default, and you will need to turn it on (by setting it to \texttt{1}) if you want the script
+	This is a binary switch that details if \texttt{latexindent.pl} should perform the
+	sentence manipulation routine; it is \emph{off} (set to \texttt{0}) by default, and you will
+	need to turn it on (by setting it to \texttt{1}) if you want the script
 	to modify line breaks surrounding and within sentences.
 
 \yamltitle{removeSentenceLineBreaks}{0|1}
-	When operating upon sentences \texttt{latexindent.pl} will, by default, remove internal linebreaks as \texttt{removeSentenceLineBreaks}
-	is set to \texttt{1}. Setting this switch to \texttt{0} instructs \texttt{latexindent.pl} not to do so.
+	When operating upon sentences \texttt{latexindent.pl} will, by default, remove
+	internal linebreaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}.
+	Setting this switch to \texttt{0} instructs \texttt{latexindent.pl}
+	not to do so.
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
@@ -364,21 +406,26 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
 	\end{minipage}
 
-	Notice, in particular, that the `internal' sentence line breaks in \cref{lst:multiple-sentences} have
-	been removed in \cref{lst:multiple-sentences-mod1}, but have not been removed in \cref{lst:multiple-sentences-mod2}.
+	Notice, in particular, that the `internal' sentence line breaks in
+	\cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1}, but have
+	not been removed in \cref{lst:multiple-sentences-mod2}.
 
-	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct \texttt{latexindent.pl} on how to define
-	a sentence. From the perpesctive of \texttt{latexindent.pl} a sentence must:
+	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
+	\texttt{latexindent.pl} on how to define a sentence. From the perpesctive of
+	\texttt{latexindent.pl} a sentence must:
 	\begin{itemize}
-		\item \emph{follow} a certain character or set of characters (see \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a blank line,
-		      a full stop/period (.), exclamation mark (!), question mark (?) right brace (\}) or a comment
-		      on the previous line;
-		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by default, this is only capital letters;
-		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by default, these are
-		      full stop/period (.), exclamation mark (!) and question mark (?).
+		\item \emph{follow} a certain character or set of characters (see
+		      \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a
+		      blank line, a full stop/period (.), exclamation mark (!), question mark (?) right brace
+		      (\}) or a comment on the previous line;
+		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by
+		      default, this is only capital letters;
+		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by
+		      default, these are full stop/period (.), exclamation mark (!) and question mark (?).
 	\end{itemize}
-	In each case, you can specify the \texttt{other} field to include any pattern that you would like; you can specify anything in
-	this field using the language of regular expressions.
+	In each case, you can specify the \texttt{other} field to include any
+	pattern that you would like; you can specify anything in this field using the language of
+	regular expressions.
 
 	\begin{adjustwidth}{-3.5cm}{-2.5cm}
 		\begin{minipage}{.36\linewidth}
@@ -395,8 +442,9 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	\end{adjustwidth}
 
 \subsubsection{sentencesFollow}
-	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with \vref{lst:multiple-sentences}, and use the YAML
-	settings given in \cref{lst:sentences-follow1-yaml}. Using the command
+	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
+	\vref{lst:multiple-sentences}, and use the YAML settings given in
+	\cref{lst:sentences-follow1-yaml}. Using the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
@@ -410,10 +458,12 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
 	\end{minipage}
 
-	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl} will not seek sentences following a blank line,
-	and so the fourth sentence has not been accounted for.
+	Notice that, because \texttt{blankLine} is set to \texttt{0},
+	\texttt{latexindent.pl} will not seek sentences following a blank line, and so the
+	fourth sentence has not been accounted for.
 
-	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
+	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with
+	the \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
@@ -435,14 +485,17 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
 	\end{minipage}
 
-	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the \texttt{)} has not been accounted for, but that
-	following the inclusion of \cref{lst:sentences-follow2-yaml}, the output given in \cref{lst:multiple-sentences1-mod2} demonstrates that
-	the sentence \emph{has} been accounted for correctly.
+	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
+	\texttt{)} has not been accounted for, but that following the inclusion
+	of \cref{lst:sentences-follow2-yaml}, the output given in \cref{lst:multiple-sentences1-mod2}
+	demonstrates that the sentence \emph{has} been accounted for correctly.
 
 \subsubsection{sentencesBeginWith}
-	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper case letters \texttt{A-Z}; you can instruct the
-	script to define sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other} field
-	to define sentences to begin with other characters.
+	By default, \texttt{latexindent.pl} will only assume that sentences begin with the
+	upper case letters \texttt{A-Z}; you can instruct the script to define
+	sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can
+	use the \texttt{other} field to define sentences to begin with other
+	characters.
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
@@ -463,14 +516,19 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
 	\end{minipage}
-	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but that the subsequent sentences
-	have not. In \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for, because the \texttt{other} field
-	in \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$! or any numeric digit, \texttt{0} to \texttt{9}.
+	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but
+	that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2}, all of the
+	sentences have been accounted for, because the \texttt{other} field in
+	\cref{lst:sentences-begin1-yaml} has defined sentences to begin with either
+	\lstinline!$! or any numeric digit, \texttt{0} to
+	\texttt{9}.
 
 \subsubsection{sentencesEndWith}
-	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in which \texttt{latexindent.pl} will operate on the
-	sentences in this file in \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any character that we wish;
-	for example, using the YAML specified in \cref{lst:sentences-end1-yaml} and the command
+	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
+	which \texttt{latexindent.pl} will operate on the sentences in this file in
+	\vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with
+	any character that we wish; for example, using the YAML specified in
+	\cref{lst:sentences-end1-yaml} and the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
 latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
@@ -493,13 +551,16 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
 	\end{minipage}
 
-	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular,
-	in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a sentence, because we have not instructed
-	\texttt{latexindent.pl} to begin sentences with lower case letters. We have changed this by using the settings in \cref{lst:sentences-end2-yaml},
-	and the associated output in \cref{lst:multiple-sentences-mod5} reflects this.
+	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in
+	particular, in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not
+	been defined as a sentence, because we have not instructed \texttt{latexindent.pl} to
+	begin sentences with lower case letters. We have changed this by using the settings in
+	\cref{lst:sentences-end2-yaml}, and the associated output in \cref{lst:multiple-sentences-mod5}
+	reflects this.
 
-	Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called \texttt{basicFullStop}, which
-	is set to \texttt{0}, and that the \texttt{betterFullStop} is set to \texttt{1} by default.
+	Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called
+	\texttt{basicFullStop}, which is set to \texttt{0}, and that the
+	\texttt{betterFullStop} is set to \texttt{1} by default.
 
 	Let's consider the file shown in \cref{lst:url}.
 
@@ -513,22 +574,25 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 
 	\cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
-	Notice that the full stop within the url has been interpreted correctly. This is because, within the \texttt{betterFullStop},
-	full stops at the end of sentences have the following properties:
+	Notice that the full stop within the url has been interpreted correctly. This is because,
+	within the \texttt{betterFullStop}, full stops at the end of sentences have the
+	following properties:
 	\begin{itemize}
 		\item they are ignored within \texttt{e.g.} and \texttt{i.e.};
 		\item they can not be immediately followed by a lower case or upper case letter;
 		\item they can not be immediately followed by a hyphen, comma, or number.
 	\end{itemize}
-	If you find that the \texttt{betterFullStop} does not work for your purposes, then you can switch it off by setting
-	it to \texttt{0}, and you can experiment with the \texttt{other} field.
+	If you find that the \texttt{betterFullStop} does not work for your purposes, then
+	you can switch it off by setting it to \texttt{0}, and you can
+	experiment with the \texttt{other} field.
 
-	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it does not accomodate the specifications
-	above. For example, using the following command
+	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
+	it does not accomodate the specifications above. For example, using the following command
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
-	and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in \cref{lst:url-mod2}.
+	and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in
+	\cref{lst:url-mod2}.
 
 	\begin{adjustwidth}{-3.5cm}{-1.5cm}
 		\begin{minipage}{.6\linewidth}
@@ -540,35 +604,38 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 		\end{minipage}
 	\end{adjustwidth}
 
-	Notice that the full stop within the URL has not been accomodated correctly because of the non-default settings in \cref{lst:alt-full-stop1-yaml}.
+	Notice that the full stop within the URL has not been accomodated correctly because of
+	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the oneSentencePerLine routine}
-	The sentence manipulation routine takes place \emph{after} verbatim environments, preamble and trailing comments have
-	been accounted for; this means that any characters within these types of code blocks will not be part
-	of the sentence manipulation routine.
+	The sentence manipulation routine takes place \emph{after} verbatim
+	environments, preamble and trailing comments have been accounted for; this means that any
+	characters within these types of code blocks will not be part of the sentence
+	manipulation routine.
 
-	For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3}, and run the command
+	For example, if we begin with the \texttt{.tex} file in
+	\cref{lst:multiple-sentences3}, and run the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\end{commandshell}
-	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+	then we obtain the output in \cref{lst:multiple-sentences3-mod1}. \cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
 	\cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
-	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed.
-	For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
+	Furthermore, if sentences run across environments then, by default, the line breaks
+	internal to the sentence will be removed. For example, if we use the
+	\texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	\end{commandshell}
-	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}. \cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
 	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
-	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the removal of internal sentence line breaks
-	by using the YAML in \cref{lst:item-rules2-yaml} and the command
+	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the
+	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
+	and the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\end{commandshell}
@@ -583,30 +650,35 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\end{minipage}
 
 \subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}\label{subsec:removeparagraphlinebreaks}
-	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
-	\announce{2017-05-27}{removeParagraphLineBreaks}
-	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
-	\cref{lst:removeParagraphLineBreaks}. Thank you to \cite{jowens} for shaping and assisting with the testing of this feature.
+	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the
+	ability to remove line breaks%
+	\announce{2017-05-27}{removeParagraphLineBreaks} from within paragraphs; the behaviour is controlled by the
+	\texttt{removeParagraphLineBreaks} field, detailed in \cref{lst:removeParagraphLineBreaks}. Thank you to
+	\cite{jowens} for shaping and assisting with the testing of this feature.
 \yamltitle{removeParagraphLineBreaks}*{fields}
-	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
+	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature
+	described in \vref{sec:onesentenceperline}.
 
 	\cmhlistingsfromfile*[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
-	This routine can be turned on \emph{globally} for \emph{every} code block type known to \texttt{latexindent.pl}
-	(see \vref{tab:code-blocks}) by using the \texttt{all} switch; by default, this switch is \emph{off}. Assuming
-	that the \texttt{all} switch is off, then the routine can be controlled on a per-code-block-type basis, and
-	within that, on a per-name basis. We will consider examples of each of these in turn, but
-	before we do, let's specify what \texttt{latexindent.pl} considers as a paragraph:
+	This routine can be turned on \emph{globally} for \emph{every}
+	code block type known to \texttt{latexindent.pl}
+	(see \vref{tab:code-blocks}) by using the
+	\texttt{all} switch; by default, this switch is
+	\emph{off}. Assuming that the \texttt{all} switch is off,
+	then the routine can be controlled on a per-code-block-type basis, and within that, on a
+	per-name basis. We will consider examples of each of these in turn, but before we do,
+	let's specify what \texttt{latexindent.pl} considers as a paragraph:
 	\begin{itemize}
-		\item it must begin on its own line with either an alphabetic or numeric character, and not with any of the
-		      code-block types detailed in \vref{tab:code-blocks};
-		\item it can include line breaks, but finishes when it meets either a blank line, a \lstinline!\par!
-		      command, or any of the user-specified settings in the \texttt{paragraphsStopAt} field,
-		      detailed in \vref{lst:paragraphsStopAt}.
+		\item it must begin on its own line with either an alphabetic or numeric character, and not
+		      with any of the code-block types detailed in \vref{tab:code-blocks};
+		\item it can include line breaks, but finishes when it meets either a blank line, a
+		      \lstinline!\par! command, or any of the user-specified settings in the
+		      \texttt{paragraphsStopAt} field, detailed in \vref{lst:paragraphsStopAt}.
 	\end{itemize}
 
-	Let's start with the \texttt{.tex} file in \cref{lst:shortlines}, together with the YAML settings in
-	\cref{lst:remove-para1-yaml}.
+	Let's start with the \texttt{.tex} file in \cref{lst:shortlines},
+	together with the YAML settings in \cref{lst:remove-para1-yaml}.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
@@ -624,19 +696,21 @@ latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 
 	\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines1.tex}{\texttt{shortlines1.tex}}{lst:shortlines1}
 
-	Keen readers may notice that some trailing white space must be present in the file in \cref{lst:shortlines} which
-	has crept in to the output in \cref{lst:shortlines1}. This can be fixed using the YAML file in
+	Keen readers may notice that some trailing white space must be present in the file in
+	\cref{lst:shortlines} which has crept in to the output in
+	\cref{lst:shortlines1}. This can be fixed using the YAML file in
 	\vref{lst:removeTWS-before} and running, for example,
 	\begin{commandshell}
 latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
     \end{commandshell}
-	in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double spaces present in \cref{lst:shortlines1}
-	have been addressed.
+	in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double
+	spaces present in \cref{lst:shortlines1} have been addressed.
 
 	\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines1-tws.tex}{\texttt{shortlines1-tws.tex}}{lst:shortlines1-tws}
 
-	Keeping with the settings in \cref{lst:remove-para1-yaml}, we note that the \texttt{all} switch applies
-	to \emph{all} code block types. So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt}
+	Keeping with the settings in \cref{lst:remove-para1-yaml}, we note that the
+	\texttt{all} switch applies to \emph{all} code block
+	types. So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt}
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/shortlines-mand.tex}{\texttt{shortlines-mand.tex}}{lst:shortlines-mand}
@@ -659,13 +733,15 @@ latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
 	\cmhlistingsfromfile{demonstrations/shortlines-mand1.tex}{\texttt{shortlines-mand1.tex}}{lst:shortlines-mand1}
 	\cmhlistingsfromfile{demonstrations/shortlines-opt1.tex}{\texttt{shortlines-opt1.tex}}{lst:shortlines-opt1}
 
-	Assuming that we turn \emph{off} the \texttt{all} switch (by setting it to \texttt{0}), then
-	we can control the behaviour of \texttt{removeParagraphLineBreaks} either on a per-code-block-type basis,
-	or on a per-name basis.
+	Assuming that we turn \emph{off} the \texttt{all} switch
+	(by setting it to \texttt{0}), then we can control the behaviour of
+	\texttt{removeParagraphLineBreaks} either on a per-code-block-type basis, or on a per-name
+	basis.
 
-	For example, let's use the code in \cref{lst:shortlines-envs}, and consider the settings in \cref{lst:remove-para2-yaml,lst:remove-para3-yaml};
-	note that in \cref{lst:remove-para2-yaml} we specify that \emph{every} environment should receive
-	treatment from the routine, while in \cref{lst:remove-para3-yaml} we specify that \emph{only} the
+	For example, let's use the code in \cref{lst:shortlines-envs}, and consider the settings
+	in \cref{lst:remove-para2-yaml,lst:remove-para3-yaml}; note that in \cref{lst:remove-para2-yaml} we specify that
+	\emph{every} environment should receive treatment from the routine, while
+	in \cref{lst:remove-para3-yaml} we specify that \emph{only} the
 	\texttt{one} environment should receive the treatment.
 
 	\begin{minipage}{.45\linewidth}
@@ -689,13 +765,15 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	\cmhlistingsfromfile{demonstrations/shortlines-envs2.tex}{\texttt{shortlines-envs2.tex}}{lst:shortlines-envs2}
 	\cmhlistingsfromfile{demonstrations/shortlines-envs3.tex}{\texttt{shortlines-envs3.tex}}{lst:shortlines-envs3}
 
-	The remaining code-block types can be customized in analogous ways, although note that \texttt{commands},
-	\texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets}, \texttt{UnNamedGroupingBracesBrackets}
-	are controlled by the \texttt{optionalArguments} and the \texttt{mandatoryArguments}.
+	The remaining code-block types can be customized in analogous ways, although note that
+	\texttt{commands}, \texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets},
+	\texttt{UnNamedGroupingBracesBrackets} are controlled by the \texttt{optionalArguments} and the
+	\texttt{mandatoryArguments}.
 
-	The only special case is the \texttt{masterDocument} field; this is designed for `chapter'-type files that
-	may contain paragraphs that are not within any other code-blocks. For example, consider the file in
-	\cref{lst:shortlines-md}, with the YAML settings in \cref{lst:remove-para4-yaml}.
+	The only special case is the \texttt{masterDocument} field; this is designed for
+	`chapter'-type files that may contain paragraphs that are not within any other
+	code-blocks. For example, consider the file in \cref{lst:shortlines-md}, with the YAML
+	settings in \cref{lst:remove-para4-yaml}.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}
@@ -711,26 +789,31 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 \end{commandshell}
 	\end{widepage}
-	then we obtain the output in \cref{lst:shortlines-md4}.
-	\cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
+	then we obtain the output in \cref{lst:shortlines-md4}. \cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
 
-    Note \announce{new}*{updates to all in removeParagraphLineBreaks} that the \texttt{all} field can take the same exceptions
-    detailed in \cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
+	Note%%
+	\announce{new}*{updates to all in removeParagraphLineBreaks} that the
+	\texttt{all} field can take the same exceptions detailed in
+	\cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
 
 \yamltitle{paragraphsStopAt}*{fields}
-	The paragraph line break routine considers blank lines and the \lstinline|\par| command to be the end of a paragraph;
-	\announce{2017-05-27}{paragraphsStopAt}
-	you can fine tune the behaviour of the routine further by using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
+	The paragraph line break routine considers blank lines and the
+	\lstinline|\par| command to be the end of a paragraph;
+	\announce{2017-05-27}{paragraphsStopAt} you can fine tune the behaviour of the routine further by
+	using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
 
-	\cmhlistingsfromfile[style=paragraphsStopAt]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
+	\cmhlistingsfromfile*[style=paragraphsStopAt]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
 
-	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to stop the current paragraph
-	when it reaches a line that \emph{begins} with any of the code-block types specified as \texttt{1} in \cref{lst:paragraphsStopAt}.
-	By default, you'll see that the paragraph line break routine will stop when it reaches an environment at the
-	beginning of a line. It is \emph{not} possible to specify these fields on a per-name basis.
+	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to
+	stop the current paragraph when it reaches a line that \emph{begins} with
+	any of the code-block types specified as \texttt{1} in
+	\cref{lst:paragraphsStopAt}. By default, you'll see that the paragraph line break routine
+	will stop when it reaches an environment or verbatim code block at the beginning of a
+	line. It is \emph{not} possible to specify these fields on a per-name
+	basis.
 
-	Let's use the \texttt{.tex} file in \cref{lst:sl-stop}; we will, in turn, consider the settings in
-	\cref{lst:stop-command-yaml,lst:stop-comment-yaml}.
+	Let's use the \texttt{.tex} file in \cref{lst:sl-stop}; we will,
+	in turn, consider the settings in \cref{lst:stop-command-yaml,lst:stop-comment-yaml}.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/sl-stop.tex}{\texttt{sl-stop.tex}}{lst:sl-stop}
@@ -750,19 +833,25 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-
 latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
     \end{commandshell}
 	\end{widepage}
-	we obtain the respective outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment}; notice in particular that:
+	we obtain the respective outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment}; notice in particular
+	that:
 	\begin{itemize}
-		\item in \cref{lst:sl-stop4} the paragraph line break routine has included commands and comments;
-		\item in \cref{lst:sl-stop4-command} the paragraph line break routine has \emph{stopped} at the
-		      \texttt{emph} command, because in \cref{lst:stop-command-yaml} we have specified \texttt{commands}
-		      to be \texttt{1}, and \texttt{emph} is at the beginning of a line;
-		\item in \cref{lst:sl-stop4-comment} the paragraph line break routine has \emph{stopped}
-		      at the comments, because in \cref{lst:stop-comment-yaml} we have specified \texttt{comments}
-		      to be \texttt{1}, and the comment is at the beginning of a line.
+		\item in \cref{lst:sl-stop4} the paragraph line break routine has included commands and
+		      comments;
+		\item in \cref{lst:sl-stop4-command} the paragraph line break routine has
+		      \emph{stopped} at the \texttt{emph} command, because in
+		      \cref{lst:stop-command-yaml} we have specified \texttt{commands} to be
+		      \texttt{1}, and \texttt{emph} is at the beginning of a
+		      line;
+		\item in \cref{lst:sl-stop4-comment} the paragraph line break routine has
+		      \emph{stopped} at the comments, because in \cref{lst:stop-comment-yaml} we
+		      have specified \texttt{comments} to be \texttt{1}, and the
+		      comment is at the beginning of a line.
 	\end{itemize}
 	In all outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment} we notice that the paragraph line break
-	routine has stopped at \lstinline!\begin{myenv}! because, by default, \texttt{environments}
-	is set to \texttt{1} in \vref{lst:paragraphsStopAt}.
+	routine has stopped at \lstinline!\begin{myenv}! because, by default,
+	\texttt{environments} is set to \texttt{1} in
+	\vref{lst:paragraphsStopAt}.
 
 	\cmhlistingsfromfile{demonstrations/sl-stop4.tex}{\texttt{sl-stop4.tex}}{lst:sl-stop4}
 	\cmhlistingsfromfile{demonstrations/sl-stop4-command.tex}{\texttt{sl-stop4-command.tex}}{lst:sl-stop4-command}
@@ -770,26 +859,30 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 
 \subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
 
-      The \announce{new}{combine text wrap and remove paragraph line breaks} text wrapping routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine (\vref{subsec:removeparagraphlinebreaks})
-      can be combined.
+	The%%
+	\announce{new}{combine text wrap and remove paragraph line breaks} text wrapping
+	routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine
+	(\vref{subsec:removeparagraphlinebreaks}) can be combined.
 
-      We motivate this feature with the code given in \cref{lst:textwrap7}.
+	We motivate this feature with the code given in \cref{lst:textwrap7}.
 
-		\cmhlistingsfromfile*{demonstrations/textwrap7.tex}{\texttt{textwrap7.tex}}{lst:textwrap7}
+	\cmhlistingsfromfile*{demonstrations/textwrap7.tex}{\texttt{textwrap7.tex}}{lst:textwrap7}
 
-      Applying the text wrap routine from \vref{subsec:textwrapping} with, for example, \vref{lst:textwrap3-yaml} gives
-      the output in \cref{lst:textwrap7-mod3}.
+	Applying the text wrap routine from \vref{subsec:textwrapping} with, for example,
+	\vref{lst:textwrap3-yaml} gives the output in \cref{lst:textwrap7-mod3}.
 
-		\cmhlistingsfromfile*{demonstrations/textwrap7-mod3.tex}{\texttt{textwrap7.tex} using \cref{lst:textwrap3-yaml}}{lst:textwrap7-mod3}
+	\cmhlistingsfromfile*{demonstrations/textwrap7-mod3.tex}{\texttt{textwrap7.tex} using \cref{lst:textwrap3-yaml}}{lst:textwrap7-mod3}
 
-        The text wrapping routine has behaved as expected, but it may be desired to remove paragraph line breaks \emph{before}
-        performing the text wrapping routine. The desired behaviour can be achieved by employing the \texttt{beforeTextWrap} switch.
+	The text wrapping routine has behaved as expected, but it may be desired to remove
+	paragraph line breaks \emph{before} performing the text wrapping routine.
+	The desired behaviour can be achieved by employing the \texttt{beforeTextWrap}
+	switch.
 
-        Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
-		\begin{commandshell}
+	Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
+	\begin{commandshell}
 latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
     \end{commandshell}
-      we obtain the output in \cref{lst:textwrap7-mod12}.
+	we obtain the output in \cref{lst:textwrap7-mod12}.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile*{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
@@ -799,48 +892,62 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		\cmhlistingsfromfile*{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
 	\end{minipage}
 
-      In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from \cref{lst:textwrap7}, and 
-      then the text wrapping routine has been applied. It is envisaged that variants of \cref{lst:textwrap12-yaml}
-      will be among the most useful settings for these two features.
-
-
+	In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from
+	\cref{lst:textwrap7}, and  then the text wrapping routine has been applied. It is
+	envisaged that variants of \cref{lst:textwrap12-yaml} will be among the most useful
+	settings for these two features.
 
 \subsection{Poly-switches}\label{sec:poly-switches}
-	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
-	one of \emph{five}%
+	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can
+	take one of \emph{five}%%%
 	\announce{2017-08-21}*{blank line poly-switch} integer values:
 	\begin{itemize}[font=\bfseries]
-		\item[$-1$] \emph{remove mode}: line breaks before or after the \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is set to \texttt{0});
-		\item[0] \emph{off mode}: line breaks will not be modified for the \emph{<part of thing>} under consideration;
-		\item[1] \emph{add mode}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
+		\item[$-1$] \emph{remove mode}: line breaks before or after the
+		      \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is
+		      set to \texttt{0});
+		\item[0] \emph{off mode}: line breaks will not be modified for the
+		      \emph{<part of thing>} under consideration;
+		\item[1] \emph{add mode}: a line break will be added before or after the
+		      \emph{<part of thing>} under consideration, assuming that
 		      there is not already a line break before or after the \emph{<part of thing>};
-		\item[2] \emph{comment then add mode}: a comment symbol will be added, followed by a line break before or after the \emph{<part of thing>} under consideration, assuming that
-		      there is not already a comment and line break before or after the \emph{<part of thing>};
+		\item[2] \emph{comment then add mode}: a comment symbol will be added, followed by a line break
+		      before or after the \emph{<part of thing>} under consideration, assuming that there
+		      is not already a comment and line break before or after the \emph{<part of thing>};
 		\item[3] \emph{add then blank line mode}%
-		      \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after the \emph{<part of thing>} under consideration, assuming that
-		      there is not already a line break before or after the \emph{<part of thing>}, followed by a blank line.
+		      \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after the
+		      \emph{<part of thing>} under consideration, assuming that
+		      there is not already a line break before or after the \emph{<part of thing>},
+		      followed by a blank line.
 	\end{itemize}
-	In the above, \emph{<part of thing>} refers to either the \emph{begin statement}, \emph{body} or \emph{end statement} of the
-	code blocks detailed in \vref{tab:code-blocks}.
-	All poly-switches are \emph{off} by default; \texttt{latexindent.pl} searches first of all for per-name settings, and then followed by global per-thing settings.
+	In the above, \emph{<part of thing>} refers to either the
+	\emph{begin statement}, \emph{body} or \emph{end statement}
+	of the code blocks detailed in \vref{tab:code-blocks}. All poly-switches are
+	\emph{off} by default; \texttt{latexindent.pl} searches first of all
+	for per-name settings, and then followed by global per-thing settings.
 
 \subsection{modifyLineBreaks for environments}\label{sec:modifylinebreaks-environments}
-	We start by viewing a snippet of \texttt{defaultSettings.yaml} in \cref{lst:environments-mlb}; note that it contains \emph{global} settings (immediately
-	after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings
-	for \texttt{equation*} have been specified. Note that all poly-switches are \emph{off} by default.
+	We start by viewing a snippet of \texttt{defaultSettings.yaml} in
+	\cref{lst:environments-mlb}; note that it contains \emph{global} settings
+	(immediately after the \texttt{environments} field) and that
+	\emph{per-name} settings are also allowed -- in the case of
+	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been
+	specified. Note that all poly-switches are \emph{off} by default.
 
 	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
-	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have annotated key parts of the file using $\BeginStartsOnOwnLine$,
-	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, these will be related to fields specified in \cref{lst:environments-mlb}.
+	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we
+	have annotated key parts of the file using $\BeginStartsOnOwnLine$,
+	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$,
+	these will be related to fields specified in \cref{lst:environments-mlb}.
 
 	\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1-tex}
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
 \end{cmhlistings}
 
 \subsubsection{Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine}
-	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in \cref{lst:env-mlb1,lst:env-mlb2}, and in particular,
-	let's allow each of them in turn to take a value of $1$.
+	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in
+	\cref{lst:env-mlb1,lst:env-mlb2}, and in particular, let's allow each of them in turn to take
+	a value of $1$.
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
@@ -869,14 +976,19 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 
 	There are a couple of points to note:
 	\begin{itemize}
-		\item in \cref{lst:env-mlb-mod1} a line break has been added at the point denoted by $\BeginStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; no
-		      other line breaks have been changed;
-		\item in \cref{lst:env-mlb-mod2} a line break has been added at the point denoted by $\BodyStartsOnOwnLine$ in \cref{lst:env-mlb1-tex};
-		      furthermore, note that the \emph{body} of \texttt{myenv} has received the appropriate (default) indentation.
+		\item in \cref{lst:env-mlb-mod1} a line break has been added at the point denoted by
+		      $\BeginStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; no other line breaks have been
+		      changed;
+		\item in \cref{lst:env-mlb-mod2} a line break has been added at the point denoted by
+		      $\BodyStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; furthermore, note that the
+		      \emph{body} of \texttt{myenv} has received the appropriate
+		      (default) indentation.
 	\end{itemize}
 
-	Let's now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $2$ and
-	save them into \texttt{env-mlb3.yaml} and \texttt{env-mlb4.yaml} respectively (see \cref{lst:env-mlb3,lst:env-mlb4}).
+	Let's now change each of the \texttt{1} values in
+	\cref{lst:env-mlb1,lst:env-mlb2} so that they are $2$ and save them
+	into \texttt{env-mlb3.yaml} and \texttt{env-mlb4.yaml} respectively (see
+	\cref{lst:env-mlb3,lst:env-mlb4}).
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
@@ -898,13 +1010,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\end{minipage}
 	\end{widepage}
 
-	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a comment symbol
-	has been added before adding the line break; in both cases, trailing horizontal
-	space has been stripped before doing so.
+	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a
+	comment symbol has been added before adding the line break; in both cases, trailing
+	horizontal space has been stripped before doing so.
 
-	Let's%
-	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}  now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
-	save them into \texttt{env-mlb5.yaml} and \texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
+	Let's%%%
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}	now change each
+	of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
+	$3$ and save them into \texttt{env-mlb5.yaml} and
+	\texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
@@ -926,12 +1040,13 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\end{minipage}
 	\end{widepage}
 
-	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a \emph{blank line}
-	has been added after adding the line break.
+	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a
+	\emph{blank line} has been added after adding the line break.
 
 \subsubsection{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
-	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in \cref{lst:env-mlb7,lst:env-mlb8},
-	and in particular, let's allow each of them in turn to take a value of $1$.
+	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in
+	\cref{lst:env-mlb7,lst:env-mlb8}, and in particular, let's allow each of them in turn to take
+	a value of $1$.
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
@@ -960,13 +1075,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 
 	There are a couple of points to note:
 	\begin{itemize}
-		\item in \cref{lst:env-mlb-mod7} a line break has been added at the point denoted by $\EndStartsOnOwnLine$ in \vref{lst:env-mlb1-tex}; no
-		      other line breaks have been changed and the \lstinline!\end{myenv}! statement has \emph{not} received indentation (as intended);
-		\item in \cref{lst:env-mlb-mod8} a line break has been added at the point denoted by $\EndFinishesWithLineBreak$ in \vref{lst:env-mlb1-tex}.
+		\item in \cref{lst:env-mlb-mod7} a line break has been added at the point denoted by
+		      $\EndStartsOnOwnLine$ in \vref{lst:env-mlb1-tex}; no other line breaks have been
+		      changed and the \lstinline!\end{myenv}! statement has \emph{not}
+		      received indentation (as intended);
+		\item in \cref{lst:env-mlb-mod8} a line break has been added at the point denoted by
+		      $\EndFinishesWithLineBreak$ in \vref{lst:env-mlb1-tex}.
 	\end{itemize}
 
-	Let's now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $2$ and
-	save them into \texttt{env-mlb9.yaml} and \texttt{env-mlb10.yaml} respectively (see \cref{lst:env-mlb9,lst:env-mlb10}).
+	Let's now change each of the \texttt{1} values in
+	\cref{lst:env-mlb7,lst:env-mlb8} so that they are $2$ and save them
+	into \texttt{env-mlb9.yaml} and \texttt{env-mlb10.yaml} respectively (see
+	\cref{lst:env-mlb9,lst:env-mlb10}).
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
@@ -988,13 +1108,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\end{minipage}
 	\end{widepage}
 
-	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, but this time a comment symbol
-	has been added before adding the line break; in both cases, trailing horizontal
-	space has been stripped before doing so.
+	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, but this time a
+	comment symbol has been added before adding the line break; in both cases, trailing
+	horizontal space has been stripped before doing so.
 
-	Let's%
-	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
-	save them into \texttt{env-mlb11.yaml} and \texttt{env-mlb12.yaml} respectively (see \cref{lst:env-mlb11,lst:env-mlb12}).
+	Let's%%%
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
+	the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are
+	$3$ and save them into \texttt{env-mlb11.yaml} and
+	\texttt{env-mlb12.yaml} respectively (see \cref{lst:env-mlb11,lst:env-mlb12}).
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
@@ -1016,13 +1138,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\end{minipage}
 	\end{widepage}
 
-	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, and that a \emph{blank line}
-	has been added after the line break.
+	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, and that a
+	\emph{blank line} has been added after the line break.
 
 \subsubsection{poly-switches only add line breaks when necessary}
-	If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment) using a poly-switch value of $1$ (or $2$),
-	it will only do so if necessary. For example, if you process the file in \vref{lst:mlb2} using any of the YAML
-	files presented so far in this section, it will be left unchanged.
+	If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment)
+	using a poly-switch value of $1$ (or $2$),
+	it will only do so if necessary. For example, if you process the file in
+	\vref{lst:mlb2} using any of the YAML files presented so far in this section,
+	it will be left unchanged.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb2.tex}{\texttt{env-mlb2.tex}}{lst:mlb2}
@@ -1032,13 +1156,15 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile{demonstrations/env-mlb3.tex}{\texttt{env-mlb3.tex}}{lst:mlb3}
 	\end{minipage}
 
-	In contrast, the output from processing the file in \cref{lst:mlb3} will vary depending
-	on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that the comment symbol after
-	the \lstinline!\begin{myenv}! has been moved to the next line, as \texttt{BodyStartsOnOwnLine}
-	is set to \texttt{1}. In \cref{lst:env-mlb3-mod4} you'll see that the comment has been accounted
-	for correctly because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2},
-	and the comment symbol has \emph{not} been moved to its own line. You're encouraged to experiment
-	with \cref{lst:mlb3} and by setting the other poly-switches considered so far to \texttt{2} in turn.
+	In contrast, the output from processing the file in \cref{lst:mlb3} will vary
+	depending on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that the
+	comment symbol after the \lstinline!\begin{myenv}! has been moved to the next line, as
+	\texttt{BodyStartsOnOwnLine} is set to \texttt{1}. In
+	\cref{lst:env-mlb3-mod4} you'll see that the comment has been accounted for correctly
+	because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, and the
+	comment symbol has \emph{not} been moved to its own line. You're
+	encouraged to experiment with \cref{lst:mlb3} and by setting the other
+	poly-switches considered so far to \texttt{2} in turn.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod2.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb2}}{lst:env-mlb3-mod2}
@@ -1048,15 +1174,19 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod4.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb4}}{lst:env-mlb3-mod4}
 	\end{minipage}
 
-	The details of the discussion in this section have concerned \emph{global} poly-switches in the \texttt{environments} field;
-	each switch can also be specified on a \emph{per-name} basis, which would take priority over the global values; with
-	reference to \vref{lst:environments-mlb}, an example is shown for the \texttt{equation*} environment.
+	The details of the discussion in this section have concerned \emph{global}
+	poly-switches in the \texttt{environments} field; each switch can also be specified
+	on a \emph{per-name} basis, which would take priority over the global values;
+	with reference to \vref{lst:environments-mlb}, an example is shown for the
+	\texttt{equation*} environment.
 
 \subsubsection{Removing line breaks (poly-switches set to $-1$)}
-	Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider the
+	Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to
+	remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider the
 	example code given in \cref{lst:mlb4}, noting in particular the positions of
-	the line break highlighters, $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$
-	and $\EndFinishesWithLineBreak$, together with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
+	the line break highlighters, $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$,
+	$\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, together with the associated
+	YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
 
 	\begin{minipage}{.45\linewidth}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
@@ -1106,14 +1236,19 @@ latexindent.pl -m env-mlb4.tex -l env-mlb16.yaml
 
 	Notice that in:
 	\begin{itemize}
-		\item \cref{lst:env-mlb4-mod13} the line break denoted by $\BeginStartsOnOwnLine$ in \cref{lst:mlb4} has been removed;
-		\item \cref{lst:env-mlb4-mod14} the line break denoted by $\BodyStartsOnOwnLine$ in \cref{lst:mlb4} has been removed;
-		\item \cref{lst:env-mlb4-mod15} the line break denoted by $\EndStartsOnOwnLine$ in \cref{lst:mlb4} has been removed;
-		\item \cref{lst:env-mlb4-mod16} the line break denoted by $\EndFinishesWithLineBreak$ in \cref{lst:mlb4} has been removed.
+		\item \cref{lst:env-mlb4-mod13} the line break denoted by $\BeginStartsOnOwnLine$ in
+		      \cref{lst:mlb4} has been removed;
+		\item \cref{lst:env-mlb4-mod14} the line break denoted by $\BodyStartsOnOwnLine$ in
+		      \cref{lst:mlb4} has been removed;
+		\item \cref{lst:env-mlb4-mod15} the line break denoted by $\EndStartsOnOwnLine$ in
+		      \cref{lst:mlb4} has been removed;
+		\item \cref{lst:env-mlb4-mod16} the line break denoted by $\EndFinishesWithLineBreak$ in
+		      \cref{lst:mlb4} has been removed.
 	\end{itemize}
-	We examined each of these cases separately for clarity of explanation, but you can combine all of the YAML
-	settings in \crefrange{lst:env-mlb13}{lst:env-mlb16} into one file; alternatively, you could tell \texttt{latexindent.pl}
-	to load them all by using the following command, for example
+	We examined each of these cases separately for clarity of explanation, but you can
+	combine all of the YAML settings in \crefrange{lst:env-mlb13}{lst:env-mlb16} into one file;
+	alternatively, you could tell \texttt{latexindent.pl} to load them all by using the
+	following command, for example
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
@@ -1122,10 +1257,12 @@ latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	which gives the output in \vref{lst:env-mlb1-tex}.
 
 \subsubsection{About trailing horizontal space}
-	Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field \texttt{removeTrailingWhitespace},
-	and that it has two (binary) switches to determine if horizontal space should be removed \texttt{beforeProcessing} and \texttt{afterProcessing}.
-	The \texttt{beforeProcessing} is particularly relevant when considering the \texttt{-m} switch; let's consider the
-	file shown in \cref{lst:mlb5}, which highlights trailing spaces.
+	Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field
+	\texttt{removeTrailingWhitespace}, and that it has two (binary) switches to determine if
+	horizontal space should be removed \texttt{beforeProcessing} and
+	\texttt{afterProcessing}. The \texttt{beforeProcessing} is particularly relevant
+	when considering the \texttt{-m} switch; let's consider the file shown in
+	\cref{lst:mlb5}, which highlights trailing spaces.
 
 	\begin{minipage}{.45\linewidth}
 		\begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
@@ -1148,9 +1285,10 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
 \end{commandshell}
 	\end{widepage}
-	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that
-	the trailing horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while
-	in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in \cref{lst:removeTWS-before}.
+	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that the trailing horizontal
+	white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while in
+	\cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in
+	\cref{lst:removeTWS-before}.
 
 	\begin{widepage}
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/env-mlb5-modAll.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb5-modAll}
@@ -1190,10 +1328,12 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 \end{commandshell}
 	\end{widepage}
 	we receive the respective outputs in \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In
-	\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed into one blank line,
-	but that blank lines have \emph{not} been removed by the poly-switches -- this is because, by default, \texttt{preserveBlankLines}
-	is set to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed
-	the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to \texttt{0}.
+	\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed
+	into one blank line, but that blank lines have \emph{not} been removed
+	by the poly-switches -- this is because, by default, \texttt{preserveBlankLines} is set
+	to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have
+	allowed the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines},
+	we have set \texttt{preserveBlankLines} to \texttt{0}.
 
 	\begin{widepage}
 		\begin{minipage}{.30\linewidth}
@@ -1205,8 +1345,8 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 		\end{minipage}
 	\end{widepage}
 
-	We can explore this further using the blank-line poly-switch value of $3$; let's use the file given
-	in \cref{lst:env-mlb7-tex}.
+	We can explore this further using the blank-line poly-switch value of
+	$3$; let's use the file given in \cref{lst:env-mlb7-tex}.
 
 	\cmhlistingsfromfile{demonstrations/env-mlb7.tex}{\texttt{env-mlb7.tex}}{lst:env-mlb7-tex}
 
@@ -1222,18 +1362,24 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 
 	Notice that in:
 	\begin{itemize}
-		\item \cref{lst:env-mlb7-preserve} that \lstinline!\end{one}! has added a blank line, because of the value of
-		      \texttt{EndFinishesWithLineBreak} in \vref{lst:env-mlb12}, and even though the line break ahead of \lstinline!\begin{two}! should have been removed
-		      (because of \texttt{BeginStartsOnOwnLine} in \vref{lst:env-mlb13}), the blank line has been preserved by default;
-		\item \cref{lst:env-mlb7-no-preserve}, by contrast, has had the additional line-break removed, because of
-		      the settings in \cref{lst:UnpreserveBlankLines}.
+		\item \cref{lst:env-mlb7-preserve} that \lstinline!\end{one}! has added a blank line,
+		      because of the value of \texttt{EndFinishesWithLineBreak} in \vref{lst:env-mlb12}, and
+		      even though the line break ahead of \lstinline!\begin{two}! should have been removed
+		      (because of \texttt{BeginStartsOnOwnLine} in \vref{lst:env-mlb13}), the blank line
+		      has been preserved by default;
+		\item \cref{lst:env-mlb7-no-preserve}, by contrast, has had the additional line-break removed,
+		      because of the settings in \cref{lst:UnpreserveBlankLines}.
 	\end{itemize}
 
 \subsection{Poly-switches for other code blocks}
-	Rather than repeat the examples shown for the environment code blocks (in \vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for
-	all other code blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these poly-switches is \emph{off by default}, i.e, set to \texttt{0}. Note also that,
-	by design, line breaks involving \texttt{verbatim}, \texttt{filecontents} and `comment-marked' code blocks (\vref{lst:alignmentmarkup}) can \emph{not} be
-	modified using \texttt{latexindent.pl}.
+	Rather than repeat the examples shown for the environment code blocks (in
+	\vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for all other code
+	blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these
+	poly-switches is \emph{off by default}, i.e, set to \texttt{0}.
+	Note also that, by design, line breaks involving \texttt{verbatim},
+	\texttt{filecontents} and `comment-marked' code blocks
+	(\vref{lst:alignmentmarkup}) can \emph{not} be modified using
+	\texttt{latexindent.pl}.
 
 	\begin{longtable}{llll}
 		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                         \\

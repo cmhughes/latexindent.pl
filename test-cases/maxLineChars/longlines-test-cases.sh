@@ -29,6 +29,7 @@ set +x
 
 # verbatim
 latexindent.pl -s -m verbatim-long-lines.tex -o verbatim-long-lines-mod1.tex -l=text-wrap-1.yaml
+latexindent.pl -s -m verbatim2 -o=+-mod1 -l=verbatim1.yaml
 
 # remove paragraph line breaks
 latexindent.pl -m -s jowens-short-multi-line.tex -l removeParaLineBreaks0.yaml -o jowens-short-multi-line0.tex

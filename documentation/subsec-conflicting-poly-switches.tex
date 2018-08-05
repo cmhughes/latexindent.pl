@@ -1,7 +1,8 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \subsection{Conflicting poly-switches: sequential code blocks}
-	It is very easy to have conflicting poly-switches; if we use the example from \vref{lst:mycommand1},
-	and consider the YAML settings given in \cref{lst:mycom-mlb4}. The output from running
+	It is very easy to have conflicting poly-switches; if we use the example from
+	\vref{lst:mycommand1}, and consider the YAML settings given in \cref{lst:mycom-mlb4}.
+	The output from running
 	\begin{commandshell}
 latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 \end{commandshell}
@@ -15,16 +16,20 @@ latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb4.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb4.yaml}}{lst:mycom-mlb4}
 	\end{minipage}
 
-	Studying \cref{lst:mycom-mlb4}, we see that the two poly-switches are at opposition with one another:
+	Studying \cref{lst:mycom-mlb4}, we see that the two poly-switches are at opposition with
+	one another:
 	\begin{itemize}
-		\item on the one hand, \texttt{LCuBStartsOnOwnLine} should \emph{not} start on its own line (as poly-switch is set to $-1$);
+		\item on the one hand, \texttt{LCuBStartsOnOwnLine} should \emph{not} start on its own line
+		      (as poly-switch is set to $-1$);
 		\item on the other hand, \texttt{RCuBFinishesWithLineBreak} \emph{should} finish with a line break.
 	\end{itemize}
-	So, which should win the conflict? As demonstrated in \cref{lst:mycommand1-mlb4}, it is clear that \texttt{LCuBStartsOnOwnLine} won
-	this conflict, and the reason is that \emph{the second argument was processed after the first} -- in general, the most recently-processed
-	code block and associated poly-switch takes priority.
+	So, which should win the conflict? As demonstrated in \cref{lst:mycommand1-mlb4}, it is clear
+	that \texttt{LCuBStartsOnOwnLine} won this conflict, and the reason is that
+	\emph{the second argument was processed after the first} -- in general, the most recently-processed code block and
+	associated poly-switch takes priority.
 
-	We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5}; upon running the command
+	We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5};
+	upon running the command
 	\begin{commandshell}
 latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 \end{commandshell}
@@ -38,8 +43,10 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
 	\end{minipage}
 
-	As previously, the most-recently-processed code block takes priority -- as before, the second (i.e, \emph{last}) argument. Exploring this
-	further, we consider the YAML settings in \cref{lst:mycom-mlb6}, which give associated output in \cref{lst:mycommand1-mlb6}.
+	As previously, the most-recently-processed code block takes priority -- as before, the
+	second (i.e, \emph{last}) argument. Exploring this further, we consider the
+	YAML settings in \cref{lst:mycom-mlb6}, which give associated output in
+	\cref{lst:mycommand1-mlb6}.
 
 	\begin{minipage}{.4\linewidth}
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb6.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb6}}{lst:mycommand1-mlb6}
@@ -49,20 +56,26 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb6.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb6.yaml}}{lst:mycom-mlb6}
 	\end{minipage}
 
-	Note that a \lstinline!%! \emph{has} been added to the trailing first \lstinline!}!; this is because:
+	Note that a \lstinline!%! \emph{has} been added to the trailing
+	first \lstinline!}!; this is because:
 	\begin{itemize}
-		\item while processing the \emph{first} argument, the trailing line break has been removed (\texttt{RCuBFinishesWithLineBreak} set to $-1$);
-		\item while processing the \emph{second} argument, \texttt{latexindent.pl} finds that it does \emph{not} begin on its own line, and so
-		      because \texttt{LCuBStartsOnOwnLine} is set to $2$, it adds a comment, followed by a line break.
+		\item while processing the \emph{first} argument, the trailing line break has been
+		      removed (\texttt{RCuBFinishesWithLineBreak} set to $-1$);
+		\item while processing the \emph{second} argument, \texttt{latexindent.pl} finds that
+		      it does \emph{not} begin on its own line, and so because
+		      \texttt{LCuBStartsOnOwnLine} is set to $2$, it adds a comment, followed by a
+		      line break.
 	\end{itemize}
 
 \subsection{Conflicting poly-switches: nested code blocks}
-	Now let's consider an example when nested code blocks have conflicting poly-switches; we'll use the code in \cref{lst:nested-env},
-	noting that it contains nested environments.
+	Now let's consider an example when nested code blocks have conflicting poly-switches;
+	we'll use the code in \cref{lst:nested-env}, noting that it contains nested
+	environments.
 
 	\cmhlistingsfromfile{demonstrations/nested-env.tex}{\texttt{nested-env.tex}}{lst:nested-env}
 
-	Let's use the YAML settings given in \cref{lst:nested-env-mlb1-yaml}, which upon running the command
+	Let's use the YAML settings given in \cref{lst:nested-env-mlb1-yaml}, which upon running the
+	command
 	\begin{commandshell}
 latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
         \end{commandshell}
@@ -76,41 +89,61 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1-yaml}
 	\end{minipage}
 
-	In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have received the appropriate (default) indentation; secondly,
-	note that the poly-switch \texttt{EndStartsOnOwnLine} appears to have won the conflict, as \lstinline!\end{one}! has had its leading line break removed.
+	In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have received
+	the appropriate (default) indentation; secondly, note that the poly-switch
+	\texttt{EndStartsOnOwnLine} appears to have won the conflict, as \lstinline!\end{one}! has
+	had its leading line break removed.
 
-	To understand it, let's talk about the three basic phases \label{page:phases}of \texttt{latexindent.pl}:
+	To understand it, let's talk about the three basic phases \label{page:phases}of
+	\texttt{latexindent.pl}:
 	\begin{enumerate}
-		\item Phase 1: packing, in which code blocks are replaced with unique ids, working from \emph{the inside to the outside}, and then sequentially -- for example, in
-		      \cref{lst:nested-env}, the \texttt{two} environment is found \emph{before} the \texttt{one} environment; if the -m switch is active, then during this phase:
+		\item Phase 1: packing, in which code blocks are replaced with unique ids, working from
+		      \emph{the inside to the outside}, and then sequentially -- for example, in \cref{lst:nested-env},
+		      the \texttt{two} environment is found \emph{before} the
+		      \texttt{one} environment; if the -m switch is active, then during this phase:
 		      \begin{itemize}
-			      \item line breaks at the beginning of the \texttt{body} can be added (if \texttt{BodyStartsOnOwnLine} is $1$ or $2$) or removed (if \texttt{BodyStartsOnOwnLine} is $-1$);
-			      \item line breaks at the end of the body can be added (if \texttt{EndStartsOnOwnLine} is $1$ or $2$) or removed (if \texttt{EndStartsOnOwnLine} is $-1$);
-			      \item line breaks after the end statement can be added (if \texttt{EndFinishesWithLineBreak} is $1$ or $2$).
+			      \item line breaks at the beginning of the \texttt{body} can be added (if
+			            \texttt{BodyStartsOnOwnLine} is $1$ or $2$) or removed (if
+			            \texttt{BodyStartsOnOwnLine} is $-1$);
+			      \item line breaks at the end of the body can be added (if \texttt{EndStartsOnOwnLine} is
+			            $1$ or $2$) or removed (if \texttt{EndStartsOnOwnLine} is
+			            $-1$);
+			      \item line breaks after the end statement can be added (if \texttt{EndFinishesWithLineBreak} is
+			            $1$ or $2$).
 		      \end{itemize}
-		\item Phase 2: indentation, in which white space is added to the begin, body, and end statements;
-		\item Phase 3: unpacking, in which unique ids are replaced by their \emph{indented} code blocks; if the -m switch is active, then during this phase,
+		\item Phase 2: indentation, in which white space is added to the begin, body, and end
+		      statements;
+		\item Phase 3: unpacking, in which unique ids are replaced by their \emph{indented} code
+		      blocks; if the -m switch is active, then during this phase,
 		      \begin{itemize}
-			      \item line breaks before \texttt{begin} statements can be added or removed (depending upon \texttt{BeginStartsOnOwnLine});
-			      \item line breaks after \emph{end} statements can be removed but \emph{NOT} added (see \texttt{EndFinishesWithLineBreak}).
+			      \item line breaks before \texttt{begin} statements can be added or removed (depending
+			            upon \texttt{BeginStartsOnOwnLine});
+			      \item line breaks after \emph{end} statements can be removed but
+			            \emph{NOT} added (see \texttt{EndFinishesWithLineBreak}).
 		      \end{itemize}
 	\end{enumerate}
 
 	With reference to \cref{lst:nested-env-mlb1}, this means that during Phase 1:
 	\begin{itemize}
-		\item the \texttt{two} environment is found first, and
-		      the line break ahead of the \lstinline!\end{two}! statement is removed because \texttt{EndStartsOnOwnLine} is set to $-1$. Importantly,
-		      because, \emph{at this stage}, \lstinline!\end{two}! \emph{does} finish with a line break, \texttt{EndFinishesWithLineBreak} causes
-		      no action.
-		\item next, the \texttt{one} environment is found; the line break ahead of \lstinline!\end{one}! is removed because \texttt{EndStartsOnOwnLine}
-		      is set to $-1$.
+		\item the \texttt{two} environment is found first, and the line break ahead of the
+		      \lstinline!\end{two}! statement is removed because \texttt{EndStartsOnOwnLine} is set to
+		      $-1$. Importantly, because, \emph{at this stage},
+		      \lstinline!\end{two}! \emph{does} finish with a line break,
+		      \texttt{EndFinishesWithLineBreak} causes no action.
+		\item next, the \texttt{one} environment is found; the line break ahead of
+		      \lstinline!\end{one}! is removed because \texttt{EndStartsOnOwnLine} is set to
+		      $-1$.
 	\end{itemize}
-	The indentation is done in Phase 2; in Phase 3 \emph{there is no option to add a line break after the \lstinline!end! statements}.
-	We can justify this by remembering that during Phase 3, the \texttt{one} environment will be found and processed first, followed
-	by the \texttt{two} environment. If the \texttt{two} environment were to add a line break after the \lstinline!\end{two}! statement, then
-	\texttt{latexindent.pl} would have no way of knowing how much indentation to add to the subsequent text (in this case, \lstinline!\end{one}!).
+	The indentation is done in Phase 2; in Phase 3 \emph{there is no option to add a line break after the \lstinline!end! statements}. We can justify
+	this by remembering that during Phase 3, the \texttt{one} environment will be
+	found and processed first, followed by the \texttt{two} environment. If the
+	\texttt{two} environment were to add a line break after the
+	\lstinline!\end{two}! statement, then \texttt{latexindent.pl} would have no way of
+	knowing how much indentation to add to the subsequent text (in this case,
+	\lstinline!\end{one}!).
 
-	We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}; upon running the command
+	We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}; upon
+	running the command
 	\begin{commandshell}
 latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
         \end{commandshell}
@@ -126,12 +159,17 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
 
 	During Phase 1:
 	\begin{itemize}
-		\item the \texttt{two} environment is found first, and
-		      the line break ahead of the \lstinline!\end{two}! statement is not changed because \texttt{EndStartsOnOwnLine} is set to $1$.
-		      Importantly, because, \emph{at this stage}, \lstinline!\end{two}! \emph{does} finish with a line break, \texttt{EndFinishesWithLineBreak} causes
-		      no action.
-		\item next, the \texttt{one} environment is found; the line break ahead of \lstinline!\end{one}! is already present, and no action is needed.
+		\item the \texttt{two} environment is found first, and the line break ahead of the
+		      \lstinline!\end{two}! statement is not changed because \texttt{EndStartsOnOwnLine} is set to
+		      $1$. Importantly, because, \emph{at this stage},
+		      \lstinline!\end{two}! \emph{does} finish with a line break,
+		      \texttt{EndFinishesWithLineBreak} causes no action.
+		\item next, the \texttt{one} environment is found; the line break ahead of
+		      \lstinline!\end{one}! is already present, and no action is needed.
 	\end{itemize}
-	The indentation is done in Phase 2, and then in Phase 3, the \texttt{one} environment is found and processed first, followed by
-	the \texttt{two} environment. \emph{At this stage}, the \texttt{two} environment finds \texttt{EndFinishesWithLineBreak} is $-1$, so it removes
-	the trailing line break; remember, at this point, \texttt{latexindent.pl} has completely finished with the \texttt{one} environment.
+	The indentation is done in Phase 2, and then in Phase 3, the \texttt{one}
+	environment is found and processed first, followed by the \texttt{two}
+	environment. \emph{At this stage}, the \texttt{two} environment finds
+	\texttt{EndFinishesWithLineBreak} is $-1$, so it removes the trailing line break;
+	remember, at this point, \texttt{latexindent.pl} has completely finished with the
+	\texttt{one} environment.
