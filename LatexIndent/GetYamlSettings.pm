@@ -22,7 +22,7 @@ use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -465,6 +465,8 @@ sub get_indentation_settings_for_this_object{
                         EndStartsOnOwnLine=>${$self}{EndStartsOnOwnLine},
                         EndFinishesWithLineBreak=>${$self}{EndFinishesWithLineBreak},
                         removeParagraphLineBreaks=>${$self}{removeParagraphLineBreaks},
+                        textWrapOptions=>${$self}{textWrapOptions},
+                        columns=>${$self}{columns},
                       );
 
         # don't forget alignment settings!
@@ -541,7 +543,8 @@ sub modify_line_breaks_settings{
     my $logger = get_logger("Document");
 
     # details to the log file
-    $logger->trace("*-m modifylinebreaks switch active, looking for settings for ${$self}{name} ") if $is_t_switch_active;
+    $logger->trace("*-m modifylinebreaks switch active") if $is_t_switch_active;
+    $logger->trace("looking for polyswitch, textWrapOptions, removeParagraphLineBreaks, oneSentencePerLine settings for ${$self}{name} ") if $is_t_switch_active;
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
     my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{${$self}{additionalAssignments}} : ();
@@ -555,39 +558,182 @@ sub modify_line_breaks_settings{
                                     toBeAssignedTo=>$_,
                                     toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
-      }
+      };
 
-    # paragraph line break settings
-    ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all};
+    $self->get_textwrap_removeparagraphline_breaks;
+    return;
+}
 
-    return if(${$self}{removeParagraphLineBreaks});
+sub get_textwrap_removeparagraphline_breaks{
+    my $self = shift;
+    
+    # grab the logging object
+    my $logger = get_logger("Document");
 
-    # the removeParagraphLineBreaks can contain fields that are hashes or scalar, for example:
-    # 
-    # removeParagraphLineBreaks:
-    #     all: 0
-    #     environments: 0
-    # or
-    # removeParagraphLineBreaks:
-    #     all: 0
-    #     environments: 
-    #         quotation: 0
+    # textWrap and removeParagraphLineBreaks settings
+    foreach ("textWrapOptions","removeParagraphLineBreaks"){
 
-    # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
-    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+        # first check for either
+        #
+        # textWrapOptions:
+        #     all: 0
+        #
+        # or
+        #
+        # removeParagraphLineBreaks:
+        #     all: 0
+        #
+        # *IMPORTANT*
+        # even if all is set to 1, then it can still be disabled on either a
+        # 
+        # per-object:
+        #   
+        #   for example
+        #
+        #       textWrapOptions:
+        #           all:
+        #               except:
+        #                   - environments
+        #
+        #   will disable textWrapOptions for *all* environments
+        #
+        # per-name
+        # 
+        #   for example
+        #
+        #       textWrapOptions:
+        #           all: 
+        #               except:
+        #                   - itemize
+        #
+        #   will disable textWrapOptions for itemize
+        
+        # if 'all' is set as a hash, then the default value is 1, to be turned  off (possibly) later
+        ${$self}{$_} = ( ref ${$masterSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$masterSettings{modifyLineBreaks}{$_}}{all});
 
-    # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-    my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+        # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
+        my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
-    if(ref ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName} eq "HASH"){
-        $logger->trace("*$YamlName specified with fields in removeParagraphLineBreaks, looking for $name") if $is_t_switch_active;
-        ${$self}{removeParagraphLineBreaks} = ${${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}}{$name}||0;
-    } else {
-        if(defined ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}){
-            $logger->trace("*$YamlName specified with just a number in removeParagraphLineBreaks ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName}") if $is_t_switch_active;
-            ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{$YamlName};
+        if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
+            if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+                # assign default value of $columns
+                my $columns;
+                if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+                } else {
+                    $columns = 80;
+                }
+
+                # possibly specify object wrapping on a per-name basis
+                if(ref ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
+                    # for example:
+                    #   modifyLineBreaks:
+                    #       textWrapOptions:
+                    #           columns: 
+                    #               default: 80
+                    #               environments:
+                    #                   default: 80
+                    #                   something: 10
+                    #                   another: 20
+                    if(defined ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
+                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
+                    } elsif (${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
+                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
+                    }
+                } else {
+                    # for example:
+                    #   modifyLineBreaks:
+                    #       textWrapOptions:
+                    #           columns: 
+                    #               default: 80
+                    #               environments: 10
+                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+                }
+                ${$self}{columns} = $columns;
+            } else {
+                ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+            }
         }
+        
+        # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
+        my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
+
+        # move to the next <thing> if
+        #
+        #   textWrapOptions/removeParagraphLineBreaks::
+        #       all: 1
+        #
+        if(${$self}{$_} 
+                    and 
+                ref ${$masterSettings{modifyLineBreaks}{$_}}{all} ne "HASH" 
+                    and 
+                ${$masterSettings{modifyLineBreaks}{$_}}{all}){
+               $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
+               next;  
+        };
+
+        # otherwise, look for exceptions, either through
+        #
+        #   textWrapOptions/removeParagraphLineBreaks:
+        #       all:
+        #           except:
+        #               - <*type* of thing or *name* of thing>
+        #
+        # so, for example, the following (per code-block) is acceptable
+        # which makes an exception for all *environments*
+        #
+        #       all:
+        #           except:
+        #               - 'environments'
+        #
+        # the following (per-name) is acceptable 
+        # which only makes an exception for things called itemize
+        #
+        #       all:
+        #           except:
+        #               - 'itemize'
+        #
+        if(${$self}{$_} 
+                and 
+           defined ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} 
+                and 
+           ref ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY"
+         ){
+              my %except = map { $_ => 1 } @{${${$masterSettings{modifyLineBreaks}}{$_}}{all}{except}};
+              if( $except{$name} or $except{$YamlName}){
+                ${$self}{$_} = 0;
+                my $detail = ($except{$name} ? "per-name" : "per-code-block-type");
+                $logger->trace("$_ for $name is ${$self}{$_} (found as exception $detail, see $_:all:except)") if $is_t_switch_active;
+                next;
+              }
+        } else {
+            # or otherwise through, for example
+            #
+            #   all: 0
+            #   ifElseFi: 1
+            #
+            # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar
+            # 
+            if(ref ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
+                # textWrapOptions/removeParagraphLineBreaks:
+                #     all: 0
+                #     environments: 
+                #         quotation: 0
+                $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
+                ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name} if (defined ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name});
+            } elsif(defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}){
+                # textWrapOptions/removeParagraphLineBreaks:
+                #     all: 0
+                #     environments: 0
+                $logger->trace("*$YamlName specified with just a number in $_ ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
+                ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} if (defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName});
+            }
+        }
+
+        # summary to log file
+        $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
     }
+
     return;
 }
 

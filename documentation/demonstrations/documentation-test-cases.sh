@@ -188,6 +188,20 @@ latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap2.tex -o textwrap2-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap3.tex -o textwrap3-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap4.tex -o textwrap4-mod2.tex -l=textwrap2.yaml -m
+latexindent.pl -s textwrap5.tex -o=+-mod3.tex -l=textwrap3.yaml -m
+latexindent.pl -s textwrap5.tex -o=+-mod4.tex -l=textwrap4.yaml -m
+latexindent.pl -s textwrap5.tex -o=+-mod5.tex -l=textwrap5.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod5.tex -l=textwrap5.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod6.tex -l=textwrap6.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod7.tex -l=textwrap7.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod8.tex -l=textwrap8.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod9.tex -l=textwrap9.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod10.tex -l=textwrap10.yaml -m
+latexindent.pl -s textwrap6.tex -o=+-mod11.tex -l=textwrap11.yaml -m
+latexindent.pl -s tabular2.tex -o=+-wrap-mod3.tex -l=textwrap3.yaml -m
+latexindent.pl -s tabular2.tex -o=+-wrap-mod3A.tex -l=textwrap3.yaml -m -y="modifyLineBreaks:textWrapOptions:alignAtAmpersandTakesPriority:0"
+latexindent.pl -s textwrap7.tex -o=+-mod3.tex -l=textwrap3.yaml -m
+latexindent.pl -s textwrap7.tex -o=+-mod12.tex -l=textwrap12.yaml -m
 
 # remove paragraph line breaks
 latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m

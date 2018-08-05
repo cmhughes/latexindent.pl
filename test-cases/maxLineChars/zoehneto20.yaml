@@ -1,0 +1,13 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 20
+        perCodeBlockBasis: 1
+        all:
+            except:
+                - 'masterDocument'
+    removeParagraphLineBreaks:
+        all:
+            except:
+                - 'masterDocument'
+                - 'itemize'
+        beforeTextWrap: 1

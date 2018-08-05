@@ -59,7 +59,7 @@ latexindent.pl myfile.tex -m
 		\cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1.tex} out output}{lst:mlb-bl-out}
 	\end{minipage}
 
-\yamltitle{textWrapOptions}*{fields}
+\subsection{textWrapOptions: modifying line breaks by text wrapping}\label{subsec:textwrapping}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to wrap text using the options
 	\announce{2017-05-27}{textWrapOptions}
 	specified in the \texttt{textWrapOptions} field, see \cref{lst:textWrapOptions}. The value of
@@ -117,12 +117,9 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 
 	\cmhlistingsfromfile{demonstrations/textwrap3-mod1.tex}{\texttt{textwrap3-mod1.tex}}{lst:textwrap3-mod1}
 
-	\begin{wrapfigure}[6]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
-	\end{wrapfigure}
 	The text wrapping routine of \texttt{latexindent.pl} is performed by the \texttt{Text::Wrap} module, which provides a
 	\texttt{separator} feature to separate lines with characters other than a new line (see \cite{textwrap}). By default,
-	the separator is empty (see \cref{lst:textWrapOptionsAll}) which means that a new line token will be used, but you can change it as you see fit.
+	the separator is empty  which means that a new line token will be used, but you can change it as you see fit.
 
 	For example starting with the file in \cref{lst:textwrap4}
 
@@ -141,11 +138,182 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap2.yaml}[MLB-TCB]{\texttt{textwrap2.yaml}}{lst:textwrap2-yaml}
 	\end{minipage}
 
-	\textbf{Summary of text wrapping}
+\subsubsection{text wrapping on a per-code-block basis}
+	By default, if the value of \texttt{columns} is greater than 0 and the \texttt{-m} switch is active, then
+	\announce{new}*{updates to textWrapOptions}
+	the text wrapping routine will operate before the code blocks have been searched for. This behaviour
+	is customisable; in particular, you can instead instruct \texttt{latexindent.pl} to apply \texttt{textWrap}
+	on a per-code-block basis. Thanks to \cite{zoehneto} for their help in testing and shaping this feature.
+
+	The full details of \texttt{textWrapOptions} are shown in \cref{lst:textWrapOptionsAll}. In particular, note
+	the field \texttt{perCodeBlockBasis: 0}.
+
+	\cmhlistingsfromfile*[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+
+	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to those detailed in \vref{tab:code-blocks}.
+	The only special case is the \texttt{masterDocument} field; this is designed for `chapter'-type files that
+	may contain paragraphs that are not within any other code-blocks. The same notation is used between this feature and the
+	\texttt{removeParagraphLineBreaks} described in \vref{lst:removeParagraphLineBreaks}; in fact, the two features can
+	even be combined (this is detailed in \vref{subsec:removeparagraphlinebreaks:and:textwrap}).
+
+	Let's explore these switches with reference to the code given in \cref{lst:textwrap5};
+	the text outside of the environment is considered part of the \texttt{masterDocument}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile*{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
+	\end{widepage}
+
+	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}
+	each give the same output.
+
+	\begin{adjustwidth}{-3.5cm}{-2.5cm}
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap3.yaml}[MLB-TCB]{\texttt{textwrap3.yaml}}{lst:textwrap3-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap4.yaml}[MLB-TCB]{\texttt{textwrap4.yaml}}{lst:textwrap4-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap5.yaml}[MLB-TCB]{\texttt{textwrap5.yaml}}{lst:textwrap5-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
+	Let's explore the similarities and differences in the equivalent (with respect to \cref{lst:textwrap5}) syntax specified in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
+	\begin{itemize}
+		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that \texttt{columns: 30};
+		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that \texttt{perCodeBlockBasis: 1};
+		\item in \cref{lst:textwrap3-yaml} we have specified \texttt{all: 1} so that the text wrapping will operate upon \emph{all} code blocks;
+		\item in \cref{lst:textwrap4-yaml} we have \emph{not} specified \texttt{all}, and instead, have specified that text wrapping
+		      should be applied to each of \texttt{environments} and \texttt{masterDocument};
+		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for \texttt{masterDocument} and
+		      on a \emph{per-name} basis for \texttt{environments} code blocks.
+	\end{itemize}
+
+	Upon running the following commands
+	\begin{commandshell}
+latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
+latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
+latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
+    \end{commandshell}
+	we obtain the output shown in \cref{lst:textwrap5-mod3}.
+
+	\cmhlistingsfromfile*{demonstrations/textwrap5-mod3.tex}{\texttt{textwrap5-mod3.tex}}{lst:textwrap5-mod3}
+
+	We can explore the idea of per-name text wrapping given in \cref{lst:textwrap5-yaml} by using \cref{lst:textwrap6}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile*{demonstrations/textwrap6.tex}{\texttt{textwrap6.tex}}{lst:textwrap6}
+	\end{widepage}
+
+	In particular, upon running
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
+    \end{commandshell}
+	we obtain the output given in \cref{lst:textwrap6-mod5}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod5.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap5-yaml}}{lst:textwrap6-mod5}
+	\end{widepage}
+
+	Notice that, because \texttt{environments} has been
+	specified only for \texttt{myenv} (in \cref{lst:textwrap5-yaml}) that the environment named \texttt{another} has \emph{not} had text wrapping
+	applied to it.
+
+	The {all} field can be specified with exceptions which can either be done on a per-code-block or per-name basis;
+	we explore this in relation to \cref{lst:textwrap6} in the settings given in \crefrange{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
+
+	\begin{adjustwidth}{-3.5cm}{-2.5cm}
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap6.yaml}[MLB-TCB]{\texttt{textwrap6.yaml}}{lst:textwrap6-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap7.yaml}[MLB-TCB]{\texttt{textwrap7.yaml}}{lst:textwrap7-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap8.yaml}[MLB-TCB]{\texttt{textwrap8.yaml}}{lst:textwrap8-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
+	Upon running the commands
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
+    \end{commandshell}
+	we receive the respective output given in \crefrange{lst:textwrap6-mod6}{lst:textwrap6-mod8}.
+	\begin{widepage}
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod6.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap6-yaml}}{lst:textwrap6-mod6}
+
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod7.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap7-yaml}}{lst:textwrap6-mod7}
+
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod8.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap8-yaml}}{lst:textwrap6-mod8}
+	\end{widepage}
+
+	Notice that:
+	\begin{itemize}
+		\item in \cref{lst:textwrap6-mod6} the text wrapping routine has not been applied to any \texttt{environments} because
+		      it has been switched off (per-code-block) in \cref{lst:textwrap6-yaml};
+		\item in \cref{lst:textwrap6-mod7} the text wrapping routine has not been applied to \texttt{myenv} because
+		      it has been switched off (per-name) in \cref{lst:textwrap7-yaml};
+		\item in \cref{lst:textwrap6-mod8} the text wrapping routine has not been applied to \texttt{masterDocument}
+		      because of the settings in \cref{lst:textwrap8-yaml}.
+	\end{itemize}
+
+	The \texttt{columns} field has a variety of different ways that it can be specified; we've seen
+	two basic ways already: the default (set to \texttt{0}) and a positive integer (see \vref{lst:textwrap6}, for example).
+	We explore further options in \crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
+
+	\begin{adjustwidth}{-3.5cm}{-2.5cm}
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap9.yaml}[MLB-TCB]{\texttt{textwrap9.yaml}}{lst:textwrap9-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap10.yaml}[MLB-TCB]{\texttt{textwrap10.yaml}}{lst:textwrap10-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile*{demonstrations/textwrap11.yaml}[MLB-TCB]{\texttt{textwrap11.yaml}}{lst:textwrap11-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
+	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running the commands
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
+    \end{commandshell}
+	we receive the respective output given in \cref{lst:textwrap6-mod9,lst:textwrap6-mod11}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod9.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap9-yaml}}{lst:textwrap6-mod9}
+
+		\cmhlistingsfromfile*{demonstrations/textwrap6-mod11.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap11-yaml}}{lst:textwrap6-mod11}
+	\end{widepage}
+
+	Notice that:
+	\begin{itemize}
+		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{masterDocument} has been wrapped using \texttt{30}
+		      columns, while \texttt{environments} has been wrapped using \texttt{50} columns;
+		\item in \cref{lst:textwrap6-mod11} the text for \texttt{myenv} has been wrapped using \texttt{50} columns, the text
+		      for \texttt{another} has been wrapped using \texttt{15} columns, and \texttt{masterDocument} has been wrapped using
+		      \texttt{30} columns.
+	\end{itemize}
+	If you don't specify a \texttt{default} value on per-code-block basis, then the \texttt{default} value from \texttt{columns}
+	will be inherited; if you don't specify a default value for \texttt{columns} then \texttt{80} will be used.
+
+	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming that text wrapping is occuring
+	on a per-code-block basis, and the current environment/code block
+	is specified within \vref{lst:aligndelims:basic} then text wrapping will be disabled for this code block.
+
+    If you wish to specify \texttt{afterHeading} commands (see \vref{lst:indentAfterHeadings}) on a per-name basis, then you need to 
+append the name with \texttt{:heading}, for example, you might use \texttt{section:heading}.
+
+\subsubsection{Summary of text wrapping}
 	It is important to note the following:
 	\begin{itemize}
 		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap2-mod1});
 		\item comments will \emph{not} be affected by the text wrapping routine (see \vref{lst:textwrap3-mod1});
+		\item it is possible to wrap text on a per-code-block and a per-name basis;
+		      \announce{new}*{updates to textWrapOptions}
+            \item the text wrapping routine sets \texttt{preserveBlankLines} as \texttt{1};
 		\item indentation is performed \emph{after} the text wrapping routine; as such, indented code
 		      will likely exceed any maximum value set in the \texttt{columns} field.
 	\end{itemize}
@@ -414,7 +582,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
-\subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}
+\subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}\label{subsec:removeparagraphlinebreaks}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to remove line breaks
 	\announce{2017-05-27}{removeParagraphLineBreaks}
 	from within paragraphs; the behaviour is controlled by the \texttt{removeParagraphLineBreaks} field, detailed in
@@ -422,7 +590,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 \yamltitle{removeParagraphLineBreaks}*{fields}
 	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature described in \vref{sec:onesentenceperline}.
 
-	\cmhlistingsfromfile[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
+	\cmhlistingsfromfile*[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
 	This routine can be turned on \emph{globally} for \emph{every} code block type known to \texttt{latexindent.pl}
 	(see \vref{tab:code-blocks}) by using the \texttt{all} switch; by default, this switch is \emph{off}. Assuming
@@ -546,6 +714,9 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	then we obtain the output in \cref{lst:shortlines-md4}.
 	\cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
 
+    Note \announce{new}*{updates to all in removeParagraphLineBreaks} that the \texttt{all} field can take the same exceptions
+    detailed in \cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
+
 \yamltitle{paragraphsStopAt}*{fields}
 	The paragraph line break routine considers blank lines and the \lstinline|\par| command to be the end of a paragraph;
 	\announce{2017-05-27}{paragraphsStopAt}
@@ -596,6 +767,43 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 	\cmhlistingsfromfile{demonstrations/sl-stop4.tex}{\texttt{sl-stop4.tex}}{lst:sl-stop4}
 	\cmhlistingsfromfile{demonstrations/sl-stop4-command.tex}{\texttt{sl-stop4-command.tex}}{lst:sl-stop4-command}
 	\cmhlistingsfromfile{demonstrations/sl-stop4-comment.tex}{\texttt{sl-stop4-comment.tex}}{lst:sl-stop4-comment}
+
+\subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
+
+      The \announce{new}{combine text wrap and remove paragraph line breaks} text wrapping routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine (\vref{subsec:removeparagraphlinebreaks})
+      can be combined.
+
+      We motivate this feature with the code given in \cref{lst:textwrap7}.
+
+		\cmhlistingsfromfile*{demonstrations/textwrap7.tex}{\texttt{textwrap7.tex}}{lst:textwrap7}
+
+      Applying the text wrap routine from \vref{subsec:textwrapping} with, for example, \vref{lst:textwrap3-yaml} gives
+      the output in \cref{lst:textwrap7-mod3}.
+
+		\cmhlistingsfromfile*{demonstrations/textwrap7-mod3.tex}{\texttt{textwrap7.tex} using \cref{lst:textwrap3-yaml}}{lst:textwrap7-mod3}
+
+        The text wrapping routine has behaved as expected, but it may be desired to remove paragraph line breaks \emph{before}
+        performing the text wrapping routine. The desired behaviour can be achieved by employing the \texttt{beforeTextWrap} switch.
+
+        Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
+		\begin{commandshell}
+latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
+    \end{commandshell}
+      we obtain the output in \cref{lst:textwrap7-mod12}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile*{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.49\linewidth}
+		\cmhlistingsfromfile*{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
+	\end{minipage}
+
+      In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from \cref{lst:textwrap7}, and 
+      then the text wrapping routine has been applied. It is envisaged that variants of \cref{lst:textwrap12-yaml}
+      will be among the most useful settings for these two features.
+
+
 
 \subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take

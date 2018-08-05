@@ -496,7 +496,7 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 	\announce*{2018-04-27}{update to specialBeginEnd} the \texttt{middle} field for anything that you
 	specify in \texttt{specialBeginEnd}. For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
 
-	\cmhlistingsfromfile*{demonstrations/special2.tex}{\texttt{special2.tex}}{lst:special2}
+	\cmhlistingsfromfile{demonstrations/special2.tex}{\texttt{special2.tex}}{lst:special2}
 
 	Upon saving the YAML settings in \cref{lst:middle-yaml,lst:middle1-yaml} and running the commands
 	\begin{commandshell}
@@ -506,19 +506,19 @@ latexindent.pl special2.tex -l=middle1
 	then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
 
 	\begin{minipage}{.4\linewidth}
-		\cmhlistingsfromfile*{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
+		\cmhlistingsfromfile{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
+		\cmhlistingsfromfile{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
 	\end{minipage}
 
 	\begin{minipage}{.4\linewidth}
-		\cmhlistingsfromfile*{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
+		\cmhlistingsfromfile{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\linewidth}
-		\cmhlistingsfromfile*{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
+		\cmhlistingsfromfile{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
 	\end{minipage}
 
 	We note that:

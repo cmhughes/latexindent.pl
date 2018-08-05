@@ -165,4 +165,4 @@ for i in {1..5}
 do 
   [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 done
-exit(1)
+exit 1

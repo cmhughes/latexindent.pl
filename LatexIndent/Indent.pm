@@ -124,7 +124,7 @@ sub indent_body{
     $self->align_at_ampersand if ${$self}{lookForAlignDelims};
 
     # possibly remove paragraph line breaks
-    $self->paragraphs_on_one_line if $is_m_switch_active;
+    $self->remove_paragraph_line_breaks if ($is_m_switch_active and ${$self}{removeParagraphLineBreaks} and !${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap});
 
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
@@ -279,7 +279,7 @@ sub indent_children_recursively{
           # we work through the array *in order*
           foreach my $child (@{${$self}{children}}){
             $logger->trace("Searching ${$self}{name} for ${$child}{id}...") if $is_t_switch_active;
-            if(${$self}{body} =~ m/${$child}{id}/s){
+            if(${$self}{body} =~ m/${$child}{idRegExp}/s){
                 # we only care if id is first non-white space character 
                 # and if followed by line break 
                 # if m switch is active 
@@ -288,11 +288,11 @@ sub indent_children_recursively{
 
                 # update the above two, if necessary
                 if ($is_m_switch_active){
-                    $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^${$child}{id}/m 
+                    $IDFirstNonWhiteSpaceCharacter = (${$self}{body} =~ m/^${$child}{idRegExp}/m 
                                                             or 
-                                                         ${$self}{body} =~ m/^\h\h*${$child}{id}/m
+                                                         ${$self}{body} =~ m/^\h\h*${$child}{idRegExp}/m
                                                         ) ?1:0;
-                    $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{id}\h*\R+/m) ?1:0;
+                    $IDFollowedImmediatelyByLineBreak = (${$self}{body} =~ m/${$child}{idRegExp}\h*\R+/m) ?1:0;
                     ${$child}{IDFollowedImmediatelyByLineBreak} = $IDFollowedImmediatelyByLineBreak; 
                }
 
@@ -308,7 +308,7 @@ sub indent_children_recursively{
                     # remove line break *after* <end statement>, if appropriate
                     my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
                     $logger->trace("Removing linebreak after ${$child}{end} (see $EndStringLogFile)") if $is_t_switch_active;
-                    ${$self}{body} =~ s/${$child}{id}(\h*)?(\R|\h)*/${$child}{id}$1/s;
+                    ${$self}{body} =~ s/${$child}{idRegExp}(\h*)?(\R|\h)*/${$child}{id}$1/s;
                     ${$child}{linebreaksAtEnd}{end} = 0;
                 }
 
@@ -332,7 +332,7 @@ sub indent_children_recursively{
                         my $trailingCharacterToken = q();
                         if(${$child}{BeginStartsOnOwnLine}==2){
                             $logger->trace("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            ${$self}{body} =~ s/\h*${$child}{id}/${$child}{id}/s;
+                            ${$self}{body} =~ s/\h*${$child}{idRegExp}/${$child}{id}/s;
                             $logger->trace("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
                             $trailingCharacterToken = "%".$self->add_comment_symbol;
                         } elsif (${$child}{BeginStartsOnOwnLine}==3){
@@ -352,9 +352,9 @@ sub indent_children_recursively{
                         # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
                         # important to check we don't move the begin statement next to a blank-line-token
                         my $blankLineToken = $tokens{blanklines};
-                        if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{id}/s){
+                        if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{idRegExp}/s){
                             $logger->trace("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)") if $is_t_switch_active;
-                            ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{id}/$1${$child}{id}/s;
+                            ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{idRegExp}/$1${$child}{id}/s;
                         } else {
                             $logger->trace("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
                         }
@@ -364,7 +364,7 @@ sub indent_children_recursively{
                 $logger->trace(Dumper(\%{$child})) if($is_tt_switch_active);
 
                 # replace ids with body
-                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+                ${$self}{body} =~ s/${$child}{idRegExp}/${$child}{begin}${$child}{body}${$child}{end}/;
 
                 # log file info
                 $logger->trace("Body (${$self}{name}) now looks like:") if $is_tt_switch_active;
