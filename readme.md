@@ -9,6 +9,8 @@ code within environments, commands, after headings and within special code block
 It has the ability to align delimiters in environments and commands, and 
 can modify line breaks.
 
+### version 
+ 
     latexindent.pl, version 3.4.3, 2018-06-08
 
 ### author 
