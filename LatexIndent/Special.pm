@@ -49,8 +49,6 @@ sub construct_special_begin{
 
       # only append the regexps if lookForThis is 1
       if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1){
-        # the beginning parts
-        $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin};
 
         # the overall regexp
         $specialAllMatchesRegExp .= ($specialAllMatchesRegExp eq ""?q():"|")
