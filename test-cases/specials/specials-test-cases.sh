@@ -67,5 +67,9 @@ do
    latexindent.pl -m -s algpseudocode-mk2 -l=koppor,special-middle$i.yaml -t -o=+-mod$i
 done
 latexindent.pl -s algpseudocode-mk3.tex -o=+-mod1 -l=koppor,koppor1
+# special verbatim (see https://github.com/cmhughes/latexindent.pl/issues/124)
+latexindent.pl -s special4.tex -o=+-mod1 -l=special-verb1.yaml
+latexindent.pl -s special4.tex -o=+-mod2 -l=special-verb2.yaml
+latexindent.pl -s special4.tex -o=+-mod3 -l=special-verb1.yaml,special-verb2.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

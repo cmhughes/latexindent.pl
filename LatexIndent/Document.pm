@@ -37,7 +37,7 @@ use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in find_verbatim_special/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
@@ -88,6 +88,7 @@ sub operate_on_file{
     $self->find_aligned_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
+    $self->find_verbatim_special;
     $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");

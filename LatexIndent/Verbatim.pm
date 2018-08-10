@@ -22,7 +22,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in find_verbatim_special/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
@@ -305,6 +305,57 @@ sub  put_verbatim_commands_back_in {
     $logger->trace('*Post-processed body:') if $is_tt_switch_active;
     $logger->trace(${$self}{body}) if($is_tt_switch_active);
     return;
+}
+
+sub find_verbatim_special{
+    my $self = shift;
+
+    # loop through specialBeginEnd
+    while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+
+      # only classify special Verbatim if lookForThis is 'verbatim'
+      if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/v/s and ${$BeginEnd}{lookForThis} eq 'verbatim'){
+            $logger->trace('*Searching for VERBATIM special (see specialBeginEnd)') if $is_t_switch_active;
+
+            my $verbatimRegExp = qr/
+                            (
+                                ${$BeginEnd}{begin}
+                            )
+                            (
+                                .*?
+                            )                    
+                            (
+                                ${$BeginEnd}{end}
+                            )                    
+                        /sx;
+
+            while( ${$self}{body} =~ m/$verbatimRegExp/sx){
+
+              # create a new Environment object
+              my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
+                                                    body=>$2,
+                                                    end=>$3,
+                                                    name=>$specialName,
+                                                    );
+              # give unique id
+              $verbatimBlock->create_unique_id;
+
+              # verbatim children go in special hash
+              ${$self}{verbatim}{${$verbatimBlock}{id}}=$verbatimBlock;
+
+              # log file output
+              $logger->trace("*VERBATIM special found: $specialName") if $is_t_switch_active;
+
+              # remove the special block, and replace with unique ID
+              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{id}/sx;
+
+              $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
+              
+              # possible decoration in log file 
+              $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+            } 
+    }
+  }
 }
 
 sub create_unique_id{

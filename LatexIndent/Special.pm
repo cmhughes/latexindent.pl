@@ -40,7 +40,7 @@ sub construct_special_begin{
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
       if(ref($BeginEnd) eq "HASH"){
         # only append the regexps if lookForThis is 1
-        $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis});
+        $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1);
       }
     }
 
@@ -48,7 +48,7 @@ sub construct_special_begin{
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
       # only append the regexps if lookForThis is 1
-      if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}){
+      if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1){
         # the beginning parts
         $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin};
 
@@ -128,7 +128,7 @@ sub find_special{
         while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
             # log file
-            if((ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}){
+            if((ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1){
                 $logger->trace("Looking for $specialName") if $is_t_switch_active ;
             } else {
                 $logger->trace("Not looking for $specialName (see lookForThis)") if ($is_t_switch_active and (ref($BeginEnd) eq "HASH"));
