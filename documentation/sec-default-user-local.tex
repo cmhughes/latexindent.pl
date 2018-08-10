@@ -585,6 +585,24 @@ latexindent.pl special2.tex -l=middle1
 		      \cref{lst:special2-mod2}.
 	\end{itemize}
 
+    You may \announce{new}{specialBeginEnd verbatim} specify fields in \texttt{specialBeginEnd}
+    to be treated as verbatim code blocks by changing \texttt{lookForThis} to be \texttt{verbatim}.
+
+    For example, beginning with the code in \cref{lst:special3-mod1} and the YAML 
+    in \cref{lst:special-verb1-yaml}, and running
+	\begin{commandshell}
+latexindent.pl special3.tex -l=special-verb1
+    \end{commandshell}
+    then the output in \cref{lst:special3-mod1} is unchanged.
+
+	\begin{minipage}{.4\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
+	\end{minipage}
+
 \yamltitle{indentAfterHeadings}*{fields}
 	\begin{wrapfigure}[17]{r}[0pt]{8cm}
 		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
