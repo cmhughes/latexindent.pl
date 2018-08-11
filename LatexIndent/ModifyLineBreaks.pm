@@ -511,6 +511,39 @@ sub one_sentence_per_line{
     while( my $sentence = pop @sentenceStorage){
       my $sentenceStorageID = ${$sentence}{id};
       my $sentenceStorageValue = ${$sentence}{value};
+
+      # option to text wrap (and option to indent) sentences
+      if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
+              my $sentenceObj = LatexIndent::Document->new(body=>$sentenceStorageValue,
+                                                    name=>"sentence",
+                                                    modifyLineBreaksYamlName=>"sentence",
+                                                    );
+
+              # text wrapping
+              $sentenceObj->get_columns;
+              $sentenceObj->text_wrap;
+
+              # indentation of sentences
+              if(${$sentenceObj}{body} =~ m/
+                                  (.*?)      # content of first line
+                                  \R         # first line break
+                                  (.*$)      # rest of body
+                                  /sx){
+                  my $bodyFirstLine = $1;
+                  my $remainingBody = $2;
+                  my $indentation = ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent};
+                  $logger->trace("first line of sencent:  $bodyFirstLine") if $is_tt_switch_active;
+                  $logger->trace("remaining body (before indentation):\n'$remainingBody'") if($is_tt_switch_active);
+    
+                  # add the indentation to all the body except first line
+                  $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
+                  $logger->trace("remaining body (after indentation):\n$remainingBody'") if($is_tt_switch_active);
+    
+                  # put the body back together
+                  ${$sentenceObj}{body} = $bodyFirstLine."\n".$remainingBody; 
+              }
+              $sentenceStorageValue = ${$sentenceObj}{body};
+      };
       # sentence at the very END
       ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
       # sentence at the very BEGINNING

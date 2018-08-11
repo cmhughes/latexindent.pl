@@ -22,7 +22,7 @@ use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings/;
+our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings get_columns/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -611,49 +611,13 @@ sub get_textwrap_removeparagraphline_breaks{
         # if 'all' is set as a hash, then the default value is 1, to be turned  off (possibly) later
         ${$self}{$_} = ( ref ${$masterSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$masterSettings{modifyLineBreaks}{$_}}{all});
 
+        # get the columns
+        if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
+            $self->get_columns;
+        }
+        
         # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
         my $YamlName = ${$self}{modifyLineBreaksYamlName};
-
-        if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
-            if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
-                # assign default value of $columns
-                my $columns;
-                if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
-                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
-                } else {
-                    $columns = 80;
-                }
-
-                # possibly specify object wrapping on a per-name basis
-                if(ref ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
-                    # for example:
-                    #   modifyLineBreaks:
-                    #       textWrapOptions:
-                    #           columns: 
-                    #               default: 80
-                    #               environments:
-                    #                   default: 80
-                    #                   something: 10
-                    #                   another: 20
-                    if(defined ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
-                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
-                    } elsif (${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
-                        $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
-                    }
-                } else {
-                    # for example:
-                    #   modifyLineBreaks:
-                    #       textWrapOptions:
-                    #           columns: 
-                    #               default: 80
-                    #               environments: 10
-                    $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
-                }
-                ${$self}{columns} = $columns;
-            } else {
-                ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
-            }
-        }
         
         # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
         my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
@@ -734,6 +698,53 @@ sub get_textwrap_removeparagraphline_breaks{
         $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
     }
 
+    return;
+}
+
+sub get_columns{
+    my $self = shift;
+
+    my $YamlName = ${$self}{modifyLineBreaksYamlName};
+
+    # the columns settings can have a variety of different ways of being specified
+    if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+        # assign default value of $columns
+        my $columns;
+        if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+        } else {
+            $columns = 80;
+        }
+
+        # possibly specify object wrapping on a per-name basis
+        if(ref ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
+            # for example:
+            #   modifyLineBreaks:
+            #       textWrapOptions:
+            #           columns: 
+            #               default: 80
+            #               environments:
+            #                   default: 80
+            #                   something: 10
+            #                   another: 20
+            if(defined ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
+                $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
+            } elsif (${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
+                $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
+            }
+        } else {
+            # for example:
+            #   modifyLineBreaks:
+            #       textWrapOptions:
+            #           columns: 
+            #               default: 80
+            #               environments: 10
+            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+        }
+        ${$self}{columns} = $columns;
+    } else {
+        ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+    }
     return;
 }
 

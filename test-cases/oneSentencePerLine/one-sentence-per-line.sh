@@ -69,6 +69,15 @@ do
     [[ $silentMode == 0 ]] && set +x 
 done
 
+# text wrap and indent sentences, https://github.com/cmhughes/latexindent.pl/issues/111
+latexindent.pl -s dbmrq.tex -m -l=dbmrq1.yaml -o=+-mod1
+latexindent.pl -s dbmrq.tex -m -l=dbmrq2.yaml -o=+-mod2
+latexindent.pl -s dbmrq.tex -m -l=dbmrq3.yaml -o=+-mod3
+latexindent.pl -s dbmrq.tex -m -l=dbmrq1.yaml,dbmrq4.yaml -o=+-mod4
+latexindent.pl -s dbmrq2.tex -m -l=dbmrq1.yaml -o=+-mod1
+latexindent.pl -s dbmrq3.tex -m -l=dbmrq1.yaml -o=+-mod1
+latexindent.pl -s dbmrq3.tex -m -l=dbmrq5.yaml -o=+-mod5
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

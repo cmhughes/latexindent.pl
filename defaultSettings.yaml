@@ -397,6 +397,8 @@ modifyLineBreaks:
     oneSentencePerLine:
         manipulateSentences: 0     
         removeSentenceLineBreaks: 1
+        textWrapSentences: 0
+        sentenceIndent: ""
         sentencesFollow:
             par: 1
             blankLine: 1
