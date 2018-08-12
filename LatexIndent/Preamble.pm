@@ -73,7 +73,7 @@ sub tasks_particular_to_each_object{
 
     # text wrapping, remove paragraph line breaks
     if ($is_m_switch_active){
-        $self->get_textwrap_removeparagraphline_breaks;
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
         if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){

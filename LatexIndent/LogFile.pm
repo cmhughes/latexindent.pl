@@ -205,7 +205,7 @@ ENDQUOTE
     }
 
     # read the YAML settings
-    $self->readSettings;
+    $self->yaml_read_settings;
     
     # the user may have specified their own settings for the rest of the log file,
     # for example:

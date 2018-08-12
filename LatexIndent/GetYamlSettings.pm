@@ -22,7 +22,7 @@ use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
-our @EXPORT_OK = qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings get_columns/;
+our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -44,7 +44,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"justification",default=>"left"},
                                         );
     
-sub readSettings{
+sub yaml_read_settings{
   my $self = shift;
   
   # read the default settings
@@ -431,7 +431,7 @@ sub readSettings{
   return;
 }
 
-sub get_indentation_settings_for_this_object{
+sub yaml_get_indentation_settings_for_this_object{
     my $self = shift;
 
     # create a name for previously found settings
@@ -449,13 +449,13 @@ sub get_indentation_settings_for_this_object{
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = $self->get_indentation_information;
+        my $indentation = $self->yaml_get_indentation_information;
 
         # check for alignment at ampersand settings
-        $self->alignment_at_ampersand_settings;
+        $self->yaml_alignment_at_ampersand_settings;
 
         # check for line break settings
-        $self->modify_line_breaks_settings if $is_m_switch_active;
+        $self->yaml_modify_line_breaks_settings if $is_m_switch_active;
 
         # store the settings
         %{${previouslyFoundSettings}{$storageName}} = (
@@ -494,7 +494,7 @@ sub get_indentation_settings_for_this_object{
     return;
 }
 
-sub alignment_at_ampersand_settings{
+sub yaml_alignment_at_ampersand_settings{
     my $self = shift;
 
     # if the YamlName is, for example, optionalArguments, mandatoryArguments, heading, then we'll be looking for information about the *parent*
@@ -536,7 +536,7 @@ sub alignment_at_ampersand_settings{
     return;
 }
 
-sub modify_line_breaks_settings{
+sub yaml_modify_line_breaks_settings{
     my $self = shift;
 
     # grab the logging object
@@ -554,17 +554,17 @@ sub modify_line_breaks_settings{
 
     # we can efficiently loop through the following
     foreach (@toBeAssignedTo){
-                    $self->get_every_or_custom_value(
+                    $self->yaml_poly_switch_get_every_or_custom_value(
                                     toBeAssignedTo=>$_,
                                     toBeAssignedToAlias=> ${$self}{aliases}{$_} ?  ${$self}{aliases}{$_} : $_,
                                   );
       };
 
-    $self->get_textwrap_removeparagraphline_breaks;
+    $self->yaml_get_textwrap_removeparagraphline_breaks;
     return;
 }
 
-sub get_textwrap_removeparagraphline_breaks{
+sub yaml_get_textwrap_removeparagraphline_breaks{
     my $self = shift;
     
     # grab the logging object
@@ -613,7 +613,7 @@ sub get_textwrap_removeparagraphline_breaks{
 
         # get the columns
         if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
-            $self->get_columns;
+            $self->yaml_get_columns;
         }
         
         # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -701,7 +701,7 @@ sub get_textwrap_removeparagraphline_breaks{
     return;
 }
 
-sub get_columns{
+sub yaml_get_columns{
     my $self = shift;
 
     my $YamlName = ${$self}{modifyLineBreaksYamlName};
@@ -748,7 +748,7 @@ sub get_columns{
     return;
 }
 
-sub get_every_or_custom_value{
+sub yaml_poly_switch_get_every_or_custom_value{
   my $self = shift;
   my %input = @_;
 
@@ -787,7 +787,7 @@ sub get_every_or_custom_value{
   return;
 }
 
-sub get_indentation_information{
+sub yaml_get_indentation_information{
     my $self = shift;
 
     #**************************************
@@ -835,7 +835,7 @@ sub get_indentation_information{
     my $name = (defined ${$self}{nameForIndentationSettings}) ? ${$self}{nameForIndentationSettings} : ${$self}{name};
 
     # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
-    my $YamlName = $self->get_object_attribute_for_indentation_settings;
+    my $YamlName = $self->yaml_get_object_attribute_for_indentation_settings;
 
     # grab the logging object
     my $logger = get_logger("Document");
@@ -889,7 +889,7 @@ sub get_indentation_information{
     return $masterSettings{defaultIndent};
 }
 
-sub get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings{
     # when looking for noAdditionalIndent or indentRules, we may need to determine
     # which thing we're looking for, e.g
     #

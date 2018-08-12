@@ -63,3 +63,7 @@ modifyLineBreaks:
         items: 1
         afterHeading: 1
         beforeTextWrap: 1
+
+removeTrailingWhitespace:
+    beforeProcessing: 1
+    afterProcessing: 1

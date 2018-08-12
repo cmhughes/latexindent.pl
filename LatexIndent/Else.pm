@@ -113,7 +113,7 @@ sub tasks_particular_to_each_object{
     return;
 }
 
-sub get_indentation_information{
+sub yaml_get_indentation_information{
     return q();
 }
 

@@ -107,7 +107,7 @@ sub find_aligned_block{
     return;
 }
 
-sub modify_line_breaks_settings{
+sub yaml_modify_line_breaks_settings{
     return;
 }
 

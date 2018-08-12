@@ -174,7 +174,7 @@ sub adjust_replacement_text_line_breaks_at_end{
     return;
 }
 
-sub get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings{
     # when looking for noAdditionalIndent or indentRules, we may need to determine
     # which thing we're looking for, e.g
     #

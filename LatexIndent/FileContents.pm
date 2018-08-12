@@ -205,7 +205,7 @@ sub find_file_contents_environments_and_preamble{
               # store the child, if necessary
               if($indentThisChild){
                     $_->remove_leading_space;
-                    $_->get_indentation_settings_for_this_object;
+                    $_->yaml_get_indentation_settings_for_this_object;
                     $_->tasks_particular_to_each_object;
                     push(@{${$self}{children}},$_);
               
@@ -249,7 +249,7 @@ sub tasks_particular_to_each_object{
     
     # text wrapping, remove paragraph line breaks
     if ($is_m_switch_active){
-        $self->get_textwrap_removeparagraphline_breaks;
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
         if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){

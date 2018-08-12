@@ -357,7 +357,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to
-	format%%%
+	format%%%%%
 	\announce{2018-01-13}{one sentence per line} your file so that
 	it puts one sentence per line. Thank you to \cite{mlep} for helping to
 	shape and test this feature. The behaviour of this part of the script is controlled by
@@ -649,33 +649,35 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{minipage}
 
-    \subsubsection{text wrapping and indenting sentences}
-    The \texttt{oneSentencePerLine} \announce{new}{oneSentencePerline text wrap and indent} can be instructed
-    to perform text wrapping and indentation upon sentences. 
+\subsubsection{text wrapping and indenting sentences}
+	The \texttt{oneSentencePerLine}%%
+	\announce{new}{oneSentencePerline text wrap and indent} can be instructed to perform
+	text wrapping and indentation upon sentences.
 
-    Let's use the code in \cref{lst:multiple-sentences5}.
+	Let's use the code in \cref{lst:multiple-sentences5}.
 
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
+	\cmhlistingsfromfile*{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
 
-Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
+	Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
 	\begin{commandshell}
 latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
-    we receive the output given in \cref{lst:multiple-sentences5-mod1}.
+	we receive the output given in \cref{lst:multiple-sentences5-mod1}.
 
-    \begin{widepage}
-	\begin{minipage}{.55\linewidth}
-		\cmhlistingsfromfile*{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
-	\end{minipage}
-    \end{widepage}
+	\begin{widepage}
+		\begin{minipage}{.55\linewidth}
+			\cmhlistingsfromfile*{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}{.45\linewidth}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
+		\end{minipage}
+	\end{widepage}
 
-    If you wish to specify the \texttt{columns} field on a per-code-block basis for sentences, then you would use
-    \texttt{sentence}; explicitly, starting with \vref{lst:textwrap9-yaml}, for example, you 
-    would replace/append \texttt{environments} with, for example, \texttt{sentence: 50}.
+	If you wish to specify the \texttt{columns} field on a per-code-block basis
+	for sentences, then you would use \texttt{sentence}; explicitly, starting with
+	\vref{lst:textwrap9-yaml}, for example, you  would replace/append
+	\texttt{environments} with, for example, \texttt{sentence: 50}.
 
 \subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}\label{subsec:removeparagraphlinebreaks}
 	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the
@@ -819,7 +821,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\end{widepage}
 	then we obtain the output in \cref{lst:shortlines-md4}. \cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
 
-	Note%%
+	Note%%%%
 	\announce{new}*{updates to all in removeParagraphLineBreaks} that the
 	\texttt{all} field can take the same exceptions detailed in
 	\cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
@@ -887,7 +889,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 
 \subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
 
-	The%%
+	The%%%%
 	\announce{new}{combine text wrap and remove paragraph line breaks} text wrapping
 	routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine
 	(\vref{subsec:removeparagraphlinebreaks}) can be combined.
@@ -927,7 +929,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 
 \subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can
-	take one of \emph{five}%%%
+	take one of \emph{five}%%%%%
 	\announce{2017-08-21}*{blank line poly-switch} integer values:
 	\begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the
@@ -1042,7 +1044,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	comment symbol has been added before adding the line break; in both cases, trailing
 	horizontal space has been stripped before doing so.
 
-	Let's%%%
+	Let's%%%%%
 	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}	now change each
 	of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
 	$3$ and save them into \texttt{env-mlb5.yaml} and
@@ -1140,7 +1142,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	comment symbol has been added before adding the line break; in both cases, trailing
 	horizontal space has been stripped before doing so.
 
-	Let's%%%
+	Let's%%%%%
 	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
 	the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are
 	$3$ and save them into \texttt{env-mlb11.yaml} and
@@ -1414,17 +1416,17 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\toprule
 		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                       & \verb!after words!                              &                                         &                                                                   \\
+		environment                            & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                       & \verb!after words!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                       & \verb!\if...!$\BodyStartsOnOwnLine$        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
 		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
-		                                       & \verb!\or!$\OrFinishesWithLineBreak$    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\

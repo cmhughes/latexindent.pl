@@ -177,7 +177,6 @@ sub modify_line_breaks_end{
 sub adjust_line_breaks_end_parent{
     # when a parent object contains a child object, the line break
     # at the end of the parent object can become messy
-    return unless $is_m_switch_active;
 
     my $self = shift;
 
@@ -520,7 +519,7 @@ sub one_sentence_per_line{
                                                     );
 
               # text wrapping
-              $sentenceObj->get_columns;
+              $sentenceObj->yaml_get_columns;
               $sentenceObj->text_wrap;
 
               # indentation of sentences

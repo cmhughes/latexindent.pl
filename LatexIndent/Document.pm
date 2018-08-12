@@ -23,7 +23,7 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings get_textwrap_removeparagraphline_breaks %masterSettings get_columns/;
+use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -197,7 +197,7 @@ sub find_objects{
     
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
-        $self->get_textwrap_removeparagraphline_breaks;
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
         if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
@@ -307,7 +307,7 @@ sub tasks_common_to_each_object{
     ${$self}{bodyLineBreaks} = $bodyLineBreaks;
 
     # get settings for this object
-    $self->get_indentation_settings_for_this_object;
+    $self->yaml_get_indentation_settings_for_this_object;
 
     # give unique id
     $self->create_unique_id;
@@ -382,7 +382,7 @@ sub wrap_up_tasks{
     my $child = @{${$self}{children}}[-1];
 
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
-    $self->adjust_line_breaks_end_parent;
+    $self->adjust_line_breaks_end_parent if $is_m_switch_active;
 
     $logger->trace(Dumper(\%{$child})) if($is_tt_switch_active);
     $logger->trace("replaced with ID: ${$child}{id}") if $is_t_switch_active;

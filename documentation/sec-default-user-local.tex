@@ -1,9 +1,8 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{defaultSettings.yaml}\label{sec:defuseloc}
  \texttt{latexindent.pl} loads its settings from \texttt{defaultSettings.yaml}. The idea is to
- separate the behaviour of the script
- from the internal working -- this is very similar to the way that we separate content
- from form when writing our documents in \LaTeX.
+ separate the behaviour of the script from the internal working -- this is very similar to
+ the way that we separate content from form when writing our documents in \LaTeX.
 
  If you look in \texttt{defaultSettings.yaml} you'll find the switches that govern the behaviour
  of \texttt{latexindent.pl}. If you're not sure where \texttt{defaultSettings.yaml} resides on
@@ -65,8 +64,8 @@ latexindent.pl myfile
 \yamltitle{cycleThroughBackUps}*{integer}
 	Some users may wish to cycle through backup files, by deleting the oldest backup file and
 	keeping only the most recent; for example, with \texttt{maxNumberOfBackUps: 4}, and
-	\texttt{cycleThroughBackUps} set to \texttt{1}	then the \texttt{copy}
-	procedure given below would be obeyed.
+	\texttt{cycleThroughBackUps} set to \texttt{1}	  then the
+	\texttt{copy} procedure given below would be obeyed.
 
 	\begin{commandshell}
 copy myfile.bak1 to myfile.bak0
@@ -88,7 +87,7 @@ copy myfile.bak4 to myfile.bak3
 
 	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
-	When%%
+	When%%%%
 	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the
 	\texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive
 	detailed information in \texttt{indent.log}. You can specify character strings to
@@ -127,8 +126,7 @@ copy myfile.bak4 to myfile.bak3
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
 	\lstinline|\lstinline|; any commands populated in this field are protected from line
-	breaking
-	routines (only relevant if the \texttt{-m} is active, see
+	breaking routines (only relevant if the \texttt{-m} is active, see
 	\vref{sec:modifylinebreaks}).
 
 \yamltitle{noIndentBlock}*{fields}
@@ -168,14 +166,13 @@ removeTrailingWhitespace: 1
 	Trailing white space can be removed both \emph{before} and
 	\emph{after} processing the document, as detailed in \cref{lst:removeTrailingWhitespace};
 	each of the fields can take the values \texttt{0} or
-	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results.
-	Thanks to \cite{vosskuhle} for providing this feature.
+	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results. Thanks
+	to \cite{vosskuhle} for providing this feature.
 
 	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or
 	\texttt{1}, if you wish; in this case,%
-	\announce{2017-06-28}{removeTrailingWhitespace}
-	\texttt{latexindent.pl} will set both \texttt{beforeProcessing} and \texttt{afterProcessing}
-	to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
+	\announce{2017-06-28}{removeTrailingWhitespace} \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and
+	\texttt{afterProcessing} to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
 
 	\begin{wrapfigure}[6]{r}[0pt]{6cm}
@@ -280,23 +277,20 @@ lookForAlignDelims:
 	fields:
 	\begin{itemize}
 		\item \texttt{delims}: binary switch (0 or 1) equivalent to simply specifying, for
-		      example, \texttt{tabular: 1} in
-		      the basic version shown in \cref{lst:aligndelims:basic}. If \texttt{delims} is set to
-		      \texttt{0} then the align at ampersand routine will not be called for this
-		      code block (default: 1);
+		      example, \texttt{tabular: 1} in the basic version shown in \cref{lst:aligndelims:basic}. If
+		      \texttt{delims} is set to \texttt{0} then the align at ampersand
+		      routine will not be called for this code block (default: 1);
 		\item \texttt{alignDoubleBackSlash}: binary switch (0 or 1) to determine if \lstinline!\\!
 		      should be aligned (default: 1);
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally,%
 		      \announce{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces
-		      to be inserted
-		      before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
+		      to be inserted before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
 		\item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if
 		      \texttt{latexindent.pl} should group columns
 		      above and below a \lstinline!\multicolumn! command (default: 0);
 		\item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if
-		      rows that do not contain the
-		      maximum number of delimeters should be formatted so as to have the ampersands aligned
-		      (default: 1);
+		      rows that do not contain the maximum number of delimeters should be formatted so as to
+		      have the ampersands aligned (default: 1);
 		\item \announce{2018-01-13}{spacesBeforeAmpersand in ampersand alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer
 		      $\geq$ 0) of
 		      spaces to be placed \emph{before} ampersands (default: 1);
@@ -304,8 +298,7 @@ lookForAlignDelims:
 		      $\geq$ 0) of
 		      spaces to be placed \emph{After} ampersands (default: 1);
 		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of
-		      each cell as either \emph{left}
-		      or \emph{right} (default: left).
+		      each cell as either \emph{left} or \emph{right} (default: left).
 	\end{itemize}
 
 	We will explore each of these features using the file \texttt{tabular2.tex} in
@@ -468,7 +461,7 @@ latexindent.pl matrix1.tex
 	\vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
-	The fields specified%%
+	The fields specified%%%%
 	\announce{2017-08-21}*{specialBeginEnd} in
 	\texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end
 	statements, but there is no requirement for this to be the case; \cref{lst:specialBeginEnd}
@@ -479,9 +472,8 @@ latexindent.pl matrix1.tex
 	The field \texttt{displayMath} represents \lstinline!\[...\]!,
 	\texttt{inlineMath} represents
 	\lstinline!$...$! and \texttt{displayMathTex} represents \lstinline!$$...$$!.
-	You can, of course,
-	rename these in your own YAML files (see \vref{sec:localsettings}); indeed, you might like
-	to set up your own special begin and end statements.
+	You can, of course, rename these in your own YAML files (see \vref{sec:localsettings});
+	indeed, you might like to set up your own special begin and end statements.
 
 	A demonstration of the before-and-after results are shown in \cref{lst:specialbefore,lst:specialafter}.
 
@@ -498,7 +490,7 @@ latexindent.pl matrix1.tex
 	\texttt{latexindent.pl} not to look for the pattern, by setting \texttt{lookForThis}
 	to \texttt{0}.
 
-	There are%%
+	There are%%%%
 	\announce{2017-08-21}{specialBeforeCommand} examples in which it
 	is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
 	searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour.
@@ -538,12 +530,11 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 		\item \cref{lst:specialLR-comm-first-tex} the \lstinline!\left! has been treated as a
 		      \emph{command}, with one optional argument;
 		\item \cref{lst:specialLR-special-first-tex} the \texttt{specialBeginEnd} pattern in \cref{lst:specialsLeftRight-yaml}
-		      has been obeyed
-		      because \cref{lst:specialBeforeCommand-yaml} specifies that the \texttt{specialBeginEnd} should be
-		      sought \emph{before} commands.
+		      has been obeyed because \cref{lst:specialBeforeCommand-yaml} specifies that the
+		      \texttt{specialBeginEnd} should be sought \emph{before} commands.
 	\end{itemize}
 
-	You can,optionally, specify%%
+	You can,optionally, specify%%%%
 	\announce*{2018-04-27}{update to specialBeginEnd} the
 	\texttt{middle} field for anything that you specify in \texttt{specialBeginEnd}.
 	For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
@@ -585,15 +576,17 @@ latexindent.pl special2.tex -l=middle1
 		      \cref{lst:special2-mod2}.
 	\end{itemize}
 
-    You may \announce{new}{specialBeginEnd verbatim} specify fields in \texttt{specialBeginEnd}
-    to be treated as verbatim code blocks by changing \texttt{lookForThis} to be \texttt{verbatim}.
+	You may%%
+	\announce{new}{specialBeginEnd verbatim} specify fields in
+	\texttt{specialBeginEnd} to be treated as verbatim code blocks by changing
+	\texttt{lookForThis} to be \texttt{verbatim}.
 
-    For example, beginning with the code in \cref{lst:special3-mod1} and the YAML 
-    in \cref{lst:special-verb1-yaml}, and running
+	For example, beginning with the code in \cref{lst:special3-mod1} and the YAML  in
+	\cref{lst:special-verb1-yaml}, and running
 	\begin{commandshell}
 latexindent.pl special3.tex -l=special-verb1
     \end{commandshell}
-    then the output in \cref{lst:special3-mod1} is unchanged.
+	then the output in \cref{lst:special3-mod1} is unchanged.
 
 	\begin{minipage}{.4\linewidth}
 		\cmhlistingsfromfile*{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
@@ -664,7 +657,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 
 \yamltitle{maximumIndentation}*{horizontal space}
 	You can control the maximum indentation given to your file
-	by%%
+	by%%%%
 	\announce{2017-08-21}{maximumIndentation} specifying the
 	\texttt{maximumIndentation} field as horizontal space (but \emph{not} including
 	tabs). This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and
