@@ -152,7 +152,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 \subsubsection{text wrapping on a per-code-block basis}
 	By default, if the value of \texttt{columns} is greater than 0 and the
 	\texttt{-m} switch is active, then%
-	\announce{new}*{updates to textWrapOptions} the text wrapping routine will operate before the code blocks
+	\announce*{2018-08-13}*{updates to textWrapOptions} the text wrapping routine will operate before the code blocks
 	have been searched for. This behaviour is customisable; in particular, you can instead
 	instruct \texttt{latexindent.pl} to apply \texttt{textWrap} on a
 	per-code-block basis. Thanks to \cite{zoehneto} for their help in testing and
@@ -347,7 +347,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 		\item comments will \emph{not} be affected by the text wrapping routine (see
 		      \vref{lst:textwrap3-mod1});
 		\item it is possible to wrap text on a per-code-block and a per-name basis;
-		      \announce{new}*{updates to textWrapOptions}
+		      \announce*{2018-08-13}*{updates to textWrapOptions}
 		\item the text wrapping routine sets \texttt{preserveBlankLines} as
 		      \texttt{1};
 		\item indentation is performed \emph{after} the text wrapping routine; as such,
@@ -651,7 +651,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 
 \subsubsection{text wrapping and indenting sentences}
 	The \texttt{oneSentencePerLine}%%
-	\announce{new}{oneSentencePerline text wrap and indent} can be instructed to perform
+	\announce*{2018-08-13}{oneSentencePerline text wrap and indent} can be instructed to perform
 	text wrapping and indentation upon sentences.
 
 	Let's use the code in \cref{lst:multiple-sentences5}.
@@ -822,7 +822,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	then we obtain the output in \cref{lst:shortlines-md4}. \cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
 
 	Note%%%%
-	\announce{new}*{updates to all in removeParagraphLineBreaks} that the
+	\announce*{2018-08-13}*{updates to all in removeParagraphLineBreaks} that the
 	\texttt{all} field can take the same exceptions detailed in
 	\cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
 
@@ -890,7 +890,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 \subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
 
 	The%%%%
-	\announce{new}{combine text wrap and remove paragraph line breaks} text wrapping
+	\announce*{2018-08-13}{combine text wrap and remove paragraph line breaks} text wrapping
 	routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine
 	(\vref{subsec:removeparagraphlinebreaks}) can be combined.
 
@@ -1425,7 +1425,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
 		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
 		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce*{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
+		\announce{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                   \\
 		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
@@ -1464,7 +1464,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
 		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
 		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce*{2018-04-27}{new special code block polyswitches}                                                                                                                                                    \\
+		\announce{2018-04-27}{new special code block polyswitches}                                                                                                                                                    \\
 		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
 		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
 		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\

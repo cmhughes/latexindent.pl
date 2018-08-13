@@ -8,7 +8,7 @@
 \yamltitle{commandCodeBlocks}*{fields}
 
 	The \texttt{commandCodeBlocks} field%%%%
-	\announce*{2018-04-27}*{commandCodeBlocks}
+	\announce{2018-04-27}*{commandCodeBlocks}
 	contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
 	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
@@ -160,7 +160,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	\end{itemize}
 
 	Referencing \vref{lst:commandCodeBlocks},%
-	\announce*{2018-04-27}*{amalgamate feature in commandCodeBlocks}, we see that the first field in the \texttt{stringsAllowedBetweenArguments} is
+	\announce{2018-04-27}*{amalgamate feature in commandCodeBlocks}, we see that the first field in the \texttt{stringsAllowedBetweenArguments} is
 	\texttt{amalgamate} and is set to \texttt{1} by default. This is for
 	users who wish to specify their settings in multiple YAML files. For example, by using
 	the settings in either \cref{lst:amalgamate-demo} or\cref{lst:amalgamate-demo1} is equivalent to
@@ -225,7 +225,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
-	\announce*{2018-04-27}*{commandNameSpecial} that do not fit within the names recognized by
+	\announce{2018-04-27}*{commandNameSpecial} that do not fit within the names recognized by
 	\texttt{latexindent.pl}, the first one of which is \lstinline!\@ifnextchar[!. From the
 	perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[! is
 	a command, because it is immediately followed by sets of mandatory arguments. However,

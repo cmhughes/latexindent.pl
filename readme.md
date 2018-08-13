@@ -11,7 +11,7 @@ can modify line breaks.
 
 ### version 
  
-    latexindent.pl, version 3.4.3, 2018-06-08
+    latexindent.pl, version 3.5, 2018-08-13
 
 ### author 
 Chris Hughes (cmhughes)
