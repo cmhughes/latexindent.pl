@@ -1,37 +1,37 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{Conclusions and known limitations}\label{sec:knownlimitations}
- There are a number of known limitations of the script, and almost certainly quite a
- few that are \emph{unknown}!
+ There are a number of known limitations of the script, and almost certainly quite a few
+ that are \emph{unknown}!
 
- The main limitation is to do with the alignment routine discussed on \cpageref{yaml:lookforaligndelims}; for example,
- consider the file given in \cref{lst:matrix2}.
+ The main limitation is to do with the alignment routine discussed on
+ \cpageref{yaml:lookforaligndelims}; for example, consider the file given in \cref{lst:matrix2}.
 
  \cmhlistingsfromfile{demonstrations/matrix2.tex}{\texttt{matrix2.tex}}{lst:matrix2}
 
- The default output is given in \cref{lst:matrix2-default}, and it is clear that the alignment routine
- has not worked as hoped, but it is \emph{expected}.
- \cmhlistingsfromfile{demonstrations/matrix2-default.tex}{\texttt{matrix2.tex} default output}{lst:matrix2-default}
+ The default output is given in \cref{lst:matrix2-default}, and it is clear that the alignment
+ routine has not worked as hoped, but it is \emph{expected}. \cmhlistingsfromfile{demonstrations/matrix2-default.tex}{\texttt{matrix2.tex} default output}{lst:matrix2-default}
 
- The reason for the problem is that when \texttt{latexindent.pl} stores its code blocks (see \vref{tab:code-blocks})
- it uses replacement tokens. The alignment routine is using the \emph{length of the replacement token} in its measuring -- I hope
- to be able to address this in the future.
+ The reason for the problem is that when \texttt{latexindent.pl} stores its code blocks
+ (see \vref{tab:code-blocks}) it uses replacement tokens. The alignment routine is using
+ the \emph{length of the replacement token} in its measuring -- I hope to be able to address this in the
+ future.
 
- There are other limitations to do with the multicolumn alignment routine (see \vref{lst:tabular2-mod2}); in particular,
- when working with codeblocks in which multicolumn commands overlap, the algorithm can fail.
+ There are other limitations to do with the multicolumn alignment routine (see
+ \vref{lst:tabular2-mod2}); in particular, when working with codeblocks in which multicolumn
+ commands overlap, the algorithm can fail.
 
  Another limitation is to do with efficiency, particularly when the \texttt{-m}
  switch is active, as this adds many checks and processes. The current implementation
- relies upon finding and storing \emph{every} code block (see the discussion on \cpageref{page:phases});
- it is hoped that, in a future version, only \emph{nested} code blocks will need
- to be stored in the `packing' phase, and that this will improve the efficiency of the script.
+ relies upon finding and storing \emph{every} code block (see the discussion on
+ \cpageref{page:phases}); it is hoped that, in a future version, only
+ \emph{nested} code blocks will need to be stored in the `packing' phase, and
+ that this will improve the efficiency of the script.
 
- You can run \texttt{latexindent} on \texttt{.sty}, \texttt{.cls} and any file types
- that you specify in \lstinline[breaklines=true]!fileExtensionPreference! (see \vref{lst:fileExtensionPreference});
- if you find a case in which the script struggles, please feel free
- to report it at \cite{latexindent-home}, and
- in the meantime, consider using a \texttt{noIndentBlock} (see \cpageref{lst:noIndentBlockdemo}).
+ You can run \texttt{latexindent} on \texttt{.sty}, \texttt{.cls} and
+ any file types that you specify in \lstinline[breaklines=true]!fileExtensionPreference! (see \vref{lst:fileExtensionPreference});
+ if you find a case in which the script struggles, please feel free to report it at
+ \cite{latexindent-home}, and in the meantime, consider using a \texttt{noIndentBlock} (see \cpageref{lst:noIndentBlockdemo}).
 
- I hope that this script is useful to some; if you find an example where the
- script does not behave as you think it should, the best way to contact me is to
- report an issue on \cite{latexindent-home}; otherwise, feel free to find me on
- the \url{http://tex.stackexchange.com/users/6621/cmhughes}.
+ I hope that this script is useful to some; if you find an example where the script does
+ not behave as you think it should, the best way to contact me is to report an issue on
+ \cite{latexindent-home}; otherwise, feel free to find me on the \url{http://tex.stackexchange.com/users/6621/cmhughes}.

@@ -1,12 +1,16 @@
 onlyOneBackUp: 1
+
 indentPreamble: 1
+
 preambleCommandsBeforeEnvironments: 1
+
 verbatimEnvironments:
     cmhlistings: 1
     yaml: 1
     commandshell: 1
     dosprompt: 1
     lstlisting: 1
+
 indentAfterHeadings:
     appendix:
        indentAfterThisHeading: 1
@@ -29,14 +33,37 @@ indentAfterHeadings:
     paragraph:
        indentAfterThisHeading: 1
        level: 3
+
 indentRules:
    titleformat:
        body: "  " 
    titlecontents:
        body: "  " 
+
 noAdditionalIndent:
     widepage: 0
+
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+      - '\*'
+
 modifyLineBreaks:
     commands:
         announce:
             CommandStartsOnOwnLine: 2
+    textWrapOptions:
+        columns: 90
+        perCodeBlockBasis: 1
+        masterDocument: 1
+        afterHeading: 1
+        items: 1
+    removeParagraphLineBreaks:
+        masterDocument: 1
+        items: 1
+        afterHeading: 1
+        beforeTextWrap: 1
+
+removeTrailingWhitespace:
+    beforeProcessing: 1
+    afterProcessing: 1

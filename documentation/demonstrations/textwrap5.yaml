@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 30
+        perCodeBlockBasis: 1
+        environments:
+          myenv: 1
+        masterDocument: 1

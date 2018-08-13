@@ -26,6 +26,18 @@ our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lin
 sub protect_blank_lines{
     return unless $is_m_switch_active;
     my $self = shift;
+    
+    # the text wrap routine, under some circumstances, can 
+    # cause new blank lines that haven't been awarded a token; see, for example,
+    #       test-cases/maxLineChars/multi-object-all.tex -l=multi-object2.yaml -m
+    # we can circumvent this by forcing blank lines to be protected if 
+    # the text wrap option is active, which allows us to remove blank
+    # lines from wrapped text
+    if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH" 
+        or ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>0 ){
+        ${$masterSettings{modifyLineBreaks}}{preserveBlankLines} = 1;
+    }
+
 
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
         $logger->trace("*Blank lines will not be protected (preserveBlankLines=0)") if $is_t_switch_active;
@@ -43,7 +55,7 @@ sub condense_blank_lines{
     return unless ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     my $self = shift;
-
+    
     $logger->trace("*condense blank lines routine") if $is_t_switch_active;
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
@@ -84,9 +96,13 @@ sub unprotect_blank_lines{
 
     return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
     my $self = shift;
+    
+    # remove any empty lines that might have been added by the text_wrap routine; see, for example,
+    #       test-cases/maxLineChars/multi-object-all.tex -l=multi-object2.yaml -m
+    ${$self}{body} =~ s/^\h*\R//mg;
 
     $logger->trace("Unprotecting blank lines (see preserveBlankLines)") if $is_t_switch_active;
-    my $blankLineToken = $tokens{blanklines};
+    my $blankLineToken = join("(?:\\h|\\R)*",split(//,$tokens{blanklines}));
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/$blankLineToken/s){

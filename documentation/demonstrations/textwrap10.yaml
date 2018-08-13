@@ -1,0 +1,8 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 
+            default: 30
+            environments: 
+                default: 50
+        perCodeBlockBasis: 1
+        all: 1

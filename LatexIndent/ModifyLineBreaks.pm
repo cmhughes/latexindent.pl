@@ -25,13 +25,13 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line text_wrap_remove_paragraph_line_breaks/;
 our $paragraphRegExp = q();
 
 
 sub modify_line_breaks_body{
     my $self = shift;
-
+    
     # add a line break after \begin{statement} if appropriate
     if(defined ${$self}{BodyStartsOnOwnLine}){
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
@@ -177,7 +177,6 @@ sub modify_line_breaks_end{
 sub adjust_line_breaks_end_parent{
     # when a parent object contains a child object, the line break
     # at the end of the parent object can become messy
-    return unless $is_m_switch_active;
 
     my $self = shift;
 
@@ -208,14 +207,44 @@ sub adjust_line_breaks_end_parent{
 
 }
 
-sub max_char_per_line{
-    return unless $is_m_switch_active;
+sub text_wrap_remove_paragraph_line_breaks{
+    my $self = shift;
+
+    if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+    } else {
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+    }
+
+}
+
+sub text_wrap{
 
     my $self = shift;
-    return unless ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1;
+    
+    # alignment at ampersand can take priority
+    return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
 
     # call the text wrapping routine
-    $Text::Wrap::columns=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+    my $columns;
+
+    # columns might have been defined by the user
+    if(defined ${$self}{columns}){
+        $columns = ${$self}{columns};
+    } elsif(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+        if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+        } else {
+            $columns = 80;
+        }
+    } elsif (defined ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}){
+        $columns = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} ;
+    } else {
+        $columns = 80;
+    }
+
+    $Text::Wrap::columns=$columns;
     if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
         $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
     }
@@ -271,7 +300,7 @@ sub construct_paragraph_reg_exp{
     $logger->trace($paragraphRegExp) if $is_tt_switch_active ;
 }
 
-sub paragraphs_on_one_line{
+sub remove_paragraph_line_breaks{
     my $self = shift;
     return unless ${$self}{removeParagraphLineBreaks};
 
@@ -481,6 +510,39 @@ sub one_sentence_per_line{
     while( my $sentence = pop @sentenceStorage){
       my $sentenceStorageID = ${$sentence}{id};
       my $sentenceStorageValue = ${$sentence}{value};
+
+      # option to text wrap (and option to indent) sentences
+      if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
+              my $sentenceObj = LatexIndent::Document->new(body=>$sentenceStorageValue,
+                                                    name=>"sentence",
+                                                    modifyLineBreaksYamlName=>"sentence",
+                                                    );
+
+              # text wrapping
+              $sentenceObj->yaml_get_columns;
+              $sentenceObj->text_wrap;
+
+              # indentation of sentences
+              if(${$sentenceObj}{body} =~ m/
+                                  (.*?)      # content of first line
+                                  \R         # first line break
+                                  (.*$)      # rest of body
+                                  /sx){
+                  my $bodyFirstLine = $1;
+                  my $remainingBody = $2;
+                  my $indentation = ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent};
+                  $logger->trace("first line of sencent:  $bodyFirstLine") if $is_tt_switch_active;
+                  $logger->trace("remaining body (before indentation):\n'$remainingBody'") if($is_tt_switch_active);
+    
+                  # add the indentation to all the body except first line
+                  $remainingBody =~ s/^/$indentation/mg unless($remainingBody eq '');  # add indentation
+                  $logger->trace("remaining body (after indentation):\n$remainingBody'") if($is_tt_switch_active);
+    
+                  # put the body back together
+                  ${$sentenceObj}{body} = $bodyFirstLine."\n".$remainingBody; 
+              }
+              $sentenceStorageValue = ${$sentenceObj}{body};
+      };
       # sentence at the very END
       ${$self}{body} =~ s/\h*$sentenceStorageID\h*$/$sentenceStorageValue/s;
       # sentence at the very BEGINNING

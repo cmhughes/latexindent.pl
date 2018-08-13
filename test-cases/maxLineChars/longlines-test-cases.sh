@@ -17,14 +17,19 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $silentMode == 0 ]] && set -x 
     # basic tests
+    [[ $showCounter == 1 ]] && echo $i of $loopmax
     latexindent.pl -s long-lines1.tex -o long-lines1-mod-$i.tex -l=text-wrap-$i.yaml -m
     latexindent.pl -s long-lines2.tex -o long-lines2-mod-$i.tex -l=text-wrap-$i.yaml -m
     latexindent.pl -s long-lines3.tex -o long-lines3-mod-$i.tex -l=text-wrap-$i.yaml -m 
    [[ $silentMode == 0 ]] && set +x 
 done
 
+set +x
+[[ $silentMode == 0 ]] && set -x 
+
 # verbatim
 latexindent.pl -s -m verbatim-long-lines.tex -o verbatim-long-lines-mod1.tex -l=text-wrap-1.yaml
+latexindent.pl -s -m verbatim2 -o=+-mod1 -l=verbatim1.yaml
 
 # remove paragraph line breaks
 latexindent.pl -m -s jowens-short-multi-line.tex -l removeParaLineBreaks0.yaml -o jowens-short-multi-line0.tex
@@ -89,5 +94,51 @@ latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,descrip
 latexindent.pl -m -s jowens-follow-ups.tex -l removeParaLineBreaks0.yaml,description.yaml,stopParaAtComments.yaml -o jowens-follow-ups-mod2.tex
 # bug reported at https://github.com/cmhughes/latexindent.pl/issues/90
 latexindent.pl -m -s bug1 -o=+-mod0 -y="modifyLineBreaks:textWrapOptions:columns:3"
+# everything below is to do with the
+# improvement to text wrap routine, requested at https://github.com/cmhughes/latexindent.pl/issues/103
+latexindent.pl -m -s zoehneto.tex -l=zoehneto1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto.tex -l=zoehneto4.yaml -o=+-mod4
+latexindent.pl -m -s zoehneto.tex -l=zoehneto5.yaml -o=+-mod5
+latexindent.pl -m -s zoehneto.tex -l=zoehneto6.yaml -o=+-mod6
+latexindent.pl -m -s zoehneto.tex -l=zoehneto7.yaml -o=+-mod7
+latexindent.pl -m -s zoehneto.tex -l=zoehneto8.yaml -o=+-mod8
+latexindent.pl -m -s zoehneto.tex -l=zoehneto9.yaml -o=+-mod9
+latexindent.pl -m -s zoehneto.tex -l=zoehneto10.yaml -o=+-mod10
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto2.yaml -o=+-mod2
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto4.yaml -o=+-mod4
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto5.yaml -o=+-mod5
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto6.yaml -o=+-mod6
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto7.yaml -o=+-mod7
+latexindent.pl -m -s zoehneto1.tex -l=zoehneto8.yaml -o=+-mod8
+latexindent.pl -m -s zoehneto2.tex -l=zoehneto3.yaml -o=+-mod3
+latexindent.pl -m -s environments-nested-fourth.tex -l=env1 -o=+-mod1
+latexindent.pl -m -s dbmrq -l=dbmrq1 -o=+-mod1
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto-config1.yaml -o=+-mod1
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto11.yaml -o=+-mod11
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto12.yaml -o=+-mod12
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto13.yaml -o=+-mod13
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto14.yaml -o=+-mod14
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto15.yaml -o=+-mod15
+latexindent.pl -m -s zoehneto4.tex -l=zoehneto16.yaml -o=+-mod16
+# except test cases
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto17.yaml -o=+-mod17
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto18.yaml -o=+-mod18
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto19.yaml -o=+-mod19
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto20.yaml -o=+-mod20
+# preamble
+latexindent.pl -m -s zoehneto5.tex -l=zoehneto21.yaml -o=+-mod21
+latexindent.pl -m -s zoehneto5.tex -l=zoehneto22.yaml -o=+-mod22
+latexindent.pl -m -s zoehneto5.tex -l=zoehneto23.yaml -o=+-mod23
+# suit of 'all' objects test cases
+loopmax=47
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $silentMode == 0 ]] && set -x 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+latexindent.pl -m -s multi-object-all.tex -l=multi-object$i.yaml -o=+-mod$i
+   [[ $silentMode == 0 ]] && set +x 
+done
+
 git status
 [[ $noisyMode == 1 ]] && makenoise
