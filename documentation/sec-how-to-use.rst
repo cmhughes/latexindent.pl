@@ -460,7 +460,8 @@ Once you have finished typing your input, you can press
 
 -  ``CTRL+Z`` followed by ``ENTER`` on Windows
 
-to signify that your input has finished.
+to signify that your input has finished. Thanks to (xu-cheng) (2018) for
+an update to this feature.
 
 .. label follows
 
@@ -471,53 +472,8 @@ From arara
 
 Using ``latexindent.pl`` from the command line is fine for some folks,
 but others may find it easier to use from ``arara``; you can find the
-arara rule at Cereda (2013).
-
-You can use the rule in any of the ways described in
-:numref:`lst:arara` (or combinations thereof). In fact, ``arara``
-allows yet greater flexibility – you can use ``yes/no``, ``true/false``,
-or ``on/off`` to toggle the various options.
-
- .. literalinclude:: demonstrations/arara-demo.tex
- 	:class: .tex
- 	:caption: ``arara`` sample usage 
- 	:name: lst:arara
-
-Hopefully the use of these rules is fairly self-explanatory, but for
-completeness :numref:`tab:orbsandswitches` shows the relationship
-between ``arara`` directive arguments and the switches given in
-:numref:`sec:commandline`.
-
-.. label follows
-
-.. _tab:orbsandswitches:
-
-.. table::  ``arara`` directive arguments and corresponding switches
-
-	
-	
-	+--------------------------------+----------+
-	| ``arara`` directive argument   | switch   |
-	+================================+==========+
-	| ``overwrite``                  | ``-w``   |
-	+--------------------------------+----------+
-	| ``output``                     | ``-o``   |
-	+--------------------------------+----------+
-	| ``silent``                     | ``-s``   |
-	+--------------------------------+----------+
-	| ``trace``                      | ``-t``   |
-	+--------------------------------+----------+
-	| ``localSettings``              | ``-l``   |
-	+--------------------------------+----------+
-	| ``onlyDefault``                | ``-d``   |
-	+--------------------------------+----------+
-	| ``cruft``                      | ``-c``   |
-	+--------------------------------+----------+
-	
-
-
-The ``cruft`` directive does not work well when used with directories
-that contain spaces.
+arara rule for ``latexindent.pl`` and its associated documentation at
+Cereda (2013).
 
 .. raw:: html
 
@@ -540,6 +496,17 @@ https://github.com/cereda/arara/blob/master/rules/indent.yaml.
 
 “Home of Latexindent.pl.” 2017. Accessed January 23.
 https://github.com/cmhughes/latexindent.pl.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-xu-cheng">
+
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/help Text to STDERR.”
+July 13. https://github.com/cmhughes/latexindent.pl/pull/121.
 
 .. raw:: html
 

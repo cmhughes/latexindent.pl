@@ -16,7 +16,7 @@ package LatexIndent::HiddenChildren;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
@@ -156,8 +156,21 @@ sub check_for_hidden_children{
 
     my $self = shift;
 
+    my @matched;
     # grab the matches
-    my @matched = (${$self}{body} =~ /((?:$tokens{ifelsefiSpecial})?$tokens{beginOfToken}.[-a-z0-9]+?$tokens{endOfToken})/ig);
+    if($is_m_switch_active){
+        # if modifyLineBreaks is active, then the IDS can be split across lines
+        my $ifElseFiSpecialBegin = join("\\R?\\h*",split(//,$tokens{ifelsefiSpecial}));
+        my $BeginwithLineBreaks = join("\\R?\\h*",split(//,$tokens{beginOfToken}));
+        my $EndwithLineBreaks = join("\\R?\\h*",split(//,$tokens{endOfToken}));
+        my $BlankLinesWithLineBreaks = join("\\R?\\h*",split(//,$tokens{blanklines}));
+        @matched = (${$self}{body} =~ /(?!$BlankLinesWithLineBreaks)((?:$ifElseFiSpecialBegin)?$BeginwithLineBreaks[-a-z0-9\n]+?$EndwithLineBreaks)/ig);
+
+        # remove line breaks and horizontal space from matches
+        $_ =~ s/\R|\h//gs foreach (@matched);
+    } else {
+        @matched = (${$self}{body} =~ /((?:$tokens{ifelsefiSpecial})?$tokens{beginOfToken}.[-a-z0-9]+?$tokens{endOfToken})/igs);
+    }
 
     # log file
     $logger->trace("*Hidden children check") if $is_t_switch_active;

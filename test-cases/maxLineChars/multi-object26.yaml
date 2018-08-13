@@ -1,0 +1,20 @@
+indentPreamble: 1
+indentAfterHeadings:
+    section:
+       indentAfterThisHeading: 1
+       level: 1
+removeTrailingWhitespace:
+    beforeProcessing: 1
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns:
+            default: 40
+            specialBeginEnd: 15
+        perCodeBlockBasis: 1
+        all: 1
+    removeParagraphLineBreaks:
+        all:
+          except:
+            - 'displayMath'
+        beforeTextWrap: 1

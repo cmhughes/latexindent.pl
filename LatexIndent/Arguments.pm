@@ -78,6 +78,14 @@ sub find_opt_mand_arguments{
 
         # give unique id
         $arguments->create_unique_id;
+        
+        # text wrapping can make the ID split across lines
+        ${$arguments}{idRegExp} = ${$arguments}{id};
+
+        if($is_m_switch_active){
+            my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$arguments}{id}));
+            ${$arguments}{idRegExp} = qr/$IDwithLineBreaks/s;  
+        }
 
         # determine which comes first, optional or mandatory
         if(${$arguments}{body} =~ m/.*?((?<!\\)\{|\[)/s){
@@ -98,6 +106,12 @@ sub find_opt_mand_arguments{
                 $arguments->find_optional_arguments;
             }
 
+            # it's possible not to have any mandatory or optional arguments, see
+            # https://github.com/cmhughes/latexindent.pl/issues/123
+            if( !(defined ${$arguments}{children}) ){
+                $logger->trace("No optional or mandatory arguments found; searching for matching round parenthesis") if $is_t_switch_active;
+                $arguments->find_round_brackets;
+            }
         } else {
                 $logger->trace("Searching for round brackets ONLY") if $is_t_switch_active;
                 # look for round brackets

@@ -406,55 +406,55 @@
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=397,linerange={397-398},
+	firstnumber=421,linerange={421-422},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=397,linerange={397-399},
+	firstnumber=421,linerange={421-437},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=422,linerange={422-434},
+	firstnumber=438,linerange={438-452},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=435,linerange={435-443},
+	firstnumber=453,linerange={453-462},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=400,linerange={400-421},
+	firstnumber=397,linerange={397-420},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=403,linerange={403-411},
+	firstnumber=402,linerange={402-410},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=412,linerange={412-415},
+	firstnumber=411,linerange={411-414},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=416,linerange={416-421},
+	firstnumber=415,linerange={415-420},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=444,linerange={444-453},
+	firstnumber=463,linerange={463-472},
 	numbers=left,
 }
 
@@ -700,85 +700,3 @@
 \input{references}
 \input{appendices}
 \end{document}
-
-version history:
-
-1.0: first release
-https://www.ctan.org/ctan-ann/id/mailman.278.1369470527.5851.ctan-ann@dante.de
-
-1.1R
-Changed Bin to RealBin so that I hope the script can get bun­dled into TeXLive 2013. Some other up­dates, too, detailed in the documentation.
-https://www.ctan.org/ctan-ann/id/mailman.3048.1384345731.2385.ctan-ann@dante.de
-
-1.11R
-This release updates the script to use $FindBin::RealBin which should help in the TeXLive implementation.
-
-Version 2.0R
-Ver­sion 2.0R of la­texin­dent.pl adds a num­ber of new fea­tures, in­clud­ing: - in­den­ta­tion af­ter \item com­mands - align­ment of de­lim­itered en­vi­ron­ments in com­mands, such as \ma­trix - in­den­ta­tion of \if...\else...\fi state­ments - max­i­mum num­ber of back­ups can cy­cle through back­ups - bet­ter sup­port for .cls and .sty files - and a few other bug fixes
-https://www.ctan.org/ctan-ann/id/mailman.3090.1417864461.4370.ctan-ann@dante.de
-
-Version 2.1R
-in­dent­con­fig.yaml can now be a 'hid­den' file, .in­dent­con­fig.yaml The Win­dows ex­e­cutable file, la­texin­dent.exe, should now work much bet­ter with Win­dows TeXLive.
-https://www.ctan.org/ctan-ann/id/mailman.343.1429509943.4405.ctan-ann@dante.de
-
-Version 2.2
-v2.2 addresses a reg­exp issue, and adds a few enhancements; full details are here: https://github.com/cmhughes/latexindent.pl/pull/49
-https://www.ctan.org/ctan-ann/id/mailman.198.1477655196.4574.ctan-ann@ctan.org
-
-Version 3.0
-latexindent.pl version 3.0: this represents a complete re-build of the script; full details are given here:
-https://github.com/cmhughes/la­texin­dent.pl/pull/56
-
-V3.0.1
-pro­vides sup­port for the align­ment at am­per­sands rou­tine for code that con­tains uni­code char­ac­ters; see
-https://github.com/cmhughes/la­texin­dent.pl/pull/61
-
-V3.0.2
-A mi­nor re­lease to fix a small bug re­lated to in­den­tPream­ble; de­tails given here:
-https://github.com/cmhughes/la­texin­dent.pl/pull/62
-
-Ver­sion 3.1 of la­texin­dent.pl,
-in­clud­ing op­tions for text wrap­ping and para­graph line break re­moval. Full de­tails here:
-https://github.com/cmhughes/la­texin­dent.pl/pull/64
-
-Ver­sion 3.2
-im­ple­ments a new fea­ture called 'mul­ti­Colum­nGroup­ing' which gives a new op­tion for the align­ment-at-am­per­sands rou­tine.
-More de­tails are given at
-https://github.com/cmhughes/la­texin­dent.pl/pull/67
-
-Version 3.2.1
-Upgrades to the -o and -l switches
-https://github.com/cmhughes/latexindent.pl/pull/71
-
-Version 3.2.2
-Users can specify removeTrailingWhitespace as a scalar, for example,  removeTrailingWhitespace: 0
-https://github.com/cmhughes/latexindent.pl/pull/72
-
-Version 3.3
-- maximum indentation: https://github.com/cmhughes/latexindent.pl/issues/50
-- blank line poly-switch: https://github.com/cmhughes/latexindent.pl/issues/57
-- ifnextchar issue: https://github.com/cmhughes/latexindent.pl/issues/73
-- the -y/yaml switch: https://github.com/cmhughes/latexindent.pl/issues/79
-- absolute paths for the -l switch: https://github.com/cmhughes/latexindent.pl/issues/82
-bug fixes:
-- an ifelsefi bug: https://github.com/cmhughes/latexindent.pl/issues/76
-- empty environment bug: https://github.com/cmhughes/latexindent.pl/issues/78
-- a command/special bug: https://github.com/cmhughes/latexindent.pl/issues/80
-https://github.com/cmhughes/latexindent.pl/releases/tag/V3.3
-
-Version 3.4
-- enhancements to alignment at ampersand routine: https://github.com/cmhughes/latexindent.pl/issues/74
-- log4Perl module: https://github.com/cmhughes/latexindent.pl/issues/75
-- one sentence per line: https://github.com/cmhughes/latexindent.pl/issues/81
-- STDIN allowed: https://github.com/cmhughes/latexindent.pl/issues/88
-- textwrap bug fix: https://github.com/cmhughes/latexindent.pl/issues/90
-- polyswitch bug fix: https://github.com/cmhughes/latexindent.pl/issues/94
-
-Version 3.4.1
-- the reading of defaultSettings.yaml needed addressing
-- https://github.com/cmhughes/latexindent.pl/releases/tag/V3.4.1
-
-Version 3.4.2
-- enhancements to specialBeginEnd: https://github.com/cmhughes/latexindent.pl/issues/100
-- enhancements to commandCodeBlocks: https://github.com/cmhughes/latexindent.pl/issues/105
-- better support for forrest syntax: https://github.com/cmhughes/latexindent.pl/issues/107

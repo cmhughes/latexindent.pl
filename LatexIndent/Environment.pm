@@ -19,7 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
@@ -90,7 +90,7 @@ sub find_environments{
                 $self->get_settings_and_store_new_object($env);
                 ${@{${$self}{children}}[-1]}{replacementText}.($9?$9:q()).($10?$10:q());
                 /xseg;
-    $self->adjust_line_breaks_end_parent;
+    $self->adjust_line_breaks_end_parent if $is_m_switch_active;
     } 
     return;
 }

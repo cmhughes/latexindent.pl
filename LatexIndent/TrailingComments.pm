@@ -103,7 +103,7 @@ sub put_trailing_comments_back_in{
             if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
                 $trailingcommentIDwithLineBreaks = join("\\".${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator}."?",split(//,$trailingcommentID));
             } else {
-                $trailingcommentIDwithLineBreaks = join("\\R?",split(//,$trailingcommentID));
+                $trailingcommentIDwithLineBreaks = join("(?:\\h|\\R)*",split(//,$trailingcommentID));
             }
             my $trailingcommentIDwithLineBreaksRegExp = qr/$trailingcommentIDwithLineBreaks/s;  
 

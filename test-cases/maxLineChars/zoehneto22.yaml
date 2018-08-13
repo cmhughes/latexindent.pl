@@ -1,0 +1,12 @@
+indentPreamble: 1
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 
+            preamble: 20
+        perCodeBlockBasis: 1
+        all: 1
+    removeParagraphLineBreaks:
+        all:
+          except:
+            - 'preamble'
+        beforeTextWrap: 1

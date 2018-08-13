@@ -17,7 +17,7 @@ package LatexIndent::Preamble;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_t_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_m_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Environment qw/$environmentBasicRegExp/;
@@ -69,7 +69,21 @@ sub tasks_particular_to_each_object{
 
         # search for special begin/end
         $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-      }
+    }
+
+    # text wrapping, remove paragraph line breaks
+    if ($is_m_switch_active){
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
+
+        # call the remove_paragraph_line_breaks and text_wrap routines
+        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        } else {
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        }
+    }
 
 }
 

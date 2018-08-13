@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.4.3, 2018-06-08
+#   latexindent.pl, version 3.5, 2018-08-13
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -73,6 +73,6 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
 # allow STDIN as input, if a filename is not present
 unshift( @ARGV, '-' ) unless @ARGV;
 
-my $document = bless ({name=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
+my $document = bless ({name=>"masterDocument",modifyLineBreaksYamlName=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
 $document->latexindent;
 exit(0);

@@ -79,7 +79,7 @@ sub find_round_brackets{
         }
   }
 
-sub get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings{
     my $self = shift;
     
     return ${$self}{modifyLineBreaksYamlName};

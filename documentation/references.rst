@@ -197,4 +197,26 @@ https://github.com/cmhughes/latexindent.pl/pull/12.
 
 .. raw:: html
 
+   <div id="ref-xu-cheng">
+
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/help Text to STDERR.”
+July 13. https://github.com/cmhughes/latexindent.pl/pull/121.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-zoehneto">
+
+(zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4.
+https://github.com/cmhughes/latexindent.pl/issues/103.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    </div>

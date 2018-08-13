@@ -140,7 +140,7 @@ ENDQUOTE
     if($switches{screenlog}){
         $appender_screen = Log::Log4perl::Appender->new(
             "Log::Log4perl::Appender::Screen",
-            stderr => 0,
+            stderr => 1,
             utf8   => 1,
         );
 
@@ -160,7 +160,7 @@ ENDQUOTE
     } else {
         $logger->info("Reading input from STDIN");
         my $buttonText = ($FindBin::Script eq 'latexindent.exe') ? 'CTRL+Z followed by ENTER':'CTRL+D';
-        print "Please enter text to be indented: (press $buttonText when finished)\n";
+        print STDERR "Please enter text to be indented: (press $buttonText when finished)\n";
     }
 
     # log the switches from the user
@@ -205,7 +205,7 @@ ENDQUOTE
     }
 
     # read the YAML settings
-    $self->readSettings;
+    $self->yaml_read_settings;
     
     # the user may have specified their own settings for the rest of the log file,
     # for example:

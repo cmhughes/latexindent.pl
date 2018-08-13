@@ -580,8 +580,8 @@ and :numref:`lst:matrixafter` are achievable by default.
  	:name: lst:matrixafter
 
 If you have blocks of code that you wish to align at the & character
-that are *not* wrapped in, for example, ``\begin{tabular}``
-…\ ``\end{tabular}``, then you can use the mark up illustrated in
+that are *not* wrapped in, for example, ``\begin{tabular}`` …
+``\end{tabular}``, then you can use the mark up illustrated in
 :numref:`lst:alignmentmarkup`; the default output is shown in
 :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be
 next to each other, but that there can be any number of spaces (possibly
@@ -809,6 +809,30 @@ We note that:
    the syntax demonstrated in :numref:`lst:middle1-yaml` so that the
    body of the ``Else`` statement has been indented appropriately in
    :numref:`lst:special2-mod2`.
+
+You may specify fields in ``specialBeginEnd`` to be treated as verbatim
+code blocks by changing ``lookForThis`` to be ``verbatim``.
+
+For example, beginning with the code in :numref:`lst:special3-mod1`
+and the YAML in :numref:`lst:special-verb1-yaml`, and running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl special3.tex -l=special-verb1
+        
+
+then the output in :numref:`lst:special3-mod1` is unchanged.
+
+ .. literalinclude:: demonstrations/special-verb1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``special-verb1.yaml`` 
+ 	:name: lst:special-verb1-yaml
+
+ .. literalinclude:: demonstrations/special3-mod1.tex
+ 	:class: .tex
+ 	:caption: ``special3.tex`` and output using :numref:`lst:special-verb1-yaml` 
+ 	:name: lst:special3-mod1
 
 .. describe:: indentAfterHeadings:fields
 
@@ -1104,12 +1128,7 @@ we obtain the output given in :numref:`lst:myenv-output-4`.
 Let’s now allow ``myenv`` to have some optional and mandatory arguments,
 as in :numref:`lst:myenv-args`.
 
- .. literalinclude:: demonstrations/myenvironment-args.tex
- 	:class: .tex
- 	:caption: ``myenv-args.tex`` 
- 	:name: lst:myenv-args
-
-Upon running
+Upon runningtex
 
 .. code-block:: latex
    :class: .commandshell

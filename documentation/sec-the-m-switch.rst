@@ -72,7 +72,12 @@ also that we have used the ``-m`` switch!
  	:caption: ``mlb1.tex`` out output 
  	:name: lst:mlb-bl-out
 
-.. describe:: textWrapOptions:fields
+.. label follows
+
+.. _subsec:textwrapping:
+
+textWrapOptions: modifying line breaks by text wrapping
+-------------------------------------------------------
 
 When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 wrap text using the options specified in the ``textWrapOptions`` field,
@@ -86,9 +91,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 397-398
+ 	:lines: 421-422
  	:linenos:
- 	:lineno-start: 397
+ 	:lineno-start: 421
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -166,20 +171,11 @@ then the output is as in :numref:`lst:textwrap3-mod1`.
  	:caption: ``textwrap3-mod1.tex`` 
  	:name: lst:textwrap3-mod1
 
- .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``textWrapOptions`` 
- 	:name: lst:textWrapOptionsAll
- 	:lines: 397-399
- 	:linenos:
- 	:lineno-start: 397
-
 The text wrapping routine of ``latexindent.pl`` is performed by the
 ``Text::Wrap`` module, which provides a ``separator`` feature to
 separate lines with characters other than a new line (see (“Text:Wrap
-Perl Module” 2017)). By default, the separator is empty (see
-:numref:`lst:textWrapOptionsAll`) which means that a new line token
-will be used, but you can change it as you see fit.
+Perl Module” 2017)). By default, the separator is empty which means that
+a new line token will be used, but you can change it as you see fit.
 
 For example starting with the file in :numref:`lst:textwrap4`
 
@@ -208,7 +204,270 @@ then we obtain the output in :numref:`lst:textwrap4-mod2`.
  	:caption: ``textwrap2.yaml`` 
  	:name: lst:textwrap2-yaml
 
-**Summary of text wrapping** It is important to note the following:
+text wrapping on a per-code-block basis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, if the value of ``columns`` is greater than 0 and the ``-m``
+switch is active, then the text wrapping routine will operate before the
+code blocks have been searched for. This behaviour is customisable; in
+particular, you can instead instruct ``latexindent.pl`` to apply
+``textWrap`` on a per-code-block basis. Thanks to (zoehneto) (2018) for
+their help in testing and shaping this feature.
+
+The full details of ``textWrapOptions`` are shown in
+:numref:`lst:textWrapOptionsAll`. In particular, note the field
+``perCodeBlockBasis: 0``.
+
+ .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textWrapOptions`` 
+ 	:name: lst:textWrapOptionsAll
+ 	:lines: 421-437
+ 	:linenos:
+ 	:lineno-start: 421
+
+The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with
+direct reference to those detailed in :numref:`tab:code-blocks`. The
+only special case is the ``masterDocument`` field; this is designed for
+‘chapter’-type files that may contain paragraphs that are not within any
+other code-blocks. The same notation is used between this feature and
+the ``removeParagraphLineBreaks`` described in
+:numref:`lst:removeParagraphLineBreaks`; in fact, the two features can
+even be combined (this is detailed in
+:numref:`subsec:removeparagraphlinebreaks:and:textwrap`).
+
+Let’s explore these switches with reference to the code given in
+:numref:`lst:textwrap5`; the text outside of the environment is
+considered part of the ``masterDocument``.
+
+ .. literalinclude:: demonstrations/textwrap5.tex
+ 	:class: .tex
+ 	:caption: ``textwrap5.tex`` 
+ 	:name: lst:textwrap5
+
+With reference to this codeblock, the settings given in
+:numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and
+:numref:`lst:textwrap5-yaml` each give the same output.
+
+ .. literalinclude:: demonstrations/textwrap3.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap3.yaml`` 
+ 	:name: lst:textwrap3-yaml
+
+ .. literalinclude:: demonstrations/textwrap4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap4.yaml`` 
+ 	:name: lst:textwrap4-yaml
+
+ .. literalinclude:: demonstrations/textwrap5.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap5.yaml`` 
+ 	:name: lst:textwrap5-yaml
+
+Let’s explore the similarities and differences in the equivalent (with
+respect to :numref:`lst:textwrap5`) syntax specified in
+:numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and
+:numref:`lst:textwrap5-yaml`:
+
+-  in each of :numref:`lst:textwrap3-yaml` and
+   :numref:`lst:textwrap4-yaml` and :numref:`lst:textwrap5-yaml`
+   notice that ``columns: 30``;
+
+-  in each of :numref:`lst:textwrap3-yaml` and
+   :numref:`lst:textwrap4-yaml` and :numref:`lst:textwrap5-yaml`
+   notice that ``perCodeBlockBasis: 1``;
+
+-  in :numref:`lst:textwrap3-yaml` we have specified ``all: 1`` so
+   that the text wrapping will operate upon *all* code blocks;
+
+-  in :numref:`lst:textwrap4-yaml` we have *not* specified ``all``,
+   and instead, have specified that text wrapping should be applied to
+   each of ``environments`` and ``masterDocument``;
+
+-  in :numref:`lst:textwrap5-yaml` we have specified text wrapping for
+   ``masterDocument`` and on a *per-name* basis for ``environments``
+   code blocks.
+
+Upon running the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
+    latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
+    latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
+        
+
+we obtain the output shown in :numref:`lst:textwrap5-mod3`.
+
+ .. literalinclude:: demonstrations/textwrap5-mod3.tex
+ 	:class: .tex
+ 	:caption: ``textwrap5-mod3.tex`` 
+ 	:name: lst:textwrap5-mod3
+
+We can explore the idea of per-name text wrapping given in
+:numref:`lst:textwrap5-yaml` by using :numref:`lst:textwrap6`.
+
+ .. literalinclude:: demonstrations/textwrap6.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` 
+ 	:name: lst:textwrap6
+
+In particular, upon running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
+        
+
+we obtain the output given in :numref:`lst:textwrap6-mod5`.
+
+ .. literalinclude:: demonstrations/textwrap6-mod5.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap5-yaml` 
+ 	:name: lst:textwrap6-mod5
+
+Notice that, because ``environments`` has been specified only for
+``myenv`` (in :numref:`lst:textwrap5-yaml`) that the environment named
+``another`` has *not* had text wrapping applied to it.
+
+The all field can be specified with exceptions which can either be done
+on a per-code-block or per-name basis; we explore this in relation to
+:numref:`lst:textwrap6` in the settings given in
+:numref:`lst:textwrap6-yaml` – :numref:`lst:textwrap8-yaml`.
+
+ .. literalinclude:: demonstrations/textwrap6.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap6.yaml`` 
+ 	:name: lst:textwrap6-yaml
+
+ .. literalinclude:: demonstrations/textwrap7.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap7.yaml`` 
+ 	:name: lst:textwrap7-yaml
+
+ .. literalinclude:: demonstrations/textwrap8.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap8.yaml`` 
+ 	:name: lst:textwrap8-yaml
+
+Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
+    latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
+    latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
+        
+
+we receive the respective output given in :numref:`lst:textwrap6-mod6`
+– :numref:`lst:textwrap6-mod8`.
+
+ .. literalinclude:: demonstrations/textwrap6-mod6.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap6-yaml` 
+ 	:name: lst:textwrap6-mod6
+
+ .. literalinclude:: demonstrations/textwrap6-mod7.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap7-yaml` 
+ 	:name: lst:textwrap6-mod7
+
+ .. literalinclude:: demonstrations/textwrap6-mod8.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap8-yaml` 
+ 	:name: lst:textwrap6-mod8
+
+Notice that:
+
+-  in :numref:`lst:textwrap6-mod6` the text wrapping routine has not
+   been applied to any ``environments`` because it has been switched off
+   (per-code-block) in :numref:`lst:textwrap6-yaml`;
+
+-  in :numref:`lst:textwrap6-mod7` the text wrapping routine has not
+   been applied to ``myenv`` because it has been switched off (per-name)
+   in :numref:`lst:textwrap7-yaml`;
+
+-  in :numref:`lst:textwrap6-mod8` the text wrapping routine has not
+   been applied to ``masterDocument`` because of the settings in
+   :numref:`lst:textwrap8-yaml`.
+
+The ``columns`` field has a variety of different ways that it can be
+specified; we’ve seen two basic ways already: the default (set to ``0``)
+and a positive integer (see :numref:`lst:textwrap6`, for example). We
+explore further options in :numref:`lst:textwrap9-yaml` –
+:numref:`lst:textwrap11-yaml`.
+
+ .. literalinclude:: demonstrations/textwrap9.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap9.yaml`` 
+ 	:name: lst:textwrap9-yaml
+
+ .. literalinclude:: demonstrations/textwrap10.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap10.yaml`` 
+ 	:name: lst:textwrap10-yaml
+
+ .. literalinclude:: demonstrations/textwrap11.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap11.yaml`` 
+ 	:name: lst:textwrap11-yaml
+
+:numref:`lst:textwrap9-yaml` and :numref:`lst:textwrap10-yaml` are
+equivalent. Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
+    latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
+        
+
+we receive the respective output given in :numref:`lst:textwrap6-mod9`
+and :numref:`lst:textwrap6-mod11`.
+
+ .. literalinclude:: demonstrations/textwrap6-mod9.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap9-yaml` 
+ 	:name: lst:textwrap6-mod9
+
+ .. literalinclude:: demonstrations/textwrap6-mod11.tex
+ 	:class: .tex
+ 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap11-yaml` 
+ 	:name: lst:textwrap6-mod11
+
+Notice that:
+
+-  in :numref:`lst:textwrap6-mod9` the text for the ``masterDocument``
+   has been wrapped using ``30`` columns, while ``environments`` has
+   been wrapped using ``50`` columns;
+
+-  in :numref:`lst:textwrap6-mod11` the text for ``myenv`` has been
+   wrapped using ``50`` columns, the text for ``another`` has been
+   wrapped using ``15`` columns, and ``masterDocument`` has been wrapped
+   using ``30`` columns.
+
+If you don’t specify a ``default`` value on per-code-block basis, then
+the ``default`` value from ``columns`` will be inherited; if you don’t
+specify a default value for ``columns`` then ``80`` will be used.
+
+``alignAtAmpersandTakesPriority`` is set to ``1`` by default; assuming
+that text wrapping is occuring on a per-code-block basis, and the
+current environment/code block is specified within
+:numref:`lst:aligndelims:basic` then text wrapping will be disabled
+for this code block.
+
+If you wish to specify ``afterHeading`` commands (see
+:numref:`lst:indentAfterHeadings`) on a per-name basis, then you need
+to append the name with ``:heading``, for example, you might use
+``section:heading``.
+
+Summary of text wrapping
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is important to note the following:
 
 -  Verbatim environments (:numref:`lst:verbatimEnvironments`) and
    verbatim commands (:numref:`lst:verbatimCommands`) will *not* be
@@ -217,6 +476,10 @@ then we obtain the output in :numref:`lst:textwrap4-mod2`.
 
 -  comments will *not* be affected by the text wrapping routine (see
    :numref:`lst:textwrap3-mod1`);
+
+-  it is possible to wrap text on a per-code-block and a per-name basis;
+
+-  the text wrapping routine sets ``preserveBlankLines`` as ``1``;
 
 -  indentation is performed *after* the text wrapping routine; as such,
    indented code will likely exceed any maximum value set in the
@@ -239,9 +502,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 400-421
+ 	:lines: 397-420
  	:linenos:
- 	:lineno-start: 400
+ 	:lineno-start: 397
 
 .. describe:: manipulateSentences:0\|1
 
@@ -330,25 +593,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 403-411
+ 	:lines: 402-410
  	:linenos:
- 	:lineno-start: 403
+ 	:lineno-start: 402
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 412-415
+ 	:lines: 411-414
  	:linenos:
- 	:lineno-start: 412
+ 	:lineno-start: 411
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 416-421
+ 	:lines: 415-420
  	:linenos:
- 	:lineno-start: 416
+ 	:lineno-start: 415
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -665,6 +928,48 @@ the output of which is shown in
  	:caption: ``item-rules2.yaml`` 
  	:name: lst:item-rules2-yaml
 
+text wrapping and indenting sentences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``oneSentencePerLine`` can be instructed to perform text wrapping
+and indentation upon sentences.
+
+Let’s use the code in :numref:`lst:multiple-sentences5`.
+
+ .. literalinclude:: demonstrations/multiple-sentences5.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences5.tex`` 
+ 	:name: lst:multiple-sentences5
+
+Referencing :numref:`lst:sentence-wrap1-yaml`, and running the
+following command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
+
+we receive the output given in :numref:`lst:multiple-sentences5-mod1`.
+
+ .. literalinclude:: demonstrations/multiple-sentences5-mod1.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences5.tex`` using :numref:`lst:sentence-wrap1-yaml` 
+ 	:name: lst:multiple-sentences5-mod1
+
+ .. literalinclude:: demonstrations/sentence-wrap1.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``sentence-wrap1.yaml`` 
+ 	:name: lst:sentence-wrap1-yaml
+
+If you wish to specify the ``columns`` field on a per-code-block basis
+for sentences, then you would use ``sentence``; explicitly, starting
+with :numref:`lst:textwrap9-yaml`, for example, you would
+replace/append ``environments`` with, for example, ``sentence: 50``.
+
+.. label follows
+
+.. _subsec:removeparagraphlinebreaks:
+
 removeParagraphLineBreaks: modifying line breaks for paragraphs
 ---------------------------------------------------------------
 
@@ -682,9 +987,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 422-434
+ 	:lines: 438-452
  	:linenos:
- 	:lineno-start: 422
+ 	:lineno-start: 438
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -869,6 +1174,9 @@ then we obtain the output in :numref:`lst:shortlines-md4`.
  	:caption: ``shortlines-md4.tex`` 
  	:name: lst:shortlines-md4
 
+Note that the ``all`` field can take the same exceptions detailed in
+:numref:`lst:textwrap6-yaml`\ lst:textwrap8-yaml.
+
 .. describe:: paragraphsStopAt:fields
 
 The paragraph line break routine considers blank lines and the ``\par``
@@ -880,17 +1188,17 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 435-443
+ 	:lines: 453-462
  	:linenos:
- 	:lineno-start: 435
+ 	:lineno-start: 453
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
 of the code-block types specified as ``1`` in
 :numref:`lst:paragraphsStopAt`. By default, you’ll see that the
-paragraph line break routine will stop when it reaches an environment at
-the beginning of a line. It is *not* possible to specify these fields on
-a per-name basis.
+paragraph line break routine will stop when it reaches an environment or
+verbatim code block at the beginning of a line. It is *not* possible to
+specify these fields on a per-name basis.
 
 Let’s use the ``.tex`` file in :numref:`lst:sl-stop`; we will, in
 turn, consider the settings in :numref:`lst:stop-command-yaml` and
@@ -960,6 +1268,66 @@ routine has stopped at ``\begin{myenv}`` because, by default,
 
 .. label follows
 
+.. _subsec:removeparagraphlinebreaks:and:textwrap:
+
+Combining removeParagraphLineBreaks and textWrapOptions
+-------------------------------------------------------
+
+The text wrapping routine (:numref:`subsec:textwrapping`) and remove
+paragraph line breaks routine
+(:numref:`subsec:removeparagraphlinebreaks`) can be combined.
+
+We motivate this feature with the code given in
+:numref:`lst:textwrap7`.
+
+ .. literalinclude:: demonstrations/textwrap7.tex
+ 	:class: .tex
+ 	:caption: ``textwrap7.tex`` 
+ 	:name: lst:textwrap7
+
+Applying the text wrap routine from :numref:`subsec:textwrapping`
+with, for example, :numref:`lst:textwrap3-yaml` gives the output in
+:numref:`lst:textwrap7-mod3`.
+
+ .. literalinclude:: demonstrations/textwrap7-mod3.tex
+ 	:class: .tex
+ 	:caption: ``textwrap7.tex`` using :numref:`lst:textwrap3-yaml` 
+ 	:name: lst:textwrap7-mod3
+
+The text wrapping routine has behaved as expected, but it may be desired
+to remove paragraph line breaks *before* performing the text wrapping
+routine. The desired behaviour can be achieved by employing the
+``beforeTextWrap`` switch.
+
+Explicitly, using the settings in :numref:`lst:textwrap12-yaml` and
+running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
+        
+
+we obtain the output in :numref:`lst:textwrap7-mod12`.
+
+ .. literalinclude:: demonstrations/textwrap7-mod12.tex
+ 	:class: .tex
+ 	:caption: ``textwrap7-mod12.tex`` 
+ 	:name: lst:textwrap7-mod12
+
+ .. literalinclude:: demonstrations/textwrap12.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap12.yaml`` 
+ 	:name: lst:textwrap12-yaml
+
+In :numref:`lst:textwrap7-mod12` the paragraph linebreaks have first
+been removed from :numref:`lst:textwrap7`, and then the text wrapping
+routine has been applied. It is envisaged that variants of
+:numref:`lst:textwrap12-yaml` will be among the most useful settings
+for these two features.
+
+.. label follows
+
 .. _sec:poly-switches:
 
 Poly-switches
@@ -1012,9 +1380,9 @@ specified. Note that all poly-switches are *off* by default.
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 444-453
+ 	:lines: 463-472
  	:linenos:
- 	:lineno-start: 444
+ 	:lineno-start: 463
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of
@@ -1998,6 +2366,17 @@ https://github.com/cmhughes/latexindent.pl/issues/33.
 
 “Text:Wrap Perl Module.” 2017. Accessed May 1.
 http://perldoc.perl.org/Text/Wrap.html.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-zoehneto">
+
+(zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4.
+https://github.com/cmhughes/latexindent.pl/issues/103.
 
 .. raw:: html
 

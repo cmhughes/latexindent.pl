@@ -113,7 +113,7 @@ sub get_mand_arg_reg_exp{
     return $mandArgRegExp;
 }
 
-sub get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings{
     my $self = shift;
     
     return ${$self}{modifyLineBreaksYamlName};

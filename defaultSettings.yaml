@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.4.3, 2018-06-08
+# defaultSettings.yaml for latexindent.pl, version 3.5, 2018-08-13
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -394,12 +394,11 @@ commandCodeBlocks:
 modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
-    textWrapOptions:
-        columns: 0
-        separator: ""
     oneSentencePerLine:
         manipulateSentences: 0     
         removeSentenceLineBreaks: 1
+        textWrapSentences: 0
+        sentenceIndent: ""
         sentencesFollow:
             par: 1
             blankLine: 1
@@ -419,7 +418,10 @@ modifyLineBreaks:
             exclamationMark: 1
             questionMark: 1
             other: 0
-    removeParagraphLineBreaks:
+    textWrapOptions:
+        columns: 0
+        separator: ""
+        perCodeBlockBasis: 0
         all: 0
         alignAtAmpersandTakesPriority: 1
         environments: 
@@ -430,10 +432,27 @@ modifyLineBreaks:
         items: 0
         specialBeginEnd: 0
         afterHeading: 0
+        preamble: 0
+        filecontents: 0
+        masterDocument: 0
+    removeParagraphLineBreaks:
+        all: 0
+        beforeTextWrap: 0
+        alignAtAmpersandTakesPriority: 1
+        environments: 
+            quotation: 0
+        ifElseFi: 0
+        optionalArguments: 0
+        mandatoryArguments: 0
+        items: 0
+        specialBeginEnd: 0
+        afterHeading: 0
+        preamble: 0
         filecontents: 0
         masterDocument: 0
         paragraphsStopAt:
             environments: 1
+            verbatim: 1
             commands: 0
             ifElseFi: 0
             items: 0

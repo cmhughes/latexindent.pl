@@ -23,11 +23,11 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
-use LatexIndent::GetYamlSettings qw/readSettings modify_line_breaks_settings get_indentation_settings_for_this_object get_every_or_custom_value get_indentation_information get_object_attribute_for_indentation_settings alignment_at_ampersand_settings %masterSettings/;
+use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent max_char_per_line paragraphs_on_one_line construct_paragraph_reg_exp one_sentence_per_line/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp one_sentence_per_line text_wrap_remove_paragraph_line_breaks/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
@@ -37,7 +37,7 @@ use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in find_verbatim_special/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
@@ -88,7 +88,8 @@ sub operate_on_file{
     $self->find_aligned_block;
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
-    $self->max_char_per_line;
+    $self->find_verbatim_special;
+    $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
     $self->find_file_contents_environments_and_preamble;
@@ -196,8 +197,16 @@ sub find_objects{
     
     # documents without preamble need a manual call to the paragraph_one_line routine
     if ($is_m_switch_active and !${$self}{preamblePresent}){
-        ${$self}{removeParagraphLineBreaks} = ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{all}||${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument}||0;
-        $self->paragraphs_on_one_line ; 
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
+
+        # call the remove_paragraph_line_breaks and text_wrap routines
+        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        } else {
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        }
     }
 
     # if there are no children, return
@@ -255,6 +264,9 @@ sub get_settings_and_store_new_object{
       
     # tasks particular to each object
     $latexIndentObject->tasks_particular_to_each_object;
+    
+    # removeParagraphLineBreaks and textWrapping fun!
+    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active);
 
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
@@ -295,13 +307,21 @@ sub tasks_common_to_each_object{
     ${$self}{bodyLineBreaks} = $bodyLineBreaks;
 
     # get settings for this object
-    $self->get_indentation_settings_for_this_object;
+    $self->yaml_get_indentation_settings_for_this_object;
 
     # give unique id
     $self->create_unique_id;
 
     # add trailing text to the id to stop, e.g LATEX-INDENT-ENVIRONMENT1 matching LATEX-INDENT-ENVIRONMENT10
     ${$self}{id} .= $tokens{endOfToken};
+
+    # text wrapping can make the ID split across lines
+    ${$self}{idRegExp} = ${$self}{id};
+
+    if($is_m_switch_active){
+        my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$self}{id}));
+        ${$self}{idRegExp} = qr/$IDwithLineBreaks/s;  
+    }
 
     # the replacement text can be just the ID, but the ID might have a line break at the end of it
     $self->get_replacement_text;
@@ -362,7 +382,7 @@ sub wrap_up_tasks{
     my $child = @{${$self}{children}}[-1];
 
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
-    $self->adjust_line_breaks_end_parent;
+    $self->adjust_line_breaks_end_parent if $is_m_switch_active;
 
     $logger->trace(Dumper(\%{$child})) if($is_tt_switch_active);
     $logger->trace("replaced with ID: ${$child}{id}") if $is_t_switch_active;
