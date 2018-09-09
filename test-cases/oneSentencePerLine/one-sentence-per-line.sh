@@ -41,12 +41,13 @@ latexindent.pl -s texbook-snippet.tex -m -o=+mod3 -l=manipulateSentences.yaml -y
 # verbatim block
 latexindent.pl -s verbatim-test.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 # more code blocks
-latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml
+latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml,itemize.yaml
 latexindent.pl -s more-code-blocks.tex -m -o=+mod1 -l=manipulateSentences.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 latexindent.pl -s more-code-blocks.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml,item.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 # webwork guide
 latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml,basic-full-stop.yaml
 latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop
+latexindent.pl -s webwork-guide -m -o=+mod2 -l=manipulateSentences.yaml,alt-full-stop,itemize
 # trailing comments
 latexindent.pl -s trailing-comments -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
@@ -55,10 +56,10 @@ latexindent.pl -s other-begins -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s other-begins -m -o=+mod1 -l=manipulateSentences.yaml,other-begins.yaml
 # from the feature request (https://github.com/cmhughes/latexindent.pl/issues/81)
 latexindent.pl -s -m mlep -o=+-mod0 -l=manipulateSentences.yaml 
-latexindent.pl -s -m mlep -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml 
-latexindent.pl -s -m mlep2 -o=+-mod0 -l=manipulateSentences.yaml
-latexindent.pl -s -m mlep2 -o=+-mod1 -l=manipulateSentences.yaml,mlep2.yaml 
-latexindent.pl -s -m mlep2 -o=+-mod2 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
+latexindent.pl -s -m mlep -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml -y="specialBeginEnd:inlineMath:lookForThis:0" 
+latexindent.pl -s -m mlep2 -o=+-mod0 -l=manipulateSentences.yaml,itemize.yaml
+latexindent.pl -s -m mlep2 -o=+-mod1 -l=manipulateSentences.yaml,itemize.yaml,mlep2.yaml 
+latexindent.pl -s -m mlep2 -o=+-mod2 -l=manipulateSentences.yaml,itemize.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
 # pcc program review test cases (https://github.com/PCCMathSAC/PCCMathProgramReview2014)
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do
@@ -78,6 +79,9 @@ latexindent.pl -s dbmrq2.tex -m -l=dbmrq1.yaml -o=+-mod1
 latexindent.pl -s dbmrq3.tex -m -l=dbmrq1.yaml -o=+-mod1
 latexindent.pl -s dbmrq3.tex -m -l=dbmrq5.yaml -o=+-mod5
 
+# sentences as objects was required from https://github.com/cmhughes/latexindent.pl/issues/131
+latexindent.pl -s kiryph.tex -m -l=kiryph1.yaml -o=+-mod1
+latexindent.pl -s kiryph1.tex -m -l=kiryph2.yaml -o=+-mod2
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise
