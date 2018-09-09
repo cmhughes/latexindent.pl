@@ -1,0 +1,12 @@
+defaultIndent: "  "
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        removeSentenceLineBreaks: 0
+        textWrapSentences: 1
+        sentenceIndent: "  "
+        sentencesEndWith:
+            betterFullStop: 0
+            other: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?:\h*\R*(?:\\end\{equation\*\})?)(?!(?:[a-z]|[A-Z]|\-|\,|[0-9]))'
+    textWrapOptions:
+        columns: 78
