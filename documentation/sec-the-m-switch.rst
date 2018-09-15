@@ -966,6 +966,73 @@ for sentences, then you would use ``sentence``; explicitly, starting
 with :numref:`lst:textwrap9-yaml`, for example, you would
 replace/append ``environments`` with, for example, ``sentence: 50``.
 
+The indentation of sentences requires that sentences are stored as code
+blocks. This means that you may need to tweak
+:numref:`lst:sentencesEndWith`. Let’s explore this in relation to
+:numref:`lst:multiple-sentences6`.
+
+ .. literalinclude:: demonstrations/multiple-sentences6.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences6.tex`` 
+ 	:name: lst:multiple-sentences6
+
+By default, ``latexindent.pl`` will find the full-stop within the first
+``item``, which means that, upon running the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml 
+    latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
+
+we receive the respective output in
+:numref:`lst:multiple-sentences6-mod1` and
+:numref:`lst:multiple-sentences6-mod2`.
+
+ .. literalinclude:: demonstrations/multiple-sentences6-mod1.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences6-mod1.tex`` using :numref:`lst:sentence-wrap1-yaml` 
+ 	:name: lst:multiple-sentences6-mod1
+
+ .. literalinclude:: demonstrations/multiple-sentences6-mod2.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences6-mod2.tex`` using :numref:`lst:sentence-wrap1-yaml` and no sentence indentation 
+ 	:name: lst:multiple-sentences6-mod2
+
+We note that :numref:`lst:multiple-sentences6-mod1` the ``itemize``
+code block has *not* been indented appropriately. This is because the
+oneSentencePerLine has been instructed to store sentences (because
+:numref:`lst:sentence-wrap1-yaml`); each sentence is then searched for
+code blocks.
+
+We can tweak the settings in :numref:`lst:sentencesEndWith` to ensure
+that full stops are not followed by ``item`` commands, and that the end
+of sentences contains ``\end{itemize}`` as in
+:numref:`lst:itemize-yaml` (if you intend to use this, ensure that you
+remove the line breaks from the ``other`` field).
+
+ .. literalinclude:: demonstrations/itemized.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``itemize.yaml`` 
+ 	:name: lst:itemize-yaml
+
+Upon running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
+
+we receive the output in :numref:`lst:multiple-sentences6-mod3`.
+
+ .. literalinclude:: demonstrations/multiple-sentences6-mod3.tex
+ 	:class: .tex
+ 	:caption: ``multiple-sentences6-mod3.tex`` using :numref:`lst:sentence-wrap1-yaml` and :numref:`lst:itemize-yaml` 
+ 	:name: lst:multiple-sentences6-mod3
+
+Notice that the sentence has received indentation, and that the
+``itemize`` code block has been found and indented correctly.
+
 .. label follows
 
 .. _subsec:removeparagraphlinebreaks:
