@@ -251,5 +251,8 @@ latexindent.pl -s multiple-sentences4 -m -l=item-rules2 -o=+-mod3
 latexindent.pl -s url.tex -m -l=manipulate-sentences.yaml -o=+-mod1
 latexindent.pl -s url.tex -m -l=alt-full-stop1 -o=+-mod2
 latexindent.pl -s multiple-sentences5 -m -l=sentence-wrap1.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml -o=+-mod1
+latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml -o=+-mod2 -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
+latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml -o=+-mod3
 [[ $noisyMode == 1 ]] && makenoise
 git status

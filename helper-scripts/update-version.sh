@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.4.3'
-newVersion='3.5'
-oldDate='2018-06-08'
-newDate='2018-08-13'
+oldVersion='3.5'
+newVersion='3.5.1'
+oldDate='2018-08-13'
+newDate='2018-09-15'
 
 cd ../
 if [ $minorVersion = 0 ]
@@ -48,6 +48,9 @@ sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
+cd documentation
+perl documentation-default-settings-update.pl -r
+cd ../
 # possibly generate the pdf
 [[ $generatePDFmode == 1 ]] && cd documentation && arara latexindent
 exit
