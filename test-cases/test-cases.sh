@@ -152,6 +152,10 @@ cd ../oneSentencePerLine
 # benchmark mode, if appropriate
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# verbatim test cases
+cd ../verbatim
+[[ $silentMode == 1 ]] && echo "./verbatim-test-cases.sh"
+./verbatim-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

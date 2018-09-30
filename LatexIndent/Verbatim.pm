@@ -36,24 +36,25 @@ sub find_noindent_block{
         if($yesno){
             $logger->trace("looking for $noIndentBlock:$yesno environments") if $is_t_switch_active;
 
+            (my $noIndentBlockSpec = $noIndentBlock) =~ s/\*/\\*/sg;
             my $noIndentRegExp = qr/
                             (
                                 (?!<\\)
                                 %
-                                \h*                     # possible horizontal spaces
+                                \h*                         # possible horizontal spaces
                                 \\begin\{
-                                        $noIndentBlock  # environment name captured into $2
-                                       \}               # %* \begin{noindentblock} statement
+                                        $noIndentBlockSpec  # environment name captured into $2
+                                       \}                   # % \begin{noindentblock} statement
                             )
                             (
                                 .*?
-                            )                           # non-greedy match (body)
+                            )                               # non-greedy match (body)
                             (
                                 (?!<\\)
-                                %                       # %
-                                \h*                     # possible horizontal spaces
-                                \\end\{$noIndentBlock\} # \end{noindentblock}
-                            )                           # %* \end{<something>} statement
+                                %                           # %
+                                \h*                         # possible horizontal spaces
+                                \\end\{$noIndentBlockSpec\} # \end{noindentblock}
+                            )                               # % \end{<something>} statement
                         /sx;
 
             while( ${$self}{body} =~ m/$noIndentRegExp/sx){
@@ -99,17 +100,18 @@ sub find_verbatim_environments{
         if($yesno){
             $logger->trace("looking for $verbEnv:$yesno environments") if $is_t_switch_active;
 
+            (my $verbEnvSpec = $verbEnv) =~ s/\*/\\*/sg;
             my $verbatimRegExp = qr/
                             (
                             \\begin\{
-                                    $verbEnv     # environment name captured into $1
-                                   \}            # \begin{<something>} statement
+                                    $verbEnvSpec      # environment name captured into $1
+                                   \}                 # \begin{<something>} statement
                             )
                             (
                                 .*?
-                            )                    # any character, but not \\begin
+                            )                         # any character, but not \\begin
                             (
-                                \\end\{$verbEnv\}# \end{<something>} statement
+                                \\end\{$verbEnvSpec\} # \end{<something>} statement
                             )                    
                         /sx;
 
