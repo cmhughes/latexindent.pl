@@ -85,24 +85,29 @@ sub yaml_read_settings{
 
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !$switches{onlyDefault}) {
-        $logger->info("Reading path information from $indentconfig");
-        # if both indentconfig.yaml and .indentconfig.yaml exist
-        if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
-              $logger->info("$homeDir/.indentconfig.yaml has been found, but $indentconfig takes priority");
-        } elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" ) {
-              $logger->info("(Alternatively $homeDir/.indentconfig.yaml can be used)");
-        } elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" ) {
-              $logger->info("(Alternatively $homeDir/indentconfig.yaml can be used)");
-        }
-        
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read( "$indentconfig" );
 
-        # output the contents of indentconfig to the log file
-        $logger->info(Dump \%{$userSettings->[0]});
-        
         # update the absolute paths
-        @absPaths = @{$userSettings->[0]->{paths}};
+        if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{paths}){
+            $logger->info("Reading path information from $indentconfig");
+            # if both indentconfig.yaml and .indentconfig.yaml exist
+            if ( -e File::HomeDir->my_home . "/indentconfig.yaml" and  -e File::HomeDir->my_home . "/.indentconfig.yaml") {
+                  $logger->info("$homeDir/.indentconfig.yaml has been found, but $indentconfig takes priority");
+            } elsif ( -e File::HomeDir->my_home . "/indentconfig.yaml" ) {
+                  $logger->info("(Alternatively $homeDir/.indentconfig.yaml can be used)");
+            } elsif ( -e File::HomeDir->my_home . "/.indentconfig.yaml" ) {
+                  $logger->info("(Alternatively $homeDir/indentconfig.yaml can be used)");
+            }
+            
+            # output the contents of indentconfig to the log file
+            $logger->info(Dump \%{$userSettings->[0]});
+        
+            @absPaths = @{$userSettings->[0]->{paths}};
+        } else {
+            $logger->warn("*The paths field cannot be read from $indentconfig; this means it is either empty or contains invalid YAML");
+            $logger->warn("See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example");
+        }
   } else {
      if($switches{onlyDefault}) {
         $logger->info("*-d switch active: only default settings requested");
