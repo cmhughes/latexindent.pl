@@ -31,7 +31,7 @@ For complete details, please see:
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
 ### Windows executable
-`latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent` 
+`latexindent.exe` is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent)
 and is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
