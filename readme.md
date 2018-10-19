@@ -44,7 +44,7 @@ using the `Par::Packer` perl module.
 
 `ppp.pl` is located in the helper-scripts directory.
 
-#### TeXstudio
+### TeXstudio
 Using TeXstudio latexindent can be called from the IDE for convenience, setting up a user command
 
 1. `Options->Build->User Commands`
