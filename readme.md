@@ -24,14 +24,11 @@ I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integratio
 
 ### documentation
 
-For complete details, please see:
-
-- pdf: http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
-- online (beta): http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
-[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
+The documentation is available as a [PDF](http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf) on CTAN or [online](http://latexindentpl.readthedocs.io/) (beta) [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest). If you find discrepancies between the PDF and the online version, defer to the PDF.
 
 ### Windows executable
-`latexindent.exe` is available at https://ctan.org/tex-archive/support/latexindent and is created using 
+
+A Windows executable called `latexindent.exe` is available [here](https://ctan.org/tex-archive/support/latexindent) and is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
 
@@ -79,7 +76,7 @@ page of this repository.
 
 ### development model
 
-I follow the development model given here: http://nvie.com/posts/a-successful-git-branching-model/
+I follow the git branching model given [here](http://nvie.com/posts/a-successful-git-branching-model/),
 which means that latexindent.pl always has (at least) two branches:
     
         master
