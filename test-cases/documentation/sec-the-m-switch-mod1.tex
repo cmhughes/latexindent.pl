@@ -476,12 +476,12 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 		      %%
 	\end{itemize}
 	In the above, \emph{<part of thing>} refers to either the \emph{begin statement}, \emph{body} or \emph{end statement} of the code blocks detailed in \vref{tab:code-blocks}.
-	All poly-switches are \emph{off} by default; \texttt{latexindent.pl} searches first of all for per-name settings, and then followed by global per-thing settings.
+      All poly-switches are \emph{off} (set to 0) by default; \texttt{latexindent.pl} searches first of all for per-name settings, and then followed by global per-thing settings.
 
 \subsection{modifyLineBreaks for environments}
 	\label{sec:modifylinebreaks-environments}
 	We start by viewing a snippet of \texttt{defaultSettings.yaml} in \cref{lst:environments-mlb}; note that it contains \emph{global} settings (immediately after the \texttt{environments} field) and that \emph{per-name} settings are also allowed -- in the case of \cref{lst:environments-mlb}, settings for \texttt{equation*} have been specified.
-	Note that all poly-switches are \emph{off} by default.
+      Note that all poly-switches are \emph{off} (set to 0) by default.
 
 	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
