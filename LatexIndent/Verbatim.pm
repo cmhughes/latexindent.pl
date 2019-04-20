@@ -64,6 +64,7 @@ sub find_noindent_block{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$noIndentBlock,
+                                                    modifyLineBreaksYamlName=>"verbatim",
                                                     );
             
               # give unique id
@@ -122,6 +123,13 @@ sub find_verbatim_environments{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$verbEnv,
+                                                    modifyLineBreaksYamlName=>"verbatim",
+                                                    aliases=>{
+                                                      # begin statements
+                                                      BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
+                                                      # after end statements
+                                                      EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
+                                                    },
                                                     );
               # give unique id
               $verbatimBlock->create_unique_id;
@@ -188,11 +196,12 @@ sub find_verbatim_commands{
 
             while( ${$self}{body} =~ m/$verbatimCommandRegExp/){
 
-              # create a new Environment object
+              # create a new Verbatim object
               my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($2?$2:q()).$3,
                                                     body=>$4,
                                                     end=>$3,
                                                     name=>$verbCommand,
+                                                    modifyLineBreaksYamlName=>"verbatim",
                                                     optArg=>$2?$2:q(),
                                                     );
               # give unique id
@@ -338,6 +347,7 @@ sub find_verbatim_special{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$specialName,
+                                                    modifyLineBreaksYamlName=>"verbatim",
                                                     );
               # give unique id
               $verbatimBlock->create_unique_id;
@@ -366,6 +376,11 @@ sub create_unique_id{
     $verbatimCounter++;
     ${$self}{id} = "$tokens{verbatim}$verbatimCounter$tokens{endOfToken}";
     return;
+}
+
+sub yaml_get_textwrap_removeparagraphline_breaks{
+    my $self = shift;
+    $logger->trace("No text wrap or remove paragraph line breaks for verbatim code blocks, ${$self}{name}") if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
 }
 
 1;

@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_s
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -90,6 +90,7 @@ sub operate_on_file{
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     $self->find_verbatim_special;
+    $self->verbatim_modify_line_breaks if $is_m_switch_active; 
     $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");

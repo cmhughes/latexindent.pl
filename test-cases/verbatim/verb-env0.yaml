@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    verbatim:
+        VerbatimBeginStartsOnOwnLine: 0

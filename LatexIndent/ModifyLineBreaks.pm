@@ -25,7 +25,7 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
 
 
@@ -207,6 +207,38 @@ sub adjust_line_breaks_end_parent{
 
 }
 
+sub verbatim_modify_line_breaks{
+    # verbatim modify line breaks are a bit special, as they happen before 
+    # any of the main processes have been done
+    my $self = shift;
+    while ( my ($key,$child)= each %{${$self}{verbatim}}){
+      $child->yaml_modify_line_breaks_settings;
+      if(defined ${$child}{BeginStartsOnOwnLine}){
+        my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine};
+        $logger->trace("*$BeginStringLogFile is ${$child}{BeginStartsOnOwnLine} for ${$child}{name}") if $is_t_switch_active ;
+        if (${$child}{BeginStartsOnOwnLine}==-1){
+            # VerbatimStartsOnOwnLine = -1
+            if(${$self}{body}=~m/^\h*${$child}{id}/m){
+                $logger->trace("${$child}{name} begins on its own line, removing leading line break") if $is_t_switch_active ;
+                ${$self}{body} =~ s/(\R|\h)*${$child}{id}/${$child}{id}/s;
+            }
+        } elsif (${$child}{BeginStartsOnOwnLine}>=1 and ${$self}{body}!~m/^\h*${$child}{id}/m){
+            # VerbatimStartsOnOwnLine = 1, 2 or 3
+            my $trailingCharacterToken = q();
+            if(${$child}{BeginStartsOnOwnLine}==1){
+                $logger->trace("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
+            } elsif (${$child}{BeginStartsOnOwnLine}==2){
+                $logger->trace("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
+                $trailingCharacterToken = "%".$self->add_comment_symbol;
+            } elsif (${$child}{BeginStartsOnOwnLine}==3){
+                $logger->trace("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
+                $trailingCharacterToken = "\n";
+            }
+            ${$self}{body} =~ s/\h*${$child}{id}/$trailingCharacterToken\n${$child}{id}/s;
+        }
+      }
+    }
+}
 sub text_wrap_remove_paragraph_line_breaks{
     my $self = shift;
 
