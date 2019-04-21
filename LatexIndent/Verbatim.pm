@@ -347,7 +347,13 @@ sub find_verbatim_special{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$specialName,
-                                                    modifyLineBreaksYamlName=>"verbatim",
+                                                    modifyLineBreaksYamlName=>"specialBeginEnd",
+                                                    aliases=>{
+                                                      # begin statements
+                                                      BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
+                                                      # after end statements
+                                                      EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
+                                                    },
                                                     );
               # give unique id
               $verbatimBlock->create_unique_id;
