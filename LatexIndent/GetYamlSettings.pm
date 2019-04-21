@@ -780,12 +780,12 @@ sub yaml_poly_switch_get_every_or_custom_value{
 
   # check for the *custom* value
   if (defined $customValue){
-      $logger->trace("$name: $toBeAssignedToAlias=$customValue, (*custom* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
+      $logger->trace("$name: $toBeAssignedToAlias=$customValue, (*per-name* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
       ${$self}{$toBeAssignedTo} = $customValue !=0 ? $customValue : undef;
    } else {
       # check for the *every* value
       if (defined $everyValue and $everyValue != 0){
-          $logger->trace("$name: $toBeAssignedToAlias=$everyValue, (*every* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
+          $logger->trace("$name: $toBeAssignedToAlias=$everyValue, (*global* value) adjusting $toBeAssignedTo") if($is_t_switch_active);
           ${$self}{$toBeAssignedTo} = $everyValue;
       }
    }
