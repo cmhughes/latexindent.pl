@@ -22,7 +22,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
@@ -115,6 +115,8 @@ sub find_verbatim_environments{
                             (
                                 \\end\{$verbEnvSpec\} # \end{<something>} statement
                             )                    
+                            (\h*)?                    # possibly followed by horizontal space
+                            (\R)?                     # possibly followed by a line break 
                         /sx;
 
             while( ${$self}{body} =~ m/$verbatimRegExp/sx){
@@ -126,6 +128,10 @@ sub find_verbatim_environments{
                                                     name=>$verbEnv,
                                                     type=>"environment",
                                                     modifyLineBreaksYamlName=>"verbatim",
+                                                    linebreaksAtEnd=>{
+                                                      end=>$5?1:0,
+                                                    },
+                                                    horizontalTrailingSpace=>$4?$4:q(),
                                                     aliases=>{
                                                       # begin statements
                                                       BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
@@ -133,9 +139,10 @@ sub find_verbatim_environments{
                                                       EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
                                                     },
                                                     );
-              # give unique id
-              $verbatimBlock->create_unique_id;
 
+              # there are common tasks for each of the verbatim objects
+              $verbatimBlock->verbatim_common_tasks;
+              
               # verbatim children go in special hash
               ${$self}{verbatim}{${$verbatimBlock}{id}}=$verbatimBlock;
 
@@ -143,7 +150,7 @@ sub find_verbatim_environments{
               $logger->trace("*VERBATIM environment found: $verbEnv") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{id}/sx;
+              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
 
               $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
               
@@ -171,7 +178,7 @@ sub find_verbatim_commands{
         if($yesno){
             $logger->trace("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
 
-            my $verbatimCommandRegExp = qr/
+            my $verbatimRegExp = qr/
                             (
                                 \\$verbCommand     
                                 \h*                                             
@@ -186,17 +193,19 @@ sub find_verbatim_commands{
                                 (?<!\\)     # not immediately pre-ceeded by \
                                 \]          # [optional arguments]
                                 \h*
-                            )?                                                  # opt arg into $2
+                            )?              # opt arg into $2
                             (
                               .
-                            )                                                   # delimiter into $3
+                            )               # delimiter into $3
                             (
                               .*?
-                            )                                                   # body into $4
+                            )               # body into $4
                             \3
+                            (\h*)?          # possibly followed by horizontal space
+                            (\R)?           # possibly followed by a line break 
                         /mx;
 
-            while( ${$self}{body} =~ m/$verbatimCommandRegExp/){
+            while( ${$self}{body} =~ m/$verbatimRegExp/){
 
               # create a new Verbatim object
               my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($2?$2:q()).$3,
@@ -205,6 +214,10 @@ sub find_verbatim_commands{
                                                     name=>$verbCommand,
                                                     type=>"command",
                                                     modifyLineBreaksYamlName=>"verbatim",
+                                                    linebreaksAtEnd=>{
+                                                      end=>$6?1:0,
+                                                    },
+                                                    horizontalTrailingSpace=>$5?$5:q(),
                                                     aliases=>{
                                                       # begin statements
                                                       BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
@@ -213,8 +226,8 @@ sub find_verbatim_commands{
                                                     },
                                                     optArg=>$2?$2:q(),
                                                     );
-              # give unique id
-              $verbatimCommand->create_unique_id;
+              # there are common tasks for each of the verbatim objects
+              $verbatimCommand->verbatim_common_tasks;
 
               # output, if desired
               $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
@@ -226,7 +239,7 @@ sub find_verbatim_commands{
               $logger->trace("*VERBATIM command found: $verbCommand") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$verbatimCommandRegExp/${$verbatimCommand}{id}/sx;
+              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimCommand}{replacementText}/sx;
 
               $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
               
@@ -261,6 +274,8 @@ sub find_verbatim_special{
                             (
                                 ${$BeginEnd}{end}
                             )                    
+                            (\h*)?                    # possibly followed by horizontal space
+                            (\R)?                     # possibly followed by a line break 
                         /sx;
 
             while( ${$self}{body} =~ m/$verbatimRegExp/sx){
@@ -271,6 +286,10 @@ sub find_verbatim_special{
                                                     end=>$3,
                                                     name=>$specialName,
                                                     modifyLineBreaksYamlName=>"specialBeginEnd",
+                                                    linebreaksAtEnd=>{
+                                                      end=>$5?1:0,
+                                                    },
+                                                    horizontalTrailingSpace=>$4?$4:q(),
                                                     type=>"special",
                                                     aliases=>{
                                                       # begin statements
@@ -279,8 +298,8 @@ sub find_verbatim_special{
                                                       EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
                                                     },
                                                     );
-              # give unique id
-              $verbatimBlock->create_unique_id;
+              # there are common tasks for each of the verbatim objects
+              $verbatimBlock->verbatim_common_tasks;
 
               # verbatim children go in special hash
               ${$self}{verbatim}{${$verbatimBlock}{id}}=$verbatimBlock;
@@ -289,7 +308,7 @@ sub find_verbatim_special{
               $logger->trace("*VERBATIM special found: $specialName") if $is_t_switch_active;
 
               # remove the special block, and replace with unique ID
-              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{id}/sx;
+              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
 
               $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
               
@@ -329,7 +348,8 @@ sub  put_verbatim_back_in {
     }
     
     # search for environments/commands
-    $logger->trace('*Putting verbatim back in, here is the pre-processed body:') if $is_tt_switch_active;
+    $logger->trace('*Putting verbatim back in') if $is_t_switch_active;
+    $logger->trace('pre-processed body:') if $is_tt_switch_active;
     $logger->trace(${$self}{body}) if($is_tt_switch_active);
 
     # loop through document children hash
@@ -338,9 +358,15 @@ sub  put_verbatim_back_in {
         while( my ($key,$child)= each %{${$self}{verbatim}}){
           if($toMatch =~ m/${$child}{type}/){
             if(${$self}{body} =~ m/${$child}{id}/mx){
-
+                # possibly remove trailing line break
+                if(defined ${$child}{EndFinishesWithLineBreak} 
+                    and ${$child}{EndFinishesWithLineBreak}==-1
+                    and ${$self}{body} =~ m/${$child}{id}\h*\R/s){
+                    $logger->trace("m-switch active, removing trailing line breaks from ${$child}{name}") if $is_t_switch_active;
+                    ${$self}{body} =~ s/${$child}{id}(\h*)?(\R|\h)*/${$child}{id} /s;
+                }
                 # replace ids with body
-                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/s;
 
                 # log file info
                 $logger->trace('Body now looks like:') if $is_tt_switch_active;
@@ -370,6 +396,27 @@ sub  put_verbatim_back_in {
           }
     }
     return;
+}
+
+sub verbatim_common_tasks{
+
+    my $self = shift;
+
+    # get yaml settings
+    $self->yaml_modify_line_breaks_settings if $is_m_switch_active;
+
+    # give unique id
+    $self->create_unique_id;
+
+    # the replacement text can be just the ID, but the ID might have a line break at the end of it
+    $self->get_replacement_text;
+
+    # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
+    # so we compensate for it here
+    $self->adjust_replacement_text_line_breaks_at_end;
+    
+    # modify line breaks end statements
+    $self->modify_line_breaks_end if $is_m_switch_active;
 }
 
 sub create_unique_id{

@@ -212,7 +212,6 @@ sub verbatim_modify_line_breaks{
     # any of the main processes have been done
     my $self = shift;
     while ( my ($key,$child)= each %{${$self}{verbatim}}){
-      $child->yaml_modify_line_breaks_settings;
       if(defined ${$child}{BeginStartsOnOwnLine}){
         my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine};
         $logger->trace("*$BeginStringLogFile is ${$child}{BeginStartsOnOwnLine} for ${$child}{name}") if $is_t_switch_active ;
