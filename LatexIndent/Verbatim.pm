@@ -22,7 +22,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands put_verbatim_commands_back_in find_verbatim_special/;
+our @EXPORT_OK = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 
@@ -64,6 +64,7 @@ sub find_noindent_block{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$noIndentBlock,
+                                                    type=>"noindentblock",
                                                     modifyLineBreaksYamlName=>"verbatim",
                                                     );
             
@@ -123,6 +124,7 @@ sub find_verbatim_environments{
                                                     body=>$2,
                                                     end=>$3,
                                                     name=>$verbEnv,
+                                                    type=>"environment",
                                                     modifyLineBreaksYamlName=>"verbatim",
                                                     aliases=>{
                                                       # begin statements
@@ -201,6 +203,7 @@ sub find_verbatim_commands{
                                                     body=>$4,
                                                     end=>$3,
                                                     name=>$verbCommand,
+                                                    type=>"command",
                                                     modifyLineBreaksYamlName=>"verbatim",
                                                     optArg=>$2?$2:q(),
                                                     );
@@ -211,7 +214,7 @@ sub find_verbatim_commands{
               $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
 
               # verbatim children go in special hash
-              ${$self}{verbatimCommands}{${$verbatimCommand}{id}}=$verbatimCommand;
+              ${$self}{verbatim}{${$verbatimCommand}{id}}=$verbatimCommand;
 
               # log file output
               $logger->trace("*VERBATIM command found: $verbCommand") if $is_t_switch_active;
@@ -230,92 +233,6 @@ sub find_verbatim_commands{
     }
     return;
 
-}
-
-sub  put_verbatim_back_in {
-    my $self = shift;
-
-    # if there are no verbatim children, return
-    return unless(${$self}{verbatim});
-
-    # search for environments/commands
-    $logger->trace('*Putting verbatim back in, here is the pre-processed body:') if $is_tt_switch_active;
-    $logger->trace(${$self}{body}) if($is_tt_switch_active);
-
-    # loop through document children hash
-    while( (scalar keys %{${$self}{verbatim}})>0 ){
-          while( my ($key,$child)= each %{${$self}{verbatim}}){
-            if(${$self}{body} =~ m/${$child}{id}/mx){
-
-                # replace ids with body
-                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
-
-                # log file info
-                $logger->trace('Body now looks like:') if $is_tt_switch_active;
-                $logger->trace(${$self}{body},'ttrace') if($is_tt_switch_active);
-
-                # delete the hash so it won't be operated upon again
-                delete ${$self}{verbatim}{${$child}{id}};
-              } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
-                $logger->trace("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
-
-                # search for a version of the verbatim ID that may have line breaks 
-                my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
-                my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;  
-
-                # replace the line-broken verbatim ID with a non-broken verbatim ID
-                ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
-              }
-            }
-    }
-
-    # logfile info
-    $logger->trace('*Post-processed body:') if $is_tt_switch_active;
-    $logger->trace(${$self}{body}) if($is_tt_switch_active);
-    return;
-}
-
-sub  put_verbatim_commands_back_in {
-    my $self = shift;
-
-    # if there are no verbatim children, return
-    return unless(${$self}{verbatimCommands});
-
-    # search for environments/commands
-    $logger->trace('*Putting verbatim commands back in, here is the pre-processed body:') if $is_tt_switch_active;
-    $logger->trace(${$self}{body}) if($is_tt_switch_active);
-
-    # loop through document children hash
-    while( (scalar keys %{${$self}{verbatimCommands}})>0 ){
-          while( my ($key,$child)= each %{${$self}{verbatimCommands}}){
-            if(${$self}{body} =~ m/${$child}{id}/mx){
-
-                # replace ids with body
-                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
-
-                # log file info
-                $logger->trace('Body now looks like:') if $is_tt_switch_active;
-                $logger->trace(${$self}{body},'ttrace') if($is_tt_switch_active);
-
-                # delete the hash so it won't be operated upon again
-                delete ${$self}{verbatimCommands}{${$child}{id}};
-              } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
-                $logger->trace("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
-
-                # search for a version of the verbatim ID that may have line breaks 
-                my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
-                my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;  
-
-                # replace the line-broken verbatim ID with a non-broken verbatim ID
-                ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
-              }
-            }
-    }
-
-    # logfile info
-    $logger->trace('*Post-processed body:') if $is_tt_switch_active;
-    $logger->trace(${$self}{body}) if($is_tt_switch_active);
-    return;
 }
 
 sub find_verbatim_special{
@@ -348,6 +265,7 @@ sub find_verbatim_special{
                                                     end=>$3,
                                                     name=>$specialName,
                                                     modifyLineBreaksYamlName=>"specialBeginEnd",
+                                                    type=>"special",
                                                     aliases=>{
                                                       # begin statements
                                                       BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
@@ -374,6 +292,78 @@ sub find_verbatim_special{
             } 
     }
   }
+}
+
+sub  put_verbatim_back_in {
+    my $self = shift;
+    my %input = @_;
+
+    # if there are no verbatim children, return
+    return unless(${$self}{verbatim});
+
+    my $verbatimCount=0;
+    my $toMatch = q();
+    if($input{match} eq "everything-except-commands"){
+        $toMatch = "noindentblockenvironmentspecial";
+
+        # count the number of non-command verbatim objects
+        while( my ($key,$child)= each %{${$self}{verbatim}}){
+            ${$child}{type} = "environment" if !(defined ${$child}{type});
+            $verbatimCount++ if($toMatch =~ m/${$child}{type}/);
+        }
+        return unless($verbatimCount>0);
+    } else {
+        $toMatch = "command";
+        # count the number of command verbatim objects
+        while( my ($key,$child)= each %{${$self}{verbatim}}){
+            ${$child}{type} = "environment" if !(defined ${$child}{type});
+            $verbatimCount++ if($toMatch =~ m/${$child}{type}/);
+        }
+        return unless($verbatimCount>0);
+    }
+    
+    # search for environments/commands
+    $logger->trace('*Putting verbatim back in, here is the pre-processed body:') if $is_tt_switch_active;
+    $logger->trace(${$self}{body}) if($is_tt_switch_active);
+
+    # loop through document children hash
+    my $verbatimFound=0;
+    while($verbatimFound < $verbatimCount){
+        while( my ($key,$child)= each %{${$self}{verbatim}}){
+          if($toMatch =~ m/${$child}{type}/){
+            if(${$self}{body} =~ m/${$child}{id}/mx){
+
+                # replace ids with body
+                ${$self}{body} =~ s/${$child}{id}/${$child}{begin}${$child}{body}${$child}{end}/;
+
+                # log file info
+                $logger->trace('Body now looks like:') if $is_tt_switch_active;
+                $logger->trace(${$self}{body},'ttrace') if($is_tt_switch_active);
+
+                # delete the child so it won't be operated upon again
+                delete ${$self}{verbatim}{${$child}{id}};
+                $verbatimFound++;
+              } elsif ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1 and ${$self}{body} !~ m/${$child}{id}/){
+                $logger->trace("${$child}{id} not found in body using /m matching, it may have been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
+
+                # search for a version of the verbatim ID that may have line breaks 
+                my $verbatimIDwithLineBreaks = join("\\R?",split(//,${$child}{id}));
+                my $verbatimIDwithLineBreaksRegExp = qr/$verbatimIDwithLineBreaks/s;  
+
+                # replace the line-broken verbatim ID with a non-broken verbatim ID
+                ${$self}{body} =~ s/$verbatimIDwithLineBreaksRegExp/${$child}{id}/s;
+
+                # note: we do *not* label this as found, as we need to go back through
+                #       and search for the newly modified ID
+              }
+            }
+
+            # logfile info
+            $logger->trace('*Post-processed body:') if $is_tt_switch_active;
+            $logger->trace(${$self}{body}) if($is_tt_switch_active);
+          }
+    }
+    return;
 }
 
 sub create_unique_id{

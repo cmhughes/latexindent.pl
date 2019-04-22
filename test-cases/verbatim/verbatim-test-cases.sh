@@ -5,6 +5,8 @@ verbatimTest=1
 
 [[ $silentMode == 0 ]] && set -x 
 
+latexindent.pl -w -s verbatim-preamble.tex
+latexindent.pl -w -s verbatim-preamble1.tex
 # starred environments
 latexindent.pl -s  verbatim-starred1 -l=verb-equation-star.yaml -o=+-mod1
 latexindent.pl -s  verbatim-starred2 -l=no-indent-star.yaml -o=+-mod1
@@ -31,6 +33,9 @@ latexindent.pl -s  -m verbatim-special3 -l=verb-special.yaml,verb-spec2-named.ya
 # make sure that trailing comments work
 latexindent.pl -s  -m verbatim-trailing-comments -l=verb-env2.yaml -o=+-mod2
 
+# verbatim command
+latexindent.pl -s -w verbatim-commands.tex
+latexindent.pl -s verbatim-trailing-comments1.tex -o=+-default
 
 #   verbatim command
 #   verbatim noindent block -- no need to test this one...?

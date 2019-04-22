@@ -38,7 +38,7 @@ use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in find_verbatim_special/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
@@ -102,9 +102,9 @@ sub operate_on_file{
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;
     $self->un_dodge_double_backslash;
-    $self->put_verbatim_back_in;
+    $self->put_verbatim_back_in (match=>"everything-except-commands");
     $self->put_trailing_comments_back_in;
-    $self->put_verbatim_commands_back_in;
+    $self->put_verbatim_back_in (match=>"just-commands");
     $self->output_indented_text;
     return
 }
