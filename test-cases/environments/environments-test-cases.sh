@@ -13,7 +13,6 @@ latexindent.pl -w -s environments-one-line.tex
 latexindent.pl -w -s environments-challenging.tex
 latexindent.pl -w -s environments-verbatim-simple.tex
 latexindent.pl -w -s environments-verbatim-harder.tex
-latexindent.pl -w -s verbatim1.tex
 latexindent.pl -w -s environments-noindent-block.tex
 latexindent.pl -w -s environments-noindent-block-mk1.tex
 latexindent.pl -w -s noIndent-maetra.tex

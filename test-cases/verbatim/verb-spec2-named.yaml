@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    specialBeginEnd:
+        displayMath:
+            SpecialBeginStartsOnOwnLine: 2

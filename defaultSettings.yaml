@@ -516,3 +516,6 @@ modifyLineBreaks:
         SpecialBodyStartsOnOwnLine: 0
         SpecialEndStartsOnOwnLine: 0
         SpecialEndFinishesWithLineBreak: 0
+    verbatim:
+        VerbatimBeginStartsOnOwnLine: 0
+        VerbatimEndFinishesWithLineBreak: 0

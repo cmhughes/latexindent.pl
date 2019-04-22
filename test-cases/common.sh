@@ -19,6 +19,7 @@
 #       commands-test-cases.sh -s -o 13 -c
 silentMode=0
 loopmin=1
+[[ $verbatimTest == 1 ]] && loopmin=-1
 noisyMode=0
 # check flags, and change defaults appropriately
 while getopts 'ncsl:o:' OPTION

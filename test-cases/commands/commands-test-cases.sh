@@ -87,9 +87,6 @@ latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-b
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
-# verbatim command
-latexindent.pl -s -w verbatim-commands.tex
-latexindent.pl -s verbatim-trailing-comments.tex -o verbatim-trailing-comments-default.tex
 # multiple trailing comment
 latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod17.yaml 
 # test that commands with trailing comments do not remove line breaks
