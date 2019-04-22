@@ -59,7 +59,7 @@ sub find_noindent_block{
 
             while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
-              # create a new Environment object
+              # create a new Verbatim object
               my $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
                                                     body=>$2,
                                                     end=>$3,
@@ -119,7 +119,7 @@ sub find_verbatim_environments{
 
             while( ${$self}{body} =~ m/$verbatimRegExp/sx){
 
-              # create a new Environment object
+              # create a new Verbatim object
               my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
                                                     body=>$2,
                                                     end=>$3,
@@ -205,6 +205,12 @@ sub find_verbatim_commands{
                                                     name=>$verbCommand,
                                                     type=>"command",
                                                     modifyLineBreaksYamlName=>"verbatim",
+                                                    aliases=>{
+                                                      # begin statements
+                                                      BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
+                                                      # after end statements
+                                                      EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
+                                                    },
                                                     optArg=>$2?$2:q(),
                                                     );
               # give unique id
@@ -259,7 +265,7 @@ sub find_verbatim_special{
 
             while( ${$self}{body} =~ m/$verbatimRegExp/sx){
 
-              # create a new Environment object
+              # create a new Verbatim object
               my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
                                                     body=>$2,
                                                     end=>$3,

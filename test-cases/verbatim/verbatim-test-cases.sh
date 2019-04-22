@@ -23,6 +23,15 @@ do
     latexindent.pl -s  -m verbatim-special1 -l=verb-special.yaml,verb-spec$i.yaml -o=+-mod$i
     latexindent.pl -s  -m verbatim-special2 -l=verb-special.yaml,verb-spec$i.yaml -o=+-mod$i
     latexindent.pl -s  -m verbatim-special3 -l=verb-special.yaml,verb-spec$i.yaml -o=+-mod$i
+
+    # verbatim commands
+    latexindent.pl -s  -m verbatim-commands1 -l=verb-env$i.yaml -o=+-mod$i
+    latexindent.pl -s  -m verbatim-commands2 -l=verb-env$i.yaml -o=+-mod$i
+    latexindent.pl -s  -m verbatim-commands3 -l=verb-env$i.yaml -o=+-mod$i
+
+    # next steps: 
+    #   - repeat the above testing for 
+    #       VerbatimEndFinishesWithLineBreak: 
 done
 
 # checking a named version of polyswitch
