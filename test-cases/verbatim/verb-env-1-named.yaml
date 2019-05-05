@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    verbatim:
+        verbatim:
+            VerbatimBeginStartsOnOwnLine: -1
+
+verbatimEnvironments:
+    cmh: 1

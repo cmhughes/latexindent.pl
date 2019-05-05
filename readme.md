@@ -11,7 +11,7 @@ can modify line breaks.
 
 ### version 
  
-    latexindent.pl, version 3.5.3, 2018-10-13
+    latexindent.pl, version 3.6, 2019-05-05
 
 ### author 
 Chris Hughes (cmhughes)
@@ -27,7 +27,7 @@ I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integratio
 For complete details, please see:
 
 - pdf: http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
-- online (beta): http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
+- online: http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
 ### Windows executable

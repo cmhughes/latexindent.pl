@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_s
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -38,7 +38,7 @@ use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  put_verbatim_commands_back_in find_verbatim_special/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
@@ -90,6 +90,7 @@ sub operate_on_file{
     $self->remove_trailing_comments;
     $self->find_verbatim_environments;
     $self->find_verbatim_special;
+    $self->verbatim_modify_line_breaks if $is_m_switch_active; 
     $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
     $self->protect_blank_lines;
     $self->remove_trailing_whitespace(when=>"before");
@@ -101,9 +102,9 @@ sub operate_on_file{
     $self->condense_blank_lines;
     $self->unprotect_blank_lines;
     $self->un_dodge_double_backslash;
-    $self->put_verbatim_back_in;
+    $self->put_verbatim_back_in (match=>"everything-except-commands");
     $self->put_trailing_comments_back_in;
-    $self->put_verbatim_commands_back_in;
+    $self->put_verbatim_back_in (match=>"just-commands");
     $self->output_indented_text;
     return
 }

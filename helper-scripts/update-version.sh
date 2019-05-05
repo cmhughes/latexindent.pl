@@ -20,13 +20,13 @@ do
  esac 
 done
 
-oldVersion='3.5.2'
-newVersion='3.5.3'
-oldDate='2018-10-06'
-newDate='2018-10-13'
+oldVersion='3.5.3'
+newVersion='3.6'
+oldDate='2018-10-13'
+newDate='2019-05-05'
 
 cd ../
-if [ $minorVersion = 0 ]
+if [ $minorVersion == 1 ]
 then
     cd documentation
     find -name "a*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/gi"
