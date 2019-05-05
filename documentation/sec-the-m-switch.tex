@@ -1452,7 +1452,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
     Note also that, by design, line breaks involving,
 	\texttt{filecontents} and `comment-marked' code blocks
 	(\vref{lst:alignmentmarkup}) can \emph{not} be modified using
-	\texttt{latexindent.pl}.\announce{new}*{verbatim poly-switch} However, there are two poly-switches available for  \texttt{verbatim}
+	\texttt{latexindent.pl}.\announce*{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for  \texttt{verbatim}
     code blocks: environments (\vref{lst:verbatimEnvironments}), commands (\vref{lst:verbatimCommands}) and \texttt{specialBeginEnd} (\vref{lst:special-verb1-yaml}).
 
     \clearpage
@@ -1516,7 +1516,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		                                       & after words                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
         verbatim                               & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!                     & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                       \\
-  \announce{NEW}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                   \\
+  \announce*{2019-05-05}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                   \\
 		                                       & after words                                             &                                         &                                                                   \\
 		\bottomrule
 	\end{longtable}
