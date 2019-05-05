@@ -129,7 +129,7 @@ sub one_sentence_per_line{
                 $sentencesEndWithEachPart = qr/\./;
             } elsif($sentencesEndWithEachPart eq "betterFullStop"){
                 $logger->trace("sentence ENDS with *better* full stop (see oneSentencePerLine:sentencesEndWith:betterFullStop") if $is_t_switch_active;
-                $sentencesEndWithEachPart = qr/(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|\,|[0-9]))/;
+                $sentencesEndWithEachPart = qr/(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))/;
             } elsif ($sentencesEndWithEachPart eq "exclamationMark"){
                 $logger->trace("sentence ENDS with exclamation mark (see oneSentencePerLine:sentencesEndWith:exclamationMark)") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/!/;
