@@ -85,6 +85,6 @@ latexindent.pl -s kiryph1.tex -m -l=kiryph2.yaml -o=+-mod2
 [[ $silentMode == 0 ]] && set -x 
 
 # tilde after full stop, see https://github.com/cmhughes/latexindent.pl/issues/153
-latexindent.pl -m dot-followed-by-tilde.tex -o=+-mod1 -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences:1'
+latexindent.pl -s -m dot-followed-by-tilde.tex -o=+-mod1 -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences:1'
 [[ $noisyMode == 1 ]] && makenoise
 git status
