@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    optionalArguments:
+        DBSStartsOnOwnLine: 0

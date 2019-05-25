@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    environments:
+        tabular:
+            DBSStartsOnOwnLine: 2

@@ -203,4 +203,10 @@ sub align_at_ampersand{
     return;
 }
 
+sub double_back_slash_else{ 
+    # need an empty routine here for commands; see
+    # test-cases/alignment/command-align.tex for example
+    return;
+}
+
 1;

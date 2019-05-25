@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    environments:
+        pmatrix:
+            DBSStartsOnOwnLine: -1

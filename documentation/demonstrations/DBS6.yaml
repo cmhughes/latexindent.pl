@@ -1,0 +1,6 @@
+lookForAlignDelims:
+    mycommand: 1
+modifyLineBreaks:
+    optionalArguments:
+        DBSStartsOnOwnLine: 2
+        DBSFinishesWithLineBreak: 2

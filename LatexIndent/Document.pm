@@ -34,7 +34,7 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
-use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
+use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block double_back_slash_else/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
@@ -343,6 +343,8 @@ sub tasks_common_to_each_object{
     # check the body for current children
     $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
 
+    # double back slash poly-switch check
+    $self->double_back_slash_else if ($is_m_switch_active and ${$self}{lookForAlignDelims});
     return;
 }
 

@@ -196,13 +196,13 @@
 		},
 }
 
-\newtcblisting[use counter=lstlisting]{cmhlistings}[3][]{%
+\DeclareTCBListing[use counter=lstlisting]{cmhlistings}{s O{} m m}{%
 	cmhlistings,
-	addtolol,
+	IfBooleanTF={#1}{new-to-this-version}{addtolol},
 	center title,
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#3},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#3},label={#4},
 	listing engine=listings,
-	listing options={#1},
+	listing options={#2},
 }
 
 % \cmhlistingsfromfile
@@ -563,9 +563,9 @@
 {0pt}
 {}
 
-\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{-5pt plus 2pt minus 2pt}
-\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
-\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{-6pt plus 2pt minus 2pt}
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 
 % list of listings
 \contentsuse{lstlisting}{lol}

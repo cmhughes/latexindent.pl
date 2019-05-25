@@ -1003,7 +1003,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 	(immediately after the \texttt{environments} field) and that
 	\emph{per-name} settings are also allowed -- in the case of
 	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been
-	specified. Note that all poly-switches are \emph{off} by default.
+    specified for demonstration. Note that all poly-switches are \emph{off} (set to 0) by default.
 
 	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
@@ -1442,6 +1442,158 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\item \cref{lst:env-mlb7-no-preserve}, by contrast, has had the additional line-break removed,
 		      because of the settings in \cref{lst:UnpreserveBlankLines}.
 	\end{itemize}
+
+\subsection{Poly-switches for double back slash}
+    With reference to \vref{yaml:lookforaligndelims} \announce{new}{poly-switch for double back slash} 
+    you can specify poly-switches to dictate the line-break behaviour of double back slashes in 
+    environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code blocks (\vref{lst:specialafter}).
+    Note that for these poly-switches to take effect, the name of the code block must necessarily be specified
+    within \texttt{lookForAlignDelims} (\vref{yaml:lookforaligndelims}); we will demonstrate this in what follows.
+
+    Consider the code given in \cref{lst:dbs-demo}.
+	\begin{cmhlistings}*[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
+\begin{tabular}{cc}
+ 1 & 2 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*) 3 & 4 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*)
+\end{tabular}
+\end{cmhlistings}
+    Referencing \cref{lst:dbs-demo}:
+      \begin{itemize}
+        \item \texttt{DBS} stands for \emph{double back slash};
+        \item line breaks ahead of the double back slash are annotated by $\ElseStartsOnOwnLine$, and are controlled by \texttt{DBSStartsOnOwnLine};
+        \item libe breaks after the double back slash are annotated by $\ElseFinishesWithLineBreak$, and are controlled by \texttt{DBSFinishesWithLineBreak}.
+      \end{itemize}
+
+      Let's explore each of these in turn. 
+      
+      \subsubsection{Double back slash starts on own line}
+      We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$); starting with 
+      the code in \cref{lst:dbs-demo}, together with the YAML files given in \cref{lst:DBS1} and \cref{lst:DBS2}
+      and running the following commands
+	\begin{commandshell}
+latexindent.pl -m tabular3.tex -l DBS1.yaml
+latexindent.pl -m tabular3.tex -l DBS2.yaml
+            \end{commandshell}
+      then we receive the respective output given in \cref{lst:tabular3-DBS1} and \cref{lst:tabular3-DBS2}.
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
+	\end{minipage}
+
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
+	\end{minipage}
+
+    We note that
+    \begin{itemize}
+      \item \cref{lst:DBS1} specifies \texttt{DBSStartsOnOwnLine} for \emph{every} environment (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+        the double back slashes from \cref{lst:dsb-demo} have been moved to their own line in \cref{lst:tabular3-DBS1};
+      \item \cref{lst:DBS2} specifies \texttt{DBSStartsOnOwnLine} on a \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+        the double back slashes from \cref{lst:dsb-demo} have been moved to their own line in \cref{lst:tabular3-DBS2}, having added comment
+        symbols before moving them.
+    \end{itemize}
+
+      \subsubsection{Double back slash finishes with line break}
+      Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$); starting with 
+      the code in \cref{lst:dbs-demo}, together with the YAML files given in \cref{lst:DBS3} and \cref{lst:DBS4}
+      and running the following commands
+	\begin{commandshell}
+latexindent.pl -m tabular3.tex -l DBS3.yaml
+latexindent.pl -m tabular3.tex -l DBS4.yaml
+            \end{commandshell}
+      then we receive the respective output given in \cref{lst:tabular3-DBS3} and \cref{lst:tabular3-DBS4}.
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
+	\end{minipage}
+
+	\begin{minipage}{.45\linewidth}
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.55\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
+	\end{minipage}
+
+    We note that
+    \begin{itemize}
+      \item \cref{lst:DBS3} specifies \texttt{DBSFinishesWithLineBreak} for \emph{every} environment (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+        the code following the double back slashes from \cref{lst:dsb-demo} has been moved to their own line in \cref{lst:tabular3-DBS3};
+      \item \cref{lst:DBS4} specifies \texttt{DBSFinishesWithLineBreak} on a \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+        the first double back slashes from \cref{lst:dsb-demo} have moved code following them to their own line in \cref{lst:tabular3-DBS4}, having added comment
+        symbols before moving them; the final double back slashes have \emph{not} added a line break as they are at the end of the body
+        within the code block.
+    \end{itemize}
+
+      \subsubsection{Double back slash poly switches for specialBeginEnd}
+      Let's explore the double back slash poly-switches for code blocks within \texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd});
+      we begin with the code within \cref{lst:special4}.
+
+		\cmhlistingsfromfile*{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
+
+        Upon using the YAML settings in \cref{lst:DBS5}, and running the command
+	\begin{commandshell}
+latexindent.pl -m special4.tex -l DBS5.yaml
+            \end{commandshell}
+            then we receive the output given in \cref{lst:special4-DBS5}.
+
+	\begin{minipage}{.35\linewidth}
+		\cmhlistingsfromfile*{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.65\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB]{\texttt{DBS5.yaml}}{lst:DBS5}
+	\end{minipage}
+
+    There are a few things to note:
+    \begin{itemize}
+      \item in \cref{lst:DBS5} we have specified \texttt{cmhMath} within \texttt{lookForAlignDelims}; without 
+        this, the double back slash poly-switches would be ignored for this code block;
+      \item the \texttt{DBSFinishesWithLineBreak} poly-switch has controlled the line breaks following the 
+        double back slashes;
+      \item the \texttt{SpecialEndStartsOnOwnLine} poly-switch has controlled the addition of a comment symbol, followed 
+        by a line break, as it is set to a value of 2.
+    \end{itemize}
+
+      \subsubsection{Double back slash poly switches for optional and mandatory arguments}
+      For clarity, we provide a demonstration of controlling the double back slash poly-switches
+      for optional and mandatory arguments. We begin with the code in \cref{lst:mycommand2}.
+
+        \cmhlistingsfromfile*{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
+
+        Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
+	\begin{commandshell}
+latexindent.pl -m mycommand2.tex -l DBS6.yaml
+latexindent.pl -m mycommand2.tex -l DBS7.yaml
+            \end{commandshell}
+            then we receive the output given in \cref{lst:mycommand2-DBS6,lst:mycommand2-DBS7}.
+
+	\begin{minipage}{.35\linewidth}
+		\cmhlistingsfromfile*{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.65\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB]{\texttt{DBS6.yaml}}{lst:DBS6}
+	\end{minipage}
+
+	\begin{minipage}{.35\linewidth}
+		\cmhlistingsfromfile*{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.65\linewidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB]{\texttt{DBS7.yaml}}{lst:DBS7}
+	\end{minipage}
 
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in

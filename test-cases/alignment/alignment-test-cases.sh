@@ -3,7 +3,6 @@ loopmax=4
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
-
 # table-based test cases
 latexindent.pl -s table1.tex -o table1-default.tex
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
@@ -93,7 +92,29 @@ latexindent.pl -s tabular-karl.tex -o=+-out11.tex -l multiColumnGrouping.yaml,ta
 # issue 95 demo
 latexindent.pl -s issue-95 -o=+-mod0
 latexindent.pl -s issue-95 -o=+-mod1 -l=noMaxDelims.yaml
-
+# double back slash polyswitch, https://github.com/cmhughes/latexindent.pl/issues/106
+for (( i=-1 ; i <= 3 ; i++ )) 
+do 
+    [[ $silentMode == 0 ]] && set -x 
+    # DBSStartsOnOwnLine
+    latexindent.pl -s -m pmatrix1.tex -o=+-mod$i -l=double-back-slash$i.yaml
+    # DBSOrFinishesWithLineBreak
+    latexindent.pl -s -m pmatrix1.tex -o=+-finish-mod$i -l=double-back-slash-finish$i.yaml
+    # per-name testing
+    latexindent.pl -s -m pmatrix1.tex -o=+-mod-per-name$i -l=double-back-slash-per-name$i.yaml
+    # commands
+    latexindent.pl -s -m command-align.tex -o=+-opt-mod$i -l=command-dbs-optional$i.yaml,mycommand.yaml
+    latexindent.pl -s -m command-align.tex -o=+-mand-mod$i -l=command-dbs-mandatory$i.yaml,mycommand.yaml
+    latexindent.pl -s -m command-align.tex -o=+-opt-finish-mod$i -l=mycommand.yaml -y="modifyLineBreaks:optionalArguments:DBSFinishesWithLineBreak:$i"
+    latexindent.pl -s -m command-align.tex -o=+-mand-finish-mod$i -l=mycommand.yaml -y="modifyLineBreaks:mandatoryArguments:DBSFinishesWithLineBreak:$i"
+    # special
+    latexindent.pl -s -m special-align.tex -o=+-mod$i -l=special-align1.yaml -y="modifyLineBreaks:specialBeginEnd:DBSStartsOnOwnLine:$i"
+    latexindent.pl -s -m special-align.tex -o=+-finish-mod$i -l=special-align1.yaml -y="modifyLineBreaks:specialBeginEnd:DBSFinishesWithLineBreak:$i"
+    latexindent.pl -s -m special-align1.tex -o=+-mod$i -l=special-align1.yaml -y="modifyLineBreaks:specialBeginEnd:DBSStartsOnOwnLine:$i"
+    latexindent.pl -s -m special-align1.tex -o=+-finish-mod$i -l=special-align1.yaml -y="modifyLineBreaks:specialBeginEnd:DBSFinishesWithLineBreak:$i"
+    [[ $silentMode == 0 ]] && set +x 
+done
+latexindent.pl -s -m pmatrix2.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
