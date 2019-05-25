@@ -263,5 +263,6 @@ latexindent.pl -s -m tabular3.tex -l=DBS4.yaml -o=+-mod4
 latexindent.pl -s -m special4.tex -l=DBS5.yaml -o=+-mod5
 latexindent.pl -s -m mycommand2.tex -l=DBS6.yaml -o=+-mod6
 latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
+latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
 [[ $noisyMode == 1 ]] && makenoise
 git status

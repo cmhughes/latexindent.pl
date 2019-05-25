@@ -115,6 +115,7 @@ do
     [[ $silentMode == 0 ]] && set +x 
 done
 latexindent.pl -s -m pmatrix2.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
+latexindent.pl -s -m pmatrix3.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

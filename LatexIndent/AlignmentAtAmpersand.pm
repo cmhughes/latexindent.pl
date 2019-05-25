@@ -511,7 +511,7 @@ sub double_back_slash_else{
     # check for existence of \\ statement, and associated line break information
     $self->check_for_else_statement(
               # else name regexp
-              elseNameRegExp=>qr|\\\\|,
+              elseNameRegExp=>qr|\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?|,
               # else statements name: note that DBS stands for 'Double Back Slash'
               ElseStartsOnOwnLine=>"DBSStartsOnOwnLine",
               # end statements

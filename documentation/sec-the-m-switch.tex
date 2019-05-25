@@ -1595,6 +1595,22 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB]{\texttt{DBS7.yaml}}{lst:DBS7}
 	\end{minipage}
 
+    \subsubsection{Double back slash optional square brackets}
+    The pattern matching for the double back slash will also, optionally, allow trailing
+    square brackets that contain a measurement of vertical spacing, for example \lstinline!\\[3pt]!. 
+
+    For example, beginning with the code in \cref{lst:pmatrix3}
+
+		\cmhlistingsfromfile*{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
+
+        and running the following command, using \cref{lst:DBS3},
+	\begin{commandshell}
+latexindent.pl -m pmatrix3.tex -l DBS3.yaml
+            \end{commandshell}
+            then we receive the output given in \cref{lst:pmatrix3-DBS3}.
+
+		\cmhlistingsfromfile*{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in
 	\vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for all other code

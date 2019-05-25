@@ -43,7 +43,7 @@ sub modify_line_breaks_body{
           #     BodyStartsOnOwnLine == 3 add a blank line, and then new line
           if(${$self}{BodyStartsOnOwnLine}==1){
             # modify the begin statement
-            $logger->trace("Adding a linebreak at the end of begin, ${$self}{begin} (see $BodyStringLogFile)") if $is_t_switch_active;
+            $logger->trace("Adding a linebreak at the end of begin statement ${$self}{begin} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{begin} .= "\n";       
             ${$self}{linebreaksAtEnd}{begin} = 1;
             $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
