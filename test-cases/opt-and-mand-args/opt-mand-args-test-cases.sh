@@ -18,6 +18,31 @@ latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/
 # indentRules
 latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-Global.tex
 latexindent.pl -s environments-opt-mand-args1-addPercent-all.tex -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml,indentRulesGlobalEnv.yaml -o=environments-opt-mand-args1-addPercent-all-indent-rules-all-Global.tex
+# comma poly-switch, https://github.com/cmhughes/latexindent.pl/issues/106
+for (( i=-1 ; i <= 3 ; i++ )) 
+do 
+    [[ $silentMode == 0 ]] && set -x 
+    [[ $showCounter == 1 ]] && echo $i of 3
+    # CommaStartsOnOwnLine, opt args
+    latexindent.pl -s -m mycommand.tex -o=+-opt-mod$i -y="modifyLineBreaks:optionalArguments:CommaStartsOnOwnLine:$i"
+    # CommaStartsOnOwnLine, mand args
+    latexindent.pl -s -m mycommand.tex -o=+-mand-mod$i -y="modifyLineBreaks:mandatoryArguments:CommaStartsOnOwnLine:$i"
+    # CommaFinishesWithLineBreak, opt args
+    latexindent.pl -s -m mycommand.tex -o=+-opt-finish-mod$i -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:$i"
+    # CommaFinishesWithLineBreak, mand args
+    latexindent.pl -s -m mycommand.tex -o=+-mand-finish-mod$i -y="modifyLineBreaks:mandatoryArguments:CommaFinishesWithLineBreak:$i"
+    # CommaStartsOnOwnLine, opt and args
+    latexindent.pl -s -m mycommand.tex -o=+-opt-mand-mod$i -y="modifyLineBreaks:optionalArguments:CommaStartsOnOwnLine:$i,modifyLineBreaks:mandatoryArguments:CommaStartsOnOwnLine:$i"
+    # CommaFinishesWithLineBreak, opt and mand args
+    latexindent.pl -s -m mycommand.tex -o=+-opt-mand-finish-mod$i -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:$i,modifyLineBreaks:mandatoryArguments:CommaFinishesWithLineBreak:$i"
+    latexindent.pl -s -m mycommand2.tex -o=+-opt-mand-finish-mod$i -l=remove-blank-lines.yaml -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:$i,modifyLineBreaks:mandatoryArguments:CommaFinishesWithLineBreak:$i,modifyLineBreaks:mandatoryArguments:CommaStartsOnOwnLine:$i,modifyLineBreaks:optionalArguments:CommaStartsOnOwnLine:$i"
+    # per-name testing
+    latexindent.pl -s -m mycommand1.tex -o=+-opt-mod$i -y="modifyLineBreaks:optionalArguments:cmh:CommaStartsOnOwnLine:$i"
+    latexindent.pl -s -m mycommand1.tex -o=+-mand-mod$i -y="modifyLineBreaks:mandatoryArguments:another:CommaStartsOnOwnLine:$i"
+    latexindent.pl -s -m mycommand1.tex -o=+-mand-finish-mod$i -y="modifyLineBreaks:mandatoryArguments:another:CommaFinishesWithLineBreak:$i"
+    [[ $silentMode == 0 ]] && set +x 
+done
+latexindent.pl -s -m heart.tex -o=+-mod0 -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:-1"
 git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

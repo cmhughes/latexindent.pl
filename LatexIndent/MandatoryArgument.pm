@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Special qw/$specialBeginBasicRegExp/;
@@ -128,6 +128,8 @@ sub tasks_particular_to_each_object{
     # search for special begin/end
     $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
+    # comma poly-switch check
+    $self->comma_else if $is_m_switch_active;
 }
 
 1;

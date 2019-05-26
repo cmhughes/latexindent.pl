@@ -1638,7 +1638,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
 		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
 		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                    \\
+		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                    \\
 		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
@@ -1648,13 +1648,17 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\cmidrule{2-4}
 		optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
 		                                       & \verb![!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
-		                                       & \verb!body of opt arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
+	\announce{new}{new comma-related poly-switches} 	                                       & \verb!value before comma!$\ElseStartsOnOwnLine$,                               & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                               \\
+		                                       & $\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                         \\
+		                                       & \verb!end of body of opt arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
 		                                       & \verb!]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
 		                                       & \verb!...!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
 		mandatoryArguments                     & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
 		                                       & \verb!{!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
-		                                       & \verb!body of mand arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
+	\announce{new}{new comma-related poly-switches} 	                                       & \verb!value before comma!$\ElseStartsOnOwnLine$,                               & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                               \\
+		                                       & $\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                         \\
+		                                       & \verb!end of body of mand arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
 		                                       & \verb!}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
 		                                       & \verb!...!                             &                                         &                                                                   \\
 		\cmidrule{2-4}
@@ -1677,7 +1681,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
 		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
 		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce{2018-04-27}{new special code block polyswitches}                                                                                                                                                     \\
+		\announce{2018-04-27}{new special code block poly-switches}                                                                                                                                                     \\
 		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
 		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
 		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\

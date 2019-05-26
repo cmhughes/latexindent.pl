@@ -24,7 +24,7 @@ use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp $optAndMandRegExp/;
+our @EXPORT_OK = qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp $optAndMandRegExp comma_else/;
 our $ArgumentCounter;
 our $optAndMandRegExp; 
 our $optAndMandRegExpWithLineBreaks; 
@@ -398,4 +398,21 @@ sub get_arguments_regexp{
         }
 }
 
+sub comma_else{
+    my $self = shift;
+
+    # check for existence of \\ statement, and associated line break information
+    $self->check_for_else_statement(
+              # else name regexp
+              elseNameRegExp=>qr|,|,
+              # else statements name
+              ElseStartsOnOwnLine=>"CommaStartsOnOwnLine",
+              # end statements
+              ElseFinishesWithLineBreak=>"CommaFinishesWithLineBreak",
+              # for the YAML settings storage
+              storageNameAppend=>"comma",
+              # logfile information
+              logName=>"comma block, see CommaStartsOnOwnLine and CommaFinishesWithLineBreak",
+        );
+}
 1;
