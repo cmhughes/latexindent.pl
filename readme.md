@@ -1,7 +1,9 @@
-### introduction
+# latexindent.pl
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
+
+<img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
 `latexindent.pl` is a `perl` script to indent (add horizontal leading space to) 
 code within environments, commands, after headings and within special code blocks.
@@ -9,20 +11,20 @@ code within environments, commands, after headings and within special code block
 It has the ability to align delimiters in environments and commands, and 
 can modify line breaks.
 
-### version 
+## version 
  
     latexindent.pl, version 3.6, 2019-05-05
 
-### author 
+## author 
 Chris Hughes (cmhughes)
 
-### build status
+## build status
 I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
 
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
-### documentation
+## documentation
 
 For complete details, please see:
 
@@ -30,7 +32,7 @@ For complete details, please see:
 - online: http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
-### Windows executable
+## Windows executable
 `latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent` 
 and is created using 
 
@@ -40,7 +42,7 @@ using the `Par::Packer` perl module.
 
 `ppp.pl` is located in the helper-scripts directory.
 
-### usage
+## usage
 
 You'll need
 
@@ -48,16 +50,21 @@ You'll need
         LatexIndent/*.pm
         defaultSettings.yaml
 
-in the same directory. Windows users might prefer to grab `latexindent.exe`
+in the same directory. Windows users might prefer to get 
 
-### testing
+        latexindent.exe
+        defaultSettings.yaml
+
+and `latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent`.
+
+## testing
 
 A nice way to test the script is to navigate to the test-cases 
 directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case version is not available):
 
         ./test-cases.sh
 
-### *important*
+## *important*
 
 This script may not work for your style of formatting; I highly 
 recommend comparing the outputfile.tex to make sure that 
@@ -70,7 +77,7 @@ I recommend using each of the following:
 * a check using `latexdiff inputfile.tex outputfile.tex`
 * `git status` myfile.tex
 
-### feature requests
+## feature requests
 
 I'm happy to review feature requests, but I make no promises as to if they 
 will be implemented; if they can be implemented, I make no promises as to 
@@ -78,7 +85,7 @@ how long it will take to implement them, and in which order I do so -- some
 features are more difficult than others! Feel free to post on the issues 
 page of this repository.
 
-### development model
+## development model
 
 I follow the development model given here: http://nvie.com/posts/a-successful-git-branching-model/
 which means that latexindent.pl always has (at least) two branches:
@@ -97,11 +104,11 @@ and then I merge it into the `develop` branch using
         git checkout develop
         git merge feature/name-of-feature --no-ff
 
-### perl version
+## perl version
 
 I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.26.0
 
-### related projects
+## related projects
 
 You might like to checkout the following related projects on github.
 
@@ -109,7 +116,7 @@ You might like to checkout the following related projects on github.
 
 [atom-beautify](https://github.com/Glavin001/atom-beautify): [![GitHub stars](https://img.shields.io/github/stars/Glavin001/atom-beautify.svg?style=flat-square)](https://github.com/Glavin001/atom-beautify/stargazers)
 
-### quotes
+## quotes
 
 I find that the following quotes resonate with me with regards to my approach to `latexindent.pl`:
 
