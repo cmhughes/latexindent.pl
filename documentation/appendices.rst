@@ -101,6 +101,21 @@ distributions will need slightly different commands).
     cpanm Log::Log4perl
     cpanm Log::Dispatch
 
+Users of the Macintosh operating system might like to explore the
+following commands, for example:
+
+.. code-block:: latex
+   :class: .commandshell
+
+    brew install perl
+    brew install cpanm
+
+    cpanm YAML::Tiny
+    cpanm File::HomeDir
+    cpanm Unicode::GCString
+    cpanm Log::Log4perl
+    cpanm Log::Dispatch
+
 Strawberry Perl users on Windows might use ``CPAN client``. All of the
 modules are readily available on CPAN (“CPAN: Comprehensive Perl Archive
 Network” 2017).
