@@ -87,13 +87,10 @@ latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 \end{commandshell}
 	we obtain the output in \cref{lst:textwrap1-mod1}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	The text wrapping routine is performed \emph{after} verbatim environments
 	have been stored, so verbatim environments and verbatim commands are exempt from the
@@ -141,13 +138,10 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 \end{commandshell}
 	then we obtain the output in \cref{lst:textwrap4-mod2}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2.tex}{\texttt{textwrap4-mod2.tex}}{lst:textwrap4-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap2.yaml}[MLB-TCB]{\texttt{textwrap2.yaml}}{lst:textwrap2-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 \subsubsection{text wrapping on a per-code-block basis}
 	By default, if the value of \texttt{columns} is greater than 0 and the
@@ -182,17 +176,14 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
 	give the same output.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.33\linewidth}
+        \begin{cmhtcbraster}[raster columns=3,
+            raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+                             raster column skip=.03\linewidth]
 			\cmhlistingsfromfile{demonstrations/textwrap3.yaml}[MLB-TCB]{\texttt{textwrap3.yaml}}{lst:textwrap3-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
 			\cmhlistingsfromfile{demonstrations/textwrap4.yaml}[MLB-TCB]{\texttt{textwrap4.yaml}}{lst:textwrap4-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
 			\cmhlistingsfromfile{demonstrations/textwrap5.yaml}[MLB-TCB]{\texttt{textwrap5.yaml}}{lst:textwrap5-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+        \end{cmhtcbraster}
 
 	Let's explore the similarities and differences in the equivalent (with respect to
 	\cref{lst:textwrap5}) syntax specified in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
@@ -288,17 +279,14 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 	\texttt{0}) and a positive integer (see \vref{lst:textwrap6}, for
 	example). We explore further options in \crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.33\linewidth}
+        \begin{cmhtcbraster}[raster columns=3,
+            raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+                             raster column skip=.03\linewidth]
 			\cmhlistingsfromfile{demonstrations/textwrap9.yaml}[MLB-TCB]{\texttt{textwrap9.yaml}}{lst:textwrap9-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
 			\cmhlistingsfromfile{demonstrations/textwrap10.yaml}[MLB-TCB]{\texttt{textwrap10.yaml}}{lst:textwrap10-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
 			\cmhlistingsfromfile{demonstrations/textwrap11.yaml}[MLB-TCB]{\texttt{textwrap11.yaml}}{lst:textwrap11-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+        \end{cmhtcbraster}
 
 	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running
 	the commands
@@ -390,21 +378,15 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Notice, in particular, that the `internal' sentence line breaks in
 	\cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1}, but have
@@ -427,19 +409,14 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	pattern that you would like; you can specify anything in this field using the language of
 	regular expressions.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.36\linewidth}
+        \begin{cmhtcbraster}[raster columns=3,
+            raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+                             raster column skip=.06\linewidth]
 			\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.31\linewidth}
 			\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.31\linewidth}
 			\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
-		\end{minipage}
-	\end{adjustwidth}
+        \end{cmhtcbraster}
 
 \subsubsection{sentencesFollow}
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
@@ -450,13 +427,10 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
 	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0},
 	\texttt{latexindent.pl} will not seek sentences following a blank line, and so the
@@ -477,13 +451,13 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
 	\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
-	\begin{minipage}{.55\linewidth}
+        \begin{cmhtcbraster}[
+            raster force size=false,
+            raster column 1/.style={add to width=1cm},
+           ]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
-	\end{minipage}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+        \end{cmhtcbraster}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
 	\texttt{)} has not been accounted for, but that following the inclusion
@@ -509,13 +483,13 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
-	\begin{minipage}{.55\linewidth}
+        \begin{cmhtcbraster}[
+            raster force size=false,
+            raster column 1/.style={add to width=1cm},
+           ]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
-	\end{minipage}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+        \end{cmhtcbraster}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but
 	that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2}, all of the
 	sentences have been accounted for, because the \texttt{other} field in
@@ -535,21 +509,15 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 \end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in
 	particular, in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not
@@ -594,15 +562,14 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 	and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in
 	\cref{lst:url-mod2}.
 
-	\begin{adjustwidth}{-3.5cm}{-1.5cm}
-		\begin{minipage}{.6\linewidth}
+        \begin{cmhtcbraster}[ raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+            raster force size=false,
+            raster column 1/.style={add to width=.1\textwidth},
+                             raster column skip=.06\linewidth]
 			\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.4\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+        \end{cmhtcbraster}
 
 	Notice that the full stop within the URL has not been accomodated correctly because of
 	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
@@ -641,13 +608,10 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\end{commandshell}
 	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 \subsubsection{text wrapping and indenting sentences}
 	The \texttt{oneSentencePerLine}%%%
@@ -664,15 +628,14 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
 	we receive the output given in \cref{lst:multiple-sentences5-mod1}.
 
-	\begin{widepage}
-		\begin{minipage}{.55\linewidth}
+        \begin{cmhtcbraster}[ raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+            raster force size=false,
+            raster column 1/.style={add to width=.1\textwidth},
+                             raster column skip=.06\linewidth]
 			\cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}{.45\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
-		\end{minipage}
-	\end{widepage}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
+        \end{cmhtcbraster}
 
 	If you wish to specify the \texttt{columns} field on a per-code-block basis
 	for sentences, then you would use \texttt{sentence}; explicitly, starting with
@@ -752,13 +715,10 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 	Let's start with the \texttt{.tex} file in \cref{lst:shortlines},
 	together with the YAML settings in \cref{lst:remove-para1-yaml}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/remove-para1.yaml}[MLB-TCB]{\texttt{remove-para1.yaml}}{lst:remove-para1-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Upon running the command
 	\begin{commandshell}
@@ -784,13 +744,10 @@ latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,rem
 	\texttt{all} switch applies to \emph{all} code block
 	types. So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt}
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/shortlines-mand.tex}{\texttt{shortlines-mand.tex}}{lst:shortlines-mand}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/shortlines-opt.tex}{\texttt{shortlines-opt.tex}}{lst:shortlines-opt}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Upon running the commands
 	\begin{widepage}
@@ -847,13 +804,10 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	code-blocks. For example, consider the file in \cref{lst:shortlines-md}, with the YAML
 	settings in \cref{lst:remove-para4-yaml}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/remove-para4.yaml}[MLB-TCB]{\texttt{remove-para4.yaml}}{lst:remove-para4-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Upon running the following command
 	\begin{widepage}
@@ -956,13 +910,10 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
     \end{commandshell}
 	we obtain the output in \cref{lst:textwrap7-mod12}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from
 	\cref{lst:textwrap7}, and  then the text wrapping routine has been applied. It is
@@ -1238,13 +1189,10 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	encouraged to experiment with \cref{lst:mlb3} and by setting the other
 	poly-switches considered so far to \texttt{2} in turn.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod2.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb2}}{lst:env-mlb3-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod4.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb4}}{lst:env-mlb3-mod4}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	The details of the discussion in this section have concerned \emph{global}
 	poly-switches in the \texttt{environments} field; each switch can also be specified
@@ -1336,7 +1284,7 @@ latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	when considering the \texttt{-m} switch; let's consider the file shown in
 	\cref{lst:mlb5}, which highlights trailing spaces.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
 before words   (*@$\BeginStartsOnOwnLine$@*) 
 \begin{myenv}           (*@$\BodyStartsOnOwnLine$@*)
@@ -1344,11 +1292,8 @@ body of myenv      (*@$\EndStartsOnOwnLine$@*)
 \end{myenv}     (*@$\EndFinishesWithLineBreak$@*)
 after words
 \end{cmhlistings}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	The output from the following commands
 	\begin{widepage}
@@ -1371,7 +1316,7 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 \subsubsection{poly-switch line break removal and blank lines}
 	Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
 before words(*@$\BeginStartsOnOwnLine$@*)
 
@@ -1386,11 +1331,8 @@ body of myenv(*@$\EndStartsOnOwnLine$@*)
 
 after words
 \end{cmhlistings}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -1407,15 +1349,15 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	allowed the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines},
 	we have set \texttt{preserveBlankLines} to \texttt{0}.
 
-	\begin{widepage}
-		\begin{minipage}{.30\linewidth}
+        \begin{cmhtcbraster}[ raster left skip=-3.5cm,
+                             raster right skip=-2cm,
+            raster force size=false,
+            raster column 1/.style={add to width=-.2\textwidth},
+            raster column 2/.style={add to width=.2\textwidth},
+                             raster column skip=.06\linewidth]
 			\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb6-modAll}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.65\linewidth}
 			\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
-		\end{minipage}
-	\end{widepage}
+        \end{cmhtcbraster}
 
 	We can explore this further using the blank-line poly-switch value of
 	$3$; let's use the file given in \cref{lst:env-mlb7-tex}.
@@ -1444,11 +1386,11 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	\end{itemize}
 
 \subsection{Poly-switches for double back slash}
-    With reference to \vref{yaml:lookforaligndelims} \announce{new}{poly-switch for double back slash} 
+    With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic}) \announce{new}{poly-switch for double back slash} 
     you can specify poly-switches to dictate the line-break behaviour of double back slashes in 
     environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code blocks (\vref{lst:specialafter}).
     Note that for these poly-switches to take effect, the name of the code block must necessarily be specified
-    within \texttt{lookForAlignDelims} (\vref{yaml:lookforaligndelims}); we will demonstrate this in what follows.
+    within \texttt{lookForAlignDelims} (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
 
     Consider the code given in \cref{lst:dbs-demo}.
 	\begin{cmhlistings}*[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
@@ -1466,7 +1408,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
       Let's explore each of these in turn. 
       
       \subsubsection{Double back slash starts on own line}
-      We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$); starting with 
+      We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in \cref{lst:dbs-demo}); starting with 
       the code in \cref{lst:dbs-demo}, together with the YAML files given in \cref{lst:DBS1} and \cref{lst:DBS2}
       and running the following commands
 	\begin{commandshell}
@@ -1475,21 +1417,15 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
             \end{commandshell}
       then we receive the respective output given in \cref{lst:tabular3-DBS1} and \cref{lst:tabular3-DBS2}.
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		\cmhlistingsfromfile*{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
-	\end{minipage}
+        \end{cmhtcbraster}
 
-	\begin{minipage}{.5\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		\cmhlistingsfromfile*{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
-	\end{minipage}
+        \end{cmhtcbraster}
 
     We note that
     \begin{itemize}
@@ -1510,21 +1446,15 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
             \end{commandshell}
       then we receive the respective output given in \cref{lst:tabular3-DBS3} and \cref{lst:tabular3-DBS4}.
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		\cmhlistingsfromfile*{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.55\linewidth}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
-	\end{minipage}
+        \end{cmhtcbraster}
 
-	\begin{minipage}{.45\linewidth}
+        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		\cmhlistingsfromfile*{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.55\linewidth}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
-	\end{minipage}
+        \end{cmhtcbraster}
 
     We note that
     \begin{itemize}
@@ -1548,13 +1478,13 @@ latexindent.pl -m special4.tex -l DBS5.yaml
             \end{commandshell}
             then we receive the output given in \cref{lst:special4-DBS5}.
 
-	\begin{minipage}{.35\linewidth}
+        \begin{cmhtcbraster}[
+            raster force size=false,
+            raster column 1/.style={add to width=-.1\textwidth},
+                             raster column skip=.06\linewidth]
 		\cmhlistingsfromfile*{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.65\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB]{\texttt{DBS5.yaml}}{lst:DBS5}
-	\end{minipage}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
+        \end{cmhtcbraster}
 
     There are a few things to note:
     \begin{itemize}
@@ -1579,21 +1509,21 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
             \end{commandshell}
             then we receive the output given in \cref{lst:mycommand2-DBS6,lst:mycommand2-DBS7}.
 
-	\begin{minipage}{.35\linewidth}
+        \begin{cmhtcbraster}[
+            raster force size=false,
+            raster column 1/.style={add to width=-.1\textwidth},
+                             raster column skip=.03\linewidth]
 		\cmhlistingsfromfile*{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.65\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB]{\texttt{DBS6.yaml}}{lst:DBS6}
-	\end{minipage}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
+        \end{cmhtcbraster}
 
-	\begin{minipage}{.35\linewidth}
+        \begin{cmhtcbraster}[
+            raster force size=false,
+            raster column 1/.style={add to width=-.1\textwidth},
+                             raster column skip=.03\linewidth]
 		\cmhlistingsfromfile*{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.65\linewidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB]{\texttt{DBS7.yaml}}{lst:DBS7}
-	\end{minipage}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
+        \end{cmhtcbraster}
 
     \subsubsection{Double back slash optional square brackets}
     The pattern matching for the double back slash will also, optionally, allow trailing

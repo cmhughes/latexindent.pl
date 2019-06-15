@@ -5,13 +5,10 @@
 	\cref{lst:mycommand-default}. \footnote{The command code blocks
 		have quite a few subtleties, described in \vref{subsec:commands-string-between}.}
 
-	\begin{minipage}{.45\textwidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mycommand.tex}{\texttt{mycommand.tex}}{lst:mycommand}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/mycommand-default.tex}{\texttt{mycommand.tex} default output}{lst:mycommand-default}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	As in the environment-based case (see \vref{lst:myenv-noAdd1,lst:myenv-noAdd2}) we may specify
 	\texttt{noAdditionalIndent} either in `scalar' form, or in `field' form, as shown in

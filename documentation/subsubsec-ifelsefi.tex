@@ -78,10 +78,7 @@ latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml
 	and the associated default output given in \cref{lst:ifelsefi2-default}; note, in particular,
 	that the bodies of each of the `or statements' have been indented.
 
-	\begin{minipage}{.45\textwidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifelsefi2.tex}{\texttt{ifelsefi2.tex}}{lst:ifelsefi2}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.54\textwidth}
 		\cmhlistingsfromfile{demonstrations/ifelsefi2-default.tex}{\texttt{ifelsefi2.tex} default output}{lst:ifelsefi2-default}
-	\end{minipage}
+        \end{cmhtcbraster}

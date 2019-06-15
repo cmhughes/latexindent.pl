@@ -172,6 +172,8 @@ if(!$readTheDocsMode){
         $body =~ s/\\printbibliography.*\\printbibliography/\\printbibliography/sg;
 
         # make the substitutions
+        $body =~ s/\\begin\{cmhtcbraster\}\h*(\[.*?\])?//sg;
+        $body =~ s/\\end\{cmhtcbraster\}.*$//mg;
         $body =~ s/\\begin\{minipage\}\{.*?\}//sg;
         $body =~ s/\\end\{minipage\}.*$//mg;
         $body =~ s/\\hfill.*$//mg;
@@ -244,7 +246,7 @@ if(!$readTheDocsMode){
                 )*?\\end\{commandshell\})(?:\R|\h)*(\\label\{.*?\})/$2\n\n$1/xsg;
         $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}style:commandshell/sg;
         $body =~ s/\\end\{commandshell\}/\\end\{verbatim\}/sg;
-        $body =~ s/\\begin\{cmhlistings\}/\\begin\{verbatim\}/sg;
+        $body =~ s/\\begin\{cmhlistings\}\*?/\\begin\{verbatim\}/sg;
         $body =~ s/\\end\{cmhlistings\}(\[.*?\])?/\\end\{verbatim\}/sg;
         $body =~ s/\\begin\{yaml\}(\[.*?\])?(\{.*?\})(\[.*?\])?/\\begin\{verbatim\}$2/sg;
         $body =~ s/\\end\{yaml\}/\\end\{verbatim\}/sg;

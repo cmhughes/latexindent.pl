@@ -47,7 +47,7 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
-\tcbuselibrary{breakable,minted,xparse,documentation,hooks}
+\tcbuselibrary{breakable,minted,xparse,documentation,hooks,raster}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -204,6 +204,14 @@
 	listing engine=listings,
 	listing options={#2},
 }
+
+\DeclareDocumentEnvironment{cmhtcbraster}{O{}}{\begin{tcbraster}[
+		new-to-this-version/.style={
+				enhanced,
+				overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
+				addtololstar,
+			},
+		raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
 %                   *    no star: not new, star: new

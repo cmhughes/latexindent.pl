@@ -14,9 +14,9 @@ All features described in this section will only be relevant if the
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 394-396
+ 	:lines: 441-443
  	:linenos:
- 	:lineno-start: 394
+ 	:lineno-start: 441
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -91,9 +91,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 421-422
+ 	:lines: 468-469
  	:linenos:
- 	:lineno-start: 421
+ 	:lineno-start: 468
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -222,9 +222,9 @@ The full details of ``textWrapOptions`` are shown in
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 421-437
+ 	:lines: 468-484
  	:linenos:
- 	:lineno-start: 421
+ 	:lineno-start: 468
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with
 direct reference to those detailed in :numref:`tab:code-blocks`. The
@@ -502,9 +502,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 397-420
+ 	:lines: 444-467
  	:linenos:
- 	:lineno-start: 397
+ 	:lineno-start: 444
 
 .. describe:: manipulateSentences:0\|1
 
@@ -593,25 +593,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 402-410
+ 	:lines: 449-457
  	:linenos:
- 	:lineno-start: 402
+ 	:lineno-start: 449
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 411-414
+ 	:lines: 458-461
  	:linenos:
- 	:lineno-start: 411
+ 	:lineno-start: 458
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 415-420
+ 	:lines: 462-467
  	:linenos:
- 	:lineno-start: 415
+ 	:lineno-start: 462
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1054,9 +1054,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 438-452
+ 	:lines: 485-499
  	:linenos:
- 	:lineno-start: 438
+ 	:lineno-start: 485
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -1255,9 +1255,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 453-462
+ 	:lines: 500-509
  	:linenos:
- 	:lineno-start: 453
+ 	:lineno-start: 500
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -1441,15 +1441,16 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in
 settings (immediately after the ``environments`` field) and that
 *per-name* settings are also allowed – in the case of
 :numref:`lst:environments-mlb`, settings for ``equation*`` have been
-specified. Note that all poly-switches are *off* by default.
+specified for demonstration. Note that all poly-switches are *off* (set
+to 0) by default.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 463-472
+ 	:lines: 510-519
  	:linenos:
- 	:lineno-start: 463
+ 	:lineno-start: 510
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of
@@ -1995,6 +1996,269 @@ Notice that in:
    additional line-break removed, because of the settings in
    :numref:`lst:UnpreserveBlankLines`.
 
+Poly-switches for double back slash
+-----------------------------------
+
+With reference to ``lookForAlignDelims`` (see
+:numref:`lst:aligndelims:basic`) you can specify poly-switches to
+dictate the line-break behaviour of double back slashes in environments
+(:numref:`lst:tabularafter:basic`), commands
+(:numref:`lst:matrixafter`), or special code blocks
+(:numref:`lst:specialafter`). Note that for these poly-switches to
+take effect, the name of the code block must necessarily be specified
+within ``lookForAlignDelims`` (:numref:`lst:aligndelims:basic`); we
+will demonstrate this in what follows.
+
+Consider the code given in :numref:`lst:dbs-demo`.
+
+.. code-block:: latex
+   :caption: ``tabular3.tex`` 
+   :name: lst:dbs-demo
+
+    \begin{tabular}{cc}
+     1 & 2 ★\\□ 3 & 4 ★\\□
+    \end{tabular}
+
+Referencing :numref:`lst:dbs-demo`:
+
+-  ``DBS`` stands for *double back slash*;
+
+-  line breaks ahead of the double back slash are annotated by ★, and
+   are controlled by ``DBSStartsOnOwnLine``;
+
+-  libe breaks after the double back slash are annotated by □, and are
+   controlled by ``DBSFinishesWithLineBreak``.
+
+Let’s explore each of these in turn.
+
+Double back slash starts on own line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We explore ``DBSStartsOnOwnLine`` (★ in :numref:`lst:dbs-demo`);
+starting with the code in :numref:`lst:dbs-demo`, together with the
+YAML files given in :numref:`lst:DBS1` and :numref:`lst:DBS2` and
+running the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m tabular3.tex -l DBS1.yaml
+    latexindent.pl -m tabular3.tex -l DBS2.yaml
+                
+
+then we receive the respective output given in
+:numref:`lst:tabular3-DBS1` and :numref:`lst:tabular3-DBS2`.
+
+ .. literalinclude:: demonstrations/tabular3-mod1.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS1` 
+ 	:name: lst:tabular3-DBS1
+
+ .. literalinclude:: demonstrations/DBS1.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS1.yaml`` 
+ 	:name: lst:DBS1
+
+ .. literalinclude:: demonstrations/tabular3-mod2.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS2` 
+ 	:name: lst:tabular3-DBS2
+
+ .. literalinclude:: demonstrations/DBS2.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS2.yaml`` 
+ 	:name: lst:DBS2
+
+We note that
+
+-  :numref:`lst:DBS1` specifies ``DBSStartsOnOwnLine`` for *every*
+   environment (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the double back slashes from
+   :numref:`lst:dsb-demo` have been moved to their own line in
+   :numref:`lst:tabular3-DBS1`;
+
+-  :numref:`lst:DBS2` specifies ``DBSStartsOnOwnLine`` on a *per-name*
+   basis for ``tabular`` (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the double back slashes from
+   :numref:`lst:dsb-demo` have been moved to their own line in
+   :numref:`lst:tabular3-DBS2`, having added comment symbols before
+   moving them.
+
+Double back slash finishes with line break
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let’s now explore ``DBSFinishesWithLineBreak`` (□); starting with the
+code in :numref:`lst:dbs-demo`, together with the YAML files given in
+:numref:`lst:DBS3` and :numref:`lst:DBS4` and running the following
+commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m tabular3.tex -l DBS3.yaml
+    latexindent.pl -m tabular3.tex -l DBS4.yaml
+                
+
+then we receive the respective output given in
+:numref:`lst:tabular3-DBS3` and :numref:`lst:tabular3-DBS4`.
+
+ .. literalinclude:: demonstrations/tabular3-mod3.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS3` 
+ 	:name: lst:tabular3-DBS3
+
+ .. literalinclude:: demonstrations/DBS3.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS3.yaml`` 
+ 	:name: lst:DBS3
+
+ .. literalinclude:: demonstrations/tabular3-mod4.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS4` 
+ 	:name: lst:tabular3-DBS4
+
+ .. literalinclude:: demonstrations/DBS4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS4.yaml`` 
+ 	:name: lst:DBS4
+
+We note that
+
+-  :numref:`lst:DBS3` specifies ``DBSFinishesWithLineBreak`` for
+   *every* environment (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the code following the double
+   back slashes from :numref:`lst:dsb-demo` has been moved to their
+   own line in :numref:`lst:tabular3-DBS3`;
+
+-  :numref:`lst:DBS4` specifies ``DBSFinishesWithLineBreak`` on a
+   *per-name* basis for ``tabular`` (that is within
+   ``lookForAlignDelims``, :numref:`yaml:lookforaligndelims`); the
+   first double back slashes from :numref:`lst:dsb-demo` have moved
+   code following them to their own line in
+   :numref:`lst:tabular3-DBS4`, having added comment symbols before
+   moving them; the final double back slashes have *not* added a line
+   break as they are at the end of the body within the code block.
+
+Double back slash poly switches for specialBeginEnd
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let’s explore the double back slash poly-switches for code blocks within
+``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we
+begin with the code within :numref:`lst:special4`.
+
+ .. literalinclude:: demonstrations/special4.tex
+ 	:class: .tex
+ 	:caption: ``special4.tex`` 
+ 	:name: lst:special4
+
+Upon using the YAML settings in :numref:`lst:DBS5`, and running the
+command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m special4.tex -l DBS5.yaml
+                
+
+then we receive the output given in :numref:`lst:special4-DBS5`.
+
+ .. literalinclude:: demonstrations/special4-mod5.tex
+ 	:class: .tex
+ 	:caption: ``special4.tex`` using :numref:`lst:DBS5` 
+ 	:name: lst:special4-DBS5
+
+ .. literalinclude:: demonstrations/DBS5.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS5.yaml`` 
+ 	:name: lst:DBS5
+
+There are a few things to note:
+
+-  in :numref:`lst:DBS5` we have specified ``cmhMath`` within
+   ``lookForAlignDelims``; without this, the double back slash
+   poly-switches would be ignored for this code block;
+
+-  the ``DBSFinishesWithLineBreak`` poly-switch has controlled the line
+   breaks following the double back slashes;
+
+-  the ``SpecialEndStartsOnOwnLine`` poly-switch has controlled the
+   addition of a comment symbol, followed by a line break, as it is set
+   to a value of 2.
+
+Double back slash poly switches for optional and mandatory arguments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For clarity, we provide a demonstration of controlling the double back
+slash poly-switches for optional and mandatory arguments. We begin with
+the code in :numref:`lst:mycommand2`.
+
+ .. literalinclude:: demonstrations/mycommand2.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` 
+ 	:name: lst:mycommand2
+
+Upon using the YAML settings in :numref:`lst:DBS6` and
+:numref:`lst:DBS7`, and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m mycommand2.tex -l DBS6.yaml
+    latexindent.pl -m mycommand2.tex -l DBS7.yaml
+                
+
+then we receive the output given in :numref:`lst:mycommand2-DBS6` and
+:numref:`lst:mycommand2-DBS7`.
+
+ .. literalinclude:: demonstrations/mycommand2-mod6.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS6` 
+ 	:name: lst:mycommand2-DBS6
+
+ .. literalinclude:: demonstrations/DBS6.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS6.yaml`` 
+ 	:name: lst:DBS6
+
+ .. literalinclude:: demonstrations/mycommand2-mod7.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS7` 
+ 	:name: lst:mycommand2-DBS7
+
+ .. literalinclude:: demonstrations/DBS7.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS7.yaml`` 
+ 	:name: lst:DBS7
+
+Double back slash optional square brackets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The pattern matching for the double back slash will also, optionally,
+allow trailing square brackets that contain a measurement of vertical
+spacing, for example ``\\[3pt]``.
+
+For example, beginning with the code in :numref:`lst:pmatrix3`
+
+ .. literalinclude:: demonstrations/pmatrix3.tex
+ 	:class: .tex
+ 	:caption: ``pmatrix3.tex`` 
+ 	:name: lst:pmatrix3
+
+and running the following command, using :numref:`lst:DBS3`,
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m pmatrix3.tex -l DBS3.yaml
+                
+
+then we receive the output given in :numref:`lst:pmatrix3-DBS3`.
+
+ .. literalinclude:: demonstrations/pmatrix3-mod3.tex
+ 	:class: .tex
+ 	:caption: ``pmatrix3.tex`` using :numref:`lst:DBS3` 
+ 	:name: lst:pmatrix3-DBS3
+
 Poly-switches for other code blocks
 -----------------------------------
 
@@ -2057,7 +2321,11 @@ poly-switches available for ``verbatim`` code blocks: environments
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``[``\ ♥                                 | ♥   | OptArgBodyStartsOnOwnLine            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
-	|                                 | ``body of opt arg``\ ◆                   | ◆   | RSqBStartsOnOwnLine                  |
+	|                                 | ``value before comma``\ ★,               | ★   | CommaStartsOnOwnLine                 |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | □                                        | □   | CommaFinishesWithLineBreak           |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | ``end of body of opt arg``\ ◆            | ◆   | RSqBStartsOnOwnLine                  |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``]``\ ♣                                 | ♣   | RSqBFinishesWithLineBreak            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
@@ -2067,7 +2335,11 @@ poly-switches available for ``verbatim`` code blocks: environments
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``{``\ ♥                                 | ♥   | MandArgBodyStartsOnOwnLine           |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
-	|                                 | ``body of mand arg``\ ◆                  | ◆   | RCuBStartsOnOwnLine                  |
+	|                                 | ``value before comma``\ ★,               | ★   | CommaStartsOnOwnLine                 |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | □                                        | □   | CommaFinishesWithLineBreak           |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | ``end of body of mand arg``\ ◆           | ◆   | RCuBStartsOnOwnLine                  |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``}``\ ♣                                 | ♣   | RCuBFinishesWithLineBreak            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+

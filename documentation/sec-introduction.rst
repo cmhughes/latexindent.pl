@@ -68,7 +68,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 382. This may
+this version of the documentation, there are a total of 401. This may
 seem a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
@@ -86,9 +86,9 @@ This type of listing is a ``.tex`` file.
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference-demo
- 	:lines: 38-42
+ 	:lines: 41-45
  	:linenos:
- 	:lineno-start: 38
+ 	:lineno-start: 41
 
 This type of listing is a ``.yaml`` file; when you see line numbers
 given (as here) it means that the snippet is taken directly from
@@ -99,9 +99,9 @@ given (as here) it means that the snippet is taken directly from
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 394-396
+ 	:lines: 441-443
  	:linenos:
- 	:lineno-start: 394
+ 	:lineno-start: 441
 
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks`

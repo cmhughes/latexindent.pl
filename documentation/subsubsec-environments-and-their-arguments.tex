@@ -92,13 +92,10 @@ latexindent.pl myenv.tex -l myenv-noAdd6.yaml
 	We may also specify indentation rules for environment code blocks using the
 	\texttt{indentRules} field; see, for example, \cref{lst:myenv-rules1,lst:myenv-rules2}.
 
-	\begin{minipage}{.45\textwidth}
+        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules1.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules1.yaml}}{lst:myenv-rules1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-rules2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules2.yaml}}{lst:myenv-rules2}
-	\end{minipage}
+        \end{cmhtcbraster}
 
 	On applying either of the following commands,
 	\begin{commandshell}
