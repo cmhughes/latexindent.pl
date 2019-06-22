@@ -39,7 +39,7 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
-use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
+use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
 use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp comma_else/;
@@ -112,6 +112,7 @@ sub operate_on_file{
 sub construct_regular_expressions{
     my $self = shift;
     $self->construct_trailing_comment_regexp;
+    $self->construct_environments_regexp;
     $self->construct_ifelsefi_regexp;
     $self->construct_list_of_items;
     $self->construct_special_begin;

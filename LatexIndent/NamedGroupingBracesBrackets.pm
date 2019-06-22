@@ -17,6 +17,7 @@ package LatexIndent::NamedGroupingBracesBrackets;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -33,18 +34,22 @@ sub construct_grouping_braces_brackets_regexp{
     # grab the arguments regexp
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
+    # read from fine tuning
+    my  $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
+    my  $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
+
     # store the regular expresssion for matching and replacing 
     $grouping_braces_regexp = qr/
                   (
-                     \h|\R|\{|\[|\$|\)|\(
+                     $NamedGroupingFollowRegExp
                   )
                   (
-                   [0-9\.a-zA-Z@\*><]+?  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
-                  )                    # $2 name
-                  (\h*)                # $3 h-space
-                  (\R*)                # $4 linebreaks
-                  ($optAndMandRegExp)  # $5 mand|opt arguments (at least one)
-                  (\R)?                # $8 linebreak 
+                   $NamedGroupingBracesBracketsRegExp  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                  )                                    # $2 name
+                  (\h*)                                # $3 h-space
+                  (\R*)                                # $4 linebreaks
+                  ($optAndMandRegExp)                  # $5 mand|opt arguments (at least one)
+                  (\R)?                                # $8 linebreak 
                 /sx;
 
     # something {value} grouping braces with trailing comment
