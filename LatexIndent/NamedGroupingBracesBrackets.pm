@@ -35,8 +35,8 @@ sub construct_grouping_braces_brackets_regexp{
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
     # read from fine tuning
-    my  $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
-    my  $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
+    my $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
+    my $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
 
     # store the regular expresssion for matching and replacing 
     $grouping_braces_regexp = qr/

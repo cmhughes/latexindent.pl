@@ -24,7 +24,7 @@ use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp $optAndMandRegExp comma_else/;
+our @EXPORT_OK = qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp $optAndMandRegExp comma_else/;
 our $ArgumentCounter;
 our $optAndMandRegExp; 
 our $optAndMandRegExpWithLineBreaks; 
@@ -222,13 +222,6 @@ sub create_unique_id{
     return;
 }
 
-sub get_numbered_arg_regexp{
-
-    # for example #1 #2, etc
-    my $numberedArgRegExp = qr/(?:#\d\h*;?,?\/?)+/;
-    return $numberedArgRegExp;
-}
-
 sub get_arguments_regexp{
 
     my $self = shift;
@@ -240,11 +233,9 @@ sub get_arguments_regexp{
     # some calls to this routine need to account for the linebreaks at the end, some do not
     my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();
 
-    # for example #1 #2, etc
-    my $numberedArgRegExp = $self->get_numbered_arg_regexp;
-
-    # beamer special
-    my $beamerRegExp = qr/\<.*?\>/;
+    # arguments Before, by default, includes beamer special and numbered arguments, for example #1 #2, etc
+    my  $argumentsBefore = qr/${${$masterSettings{fineTuning}}{arguments}}{before}/;
+    my  $argumentsBetween = qr/${${$masterSettings{fineTuning}}{arguments}}{between}/;
 
     # commands are allowed strings between arguments, e.g node, decoration, etc, specified in stringsAllowedBetweenArguments
     my $stringsBetweenArguments = q();
@@ -272,7 +263,7 @@ sub get_arguments_regexp{
             return qr/
                                   (                          # capture into $1
                                      (?:                  
-                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$stringsBetweenArguments)* 
+                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$argumentsBefore|$argumentsBetween|$stringsBetweenArguments)* 
                                         (?:
                                              (?:
                                                  \h*         # 0 or more spaces
@@ -332,7 +323,7 @@ sub get_arguments_regexp{
                                      # NOT followed by
                                      (?!
                                        (?:
-                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|$stringsBetweenArguments)*  # 0 or more h-space, blanklines, trailing comments
+                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$argumentsBefore|$stringsBetweenArguments)*  # 0 or more h-space, blanklines, trailing comments
                                            (?:
                                              (?:(?<!\\)\[)
                                              |
@@ -350,7 +341,7 @@ sub get_arguments_regexp{
             return qr/
                                   (                          # capture into $1
                                      (?:                  
-                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp|_|\^|$stringsBetweenArguments)* 
+                                        (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$argumentsBefore|$argumentsBetween|$stringsBetweenArguments)* 
                                         (?:
                                              (?:
                                                  \h*         # 0 or more spaces
@@ -383,7 +374,7 @@ sub get_arguments_regexp{
                                      # NOT followed by
                                      (?!
                                        (?:
-                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp|$beamerRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                                           (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$argumentsBefore)*  # 0 or more h-space, blanklines, trailing comments
                                            (?:
                                              (?:(?<!\\)\[)
                                              |
@@ -404,7 +395,7 @@ sub comma_else{
     # check for existence of \\ statement, and associated line break information
     $self->check_for_else_statement(
               # else name regexp
-              elseNameRegExp=>qr|,|,
+              elseNameRegExp=>qr/${${$masterSettings{fineTuning}}{modifyLineBreaks}}{comma}/,
               # else statements name
               ElseStartsOnOwnLine=>"CommaStartsOnOwnLine",
               # end statements

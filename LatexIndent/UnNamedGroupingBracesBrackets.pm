@@ -17,6 +17,7 @@ package LatexIndent::UnNamedGroupingBracesBrackets;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -36,8 +37,9 @@ sub construct_unnamed_grouping_braces_brackets_regexp{
     # blank line token
     my $blankLineToken = $tokens{blanklines};
 
-    # for example #1 #2, etc
-    my $numberedArgRegExp = $self->get_numbered_arg_regexp;
+    # arguments Before, by default, includes beamer special and numbered arguments, for example #1 #2, etc
+    my $argumentsBefore = qr/${${$masterSettings{fineTuning}}{arguments}}{before}/;
+    my $UnNamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{UnNamedGroupingBracesBrackets}}{follow}/;
 
     # store the regular expresssion for matching and replacing 
     $un_named_grouping_braces_RegExp = qr/
@@ -48,18 +50,18 @@ sub construct_unnamed_grouping_braces_brackets_regexp{
                         |
                         (?:(?<!\\)\}) 
                       )
-                      (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$numberedArgRegExp)*  # 0 or more h-space, blanklines, trailing comments
+                      (?:\h|\R|$blankLineToken|$trailingCommentRegExp|$argumentsBefore)*  # 0 or more h-space, blanklines, trailing comments
                   )
                   # END of NOT
                   (
                      (?:
-                        \{|\[|,|&|\)|\(|\$ # starting with { OR [ OR , OR & OR ) OR ( OR $
+                        $UnNamedGroupingFollowRegExp # starting with { OR [ OR , OR & OR ) OR ( OR $
                      )
                      \h*
-                  )                     # $1 into beginning bit
-                  (\R*)                 # $2 linebreaksAtEnd of begin
-                  ($optAndMandRegExp)   # $3 mand|opt arguments (at least one) stored into body
-                  (\R)?                 # $6 linebreak 
+                  )                                  # $1 into beginning bit
+                  (\R*)                              # $2 linebreaksAtEnd of begin
+                  ($optAndMandRegExp)                # $3 mand|opt arguments (at least one) stored into body
+                  (\R)?                              # $6 linebreak 
                 /sx;
 
     $un_named_grouping_braces_RegExp_trailing_comment = qr/$un_named_grouping_braces_RegExp(\h*)((?:$trailingCommentRegExp\h*)*)?/; 
