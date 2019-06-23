@@ -68,8 +68,8 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 401. This may
-seem a lot, but I deem it necessary in presenting the various different
+this version of the documentation, there are a total of 1. This may seem
+a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
 

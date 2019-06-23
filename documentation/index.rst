@@ -19,5 +19,6 @@ latexindent.pl documentation
    sec-default-user-local
    sec-the-m-switch
    sec-conclusions-know-limitations
+   sec-fine-tuning
    references
    appendices

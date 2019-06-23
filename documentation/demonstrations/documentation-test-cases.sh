@@ -264,5 +264,9 @@ latexindent.pl -s -m special4.tex -l=DBS5.yaml -o=+-mod5
 latexindent.pl -s -m mycommand2.tex -l=DBS6.yaml -o=+-mod6
 latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
 latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
+
+# fine tuning
+latexindent.pl -s finetuning1.tex -o=+-default
+latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1
 [[ $noisyMode == 1 ]] && makenoise
 git status

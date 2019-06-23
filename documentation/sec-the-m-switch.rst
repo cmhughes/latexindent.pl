@@ -818,7 +818,9 @@ sentences have the following properties:
 
 If you find that the ``betterFullStop`` does not work for your purposes,
 then you can switch it off by setting it to ``0``, and you can
-experiment with the ``other`` field.
+experiment with the ``other`` field. You can also seek to customise the
+``betterFullStop`` routine by using the *fine tuning*, detailed in
+:numref:`lst:fineTuning`.
 
 The ``basicFullStop`` routine should probably be avoided in most
 situations, as it does not accomodate the specifications above. For
@@ -1996,6 +1998,10 @@ Notice that in:
    additional line-break removed, because of the settings in
    :numref:`lst:UnpreserveBlankLines`.
 
+.. label follows
+
+.. _subsec:dbs:
+
 Poly-switches for double back slash
 -----------------------------------
 
@@ -2258,6 +2264,9 @@ then we receive the output given in :numref:`lst:pmatrix3-DBS3`.
  	:class: .tex
  	:caption: ``pmatrix3.tex`` using :numref:`lst:DBS3` 
  	:name: lst:pmatrix3-DBS3
+
+You can customise the pattern for the double back slash by exploring the
+*fine tuning* field detailed in :numref:`lst:fineTuning`.
 
 Poly-switches for other code blocks
 -----------------------------------

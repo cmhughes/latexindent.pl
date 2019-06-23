@@ -1014,7 +1014,14 @@ blocks; each of these are shown in :numref:`tab:code-blocks`.
 	
 
 
-We will refer to these code blocks in what follows.
+We will refer to these code blocks in what follows. Note that the fine
+tuning of the definition of the code blocks detailed in
+
+.. label follows
+
+.. _tab:code-blocks:
+
+is discussed in :numref:`sec:finetuning`.
 
 .. label follows
 
@@ -2055,7 +2062,7 @@ keyEqualsValuesBracesBrackets
 criteria:
 
 -  it must immediately follow either ``{`` OR ``[`` OR ``,`` with
-   comments and blank lines allowed;
+   comments and blank lines allowed.
 
 -  then it has a name made up of the characters detailed in
    :numref:`tab:code-blocks`;
@@ -2065,8 +2072,11 @@ criteria:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-An example is shown in :numref:`lst:pgfkeysbefore`, with the default
-output given in :numref:`lst:pgfkeys1:default`.
+See the ``keyEqualsValuesBracesBrackets: follow`` and
+``keyEqualsValuesBracesBrackets: name`` fields of the fine tuning
+section in :numref:`lst:fineTuning` An example is shown in
+:numref:`lst:pgfkeysbefore`, with the default output given in
+:numref:`lst:pgfkeys1:default`.
 
  .. literalinclude:: demonstrations/pgfkeys1.tex
  	:class: .tex
@@ -2098,7 +2108,7 @@ This type of code block is mostly motivated by tikz-based code; we
 define this code block as follows:
 
 -  it must immediately follow either *horizontal space* OR *one or more
-   line breaks* OR ``{`` OR ``[`` OR ``$`` OR ``)`` OR ``(``;
+   line breaks* OR ``{`` OR ``[`` OR ``$`` OR ``)`` OR ``(``
 
 -  the name may contain the characters detailed in
    :numref:`tab:code-blocks`;
@@ -2106,8 +2116,11 @@ define this code block as follows:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-A simple example is given in :numref:`lst:child1`, with default output
-in :numref:`lst:child1:default`.
+See the ``NamedGroupingBracesBrackets: follow`` and
+``NamedGroupingBracesBrackets: name`` fields of the fine tuning section
+in :numref:`lst:fineTuning` A simple example is given in
+:numref:`lst:child1`, with default output in
+:numref:`lst:child1:default`.
 
  .. literalinclude:: demonstrations/child1.tex
  	:class: .tex
@@ -2144,8 +2157,10 @@ code block as satisfying the following criteria:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-An example is shown in :numref:`lst:psforeach1` with default output
-give in :numref:`lst:psforeach:default`.
+See the ``UnNamedGroupingBracesBrackets: follow`` field of the fine
+tuning section in :numref:`lst:fineTuning` An example is shown in
+:numref:`lst:psforeach1` with default output give in
+:numref:`lst:psforeach:default`.
 
  .. literalinclude:: demonstrations/psforeach1.tex
  	:class: .tex
