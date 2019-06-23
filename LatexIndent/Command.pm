@@ -71,7 +71,7 @@ sub construct_command_regexp{
     $commandRegExp = qr/
               (\\|\\@|@)   
               (
-               $commandNameRegExp?|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
+               $commandNameRegExp|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?
