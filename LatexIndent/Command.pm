@@ -64,11 +64,14 @@ sub construct_command_regexp{
     # details to log file
     $logger->trace("*The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)") if $is_t_switch_active;
 
+    # read from fine tuning
+    my  $commandNameRegExp = qr/${${$masterSettings{fineTuning}}{commands}}{name}/;
+
     # construct the command regexp
     $commandRegExp = qr/
               (\\|\\@|@)   
               (
-               [+a-zA-Z@\*0-9_\:]+?|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
+               $commandNameRegExp|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?

@@ -30,7 +30,7 @@ my @namesAndOffsets = (
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
                         {name=>"commandCodeBlocks",numberOfLines=>14},
-                        {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks"},
+                        {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>16,special=>"textWrapOptions"},
                         {name=>"removeParagraphLineBreaks",numberOfLines=>14},
@@ -39,18 +39,25 @@ my @namesAndOffsets = (
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
-                        {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments"},
+                        {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
+                        {name=>"fineTuning",numberOfLines=>22},
                       );
 
 # loop through defaultSettings.yaml and count the lines as we go through
 my $lineCounter = 1;
+my $within = q();
 open(MAINFILE,"../defaultSettings.yaml");
 while(<MAINFILE>){
+    $within = $_ if($_=~m/^[a-zA-Z]/);
     # loop through the names and search for a match
     foreach my $thing (@namesAndOffsets){
       my $name = (defined ${$thing}{special} ? ${$thing}{special} : ${$thing}{name} ); 
       my $beginning = (${$thing}{mustBeAtBeginning}? qr/^/ : qr/\h*/);
-      ${$thing}{firstLine} = $lineCounter if $_=~m/$beginning$name:/;
+      if(defined ${$thing}{within}){
+        ${$thing}{firstLine} = $lineCounter if ($_=~m/$beginning$name:/ and $within =~ m/${$thing}{within}/);
+      } else {
+        ${$thing}{firstLine} = $lineCounter if ($_=~m/$beginning$name:/);
+      }
     }
     $lineCounter++;
   }
@@ -152,6 +159,7 @@ if(!$readTheDocsMode){
                           "sec-indent-config-and-settings.tex",
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
+                          "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
                           "references.tex",
                           "appendices.tex",

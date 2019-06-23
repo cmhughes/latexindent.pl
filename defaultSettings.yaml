@@ -566,3 +566,28 @@ modifyLineBreaks:
     verbatim:
         VerbatimBeginStartsOnOwnLine: 0
         VerbatimEndFinishesWithLineBreak: 0
+
+# fineTuning allows you to tweak the internal pattern matching that 
+# is central to latexindent.pl
+fineTuning:
+    environments:
+      name: '[a-zA-Z@\*0-9_\\]+' 
+    ifElseFi:
+      name: '@?if[a-zA-Z@]*?' 
+    commands:
+      name: '[+a-zA-Z@\*0-9_\:]+?'
+    keyEqualsValuesBracesBrackets:
+      name: '[a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?'
+      follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
+    NamedGroupingBracesBrackets:
+      name: '[0-9\.a-zA-Z@\*><]+?'
+      follow: '\h|\R|\{|\[|\$|\)|\('
+    UnNamedGroupingBracesBrackets: 
+      follow: '\{|\[|,|&|\)|\(|\$'
+    arguments:
+      before: '(?:#\d\h*;?,?\/?)+|\<.*?\>'
+      between: '_|\^|\*'
+    modifyLineBreaks:
+      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
+      doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
+      comma: ','

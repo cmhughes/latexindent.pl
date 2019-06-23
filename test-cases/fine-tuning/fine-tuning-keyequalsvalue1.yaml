@@ -1,0 +1,3 @@
+fineTuning:
+  keyEqualsValuesBracesBrackets:
+      name: '[A-Z@\*0-9_\\]+' 

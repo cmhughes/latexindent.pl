@@ -79,7 +79,7 @@ latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-c
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml,unprotect-blank-lines.yaml
 # special characters test case
-latexindent.pl commands-four-special-characters.tex -o=commands-four-special-characters-default.tex -s
+latexindent.pl commands-four-special-characters.tex -o=+-default.tex -s -l=fine-tuning-args1
 # multiple brace test
 latexindent.pl -s -w multipleBraces.tex
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml -o multipleBraces-mod1.tex

@@ -1,0 +1,3 @@
+fineTuning:
+  NamedGroupingBracesBrackets:
+      follow: '\R|\[|\$|\)|\('

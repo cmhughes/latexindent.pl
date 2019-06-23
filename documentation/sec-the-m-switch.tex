@@ -552,7 +552,8 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	\end{itemize}
 	If you find that the \texttt{betterFullStop} does not work for your purposes, then
 	you can switch it off by setting it to \texttt{0}, and you can
-	experiment with the \texttt{other} field.
+    experiment with the \texttt{other} field.\announce{new}{fine tuning the betterFullStop} You can also seek to customise the \texttt{betterFullStop}
+    routine by using the \emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
 	it does not accomodate the specifications above. For example, using the following command
@@ -1385,7 +1386,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		      because of the settings in \cref{lst:UnpreserveBlankLines}.
 	\end{itemize}
 
-\subsection{Poly-switches for double back slash}
+\subsection{Poly-switches for double back slash}\label{subsec:dbs}
     With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic}) \announce{new}{poly-switch for double back slash} 
     you can specify poly-switches to dictate the line-break behaviour of double back slashes in 
     environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code blocks (\vref{lst:specialafter}).
@@ -1430,9 +1431,9 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
     We note that
     \begin{itemize}
       \item \cref{lst:DBS1} specifies \texttt{DBSStartsOnOwnLine} for \emph{every} environment (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
-        the double back slashes from \cref{lst:dsb-demo} have been moved to their own line in \cref{lst:tabular3-DBS1};
+        the double back slashes from \cref{lst:dbs-demo} have been moved to their own line in \cref{lst:tabular3-DBS1};
       \item \cref{lst:DBS2} specifies \texttt{DBSStartsOnOwnLine} on a \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
-        the double back slashes from \cref{lst:dsb-demo} have been moved to their own line in \cref{lst:tabular3-DBS2}, having added comment
+        the double back slashes from \cref{lst:dbs-demo} have been moved to their own line in \cref{lst:tabular3-DBS2}, having added comment
         symbols before moving them.
     \end{itemize}
 
@@ -1459,9 +1460,9 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
     We note that
     \begin{itemize}
       \item \cref{lst:DBS3} specifies \texttt{DBSFinishesWithLineBreak} for \emph{every} environment (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
-        the code following the double back slashes from \cref{lst:dsb-demo} has been moved to their own line in \cref{lst:tabular3-DBS3};
+        the code following the double back slashes from \cref{lst:dbs-demo} has been moved to their own line in \cref{lst:tabular3-DBS3};
       \item \cref{lst:DBS4} specifies \texttt{DBSFinishesWithLineBreak} on a \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
-        the first double back slashes from \cref{lst:dsb-demo} have moved code following them to their own line in \cref{lst:tabular3-DBS4}, having added comment
+        the first double back slashes from \cref{lst:dbs-demo} have moved code following them to their own line in \cref{lst:tabular3-DBS4}, having added comment
         symbols before moving them; the final double back slashes have \emph{not} added a line break as they are at the end of the body
         within the code block.
     \end{itemize}
@@ -1540,6 +1541,9 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
             then we receive the output given in \cref{lst:pmatrix3-DBS3}.
 
 		\cmhlistingsfromfile*{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+
+        You can customise the pattern for the double back slash by exploring the \emph{fine tuning} field
+        detailed in \vref{lst:fineTuning}.
 
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in

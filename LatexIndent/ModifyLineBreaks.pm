@@ -114,7 +114,7 @@ sub modify_line_breaks_end{
               }
               
               # modified end statement
-              if(${$self}{body} =~ m/^\h*$/s and ${$self}{BodyStartsOnOwnLine} >=1 ){
+              if(${$self}{body} =~ m/^\h*$/s and (defined ${$self}{BodyStartsOnOwnLine}) and ${$self}{BodyStartsOnOwnLine} >=1 ){
                 ${$self}{linebreaksAtEnd}{body} = 0;
               } else {
                 ${$self}{body} .= "$trailingCharacterToken\n";
