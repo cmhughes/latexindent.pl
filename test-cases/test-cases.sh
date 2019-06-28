@@ -160,6 +160,10 @@ cd ../verbatim
 cd ../fine-tuning
 [[ $silentMode == 1 ]] && echo "./fine-tuning-test-cases.sh"
 ./fine-tuning-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# replacement test cases
+cd ../replacements
+[[ $silentMode == 1 ]] && echo "./replacement-test-cases.sh"
+./replacement-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

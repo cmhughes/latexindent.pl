@@ -44,6 +44,8 @@ GetOptions (
     "help|h"=>\$switches{showhelp},
     "cruft|c=s"=>\$switches{cruftDirectory},
     "screenlog|sl"=>\$switches{screenlog},
+    "replacement|r"=>\$switches{replacement},
+    "onlyreplacement|rr"=>\$switches{onlyreplacement},
 );
 
 # check local settings doesn't interfer with reading the file;

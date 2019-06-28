@@ -80,6 +80,10 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
       -m, --modifylinebreaks
           modify linebreaks before, during, and at the end of code blocks; 
           trailing comments and blank lines can also be added using this feature
+      -r,--replacement
+          replacement mode, allows you to replace strings and regular expressions
+      -rr,--onlyreplacement
+          *only* replacement mode, no indentation
 ENDQUOTE
     ;
     exit(2);
@@ -182,6 +186,8 @@ ENDQUOTE
     $logger->info("-m|--modifylinebreaks: modify line breaks") if($switches{modifyLineBreaks});
     $logger->info("-g|--logfile: logfile name") if($switches{logFileName});
     $logger->info("-c|--cruft: cruft directory") if($switches{cruftDirectory});
+    $logger->info("-r|--replacement: replacement mode") if($switches{replacement});
+    $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if($switches{onlyreplacement});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
