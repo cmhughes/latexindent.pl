@@ -564,6 +564,21 @@
 {\llap{\thesection\hskip.5cm}}
 {0pt}
 {}
+
+\newcommand*\ruleline[1]{%
+    \par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
+
+\newcommand{\imagetouse}{logo-bw}
+
+\titleformat% Formatting the header
+  {\section} % command
+    [block] % shape - Only managed to get it working with block
+      {\normalfont\bfseries\sc\huge} % format - Change here as needed
+        {\centering Section \thesection\\} % The Chapter N° label
+          {0pt} % sep
+            {\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
+              \centering} % And the actual title
+
 % custom subsection
 \titleformat{\subsection}
 {\normalfont\bfseries}
@@ -577,9 +592,12 @@
 {0pt}
 {}
 
-\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+\titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{34pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 \titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+
+% start sections on new page
+\newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
 
 % list of listings
 \contentsuse{lstlisting}{lol}

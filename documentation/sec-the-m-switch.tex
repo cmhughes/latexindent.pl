@@ -1,9 +1,10 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
+\renewcommand{\imagetouse}{logo}
+\section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
 \fancyhead[R]{\bfseries\thepage%
 	\tikz[remember picture,overlay] {
 		\node at (1,0){\includegraphics{logo}};
 	}}
-\section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
  All features described in this section will only be relevant if the
  \texttt{-m} switch is used.
 
