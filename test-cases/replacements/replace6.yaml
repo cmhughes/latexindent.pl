@@ -1,0 +1,7 @@
+replacements:
+  -
+    this: '$f_i^k+10=x$'
+    that: |-
+            %%
+            %% Insert comment describing function here
+            $ f_i^k+10=x $

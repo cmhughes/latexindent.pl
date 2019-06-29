@@ -1,0 +1,25 @@
+modifyLineBreaks:
+    commands:
+        announce:
+            CommandStartsOnOwnLine: 2
+    textWrapOptions:
+        columns: 90
+        perCodeBlockBasis: 1
+        masterDocument: 1
+        afterHeading: 1
+        items: 1
+    removeParagraphLineBreaks:
+        masterDocument: 1
+        items: 1
+        afterHeading: 1
+        beforeTextWrap: 1
+
+removeTrailingWhitespace:
+    beforeProcessing: 1
+    afterProcessing: 1
+
+replacements:
+  -
+    this: '%%%%%'
+    that: ''
+    when: after

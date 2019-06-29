@@ -1,0 +1,4 @@
+replacements:
+  -
+    this: '\mycommand'
+    that: '\cmh'

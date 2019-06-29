@@ -38,22 +38,37 @@ sub make_replacements{
 	my @replacements = @{$masterSettings{replacements}};
 
 	foreach ( @replacements ){
-        next if(!${$_}{this} or !${$_}{that});
-        # default value of "when" is before
-        ${$_}{when} = "before" if( !(defined ${$_}{when}) or $is_rr_switch_active); 
-        ${$_}{type} = "string" if( !(defined ${$_}{type})); 
+        next if !${$_}{this};
+        
+        # default value of "lookForThis" is 1
         ${$_}{lookForThis} = 1 if( !(defined ${$_}{lookForThis})); 
 
         # move on if this one shouldn't be looked for
         next if(!${$_}{lookForThis});
 
+        # default value of "when" is before
+        ${$_}{when} = "before" if( !(defined ${$_}{when}) or $is_rr_switch_active); 
+        
+        # default value of "type" is "string"
+        ${$_}{type} = "string" if( !(defined ${$_}{type})); 
+
+        # update to the logging file
+        if($is_t_switch_active){
+            $logger->trace("-");
+            $logger->trace("this: ${$_}{this}");
+            $logger->trace("that: ${$_}{that}");
+            $logger->trace("when: ${$_}{when}");
+            $logger->trace("type: ${$_}{type}");
+        }
+
+        # perform the substitutions
         if(${$_}{when} eq $input{when}){
 	        my $this = qq{${$_}{this}};
 	        my $that = qq{${$_}{that}};
 	        my $index_match = index(${$self}{body}, $this);
 	        while ( $index_match != -1 ) {
 	              substr (${$self}{body}, $index_match, length($this), $that ); 
-	        	     $index_match = index(${$self}{body}, $this);
+	        	  $index_match = index(${$self}{body}, $this);
 	        }
         }
     }
