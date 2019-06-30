@@ -8,10 +8,10 @@ latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 \end{commandshell}
 	is given in \cref{lst:mycom-mlb4}.
 
-        \begin{cmhtcbraster}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb4.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb4}}{lst:mycommand1-mlb4}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb4.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb4.yaml}}{lst:mycom-mlb4}
-        \end{cmhtcbraster}
+	\end{cmhtcbraster}
 
 	Studying \cref{lst:mycom-mlb4}, we see that the two poly-switches are at opposition with
 	one another:
@@ -32,20 +32,20 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 \end{commandshell}
 	we obtain the output given in \cref{lst:mycommand1-mlb5}.
 
-        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb5.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb5}}{lst:mycommand1-mlb5}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
-        \end{cmhtcbraster}
+	\end{cmhtcbraster}
 
 	As previously, the most-recently-processed code block takes priority -- as before, the
 	second (i.e, \emph{last}) argument. Exploring this further, we consider the
 	YAML settings in \cref{lst:mycom-mlb6}, which give associated output in
 	\cref{lst:mycommand1-mlb6}.
 
-        \begin{cmhtcbraster}[raster column skip=.1\linewidth]
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb6.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb6}}{lst:mycommand1-mlb6}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb6.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb6.yaml}}{lst:mycom-mlb6}
-        \end{cmhtcbraster}
+	\end{cmhtcbraster}
 
 	Note that a \lstinline!%! \emph{has} been added to the trailing
 	first \lstinline!}!; this is because:
@@ -72,10 +72,10 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
         \end{commandshell}
 	gives the output in \cref{lst:nested-env-mlb1}.
 
-        \begin{cmhtcbraster}[raster column skip=.05\linewidth]
+	\begin{cmhtcbraster}[raster column skip=.05\linewidth]
 		\cmhlistingsfromfile{demonstrations/nested-env-mlb1.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb1-yaml}}{lst:nested-env-mlb1}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1-yaml}
-        \end{cmhtcbraster}
+	\end{cmhtcbraster}
 
 	In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have received
 	the appropriate (default) indentation; secondly, note that the poly-switch
@@ -137,10 +137,10 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
         \end{commandshell}
 	we obtain the output given in \cref{lst:nested-env-mlb2-output}.
 
-        \begin{cmhtcbraster}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
-        \end{cmhtcbraster}
+	\end{cmhtcbraster}
 
 	During Phase 1:
 	\begin{itemize}

@@ -528,33 +528,32 @@
 }
 
 \newtcolorbox[auto counter]{example}{breakable,
-enhanced jigsaw,
-before skip=6pt,after skip=6pt,
-frame hidden,
-title={\llap{Example~\thetcbcounter\hspace{3mm}}},
-fonttitle=\bfseries,
-coltitle=black,
-attach title to upper,
-grow to left by=5mm,
-top=3mm,
-overlay unbroken={%
-  \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-  \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-  \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
-  },
-  overlay first={%
-    \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-    \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-    %\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
-    },
-    overlay last={%
-      \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-      %\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-      \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
-      },
-      parbox=false,
-      }
-                
+	enhanced jigsaw,
+	before skip=6pt,after skip=6pt,
+	frame hidden,
+	title={\llap{Example~\thetcbcounter\hspace{3mm}}},
+	fonttitle=\bfseries,
+	coltitle=black,
+	attach title to upper,
+	grow to left by=5mm,
+	top=3mm,
+	overlay unbroken={%
+			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+			\path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+			\path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+		},
+	overlay first={%
+			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+			\path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+			%\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
+		},
+	overlay last={%
+			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+			%\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+			\path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+		},
+	parbox=false,
+}
 
 % copied from /usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
 % the only modification is the \stars and \endstars

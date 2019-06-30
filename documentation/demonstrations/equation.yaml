@@ -1,0 +1,8 @@
+modifyLineBreaks:
+    environments:
+        equation*:
+            BeginStartsOnOwnLine: 2
+            BodyStartsOnOwnLine: 2
+            EndStartsOnOwnLine: 2
+            EndFinishesWithLineBreak: 2
+        
