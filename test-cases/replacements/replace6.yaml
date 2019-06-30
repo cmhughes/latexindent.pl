@@ -5,3 +5,4 @@ replacements:
             %%
             %% Insert comment describing function here
             $ f_i^k+10=x $
+    substitution: s///g

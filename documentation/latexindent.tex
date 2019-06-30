@@ -122,6 +122,8 @@
 
 \definecolor{harvestgold}{cmyk}{0.00, 0.05, 0.51, 0.07}  %EDE275
 \definecolor{cmhgold}{cmyk}{0,0.178,0.909,0.008}         %FDD017
+\colorlet{cmhgray}{gray!30!white}
+
 \makeatletter
 \tcbset{
 	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
@@ -152,16 +154,13 @@
 			listing engine=listings,
 			left=0cm,
 			boxrule=0pt,
-			%leftrule=3pt,
 			sharp corners,
 			center title,
-			%colbacktitle=white!75!black,
 			colbacktitle=white!75!blue,
 			colframe=white!25!blue,
 			colback=white!90!blue,
 			toprule=2pt,
 			titlerule=2pt,
-			%bottomrule=1pt,
 		},
 	MLB-TCB/.style={
 			yaml-TCB,
@@ -171,16 +170,25 @@
 			colback=white!60!cmhgold,
 			width=0.9\linewidth,
 			before=\centering,
-			%bottomrule=1pt,
 			enhanced,
 			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
+		},
+	replace-TCB/.style={
+			yaml-TCB,
+			center title,
+			colbacktitle=white!75!green,
+			colframe=white!25!green,
+			colback=white!90!green,
+			width=0.9\linewidth,
+			before=\centering,
+			enhanced,
+			overlay={\node[anchor=north east,outer sep=2pt,draw=white!25!green,very thick,circle,fill=white!75!green,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-r}}; }
 		},
 	yaml-obsolete/.style={
 			listing only,
 			listing engine=listings,
 			left=0cm,
 			boxrule=0pt,
-			%leftrule=3pt,
 			sharp corners,
 			center title,
 			toprule=2pt,
@@ -466,9 +474,15 @@
 	numbers=left,
 }
 
+\lstdefinestyle{replacements}{
+	style=yaml-LST,
+	firstnumber=571,linerange={571-577},
+	numbers=left,
+}
+
 \lstdefinestyle{fineTuning}{
 	style=yaml-LST,
-	firstnumber=572,linerange={572-594},
+	firstnumber=580,linerange={580-602},
 	numbers=left,
 }
 
@@ -512,6 +526,35 @@
 	% paragraph skips obeyed within tcolorbox
 	parbox=false,
 }
+
+\newtcolorbox[auto counter]{example}{breakable,
+enhanced jigsaw,
+before skip=6pt,after skip=6pt,
+frame hidden,
+title={\llap{Example~\thetcbcounter\hspace{3mm}}},
+fonttitle=\bfseries,
+coltitle=black,
+attach title to upper,
+grow to left by=5mm,
+top=3mm,
+overlay unbroken={%
+  \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+  \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+  \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+  },
+  overlay first={%
+    \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+    \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+    %\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
+    },
+    overlay last={%
+      \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+      %\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+      \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+      },
+      parbox=false,
+      }
+                
 
 % copied from /usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
 % the only modification is the \stars and \endstars
@@ -566,18 +609,18 @@
 {}
 
 \newcommand*\ruleline[1]{%
-    \par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
+	\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
 
 \newcommand{\imagetouse}{logo-bw}
 
 \titleformat% Formatting the header
-  {\section} % command
-    [block] % shape - Only managed to get it working with block
-      {\normalfont\bfseries\sc\huge} % format - Change here as needed
-        {\centering Section \thesection\\} % The Chapter N° label
-          {0pt} % sep
-            {\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
-              \centering} % And the actual title
+{\section} % command
+[block] % shape - Only managed to get it working with block
+{\normalfont\bfseries\sc\huge} % format - Change here as needed
+{\centering Section \thesection\\} % The Chapter N° label
+{0pt} % sep
+{\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
+	\centering} % And the actual title
 
 % custom subsection
 \titleformat{\subsection}
@@ -728,6 +771,7 @@
 \stopcontents[the-m-switch]
 \input{subsec-partnering-poly-switches}
 \input{subsec-conflicting-poly-switches}
+\input{sec-replacements}
 \input{sec-fine-tuning}
 \input{sec-conclusions-know-limitations}
 \input{references}

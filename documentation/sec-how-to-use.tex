@@ -352,6 +352,23 @@ latexindent.pl
 	\end{itemize}
 	to signify that your input has finished. Thanks to \cite{xu-cheng} for an update
 	to this feature.
+\flagbox{-r, --replacement}
+	\begin{commandshell}
+latexindent.pl -r myfile.tex
+latexindent.pl -replacement myfile.tex
+      \end{commandshell}
+    You can \announce{new}{replacement mode switch} call \texttt{latexindent.pl} with the \texttt{-r} switch
+    to instruct it to perform replacements/substitutions on your file; full details and examples are given in
+    \vref{sec:replacements}.
+
+\flagbox{-rr, --onlyreplacement}
+	\begin{commandshell}
+latexindent.pl -rr myfile.tex
+latexindent.pl -onlyreplacement myfile.tex
+      \end{commandshell}
+    You can \announce{new}{replacement (only) mode switch} instruct \texttt{latexindent.pl} to skip all of its other
+    indentation operations and \emph{only} perform replacements/substitutions by using the \texttt{-rr} switch; 
+    full details and examples are given in \vref{sec:replacements}.
 
 \subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but others

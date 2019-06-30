@@ -60,12 +60,13 @@ sub make_replacements{
 
         # perform the substitutions
         if(${$_}{when} eq $input{when}){
+            $logger->warn("*You have specified both 'this' and 'substitution'; the 'substitution' field will be ignored") if(${$_}{this} and ${$_}{substitution});
             if(${$_}{this}){
                 # *string* replacement
                 # *string* replacement
                 # *string* replacement
 	            my $this = qq{${$_}{this}};
-	            my $that = qq{${$_}{that}};
+	            my $that = (defined ${$_}{that}) ? qq{${$_}{that}} : q();
 	            my $index_match = index(${$self}{body}, $this);
 	            while ( $index_match != -1 ) {
 	                  substr (${$self}{body}, $index_match, length($this), $that ); 

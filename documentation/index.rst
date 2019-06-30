@@ -18,7 +18,8 @@ latexindent.pl documentation
    sec-indent-config-and-settings
    sec-default-user-local
    sec-the-m-switch
-   sec-conclusions-know-limitations
+   sec-replacements
    sec-fine-tuning
+   sec-conclusions-know-limitations
    references
    appendices

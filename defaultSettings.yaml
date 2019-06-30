@@ -572,9 +572,8 @@ replacements:
   -
     this: 'latexindent.pl'
     that: 'pl.latexindent'
-    when: before
-    type: string
     lookForThis: 1
+    when: before
 
 # fineTuning allows you to tweak the internal pattern matching that 
 # is central to latexindent.pl

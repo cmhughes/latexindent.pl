@@ -10,6 +10,7 @@ loopmax=0
 latexindent.pl -s -r test1.tex -l=replace1.yaml -o=+-mod1
 latexindent.pl -s -r test1.tex -l=replace2.yaml -o=+-mod2
 latexindent.pl -s -rr test1.tex -l=replace1.yaml -o=+-rr-mod1
+latexindent.pl -s -onlyreplacement test1.tex -l=replace1.yaml -o=+-rr-mod1
 latexindent.pl -s -r test1.tex -l=replace3.yaml -o=+-mod3
 
 latexindent.pl -s -r test2.tex -l=replace4.yaml -o=+-mod4
@@ -44,7 +45,7 @@ latexindent.pl -s -r test8.tex -l=replace15.yaml -o=+-mod15
 
 # replacing equation \eqref{eq:aa} with \hyperref{equation \ref*{eq:aa}}
 latexindent.pl -s -r test9.tex -l=replace16.yaml -o=+-mod16
-latexindent.pl -s -r test9.tex -l=replace17.yaml -o=+-mod17
+latexindent.pl -s -replacement test9.tex -l=replace17.yaml -o=+-mod17
 
 git status
 [[ $noisyMode == 1 ]] && makenoise

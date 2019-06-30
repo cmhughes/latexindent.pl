@@ -265,6 +265,15 @@ latexindent.pl -s -m mycommand2.tex -l=DBS6.yaml -o=+-mod6
 latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
 latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
 
+# replacement mode demonstrations
+latexindent.pl -s -r replace1 -o=+-r1
+latexindent.pl -s -r replace1 -l=replace1.yaml -o=+-mod1
+
+latexindent.pl -s -r colsep -o=+-mod0 -l=colsep.yaml
+latexindent.pl -s -r colsep -o=+-mod1 -l=colsep1.yaml
+latexindent.pl -s -r colsep -o=+-mod2 -l=multi-line.yaml
+latexindent.pl -s -r colsep -o=+-mod3 -l=multi-line1yaml
+
 # fine tuning
 latexindent.pl -s finetuning1.tex -o=+-default
 latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1

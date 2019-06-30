@@ -41,6 +41,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
                         {name=>"fineTuning",numberOfLines=>22},
+                        {name=>"replacements",numberOfLines=>6},
                       );
 
 # loop through defaultSettings.yaml and count the lines as we go through
@@ -159,6 +160,7 @@ if(!$readTheDocsMode){
                           "sec-indent-config-and-settings.tex",
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
+                          "sec-replacements.tex",
                           "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
                           "references.tex",
