@@ -24,7 +24,7 @@ use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/regexp_body_substitutions make_replacements/;
+our @EXPORT_OK = qw/make_replacements/;
 
 sub make_replacements{
     my $self = shift;
@@ -83,15 +83,6 @@ sub make_replacements{
            }
         }
     }
-}
-
-sub regexp_body_substitutions{
-    my $self = shift;
-	my @regExpSubs = @{$masterSettings{regExpBodySubs}};
-
-	foreach ( @regExpSubs ){
- 	   ${$self}{body} =~ s/${$_}{before}/${$_}{after}/sg;
-	}
 }
 
 1;

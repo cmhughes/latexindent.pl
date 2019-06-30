@@ -1,0 +1,5 @@
+replacements:
+  -
+    substitution: s/\\e(?![a-zA-Z])/\\epsilon/sgx
+  -
+    substitution: s/\\f(?![a-zA-Z])/\\frac/sgx

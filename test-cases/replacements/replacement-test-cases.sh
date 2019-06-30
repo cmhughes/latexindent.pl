@@ -27,5 +27,24 @@ latexindent.pl -s -r test4.tex -l=replace7.yaml -o=+-mod7
 latexindent.pl -s -r test4.tex -l=replace8.yaml -o=+-mod8
 latexindent.pl -s -r test4.tex -l=replace9.yaml -o=+-mod9
 latexindent.pl -s -r test3.tex -l=replace10.yaml -o=+-mod10
+
+# replace $$...$$ with \begin{equation}...\end{equation}, https://tex.stackexchange.com/questions/242150/good-looking-latex-code
+latexindent.pl -s -r test5.tex -l=replace11.yaml -o=+-mod11
+latexindent.pl -s -r test5.tex -l=replace11.yaml -o=+-m-mod11 -m -y="modifyLineBreaks:environments:BeginStartsOnOwnLine:1;BodyStartsOnOwnLine:2;EndStartsOnOwnLine:2"
+
+# multiple spaces with single spaces: https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker
+latexindent.pl -s -r test6.tex -l=replace12.yaml -o=+-mod12
+
+# an auto-index...? https://tex.stackexchange.com/questions/494776/how-do-i-create-an-index-in-latex-using-a-custom-wordfile
+latexindent.pl -s -r test7.tex -l=replace13.yaml -o=+-mod13
+latexindent.pl -s -r test7.tex -l=replace14.yaml -o=+-mod14
+
+# replacing short commands with long commands, https://tex.stackexchange.com/questions/496660/replace-all-shorthands-defined-by-newcommand-with-full-commands
+latexindent.pl -s -r test8.tex -l=replace15.yaml -o=+-mod15
+
+# replacing equation \eqref{eq:aa} with \hyperref{equation \ref*{eq:aa}}
+latexindent.pl -s -r test9.tex -l=replace16.yaml -o=+-mod16
+latexindent.pl -s -r test9.tex -l=replace17.yaml -o=+-mod17
+
 git status
 [[ $noisyMode == 1 ]] && makenoise
