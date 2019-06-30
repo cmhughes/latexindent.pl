@@ -1,0 +1,8 @@
+replacements:
+  -
+    substitution: |-
+            s/#
+                \$f_i\^k\+10=x\$
+             /%%
+              %% Insert comment describing function here
+              \$ f_{i}^{k} + 10 = x \$/sgx

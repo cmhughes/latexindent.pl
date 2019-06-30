@@ -38,7 +38,7 @@ sub make_replacements{
 	my @replacements = @{$masterSettings{replacements}};
 
 	foreach ( @replacements ){
-        next if !${$_}{this};
+        next if !(${$_}{this} or ${$_}{substitution});
         
         # default value of "lookForThis" is 1
         ${$_}{lookForThis} = 1 if( !(defined ${$_}{lookForThis})); 
@@ -49,27 +49,38 @@ sub make_replacements{
         # default value of "when" is before
         ${$_}{when} = "before" if( !(defined ${$_}{when}) or $is_rr_switch_active); 
         
-        # default value of "type" is "string"
-        ${$_}{type} = "string" if( !(defined ${$_}{type})); 
-
         # update to the logging file
-        if($is_t_switch_active){
+        if($is_t_switch_active and (${$_}{when} eq $input{when})){
             $logger->trace("-");
-            $logger->trace("this: ${$_}{this}");
-            $logger->trace("that: ${$_}{that}");
+            $logger->trace("this: ${$_}{this}") if(${$_}{this});
+            $logger->trace("that: ${$_}{that}") if(${$_}{that});
+            $logger->trace("substitution: ${$_}{substitution}") if(${$_}{substitution});
             $logger->trace("when: ${$_}{when}");
-            $logger->trace("type: ${$_}{type}");
         }
 
         # perform the substitutions
         if(${$_}{when} eq $input{when}){
-	        my $this = qq{${$_}{this}};
-	        my $that = qq{${$_}{that}};
-	        my $index_match = index(${$self}{body}, $this);
-	        while ( $index_match != -1 ) {
-	              substr (${$self}{body}, $index_match, length($this), $that ); 
-	        	  $index_match = index(${$self}{body}, $this);
-	        }
+            if(${$_}{this}){
+                # *string* replacement
+                # *string* replacement
+                # *string* replacement
+	            my $this = qq{${$_}{this}};
+	            my $that = qq{${$_}{that}};
+	            my $index_match = index(${$self}{body}, $this);
+	            while ( $index_match != -1 ) {
+	                  substr (${$self}{body}, $index_match, length($this), $that ); 
+	            	  $index_match = index(${$self}{body}, $this);
+	            }
+           } else {
+                # *regex* replacement
+                # *regex* replacement
+                # *regex* replacement
+                
+                # https://stackoverflow.com/questions/12423337/how-to-pass-a-replacing-regex-as-a-command-line-argument-to-a-perl-script
+                my $body = ${$self}{body}; 
+                eval("\$body =~ ${$_}{substitution}");
+                ${$self}{body} = $body ; 
+           }
         }
     }
 }
