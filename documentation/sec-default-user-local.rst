@@ -1016,12 +1016,7 @@ blocks; each of these are shown in :numref:`tab:code-blocks`.
 
 We will refer to these code blocks in what follows. Note that the fine
 tuning of the definition of the code blocks detailed in
-
-.. label follows
-
-.. _tab:code-blocks:
-
-is discussed in :numref:`sec:finetuning`.
+:numref:`tab:code-blocks` is discussed in :numref:`sec:finetuning`.
 
 .. label follows
 
@@ -1135,7 +1130,12 @@ we obtain the output given in :numref:`lst:myenv-output-4`.
 Let’s now allow ``myenv`` to have some optional and mandatory arguments,
 as in :numref:`lst:myenv-args`.
 
-Upon runningtex
+ .. literalinclude:: demonstrations/myenvironment-args.tex
+ 	:class: .tex
+ 	:caption: ``myenv-args.tex`` 
+ 	:name: lst:myenv-args
+
+Upon running
 
 .. code-block:: latex
    :class: .commandshell

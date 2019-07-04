@@ -6,6 +6,10 @@ div.baseyaml table.highlighttable td.code div.highlight {background-color: #b3d9
 div.mlbyaml > div.highlight{background-color: #EDE275; border-right: 5px solid #FDD017; border-top: 5px solid #FDD017;}
 div.mlbyaml > table.highlighttable{background-color: #EDE275; border-right: 5px solid #FDD017; border-top: 5px solid #FDD017;}
 div.mlbyaml table.highlighttable td.code div.highlight {background-color: #EDE275;border: 0px;}
+/* -r switch YAML */
+div.replaceyaml > div.highlight{background-color: #1abc9c; border-right: 5px solid #1d8348; border-top: 5px solid #1d8348;border-left: 5px solid #1d8348;}
+div.replaceyaml > table.highlighttable{background-color: #1abc9c; border-right: 5px solid #1d8348; border-top: 5px solid #1d8348;border-left: 5px solid #1d8348;}
+div.replaceyaml table.highlighttable td.code div.highlight {background-color: #1abc9c;border: 0px;}
 div.tex > div.highlight{background-color:  #e0e0d1; border-top: 5px solid #adad85;}
 /* make line numbers red */
 td.linenos div.linenodiv pre {color: red;}

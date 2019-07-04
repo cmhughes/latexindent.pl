@@ -37,7 +37,7 @@ latexindent.pl -r replace1.tex
 
 	If we don't wish to perform this replacement, then we can tweak the default settings of
 	\vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action
-	in \cref{lst:replace1}, and run the command
+	in \cref{lst:replace1-yaml}, and run the command
 	\begin{commandshell}
 latexindent.pl -r replace1.tex -l=replace1.yaml
 \end{commandshell}
@@ -45,7 +45,7 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		\cmhlistingsfromfile*{demonstrations/replace1-mod1.tex}{\texttt{replace1.tex} using \cref{lst:replace1}}{lst:replace1-mod1}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
 	\end{cmhtcbraster}
 	We haven't yet discussed the \texttt{when} field; don't worry, we'll get to it
 	as part of the discussion in what follows.
@@ -75,14 +75,14 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 		Let's assume that our goal is to remove both of the \texttt{arraycolsep} statements; we can achieve this in
 		a few different ways.
 
-		Using the YAML in \cref{lst:colsep}, and running the command
+		Using the YAML in \cref{lst:colsep-yaml}, and running the command
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=colsep.yaml
 \end{commandshell}
 		then we achieve the output in \cref{lst:colsep-mod0}.
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 			\cmhlistingsfromfile*{demonstrations/colsep-mod0.tex}{\texttt{colsep.tex} using \cref{lst:colsep}}{lst:colsep-mod0}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep.yaml}[replace-TCB]{\texttt{colsep.yaml}}{lst:colsep}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep.yaml}[replace-TCB]{\texttt{colsep.yaml}}{lst:colsep-yaml}
 		\end{cmhtcbraster}
 		Note that in \cref{lst:colsep}, we have specified \emph{two} separate fields, each with their own `\emph{this}' field;
 		furthermore, for both of the separate fields, we have not specified `\texttt{that}', so the \texttt{that} field

@@ -68,7 +68,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 1. This may seem
+this version of the documentation, there are a total of 5. This may seem
 a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
@@ -106,6 +106,18 @@ given (as here) it means that the snippet is taken directly from
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks`
 for more details.
+
+ .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .replaceyaml
+ 	:caption: ``replacements`` 
+ 	:name: lst:replacements-demo
+ 	:lines: 571-577
+ 	:linenos:
+ 	:lineno-start: 571
+
+This type of listing is a ``.yaml`` file, but it will only be relevant
+when the ``-r`` switch is active; see :numref:`sec:replacements` for
+more details.
 
 .. label follows
 

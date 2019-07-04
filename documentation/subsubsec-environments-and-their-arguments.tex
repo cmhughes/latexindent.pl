@@ -47,7 +47,11 @@ latexindent.pl myenv.tex -l myenv-noAdd4.yaml
 	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3} or \cref{lst:myenv-noAdd4})}{lst:myenv-output-4}
 
 	Let's now allow \texttt{myenv} to have some optional and mandatory arguments, as
-	in \cref{lst:myenv-args}. \cmhlistingsfromfile{demonstrations/myenvironment-args.tex}{\texttt{myenv-args.tex}}{lst:myenv-args} Upon running
+	in \cref{lst:myenv-args}. 
+
+    \cmhlistingsfromfile{demonstrations/myenvironment-args.tex}{\texttt{myenv-args.tex}}{lst:myenv-args} 
+
+    Upon running
 	\begin{commandshell}
 latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex  
 \end{commandshell}

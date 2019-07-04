@@ -40,7 +40,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
-                        {name=>"fineTuning",numberOfLines=>22},
+                        {name=>"fineTuning",numberOfLines=>21},
                         {name=>"replacements",numberOfLines=>6},
                       );
 
@@ -191,7 +191,9 @@ if(!$readTheDocsMode){
                     my $listingsbody = $1;
                     $listingsbody =~ s|\*||sg;
                     my $rst_class = "tex";
-                    if($listingsbody =~ m|MLB-TCB|s ){
+                    if($listingsbody =~ m|replace-TCB|s ){
+                        $rst_class = "replaceyaml";
+                    } elsif($listingsbody =~ m|MLB-TCB|s ){
                         $rst_class = "mlbyaml";
                     } elsif ($listingsbody =~ m|yaml-TCB|s or $listingsbody =~ m|defaultSettings\.yaml|s or $listingsbody =~ m|yaml-LST|s) {
                         $rst_class = "baseyaml";
