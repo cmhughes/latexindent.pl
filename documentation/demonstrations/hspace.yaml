@@ -1,0 +1,3 @@
+replacements:
+  -
+    substitution: s/\h+/ /sg

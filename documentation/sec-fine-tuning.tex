@@ -1,93 +1,109 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{Fine tuning}\label{sec:finetuning}
-\fancyhead[R]{\bfseries\thepage%
-	\tikz[remember picture,overlay] {
-		\node at (1,0){\includegraphics{logo-bw}}; }
-}
-\texttt{latexindent.pl} operates by looking for the code blocks detailed in \vref{tab:code-blocks}.
-\announce{new}{details of fine tuning of code blocks} The fine tuning of the details of such code blocks
-is controlled by the \texttt{fineTuning} field, detailed in \cref{lst:fineTuning}.
+ \texttt{latexindent.pl} operates by looking for the code blocks detailed in
+ \vref{tab:code-blocks}.
+ \announce{new}{details of fine tuning of code blocks} The fine tuning of the details of such code blocks
+ is controlled by the \texttt{fineTuning} field, detailed in \cref{lst:fineTuning}.
 
-This field is for those that would like to peek under the bonnet/hood and make some
-fine tuning to \texttt{latexindent.pl}'s operating.
+ This field is for those that would like to peek under the bonnet/hood and make some fine
+ tuning to \texttt{latexindent.pl}'s operating.
 
-\begin{warning}
-	Making changes to the fine tuning may have significant consequences for your indentation scheme,
-	proceed with caution!
-\end{warning}
+ \begin{warning}
+	 Making changes to the fine tuning may have significant consequences for your indentation scheme,
+	 proceed with caution!
+ \end{warning}
 
-\begin{widepage}
-\cmhlistingsfromfile*[style=fineTuning]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
-\end{widepage}
+ \begin{widepage}
+	 \cmhlistingsfromfile*[style=fineTuning]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
+ \end{widepage}
 
-The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual is not intended to be
-a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
-covering of the topic.
+ The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual is
+ not intended to be a tutorial on regular expressions; you might like to read, for
+ example, \cite{masteringregexp} for a detailed covering of the topic.
 
-We make the following comments with reference to \cref{lst:fineTuning}:
-\begin{enumerate}
-	\item the \texttt{environments:name} field details that the \emph{name} of an environment can contain:
-	      \begin{enumerate}
-		      \item \texttt{a-z} lower case letters
-		      \item \texttt{A-Z} upper case letters
-		      \item \texttt{@} the \texttt{@} 'letter'
-		      \item \lstinline!\*! stars
-		      \item \texttt{0-9} numbers
-		      \item \lstinline!_! underscores
-		      \item \lstinline!\! backslashes
-	      \end{enumerate}
-	      The \texttt{+} at the end means \emph{at least one} of the above characters.
-	\item the \texttt{ifElseFi:name} field:
-	      \begin{enumerate}
-		      \item \lstinline^@?^ means that it \emph{can possibly} begin with \lstinline^@^
-		      \item followed by \texttt{if}
-		      \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and \texttt{@}
-              \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the match as soon as possible'
-	      \end{enumerate}
-	\item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
-	      \begin{enumerate}
-		      \item \lstinline!|! means `or'
-		      \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group -- you don't necessarily need to worry about
-		            what this means, but just know that for the \texttt{fineTuning} feature you should only ever use
-		            \emph{non}-capturing groups, and \emph{not} capturing groups, which are simply \lstinline!(...)!
-		      \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not} be immediately preceeded by a \lstinline!\!
-	      \end{enumerate}
-	\item in the \texttt{arguments:before} field
-	      \begin{enumerate}
-            \item \lstinline^\d\h*^ means a digit (i.e. a number), followed by 0 or more horizontal spaces
-		      \item \lstinline^;?,?^ means \emph{possibly} a semi-colon, and possibly a comma
-		      \item \lstinline^\<.*?\>^ is designed for 'beamer'-type commands; the \lstinline^.*?^ means anything in between \lstinline^<...>^
-	      \end{enumerate}
-        \item the \texttt{modifyLineBreaks} field refers to fine tuning settings detailed in \vref{sec:modifylinebreaks}. In particular:
-	      \begin{enumerate}
-            \item \texttt{betterFullStop} is in relation to the one sentence per line routine, detailed in \vref{sec:onesentenceperline}
-            \item \texttt{doubleBackSlash} is in relation to the \texttt{DBSStartsOnOwnLine} and \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double back slashes, see \vref{subsec:dbs}
-            \item \texttt{comma} is in relation to the \texttt{CommaStartsOnOwnLine} and \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and mandatory arguments; see \vref{tab:poly-switch-mapping}
-	      \end{enumerate}
-\end{enumerate}
+ We make the following comments with reference to \cref{lst:fineTuning}:
+ \begin{enumerate}
+	 \item the \texttt{environments:name} field details that the \emph{name} of an
+	       environment can contain:
+	       \begin{enumerate}
+		       \item \texttt{a-z} lower case letters
+		       \item \texttt{A-Z} upper case letters
+		       \item \texttt{@} the \texttt{@} 'letter'
+		       \item \lstinline!\*! stars
+		       \item \texttt{0-9} numbers
+		       \item \lstinline!_! underscores
+		       \item \lstinline!\! backslashes
+	       \end{enumerate}
+	       The \texttt{+} at the end means \emph{at least one} of the above
+	       characters.
+	 \item the \texttt{ifElseFi:name} field:
+	       \begin{enumerate}
+		       \item \lstinline^@?^ means that it \emph{can possibly} begin with
+		             \lstinline^@^
+		       \item followed by \texttt{if}
+		       \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and
+		             \texttt{@}
+		       \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the
+		             match as soon as possible'
+	       \end{enumerate}
+	 \item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
+	       \begin{enumerate}
+		       \item \lstinline!|! means `or'
+		       \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group --
+		             you don't necessarily need to worry about what this means, but just know that for the
+		             \texttt{fineTuning} feature you should only ever use \emph{non}-capturing
+		             groups, and \emph{not} capturing groups, which are simply
+		             \lstinline!(...)!
+		       \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not}
+		             be immediately preceeded by a \lstinline!\!
+	       \end{enumerate}
+	 \item in the \texttt{arguments:before} field
+	       \begin{enumerate}
+		       \item \lstinline^\d\h*^ means a digit (i.e. a number), followed by 0 or more horizontal
+		             spaces
+		       \item \lstinline^;?,?^ means \emph{possibly} a semi-colon, and possibly a comma
+		       \item \lstinline^\<.*?\>^ is designed for 'beamer'-type commands; the
+		             \lstinline^.*?^ means anything in between \lstinline^<...>^
+	       \end{enumerate}
+	 \item the \texttt{modifyLineBreaks} field refers to fine tuning settings detailed in
+	       \vref{sec:modifylinebreaks}. In particular:
+	       \begin{enumerate}
+		       \item \texttt{betterFullStop} is in relation to the one sentence per line routine, detailed in
+		             \vref{sec:onesentenceperline}
+		       \item \texttt{doubleBackSlash} is in relation to the \texttt{DBSStartsOnOwnLine} and
+		             \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double back slashes, see
+		             \vref{subsec:dbs}
+		       \item \texttt{comma} is in relation to the \texttt{CommaStartsOnOwnLine} and
+		             \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and mandatory
+		             arguments; see \vref{tab:poly-switch-mapping}
+	       \end{enumerate}
+ \end{enumerate}
 
-It is not obvious from \cref{lst:fineTuning}, but each of the \texttt{follow}, \texttt{before} and \texttt{between} fields
-allow trailing comments, line breaks, and horizontal spaces between each character.
+ It is not obvious from \cref{lst:fineTuning}, but each of the \texttt{follow},
+ \texttt{before} and \texttt{between} fields allow trailing comments, line
+ breaks, and horizontal spaces between each character.
 
-As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its default output using the command
-\begin{commandshell}
+ As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
+ default output using the command
+ \begin{commandshell}
 latexindent.pl finetuning1.tex 
 \end{commandshell}
-is given in \cref{lst:finetuning1-default}.
+ is given in \cref{lst:finetuning1-default}.
 
-        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
-		\cmhlistingsfromfile*{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
-        \end{cmhtcbraster}
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+	 \cmhlistingsfromfile*{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
+	 \cmhlistingsfromfile*{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
+ \end{cmhtcbraster}
 
-It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as expected. We can \emph{fine tune} the 
-indentation scheme by employing the settings given in \cref{lst:fine-tuning1} and running the command
-\begin{commandshell}
+ It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
+ expected. We can \emph{fine tune} the indentation scheme by employing the settings
+ given in \cref{lst:fine-tuning1} and running the command
+ \begin{commandshell}
 latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 \end{commandshell}
-and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
+ and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
 
-        \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
-        \end{cmhtcbraster}
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+	 \cmhlistingsfromfile*{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
+	 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
+ \end{cmhtcbraster}

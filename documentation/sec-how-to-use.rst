@@ -463,6 +463,33 @@ Once you have finished typing your input, you can press
 to signify that your input has finished. Thanks to (xu-cheng) (2018) for
 an update to this feature.
 
+.. describe:: -r, –replacement
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -r myfile.tex
+    latexindent.pl -replacement myfile.tex
+          
+
+You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to
+perform replacements/substitutions on your file; full details and
+examples are given in :numref:`sec:replacements`.
+
+.. describe:: -rr, –onlyreplacement
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -rr myfile.tex
+    latexindent.pl -onlyreplacement myfile.tex
+          
+
+You can instruct ``latexindent.pl`` to skip all of its other indentation
+operations and *only* perform replacements/substitutions by using the
+``-rr`` switch; full details and examples are given in
+:numref:`sec:replacements`.
+
 .. label follows
 
 .. _sec:arara:

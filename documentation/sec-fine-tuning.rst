@@ -2,7 +2,7 @@
 
 .. _sec:finetuning:
 
-fine tuning
+Fine tuning
 ===========
 
 ``latexindent.pl`` operates by looking for the code blocks detailed in
@@ -23,9 +23,9 @@ and make some fine tuning to ``latexindent.pl``\ ’s operating.
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 572-594
+ 	:lines: 580-601
  	:linenos:
- 	:lineno-start: 572
+ 	:lineno-start: 580
 
 The fields given in :numref:`lst:fineTuning` are all *regular
 expressions*. This manual is not intended to be a tutorial on regular
@@ -62,22 +62,27 @@ We make the following comments with reference to
 
    #. followed by 0 or more characters from ``a-z``, ``A-Z`` and ``@``
 
+   #. the ``?`` the end means *non-greedy*, which means ‘stop the match
+      as soon as possible’
+
 #. the ``keyEqualsValuesBracesBrackets`` contains some interesting
    syntax:
 
    #. ``|`` means ‘or’
 
    #. ``(?:(?<!\\)\{)`` the ``(?:...)`` uses a *non-capturing* group –
-      don’t worry about what this means, but just know that for the
-      ``fineTuning`` feature you should only ever use *non*-capturing
-      groups, and *not* capturing groups, which are simply ``(...)``
+      you don’t necessarily need to worry about what this means, but
+      just know that for the ``fineTuning`` feature you should only ever
+      use *non*-capturing groups, and *not* capturing groups, which are
+      simply ``(...)``
 
    #. ``(?<!\\)\{)`` means a ``{`` but it can *not* be immediately
       preceeded by a ``\``
 
 #. in the ``arguments:before`` field
 
-   #. ``\d\h*`` means a digit, followed by 0 or more horizontal spaces
+   #. ``\d\h*`` means a digit (i.e. a number), followed by 0 or more
+      horizontal spaces
 
    #. ``;?,?`` means *possibly* a semi-colon, and possibly a comma
 
@@ -90,12 +95,62 @@ We make the following comments with reference to
    #. ``betterFullStop`` is in relation to the one sentence per line
       routine, detailed in :numref:`sec:onesentenceperline`
 
-   #. ``doubleBackSlash`` is in relation to the polyswitches surrounding
-      double back slashes, see :numref:`subsec:dbs`
+   #. ``doubleBackSlash`` is in relation to the ``DBSStartsOnOwnLine``
+      and ``DBSFinishesWithLineBreak`` polyswitches surrounding double
+      back slashes, see :numref:`subsec:dbs`
+
+   #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and
+      ``CommaFinishesWithLineBreak`` polyswitches surrounding commas in
+      optional and mandatory arguments; see
+      :numref:`tab:poly-switch-mapping`
 
 It is not obvious from :numref:`lst:fineTuning`, but each of the
 ``follow``, ``before`` and ``between`` fields allow trailing comments,
 line breaks, and horizontal spaces between each character.
+
+As a demonstration, consider the file given in
+:numref:`lst:finetuning1`, together with its default output using the
+command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl finetuning1.tex 
+
+is given in :numref:`lst:finetuning1-default`.
+
+ .. literalinclude:: demonstrations/finetuning1.tex
+ 	:class: .tex
+ 	:caption: ``finetuning1.tex`` 
+ 	:name: lst:finetuning1
+
+ .. literalinclude:: demonstrations/finetuning1-default.tex
+ 	:class: .tex
+ 	:caption: ``finetuning1.tex`` default 
+ 	:name: lst:finetuning1-default
+
+It’s clear from :numref:`lst:finetuning1-default` that the indentation
+scheme has not worked as expected. We can *fine tune* the indentation
+scheme by employing the settings given in :numref:`lst:fine-tuning1`
+and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
+
+and the associated (desired) output is given in
+:numref:`lst:finetuning1-mod1`.
+
+ .. literalinclude:: demonstrations/finetuning1-mod1.tex
+ 	:class: .tex
+ 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
+ 	:name: lst:finetuning1-mod1
+
+ .. literalinclude:: demonstrations/fine-tuning1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``finetuning1.yaml`` 
+ 	:name: lst:fine-tuning1
 
 .. raw:: html
 

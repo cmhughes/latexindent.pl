@@ -567,6 +567,14 @@ modifyLineBreaks:
         VerbatimBeginStartsOnOwnLine: 0
         VerbatimEndFinishesWithLineBreak: 0
 
+# replacements, only active when either -r or -rr switches are active
+replacements:
+  -
+    this: 'latexindent.pl'
+    that: 'pl.latexindent'
+    lookForThis: 1
+    when: before
+
 # fineTuning allows you to tweak the internal pattern matching that 
 # is central to latexindent.pl
 fineTuning:

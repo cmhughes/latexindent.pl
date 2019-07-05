@@ -2080,13 +2080,13 @@ We note that
 -  :numref:`lst:DBS1` specifies ``DBSStartsOnOwnLine`` for *every*
    environment (that is within ``lookForAlignDelims``,
    :numref:`yaml:lookforaligndelims`); the double back slashes from
-   :numref:`lst:dsb-demo` have been moved to their own line in
+   :numref:`lst:dbs-demo` have been moved to their own line in
    :numref:`lst:tabular3-DBS1`;
 
 -  :numref:`lst:DBS2` specifies ``DBSStartsOnOwnLine`` on a *per-name*
    basis for ``tabular`` (that is within ``lookForAlignDelims``,
    :numref:`yaml:lookforaligndelims`); the double back slashes from
-   :numref:`lst:dsb-demo` have been moved to their own line in
+   :numref:`lst:dbs-demo` have been moved to their own line in
    :numref:`lst:tabular3-DBS2`, having added comment symbols before
    moving them.
 
@@ -2133,13 +2133,13 @@ We note that
 -  :numref:`lst:DBS3` specifies ``DBSFinishesWithLineBreak`` for
    *every* environment (that is within ``lookForAlignDelims``,
    :numref:`yaml:lookforaligndelims`); the code following the double
-   back slashes from :numref:`lst:dsb-demo` has been moved to their
+   back slashes from :numref:`lst:dbs-demo` has been moved to their
    own line in :numref:`lst:tabular3-DBS3`;
 
 -  :numref:`lst:DBS4` specifies ``DBSFinishesWithLineBreak`` on a
    *per-name* basis for ``tabular`` (that is within
    ``lookForAlignDelims``, :numref:`yaml:lookforaligndelims`); the
-   first double back slashes from :numref:`lst:dsb-demo` have moved
+   first double back slashes from :numref:`lst:dbs-demo` have moved
    code following them to their own line in
    :numref:`lst:tabular3-DBS4`, having added comment symbols before
    moving them; the final double back slashes have *not* added a line

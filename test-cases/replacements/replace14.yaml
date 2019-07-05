@@ -1,0 +1,15 @@
+replacements:
+  -
+    substitution: |-
+      s/#
+      ( #
+        amet
+        |
+        dolor
+        |
+        ipsum
+        |
+        lorem
+        |
+        nulla
+       )/\\index{$1}/sgxi

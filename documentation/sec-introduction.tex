@@ -86,9 +86,19 @@
 		for more details.
 	\end{minipage}%
 
+	\begin{minipage}{.55\textwidth}
+		\cmhlistingsfromfile*[style=replacements]*{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.4\textwidth}
+		This type of listing is a \texttt{.yaml} file, but it will only
+		be relevant when the \texttt{-r} switch is active; see \vref{sec:replacements}
+		for more details.
+	\end{minipage}%
+
 	% \begin{latexonly}
 	You will occasionally see dates shown in the margin (for example, next to this
-	paragraph!)%%%
+	paragraph!)%
 	\announce{2017-06-25}{announce} which detail the date
 	of the version in which the feature was implemented; the `N' stands for `new as of the
 	date shown' and `U' stands for `updated as of the date shown'. If you see \stardemo, it

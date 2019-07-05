@@ -27,7 +27,7 @@
 \subsection{From the command line}\label{sec:commandline}
 	\texttt{latexindent.pl} has a number of different switches/flags/options, which
 	can be combined in any way that you like, either in short or long form as detailed below.
-	\texttt{latexindent.pl}		    produces a \texttt{.log} file,
+	\texttt{latexindent.pl}				produces a \texttt{.log} file,
 	\texttt{indent.log}, every time it is run; the name of the log file can be customized,
 	but we will refer to the log file as \texttt{indent.log} throughout this document.
 	There is a base of information that is written to \texttt{indent.log}, but other
@@ -54,8 +54,8 @@ latexindent.pl myfile.tex
       \end{commandshell}
 
 	This will operate on \texttt{myfile.tex}, but will simply output to your terminal;
-	\texttt{myfile.tex} will	      not be changed by \texttt{latexindent.pl} in any way
-	using this command.
+	\texttt{myfile.tex} will		  not be changed by \texttt{latexindent.pl} in any
+	way using this command.
 
 \flagbox{-w, --overwrite}
 	\begin{commandshell}
@@ -105,7 +105,7 @@ latexindent.pl myfile.tex -o=output.tex
 \end{commandshell}
 
 	You can call the \texttt{-o} switch using a \texttt{+} symbol at
-	the beginning; this will%%%
+	the beginning; this will%
 	\announce{2017-06-25}{+ sign in o switch}
 	concatenate the name of the input file and the text given to the \texttt{-o}
 	switch. For example, the following two calls to \texttt{latexindent.pl} are equivalent:
@@ -115,7 +115,7 @@ latexindent.pl myfile.tex -o=myfilenew.tex
 \end{commandshell}
 
 	You can call the \texttt{-o} switch using a \texttt{++} symbol at
-	the end of the name%%%
+	the end of the name%
 	\announce{2017-06-25}{++ in o switch} of your output
 	file; this tells \texttt{latexindent.pl} to search successively for the name of your
 	output file concatenated with $0, 1, \ldots$ while the name of the output file
@@ -204,7 +204,7 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	details the name (or names separated by commas) of a YAML file(s) that resides in the
 	same directory as \texttt{myfile.tex}; you can use this option if you would like to
 	load a settings file in the current working directory that is \emph{not}
-	called \texttt{localSettings.yaml}.%%%
+	called \texttt{localSettings.yaml}.%
 	\announce{2017-08-21}*{-l switch absolute paths}
 	In fact, you can specify both \emph{relative} and \emph{absolute paths} for
 	your YAML files; for example
@@ -306,7 +306,7 @@ latexindent.pl myfile.tex -g other.log
 latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
       \end{commandshell}
-	Using this%%%%
+	Using this%
 	\announce{2018-01-13}{screenlog switch created} option tells
 	\texttt{latexindent.pl} to output the log file to the screen, as well as to your chosen
 	log file.
@@ -337,7 +337,7 @@ cat myfile.tex | latexindent.pl
 	\texttt{myfile.tex}, then the above command will output the results of operating upon
 	\texttt{myfile.tex}
 
-	Similarly, if you%%%%
+	Similarly, if you%
 	\announce{2018-01-13}*{no options/filename updated} simply type
 	\texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the
 	command line.
@@ -352,6 +352,39 @@ latexindent.pl
 	\end{itemize}
 	to signify that your input has finished. Thanks to \cite{xu-cheng} for an update
 	to this feature.
+\flagbox{-r, --replacement}
+	\begin{commandshell}
+latexindent.pl -r myfile.tex
+latexindent.pl -replacement myfile.tex
+      \end{commandshell}
+	You can%
+	\announce{new}{replacement mode switch} call
+	\texttt{latexindent.pl} with the \texttt{-r} switch to instruct it to perform
+	replacements/substitutions on your file; full details and examples are given in
+	\vref{sec:replacements}.
+
+\flagbox{-rv, --replacementrespectverb}
+	\begin{commandshell}
+latexindent.pl -rv myfile.tex
+latexindent.pl -replacementrespectverb myfile.tex
+      \end{commandshell}
+	You can%
+	\announce{new}{replacement mode switch, respecting verbatim} instructs
+	\texttt{latexindent.pl} to perform replacements/substitutions by using the
+    \texttt{-rv} switch, but will \emph{respect verbatim code blocks}; full details and examples are given in
+	\vref{sec:replacements}.
+
+\flagbox{-rr, --onlyreplacement}
+	\begin{commandshell}
+latexindent.pl -rr myfile.tex
+latexindent.pl -onlyreplacement myfile.tex
+      \end{commandshell}
+	You can%
+	\announce{new}{replacement (only) mode switch} instructs
+	\texttt{latexindent.pl} to skip all of its other indentation operations and
+	\emph{only} perform replacements/substitutions by using the
+	\texttt{-rr} switch; full details and examples are given in
+	\vref{sec:replacements}.
 
 \subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but others
