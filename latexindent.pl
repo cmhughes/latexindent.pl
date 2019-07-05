@@ -46,6 +46,7 @@ GetOptions (
     "screenlog|sl"=>\$switches{screenlog},
     "replacement|r"=>\$switches{replacement},
     "onlyreplacement|rr"=>\$switches{onlyreplacement},
+    "replacementrespectverb|rv"=>\$switches{replacementRespectVerb},
 );
 
 # check local settings doesn't interfer with reading the file;

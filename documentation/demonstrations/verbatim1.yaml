@@ -1,0 +1,4 @@
+replacements:
+  -
+    this: 'body'
+    that: 'head'

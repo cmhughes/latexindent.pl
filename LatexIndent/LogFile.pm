@@ -82,8 +82,13 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           trailing comments and blank lines can also be added using this feature
       -r,--replacement
           replacement mode, allows you to replace strings and regular expressions
+          verbatim blocks not respected
+      -rv,--replacementrespectverb
+          replacement mode, allows you to replace strings and regular expressions
+          while respecting verbatim code blocks
       -rr,--onlyreplacement
           *only* replacement mode, no indentation
+          verbatim blocks not respected
 ENDQUOTE
     ;
     exit(2);

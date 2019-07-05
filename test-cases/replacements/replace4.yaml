@@ -2,3 +2,4 @@ replacements:
   -
     this: '%%%%'
     that: ''
+    when: after

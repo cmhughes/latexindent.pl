@@ -21,7 +21,7 @@ use utf8;
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
-use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active/;
+use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
@@ -84,7 +84,7 @@ sub operate_on_file{
 
     $self->create_back_up_file;
     $self->token_check;
-    $self->make_replacements(when=>"before") if $is_r_switch_active;
+    $self->make_replacements(when=>"before") if ($is_r_switch_active and !$is_rv_switch_active);
     unless ($is_rr_switch_active){
         $self->construct_regular_expressions;
         $self->find_noindent_block;
@@ -94,6 +94,7 @@ sub operate_on_file{
         $self->find_verbatim_environments;
         $self->find_verbatim_special;
         $self->verbatim_modify_line_breaks if $is_m_switch_active; 
+        $self->make_replacements(when=>"before") if $is_rv_switch_active;
         $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
         $self->protect_blank_lines;
         $self->remove_trailing_whitespace(when=>"before");
@@ -105,10 +106,11 @@ sub operate_on_file{
         $self->condense_blank_lines;
         $self->unprotect_blank_lines;
         $self->un_dodge_double_backslash;
+        $self->make_replacements(when=>"after") if $is_rv_switch_active;
         $self->put_verbatim_back_in (match=>"everything-except-commands");
         $self->put_trailing_comments_back_in;
         $self->put_verbatim_back_in (match=>"just-commands");
-        $self->make_replacements(when=>"after") if $is_r_switch_active;
+        $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
     }
     $self->output_indented_text;
     return

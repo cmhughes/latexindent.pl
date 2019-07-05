@@ -47,5 +47,16 @@ latexindent.pl -s -r test8.tex -l=replace15.yaml -o=+-mod15
 latexindent.pl -s -r test9.tex -l=replace16.yaml -o=+-mod16
 latexindent.pl -s -replacement test9.tex -l=replace17.yaml -o=+-mod17
 
+# verbatim test cases
+latexindent.pl -s -r test10.tex -l=replace14.yaml -o=+-mod14
+latexindent.pl -s -rr test10.tex -l=replace14.yaml -o=+-rr-mod14
+latexindent.pl -s -rv test10.tex -l=replace14.yaml -o=+-rv-mod14
+
+latexindent.pl -s -r test12.tex -l=replace19.yaml,../specials/special-verb1.yaml -o=+-mod19
+latexindent.pl -s -rv test12.tex -l=replace19.yaml,../specials/special-verb1.yaml -o=+-rv-mod19
+
+# strip preamble
+latexindent.pl -s -r test11.tex -l=replace18.yaml -o=+-mod18
+
 git status
 [[ $noisyMode == 1 ]] && makenoise
