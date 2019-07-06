@@ -2,20 +2,50 @@
 
 .. _sec:replacements:
 
-The -r and -rr switches
-=======================
+The -r, -rv and -rr switches
+============================
 
 You can instruct ``latexindent.pl`` to perform
-replacements/substitutions on your file by using either the ``-r`` or
-``-rr`` switches; the only difference between the two switches is that
-the ``-rr`` instructs ``latexindent.pl`` to skip all of the other
-indentation operations.
+replacements/substitutions on your file by using any of the ``-r``,
+``-rv`` or ``-rr`` switches:
+
+-  the ``-r`` switch will perform indentation and replacements, not
+   respecting verbatim code blocks;
+
+-  the ``-rv`` switch will perform indentation and replacements, and
+   *will* respect verbatim code blocks;
+
+-  the ``-rr`` switch will *not* perform indentation, and will perform
+   replacements not respecting verbatim code blocks.
+
+We will demonstrate each of the ``-r``, ``-rv`` and ``-rr`` switches,
+but a summary is given in :numref:`tab:replacementswitches`.
+
+.. label follows
+
+.. _tab:replacementswitches:
+
+.. table::  The replacement mode switches
+
+	
+	
+	+-----------+----------------+-----------------------+
+	| switch    | indentation?   | verbatim respected?   |
+	+===========+================+=======================+
+	| ``-r``    |                |                       |
+	+-----------+----------------+-----------------------+
+	| ``-rv``   |                |                       |
+	+-----------+----------------+-----------------------+
+	| ``-rr``   |                |                       |
+	+-----------+----------------+-----------------------+
+	
+
 
 The default value of the ``replacements`` field is shown in
 :numref:`lst:replacements`; as with all of the other fields, you are
 encouraged to customise and change this as you see fit. The options in
-this field will *only* be considered if either the ``-r`` or ``-rr``
-switch are active; when discussing YAML settings related to either of
+this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr``
+switches are active; when discussing YAML settings related to either of
 the replacement-mode switches, we will use the style given in
 :numref:`lst:replacements`.
 
@@ -126,7 +156,7 @@ then we achieve the output in :numref:`lst:colsep-mod0`.
 
  .. literalinclude:: demonstrations/colsep-mod0.tex
  	:class: .tex
- 	:caption: ``colsep.tex`` using :numref:`lst:colsep-yaml` 
+ 	:caption: ``colsep.tex`` using :numref:`lst:colsep` 
  	:name: lst:colsep-mod0
 
  .. literalinclude:: demonstrations/colsep.yaml
@@ -392,6 +422,64 @@ which gives the output in :numref:`lst:references-mod1`.
 Referencing :numref:`lst:reference`, the ``|`` means *or*, we have
 used *capture groups*, together with an example of an *optional*
 pattern, ``(?:eq)?``.
+
+Let’s explore the three replacement mode switches (see
+:numref:`tab:replacementswitches`) in the context of an example that
+contains a verbatim code block, :numref:`lst:verbatim1`; we will use
+the settings in :numref:`lst:verbatim1-yaml`.
+
+ .. literalinclude:: demonstrations/verbatim1.tex
+ 	:class: .tex
+ 	:caption: ``verbatim1.tex`` 
+ 	:name: lst:verbatim1
+
+ .. literalinclude:: demonstrations/verbatim1.yaml
+ 	:class: .replaceyaml
+ 	:caption: ``verbatim1.yaml`` 
+ 	:name: lst:verbatim1-yaml
+
+Upon running the following commands,
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -r verbatim1.tex -l=verbatim1.yaml -o=+mod1
+    latexindent.pl -rv verbatim1.tex -l=verbatim1.yaml -o=+-rv-mod1
+    latexindent.pl -rr verbatim1.tex -l=verbatim1.yaml -o=+-rr-mod1
+
+we receive the respective output in :numref:`lst:verbatim1-mod1` –
+:numref:`lst:verbatim1-rr-mod1`
+
+ .. literalinclude:: demonstrations/verbatim1-mod1.tex
+ 	:class: .tex
+ 	:caption: ``verbatim1-mod1.tex`` 
+ 	:name: lst:verbatim1-mod1
+
+ .. literalinclude:: demonstrations/verbatim1-rv-mod1.tex
+ 	:class: .tex
+ 	:caption: ``verbatim1-rv-mod1.tex`` 
+ 	:name: lst:verbatim1-rv-mod1
+
+ .. literalinclude:: demonstrations/verbatim1-rr-mod1.tex
+ 	:class: .tex
+ 	:caption: ``verbatim1-rr-mod1.tex`` 
+ 	:name: lst:verbatim1-rr-mod1
+
+We note that:
+
+#. in :numref:`lst:verbatim1-mod1` indentation has been performed, and
+   that the replacements specified in :numref:`lst:verbatim1-yaml`
+   have been performed, even within the verbatim code block;
+
+#. in :numref:`lst:verbatim1-rv-mod1` indentation has been performed,
+   but that the replacements have *not* been performed within the
+   verbatim environment, because the ``rv`` switch is active;
+
+#. in :numref:`lst:verbatim1-rr-mod1` indentation has *not* been
+   performed, but that replacements have been performed, not respecting
+   the verbatim code block.
+
+See the summary within :numref:`tab:replacementswitches`.
 
 .. raw:: html
 

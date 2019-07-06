@@ -476,6 +476,20 @@ You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to
 perform replacements/substitutions on your file; full details and
 examples are given in :numref:`sec:replacements`.
 
+.. describe:: -rv, –replacementrespectverb
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -rv myfile.tex
+    latexindent.pl -replacementrespectverb myfile.tex
+          
+
+You can instruct ``latexindent.pl`` to perform
+replacements/substitutions by using the ``-rv`` switch, but will
+*respect verbatim code blocks*; full details and examples are given in
+:numref:`sec:replacements`.
+
 .. describe:: -rr, –onlyreplacement
 
 .. code-block:: latex
