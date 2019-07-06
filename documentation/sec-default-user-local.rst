@@ -1360,8 +1360,8 @@ we may run the commands
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -local opt-args-no-add-glob.yaml
-    latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
+    latexindent.pl myenv-args.tex -local opt-args-no-add-glob.yaml
+    latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
 
 which produces the respective outputs given in
 :numref:`lst:myenv-args-no-add-opt` and
@@ -1400,8 +1400,8 @@ The final check that ``latexindent.pl`` will make is to look for
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -l env-indentRules.yaml
-    latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
+    latexindent.pl myenv-args.tex -l env-indentRules.yaml
+    latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 
 then the respective output is shown in
 :numref:`lst:myenv-args-indent-rules-global1` and
@@ -1443,8 +1443,8 @@ Upon running the following commands
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -local opt-args-indent-rules-glob.yaml
-    latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
+    latexindent.pl myenv-args.tex -local opt-args-indent-rules-glob.yaml
+    latexindent.pl myenv-args.tex -local mand-args-indent-rules-glob.yaml
 
 we obtain the respective outputs in
 :numref:`lst:myenv-args-indent-rules-global3` and

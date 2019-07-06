@@ -278,7 +278,7 @@ another YAML file; for example:
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl -l=+myyaml.yaml  myfile.tex
+    latexindent.pl -l=+myyaml.yaml myfile.tex
     latexindent.pl -l "+ myyaml.yaml" myfile.tex
     latexindent.pl -l=myyaml.yaml+  myfile.tex
         

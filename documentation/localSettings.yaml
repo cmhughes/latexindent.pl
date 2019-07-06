@@ -75,5 +75,5 @@ replacements:
     substitution: s/\%+/\%/sg
     when: after
   -
-    substitution: s/\}\h+([a-zA-Z])/\} $1/sg
+    substitution: s/(\}|[a-zA-Z])\h+([a-zA-Z])/$1 $2/sg
     when: before

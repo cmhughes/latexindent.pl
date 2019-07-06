@@ -228,7 +228,7 @@ latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 		of capture groups.
 
 		The features of the replacement switches can, of course, be combined with others from the toolkit of \texttt{latexindent.pl}. For example,
-		we can combine the poly-switches  of \vref{sec:poly-switches}, which we do in \cref{lst:equation}; upon running the command
+		we can combine the poly-switches of \vref{sec:poly-switches}, which we do in \cref{lst:equation}; upon running the command
 		\begin{commandshell}
 latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 \end{commandshell}
@@ -286,7 +286,7 @@ latexindent.pl -r references.tex -l=reference.yaml
 
 	\begin{example}
 		Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in the context of
-		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verb1-yaml}.
+		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verbatim1-yaml}.
 
 		\begin{cmhtcbraster}
 			\cmhlistingsfromfile*{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
@@ -313,7 +313,7 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 	We note that:
 	\begin{enumerate}
 		\item in \cref{lst:verb1-mod1} indentation has been performed, and that the replacements
-		      specified in \cref{lst:verb1-yaml} have been performed, even within the verbatim code
+		      specified in \cref{lst:verbatim1-yaml} have been performed, even within the verbatim code
 		      block;
 		\item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements have
 		      \emph{not} been performed within the verbatim environment, because the

@@ -116,7 +116,7 @@ copy myfile.bak4 to myfile.bak3
 		\cmhlistingsfromfile[style=verbatimCommands]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
 	\end{cmhtcbraster}
 
-	Note that if  you put an environment in  \texttt{verbatimEnvironments} and in other fields such
+	Note that if you put an environment in	\texttt{verbatimEnvironments} and in other fields such
 	as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then \texttt{latexindent.pl} will
 	\emph{always} prioritize  \texttt{verbatimEnvironments}.
 
@@ -240,7 +240,7 @@ lookForAlignDelims:
 	\cref{lst:aligndelims:basic} and the \emph{advanced} version in
 	\cref{lst:aligndelims:advanced}; we will discuss each in turn.
 
-	The environments specified in this field will be operated on in a special way  by
+	The environments specified in this field will be operated on in a special way by
 	\texttt{latexindent.pl}. In particular, it will try and align each column by its
 	alignment tabs. It does have some limitations (discussed further in
 	\cref{sec:knownlimitations}), but in many cases it will produce results such as those in
@@ -555,7 +555,7 @@ latexindent.pl special2.tex -l=middle1
 	\texttt{specialBeginEnd} to be treated as verbatim code blocks by changing
 	\texttt{lookForThis} to be \texttt{verbatim}.
 
-	For example, beginning with the code in \cref{lst:special3-mod1} and the YAML  in
+	For example, beginning with the code in \cref{lst:special3-mod1} and the YAML in
 	\cref{lst:special-verb1-yaml}, and running
 	\begin{commandshell}
 latexindent.pl special3.tex -l=special-verb1

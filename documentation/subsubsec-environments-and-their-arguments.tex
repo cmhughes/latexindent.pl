@@ -207,8 +207,8 @@ latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
 
 	we may run the commands
 	\begin{commandshell}
-latexindent.pl  myenv-args.tex -local opt-args-no-add-glob.yaml
-latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
+latexindent.pl myenv-args.tex -local opt-args-no-add-glob.yaml
+latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
 \end{commandshell}
 	which produces the respective outputs given in \cref{lst:myenv-args-no-add-opt,lst:myenv-args-no-add-mand}. Notice that in
 	\cref{lst:myenv-args-no-add-opt} the \emph{optional} argument has not received any
@@ -233,8 +233,8 @@ latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
 	\lstinline!" "!, and then run the following commands
 
 	\begin{commandshell}
-latexindent.pl  myenv-args.tex -l env-indentRules.yaml
-latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
+latexindent.pl myenv-args.tex -l env-indentRules.yaml
+latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 \end{commandshell}
 	then the respective output is shown in \cref{lst:myenv-args-indent-rules-global1,lst:myenv-args-indent-rules-global2}. Note that in
 	\cref{lst:myenv-args-indent-rules-global1}, both the environment blocks have received a single-space
@@ -264,8 +264,8 @@ latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 
 	Upon running the following commands
 	\begin{commandshell}
-latexindent.pl  myenv-args.tex -local opt-args-indent-rules-glob.yaml
-latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
+latexindent.pl myenv-args.tex -local opt-args-indent-rules-glob.yaml
+latexindent.pl myenv-args.tex -local mand-args-indent-rules-glob.yaml
 \end{commandshell}
 	we obtain the respective outputs in \cref{lst:myenv-args-indent-rules-global3,lst:myenv-args-indent-rules-global4}. Note that the
 	\emph{optional} argument in \cref{lst:myenv-args-indent-rules-global3} has received two tabs worth
