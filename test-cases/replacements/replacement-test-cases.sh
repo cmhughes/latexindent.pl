@@ -62,5 +62,9 @@ latexindent.pl -s -r test11.tex -l=replace18.yaml -o=+-mod18
 latexindent.pl -m -s -r test13.tex -l=replace20.yaml -o=+-mod20
 latexindent.pl -m -s -r JHenneberg.tex -l=replace20.yaml -o=+-mod20
 
+# amalgamate test cases
+latexindent.pl -r test7.tex -l=replace21,replace22 -s -o=+-mod2122
+latexindent.pl -r test7.tex -l=replace21,replace23 -s -o=+-mod2123
+latexindent.pl -r test7.tex -l=replace23,replace24 -s -o=+-mod2324
 git status
 [[ $noisyMode == 1 ]] && makenoise

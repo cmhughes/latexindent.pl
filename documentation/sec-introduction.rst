@@ -68,7 +68,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 437. This may
+this version of the documentation, there are a total of 37. This may
 seem a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
@@ -111,7 +111,7 @@ for more details.
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 571-577
+ 	:lines: 571-579
  	:linenos:
  	:lineno-start: 571
 

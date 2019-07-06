@@ -41,7 +41,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
                         {name=>"fineTuning",numberOfLines=>21},
-                        {name=>"replacements",numberOfLines=>6},
+                        {name=>"replacements",numberOfLines=>8},
                       );
 
 # loop through defaultSettings.yaml and count the lines as we go through

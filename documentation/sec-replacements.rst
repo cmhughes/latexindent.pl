@@ -45,17 +45,22 @@ The default value of the ``replacements`` field is shown in
 :numref:`lst:replacements`; as with all of the other fields, you are
 encouraged to customise and change this as you see fit. The options in
 this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr``
-switches are active; when discussing YAML settings related to either of
-the replacement-mode switches, we will use the style given in
+switches are active; when discussing YAML settings related to the
+replacement-mode switches, we will use the style given in
 :numref:`lst:replacements`.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 571-577
+ 	:lines: 571-579
  	:linenos:
  	:lineno-start: 571
+
+The first entry within the ``replacements`` field is ``amalgamate``, and
+is *optional*; by default it is set to 1, so that replacements will be
+amalgamated from each settings file that you specify. As you’ll see in
+the demonstrations that follow, there is no need to specify this field.
 
 You’ll notice that, by default, there is only *one* entry in the
 ``replacements`` field, but it can take as many entries as you would
@@ -103,7 +108,7 @@ which gives the output in :numref:`lst:replace1-mod1`.
 
  .. literalinclude:: demonstrations/replace1-mod1.tex
  	:class: .tex
- 	:caption: ``replace1.tex`` using :numref:`lst:replace1` 
+ 	:caption: ``replace1.tex`` using :numref:`lst:replace1-yaml` 
  	:name: lst:replace1-mod1
 
  .. literalinclude:: demonstrations/replace1.yaml
@@ -166,13 +171,13 @@ Examples of replacements
 	 	:caption: ``colsep.yaml`` 
 	 	:name: lst:colsep-yaml
 	
-	Note that in :numref:`lst:colsep`, we have specified *two* separate
-	fields, each with their own ‘*this*’ field; furthermore, for both of the
-	separate fields, we have not specified ‘``that``’, so the ``that`` field
-	is assumed to be blank by ``latexindent.pl``;
+	Note that in :numref:`lst:colsep-yaml`, we have specified *two*
+	separate fields, each with their own ‘*this*’ field; furthermore, for
+	both of the separate fields, we have not specified ‘``that``’, so the
+	``that`` field is assumed to be blank by ``latexindent.pl``;
 	
-	We can make the YAML in :numref:`lst:colsep` more consise by exploring
-	the ``substitution`` field. Using the settings in
+	We can make the YAML in :numref:`lst:colsep-yaml` more consise by
+	exploring the ``substitution`` field. Using the settings in
 	:numref:`lst:colsep1` and running the command
 	
 	.. code-block:: latex
@@ -244,7 +249,7 @@ Examples of replacements
 	 	:name: lst:multi-line
 	
 	With reference to :numref:`lst:multi-line`, we have specified a
-	*multi-line* version of ``this`` by employing the *literal* style
+	*multi-line* version of ``this`` by employing the *literal* YAML style
 	``|-``. See, for example,
 	https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines
 	for further options, all of which can be used in your YAML file.
@@ -442,13 +447,13 @@ Examples of replacements
 	
 	Let’s explore the three replacement mode switches (see
 	:numref:`tab:replacementswitches`) in the context of an example that
-	contains a verbatim code block, :numref:`lst:verbatim1`; we will use
-	the settings in :numref:`lst:verbatim1-yaml`.
+	contains a verbatim code block, :numref:`lst:verb1`; we will use the
+	settings in :numref:`lst:verb1-yaml`.
 	
-	 .. literalinclude:: demonstrations/verbatim1.tex
+	 .. literalinclude:: demonstrations/verb1.tex
 	 	:class: .tex
-	 	:caption: ``verbatim1.tex`` 
-	 	:name: lst:verbatim1
+	 	:caption: ``verb1.tex`` 
+	 	:name: lst:verb1
 	
 	 .. literalinclude:: demonstrations/verbatim1.yaml
 	 	:class: .replaceyaml
@@ -460,46 +465,117 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r verbatim1.tex -l=verbatim1.yaml -o=+mod1
-	    latexindent.pl -rv verbatim1.tex -l=verbatim1.yaml -o=+-rv-mod1
-	    latexindent.pl -rr verbatim1.tex -l=verbatim1.yaml -o=+-rr-mod1
+	    latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
+	    latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
+	    latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 	
-	we receive the respective output in :numref:`lst:verbatim1-mod1` –
-	:numref:`lst:verbatim1-rr-mod1`
+	we receive the respective output in :numref:`lst:verb1-mod1` –
+	:numref:`lst:verb1-rr-mod1`
 	
-	 .. literalinclude:: demonstrations/verbatim1-mod1.tex
+	 .. literalinclude:: demonstrations/verb1-mod1.tex
 	 	:class: .tex
-	 	:caption: ``verbatim1-mod1.tex`` 
-	 	:name: lst:verbatim1-mod1
+	 	:caption: ``verb1-mod1.tex`` 
+	 	:name: lst:verb1-mod1
 	
-	 .. literalinclude:: demonstrations/verbatim1-rv-mod1.tex
+	 .. literalinclude:: demonstrations/verb1-rv-mod1.tex
 	 	:class: .tex
-	 	:caption: ``verbatim1-rv-mod1.tex`` 
-	 	:name: lst:verbatim1-rv-mod1
+	 	:caption: ``verb1-rv-mod1.tex`` 
+	 	:name: lst:verb1-rv-mod1
 	
-	 .. literalinclude:: demonstrations/verbatim1-rr-mod1.tex
+	 .. literalinclude:: demonstrations/verb1-rr-mod1.tex
 	 	:class: .tex
-	 	:caption: ``verbatim1-rr-mod1.tex`` 
-	 	:name: lst:verbatim1-rr-mod1
+	 	:caption: ``verb1-rr-mod1.tex`` 
+	 	:name: lst:verb1-rr-mod1
 	
 	
 	 
 
 We note that:
 
-#. in :numref:`lst:verbatim1-mod1` indentation has been performed, and
-   that the replacements specified in :numref:`lst:verbatim1-yaml`
-   have been performed, even within the verbatim code block;
+#. in :numref:`lst:verb1-mod1` indentation has been performed, and
+   that the replacements specified in :numref:`lst:verb1-yaml` have
+   been performed, even within the verbatim code block;
 
-#. in :numref:`lst:verbatim1-rv-mod1` indentation has been performed,
-   but that the replacements have *not* been performed within the
-   verbatim environment, because the ``rv`` switch is active;
+#. in :numref:`lst:verb1-rv-mod1` indentation has been performed, but
+   that the replacements have *not* been performed within the verbatim
+   environment, because the ``rv`` switch is active;
 
-#. in :numref:`lst:verbatim1-rr-mod1` indentation has *not* been
+#. in :numref:`lst:verb1-rr-mod1` indentation has *not* been
    performed, but that replacements have been performed, not respecting
    the verbatim code block.
 
 See the summary within :numref:`tab:replacementswitches`.
+
+.. proof:example::	
+	
+	Let’s explore the ``amalgamate`` field from :numref:`lst:replacements`
+	in the context of the file specified in :numref:`lst:amalg1`.
+	
+	 .. literalinclude:: demonstrations/amalg1.tex
+	 	:class: .tex
+	 	:caption: ``amalg1.tex`` 
+	 	:name: lst:amalg1
+	
+	Let’s consider the YAML files given in :numref:`lst:amalg1-yaml` –
+	:numref:`lst:amalg3-yaml`.
+	
+	 .. literalinclude:: demonstrations/amalg1-yaml.yaml
+	 	:class: .replaceyaml
+	 	:caption: ``amalg1-yaml.yaml`` 
+	 	:name: lst:amalg1-yaml
+	
+	 .. literalinclude:: demonstrations/amalg2-yaml.yaml
+	 	:class: .replaceyaml
+	 	:caption: ``amalg2-yaml.yaml`` 
+	 	:name: lst:amalg2-yaml
+	
+	 .. literalinclude:: demonstrations/amalg3-yaml.yaml
+	 	:class: .replaceyaml
+	 	:caption: ``amalg3-yaml.yaml`` 
+	 	:name: lst:amalg3-yaml
+	
+	Upon running the following commands,
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl -r amalg1.tex -l=amalg1-yaml
+	    latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml
+	    latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
+	
+	we receive the respective output in :numref:`lst:amalg1-mod1` –
+	:numref:`lst:amalg1-mod123`.
+	
+	 .. literalinclude:: demonstrations/amalg1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` 
+	 	:name: lst:amalg1-mod1
+	
+	 .. literalinclude:: demonstrations/amalg1-mod12.tex
+	 	:class: .tex
+	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` 
+	 	:name: lst:amalg1-mod12
+	
+	 .. literalinclude:: demonstrations/amalg1-mod123.tex
+	 	:class: .tex
+	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` and :numref:`lst:amalg3-yaml` 
+	 	:name: lst:amalg1-mod123
+	
+	We note that:
+	
+	#. in :numref:`lst:amalg1-mod1` the replacements from
+	   :numref:`lst:amalg1-yaml` have been used;
+	
+	#. in :numref:`lst:amalg1-mod12` the replacements from
+	   :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` have
+	   *both* been used, because the default value of ``amalgamate`` is 1;
+	
+	#. in :numref:`lst:amalg1-mod123` *only* the replacements from
+	   :numref:`lst:amalg3-yaml` have been used, because the value of
+	   ``amalgamate`` has been set to 0.
+	
+	
+	 
 
 .. raw:: html
 

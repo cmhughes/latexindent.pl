@@ -2,5 +2,5 @@ replacements:
   -
     amalgamate: 0
   -
-    this: '\mycommand'
-    that: '\cmh'
+    this: end
+    that: END

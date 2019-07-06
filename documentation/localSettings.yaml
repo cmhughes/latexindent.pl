@@ -69,6 +69,11 @@ removeTrailingWhitespace:
     afterProcessing: 1
 
 replacements:
+  - 
+    amalgamate: 0
   -
     substitution: s/\%+/\%/sg
     when: after
+  -
+    substitution: s/\}\h+([a-zA-Z])/\} $1/sg
+    when: before

@@ -1,5 +1,7 @@
 replacements:
   -
+    amalgamate: 0
+  -
     this: '%%%%'
     that: ''
     when: after

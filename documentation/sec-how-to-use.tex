@@ -27,12 +27,11 @@
 \subsection{From the command line}\label{sec:commandline}
 	\texttt{latexindent.pl} has a number of different switches/flags/options, which
 	can be combined in any way that you like, either in short or long form as detailed below.
-	\texttt{latexindent.pl}				produces a \texttt{.log} file,
-	\texttt{indent.log}, every time it is run; the name of the log file can be customized,
-	but we will refer to the log file as \texttt{indent.log} throughout this document.
-	There is a base of information that is written to \texttt{indent.log}, but other
-	additional information will be written depending on which of the following options are
-	used.
+	\texttt{latexindent.pl} produces a \texttt{.log} file, \texttt{indent.log},
+	every time it is run; the name of the log file can be customized, but we will refer to
+	the log file as \texttt{indent.log} throughout this document. There is a base of
+	information that is written to \texttt{indent.log}, but other additional information
+	will be written depending on which of the following options are used.
 
 \flagbox{-v, --version}
 	\announce{2017-06-25}{version}
@@ -54,8 +53,8 @@ latexindent.pl myfile.tex
       \end{commandshell}
 
 	This will operate on \texttt{myfile.tex}, but will simply output to your terminal;
-	\texttt{myfile.tex} will		  not be changed by \texttt{latexindent.pl} in any
-	way using this command.
+	\texttt{myfile.tex} will			not be changed by \texttt{latexindent.pl}
+	in any way using this command.
 
 \flagbox{-w, --overwrite}
 	\begin{commandshell}
@@ -272,7 +271,7 @@ latexindent.pl -d myfile.tex
 
 	Only \texttt{defaultSettings.yaml}: you might like to read \cref{sec:defuseloc} before using
 	this switch. By default, \texttt{latexindent.pl} will always search for
-	\texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml}  in your home directory. If you would
+	\texttt{indentconfig.yaml} or \texttt{.indentconfig.yaml} in your home directory. If you would
 	prefer it not to do so then (instead of deleting or renaming \texttt{indentconfig.yaml} or
 	\texttt{.indentconfig.yaml}) you can simply call the script with the \texttt{-d}
 	switch; note that this will also tell the script to ignore \texttt{localSettings.yaml} even
@@ -371,8 +370,8 @@ latexindent.pl -replacementrespectverb myfile.tex
 	You can%
 	\announce{new}{replacement mode switch, respecting verbatim} instruct
 	\texttt{latexindent.pl} to perform replacements/substitutions by using the
-    \texttt{-rv} switch, but will \emph{respect verbatim code blocks}; full details and examples are given in
-	\vref{sec:replacements}.
+	\texttt{-rv} switch, but will \emph{respect verbatim code blocks}; full details and
+	examples are given in \vref{sec:replacements}.
 
 \flagbox{-rr, --onlyreplacement}
 	\begin{commandshell}

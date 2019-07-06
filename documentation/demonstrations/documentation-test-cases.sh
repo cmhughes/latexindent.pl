@@ -266,6 +266,8 @@ latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
 latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
 
 # replacement mode demonstrations
+# replacement mode demonstrations
+# replacement mode demonstrations
 latexindent.pl -s -r replace1 -o=+-r1
 latexindent.pl -s -r replace1 -l=replace1.yaml -o=+-mod1
 
@@ -281,10 +283,17 @@ latexindent.pl -s -r phrase -o=+-mod1 -l=hspace.yaml
 
 latexindent.pl -s -r references.tex -o=+-mod1 -l=reference.yaml
 
-latexindent.pl -s -r verb1.tex -o=+-mod1
-latexindent.pl -s -rr verb1.tex -o=+-rr-mod1
-latexindent.pl -s -rv verb1.tex -o=+-rv-mod1
+latexindent.pl -s -r verb1.tex -o=+-mod1 -l=verbatim1
+latexindent.pl -s -rr verb1.tex -o=+-rr-mod1 -l=verbatim1
+latexindent.pl -s -rv verb1.tex -o=+-rv-mod1 -l=verbatim1
 
+# amalgamate demonstrations
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml -o=+-mod1
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg2-yaml.yaml -o=+-mod12
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg3-yaml,amalg3-yaml.yaml -o=+-mod123
+
+# fine tuning
+# fine tuning
 # fine tuning
 latexindent.pl -s finetuning1.tex -o=+-default
 latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1

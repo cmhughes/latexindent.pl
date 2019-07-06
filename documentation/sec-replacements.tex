@@ -6,43 +6,51 @@
  }
 
  You can instruct \texttt{latexindent.pl} to perform replacements/substitutions on your
- file by using any of the \texttt{-r}, \texttt{-rv}  or \texttt{-rr} switches: 
+ file by using any of the \texttt{-r}, \texttt{-rv} or
+ \texttt{-rr} switches:
  \begin{itemize}
-   \item the \texttt{-r} switch will perform indentation and replacements, not respecting verbatim code blocks;
-   \item the \texttt{-rv} switch will perform indentation and replacements, and \emph{will} respect verbatim code blocks;
-   \item the \texttt{-rr} switch will \emph{not} perform indentation,  and will perform replacements not respecting verbatim code blocks.
+	 \item the \texttt{-r} switch will perform indentation and replacements, not
+	       respecting verbatim code blocks;
+	 \item the \texttt{-rv} switch will perform indentation and replacements, and
+	       \emph{will} respect verbatim code blocks;
+	 \item the \texttt{-rr} switch will \emph{not} perform indentation,  and
+	       will perform replacements not respecting verbatim code blocks.
  \end{itemize}
 
- We will demonstrate each of the \texttt{-r}, \texttt{-rv}  and \texttt{-rr} switches, but a summary
- is given in \cref{tab:replacementswitches}.
+ We will demonstrate each of the \texttt{-r}, \texttt{-rv} and
+ \texttt{-rr} switches, but a summary is given in \cref{tab:replacementswitches}.
 
  \begin{table}[!htb]
-   \centering
-   \caption{The replacement mode switches}\label{tab:replacementswitches}
-   \begin{tabular}{rcc}
-    \toprule
-     switch & indentation? & verbatim respected?\\
-     \midrule
-     \texttt{-r} &\faCheck&\faClose\\
-     \texttt{-rv} &\faCheck&\faCheck\\
-     \texttt{-rr} &\faClose&\faClose\\
-     \bottomrule
-   \end{tabular}
+	 \centering
+	 \caption{The replacement mode switches}\label{tab:replacementswitches}
+	 \begin{tabular}{rcc}
+		 \toprule
+		 switch       & indentation? & verbatim respected? \\
+		 \midrule
+		 \texttt{-r}  & \faCheck     & \faClose            \\
+		 \texttt{-rv} & \faCheck     & \faCheck            \\
+		 \texttt{-rr} & \faClose     & \faClose            \\
+		 \bottomrule
+	 \end{tabular}
  \end{table}
 
  The default value of the \texttt{replacements} field is shown in
  \cref{lst:replacements}; as with all of the other fields, you are encouraged to customise
  and change this as you see fit. The options in this field will \emph{only} be
- considered if the \texttt{-r}, \texttt{-rv}  or \texttt{-rr} switches are
- active; when discussing YAML settings related to either of the replacement-mode switches,
- we will use the style given in \cref{lst:replacements}.
+ considered if the \texttt{-r}, \texttt{-rv} or
+ \texttt{-rr} switches are active; when discussing YAML settings related to the
+ replacement-mode switches, we will use the style given in \cref{lst:replacements}.
 
  \cmhlistingsfromfile*[style=replacements]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,replace-TCB]{\texttt{replacements}}{lst:replacements}
+
+ The first entry within the \texttt{replacements} field is \texttt{amalgamate}, and
+ is \emph{optional}; by default it is set to 1, so that replacements will be
+ amalgamated from each settings file that you specify. As you'll see in the demonstrations
+ that follow, there is no need to specify this field.
 
  You'll notice that, by default, there is only \emph{one} entry in the
  \texttt{replacements} field, but it can take as many entries as you would like; each
  one needs to begin with a \texttt{-} on its own line.
-
 
 \subsection{Introduction to replacements}
 	Let's explore the action of the default settings, and then we'll demonstrate the feature
@@ -277,38 +285,83 @@ latexindent.pl -r references.tex -l=reference.yaml
 	\end{example}
 
 	\begin{example}
-      Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in the context of
-      an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verb1-yaml}.
+		Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in the context of
+		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verb1-yaml}.
 
 		\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
+			\cmhlistingsfromfile*{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
 			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/verbatim1.yaml}[replace-TCB]{\texttt{verbatim1.yaml}}{lst:verbatim1-yaml}
 		\end{cmhtcbraster}
 
-        Upon running the following commands,
+		Upon running the following commands,
 		\begin{commandshell}
 latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
 latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
 latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 \end{commandshell}
- we receive the respective output in \crefrange{lst:verb1-mod1}{lst:verb1-rr-mod1}
+		we receive the respective output in \crefrange{lst:verb1-mod1}{lst:verb1-rr-mod1}
 
 		\begin{cmhtcbraster}[raster columns=3,
-          raster left skip=-3.75cm,
+				raster left skip=-3.75cm,
 				raster right skip=-2cm,]
-		\cmhlistingsfromfile*{demonstrations/verb1-mod1.tex}{\texttt{verb1-mod1.tex}}{lst:verb1-mod1}
-		\cmhlistingsfromfile*{demonstrations/verb1-rv-mod1.tex}{\texttt{verb1-rv-mod1.tex}}{lst:verb1-rv-mod1}
-		\cmhlistingsfromfile*{demonstrations/verb1-rr-mod1.tex}{\texttt{verb1-rr-mod1.tex}}{lst:verb1-rr-mod1}
+			\cmhlistingsfromfile*{demonstrations/verb1-mod1.tex}{\texttt{verb1-mod1.tex}}{lst:verb1-mod1}
+			\cmhlistingsfromfile*{demonstrations/verb1-rv-mod1.tex}{\texttt{verb1-rv-mod1.tex}}{lst:verb1-rv-mod1}
+			\cmhlistingsfromfile*{demonstrations/verb1-rr-mod1.tex}{\texttt{verb1-rr-mod1.tex}}{lst:verb1-rr-mod1}
 		\end{cmhtcbraster}
 	\end{example}
 
-    We note that:
-    \begin{enumerate}
-      \item in \cref{lst:verb1-mod1} indentation has been performed, and that the replacements specified in \cref{lst:verb1-yaml}
-        have been performed, even within the verbatim code block;
-      \item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements have \emph{not} been performed 
-        within the verbatim environment, because the \texttt{rv} switch is active;
-      \item in \cref{lst:verb1-rr-mod1}  indentation has \emph{not} been performed, but that replacements have been performed, 
-        not respecting the verbatim code block.
-    \end{enumerate}
-    See the summary within \vref{tab:replacementswitches}.
+	We note that:
+	\begin{enumerate}
+		\item in \cref{lst:verb1-mod1} indentation has been performed, and that the replacements
+		      specified in \cref{lst:verb1-yaml} have been performed, even within the verbatim code
+		      block;
+		\item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements have
+		      \emph{not} been performed within the verbatim environment, because the
+		      \texttt{rv} switch is active;
+		\item in \cref{lst:verb1-rr-mod1} indentation has \emph{not} been performed, but
+		      that replacements have been performed, not respecting the verbatim code block.
+	\end{enumerate}
+	See the summary within \vref{tab:replacementswitches}.
+
+	\begin{example}
+		Let's explore the \texttt{amalgamate} field from \vref{lst:replacements} in the context of the file specified
+		in \cref{lst:amalg1}.
+
+		\cmhlistingsfromfile*{demonstrations/amalg1.tex}{\texttt{amalg1.tex}}{lst:amalg1}
+
+		Let's consider the YAML files given in \crefrange{lst:amalg1-yaml}{lst:amalg3-yaml}.
+
+		\begin{cmhtcbraster}[raster columns=3,
+				raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg1-yaml.yaml}[replace-TCB]{\texttt{amalg1-yaml.yaml}}{lst:amalg1-yaml}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg2-yaml.yaml}[replace-TCB]{\texttt{amalg2-yaml.yaml}}{lst:amalg2-yaml}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg3-yaml.yaml}[replace-TCB]{\texttt{amalg3-yaml.yaml}}{lst:amalg3-yaml}
+		\end{cmhtcbraster}
+
+		Upon running the following commands,
+		\begin{commandshell}
+latexindent.pl -r amalg1.tex -l=amalg1-yaml
+latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml
+latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
+\end{commandshell}
+		we receive the respective output in \crefrange{lst:amalg1-mod1}{lst:amalg1-mod123}.
+
+		\begin{cmhtcbraster}[raster columns=3,
+				raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod1.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml}}{lst:amalg1-mod1}
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod12.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml}}{lst:amalg1-mod12}
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod123.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml,lst:amalg3-yaml}}{lst:amalg1-mod123}
+		\end{cmhtcbraster}
+		We note that:
+		\begin{enumerate}
+			\item in \cref{lst:amalg1-mod1} the replacements from \cref{lst:amalg1-yaml} have been used;
+			\item in \cref{lst:amalg1-mod12} the replacements from \cref{lst:amalg1-yaml,lst:amalg2-yaml} have
+			      \emph{both} been used, because the default value of \texttt{amalgamate}
+			      is 1;
+			\item in \cref{lst:amalg1-mod123}  \emph{only} the replacements from
+			      \cref{lst:amalg3-yaml} have been used, because the value of \texttt{amalgamate} has
+			      been set to 0.
+		\end{enumerate}
+	\end{example}

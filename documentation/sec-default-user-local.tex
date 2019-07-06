@@ -38,7 +38,7 @@ latexindent.pl myfile
 	If you call \texttt{latexindent.pl} with the \texttt{-w} switch (to overwrite
 	\texttt{myfile.tex}) then it will create a backup file before doing any indentation;
 	the default extension is \texttt{.bak}, so, for example,
-	\texttt{myfile.bak0} would be created when calling \texttt{latexindent.pl myfile.tex}  for the
+	\texttt{myfile.bak0} would be created when calling \texttt{latexindent.pl myfile.tex} for the
 	first time.
 
 	By default, every time you subsequently call \texttt{latexindent.pl} with the
@@ -64,8 +64,8 @@ latexindent.pl myfile
 \yamltitle{cycleThroughBackUps}*{integer}
 	Some users may wish to cycle through backup files, by deleting the oldest backup file and
 	keeping only the most recent; for example, with \texttt{maxNumberOfBackUps: 4}, and
-	\texttt{cycleThroughBackUps} set to \texttt{1}	    then the
-	\texttt{copy} procedure given below would be obeyed.
+	\texttt{cycleThroughBackUps} set to \texttt{1} then the \texttt{copy}
+	procedure given below would be obeyed.
 
 	\begin{commandshell}
 copy myfile.bak1 to myfile.bak0
@@ -420,7 +420,7 @@ latexindent.pl matrix1.tex
 	considered \texttt{environments}.
 
 \yamltitle{indentAfterItems}*{fields}
-	The environment names specified in \texttt{indentAfterItems}  tell \texttt{latexindent.pl}
+	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
 	to look for \lstinline!\item! commands; if these switches are set to
 	\texttt{1} then indentation will be performed so as indent the code after
 	each \texttt{item}. A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}

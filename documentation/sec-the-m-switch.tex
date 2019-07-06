@@ -1044,8 +1044,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	horizontal space has been stripped before doing so.
 
 	Let's%
-	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}	now change each
-	of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
+	the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
 	$3$ and save them into \texttt{env-mlb5.yaml} and
 	\texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
 
@@ -1592,17 +1592,17 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\toprule
 		Code block                                      & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                                     & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                                & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                & \verb!body of myenv!$\EndStartsOnOwnLine$                         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                                & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                                & \verb!after words!                                              &                                         &                                                                   \\
+		environment                                     & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                                & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of myenv!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                                & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                                & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                                        & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                                & \verb!\if...!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                & \verb!body of if/or statement!$\OrStartsOnOwnLine$                          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		ifelsefi                                        & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                                & \verb!\if...!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of if/or statement!$\OrStartsOnOwnLine$                         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
 		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                            \\
-		                                                & \verb!\or!$\OrFinishesWithLineBreak$                    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                                & \verb!\or!$\OrFinishesWithLineBreak$                   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                                & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                                & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                                & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
