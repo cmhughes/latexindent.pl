@@ -233,6 +233,9 @@ if(!$readTheDocsMode){
         # warning
         $body =~ s/\\begin\{warning}(.*?)\\end\{warning\}/\\warning\{$1\}\n/sg;
 
+        # example
+        $body =~ s/\\begin\{example}(.*?)\\end\{example\}/\\example\{$1\}\n/sg;
+
         # cross references
         $body =~ s/\\[vVcC]?ref\{(.*?)\}/
                 # check for ,
@@ -351,6 +354,9 @@ if(!$readTheDocsMode){
 
         $body =~ s|\(\*@\$\\EqualsStartsOnOwnLine\$@\*\)|●|gs;
         $body =~ s|\$\\EqualsStartsOnOwnLine\$|●|gs;
+
+        $body =~ s|\\faCheck|yes|gs;
+        $body =~ s|\\faClose|no|gs;
 
         # output the file
         open(OUTPUTFILE,">",$fileName);

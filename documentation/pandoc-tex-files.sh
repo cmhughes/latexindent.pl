@@ -33,5 +33,7 @@ perl -p0i -e 's|(\.\. _tab.*?$)(.*?)^Table:(.*?)$|my $label=$1; my $body=$2; my 
 perl -p0i -e 's/^\h*\|\h*$//mg' ${mainFile}.rst
 # warnings
 perl -p0i -e 's|\.\.\h*warning::(.*?)\.\.\h*endwarning::|my $body=$1; $body=~s/^/\t/mg; "\.\. warning::$body";|sge' ${mainFile}.rst
+# examples
+perl -p0i -e 's|\.\.\h*proof:example::(.*?)\.\.\h*endproof:example::|my $body=$1; $body=~s/^/\t/mg; "\.\. proof:example::$body";|sge' ${mainFile}.rst
 # reset the .tex file
 git checkout ${mainFile}.tex
