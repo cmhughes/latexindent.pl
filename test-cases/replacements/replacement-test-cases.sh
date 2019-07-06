@@ -58,5 +58,9 @@ latexindent.pl -s -rv test12.tex -l=replace19.yaml,../specials/special-verb1.yam
 # strip preamble
 latexindent.pl -s -r test11.tex -l=replace18.yaml -o=+-mod18
 
+# https://github.com/cmhughes/latexindent.pl/issues/14
+latexindent.pl -m -s -r test13.tex -l=replace20.yaml -o=+-mod20
+latexindent.pl -m -s -r JHenneberg.tex -l=replace20.yaml -o=+-mod20
+
 git status
 [[ $noisyMode == 1 ]] && makenoise
