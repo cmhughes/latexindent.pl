@@ -25,11 +25,101 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_body_internal modify_line_breaks_end modify_line_breaks_end_internal adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
 
 
 sub modify_line_breaks_body{
+    my $self = shift;
+    # 
+    # Blank line poly-switch notes (==4)
+    #
+    # when BodyStartsOnOwnLine=4 we adopt the following approach:
+    #   temporarily change BodyStartsOnOwnLine to -1, make a call to the modify_line_breaks_body_internal
+    #   temporarily change BodyStartsOnOwnLine to 3, make a call to the modify_line_breaks_body_internal
+    # switch BodyStartsOnOwnLine back to 4
+
+    if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==4){
+        if ($is_t_switch_active){
+            my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+            $logger->trace("*Blank line poly-switch: $BodyStringLogFile=4");
+            $logger->trace("expect to see two calls, one for -1 and then one for 3");
+        }
+
+        # first call
+        ${$self}{BodyStartsOnOwnLine} = -1;
+        $self->modify_line_breaks_body_internal;
+
+        # second call
+        ${$self}{BodyStartsOnOwnLine} = 3;
+        $self->modify_line_breaks_body_internal;
+
+        # reset switch
+        ${$self}{BodyStartsOnOwnLine} = 4;
+    } else {
+        $self->modify_line_breaks_body_internal;
+    }
+}
+
+sub modify_line_breaks_end{
+    my $self = shift;
+    # 
+    # Blank line poly-switch notes (==4)
+    #
+    # when EndFinishesWithLineBreak=4 we adopt the following approach:
+    #   temporarily change EndFinishesWithLineBreak to -1, make a call to the modify_line_breaks_body_internal
+    #   temporarily change EndFinishesWithLineBreak to 3, make a call to the modify_line_breaks_body_internal
+    # switch EndFinishesWithLineBreak back to 4
+    #
+    # Note: same for EndStartsOnOwnLine
+
+    if( (defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4)
+        or
+        (defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4)
+      ){
+        my $originalEndStartsOnOwnLine = 5;
+        if(defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4){
+            if ($is_t_switch_active){
+                my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
+                $logger->trace("*Blank line poly-switch: $EndStringLogFile=4");
+                $logger->trace("expect to see two calls, one for -1 and then one for 3");
+            }
+            ${$self}{EndStartsOnOwnLine} = -1;
+            $originalEndStartsOnOwnLine = 4;
+        }
+
+        my $originalEndFinishesWithLineBreak = 5;
+        if(defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4){
+            if ($is_t_switch_active){
+                my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                $logger->trace("*Blank line poly-switch: $EndStringLogFile=4");
+                $logger->trace("expect to see two calls, one for -1 and then one for 3");
+            }
+            ${$self}{EndFinishesWithLineBreak} = -1;
+            $originalEndFinishesWithLineBreak = 4;
+        }
+
+        # first call
+        $self->modify_line_breaks_end_internal;
+
+        # second call
+        ${$self}{EndStartsOnOwnLine} = 3 if($originalEndStartsOnOwnLine == 4);
+        if($originalEndFinishesWithLineBreak == 4){
+            ${$self}{EndFinishesWithLineBreak} = 3 ;
+            ${$self}{linebreaksAtEnd}{end} = 0;
+        }
+        $self->modify_line_breaks_end_internal;
+
+        # reset switches
+        ${$self}{EndStartsOnOwnLine} = 4 if($originalEndStartsOnOwnLine == 4);
+        ${$self}{EndFinishesWithLineBreak} = 4 if($originalEndFinishesWithLineBreak == 4);
+    } else {
+        $self->modify_line_breaks_end_internal;
+    }
+}
+
+
+sub modify_line_breaks_body_internal{
     my $self = shift;
     
     # add a line break after \begin{statement} if appropriate
@@ -87,7 +177,7 @@ sub remove_line_breaks_begin{
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 
-sub modify_line_breaks_end{
+sub modify_line_breaks_end_internal{
     my $self = shift;
 
     # possibly modify line break *before* \end{statement}

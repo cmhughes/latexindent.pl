@@ -164,6 +164,10 @@ cd ../fine-tuning
 cd ../replacements
 [[ $silentMode == 1 ]] && echo "./replacement-test-cases.sh"
 ./replacement-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# poly-switch-blank-line test cases (poly-switches = 4)
+cd ../poly-switch-blank-line
+[[ $silentMode == 1 ]] && echo "./poly-switch-blank-line-test-cases.sh"
+./poly-switch-blank-line-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"
