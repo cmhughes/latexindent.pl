@@ -281,9 +281,9 @@ latexindent.pl -s -r phrase -o=+-mod1 -l=hspace.yaml
 
 latexindent.pl -s -r references.tex -o=+-mod1 -l=reference.yaml
 
-latexindent.pl -s -r verbatim1.tex -o=+-mod1
-latexindent.pl -s -rr verbatim1.tex -o=+-rr-mod1
-latexindent.pl -s -rv verbatim1.tex -o=+-rv-mod1
+latexindent.pl -s -r verb1.tex -o=+-mod1
+latexindent.pl -s -rr verb1.tex -o=+-rr-mod1
+latexindent.pl -s -rv verb1.tex -o=+-rv-mod1
 
 # fine tuning
 latexindent.pl -s finetuning1.tex -o=+-default
