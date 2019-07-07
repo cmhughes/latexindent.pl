@@ -25,9 +25,8 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_body_internal modify_line_breaks_end modify_line_breaks_end_internal adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
-
 
 sub modify_line_breaks_body{
     my $self = shift;
@@ -35,110 +34,28 @@ sub modify_line_breaks_body{
     # Blank line poly-switch notes (==4)
     #
     # when BodyStartsOnOwnLine=4 we adopt the following approach:
-    #   temporarily change BodyStartsOnOwnLine to -1, make a call to the modify_line_breaks_body_internal
-    #   temporarily change BodyStartsOnOwnLine to 3, make a call to the modify_line_breaks_body_internal
+    #   temporarily change BodyStartsOnOwnLine to -1, make adjustments
+    #   temporarily change BodyStartsOnOwnLine to 3, make adjustments
     # switch BodyStartsOnOwnLine back to 4
-
-    if(defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine}==4){
-        if ($is_t_switch_active){
-            my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-            $logger->trace("*Blank line poly-switch: $BodyStringLogFile=4");
-            $logger->trace("expect to see two calls, one for -1 and then one for 3");
-        }
-
-        # first call
-        ${$self}{BodyStartsOnOwnLine} = -1;
-        $self->modify_line_breaks_body_internal;
-
-        # second call
-        ${$self}{BodyStartsOnOwnLine} = 3;
-        $self->modify_line_breaks_body_internal;
-
-        # reset switch
-        ${$self}{BodyStartsOnOwnLine} = 4;
-    } else {
-        $self->modify_line_breaks_body_internal;
-    }
-}
-
-sub modify_line_breaks_end{
-    my $self = shift;
-    # 
-    # Blank line poly-switch notes (==4)
-    #
-    # when EndFinishesWithLineBreak=4 we adopt the following approach:
-    #   temporarily change EndFinishesWithLineBreak to -1, make a call to the modify_line_breaks_body_internal
-    #   temporarily change EndFinishesWithLineBreak to 3, make a call to the modify_line_breaks_body_internal
-    # switch EndFinishesWithLineBreak back to 4
-    #
-    # Note: same for EndStartsOnOwnLine
-
-    if( (defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4)
-        or
-        (defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4)
-      ){
-        my $originalEndStartsOnOwnLine = 5;
-        if(defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4){
-            if ($is_t_switch_active){
-                my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
-                $logger->trace("*Blank line poly-switch: $EndStringLogFile=4");
-                $logger->trace("expect to see two calls, one for -1 and then one for 3");
-            }
-            ${$self}{EndStartsOnOwnLine} = -1;
-            $originalEndStartsOnOwnLine = 4;
-        }
-
-        my $originalEndFinishesWithLineBreak = 5;
-        if(defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4){
-            if ($is_t_switch_active){
-                my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-                $logger->trace("*Blank line poly-switch: $EndStringLogFile=4");
-                $logger->trace("expect to see two calls, one for -1 and then one for 3");
-            }
-            ${$self}{EndFinishesWithLineBreak} = -1;
-            $originalEndFinishesWithLineBreak = 4;
-        }
-
-        # first call
-        $self->modify_line_breaks_end_internal;
-
-        # second call
-        ${$self}{EndStartsOnOwnLine} = 3 if($originalEndStartsOnOwnLine == 4);
-        if($originalEndFinishesWithLineBreak == 4){
-            ${$self}{EndFinishesWithLineBreak} = 3 ;
-            ${$self}{linebreaksAtEnd}{end} = 0;
-        }
-        $self->modify_line_breaks_end_internal;
-
-        # reset switches
-        ${$self}{EndStartsOnOwnLine} = 4 if($originalEndStartsOnOwnLine == 4);
-        ${$self}{EndFinishesWithLineBreak} = 4 if($originalEndFinishesWithLineBreak == 4);
-    } else {
-        $self->modify_line_breaks_end_internal;
-    }
-}
-
-
-sub modify_line_breaks_body_internal{
-    my $self = shift;
     
     # add a line break after \begin{statement} if appropriate
-    if(defined ${$self}{BodyStartsOnOwnLine}){
+    my @polySwitchValues = (${$self}{BodyStartsOnOwnLine}==4)?(-1,3):(${$self}{BodyStartsOnOwnLine});
+    foreach(@polySwitchValues){
       my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
-      if(${$self}{BodyStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{begin}){
+      if($_>=1 and !${$self}{linebreaksAtEnd}{begin}){
           # if the <begin> statement doesn't finish with a line break, 
           # then we have different actions based upon the value of BodyStartsOnOwnLine:
           #     BodyStartsOnOwnLine == 1 just add a new line
           #     BodyStartsOnOwnLine == 2 add a comment, and then new line
           #     BodyStartsOnOwnLine == 3 add a blank line, and then new line
-          if(${$self}{BodyStartsOnOwnLine}==1){
+          if($_==1){
             # modify the begin statement
             $logger->trace("Adding a linebreak at the end of begin statement ${$self}{begin} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{begin} .= "\n";       
             ${$self}{linebreaksAtEnd}{begin} = 1;
             $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{body} =~ s/^\h*//;       
-          } elsif(${$self}{BodyStartsOnOwnLine}==2){
+          } elsif($_==2){
             # by default, assume that no trailing comment token is needed
             my $trailingCommentToken = q();
             if(${$self}{body} !~ m/^\h*$trailingCommentRegExp/s){
@@ -153,7 +70,7 @@ sub modify_line_breaks_body_internal{
             } else {
                 $logger->trace("Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another.") if $is_t_switch_active;
             }
-          } elsif (${$self}{BodyStartsOnOwnLine}==3){
+          } elsif ($_==3){
             my $trailingCharacterToken = q();
             $logger->trace("Adding a blank line at the end of begin ${$self}{begin} followed by a linebreak ($BodyStringLogFile == 3)") if $is_t_switch_active;
             ${$self}{begin} =~ s/\h*$//;       
@@ -162,12 +79,12 @@ sub modify_line_breaks_body_internal{
             $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{body} =~ s/^\h*//;       
           } 
-       } elsif (${$self}{BodyStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{begin}){
+       } elsif ($_==-1 and ${$self}{linebreaksAtEnd}{begin}){
           # remove line break *after* begin, if appropriate
           $self->remove_line_breaks_begin;
        }
     }
-  }
+}
 
 sub remove_line_breaks_begin{
     my $self = shift;
@@ -177,89 +94,114 @@ sub remove_line_breaks_begin{
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 
-sub modify_line_breaks_end_internal{
+sub modify_line_breaks_end{
     my $self = shift;
 
-    # possibly modify line break *before* \end{statement}
-    if(defined ${$self}{EndStartsOnOwnLine}){
-          my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
-          if(${$self}{EndStartsOnOwnLine}>=1 and !${$self}{linebreaksAtEnd}{body}){
-              # if the <body> statement doesn't finish with a line break, 
-              # then we have different actions based upon the value of EndStartsOnOwnLine:
-              #     EndStartsOnOwnLine == 1 just add a new line
-              #     EndStartsOnOwnLine == 2 add a comment, and then new line
-              #     EndStartsOnOwnLine == 3 add a blank line, and then new line
-              $logger->trace("Adding a linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
+    # 
+    # Blank line poly-switch notes (==4)
+    #
+    # when EndStartsOnOwnLine=4 we adopt the following approach:
+    #   temporarily change EndStartsOnOwnLine to -1, make adjustments
+    #   temporarily change EndStartsOnOwnLine to 3, make adjustments
+    # switch EndStartsOnOwnLine back to 4
+    #
+    
+    my @polySwitchValues =(defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4) ?(-1,3):(${$self}{EndStartsOnOwnLine});
+    foreach(@polySwitchValues){
+        # possibly modify line break *before* \end{statement}
+        if(defined ${$self}{EndStartsOnOwnLine}){
+              my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
+              if($_>=1 and !${$self}{linebreaksAtEnd}{body}){
+                  # if the <body> statement doesn't finish with a line break, 
+                  # then we have different actions based upon the value of EndStartsOnOwnLine:
+                  #     EndStartsOnOwnLine == 1 just add a new line
+                  #     EndStartsOnOwnLine == 2 add a comment, and then new line
+                  #     EndStartsOnOwnLine == 3 add a blank line, and then new line
+                  $logger->trace("Adding a linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
 
-              # by default, assume that no trailing character token is needed
-              my $trailingCharacterToken = q();
-              if(${$self}{EndStartsOnOwnLine}==2){
-                $logger->trace("Adding a % immediately after body of ${$self}{name} ($EndStringLogFile==2)") if $is_t_switch_active;
-                $trailingCharacterToken = "%".$self->add_comment_symbol;
-                ${$self}{body} =~ s/\h*$//s;
-              } elsif (${$self}{EndStartsOnOwnLine}==3) {
-                $logger->trace("Adding a blank line immediately after body of ${$self}{name} ($EndStringLogFile==3)") if $is_t_switch_active;
-                $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
-                ${$self}{body} =~ s/\h*$//s;
-              }
-              
-              # modified end statement
-              if(${$self}{body} =~ m/^\h*$/s and (defined ${$self}{BodyStartsOnOwnLine}) and ${$self}{BodyStartsOnOwnLine} >=1 ){
-                ${$self}{linebreaksAtEnd}{body} = 0;
-              } else {
-                ${$self}{body} .= "$trailingCharacterToken\n";
-                ${$self}{linebreaksAtEnd}{body} = 1;
-              }
-          } elsif (${$self}{EndStartsOnOwnLine}==-1 and ${$self}{linebreaksAtEnd}{body}){
-              # remove line break *after* body, if appropriate
+                  # by default, assume that no trailing character token is needed
+                  my $trailingCharacterToken = q();
+                  if($_==2){
+                    $logger->trace("Adding a % immediately after body of ${$self}{name} ($EndStringLogFile==2)") if $is_t_switch_active;
+                    $trailingCharacterToken = "%".$self->add_comment_symbol;
+                    ${$self}{body} =~ s/\h*$//s;
+                  } elsif ($_==3) {
+                    $logger->trace("Adding a blank line immediately after body of ${$self}{name} ($EndStringLogFile==3)") if $is_t_switch_active;
+                    $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
+                    ${$self}{body} =~ s/\h*$//s;
+                  }
+                  
+                  # modified end statement
+                  if(${$self}{body} =~ m/^\h*$/s and (defined ${$self}{BodyStartsOnOwnLine}) and ${$self}{BodyStartsOnOwnLine} >=1 ){
+                    ${$self}{linebreaksAtEnd}{body} = 0;
+                  } else {
+                    ${$self}{body} .= "$trailingCharacterToken\n";
+                    ${$self}{linebreaksAtEnd}{body} = 1;
+                  }
+              } elsif ($_==-1 and ${$self}{linebreaksAtEnd}{body}){
+                  # remove line break *after* body, if appropriate
 
-              # check to see that body does *not* finish with blank-line-token, 
-              # if so, then don't remove that final line break
-              if(${$self}{body} !~ m/$tokens{blanklines}$/s){
-                $logger->trace("Removing linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
-                ${$self}{body} =~ s/\R*$//sx;
-                ${$self}{linebreaksAtEnd}{body} = 0;
-              } else {
-                $logger->trace("Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}") if $is_t_switch_active;
+                  # check to see that body does *not* finish with blank-line-token, 
+                  # if so, then don't remove that final line break
+                  if(${$self}{body} !~ m/$tokens{blanklines}$/s){
+                    $logger->trace("Removing linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
+                    ${$self}{body} =~ s/\R*$//sx;
+                    ${$self}{linebreaksAtEnd}{body} = 0;
+                  } else {
+                    $logger->trace("Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}") if $is_t_switch_active;
+                  }
               }
-          }
+        }
     }
 
-    # possibly modify line break *after* \end{statement}
-    if(defined ${$self}{EndFinishesWithLineBreak}
-       and ${$self}{EndFinishesWithLineBreak}>=1 
-       and !${$self}{linebreaksAtEnd}{end}){
-              # if the <end> statement doesn't finish with a line break, 
-              # then we have different actions based upon the value of EndFinishesWithLineBreak:
-              #     EndFinishesWithLineBreak == 1 just add a new line
-              #     EndFinishesWithLineBreak == 2 add a comment, and then new line
-              #     EndFinishesWithLineBreak == 3 add a blank line, and then new line
-              my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
-              if(${$self}{EndFinishesWithLineBreak}==1){
-                $logger->trace("Adding a linebreak at the end of ${$self}{end} ($EndStringLogFile==1)") if $is_t_switch_active;
-                ${$self}{linebreaksAtEnd}{end} = 1;
+    # 
+    # Blank line poly-switch notes (==4)
+    #
+    # when EndFinishesWithLineBreak=4 we adopt the following approach:
+    #   temporarily change EndFinishesWithLineBreak to -1, make adjustments
+    #   temporarily change EndFinishesWithLineBreak to 3, make adjustments
+    # switch EndFinishesWithLineBreak back to 4
+    #
+    @polySwitchValues =(defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4) ?(-1,3):(${$self}{EndFinishesWithLineBreak});
+    foreach(@polySwitchValues){
+        last if !(defined $_);
+        ${$self}{linebreaksAtEnd}{end} = 0 if($_==3 and (defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4));
 
-                # modified end statement
-                ${$self}{replacementText} .= "\n";
-              } elsif(${$self}{EndFinishesWithLineBreak}==2){
-                if(${$self}{endImmediatelyFollowedByComment}){
-                  # no need to add a % if one already exists
-                  $logger->trace("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.") if $is_t_switch_active;
-                } else {
-                  # otherwise, create a trailing comment, and tack it on 
-                  $logger->trace("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)") if $is_t_switch_active;
-                  my $trailingCommentToken = "%".$self->add_comment_symbol;
-                  ${$self}{end} =~ s/\h*$//s;
-                  ${$self}{replacementText} .= "$trailingCommentToken\n";
-                  ${$self}{linebreaksAtEnd}{end} = 1;
-                }
-              } elsif(${$self}{EndFinishesWithLineBreak}==3){
-                $logger->trace("Adding a blank line at the end of ${$self}{end} ($EndStringLogFile==3)") if $is_t_switch_active;
-                ${$self}{linebreaksAtEnd}{end} = 1;
+        # possibly modify line break *after* \end{statement}
+        if(defined $_ and $_>=1 
+           and !${$self}{linebreaksAtEnd}{end}){
+                  # if the <end> statement doesn't finish with a line break, 
+                  # then we have different actions based upon the value of EndFinishesWithLineBreak:
+                  #     EndFinishesWithLineBreak == 1 just add a new line
+                  #     EndFinishesWithLineBreak == 2 add a comment, and then new line
+                  #     EndFinishesWithLineBreak == 3 add a blank line, and then new line
+                  my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
+                  if($_==1){
+                    $logger->trace("Adding a linebreak at the end of ${$self}{end} ($EndStringLogFile==1)") if $is_t_switch_active;
+                    ${$self}{linebreaksAtEnd}{end} = 1;
 
-                # modified end statement
-                ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
-              } 
+                    # modified end statement
+                    ${$self}{replacementText} .= "\n";
+                  } elsif($_==2){
+                    if(${$self}{endImmediatelyFollowedByComment}){
+                      # no need to add a % if one already exists
+                      $logger->trace("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.") if $is_t_switch_active;
+                    } else {
+                      # otherwise, create a trailing comment, and tack it on 
+                      $logger->trace("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)") if $is_t_switch_active;
+                      my $trailingCommentToken = "%".$self->add_comment_symbol;
+                      ${$self}{end} =~ s/\h*$//s;
+                      ${$self}{replacementText} .= "$trailingCommentToken\n";
+                      ${$self}{linebreaksAtEnd}{end} = 1;
+                    }
+                  } elsif($_==3){
+                    $logger->trace("Adding a blank line at the end of ${$self}{end} ($EndStringLogFile==3)") if $is_t_switch_active;
+                    ${$self}{linebreaksAtEnd}{end} = 1;
+
+                    # modified end statement
+                    ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
+                  } 
+        }
     }
 
 }
