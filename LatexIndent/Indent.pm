@@ -325,40 +325,57 @@ sub indent_children_recursively{
                 if(defined ${$child}{BeginStartsOnOwnLine}){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
 
-                    # if the child ID is not the first character and BeginStartsOnOwnLine>=1 
-                    # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
-                    if(${$child}{BeginStartsOnOwnLine}>=1 and !$IDFirstNonWhiteSpaceCharacter){
-                        # by default, assume that no trailing comment token is needed
-                        my $trailingCharacterToken = q();
-                        if(${$child}{BeginStartsOnOwnLine}==2){
-                            $logger->trace("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            ${$self}{body} =~ s/\h*${$child}{idRegExp}/${$child}{id}/s;
-                            $logger->trace("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
-                            $trailingCharacterToken = "%".$self->add_comment_symbol;
-                        } elsif (${$child}{BeginStartsOnOwnLine}==3){
-                            $logger->trace("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
-                            $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
-                        } else {
-                            $logger->trace("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
-                        }
+                    # 
+                    # Blank line poly-switch notes (==4)
+                    #
+                    # when BeginStartsOnOwnLine=4 we adopt the following approach:
+                    #   temporarily change BeginStartsOnOwnLine to -1, make adjustments
+                    #   temporarily change BeginStartsOnOwnLine to 3, make adjustments
+                    #
+                    # we use an array, @polySwitchValues to facilitate this
+                    my @polySwitchValues = (${$child}{BeginStartsOnOwnLine}==4)?(-1,3):(${$child}{BeginStartsOnOwnLine});
 
-                        # the trailing comment/linebreak magic
-                        ${$child}{begin} = "$trailingCharacterToken\n".${$child}{begin};
-                        $child->add_surrounding_indentation_to_begin_statement;
+                    foreach(@polySwitchValues){
+                        # if BeginStartsOnOwnLine is 4, then we hack 
+                        #       $IDFirstNonWhiteSpaceCharacter 
+                        # to be 0 on the second time through (poly-switch set to 3)
+                        $IDFirstNonWhiteSpaceCharacter = 0 if (${$child}{BeginStartsOnOwnLine}==4 and $_==3);
 
-                        # remove surrounding indentation ahead of %
-                        ${$child}{begin} =~ s/^(\h*)%/%/ if(${$child}{BeginStartsOnOwnLine}==2);
-                    } elsif (${$child}{BeginStartsOnOwnLine}==-1 and $IDFirstNonWhiteSpaceCharacter){
-                        # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
-                        # important to check we don't move the begin statement next to a blank-line-token
-                        my $blankLineToken = $tokens{blanklines};
-                        if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{idRegExp}/s){
-                            $logger->trace("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)") if $is_t_switch_active;
-                            ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{idRegExp}/$1${$child}{id}/s;
-                        } else {
-                            $logger->trace("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
+                        # if the child ID is not the first character and BeginStartsOnOwnLine>=1 
+                        # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
+                        if($_>=1 and !$IDFirstNonWhiteSpaceCharacter){
+                            # by default, assume that no trailing comment token is needed
+                            my $trailingCharacterToken = q();
+                            if($_==2){
+                                $logger->trace("Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)") if $is_t_switch_active;
+                                ${$self}{body} =~ s/\h*${$child}{idRegExp}/${$child}{id}/s;
+                                $logger->trace("Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)") if $is_t_switch_active;
+                                $trailingCharacterToken = "%".$self->add_comment_symbol;
+                            } elsif ($_==3){
+                                $logger->trace("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
+                                $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
+                            } else {
+                                $logger->trace("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
+                            }
+
+                            # the trailing comment/linebreak magic
+                            ${$child}{begin} = "$trailingCharacterToken\n".${$child}{begin};
+                            $child->add_surrounding_indentation_to_begin_statement;
+
+                            # remove surrounding indentation ahead of %
+                            ${$child}{begin} =~ s/^(\h*)%/%/ if($_==2);
+                        } elsif ($_==-1 and $IDFirstNonWhiteSpaceCharacter){
+                            # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
+                            # important to check we don't move the begin statement next to a blank-line-token
+                            my $blankLineToken = $tokens{blanklines};
+                            if(${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{idRegExp}/s){
+                                $logger->trace("Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)") if $is_t_switch_active;
+                                ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{idRegExp}/$1${$child}{id}/s;
+                            } else {
+                                $logger->trace("Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)") if $is_t_switch_active;
+                            }
                         }
-                    }
+                     }
                 }
 
                 $logger->trace(Dumper(\%{$child})) if($is_tt_switch_active);

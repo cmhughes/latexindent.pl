@@ -1423,7 +1423,11 @@ and can take one of *five* integer values:
 -  *add then blank line mode* : a line break will be added before or
    after the *<part of thing>* under consideration, assuming that there
    is not already a line break before or after the *<part of thing>*,
-   followed by a blank line.
+   followed by a blank line;
+
+-  *add blank line mode* ; a blank line will be added before or after
+   the *<part of thing>* under consideration, even if the *<part of
+   thing>* is already on its own line.
 
 In the above, *<part of thing>* refers to either the *begin statement*,
 *body* or *end statement* of the code blocks detailed in
@@ -1580,6 +1584,61 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod1`
 and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been
 added after adding the line break.
 
+Let’s now change each of the ``1`` values in :numref:`lst:env-mlb5`
+and :numref:`lst:env-mlb6` so that they are :math:`4` and save them
+into ``env-beg4.yaml`` and ``env-body4.yaml`` respectively (see
+:numref:`lst:env-beg4` and :numref:`lst:env-body4`).
+
+ .. literalinclude:: demonstrations/env-beg4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-beg4.yaml`` 
+ 	:name: lst:env-beg4
+
+ .. literalinclude:: demonstrations/env-body4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-body4.yaml`` 
+ 	:name: lst:env-body4
+
+We will demonstrate this poly-switch value using the code in
+:numref:`lst:env-mlb1-text`.
+
+ .. literalinclude:: demonstrations/env-mlb1.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` 
+ 	:name: lst:env-mlb1-text
+
+Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
+    latexindent.pl -m env-mlb.1tex -l env-body4.yaml
+
+then we receive the respective outputs in :numref:`lst:env-mlb1-beg4`
+and :numref:`lst:env-mlb1-body4`.
+
+ .. literalinclude:: demonstrations/env-mlb1-beg4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-beg4` 
+ 	:name: lst:env-mlb1-beg4
+
+ .. literalinclude:: demonstrations/env-mlb1-body4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-body4` 
+ 	:name: lst:env-mlb1-body4
+
+We note in particular that, by design, for this value of the
+poly-switches:
+
+#. in :numref:`lst:env-mlb1-beg4` a blank line has been inserted
+   before the ``\begin`` statement, even though the ``\begin`` statement
+   was already on its own line;
+
+#. in :numref:`lst:env-mlb1-body4` a blank line has been inserted
+   before the beginning of the *body*, even though it already began on
+   its own line.
+
 Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1694,14 +1753,64 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod7`
 and :numref:`lst:env-mlb-mod8`, and that a *blank line* has been added
 after the line break.
 
-poly-switches only add line breaks when necessary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Let’s now change each of the ``1`` values in :numref:`lst:env-mlb11`
+and :numref:`lst:env-mlb12` so that they are :math:`4` and save them
+into ``env-end4.yaml`` and ``env-end-f4.yaml`` respectively (see
+:numref:`lst:env-end4` and :numref:`lst:env-end-f4`).
+
+ .. literalinclude:: demonstrations/env-end4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-end4.yaml`` 
+ 	:name: lst:env-end4
+
+ .. literalinclude:: demonstrations/env-end-f4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-end-f4.yaml`` 
+ 	:name: lst:env-end-f4
+
+We will demonstrate this poly-switch value using the code from
+:numref:`lst:env-mlb1-text`.
+
+Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m env-mlb1.tex -l env-end4.yaml
+    latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
+
+then we receive the respective outputs in :numref:`lst:env-mlb1-end4`
+and :numref:`lst:env-mlb1-end-f4`.
+
+ .. literalinclude:: demonstrations/env-mlb1-end4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end4` 
+ 	:name: lst:env-mlb1-end4
+
+ .. literalinclude:: demonstrations/env-mlb1-end-f4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end-f4` 
+ 	:name: lst:env-mlb1-end-f4
+
+We note in particular that, by design, for this value of the
+poly-switches:
+
+#. in :numref:`lst:env-mlb1-end4` a blank line has been inserted
+   before the ``\end`` statement, even though the ``\end`` statement was
+   already on its own line;
+
+#. in :numref:`lst:env-mlb1-end-f4` a blank line has been inserted
+   after the ``\end`` statement, even though it already began on its own
+   line.
+
+poly-switches 1, 2, and 3 only add line breaks when necessary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you ask ``latexindent.pl`` to add a line break (possibly with a
-comment) using a poly-switch value of :math:`1` (or :math:`2`), it will
-only do so if necessary. For example, if you process the file in
-:numref:`lst:mlb2` using any of the YAML files presented so far in
-this section, it will be left unchanged.
+comment) using a poly-switch value of :math:`1` (or :math:`2` or
+:math:`3`), it will only do so if necessary. For example, if you process
+the file in :numref:`lst:mlb2` using any of the YAML files presented
+so far in this section, it will be left unchanged.
 
  .. literalinclude:: demonstrations/env-mlb2.tex
  	:class: .tex
@@ -1712,6 +1821,12 @@ this section, it will be left unchanged.
  	:class: .tex
  	:caption: ``env-mlb3.tex`` 
  	:name: lst:mlb3
+
+Setting the poly-switches to a value of :math:`4` instructs
+``latexindent.pl`` to add a line break even if the *<part of thing>* is
+already on its own line; see :numref:`lst:env-mlb1-beg4` and
+:numref:`lst:env-mlb1-body4` and :numref:`lst:env-mlb1-end4` and
+:numref:`lst:env-mlb1-end-f4`.
 
 In contrast, the output from processing the file in :numref:`lst:mlb3`
 will vary depending on the poly-switches used; in

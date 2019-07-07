@@ -343,7 +343,7 @@ sub tasks_common_to_each_object{
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_body if $is_m_switch_active;
+    $self->modify_line_breaks_body if ($is_m_switch_active and defined ${$self}{BodyStartsOnOwnLine});
 
     # modify line breaks end statements
     $self->modify_line_breaks_end if $is_m_switch_active;
