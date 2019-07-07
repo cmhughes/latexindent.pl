@@ -2521,7 +2521,7 @@ settings given in :numref:`lst:foreach`.
 .. describe:: commandNameSpecial:fields
 
 There are some special command names that do not fit within the names
-recognized by ``latexindent.pl``, the first one of which is
+recognised by ``latexindent.pl``, the first one of which is
 ``\@ifnextchar[``. From the perspective of ``latexindent.pl``, the whole
 of the text ``\@ifnextchar[`` is a command, because it is immediately
 followed by sets of mandatory arguments. However, without the

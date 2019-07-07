@@ -34,7 +34,7 @@ future.
 
 There are other limitations to do with the multicolumn alignment routine
 (see :numref:`lst:tabular2-mod2`); in particular, when working with
-codeblocks in which multicolumn commands overlap, the algorithm can
+code blocks in which multicolumn commands overlap, the algorithm can
 fail.
 
 Another limitation is to do with efficiency, particularly when the

@@ -174,7 +174,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
 	\end{widepage}
 
-	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
+	With reference to this code block, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
 	give the same output.
 
 	\begin{cmhtcbraster}[raster columns=3,
@@ -319,7 +319,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 	\texttt{80} will be used.
 
 	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming
-	that text wrapping is occuring on a per-code-block basis, and the current
+	that text wrapping is occurring on a per-code-block basis, and the current
 	environment/code block is specified within \vref{lst:aligndelims:basic} then text wrapping
 	will be disabled for this code block.
 
@@ -362,7 +362,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \yamltitle{removeSentenceLineBreaks}{0|1}
 	When operating upon sentences \texttt{latexindent.pl} will, by default, remove
-	internal linebreaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}.
+	internal line breaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}.
 	Setting this switch to \texttt{0} instructs \texttt{latexindent.pl}
 	not to do so.
 
@@ -394,7 +394,7 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	not been removed in \cref{lst:multiple-sentences-mod2}.
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
-	\texttt{latexindent.pl} on how to define a sentence. From the perpesctive of
+	\texttt{latexindent.pl} on how to define a sentence. From the perspective of
 	\texttt{latexindent.pl} a sentence must:
 	\begin{itemize}
 		\item \emph{follow} a certain character or set of characters (see
@@ -560,7 +560,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	\emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
-	it does not accomodate the specifications above. For example, using the following command
+	it does not accommodate the specifications above. For example, using the following command
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -576,7 +576,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 	\end{cmhtcbraster}
 
-	Notice that the full stop within the URL has not been accomodated correctly because of
+	Notice that the full stop within the URL has not been accommodated correctly because of
 	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the oneSentencePerLine routine}
@@ -605,7 +605,7 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
 	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
-	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the
+	Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
 	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
 	and the command
 	\begin{commandshell}
@@ -799,7 +799,7 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	\cmhlistingsfromfile{demonstrations/shortlines-envs2.tex}{\texttt{shortlines-envs2.tex}}{lst:shortlines-envs2}
 	\cmhlistingsfromfile{demonstrations/shortlines-envs3.tex}{\texttt{shortlines-envs3.tex}}{lst:shortlines-envs3}
 
-	The remaining code-block types can be customized in analogous ways, although note that
+	The remaining code-block types can be customised in analogous ways, although note that
 	\texttt{commands}, \texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets},
 	\texttt{UnNamedGroupingBracesBrackets} are controlled by the \texttt{optionalArguments} and the
 	\texttt{mandatoryArguments}.
@@ -920,7 +920,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		\cmhlistingsfromfile{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
 	\end{cmhtcbraster}
 
-	In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from
+	In \cref{lst:textwrap7-mod12} the paragraph line breaks have first been removed from
 	\cref{lst:textwrap7}, and then the text wrapping routine has been applied. It is
 	envisaged that variants of \cref{lst:textwrap12-yaml} will be among the most useful
 	settings for these two features.
@@ -1257,8 +1257,8 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
 	If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment)
 	using a poly-switch value of $1$ (or $2$
 	or $3$), it will only do so if necessary. For example, if you
-	process the file in \vref{lst:mlb2} using any of the YAML files presented so
-	far in this section, it will be left unchanged.
+	process the file in \vref{lst:mlb2} using poly-switch values of 1, 2, or 3,
+	it will be left unchanged.
 
 	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb2.tex}{\texttt{env-mlb2.tex}}{lst:mlb2}
@@ -1500,7 +1500,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		\item \texttt{DBS} stands for \emph{double back slash};
 		\item line breaks ahead of the double back slash are annotated by $\ElseStartsOnOwnLine$,
 		      and are controlled by \texttt{DBSStartsOnOwnLine};
-		\item libe breaks after the double back slash are annotated by $\ElseFinishesWithLineBreak$, and
+		\item line breaks after the double back slash are annotated by $\ElseFinishesWithLineBreak$, and
 		      are controlled by \texttt{DBSFinishesWithLineBreak}.
 	\end{itemize}
 
@@ -1542,7 +1542,7 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 	\end{itemize}
 
 \subsubsection{Double back slash finishes with line break}
-	Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$); starting with the code in
+	Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in \cref{lst:dbs-demo}); starting with the code in
 	\cref{lst:dbs-demo}, together with the YAML files given in
 	\cref{lst:DBS3} and \cref{lst:DBS4} and running the following
 	commands

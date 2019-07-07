@@ -125,7 +125,7 @@ latexindent.pl -r colsep.tex -l=colsep.yaml
 		furthermore, for both of the separate fields, we have not specified `\texttt{that}', so the \texttt{that} field
 		is assumed to be blank by \texttt{latexindent.pl};
 
-		We can make the YAML in \cref{lst:colsep-yaml} more consise by exploring the \texttt{substitution} field. Using
+		We can make the YAML in \cref{lst:colsep-yaml} more concise by exploring the \texttt{substitution} field. Using
 		the settings in \cref{lst:colsep1} and running the command
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=colsep1.yaml
@@ -138,7 +138,7 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
 		\end{cmhtcbraster}
 
-		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbrieviate to \emph{regex}
+		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbreviate to \emph{regex}
 		in what follows.  This manual is not intended to be
 		a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
 		covering of the topic. With reference to \cref{lst:colsep1}, we do note the following:
@@ -253,7 +253,7 @@ latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 
 		\cmhlistingsfromfile*{demonstrations/phrase.tex}{\texttt{phrase.tex}}{lst:phrase}
 
-		Our goal is to make the spacing uniform between the phrases. To achieve this, we emply the settings in \cref{lst:hspace},
+		Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in \cref{lst:hspace},
 		and run the command
 		\begin{commandshell}
 latexindent.pl -r phrase.tex -l=hspace.yaml

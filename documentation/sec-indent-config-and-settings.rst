@@ -77,7 +77,7 @@ documentation.
 
 You can make sure that your settings are loaded by checking
 ``indent.log`` for details – if you have specified a path that
-``latexindent.pl`` doesn’t recognize then you’ll get a warning,
+``latexindent.pl`` doesn’t recognise then you’ll get a warning,
 otherwise you’ll get confirmation that ``latexindent.pl`` has read your
 settings file. [2]_
 

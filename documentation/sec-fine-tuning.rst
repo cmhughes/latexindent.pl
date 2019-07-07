@@ -77,7 +77,7 @@ We make the following comments with reference to
       simply ``(...)``
 
    #. ``(?<!\\)\{)`` means a ``{`` but it can *not* be immediately
-      preceeded by a ``\``
+      preceded by a ``\``
 
 #. in the ``arguments:before`` field
 

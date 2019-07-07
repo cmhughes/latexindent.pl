@@ -179,7 +179,7 @@ Examples of replacements
 	both of the separate fields, we have not specified ‘``that``’, so the
 	``that`` field is assumed to be blank by ``latexindent.pl``;
 	
-	We can make the YAML in :numref:`lst:colsep-yaml` more consise by
+	We can make the YAML in :numref:`lst:colsep-yaml` more concise by
 	exploring the ``substitution`` field. Using the settings in
 	:numref:`lst:colsep1` and running the command
 	
@@ -201,7 +201,7 @@ Examples of replacements
 	 	:name: lst:colsep1
 	
 	The code given in :numref:`lst:colsep1` is an example of a *regular
-	expression*, which we may abbrieviate to *regex* in what follows. This
+	expression*, which we may abbreviate to *regex* in what follows. This
 	manual is not intended to be a tutorial on regular expressions; you
 	might like to read, for example, Friedl (n.d.) for a detailed covering
 	of the topic. With reference to :numref:`lst:colsep1`, we do note the
@@ -388,7 +388,7 @@ Examples of replacements
 	 	:name: lst:phrase
 	
 	Our goal is to make the spacing uniform between the phrases. To achieve
-	this, we emply the settings in :numref:`lst:hspace`, and run the
+	this, we employ the settings in :numref:`lst:hspace`, and run the
 	command
 	
 	.. code-block:: latex

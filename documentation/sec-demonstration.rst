@@ -9,7 +9,7 @@ youtube (“Video Demonstration of Latexindent.pl on Youtube” 2017)
 As you look at :numref:`lst:filecontentsbefore` –
 :numref:`lst:pstricksafter`, remember that ``latexindent.pl`` is just
 following its rules, and there is nothing particular about these code
-snippets. All of the rules can be modified so that you can personalize
+snippets. All of the rules can be modified so that you can personalise
 your indentation scheme.
 
 In each of the samples given in :numref:`lst:filecontentsbefore` –

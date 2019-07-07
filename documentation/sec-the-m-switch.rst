@@ -245,7 +245,7 @@ considered part of the ``masterDocument``.
  	:caption: ``textwrap5.tex`` 
  	:name: lst:textwrap5
 
-With reference to this codeblock, the settings given in
+With reference to this code block, the settings given in
 :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and
 :numref:`lst:textwrap5-yaml` each give the same output.
 
@@ -454,7 +454,7 @@ the ``default`` value from ``columns`` will be inherited; if you don’t
 specify a default value for ``columns`` then ``80`` will be used.
 
 ``alignAtAmpersandTakesPriority`` is set to ``1`` by default; assuming
-that text wrapping is occuring on a per-code-block basis, and the
+that text wrapping is occurring on a per-code-block basis, and the
 current environment/code block is specified within
 :numref:`lst:aligndelims:basic` then text wrapping will be disabled
 for this code block.
@@ -516,7 +516,7 @@ want the script to modify line breaks surrounding and within sentences.
 .. describe:: removeSentenceLineBreaks:0\|1
 
 When operating upon sentences ``latexindent.pl`` will, by default,
-remove internal linebreaks as ``removeSentenceLineBreaks`` is set to
+remove internal line breaks as ``removeSentenceLineBreaks`` is set to
 ``1``. Setting this switch to ``0`` instructs ``latexindent.pl`` not to
 do so.
 
@@ -569,7 +569,7 @@ Notice, in particular, that the ‘internal’ sentence line breaks in
 
 The remainder of the settings displayed in
 :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to
-define a sentence. From the perpesctive of ``latexindent.pl`` a sentence
+define a sentence. From the perspective of ``latexindent.pl`` a sentence
 must:
 
 -  *follow* a certain character or set of characters (see
@@ -823,7 +823,7 @@ experiment with the ``other`` field. You can also seek to customise the
 :numref:`lst:fineTuning`.
 
 The ``basicFullStop`` routine should probably be avoided in most
-situations, as it does not accomodate the specifications above. For
+situations, as it does not accommodate the specifications above. For
 example, using the following command
 
 .. code-block:: latex
@@ -844,7 +844,7 @@ and the YAML in :numref:`lst:alt-full-stop1-yaml` gives the output in
  	:caption: ``alt-full-stop1.yaml`` 
  	:name: lst:alt-full-stop1-yaml
 
-Notice that the full stop within the URL has not been accomodated
+Notice that the full stop within the URL has not been accommodated
 correctly because of the non-default settings in
 :numref:`lst:alt-full-stop1-yaml`.
 
@@ -908,8 +908,8 @@ and :numref:`lst:multiple-sentences4-mod2`.
  	:name: lst:multiple-sentences4-mod2
 
 Once you’ve read :numref:`sec:poly-switches`, you will know that you
-can accomodate the removal of internal sentence line breaks by using the
-YAML in :numref:`lst:item-rules2-yaml` and the command
+can accommodate the removal of internal sentence line breaks by using
+the YAML in :numref:`lst:item-rules2-yaml` and the command
 
 .. code-block:: latex
    :class: .commandshell
@@ -1208,7 +1208,7 @@ then we obtain the respective output given in
  	:caption: ``shortlines-envs3.tex`` 
  	:name: lst:shortlines-envs3
 
-The remaining code-block types can be customized in analogous ways,
+The remaining code-block types can be customised in analogous ways,
 although note that ``commands``, ``keyEqualsValuesBracesBrackets``,
 ``namedGroupingBracesBrackets``, ``UnNamedGroupingBracesBrackets`` are
 controlled by the ``optionalArguments`` and the ``mandatoryArguments``.
@@ -1389,7 +1389,7 @@ we obtain the output in :numref:`lst:textwrap7-mod12`.
  	:caption: ``textwrap12.yaml`` 
  	:name: lst:textwrap12-yaml
 
-In :numref:`lst:textwrap7-mod12` the paragraph linebreaks have first
+In :numref:`lst:textwrap7-mod12` the paragraph line breaks have first
 been removed from :numref:`lst:textwrap7`, and then the text wrapping
 routine has been applied. It is envisaged that variants of
 :numref:`lst:textwrap12-yaml` will be among the most useful settings
@@ -1809,8 +1809,8 @@ poly-switches 1, 2, and 3 only add line breaks when necessary
 If you ask ``latexindent.pl`` to add a line break (possibly with a
 comment) using a poly-switch value of :math:`1` (or :math:`2` or
 :math:`3`), it will only do so if necessary. For example, if you process
-the file in :numref:`lst:mlb2` using any of the YAML files presented
-so far in this section, it will be left unchanged.
+the file in :numref:`lst:mlb2` using poly-switch values of 1, 2, or 3,
+it will be left unchanged.
 
  .. literalinclude:: demonstrations/env-mlb2.tex
  	:class: .tex
@@ -2147,7 +2147,7 @@ Referencing :numref:`lst:dbs-demo`:
 -  line breaks ahead of the double back slash are annotated by ★, and
    are controlled by ``DBSStartsOnOwnLine``;
 
--  libe breaks after the double back slash are annotated by □, and are
+-  line breaks after the double back slash are annotated by □, and are
    controlled by ``DBSFinishesWithLineBreak``.
 
 Let’s explore each of these in turn.
@@ -2208,8 +2208,9 @@ We note that
 Double back slash finishes with line break
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let’s now explore ``DBSFinishesWithLineBreak`` (□); starting with the
-code in :numref:`lst:dbs-demo`, together with the YAML files given in
+Let’s now explore ``DBSFinishesWithLineBreak`` (□ in
+:numref:`lst:dbs-demo`); starting with the code in
+:numref:`lst:dbs-demo`, together with the YAML files given in
 :numref:`lst:DBS3` and :numref:`lst:DBS4` and running the following
 commands
 
