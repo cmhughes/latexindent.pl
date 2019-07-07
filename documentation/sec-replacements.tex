@@ -25,11 +25,11 @@
 	 \caption{The replacement mode switches}\label{tab:replacementswitches}
 	 \begin{tabular}{rcc}
 		 \toprule
-		 switch       & indentation? & verbatim respected? \\
+		 switch       & indentation? & respect verbatim? \\
 		 \midrule
-		 \texttt{-r}  & \faCheck     & \faClose            \\
-		 \texttt{-rv} & \faCheck     & \faCheck            \\
-		 \texttt{-rr} & \faClose     & \faClose            \\
+		 \texttt{-r}  & \faCheck     & \faClose          \\
+		 \texttt{-rv} & \faCheck     & \faCheck          \\
+		 \texttt{-rr} & \faClose     & \faClose          \\
 		 \bottomrule
 	 \end{tabular}
  \end{table}
@@ -54,7 +54,7 @@
 
 \subsection{Introduction to replacements}
 	Let's explore the action of the default settings, and then we'll demonstrate the feature
-	with further examples. with reference to \cref{lst:replacements}, the default action will
+	with further examples. With reference to \cref{lst:replacements}, the default action will
 	replace every instance of the text \texttt{latexindent.pl} with \texttt{pl.latexindent}.
 
 	Beginning with the code in \cref{lst:replace1} and running the command
@@ -80,6 +80,10 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 		\cmhlistingsfromfile*{demonstrations/replace1-mod1.tex}{\texttt{replace1.tex} using \cref{lst:replace1-yaml}}{lst:replace1-mod1}
 		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
 	\end{cmhtcbraster}
+
+	Note that in \cref{lst:replace1-yaml} we have specified \texttt{amalgamate} as 0 so
+	that the default replacements are overwritten.
+
 	We haven't yet discussed the \texttt{when} field; don't worry, we'll get to it
 	as part of the discussion in what follows.
 
@@ -134,8 +138,8 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
 		\end{cmhtcbraster}
 
-		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}.
-		This manual is not intended to be
+		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbrieviate to \emph{regex}
+		in what follows.  This manual is not intended to be
 		a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
 		covering of the topic. With reference to \cref{lst:colsep1}, we do note the following:
 		\begin{itemize}

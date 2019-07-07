@@ -29,15 +29,15 @@ but a summary is given in :numref:`tab:replacementswitches`.
 
 	
 	
-	+-----------+----------------+-----------------------+
-	| switch    | indentation?   | verbatim respected?   |
-	+===========+================+=======================+
-	| ``-r``    | yes            | no                    |
-	+-----------+----------------+-----------------------+
-	| ``-rv``   | yes            | yes                   |
-	+-----------+----------------+-----------------------+
-	| ``-rr``   | no             | no                    |
-	+-----------+----------------+-----------------------+
+	+-----------+----------------+---------------------+
+	| switch    | indentation?   | respect verbatim?   |
+	+===========+================+=====================+
+	| ``-r``    | yes            | no                  |
+	+-----------+----------------+---------------------+
+	| ``-rv``   | yes            | yes                 |
+	+-----------+----------------+---------------------+
+	| ``-rr``   | no             | no                  |
+	+-----------+----------------+---------------------+
 	
 
 
@@ -70,7 +70,7 @@ Introduction to replacements
 ----------------------------
 
 Let’s explore the action of the default settings, and then we’ll
-demonstrate the feature with further examples. with reference to
+demonstrate the feature with further examples. With reference to
 :numref:`lst:replacements`, the default action will replace every
 instance of the text ``latexindent.pl`` with ``pl.latexindent``.
 
@@ -115,6 +115,9 @@ which gives the output in :numref:`lst:replace1-mod1`.
  	:class: .replaceyaml
  	:caption: ``replace1.yaml`` 
  	:name: lst:replace1-yaml
+
+Note that in :numref:`lst:replace1-yaml` we have specified
+``amalgamate`` as 0 so that the default replacements are overwritten.
 
 We haven’t yet discussed the ``when`` field; don’t worry, we’ll get to
 it as part of the discussion in what follows.
@@ -198,10 +201,11 @@ Examples of replacements
 	 	:name: lst:colsep1
 	
 	The code given in :numref:`lst:colsep1` is an example of a *regular
-	expression*. This manual is not intended to be a tutorial on regular
-	expressions; you might like to read, for example, Friedl (n.d.) for a
-	detailed covering of the topic. With reference to
-	:numref:`lst:colsep1`, we do note the following:
+	expression*, which we may abbrieviate to *regex* in what follows. This
+	manual is not intended to be a tutorial on regular expressions; you
+	might like to read, for example, Friedl (n.d.) for a detailed covering
+	of the topic. With reference to :numref:`lst:colsep1`, we do note the
+	following:
 	
 	-  the general form of the ``substitution`` field is
 	   ``s/regex/replacement/modifiers``. You can place any regular

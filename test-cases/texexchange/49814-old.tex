@@ -1,0 +1,38 @@
+% arara: pdflatex
+\documentclass{article}
+\usepackage[many]{tcolorbox}
+
+\usetikzlibrary{circuits.ee.IEC}
+\usepackage{lipsum}
+\newtcolorbox{circuitbox}{%
+    enhanced jigsaw, breakable, % allow page breaks
+    frame hidden, % hide the default frame
+\newtcolorbox{circuitbox}{%
+    enhanced jigsaw, breakable, % allow page breaks
+    frame hidden, % hide the default frame
+    overlay={%
+        \draw
+        % left line
+        (frame.south west) to [ground={near start, rotate=180}] (frame.west)
+        to [inductor={direction info={info=$L$},info'=$5H$}] (frame.north west)
+        % top line
+        to [break contact={info=$\delta$}] (frame.120)
+        to [battery={info={[yshift=-1em]+\quad -},info'={$ 120V $}}] (frame.north)
+        % right line
+        to [resistor={direction info={info=$R$}, info'=$3\Omega$}] (frame.north east)
+        to [capacitor={info'=$C$, info=$3F$}] (frame.east)
+        to [ground={near end}] (frame.south east);
+    },
+    % paragraph skips obeyed within tcolorbox
+    parbox=false,
+}    % paragraph skips obeyed within tcolorbox
+    parbox=false,
+}
+\begin{document}
+\begin{circuitbox}
+	\lipsum[1]
+\end{circuitbox}
+\begin{circuitbox}
+	\lipsum
+\end{circuitbox}
+\end{document}

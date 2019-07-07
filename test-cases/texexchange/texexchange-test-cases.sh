@@ -47,6 +47,8 @@ latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-mod5.tex -m -l=348.yaml,ind
 latexindent.pl -s 43884.tex -o=43884-default.tex -l indentPreamble.yaml
 latexindent.pl -s 104498.tex -o=104498-default.tex -l indentPreamble.yaml
 latexindent.pl -s 353493.tex -o=353493-default.tex -l indentPreamble.yaml
+latexindent.pl -s 49814.tex -o=+-default -y="indentPreamble:1"
+latexindent.pl -s 49814-old.tex -o=+-default -y="indentPreamble:1" -l=fine-tune.yaml
 
 # =======  pgfplots tag  =========
 # =======  pgfplots tag  =========
