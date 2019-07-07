@@ -37,5 +37,10 @@ latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:mandatoryArguments:LCuB
 latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:mandatoryArguments:RCuBStartsOnOwnLine:4" -o=+-mod4-RCuB
 latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:LSqBStartsOnOwnLine:4" -o=+-mod4-LSqB
 latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:RSqBStartsOnOwnLine:4" -o=+-mod4-RSqB
+
+# https://github.com/cmhughes/latexindent.pl/issues/160
+latexindent.pl -s -m xaltsc.tex -l=xaltsc.yaml -o=+-mod1
+latexindent.pl -s -m -r xaltsc.tex -l=xaltsc2.yaml -o=+-mod2
+
 git status
 [[ $noisyMode == 1 ]] && makenoise

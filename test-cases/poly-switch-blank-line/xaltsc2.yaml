@@ -1,0 +1,13 @@
+modifyLineBreaks:
+    environments:
+        EndFinishesWithLineBreak: 4
+        BeginStartsOnOwnLine: 4
+replacements:
+  -
+    substitution: |- 
+      s/(\\begin\{.*\})\h*\R\R(\h*\\begin)/$1\n$2/sg
+    when: after
+  -
+    substitution: |- 
+      s/(\\end\{.*\})\h*\R\R(\h*\\end)/$1\n$2/sg
+    when: after

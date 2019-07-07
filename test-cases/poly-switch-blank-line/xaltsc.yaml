@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    environments:
+      defn:
+        EndFinishesWithLineBreak: 4
+      prop:
+        BeginStartsOnOwnLine: 4
