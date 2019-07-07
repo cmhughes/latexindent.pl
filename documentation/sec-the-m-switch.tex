@@ -945,7 +945,11 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after the
 		      \emph{<part of thing>} under consideration, assuming that
 		      there is not already a line break before or after the \emph{<part of thing>},
-		      followed by a blank line.
+		      followed by a blank line;
+		\item[4] \emph{add blank line mode}%
+		      \announce{new}{blank line poly-switch}; a blank line will
+		      be added before or after the \emph{<part of thing>} under consideration, even if the
+		      \emph{<part of thing>} is already on its own line.
 	\end{itemize}
 	In the above, \emph{<part of thing>} refers to either the
 	\emph{begin statement}, \emph{body} or \emph{end statement}
@@ -1072,6 +1076,46 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a
 	\emph{blank line} has been added after adding the line break.
 
+	Let's now change%
+	\announce{new}{demonstration of new blank line poly-switch} each of
+	the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are
+	$4$ and save them into \texttt{env-beg4.yaml} and
+	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
+	\end{minipage}
+
+	We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
+
+	\cmhlistingsfromfile*{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
+
+	Upon running the commands
+	\begin{commandshell}
+latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
+latexindent.pl -m env-mlb.1tex -l env-body4.yaml
+\end{commandshell}
+
+	then we receive the respective outputs in \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
+	\end{cmhtcbraster}
+
+	We note in particular that, by design, for this value of the poly-switches:
+	\begin{enumerate}
+		\item in \cref{lst:env-mlb1-beg4} a blank line has been inserted before the
+		      \lstinline!\begin! statement, even though the \lstinline!\begin!
+		      statement was already on its own line;
+		\item in \cref{lst:env-mlb1-body4} a blank line has been inserted before the beginning of the
+		      \emph{body}, even though it already began on its own line.
+	\end{enumerate}
+
 \subsubsection{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in
 	\cref{lst:env-mlb7,lst:env-mlb8}, and in particular, let's allow each of them in turn to take
@@ -1170,10 +1214,49 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, and that a
 	\emph{blank line} has been added after the line break.
 
-\subsubsection{poly-switches only add line breaks when necessary}
+	Let's now change%
+	\announce{new}{demonstration of new blank line poly-switch} each of
+	the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they are
+	$4$ and save them into \texttt{env-end4.yaml} and
+	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
+	\end{minipage}
+
+	We will demonstrate this poly-switch value using the code from
+	\vref{lst:env-mlb1-text}.
+
+	Upon running the commands
+	\begin{commandshell}
+latexindent.pl -m env-mlb1.tex -l env-end4.yaml
+latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
+\end{commandshell}
+
+	then we receive the respective outputs in \cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
+	\end{cmhtcbraster}
+
+	We note in particular that, by design, for this value of the poly-switches:
+	\begin{enumerate}
+		\item in \cref{lst:env-mlb1-end4} a blank line has been inserted before the
+		      \lstinline!\end! statement, even though the \lstinline!\end!
+		      statement was already on its own line;
+		\item in \cref{lst:env-mlb1-end-f4} a blank line has been inserted after the
+		      \lstinline!\end! statement, even though it already began on its own line.
+	\end{enumerate}
+
+\subsubsection{poly-switches 1, 2, and 3 only add line breaks when necessary}
 	If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment)
-	using a poly-switch value of $1$ (or
-	$2$), it will only do so if necessary. For example, if you
+	using a poly-switch value of $1$ (or $2$
+	or $3$), it will only do so if necessary. For example, if you
 	process the file in \vref{lst:mlb2} using any of the YAML files presented so
 	far in this section, it will be left unchanged.
 
@@ -1185,13 +1268,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile{demonstrations/env-mlb3.tex}{\texttt{env-mlb3.tex}}{lst:mlb3}
 	\end{minipage}
 
-	In contrast, the output from processing the file in \cref{lst:mlb3} will vary
-	depending on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that the
-	comment symbol after the \lstinline!\begin{myenv}! has been moved to the next line, as
-	\texttt{BodyStartsOnOwnLine} is set to \texttt{1}. In
+	Setting the poly-switches to a value of $4$ instructs
+	\texttt{latexindent.pl} to add a line break even if the \emph{<part of thing>}
+	is already on its own line; see \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4} and
+	\cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
+
+	In contrast, the output from processing the file in \cref{lst:mlb3} will
+	vary depending on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that
+	the comment symbol after the \lstinline!\begin{myenv}! has been moved to the next line,
+	as \texttt{BodyStartsOnOwnLine} is set to \texttt{1}. In
 	\cref{lst:env-mlb3-mod4} you'll see that the comment has been accounted for correctly
-	because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, and the
-	comment symbol has \emph{not} been moved to its own line. You're
+	because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, and
+	the comment symbol has \emph{not} been moved to its own line. You're
 	encouraged to experiment with \cref{lst:mlb3} and by setting the other
 	poly-switches considered so far to \texttt{2} in turn.
 
@@ -1201,18 +1289,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\end{cmhtcbraster}
 
 	The details of the discussion in this section have concerned \emph{global}
-	poly-switches in the \texttt{environments} field; each switch can also be specified
-	on a \emph{per-name} basis, which would take priority over the global values;
-	with reference to \vref{lst:environments-mlb}, an example is shown for the
-	\texttt{equation*} environment.
+	poly-switches in the \texttt{environments} field; each switch can also be
+	specified on a \emph{per-name} basis, which would take priority over the
+	global values; with reference to \vref{lst:environments-mlb}, an example is shown for
+	the \texttt{equation*} environment.
 
 \subsubsection{Removing line breaks (poly-switches set to $-1$)}
-	Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to
-	remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider the
-	example code given in \cref{lst:mlb4}, noting in particular the positions of
-	the line break highlighters, $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$,
-	$\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, together with the associated
-	YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
+	Setting poly-switches to $-1$ tells \texttt{latexindent.pl}
+	to remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider
+	the example code given in \cref{lst:mlb4}, noting in particular the
+	positions of the line break highlighters, $\BeginStartsOnOwnLine$,
+	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$,
+	together with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
 
 	\begin{minipage}{.45\linewidth}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
@@ -1287,8 +1375,8 @@ latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	\texttt{removeTrailingWhitespace}, and that it has two (binary) switches to determine if
 	horizontal space should be removed \texttt{beforeProcessing} and
 	\texttt{afterProcessing}. The \texttt{beforeProcessing} is particularly relevant
-	when considering the \texttt{-m} switch; let's consider the file shown in
-	\cref{lst:mlb5}, which highlights trailing spaces.
+	when considering the \texttt{-m} switch; let's consider the file shown
+	in \cref{lst:mlb5}, which highlights trailing spaces.
 
 	\begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
@@ -1308,9 +1396,9 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
 \end{commandshell}
 	\end{widepage}
-	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that the trailing horizontal
-	white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while in
-	\cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in
+	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that the trailing
+	horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll},
+	while in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in
 	\cref{lst:removeTWS-before}.
 
 	\begin{widepage}
@@ -1592,17 +1680,17 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\toprule
 		Code block                                      & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                                     & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                                & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                & \verb!body of myenv!$\EndStartsOnOwnLine$                         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                                & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                                & \verb!after words!                                              &                                         &                                                                   \\
+		environment                                     & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                                & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of myenv!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                                & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                                & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                                        & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                                & \verb!\if...!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                & \verb!body of if/or statement!$\OrStartsOnOwnLine$                          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		ifelsefi                                        & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                                & \verb!\if...!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of if/or statement!$\OrStartsOnOwnLine$                         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
 		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                            \\
-		                                                & \verb!\or!$\OrFinishesWithLineBreak$                    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                                & \verb!\or!$\OrFinishesWithLineBreak$                   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                                & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                                & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                                & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\

@@ -26,5 +26,16 @@ latexindent.pl -s -m  ../environments/environments-simple.tex -y="modifyLineBrea
 latexindent.pl -s -m  section1.tex -y="modifyLineBreaks:mandatoryArguments:RCuBFinishesWithLineBreak:4" -o=+-bl-beg-mod1
 latexindent.pl -s -m  section1.tex -y="modifyLineBreaks:commands:CommandStartsOnOwnLine:4" -o=+-bl-beg-head-mod1
 latexindent.pl -s -m  defn1.tex -y="modifyLineBreaks:environments:defn:EndFinishesWithLineBreak:4" -o=+-bl-beg-mod1
+
+# arguments
+latexindent.pl -s -m mycommand.tex -y="modifyLineBreaks:mandatoryArguments:LCuBStartsOnOwnLine:4" -o=+-mod4-LCuB
+latexindent.pl -s -m mycommand.tex -y="modifyLineBreaks:mandatoryArguments:RCuBStartsOnOwnLine:4" -o=+-mod4-RCuB
+latexindent.pl -s -m mycommand.tex -y="modifyLineBreaks:optionalArguments:LSqBStartsOnOwnLine:4" -o=+-mod4-LSqB
+latexindent.pl -s -m mycommand.tex -y="modifyLineBreaks:optionalArguments:RSqBStartsOnOwnLine:4" -o=+-mod4-RSqB
+
+latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:mandatoryArguments:LCuBStartsOnOwnLine:4" -o=+-mod4-LCuB
+latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:mandatoryArguments:RCuBStartsOnOwnLine:4" -o=+-mod4-RCuB
+latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:LSqBStartsOnOwnLine:4" -o=+-mod4-LSqB
+latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:RSqBStartsOnOwnLine:4" -o=+-mod4-RSqB
 git status
 [[ $noisyMode == 1 ]] && makenoise

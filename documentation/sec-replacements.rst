@@ -448,7 +448,7 @@ Examples of replacements
 	Let’s explore the three replacement mode switches (see
 	:numref:`tab:replacementswitches`) in the context of an example that
 	contains a verbatim code block, :numref:`lst:verb1`; we will use the
-	settings in :numref:`lst:verb1-yaml`.
+	settings in :numref:`lst:verbatim1-yaml`.
 	
 	 .. literalinclude:: demonstrations/verb1.tex
 	 	:class: .tex
@@ -493,8 +493,8 @@ Examples of replacements
 We note that:
 
 #. in :numref:`lst:verb1-mod1` indentation has been performed, and
-   that the replacements specified in :numref:`lst:verb1-yaml` have
-   been performed, even within the verbatim code block;
+   that the replacements specified in :numref:`lst:verbatim1-yaml`
+   have been performed, even within the verbatim code block;
 
 #. in :numref:`lst:verb1-rv-mod1` indentation has been performed, but
    that the replacements have *not* been performed within the verbatim
