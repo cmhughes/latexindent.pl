@@ -57,6 +57,12 @@ in the same directory. Windows users might prefer to get
 
 and `latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent`.
 
+## perl modules
+You'll need a few readily-available perl modules. Full details are given within the Appendix 
+of the [documentation](https://latexindentpl.readthedocs.io/en/latest/);
+you might also like to see [.travis.yml](.travis.yml) for Linux/MacOS users, 
+and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
+
 ## testing
 
 A nice way to test the script is to navigate to the test-cases 
