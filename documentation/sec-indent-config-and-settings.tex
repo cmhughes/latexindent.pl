@@ -141,6 +141,15 @@ latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myen
 	\emph{after} any specified using \texttt{indentconfig.yaml} and the
 	\texttt{-l} switch.
 
+	If you wish to specify any regex-based settings using the \texttt{-y} switch,
+	it is important not to use quotes surrounding the regex; for example, with reference to
+	the `one sentence per line' feature (\vref{sec:onesentenceperline}) and the listings within
+	\vref{lst:sentencesEndWith}, the following settings give the option to have sentences end
+	with a semicolon
+	\begin{commandshell}
+latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
+    \end{commandshell}
+
 \subsection{Settings load order}\label{sec:loadorder}
 	\texttt{latexindent.pl} loads the settings files in the following order:
 	\begin{enumerate}

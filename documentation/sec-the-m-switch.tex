@@ -362,9 +362,9 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \yamltitle{removeSentenceLineBreaks}{0|1}
 	When operating upon sentences \texttt{latexindent.pl} will, by default, remove
-	internal line breaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}.
-	Setting this switch to \texttt{0} instructs \texttt{latexindent.pl}
-	not to do so.
+	internal line breaks as \texttt{removeSentenceLineBreaks} is set to
+	\texttt{1}. Setting this switch to \texttt{0} instructs
+	\texttt{latexindent.pl} not to do so.
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
@@ -560,7 +560,8 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	\emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
-	it does not accommodate the specifications above. For example, using the following command
+	it does not accommodate the specifications above. For example, using the following
+	command
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}

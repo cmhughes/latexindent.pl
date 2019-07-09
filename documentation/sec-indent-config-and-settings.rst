@@ -182,6 +182,19 @@ for example, settings loaded using the ``-l`` switch; for example,
 Any settings specified using the ``-y`` switch will be loaded *after*
 any specified using ``indentconfig.yaml`` and the ``-l`` switch.
 
+If you wish to specify any regex-based settings using the ``-y`` switch,
+it is important not to use quotes surrounding the regex; for example,
+with reference to the ‘one sentence per line’ feature
+(:numref:`sec:onesentenceperline`) and the listings within
+:numref:`lst:sentencesEndWith`, the following settings give the option
+to have sentences end with a semicolon
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
+        
+
 .. label follows
 
 .. _sec:loadorder:
