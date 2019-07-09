@@ -77,3 +77,6 @@ replacements:
   -
     substitution: s/(\}|[a-zA-Z])\h+([a-zA-Z])/$1 $2/sg
     when: before
+  -
+    substitution: s/\h+(\\end\{commandshell\})/$1/sg
+    when: after

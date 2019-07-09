@@ -125,18 +125,18 @@ verbatimEnvironments:
 	then you could use the following command:
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	Note the use of \texttt{;} to specify another field within
 	\texttt{verbatimEnvironments}. This is shorthand, and equivalent, to using the following
 	command:
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	You may, of course, specify settings using the \texttt{-y} switch as well as,
 	for example, settings loaded using the \texttt{-l} switch; for example,
 	\begin{commandshell}
 latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	Any settings specified using the \texttt{-y} switch will be loaded
 	\emph{after} any specified using \texttt{indentconfig.yaml} and the
 	\texttt{-l} switch.
@@ -148,7 +148,7 @@ latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myen
 	with a semicolon
 	\begin{commandshell}
 latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
-    \end{commandshell}
+\end{commandshell}
 
 \subsection{Settings load order}\label{sec:loadorder}
 	\texttt{latexindent.pl} loads the settings files in the following order:
