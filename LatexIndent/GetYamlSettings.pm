@@ -392,7 +392,7 @@ sub yaml_read_settings{
         # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
             # split each value at semi-colon
-            my (@keysValues) = split(/(?<!\\):/,$_);
+            my (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
 
             # $value will always be the last element
             my $value = $keysValues[-1];

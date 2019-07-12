@@ -86,5 +86,10 @@ latexindent.pl -s kiryph1.tex -m -l=kiryph2.yaml -o=+-mod2
 
 # tilde after full stop, see https://github.com/cmhughes/latexindent.pl/issues/153
 latexindent.pl -s -m dot-followed-by-tilde.tex -o=+-mod1 -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences:1'
+
+# https://github.com/cmhughes/latexindent.pl/issues/167
+latexindent.pl -s -m konfekt.tex -o=+-mod0 -l=konfekt0.yaml
+latexindent.pl -s -m konfekt.tex -o=+-mod1 -l=konfekt1.yaml
+latexindent.pl -s -m konfekt.tex -o=+-mod2 -y="modifyLineBreaks:oneSentencePerLine:manipulateSentences:1;sentencesEndWith:other:\;;sentencesBeginWith:other:[[:lower:]]"
 [[ $noisyMode == 1 ]] && makenoise
 git status

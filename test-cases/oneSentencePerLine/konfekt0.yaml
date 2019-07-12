@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1     
+        sentencesEndWith:
+          other: '\;'
+        sentencesBeginWith:
+          other: [a-z]
