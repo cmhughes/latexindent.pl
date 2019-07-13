@@ -26,13 +26,14 @@ oldDate='2019-05-05'
 newDate='2019-07-13'
 
 cd ../
-if [ $minorVersion == 1 ]
+if [ $minorVersion == 0 ]
 then
     cd documentation
-    find -name "a*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/gi"
-    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\*\{/announce\{/gi"
-    find -name "a*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
-    find -name "s*.tex" -print0|xargs -0 sed -i.bak -E "s/announce\{NEW\}/announce\*\{$newDate\}/gi"
+    find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+    find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+    find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+    find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+    exit
     cd ../
 fi
 sed -i.bak "s/version = u'$oldVersion'/version = u'$newVersion'/" documentation/conf.py

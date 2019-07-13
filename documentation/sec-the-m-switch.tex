@@ -555,7 +555,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	you can switch it off by setting it to \texttt{0}, and you can
 	experiment with the \texttt{other}
 	field.%
-	\announce{new}{fine tuning the betterFullStop} You can also seek
+	\announce*{2019-07-13}{fine tuning the betterFullStop} You can also seek
 	to customise the \texttt{betterFullStop} routine by using the
 	\emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
@@ -948,7 +948,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      there is not already a line break before or after the \emph{<part of thing>},
 		      followed by a blank line;
 		\item[4] \emph{add blank line mode}%
-		      \announce{new}{blank line poly-switch}; a blank line will
+		      \announce*{2019-07-13}{blank line poly-switch}; a blank line will
 		      be added before or after the \emph{<part of thing>} under consideration, even if the
 		      \emph{<part of thing>} is already on its own line.
 	\end{itemize}
@@ -1078,7 +1078,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\emph{blank line} has been added after adding the line break.
 
 	Let's now change%
-	\announce{new}{demonstration of new blank line poly-switch} each of
+	\announce*{2019-07-13}{demonstration of new blank line poly-switch} each of
 	the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are
 	$4$ and save them into \texttt{env-beg4.yaml} and
 	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
@@ -1216,7 +1216,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\emph{blank line} has been added after the line break.
 
 	Let's now change%
-	\announce{new}{demonstration of new blank line poly-switch} each of
+	\announce*{2019-07-13}{demonstration of new blank line poly-switch} each of
 	the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they are
 	$4$ and save them into \texttt{env-end4.yaml} and
 	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
@@ -1483,7 +1483,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 
 \subsection{Poly-switches for double back slash}\label{subsec:dbs}
 	With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic})%
-	\announce{new}{poly-switch for double back slash} you can
+	\announce*{2019-07-13}{poly-switch for double back slash} you can
 	specify poly-switches to dictate the line-break behaviour of double back slashes in
 	environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or
 	special code blocks (\vref{lst:specialafter}). Note that for these poly-switches to
@@ -1671,7 +1671,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 	`comment-marked' code blocks (\vref{lst:alignmentmarkup}) can
 	\emph{not} be modified using
 	\texttt{latexindent.pl}.%
-	\announce*{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for
+	\announce{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for
 	\texttt{verbatim} code blocks: environments (\vref{lst:verbatimEnvironments}),
 	commands (\vref{lst:verbatimCommands}) and \texttt{specialBeginEnd} (\vref{lst:special-verb1-yaml}).
 
@@ -1700,7 +1700,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\cmidrule{2-4}
 		optionalArguments                               & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
 		                                                & \verb![!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
-		\announce{new}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		\announce*{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
 		                                                & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
 		                                                & \verb!end of body of opt arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
 		                                                & \verb!]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
@@ -1708,7 +1708,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\cmidrule{2-4}
 		mandatoryArguments                              & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
 		                                                & \verb!{!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
-		\announce{new}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		\announce*{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
 		                                                & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
 		                                                & \verb!end of body of mand arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
 		                                                & \verb!}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
@@ -1740,7 +1740,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		                                                & after words                                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
 		verbatim                                        & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!          & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                      \\
-		\announce*{2019-05-05}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$ & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                  \\
+		\announce{2019-05-05}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$ & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                  \\
 		                                                & after words                                                             &                                         &                                                                   \\
 		\bottomrule
 	\end{longtable}
