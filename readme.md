@@ -32,8 +32,9 @@ For complete details, please see:
 - online: http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
 
+<<<<<<< HEAD
 ## Windows executable
-`latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent` 
+`latexindent.exe` is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent)
 and is created using 
 
       perl ppp.pl -u -o latexindent.exe latexindent.pl
