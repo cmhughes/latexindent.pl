@@ -132,7 +132,6 @@ If you’d like to get started with ``latexindent.pl`` then simply type
    :class: .commandshell
 
     latexindent.pl myfile.tex
-        
 
 from the command line. If you receive an error message such as that
 given in :numref:`lst:poss-errors`, then you need to install the
@@ -153,7 +152,6 @@ appropriate modules.
    :class: .commandshell
 
     perl latexindent-module-installer.pl
-        
 
 You might also like to see
 https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc,

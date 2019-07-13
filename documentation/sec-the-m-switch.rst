@@ -296,7 +296,6 @@ Upon running the following commands
     latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
     latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
     latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
-        
 
 we obtain the output shown in :numref:`lst:textwrap5-mod3`.
 
@@ -319,7 +318,6 @@ In particular, upon running
    :class: .commandshell
 
     latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
-        
 
 we obtain the output given in :numref:`lst:textwrap6-mod5`.
 
@@ -360,7 +358,6 @@ Upon running the commands
     latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
-        
 
 we receive the respective output given in :numref:`lst:textwrap6-mod6`
 – :numref:`lst:textwrap6-mod8`.
@@ -423,7 +420,6 @@ equivalent. Upon running the commands
 
     latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
-        
 
 we receive the respective output given in :numref:`lst:textwrap6-mod9`
 and :numref:`lst:textwrap6-mod11`.
@@ -536,7 +532,6 @@ and :numref:`lst:keep-sen-line-breaks-yaml`, and run the commands
 
     latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences-mod1` and
@@ -656,7 +651,6 @@ Upon running the following commands
 
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences1-mod1` and
@@ -704,7 +698,6 @@ Upon running the following commands
 
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences2-mod1` and
@@ -863,7 +856,6 @@ For example, if we begin with the ``.tex`` file in
    :class: .commandshell
 
     latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
-        
 
 then we obtain the output in :numref:`lst:multiple-sentences3-mod1`.
 
@@ -887,7 +879,6 @@ commands
 
     latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
-        
 
 then we obtain the output in :numref:`lst:multiple-sentences4-mod1`
 and :numref:`lst:multiple-sentences4-mod2`.
@@ -915,7 +906,6 @@ the YAML in :numref:`lst:item-rules2-yaml` and the command
    :class: .commandshell
 
     latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
-        
 
 the output of which is shown in
 :numref:`lst:multiple-sentences4-mod3`.
@@ -1113,7 +1103,6 @@ file in :numref:`lst:removeTWS-before` and running, for example,
    :class: .commandshell
 
     latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
-        
 
 in which case the output is as in :numref:`lst:shortlines1-tws`;
 notice that the double spaces present in :numref:`lst:shortlines1`
@@ -1297,7 +1286,6 @@ running the commands
     latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
     latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
     latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
-        
 
 we obtain the respective outputs in :numref:`lst:sl-stop4` –
 :numref:`lst:sl-stop4-comment`; notice in particular that:
@@ -1375,7 +1363,6 @@ running the command
    :class: .commandshell
 
     latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
-        
 
 we obtain the output in :numref:`lst:textwrap7-mod12`.
 
@@ -2085,7 +2072,6 @@ Upon running the following commands
 
     latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
     latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
-                
 
 we receive the outputs given in :numref:`lst:env-mlb7-preserve` and
 :numref:`lst:env-mlb7-no-preserve`.
@@ -2165,7 +2151,6 @@ running the following commands
 
     latexindent.pl -m tabular3.tex -l DBS1.yaml
     latexindent.pl -m tabular3.tex -l DBS2.yaml
-                
 
 then we receive the respective output given in
 :numref:`lst:tabular3-DBS1` and :numref:`lst:tabular3-DBS2`.
@@ -2219,7 +2204,6 @@ commands
 
     latexindent.pl -m tabular3.tex -l DBS3.yaml
     latexindent.pl -m tabular3.tex -l DBS4.yaml
-                
 
 then we receive the respective output given in
 :numref:`lst:tabular3-DBS3` and :numref:`lst:tabular3-DBS4`.
@@ -2280,7 +2264,6 @@ command
    :class: .commandshell
 
     latexindent.pl -m special4.tex -l DBS5.yaml
-                
 
 then we receive the output given in :numref:`lst:special4-DBS5`.
 
@@ -2327,7 +2310,6 @@ Upon using the YAML settings in :numref:`lst:DBS6` and
 
     latexindent.pl -m mycommand2.tex -l DBS6.yaml
     latexindent.pl -m mycommand2.tex -l DBS7.yaml
-                
 
 then we receive the output given in :numref:`lst:mycommand2-DBS6` and
 :numref:`lst:mycommand2-DBS7`.
@@ -2372,7 +2354,6 @@ and running the following command, using :numref:`lst:DBS3`,
    :class: .commandshell
 
     latexindent.pl -m pmatrix3.tex -l DBS3.yaml
-                
 
 then we receive the output given in :numref:`lst:pmatrix3-DBS3`.
 
@@ -2691,7 +2672,6 @@ Let’s use the YAML settings given in
    :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
-            
 
 gives the output in :numref:`lst:nested-env-mlb1`.
 
@@ -2777,7 +2757,6 @@ We can explore this further using the poly-switches in
    :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
-            
 
 we obtain the output given in :numref:`lst:nested-env-mlb2-output`.
 

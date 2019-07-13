@@ -158,7 +158,6 @@ the ``-y`` switch, then you could use the following command:
    :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-        
 
 Note the use of ``;`` to specify another field within
 ``verbatimEnvironments``. This is shorthand, and equivalent, to using
@@ -168,7 +167,6 @@ the following command:
    :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
-        
 
 You may, of course, specify settings using the ``-y`` switch as well as,
 for example, settings loaded using the ``-l`` switch; for example,
@@ -177,7 +175,6 @@ for example, settings loaded using the ``-l`` switch; for example,
    :class: .commandshell
 
     latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-        
 
 Any settings specified using the ``-y`` switch will be loaded *after*
 any specified using ``indentconfig.yaml`` and the ``-l`` switch.
@@ -193,7 +190,6 @@ to have sentences end with a semicolon
    :class: .commandshell
 
     latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
-        
 
 .. label follows
 

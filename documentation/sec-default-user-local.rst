@@ -96,7 +96,6 @@ the ``copy`` procedure given below would be obeyed.
     copy myfile.bak2 to myfile.bak1
     copy myfile.bak3 to myfile.bak2
     copy myfile.bak4 to myfile.bak3
-        
 
 The default value of ``cycleThroughBackUps`` is ``0``.
 
@@ -461,7 +460,6 @@ On running the commands
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular6.yaml
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
-            
 
 we obtain the respective outputs given in
 :numref:`lst:tabular2-default` – :numref:`lst:tabular2-mod8`.
@@ -564,7 +562,6 @@ that you run the command
    :class: .commandshell
 
     latexindent.pl matrix1.tex 
-        
 
 then the before-and-after results shown in :numref:`lst:matrixbefore`
 and :numref:`lst:matrixafter` are achievable by default.
@@ -729,7 +726,6 @@ Upon running the following commands
 
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
-        
 
 we receive the respective outputs in
 :numref:`lst:specialLR-comm-first-tex` and
@@ -772,7 +768,6 @@ Upon saving the YAML settings in :numref:`lst:middle-yaml` and
 
     latexindent.pl special2.tex -l=middle
     latexindent.pl special2.tex -l=middle1
-        
 
 then we obtain the output given in :numref:`lst:special2-mod1` and
 :numref:`lst:special2-mod2`.
@@ -820,7 +815,6 @@ and the YAML in :numref:`lst:special-verb1-yaml`, and running
    :class: .commandshell
 
     latexindent.pl special3.tex -l=special-verb1
-        
 
 then the output in :numref:`lst:special3-mod1` is unchanged.
 
@@ -941,7 +935,6 @@ command:
    :class: .commandshell
 
     latexindent.pl mult-nested.tex -l=max-indentation1
-        
 
 You should receive the output shown in
 :numref:`lst:mult-nested-max-ind1`.
@@ -1927,7 +1920,6 @@ command
    :class: .commandshell
 
     latexindent.pl headings2.tex -l headings3.yaml      
-        
 
 we obtain the output in :numref:`lst:headings2-mod3`. Note that the
 argument of ``paragraph`` has received (default) indentation, and that
@@ -1950,7 +1942,6 @@ and run the command
    :class: .commandshell
 
     latexindent.pl headings2.tex -l headings4.yaml      
-        
 
 then we receive the output in :numref:`lst:headings2-mod4`. Note that
 the arguments *and* the body after the heading of ``paragraph`` has
@@ -2285,7 +2276,6 @@ running the command
    :class: .commandshell
 
     latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
-            
 
 we obtain the output given in :numref:`lst:pstricks1-nrp`.
 
@@ -2316,7 +2306,6 @@ and run the command
    :class: .commandshell
 
     latexindent.pl pstricks1.tex -l defFunction.yaml
-            
 
 then the output is as in :numref:`lst:pstricks1-indent-rules`.
 
