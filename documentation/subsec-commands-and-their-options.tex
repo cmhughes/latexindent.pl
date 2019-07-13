@@ -7,7 +7,7 @@
 
 \yamltitle{commandCodeBlocks}*{fields}
 
-	The \texttt{commandCodeBlocks} field%%%%
+	The \texttt{commandCodeBlocks} field%
 	\announce{2018-04-27}*{commandCodeBlocks}
 	contains a few switches detailed in \cref{lst:commandCodeBlocks}.
 
@@ -43,16 +43,13 @@
 	Upon using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
-        \end{commandshell}
+\end{commandshell}
 	we obtain the output given in  \cref{lst:pstricks1-nrp}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/pstricks1-nrp.tex}{\texttt{pstricks1.tex} using \cref{lst:noRoundParentheses}}{lst:pstricks1-nrp}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp}; in
 	particular, in \cref{lst:pstricks1-nrp}, because round parentheses are
@@ -65,16 +62,13 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 	Let's explore this using the YAML given in \cref{lst:defFunction} and run the command
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l defFunction.yaml
-        \end{commandshell}
+\end{commandshell}
 	then the output is as in \cref{lst:pstricks1-indent-rules}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/pstricks1-indent-rules.tex}{\texttt{pstricks1.tex} using \cref{lst:defFunction}}{lst:pstricks1-indent-rules}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice in \cref{lst:pstricks1-indent-rules} that the \emph{body} of the
 	\lstinline!defFunction! command i.e, the subsequent lines containing arguments after the
@@ -121,13 +115,10 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 \end{commandshell}
 	we receive the output given in \cref{lst:tikz-node1-draw}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/tikz-node1-draw.tex}{\texttt{tikz-node1.tex} using \cref{lst:draw}}{lst:tikz-node1-draw}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice that each line after the \lstinline!\draw! command (its `body') in
 	\cref{lst:tikz-node1-draw} has been given the appropriate two-spaces worth of indentation
@@ -140,13 +131,10 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 \end{commandshell}
 	given in \cref{lst:tikz-node1-no-strings}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/tikz-node1-no-strings.tex}{\texttt{tikz-node1.tex} using \cref{lst:no-strings}}{lst:tikz-node1-no-strings}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	In this case, \texttt{latexindent.pl} sees that:
 	\begin{itemize}
@@ -166,19 +154,15 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	the settings in either \cref{lst:amalgamate-demo} or\cref{lst:amalgamate-demo1} is equivalent to
 	using the settings in \cref{lst:amalgamate-demo2}.
 
-	\begin{adjustwidth}{-3.5cm}{-1.5cm}
-		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}{.32\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
-		\end{minipage}
-	\end{adjustwidth}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
+	\end{cmhtcbraster}
+
 	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case
 	any settings loaded prior to those specified, including the default, will be overwritten.
 	For example, using the settings in \cref{lst:amalgamate-demo3} means that only the strings
@@ -192,13 +176,10 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	We may explore this feature further with the code in \cref{lst:for-each}, whose
 	default output is given in \cref{lst:for-each-default}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/for-each-default.tex}{\texttt{for-each} default output}{lst:for-each-default}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Let's compare this with the output from using the YAML settings in
 	\cref{lst:foreach}, and running the command
@@ -207,13 +188,10 @@ latexindent.pl for-each.tex -l foreach.yaml
 \end{commandshell}
 	given in \cref{lst:for-each-mod1}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:foreach}}{lst:for-each-mod1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	You might like to compare the output given in \cref{lst:for-each-default} and
 	\cref{lst:for-each-mod1}. Note,in particular, in \cref{lst:for-each-default} that the
@@ -225,7 +203,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
-	\announce{2018-04-27}*{commandNameSpecial} that do not fit within the names recognized by
+	\announce{2018-04-27}*{commandNameSpecial} that do not fit within the names recognised by
 	\texttt{latexindent.pl}, the first one of which is \lstinline!\@ifnextchar[!. From the
 	perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[! is
 	a command, because it is immediately followed by sets of mandatory arguments. However,
@@ -236,13 +214,10 @@ latexindent.pl for-each.tex -l foreach.yaml
 	For example, consider the sample file in \cref{lst:ifnextchar}, which has default
 	output in \cref{lst:ifnextchar-default}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifnextchar.tex}{\texttt{ifnextchar.tex}}{lst:ifnextchar}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/ifnextchar-default.tex}{\texttt{ifnextchar.tex} default output}{lst:ifnextchar-default}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able
 	to indent its body, because \texttt{latexindent.pl} has successfully found the command
@@ -256,13 +231,10 @@ latexindent.pl for-each.tex -l foreach.yaml
 	to indent its body successfully, because the \lstinline!\@ifnextchar[! command has not been
 	found.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for
 	\texttt{stringsAllowedBetweenArguments}. The same condition holds as stated previously, which we state

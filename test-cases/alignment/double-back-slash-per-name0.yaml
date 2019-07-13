@@ -1,0 +1,3 @@
+modifyLineBreaks:
+    environments:
+        DBSStartsOnOwnLine: 0

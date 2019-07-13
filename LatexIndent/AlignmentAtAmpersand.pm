@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/align_at_ampersand find_aligned_block/;
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else/;
 our $alignmentBlockCounter;
 
 sub find_aligned_block{
@@ -258,7 +258,7 @@ sub align_at_ampersand{
     }
 
     # output some of the info so far to the log file
-    $logger->trace("*Alignment at ampersand routine") if $is_t_switch_active;
+    $logger->trace("*Alignment at ampersand routine for ${$self}{name} (see lookForAlignDelims)") if $is_t_switch_active;
     $logger->trace("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
     $logger->trace("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
     $logger->trace("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
@@ -505,4 +505,21 @@ sub align_at_ampersand{
     ${$self}{body} =~ s/\h*\R$//s if !${$self}{linebreaksAtEnd}{body};
 }
 
+sub double_back_slash_else{
+    my $self = shift;
+
+    # check for existence of \\ statement, and associated line break information
+    $self->check_for_else_statement(
+              # else name regexp
+              elseNameRegExp=>qr/${${$masterSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash}/,
+              # else statements name: note that DBS stands for 'Double Back Slash'
+              ElseStartsOnOwnLine=>"DBSStartsOnOwnLine",
+              # end statements
+              ElseFinishesWithLineBreak=>"DBSFinishesWithLineBreak",
+              # for the YAML settings storage
+              storageNameAppend=>"DBS",
+              # logfile information
+              logName=>"double-back-slash-block (for align at ampersand, see lookForAlignDelims)",
+        );
+}
 1;

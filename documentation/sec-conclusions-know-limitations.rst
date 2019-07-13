@@ -34,7 +34,7 @@ future.
 
 There are other limitations to do with the multicolumn alignment routine
 (see :numref:`lst:tabular2-mod2`); in particular, when working with
-codeblocks in which multicolumn commands overlap, the algorithm can
+code blocks in which multicolumn commands overlap, the algorithm can
 fail.
 
 Another limitation is to do with efficiency, particularly when the
@@ -45,11 +45,12 @@ it is hoped that, in a future version, only *nested* code blocks will
 need to be stored in the ‘packing’ phase, and that this will improve the
 efficiency of the script.
 
-You can run ``latexindent`` on ``.sty``, ``.cls`` and any file types
-that you specify in ``fileExtensionPreference`` (see
-:numref:`lst:fileExtensionPreference`); if you find a case in which
-the script struggles, please feel free to report it at (“Home of
-Latexindent.pl” 2017), and in the meantime, consider using a
+You can run ``latexindent`` on any file; if you don’t specify an
+extension, then the extensions that you specify in
+``fileExtensionPreference`` (see
+:numref:`lst:fileExtensionPreference`) will be consulted. If you find
+a case in which the script struggles, please feel free to report it at
+(“Home of Latexindent.pl” 2017), and in the meantime, consider using a
 ``noIndentBlock`` (see
 :ref:`page lst:noIndentBlockdemo <lst:noIndentBlockdemo>`).
 

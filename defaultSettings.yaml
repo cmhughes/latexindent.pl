@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.6, 2019-05-05
+# defaultSettings.yaml for latexindent.pl, version 3.7, 2019-07-13
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -21,15 +21,18 @@
 # For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 
 
-# You're welcome to change anything you like in here, but 
+# You should feel encouraged to change anything you like in these settings, but 
 # it would probably be better to have your own user settings 
 # files somewhere else - remember that this file may be overwritten
-# when you update your distribution. Please see the manual
-# for details of how to setup your own settings files.
+# when you update your tex distribution. Please see the manual linked from:
 #
-# Please read the manual first to understand what each switch does.
+#       https://github.com/cmhughes/latexindent.pl
+#
+# for details of how to create and configure your own settings files.
+#
+# Please read the manual (linked from above) first to understand what each switch does.
 
-# latexindent can be called without a file extension, 
+# latexindent can be called to act on a file without using the file's extension, 
 # e.g, simply
 #       latexindent myfile
 # in which case the choice of file extension is chosen
@@ -41,7 +44,7 @@ fileExtensionPreference:
     .cls: 3
     .bib: 4
 
-# default file extension of backup file (if original is overwritten with -w switch)
+# default file extension of backup file (if -w switch is active)
 # for example, if your .tex file is called
 #       myfile.tex
 # and you specify the backupExtension as BACKUP.bak then your 
@@ -49,23 +52,26 @@ fileExtensionPreference:
 #       myfileBACKUP.bak
 backupExtension: .bak
 
-# only one backup per file; if onlyOneBackUp is 0 then, as a safety measure, 
-# the number on the extension increments by 1 each time:
-#     myfile.bak0, myfile.bak1, myfile.bak2
+# only one backup per file: 
+#   - if onlyOneBackUp is 0 then, as a safety measure, 
+#     the number on the extension increments by 1 each time:
 #
-# if you set onlyOnebackUp to 1, then the backup file will
-# be overwritten each time (not recommended until you trust the script)
+#           myfile.bak0, myfile.bak1, myfile.bak2
+#   - if you set onlyOnebackUp to 1, then the backup file will
+#     be overwritten each time (not recommended until you trust the script)
 onlyOneBackUp: 0
 
-# some users may only want a set number of backup files, 
-# say at most 3; in which case, they can change this switch.
+# some users may want a finite number of backup files, 
+# say at most 3; in which case, they can change this maxNumberOfBackUps.
+#
 # If maxNumberOfBackUps is set to 0 (or less) then infinitely 
 # many backups are possible, unless onlyOneBackUp is switched on
 maxNumberOfBackUps: 0
 
-# some users may wish to cycle through back up files, for example, 
-# with maxNumberOfBackUps: 4, they may wish to delete the oldest
-# back up file, and keep only the most recent.
+# some users may wish to cycle through back up files. 
+#
+# for example, with maxNumberOfBackUps: 4, they may 
+# wish to delete the oldest back up file, and keep only the most recent.
 #
 #    copy myfile.bak1 to myfile.bak0
 #    copy myfile.bak2 to myfile.bak1
@@ -102,8 +108,7 @@ verbatimCommands:
 
 #  no indent blocks (not necessarily verbatim 
 #  environments) which are marked as %\begin{noindent}
-#  or anything else that the user puts in this hash
-#  table
+#  or anything else that you detail in the following
 noIndentBlock:
     noindent: 1
     cmhtest: 1
@@ -136,7 +141,7 @@ lookForPreamble:
 #    postfoothook=\end{mdframed},
 preambleCommandsBeforeEnvironments: 0
 
-# Default value of indentation
+# default value of indentation
 defaultIndent: "\t"
 
 # name of code blocks that should have their body aligned at ampersand delimiters
@@ -185,7 +190,7 @@ indentAfterItems:
     description: 1
     list: 1
 
-# if you want to use other names for your items (such as, for example, part)
+# if you want to use other names for your items (for example, \part)
 # then populate them here; note that you can trick latexindent.pl
 # into indenting all kinds of commands (within environments specified in 
 # indentAfterItems) using this technique.
@@ -193,7 +198,7 @@ itemNames:
     item: 1
     myitem: 1
 
-# specialBeginEnd is mainly mathmode focus, although
+# specialBeginEnd is, by default, mathmode focus, although
 # there's no restrictions
 specialBeginEnd:
     displayMath:
@@ -248,10 +253,10 @@ indentAfterHeadings:
 maximumIndentation: -1
 
 # if you don't want to have additional indentation 
-# in an environment put it in this hash table; note that
-# environments in this field will inherit 
+# in a code block, then add it to noAdditionalIndent; note that
+# code blocks in this field will inherit 
 # the *current* level of indentation they just won't
-# get any *additional*.
+# get any *additional* indentation
 noAdditionalIndent:
     myexample: 1
     mydefinition: 1
@@ -264,8 +269,8 @@ noAdditionalIndent:
     document: 1
     frame: 0
 
-# if you have indent rules for particular environments
-# or commands, put them in here; for example, you might just want 
+# if you have indent rules for particular code blocks
+# then you can populate them in indentRules; for example, you might just want 
 # to use a space " " or maybe a double tab "\t\t"
 indentRules:
    myenvironment: "\t\t"
@@ -325,72 +330,114 @@ commandCodeBlocks:
 
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
-#    BeginStartsOnOwnLine: 1
-#       if a begin statement is not already on its own line,
-#       then, with -m active, it will be moved to its own line.
 #
-#       when set to 1, e.g 
-#               some text some text \begin{myenvironment}
-#           will be changed to
-#               some text some text 
-#               \begin{myenvironment}
+# poly-switch examples:
+#
+#    BeginStartsOnOwnLine: 
+#       modify line breaks before a begin statement
+#
 #       when set to -1, e.g 
 #               some text some text 
 #               \begin{myenvironment}
 #           will be changed to
 #               some text some text \begin{myenvironment}
 #       when set to 0, the switch is ignored
-#
-#    BodyStartsOnOwnLine: 1
-#       if body does not already start on its own line, then with 
-#       -m active, it will be moved to its own line.
-#
 #       when set to 1, e.g 
-#               \begin{myenv}body text body text
+#               some text some text \begin{myenvironment}
 #           will be changed to
-#               \begin{myenv}
-#                   body text body text
+#               some text some text 
+#               \begin{myenvironment}
+#       when set to 2, e.g 
+#               some text some text \begin{myenvironment}
+#           will be changed to
+#               some text some text%
+#               \begin{myenvironment}
+#       when set to 3, e.g 
+#               some text some text \begin{myenvironment}
+#           will be changed to
+#               some text some text
+#
+#               \begin{myenvironment}
+#
+#    BodyStartsOnOwnLine: 
+#       modify line breaks before the beginning of the body
+#
 #       when set to -1, e.g 
 #               \begin{myenv}
 #                   body text body text
 #           will be changed to
 #               \begin{myenv}body text body text
 #       when set to 0, the switch is ignored
-#
-#    EndStartsOnOwnLine: 1
-#       if an end statement is not already on its own line,
-#       then, with -m active, it will be moved to its own line.
-#
 #       when set to 1, e.g 
-#               some text some text \end{myenvironment}
+#               \begin{myenv}body text body text
 #           will be changed to
-#               some text some text 
-#               \end{myenvironment}
+#               \begin{myenv}
+#                   body text body text
+#       when set to 2, e.g 
+#               \begin{myenv}body text body text
+#           will be changed to
+#               \begin{myenv}%
+#                   body text body text
+#       when set to 3, e.g 
+#               \begin{myenv}body text body text
+#           will be changed to
+#               \begin{myenv}
+#
+#                   body text body text
+#
+#    EndStartsOnOwnLine: 
+#       modify line breaks before the end statement
+#
 #       when set to -1, e.g 
 #               some text some text 
 #               \end{myenvironment}
 #           will be changed to
 #               some text some text \end{myenvironment}
 #       when set to 0, the switch is ignored
+#       when set to 1, e.g 
+#               some text some text \end{myenvironment}
+#           will be changed to
+#               some text some text 
+#               \end{myenvironment}
+#       when set to 2, e.g 
+#               some text some text \end{myenvironment}
+#           will be changed to
+#               some text some text%
+#               \end{myenvironment}
+#       when set to 3, e.g 
+#               some text some text \end{myenvironment}
+#           will be changed to
+#               some text some text
 #
-#    EndFinishesWithLineBreak: 1
-#       this switch adjusts line breaks immmediately 
-#       after an end statement (with -m active)
+#               \end{myenvironment}
+#
+#    EndFinishesWithLineBreak: 
+#       modify line breaks after the end statement
 #       
-#       when set to 1, e.g 
-#               \end{myenvironment}some text some text 
-#           will be changed to
-#                   \end{myenvironment}
-#                   some text some text 
 #       when set to -1, e.g 
 #               \end{myenvironment}
 #               some text some text 
 #           will be changed to
 #                   \end{myenvironment}some text some text 
 #       when set to 0, the switch is ignored
+#       when set to 1, e.g 
+#               \end{myenvironment}some text some text 
+#           will be changed to
+#                   \end{myenvironment}
+#                   some text some text 
+#       when set to 2, e.g 
+#               \end{myenvironment}some text some text 
+#           will be changed to
+#                   \end{myenvironment}%
+#                   some text some text 
+#       when set to 3, e.g 
+#               \end{myenvironment}some text some text 
+#           will be changed to
+#                   \end{myenvironment}
 #
-# Naturally, you can specify settings for individual environments,
-# commands, headings, etc, populate as you wish.
+#                   some text some text 
+#
+# you can specify settings on a per-name basis
 modifyLineBreaks:
     preserveBlankLines: 1
     condenseMultipleBlankLinesInto: 1
@@ -519,3 +566,38 @@ modifyLineBreaks:
     verbatim:
         VerbatimBeginStartsOnOwnLine: 0
         VerbatimEndFinishesWithLineBreak: 0
+
+# replacements, only active when either -r or -rr switches are active
+replacements:
+  - 
+    amalgamate: 1
+  -
+    this: 'latexindent.pl'
+    that: 'pl.latexindent'
+    lookForThis: 1
+    when: before
+
+# fineTuning allows you to tweak the internal pattern matching that 
+# is central to latexindent.pl
+fineTuning:
+    environments:
+      name: '[a-zA-Z@\*0-9_\\]+' 
+    ifElseFi:
+      name: '@?if[a-zA-Z@]*?' 
+    commands:
+      name: '[+a-zA-Z@\*0-9_\:]+?'
+    keyEqualsValuesBracesBrackets:
+      name: '[a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?'
+      follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
+    NamedGroupingBracesBrackets:
+      name: '[0-9\.a-zA-Z@\*><]+?'
+      follow: '\h|\R|\{|\[|\$|\)|\('
+    UnNamedGroupingBracesBrackets: 
+      follow: '\{|\[|,|&|\)|\(|\$'
+    arguments:
+      before: '(?:#\d\h*;?,?\/?)+|\<.*?\>'
+      between: '_|\^|\*'
+    modifyLineBreaks:
+      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
+      doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
+      comma: ','

@@ -35,9 +35,9 @@ in
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference
- 	:lines: 38-42
+ 	:lines: 41-45
  	:linenos:
- 	:lineno-start: 38
+ 	:lineno-start: 41
 
 which case the script will look for ``myfile`` with the extensions
 specified in ``fileExtensionPreference`` in their numeric order. If no
@@ -96,7 +96,6 @@ the ``copy`` procedure given below would be obeyed.
     copy myfile.bak2 to myfile.bak1
     copy myfile.bak3 to myfile.bak2
     copy myfile.bak4 to myfile.bak3
-        
 
 The default value of ``cycleThroughBackUps`` is ``0``.
 
@@ -115,9 +114,9 @@ switching ``showAmalgamatedSettings`` to ``1``, if you wish.
  	:class: .baseyaml
  	:caption: ``logFilePreferences`` 
  	:name: lst:logFilePreferences
- 	:lines: 79-89
+ 	:lines: 85-95
  	:linenos:
- 	:lineno-start: 79
+ 	:lineno-start: 85
 
 When either of the ``trace`` modes (see
 :ref:`page page:traceswitch <page:traceswitch>`) are active, you will
@@ -147,17 +146,17 @@ you have specified in this field, see
  	:class: .baseyaml
  	:caption: ``verbatimEnvironments`` 
  	:name: lst:verbatimEnvironments
- 	:lines: 93-96
+ 	:lines: 99-102
  	:linenos:
- 	:lineno-start: 93
+ 	:lineno-start: 99
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``verbatimCommands`` 
  	:name: lst:verbatimCommands
- 	:lines: 99-101
+ 	:lines: 105-107
  	:linenos:
- 	:lineno-start: 99
+ 	:lineno-start: 105
 
 Note that if you put an environment in ``verbatimEnvironments`` and in
 other fields such as ``lookForAlignDelims`` or ``noAdditionalIndent``
@@ -177,9 +176,9 @@ from line breaking routines (only relevant if the ``-m`` is active, see
  	:class: .baseyaml
  	:caption: ``noIndentBlock`` 
  	:name: lst:noIndentBlock
- 	:lines: 107-109
+ 	:lines: 112-114
  	:linenos:
- 	:lineno-start: 107
+ 	:lineno-start: 112
 
 If you have a block of code that you don’t want ``latexindent.pl`` to
 touch (even if it is *not* a verbatim-like environment) then you can
@@ -215,9 +214,9 @@ as many spaces (possibly none) as you like; see
  	:class: .baseyaml
  	:caption: removeTrailingWhitespace 
  	:name: lst:removeTrailingWhitespace
- 	:lines: 112-114
+ 	:lines: 117-119
  	:linenos:
- 	:lineno-start: 112
+ 	:lineno-start: 117
 
 .. code-block:: latex
    :caption: removeTrailingWhitespace (alt) 
@@ -242,9 +241,9 @@ fileContentsEnvironments:field
  	:class: .baseyaml
  	:caption: ``fileContentsEnvironments`` 
  	:name: lst:fileContentsEnvironments
- 	:lines: 118-120
+ 	:lines: 123-125
  	:linenos:
- 	:lineno-start: 118
+ 	:lineno-start: 123
 
 Before ``latexindent.pl`` determines the difference between preamble (if
 any) and the main document, it first searches for any of the
@@ -267,9 +266,9 @@ by default), but if you’d like ``latexindent.pl`` to try then change
  	:class: .baseyaml
  	:caption: lookForPreamble 
  	:name: lst:lookForPreamble
- 	:lines: 126-130
+ 	:lines: 131-135
  	:linenos:
- 	:lineno-start: 126
+ 	:lineno-start: 131
 
 Not all files contain preamble; for example, ``sty``, ``cls`` and
 ``bib`` files typically do *not*. Referencing
@@ -461,7 +460,6 @@ On running the commands
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular6.yaml
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
     latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
-            
 
 we obtain the respective outputs given in
 :numref:`lst:tabular2-default` – :numref:`lst:tabular2-mod8`.
@@ -564,7 +562,6 @@ that you run the command
    :class: .commandshell
 
     latexindent.pl matrix1.tex 
-        
 
 then the before-and-after results shown in :numref:`lst:matrixbefore`
 and :numref:`lst:matrixafter` are achievable by default.
@@ -606,19 +603,19 @@ considered ``environments``.
 
 .. describe:: indentAfterItems:fields
 
- .. literalinclude:: ../defaultSettings.yaml
- 	:class: .baseyaml
- 	:caption: ``indentAfterItems`` 
- 	:name: lst:indentafteritems
- 	:lines: 182-186
- 	:linenos:
- 	:lineno-start: 182
-
 The environment names specified in ``indentAfterItems`` tell
 ``latexindent.pl`` to look for ``\item`` commands; if these switches are
 set to ``1`` then indentation will be performed so as indent the code
 after each ``item``. A demonstration is given in
 :numref:`lst:itemsbefore` and :numref:`lst:itemsafter`
+
+ .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterItems`` 
+ 	:name: lst:indentafteritems
+ 	:lines: 187-191
+ 	:linenos:
+ 	:lineno-start: 187
 
  .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -636,9 +633,9 @@ after each ``item``. A demonstration is given in
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 192-194
+ 	:lines: 197-199
  	:linenos:
- 	:lineno-start: 192
+ 	:lineno-start: 197
 
 | If you have your own ``item`` commands (perhaps you prefer to use
   ``myitem``, for example) then you can put populate them in
@@ -670,9 +667,9 @@ shows the default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 198-211
+ 	:lines: 203-216
  	:linenos:
- 	:lineno-start: 198
+ 	:lineno-start: 203
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath``
 represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You
@@ -729,7 +726,6 @@ Upon running the following commands
 
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
     latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
-        
 
 we receive the respective outputs in
 :numref:`lst:specialLR-comm-first-tex` and
@@ -772,7 +768,6 @@ Upon saving the YAML settings in :numref:`lst:middle-yaml` and
 
     latexindent.pl special2.tex -l=middle
     latexindent.pl special2.tex -l=middle1
-        
 
 then we obtain the output given in :numref:`lst:special2-mod1` and
 :numref:`lst:special2-mod2`.
@@ -820,7 +815,6 @@ and the YAML in :numref:`lst:special-verb1-yaml`, and running
    :class: .commandshell
 
     latexindent.pl special3.tex -l=special-verb1
-        
 
 then the output in :numref:`lst:special3-mod1` is unchanged.
 
@@ -840,9 +834,9 @@ then the output in :numref:`lst:special3-mod1` is unchanged.
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 221-230
+ 	:lines: 226-235
  	:linenos:
- 	:lineno-start: 221
+ 	:lineno-start: 226
 
 This field enables the user to specify indentation rules that take
 effect after heading commands such as ``\part``, ``\chapter``,
@@ -941,7 +935,6 @@ command:
    :class: .commandshell
 
     latexindent.pl mult-nested.tex -l=max-indentation1
-        
 
 You should receive the output shown in
 :numref:`lst:mult-nested-max-ind1`.
@@ -1014,7 +1007,9 @@ blocks; each of these are shown in :numref:`tab:code-blocks`.
 	
 
 
-We will refer to these code blocks in what follows.
+We will refer to these code blocks in what follows. Note that the fine
+tuning of the definition of the code blocks detailed in
+:numref:`tab:code-blocks` is discussed in :numref:`sec:finetuning`.
 
 .. label follows
 
@@ -1128,7 +1123,12 @@ we obtain the output given in :numref:`lst:myenv-output-4`.
 Let’s now allow ``myenv`` to have some optional and mandatory arguments,
 as in :numref:`lst:myenv-args`.
 
-Upon runningtex
+ .. literalinclude:: demonstrations/myenvironment-args.tex
+ 	:class: .tex
+ 	:caption: ``myenv-args.tex`` 
+ 	:name: lst:myenv-args
+
+Upon running
 
 .. code-block:: latex
    :class: .commandshell
@@ -1294,9 +1294,9 @@ indentation.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 279-280
+ 	:lines: 284-285
  	:linenos:
- 	:lineno-start: 279
+ 	:lineno-start: 284
 
 Assuming that your environment name is not found within neither
 ``noAdditionalIndent`` nor ``indentRules``, the next place that
@@ -1353,8 +1353,8 @@ we may run the commands
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -local opt-args-no-add-glob.yaml
-    latexindent.pl  myenv-args.tex -local mand-args-no-add-glob.yaml
+    latexindent.pl myenv-args.tex -local opt-args-no-add-glob.yaml
+    latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
 
 which produces the respective outputs given in
 :numref:`lst:myenv-args-no-add-opt` and
@@ -1380,9 +1380,9 @@ received any additional indentation.
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 295-296
+ 	:lines: 300-301
  	:linenos:
- 	:lineno-start: 295
+ 	:lineno-start: 300
 
 The final check that ``latexindent.pl`` will make is to look for
 ``indentRulesGlobal`` as detailed in
@@ -1393,8 +1393,8 @@ The final check that ``latexindent.pl`` will make is to look for
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -l env-indentRules.yaml
-    latexindent.pl  myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
+    latexindent.pl myenv-args.tex -l env-indentRules.yaml
+    latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 
 then the respective output is shown in
 :numref:`lst:myenv-args-indent-rules-global1` and
@@ -1436,8 +1436,8 @@ Upon running the following commands
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl  myenv-args.tex -local opt-args-indent-rules-glob.yaml
-    latexindent.pl  myenv-args.tex -local mand-args-indent-rules-glob.yaml
+    latexindent.pl myenv-args.tex -local opt-args-indent-rules-glob.yaml
+    latexindent.pl myenv-args.tex -local mand-args-indent-rules-glob.yaml
 
 we obtain the respective outputs in
 :numref:`lst:myenv-args-indent-rules-global3` and
@@ -1920,7 +1920,6 @@ command
    :class: .commandshell
 
     latexindent.pl headings2.tex -l headings3.yaml      
-        
 
 we obtain the output in :numref:`lst:headings2-mod3`. Note that the
 argument of ``paragraph`` has received (default) indentation, and that
@@ -1943,7 +1942,6 @@ and run the command
    :class: .commandshell
 
     latexindent.pl headings2.tex -l headings4.yaml      
-        
 
 then we receive the output in :numref:`lst:headings2-mod4`. Note that
 the arguments *and* the body after the heading of ``paragraph`` has
@@ -2055,7 +2053,7 @@ keyEqualsValuesBracesBrackets
 criteria:
 
 -  it must immediately follow either ``{`` OR ``[`` OR ``,`` with
-   comments and blank lines allowed;
+   comments and blank lines allowed.
 
 -  then it has a name made up of the characters detailed in
    :numref:`tab:code-blocks`;
@@ -2065,8 +2063,11 @@ criteria:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-An example is shown in :numref:`lst:pgfkeysbefore`, with the default
-output given in :numref:`lst:pgfkeys1:default`.
+See the ``keyEqualsValuesBracesBrackets: follow`` and
+``keyEqualsValuesBracesBrackets: name`` fields of the fine tuning
+section in :numref:`lst:fineTuning` An example is shown in
+:numref:`lst:pgfkeysbefore`, with the default output given in
+:numref:`lst:pgfkeys1:default`.
 
  .. literalinclude:: demonstrations/pgfkeys1.tex
  	:class: .tex
@@ -2098,7 +2099,7 @@ This type of code block is mostly motivated by tikz-based code; we
 define this code block as follows:
 
 -  it must immediately follow either *horizontal space* OR *one or more
-   line breaks* OR ``{`` OR ``[`` OR ``$`` OR ``)`` OR ``(``;
+   line breaks* OR ``{`` OR ``[`` OR ``$`` OR ``)`` OR ``(``
 
 -  the name may contain the characters detailed in
    :numref:`tab:code-blocks`;
@@ -2106,8 +2107,11 @@ define this code block as follows:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-A simple example is given in :numref:`lst:child1`, with default output
-in :numref:`lst:child1:default`.
+See the ``NamedGroupingBracesBrackets: follow`` and
+``NamedGroupingBracesBrackets: name`` fields of the fine tuning section
+in :numref:`lst:fineTuning` A simple example is given in
+:numref:`lst:child1`, with default output in
+:numref:`lst:child1:default`.
 
  .. literalinclude:: demonstrations/child1.tex
  	:class: .tex
@@ -2144,8 +2148,10 @@ code block as satisfying the following criteria:
 -  then at least one set of curly braces or square brackets (comments
    and line breaks allowed throughout).
 
-An example is shown in :numref:`lst:psforeach1` with default output
-give in :numref:`lst:psforeach:default`.
+See the ``UnNamedGroupingBracesBrackets: follow`` field of the fine
+tuning section in :numref:`lst:fineTuning` An example is shown in
+:numref:`lst:psforeach1` with default output give in
+:numref:`lst:psforeach:default`.
 
  .. literalinclude:: demonstrations/psforeach1.tex
  	:class: .tex
@@ -2193,17 +2199,17 @@ functions of the fields given in
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 279-291
+ 	:lines: 284-296
  	:linenos:
- 	:lineno-start: 279
+ 	:lineno-start: 284
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 295-307
+ 	:lines: 300-312
  	:linenos:
- 	:lineno-start: 295
+ 	:lineno-start: 300
 
 .. label follows
 
@@ -2227,9 +2233,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 310-324
+ 	:lines: 315-329
  	:linenos:
- 	:lineno-start: 310
+ 	:lineno-start: 315
 
 .. describe:: roundParenthesesAllowed:0\|1
 
@@ -2270,7 +2276,6 @@ running the command
    :class: .commandshell
 
     latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
-            
 
 we obtain the output given in :numref:`lst:pstricks1-nrp`.
 
@@ -2301,7 +2306,6 @@ and run the command
    :class: .commandshell
 
     latexindent.pl pstricks1.tex -l defFunction.yaml
-            
 
 then the output is as in :numref:`lst:pstricks1-indent-rules`.
 
@@ -2506,7 +2510,7 @@ settings given in :numref:`lst:foreach`.
 .. describe:: commandNameSpecial:fields
 
 There are some special command names that do not fit within the names
-recognized by ``latexindent.pl``, the first one of which is
+recognised by ``latexindent.pl``, the first one of which is
 ``\@ifnextchar[``. From the perspective of ``latexindent.pl``, the whole
 of the text ``\@ifnextchar[`` is a command, because it is immediately
 followed by sets of mandatory arguments. However, without the

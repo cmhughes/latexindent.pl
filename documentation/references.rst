@@ -66,6 +66,16 @@ https://github.com/cmhughes/latexindent.pl/pull/17.
 
 .. raw:: html
 
+   <div id="ref-masteringregexp">
+
+Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-latexindent-home">
 
 “Home of Latexindent.pl.” 2017. Accessed January 23.

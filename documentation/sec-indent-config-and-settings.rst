@@ -77,7 +77,7 @@ documentation.
 
 You can make sure that your settings are loaded by checking
 ``indent.log`` for details – if you have specified a path that
-``latexindent.pl`` doesn’t recognize then you’ll get a warning,
+``latexindent.pl`` doesn’t recognise then you’ll get a warning,
 otherwise you’ll get confirmation that ``latexindent.pl`` has read your
 settings file. [2]_
 
@@ -158,7 +158,6 @@ the ``-y`` switch, then you could use the following command:
    :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-        
 
 Note the use of ``;`` to specify another field within
 ``verbatimEnvironments``. This is shorthand, and equivalent, to using
@@ -168,7 +167,6 @@ the following command:
    :class: .commandshell
 
     latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
-        
 
 You may, of course, specify settings using the ``-y`` switch as well as,
 for example, settings loaded using the ``-l`` switch; for example,
@@ -177,10 +175,21 @@ for example, settings loaded using the ``-l`` switch; for example,
    :class: .commandshell
 
     latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-        
 
 Any settings specified using the ``-y`` switch will be loaded *after*
 any specified using ``indentconfig.yaml`` and the ``-l`` switch.
+
+If you wish to specify any regex-based settings using the ``-y`` switch,
+it is important not to use quotes surrounding the regex; for example,
+with reference to the ‘one sentence per line’ feature
+(:numref:`sec:onesentenceperline`) and the listings within
+:numref:`lst:sentencesEndWith`, the following settings give the option
+to have sentences end with a semicolon
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
 
 .. label follows
 

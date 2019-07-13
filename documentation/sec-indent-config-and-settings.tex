@@ -64,7 +64,7 @@ lookForAlignDelims:
 \end{yaml}
 
 	You can make sure that your settings are loaded by checking \texttt{indent.log} for
-	details -- if you have specified a path that \texttt{latexindent.pl} doesn't recognize
+	details -- if you have specified a path that \texttt{latexindent.pl} doesn't recognise
 	then you'll get a warning, otherwise you'll get confirmation that \texttt{latexindent.pl}
 	has read your settings file \footnote{Windows users
 		may find that they have to end \texttt{.yaml} files with a blank line}.
@@ -118,28 +118,37 @@ verbatimEnvironments:
 	file.
 
 \subsection{The -y|yaml switch}\label{sec:yamlswitch}
-	You%%%%
+	You%
 	\announce{2017-08-21}{demonstration of the -y switch} may use the
 	\texttt{-y} switch to load your settings;  for example, if you wished to
 	specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch,
 	then you could use the following command:
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	Note the use of \texttt{;} to specify another field within
 	\texttt{verbatimEnvironments}. This is shorthand, and equivalent, to using the following
 	command:
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	You may, of course, specify settings using the \texttt{-y} switch as well as,
 	for example, settings loaded using the \texttt{-l} switch; for example,
 	\begin{commandshell}
 latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
-    \end{commandshell}
+\end{commandshell}
 	Any settings specified using the \texttt{-y} switch will be loaded
 	\emph{after} any specified using \texttt{indentconfig.yaml} and the
 	\texttt{-l} switch.
+
+	If you wish to specify any regex-based settings using the \texttt{-y} switch,
+	it is important not to use quotes surrounding the regex; for example, with reference to
+	the `one sentence per line' feature (\vref{sec:onesentenceperline}) and the listings within
+	\vref{lst:sentencesEndWith}, the following settings give the option to have sentences end
+	with a semicolon
+	\begin{commandshell}
+latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
+\end{commandshell}
 
 \subsection{Settings load order}\label{sec:loadorder}
 	\texttt{latexindent.pl} loads the settings files in the following order:
@@ -150,11 +159,11 @@ latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myen
 		\item \texttt{localSettings.yaml} but only if found in the same directory as \texttt{myfile.tex}
 		      and called with \texttt{-l} switch; this file can be renamed, provided that
 		      the call to \texttt{latexindent.pl} is adjusted accordingly (see \cref{sec:localsettings}).
-		      You may specify both relative and absolute%%
+		      You may specify both relative and absolute%
 		      \announce{2017-08-21}*{-l absolute paths} paths to other YAML files using the \texttt{-l} switch,
 		      separating multiple files using commas;
-		\item any settings%%%%
-		      \announce{2017-08-21}{-y switch load order}  specified in the
+		\item any settings%
+		      \announce{2017-08-21}{-y switch load order} specified in the
 		      \texttt{-y} switch.
 	\end{enumerate}
 	A visual representation of this is given in \cref{fig:loadorder}.

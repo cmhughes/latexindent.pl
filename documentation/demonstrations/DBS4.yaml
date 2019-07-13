@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    environments:
+        tabular:
+            DBSFinishesWithLineBreak: 2

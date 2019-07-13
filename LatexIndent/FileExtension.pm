@@ -35,28 +35,23 @@ sub file_extension_check{
     # grab the filename
     my $fileName = ${$self}{fileName};
 
+    # see if an extension exists for the fileName
+    my ($name,$dir,$ext) = fileparse($fileName,qr/\..[^.]*$/);
+    
     # grab the file extension preferences
     my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
 
     # sort the file extensions by preference 
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
     
-    # get the base file name, allowing for different extensions (possibly no extension)
-    my ($name, $dir, $ext) = fileparse($fileName, @fileExtensions);
+    # store the base name
     ${$self}{baseName} = $name;
-
-    # check to make sure given file type is supported
-    if( -e $fileName  and !$ext ){
-        my $message = "The file $fileName exists , but the extension does not correspond to any given in fileExtensionPreference; consinder updating fileExtensionPreference.";
-        $logger->fatal("*$message");
-        die($message);
-    }
 
     # if no extension, search according to fileExtensionPreference
     if ($fileName ne "-"){
         if (!$ext) {
             $logger->info("*File extension work:");
-            $logger->info("latexindent called to act upon $fileName with a file extension;\nsearching for file with an extension in the following order (see fileExtensionPreference):");
+            $logger->info("latexindent called to act upon $fileName without a file extension;\nsearching for file with an extension in the following order (see fileExtensionPreference):");
             $logger->info(join("\n",@fileExtensions));
 
             my $fileFound = 0;

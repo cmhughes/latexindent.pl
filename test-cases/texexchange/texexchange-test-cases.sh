@@ -37,7 +37,7 @@ latexindent.pl -s 39149-jake.tex -outputfile 39149-jake-default.tex -l indentPre
 latexindent.pl -s 39149-morbusg.tex -outputfile 39149-morbusg-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-mark-wibrow1.tex -outputfile 39149-mark-wibrow1-default.tex -l indentPreamble.yaml
 latexindent.pl -s 39149-mark-wibrow2.tex -outputfile 39149-mark-wibrow2-default.tex -l indentPreamble.yaml
-#latexindent.pl -s 39149-SztupY.tex -outputfile 39149-SztupY-default.tex -l indentPreamble.yaml
+latexindent.pl -s 39149-SztupY.tex -outputfile 39149-SztupY-default.tex -l=indentPreamble.yaml,fine-tuning-args1
 latexindent.pl -s 103863-kiss-my-armpit1.tex -o=103863-kiss-my-armpit1-default.tex -l indentPreamble.yaml
 latexindent.pl -s 135683-kiss-my-armpit1.tex -o=135683-kiss-my-armpit1-default.tex -l indentPreamble.yaml
 latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-default.tex -l=indentPreamble.yaml
@@ -47,6 +47,8 @@ latexindent.pl -s 348-cmhughes1.tex -o=348-cmhughes1-mod5.tex -m -l=348.yaml,ind
 latexindent.pl -s 43884.tex -o=43884-default.tex -l indentPreamble.yaml
 latexindent.pl -s 104498.tex -o=104498-default.tex -l indentPreamble.yaml
 latexindent.pl -s 353493.tex -o=353493-default.tex -l indentPreamble.yaml
+latexindent.pl -s 49814.tex -o=+-default -y="indentPreamble:1"
+latexindent.pl -s 49814-old.tex -o=+-default -y="indentPreamble:1" -l=fine-tune.yaml
 
 # =======  pgfplots tag  =========
 # =======  pgfplots tag  =========

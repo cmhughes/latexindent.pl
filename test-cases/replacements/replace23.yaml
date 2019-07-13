@@ -1,0 +1,6 @@
+replacements:
+  -
+    amalgamate: 0
+  -
+    this: end
+    that: END

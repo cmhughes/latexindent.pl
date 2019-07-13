@@ -1,9 +1,10 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\fancyhead[R]{\bfseries\thepage%
-	\tikz[remember picture,overlay] {
-		\node at (1,0){\includegraphics{logo}};
-	}}
+\renewcommand{\imagetouse}{logo}
 \section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
+ \fancyhead[R]{\bfseries\thepage%
+	 \tikz[remember picture,overlay] {
+		 \node at (1,0){\includegraphics{logo}};
+	 }}
  All features described in this section will only be relevant if the
  \texttt{-m} switch is used.
 
@@ -87,13 +88,10 @@ latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 \end{commandshell}
 	we obtain the output in \cref{lst:textwrap1-mod1}.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	The text wrapping routine is performed \emph{after} verbatim environments
 	have been stored, so verbatim environments and verbatim commands are exempt from the
@@ -128,7 +126,7 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 	The text wrapping routine of \texttt{latexindent.pl} is performed by the
 	\texttt{Text::Wrap} module, which provides a \texttt{separator} feature
 	to separate lines with characters other than a new line (see
-	\cite{textwrap}). By default, the separator is empty  which means that a new
+	\cite{textwrap}). By default, the separator is empty which means that a new
 	line token will be used, but you can change it as you see fit.
 
 	For example starting with the file in \cref{lst:textwrap4}
@@ -141,13 +139,10 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 \end{commandshell}
 	then we obtain the output in \cref{lst:textwrap4-mod2}.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2.tex}{\texttt{textwrap4-mod2.tex}}{lst:textwrap4-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap2.yaml}[MLB-TCB]{\texttt{textwrap2.yaml}}{lst:textwrap2-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 \subsubsection{text wrapping on a per-code-block basis}
 	By default, if the value of \texttt{columns} is greater than 0 and the
@@ -179,20 +174,17 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
 	\end{widepage}
 
-	With reference to this codeblock, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
+	With reference to this code block, the settings given in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each
 	give the same output.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap3.yaml}[MLB-TCB]{\texttt{textwrap3.yaml}}{lst:textwrap3-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap4.yaml}[MLB-TCB]{\texttt{textwrap4.yaml}}{lst:textwrap4-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap5.yaml}[MLB-TCB]{\texttt{textwrap5.yaml}}{lst:textwrap5-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap3.yaml}[MLB-TCB]{\texttt{textwrap3.yaml}}{lst:textwrap3-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4.yaml}[MLB-TCB]{\texttt{textwrap4.yaml}}{lst:textwrap4-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap5.yaml}[MLB-TCB]{\texttt{textwrap5.yaml}}{lst:textwrap5-yaml}
+	\end{cmhtcbraster}
 
 	Let's explore the similarities and differences in the equivalent (with respect to
 	\cref{lst:textwrap5}) syntax specified in \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
@@ -214,7 +206,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
 latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
-    \end{commandshell}
+\end{commandshell}
 	we obtain the output shown in \cref{lst:textwrap5-mod3}.
 
 	\cmhlistingsfromfile{demonstrations/textwrap5-mod3.tex}{\texttt{textwrap5-mod3.tex}}{lst:textwrap5-mod3}
@@ -229,7 +221,7 @@ latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
 	In particular, upon running
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
-    \end{commandshell}
+\end{commandshell}
 	we obtain the output given in \cref{lst:textwrap6-mod5}.
 
 	\begin{widepage}
@@ -261,7 +253,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
-    \end{commandshell}
+\end{commandshell}
 	we receive the respective output given in \crefrange{lst:textwrap6-mod6}{lst:textwrap6-mod8}.
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/textwrap6-mod6.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap6-yaml}}{lst:textwrap6-mod6}
@@ -288,24 +280,21 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 	\texttt{0}) and a positive integer (see \vref{lst:textwrap6}, for
 	example). We explore further options in \crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap9.yaml}[MLB-TCB]{\texttt{textwrap9.yaml}}{lst:textwrap9-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap10.yaml}[MLB-TCB]{\texttt{textwrap10.yaml}}{lst:textwrap10-yaml}
-		\end{minipage}%
-		\begin{minipage}{.33\linewidth}
-			\cmhlistingsfromfile{demonstrations/textwrap11.yaml}[MLB-TCB]{\texttt{textwrap11.yaml}}{lst:textwrap11-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap9.yaml}[MLB-TCB]{\texttt{textwrap9.yaml}}{lst:textwrap9-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap10.yaml}[MLB-TCB]{\texttt{textwrap10.yaml}}{lst:textwrap10-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap11.yaml}[MLB-TCB]{\texttt{textwrap11.yaml}}{lst:textwrap11-yaml}
+	\end{cmhtcbraster}
 
 	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running
 	the commands
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
-    \end{commandshell}
+\end{commandshell}
 	we receive the respective output given in \cref{lst:textwrap6-mod9,lst:textwrap6-mod11}.
 
 	\begin{widepage}
@@ -330,12 +319,12 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 	\texttt{80} will be used.
 
 	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming
-	that text wrapping is occuring on a per-code-block basis, and the current
+	that text wrapping is occurring on a per-code-block basis, and the current
 	environment/code block is specified within \vref{lst:aligndelims:basic} then text wrapping
 	will be disabled for this code block.
 
 	If you wish to specify \texttt{afterHeading} commands (see
-	\vref{lst:indentAfterHeadings}) on a per-name basis, then you need to  append the name with
+	\vref{lst:indentAfterHeadings}) on a per-name basis, then you need to append the name with
 	\texttt{:heading}, for example, you might use \texttt{section:heading}.
 
 \subsubsection{Summary of text wrapping}
@@ -357,7 +346,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 	You can instruct \texttt{latexindent.pl} to
-	format%%%%%%
+	format%
 	\announce{2018-01-13}{one sentence per line} your file so that
 	it puts one sentence per line. Thank you to \cite{mlep} for helping to
 	shape and test this feature. The behaviour of this part of the script is controlled by
@@ -373,9 +362,9 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \yamltitle{removeSentenceLineBreaks}{0|1}
 	When operating upon sentences \texttt{latexindent.pl} will, by default, remove
-	internal linebreaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}.
-	Setting this switch to \texttt{0} instructs \texttt{latexindent.pl}
-	not to do so.
+	internal line breaks as \texttt{removeSentenceLineBreaks} is set to
+	\texttt{1}. Setting this switch to \texttt{0} instructs
+	\texttt{latexindent.pl} not to do so.
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
@@ -386,32 +375,26 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 		\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
-	\end{commandshell}
+\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice, in particular, that the `internal' sentence line breaks in
 	\cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1}, but have
 	not been removed in \cref{lst:multiple-sentences-mod2}.
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
-	\texttt{latexindent.pl} on how to define a sentence. From the perpesctive of
+	\texttt{latexindent.pl} on how to define a sentence. From the perspective of
 	\texttt{latexindent.pl} a sentence must:
 	\begin{itemize}
 		\item \emph{follow} a certain character or set of characters (see
@@ -427,19 +410,14 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	pattern that you would like; you can specify anything in this field using the language of
 	regular expressions.
 
-	\begin{adjustwidth}{-3.5cm}{-2.5cm}
-		\begin{minipage}{.36\linewidth}
-			\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.31\linewidth}
-			\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
-		\end{minipage}
-	\end{adjustwidth}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.06\linewidth]
+		\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+		\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+		\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+	\end{cmhtcbraster}
 
 \subsubsection{sentencesFollow}
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
@@ -450,13 +428,10 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
 	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0},
 	\texttt{latexindent.pl} will not seek sentences following a blank line, and so the
@@ -472,18 +447,18 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 		\begin{commandshell}
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
-	\end{commandshell}
+\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
 	\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
-	\begin{minipage}{.55\linewidth}
+	\begin{cmhtcbraster}[
+			raster force size=false,
+			raster column 1/.style={add to width=1cm},
+		]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
-	\end{minipage}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+	\end{cmhtcbraster}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
 	\texttt{)} has not been accounted for, but that following the inclusion
@@ -504,18 +479,18 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 		\begin{commandshell}
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
-	\end{commandshell}
+\end{commandshell}
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
 
-	\begin{minipage}{.55\linewidth}
+	\begin{cmhtcbraster}[
+			raster force size=false,
+			raster column 1/.style={add to width=1cm},
+		]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
-	\end{minipage}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+	\end{cmhtcbraster}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted for but
 	that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2}, all of the
 	sentences have been accounted for, because the \texttt{other} field in
@@ -535,21 +510,15 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 \end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	There is a subtle difference between the output in \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in
 	particular, in \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not
@@ -584,27 +553,31 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	\end{itemize}
 	If you find that the \texttt{betterFullStop} does not work for your purposes, then
 	you can switch it off by setting it to \texttt{0}, and you can
-	experiment with the \texttt{other} field.
+	experiment with the \texttt{other}
+	field.%
+	\announce{new}{fine tuning the betterFullStop} You can also seek
+	to customise the \texttt{betterFullStop} routine by using the
+	\emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
-	it does not accomodate the specifications above. For example, using the following command
+	it does not accommodate the specifications above. For example, using the following
+	command
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
 	and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in
 	\cref{lst:url-mod2}.
 
-	\begin{adjustwidth}{-3.5cm}{-1.5cm}
-		\begin{minipage}{.6\linewidth}
-			\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.4\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
-		\end{minipage}
-	\end{adjustwidth}
+	\begin{cmhtcbraster}[ raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster force size=false,
+			raster column 1/.style={add to width=.1\textwidth},
+			raster column skip=.06\linewidth]
+		\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+	\end{cmhtcbraster}
 
-	Notice that the full stop within the URL has not been accomodated correctly because of
+	Notice that the full stop within the URL has not been accommodated correctly because of
 	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the oneSentencePerLine routine}
@@ -617,7 +590,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 	\cref{lst:multiple-sentences3}, and run the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
-	\end{commandshell}
+\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences3-mod1}. \cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
 	\cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
@@ -627,30 +600,27 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
-	\end{commandshell}
+\end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}. \cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
 	\end{widepage}
 	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
-	Once you've read \cref{sec:poly-switches}, you will know that you can accomodate the
+	Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
 	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
 	and the command
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
-	\end{commandshell}
+\end{commandshell}
 	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
-	\begin{minipage}{.5\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 \subsubsection{text wrapping and indenting sentences}
-	The \texttt{oneSentencePerLine}%%%
+	The \texttt{oneSentencePerLine}%
 	\announce{2018-08-13}{oneSentencePerline text wrap and indent} can be instructed to perform
 	text wrapping and indentation upon sentences.
 
@@ -664,19 +634,18 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
 	we receive the output given in \cref{lst:multiple-sentences5-mod1}.
 
-	\begin{widepage}
-		\begin{minipage}{.55\linewidth}
-			\cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}{.45\linewidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
-		\end{minipage}
-	\end{widepage}
+	\begin{cmhtcbraster}[ raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster force size=false,
+			raster column 1/.style={add to width=.1\textwidth},
+			raster column skip=.06\linewidth]
+		\cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
+	\end{cmhtcbraster}
 
 	If you wish to specify the \texttt{columns} field on a per-code-block basis
 	for sentences, then you would use \texttt{sentence}; explicitly, starting with
-	\vref{lst:textwrap9-yaml}, for example, you  would replace/append
+	\vref{lst:textwrap9-yaml}, for example, you would replace/append
 	\texttt{environments} with, for example, \texttt{sentence: 50}.
 
 	The indentation of sentences requires that sentences are stored as code blocks. This
@@ -752,13 +721,10 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 	Let's start with the \texttt{.tex} file in \cref{lst:shortlines},
 	together with the YAML settings in \cref{lst:remove-para1-yaml}.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/shortlines.tex}{\texttt{shortlines.tex}}{lst:shortlines}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/remove-para1.yaml}[MLB-TCB]{\texttt{remove-para1.yaml}}{lst:remove-para1-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Upon running the command
 	\begin{commandshell}
@@ -774,7 +740,7 @@ latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 	\vref{lst:removeTWS-before} and running, for example,
 	\begin{commandshell}
 latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
-    \end{commandshell}
+\end{commandshell}
 	in which case the output is as in \cref{lst:shortlines1-tws}; notice that the double
 	spaces present in \cref{lst:shortlines1} have been addressed.
 
@@ -784,13 +750,10 @@ latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,rem
 	\texttt{all} switch applies to \emph{all} code block
 	types. So, for example, let's consider the files in \cref{lst:shortlines-mand,lst:shortlines-opt}
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/shortlines-mand.tex}{\texttt{shortlines-mand.tex}}{lst:shortlines-mand}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/shortlines-opt.tex}{\texttt{shortlines-opt.tex}}{lst:shortlines-opt}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Upon running the commands
 	\begin{widepage}
@@ -837,7 +800,7 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	\cmhlistingsfromfile{demonstrations/shortlines-envs2.tex}{\texttt{shortlines-envs2.tex}}{lst:shortlines-envs2}
 	\cmhlistingsfromfile{demonstrations/shortlines-envs3.tex}{\texttt{shortlines-envs3.tex}}{lst:shortlines-envs3}
 
-	The remaining code-block types can be customized in analogous ways, although note that
+	The remaining code-block types can be customised in analogous ways, although note that
 	\texttt{commands}, \texttt{keyEqualsValuesBracesBrackets}, \texttt{namedGroupingBracesBrackets},
 	\texttt{UnNamedGroupingBracesBrackets} are controlled by the \texttt{optionalArguments} and the
 	\texttt{mandatoryArguments}.
@@ -847,13 +810,10 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	code-blocks. For example, consider the file in \cref{lst:shortlines-md}, with the YAML
 	settings in \cref{lst:remove-para4-yaml}.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/remove-para4.yaml}[MLB-TCB]{\texttt{remove-para4.yaml}}{lst:remove-para4-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Upon running the following command
 	\begin{widepage}
@@ -863,7 +823,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\end{widepage}
 	then we obtain the output in \cref{lst:shortlines-md4}. \cmhlistingsfromfile{demonstrations/shortlines-md4.tex}{\texttt{shortlines-md4.tex}}{lst:shortlines-md4}
 
-	Note%%%%%
+	Note%
 	\announce{2018-08-13}*{updates to all in removeParagraphLineBreaks} that the
 	\texttt{all} field can take the same exceptions detailed in
 	\cref{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
@@ -903,7 +863,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
 latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
 latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
-    \end{commandshell}
+\end{commandshell}
 	\end{widepage}
 	we obtain the respective outputs in \crefrange{lst:sl-stop4}{lst:sl-stop4-comment}; notice in particular
 	that:
@@ -931,7 +891,7 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 
 \subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
 
-	The%%%%%
+	The%
 	\announce{2018-08-13}{combine text wrap and remove paragraph line breaks} text wrapping
 	routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine
 	(\vref{subsec:removeparagraphlinebreaks}) can be combined.
@@ -953,25 +913,22 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 	Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
 	\begin{commandshell}
 latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
-    \end{commandshell}
+\end{commandshell}
 	we obtain the output in \cref{lst:textwrap7-mod12}.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
-	In \cref{lst:textwrap7-mod12} the paragraph linebreaks have first been removed from
-	\cref{lst:textwrap7}, and  then the text wrapping routine has been applied. It is
+	In \cref{lst:textwrap7-mod12} the paragraph line breaks have first been removed from
+	\cref{lst:textwrap7}, and then the text wrapping routine has been applied. It is
 	envisaged that variants of \cref{lst:textwrap12-yaml} will be among the most useful
 	settings for these two features.
 
 \subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can
-	take one of \emph{five}%%%%%%
+	take one of \emph{five}%
 	\announce{2017-08-21}*{blank line poly-switch} integer values:
 	\begin{itemize}[font=\bfseries]
 		\item[$-1$] \emph{remove mode}: line breaks before or after the
@@ -989,7 +946,11 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after the
 		      \emph{<part of thing>} under consideration, assuming that
 		      there is not already a line break before or after the \emph{<part of thing>},
-		      followed by a blank line.
+		      followed by a blank line;
+		\item[4] \emph{add blank line mode}%
+		      \announce{new}{blank line poly-switch}; a blank line will
+		      be added before or after the \emph{<part of thing>} under consideration, even if the
+		      \emph{<part of thing>} is already on its own line.
 	\end{itemize}
 	In the above, \emph{<part of thing>} refers to either the
 	\emph{begin statement}, \emph{body} or \emph{end statement}
@@ -1002,8 +963,9 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 	\cref{lst:environments-mlb}; note that it contains \emph{global} settings
 	(immediately after the \texttt{environments} field) and that
 	\emph{per-name} settings are also allowed -- in the case of
-	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been
-	specified. Note that all poly-switches are \emph{off} by default.
+	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been specified
+	for demonstration. Note that all poly-switches are \emph{off} (set to 0) by
+	default.
 
 	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
@@ -1070,7 +1032,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
 	\end{minipage}
 
-	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
+	Upon running commands analogous to the above, we obtain \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
 
 	\begin{widepage}
 		\begin{minipage}{.56\linewidth}
@@ -1086,9 +1048,9 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	comment symbol has been added before adding the line break; in both cases, trailing
 	horizontal space has been stripped before doing so.
 
-	Let's%%%%%%
-	\announce{2017-08-21}{demonstration of blank line poly-switch (3)}	now change each
-	of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
+	Let's%
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
+	the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
 	$3$ and save them into \texttt{env-mlb5.yaml} and
 	\texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
 
@@ -1100,7 +1062,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
 	\end{minipage}
 
-	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
+	Upon running commands analogous to the above, we obtain \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
 
 	\begin{widepage}
 		\begin{minipage}{.56\linewidth}
@@ -1114,6 +1076,46 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but this time a
 	\emph{blank line} has been added after adding the line break.
+
+	Let's now change%
+	\announce{new}{demonstration of new blank line poly-switch} each of
+	the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are
+	$4$ and save them into \texttt{env-beg4.yaml} and
+	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
+	\end{minipage}
+
+	We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
+
+	\cmhlistingsfromfile*{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
+
+	Upon running the commands
+	\begin{commandshell}
+latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
+latexindent.pl -m env-mlb.1tex -l env-body4.yaml
+\end{commandshell}
+
+	then we receive the respective outputs in \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
+	\end{cmhtcbraster}
+
+	We note in particular that, by design, for this value of the poly-switches:
+	\begin{enumerate}
+		\item in \cref{lst:env-mlb1-beg4} a blank line has been inserted before the
+		      \lstinline!\begin! statement, even though the \lstinline!\begin!
+		      statement was already on its own line;
+		\item in \cref{lst:env-mlb1-body4} a blank line has been inserted before the beginning of the
+		      \emph{body}, even though it already began on its own line.
+	\end{enumerate}
 
 \subsubsection{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in
@@ -1168,7 +1170,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
 	\end{minipage}
 
-	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
+	Upon running commands analogous to the above, we obtain \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
 
 	\begin{widepage}
 		\begin{minipage}{.43\linewidth}
@@ -1184,7 +1186,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	comment symbol has been added before adding the line break; in both cases, trailing
 	horizontal space has been stripped before doing so.
 
-	Let's%%%%%%
+	Let's%
 	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
 	the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are
 	$3$ and save them into \texttt{env-mlb11.yaml} and
@@ -1198,7 +1200,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
 	\end{minipage}
 
-	Upon running  commands analogous to the above, we obtain \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
+	Upon running commands analogous to the above, we obtain \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
 
 	\begin{widepage}
 		\begin{minipage}{.42\linewidth}
@@ -1213,11 +1215,50 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, and that a
 	\emph{blank line} has been added after the line break.
 
-\subsubsection{poly-switches only add line breaks when necessary}
+	Let's now change%
+	\announce{new}{demonstration of new blank line poly-switch} each of
+	the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they are
+	$4$ and save them into \texttt{env-end4.yaml} and
+	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
+
+	\begin{minipage}{.45\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{.5\textwidth}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
+	\end{minipage}
+
+	We will demonstrate this poly-switch value using the code from
+	\vref{lst:env-mlb1-text}.
+
+	Upon running the commands
+	\begin{commandshell}
+latexindent.pl -m env-mlb1.tex -l env-end4.yaml
+latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
+\end{commandshell}
+
+	then we receive the respective outputs in \cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
+		\cmhlistingsfromfile*{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
+	\end{cmhtcbraster}
+
+	We note in particular that, by design, for this value of the poly-switches:
+	\begin{enumerate}
+		\item in \cref{lst:env-mlb1-end4} a blank line has been inserted before the
+		      \lstinline!\end! statement, even though the \lstinline!\end!
+		      statement was already on its own line;
+		\item in \cref{lst:env-mlb1-end-f4} a blank line has been inserted after the
+		      \lstinline!\end! statement, even though it already began on its own line.
+	\end{enumerate}
+
+\subsubsection{poly-switches 1, 2, and 3 only add line breaks when necessary}
 	If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment)
-	using a poly-switch value of $1$ (or $2$),
-	it will only do so if necessary. For example, if you process the file in
-	\vref{lst:mlb2} using any of the YAML files presented so far in this section,
+	using a poly-switch value of $1$ (or $2$
+	or $3$), it will only do so if necessary. For example, if you
+	process the file in \vref{lst:mlb2} using poly-switch values of 1, 2, or 3,
 	it will be left unchanged.
 
 	\begin{minipage}{.45\linewidth}
@@ -1228,37 +1269,39 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\cmhlistingsfromfile{demonstrations/env-mlb3.tex}{\texttt{env-mlb3.tex}}{lst:mlb3}
 	\end{minipage}
 
-	In contrast, the output from processing the file in \cref{lst:mlb3} will vary
-	depending on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that the
-	comment symbol after the \lstinline!\begin{myenv}! has been moved to the next line, as
-	\texttt{BodyStartsOnOwnLine} is set to \texttt{1}. In
+	Setting the poly-switches to a value of $4$ instructs
+	\texttt{latexindent.pl} to add a line break even if the \emph{<part of thing>}
+	is already on its own line; see \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4} and
+	\cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
+
+	In contrast, the output from processing the file in \cref{lst:mlb3} will
+	vary depending on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that
+	the comment symbol after the \lstinline!\begin{myenv}! has been moved to the next line,
+	as \texttt{BodyStartsOnOwnLine} is set to \texttt{1}. In
 	\cref{lst:env-mlb3-mod4} you'll see that the comment has been accounted for correctly
-	because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, and the
-	comment symbol has \emph{not} been moved to its own line. You're
+	because \texttt{BodyStartsOnOwnLine} has been set to \texttt{2}, and
+	the comment symbol has \emph{not} been moved to its own line. You're
 	encouraged to experiment with \cref{lst:mlb3} and by setting the other
 	poly-switches considered so far to \texttt{2} in turn.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod2.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb2}}{lst:env-mlb3-mod2}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile{demonstrations/env-mlb3-mod4.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb4}}{lst:env-mlb3-mod4}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	The details of the discussion in this section have concerned \emph{global}
-	poly-switches in the \texttt{environments} field; each switch can also be specified
-	on a \emph{per-name} basis, which would take priority over the global values;
-	with reference to \vref{lst:environments-mlb}, an example is shown for the
-	\texttt{equation*} environment.
+	poly-switches in the \texttt{environments} field; each switch can also be
+	specified on a \emph{per-name} basis, which would take priority over the
+	global values; with reference to \vref{lst:environments-mlb}, an example is shown for
+	the \texttt{equation*} environment.
 
 \subsubsection{Removing line breaks (poly-switches set to $-1$)}
-	Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to
-	remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider the
-	example code given in \cref{lst:mlb4}, noting in particular the positions of
-	the line break highlighters, $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$,
-	$\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, together with the associated
-	YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
+	Setting poly-switches to $-1$ tells \texttt{latexindent.pl}
+	to remove line breaks of the \emph{<part of the thing>}, if necessary. We will consider
+	the example code given in \cref{lst:mlb4}, noting in particular the
+	positions of the line break highlighters, $\BeginStartsOnOwnLine$,
+	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$,
+	together with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
 
 	\begin{minipage}{.45\linewidth}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
@@ -1333,10 +1376,10 @@ latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	\texttt{removeTrailingWhitespace}, and that it has two (binary) switches to determine if
 	horizontal space should be removed \texttt{beforeProcessing} and
 	\texttt{afterProcessing}. The \texttt{beforeProcessing} is particularly relevant
-	when considering the \texttt{-m} switch; let's consider the file shown in
-	\cref{lst:mlb5}, which highlights trailing spaces.
+	when considering the \texttt{-m} switch; let's consider the file shown
+	in \cref{lst:mlb5}, which highlights trailing spaces.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
 before words   (*@$\BeginStartsOnOwnLine$@*) 
 \begin{myenv}           (*@$\BodyStartsOnOwnLine$@*)
@@ -1344,11 +1387,8 @@ body of myenv      (*@$\EndStartsOnOwnLine$@*)
 \end{myenv}     (*@$\EndFinishesWithLineBreak$@*)
 after words
 \end{cmhlistings}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	The output from the following commands
 	\begin{widepage}
@@ -1357,9 +1397,9 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
 \end{commandshell}
 	\end{widepage}
-	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that the trailing horizontal
-	white space has been preserved (by default) in \cref{lst:env-mlb5-modAll}, while in
-	\cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in
+	is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note that the trailing
+	horizontal white space has been preserved (by default) in \cref{lst:env-mlb5-modAll},
+	while in \cref{lst:env-mlb5-modAll-remove-WS}, it has been removed using the switch specified in
 	\cref{lst:removeTWS-before}.
 
 	\begin{widepage}
@@ -1371,7 +1411,7 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 \subsubsection{poly-switch line break removal and blank lines}
 	Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
 
-	\begin{minipage}{.45\linewidth}
+	\begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
 before words(*@$\BeginStartsOnOwnLine$@*)
 
@@ -1386,11 +1426,8 @@ body of myenv(*@$\EndStartsOnOwnLine$@*)
 
 after words
 \end{cmhlistings}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\linewidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Upon running the following commands
 	\begin{widepage}
@@ -1400,22 +1437,23 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 \end{commandshell}
 	\end{widepage}
 	we receive the respective outputs in \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In
-	\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been condensed
-	into one blank line, but that blank lines have \emph{not} been removed
-	by the poly-switches -- this is because, by default, \texttt{preserveBlankLines} is set
-	to \texttt{1}. By contrast, in \cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have
-	allowed the poly-switches to remove blank lines because, in \cref{lst:UnpreserveBlankLines},
-	we have set \texttt{preserveBlankLines} to \texttt{0}.
+	\cref{lst:env-mlb6-modAll} we see that the multiple blank lines have each been
+	condensed into one blank line, but that blank lines have \emph{not}
+	been removed by the poly-switches -- this is because, by default,
+	\texttt{preserveBlankLines} is set to \texttt{1}. By contrast, in
+	\cref{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}, we have allowed the poly-switches to remove blank lines
+	because, in \cref{lst:UnpreserveBlankLines}, we have set \texttt{preserveBlankLines} to
+	\texttt{0}.
 
-	\begin{widepage}
-		\begin{minipage}{.30\linewidth}
-			\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb6-modAll}
-		\end{minipage}
-		\hfill
-		\begin{minipage}{.65\linewidth}
-			\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
-		\end{minipage}
-	\end{widepage}
+	\begin{cmhtcbraster}[ raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster force size=false,
+			raster column 1/.style={add to width=-.2\textwidth},
+			raster column 2/.style={add to width=.2\textwidth},
+			raster column skip=.06\linewidth]
+		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb6-modAll}
+		\cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
+	\end{cmhtcbraster}
 
 	We can explore this further using the blank-line poly-switch value of
 	$3$; let's use the file given in \cref{lst:env-mlb7-tex}.
@@ -1426,7 +1464,7 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	\begin{commandshell}
 latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
 latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
-            \end{commandshell}
+\end{commandshell}
 	we receive the outputs given in \cref{lst:env-mlb7-preserve,lst:env-mlb7-no-preserve}.
 
 	\cmhlistingsfromfile{demonstrations/env-mlb7-preserve.tex}{\texttt{env-mlb7-preserve.tex}}{lst:env-mlb7-preserve}
@@ -1443,80 +1481,266 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 		      because of the settings in \cref{lst:UnpreserveBlankLines}.
 	\end{itemize}
 
+\subsection{Poly-switches for double back slash}\label{subsec:dbs}
+	With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic})%
+	\announce{new}{poly-switch for double back slash} you can
+	specify poly-switches to dictate the line-break behaviour of double back slashes in
+	environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or
+	special code blocks (\vref{lst:specialafter}). Note that for these poly-switches to
+	take effect, the name of the code block must necessarily be specified within
+	\texttt{lookForAlignDelims} (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
+
+	Consider the code given in \cref{lst:dbs-demo}.
+	\begin{cmhlistings}*[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
+\begin{tabular}{cc}
+ 1 & 2 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*) 3 & 4 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*)
+\end{tabular}
+\end{cmhlistings}
+	Referencing \cref{lst:dbs-demo}:
+	\begin{itemize}
+		\item \texttt{DBS} stands for \emph{double back slash};
+		\item line breaks ahead of the double back slash are annotated by $\ElseStartsOnOwnLine$,
+		      and are controlled by \texttt{DBSStartsOnOwnLine};
+		\item line breaks after the double back slash are annotated by $\ElseFinishesWithLineBreak$, and
+		      are controlled by \texttt{DBSFinishesWithLineBreak}.
+	\end{itemize}
+
+	Let's explore each of these in turn.
+
+\subsubsection{Double back slash starts on own line}
+	We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in \cref{lst:dbs-demo}); starting with the code in
+	\cref{lst:dbs-demo}, together with the YAML files given in
+	\cref{lst:DBS1} and \cref{lst:DBS2} and running the following
+	commands
+	\begin{commandshell}
+latexindent.pl -m tabular3.tex -l DBS1.yaml
+latexindent.pl -m tabular3.tex -l DBS2.yaml
+\end{commandshell}
+	then we receive the respective output given in \cref{lst:tabular3-DBS1} and
+	\cref{lst:tabular3-DBS2}.
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
+	\end{cmhtcbraster}
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
+	\end{cmhtcbraster}
+
+	We note that
+	\begin{itemize}
+		\item \cref{lst:DBS1} specifies \texttt{DBSStartsOnOwnLine} for
+		      \emph{every} environment (that is within \texttt{lookForAlignDelims},
+		      \vref{yaml:lookforaligndelims});
+		      the double back slashes from \cref{lst:dbs-demo} have been moved to their own
+		      line in \cref{lst:tabular3-DBS1};
+		\item \cref{lst:DBS2} specifies \texttt{DBSStartsOnOwnLine} on a
+		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+		      the double back slashes from \cref{lst:dbs-demo} have been moved to their own
+		      line in \cref{lst:tabular3-DBS2}, having added comment symbols before moving them.
+	\end{itemize}
+
+\subsubsection{Double back slash finishes with line break}
+	Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in \cref{lst:dbs-demo}); starting with the code in
+	\cref{lst:dbs-demo}, together with the YAML files given in
+	\cref{lst:DBS3} and \cref{lst:DBS4} and running the following
+	commands
+	\begin{commandshell}
+latexindent.pl -m tabular3.tex -l DBS3.yaml
+latexindent.pl -m tabular3.tex -l DBS4.yaml
+\end{commandshell}
+	then we receive the respective output given in \cref{lst:tabular3-DBS3} and
+	\cref{lst:tabular3-DBS4}.
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
+	\end{cmhtcbraster}
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
+	\end{cmhtcbraster}
+
+	We note that
+	\begin{itemize}
+		\item \cref{lst:DBS3} specifies \texttt{DBSFinishesWithLineBreak} for
+		      \emph{every} environment (that is within \texttt{lookForAlignDelims},
+		      \vref{yaml:lookforaligndelims});
+		      the code following the double back slashes from \cref{lst:dbs-demo} has been
+		      moved to their own line in \cref{lst:tabular3-DBS3};
+		\item \cref{lst:DBS4} specifies \texttt{DBSFinishesWithLineBreak} on a
+		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+		      the first double back slashes from \cref{lst:dbs-demo} have moved code following
+		      them to their own line in \cref{lst:tabular3-DBS4}, having added comment symbols
+		      before moving them; the final double back slashes have \emph{not} added
+		      a line break as they are at the end of the body within the code block.
+	\end{itemize}
+
+\subsubsection{Double back slash poly switches for specialBeginEnd}
+	Let's explore the double back slash poly-switches for code blocks within
+	\texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with
+	the code within \cref{lst:special4}.
+
+	\cmhlistingsfromfile*{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
+
+	Upon using the YAML settings in \cref{lst:DBS5}, and running the command
+	\begin{commandshell}
+latexindent.pl -m special4.tex -l DBS5.yaml
+\end{commandshell}
+	then we receive the output given in \cref{lst:special4-DBS5}.
+
+	\begin{cmhtcbraster}[
+			raster force size=false,
+			raster column 1/.style={add to width=-.1\textwidth},
+			raster column skip=.06\linewidth]
+		\cmhlistingsfromfile*{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
+	\end{cmhtcbraster}
+
+	There are a few things to note:
+	\begin{itemize}
+		\item in \cref{lst:DBS5} we have specified \texttt{cmhMath} within
+		      \texttt{lookForAlignDelims}; without this, the double back slash poly-switches would be
+		      ignored for this code block;
+		\item the \texttt{DBSFinishesWithLineBreak} poly-switch has controlled the line breaks following the
+		      double back slashes;
+		\item the \texttt{SpecialEndStartsOnOwnLine} poly-switch has controlled the addition of a comment
+		      symbol, followed by a line break, as it is set to a value of 2.
+	\end{itemize}
+
+\subsubsection{Double back slash poly switches for optional and mandatory arguments}
+	For clarity, we provide a demonstration of controlling the double back slash
+	poly-switches for optional and mandatory arguments. We begin with the code in
+	\cref{lst:mycommand2}.
+
+	\cmhlistingsfromfile*{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
+
+	Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
+	\begin{commandshell}
+latexindent.pl -m mycommand2.tex -l DBS6.yaml
+latexindent.pl -m mycommand2.tex -l DBS7.yaml
+\end{commandshell}
+	then we receive the output given in \cref{lst:mycommand2-DBS6,lst:mycommand2-DBS7}.
+
+	\begin{cmhtcbraster}[
+			raster force size=false,
+			raster column 1/.style={add to width=-.1\textwidth},
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile*{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
+	\end{cmhtcbraster}
+
+	\begin{cmhtcbraster}[
+			raster force size=false,
+			raster column 1/.style={add to width=-.1\textwidth},
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile*{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
+	\end{cmhtcbraster}
+
+\subsubsection{Double back slash optional square brackets}
+	The pattern matching for the double back slash will also, optionally, allow trailing
+	square brackets that contain a measurement of vertical spacing, for example
+	\lstinline!\\[3pt]!.
+
+	For example, beginning with the code in \cref{lst:pmatrix3}
+
+	\cmhlistingsfromfile*{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
+
+	and running the following command, using \cref{lst:DBS3},
+	\begin{commandshell}
+latexindent.pl -m pmatrix3.tex -l DBS3.yaml
+\end{commandshell}
+	then we receive the output given in \cref{lst:pmatrix3-DBS3}.
+
+	\cmhlistingsfromfile*{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+
+	You can customise the pattern for the double back slash by exploring the
+	\emph{fine tuning} field detailed in \vref{lst:fineTuning}.
+
 \subsection{Poly-switches for other code blocks}
 	Rather than repeat the examples shown for the environment code blocks (in
 	\vref{sec:modifylinebreaks-environments}), we choose to detail the poly-switches for all other code
 	blocks in \cref{tab:poly-switch-mapping}; note that each and every one of these
 	poly-switches is \emph{off by default}, i.e, set to \texttt{0}.
 
-    Note also that, by design, line breaks involving,
-	\texttt{filecontents} and `comment-marked' code blocks
-	(\vref{lst:alignmentmarkup}) can \emph{not} be modified using
-	\texttt{latexindent.pl}.\announce*{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for  \texttt{verbatim}
-    code blocks: environments (\vref{lst:verbatimEnvironments}), commands (\vref{lst:verbatimCommands}) and \texttt{specialBeginEnd} (\vref{lst:special-verb1-yaml}).
+	Note also that, by design, line breaks involving, \texttt{filecontents} and
+	`comment-marked' code blocks (\vref{lst:alignmentmarkup}) can
+	\emph{not} be modified using
+	\texttt{latexindent.pl}.%
+	\announce*{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for
+	\texttt{verbatim} code blocks: environments (\vref{lst:verbatimEnvironments}),
+	commands (\vref{lst:verbatimCommands}) and \texttt{specialBeginEnd} (\vref{lst:special-verb1-yaml}).
 
-    \clearpage
+	\clearpage
 	\begin{longtable}{llll}
-		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                         \\
+		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                                                  \\
 		\toprule
-		Code block                             & Sample                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
+		Code block                                      & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                            & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of myenv!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                       & \verb!after words!                             &                                         &                                                                   \\
+		environment                                     & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                                & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of myenv!$\EndStartsOnOwnLine$                         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                                & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                                & \verb!after words!                                              &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                       & \verb!\if...!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce{2018-04-27}{new ifElseFi code block polyswitches}                                                                                                                                                    \\
-		                                       & \verb!\or!$\OrFinishesWithLineBreak$   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
-		                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
-		                                       & \verb!\else!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
-		                                       & \verb!body of else statement!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
-		                                       & \verb!\fi!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
-		                                       & \verb!after words!                             &                                         &                                                                   \\
+		ifelsefi                                        & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                                & \verb!\if...!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                & \verb!body of if/or statement!$\OrStartsOnOwnLine$                          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                            \\
+		                                                & \verb!\or!$\OrFinishesWithLineBreak$                    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                                & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
+		                                                & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
+		                                                & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
+		                                                & \verb!\fi!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
+		                                                & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		optionalArguments                      & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
-		                                       & \verb![!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
-		                                       & \verb!body of opt arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
-		                                       & \verb!]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
-		                                       & \verb!...!                             &                                         &                                                                   \\
+		optionalArguments                               & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
+		                                                & \verb![!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
+		\announce{new}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		                                                & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
+		                                                & \verb!end of body of opt arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
+		                                                & \verb!]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
+		                                                & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		mandatoryArguments                     & \verb!...!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
-		                                       & \verb!{!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
-		                                       & \verb!body of mand arg!$\EndStartsOnOwnLine$        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
-		                                       & \verb!}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
-		                                       & \verb!...!                             &                                         &                                                                   \\
+		mandatoryArguments                              & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
+		                                                & \verb!{!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
+		\announce{new}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		                                                & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
+		                                                & \verb!end of body of mand arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
+		                                                & \verb!}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
+		                                                & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		commands                               & \verb!before words!$\BeginStartsOnOwnLine$      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
-		                                       & \verb!\mycommand!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
-		                                       & $\langle$\itshape{arguments}$\rangle$                   &                                         &                                                                   \\
+		commands                                        & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
+		                                                & \verb!\mycommand!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+		                                                & $\langle$\itshape{arguments}$\rangle$                                   &                                         &                                                                   \\
 		\cmidrule{2-4}
-		namedGroupingBraces Brackets           & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
-		                                       & myname$\BodyStartsOnOwnLine$                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
-		                                       & $\langle$\itshape{braces/brackets}$\rangle$             &                                         &                                                                   \\
+		namedGroupingBraces Brackets                    & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
+		                                                & myname$\BodyStartsOnOwnLine$                                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+		                                                & $\langle$\itshape{braces/brackets}$\rangle$                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		keyEqualsValuesBraces\newline Brackets & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
-		                                       & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
-		                                       & $\langle$\itshape{braces/brackets}$\rangle$             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
+		keyEqualsValuesBraces\newline Brackets          & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
+		                                                & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$                      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
+		                                                & $\langle$\itshape{braces/brackets}$\rangle$                             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
 		\cmidrule{2-4}
-		items                                  & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
-		                                       & \verb!\item!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
-		                                       & \verb!...!                             &                                         &                                                                   \\
+		items                                           & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
+		                                                & \verb!\item!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
+		                                                & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		specialBeginEnd                        & before words$\BeginStartsOnOwnLine$                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
-		                                       & \verb!\[!$\BodyStartsOnOwnLine$       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
-		                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce{2018-04-27}{new special code block polyswitches}                                                                                                                                                     \\
-		                                       & \verb!\middle!$\ElseFinishesWithLineBreak$ & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
-		                                       & body of special/middle $\EndStartsOnOwnLine$            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
-		                                       & \verb!\]!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
-		                                       & after words                                             &                                         &                                                                   \\
+		specialBeginEnd                                 & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
+		                                                & \verb!\[!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
+		                                                & \verb!body of special/middle!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
+		\announce{2018-04-27}{new special code block poly-switches}                                                                                                                                                                             \\
+		                                                & \verb!\middle!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
+		                                                & body of special/middle $\EndStartsOnOwnLine$                            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
+		                                                & \verb!\]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
+		                                                & after words                                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-        verbatim                               & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!                     & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                       \\
-  \announce*{2019-05-05}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$  & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                   \\
-		                                       & after words                                             &                                         &                                                                   \\
+		verbatim                                        & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!          & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                      \\
+		\announce*{2019-05-05}{verbatim poly-switches}  & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$ & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                  \\
+		                                                & after words                                                             &                                         &                                                                   \\
 		\bottomrule
 	\end{longtable}

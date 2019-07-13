@@ -57,7 +57,6 @@ missing ``perl`` modules on your system; if you run
    :class: .commandshell
 
     perl latexindent-module-installer.pl
-         
 
 or
 
@@ -81,7 +80,6 @@ example, Ubuntu users might visit the software center, or else run
    :class: .commandshell
 
     sudo perl -MCPAN -e 'install "File::HomeDir"'
-     
 
 Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017);
 possible installation and setup options follow for Ubuntu (other
@@ -95,6 +93,21 @@ distributions will need slightly different commands).
     perlbrew switch perl-5.22.1
     sudo apt-get install curl
     curl -L http://cpanmin.us | perl - App::cpanminus
+    cpanm YAML::Tiny
+    cpanm File::HomeDir
+    cpanm Unicode::GCString
+    cpanm Log::Log4perl
+    cpanm Log::Dispatch
+
+Users of the Macintosh operating system might like to explore the
+following commands, for example:
+
+.. code-block:: latex
+   :class: .commandshell
+
+    brew install perl
+    brew install cpanm
+
     cpanm YAML::Tiny
     cpanm File::HomeDir
     cpanm Unicode::GCString
@@ -146,7 +159,6 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
       :class: .commandshell
 
        ls /usr/local/bin
-                 
 
    to see what is *currently* in there;
 
@@ -167,7 +179,6 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
       :class: .commandshell
 
        ls /usr/local/bin
-                 
 
    again to check that ``latexindent.pl``, its modules and
    ``defaultSettings.yaml`` have been added.
@@ -178,7 +189,6 @@ To *remove* the files, run
    :class: .commandshell
 
     sudo make uninstall
-        
 
 Add to path for Windows
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -237,7 +247,6 @@ If we run the following command (noting that ``-t`` is active)
    :class: .commandshell
 
     latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
-     
 
 then on inspection of ``indent.log`` we will find the snippet given in
 :numref:`lst:indentlog`.
@@ -280,7 +289,6 @@ for example,
    :class: .commandshell
 
     latexindent.pl -o myfile.tex outputfile.tex
-     
 
 whereas in Version 3.0 you would run any of the following, for example,
 
@@ -293,7 +301,6 @@ whereas in Version 3.0 you would run any of the following, for example,
     latexindent.pl myfile.tex -o=outputfile.tex 
     latexindent.pl myfile.tex -outputfile=outputfile.tex 
     latexindent.pl myfile.tex -outputfile outputfile.tex 
-     
 
 noting that the *output* file is given *next to* the ``-o`` switch.
 

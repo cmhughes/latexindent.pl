@@ -64,11 +64,14 @@ sub construct_command_regexp{
     # details to log file
     $logger->trace("*The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)") if $is_t_switch_active;
 
+    # read from fine tuning
+    my  $commandNameRegExp = qr/${${$masterSettings{fineTuning}}{commands}}{name}/;
+
     # construct the command regexp
     $commandRegExp = qr/
               (\\|\\@|@)   
               (
-               [+a-zA-Z@\*0-9_\:]+?|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
+               $commandNameRegExp|$commandNameSpecialRegExp      # lowercase|uppercase letters, @, *, numbers
               )                
               (\h*)
               (\R*)?
@@ -200,6 +203,12 @@ sub create_unique_id{
 sub align_at_ampersand{
     # need an empty routine here for commands; see
     # test-cases/matrix1.tex for example
+    return;
+}
+
+sub double_back_slash_else{ 
+    # need an empty routine here for commands; see
+    # test-cases/alignment/command-align.tex for example
     return;
 }
 

@@ -38,7 +38,7 @@ latexindent.pl myfile
 	If you call \texttt{latexindent.pl} with the \texttt{-w} switch (to overwrite
 	\texttt{myfile.tex}) then it will create a backup file before doing any indentation;
 	the default extension is \texttt{.bak}, so, for example,
-	\texttt{myfile.bak0} would be created when calling \texttt{latexindent.pl myfile.tex}  for the
+	\texttt{myfile.bak0} would be created when calling \texttt{latexindent.pl myfile.tex} for the
 	first time.
 
 	By default, every time you subsequently call \texttt{latexindent.pl} with the
@@ -64,15 +64,15 @@ latexindent.pl myfile
 \yamltitle{cycleThroughBackUps}*{integer}
 	Some users may wish to cycle through backup files, by deleting the oldest backup file and
 	keeping only the most recent; for example, with \texttt{maxNumberOfBackUps: 4}, and
-	\texttt{cycleThroughBackUps} set to \texttt{1}	  then the
-	\texttt{copy} procedure given below would be obeyed.
+	\texttt{cycleThroughBackUps} set to \texttt{1} then the \texttt{copy}
+	procedure given below would be obeyed.
 
 	\begin{commandshell}
 copy myfile.bak1 to myfile.bak0
 copy myfile.bak2 to myfile.bak1
 copy myfile.bak3 to myfile.bak2
 copy myfile.bak4 to myfile.bak3
-	\end{commandshell}
+\end{commandshell}
 	The default value of \texttt{cycleThroughBackUps} is \texttt{0}.
 
 \yamltitle{logFilePreferences}*{fields}
@@ -87,7 +87,7 @@ copy myfile.bak4 to myfile.bak3
 
 	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
-	When%%%%
+	When%
 	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the
 	\texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive
 	detailed information in \texttt{indent.log}. You can specify character strings to
@@ -111,15 +111,12 @@ copy myfile.bak4 to myfile.bak3
 	no indentation will be performed on environments that you have specified in this field,
 	see \cref{lst:verbatimEnvironments}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[style=verbatimEnvironments]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimEnvironments}}{lst:verbatimEnvironments}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=verbatimCommands]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
-	\end{minipage}%
+	\end{cmhtcbraster}
 
-	Note that if  you put an environment in  \texttt{verbatimEnvironments} and in other fields such
+	Note that if you put an environment in	\texttt{verbatimEnvironments} and in other fields such
 	as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then \texttt{latexindent.pl} will
 	\emph{always} prioritize  \texttt{verbatimEnvironments}.
 
@@ -243,7 +240,7 @@ lookForAlignDelims:
 	\cref{lst:aligndelims:basic} and the \emph{advanced} version in
 	\cref{lst:aligndelims:advanced}; we will discuss each in turn.
 
-	The environments specified in this field will be operated on in a special way  by
+	The environments specified in this field will be operated on in a special way by
 	\texttt{latexindent.pl}. In particular, it will try and align each column by its
 	alignment tabs. It does have some limitations (discussed further in
 	\cref{sec:knownlimitations}), but in many cases it will produce results such as those in
@@ -255,13 +252,10 @@ lookForAlignDelims:
 	\emph{specific} instances of the environment, you could wrap them in something
 	from \texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/tabular1-default.tex}{\texttt{tabular1.tex} default output}{lst:tabularafter:basic}
-	\end{minipage}%
+	\end{cmhtcbraster}
 
 	If, for example, you wish to remove the alignment of the \lstinline!\\! within a
 	delimiter-aligned block, then the advanced form of \texttt{lookForAlignDelims} shown in
@@ -343,7 +337,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular5.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular6.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular7.yaml
 latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
-        \end{commandshell}
+\end{commandshell}
 	we obtain the respective outputs given in \crefrange{lst:tabular2-default}{lst:tabular2-mod8}.
 
 	\begin{widepage}
@@ -397,17 +391,14 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 	you run the command
 	\begin{commandshell}
 latexindent.pl matrix1.tex 
-    \end{commandshell}
+\end{commandshell}
 	then the before-and-after results shown in \cref{lst:matrixbefore,lst:matrixafter} are achievable by
 	default.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/matrix1.tex}{\texttt{matrix1.tex}}{lst:matrixbefore}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/matrix1-default.tex}{\texttt{matrix1.tex} default output}{lst:matrixafter}
-	\end{minipage}%
+	\end{cmhtcbraster}
 
 	If you have blocks of code that you wish to align at the \&  character that are
 	\emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots
@@ -418,13 +409,10 @@ latexindent.pl matrix1.tex
 	\lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
 	environment name that you have specified in \texttt{lookForAlignDelims}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/align-block.tex}{\texttt{align-block.tex}}{lst:alignmentmarkup}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/align-block-default.tex}{\texttt{align-block.tex} default output}{lst:alignmentmarkup-default}
-	\end{minipage}%
+	\end{cmhtcbraster}
 
 	With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of
 	\texttt{noAdditionalIndent} and \texttt{indentRules}
@@ -432,21 +420,19 @@ latexindent.pl matrix1.tex
 	considered \texttt{environments}.
 
 \yamltitle{indentAfterItems}*{fields}
-	\begin{wrapfigure}[5]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=indentAfterItems]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterItems}}{lst:indentafteritems}
-	\end{wrapfigure}
-	The environment names specified in \texttt{indentAfterItems}  tell \texttt{latexindent.pl}
+	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
 	to look for \lstinline!\item! commands; if these switches are set to
 	\texttt{1} then indentation will be performed so as indent the code after
 	each \texttt{item}. A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile[style=indentAfterItems]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterItems}}{lst:indentafteritems}
 		\cmhlistingsfromfile{demonstrations/items1.tex}{\texttt{items1.tex}}{lst:itemsbefore}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/items1-default.tex}{\texttt{items1.tex} default output}{lst:itemsafter}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 \yamltitle{itemNames}*{fields}
 	\begin{wrapfigure}[5]{r}[0pt]{5cm}
@@ -461,7 +447,7 @@ latexindent.pl matrix1.tex
 	\vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
-	The fields specified%%%%
+	The fields specified%
 	\announce{2017-08-21}*{specialBeginEnd} in
 	\texttt{specialBeginEnd} are, in their default state, focused on math mode begin and end
 	statements, but there is no requirement for this to be the case; \cref{lst:specialBeginEnd}
@@ -477,20 +463,17 @@ latexindent.pl matrix1.tex
 
 	A demonstration of the before-and-after results are shown in \cref{lst:specialbefore,lst:specialafter}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/special1.tex}{\texttt{special1.tex} before}{lst:specialbefore}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/special1-default.tex}{\texttt{special1.tex} default output}{lst:specialafter}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	For each field, \texttt{lookForThis} is set to \texttt{1} by default,
 	which means that \texttt{latexindent.pl} will look for this pattern; you can tell
 	\texttt{latexindent.pl} not to look for the pattern, by setting \texttt{lookForThis}
 	to \texttt{0}.
 
-	There are%%%%
+	There are%
 	\announce{2017-08-21}{specialBeforeCommand} examples in which it
 	is advantageous to search for \texttt{specialBeginEnd} fields \emph{before}
 	searching for commands, and the \texttt{specialBeforeCommand} switch controls this behaviour.
@@ -500,20 +483,17 @@ latexindent.pl matrix1.tex
 
 	Now consider the YAML files shown in \cref{lst:specialsLeftRight-yaml,lst:specialBeforeCommand-yaml}
 
-	\begin{minipage}{.49\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile[]*{demonstrations/specialsLeftRight.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialsLeftRight.yaml}}{lst:specialsLeftRight-yaml}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.49\linewidth}
 		\cmhlistingsfromfile[]*{demonstrations/specialBeforeCommand.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeforeCommand.yaml}}{lst:specialBeforeCommand-yaml}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Upon running the following commands
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl specialLR.tex -l=specialsLeftRight.yaml      
 latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml      
-    \end{commandshell}
+\end{commandshell}
 	\end{widepage}
 	we receive the respective outputs in \cref{lst:specialLR-comm-first-tex,lst:specialLR-special-first-tex}.
 
@@ -534,7 +514,7 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 		      \texttt{specialBeginEnd} should be sought \emph{before} commands.
 	\end{itemize}
 
-	You can,optionally, specify%%%%
+	You can,optionally, specify%
 	\announce{2018-04-27}{update to specialBeginEnd} the
 	\texttt{middle} field for anything that you specify in \texttt{specialBeginEnd}.
 	For example, let's consider the \texttt{.tex} file in \cref{lst:special2}.
@@ -545,24 +525,18 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
 	\begin{commandshell}
 latexindent.pl special2.tex -l=middle
 latexindent.pl special2.tex -l=middle1
-    \end{commandshell}
+\end{commandshell}
 	then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
 
-	\begin{minipage}{.4\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
-	\end{minipage}
+	\end{cmhtcbraster}
 
-	\begin{minipage}{.4\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	We note that:
 	\begin{itemize}
@@ -576,25 +550,22 @@ latexindent.pl special2.tex -l=middle1
 		      \cref{lst:special2-mod2}.
 	\end{itemize}
 
-	You may%%
+	You may%
 	\announce{2018-08-13}{specialBeginEnd verbatim} specify fields in
 	\texttt{specialBeginEnd} to be treated as verbatim code blocks by changing
 	\texttt{lookForThis} to be \texttt{verbatim}.
 
-	For example, beginning with the code in \cref{lst:special3-mod1} and the YAML  in
+	For example, beginning with the code in \cref{lst:special3-mod1} and the YAML in
 	\cref{lst:special-verb1-yaml}, and running
 	\begin{commandshell}
 latexindent.pl special3.tex -l=special-verb1
-    \end{commandshell}
+\end{commandshell}
 	then the output in \cref{lst:special3-mod1} is unchanged.
 
-	\begin{minipage}{.4\linewidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
-	\end{minipage}
-	\hfill
-	\begin{minipage}{.5\linewidth}
 		\cmhlistingsfromfile{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 \yamltitle{indentAfterHeadings}*{fields}
 	\begin{wrapfigure}[17]{r}[0pt]{8cm}
@@ -624,13 +595,10 @@ latexindent.pl special3.tex -l=special-verb1
 	\texttt{headings1.yaml}, and that you have the text from \cref{lst:headings1} saved
 	into \texttt{headings1.tex}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/headings1.tex}{\texttt{headings1.tex}}{lst:headings1}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	If you run the command
 	\begin{commandshell}
@@ -657,7 +625,7 @@ latexindent.pl headings1.tex -l=headings1.yaml
 
 \yamltitle{maximumIndentation}*{horizontal space}
 	You can control the maximum indentation given to your file
-	by%%%%
+	by%
 	\announce{2017-08-21}{maximumIndentation} specifying the
 	\texttt{maximumIndentation} field as horizontal space (but \emph{not} including
 	tabs). This feature uses the \texttt{Text::Tabs} module \cite{texttabs}, and
@@ -666,28 +634,22 @@ latexindent.pl headings1.tex -l=headings1.yaml
 	For example, consider the example shown in \cref{lst:mult-nested} together with the
 	default output shown in \cref{lst:mult-nested-default}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mult-nested.tex}{\texttt{mult-nested.tex}}{lst:mult-nested}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[showtabs=true]{demonstrations/mult-nested-default.tex}{\texttt{mult-nested.tex} default output}{lst:mult-nested-default}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Now say that, for example, you have the \texttt{max-indentation1.yaml} from
 	\cref{lst:max-indentation1yaml} and that you run the following command:
 	\begin{commandshell}
 latexindent.pl mult-nested.tex -l=max-indentation1
-    \end{commandshell}
+\end{commandshell}
 	You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
 
-	\begin{minipage}{.45\textwidth}
+	\begin{cmhtcbraster}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
-	\end{minipage}
+	\end{cmhtcbraster}
 
 	Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice that the (default) tabs of
 	indentation have been replaced by a single space.
@@ -770,4 +732,6 @@ mand arg text
 		\end{widepage}
 	\end{table}
 
-	We will refer to these code blocks in what follows.
+	We will refer to these code blocks in what follows.%
+	\announce{new}{fine tuning of code blocks} Note that the fine tuning of the definition of the code blocks
+	detailed in \cref{tab:code-blocks} is discussed in \vref{sec:finetuning}.

@@ -156,6 +156,18 @@ cd ../benchmarks
 cd ../verbatim
 [[ $silentMode == 1 ]] && echo "./verbatim-test-cases.sh"
 ./verbatim-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# fine-tuning test cases
+cd ../fine-tuning
+[[ $silentMode == 1 ]] && echo "./fine-tuning-test-cases.sh"
+./fine-tuning-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# replacement test cases
+cd ../replacements
+[[ $silentMode == 1 ]] && echo "./replacement-test-cases.sh"
+./replacement-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# poly-switch-blank-line test cases (poly-switches = 4)
+cd ../poly-switch-blank-line
+[[ $silentMode == 1 ]] && echo "./poly-switch-blank-line-test-cases.sh"
+./poly-switch-blank-line-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

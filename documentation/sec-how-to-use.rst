@@ -36,7 +36,7 @@ From the command line
 which can be combined in any way that you like, either in short or long
 form as detailed below. ``latexindent.pl`` produces a ``.log`` file,
 ``indent.log``, every time it is run; the name of the log file can be
-customized, but we will refer to the log file as ``indent.log``
+customised, but we will refer to the log file as ``indent.log``
 throughout this document. There is a base of information that is written
 to ``indent.log``, but other additional information will be written
 depending on which of the following options are used.
@@ -47,7 +47,6 @@ depending on which of the following options are used.
    :class: .commandshell
 
     latexindent.pl -v
-          
 
 This will output only the version number to the terminal.
 
@@ -57,7 +56,6 @@ This will output only the version number to the terminal.
    :class: .commandshell
 
     latexindent.pl -h
-          
 
 As above this will output a welcome message to the terminal, including
 the version number and available options.
@@ -66,7 +64,6 @@ the version number and available options.
    :class: .commandshell
 
     latexindent.pl myfile.tex
-          
 
 This will operate on ``myfile.tex``, but will simply output to your
 terminal; ``myfile.tex`` will not be changed by ``latexindent.pl`` in
@@ -80,7 +77,6 @@ any way using this command.
     latexindent.pl -w myfile.tex
     latexindent.pl --overwrite myfile.tex
     latexindent.pl myfile.tex --overwrite 
-          
 
 This *will* overwrite ``myfile.tex``, but it will make a copy of
 ``myfile.tex`` first. You can control the name of the extension (default
@@ -101,7 +97,6 @@ asking you to check the permissions of the backup file.
     latexindent.pl myfile.tex -o=output.tex 
     latexindent.pl --outputfile=output.tex myfile.tex
     latexindent.pl --outputfile output.tex myfile.tex
-          
 
 This will indent ``myfile.tex`` and output it to ``output.tex``,
 overwriting it (``output.tex``) if it already exists [1]_. Note that if
@@ -192,7 +187,6 @@ changed from Version 2.2 to Version 3.0 for this flag.
 
     latexindent.pl -s myfile.tex
     latexindent.pl myfile.tex -s
-          
 
 Silent mode: no output will be given to the terminal.
 
@@ -207,7 +201,6 @@ Silent mode: no output will be given to the terminal.
 
     latexindent.pl -t myfile.tex
     latexindent.pl myfile.tex -t
-          
 
 Tracing mode: verbose output will be given to ``indent.log``. This is
 useful if ``latexindent.pl`` has made a mistake and you’re trying to
@@ -223,7 +216,6 @@ affect performance of the script.
 
     latexindent.pl -tt myfile.tex
     latexindent.pl myfile.tex -tt
-          
 
 *More detailed* tracing mode: this option gives more details to
 ``indent.log`` than the standard ``trace`` option (note that, even more
@@ -245,7 +237,6 @@ script will be affected).
     latexindent.pl -l first.yaml,second.yaml,third.yaml myfile.tex
     latexindent.pl -l=first.yaml,second.yaml,third.yaml myfile.tex
     latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml 
-          
 
 ``latexindent.pl`` will always load ``defaultSettings.yaml`` (rhymes
 with camel) and if it is called with the ``-l`` switch and it finds
@@ -267,7 +258,6 @@ like to load a settings file in the current working directory that is
     latexindent.pl -l=../../myyaml.yaml myfile.tex
     latexindent.pl -l=/home/cmhughes/Desktop/myyaml.yaml myfile.tex
     latexindent.pl -l=C:\Users\cmhughes\Desktop\myyaml.yaml myfile.tex
-        
 
 You will find a lot of other explicit demonstrations of how to use the
 ``-l`` switch throughout this documentation,
@@ -278,10 +268,9 @@ another YAML file; for example:
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl -l=+myyaml.yaml  myfile.tex
+    latexindent.pl -l=+myyaml.yaml myfile.tex
     latexindent.pl -l "+ myyaml.yaml" myfile.tex
     latexindent.pl -l=myyaml.yaml+  myfile.tex
-        
 
 which translate, respectively, to
 
@@ -291,7 +280,6 @@ which translate, respectively, to
     latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
     latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
     latexindent.pl -l=myyaml.yaml,localSettings.yaml myfile.tex
-        
 
 Note that the following is *not* allowed:
 
@@ -299,7 +287,6 @@ Note that the following is *not* allowed:
    :class: .commandshell
 
     latexindent.pl -l+myyaml.yaml myfile.tex
-        
 
 and
 
@@ -307,7 +294,6 @@ and
    :class: .commandshell
 
     latexindent.pl -l + myyaml.yaml myfile.tex
-        
 
 will *only* load ``localSettings.yaml``, and ``myyaml.yaml`` will be
 ignored. If you wish to use spaces between any of the YAML settings,
@@ -320,7 +306,6 @@ You may also choose to omit the ``yaml`` extension, such as
    :class: .commandshell
 
     latexindent.pl -l=localSettings,myyaml myfile.tex
-        
 
 .. describe:: -y, –yaml=yaml settings
 
@@ -336,7 +321,6 @@ You may also choose to omit the ``yaml`` extension, such as
     latexindent.pl myfile.tex -y="indentRules: one: '\t\t\t\t'"
     latexindent.pl myfile.tex -y='modifyLineBreaks:environments:EndStartsOnOwnLine:3' -m
     latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLine:3' -m
-        
 
 You can specify YAML settings from the command line using the ``-y`` or
 ``–yaml`` switch; sample demonstrations are given above. Note, in
@@ -354,7 +338,6 @@ specified using the ``-l`` switch. This is discussed further in
    :class: .commandshell
 
     latexindent.pl -d myfile.tex
-          
 
 Only ``defaultSettings.yaml``: you might like to read
 :numref:`sec:defuseloc` before using this switch. By default,
@@ -373,7 +356,6 @@ the ``-y`` switch.
    :class: .commandshell
 
     latexindent.pl -c=/path/to/directory/ myfile.tex
-          
 
 If you wish to have backup files and ``indent.log`` written to a
 directory other than the current working directory, then you can send
@@ -388,7 +370,6 @@ these ‘cruft’ files to another directory.
     latexindent.pl -g other.log myfile.tex
     latexindent.pl --logfile other.log myfile.tex
     latexindent.pl myfile.tex -g other.log 
-          
 
 By default, ``latexindent.pl`` reports information to ``indent.log``,
 but if you wish to change the name of this file, simply call the script
@@ -401,7 +382,6 @@ with your chosen name after the ``-g`` switch as demonstrated above.
 
     latexindent.pl -sl myfile.tex
     latexindent.pl -screenlog myfile.tex
-          
 
 Using this option tells ``latexindent.pl`` to output the log file to the
 screen, as well as to your chosen log file.
@@ -413,7 +393,6 @@ screen, as well as to your chosen log file.
 
     latexindent.pl -m myfile.tex
     latexindent.pl -modifylinebreaks myfile.tex
-          
 
 One of the most exciting developments in Version 3.0 is the ability to
 modify line breaks; for full details see
@@ -426,7 +405,6 @@ extension, for example
    :class: .commandshell
 
     latexindent.pl myfile
-        
 
 and in which case, you can specify the order in which extensions are
 searched for; see :numref:`lst:fileExtensionPreference` for full
@@ -438,7 +416,6 @@ details.
    :class: .commandshell
 
     cat myfile.tex | latexindent.pl
-        
 
 ``latexindent.pl`` will allow input from STDIN, which means that you can
 pipe output from other commands directly into the script. For example
@@ -452,7 +429,6 @@ then it will expect (STDIN) input from the command line.
    :class: .commandshell
 
     latexindent.pl
-          
 
 Once you have finished typing your input, you can press
 
@@ -462,6 +438,44 @@ Once you have finished typing your input, you can press
 
 to signify that your input has finished. Thanks to (xu-cheng) (2018) for
 an update to this feature.
+
+.. describe:: -r, –replacement
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -r myfile.tex
+    latexindent.pl -replacement myfile.tex
+
+You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to
+perform replacements/substitutions on your file; full details and
+examples are given in :numref:`sec:replacements`.
+
+.. describe:: -rv, –replacementrespectverb
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -rv myfile.tex
+    latexindent.pl -replacementrespectverb myfile.tex
+
+You can instruct ``latexindent.pl`` to perform
+replacements/substitutions by using the ``-rv`` switch, but will
+*respect verbatim code blocks*; full details and examples are given in
+:numref:`sec:replacements`.
+
+.. describe:: -rr, –onlyreplacement
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -rr myfile.tex
+    latexindent.pl -onlyreplacement myfile.tex
+
+You can instruct ``latexindent.pl`` to skip all of its other indentation
+operations and *only* perform replacements/substitutions by using the
+``-rr`` switch; full details and examples are given in
+:numref:`sec:replacements`.
 
 .. label follows
 

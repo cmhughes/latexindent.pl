@@ -14,9 +14,9 @@ All features described in this section will only be relevant if the
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 394-396
+ 	:lines: 441-443
  	:linenos:
- 	:lineno-start: 394
+ 	:lineno-start: 441
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -91,9 +91,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 421-422
+ 	:lines: 468-469
  	:linenos:
- 	:lineno-start: 421
+ 	:lineno-start: 468
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -222,9 +222,9 @@ The full details of ``textWrapOptions`` are shown in
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 421-437
+ 	:lines: 468-484
  	:linenos:
- 	:lineno-start: 421
+ 	:lineno-start: 468
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with
 direct reference to those detailed in :numref:`tab:code-blocks`. The
@@ -245,7 +245,7 @@ considered part of the ``masterDocument``.
  	:caption: ``textwrap5.tex`` 
  	:name: lst:textwrap5
 
-With reference to this codeblock, the settings given in
+With reference to this code block, the settings given in
 :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and
 :numref:`lst:textwrap5-yaml` each give the same output.
 
@@ -296,7 +296,6 @@ Upon running the following commands
     latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
     latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
     latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
-        
 
 we obtain the output shown in :numref:`lst:textwrap5-mod3`.
 
@@ -319,7 +318,6 @@ In particular, upon running
    :class: .commandshell
 
     latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
-        
 
 we obtain the output given in :numref:`lst:textwrap6-mod5`.
 
@@ -360,7 +358,6 @@ Upon running the commands
     latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
-        
 
 we receive the respective output given in :numref:`lst:textwrap6-mod6`
 – :numref:`lst:textwrap6-mod8`.
@@ -423,7 +420,6 @@ equivalent. Upon running the commands
 
     latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
     latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
-        
 
 we receive the respective output given in :numref:`lst:textwrap6-mod9`
 and :numref:`lst:textwrap6-mod11`.
@@ -454,7 +450,7 @@ the ``default`` value from ``columns`` will be inherited; if you don’t
 specify a default value for ``columns`` then ``80`` will be used.
 
 ``alignAtAmpersandTakesPriority`` is set to ``1`` by default; assuming
-that text wrapping is occuring on a per-code-block basis, and the
+that text wrapping is occurring on a per-code-block basis, and the
 current environment/code block is specified within
 :numref:`lst:aligndelims:basic` then text wrapping will be disabled
 for this code block.
@@ -502,9 +498,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 397-420
+ 	:lines: 444-467
  	:linenos:
- 	:lineno-start: 397
+ 	:lineno-start: 444
 
 .. describe:: manipulateSentences:0\|1
 
@@ -516,7 +512,7 @@ want the script to modify line breaks surrounding and within sentences.
 .. describe:: removeSentenceLineBreaks:0\|1
 
 When operating upon sentences ``latexindent.pl`` will, by default,
-remove internal linebreaks as ``removeSentenceLineBreaks`` is set to
+remove internal line breaks as ``removeSentenceLineBreaks`` is set to
 ``1``. Setting this switch to ``0`` instructs ``latexindent.pl`` not to
 do so.
 
@@ -536,7 +532,6 @@ and :numref:`lst:keep-sen-line-breaks-yaml`, and run the commands
 
     latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences-mod1` and
@@ -569,7 +564,7 @@ Notice, in particular, that the ‘internal’ sentence line breaks in
 
 The remainder of the settings displayed in
 :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to
-define a sentence. From the perpesctive of ``latexindent.pl`` a sentence
+define a sentence. From the perspective of ``latexindent.pl`` a sentence
 must:
 
 -  *follow* a certain character or set of characters (see
@@ -593,25 +588,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 402-410
+ 	:lines: 449-457
  	:linenos:
- 	:lineno-start: 402
+ 	:lineno-start: 449
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 411-414
+ 	:lines: 458-461
  	:linenos:
- 	:lineno-start: 411
+ 	:lineno-start: 458
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 415-420
+ 	:lines: 462-467
  	:linenos:
- 	:lineno-start: 415
+ 	:lineno-start: 462
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -656,7 +651,6 @@ Upon running the following commands
 
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences1-mod1` and
@@ -704,7 +698,6 @@ Upon running the following commands
 
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
-        
 
 then we obtain the respective output given in
 :numref:`lst:multiple-sentences2-mod1` and
@@ -818,10 +811,12 @@ sentences have the following properties:
 
 If you find that the ``betterFullStop`` does not work for your purposes,
 then you can switch it off by setting it to ``0``, and you can
-experiment with the ``other`` field.
+experiment with the ``other`` field. You can also seek to customise the
+``betterFullStop`` routine by using the *fine tuning*, detailed in
+:numref:`lst:fineTuning`.
 
 The ``basicFullStop`` routine should probably be avoided in most
-situations, as it does not accomodate the specifications above. For
+situations, as it does not accommodate the specifications above. For
 example, using the following command
 
 .. code-block:: latex
@@ -842,7 +837,7 @@ and the YAML in :numref:`lst:alt-full-stop1-yaml` gives the output in
  	:caption: ``alt-full-stop1.yaml`` 
  	:name: lst:alt-full-stop1-yaml
 
-Notice that the full stop within the URL has not been accomodated
+Notice that the full stop within the URL has not been accommodated
 correctly because of the non-default settings in
 :numref:`lst:alt-full-stop1-yaml`.
 
@@ -861,7 +856,6 @@ For example, if we begin with the ``.tex`` file in
    :class: .commandshell
 
     latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
-        
 
 then we obtain the output in :numref:`lst:multiple-sentences3-mod1`.
 
@@ -885,7 +879,6 @@ commands
 
     latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
     latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
-        
 
 then we obtain the output in :numref:`lst:multiple-sentences4-mod1`
 and :numref:`lst:multiple-sentences4-mod2`.
@@ -906,14 +899,13 @@ and :numref:`lst:multiple-sentences4-mod2`.
  	:name: lst:multiple-sentences4-mod2
 
 Once you’ve read :numref:`sec:poly-switches`, you will know that you
-can accomodate the removal of internal sentence line breaks by using the
-YAML in :numref:`lst:item-rules2-yaml` and the command
+can accommodate the removal of internal sentence line breaks by using
+the YAML in :numref:`lst:item-rules2-yaml` and the command
 
 .. code-block:: latex
    :class: .commandshell
 
     latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
-        
 
 the output of which is shown in
 :numref:`lst:multiple-sentences4-mod3`.
@@ -1054,9 +1046,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 438-452
+ 	:lines: 485-499
  	:linenos:
- 	:lineno-start: 438
+ 	:lineno-start: 485
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -1111,7 +1103,6 @@ file in :numref:`lst:removeTWS-before` and running, for example,
    :class: .commandshell
 
     latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
-        
 
 in which case the output is as in :numref:`lst:shortlines1-tws`;
 notice that the double spaces present in :numref:`lst:shortlines1`
@@ -1206,7 +1197,7 @@ then we obtain the respective output given in
  	:caption: ``shortlines-envs3.tex`` 
  	:name: lst:shortlines-envs3
 
-The remaining code-block types can be customized in analogous ways,
+The remaining code-block types can be customised in analogous ways,
 although note that ``commands``, ``keyEqualsValuesBracesBrackets``,
 ``namedGroupingBracesBrackets``, ``UnNamedGroupingBracesBrackets`` are
 controlled by the ``optionalArguments`` and the ``mandatoryArguments``.
@@ -1255,9 +1246,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 453-462
+ 	:lines: 500-509
  	:linenos:
- 	:lineno-start: 453
+ 	:lineno-start: 500
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -1295,7 +1286,6 @@ running the commands
     latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
     latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
     latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
-        
 
 we obtain the respective outputs in :numref:`lst:sl-stop4` –
 :numref:`lst:sl-stop4-comment`; notice in particular that:
@@ -1373,7 +1363,6 @@ running the command
    :class: .commandshell
 
     latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
-        
 
 we obtain the output in :numref:`lst:textwrap7-mod12`.
 
@@ -1387,7 +1376,7 @@ we obtain the output in :numref:`lst:textwrap7-mod12`.
  	:caption: ``textwrap12.yaml`` 
  	:name: lst:textwrap12-yaml
 
-In :numref:`lst:textwrap7-mod12` the paragraph linebreaks have first
+In :numref:`lst:textwrap7-mod12` the paragraph line breaks have first
 been removed from :numref:`lst:textwrap7`, and then the text wrapping
 routine has been applied. It is envisaged that variants of
 :numref:`lst:textwrap12-yaml` will be among the most useful settings
@@ -1421,7 +1410,11 @@ and can take one of *five* integer values:
 -  *add then blank line mode* : a line break will be added before or
    after the *<part of thing>* under consideration, assuming that there
    is not already a line break before or after the *<part of thing>*,
-   followed by a blank line.
+   followed by a blank line;
+
+-  *add blank line mode* ; a blank line will be added before or after
+   the *<part of thing>* under consideration, even if the *<part of
+   thing>* is already on its own line.
 
 In the above, *<part of thing>* refers to either the *begin statement*,
 *body* or *end statement* of the code blocks detailed in
@@ -1441,15 +1434,16 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in
 settings (immediately after the ``environments`` field) and that
 *per-name* settings are also allowed – in the case of
 :numref:`lst:environments-mlb`, settings for ``equation*`` have been
-specified. Note that all poly-switches are *off* by default.
+specified for demonstration. Note that all poly-switches are *off* (set
+to 0) by default.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 463-472
+ 	:lines: 510-519
  	:linenos:
- 	:lineno-start: 463
+ 	:lineno-start: 510
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of
@@ -1577,6 +1571,61 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod1`
 and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been
 added after adding the line break.
 
+Let’s now change each of the ``1`` values in :numref:`lst:env-mlb5`
+and :numref:`lst:env-mlb6` so that they are :math:`4` and save them
+into ``env-beg4.yaml`` and ``env-body4.yaml`` respectively (see
+:numref:`lst:env-beg4` and :numref:`lst:env-body4`).
+
+ .. literalinclude:: demonstrations/env-beg4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-beg4.yaml`` 
+ 	:name: lst:env-beg4
+
+ .. literalinclude:: demonstrations/env-body4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-body4.yaml`` 
+ 	:name: lst:env-body4
+
+We will demonstrate this poly-switch value using the code in
+:numref:`lst:env-mlb1-text`.
+
+ .. literalinclude:: demonstrations/env-mlb1.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` 
+ 	:name: lst:env-mlb1-text
+
+Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
+    latexindent.pl -m env-mlb.1tex -l env-body4.yaml
+
+then we receive the respective outputs in :numref:`lst:env-mlb1-beg4`
+and :numref:`lst:env-mlb1-body4`.
+
+ .. literalinclude:: demonstrations/env-mlb1-beg4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-beg4` 
+ 	:name: lst:env-mlb1-beg4
+
+ .. literalinclude:: demonstrations/env-mlb1-body4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-body4` 
+ 	:name: lst:env-mlb1-body4
+
+We note in particular that, by design, for this value of the
+poly-switches:
+
+#. in :numref:`lst:env-mlb1-beg4` a blank line has been inserted
+   before the ``\begin`` statement, even though the ``\begin`` statement
+   was already on its own line;
+
+#. in :numref:`lst:env-mlb1-body4` a blank line has been inserted
+   before the beginning of the *body*, even though it already began on
+   its own line.
+
 Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1691,14 +1740,64 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod7`
 and :numref:`lst:env-mlb-mod8`, and that a *blank line* has been added
 after the line break.
 
-poly-switches only add line breaks when necessary
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Let’s now change each of the ``1`` values in :numref:`lst:env-mlb11`
+and :numref:`lst:env-mlb12` so that they are :math:`4` and save them
+into ``env-end4.yaml`` and ``env-end-f4.yaml`` respectively (see
+:numref:`lst:env-end4` and :numref:`lst:env-end-f4`).
+
+ .. literalinclude:: demonstrations/env-end4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-end4.yaml`` 
+ 	:name: lst:env-end4
+
+ .. literalinclude:: demonstrations/env-end-f4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``env-end-f4.yaml`` 
+ 	:name: lst:env-end-f4
+
+We will demonstrate this poly-switch value using the code from
+:numref:`lst:env-mlb1-text`.
+
+Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m env-mlb1.tex -l env-end4.yaml
+    latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
+
+then we receive the respective outputs in :numref:`lst:env-mlb1-end4`
+and :numref:`lst:env-mlb1-end-f4`.
+
+ .. literalinclude:: demonstrations/env-mlb1-end4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end4` 
+ 	:name: lst:env-mlb1-end4
+
+ .. literalinclude:: demonstrations/env-mlb1-end-f4.tex
+ 	:class: .tex
+ 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end-f4` 
+ 	:name: lst:env-mlb1-end-f4
+
+We note in particular that, by design, for this value of the
+poly-switches:
+
+#. in :numref:`lst:env-mlb1-end4` a blank line has been inserted
+   before the ``\end`` statement, even though the ``\end`` statement was
+   already on its own line;
+
+#. in :numref:`lst:env-mlb1-end-f4` a blank line has been inserted
+   after the ``\end`` statement, even though it already began on its own
+   line.
+
+poly-switches 1, 2, and 3 only add line breaks when necessary
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you ask ``latexindent.pl`` to add a line break (possibly with a
-comment) using a poly-switch value of :math:`1` (or :math:`2`), it will
-only do so if necessary. For example, if you process the file in
-:numref:`lst:mlb2` using any of the YAML files presented so far in
-this section, it will be left unchanged.
+comment) using a poly-switch value of :math:`1` (or :math:`2` or
+:math:`3`), it will only do so if necessary. For example, if you process
+the file in :numref:`lst:mlb2` using poly-switch values of 1, 2, or 3,
+it will be left unchanged.
 
  .. literalinclude:: demonstrations/env-mlb2.tex
  	:class: .tex
@@ -1709,6 +1808,12 @@ this section, it will be left unchanged.
  	:class: .tex
  	:caption: ``env-mlb3.tex`` 
  	:name: lst:mlb3
+
+Setting the poly-switches to a value of :math:`4` instructs
+``latexindent.pl`` to add a line break even if the *<part of thing>* is
+already on its own line; see :numref:`lst:env-mlb1-beg4` and
+:numref:`lst:env-mlb1-body4` and :numref:`lst:env-mlb1-end4` and
+:numref:`lst:env-mlb1-end-f4`.
 
 In contrast, the output from processing the file in :numref:`lst:mlb3`
 will vary depending on the poly-switches used; in
@@ -1967,7 +2072,6 @@ Upon running the following commands
 
     latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
     latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
-                
 
 we receive the outputs given in :numref:`lst:env-mlb7-preserve` and
 :numref:`lst:env-mlb7-no-preserve`.
@@ -1994,6 +2098,272 @@ Notice that in:
 -  :numref:`lst:env-mlb7-no-preserve`, by contrast, has had the
    additional line-break removed, because of the settings in
    :numref:`lst:UnpreserveBlankLines`.
+
+.. label follows
+
+.. _subsec:dbs:
+
+Poly-switches for double back slash
+-----------------------------------
+
+With reference to ``lookForAlignDelims`` (see
+:numref:`lst:aligndelims:basic`) you can specify poly-switches to
+dictate the line-break behaviour of double back slashes in environments
+(:numref:`lst:tabularafter:basic`), commands
+(:numref:`lst:matrixafter`), or special code blocks
+(:numref:`lst:specialafter`). Note that for these poly-switches to
+take effect, the name of the code block must necessarily be specified
+within ``lookForAlignDelims`` (:numref:`lst:aligndelims:basic`); we
+will demonstrate this in what follows.
+
+Consider the code given in :numref:`lst:dbs-demo`.
+
+.. code-block:: latex
+   :caption: ``tabular3.tex`` 
+   :name: lst:dbs-demo
+
+    \begin{tabular}{cc}
+     1 & 2 ★\\□ 3 & 4 ★\\□
+    \end{tabular}
+
+Referencing :numref:`lst:dbs-demo`:
+
+-  ``DBS`` stands for *double back slash*;
+
+-  line breaks ahead of the double back slash are annotated by ★, and
+   are controlled by ``DBSStartsOnOwnLine``;
+
+-  line breaks after the double back slash are annotated by □, and are
+   controlled by ``DBSFinishesWithLineBreak``.
+
+Let’s explore each of these in turn.
+
+Double back slash starts on own line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We explore ``DBSStartsOnOwnLine`` (★ in :numref:`lst:dbs-demo`);
+starting with the code in :numref:`lst:dbs-demo`, together with the
+YAML files given in :numref:`lst:DBS1` and :numref:`lst:DBS2` and
+running the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m tabular3.tex -l DBS1.yaml
+    latexindent.pl -m tabular3.tex -l DBS2.yaml
+
+then we receive the respective output given in
+:numref:`lst:tabular3-DBS1` and :numref:`lst:tabular3-DBS2`.
+
+ .. literalinclude:: demonstrations/tabular3-mod1.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS1` 
+ 	:name: lst:tabular3-DBS1
+
+ .. literalinclude:: demonstrations/DBS1.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS1.yaml`` 
+ 	:name: lst:DBS1
+
+ .. literalinclude:: demonstrations/tabular3-mod2.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS2` 
+ 	:name: lst:tabular3-DBS2
+
+ .. literalinclude:: demonstrations/DBS2.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS2.yaml`` 
+ 	:name: lst:DBS2
+
+We note that
+
+-  :numref:`lst:DBS1` specifies ``DBSStartsOnOwnLine`` for *every*
+   environment (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the double back slashes from
+   :numref:`lst:dbs-demo` have been moved to their own line in
+   :numref:`lst:tabular3-DBS1`;
+
+-  :numref:`lst:DBS2` specifies ``DBSStartsOnOwnLine`` on a *per-name*
+   basis for ``tabular`` (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the double back slashes from
+   :numref:`lst:dbs-demo` have been moved to their own line in
+   :numref:`lst:tabular3-DBS2`, having added comment symbols before
+   moving them.
+
+Double back slash finishes with line break
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let’s now explore ``DBSFinishesWithLineBreak`` (□ in
+:numref:`lst:dbs-demo`); starting with the code in
+:numref:`lst:dbs-demo`, together with the YAML files given in
+:numref:`lst:DBS3` and :numref:`lst:DBS4` and running the following
+commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m tabular3.tex -l DBS3.yaml
+    latexindent.pl -m tabular3.tex -l DBS4.yaml
+
+then we receive the respective output given in
+:numref:`lst:tabular3-DBS3` and :numref:`lst:tabular3-DBS4`.
+
+ .. literalinclude:: demonstrations/tabular3-mod3.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS3` 
+ 	:name: lst:tabular3-DBS3
+
+ .. literalinclude:: demonstrations/DBS3.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS3.yaml`` 
+ 	:name: lst:DBS3
+
+ .. literalinclude:: demonstrations/tabular3-mod4.tex
+ 	:class: .tex
+ 	:caption: ``tabular3.tex`` using :numref:`lst:DBS4` 
+ 	:name: lst:tabular3-DBS4
+
+ .. literalinclude:: demonstrations/DBS4.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS4.yaml`` 
+ 	:name: lst:DBS4
+
+We note that
+
+-  :numref:`lst:DBS3` specifies ``DBSFinishesWithLineBreak`` for
+   *every* environment (that is within ``lookForAlignDelims``,
+   :numref:`yaml:lookforaligndelims`); the code following the double
+   back slashes from :numref:`lst:dbs-demo` has been moved to their
+   own line in :numref:`lst:tabular3-DBS3`;
+
+-  :numref:`lst:DBS4` specifies ``DBSFinishesWithLineBreak`` on a
+   *per-name* basis for ``tabular`` (that is within
+   ``lookForAlignDelims``, :numref:`yaml:lookforaligndelims`); the
+   first double back slashes from :numref:`lst:dbs-demo` have moved
+   code following them to their own line in
+   :numref:`lst:tabular3-DBS4`, having added comment symbols before
+   moving them; the final double back slashes have *not* added a line
+   break as they are at the end of the body within the code block.
+
+Double back slash poly switches for specialBeginEnd
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let’s explore the double back slash poly-switches for code blocks within
+``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we
+begin with the code within :numref:`lst:special4`.
+
+ .. literalinclude:: demonstrations/special4.tex
+ 	:class: .tex
+ 	:caption: ``special4.tex`` 
+ 	:name: lst:special4
+
+Upon using the YAML settings in :numref:`lst:DBS5`, and running the
+command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m special4.tex -l DBS5.yaml
+
+then we receive the output given in :numref:`lst:special4-DBS5`.
+
+ .. literalinclude:: demonstrations/special4-mod5.tex
+ 	:class: .tex
+ 	:caption: ``special4.tex`` using :numref:`lst:DBS5` 
+ 	:name: lst:special4-DBS5
+
+ .. literalinclude:: demonstrations/DBS5.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS5.yaml`` 
+ 	:name: lst:DBS5
+
+There are a few things to note:
+
+-  in :numref:`lst:DBS5` we have specified ``cmhMath`` within
+   ``lookForAlignDelims``; without this, the double back slash
+   poly-switches would be ignored for this code block;
+
+-  the ``DBSFinishesWithLineBreak`` poly-switch has controlled the line
+   breaks following the double back slashes;
+
+-  the ``SpecialEndStartsOnOwnLine`` poly-switch has controlled the
+   addition of a comment symbol, followed by a line break, as it is set
+   to a value of 2.
+
+Double back slash poly switches for optional and mandatory arguments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For clarity, we provide a demonstration of controlling the double back
+slash poly-switches for optional and mandatory arguments. We begin with
+the code in :numref:`lst:mycommand2`.
+
+ .. literalinclude:: demonstrations/mycommand2.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` 
+ 	:name: lst:mycommand2
+
+Upon using the YAML settings in :numref:`lst:DBS6` and
+:numref:`lst:DBS7`, and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m mycommand2.tex -l DBS6.yaml
+    latexindent.pl -m mycommand2.tex -l DBS7.yaml
+
+then we receive the output given in :numref:`lst:mycommand2-DBS6` and
+:numref:`lst:mycommand2-DBS7`.
+
+ .. literalinclude:: demonstrations/mycommand2-mod6.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS6` 
+ 	:name: lst:mycommand2-DBS6
+
+ .. literalinclude:: demonstrations/DBS6.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS6.yaml`` 
+ 	:name: lst:DBS6
+
+ .. literalinclude:: demonstrations/mycommand2-mod7.tex
+ 	:class: .tex
+ 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS7` 
+ 	:name: lst:mycommand2-DBS7
+
+ .. literalinclude:: demonstrations/DBS7.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``DBS7.yaml`` 
+ 	:name: lst:DBS7
+
+Double back slash optional square brackets
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The pattern matching for the double back slash will also, optionally,
+allow trailing square brackets that contain a measurement of vertical
+spacing, for example ``\\[3pt]``.
+
+For example, beginning with the code in :numref:`lst:pmatrix3`
+
+ .. literalinclude:: demonstrations/pmatrix3.tex
+ 	:class: .tex
+ 	:caption: ``pmatrix3.tex`` 
+ 	:name: lst:pmatrix3
+
+and running the following command, using :numref:`lst:DBS3`,
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m pmatrix3.tex -l DBS3.yaml
+
+then we receive the output given in :numref:`lst:pmatrix3-DBS3`.
+
+ .. literalinclude:: demonstrations/pmatrix3-mod3.tex
+ 	:class: .tex
+ 	:caption: ``pmatrix3.tex`` using :numref:`lst:DBS3` 
+ 	:name: lst:pmatrix3-DBS3
+
+You can customise the pattern for the double back slash by exploring the
+*fine tuning* field detailed in :numref:`lst:fineTuning`.
 
 Poly-switches for other code blocks
 -----------------------------------
@@ -2057,7 +2427,11 @@ poly-switches available for ``verbatim`` code blocks: environments
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``[``\ ♥                                 | ♥   | OptArgBodyStartsOnOwnLine            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
-	|                                 | ``body of opt arg``\ ◆                   | ◆   | RSqBStartsOnOwnLine                  |
+	|                                 | ``value before comma``\ ★,               | ★   | CommaStartsOnOwnLine                 |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | □                                        | □   | CommaFinishesWithLineBreak           |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | ``end of body of opt arg``\ ◆            | ◆   | RSqBStartsOnOwnLine                  |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``]``\ ♣                                 | ♣   | RSqBFinishesWithLineBreak            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
@@ -2067,7 +2441,11 @@ poly-switches available for ``verbatim`` code blocks: environments
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``{``\ ♥                                 | ♥   | MandArgBodyStartsOnOwnLine           |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
-	|                                 | ``body of mand arg``\ ◆                  | ◆   | RCuBStartsOnOwnLine                  |
+	|                                 | ``value before comma``\ ★,               | ★   | CommaStartsOnOwnLine                 |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | □                                        | □   | CommaFinishesWithLineBreak           |
+	+---------------------------------+------------------------------------------+-----+--------------------------------------+
+	|                                 | ``end of body of mand arg``\ ◆           | ◆   | RCuBStartsOnOwnLine                  |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
 	|                                 | ``}``\ ♣                                 | ♣   | RCuBFinishesWithLineBreak            |
 	+---------------------------------+------------------------------------------+-----+--------------------------------------+
@@ -2294,7 +2672,6 @@ Let’s use the YAML settings given in
    :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
-            
 
 gives the output in :numref:`lst:nested-env-mlb1`.
 
@@ -2380,7 +2757,6 @@ We can explore this further using the poly-switches in
    :class: .commandshell
 
     latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
-            
 
 we obtain the output given in :numref:`lst:nested-env-mlb2-output`.
 

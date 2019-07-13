@@ -17,6 +17,7 @@ package LatexIndent::KeyEqualsValuesBraces;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -37,21 +38,19 @@ sub construct_key_equals_values_regexp{
     # blank line token
     my $blankLineToken = $tokens{blanklines};
 
+    # read from fine tuning
+    my  $keyEqualsValuesBracesBrackets = qr/${${$masterSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}/;
+    my  $keyEqualsValuesBracesBracketsFollow = qr/${${$masterSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{follow}/;
+
     # store the regular expresssion for matching and replacing 
     $key_equals_values_bracesRegExp = qr/
                   (
-                    (?:
-                       (?:(?<!\\)\{)
-                           |
-                           ,
-                           |
-                       (?:(?<!\\)\[)
-                     )
+                     (?:$keyEqualsValuesBracesBracketsFollow)
                      (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*
                   )                                                     # $1 pre-key bit: could be { OR , OR [                                 
                   (\\)?                                                 # $2 possible backslash
                   (
-                   [a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?                               # lowercase|uppercase letters, @, *, numbers, forward slash, dots
+                   $keyEqualsValuesBracesBrackets?                      # lowercase|uppercase letters, @, *, numbers, forward slash, dots
                   )                                                     # $3 name
                   (
                     (?:\h|\R|$blankLineToken|$trailingCommentRegExp)*

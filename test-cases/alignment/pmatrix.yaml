@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    environments:
+        pmatrix:
+            BodyStartsOnOwnLine: 1
+            EndStartsOnOwnLine: 1

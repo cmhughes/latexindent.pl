@@ -55,27 +55,32 @@ sub check_for_else_statement{
     while(${$self}{body} =~ m/$elseRegExp(\h*)($trailingCommentRegExp)?/){
         ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
                            /   
-                          # create a new IfElseFi object
+                          # create a new Else object
                           my $else = LatexIndent::Else->new(begin=>$1,
-                                                                  name=>${$self}{name},
-                                                                  storageNameAppend=>$input{storageNameAppend},
-                                                                  body=>$3,
-                                                                  end=>q(),
-                                                                  linebreaksAtEnd=>{
-                                                                    begin=>$2?1:0,
-                                                                    body=>0,
-                                                                    end=>0,
-                                                                  },
-                                                                  aliases=>{
-                                                                    # begin statements
-                                                                    BeginStartsOnOwnLine=>$input{ElseStartsOnOwnLine},
-                                                                    # end statements
-                                                                    BodyStartsOnOwnLine=>$input{ElseFinishesWithLineBreak},
-                                                                  },
-                                                                  modifyLineBreaksYamlName=>${$self}{modifyLineBreaksYamlName},
-                                                                  endImmediatelyFollowedByComment=>0,
-                                                                  horizontalTrailingSpace=>q(),
-                                                                );
+                                            name=>${$self}{name},
+                                            storageNameAppend=>$input{storageNameAppend},
+                                            body=>$3,
+                                            end=>q(),
+                                            linebreaksAtEnd=>{
+                                              begin=>$2?1:0,
+                                              body=>0,
+                                              end=>0,
+                                            },
+                                            aliases=>{
+                                              # begin statements
+                                              BeginStartsOnOwnLine=>$input{ElseStartsOnOwnLine},
+                                              # end statements
+                                              BodyStartsOnOwnLine=>$input{ElseFinishesWithLineBreak},
+                                            },
+                                            modifyLineBreaksYamlName=>${$self}{modifyLineBreaksYamlName},
+                                            endImmediatelyFollowedByComment=>0,
+                                            horizontalTrailingSpace=>q(),
+                                            # mandatory and optional arguments have a parent, which we need
+                                            # to detail for double back slash poly-switches 
+                                            # (see test-cases alignment command-align.tex, for example)
+                                            parent=>(${$self}{parent}?${$self}{parent}:"none"),
+                                          );
+
                           # log file output
                           $logger->trace("*$input{logName} found: ${$self}{name}")if $is_t_switch_active;
              

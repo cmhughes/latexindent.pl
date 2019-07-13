@@ -254,5 +254,54 @@ latexindent.pl -s multiple-sentences5 -m -l=sentence-wrap1.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml -o=+-mod2 -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
 latexindent.pl -s multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml -o=+-mod3
+
+# double back slash demonstrations
+latexindent.pl -s -m tabular3.tex -l=DBS1.yaml -o=+-mod1
+latexindent.pl -s -m tabular3.tex -l=DBS2.yaml -o=+-mod2
+latexindent.pl -s -m tabular3.tex -l=DBS3.yaml -o=+-mod3
+latexindent.pl -s -m tabular3.tex -l=DBS4.yaml -o=+-mod4
+latexindent.pl -s -m special4.tex -l=DBS5.yaml -o=+-mod5
+latexindent.pl -s -m mycommand2.tex -l=DBS6.yaml -o=+-mod6
+latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
+latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
+
+# replacement mode demonstrations
+# replacement mode demonstrations
+# replacement mode demonstrations
+latexindent.pl -s -r replace1 -o=+-r1
+latexindent.pl -s -r replace1 -l=replace1.yaml -o=+-mod1
+
+latexindent.pl -s -r colsep -o=+-mod0 -l=colsep.yaml
+latexindent.pl -s -r colsep -o=+-mod1 -l=colsep1.yaml
+latexindent.pl -s -r colsep -o=+-mod2 -l=multi-line.yaml
+latexindent.pl -s -r colsep -o=+-mod3 -l=multi-line1yaml
+
+latexindent.pl -s -r displaymath -o=+-mod1 -l=displaymath1.yaml
+latexindent.pl -s -r -m displaymath -o=+-mod2 -l=displaymath1.yaml,equation.yaml
+
+latexindent.pl -s -r phrase -o=+-mod1 -l=hspace.yaml
+
+latexindent.pl -s -r references.tex -o=+-mod1 -l=reference.yaml
+
+latexindent.pl -s -r verb1.tex -o=+-mod1 -l=verbatim1
+latexindent.pl -s -rr verb1.tex -o=+-rr-mod1 -l=verbatim1
+latexindent.pl -s -rv verb1.tex -o=+-rv-mod1 -l=verbatim1
+
+# amalgamate demonstrations
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml -o=+-mod1
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg2-yaml.yaml -o=+-mod12
+latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg3-yaml,amalg3-yaml.yaml -o=+-mod123
+
+# fine tuning
+# fine tuning
+# fine tuning
+latexindent.pl -s finetuning1.tex -o=+-default
+latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1
+
+# blank line poly-switches
+latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4
+latexindent.pl -s -m env-mlb1.tex -l env-body4.yaml -o=+-body4
+latexindent.pl -s -m env-mlb1.tex -l env-end4.yaml -o=+-end4
+latexindent.pl -s -m env-mlb1.tex -l env-end-f4.yaml -o=+-end-f4
 [[ $noisyMode == 1 ]] && makenoise
 git status

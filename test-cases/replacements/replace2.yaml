@@ -1,0 +1,9 @@
+replacements:
+  -
+    this: 'latexindent.pl'
+    that: 'pl.latexindent'
+  -
+    this: 'old'
+    that: 'new'
+    when: after
+    lookForThis: 0

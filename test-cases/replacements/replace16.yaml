@@ -1,0 +1,15 @@
+replacements:
+  -
+    substitution: |-
+      s/(
+        equation
+        |
+        table
+        |
+        figure
+        |
+        section
+      )
+      (\h|~)*
+      \\(?:eq)?
+      ref\{(.*?)\}/\\hyperref{$1 \\ref\*{$3}}/sgxi

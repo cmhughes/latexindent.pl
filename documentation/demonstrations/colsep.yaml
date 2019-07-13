@@ -1,0 +1,5 @@
+replacements:
+  -
+    this: \arraycolsep=3pt
+  -
+    this: \arraycolsep=5pt

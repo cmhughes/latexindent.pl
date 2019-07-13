@@ -67,3 +67,16 @@ modifyLineBreaks:
 removeTrailingWhitespace:
     beforeProcessing: 1
     afterProcessing: 1
+
+replacements:
+  - 
+    amalgamate: 0
+  -
+    substitution: s/\%+/\%/sg
+    when: after
+  -
+    substitution: s/(\}|[a-zA-Z])\h+([a-zA-Z])/$1 $2/sg
+    when: before
+  -
+    substitution: s/\h+(\\end\{commandshell\})/$1/sg
+    when: after

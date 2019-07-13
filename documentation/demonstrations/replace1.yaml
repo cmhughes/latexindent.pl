@@ -1,0 +1,7 @@
+replacements:
+  - 
+    amalgamate: 0
+  -
+    this: latexindent.pl
+    that: pl.latexindent
+    lookForThis: 0

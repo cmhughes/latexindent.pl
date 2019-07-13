@@ -30,7 +30,7 @@ my @namesAndOffsets = (
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
                         {name=>"commandCodeBlocks",numberOfLines=>14},
-                        {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks"},
+                        {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>16,special=>"textWrapOptions"},
                         {name=>"removeParagraphLineBreaks",numberOfLines=>14},
@@ -39,18 +39,26 @@ my @namesAndOffsets = (
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
-                        {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments"},
+                        {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
+                        {name=>"fineTuning",numberOfLines=>21},
+                        {name=>"replacements",numberOfLines=>8},
                       );
 
 # loop through defaultSettings.yaml and count the lines as we go through
 my $lineCounter = 1;
+my $within = q();
 open(MAINFILE,"../defaultSettings.yaml");
 while(<MAINFILE>){
+    $within = $_ if($_=~m/^[a-zA-Z]/);
     # loop through the names and search for a match
     foreach my $thing (@namesAndOffsets){
       my $name = (defined ${$thing}{special} ? ${$thing}{special} : ${$thing}{name} ); 
       my $beginning = (${$thing}{mustBeAtBeginning}? qr/^/ : qr/\h*/);
-      ${$thing}{firstLine} = $lineCounter if $_=~m/$beginning$name:/;
+      if(defined ${$thing}{within}){
+        ${$thing}{firstLine} = $lineCounter if ($_=~m/$beginning$name:/ and $within =~ m/${$thing}{within}/);
+      } else {
+        ${$thing}{firstLine} = $lineCounter if ($_=~m/$beginning$name:/);
+      }
     }
     $lineCounter++;
   }
@@ -152,6 +160,8 @@ if(!$readTheDocsMode){
                           "sec-indent-config-and-settings.tex",
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
+                          "sec-replacements.tex",
+                          "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
                           "references.tex",
                           "appendices.tex",
@@ -172,6 +182,8 @@ if(!$readTheDocsMode){
         $body =~ s/\\printbibliography.*\\printbibliography/\\printbibliography/sg;
 
         # make the substitutions
+        $body =~ s/\\begin\{cmhtcbraster\}\h*(\[.*?\])?//sg;
+        $body =~ s/\\end\{cmhtcbraster\}.*$//mg;
         $body =~ s/\\begin\{minipage\}\{.*?\}//sg;
         $body =~ s/\\end\{minipage\}.*$//mg;
         $body =~ s/\\hfill.*$//mg;
@@ -179,7 +191,9 @@ if(!$readTheDocsMode){
                     my $listingsbody = $1;
                     $listingsbody =~ s|\*||sg;
                     my $rst_class = "tex";
-                    if($listingsbody =~ m|MLB-TCB|s ){
+                    if($listingsbody =~ m|replace-TCB|s ){
+                        $rst_class = "replaceyaml";
+                    } elsif($listingsbody =~ m|MLB-TCB|s ){
                         $rst_class = "mlbyaml";
                     } elsif ($listingsbody =~ m|yaml-TCB|s or $listingsbody =~ m|defaultSettings\.yaml|s or $listingsbody =~ m|yaml-LST|s) {
                         $rst_class = "baseyaml";
@@ -219,6 +233,9 @@ if(!$readTheDocsMode){
         # warning
         $body =~ s/\\begin\{warning}(.*?)\\end\{warning\}/\\warning\{$1\}\n/sg;
 
+        # example
+        $body =~ s/\\begin\{example}(.*?)\\end\{example\}/\\example\{$1\}\n/sg;
+
         # cross references
         $body =~ s/\\[vVcC]?ref\{(.*?)\}/
                 # check for ,
@@ -244,7 +261,7 @@ if(!$readTheDocsMode){
                 )*?\\end\{commandshell\})(?:\R|\h)*(\\label\{.*?\})/$2\n\n$1/xsg;
         $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}style:commandshell/sg;
         $body =~ s/\\end\{commandshell\}/\\end\{verbatim\}/sg;
-        $body =~ s/\\begin\{cmhlistings\}/\\begin\{verbatim\}/sg;
+        $body =~ s/\\begin\{cmhlistings\}\*?/\\begin\{verbatim\}/sg;
         $body =~ s/\\end\{cmhlistings\}(\[.*?\])?/\\end\{verbatim\}/sg;
         $body =~ s/\\begin\{yaml\}(\[.*?\])?(\{.*?\})(\[.*?\])?/\\begin\{verbatim\}$2/sg;
         $body =~ s/\\end\{yaml\}/\\end\{verbatim\}/sg;
@@ -337,6 +354,9 @@ if(!$readTheDocsMode){
 
         $body =~ s|\(\*@\$\\EqualsStartsOnOwnLine\$@\*\)|●|gs;
         $body =~ s|\$\\EqualsStartsOnOwnLine\$|●|gs;
+
+        $body =~ s|\\faCheck|yes|gs;
+        $body =~ s|\\faClose|no|gs;
 
         # output the file
         open(OUTPUTFILE,">",$fileName);

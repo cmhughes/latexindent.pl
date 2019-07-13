@@ -37,7 +37,7 @@ exit;
 		install any missing \texttt{perl} modules on your system; if you run
 		\begin{commandshell}
 perl latexindent-module-installer.pl
-     \end{commandshell}
+\end{commandshell}
 		or
 		\begin{dosprompt}
 perl latexindent-module-installer.pl
@@ -51,7 +51,7 @@ perl latexindent-module-installer.pl
 		might visit the software center, or else run
 		\begin{commandshell}
 sudo perl -MCPAN -e 'install "File::HomeDir"'
- \end{commandshell}
+\end{commandshell}
 
 		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible
 		installation and setup options follow for Ubuntu (other distributions will need slightly
@@ -62,6 +62,19 @@ perlbrew install perl-5.22.1
 perlbrew switch perl-5.22.1
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
+cpanm YAML::Tiny
+cpanm File::HomeDir
+cpanm Unicode::GCString
+cpanm Log::Log4perl
+cpanm Log::Dispatch
+\end{commandshell}
+
+		Users of the Macintosh operating system might like to explore the following commands, for
+		example:
+		\begin{commandshell}
+brew install perl
+brew install cpanm
+
 cpanm YAML::Tiny
 cpanm File::HomeDir
 cpanm Unicode::GCString
@@ -97,7 +110,7 @@ latexindent.exe -t myfile.tex
 			\item run
 			      \begin{commandshell}
 ls /usr/local/bin
-          \end{commandshell}
+\end{commandshell}
 			      to see what is \emph{currently} in there;
 			\item run the following commands
 			      \begin{commandshell}
@@ -110,14 +123,14 @@ sudo make install
 			\item run
 			      \begin{commandshell}
 ls /usr/local/bin
-          \end{commandshell}
+\end{commandshell}
 			      again to check that \texttt{latexindent.pl}, its modules and \texttt{defaultSettings.yaml} have
 			      been added.
 		\end{enumerate}
 		To \emph{remove} the files, run
 		\begin{commandshell}
 sudo make uninstall
-    \end{commandshell}
+\end{commandshell}
 	\subsection{Add to path for Windows}
 		To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
 		\begin{enumerate}
@@ -156,7 +169,7 @@ echo %path%
 	 If we run the following command (noting that \texttt{-t} is active)
 	 \begin{commandshell}
 latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
- \end{commandshell}
+\end{commandshell}
 	 then on inspection of \texttt{indent.log} we will find the snippet given in
 	 \cref{lst:indentlog}.
 	 \begin{cmhlistings}[style=tcblatex,morekeywords={TRACE}]{\texttt{indent.log}}{lst:indentlog}
@@ -183,7 +196,7 @@ TRACE: Searching myenv for optional and mandatory arguments
 	 3.0. Explicitly, in previous versions you might have run, for example,
 	 \begin{commandshell}
 latexindent.pl -o myfile.tex outputfile.tex
- \end{commandshell}
+\end{commandshell}
 	 whereas in Version 3.0 you would run any of the following, for example,
 	 \begin{commandshell}
 latexindent.pl -o=outputfile.tex myfile.tex
@@ -192,7 +205,7 @@ latexindent.pl myfile.tex -o outputfile.tex
 latexindent.pl myfile.tex -o=outputfile.tex 
 latexindent.pl myfile.tex -outputfile=outputfile.tex 
 latexindent.pl myfile.tex -outputfile outputfile.tex 
- \end{commandshell}
+\end{commandshell}
 	 noting that the \emph{output} file is given \emph{next to} the
 	 \texttt{-o} switch.
 
@@ -223,7 +236,7 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 	 \begin{minipage}{.45\textwidth}
 		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
 
-		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath}  in Version 3.0}{lst:indentAfterThisHeadingNew2}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew2}
 	 \end{minipage}%
 
 	 \mbox{}\hfill	  \begin{minipage}{.25\textwidth}

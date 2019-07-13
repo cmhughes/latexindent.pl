@@ -256,6 +256,23 @@ sub yaml_read_settings{
                                 }
                             }
                           }
+                      } elsif (ref($firstLevelValue) eq "ARRAY") {
+                            # update amalgamate in master settings
+                            if(ref(${$firstLevelValue}[0]) eq "HASH" and defined ${$firstLevelValue}[0]{amalgamate}){
+                               ${$masterSettings{$firstLevelKey}[0]}{amalgamate} = ${$firstLevelValue}[0]{amalgamate};
+                               shift @{$firstLevelValue} if ${$masterSettings{$firstLevelKey}[0]}{amalgamate};
+                            }
+
+                            # if amalgamate is set to 1, then append
+                            if(${$masterSettings{$firstLevelKey}[0]}{amalgamate}){
+                                # loop through the other settings
+                                foreach (@{$firstLevelValue}){
+                                    push (@{$masterSettings{$firstLevelKey}},$_);
+                                }
+                            } else {
+                                # otherwise overwrite
+                                $masterSettings{$firstLevelKey} = $firstLevelValue;
+                            }
                       } else {
                             $masterSettings{$firstLevelKey} = $firstLevelValue;
                       }
@@ -375,7 +392,7 @@ sub yaml_read_settings{
         # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
             # split each value at semi-colon
-            my (@keysValues) = split(/(?<!\\):/,$_);
+            my (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
 
             # $value will always be the last element
             my $value = $keysValues[-1];

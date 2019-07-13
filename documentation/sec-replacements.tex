@@ -1,0 +1,371 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\section{The -r, -rv and -rr switches}\label{sec:replacements}
+ \fancyhead[R]{\bfseries\thepage%
+	 \tikz[remember picture,overlay] {
+		 \node at (1,0){\includegraphics{logo-bw}}; }
+ }
+
+ You can instruct \texttt{latexindent.pl} to perform replacements/substitutions on your
+ file by using any of the \texttt{-r}, \texttt{-rv} or
+ \texttt{-rr} switches:
+ \begin{itemize}
+	 \item the \texttt{-r} switch will perform indentation and replacements, not
+	       respecting verbatim code blocks;
+	 \item the \texttt{-rv} switch will perform indentation and replacements, and
+	       \emph{will} respect verbatim code blocks;
+	 \item the \texttt{-rr} switch will \emph{not} perform indentation,  and
+	       will perform replacements not respecting verbatim code blocks.
+ \end{itemize}
+
+ We will demonstrate each of the \texttt{-r}, \texttt{-rv} and
+ \texttt{-rr} switches, but a summary is given in \cref{tab:replacementswitches}.
+
+ \begin{table}[!htb]
+	 \centering
+	 \caption{The replacement mode switches}\label{tab:replacementswitches}
+	 \begin{tabular}{rcc}
+		 \toprule
+		 switch       & indentation? & respect verbatim? \\
+		 \midrule
+		 \texttt{-r}  & \faCheck     & \faClose          \\
+		 \texttt{-rv} & \faCheck     & \faCheck          \\
+		 \texttt{-rr} & \faClose     & \faClose          \\
+		 \bottomrule
+	 \end{tabular}
+ \end{table}
+
+ The default value of the \texttt{replacements} field is shown in
+ \cref{lst:replacements}; as with all of the other fields, you are encouraged to customise
+ and change this as you see fit. The options in this field will \emph{only} be
+ considered if the \texttt{-r}, \texttt{-rv} or
+ \texttt{-rr} switches are active; when discussing YAML settings related to the
+ replacement-mode switches, we will use the style given in \cref{lst:replacements}.
+
+ \cmhlistingsfromfile*[style=replacements]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,replace-TCB]{\texttt{replacements}}{lst:replacements}
+
+ The first entry within the \texttt{replacements} field is \texttt{amalgamate}, and
+ is \emph{optional}; by default it is set to 1, so that replacements will be
+ amalgamated from each settings file that you specify. As you'll see in the demonstrations
+ that follow, there is no need to specify this field.
+
+ You'll notice that, by default, there is only \emph{one} entry in the
+ \texttt{replacements} field, but it can take as many entries as you would like; each
+ one needs to begin with a \texttt{-} on its own line.
+
+\subsection{Introduction to replacements}
+	Let's explore the action of the default settings, and then we'll demonstrate the feature
+	with further examples. With reference to \cref{lst:replacements}, the default action will
+	replace every instance of the text \texttt{latexindent.pl} with \texttt{pl.latexindent}.
+
+	Beginning with the code in \cref{lst:replace1} and running the command
+	\begin{commandshell}
+latexindent.pl -r replace1.tex
+\end{commandshell}
+	gives the output given in \cref{lst:replace1-r1}.
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/replace1.tex}{\texttt{replace1.tex}}{lst:replace1}
+		\cmhlistingsfromfile*{demonstrations/replace1-r1.tex}{\texttt{replace1.tex} default}{lst:replace1-r1}
+	\end{cmhtcbraster}
+
+	If we don't wish to perform this replacement, then we can tweak the default settings of
+	\vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action
+	in \cref{lst:replace1-yaml}, and run the command
+	\begin{commandshell}
+latexindent.pl -r replace1.tex -l=replace1.yaml
+\end{commandshell}
+	which gives the output in \cref{lst:replace1-mod1}.
+
+	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		\cmhlistingsfromfile*{demonstrations/replace1-mod1.tex}{\texttt{replace1.tex} using \cref{lst:replace1-yaml}}{lst:replace1-mod1}
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
+	\end{cmhtcbraster}
+
+	Note that in \cref{lst:replace1-yaml} we have specified \texttt{amalgamate} as 0 so
+	that the default replacements are overwritten.
+
+	We haven't yet discussed the \texttt{when} field; don't worry, we'll get to it
+	as part of the discussion in what follows.
+
+\subsection{The two types of replacements}
+	There are two types of replacements:
+	\begin{enumerate}
+		\item \emph{string}-based replacements, which replace the string in
+		      \emph{this} with the string in \emph{that}.
+		      If you specify \texttt{this} and you do not specify \texttt{that}, then
+		      the \texttt{that} field will be assumed to be empty.
+		\item \emph{regex}-based replacements, which use the \texttt{substitution} field.
+	\end{enumerate}
+	We will demonstrate both in the examples that follow.
+
+	\texttt{latexindent.pl} chooses which type of replacement to make based on which fields
+	have been specified; if the \texttt{this} field is specified, then it will make
+	\emph{string}-based replacements, regardless of if \texttt{substitution} is
+	present or not.
+
+\subsection{Examples of replacements}
+	\begin{example}
+		We begin with code given in \cref{lst:colsep}
+
+		\cmhlistingsfromfile*{demonstrations/colsep.tex}{\texttt{colsep.tex}}{lst:colsep}
+
+		Let's assume that our goal is to remove both of the \texttt{arraycolsep} statements; we can achieve this in
+		a few different ways.
+
+		Using the YAML in \cref{lst:colsep-yaml}, and running the command
+		\begin{commandshell}
+latexindent.pl -r colsep.tex -l=colsep.yaml
+\end{commandshell}
+		then we achieve the output in \cref{lst:colsep-mod0}.
+		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+			\cmhlistingsfromfile*{demonstrations/colsep-mod0.tex}{\texttt{colsep.tex} using \cref{lst:colsep}}{lst:colsep-mod0}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep.yaml}[replace-TCB]{\texttt{colsep.yaml}}{lst:colsep-yaml}
+		\end{cmhtcbraster}
+		Note that in \cref{lst:colsep-yaml}, we have specified \emph{two} separate fields, each with their own `\emph{this}' field;
+		furthermore, for both of the separate fields, we have not specified `\texttt{that}', so the \texttt{that} field
+		is assumed to be blank by \texttt{latexindent.pl};
+
+		We can make the YAML in \cref{lst:colsep-yaml} more concise by exploring the \texttt{substitution} field. Using
+		the settings in \cref{lst:colsep1} and running the command
+		\begin{commandshell}
+latexindent.pl -r colsep.tex -l=colsep1.yaml
+\end{commandshell}
+		then we achieve the output in \cref{lst:colsep-mod1}.
+		\begin{cmhtcbraster}[raster column skip=.01\linewidth,
+				raster force size=false,
+				raster column 1/.style={add to width=-.1\textwidth}]
+			\cmhlistingsfromfile*{demonstrations/colsep-mod1.tex}{\texttt{colsep.tex} using \cref{lst:colsep1}}{lst:colsep-mod1}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
+		\end{cmhtcbraster}
+
+		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbreviate to \emph{regex}
+		in what follows.  This manual is not intended to be
+		a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
+		covering of the topic. With reference to \cref{lst:colsep1}, we do note the following:
+		\begin{itemize}
+			\item the general form of the \texttt{substitution} field is \lstinline!s/regex/replacement/modifiers!. You can
+			      place any regular expression you like within this;
+			\item we have `escaped' the backslash by using \lstinline!\\!
+			\item we have used \lstinline!\d+! to represent \emph{at least} one digit
+			\item the \texttt{s} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs \texttt{latexindent.pl} to
+			      treat your file as one single line;
+			\item the \texttt{g} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs \texttt{latexindent.pl} to
+			      make the substitution \emph{globally} throughout your file; you might try removing
+			      the \texttt{g} modifier from \cref{lst:colsep1} and observing the
+			      difference in output.
+		\end{itemize}
+		You might like to see \href{https://perldoc.perl.org/perlre.html#Modifiers}{https://perldoc.perl.org/perlre.html\#Modifiers}
+		for details of modifiers; in general, I recommend starting with the \texttt{sg} modifiers for this feature.
+	\end{example}
+
+	\begin{example}
+		We'll keep working with the file in \vref{lst:colsep} for this example.
+
+		Using the YAML in \cref{lst:multi-line}, and running the command
+		\begin{commandshell}
+latexindent.pl -r colsep.tex -l=multi-line.yaml
+\end{commandshell}
+		then we achieve the output in \cref{lst:colsep-mod2}.
+		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+			\cmhlistingsfromfile*{demonstrations/colsep-mod2.tex}{\texttt{colsep.tex} using \cref{lst:multi-line}}{lst:colsep-mod2}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/multi-line.yaml}[replace-TCB]{\texttt{multi-line.yaml}}{lst:multi-line}
+		\end{cmhtcbraster}
+		With reference to \cref{lst:multi-line}, we have specified a \emph{multi-line} version of \texttt{this} by employing the \emph{literal}
+		YAML style \lstinline!|-!. See, for example, \href{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}
+		for further options, all of which can be used in your YAML file.
+
+		This is a natural point to explore the \texttt{when} field, specified in \vref{lst:replacements}. This field can take two values: \emph{before}
+		and \emph{after}, which respectively instruct \texttt{latexindent.pl} to perform the replacements \emph{before} indentation or \emph{after} it.
+		The default value is \texttt{before}.
+
+		Using the YAML in \cref{lst:multi-line1}, and running the command
+		\begin{commandshell}
+latexindent.pl -r colsep.tex -l=multi-line1.yaml
+\end{commandshell}
+		then we achieve the output in \cref{lst:colsep-mod3}.
+		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
+			\cmhlistingsfromfile*{demonstrations/colsep-mod3.tex}{\texttt{colsep.tex} using \cref{lst:multi-line1}}{lst:colsep-mod3}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/multi-line1.yaml}[replace-TCB]{\texttt{multi-line1.yaml}}{lst:multi-line1}
+		\end{cmhtcbraster}
+		We note that, because we have specified \texttt{when: after}, that \texttt{latexindent.pl} has not found the string specified
+		in \cref{lst:multi-line1} within the file in \vref{lst:colsep}. As it has looked for the string within \cref{lst:multi-line1} \emph{after} the indentation has been performed. After
+		indentation, the string as written in \cref{lst:multi-line1} is no longer part of the file, and has therefore not been replaced.
+
+		As a final note on this example, if you use the \texttt{-rr} switch, as follows,
+		\begin{commandshell}
+latexindent.pl -rr colsep.tex -l=multi-line1.yaml
+\end{commandshell}
+		then the \texttt{when} field is ignored, no indentation is done, and the output is as in \cref{lst:colsep-mod2}.
+	\end{example}
+
+	\begin{example}
+		An important part of the substitution routine is in \emph{capture groups}.
+
+		Assuming that we start with
+		the code in \cref{lst:displaymath}, let's assume that our goal is to replace each occurrence of \lstinline!$$...$$!
+		with \lstinline!\begin{equation*}...\end{equation*}!. This example is partly motivated by \href{https://tex.stackexchange.com/questions/242150/good-looking-latex-code}{tex stackexchange question 242150}.
+
+		\cmhlistingsfromfile*{demonstrations/displaymath.tex}{\texttt{displaymath.tex}}{lst:displaymath}
+
+		We use the settings in \cref{lst:displaymath1} and run the command
+		\begin{commandshell}
+latexindent.pl -r displaymath.tex -l=displaymath1.yaml
+\end{commandshell}
+		to receive the output given in \cref{lst:displaymath-mod1}.
+
+		\begin{cmhtcbraster}[raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*{demonstrations/displaymath-mod1.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1}}{lst:displaymath-mod1}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/displaymath1.yaml}[replace-TCB]{\texttt{displaymath1.yaml}}{lst:displaymath1}
+		\end{cmhtcbraster}
+
+		A few notes about \cref{lst:displaymath1}:
+		\begin{enumerate}
+			\item we have used the \texttt{x} modifier, which allows us to have white space
+			      within the regex;
+			\item we have used a capture group, \lstinline!(.*?)! which captures the content between
+			      the \lstinline!$$...$$! into the special variable, \lstinline!$1!;
+			\item we have used the content of the capture group, \lstinline!$1!, in the
+			      replacement text.
+		\end{enumerate}
+		See \href{https://perldoc.perl.org/perlre.html#Capture-groups}{https://perldoc.perl.org/perlre.html\#Capture-groups} for a discussion
+		of capture groups.
+
+		The features of the replacement switches can, of course, be combined with others from the toolkit of \texttt{latexindent.pl}. For example,
+		we can combine the poly-switches of \vref{sec:poly-switches}, which we do in \cref{lst:equation}; upon running the command
+		\begin{commandshell}
+latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
+\end{commandshell}
+		then we receive the output in \cref{lst:displaymath-mod2}.
+
+		\begin{cmhtcbraster}[
+				raster force size=false,
+				raster column 1/.style={add to width=-.1\textwidth},
+				raster column skip=.06\linewidth]
+			\cmhlistingsfromfile*{demonstrations/displaymath-mod2.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1,lst:equation}}{lst:displaymath-mod2}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/equation.yaml}[MLB-TCB,width=0.55\textwidth]{\texttt{equation.yaml}}{lst:equation}
+		\end{cmhtcbraster}
+	\end{example}
+
+	\begin{example}
+		This example is motivated by \href{https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker}{tex stackexchange question 490086}.
+		We begin with the code in \cref{lst:phrase}.
+
+		\cmhlistingsfromfile*{demonstrations/phrase.tex}{\texttt{phrase.tex}}{lst:phrase}
+
+		Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in \cref{lst:hspace},
+		and run the command
+		\begin{commandshell}
+latexindent.pl -r phrase.tex -l=hspace.yaml
+\end{commandshell}
+		which gives the output in \cref{lst:phrase-mod1}.
+
+		\begin{cmhtcbraster}
+			\cmhlistingsfromfile*{demonstrations/phrase-mod1.tex}{\texttt{phrase.tex} using \cref{lst:hspace}}{lst:phrase-mod1}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/hspace.yaml}[replace-TCB]{\texttt{hspace.yaml}}{lst:hspace}
+		\end{cmhtcbraster}
+
+		The \lstinline!\h+! setting in \cref{lst:hspace} say to replace \emph{at least one horizontal space} with a single space.
+	\end{example}
+
+	\begin{example}
+		We begin with the code in \cref{lst:references}.
+
+		\cmhlistingsfromfile*{demonstrations/references.tex}{\texttt{references.tex}}{lst:references}
+
+		Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We
+		achieve this by employing \cref{lst:reference} and running the command
+		\begin{commandshell}
+latexindent.pl -r references.tex -l=reference.yaml
+\end{commandshell}
+		which gives the output in \cref{lst:references-mod1}.
+
+		\cmhlistingsfromfile*{demonstrations/references-mod1.tex}{\texttt{references.tex} using \cref{lst:reference}}{lst:references-mod1}
+
+		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/reference.yaml}[replace-TCB]{\texttt{reference.yaml}}{lst:reference}
+
+		Referencing \cref{lst:reference}, the \lstinline!|! means \emph{or}, we have used \emph{capture groups}, together with an example
+		of an \emph{optional} pattern, \lstinline!(?:eq)?!.
+	\end{example}
+
+	\begin{example}
+		Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in the context of
+		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verbatim1-yaml}.
+
+		\begin{cmhtcbraster}
+			\cmhlistingsfromfile*{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
+			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/verbatim1.yaml}[replace-TCB]{\texttt{verbatim1.yaml}}{lst:verbatim1-yaml}
+		\end{cmhtcbraster}
+
+		Upon running the following commands,
+		\begin{commandshell}
+latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
+latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
+latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
+\end{commandshell}
+		we receive the respective output in \crefrange{lst:verb1-mod1}{lst:verb1-rr-mod1}
+
+		\begin{cmhtcbraster}[raster columns=3,
+				raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*{demonstrations/verb1-mod1.tex}{\texttt{verb1-mod1.tex}}{lst:verb1-mod1}
+			\cmhlistingsfromfile*{demonstrations/verb1-rv-mod1.tex}{\texttt{verb1-rv-mod1.tex}}{lst:verb1-rv-mod1}
+			\cmhlistingsfromfile*{demonstrations/verb1-rr-mod1.tex}{\texttt{verb1-rr-mod1.tex}}{lst:verb1-rr-mod1}
+		\end{cmhtcbraster}
+	\end{example}
+
+	We note that:
+	\begin{enumerate}
+		\item in \cref{lst:verb1-mod1} indentation has been performed, and that the replacements
+		      specified in \cref{lst:verbatim1-yaml} have been performed, even within the verbatim code
+		      block;
+		\item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements have
+		      \emph{not} been performed within the verbatim environment, because the
+		      \texttt{rv} switch is active;
+		\item in \cref{lst:verb1-rr-mod1} indentation has \emph{not} been performed, but
+		      that replacements have been performed, not respecting the verbatim code block.
+	\end{enumerate}
+	See the summary within \vref{tab:replacementswitches}.
+
+	\begin{example}
+		Let's explore the \texttt{amalgamate} field from \vref{lst:replacements} in the context of the file specified
+		in \cref{lst:amalg1}.
+
+		\cmhlistingsfromfile*{demonstrations/amalg1.tex}{\texttt{amalg1.tex}}{lst:amalg1}
+
+		Let's consider the YAML files given in \crefrange{lst:amalg1-yaml}{lst:amalg3-yaml}.
+
+		\begin{cmhtcbraster}[raster columns=3,
+				raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg1-yaml.yaml}[replace-TCB]{\texttt{amalg1-yaml.yaml}}{lst:amalg1-yaml}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg2-yaml.yaml}[replace-TCB]{\texttt{amalg2-yaml.yaml}}{lst:amalg2-yaml}
+			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg3-yaml.yaml}[replace-TCB]{\texttt{amalg3-yaml.yaml}}{lst:amalg3-yaml}
+		\end{cmhtcbraster}
+
+		Upon running the following commands,
+		\begin{commandshell}
+latexindent.pl -r amalg1.tex -l=amalg1-yaml
+latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml
+latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
+\end{commandshell}
+		we receive the respective output in \crefrange{lst:amalg1-mod1}{lst:amalg1-mod123}.
+
+		\begin{cmhtcbraster}[raster columns=3,
+				raster left skip=-3.75cm,
+				raster right skip=-2cm,]
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod1.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml}}{lst:amalg1-mod1}
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod12.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml}}{lst:amalg1-mod12}
+			\cmhlistingsfromfile*{demonstrations/amalg1-mod123.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml,lst:amalg3-yaml}}{lst:amalg1-mod123}
+		\end{cmhtcbraster}
+		We note that:
+		\begin{enumerate}
+			\item in \cref{lst:amalg1-mod1} the replacements from \cref{lst:amalg1-yaml} have been used;
+			\item in \cref{lst:amalg1-mod12} the replacements from \cref{lst:amalg1-yaml,lst:amalg2-yaml} have
+			      \emph{both} been used, because the default value of \texttt{amalgamate}
+			      is 1;
+			\item in \cref{lst:amalg1-mod123}  \emph{only} the replacements from
+			      \cref{lst:amalg3-yaml} have been used, because the value of \texttt{amalgamate} has
+			      been set to 0.
+		\end{enumerate}
+	\end{example}

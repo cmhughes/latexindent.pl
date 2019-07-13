@@ -21,8 +21,9 @@ use utf8;
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
-use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
+use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
@@ -34,15 +35,15 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
-use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block/;
+use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block double_back_slash_else/;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
-use LatexIndent::Environment qw/find_environments $environmentBasicRegExp/;
+use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
-use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments get_numbered_arg_regexp construct_arguments_regexp/;
+use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp comma_else/;
 use LatexIndent::OptionalArgument qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets qw/find_round_brackets/;
@@ -83,28 +84,34 @@ sub operate_on_file{
 
     $self->create_back_up_file;
     $self->token_check;
-    $self->construct_regular_expressions;
-    $self->find_noindent_block;
-    $self->find_verbatim_commands;
-    $self->find_aligned_block;
-    $self->remove_trailing_comments;
-    $self->find_verbatim_environments;
-    $self->find_verbatim_special;
-    $self->verbatim_modify_line_breaks if $is_m_switch_active; 
-    $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
-    $self->protect_blank_lines;
-    $self->remove_trailing_whitespace(when=>"before");
-    $self->find_file_contents_environments_and_preamble;
-    $self->dodge_double_backslash;
-    $self->remove_leading_space;
-    $self->process_body_of_text;
-    $self->remove_trailing_whitespace(when=>"after");
-    $self->condense_blank_lines;
-    $self->unprotect_blank_lines;
-    $self->un_dodge_double_backslash;
-    $self->put_verbatim_back_in (match=>"everything-except-commands");
-    $self->put_trailing_comments_back_in;
-    $self->put_verbatim_back_in (match=>"just-commands");
+    $self->make_replacements(when=>"before") if ($is_r_switch_active and !$is_rv_switch_active);
+    unless ($is_rr_switch_active){
+        $self->construct_regular_expressions;
+        $self->find_noindent_block;
+        $self->find_verbatim_commands;
+        $self->find_aligned_block;
+        $self->remove_trailing_comments;
+        $self->find_verbatim_environments;
+        $self->find_verbatim_special;
+        $self->verbatim_modify_line_breaks if $is_m_switch_active; 
+        $self->make_replacements(when=>"before") if $is_rv_switch_active;
+        $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
+        $self->protect_blank_lines;
+        $self->remove_trailing_whitespace(when=>"before");
+        $self->find_file_contents_environments_and_preamble;
+        $self->dodge_double_backslash;
+        $self->remove_leading_space;
+        $self->process_body_of_text;
+        $self->remove_trailing_whitespace(when=>"after");
+        $self->condense_blank_lines;
+        $self->unprotect_blank_lines;
+        $self->un_dodge_double_backslash;
+        $self->make_replacements(when=>"after") if $is_rv_switch_active;
+        $self->put_verbatim_back_in (match=>"everything-except-commands");
+        $self->put_trailing_comments_back_in;
+        $self->put_verbatim_back_in (match=>"just-commands");
+        $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
+    }
     $self->output_indented_text;
     return
 }
@@ -112,6 +119,7 @@ sub operate_on_file{
 sub construct_regular_expressions{
     my $self = shift;
     $self->construct_trailing_comment_regexp;
+    $self->construct_environments_regexp;
     $self->construct_ifelsefi_regexp;
     $self->construct_list_of_items;
     $self->construct_special_begin;
@@ -335,7 +343,7 @@ sub tasks_common_to_each_object{
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_body if $is_m_switch_active;
+    $self->modify_line_breaks_body if ($is_m_switch_active and defined ${$self}{BodyStartsOnOwnLine});
 
     # modify line breaks end statements
     $self->modify_line_breaks_end if $is_m_switch_active;
@@ -343,6 +351,8 @@ sub tasks_common_to_each_object{
     # check the body for current children
     $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
 
+    # double back slash poly-switch check
+    $self->double_back_slash_else if ($is_m_switch_active and ${$self}{lookForAlignDelims});
     return;
 }
 

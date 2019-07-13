@@ -1,0 +1,3 @@
+replacements:
+  -
+    substitution: s/\\arraycolsep=(\d+)pt/cmh$1/sg

@@ -1,0 +1,10 @@
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 1
+
+replacements:
+  -
+    amalgamate: 1
+  -
+    this: begin
+    that: BEGIN

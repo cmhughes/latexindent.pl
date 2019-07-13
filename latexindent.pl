@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.6, 2019-05-05
+#   latexindent.pl, version 3.7, 2019-07-13
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -44,6 +44,9 @@ GetOptions (
     "help|h"=>\$switches{showhelp},
     "cruft|c=s"=>\$switches{cruftDirectory},
     "screenlog|sl"=>\$switches{screenlog},
+    "replacement|r"=>\$switches{replacement},
+    "onlyreplacement|rr"=>\$switches{onlyreplacement},
+    "replacementrespectverb|rv"=>\$switches{replacementRespectVerb},
 );
 
 # check local settings doesn't interfer with reading the file;
