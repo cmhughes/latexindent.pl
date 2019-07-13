@@ -1,0 +1,7 @@
+replacements:
+  -
+    substitution: |-
+      s/\$(.*?)\$/%%
+            %% Insert comment describing function here
+            %%
+            \$$1\$/sxg

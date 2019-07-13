@@ -66,5 +66,9 @@ latexindent.pl -m -s -r JHenneberg.tex -l=replace20.yaml -o=+-mod20
 latexindent.pl -r test7.tex -l=replace21,replace22 -s -o=+-mod2122
 latexindent.pl -r test7.tex -l=replace21,replace23 -s -o=+-mod2123
 latexindent.pl -r test7.tex -l=replace23,replace24 -s -o=+-mod2324
+
+# subscripts and superscripts, https://tex.stackexchange.com/questions/30595/is-there-such-a-thing-as-a-latex-code-formatter
+latexindent.pl -r test14.tex -l=replace25 -s -o=+-mod25
+latexindent.pl -r test14.tex -l=replace26 -s -o=+-mod26
 git status
 [[ $noisyMode == 1 ]] && makenoise
