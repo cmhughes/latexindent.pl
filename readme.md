@@ -1,7 +1,7 @@
 # latexindent.pl
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
-[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -30,7 +30,7 @@ For complete details, please see:
 
 - pdf: http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
 - online: http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
-[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest)
 
 ## Windows executable
 `latexindent.exe` is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent)

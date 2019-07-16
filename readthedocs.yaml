@@ -1,4 +1,10 @@
 # https://docs.readthedocs.io/en/latest/config-file/v1.html
+# helpful:
+#   https://github.com/readthedocs/readthedocs.org/blob/master/.readthedocs.yml
+#   https://github.com/readthedocs/readthedocs.org/issues/5923#issuecomment-511750922
+#
+version: 2
+
 build:
   image: latest
 
@@ -8,7 +14,4 @@ sphinx:
 python:
   version: 3.6
   install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - sphinxcontrib-proof
+    - requirements: documentation/requirements.txt
