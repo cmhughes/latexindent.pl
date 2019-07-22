@@ -112,7 +112,7 @@ and then I merge it into the `develop` branch using
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.26.0
+I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.28.1
 
 ## related projects
 
