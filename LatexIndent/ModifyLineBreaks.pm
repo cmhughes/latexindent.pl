@@ -16,7 +16,6 @@ package LatexIndent::ModifyLineBreaks;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use Data::Dumper;
 use Exporter qw/import/;
 use Text::Wrap;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
@@ -311,6 +310,8 @@ sub text_wrap{
     if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
         $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
     }
+    $Text::Wrap::huge = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge};
+    $Text::Wrap::break = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break};
     ${$self}{body} = wrap('','',${$self}{body});
 }
 

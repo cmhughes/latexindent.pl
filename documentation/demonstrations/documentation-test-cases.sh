@@ -189,6 +189,8 @@ latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap2.tex -o textwrap2-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap3.tex -o textwrap3-mod1.tex -l=textwrap1.yaml -m
 latexindent.pl -s textwrap4.tex -o textwrap4-mod2.tex -l=textwrap2.yaml -m
+latexindent.pl -s textwrap4.tex -o=+-mod2A -l=textwrap2A.yaml -m
+latexindent.pl -s textwrap4.tex -o=+-mod2B -l=textwrap2B.yaml -m
 latexindent.pl -s textwrap5.tex -o=+-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap5.tex -o=+-mod4.tex -l=textwrap4.yaml -m
 latexindent.pl -s textwrap5.tex -o=+-mod5.tex -l=textwrap5.yaml -m

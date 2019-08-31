@@ -1,0 +1,9 @@
+noAdditionalIndent:
+  document: 0
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 3
+    break: '(?:(?=\s)|(?:ll))\X'
+    huge: overflow
+    perCodeBlockBasis: 1
+    environments: 1
