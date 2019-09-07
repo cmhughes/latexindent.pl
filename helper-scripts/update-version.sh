@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.6'
-newVersion='3.7'
-oldDate='2019-05-05'
-newDate='2019-07-13'
+oldVersion='3.7'
+newVersion='3.7.1'
+oldDate='2019-07-13'
+newDate='2019-09-07'
 
 cd ../
 if [ $minorVersion == 0 ]
@@ -51,6 +51,7 @@ sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
 cd documentation
 perl documentation-default-settings-update.pl -r
+egrep -i --color=auto 'announce{new' *.tex
 cd ../
 # possibly generate the pdf
 [[ $generatePDFmode == 1 ]] && cd documentation && arara latexindent

@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version 
  
-    latexindent.pl, version 3.7, 2019-07-13
+    latexindent.pl, version 3.7.1, 2019-09-07
 
 ## author 
 Chris Hughes (cmhughes)
