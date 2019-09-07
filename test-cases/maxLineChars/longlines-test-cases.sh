@@ -140,5 +140,10 @@ latexindent.pl -m -s multi-object-all.tex -l=multi-object$i.yaml -o=+-mod$i
    [[ $silentMode == 0 ]] && set +x 
 done
 
+# https://github.com/cmhughes/latexindent.pl/issues/172, adds fields for break, huge for textwrap
+latexindent.pl waschk.tex -s -m -l waschk.yaml -o=+-mod
+latexindent.pl waschk.tex -s -m -l waschk0.yaml -o=+-mod0
+latexindent.pl waschk.tex -s -m -l waschk1.yaml -o=+-mod1
+
 git status
 [[ $noisyMode == 1 ]] && makenoise

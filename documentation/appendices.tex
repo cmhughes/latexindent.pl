@@ -58,8 +58,9 @@ sudo perl -MCPAN -e 'install "File::HomeDir"'
 		different commands).
 		\begin{commandshell}
 sudo apt-get install perlbrew
-perlbrew install perl-5.22.1
-perlbrew switch perl-5.22.1
+perlbrew init
+perlbrew install perl-5.28.1
+perlbrew switch perl-5.28.1
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny

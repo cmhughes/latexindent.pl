@@ -1,0 +1,12 @@
+replacements:
+  -
+    substitution: |-
+      s/\$\h*(.*?)\h*\$/#
+            my $comment = "%%\n%% Insert comment describing function here\n%%\n";
+            my $body = $1;
+            # add braces to superscripts and subscripts
+            $body =~ s@(\^|\_)([a-zA-Z0-9]+)@$1\{$2\}@sg;
+            # add a single space around + - =
+            $body =~ s@\h*([+\-=])\h*@ $1 @sg;
+            # put it all together
+            $comment."\$ ".$body." \$";/sxge

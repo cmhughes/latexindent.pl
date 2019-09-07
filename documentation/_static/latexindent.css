@@ -18,3 +18,5 @@ div.commandshell div.highlight{background-color: black;}
 div.commandshell div.highlight pre {color: white;}
 /* obsolete */
 div.obsolete div.highlight{background-color: #ff8080; border-top: 5px solid #ff1a1a;}
+/* example 
+ * should be able to use https://sphinxcontrib-proof.readthedocs.io/en/latest/usage/#css-and-javascript */
