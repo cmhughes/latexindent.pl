@@ -14,3 +14,5 @@ echo "----------4. localSettings and modify line breaks--------------\n"
 perl latexindent.pl -l -m environments-nested-fourth
 echo "----------5. localSettings renamed and modify line breaks--------------\n"
 perl latexindent.pl -l=env-all-on -m environments-nested-fourth
+echo "----------6. STDIN/cat mode--------------\n"
+perl latexindent.pl < environments-nested-fourth.tex
