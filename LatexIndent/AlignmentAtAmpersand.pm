@@ -20,7 +20,7 @@ use utf8;
 use Unicode::GCString;
 use Data::Dumper;
 use Exporter qw/import/;
-use List::Util qw/max sum/;
+use List::Util qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
@@ -31,7 +31,7 @@ our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else
 our $alignmentBlockCounter;
 our @cellStorage;   # two-dimensional storage array containing the cell information
 our @formattedBody; # array for the new body
-our @emptyCell = ({type=>"-",entry=>'',width=>0,individualPadding=>0,measureThis=>0});
+our @minMultiColSpan;
 
 sub find_aligned_block{
     my $self = shift;
@@ -224,6 +224,9 @@ sub align_at_ampersand{
                                                       measureThis=>0});
                 }
                 
+                # store the minimum spanning value
+                $minMultiColSpan[$columnCounter] = (defined $minMultiColSpan[$columnCounter] ? min($minMultiColSpan[$columnCounter],$spanning) : $spanning );
+
                 # adjust the column counter
                 $columnCounter += $spanning - 1;
             } 
@@ -537,8 +540,43 @@ sub multicolumn_pre_check {
   #     *should* receive individual padding
     my $self = shift;
 
+    # loop through minMultiColSpan and add empty entries as necessary
+    foreach(@minMultiColSpan){
+        $_ = "." if !(defined $_);
+    }
+
+    # ensure that only the *MINIMUM* multicolumn commands are designated 
+    # to be measured; for example:
+    #
+    #     \multicolumn{2}{c|}{Ótimo humano}      & Abuso da pontuação & Recompensas densas \\
+    #     \multicolumn{3}{c||}{Exploração Fácil}                      & second             \\
+    #     Assault     & Asterix                  & Beam Rider         & Alien              \\
+    #
+    # the \multicolumn{2}{c|}{Ótimo humano} *is* the minimum multicolumn command
+    # for the first column, and the \multicolumn{3}{c||}{Exploração Fácil} *is not*
+    # to be measured
+    
     # row loop
     my $rowCount = -1;
+    foreach my $row (@cellStorage) {
+      $rowCount++;
+
+      # column loop
+      my $j = -1;
+      foreach my $cell (@$row) {
+        $j++;
+        if( ${$cell}{type} =~ m/(\d)/ and ($1 >$minMultiColSpan[$j])){
+          ${$cell}{type} = "X";
+          ${$cell}{measureThis} = 0;
+        }
+      }
+    }
+
+    # now loop back through and ensure that each of the \multicolumn commands
+    # are measured correctly
+    #
+    # row loop
+    $rowCount = -1;
     foreach my $row (@cellStorage) {
       $rowCount++;
 
@@ -564,6 +602,7 @@ sub multicolumn_pre_check {
              my $innerJ = -1;
              foreach my $innerCell (@$innerRow) {
                $innerJ++;
+
                if(  $innerJ == $j and ${$innerCell}{type} =~ m/(\d)/ and $1 >= $multiColumnSpan){
                  if(${$cell}{width} < ${$innerCell}{width}){
                      ${$cell}{type} = "X";
@@ -963,6 +1002,10 @@ sub multicolumn_post_check {
 sub pretty_print_cell_info{
   
   my $thingToPrint = (defined $_[0] ? $_[0] : "entry");
+
+  $logger->trace("*cell information");
+
+  $logger->trace("minimum multi col span: ",join(",",@minMultiColSpan));
 
   $logger->trace("*cell information: $thingToPrint");
 
