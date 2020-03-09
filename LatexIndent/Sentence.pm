@@ -25,7 +25,6 @@ use LatexIndent::Environment qw/$environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/one_sentence_per_line/;
@@ -253,7 +252,15 @@ sub one_sentence_per_line{
 
                        # text wrapping
                        $sentenceObj->yaml_get_columns;
-                       $sentenceObj->text_wrap;
+                       if(${$sentenceObj}{columns}<=0){
+                           $logger->warn("*Sentence text wrap warning:");
+                           $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
+                           $logger->info("You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
+                           $logger->info("The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again");
+                           ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences} = 0;
+                       } else {
+                           $sentenceObj->text_wrap;
+                       }
 
                        # indentation of sentences
                        if(${$sentenceObj}{body} =~ m/

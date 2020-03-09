@@ -669,6 +669,9 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 	\vref{lst:textwrap9-yaml}, for example, you would replace/append
 	\texttt{environments} with, for example, \texttt{sentence: 50}.
 
+    If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for \texttt{columns}
+    then the text wrapping will \emph{not} operate on sentences, and you will see a warning in \texttt{indent.log}.
+
 	The indentation of sentences requires that sentences are stored as code blocks. This
 	means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
 	relation to \cref{lst:multiple-sentences6}.
