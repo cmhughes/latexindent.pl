@@ -103,7 +103,7 @@ ENDQUOTE
     ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
     die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
 
-    my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory} : '').($switches{logFileName}||"indent.log");
+    my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory}."/" : '').($switches{logFileName}||"indent.log");
     
     # layout of the logfile information, for example
     #
