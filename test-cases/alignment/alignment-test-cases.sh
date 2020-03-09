@@ -126,6 +126,13 @@ latexindent.pl -s -m pmatrix3.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pm
 latexindent.pl -s douglasrizzo.tex -o=+-mod1 -l=multiColumnGrouping.yaml
 latexindent.pl -s douglasrizzo1.tex -o=+-mod1 -l=multiColumnGrouping.yaml
 latexindent.pl -s douglasrizzo2.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+# alignFinalDoubleBackSlash, as in https://github.com/cmhughes/latexindent.pl/issues/179
+latexindent.pl -s hudcap.tex -o=+-default
+latexindent.pl -s hudcap.tex -o=+-mod1 -l=alignFinalDoubleBackSlash.yaml
+latexindent.pl -s hudcap1.tex -o=+-default
+latexindent.pl -s hudcap1.tex -o=+-mod1 -l=alignFinalDoubleBackSlash.yaml
+latexindent.pl -s hudcap1.tex -o=+-mod2 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5"
+latexindent.pl -s hudcap1.tex -o=+-mod3 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5;alignDoubleBackSlash:0"
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

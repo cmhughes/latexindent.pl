@@ -155,6 +155,7 @@ lookForAlignDelims:
       spacesBeforeAmpersand: 1
       spacesAfterAmpersand: 1
       justification: "left"
+      alignFinalDoubleBackSlash: 0
    tabularx:
       delims: 1
    longtable: 1

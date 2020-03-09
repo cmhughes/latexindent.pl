@@ -305,5 +305,9 @@ latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4
 latexindent.pl -s -m env-mlb1.tex -l env-body4.yaml -o=+-body4
 latexindent.pl -s -m env-mlb1.tex -l env-end4.yaml -o=+-end4
 latexindent.pl -s -m env-mlb1.tex -l env-end-f4.yaml -o=+-end-f4
+
+# final double back slash demo
+latexindent.pl -s tabular4.tex -o=+-default
+latexindent.pl -s tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
 [[ $noisyMode == 1 ]] && makenoise
 git status

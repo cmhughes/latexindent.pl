@@ -41,7 +41,7 @@
  \texttt{-rr} switches are active; when discussing YAML settings related to the
  replacement-mode switches, we will use the style given in \cref{lst:replacements}.
 
- \cmhlistingsfromfile*[style=replacements]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,replace-TCB]{\texttt{replacements}}{lst:replacements}
+ \cmhlistingsfromfile[style=replacements]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,replace-TCB]{\texttt{replacements}}{lst:replacements}
 
  The first entry within the \texttt{replacements} field is \texttt{amalgamate}, and
  is \emph{optional}; by default it is set to 1, so that replacements will be
@@ -64,8 +64,8 @@ latexindent.pl -r replace1.tex
 	gives the output given in \cref{lst:replace1-r1}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/replace1.tex}{\texttt{replace1.tex}}{lst:replace1}
-		\cmhlistingsfromfile*{demonstrations/replace1-r1.tex}{\texttt{replace1.tex} default}{lst:replace1-r1}
+		\cmhlistingsfromfile{demonstrations/replace1.tex}{\texttt{replace1.tex}}{lst:replace1}
+		\cmhlistingsfromfile{demonstrations/replace1-r1.tex}{\texttt{replace1.tex} default}{lst:replace1-r1}
 	\end{cmhtcbraster}
 
 	If we don't wish to perform this replacement, then we can tweak the default settings of
@@ -77,8 +77,8 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 	which gives the output in \cref{lst:replace1-mod1}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/replace1-mod1.tex}{\texttt{replace1.tex} using \cref{lst:replace1-yaml}}{lst:replace1-mod1}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
+		\cmhlistingsfromfile{demonstrations/replace1-mod1.tex}{\texttt{replace1.tex} using \cref{lst:replace1-yaml}}{lst:replace1-mod1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
 	\end{cmhtcbraster}
 
 	Note that in \cref{lst:replace1-yaml} we have specified \texttt{amalgamate} as 0 so
@@ -107,7 +107,7 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 	\begin{example}
 		We begin with code given in \cref{lst:colsep}
 
-		\cmhlistingsfromfile*{demonstrations/colsep.tex}{\texttt{colsep.tex}}{lst:colsep}
+		\cmhlistingsfromfile{demonstrations/colsep.tex}{\texttt{colsep.tex}}{lst:colsep}
 
 		Let's assume that our goal is to remove both of the \texttt{arraycolsep} statements; we can achieve this in
 		a few different ways.
@@ -118,8 +118,8 @@ latexindent.pl -r colsep.tex -l=colsep.yaml
 \end{commandshell}
 		then we achieve the output in \cref{lst:colsep-mod0}.
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-			\cmhlistingsfromfile*{demonstrations/colsep-mod0.tex}{\texttt{colsep.tex} using \cref{lst:colsep}}{lst:colsep-mod0}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep.yaml}[replace-TCB]{\texttt{colsep.yaml}}{lst:colsep-yaml}
+			\cmhlistingsfromfile{demonstrations/colsep-mod0.tex}{\texttt{colsep.tex} using \cref{lst:colsep}}{lst:colsep-mod0}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/colsep.yaml}[replace-TCB]{\texttt{colsep.yaml}}{lst:colsep-yaml}
 		\end{cmhtcbraster}
 		Note that in \cref{lst:colsep-yaml}, we have specified \emph{two} separate fields, each with their own `\emph{this}' field;
 		furthermore, for both of the separate fields, we have not specified `\texttt{that}', so the \texttt{that} field
@@ -134,8 +134,8 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth,
 				raster force size=false,
 				raster column 1/.style={add to width=-.1\textwidth}]
-			\cmhlistingsfromfile*{demonstrations/colsep-mod1.tex}{\texttt{colsep.tex} using \cref{lst:colsep1}}{lst:colsep-mod1}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
+			\cmhlistingsfromfile{demonstrations/colsep-mod1.tex}{\texttt{colsep.tex} using \cref{lst:colsep1}}{lst:colsep-mod1}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
 		\end{cmhtcbraster}
 
 		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbreviate to \emph{regex}
@@ -167,8 +167,8 @@ latexindent.pl -r colsep.tex -l=multi-line.yaml
 \end{commandshell}
 		then we achieve the output in \cref{lst:colsep-mod2}.
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-			\cmhlistingsfromfile*{demonstrations/colsep-mod2.tex}{\texttt{colsep.tex} using \cref{lst:multi-line}}{lst:colsep-mod2}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/multi-line.yaml}[replace-TCB]{\texttt{multi-line.yaml}}{lst:multi-line}
+			\cmhlistingsfromfile{demonstrations/colsep-mod2.tex}{\texttt{colsep.tex} using \cref{lst:multi-line}}{lst:colsep-mod2}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/multi-line.yaml}[replace-TCB]{\texttt{multi-line.yaml}}{lst:multi-line}
 		\end{cmhtcbraster}
 		With reference to \cref{lst:multi-line}, we have specified a \emph{multi-line} version of \texttt{this} by employing the \emph{literal}
 		YAML style \lstinline!|-!. See, for example, \href{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}
@@ -184,8 +184,8 @@ latexindent.pl -r colsep.tex -l=multi-line1.yaml
 \end{commandshell}
 		then we achieve the output in \cref{lst:colsep-mod3}.
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-			\cmhlistingsfromfile*{demonstrations/colsep-mod3.tex}{\texttt{colsep.tex} using \cref{lst:multi-line1}}{lst:colsep-mod3}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/multi-line1.yaml}[replace-TCB]{\texttt{multi-line1.yaml}}{lst:multi-line1}
+			\cmhlistingsfromfile{demonstrations/colsep-mod3.tex}{\texttt{colsep.tex} using \cref{lst:multi-line1}}{lst:colsep-mod3}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/multi-line1.yaml}[replace-TCB]{\texttt{multi-line1.yaml}}{lst:multi-line1}
 		\end{cmhtcbraster}
 		We note that, because we have specified \texttt{when: after}, that \texttt{latexindent.pl} has not found the string specified
 		in \cref{lst:multi-line1} within the file in \vref{lst:colsep}. As it has looked for the string within \cref{lst:multi-line1} \emph{after} the indentation has been performed. After
@@ -205,7 +205,7 @@ latexindent.pl -rr colsep.tex -l=multi-line1.yaml
 		the code in \cref{lst:displaymath}, let's assume that our goal is to replace each occurrence of \lstinline!$$...$$!
 		with \lstinline!\begin{equation*}...\end{equation*}!. This example is partly motivated by \href{https://tex.stackexchange.com/questions/242150/good-looking-latex-code}{tex stackexchange question 242150}.
 
-		\cmhlistingsfromfile*{demonstrations/displaymath.tex}{\texttt{displaymath.tex}}{lst:displaymath}
+		\cmhlistingsfromfile{demonstrations/displaymath.tex}{\texttt{displaymath.tex}}{lst:displaymath}
 
 		We use the settings in \cref{lst:displaymath1} and run the command
 		\begin{commandshell}
@@ -215,8 +215,8 @@ latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 
 		\begin{cmhtcbraster}[raster left skip=-3.75cm,
 				raster right skip=-2cm,]
-			\cmhlistingsfromfile*{demonstrations/displaymath-mod1.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1}}{lst:displaymath-mod1}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/displaymath1.yaml}[replace-TCB]{\texttt{displaymath1.yaml}}{lst:displaymath1}
+			\cmhlistingsfromfile{demonstrations/displaymath-mod1.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1}}{lst:displaymath-mod1}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/displaymath1.yaml}[replace-TCB]{\texttt{displaymath1.yaml}}{lst:displaymath1}
 		\end{cmhtcbraster}
 
 		A few notes about \cref{lst:displaymath1}:
@@ -242,8 +242,8 @@ latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 				raster force size=false,
 				raster column 1/.style={add to width=-.1\textwidth},
 				raster column skip=.06\linewidth]
-			\cmhlistingsfromfile*{demonstrations/displaymath-mod2.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1,lst:equation}}{lst:displaymath-mod2}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/equation.yaml}[MLB-TCB,width=0.55\textwidth]{\texttt{equation.yaml}}{lst:equation}
+			\cmhlistingsfromfile{demonstrations/displaymath-mod2.tex}{\texttt{displaymath.tex} using \cref{lst:displaymath1,lst:equation}}{lst:displaymath-mod2}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/equation.yaml}[MLB-TCB,width=0.55\textwidth]{\texttt{equation.yaml}}{lst:equation}
 		\end{cmhtcbraster}
 	\end{example}
 
@@ -251,7 +251,7 @@ latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 		This example is motivated by \href{https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker}{tex stackexchange question 490086}.
 		We begin with the code in \cref{lst:phrase}.
 
-		\cmhlistingsfromfile*{demonstrations/phrase.tex}{\texttt{phrase.tex}}{lst:phrase}
+		\cmhlistingsfromfile{demonstrations/phrase.tex}{\texttt{phrase.tex}}{lst:phrase}
 
 		Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in \cref{lst:hspace},
 		and run the command
@@ -261,8 +261,8 @@ latexindent.pl -r phrase.tex -l=hspace.yaml
 		which gives the output in \cref{lst:phrase-mod1}.
 
 		\begin{cmhtcbraster}
-			\cmhlistingsfromfile*{demonstrations/phrase-mod1.tex}{\texttt{phrase.tex} using \cref{lst:hspace}}{lst:phrase-mod1}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/hspace.yaml}[replace-TCB]{\texttt{hspace.yaml}}{lst:hspace}
+			\cmhlistingsfromfile{demonstrations/phrase-mod1.tex}{\texttt{phrase.tex} using \cref{lst:hspace}}{lst:phrase-mod1}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/hspace.yaml}[replace-TCB]{\texttt{hspace.yaml}}{lst:hspace}
 		\end{cmhtcbraster}
 
 		The \lstinline!\h+! setting in \cref{lst:hspace} say to replace \emph{at least one horizontal space} with a single space.
@@ -271,7 +271,7 @@ latexindent.pl -r phrase.tex -l=hspace.yaml
 	\begin{example}
 		We begin with the code in \cref{lst:references}.
 
-		\cmhlistingsfromfile*{demonstrations/references.tex}{\texttt{references.tex}}{lst:references}
+		\cmhlistingsfromfile{demonstrations/references.tex}{\texttt{references.tex}}{lst:references}
 
 		Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We
 		achieve this by employing \cref{lst:reference} and running the command
@@ -280,9 +280,9 @@ latexindent.pl -r references.tex -l=reference.yaml
 \end{commandshell}
 		which gives the output in \cref{lst:references-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/references-mod1.tex}{\texttt{references.tex} using \cref{lst:reference}}{lst:references-mod1}
+		\cmhlistingsfromfile{demonstrations/references-mod1.tex}{\texttt{references.tex} using \cref{lst:reference}}{lst:references-mod1}
 
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/reference.yaml}[replace-TCB]{\texttt{reference.yaml}}{lst:reference}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/reference.yaml}[replace-TCB]{\texttt{reference.yaml}}{lst:reference}
 
 		Referencing \cref{lst:reference}, the \lstinline!|! means \emph{or}, we have used \emph{capture groups}, together with an example
 		of an \emph{optional} pattern, \lstinline!(?:eq)?!.
@@ -293,8 +293,8 @@ latexindent.pl -r references.tex -l=reference.yaml
 		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verbatim1-yaml}.
 
 		\begin{cmhtcbraster}
-			\cmhlistingsfromfile*{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
-			\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/verbatim1.yaml}[replace-TCB]{\texttt{verbatim1.yaml}}{lst:verbatim1-yaml}
+			\cmhlistingsfromfile{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
+			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/verbatim1.yaml}[replace-TCB]{\texttt{verbatim1.yaml}}{lst:verbatim1-yaml}
 		\end{cmhtcbraster}
 
 		Upon running the following commands,
@@ -308,9 +308,9 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 		\begin{cmhtcbraster}[raster columns=3,
 				raster left skip=-3.75cm,
 				raster right skip=-2cm,]
-			\cmhlistingsfromfile*{demonstrations/verb1-mod1.tex}{\texttt{verb1-mod1.tex}}{lst:verb1-mod1}
-			\cmhlistingsfromfile*{demonstrations/verb1-rv-mod1.tex}{\texttt{verb1-rv-mod1.tex}}{lst:verb1-rv-mod1}
-			\cmhlistingsfromfile*{demonstrations/verb1-rr-mod1.tex}{\texttt{verb1-rr-mod1.tex}}{lst:verb1-rr-mod1}
+			\cmhlistingsfromfile{demonstrations/verb1-mod1.tex}{\texttt{verb1-mod1.tex}}{lst:verb1-mod1}
+			\cmhlistingsfromfile{demonstrations/verb1-rv-mod1.tex}{\texttt{verb1-rv-mod1.tex}}{lst:verb1-rv-mod1}
+			\cmhlistingsfromfile{demonstrations/verb1-rr-mod1.tex}{\texttt{verb1-rr-mod1.tex}}{lst:verb1-rr-mod1}
 		\end{cmhtcbraster}
 	\end{example}
 
@@ -331,16 +331,16 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 		Let's explore the \texttt{amalgamate} field from \vref{lst:replacements} in the context of the file specified
 		in \cref{lst:amalg1}.
 
-		\cmhlistingsfromfile*{demonstrations/amalg1.tex}{\texttt{amalg1.tex}}{lst:amalg1}
+		\cmhlistingsfromfile{demonstrations/amalg1.tex}{\texttt{amalg1.tex}}{lst:amalg1}
 
 		Let's consider the YAML files given in \crefrange{lst:amalg1-yaml}{lst:amalg3-yaml}.
 
 		\begin{cmhtcbraster}[raster columns=3,
 				raster left skip=-3.75cm,
 				raster right skip=-2cm,]
-			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg1-yaml.yaml}[replace-TCB]{\texttt{amalg1-yaml.yaml}}{lst:amalg1-yaml}
-			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg2-yaml.yaml}[replace-TCB]{\texttt{amalg2-yaml.yaml}}{lst:amalg2-yaml}
-			\cmhlistingsfromfile*[style=yaml-LST]{demonstrations/amalg3-yaml.yaml}[replace-TCB]{\texttt{amalg3-yaml.yaml}}{lst:amalg3-yaml}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalg1-yaml.yaml}[replace-TCB]{\texttt{amalg1-yaml.yaml}}{lst:amalg1-yaml}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalg2-yaml.yaml}[replace-TCB]{\texttt{amalg2-yaml.yaml}}{lst:amalg2-yaml}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalg3-yaml.yaml}[replace-TCB]{\texttt{amalg3-yaml.yaml}}{lst:amalg3-yaml}
 		\end{cmhtcbraster}
 
 		Upon running the following commands,
@@ -354,9 +354,9 @@ latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
 		\begin{cmhtcbraster}[raster columns=3,
 				raster left skip=-3.75cm,
 				raster right skip=-2cm,]
-			\cmhlistingsfromfile*{demonstrations/amalg1-mod1.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml}}{lst:amalg1-mod1}
-			\cmhlistingsfromfile*{demonstrations/amalg1-mod12.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml}}{lst:amalg1-mod12}
-			\cmhlistingsfromfile*{demonstrations/amalg1-mod123.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml,lst:amalg3-yaml}}{lst:amalg1-mod123}
+			\cmhlistingsfromfile{demonstrations/amalg1-mod1.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml}}{lst:amalg1-mod1}
+			\cmhlistingsfromfile{demonstrations/amalg1-mod12.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml}}{lst:amalg1-mod12}
+			\cmhlistingsfromfile{demonstrations/amalg1-mod123.tex}{\texttt{amalg1.tex} using \cref{lst:amalg1-yaml,lst:amalg2-yaml,lst:amalg3-yaml}}{lst:amalg1-mod123}
 		\end{cmhtcbraster}
 		We note that:
 		\begin{enumerate}

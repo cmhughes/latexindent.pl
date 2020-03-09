@@ -158,11 +158,11 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 	this; see \cite{textwrap} for more details.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
-		\cmhlistingsfromfile*{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
+		\cmhlistingsfromfile{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
 
-		\cmhlistingsfromfile*{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
-		\cmhlistingsfromfile*{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
+		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
 	\end{cmhtcbraster}
 
 \subsubsection{text wrapping on a per-code-block basis}
@@ -669,8 +669,10 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 	\vref{lst:textwrap9-yaml}, for example, you would replace/append
 	\texttt{environments} with, for example, \texttt{sentence: 50}.
 
-    If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for \texttt{columns}
-    then the text wrapping will \emph{not} operate on sentences, and you will see a warning in \texttt{indent.log}.
+	If you specify \texttt{textWrapSentences} as 1, but do \emph{not}
+	specify a value for \texttt{columns} then the text wrapping will
+	\emph{not} operate on sentences, and you will see a warning in
+	\texttt{indent.log}.
 
 	The indentation of sentences requires that sentences are stored as code blocks. This
 	means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
@@ -1108,16 +1110,16 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
 	\end{minipage}
 
 	We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
 
-	\cmhlistingsfromfile*{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
+	\cmhlistingsfromfile{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
 
 	Upon running the commands
 	\begin{commandshell}
@@ -1128,8 +1130,8 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
 	then we receive the respective outputs in \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
 	\end{cmhtcbraster}
 
 	We note in particular that, by design, for this value of the poly-switches:
@@ -1246,11 +1248,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
 	\end{minipage}
 
 	We will demonstrate this poly-switch value using the code from
@@ -1265,8 +1267,8 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
 	then we receive the respective outputs in \cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
 	\end{cmhtcbraster}
 
 	We note in particular that, by design, for this value of the poly-switches:
@@ -1544,13 +1546,13 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 	\cref{lst:tabular3-DBS2}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
 	\end{cmhtcbraster}
 
 	We note that
@@ -1579,13 +1581,13 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 	\cref{lst:tabular3-DBS4}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
 	\end{cmhtcbraster}
 
 	We note that
@@ -1608,7 +1610,7 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 	\texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with
 	the code within \cref{lst:special4}.
 
-	\cmhlistingsfromfile*{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
+	\cmhlistingsfromfile{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
 
 	Upon using the YAML settings in \cref{lst:DBS5}, and running the command
 	\begin{commandshell}
@@ -1620,8 +1622,8 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile*{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
+		\cmhlistingsfromfile{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
 	\end{cmhtcbraster}
 
 	There are a few things to note:
@@ -1640,7 +1642,7 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 	poly-switches for optional and mandatory arguments. We begin with the code in
 	\cref{lst:mycommand2}.
 
-	\cmhlistingsfromfile*{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
+	\cmhlistingsfromfile{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
 
 	Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
 	\begin{commandshell}
@@ -1653,16 +1655,16 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
+		\cmhlistingsfromfile{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
+		\cmhlistingsfromfile{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
 	\end{cmhtcbraster}
 
 \subsubsection{Double back slash optional square brackets}
@@ -1672,7 +1674,7 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 
 	For example, beginning with the code in \cref{lst:pmatrix3}
 
-	\cmhlistingsfromfile*{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
+	\cmhlistingsfromfile{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
 
 	and running the following command, using \cref{lst:DBS3},
 	\begin{commandshell}
@@ -1680,7 +1682,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 \end{commandshell}
 	then we receive the output given in \cref{lst:pmatrix3-DBS3}.
 
-	\cmhlistingsfromfile*{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+	\cmhlistingsfromfile{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
 
 	You can customise the pattern for the double back slash by exploring the
 	\emph{fine tuning} field detailed in \vref{lst:fineTuning}.
@@ -1705,17 +1707,17 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		\toprule
 		Code block                                              & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                                             & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                                        & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                        & \verb!body of myenv!$\EndStartsOnOwnLine$                         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                                        & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                                        & \verb!after words!                                              &                                         &                                                                   \\
+		environment                                             & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                                        & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                        & \verb!body of myenv!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                                        & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                                        & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                                                & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                                        & \verb!\if...!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                        & \verb!body of if/or statement!$\OrStartsOnOwnLine$                          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		ifelsefi                                                & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                                        & \verb!\if...!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                        & \verb!body of if/or statement!$\OrStartsOnOwnLine$                         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
 		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                                    \\
-		                                                        & \verb!\or!$\OrFinishesWithLineBreak$                    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                                        & \verb!\or!$\OrFinishesWithLineBreak$                   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
 		                                                        & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
 		                                                        & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
 		                                                        & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
