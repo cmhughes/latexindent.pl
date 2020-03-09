@@ -135,6 +135,7 @@ sub align_at_ampersand{
     # clear the global arrays
     @formattedBody = ();
     @cellStorage = ();
+    @minMultiColSpan = ();
 
     # maximum column widths
     my @maximumColumnWidths;
@@ -285,7 +286,7 @@ sub align_at_ampersand{
                 $padding = " " x (${$self}{spacesBeforeDoubleBackSlash});
             } else {
                 # aligned \\
-                $padding = " " x (${$self}{maximumRowWidth} - ${$_}{rowWidth});
+                $padding = " " x max(0,(${$self}{maximumRowWidth} - ${$_}{rowWidth}));
             }
         }
 
@@ -413,7 +414,10 @@ sub main_formatting {
       ${$formattedBody[$rowCount]}{rowWidth} = $rowWidth;
       
       # update the maximum row width
-      ${$self}{maximumRowWidth} = $rowWidth if($rowWidth >  ${$self}{maximumRowWidth});
+      if( $rowWidth > ${$self}{maximumRowWidth}
+          and !(${$formattedBody[$rowCount]}{numberOfAmpersands} == 0 and !${$formattedBody[$rowCount]}{endPiece}) ){
+          ${$self}{maximumRowWidth} = $rowWidth;
+      }
     }
 }
 
@@ -994,7 +998,19 @@ sub multicolumn_post_check {
       }
 
       ${$cell}{individualPadding} = 0;
-      ${$cell}{groupPadding} = ($maxGroupingWidth - ${$cell}{width});
+
+      # there are cases where the 
+      #
+      #     maxGroupingWidth 
+      #
+      # is *less than* the cell width, for example:
+      #
+      #    \multicolumn{4}{|c|}{\textbf{Search Results}} \\  <!------ the width of this multicolumn entry 
+	  #    1  & D7  & R                       &          \\           is larger than maxGroupingWidth
+	  #    2  & D2  & R                       &          \\
+	  #    \multicolumn{3}{|c|}{\textbf{Avg}} &          \\
+      #
+      ${$cell}{groupPadding} = max(0,$maxGroupingWidth - ${$cell}{width});
      }
     }
 }
