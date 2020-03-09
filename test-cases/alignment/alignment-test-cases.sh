@@ -4,6 +4,11 @@ loopmax=4
 
 [[ $silentMode == 0 ]] && set -x 
 # table-based test cases
+latexindent.pl -s simple.tex -o=+-default.tex
+latexindent.pl -s simple-multi-column.tex -o=+-mod1 -y="lookForAlignDelims:tabular:multiColumnGrouping:1"
+latexindent.pl -s simple-multi-column.tex -o=+-mod2 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;justification:right"
+latexindent.pl -s simple-multi-column.tex -o=+-mod3 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesBeforeAmpersand:3;justification:right"
+latexindent.pl -s simple-multi-column.tex -o=+-mod4 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesAfterAmpersand:3;justification:right"
 latexindent.pl -s table1.tex -o table1-default.tex
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
@@ -69,6 +74,7 @@ latexindent.pl -s tabular-karl.tex -o=+-out6.tex -l multiColumnGrouping.yaml,tab
 latexindent.pl -s multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s unicode-multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s table3.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-multiple-multicol -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s multicol-no-ampersands -o=+-default.tex
 latexindent.pl -s multicol-no-ampersands.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s multicol-no-ampersands.tex -o=+-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
@@ -116,6 +122,10 @@ do
 done
 latexindent.pl -s -m pmatrix2.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
 latexindent.pl -s -m pmatrix3.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
+# multicolumn grouping issue from douglasrizzo, https://github.com/cmhughes/latexindent.pl/issues/143
+latexindent.pl -s douglasrizzo.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+latexindent.pl -s douglasrizzo1.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+latexindent.pl -s douglasrizzo2.tex -o=+-mod1 -l=multiColumnGrouping.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
