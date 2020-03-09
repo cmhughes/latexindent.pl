@@ -299,6 +299,8 @@ latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg3-yaml,amalg3-yaml.yaml
 # fine tuning
 latexindent.pl -s finetuning1.tex -o=+-default
 latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1
+latexindent.pl -s finetuning2.tex -o=+-default
+latexindent.pl -s finetuning2.tex -o=+-mod1 -l=fine-tuning2
 
 # blank line poly-switches
 latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4

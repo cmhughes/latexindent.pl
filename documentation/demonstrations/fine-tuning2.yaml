@@ -1,0 +1,7 @@
+fineTuning:
+    NamedGroupingBracesBrackets:
+      follow: '\h|\R|\{|\[|\$|\)|\(|"'
+    UnNamedGroupingBracesBrackets: 
+      follow: '\{|\[|,|&|\)|\(|\$|"'
+    arguments:
+      between: '_|\^|\*|---'
