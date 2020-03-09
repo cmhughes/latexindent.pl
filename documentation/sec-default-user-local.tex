@@ -223,8 +223,13 @@ postfoothook=\end{mdframed},
 	\emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
 
 \yamltitle{lookForAlignDelims}*{fields}\label{yaml:lookforaligndelims}
-	\begin{wrapfigure}[12]{r}[0pt]{5cm}
-		\begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
+	This contains a list of environments and/or commands that are operated upon in a special
+	way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in \texttt{lookForAlignDelims} can
+	actually take two different forms: the \emph{basic} version is shown in
+	\cref{lst:aligndelims:basic} and the \emph{advanced} version in
+	\cref{lst:aligndelims:advanced}; we will discuss each in turn.
+
+	\begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
 lookForAlignDelims:
    tabular: 1
    tabularx: 1
@@ -233,12 +238,6 @@ lookForAlignDelims:
    matrix: 1
    ...
 	\end{yaml}
-	\end{wrapfigure}
-	This contains a list of environments and/or commands that are operated upon in a special
-	way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in \texttt{lookForAlignDelims} can
-	actually take two different forms: the \emph{basic} version is shown in
-	\cref{lst:aligndelims:basic} and the \emph{advanced} version in
-	\cref{lst:aligndelims:advanced}; we will discuss each in turn.
 
 	The environments specified in this field will be operated on in a special way by
 	\texttt{latexindent.pl}. In particular, it will try and align each column by its
@@ -261,7 +260,7 @@ lookForAlignDelims:
 	delimiter-aligned block, then the advanced form of \texttt{lookForAlignDelims} shown in
 	\cref{lst:aligndelims:advanced} is for you.
 
-	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/tabular.yaml}[yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile*[style=lookForAlignDelims]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in
 	\cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx} are advanced
@@ -292,11 +291,14 @@ lookForAlignDelims:
 		      $\geq$ 0) of
 		      spaces to be placed \emph{After} ampersands (default: 1);
 		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of
-		      each cell as either \emph{left} or \emph{right} (default: left).
+		      each cell as either \emph{left} or \emph{right} (default: left);
+		\item \announce{NEW}{alignFinalDoubleBackSlash}{align final double back slash} optionally specifies if the
+		      \emph{final} double back slash should be used for alignment (default: 0).
 	\end{itemize}
 
-	We will explore each of these features using the file \texttt{tabular2.tex} in
-	\cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command), and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular8YAML}.
+	We will explore most of these features using the file \texttt{tabular2.tex} in
+	\cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command), and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular8YAML}; we will explore
+	\texttt{alignFinalDoubleBackSlash} in \cref{lst:tabular4}.
 
 	\cmhlistingsfromfile{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
 	\begin{minipage}{.45\textwidth}
@@ -382,6 +384,34 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 		\item in \cref{lst:tabular2-mod8} the cells have been \emph{right}-justified; note
 		      that cells above and below the \lstinline!\multicol! statements have still been group
 		      correctly, because of the settings in \cref{lst:tabular2YAML}.
+	\end{itemize}
+
+	We explore%
+	\announce{new}{alignFinalDoubleBackSlash demonstration} the \texttt{alignFinalDoubleBackSlash} feature by using the file
+	in \cref{lst:tabular4}. Upon running the following commands
+	\begin{commandshell}
+latexindent.pl tabular4.tex -o=+-default
+latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
+\end{commandshell}
+	then we receive the respective outputs given in \cref{lst:tabular4-default} and
+	\cref{lst:tabular4-FDBS}.
+
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.75cm,
+			raster right skip=-2cm,]
+		\cmhlistingsfromfile*{demonstrations/tabular4.tex}{\texttt{tabular4.tex}}{lst:tabular4}
+		\cmhlistingsfromfile*{demonstrations/tabular4-default.tex}{\texttt{tabular4-default.tex}}{lst:tabular4-default}
+		\cmhlistingsfromfile*{demonstrations/tabular4-FDBS.tex}{\texttt{tabular4-FDBS.tex}}{lst:tabular4-FDBS}
+	\end{cmhtcbraster}
+
+	We note that in:
+	\begin{itemize}
+		\item \cref{lst:tabular4-default}, by default, the \emph{first} set of double back
+		      slashes in the first row
+		      of the \texttt{tabular} environment have been used for alignment;
+		\item \cref{lst:tabular4-FDBS}, the \emph{final} set of double back slashes in the
+		      first row have
+		      been used, because we specified \texttt{alignFinalDoubleBackSlash} as 1.
 	\end{itemize}
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within

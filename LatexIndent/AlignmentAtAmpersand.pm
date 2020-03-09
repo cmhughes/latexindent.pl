@@ -152,8 +152,28 @@ sub align_at_ampersand{
         # remove \\ and anything following it
         my $endPiece = q();
         if($_ =~ m/(\\\\.*)/){
-            $_ =~ s/(\\\\.*)//;
-            $endPiece = $1;
+            if(${$self}{alignFinalDoubleBackSlash} ){
+                # for example, if we want:
+                #
+                #  Name & \shortstack{Hi \\ Lo} \\      <!--- Note this row!
+                #  Foo  & Bar                   \\
+                #
+                # in the first row, note that the first \\
+                # needs to be ignored, and we align by 
+                # the final double back slash                           
+                
+                $_ =~ s/(\\\\
+                          (?:                      
+                              (?!                 
+                                  (?:\\\\)           
+                              ).            # any character, but not \\
+                          )*?$               # non-greedy
+                        )//sx;
+                $endPiece = $1;
+            } else {
+                $_ =~ s/(\\\\.*)//;
+                $endPiece = $1;
+            }
         }
 
         # remove any trailing comments

@@ -14,7 +14,7 @@
  \end{warning}
 
  \begin{widepage}
-	 \cmhlistingsfromfile*[style=fineTuning]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
+	 \cmhlistingsfromfile[style=fineTuning]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
  The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual is
@@ -91,8 +91,8 @@ latexindent.pl finetuning1.tex
  is given in \cref{lst:finetuning1-default}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-	 \cmhlistingsfromfile*{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
-	 \cmhlistingsfromfile*{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
+	 \cmhlistingsfromfile{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
+	 \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
  \end{cmhtcbraster}
 
  It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
@@ -104,6 +104,6 @@ latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
  and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-	 \cmhlistingsfromfile*{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
-	 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
+	 \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
+	 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
  \end{cmhtcbraster}
