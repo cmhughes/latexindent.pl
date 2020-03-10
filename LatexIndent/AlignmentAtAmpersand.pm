@@ -27,7 +27,7 @@ use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check/;
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure/;
 our $alignmentBlockCounter;
 our @cellStorage;   # two-dimensional storage array containing the cell information
 our @formattedBody; # array for the new body
@@ -149,6 +149,12 @@ sub align_at_ampersand{
     foreach(split("\n",${$self}{body})){
         $rowCounter++;
 
+        # default is to measure this row, but it can be switched off by the dont_measure routine
+        ${$self}{measureRow} = 1;
+
+        # call the dont_measure routine
+        $self->dont_measure(mode=>"row",row=>$_) if ${$self}{dontMeasure};
+
         # remove \\ and anything following it
         my $endPiece = q();
         if($_ =~ m/(\\\\.*)/){
@@ -167,7 +173,7 @@ sub align_at_ampersand{
                               (?!                 
                                   (?:\\\\)           
                               ).            # any character, but not \\
-                          )*?$               # non-greedy
+                          )*?$              # non-greedy
                         )//sx;
                 $endPiece = $1;
             } else {
@@ -218,8 +224,8 @@ sub align_at_ampersand{
                         type=>($numberOfAmpersands>0 ? "X" : "*"),
                         groupPadding=>0,
                         colSpan=>".",
-                        measureThis=> ($numberOfAmpersands>0 ? 1 : 0) });
-
+                        measureThis=> ($numberOfAmpersands>0 ?  ${$self}{measureRow} : 0) });
+                    
             # \multicolumn cell
             if(${$self}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
                 my $spanning = $1;
@@ -267,6 +273,9 @@ sub align_at_ampersand{
 
     # blocks with nested multicolumns need some pre checking
     $self->multicolumn_pre_check if ${$self}{multiColumnGrouping};
+    
+    # some cells/rows shouldn't be measured
+    $self->dont_measure (mode=>"largest") if (${$self}{dontMeasure} and ${$self}{dontMeasure} eq "largest" );
 
     # maximum column width loop, and individual padding
     $self->individual_padding;
@@ -441,6 +450,100 @@ sub main_formatting {
     }
 }
 
+sub dont_measure{
+
+    my $self = shift;
+    my %input = @_;
+
+    if($input{mode} eq "cell" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
+      
+        # loop through the entries in dontMeasure
+        foreach(@{${$self}{dontMeasure}}){
+            if(ref(\$_) eq "SCALAR" and ${$cellStorage[$input{row}][$input{column}]}{entry} eq $_){
+                # dontMeasure stored as *strings*, for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           - \multicolumn{1}{c}{Expiry}
+                #           - Tenor 
+                #           - \multicolumn{1}{c}{$\Delta_{\text{call},10}$} 
+                
+                $logger->trace("CELL FOUND (this): $_ and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            } elsif (ref($_) eq "HASH" and  ${$_}{this} and ${$cellStorage[$input{row}][$input{column}]}{entry} eq ${$_}{this}){
+                # for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               this: \multicolumn{1}{c}{Expiry}
+                #               applyTo: cell
+                #
+                # OR (note that applyTo is optional):
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               this: \multicolumn{1}{c}{Expiry}
+                next if(defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                $logger->trace("CELL FOUND (this): ${$_}{this} and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            } elsif (ref($_) eq "HASH" and  ${$_}{regex} ){
+                # for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               regex: \multicolumn{1}{c}{Expiry}
+                #               applyTo: cell
+                #
+                # OR (note that applyTo is optional):
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               regex: \multicolumn{1}{c}{Expiry}
+                next if(defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                my $regex = qr/${$_}{regex}/;
+                next unless ${$cellStorage[$input{row}][$input{column}]}{entry} =~ m/${$_}{regex}/;
+                $logger->trace("CELL FOUND (regex): ${$_}{regex} and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            }
+        }
+    } elsif($input{mode} eq "row" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
+        foreach(@{${$self}{dontMeasure}}){
+            # move on, unless we have specified applyTo as row:
+            #
+            #    lookForAlignDelims:
+            #       tabular: 
+            #          dontMeasure:
+            #            -
+            #                this: \multicolumn{1}{c}{Expiry}
+            #                applyTo: row
+            #
+            # note: *default value* of applyTo is cell
+            next unless (ref($_) eq "HASH" and  defined ${$_}{applyTo} and ${$_}{applyTo} eq "row");
+            if(${$_}{this} and $input{row} eq ${$_}{this}){
+                $logger->trace("ROW FOUND (this): ${$_}{this}") if($is_t_switch_active);
+                $logger->trace("and will not be measured") if($is_t_switch_active);
+                ${$self}{measureRow} = 0;
+            } elsif(${$_}{regex} and $input{row} =~  ${$_}{regex}){
+                $logger->trace("ROW FOUND (regex): ${$_}{regex}") if($is_t_switch_active);
+                $logger->trace("and will not be measured") if($is_t_switch_active);
+                ${$self}{measureRow} = 0;
+            }
+        }
+    }
+}
+
 sub individual_padding{
   # PURPOSE
   #     (1) the *primary* purpose of this routine is to 
@@ -485,6 +588,8 @@ sub individual_padding{
   # maximum column width loop
   # maximum column width loop
   
+  $logger->trace("*dontMeasure routine, cell mode with strings") if(${$self}{dontMeasure} and $is_t_switch_active);
+
   # row loop
   my $rowCount = -1;
   foreach my $row (@cellStorage) {
@@ -504,6 +609,9 @@ sub individual_padding{
              ${$cell}{measureThis} = 0;
              ${$cell}{type} = "*";
         }
+
+        # check if the cell shouldn't be measured
+        $self->dont_measure(mode=>"cell",row=>$rowCount,column=>$j) if ${$self}{dontMeasure};
 
         # there are some cells that shouldn't be accounted for in measuring, 
         # for example {ccc}

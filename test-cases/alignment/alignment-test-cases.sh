@@ -133,6 +133,18 @@ latexindent.pl -s hudcap1.tex -o=+-default
 latexindent.pl -s hudcap1.tex -o=+-mod1 -l=alignFinalDoubleBackSlash.yaml
 latexindent.pl -s hudcap1.tex -o=+-mod2 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5"
 latexindent.pl -s hudcap1.tex -o=+-mod3 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5;alignDoubleBackSlash:0"
+# dontMeasure, https://github.com/cmhughes/latexindent.pl/issues/182
+latexindent.pl -s yangmw.tex -o=+-default -y="lookForAlignDelims:tabular:dontMeasure:0"
+latexindent.pl -s yangmw.tex -o=+-mod1 -l=dontMeasure.yaml
+latexindent.pl -s yangmw.tex -o=+-mod2 -l=dontMeasure2.yaml
+latexindent.pl -s yangmw.tex -o=+-mod3 -l=dontMeasure3.yaml
+latexindent.pl -s yangmw.tex -o=+-mod4 -l=dontMeasure4.yaml
+latexindent.pl -s yangmw.tex -o=+-mod5 -l=dontMeasure5.yaml
+latexindent.pl -s yangmw.tex -o=+-mod6 -l=dontMeasure6.yaml
+latexindent.pl -s yangmw.tex -o=+-mod7 -l=dontMeasure7.yaml
+latexindent.pl -s yangmw.tex -o=+-mod8 -l=dontMeasure8.yaml
+latexindent.pl -s yangmw.tex -o=+-just-right -l=dontMeasure.yaml -y="lookForAlignDelims:tabular:spacesBeforeAmpersand:3;justification:right"
+latexindent.pl -s swaroopguggilam.tex -o=+-mod1 -l=dontMeasure1.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

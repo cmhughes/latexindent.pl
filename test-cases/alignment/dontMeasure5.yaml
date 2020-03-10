@@ -1,0 +1,6 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure:
+        -
+            this: \multicolumn{1}{c}{Expiry} & Tenor & \multicolumn{1}{c}{$\Delta_{\text{call},10}$} \\
+            applyTo: row
