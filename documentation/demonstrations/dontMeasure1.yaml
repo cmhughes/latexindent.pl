@@ -1,0 +1,3 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure: largest

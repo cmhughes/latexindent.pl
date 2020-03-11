@@ -32,6 +32,7 @@ our $alignmentBlockCounter;
 our @cellStorage;   # two-dimensional storage array containing the cell information
 our @formattedBody; # array for the new body
 our @minMultiColSpan;
+our @maxColumnWidth;
 
 sub find_aligned_block{
     my $self = shift;
@@ -136,12 +137,15 @@ sub align_at_ampersand{
     @formattedBody = ();
     @cellStorage = ();
     @minMultiColSpan = ();
+    @maxColumnWidth = ();
 
     # maximum column widths
     my @maximumColumnWidths;
 
     my $rowCounter = -1;
     my $columnCounter = -1;
+
+    $logger->trace("*dontMeasure routine, row mode") if(${$self}{dontMeasure} and $is_t_switch_active);
 
     # initial loop for column storage and measuring
     # initial loop for column storage and measuring
@@ -226,6 +230,13 @@ sub align_at_ampersand{
                         colSpan=>".",
                         measureThis=> ($numberOfAmpersands>0 ?  ${$self}{measureRow} : 0) });
                     
+            # store the maximum column width 
+            $maxColumnWidth[$columnCounter] = (defined $maxColumnWidth[$columnCounter] 
+                                                        ? 
+                                                max($maxColumnWidth[$columnCounter],${$cellStorage[$rowCounter][$columnCounter]}{width})
+                                                        :
+                                                ${$cellStorage[$rowCounter][$columnCounter]}{width} ) if ${$cellStorage[$rowCounter][$columnCounter]}{type} eq "X";
+            
             # \multicolumn cell
             if(${$self}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
                 my $spanning = $1;
@@ -274,9 +285,6 @@ sub align_at_ampersand{
     # blocks with nested multicolumns need some pre checking
     $self->multicolumn_pre_check if ${$self}{multiColumnGrouping};
     
-    # some cells/rows shouldn't be measured
-    $self->dont_measure (mode=>"largest") if (${$self}{dontMeasure} and ${$self}{dontMeasure} eq "largest" );
-
     # maximum column width loop, and individual padding
     $self->individual_padding;
 
@@ -455,7 +463,22 @@ sub dont_measure{
     my $self = shift;
     my %input = @_;
 
-    if($input{mode} eq "cell" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
+    if( $input{mode} eq "cell" 
+        and ref(\${$self}{dontMeasure}) eq "SCALAR" 
+        and ${$self}{dontMeasure} eq "largest" 
+        and ${$cellStorage[$input{row}][$input{column}]}{width} == $maxColumnWidth[$input{column}]){
+        # dontMeasure stored as largest, for example
+        #
+        # lookForAlignDelims:
+        #    tabular: 
+        #       dontMeasure: largest
+        $logger->trace("CELL FOUND with maximum column width, $maxColumnWidth[$input{column}], and will not be measured (largest mode)") if($is_t_switch_active);
+        $logger->trace("column: ", $input{column}," width: ",${$cellStorage[$input{row}][$input{column}]}{width}) if($is_t_switch_active);
+        $logger->trace("entry: ", ${$cellStorage[$input{row}][$input{column}]}{entry}) if($is_t_switch_active);
+        $logger->trace("--------------------------") if($is_t_switch_active);
+        ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+        ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+    } elsif($input{mode} eq "cell" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
       
         # loop through the entries in dontMeasure
         foreach(@{${$self}{dontMeasure}}){
@@ -588,7 +611,7 @@ sub individual_padding{
   # maximum column width loop
   # maximum column width loop
   
-  $logger->trace("*dontMeasure routine, cell mode with strings") if(${$self}{dontMeasure} and $is_t_switch_active);
+  $logger->trace("*dontMeasure routine, cell mode") if(${$self}{dontMeasure} and $is_t_switch_active);
 
   # row loop
   my $rowCount = -1;
@@ -1147,11 +1170,9 @@ sub pretty_print_cell_info{
   
   my $thingToPrint = (defined $_[0] ? $_[0] : "entry");
 
-  $logger->trace("*cell information");
-
-  $logger->trace("minimum multi col span: ",join(",",@minMultiColSpan));
-
   $logger->trace("*cell information: $thingToPrint");
+
+  $logger->trace("minimum multi col span: ",join(",",@minMultiColSpan)) if(@minMultiColSpan);
 
   foreach my $row (@cellStorage) {
     my $tmpLogFileLine = q();
@@ -1164,7 +1185,7 @@ sub pretty_print_cell_info{
   if($thingToPrint eq "type"){
     $logger->trace("*key to types:");
     $logger->trace("\tX\tbasic cell, will be measured and aligned");
-    $logger->trace("\t*\t will not be measured");
+    $logger->trace("\t*\t will not be measured, and no ampersand");
     $logger->trace("\t-\t phantom/blank cell for gaps");
     $logger->trace("\t[0-9]\tmulticolumn cell, spanning multiple columns");
   }

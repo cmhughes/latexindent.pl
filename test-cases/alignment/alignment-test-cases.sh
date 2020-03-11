@@ -143,6 +143,7 @@ latexindent.pl -s yangmw.tex -o=+-mod5 -l=dontMeasure5.yaml
 latexindent.pl -s yangmw.tex -o=+-mod6 -l=dontMeasure6.yaml
 latexindent.pl -s yangmw.tex -o=+-mod7 -l=dontMeasure7.yaml
 latexindent.pl -s yangmw.tex -o=+-mod8 -l=dontMeasure8.yaml
+latexindent.pl -s yangmw.tex -o=+-mod9 -l=dontMeasure9.yaml
 latexindent.pl -s yangmw.tex -o=+-just-right -l=dontMeasure.yaml -y="lookForAlignDelims:tabular:spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s swaroopguggilam.tex -o=+-mod1 -l=dontMeasure1.yaml
 [[ $silentMode == 0 ]] && set -x 

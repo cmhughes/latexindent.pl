@@ -1,0 +1,7 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure:
+        - aaaaaa
+        - bbbbb
+        - ccc
+        - dd

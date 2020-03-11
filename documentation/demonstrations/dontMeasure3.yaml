@@ -1,0 +1,10 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure:
+        - 
+          this: aaaaaa
+          applyTo: cell
+        - 
+          this: bbbbb
+        - ccc
+        - dd
