@@ -311,5 +311,14 @@ latexindent.pl -s -m env-mlb1.tex -l env-end-f4.yaml -o=+-end-f4
 # final double back slash demo
 latexindent.pl -s tabular4.tex -o=+-default
 latexindent.pl -s tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
+
+# dontMeasure
+latexindent.pl -s tabular-DM -o=+-default
+latexindent.pl -s tabular-DM -o=+-mod1 -l=dontMeasure1.yaml
+latexindent.pl -s tabular-DM -o=+-mod2 -l=dontMeasure2.yaml
+latexindent.pl -s tabular-DM -o=+-mod3 -l=dontMeasure3.yaml
+latexindent.pl -s tabular-DM -o=+-mod4 -l=dontMeasure4.yaml
+latexindent.pl -s tabular-DM -o=+-mod5 -l=dontMeasure5.yaml
+latexindent.pl -s tabular-DM -o=+-mod6 -l=dontMeasure6.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

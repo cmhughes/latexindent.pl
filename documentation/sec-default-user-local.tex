@@ -293,7 +293,9 @@ lookForAlignDelims:
 		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of
 		      each cell as either \emph{left} or \emph{right} (default: left);
 		\item \announce{NEW}{alignFinalDoubleBackSlash}{align final double back slash} optionally specifies if the
-		      \emph{final} double back slash should be used for alignment (default: 0).
+		      \emph{final} double back slash should be used for alignment (default: 0);
+		\item \announce{NEW}{dontMeasure}{don't measure feature} optionally specifies if 
+          user-specified cells, rows or the largest entries should \emph{not} be measured (default: 0).
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
@@ -387,8 +389,9 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 	\end{itemize}
 
 	We explore%
-	\announce{new}{alignFinalDoubleBackSlash demonstration} the \texttt{alignFinalDoubleBackSlash} feature by using the file
-	in \cref{lst:tabular4}. Upon running the following commands
+	\announce{new}{alignFinalDoubleBackSlash demonstration} the
+	\texttt{alignFinalDoubleBackSlash} feature by using the file in \cref{lst:tabular4}. Upon
+	running the following commands
 	\begin{commandshell}
 latexindent.pl tabular4.tex -o=+-default
 latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
@@ -407,11 +410,10 @@ latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalD
 	We note that in:
 	\begin{itemize}
 		\item \cref{lst:tabular4-default}, by default, the \emph{first} set of double back
-		      slashes in the first row
-		      of the \texttt{tabular} environment have been used for alignment;
+		      slashes in the first row of the \texttt{tabular} environment have been used for
+		      alignment;
 		\item \cref{lst:tabular4-FDBS}, the \emph{final} set of double back slashes in the
-		      first row have
-		      been used, because we specified \texttt{alignFinalDoubleBackSlash} as 1.
+		      first row have been used, because we specified \texttt{alignFinalDoubleBackSlash} as 1.
 	\end{itemize}
 
 	As of Version 3.0, the alignment routine works on mandatory and optional arguments within
@@ -448,6 +450,94 @@ latexindent.pl matrix1.tex
 	\texttt{noAdditionalIndent} and \texttt{indentRules}
 	(see \vref{sec:noadd-indent-rules}), these comment-marked blocks are
 	considered \texttt{environments}.
+      
+      \subsection{lookForAlignDelims: the dontMeasure feature}
+      The \announce{NEW}{don't measure feature} \texttt{lookForAlignDelims} field 
+      can, optionally, receive the \texttt{dontMeasure} option which can be specified 
+      in a few different ways. We will explore this feature in relation to 
+      the code given in \cref{lst:tabular-DM}; the default output is shown in \cref{lst:tabular-DM-default}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM.tex}{\texttt{tabular-DM.tex}}{lst:tabular-DM}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-default.tex}{\texttt{tabular-DM.tex} default output}{lst:tabular-DM-default}
+	\end{cmhtcbraster}
+
+      The \texttt{dontMeasure} field can be specified as \texttt{largest}, and in which case, the 
+      largest element will not be measured; with reference to the YAML file given in 
+      \cref{lst:dontMeasure1}, we can run the command
+      \begin{commandshell} 
+latexindent.pl tabular-DM.tex -l=dontMeasure1.yaml
+      \end{commandshell} 
+      and receive the output given in \cref{lst:tabular-DM-mod1}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod1.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure1}}{lst:tabular-DM-mod1}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure1.yaml}[yaml-TCB]{\texttt{dontMeasure1.yaml}}{lst:dontMeasure1}
+	\end{cmhtcbraster}
+
+      We note that the \emph{largest} column entries have not contributed to the measuring routine.
+
+      The \texttt{dontMeasure} field can also be specified in the form demonstrated in \cref{lst:dontMeasure2}.
+      On running the following commands, 
+      \begin{commandshell} 
+latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
+      \end{commandshell} 
+we receive the output in \cref{lst:tabular-DM-mod2}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod2.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure2} or \cref{lst:dontMeasure3}}{lst:tabular-DM-mod2}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure2.yaml}[yaml-TCB]{\texttt{dontMeasure2.yaml}}{lst:dontMeasure2}
+	\end{cmhtcbraster}
+
+      We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured, one entry per line.
+
+      The \texttt{dontMeasure} field can also be specified in the forms demonstrated in \cref{lst:dontMeasure3}
+      and \cref{lst:dontMeasure4}. Upon running the commands
+      \begin{commandshell} 
+latexindent.pl tabular-DM.tex -l=dontMeasure3.yaml
+latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
+      \end{commandshell} 
+      we receive the output given in \cref{lst:tabular-DM-mod4}
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod3.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure3} or \cref{lst:dontMeasure3}}{lst:tabular-DM-mod3}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure3.yaml}[yaml-TCB]{\texttt{dontMeasure3.yaml}}{lst:dontMeasure3}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure4.yaml}[yaml-TCB]{\texttt{dontMeasure4.yaml}}{lst:dontMeasure4}
+	\end{cmhtcbraster}
+    We note that in:
+        \begin{itemize}
+        \item \cref{lst:dontMeasure3} we have specified entries not to be measured, each one has a \emph{string} in the \texttt{this}
+          field, together with an optional specification of \texttt{applyTo} as \texttt{cell};
+        \item \cref{lst:dontMeasure4} we have specified entries not to be measured as a \emph{regular expression} using 
+          the \texttt{regex} field, together with an optional specification of \texttt{applyTo} as \texttt{cell}
+          field, together with an optional specification of \texttt{applyTo} as \texttt{cell}.
+        \end{itemize}
+        In both cases, the default value of \texttt{applyTo} is \texttt{cell}, and does not need to be specified.
+      
+      We may also specify the \texttt{applyTo} field as \texttt{row}, a demonstration of which is 
+      given in \cref{lst:dontMeasure5}; upon running
+      \begin{commandshell} 
+latexindent.pl tabular-DM.tex -l=dontMeasure5.yaml
+      \end{commandshell} 
+      we receive the output in \cref{lst:tabular-DM-mod5}.
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod5.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure5}}{lst:tabular-DM-mod5}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure5.yaml}[yaml-TCB]{\texttt{dontMeasure5.yaml}}{lst:dontMeasure5}
+	\end{cmhtcbraster}
+
+    Finally, the \texttt{applyTo} field can be specified as \texttt{row}, together with a \texttt{regex} expression.
+    For example, for the settings given in \cref{lst:dontMeasure6}, upon running
+      \begin{commandshell} 
+latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
+      \end{commandshell} 
+      we receive the output in \cref{lst:tabular-DM-mod6}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod6.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure6}}{lst:tabular-DM-mod6}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
+	\end{cmhtcbraster}
 
 \yamltitle{indentAfterItems}*{fields}
 	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}

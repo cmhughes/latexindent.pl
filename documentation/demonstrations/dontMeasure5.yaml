@@ -1,0 +1,6 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure:
+        - 
+          this: aaaaaa&bbbbb&ccc&dd\\
+          applyTo: row
