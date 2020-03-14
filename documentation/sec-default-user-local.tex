@@ -23,7 +23,7 @@ latexindent.pl myfile
 	script will exit. As with all of the fields, you should change and/or add to this as
 	necessary.
 
-		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
+	\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
 
 	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in
 	\cref{lst:fileExtensionPreference} means that the script will first look for
@@ -131,7 +131,7 @@ copy myfile.bak4 to myfile.bak3
 	environment from \texttt{noIndentBlock}; you can use any name you like for this,
 	provided you populate it as demonstrate in \cref{lst:noIndentBlock}.
 
-		\cmhlistingsfromfile[style=noIndentBlock]*{../defaultSettings.yaml}[width=.4\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
+	\cmhlistingsfromfile[style=noIndentBlock]*{../defaultSettings.yaml}[width=.4\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
 
 	Of course, you don't want to have to specify these as null environments in your code, so
 	you use them with a comment symbol, \lstinline!%!, followed by as many spaces
@@ -155,15 +155,15 @@ copy myfile.bak4 to myfile.bak3
 	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results. Thanks
 	to \cite{vosskuhle} for providing this feature.
 
-\begin{minipage}{.4\textwidth}
+	\begin{minipage}{.4\textwidth}
 		\cmhlistingsfromfile[style=removeTrailingWhitespace]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
-\end{minipage}%
-\hfill
-\begin{minipage}{.5\textwidth}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.5\textwidth}
 		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[before=\centering]{lst:removeTrailingWhitespace-alt}
 removeTrailingWhitespace: 1
 \end{yaml}
-\end{minipage}%
+	\end{minipage}%
 
 	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or
 	\texttt{1}, if you wish; in this case,%
@@ -177,7 +177,7 @@ removeTrailingWhitespace: 1
 	\texttt{latexindent.pl} on these environments is determined by their location (preamble
 	or not), and the value \texttt{indentPreamble}, discussed next.
 
-		\cmhlistingsfromfile[style=fileContentsEnvironments]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
+	\cmhlistingsfromfile[style=fileContentsEnvironments]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
 
 \yamltitle{indentPreamble}{0|1}
 
@@ -196,7 +196,7 @@ removeTrailingWhitespace: 1
 	value of \texttt{indentPreamble}, preamble will not be assumed when operating upon
 	\texttt{.tex} files.
 
-		\cmhlistingsfromfile[style=lookForPreamble]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
+	\cmhlistingsfromfile[style=lookForPreamble]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
 \yamltitle{preambleCommandsBeforeEnvironments}{0|1}
 	Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a
 	document, when this switch is set to \texttt{0} then environment code blocks
@@ -291,13 +291,18 @@ lookForAlignDelims:
 		      each cell as either \emph{left} or \emph{right} (default: left);
 		\item \announce{NEW}{alignFinalDoubleBackSlash}{align final double back slash} optionally specifies if the
 		      \emph{final} double back slash should be used for alignment (default: 0);
-		\item \announce{NEW}{dontMeasure}{don't measure feature} optionally specifies if 
-          user-specified cells, rows or the largest entries should \emph{not} be measured (default: 0).
+		\item \announce{NEW}{dontMeasure}{don't measure feature} optionally specifies if
+		      user-specified cells, rows or the largest entries should \emph{not} be
+		      measured (default: 0);
+		\item \announce{NEW}{delimiterRegEx}{delimiter RegEx feature} optionally specifies the pattern
+		      matching to be used for the alignment delimeter (default: \lstinline3 '(?<!\\)(&)'3).
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
 	\cref{lst:tabular2} (which contains a \lstinline!\multicolumn! command), and the YAML files in \crefrange{lst:tabular2YAML}{lst:tabular8YAML}; we will explore
-	\texttt{alignFinalDoubleBackSlash} in \cref{lst:tabular4}.
+	\texttt{alignFinalDoubleBackSlash} in \cref{lst:tabular4}; the \texttt{dontMeasure} feature
+	will be described in \cref{sec:dontMeasure}, and \texttt{delimiterRegEx} in
+	\cref{sec:delimiter-reg-ex}.
 
 	\cmhlistingsfromfile{demonstrations/tabular2.tex}{\texttt{tabular2.tex}}{lst:tabular2}
 	\begin{minipage}{.45\textwidth}
@@ -447,54 +452,57 @@ latexindent.pl matrix1.tex
 	\texttt{noAdditionalIndent} and \texttt{indentRules}
 	(see \vref{sec:noadd-indent-rules}), these comment-marked blocks are
 	considered \texttt{environments}.
-      
-      \subsection{lookForAlignDelims: the dontMeasure feature}
-      The \announce{NEW}{don't measure feature} \texttt{lookForAlignDelims} field 
-      can, optionally, receive the \texttt{dontMeasure} option which can be specified 
-      in a few different ways. We will explore this feature in relation to 
-      the code given in \cref{lst:tabular-DM}; the default output is shown in \cref{lst:tabular-DM-default}.
+
+\subsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
+	The%
+	\announce{NEW}{don't measure feature} \texttt{lookForAlignDelims} field can, optionally, receive the
+	\texttt{dontMeasure} option which can be specified in a few different ways. We will
+	explore this feature in relation to the code given in \cref{lst:tabular-DM}; the
+	default output is shown in \cref{lst:tabular-DM-default}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM.tex}{\texttt{tabular-DM.tex}}{lst:tabular-DM}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-default.tex}{\texttt{tabular-DM.tex} default output}{lst:tabular-DM-default}
 	\end{cmhtcbraster}
 
-      The \texttt{dontMeasure} field can be specified as \texttt{largest}, and in which case, the 
-      largest element will not be measured; with reference to the YAML file given in 
-      \cref{lst:dontMeasure1}, we can run the command
-      \begin{commandshell} 
+	The \texttt{dontMeasure} field can be specified as \texttt{largest}, and in
+	which case, the largest element will not be measured; with reference to the YAML file
+	given in \cref{lst:dontMeasure1}, we can run the command
+	\begin{commandshell} 
 latexindent.pl tabular-DM.tex -l=dontMeasure1.yaml
-      \end{commandshell} 
-      and receive the output given in \cref{lst:tabular-DM-mod1}.
+\end{commandshell}
+	and receive the output given in \cref{lst:tabular-DM-mod1}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod1.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure1}}{lst:tabular-DM-mod1}
 		\cmhlistingsfromfile*{demonstrations/dontMeasure1.yaml}[yaml-TCB]{\texttt{dontMeasure1.yaml}}{lst:dontMeasure1}
 	\end{cmhtcbraster}
 
-      We note that the \emph{largest} column entries have not contributed to the measuring routine.
+	We note that the \emph{largest} column entries have not contributed to the
+	measuring routine.
 
-      The \texttt{dontMeasure} field can also be specified in the form demonstrated in \cref{lst:dontMeasure2}.
-      On running the following commands, 
-      \begin{commandshell} 
+	The \texttt{dontMeasure} field can also be specified in the form demonstrated in
+	\cref{lst:dontMeasure2}. On running the following commands,
+	\begin{commandshell} 
 latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
-      \end{commandshell} 
-we receive the output in \cref{lst:tabular-DM-mod2}.
+\end{commandshell}
+	we receive the output in \cref{lst:tabular-DM-mod2}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod2.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure2} or \cref{lst:dontMeasure3}}{lst:tabular-DM-mod2}
 		\cmhlistingsfromfile*{demonstrations/dontMeasure2.yaml}[yaml-TCB]{\texttt{dontMeasure2.yaml}}{lst:dontMeasure2}
 	\end{cmhtcbraster}
 
-      We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured, one entry per line.
+	We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured, one
+	entry per line.
 
-      The \texttt{dontMeasure} field can also be specified in the forms demonstrated in \cref{lst:dontMeasure3}
-      and \cref{lst:dontMeasure4}. Upon running the commands
-      \begin{commandshell} 
+	The \texttt{dontMeasure} field can also be specified in the forms demonstrated in
+	\cref{lst:dontMeasure3} and \cref{lst:dontMeasure4}. Upon running the commands
+	\begin{commandshell} 
 latexindent.pl tabular-DM.tex -l=dontMeasure3.yaml
 latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
-      \end{commandshell} 
-      we receive the output given in \cref{lst:tabular-DM-mod3}
+\end{commandshell}
+	we receive the output given in \cref{lst:tabular-DM-mod3}
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
@@ -503,39 +511,98 @@ latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
 		\cmhlistingsfromfile*{demonstrations/dontMeasure3.yaml}[yaml-TCB]{\texttt{dontMeasure3.yaml}}{lst:dontMeasure3}
 		\cmhlistingsfromfile*{demonstrations/dontMeasure4.yaml}[yaml-TCB]{\texttt{dontMeasure4.yaml}}{lst:dontMeasure4}
 	\end{cmhtcbraster}
-    We note that in:
-        \begin{itemize}
-        \item \cref{lst:dontMeasure3} we have specified entries not to be measured, each one has a \emph{string} in the \texttt{this}
-          field, together with an optional specification of \texttt{applyTo} as \texttt{cell};
-        \item \cref{lst:dontMeasure4} we have specified entries not to be measured as a \emph{regular expression} using 
-          the \texttt{regex} field, together with an optional specification of \texttt{applyTo} as \texttt{cell}
-          field, together with an optional specification of \texttt{applyTo} as \texttt{cell}.
-        \end{itemize}
-        In both cases, the default value of \texttt{applyTo} is \texttt{cell}, and does not need to be specified.
-      
-      We may also specify the \texttt{applyTo} field as \texttt{row}, a demonstration of which is 
-      given in \cref{lst:dontMeasure5}; upon running
-      \begin{commandshell} 
+	We note that in:
+	\begin{itemize}
+		\item \cref{lst:dontMeasure3} we have specified entries not to be measured, each one has a
+		      \emph{string} in the \texttt{this}
+		      field, together with an optional specification of \texttt{applyTo} as
+		      \texttt{cell};
+		\item \cref{lst:dontMeasure4} we have specified entries not to be measured as a
+		      \emph{regular expression} using
+		      the \texttt{regex} field, together with an optional specification of
+		      \texttt{applyTo} as \texttt{cell} field, together with an optional
+		      specification of \texttt{applyTo} as \texttt{cell}.
+	\end{itemize}
+	In both cases, the default value of \texttt{applyTo} is \texttt{cell},
+	and does not need to be specified.
+
+	We may also specify the \texttt{applyTo} field as \texttt{row}, a
+	demonstration of which is given in \cref{lst:dontMeasure5}; upon running
+	\begin{commandshell} 
 latexindent.pl tabular-DM.tex -l=dontMeasure5.yaml
-      \end{commandshell} 
-      we receive the output in \cref{lst:tabular-DM-mod5}.
+\end{commandshell}
+	we receive the output in \cref{lst:tabular-DM-mod5}.
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod5.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure5}}{lst:tabular-DM-mod5}
 		\cmhlistingsfromfile*{demonstrations/dontMeasure5.yaml}[yaml-TCB]{\texttt{dontMeasure5.yaml}}{lst:dontMeasure5}
 	\end{cmhtcbraster}
 
-    Finally, the \texttt{applyTo} field can be specified as \texttt{row}, together with a \texttt{regex} expression.
-    For example, for the settings given in \cref{lst:dontMeasure6}, upon running
-      \begin{commandshell} 
+	Finally, the \texttt{applyTo} field can be specified as \texttt{row},
+	together with a \texttt{regex} expression. For example, for the settings given
+	in \cref{lst:dontMeasure6}, upon running
+	\begin{commandshell} 
 latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
-      \end{commandshell} 
-      we receive the output in \cref{lst:tabular-DM-mod6}.
+\end{commandshell}
+	we receive the output in \cref{lst:tabular-DM-mod6}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-mod6.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure6}}{lst:tabular-DM-mod6}
 		\cmhlistingsfromfile*{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
 	\end{cmhtcbraster}
 
+\subsection{lookForAlignDelims: the delimiterRegEx feature}\label{sec:delimiter-reg-ex}
+	The delimiter alignment%
+	\announce{new}{delimiterRegEx feature} will, by default, align code blocks at
+	the ampersand character. The behaviour is controlled by the \texttt{delimiterRegEx} field
+	within \texttt{lookForAlignDelims}; the default value is \lstinline3'(?<!\\)(&)'3, which can
+	be read as: \emph{an ampersand, as long as it is not immediately preceeded by a backslash}.
+
+	\begin{warning}
+		Important: note the `capturing' parenthesis in the \lstinline!(&)! which are necessary; if you
+		intend to customise this field, then be sure to include them appropriately.
+	\end{warning}
+
+	We demonstrate how to customise this with respect to the code given in
+	\cref{lst:tabbing}; the default output from \lstinline!latexindent.pl! is given in
+	\cref{lst:tabbing-default}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabbing.tex}{\texttt{tabbing.tex}}{lst:tabbing}
+		\cmhlistingsfromfile*{demonstrations/tabbing-default.tex}{\texttt{tabbing.tex} default output}{lst:tabbing-default}
+	\end{cmhtcbraster}
+
+	Let's say that we wish to align the code at either the \lstinline!\=! or
+	\lstinline!\>!. We employ the settings given in \cref{lst:delimiterRegEx1} and run
+	the command
+	\begin{commandshell}
+latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
+\end{commandshell}
+	to receive the output given in \cref{lst:tabbing-mod1}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabbing-mod1.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx1}}{lst:tabbing-mod1}
+		\cmhlistingsfromfile*{demonstrations/delimiterRegEx1.yaml}[yaml-TCB]{\texttt{delimiterRegEx1.yaml}}{lst:delimiterRegEx1}
+	\end{cmhtcbraster}
+	We note that:
+	\begin{itemize}
+		\item in \cref{lst:tabbing-mod1} the code has been aligned, as intended, at both the
+		      \lstinline!\=! and \lstinline!\>!;
+		\item in \cref{lst:delimiterRegEx1} we have heeded the warning and captured the expression using
+		      grouping parenthesis, specified a backslash using \lstinline!\\! and said that
+		      it must be followed by either \lstinline!=! or \lstinline!>!.
+	\end{itemize}
+	We can explore this a little further using the settings in \cref{lst:delimiterRegEx2} and
+	run the command
+	\begin{commandshell}
+latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
+\end{commandshell}
+	to receive the output given in \cref{lst:tabbing-mod2}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabbing-mod2.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx2}}{lst:tabbing-mod2}
+		\cmhlistingsfromfile*{demonstrations/delimiterRegEx2.yaml}[yaml-TCB]{\texttt{delimiterRegEx2.yaml}}{lst:delimiterRegEx2}
+	\end{cmhtcbraster}
+	We note that only the \lstinline!\>! have been aligned.
 \yamltitle{indentAfterItems}*{fields}
 	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
 	to look for \lstinline!\item! commands; if these switches are set to
@@ -560,7 +627,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 	\vref{sec:indentconfig} for details of how to configure user settings, and
 	\vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
 
-		\cmhlistingsfromfile[style=itemNames]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
+	\cmhlistingsfromfile[style=itemNames]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified%
@@ -690,14 +757,14 @@ latexindent.pl special3.tex -l=special-verb1
 	written in this field.\footnote{There is a slight
 		difference in interface for this field when comparing Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
 
-		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
+	\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
 
 	The default settings do \emph{not} place indentation after a heading, but
-	you can easily switch them on by changing \texttt{indentAfterThisHeading} from 0 to
-	1. The \texttt{level} field tells \texttt{latexindent.pl}
-	the hierarchy of the heading structure in your document. You might, for example, like to
-	have both \texttt{section} and \texttt{subsection} set with
-	\texttt{level: 3} because you do not want the indentation to go too deep.
+	you can easily switch them on by changing \texttt{indentAfterThisHeading} from 0 to 1. The
+	\texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
+	structure in your document. You might, for example, like to have both
+	\texttt{section} and \texttt{subsection} set with \texttt{level: 3}
+	because you do not want the indentation to go too deep.
 
 	You can add any of your own custom heading commands to this field, specifying the
 	\texttt{level} as appropriate.  You can also specify your own indentation in

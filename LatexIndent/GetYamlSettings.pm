@@ -44,6 +44,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"justification",default=>"left"},
                                        {name=>"alignFinalDoubleBackSlash",default=>0},
                                        {name=>"dontMeasure",default=>0},
+                                       {name=>"delimiterRegEx",default=>"(?<!\\\\)(&)"},
                                         );
     
 sub yaml_read_settings{

@@ -83,63 +83,63 @@
  \texttt{before} and \texttt{between} fields allow trailing comments, line
  breaks, and horizontal spaces between each character.
 
-	\begin{example}
- As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
- default output using the command
- \begin{commandshell}
+ \begin{example}
+	 As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
+	 default output using the command
+	 \begin{commandshell}
 latexindent.pl finetuning1.tex 
 \end{commandshell}
- is given in \cref{lst:finetuning1-default}.
+	 is given in \cref{lst:finetuning1-default}.
 
- \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-	 \cmhlistingsfromfile{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
-	 \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
- \end{cmhtcbraster}
+	 \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		 \cmhlistingsfromfile{demonstrations/finetuning1.tex}{\texttt{finetuning1.tex}}{lst:finetuning1}
+		 \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
+	 \end{cmhtcbraster}
 
- It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
- expected. We can \emph{fine tune} the indentation scheme by employing the settings
- given in \cref{lst:fine-tuning1} and running the command
- \begin{commandshell}
+	 It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
+	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
+	 given in \cref{lst:fine-tuning1} and running the command
+	 \begin{commandshell}
 latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 \end{commandshell}
- and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
+	 and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
 
- \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-	 \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
-	 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
- \end{cmhtcbraster}
-	\end{example}
+	 \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+		 \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
+		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
+	 \end{cmhtcbraster}
+ \end{example}
 
-	\begin{example}
- Let's have another demonstration; consider the file given in \cref{lst:finetuning2}, together with its
- default output using the command
- \begin{commandshell}
+ \begin{example}
+	 Let's have another demonstration; consider the file given in \cref{lst:finetuning2}, together with its
+	 default output using the command
+	 \begin{commandshell}
 latexindent.pl finetuning2.tex 
 \end{commandshell}
- is given in \cref{lst:finetuning2-default}.
+	 is given in \cref{lst:finetuning2-default}.
 
-		\begin{cmhtcbraster}[raster column skip=.01\linewidth,
-				raster left skip=-3.75cm,
-				raster right skip=0cm,]
-	 \cmhlistingsfromfile*{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
-	 \cmhlistingsfromfile*{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
- \end{cmhtcbraster}
+	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+			 raster left skip=-3.75cm,
+			 raster right skip=0cm,]
+		 \cmhlistingsfromfile*{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
+		 \cmhlistingsfromfile*{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
+	 \end{cmhtcbraster}
 
- It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked as
- expected. We can \emph{fine tune} the indentation scheme by employing the settings
- given in \cref{lst:fine-tuning2} and running the command
- \begin{commandshell}
+	 It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked as
+	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
+	 given in \cref{lst:fine-tuning2} and running the command
+	 \begin{commandshell}
 latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 \end{commandshell}
- and the associated (desired) output is given in \cref{lst:finetuning2-mod1}.
+	 and the associated (desired) output is given in \cref{lst:finetuning2-mod1}.
 
-		\begin{cmhtcbraster}[raster column skip=.01\linewidth,
-				raster left skip=-3.75cm,
-				raster right skip=0cm,]
-	 \cmhlistingsfromfile*{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
-	 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
- \end{cmhtcbraster}
+	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+			 raster left skip=-3.75cm,
+			 raster right skip=0cm,]
+		 \cmhlistingsfromfile*{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
+		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
+	 \end{cmhtcbraster}
 
- In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets} 
- and \texttt{UnNamedGroupingBracesBrackets} can follow \texttt{"} and that we  allow \lstinline!---! between arguments.
-	\end{example}
+	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets}
+	 and \texttt{UnNamedGroupingBracesBrackets} can follow \texttt{"} and that we allow \lstinline!---! between arguments.
+ \end{example}
