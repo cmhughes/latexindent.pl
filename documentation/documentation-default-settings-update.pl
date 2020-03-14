@@ -21,7 +21,7 @@ my @namesAndOffsets = (
                         {name=>"removeTrailingWhitespace",numberOfLines=>2},
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
                         {name=>"lookForPreamble",numberOfLines=>4},
-                        {name=>"lookForAlignDelims",numberOfLines=>14},
+                        {name=>"lookForAlignDelims",numberOfLines=>15},
                         {name=>"indentAfterItems",numberOfLines=>4},
                         {name=>"itemNames",numberOfLines=>2},
                         {name=>"specialBeginEnd",numberOfLines=>13,mustBeAtBeginning=>1},

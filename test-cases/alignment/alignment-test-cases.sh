@@ -146,6 +146,11 @@ latexindent.pl -s yangmw.tex -o=+-mod8 -l=dontMeasure8.yaml
 latexindent.pl -s yangmw.tex -o=+-mod9 -l=dontMeasure9.yaml
 latexindent.pl -s yangmw.tex -o=+-just-right -l=dontMeasure.yaml -y="lookForAlignDelims:tabular:spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s swaroopguggilam.tex -o=+-mod1 -l=dontMeasure1.yaml
+# delimiterRegex feature: https://github.com/cmhughes/latexindent.pl/issues/187
+latexindent.pl -s tabbing.tex -o=+-default
+latexindent.pl -s tabbing.tex -o=+-mod1 -l=delimiterRegEx1.yaml
+latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
+latexindent.pl -s tabbing1.tex -o=+-mod3 -l=delimiterRegEx3.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

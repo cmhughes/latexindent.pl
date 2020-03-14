@@ -157,6 +157,7 @@ lookForAlignDelims:
       justification: "left"
       alignFinalDoubleBackSlash: 0
       dontMeasure: 0
+      delimiterRegEx: '(?<!\\)(&)'
    tabularx:
       delims: 1
    longtable: 1

@@ -196,26 +196,61 @@ sub align_at_ampersand{
         # some rows shouldn't be formatted
         my $unformattedRow = $_;
 
-        my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
+        # delimiters regex, default is:
+        #
+        #   (?<!\\)&
+        #
+        # which is set in GetYamlSettings.pm, but can be set 
+        # by the user using, for example
+        #
+        #   lookForAlignDelims:
+        #       tabular:
+        #           delimiter: '\<'
+        #
+        my $delimiterRegEx = qr/${$self}{delimiterRegEx}/;
+
+        my $numberOfAmpersands = () = $_ =~ /$delimiterRegEx/g;
         $maximumNumberOfAmpersands = $numberOfAmpersands if($numberOfAmpersands>$maximumNumberOfAmpersands);
         
         # remove space at the beginning of a row, surrounding &, and at the end of the row
-        $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
+        $_ =~ s/(?<!\\)\h*($delimiterRegEx)\h*/$1/g;
         $_ =~ s/^\h*//g;
         $_ =~ s/\h*$//g;
         
         # if the line finishes with an &, then add an empty space,
         # otherwise the column count is off
-        $_ .= ($_ =~ m/(?<!\\)&$/ ? " ":q());
+        $_ .= ($_ =~ m/$delimiterRegEx$/ ? " ":q());
 
         # store the columns, which are either split by & 
         # or otherwise simply the current line, if for example, the current line simply
         # contains \multicolumn{8}... \\  (see test-cases/texexchange/366841-zarko.tex, for example)
-        my @columns = ($_ =~ m/(?<!\\)&/ ? split(/(?<!\\)&/,$_) : $_);
+        my @columns = ($_ =~ m/$delimiterRegEx/ ? split(/($delimiterRegEx)/,$_) : $_);
 
         $columnCounter = -1;
+        my $spanning = 0;
+
         foreach my $column (@columns){
+            # if a column contains only the delimiter, then we need to 
+            #       - measure it
+            #       - add it and its length to the previous cell
+            #       - remove it from the columns array
+            #
+            if($column =~ m/$delimiterRegEx/) {
+                # update the delimiter to be used, and its associated length 
+                # for the *previous* cell
+                my $spanningOffSet = ($spanning > 0 ?  $spanning - 1 : 0);
+                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiter} = $1;
+                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength} = Unicode::GCString->new($1)->columns();
+
+                # importantly, move on to the next column!
+                next;
+            }
+
+            # otherwise increment the column counter, and proceed
             $columnCounter++;
+
+            # reset spanning (only applicable if multiColumnGrouping)
+            $spanning = 0;
 
             # if a column has finished with a \ then we need to add a trailing space, 
             # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
@@ -228,6 +263,8 @@ sub align_at_ampersand{
                         type=>($numberOfAmpersands>0 ? "X" : "*"),
                         groupPadding=>0,
                         colSpan=>".",
+                        delimiter=>"",
+                        delimiterLength=>0,
                         measureThis=> ($numberOfAmpersands>0 ?  ${$self}{measureRow} : 0) });
                     
             # store the maximum column width 
@@ -239,7 +276,7 @@ sub align_at_ampersand{
             
             # \multicolumn cell
             if(${$self}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
-                my $spanning = $1;
+                $spanning = $1;
 
                 # adjust the type
                 ${$cellStorage[$rowCounter][$columnCounter]}{type} = "$spanning";
@@ -259,6 +296,8 @@ sub align_at_ampersand{
                                                       individualPadding=>0,
                                                       groupPadding=>0,
                                                       colSpan=>".",
+                                                      delimiter=>"",
+                                                      delimiterLength=>0,
                                                       measureThis=>0});
                 }
                 
@@ -296,7 +335,7 @@ sub align_at_ampersand{
 
     # output to log file
     if( $is_t_switch_active ){
-      &pretty_print_cell_info($_) for ("entry","type","colSpan","width","measureThis","maximumColumnWidth","individualPadding","groupPadding");
+      &pretty_print_cell_info($_) for ("entry","type","colSpan","width","measureThis","maximumColumnWidth","individualPadding","groupPadding","delimiter","delimiterLength");
     }
 
     # main formatting loop
@@ -414,12 +453,9 @@ sub main_formatting {
 
           # either way, finish with:  <spacesBeforeAmpersand> & <spacesAfterAmpersand>
           $tmpRow .= " " x ${$self}{spacesBeforeAmpersand};
-          $tmpRow .= "&";
+          $tmpRow .= ${$cell}{delimiter};
           $tmpRow .= " " x ${$self}{spacesAfterAmpersand};
       }
-
-      # remove the final &
-      $tmpRow =~ s/\h*&\h*$/ /;
 
       # if alignRowsWithoutMaxDelims = 0
       # and there are *less than* the maximum number of ampersands, then 
@@ -667,7 +703,16 @@ sub individual_padding{
             ${$row}[$j]{individualPadding} += ($maximum > $cellWidth ? $maximum - $cellWidth : 0);
         } else { 
             # gap filling
-            ${$row}[$j] = ({type=>"-",entry=>'',width=>0,individualPadding=>0,groupPadding=>0,measureThis=>0,colSpan=>"."});
+            ${$row}[$j] = ({type=>"-",
+                            entry=>'',
+                            width=>0,
+                            individualPadding=>0,
+                            groupPadding=>0,
+                            measureThis=>0,
+                            colSpan=>".",
+                            delimiter=>"", 
+                            delimiterLength=>0,
+              });
         }
 
         # now the gaps have been filled, store the maximumColumnWidth for future reference
@@ -904,6 +949,7 @@ sub multicolumn_padding{
 
                $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{width};
                $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{individualPadding};
+               $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{delimiterLength} if ($innerJ < $multiColumnSpan - 1);
             }
 
             # adjust for 
@@ -920,10 +966,13 @@ sub multicolumn_padding{
             #
             #   we multiply by (2-1) = 1 because there is *1* ampersand
             #   underneath the multicolumn command
+            #
+            # note:
+            #   the & will have been accounted for in the above section using delimiterLength
             
             $groupingWidth += ($multiColumnSpan-1)
                                      *
-                              (${$self}{spacesBeforeAmpersand} + length("&") + ${$self}{spacesAfterAmpersand});
+                              (${$self}{spacesBeforeAmpersand} + ${$self}{spacesAfterAmpersand});
 
             # store the grouping width for the next phase
             ${$cellStorage[$innerRowCount][$justificationOffset]}{groupingWidth} = $groupingWidth;
@@ -1111,6 +1160,7 @@ sub multicolumn_post_check {
 
           # update the number of & encountered
           $ampersandsEncountered++;
+          $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{delimiterLength} if ($ampersandsEncountered>0);
 
           # and adjust the column count, if necessary; in the above example
           #
@@ -1142,7 +1192,7 @@ sub multicolumn_post_check {
         
         $groupingWidth += $ampersandsEncountered
                                  *
-                          (${$self}{spacesBeforeAmpersand} + length("&") + ${$self}{spacesAfterAmpersand});
+                          (${$self}{spacesBeforeAmpersand} + ${$self}{spacesAfterAmpersand});
                           
         # update the maximum grouping width
         $maxGroupingWidth = max($maxGroupingWidth, $groupingWidth);
