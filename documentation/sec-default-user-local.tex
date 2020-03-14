@@ -18,14 +18,12 @@
 	\begin{commandshell}
 latexindent.pl myfile
 \end{commandshell}
-	\begin{wrapfigure}[8]{r}[0pt]{6cm}
-		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
-	\end{wrapfigure}
-
 	in which case the script will look for \texttt{myfile} with the extensions
 	specified in \texttt{fileExtensionPreference} in their numeric order. If no match is found, the
 	script will exit. As with all of the fields, you should change and/or add to this as
 	necessary.
+
+		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
 
 	Calling \texttt{latexindent.pl myfile} with the (default) settings specified in
 	\cref{lst:fileExtensionPreference} means that the script will first look for
@@ -128,13 +126,12 @@ copy myfile.bak4 to myfile.bak3
 
 \yamltitle{noIndentBlock}*{fields}
 
-	\begin{wrapfigure}[8]{r}[0pt]{6cm}
-		\cmhlistingsfromfile[style=noIndentBlock]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
-	\end{wrapfigure}
 	If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if
 	it is \emph{not} a verbatim-like environment) then you can wrap it in an
 	environment from \texttt{noIndentBlock}; you can use any name you like for this,
 	provided you populate it as demonstrate in \cref{lst:noIndentBlock}.
+
+		\cmhlistingsfromfile[style=noIndentBlock]*{../defaultSettings.yaml}[width=.4\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
 
 	Of course, you don't want to have to specify these as null environments in your code, so
 	you use them with a comment symbol, \lstinline!%!, followed by as many spaces
@@ -152,19 +149,21 @@ copy myfile.bak4 to myfile.bak3
 
 \yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
-	\begin{wrapfigure}[10]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=removeTrailingWhitespace]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
-
-		\vspace{.1cm}
-		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[width=.8\linewidth,before=\centering]{lst:removeTrailingWhitespace-alt}
-removeTrailingWhitespace: 1
-\end{yaml}
-	\end{wrapfigure}
 	Trailing white space can be removed both \emph{before} and
 	\emph{after} processing the document, as detailed in \cref{lst:removeTrailingWhitespace};
 	each of the fields can take the values \texttt{0} or
 	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results. Thanks
 	to \cite{vosskuhle} for providing this feature.
+
+\begin{minipage}{.4\textwidth}
+		\cmhlistingsfromfile[style=removeTrailingWhitespace]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+\end{minipage}%
+\hfill
+\begin{minipage}{.5\textwidth}
+		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[before=\centering]{lst:removeTrailingWhitespace-alt}
+removeTrailingWhitespace: 1
+\end{yaml}
+\end{minipage}%
 
 	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or
 	\texttt{1}, if you wish; in this case,%
@@ -172,14 +171,13 @@ removeTrailingWhitespace: 1
 	\texttt{afterProcessing} to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
 \yamltitle{fileContentsEnvironments}*{field}
 
-	\begin{wrapfigure}[6]{r}[0pt]{6cm}
-		\cmhlistingsfromfile[style=fileContentsEnvironments]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
-	\end{wrapfigure}
 	Before \texttt{latexindent.pl} determines the difference between preamble (if any) and
 	the main document, it first searches for any of the environments specified in
 	\texttt{fileContentsEnvironments}, see \cref{lst:fileContentsEnvironments}. The behaviour of
 	\texttt{latexindent.pl} on these environments is determined by their location (preamble
 	or not), and the value \texttt{indentPreamble}, discussed next.
+
+		\cmhlistingsfromfile[style=fileContentsEnvironments]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
 
 \yamltitle{indentPreamble}{0|1}
 
@@ -191,15 +189,14 @@ removeTrailingWhitespace: 1
 
 \yamltitle{lookForPreamble}*{fields}
 
-	\begin{wrapfigure}[8]{r}[0pt]{5cm}
-		\cmhlistingsfromfile[style=lookForPreamble]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
-	\end{wrapfigure}
 	Not all files contain preamble; for example, \texttt{sty},
 	\texttt{cls} and \texttt{bib} files typically do
 	\emph{not}. Referencing \cref{lst:lookForPreamble}, if you set, for example,
 	\texttt{.tex} to \texttt{0}, then regardless of the setting of the
 	value of \texttt{indentPreamble}, preamble will not be assumed when operating upon
 	\texttt{.tex} files.
+
+		\cmhlistingsfromfile[style=lookForPreamble]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{lookForPreamble}{lst:lookForPreamble}
 \yamltitle{preambleCommandsBeforeEnvironments}{0|1}
 	Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a
 	document, when this switch is set to \texttt{0} then environment code blocks
@@ -497,7 +494,7 @@ we receive the output in \cref{lst:tabular-DM-mod2}.
 latexindent.pl tabular-DM.tex -l=dontMeasure3.yaml
 latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
       \end{commandshell} 
-      we receive the output given in \cref{lst:tabular-DM-mod4}
+      we receive the output given in \cref{lst:tabular-DM-mod3}
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
@@ -555,9 +552,6 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 	\end{cmhtcbraster}
 
 \yamltitle{itemNames}*{fields}
-	\begin{wrapfigure}[5]{r}[0pt]{5cm}
-		\cmhlistingsfromfile[style=itemNames]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
-	\end{wrapfigure}
 	If you have your own \texttt{item} commands (perhaps you prefer to use
 	\texttt{myitem}, for example) then you can put populate them in
 	\texttt{itemNames}. For example, users of the \texttt{exam} document class
@@ -565,6 +559,8 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 	\texttt{part} to \texttt{itemNames} to their user settings (see
 	\vref{sec:indentconfig} for details of how to configure user settings, and
 	\vref{lst:mysettings} \\ in particular \label{page:examsettings}.)
+
+		\cmhlistingsfromfile[style=itemNames]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{itemNames}}{lst:itemNames}
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
 	The fields specified%
@@ -688,18 +684,17 @@ latexindent.pl special3.tex -l=special-verb1
 	\end{cmhtcbraster}
 
 \yamltitle{indentAfterHeadings}*{fields}
-	\begin{wrapfigure}[17]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
-	\end{wrapfigure}
 	This field enables the user to specify indentation rules that take effect after heading
 	commands such as \lstinline!\part!, \lstinline!\chapter!,
 	\lstinline!\section!, \lstinline!\subsection*!, or indeed any user-specified command
 	written in this field.\footnote{There is a slight
 		difference in interface for this field when comparing Version 2.2 to Version 3.0; see \vref{app:differences} for details.}
 
+		\cmhlistingsfromfile[style=indentAfterHeadings]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentAfterHeadings}}{lst:indentAfterHeadings}
+
 	The default settings do \emph{not} place indentation after a heading, but
-	you can easily switch them on by changing \\ \texttt{indentAfterThisHeading: 0} to \\
-	\texttt{indentAfterThisHeading: 1}. The \texttt{level} field tells \texttt{latexindent.pl}
+	you can easily switch them on by changing \texttt{indentAfterThisHeading} from 0 to
+	1. The \texttt{level} field tells \texttt{latexindent.pl}
 	the hierarchy of the heading structure in your document. You might, for example, like to
 	have both \texttt{section} and \texttt{subsection} set with
 	\texttt{level: 3} because you do not want the indentation to go too deep.
