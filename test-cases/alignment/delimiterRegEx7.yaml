@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   tabbing: 
+    delimiterRegEx: '(#|\\>)'
+    delimiterJustification: right
+    justification: right

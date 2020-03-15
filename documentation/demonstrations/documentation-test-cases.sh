@@ -325,5 +325,8 @@ latexindent.pl -s tabular-DM -o=+-mod6 -l=dontMeasure6.yaml
 latexindent.pl -s tabbing.tex -o=+-default
 latexindent.pl -s tabbing.tex -o=+-mod1 -l=delimiterRegEx1.yaml
 latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
+latexindent.pl -s tabbing.tex -o=+-mod3 -l=delimiterRegEx3.yaml
+latexindent.pl -s tabbing1.tex -o=+-mod4 -l=delimiterRegEx4.yaml
+latexindent.pl -s tabbing1.tex -o=+-mod5 -l=delimiterRegEx5.yaml
 [[ $noisyMode == 1 ]] && makenoise
 git status

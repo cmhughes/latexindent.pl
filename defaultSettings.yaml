@@ -154,10 +154,11 @@ lookForAlignDelims:
       alignRowsWithoutMaxDelims: 1
       spacesBeforeAmpersand: 1
       spacesAfterAmpersand: 1
-      justification: "left"
+      justification: left
       alignFinalDoubleBackSlash: 0
       dontMeasure: 0
       delimiterRegEx: '(?<!\\)(&)'
+      delimiterJustification: left
    tabularx:
       delims: 1
    longtable: 1

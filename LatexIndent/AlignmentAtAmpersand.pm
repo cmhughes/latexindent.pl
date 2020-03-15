@@ -33,6 +33,7 @@ our @cellStorage;   # two-dimensional storage array containing the cell informat
 our @formattedBody; # array for the new body
 our @minMultiColSpan;
 our @maxColumnWidth;
+our @maxDelimiterWidth;
 
 sub find_aligned_block{
     my $self = shift;
@@ -138,6 +139,7 @@ sub align_at_ampersand{
     @cellStorage = ();
     @minMultiColSpan = ();
     @maxColumnWidth = ();
+    @maxDelimiterWidth = ();
 
     # maximum column widths
     my @maximumColumnWidths;
@@ -241,6 +243,15 @@ sub align_at_ampersand{
                 my $spanningOffSet = ($spanning > 0 ?  $spanning - 1 : 0);
                 ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiter} = $1;
                 ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength} = Unicode::GCString->new($1)->columns();
+
+                # keep track of maximum delimiter width
+                $maxDelimiterWidth[$columnCounter - $spanningOffSet] = 
+                                                (defined $maxDelimiterWidth[$columnCounter - $spanningOffSet]
+                                                        ? 
+                                                max($maxDelimiterWidth[$columnCounter-$spanningOffSet],
+                                                    ${$cellStorage[$rowCounter][$columnCounter-$spanningOffSet]}{delimiterLength})
+                                                        :
+                                                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength});
 
                 # importantly, move on to the next column!
                 next;
@@ -672,6 +683,31 @@ sub individual_padding{
         # check if the cell shouldn't be measured
         $self->dont_measure(mode=>"cell",row=>$rowCount,column=>$j) if ${$self}{dontMeasure};
 
+        # it's possible to have delimiters of different lengths, for example
+        #
+        #       \begin{tabbing}
+        #       	1   # 22  \> 333   # 4444     \\
+        #       	xxx # aaa #  yyyyy # zzzzzzzz \\
+        #       	.   #     #  &     #          \\
+        #
+        #       	          ^^
+        #       	          ||
+        #       \end{tabbing}
+        #
+        # note that this has a delimiter of \> (length 2) and # (length 1)
+        #
+        # furthermore, it's possible to specify the delimiter justification as "left" or "right"
+        if(${$cell}{delimiterLength}>0 and ${$cell}{delimiterLength} < $maxDelimiterWidth[$j]){
+           if(${$self}{delimiterJustification} eq "left"){
+               ${$cell}{delimiter} .= " " x ($maxDelimiterWidth[$j] - ${$cell}{delimiterLength});
+           } elsif(${$self}{delimiterJustification} eq "right") {
+               ${$cell}{delimiter} = " " x ($maxDelimiterWidth[$j] - ${$cell}{delimiterLength}).${$cell}{delimiter} ;
+           }
+
+           # update the delimiterLength
+           ${$cell}{delimiterLength} = $maxDelimiterWidth[$j];
+        }
+        
         # there are some cells that shouldn't be accounted for in measuring, 
         # for example {ccc}
         next if !${$cell}{measureThis};

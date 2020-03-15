@@ -257,7 +257,7 @@ lookForAlignDelims:
 	delimiter-aligned block, then the advanced form of \texttt{lookForAlignDelims} shown in
 	\cref{lst:aligndelims:advanced} is for you.
 
-	\cmhlistingsfromfile*[style=lookForAlignDelims]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{tabular.yaml}}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile*[style=lookForAlignDelims]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in
 	\cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx} are advanced
@@ -289,13 +289,17 @@ lookForAlignDelims:
 		      spaces to be placed \emph{After} ampersands (default: 1);
 		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of
 		      each cell as either \emph{left} or \emph{right} (default: left);
-		\item \announce{NEW}{alignFinalDoubleBackSlash}{align final double back slash} optionally specifies if the
+		\item \announce{NEW}{align final double back slash}{alignFinalDoubleBackSlash} optionally specifies if the
 		      \emph{final} double back slash should be used for alignment (default: 0);
-		\item \announce{NEW}{dontMeasure}{don't measure feature} optionally specifies if
+		\item \announce{NEW}{don't measure feature}{dontMeasure} optionally specifies if
 		      user-specified cells, rows or the largest entries should \emph{not} be
 		      measured (default: 0);
-		\item \announce{NEW}{delimiterRegEx}{delimiter RegEx feature} optionally specifies the pattern
-		      matching to be used for the alignment delimeter (default: \lstinline3 '(?<!\\)(&)'3).
+		\item \announce{NEW}{delimiter RegEx feature}{delimiterRegEx} optionally specifies the pattern
+		      matching to be used for the alignment delimeter (default: \lstinline3 '(?<!\\)(&)'3);
+		\item \announce{NEW}{delimiter justification}{delimiterJustification} optionally specifies the justification
+		      for the alignment delimeters (default: left); note that this feature is only useful if
+		      you have delimiters of different lengths in the same column, discussed in
+		      \cref{sec:delimiter-reg-ex}.
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
@@ -455,10 +459,10 @@ latexindent.pl matrix1.tex
 
 \subsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
 	The%
-	\announce{NEW}{don't measure feature} \texttt{lookForAlignDelims} field can, optionally, receive the
-	\texttt{dontMeasure} option which can be specified in a few different ways. We will
-	explore this feature in relation to the code given in \cref{lst:tabular-DM}; the
-	default output is shown in \cref{lst:tabular-DM-default}.
+	\announce{NEW}{don't measure feature} \texttt{lookForAlignDelims}
+	field can, optionally, receive the \texttt{dontMeasure} option which can be specified
+	in a few different ways. We will explore this feature in relation to the code given in
+	\cref{lst:tabular-DM}; the default output is shown in \cref{lst:tabular-DM-default}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM.tex}{\texttt{tabular-DM.tex}}{lst:tabular-DM}
@@ -550,12 +554,12 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 		\cmhlistingsfromfile*{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
 	\end{cmhtcbraster}
 
-\subsection{lookForAlignDelims: the delimiterRegEx feature}\label{sec:delimiter-reg-ex}
+\subsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification feature}\label{sec:delimiter-reg-ex}
 	The delimiter alignment%
-	\announce{new}{delimiterRegEx feature} will, by default, align code blocks at
-	the ampersand character. The behaviour is controlled by the \texttt{delimiterRegEx} field
-	within \texttt{lookForAlignDelims}; the default value is \lstinline3'(?<!\\)(&)'3, which can
-	be read as: \emph{an ampersand, as long as it is not immediately preceeded by a backslash}.
+	\announce{new}{delimiterRegEx feature} will, by
+	default, align code blocks at the ampersand character. The behaviour is controlled by the
+	\texttt{delimiterRegEx} field within \texttt{lookForAlignDelims}; the default value is
+	\lstinline3'(?<!\\)(&)'3, which can be read as: \emph{an ampersand, as long as it is not immediately preceeded by a backslash}.
 
 	\begin{warning}
 		Important: note the `capturing' parenthesis in the \lstinline!(&)! which are necessary; if you
@@ -591,8 +595,8 @@ latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
 		      grouping parenthesis, specified a backslash using \lstinline!\\! and said that
 		      it must be followed by either \lstinline!=! or \lstinline!>!.
 	\end{itemize}
-	We can explore this a little further using the settings in \cref{lst:delimiterRegEx2} and
-	run the command
+	We can explore \texttt{delimiterRegEx} a little further using the settings in
+	\cref{lst:delimiterRegEx2} and run the command
 	\begin{commandshell}
 latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
 \end{commandshell}
@@ -603,6 +607,57 @@ latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
 		\cmhlistingsfromfile*{demonstrations/delimiterRegEx2.yaml}[yaml-TCB]{\texttt{delimiterRegEx2.yaml}}{lst:delimiterRegEx2}
 	\end{cmhtcbraster}
 	We note that only the \lstinline!\>! have been aligned.
+
+	Of course, the other lookForAlignDelims options can be used alongside the
+	\texttt{delimiterRegEx}; regardless of the type of delimiter being used (ampersand or
+	anything else), the fields from \vref{lst:aligndelims:advanced} remain the same; for example,
+	using the settings in \cref{lst:delimiterRegEx3}, and running
+	\begin{commandshell}
+latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
+\end{commandshell}
+	to receive the output given in \cref{lst:tabbing-mod3}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabbing-mod3.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx3}}{lst:tabbing-mod3}
+		\cmhlistingsfromfile*{demonstrations/delimiterRegEx3.yaml}[yaml-TCB]{\texttt{delimiterRegEx3.yaml}}{lst:delimiterRegEx3}
+	\end{cmhtcbraster}
+
+	It is possible that delimiters specified within \texttt{delimiterRegEx} can be of
+	different lengths. Consider the file in \cref{lst:tabbing1}, and associated YAML in
+	\cref{lst:delimiterRegEx4}. Note that the	\cref{lst:delimiterRegEx4} specifies the option for
+	the delimiter to be either \lstinline!#! or \lstinline!\>!,
+	\emph{which are different lengths}. Upon running the command
+	\begin{commandshell}
+latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
+\end{commandshell}
+	we receive the output in \cref{lst:tabbing1-mod4}.
+
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile*{demonstrations/tabbing1.tex}{\texttt{tabbing1.tex}}{lst:tabbing1}
+		\cmhlistingsfromfile*{demonstrations/tabbing1-mod4.tex}{\texttt{tabbing1-mod4.tex}}{lst:tabbing1-mod4}
+		\cmhlistingsfromfile*{demonstrations/delimiterRegEx4.yaml}[yaml-TCB]{\texttt{delimiterRegEx4.yaml}}{lst:delimiterRegEx4}
+	\end{cmhtcbraster}
+
+	You can set the \emph{delimiter} justification as either \texttt{left} (default)
+	or \texttt{right}, which will only have effect when delimiters in the same
+	column have different lengths. Using the settings in \cref{lst:delimiterRegEx5} and running
+	the command
+	\begin{commandshell}
+latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
+\end{commandshell}
+	gives the output in \cref{lst:tabbing1-mod5}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabbing1-mod5.tex}{\texttt{tabbing1-mod5.tex}}{lst:tabbing1-mod5}
+		\cmhlistingsfromfile*{demonstrations/delimiterRegEx5.yaml}[yaml-TCB]{\texttt{delimiterRegEx5.yaml}}{lst:delimiterRegEx5}
+	\end{cmhtcbraster}
+
+	Note that in \cref{lst:tabbing1-mod5} the second set of delimiters have been
+	\emph{right aligned} -- it is quite subtle!
+
 \yamltitle{indentAfterItems}*{fields}
 	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
 	to look for \lstinline!\item! commands; if these switches are set to

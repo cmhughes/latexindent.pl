@@ -151,6 +151,13 @@ latexindent.pl -s tabbing.tex -o=+-default
 latexindent.pl -s tabbing.tex -o=+-mod1 -l=delimiterRegEx1.yaml
 latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
 latexindent.pl -s tabbing1.tex -o=+-mod3 -l=delimiterRegEx3.yaml
+
+latexindent.pl -s tabbing2.tex -o=+-mod5 -l=delimiterRegEx5.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod6 -l=delimiterRegEx6.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod7 -l=delimiterRegEx7.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod8 -l=delimiterRegEx8.yaml
+
+latexindent.pl -s mixed.tex -o=+-out -l=mixed.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
