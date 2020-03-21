@@ -286,7 +286,7 @@ latexindent.pl -c=/path/to/directory/ myfile.tex
 
 	If you wish to have backup files and \texttt{indent.log} written to a directory other
 	than the current working directory, then you can send these `cruft' files to another
-	directory. % this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
+	directory. Note the use of a trailing forward slash. % this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
 
 \flagbox{-g, --logfile=<name of log file>}
 	\begin{commandshell}
@@ -329,12 +329,19 @@ latexindent.pl myfile
 \flagbox{STDIN}
 	\begin{commandshell}
 cat myfile.tex | latexindent.pl
+cat myfile.tex | latexindent.pl -
 \end{commandshell}
 	\texttt{latexindent.pl} will%
 	\announce{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
 	other commands directly into the script. For example assuming that you have content in
 	\texttt{myfile.tex}, then the above command will output the results of operating upon
-	\texttt{myfile.tex}
+	\texttt{myfile.tex}. 
+
+    If you wish to use this feature with your own local settings, via the \texttt{-l} switch, 
+    then you should finish your call to \texttt{latexindent.pl} with a \texttt{-} sign:
+	\begin{commandshell}
+cat myfile.tex | latexindent.pl -l=mysettings.yaml -
+\end{commandshell}
 
 	Similarly, if you%
 	\announce{2018-01-13}*{no options/filename updated} simply type
@@ -357,7 +364,7 @@ latexindent.pl -r myfile.tex
 latexindent.pl -replacement myfile.tex
 \end{commandshell}
 	You can%
-	\announce*{2019-07-13}{replacement mode switch} call
+	\announce{2019-07-13}{replacement mode switch} call
 	\texttt{latexindent.pl} with the \texttt{-r} switch to instruct it to perform
 	replacements/substitutions on your file; full details and examples are given in
 	\vref{sec:replacements}.
@@ -368,7 +375,7 @@ latexindent.pl -rv myfile.tex
 latexindent.pl -replacementrespectverb myfile.tex
 \end{commandshell}
 	You can%
-	\announce*{2019-07-13}{replacement mode switch, respecting verbatim} instruct
+	\announce{2019-07-13}{replacement mode switch, respecting verbatim} instruct
 	\texttt{latexindent.pl} to perform replacements/substitutions by using the
 	\texttt{-rv} switch, but will \emph{respect verbatim code blocks}; full details and
 	examples are given in \vref{sec:replacements}.
@@ -379,7 +386,7 @@ latexindent.pl -rr myfile.tex
 latexindent.pl -onlyreplacement myfile.tex
 \end{commandshell}
 	You can%
-	\announce*{2019-07-13}{replacement (only) mode switch} instruct
+	\announce{2019-07-13}{replacement (only) mode switch} instruct
 	\texttt{latexindent.pl} to skip all of its other indentation operations and
 	\emph{only} perform replacements/substitutions by using the
 	\texttt{-rr} switch; full details and examples are given in

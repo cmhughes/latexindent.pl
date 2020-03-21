@@ -12,4 +12,6 @@ Typical running order of these helper scripts:
     - <commit changes and push>
     - <pull request to master>
     - <pull from master>
+    - git tag "V<number>"
+    - git push --tags
     - prepctan.sh

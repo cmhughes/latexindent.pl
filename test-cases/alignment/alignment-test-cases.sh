@@ -4,6 +4,11 @@ loopmax=4
 
 [[ $silentMode == 0 ]] && set -x 
 # table-based test cases
+latexindent.pl -s simple.tex -o=+-default.tex
+latexindent.pl -s simple-multi-column.tex -o=+-mod1 -y="lookForAlignDelims:tabular:multiColumnGrouping:1"
+latexindent.pl -s simple-multi-column.tex -o=+-mod2 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;justification:right"
+latexindent.pl -s simple-multi-column.tex -o=+-mod3 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesBeforeAmpersand:3;justification:right"
+latexindent.pl -s simple-multi-column.tex -o=+-mod4 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesAfterAmpersand:3;justification:right"
 latexindent.pl -s table1.tex -o table1-default.tex
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
@@ -69,6 +74,7 @@ latexindent.pl -s tabular-karl.tex -o=+-out6.tex -l multiColumnGrouping.yaml,tab
 latexindent.pl -s multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s unicode-multicol.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s table3.tex -o=+-out.tex -l multiColumnGrouping.yaml
+latexindent.pl -s tabular-multiple-multicol -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s multicol-no-ampersands -o=+-default.tex
 latexindent.pl -s multicol-no-ampersands.tex -o=+-out.tex -l multiColumnGrouping.yaml
 latexindent.pl -s multicol-no-ampersands.tex -o=+-out5.tex -l multiColumnGrouping.yaml,tabular5.yaml
@@ -116,6 +122,42 @@ do
 done
 latexindent.pl -s -m pmatrix2.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
 latexindent.pl -s -m pmatrix3.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pmatrix.yaml
+# multicolumn grouping issue from douglasrizzo, https://github.com/cmhughes/latexindent.pl/issues/143
+latexindent.pl -s douglasrizzo.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+latexindent.pl -s douglasrizzo1.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+latexindent.pl -s douglasrizzo2.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+# alignFinalDoubleBackSlash, as in https://github.com/cmhughes/latexindent.pl/issues/179
+latexindent.pl -s hudcap.tex -o=+-default
+latexindent.pl -s hudcap.tex -o=+-mod1 -l=alignFinalDoubleBackSlash.yaml
+latexindent.pl -s hudcap1.tex -o=+-default
+latexindent.pl -s hudcap1.tex -o=+-mod1 -l=alignFinalDoubleBackSlash.yaml
+latexindent.pl -s hudcap1.tex -o=+-mod2 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5"
+latexindent.pl -s hudcap1.tex -o=+-mod3 -l=alignFinalDoubleBackSlash.yaml -y="lookForAlignDelims:tabular:spacesBeforeDoubleBackSlash:5;alignDoubleBackSlash:0"
+# dontMeasure, https://github.com/cmhughes/latexindent.pl/issues/182
+latexindent.pl -s yangmw.tex -o=+-default -y="lookForAlignDelims:tabular:dontMeasure:0"
+latexindent.pl -s yangmw.tex -o=+-mod1 -l=dontMeasure.yaml
+latexindent.pl -s yangmw.tex -o=+-mod2 -l=dontMeasure2.yaml
+latexindent.pl -s yangmw.tex -o=+-mod3 -l=dontMeasure3.yaml
+latexindent.pl -s yangmw.tex -o=+-mod4 -l=dontMeasure4.yaml
+latexindent.pl -s yangmw.tex -o=+-mod5 -l=dontMeasure5.yaml
+latexindent.pl -s yangmw.tex -o=+-mod6 -l=dontMeasure6.yaml
+latexindent.pl -s yangmw.tex -o=+-mod7 -l=dontMeasure7.yaml
+latexindent.pl -s yangmw.tex -o=+-mod8 -l=dontMeasure8.yaml
+latexindent.pl -s yangmw.tex -o=+-mod9 -l=dontMeasure9.yaml
+latexindent.pl -s yangmw.tex -o=+-just-right -l=dontMeasure.yaml -y="lookForAlignDelims:tabular:spacesBeforeAmpersand:3;justification:right"
+latexindent.pl -s swaroopguggilam.tex -o=+-mod1 -l=dontMeasure1.yaml
+# delimiterRegex feature: https://github.com/cmhughes/latexindent.pl/issues/187
+latexindent.pl -s tabbing.tex -o=+-default
+latexindent.pl -s tabbing.tex -o=+-mod1 -l=delimiterRegEx1.yaml
+latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
+latexindent.pl -s tabbing1.tex -o=+-mod3 -l=delimiterRegEx3.yaml
+
+latexindent.pl -s tabbing2.tex -o=+-mod5 -l=delimiterRegEx5.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod6 -l=delimiterRegEx6.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod7 -l=delimiterRegEx7.yaml
+latexindent.pl -s tabbing2.tex -o=+-mod8 -l=delimiterRegEx8.yaml
+
+latexindent.pl -s mixed.tex -o=+-out -l=mixed.yaml
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

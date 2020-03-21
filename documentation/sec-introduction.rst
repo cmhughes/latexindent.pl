@@ -7,9 +7,8 @@ Thanks
 I first created ``latexindent.pl`` to help me format chapter files in a
 big project. After I blogged about it on the TeX stack exchange (“A Perl
 Script for Indenting Tex Files” 2017) I received some positive feedback
-and follow-up feature requests. A big thank you to Harish Kumar Kumar
-(2013) who helped to develop and test the initial versions of the
-script.
+and follow-up feature requests. A big thank you to Harish Kumar (Kumar
+2013) who helped to develop and test the initial versions of the script.
 
 The ``YAML``-based interface of ``latexindent.pl`` was inspired by the
 wonderful ``arara`` tool; any similarities are deliberate, and I hope
@@ -68,7 +67,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in
-this version of the documentation, there are a total of 453. This may
+this version of the documentation, there are a total of 490. This may
 seem a lot, but I deem it necessary in presenting the various different
 options of ``latexindent.pl`` and the associated output that they are
 capable of producing.
@@ -99,9 +98,9 @@ given (as here) it means that the snippet is taken directly from
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 441-443
+ 	:lines: 445-447
  	:linenos:
- 	:lineno-start: 441
+ 	:lineno-start: 445
 
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks`
@@ -111,9 +110,9 @@ for more details.
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 571-579
+ 	:lines: 575-583
  	:linenos:
- 	:lineno-start: 571
+ 	:lineno-start: 575
 
 This type of listing is a ``.yaml`` file, but it will only be relevant
 when the ``-r`` switch is active; see :numref:`sec:replacements` for
@@ -157,6 +156,15 @@ You might also like to see
 https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc,
 for example, as well as :numref:`sec:requiredmodules`.
 
+A word about regular expressions
+--------------------------------
+
+As you read this documentation, you may encounter the term *regular
+expressions*. I’ve tried to write this documentation in such a way so as
+to allow you to engage with them or not, as you prefer. This
+documentation is not designed to be a guide to regular expressions, and
+if you’d like to read about them, I recommend (Friedl, n.d.).
+
 .. raw:: html
 
    <div id="refs" class="references">
@@ -167,6 +175,16 @@ for example, as well as :numref:`sec:requiredmodules`.
 
 “A Perl Script for Indenting Tex Files.” 2017. Accessed January 23.
 http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-masteringregexp">
+
+Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
 
 .. raw:: html
 

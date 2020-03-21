@@ -53,9 +53,9 @@ replacement-mode switches, we will use the style given in
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 571-579
+ 	:lines: 575-583
  	:linenos:
- 	:lineno-start: 571
+ 	:lineno-start: 575
 
 The first entry within the ``replacements`` field is ``amalgamate``, and
 is *optional*; by default it is set to 1, so that replacements will be
@@ -203,7 +203,7 @@ Examples of replacements
 	The code given in :numref:`lst:colsep1` is an example of a *regular
 	expression*, which we may abbreviate to *regex* in what follows. This
 	manual is not intended to be a tutorial on regular expressions; you
-	might like to read, for example, Friedl (n.d.) for a detailed covering
+	might like to read, for example, (Friedl, n.d.) for a detailed covering
 	of the topic. With reference to :numref:`lst:colsep1`, we do note the
 	following:
 	

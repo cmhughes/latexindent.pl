@@ -103,7 +103,7 @@ ENDQUOTE
     ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
     die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
 
-    my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory} : '').($switches{logFileName}||"indent.log");
+    my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory}."/" : '').($switches{logFileName}||"indent.log");
     
     # layout of the logfile information, for example
     #
@@ -168,8 +168,10 @@ ENDQUOTE
         $logger->info("Filename: ${$self}{fileName}");
     } else {
         $logger->info("Reading input from STDIN");
-        my $buttonText = ($FindBin::Script eq 'latexindent.exe') ? 'CTRL+Z followed by ENTER':'CTRL+D';
-        print STDERR "Please enter text to be indented: (press $buttonText when finished)\n";
+        if (-t STDIN) {
+            my $buttonText = ($FindBin::Script eq 'latexindent.exe') ? 'CTRL+Z followed by ENTER':'CTRL+D';
+            print STDERR "Please enter text to be indented: (press $buttonText when finished)\n";
+        }
     }
 
     # log the switches from the user

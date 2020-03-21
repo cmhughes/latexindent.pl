@@ -146,7 +146,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 	There are options to specify the \texttt{huge} option for the
 	\texttt{Text::Wrap} module \cite{textwrap}
-	\announce*{2019-09-07}{huge option for text wrap module}. This can be helpful if you would like to forbid the
+	\announce{2019-09-07}{huge option for text wrap module}. This can be helpful if you would like to forbid the
 	\texttt{Text::Wrap} routine from breaking words. For example, using the settings
 	in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and running the commands
 	\begin{commandshell}
@@ -158,11 +158,11 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 	this; see \cite{textwrap} for more details.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
-		\cmhlistingsfromfile*{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
+		\cmhlistingsfromfile{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
 
-		\cmhlistingsfromfile*{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
-		\cmhlistingsfromfile*{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
+		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
 	\end{cmhtcbraster}
 
 \subsubsection{text wrapping on a per-code-block basis}
@@ -576,7 +576,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	you can switch it off by setting it to \texttt{0}, and you can
 	experiment with the \texttt{other}
 	field.%
-	\announce*{2019-07-13}{fine tuning the betterFullStop} You can also seek
+	\announce{2019-07-13}{fine tuning the betterFullStop} You can also seek
 	to customise the \texttt{betterFullStop} routine by using the
 	\emph{fine tuning}, detailed in \vref{lst:fineTuning}.
 
@@ -668,6 +668,11 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 	for sentences, then you would use \texttt{sentence}; explicitly, starting with
 	\vref{lst:textwrap9-yaml}, for example, you would replace/append
 	\texttt{environments} with, for example, \texttt{sentence: 50}.
+
+	If you specify \texttt{textWrapSentences} as 1, but do \emph{not}
+	specify a value for \texttt{columns} then the text wrapping will
+	\emph{not} operate on sentences, and you will see a warning in
+	\texttt{indent.log}.
 
 	The indentation of sentences requires that sentences are stored as code blocks. This
 	means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
@@ -969,7 +974,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      there is not already a line break before or after the \emph{<part of thing>},
 		      followed by a blank line;
 		\item[4] \emph{add blank line mode}%
-		      \announce*{2019-07-13}{blank line poly-switch}; a blank line will
+		      \announce{2019-07-13}{blank line poly-switch}; a blank line will
 		      be added before or after the \emph{<part of thing>} under consideration, even if the
 		      \emph{<part of thing>} is already on its own line.
 	\end{itemize}
@@ -1099,22 +1104,22 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\emph{blank line} has been added after adding the line break.
 
 	Let's now change%
-	\announce*{2019-07-13}{demonstration of new blank line poly-switch} each of
+	\announce{2019-07-13}{demonstration of new blank line poly-switch} each of
 	the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are
 	$4$ and save them into \texttt{env-beg4.yaml} and
 	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
 	\end{minipage}
 
 	We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
 
-	\cmhlistingsfromfile*{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
+	\cmhlistingsfromfile{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
 
 	Upon running the commands
 	\begin{commandshell}
@@ -1125,8 +1130,8 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
 	then we receive the respective outputs in \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-beg4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-beg4}}{lst:env-mlb1-beg4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-body4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-body4}}{lst:env-mlb1-body4}
 	\end{cmhtcbraster}
 
 	We note in particular that, by design, for this value of the poly-switches:
@@ -1237,17 +1242,17 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\emph{blank line} has been added after the line break.
 
 	Let's now change%
-	\announce*{2019-07-13}{demonstration of new blank line poly-switch} each
+	\announce{2019-07-13}{demonstration of new blank line poly-switch} each
 	of the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they
 	are $4$ and save them into \texttt{env-end4.yaml} and
 	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.5\textwidth}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
 	\end{minipage}
 
 	We will demonstrate this poly-switch value using the code from
@@ -1262,8 +1267,8 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
 	then we receive the respective outputs in \cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
-		\cmhlistingsfromfile*{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-end4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end4}}{lst:env-mlb1-end4}
+		\cmhlistingsfromfile{demonstrations/env-mlb1-end-f4.tex}{\texttt{env-mlb1.tex} using \cref{lst:env-end-f4}}{lst:env-mlb1-end-f4}
 	\end{cmhtcbraster}
 
 	We note in particular that, by design, for this value of the poly-switches:
@@ -1504,7 +1509,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 
 \subsection{Poly-switches for double back slash}\label{subsec:dbs}
 	With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic})%
-	\announce*{2019-07-13}{poly-switch for double back slash} you can
+	\announce{2019-07-13}{poly-switch for double back slash} you can
 	specify poly-switches to dictate the line-break behaviour of double back slashes in
 	environments (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or
 	special code blocks (\vref{lst:specialafter}). Note that for these poly-switches to
@@ -1512,7 +1517,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	\texttt{lookForAlignDelims} (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
 
 	Consider the code given in \cref{lst:dbs-demo}.
-	\begin{cmhlistings}*[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
+	\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
 \begin{tabular}{cc}
  1 & 2 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*) 3 & 4 (*@$\ElseStartsOnOwnLine$@*)\\(*@$\ElseFinishesWithLineBreak$@*)
 \end{tabular}
@@ -1541,13 +1546,13 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 	\cref{lst:tabular3-DBS2}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
 	\end{cmhtcbraster}
 
 	We note that
@@ -1576,13 +1581,13 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 	\cref{lst:tabular3-DBS4}.
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[raster column skip=.01\linewidth]
-		\cmhlistingsfromfile*{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
+		\cmhlistingsfromfile{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
 	\end{cmhtcbraster}
 
 	We note that
@@ -1605,7 +1610,7 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 	\texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with
 	the code within \cref{lst:special4}.
 
-	\cmhlistingsfromfile*{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
+	\cmhlistingsfromfile{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
 
 	Upon using the YAML settings in \cref{lst:DBS5}, and running the command
 	\begin{commandshell}
@@ -1617,8 +1622,8 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile*{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
+		\cmhlistingsfromfile{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
 	\end{cmhtcbraster}
 
 	There are a few things to note:
@@ -1637,7 +1642,7 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 	poly-switches for optional and mandatory arguments. We begin with the code in
 	\cref{lst:mycommand2}.
 
-	\cmhlistingsfromfile*{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
+	\cmhlistingsfromfile{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
 
 	Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
 	\begin{commandshell}
@@ -1650,16 +1655,16 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
+		\cmhlistingsfromfile{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}[
 			raster force size=false,
 			raster column 1/.style={add to width=-.1\textwidth},
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
-		\cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
+		\cmhlistingsfromfile{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
+		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
 	\end{cmhtcbraster}
 
 \subsubsection{Double back slash optional square brackets}
@@ -1669,7 +1674,7 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 
 	For example, beginning with the code in \cref{lst:pmatrix3}
 
-	\cmhlistingsfromfile*{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
+	\cmhlistingsfromfile{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
 
 	and running the following command, using \cref{lst:DBS3},
 	\begin{commandshell}
@@ -1677,7 +1682,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 \end{commandshell}
 	then we receive the output given in \cref{lst:pmatrix3-DBS3}.
 
-	\cmhlistingsfromfile*{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+	\cmhlistingsfromfile{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
 
 	You can customise the pattern for the double back slash by exploring the
 	\emph{fine tuning} field detailed in \vref{lst:fineTuning}.
@@ -1698,70 +1703,70 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 
 	\clearpage
 	\begin{longtable}{llll}
-		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                                                          \\
+		\caption{Poly-switch mappings for all code-block types}\label{tab:poly-switch-mapping}                                                                                                                                                         \\
 		\toprule
-		Code block                                              & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
+		Code block                                             & Sample                                                                  & \multicolumn{2}{c}{Poly-switch mapping}                                                                     \\
 		\midrule
-		environment                                             & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
-		                                                        & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                        & \verb!body of myenv!$\EndStartsOnOwnLine$                         & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
-		                                                        & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                   & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
-		                                                        & \verb!after words!                                              &                                         &                                                                   \\
+		environment                                            & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & BeginStartsOnOwnLine                                              \\
+		                                                       & \verb!\begin{myenv}!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                       & \verb!body of myenv!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & EndStartsOnOwnLine                                                \\
+		                                                       & \verb!\end{myenv}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & EndFinishesWithLineBreak                                          \\
+		                                                       & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		ifelsefi                                                & \verb!before words!$\BeginStartsOnOwnLine$                       & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
-		                                                        & \verb!\if...!$\BodyStartsOnOwnLine$                        & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
-		                                                        & \verb!body of if/or statement!$\OrStartsOnOwnLine$                          & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
-		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                                    \\
-		                                                        & \verb!\or!$\OrFinishesWithLineBreak$                    & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
-		                                                        & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
-		                                                        & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
-		                                                        & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
-		                                                        & \verb!\fi!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
-		                                                        & \verb!after words!                                             &                                         &                                                                   \\
+		ifelsefi                                               & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & IfStartsOnOwnLine                                                 \\
+		                                                       & \verb!\if...!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & BodyStartsOnOwnLine                                               \\
+		                                                       & \verb!body of if/or statement!$\OrStartsOnOwnLine$                         & $\OrStartsOnOwnLine$                    & OrStartsOnOwnLine                                                 %
+		\announce{2018-04-27}{new ifElseFi code block poly-switches}                                                                                                                                                                                   \\
+		                                                       & \verb!\or!$\OrFinishesWithLineBreak$                   & $\OrFinishesWithLineBreak$              & OrFinishesWithLineBreak                                           \\
+		                                                       & \verb!body of if/or statement!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & ElseStartsOnOwnLine                                               \\
+		                                                       & \verb!\else!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & ElseFinishesWithLineBreak                                         \\
+		                                                       & \verb!body of else statement!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & FiStartsOnOwnLine                                                 \\
+		                                                       & \verb!\fi!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & FiFinishesWithLineBreak                                           \\
+		                                                       & \verb!after words!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		optionalArguments                                       & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
-		                                                        & \verb![!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
-		\announce*{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
-		                                                        & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
-		                                                        & \verb!end of body of opt arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
-		                                                        & \verb!]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
-		                                                        & \verb!...!                                             &                                         &                                                                   \\
+		optionalArguments                                      & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LSqBStartsOnOwnLine\footnote{LSqB stands for Left Square Bracket} \\
+		                                                       & \verb![!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & OptArgBodyStartsOnOwnLine                                         \\
+		\announce{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		                                                       & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
+		                                                       & \verb!end of body of opt arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RSqBStartsOnOwnLine                                               \\
+		                                                       & \verb!]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RSqBFinishesWithLineBreak                                         \\
+		                                                       & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		mandatoryArguments                                      & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
-		                                                        & \verb!{!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
-		\announce*{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
-		                                                        & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
-		                                                        & \verb!end of body of mand arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
-		                                                        & \verb!}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
-		                                                        & \verb!...!                                             &                                         &                                                                   \\
+		mandatoryArguments                                     & \verb!...!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & LCuBStartsOnOwnLine\footnote{LCuB stands for Left Curly Brace}    \\
+		                                                       & \verb!{!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & MandArgBodyStartsOnOwnLine                                        \\
+		\announce{2019-07-13}{new comma-related poly-switches} & \verb!value before comma!$\ElseStartsOnOwnLine$,                      & $\ElseStartsOnOwnLine$                  & CommaStartsOnOwnLine                                              \\
+		                                                       & $\ElseFinishesWithLineBreak$                                            & $\ElseFinishesWithLineBreak$            & CommaFinishesWithLineBreak                                        \\
+		                                                       & \verb!end of body of mand arg!$\EndStartsOnOwnLine$                        & $\EndStartsOnOwnLine$                   & RCuBStartsOnOwnLine                                               \\
+		                                                       & \verb!}!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & RCuBFinishesWithLineBreak                                         \\
+		                                                       & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		commands                                                & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
-		                                                        & \verb!\mycommand!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
-		                                                        & $\langle$\itshape{arguments}$\rangle$                                   &                                         &                                                                   \\
+		commands                                               & \verb!before words!$\BeginStartsOnOwnLine$                      & $\BeginStartsOnOwnLine$                 & CommandStartsOnOwnLine                                            \\
+		                                                       & \verb!\mycommand!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
+		                                                       & $\langle$\itshape{arguments}$\rangle$                                   &                                         &                                                                   \\
 		\cmidrule{2-4}
-		namedGroupingBraces Brackets                            & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
-		                                                        & myname$\BodyStartsOnOwnLine$                                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
-		                                                        & $\langle$\itshape{braces/brackets}$\rangle$                             &                                         &                                                                   \\
+		namedGroupingBraces Brackets                           & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
+		                                                       & myname$\BodyStartsOnOwnLine$                                            & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
+		                                                       & $\langle$\itshape{braces/brackets}$\rangle$                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		keyEqualsValuesBraces\newline Brackets                  & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
-		                                                        & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$                      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
-		                                                        & $\langle$\itshape{braces/brackets}$\rangle$                             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
+		keyEqualsValuesBraces\newline Brackets                 & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & KeyStartsOnOwnLine                                                \\
+		                                                       & key$\EqualsStartsOnOwnLine$=$\BodyStartsOnOwnLine$                      & $\EqualsStartsOnOwnLine$                & EqualsStartsOnOwnLine                                             \\
+		                                                       & $\langle$\itshape{braces/brackets}$\rangle$                             & $\BodyStartsOnOwnLine$                  & EqualsFinishesWithLineBreak                                       \\
 		\cmidrule{2-4}
-		items                                                   & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
-		                                                        & \verb!\item!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
-		                                                        & \verb!...!                                             &                                         &                                                                   \\
+		items                                                  & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & ItemStartsOnOwnLine                                               \\
+		                                                       & \verb!\item!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & ItemFinishesWithLineBreak                                         \\
+		                                                       & \verb!...!                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		specialBeginEnd                                         & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
-		                                                        & \verb!\[!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
-		                                                        & \verb!body of special/middle!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
-		\announce{2018-04-27}{new special code block poly-switches}                                                                                                                                                                                     \\
-		                                                        & \verb!\middle!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
-		                                                        & body of special/middle $\EndStartsOnOwnLine$                            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
-		                                                        & \verb!\]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
-		                                                        & after words                                                             &                                         &                                                                   \\
+		specialBeginEnd                                        & before words$\BeginStartsOnOwnLine$                                     & $\BeginStartsOnOwnLine$                 & SpecialBeginStartsOnOwnLine                                       \\
+		                                                       & \verb!\[!$\BodyStartsOnOwnLine$                       & $\BodyStartsOnOwnLine$                  & SpecialBodyStartsOnOwnLine                                        \\
+		                                                       & \verb!body of special/middle!$\ElseStartsOnOwnLine$                       & $\ElseStartsOnOwnLine$                  & SpecialMiddleStartsOnOwnLine                                      %
+		\announce{2018-04-27}{new special code block poly-switches}                                                                                                                                                                                    \\
+		                                                       & \verb!\middle!$\ElseFinishesWithLineBreak$                 & $\ElseFinishesWithLineBreak$            & SpecialMiddleFinishesWithLineBreak                                \\
+		                                                       & body of special/middle $\EndStartsOnOwnLine$                            & $\EndStartsOnOwnLine$                   & SpecialEndStartsOnOwnLine                                         \\
+		                                                       & \verb!\]!$\EndFinishesWithLineBreak$                  & $\EndFinishesWithLineBreak$             & SpecialEndFinishesWithLineBreak                                   \\
+		                                                       & after words                                                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		verbatim                                                & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!          & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                      \\
-		\announce{2019-05-05}{verbatim poly-switches}           & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$ & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                  \\
-		                                                        & after words                                                             &                                         &                                                                   \\
+		verbatim                                               & before words$\BeginStartsOnOwnLine$\verb!\begin{verbatim}!          & $\BeginStartsOnOwnLine$                 & VerbatimBeginStartsOnOwnLine                                      \\
+		\announce{2019-05-05}{verbatim poly-switches}          & body of verbatim \verb!\end{verbatim}!$\EndFinishesWithLineBreak$ & $\EndFinishesWithLineBreak$             & VerbatimEndFinishesWithLineBreak                                  \\
+		                                                       & after words                                                             &                                         &                                                                   \\
 		\bottomrule
 	\end{longtable}

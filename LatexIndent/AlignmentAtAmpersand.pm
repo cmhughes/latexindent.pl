@@ -20,15 +20,20 @@ use utf8;
 use Unicode::GCString;
 use Data::Dumper;
 use Exporter qw/import/;
-use List::Util qw(max);
+use List::Util qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else/;
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure/;
 our $alignmentBlockCounter;
+our @cellStorage;   # two-dimensional storage array containing the cell information
+our @formattedBody; # array for the new body
+our @minMultiColSpan;
+our @maxColumnWidth;
+our @maxDelimiterWidth;
 
 sub find_aligned_block{
     my $self = shift;
@@ -127,27 +132,60 @@ sub align_at_ampersand{
     my $self = shift;
     return if(${$self}{bodyLineBreaks}==0);
 
-    # calculate the maximum number of ampersands in a row in the body
     my $maximumNumberOfAmpersands = 0;
+
+    # clear the global arrays
+    @formattedBody = ();
+    @cellStorage = ();
+    @minMultiColSpan = ();
+    @maxColumnWidth = ();
+    @maxDelimiterWidth = ();
+
+    # maximum column widths
+    my @maximumColumnWidths;
+
+    my $rowCounter = -1;
+    my $columnCounter = -1;
+
+    $logger->trace("*dontMeasure routine, row mode") if(${$self}{dontMeasure} and $is_t_switch_active);
+
+    # initial loop for column storage and measuring
+    # initial loop for column storage and measuring
+    # initial loop for column storage and measuring
     foreach(split("\n",${$self}{body})){
-        my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
-        $maximumNumberOfAmpersands = $numberOfAmpersands if($numberOfAmpersands>$maximumNumberOfAmpersands);
-    }
+        $rowCounter++;
 
-    # create an array of zeros
-    my @maximumColumnWidth = (0) x ($maximumNumberOfAmpersands+1); 
-    my @maximumColumnWidthMC = (0) x ($maximumNumberOfAmpersands+1); 
+        # default is to measure this row, but it can be switched off by the dont_measure routine
+        ${$self}{measureRow} = 1;
 
-    # array for the new body
-    my @formattedBody;
+        # call the dont_measure routine
+        $self->dont_measure(mode=>"row",row=>$_) if ${$self}{dontMeasure};
 
-    # now loop back through the body, and store the maximum column size
-    foreach(split("\n",${$self}{body})){
         # remove \\ and anything following it
-        my $endPiece;
+        my $endPiece = q();
         if($_ =~ m/(\\\\.*)/){
-            $_ =~ s/(\\\\.*)//;
-            $endPiece = $1;
+            if(${$self}{alignFinalDoubleBackSlash} ){
+                # for example, if we want:
+                #
+                #  Name & \shortstack{Hi \\ Lo} \\      <!--- Note this row!
+                #  Foo  & Bar                   \\
+                #
+                # in the first row, note that the first \\
+                # needs to be ignored, and we align by 
+                # the final double back slash                           
+                
+                $_ =~ s/(\\\\
+                          (?:                      
+                              (?!                 
+                                  (?:\\\\)           
+                              ).            # any character, but not \\
+                          )*?$              # non-greedy
+                        )//sx;
+                $endPiece = $1;
+            } else {
+                $_ =~ s/(\\\\.*)//;
+                $endPiece = $1;
+            }
         }
 
         # remove any trailing comments
@@ -157,318 +195,172 @@ sub align_at_ampersand{
             $trailingComments = $1; 
         }
 
-        # count the number of ampersands in the current row
-        my $numberOfAmpersands = () = $_ =~ /(?<!\\)&/g;
+        # some rows shouldn't be formatted
+        my $unformattedRow = $_;
 
-        # switch for multiColumGrouping
-        my $multiColumnGrouping = ($_ =~ m/\\multicolumn/ and ${$self}{multiColumnGrouping});
-        my $alignRowsWithoutMaxDelims = ${$self}{alignRowsWithoutMaxDelims};
+        # delimiters regex, default is:
+        #
+        #   (?<!\\)&
+        #
+        # which is set in GetYamlSettings.pm, but can be set 
+        # by the user using, for example
+        #
+        #   lookForAlignDelims:
+        #       tabular:
+        #           delimiter: '\<'
+        #
+        my $delimiterRegEx = qr/${$self}{delimiterRegEx}/;
 
-        # by default, the stripped row is simply the current row
-        my $strippedRow = $_;
+        my $numberOfAmpersands = () = $_ =~ /$delimiterRegEx/g;
+        $maximumNumberOfAmpersands = $numberOfAmpersands if($numberOfAmpersands>$maximumNumberOfAmpersands);
+        
+        # remove space at the beginning of a row, surrounding &, and at the end of the row
+        $_ =~ s/(?<!\\)\h*($delimiterRegEx)\h*/$1/g;
+        $_ =~ s/^\h*//g;
+        $_ =~ s/\h*$//g;
+        
+        # if the line finishes with an &, then add an empty space,
+        # otherwise the column count is off
+        $_ .= ($_ =~ m/$delimiterRegEx$/ ? " ":q());
 
-        # loop through the columns
-        my $columnCount = 0;
+        # store the columns, which are either split by & 
+        # or otherwise simply the current line, if for example, the current line simply
+        # contains \multicolumn{8}... \\  (see test-cases/texexchange/366841-zarko.tex, for example)
+        my @columns = ($_ =~ m/$delimiterRegEx/ ? split(/($delimiterRegEx)/,$_) : $_);
 
-        # format switch off by default
-        my $formatRow = 0;
+        $columnCounter = -1;
+        my $spanning = 0;
 
-        # store the column sizes for measuring and comparison purposes
-        my @columnSizes = ();
+        foreach my $column (@columns){
+            # if a column contains only the delimiter, then we need to 
+            #       - measure it
+            #       - add it and its length to the previous cell
+            #       - remove it from the columns array
+            #
+            if($column =~ m/$delimiterRegEx/) {
+                # update the delimiter to be used, and its associated length 
+                # for the *previous* cell
+                my $spanningOffSet = ($spanning > 0 ?  $spanning - 1 : 0);
+                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiter} = $1;
+                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength} = Unicode::GCString->new($1)->columns();
 
-        # we will store the columns in each row
-        my @columns;
+                # keep track of maximum delimiter width
+                $maxDelimiterWidth[$columnCounter - $spanningOffSet] = 
+                                                (defined $maxDelimiterWidth[$columnCounter - $spanningOffSet]
+                                                        ? 
+                                                max($maxDelimiterWidth[$columnCounter-$spanningOffSet],
+                                                    ${$cellStorage[$rowCounter][$columnCounter-$spanningOffSet]}{delimiterLength})
+                                                        :
+                                                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength});
 
-        # need to have at least one ampersand, or contain a \multicolumn command
-        if( ($_ =~ m/(?<!\\)&/ and ( ($numberOfAmpersands == $maximumNumberOfAmpersands)||$multiColumnGrouping||$alignRowsWithoutMaxDelims ) )
-                                                or
-                            ($multiColumnGrouping and $alignRowsWithoutMaxDelims) ){
-            # remove space at the beginning of a row, surrounding &, and at the end of the row
-            $_ =~ s/(?<!\\)\h*(?<!\\)&\h*/&/g;
-            $_ =~ s/^\h*//g;
-            $_ =~ s/\h*$//g;
-
-            # if the line finishes with an &, then add an empty space,
-            # otherwise the column count is off
-            $_ .= ($_ =~ m/(?<!\\)&$/ ? " ":q());
-
-            # store the columns, which are either split by & 
-            # or otherwise simply the current line, if for example, the current line simply
-            # contains \multicolumn{8}... \\  (see test-cases/texexchange/366841-zarko.tex, for example)
-            @columns = ($_ =~ m/(?<!\\)&/ ? split(/(?<!\\)&/,$_) : $_);
-
-            # empty the white-space-stripped row
-            $strippedRow = '';
-            foreach my $column (@columns){
-                # if a column has finished with a \ then we need to add a trailing space, 
-                # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
-                $column .= ($column =~ m/\\$/ ? " ": q());
-
-                # store the column size
-                # reference: http://www.perl.com/pub/2012/05/perlunicook-unicode-column-width-for-printing.html
-                my $gcs  = Unicode::GCString->new($column);
-                my $columnWidth = $gcs->columns();
-
-                # multicolumn cells need a bit of special care
-                if($multiColumnGrouping and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
-                    $maximumColumnWidthMC[$columnCount] = $columnWidth if( defined $maximumColumnWidthMC[$columnCount] and ($columnWidth > $maximumColumnWidthMC[$columnCount]) );
-                    $columnWidth = 1 if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/));
-                }
-
-                # store the maximum column width
-                $maximumColumnWidth[$columnCount] = $columnWidth if( defined $maximumColumnWidth[$columnCount] and ($columnWidth > $maximumColumnWidth[$columnCount]) );
-
-                # put the row back together, using " " if the column is empty
-                $strippedRow .= ($columnCount>0 ? "&" : q() ).($columnWidth > 0 ? $column: " ");
-
-                # store the column width
-                $columnSizes[$columnCount] = $columnWidth; 
-
-                # move on to the next column
-                if($multiColumnGrouping and ($column =~ m/\\multicolumn\{(\d+)\}/)){
-                    # columns that are within the multiCol statement receive a width of -1
-                    for my $i (($columnCount+1)..($columnCount+$1)){
-                        $columnSizes[$i] = -1; 
-                    }
-                    # update the columnCount to account for the multiColSpan
-                    $columnCount += $1; 
-                } else {
-                    $columnCount++;
-                }
+                # importantly, move on to the next column!
+                next;
             }
 
-            # toggle the formatting switch
-            $formatRow = 1;
-        } elsif($endPiece and ${$self}{alignDoubleBackSlash}){
-            # otherwise a row could contain no ampersands, but would still desire
-            # the \\ to be aligned, see test-cases/alignment/multicol-no-ampersands.tex
-            @columns = $_;
-            $formatRow = 1;
+            # otherwise increment the column counter, and proceed
+            $columnCounter++;
+
+            # reset spanning (only applicable if multiColumnGrouping)
+            $spanning = 0;
+
+            # if a column has finished with a \ then we need to add a trailing space, 
+            # otherwise the \ can be put next to &. See test-cases/texexchange/112343-gonzalo for example
+            $column .= ($column =~ m/\\$/ ? " ": q());
+
+            # basic cell storage
+            $cellStorage[$rowCounter][$columnCounter] 
+                    = ({width=>Unicode::GCString->new($column)->columns(),
+                        entry=>$column,
+                        type=>($numberOfAmpersands>0 ? "X" : "*"),
+                        groupPadding=>0,
+                        colSpan=>".",
+                        delimiter=>"",
+                        delimiterLength=>0,
+                        measureThis=> ($numberOfAmpersands>0 ?  ${$self}{measureRow} : 0) });
+                    
+            # store the maximum column width 
+            $maxColumnWidth[$columnCounter] = (defined $maxColumnWidth[$columnCounter] 
+                                                        ? 
+                                                max($maxColumnWidth[$columnCounter],${$cellStorage[$rowCounter][$columnCounter]}{width})
+                                                        :
+                                                ${$cellStorage[$rowCounter][$columnCounter]}{width} ) if ${$cellStorage[$rowCounter][$columnCounter]}{type} eq "X";
+            
+            # \multicolumn cell
+            if(${$self}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
+                $spanning = $1;
+
+                # adjust the type
+                ${$cellStorage[$rowCounter][$columnCounter]}{type} = "$spanning";
+
+                # some \multicol cells can have their spanning information removed from type
+                # so we store it in colSpan as well
+                ${$cellStorage[$rowCounter][$columnCounter]}{colSpan} = $spanning;
+
+                # and don't measure it
+                ${$cellStorage[$rowCounter][$columnCounter]}{measureThis} = 0;
+
+                # create 'gap' columns
+                for(my $j=$columnCounter+1; $j<=$columnCounter+($spanning-1);$j++){
+                    $cellStorage[$rowCounter][$j] = ({type=>"-",
+                                                      entry=>'',
+                                                      width=>0,
+                                                      individualPadding=>0,
+                                                      groupPadding=>0,
+                                                      colSpan=>".",
+                                                      delimiter=>"",
+                                                      delimiterLength=>0,
+                                                      measureThis=>0});
+                }
+                
+                # store the minimum spanning value
+                $minMultiColSpan[$columnCounter] = (defined $minMultiColSpan[$columnCounter] ? min($minMultiColSpan[$columnCounter],$spanning) : $spanning );
+
+                # adjust the column counter
+                $columnCounter += $spanning - 1;
+            } 
         }
 
         # store the information
-        push(@formattedBody,{
-                            row=>$strippedRow,
-                            format=>$formatRow,
-                            multiColumnGrouping=>$multiColumnGrouping,
-                            columnSizes=>\@columnSizes,
-                            columns=>\@columns,
-                            endPiece=>($endPiece ? $endPiece :q() ),
-                            trailingComment=>($trailingComments ? $trailingComments :q() )});
+        push(@formattedBody,{row=>$_,
+                             endPiece=>$endPiece,
+                             trailingComment=>$trailingComments,
+                             numberOfAmpersands=>$numberOfAmpersands,
+                             unformattedRow=>$unformattedRow });
+                 
     }
 
-    # output some of the info so far to the log file
-    $logger->trace("*Alignment at ampersand routine for ${$self}{name} (see lookForAlignDelims)") if $is_t_switch_active;
-    $logger->trace("Maximum column sizes of horizontally stripped formatted block (${$self}{name}): @maximumColumnWidth") if $is_t_switch_active;
-    $logger->trace("align at ampersand: ${$self}{lookForAlignDelims}") if $is_t_switch_active;
-    $logger->trace("align at \\\\: ${$self}{alignDoubleBackSlash}") if $is_t_switch_active;
-    $logger->trace("spaces before \\\\: ${$self}{spacesBeforeDoubleBackSlash}") if $is_t_switch_active;
-    $logger->trace("multi column grouping: ${$self}{multiColumnGrouping}") if $is_t_switch_active;
-    $logger->trace("align rows without maximum delimeters: ${$self}{alignRowsWithoutMaxDelims}") if $is_t_switch_active;
-    $logger->trace("spaces before ampersand: ${$self}{spacesBeforeAmpersand}") if $is_t_switch_active;
-    $logger->trace("spaces after ampersand: ${$self}{spacesAfterAmpersand}") if $is_t_switch_active;
-    $logger->trace("justification: ${$self}{justification}") if $is_t_switch_active;
+    # store the maximum number of ampersands
+    ${$self}{maximumNumberOfAmpersands} = $maximumNumberOfAmpersands;
 
-    # acount for multicolumn grouping, if the appropriate switch is set
-    if(${$self}{multiColumnGrouping}){
-        foreach(@formattedBody){
-            if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
+    # blocks with nested multicolumns need some pre checking
+    $self->multicolumn_pre_check if ${$self}{multiColumnGrouping};
+    
+    # maximum column width loop, and individual padding
+    $self->individual_padding;
 
-                # set a columnCount, which will vary depending on multiColumnGrouping settings or not
-                my $columnCount=0;
+    # multi column rearrangement and multicolumn padding
+    $self->multicolumn_padding if ${$self}{multiColumnGrouping};
 
-                # loop through the columns
-                foreach my $column (@{${$_}{columns}}){
-                    # calculate the width of the current column 
-                    my $gcs  = Unicode::GCString->new($column);
-                    my $columnWidth = $gcs->columns();
+    # multi column post check to ensure that multicolumn commands have received appropriate padding
+    $self->multicolumn_post_check if ${$self}{multiColumnGrouping};
 
-                    # check for multiColumnGrouping
-                    if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
-                        my $multiColSpan = $1;
-
-                        # for example, \multicolumn{3}{c}{<stuff>} spans 3 columns, so 
-                        # the maximum column needs to account for this (subtract 1 because of 0 index in perl arrays)
-                        my $columnMax = $columnCount+$multiColSpan-1;
-
-                        # groupingWidth contains the total width of column sizes grouped 
-                        # underneath the \multicolumn{} statement
-                        my $groupingWidth = 0;
-                        my $maxGroupingWidth = 0;
-                        foreach (@formattedBody){
-                           $groupingWidth = 0;
-
-                            # loop through the columns covered by the multicolumn statement
-                            foreach my $j ($columnCount..$columnMax){
-                                if(  defined @{${$_}{columnSizes}}[$j] 
-                                             and 
-                                     @{${$_}{columnSizes}}[$j] >= 0
-                                             and
-                                         ${$_}{format} 
-                                          ){
-                                    $groupingWidth += (defined $maximumColumnWidth[$j] ? $maximumColumnWidth[$j] : 0); 
-                                } else {
-                                    $groupingWidth = 0;
-                                }
-                            }
-
-                            # update the maximum grouping width
-                            $maxGroupingWidth = $groupingWidth if($groupingWidth > $maxGroupingWidth);
-
-                            # the cells that receive multicolumn grouping need extra padding; in particular
-                            # if the justification is *left*:
-                            #       the *last* cell of the multicol group receives the padding
-                            # if the justification is *right*:
-                            #       the *first* cell of the multicol group receives the padding
-                            #
-                            # this motivates the introduction of $columnOffset, which is 
-                            #       0 if justification is left
-                            #       $multiColSpan if justification is right
-                            my $columnOffset = (${$self}{justification} eq "left") ? $columnMax : $columnCount;
-                            if(defined @{${$_}{columnSizes}}[$columnMax] and ($columnWidth > ($groupingWidth+(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand})*($multiColSpan-1)) ) and @{${$_}{columnSizes}}[$columnMax] >= 0){
-                                my $multiColPadding = $columnWidth-$groupingWidth-(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand})*($multiColSpan-1);
-
-                                # it's possible that multiColPadding might already be assigned; in which case, 
-                                # we need to check that the current value of $multiColPadding is greater than the existing one
-                                if(defined @{${$_}{multiColPadding}}[$columnOffset]){
-                                    @{${$_}{multiColPadding}}[$columnOffset] = max($multiColPadding,@{${$_}{multiColPadding}}[$columnOffset]);
-                                } else {
-                                    @{${$_}{multiColPadding}}[$columnOffset] = $multiColPadding;
-                                }
-
-                                # also need to account for maximum column width *including* other multicolumn statements
-                                if($maximumColumnWidthMC[$columnCount]>$columnWidth and $column !~ m/\\multicolumn\{(\d+)\}/){
-                                    @{${$_}{multiColPadding}}[$columnOffset] += ($maximumColumnWidthMC[$columnCount]-$columnWidth); 
-                                }
-                            }
-                        }
-                        # update it to account for the ampersands and the spacing either side of ampersands
-                        $maxGroupingWidth += ($multiColSpan-1)*(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand});
-
-                        # store the maxGroupingWidth for use in the next loop
-                        @{${$_}{maxGroupingWidth}}[$columnCount] = $maxGroupingWidth; 
-
-                        # update the columnCount to account for the multiColSpan
-                        $columnCount += $multiColSpan - 1;
-                    } 
-
-                    # increase the column count
-                    $columnCount++;
-                }
-            } 
-        }
+    # output to log file
+    if( $is_t_switch_active ){
+      &pretty_print_cell_info($_) for ("entry","type","colSpan","width","measureThis","maximumColumnWidth","individualPadding","groupPadding","delimiter","delimiterLength");
     }
 
-    # the maximum row width will be used in aligning (or not) the \\
-    my $maximumRowWidth = 0;
+    # main formatting loop
+    $self->main_formatting;
 
-    # now that the multicolumn widths have been accounted for, loop through the body
-    foreach(@formattedBody){
-        if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
-
-            # set a columnCount, which will vary depending on multiColumnGrouping settings or not
-            my $columnCount=0;
-            my $tmpRow = q();
-
-            # loop through the columns
-            foreach my $column (@{${$_}{columns}}){
-                # calculate the width of the current column 
-                my $gcs  = Unicode::GCString->new($column);
-                my $columnWidth = $gcs->columns();
-
-                # reset the column padding
-                my $padding = q();
-
-                # check for multiColumnGrouping
-                if(${$_}{multiColumnGrouping} and $column =~ m/\\multicolumn\{(\d+)\}/ and $1>1){
-                    my $multiColSpan = $1;
-
-                    # groupingWidth contains the total width of column sizes grouped 
-                    # underneath the \multicolumn{} statement
-                    my $maxGroupingWidth = ${${$_}{maxGroupingWidth}}[$columnCount];
-
-                    # it's possible to have situations such as
-                    #
-	                # \multicolumn{3}{l}{one} & \multicolumn{3}{l}{two} & \\ 
-	                # \multicolumn{6}{l}{one}                           & \\
-                    #
-                    # in which case we need to loop through the @maximumColumnWidthMC
-                    my $groupingWidthMC = 0;
-                    my $multicolsEncountered =0;
-                    for ($columnCount..($columnCount + ($multiColSpan-1))){
-                        if(defined $maximumColumnWidthMC[$_]){
-                            $groupingWidthMC += $maximumColumnWidthMC[$_];
-                            $multicolsEncountered++ if $maximumColumnWidthMC[$_]>0;
-                        }
-                    }
-
-                    # need to account for (spacesBeforeAmpersands) + length of ampersands (which is 1) + (spacesAfterAmpersands)
-                    $groupingWidthMC += ($multicolsEncountered-1)*(${$self}{spacesBeforeAmpersand}+1+${$self}{spacesAfterAmpersand});
-                    
-                    # set the padding; we need
-                    #       maximum( $maxGroupingWidth, $maximumColumnWidthMC[$columnCount] )
-                    my $maxValueToUse = 0;
-                    if(defined $maximumColumnWidthMC[$columnCount]){
-                        $maxValueToUse = max($maxGroupingWidth,$maximumColumnWidthMC[$columnCount],$groupingWidthMC);
-                    } else {
-                        $maxValueToUse = $maxGroupingWidth;
-                    }
-
-                    # calculate the padding
-                    $padding = " " x ( $maxValueToUse  >= $columnWidth ? $maxValueToUse  - $columnWidth : 0 );
-
-                    # to the log file
-                    if($is_tt_switch_active){    
-                        $logger->trace("*---------column-------------");
-                        $logger->trace($column);
-                        $logger->trace("multiColSpan: $multiColSpan");
-                        $logger->trace("groupingWidthMC: $groupingWidthMC");
-                        $logger->trace("padding length: ",$maxValueToUse  - $columnWidth);
-                        $logger->trace("multicolsEncountered: $multicolsEncountered");
-                        $logger->trace("maxValueToUse: $maxValueToUse");
-                        $logger->trace("maximumColumnWidth: ",join(",",@maximumColumnWidth));
-                        $logger->trace("maximumColumnWidthMC: ",join(",",@maximumColumnWidthMC));
-                    }
-
-                    # update the columnCount to account for the multiColSpan
-                    $columnCount += $multiColSpan - 1;
-                } else {
-                    # compare the *current* column width with the *maximum* column width
-                    $padding = " " x (defined $maximumColumnWidth[$columnCount] and $maximumColumnWidth[$columnCount] >= $columnWidth ? $maximumColumnWidth[$columnCount] - $columnWidth : 0);
-                }
-
-                # either way, the row is formed of "COLUMN + PADDING"
-                if(${$self}{justification} eq "left"){
-                    $tmpRow .= $column.$padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q()).(" " x ${$self}{spacesBeforeAmpersand})."&".(" " x ${$self}{spacesAfterAmpersand});
-                } else {
-                    $tmpRow .= $padding.(defined @{${$_}{multiColPadding}}[$columnCount] ? " " x @{${$_}{multiColPadding}}[$columnCount]: q()).$column.(" " x ${$self}{spacesBeforeAmpersand})."&".(" " x ${$self}{spacesAfterAmpersand});
-                }
-                $columnCount++;
-            }
-
-            # remove the final &
-            $tmpRow =~ s/\h*&\h*$/ /;
-            my $finalSpacing = q();
-            $finalSpacing = " " x (${$self}{spacesBeforeDoubleBackSlash}) if ${$self}{spacesBeforeDoubleBackSlash}>=1;
-            $tmpRow =~ s/\h*$/$finalSpacing/;
-
-            # replace the row with the formatted row
-            ${$_}{row} = $tmpRow;
-
-            # update the maximum row width
-            my $gcs  = Unicode::GCString->new($tmpRow);
-            ${$_}{rowWidth} = $gcs->columns();
-            $maximumRowWidth = ${$_}{rowWidth} if(${$_}{rowWidth} >  $maximumRowWidth);
-        } 
-    }
-
-    # final loop through to get \\ aligned
+    # final \\ loop
+    # final \\ loop
+    # final \\ loop
     foreach (@formattedBody){
         # reset the padding
         my $padding = q();
 
         # possibly adjust the padding
-        if(${$_}{format} and ${$_}{row} !~ m/^\h*$/){
+        if(${$_}{row} !~ m/^\h*$/){
             # remove trailing horizontal space if ${$self}{alignDoubleBackSlash} is set to 0
             ${$_}{row} =~ s/\h*$// if (!${$self}{alignDoubleBackSlash});
             
@@ -481,17 +373,22 @@ sub align_at_ampersand{
                 $padding = " " x (${$self}{spacesBeforeDoubleBackSlash});
             } else {
                 # aligned \\
-                $padding = " " x ($maximumRowWidth - ${$_}{rowWidth});
+                $padding = " " x max(0,(${$self}{maximumRowWidth} - ${$_}{rowWidth}));
             }
         }
 
         # format the row, and put the trailing \\ and trailing comments back into the row
         ${$_}{row} .= $padding.(${$_}{endPiece} ? ${$_}{endPiece} :q() ).(${$_}{trailingComment}? ${$_}{trailingComment} : q() );
-    }
 
-    # to the log file
-    if($is_tt_switch_active){    
-        $logger->trace(${$_}{row}) for @formattedBody;
+        # some rows shouldn't be formatted, and may only have trailing comments;
+        # see test-cases/alignment/table4.tex for example
+        if(  (${$_}{numberOfAmpersands} == 0 and !${$_}{endPiece})  
+                            or 
+             (${$_}{numberOfAmpersands} < ${$self}{maximumNumberOfAmpersands} and !${$self}{alignRowsWithoutMaxDelims} and !${$_}{endPiece})      
+        ){
+            ${$_}{row} = (${$_}{unformattedRow}?${$_}{unformattedRow}:q()).(${$_}{trailingComment}?${$_}{trailingComment}:q());
+        }
+
     }
 
     # delete the original body
@@ -503,6 +400,882 @@ sub align_at_ampersand{
     # if the \end{} statement didn't originally have a line break before it, we need to remove the final 
     # line break added by the above
     ${$self}{body} =~ s/\h*\R$//s if !${$self}{linebreaksAtEnd}{body};
+  }
+
+sub main_formatting {
+    # PURPOSE:
+    #   (1) perform the *padding* operations
+    #       by adding 
+    #
+    #           <spacesBeforeAmpersand>
+    #           &
+    #           <spacesEndAmpersand>
+    #
+    #       to the cell entries, accounting for
+    #       the justification being LEFT or RIGHT
+    #
+    #   (2) measure the row width and store
+    #       the maximum row width for use with 
+    #       the (possible) alignment of the \\
+    #
+    my $self = shift;
+
+    ${$self}{maximumRowWidth} = 0;
+
+    # objective (1): padding
+    # objective (1): padding
+    # objective (1): padding
+    
+    $logger->trace("*formatted rows for: ${$self}{name}") if($is_t_switch_active);
+
+    my $rowCount = -1;
+    # row loop
+    foreach my $row (@cellStorage) {
+      $rowCount++;
+
+      # clear the temporary row
+      my $tmpRow = q();
+
+      # column loop
+      foreach my $cell (@$row) {
+          if (${$cell}{type} eq "*" or ${$cell}{type} eq "-"){
+            $tmpRow .= ${$cell}{entry};
+            next;
+          }
+
+          # the placement of the padding is dependent on the value of justification
+          if(${$self}{justification} eq "left"){
+            # LEFT: 
+            # LEFT: 
+            # LEFT: 
+            #   <cell entry> <individual padding> <group padding> ...
+            $tmpRow .= ${$cell}{entry};
+            $tmpRow .= " " x ${$cell}{individualPadding};
+            $tmpRow .= " " x ${$cell}{groupPadding};
+          } else {
+            # RIGHT: 
+            # RIGHT: 
+            # RIGHT: 
+            #   <group padding> <individual padding> <cell entry> ...
+            $tmpRow .= " " x ${$cell}{groupPadding};
+            $tmpRow .= " " x ${$cell}{individualPadding};
+            $tmpRow .= ${$cell}{entry};
+          }
+
+          # either way, finish with:  <spacesBeforeAmpersand> & <spacesAfterAmpersand>
+          $tmpRow .= " " x ${$self}{spacesBeforeAmpersand};
+          $tmpRow .= ${$cell}{delimiter};
+          $tmpRow .= " " x ${$self}{spacesAfterAmpersand};
+      }
+
+      # if alignRowsWithoutMaxDelims = 0
+      # and there are *less than* the maximum number of ampersands, then 
+      # we undo all of the work above!
+      if( !${$self}{alignRowsWithoutMaxDelims} 
+              and 
+           ${$formattedBody[$rowCount]}{numberOfAmpersands} < ${$self}{maximumNumberOfAmpersands} ){
+            $tmpRow = ${$formattedBody[$rowCount]}{unformattedRow};
+      }
+
+      # spacing before \\
+      my $finalSpacing = q();
+      $finalSpacing = " " x (${$self}{spacesBeforeDoubleBackSlash}) if ${$self}{spacesBeforeDoubleBackSlash}>=1;
+      $tmpRow =~ s/\h*$/$finalSpacing/;
+
+      # if $tmpRow is made up of only horizontal space, then empty it
+      $tmpRow = q() if($tmpRow =~ m/^\h*$/);
+
+      # to the log file
+      $logger->trace($tmpRow) if($is_t_switch_active);
+
+      # store this formatted row
+      ${$formattedBody[$rowCount]}{row} = $tmpRow;
+
+      # objective (2): calculate row width and update maximumRowWidth
+      # objective (2): calculate row width and update maximumRowWidth
+      # objective (2): calculate row width and update maximumRowWidth
+      my $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+      ${$formattedBody[$rowCount]}{rowWidth} = $rowWidth;
+      
+      # update the maximum row width
+      if( $rowWidth > ${$self}{maximumRowWidth}
+          and !(${$formattedBody[$rowCount]}{numberOfAmpersands} == 0 and !${$formattedBody[$rowCount]}{endPiece}) ){
+          ${$self}{maximumRowWidth} = $rowWidth;
+      }
+    }
+}
+
+sub dont_measure{
+
+    my $self = shift;
+    my %input = @_;
+
+    if( $input{mode} eq "cell" 
+        and ref(\${$self}{dontMeasure}) eq "SCALAR" 
+        and ${$self}{dontMeasure} eq "largest" 
+        and ${$cellStorage[$input{row}][$input{column}]}{width} == $maxColumnWidth[$input{column}]){
+        # dontMeasure stored as largest, for example
+        #
+        # lookForAlignDelims:
+        #    tabular: 
+        #       dontMeasure: largest
+        $logger->trace("CELL FOUND with maximum column width, $maxColumnWidth[$input{column}], and will not be measured (largest mode)") if($is_t_switch_active);
+        $logger->trace("column: ", $input{column}," width: ",${$cellStorage[$input{row}][$input{column}]}{width}) if($is_t_switch_active);
+        $logger->trace("entry: ", ${$cellStorage[$input{row}][$input{column}]}{entry}) if($is_t_switch_active);
+        $logger->trace("--------------------------") if($is_t_switch_active);
+        ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+        ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+    } elsif($input{mode} eq "cell" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
+      
+        # loop through the entries in dontMeasure
+        foreach(@{${$self}{dontMeasure}}){
+            if(ref(\$_) eq "SCALAR" and ${$cellStorage[$input{row}][$input{column}]}{entry} eq $_){
+                # dontMeasure stored as *strings*, for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           - \multicolumn{1}{c}{Expiry}
+                #           - Tenor 
+                #           - \multicolumn{1}{c}{$\Delta_{\text{call},10}$} 
+                
+                $logger->trace("CELL FOUND (this): $_ and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            } elsif (ref($_) eq "HASH" and  ${$_}{this} and ${$cellStorage[$input{row}][$input{column}]}{entry} eq ${$_}{this}){
+                # for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               this: \multicolumn{1}{c}{Expiry}
+                #               applyTo: cell
+                #
+                # OR (note that applyTo is optional):
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               this: \multicolumn{1}{c}{Expiry}
+                next if(defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                $logger->trace("CELL FOUND (this): ${$_}{this} and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            } elsif (ref($_) eq "HASH" and  ${$_}{regex} ){
+                # for example:
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               regex: \multicolumn{1}{c}{Expiry}
+                #               applyTo: cell
+                #
+                # OR (note that applyTo is optional):
+                #
+                #   lookForAlignDelims:
+                #      tabular: 
+                #         dontMeasure:
+                #           -
+                #               regex: \multicolumn{1}{c}{Expiry}
+                next if(defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                my $regex = qr/${$_}{regex}/;
+                next unless ${$cellStorage[$input{row}][$input{column}]}{entry} =~ m/${$_}{regex}/;
+                $logger->trace("CELL FOUND (regex): ${$_}{regex} and will not be measured") if($is_t_switch_active);
+                ${$cellStorage[$input{row}][$input{column}]}{measureThis} = 0;
+                ${$cellStorage[$input{row}][$input{column}]}{type} = "X";
+            }
+        }
+    } elsif($input{mode} eq "row" and (ref(${$self}{dontMeasure}) eq "ARRAY")){
+        foreach(@{${$self}{dontMeasure}}){
+            # move on, unless we have specified applyTo as row:
+            #
+            #    lookForAlignDelims:
+            #       tabular: 
+            #          dontMeasure:
+            #            -
+            #                this: \multicolumn{1}{c}{Expiry}
+            #                applyTo: row
+            #
+            # note: *default value* of applyTo is cell
+            next unless (ref($_) eq "HASH" and  defined ${$_}{applyTo} and ${$_}{applyTo} eq "row");
+            if(${$_}{this} and $input{row} eq ${$_}{this}){
+                $logger->trace("ROW FOUND (this): ${$_}{this}") if($is_t_switch_active);
+                $logger->trace("and will not be measured") if($is_t_switch_active);
+                ${$self}{measureRow} = 0;
+            } elsif(${$_}{regex} and $input{row} =~  ${$_}{regex}){
+                $logger->trace("ROW FOUND (regex): ${$_}{regex}") if($is_t_switch_active);
+                $logger->trace("and will not be measured") if($is_t_switch_active);
+                ${$self}{measureRow} = 0;
+            }
+        }
+    }
+}
+
+sub individual_padding{
+  # PURPOSE
+  #     (1) the *primary* purpose of this routine is to 
+  #         measure the *individual padding* of 
+  #         each cell.
+  #
+  #         for example, for 
+  #
+  #            111 & 2  & 33333 \\
+  #            4   & 55 & 66\\ 
+  #
+  #         then the individual padding will be
+  #         
+  #            0    1   0
+  #            2    0   3
+  #
+  #         this is calculated by looping 
+  #         through the rows & columns
+  #         and finding the maximum column widths
+  #
+  #     (2) the *secondary* purpose of this routine is to 
+  #         fill in any gaps in the @cellStorage array 
+  #         for any entries that don't yet exist;
+  #
+  #         for example, 
+  #               111 & 2  & 33333 \\
+  #               4   & 55 & 66\\
+  #               77  & 8   <------ GAP HERE
+  #
+  #         there is a gap in @cellStorage in the final row,
+  #         which is completed by the second loop in the below
+  
+  my $self = shift;
+
+  # array to store maximum column widths
+  my @maximumColumnWidths;
+
+  # we count the maximum number of columns
+  my $maximumNumberOfColumns = 0;
+
+  # maximum column width loop
+  # maximum column width loop
+  # maximum column width loop
+  
+  $logger->trace("*dontMeasure routine, cell mode") if(${$self}{dontMeasure} and $is_t_switch_active);
+
+  # row loop
+  my $rowCount = -1;
+  foreach my $row (@cellStorage) {
+    $rowCount++;
+
+    # column loop
+    my $j = -1;
+    foreach my $cell (@$row) {
+        $j++;
+
+        # if alignRowsWithoutMaxDelims = 0
+        # and there are *less than* the maximum number of ampersands, then 
+        # don't measure this column
+        if( !${$self}{alignRowsWithoutMaxDelims} 
+                and 
+             ${$formattedBody[$rowCount]}{numberOfAmpersands} < ${$self}{maximumNumberOfAmpersands} ){
+             ${$cell}{measureThis} = 0;
+             ${$cell}{type} = "*";
+        }
+
+        # check if the cell shouldn't be measured
+        $self->dont_measure(mode=>"cell",row=>$rowCount,column=>$j) if ${$self}{dontMeasure};
+
+        # it's possible to have delimiters of different lengths, for example
+        #
+        #       \begin{tabbing}
+        #       	1   # 22  \> 333   # 4444     \\
+        #       	xxx # aaa #  yyyyy # zzzzzzzz \\
+        #       	.   #     #  &     #          \\
+        #
+        #       	          ^^
+        #       	          ||
+        #       \end{tabbing}
+        #
+        # note that this has a delimiter of \> (length 2) and # (length 1)
+        #
+        # furthermore, it's possible to specify the delimiter justification as "left" or "right"
+        if(${$cell}{delimiterLength}>0 and ${$cell}{delimiterLength} < $maxDelimiterWidth[$j]){
+           if(${$self}{delimiterJustification} eq "left"){
+               ${$cell}{delimiter} .= " " x ($maxDelimiterWidth[$j] - ${$cell}{delimiterLength});
+           } elsif(${$self}{delimiterJustification} eq "right") {
+               ${$cell}{delimiter} = " " x ($maxDelimiterWidth[$j] - ${$cell}{delimiterLength}).${$cell}{delimiter} ;
+           }
+
+           # update the delimiterLength
+           ${$cell}{delimiterLength} = $maxDelimiterWidth[$j];
+        }
+        
+        # there are some cells that shouldn't be accounted for in measuring, 
+        # for example {ccc}
+        next if !${$cell}{measureThis};
+
+        # otherwise, make the measurement
+        $maximumColumnWidths[$j] = (defined $maximumColumnWidths[$j] 
+                                        ? 
+                                    max($maximumColumnWidths[$j],${$cell}{width})
+                                        :
+                                    ${$cell}{width});
+    }
+
+    # update the maximum number of columns
+    $maximumNumberOfColumns = $j if ( $j > $maximumNumberOfColumns );
+  }
+  
+  # individual padding and gap filling loop
+  # individual padding and gap filling loop
+  # individual padding and gap filling loop
+  
+  # row loop
+  foreach my $row (@cellStorage) {
+    # column loop
+    foreach (my $j=0; $j <= $maximumNumberOfColumns; $j++){
+        if( defined ${$row}[$j]){
+            # individual padding
+            my $maximum = (defined $maximumColumnWidths[$j] ? $maximumColumnWidths[$j]: 0);
+            my $cellWidth = ${$row}[$j]{width}; 
+            ${$row}[$j]{individualPadding} += ($maximum > $cellWidth ? $maximum - $cellWidth : 0);
+        } else { 
+            # gap filling
+            ${$row}[$j] = ({type=>"-",
+                            entry=>'',
+                            width=>0,
+                            individualPadding=>0,
+                            groupPadding=>0,
+                            measureThis=>0,
+                            colSpan=>".",
+                            delimiter=>"", 
+                            delimiterLength=>0,
+              });
+        }
+
+        # now the gaps have been filled, store the maximumColumnWidth for future reference
+        ${$row}[$j]{maximumColumnWidth} = (defined $maximumColumnWidths[$j] ? $maximumColumnWidths[$j] : 0);
+    }
+  }
+}
+
+sub multicolumn_pre_check {
+  # PURPOSE:
+  #     ensure that multiple multicolumn commands are 
+  #     handled appropriately
+  #
+  #     example 1
+  #
+  #           \multicolumn{2}{c}{thing} &       \\
+  #           111 & 2                   & 33333 \\
+  #           4   & 55                  & 66    \\ 
+  #           \multicolumn{2}{c}{a}     &       \\
+  #
+  #              ^^^^^^^^
+  #              ||||||||
+  #              
+  #     the second multicolumn command should not be measured, but 
+  #     *should* receive individual padding
+    my $self = shift;
+
+    # loop through minMultiColSpan and add empty entries as necessary
+    foreach(@minMultiColSpan){
+        $_ = "." if !(defined $_);
+    }
+
+    # ensure that only the *MINIMUM* multicolumn commands are designated 
+    # to be measured; for example:
+    #
+    #     \multicolumn{2}{c|}{Ótimo humano}      & Abuso da pontuação & Recompensas densas \\
+    #     \multicolumn{3}{c||}{Exploração Fácil}                      & second             \\
+    #     Assault     & Asterix                  & Beam Rider         & Alien              \\
+    #
+    # the \multicolumn{2}{c|}{Ótimo humano} *is* the minimum multicolumn command
+    # for the first column, and the \multicolumn{3}{c||}{Exploração Fácil} *is not*
+    # to be measured
+    
+    # row loop
+    my $rowCount = -1;
+    foreach my $row (@cellStorage) {
+      $rowCount++;
+
+      # column loop
+      my $j = -1;
+      foreach my $cell (@$row) {
+        $j++;
+        if( ${$cell}{type} =~ m/(\d)/ and ($1 >$minMultiColSpan[$j])){
+          ${$cell}{type} = "X";
+          ${$cell}{measureThis} = 0;
+        }
+      }
+    }
+
+    # now loop back through and ensure that each of the \multicolumn commands
+    # are measured correctly
+    #
+    # row loop
+    $rowCount = -1;
+    foreach my $row (@cellStorage) {
+      $rowCount++;
+
+      # column loop
+      my $j = -1;
+      foreach my $cell (@$row) {
+        $j++;
+        
+        # multicolumn entry
+        if(${$cell}{type} =~ m/(\d)/) {
+
+           my $multiColumnSpan = $1;
+
+           # *inner* row loop
+           my $innerRowCount = -1;
+           foreach my $innerRow (@cellStorage) {
+             $innerRowCount++;
+
+             # we only want to measure the *other* rows
+             next if($innerRowCount == $rowCount);
+             
+             # column loop
+             my $innerJ = -1;
+             foreach my $innerCell (@$innerRow) {
+               $innerJ++;
+
+               if(  $innerJ == $j and ${$innerCell}{type} =~ m/(\d)/ and $1 >= $multiColumnSpan){
+                 if(${$cell}{width} < ${$innerCell}{width}){
+                     ${$cell}{type} = "X";
+                     ${$cell}{measureThis} = 0;
+                     ${$cell}{individualPadding} = (${$innerCell}{width} - ${$cell}{width} );
+                 } else {
+                     ${$innerCell}{type} = "X";
+                     ${$innerCell}{measureThis} = 0;
+                     ${$innerCell}{individualPadding} = (${$cell}{width} - ${$innerCell}{width});
+                 }
+               }
+             }
+           }
+        }
+       }
+      }
+}
+
+sub multicolumn_padding{
+    # PURPOSE:
+    #   assign multi column padding, for example:
+    #
+    #       \multicolumn{2}{c}{thing}&\\
+    #       111 &2&33333 \\
+    #       4& 55&66\\ 
+    #
+    #  needs to be transformed into
+    #
+    #       \multicolumn{2}{c}{thing} &       \\
+    #       111 & 2                   & 33333 \\
+    #       4   & 55                  & 66    \\ 
+    #
+    #                ^^^^^^^^^^^^^^^
+    #                |||||||||||||||
+    #
+    #  and we need to compute the multi column padding,
+    #  illustrated by the up arrows in the above
+    #
+    #  Approach:
+    #   (1) measure the "grouping widths" under/above each of the 
+    #       \multicolumn entries; these are stored within
+    #
+    #               groupingWidth 
+    #
+    #       for the relevant column entries; in the 
+    #       above example, they would be stored in the 
+    #
+    #           2
+    #           55
+    #
+    #       entries when justification is LEFT, and in the 
+    #
+    #           111
+    #           4
+    #
+    #       entries when justification is RIGHT. We also calculate
+    #       maximum grouping width and store it within $maxGroupingWidth
+    #
+    #   (2) loop back through and update
+    #
+    #           groupPadding
+    #
+    #       for each of the relevant column entries; in the 
+    #       above example, they would be stored in the 
+    #
+    #           2
+    #           55
+    #
+    #       entries when justification is LEFT, and in the 
+    #
+    #           111
+    #           4
+    #
+    #   (3) finally, account for the \multicolumn command itself;
+    #       ensuring that we account for it being wider or narrower 
+    #       than its spanning columns
+    my $self = shift;
+
+    # row loop
+    my $rowCount = -1;
+    foreach my $row (@cellStorage) {
+      $rowCount++;
+
+      # column loop
+      my $j = -1;
+      foreach my $cell (@$row) {
+          $j++;
+          
+          # multicolumn entry
+          next unless (${$cell}{type} =~ m/(\d)/);
+
+          my $multiColumnSpan = $1;
+
+          my $maxGroupingWidth = 0;
+          
+          # depending on the 
+          #
+          #    justification
+          #
+          # setting (left or right), we store the 
+          #
+          #    groupingWidth 
+          #
+          # and groupPadding accordingly
+          my $justificationOffset = (${$self}{justification} eq "left" ? $j+$multiColumnSpan-1 : $j);
+
+          # phase (1)
+          # phase (1)
+          # phase (1)
+          
+          # *inner* row loop
+          my $innerRowCount = -1;
+          foreach my $innerRow (@cellStorage) {
+            $innerRowCount++;
+
+            # we only want to measure the *other* rows
+            next if($innerRowCount == $rowCount);
+
+            # we will store the width of columns spanned by the multicolumn command
+            my $groupingWidth = 0;
+
+            # *inner* column loop
+            for (my $innerJ = 0; $innerJ < $multiColumnSpan; $innerJ++) {
+
+               # some entries should not be measured in the grouping width, 
+               # for example
+               #
+               #       \multicolumn{2}{c}{thing} &       \\
+               #       111 & 2                   & 33333 \\
+               #       4   & 55                  & 66    \\ 
+               #       \multicolumn{2}{c}{a}     &       \\
+               #
+               #          ^^^^^^^^
+               #          ||||||||
+               #          
+               # the second \multicolumn entry shouldn't be measured, and it will 
+               # have had 
+               #     
+               #         measureThis 
+               #
+               # switched off during multicolumn_pre_check
+               
+               next if !${$cellStorage[$innerRowCount][$j+$innerJ]}{measureThis};
+
+               $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{width};
+               $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{individualPadding};
+               $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{delimiterLength} if ($innerJ < $multiColumnSpan - 1);
+            }
+
+            # adjust for 
+            #           <spacesBeforeAmpersand>
+            #           &
+            #           <spacesEndAmpersand>
+            # note:
+            #    we need to multiply this by the appropriate multicolumn 
+            #    spanning; in the above example:
+            #
+            #       \multicolumn{2}{c}{thing} &       \\
+            #       111 & 2                   & 33333 \\
+            #       4   & 55                  & 66    \\ 
+            #
+            #   we multiply by (2-1) = 1 because there is *1* ampersand
+            #   underneath the multicolumn command
+            #
+            # note:
+            #   the & will have been accounted for in the above section using delimiterLength
+            
+            $groupingWidth += ($multiColumnSpan-1)
+                                     *
+                              (${$self}{spacesBeforeAmpersand} + ${$self}{spacesAfterAmpersand});
+
+            # store the grouping width for the next phase
+            ${$cellStorage[$innerRowCount][$justificationOffset]}{groupingWidth} = $groupingWidth;
+
+            # update the maximum grouping width
+            $maxGroupingWidth = max($maxGroupingWidth, $groupingWidth);
+
+          }
+
+          # phase (2)
+          # phase (2)
+          # phase (2)
+          
+          # now that the maxGroupingWidth has been established, loop back 
+          # through and update groupingWidth for the appropriate cells
+          
+          # *inner* row loop
+          $innerRowCount = -1;
+          foreach my $innerRow (@cellStorage) {
+            $innerRowCount++;
+
+            # we only want to make adjustment on the *other* rows
+            next if($innerRowCount == $rowCount);
+
+            # it's possible that we have multicolumn commands that were *not* measured,
+            # and are *narrower* than the maxGroupingWidth, for example:
+            #
+            #        \multicolumn{3}{l}{aaaa}         &         \\    <------ this entry won't have been measured! 
+            #        $S_N$ & $=$ & $\SI{1000}{\kV\A}$ & $U_0$ & \\
+            #        \multicolumn{3}{l}{bbbbbbb}      &         \\
+            #
+            if(  ${$cellStorage[$innerRowCount][$j]}{colSpan} ne "."
+                    and ${$cellStorage[$innerRowCount][$j]}{colSpan} == $multiColumnSpan
+                    and !${$cellStorage[$innerRowCount][$j]}{measureThis} 
+                    and $maxGroupingWidth > ${$cellStorage[$innerRowCount][$j]}{width}
+                    and ${$cellStorage[$innerRowCount][$j]}{width} >= ${$cell}{width}) {
+                ${$cellStorage[$innerRowCount][$j]}{individualPadding} = 0;
+                ${$cellStorage[$innerRowCount][$j]}{groupPadding} = ($maxGroupingWidth - ${$cellStorage[$innerRowCount][$j]}{width});
+            }
+
+            my $groupingWidth = ${$cellStorage[$innerRowCount][$justificationOffset]}{groupingWidth};
+
+            # phase (3)
+            # phase (3)
+            # phase (3)
+            
+            # there are two possible cases:
+            #
+            # (1) the \multicolumn statement is *WIDER* than its grouped columns, e.g.:
+            #
+            #       \multicolumn{2}{c}{thing} &       \\
+            #       111 & 2                   & 33333 \\ 
+            #       4   & 55                  & 66    \\ 
+            #                ^^^^^^^^^^^^^^^
+            #                |||||||||||||||
+            #
+            #     in this situation, we need to adjust each of the group paddings for the cells
+            #     marked with an up arrow
+            #
+            # (2) the \multicolumn statement is *NARROWER* than its grouped columns, e.g.:
+            #
+            #                                 ||
+            #                                 **
+            #       \multicolumn{2}{c}{thing}    &       \\
+            #       111 & bbbbbbbbbbbbbbbbbbbbbb & 33333 \\
+            #       4   & 55                     & 66    \\ 
+            #
+            #     in this situation, we need to adjust the groupPadding of the multicolumn
+            #     entry, which happens ***once the row loop has finished***
+            #
+            if(${$cell}{width} > $maxGroupingWidth ){
+                 ${$cellStorage[$innerRowCount][$justificationOffset]}{groupPadding} = (${$cell}{width} - $maxGroupingWidth );
+            }  
+          }
+
+          # case (2) from above when \multicolumn statement is *NARROWER* than its grouped columns
+          if(${$cell}{width} < $maxGroupingWidth ){
+             ${$cell}{groupPadding} += ($maxGroupingWidth - ${$cell}{width});
+             ${$cell}{individualPadding} = 0;
+          }
+      }
+
+    }
+
+}
+
+sub multicolumn_post_check {
+  # PURPOSE:
+  #     ensure that multiple multicolumn commands are 
+  #     handled appropriately
+  #
+  #     example 1
+  #
+  #           \multicolumn{2}{c}{thing} & aaa     & bbb  \\
+  #           111 & 2                   & 33333   &      \\
+  #           4   & 55                  & 66      &      \\ 
+  #           \multicolumn{3}{c}{a}               &      \\
+  #
+  #                                 ^^^^^^^^
+  #                                 ||||||||
+  #              
+  #     the second multicolumn command needs to have its group padding
+  #     accounted for.
+  #
+  #     *Note* this will not have been done previously, as
+  #     this second multicolumn command will have had its type changed to 
+  #     X, because it spans 3 columns, and there is a cell within its 
+  #     column that spans *less than 3 columns*
+  my $self = shift;
+
+  # row loop
+  my $rowCount = -1;
+  foreach my $row (@cellStorage) {
+    $rowCount++;
+
+    # column loop
+    my $j = -1;
+    foreach my $cell (@$row) {
+      $j++;
+      
+      # we only need to account for X-type columns, with an integer colSpan
+      next unless (${$cell}{type} eq "X" and ${$cell}{colSpan} =~ m/(\d+)/);
+
+      # multicolumn entry
+      my $multiColumnSpan = $1;
+      
+      # we store the maximum grouping width
+      my $maxGroupingWidth = 0;
+
+      # *inner* row loop
+      my $innerRowCount = -1;
+      foreach my $innerRow (@cellStorage) {
+        $innerRowCount++;
+
+        # we only want to measure the *other* rows
+        next if($innerRowCount == $rowCount);
+        
+        # we will store the width of columns spanned by the multicolumn command
+        my $groupingWidth = 0;
+        
+        # we need to keep track of the number of ampersands encountered; 
+        #
+        # for example:
+        #
+        #       \multicolumn{2}{c}{thing} & aaa     & bbb  \\
+        #       111 & 2                   & 33333   &      \\
+        #       4   & 55                  & 66      &      \\ 
+        #       \multicolumn{3}{c}{a}               &      \\   <!----- focus on the multicolumn entry in this row
+        #
+        # focusing on the final multicolumn entry (spanning 3 columns), 
+        # when we loop back through the rows, we will encounter:
+        #
+        #   row 1: one ampersand
+        #
+        #       \multicolumn{2}{c}{thing} & aaa    ...
+        #
+        #   row 2: two ampersands
+        #
+        #       111 & 2                   & 33333  ...
+        #
+        #   row 3: two ampersands
+        #
+        #       4   & 55                  & 66     ...
+        #
+        # note: we start the counter at -1, because the count of ampersands
+        #       is always one behind the cell count; for example, looking 
+        #       at row 3 in the above, in the above, in cell 1 (entry: 4)
+        #       we have 0 ampersands, in cell 2 (entry: 55) we now have 1 ampersands, etc
+        my $ampersandsEncountered = -1;
+
+        # column loop
+        my @dumRow = @$innerRow;
+        foreach (my $innerJ = 0; $innerJ <= $#dumRow; $innerJ++){
+
+          # exit the loop if we've reached the multiColumn spanning width
+          last if($innerJ >= ($multiColumnSpan));
+
+          # don't include '*' or '-' cell types in the calculations
+          my $type = ${$cellStorage[$innerRowCount][$j+$innerJ]}{type};
+          next if($type eq "*" or $type eq "-");
+
+          # update the grouping width
+          $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{width};
+          $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{individualPadding};
+
+          # update the number of & encountered
+          $ampersandsEncountered++;
+          $groupingWidth += ${$cellStorage[$innerRowCount][$j+$innerJ]}{delimiterLength} if ($ampersandsEncountered>0);
+
+          # and adjust the column count, if necessary; in the above example
+          #
+          #       \multicolumn{2}{c}{thing} & aaa     & bbb  \\
+          #       111 & 2                   & 33333   &      \\
+          #       4   & 55                  & 66      &      \\ 
+          #       \multicolumn{3}{c}{a}               &      \\   <!----- focus on the multicolumn entry in this row
+          #
+          # the *first entry* \multicolumn{2}{c}{thing} spans 2 columns, so 
+          # we need to move the column count along accordingly
+          
+          if(${$cellStorage[$innerRowCount][$j+$innerJ]}{colSpan} =~ m/(\d+)/){
+            $innerJ += $1-1;
+          }
+          
+        }
+        
+        # adjust for 
+        #           <spacesBeforeAmpersand>
+        #           &
+        #           <spacesEndAmpersand>
+        # note:
+        #    we need to multiply this by the appropriate 
+        #    number of *ampersandsEncountered*
+        #
+        #       \multicolumn{2}{c}{thing} &       \\
+        #       111 & 2                   & 33333 \\
+        #       4   & 55                  & 66    \\ 
+        
+        $groupingWidth += $ampersandsEncountered
+                                 *
+                          (${$self}{spacesBeforeAmpersand} + ${$self}{spacesAfterAmpersand});
+                          
+        # update the maximum grouping width
+        $maxGroupingWidth = max($maxGroupingWidth, $groupingWidth);
+      }
+
+      ${$cell}{individualPadding} = 0;
+
+      # there are cases where the 
+      #
+      #     maxGroupingWidth 
+      #
+      # is *less than* the cell width, for example:
+      #
+      #    \multicolumn{4}{|c|}{\textbf{Search Results}} \\  <!------ the width of this multicolumn entry 
+	  #    1  & D7  & R                       &          \\           is larger than maxGroupingWidth
+	  #    2  & D2  & R                       &          \\
+	  #    \multicolumn{3}{|c|}{\textbf{Avg}} &          \\
+      #
+      ${$cell}{groupPadding} = max(0,$maxGroupingWidth - ${$cell}{width});
+     }
+    }
+}
+
+sub pretty_print_cell_info{
+  
+  my $thingToPrint = (defined $_[0] ? $_[0] : "entry");
+
+  $logger->trace("*cell information: $thingToPrint");
+
+  $logger->trace("minimum multi col span: ",join(",",@minMultiColSpan)) if(@minMultiColSpan);
+
+  foreach my $row (@cellStorage) {
+    my $tmpLogFileLine = q();
+    foreach my $cell (@$row) {
+        $tmpLogFileLine .= ${$cell}{$thingToPrint}."\t";
+    }
+    $logger->trace(' ', $tmpLogFileLine) if($is_t_switch_active);
+  }
+
+  if($thingToPrint eq "type"){
+    $logger->trace("*key to types:");
+    $logger->trace("\tX\tbasic cell, will be measured and aligned");
+    $logger->trace("\t*\t will not be measured, and no ampersand");
+    $logger->trace("\t-\t phantom/blank cell for gaps");
+    $logger->trace("\t[0-9]\tmulticolumn cell, spanning multiple columns");
+  }
+
 }
 
 sub double_back_slash_else{

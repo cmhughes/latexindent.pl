@@ -1,0 +1,12 @@
+lookForAlignDelims:
+   tabbing: 
+    delimiterRegEx: '(\\(?:=|>))'
+   cmh: 
+    delimiterRegEx: '(#)'
+   mixed:
+    delimiterRegEx: '(#|\\>)'
+    spacesBeforeAmpersand: 2
+   another:
+    delimiterRegEx: '(#|\\>)'
+    delimiterJustification: right
+    spacesAfterAmpersand: 6

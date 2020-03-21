@@ -91,5 +91,8 @@ latexindent.pl -s -m dot-followed-by-tilde.tex -o=+-mod1 -y='modifyLineBreaks:on
 latexindent.pl -s -m konfekt.tex -o=+-mod0 -l=konfekt0.yaml
 latexindent.pl -s -m konfekt.tex -o=+-mod1 -l=konfekt1.yaml
 latexindent.pl -s -m konfekt.tex -o=+-mod2 -y="modifyLineBreaks:oneSentencePerLine:manipulateSentences:1;sentencesEndWith:other:\;;sentencesBeginWith:other:[[:lower:]]"
+
+# https://github.com/cmhughes/latexindent.pl/issues/188; in particular, see the WARNING message within indent.log from the following
+latexindent.pl -s -m sentence-wrap-no-columns-specified.tex -l=sentence-wrap-no-columns-specified.yaml -o=+-mod1
 [[ $noisyMode == 1 ]] && makenoise
 git status

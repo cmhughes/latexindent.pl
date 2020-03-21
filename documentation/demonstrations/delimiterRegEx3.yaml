@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   tabbing: 
+    delimiterRegEx: '(\\(?:=|>))'
+    spacesBeforeAmpersand: 0
+    spacesAfterAmpersand: 0

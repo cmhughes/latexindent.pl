@@ -1,8 +1,8 @@
 % arara: pdflatex: {shell: yes}
 % arara: bibtex
-% arara: pdflatex: {shell: yes}
-% arara: pdflatex: {shell: yes}
-% arara: pdflatex: {shell: yes}
+% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
+% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
+% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -360,129 +360,135 @@
 	numbers=left,
 }
 
+\lstdefinestyle{lookForAlignDelims}{
+	style=yaml-LST,
+	firstnumber=148,linerange={148-164},
+	numbers=left,
+}
+
 \lstdefinestyle{indentAfterItems}{
 	style=yaml-LST,
-	firstnumber=187,linerange={187-191},
+	firstnumber=191,linerange={191-195},
 	numbers=left,
 }
 
 \lstdefinestyle{itemNames}{
 	style=yaml-LST,
-	firstnumber=197,linerange={197-199},
+	firstnumber=201,linerange={201-203},
 	numbers=left,
 }
 
 \lstdefinestyle{specialBeginEnd}{
 	style=yaml-LST,
-	firstnumber=203,linerange={203-216},
+	firstnumber=207,linerange={207-220},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
 	style=yaml-LST,
-	firstnumber=226,linerange={226-235},
+	firstnumber=230,linerange={230-239},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=284,linerange={284-285},
+	firstnumber=288,linerange={288-289},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=284,linerange={284-296},
+	firstnumber=288,linerange={288-300},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=300,linerange={300-301},
+	firstnumber=304,linerange={304-305},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=300,linerange={300-312},
+	firstnumber=304,linerange={304-316},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=315,linerange={315-329},
+	firstnumber=319,linerange={319-333},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=441,linerange={441-443},
+	firstnumber=445,linerange={445-447},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=468,linerange={468-469},
+	firstnumber=472,linerange={472-473},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=468,linerange={468-484},
+	firstnumber=472,linerange={472-488},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=485,linerange={485-499},
+	firstnumber=489,linerange={489-503},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=500,linerange={500-509},
+	firstnumber=504,linerange={504-513},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=444,linerange={444-467},
+	firstnumber=448,linerange={448-471},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=449,linerange={449-457},
+	firstnumber=453,linerange={453-461},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=458,linerange={458-461},
+	firstnumber=462,linerange={462-465},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=462,linerange={462-467},
+	firstnumber=466,linerange={466-471},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=510,linerange={510-519},
+	firstnumber=514,linerange={514-523},
 	numbers=left,
 }
 
 \lstdefinestyle{replacements}{
 	style=yaml-LST,
-	firstnumber=571,linerange={571-579},
+	firstnumber=575,linerange={575-583},
 	numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
 	style=yaml-LST,
-	firstnumber=582,linerange={582-603},
+	firstnumber=586,linerange={586-607},
 	numbers=left,
 }
 

@@ -14,9 +14,9 @@ All features described in this section will only be relevant if the
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 441-443
+ 	:lines: 445-447
  	:linenos:
- 	:lineno-start: 441
+ 	:lineno-start: 445
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -91,9 +91,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 468-469
+ 	:lines: 472-473
  	:linenos:
- 	:lineno-start: 468
+ 	:lineno-start: 472
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -173,7 +173,7 @@ then the output is as in :numref:`lst:textwrap3-mod1`.
 
 The text wrapping routine of ``latexindent.pl`` is performed by the
 ``Text::Wrap`` module, which provides a ``separator`` feature to
-separate lines with characters other than a new line (see (“Text:Wrap
+separate lines with characters other than a new line (see (“Text::Wrap
 Perl Module” 2017)). By default, the separator is empty which means that
 a new line token will be used, but you can change it as you see fit.
 
@@ -204,6 +204,43 @@ then we obtain the output in :numref:`lst:textwrap4-mod2`.
  	:caption: ``textwrap2.yaml`` 
  	:name: lst:textwrap2-yaml
 
+There are options to specify the ``huge`` option for the ``Text::Wrap``
+module (“Text::Wrap Perl Module” 2017) . This can be helpful if you
+would like to forbid the ``Text::Wrap`` routine from breaking words. For
+example, using the settings in :numref:`lst:textwrap2A-yaml` and
+:numref:`lst:textwrap2B-yaml` and running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
+    latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
+
+gives the respective output in :numref:`lst:textwrap4-mod2A` and
+:numref:`lst:textwrap4-mod2B`. You can also specify ``break`` in your
+settings, but I haven’t found a useful reason to do this; see
+(“Text::Wrap Perl Module” 2017) for more details.
+
+ .. literalinclude:: demonstrations/textwrap4-mod2A.tex
+ 	:class: .tex
+ 	:caption: ``textwrap4-mod2A.tex`` 
+ 	:name: lst:textwrap4-mod2A
+
+ .. literalinclude:: demonstrations/textwrap2A.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap2A.yaml`` 
+ 	:name: lst:textwrap2A-yaml
+
+ .. literalinclude:: demonstrations/textwrap4-mod2B.tex
+ 	:class: .tex
+ 	:caption: ``textwrap4-mod2B.tex`` 
+ 	:name: lst:textwrap4-mod2B
+
+ .. literalinclude:: demonstrations/textwrap2B.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textwrap2B.yaml`` 
+ 	:name: lst:textwrap2B-yaml
+
 text wrapping on a per-code-block basis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -211,7 +248,7 @@ By default, if the value of ``columns`` is greater than 0 and the ``-m``
 switch is active, then the text wrapping routine will operate before the
 code blocks have been searched for. This behaviour is customisable; in
 particular, you can instead instruct ``latexindent.pl`` to apply
-``textWrap`` on a per-code-block basis. Thanks to (zoehneto) (2018) for
+``textWrap`` on a per-code-block basis. Thanks to ((zoehneto) 2018) for
 their help in testing and shaping this feature.
 
 The full details of ``textWrapOptions`` are shown in
@@ -222,9 +259,9 @@ The full details of ``textWrapOptions`` are shown in
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 468-484
+ 	:lines: 472-488
  	:linenos:
- 	:lineno-start: 468
+ 	:lineno-start: 472
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with
 direct reference to those detailed in :numref:`tab:code-blocks`. The
@@ -489,7 +526,7 @@ oneSentencePerLine: modifying line breaks for sentences
 -------------------------------------------------------
 
 You can instruct ``latexindent.pl`` to format your file so that it puts
-one sentence per line. Thank you to mlep (2017) for helping to shape and
+one sentence per line. Thank you to (mlep 2017) for helping to shape and
 test this feature. The behaviour of this part of the script is
 controlled by the switches detailed in
 :numref:`lst:oneSentencePerLine`, all of which we discuss next.
@@ -498,9 +535,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 444-467
+ 	:lines: 448-471
  	:linenos:
- 	:lineno-start: 444
+ 	:lineno-start: 448
 
 .. describe:: manipulateSentences:0\|1
 
@@ -588,25 +625,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 449-457
+ 	:lines: 453-461
  	:linenos:
- 	:lineno-start: 449
+ 	:lineno-start: 453
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 458-461
+ 	:lines: 462-465
  	:linenos:
- 	:lineno-start: 458
+ 	:lineno-start: 462
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 462-467
+ 	:lines: 466-471
  	:linenos:
- 	:lineno-start: 462
+ 	:lineno-start: 466
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -958,6 +995,10 @@ for sentences, then you would use ``sentence``; explicitly, starting
 with :numref:`lst:textwrap9-yaml`, for example, you would
 replace/append ``environments`` with, for example, ``sentence: 50``.
 
+If you specify ``textWrapSentences`` as 1, but do *not* specify a value
+for ``columns`` then the text wrapping will *not* operate on sentences,
+and you will see a warning in ``indent.log``.
+
 The indentation of sentences requires that sentences are stored as code
 blocks. This means that you may need to tweak
 :numref:`lst:sentencesEndWith`. Let’s explore this in relation to
@@ -1035,7 +1076,7 @@ removeParagraphLineBreaks: modifying line breaks for paragraphs
 When the ``-m`` switch is active ``latexindent.pl`` has the ability to
 remove line breaks from within paragraphs; the behaviour is controlled
 by the ``removeParagraphLineBreaks`` field, detailed in
-:numref:`lst:removeParagraphLineBreaks`. Thank you to Owens (2017) for
+:numref:`lst:removeParagraphLineBreaks`. Thank you to (Owens 2017) for
 shaping and assisting with the testing of this feature. .. describe::
 removeParagraphLineBreaks:fields
 
@@ -1046,9 +1087,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 485-499
+ 	:lines: 489-503
  	:linenos:
- 	:lineno-start: 485
+ 	:lineno-start: 489
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -1246,9 +1287,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 500-509
+ 	:lines: 504-513
  	:linenos:
- 	:lineno-start: 500
+ 	:lineno-start: 504
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -1441,9 +1482,9 @@ to 0) by default.
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 510-519
+ 	:lines: 514-523
  	:linenos:
- 	:lineno-start: 510
+ 	:lineno-start: 514
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of
@@ -2818,7 +2859,7 @@ https://github.com/cmhughes/latexindent.pl/issues/33.
 
    <div id="ref-textwrap">
 
-“Text:Wrap Perl Module.” 2017. Accessed May 1.
+“Text::Wrap Perl Module.” 2017. Accessed May 1.
 http://perldoc.perl.org/Text/Wrap.html.
 
 .. raw:: html

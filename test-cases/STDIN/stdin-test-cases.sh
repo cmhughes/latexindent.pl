@@ -4,4 +4,5 @@ loopmax=0
 
 [[ $silentMode == 0 ]] && set -x 
 cat myfile.tex | latexindent.pl -s -o=myfile-default 
+cat myfile.tex | latexindent.pl -s -o=myfile-default -l=dontMeasure.yaml -
 git status

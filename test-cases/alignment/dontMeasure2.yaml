@@ -1,0 +1,8 @@
+lookForAlignDelims:
+   tabular: 
+      dontMeasure:
+        -
+            this: \multicolumn{1}{c}{Expiry}
+            applyTo: cell
+        -
+            this: Tenor

@@ -5,6 +5,7 @@
 *.blg
 *.ptc
 *.exe
+arara.xml
 documentation/_minted-latexindent/
 documentation/latexindent-blx.*
 documentation/*.aux

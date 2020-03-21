@@ -20,22 +20,18 @@ do
  esac 
 done
 
-oldVersion='3.7'
-newVersion='3.7.1'
-oldDate='2019-07-13'
-newDate='2019-09-07'
+oldVersion='3.7.1'
+newVersion='3.8'
+oldDate='2019-09-07'
+newDate='2020-03-21'
 
 cd ../
-if [ $minorVersion == 0 ]
-then
-    cd documentation
-    find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
-    find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
-    find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
-    find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
-    exit
-    cd ../
-fi
+cd documentation
+find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+cd ../
 sed -i.bak "s/version = u'$oldVersion'/version = u'$newVersion'/" documentation/conf.py
 sed -i.bak "s/release = u'$oldVersion'/release = u'$newVersion'/" documentation/conf.py
 sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
@@ -50,7 +46,7 @@ sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
 cd documentation
-perl documentation-default-settings-update.pl -r
+## perl documentation-default-settings-update.pl -r
 egrep -i --color=auto 'announce{new' *.tex
 cd ../
 # possibly generate the pdf
