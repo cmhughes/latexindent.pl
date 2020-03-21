@@ -23,13 +23,13 @@ and make some fine tuning to ``latexindent.pl``\ ’s operating.
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 582-603
+ 	:lines: 586-607
  	:linenos:
- 	:lineno-start: 582
+ 	:lineno-start: 586
 
 The fields given in :numref:`lst:fineTuning` are all *regular
 expressions*. This manual is not intended to be a tutorial on regular
-expressions; you might like to read, for example, Friedl (n.d.) for a
+expressions; you might like to read, for example, (Friedl, n.d.) for a
 detailed covering of the topic.
 
 We make the following comments with reference to
@@ -108,49 +108,106 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the
 ``follow``, ``before`` and ``between`` fields allow trailing comments,
 line breaks, and horizontal spaces between each character.
 
-As a demonstration, consider the file given in
-:numref:`lst:finetuning1`, together with its default output using the
-command
+.. proof:example::	
+	
+	As a demonstration, consider the file given in
+	:numref:`lst:finetuning1`, together with its default output using the
+	command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl finetuning1.tex 
+	
+	is given in :numref:`lst:finetuning1-default`.
+	
+	 .. literalinclude:: demonstrations/finetuning1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning1.tex`` 
+	 	:name: lst:finetuning1
+	
+	 .. literalinclude:: demonstrations/finetuning1-default.tex
+	 	:class: .tex
+	 	:caption: ``finetuning1.tex`` default 
+	 	:name: lst:finetuning1-default
+	
+	It’s clear from :numref:`lst:finetuning1-default` that the indentation
+	scheme has not worked as expected. We can *fine tune* the indentation
+	scheme by employing the settings given in :numref:`lst:fine-tuning1`
+	and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
+	
+	and the associated (desired) output is given in
+	:numref:`lst:finetuning1-mod1`.
+	
+	 .. literalinclude:: demonstrations/finetuning1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
+	 	:name: lst:finetuning1-mod1
+	
+	 .. literalinclude:: demonstrations/fine-tuning1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``finetuning1.yaml`` 
+	 	:name: lst:fine-tuning1
+	
+	
+	 
 
-.. code-block:: latex
-   :class: .commandshell
-
-    latexindent.pl finetuning1.tex 
-
-is given in :numref:`lst:finetuning1-default`.
-
- .. literalinclude:: demonstrations/finetuning1.tex
- 	:class: .tex
- 	:caption: ``finetuning1.tex`` 
- 	:name: lst:finetuning1
-
- .. literalinclude:: demonstrations/finetuning1-default.tex
- 	:class: .tex
- 	:caption: ``finetuning1.tex`` default 
- 	:name: lst:finetuning1-default
-
-It’s clear from :numref:`lst:finetuning1-default` that the indentation
-scheme has not worked as expected. We can *fine tune* the indentation
-scheme by employing the settings given in :numref:`lst:fine-tuning1`
-and running the command
-
-.. code-block:: latex
-   :class: .commandshell
-
-    latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
-
-and the associated (desired) output is given in
-:numref:`lst:finetuning1-mod1`.
-
- .. literalinclude:: demonstrations/finetuning1-mod1.tex
- 	:class: .tex
- 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
- 	:name: lst:finetuning1-mod1
-
- .. literalinclude:: demonstrations/fine-tuning1.yaml
- 	:class: .baseyaml
- 	:caption: ``finetuning1.yaml`` 
- 	:name: lst:fine-tuning1
+.. proof:example::	
+	
+	Let’s have another demonstration; consider the file given in
+	:numref:`lst:finetuning2`, together with its default output using the
+	command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl finetuning2.tex 
+	
+	is given in :numref:`lst:finetuning2-default`.
+	
+	 .. literalinclude:: demonstrations/finetuning2.tex
+	 	:class: .tex
+	 	:caption: ``finetuning2.tex`` 
+	 	:name: lst:finetuning2
+	
+	 .. literalinclude:: demonstrations/finetuning2-default.tex
+	 	:class: .tex
+	 	:caption: ``finetuning2.tex`` default 
+	 	:name: lst:finetuning2-default
+	
+	It’s clear from :numref:`lst:finetuning2-default` that the indentation
+	scheme has not worked as expected. We can *fine tune* the indentation
+	scheme by employing the settings given in :numref:`lst:fine-tuning2`
+	and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
+	
+	and the associated (desired) output is given in
+	:numref:`lst:finetuning2-mod1`.
+	
+	 .. literalinclude:: demonstrations/finetuning2-mod1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
+	 	:name: lst:finetuning2-mod1
+	
+	 .. literalinclude:: demonstrations/fine-tuning2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``finetuning2.yaml`` 
+	 	:name: lst:fine-tuning2
+	
+	In particular, note that the settings in :numref:`lst:fine-tuning2`
+	specify that ``NamedGroupingBracesBrackets`` and
+	``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we allow
+	``---`` between arguments.
+	 
 
 .. raw:: html
 

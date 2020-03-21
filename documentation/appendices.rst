@@ -89,8 +89,9 @@ distributions will need slightly different commands).
    :class: .commandshell
 
     sudo apt-get install perlbrew
-    perlbrew install perl-5.22.1
-    perlbrew switch perl-5.22.1
+    perlbrew init
+    perlbrew install perl-5.28.1
+    perlbrew switch perl-5.28.1
     sudo apt-get install curl
     curl -L http://cpanmin.us | perl - App::cpanminus
     cpanm YAML::Tiny
@@ -135,7 +136,7 @@ Updating the path variable
 
 ``latexindent.pl`` has a few scripts (available at (“Home of
 Latexindent.pl” 2017)) that can update the ``path`` variables. Thank you
-to Juang (2015) for this feature. If you’re on a Linux or Mac machine,
+to (Juang 2015) for this feature. If you’re on a Linux or Mac machine,
 then you’ll want ``CMakeLists.txt`` from (“Home of Latexindent.pl”
 2017).
 
@@ -380,7 +381,7 @@ https://github.com/cmhughes/latexindent.pl.
 
    <div id="ref-jasjuang">
 
-Juang, Jason. 2015. “Add in PATH Installation.” November 24.
+Juang, Jason. 2015. “Add in Path Installation.” November 24.
 https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html

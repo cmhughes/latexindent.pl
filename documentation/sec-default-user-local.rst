@@ -29,7 +29,10 @@ file extension. For example we can call
 
     latexindent.pl myfile
 
-in
+in which case the script will look for ``myfile`` with the extensions
+specified in ``fileExtensionPreference`` in their numeric order. If no
+match is found, the script will exit. As with all of the fields, you
+should change and/or add to this as necessary.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
@@ -38,11 +41,6 @@ in
  	:lines: 41-45
  	:linenos:
  	:lineno-start: 41
-
-which case the script will look for ``myfile`` with the extensions
-specified in ``fileExtensionPreference`` in their numeric order. If no
-match is found, the script will exit. As with all of the fields, you
-should change and/or add to this as necessary.
 
 Calling ``latexindent.pl myfile`` with the (default) settings specified
 in :numref:`lst:fileExtensionPreference` means that the script will
@@ -172,6 +170,12 @@ from line breaking routines (only relevant if the ``-m`` is active, see
 
 .. describe:: noIndentBlock:fields
 
+If you have a block of code that you don’t want ``latexindent.pl`` to
+touch (even if it is *not* a verbatim-like environment) then you can
+wrap it in an environment from ``noIndentBlock``; you can use any name
+you like for this, provided you populate it as demonstrate in
+:numref:`lst:noIndentBlock`.
+
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``noIndentBlock`` 
@@ -179,12 +183,6 @@ from line breaking routines (only relevant if the ``-m`` is active, see
  	:lines: 112-114
  	:linenos:
  	:lineno-start: 112
-
-If you have a block of code that you don’t want ``latexindent.pl`` to
-touch (even if it is *not* a verbatim-like environment) then you can
-wrap it in an environment from ``noIndentBlock``; you can use any name
-you like for this, provided you populate it as demonstrate in
-:numref:`lst:noIndentBlock`.
 
 Of course, you don’t want to have to specify these as null environments
 in your code, so you use them with a comment symbol, ``%``, followed by
@@ -210,6 +208,13 @@ as many spaces (possibly none) as you like; see
 
 .. _yaml:removeTrailingWhitespace:
 
+Trailing white space can be removed both *before* and *after* processing
+the document, as detailed in :numref:`lst:removeTrailingWhitespace`;
+each of the fields can take the values ``0`` or ``1``. See
+:numref:`lst:removeTWS-before` and :numref:`lst:env-mlb5-modAll` and
+:numref:`lst:env-mlb5-modAll-remove-WS` for before and after results.
+Thanks to (Voßkuhle 2013) for providing this feature.
+
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: removeTrailingWhitespace 
@@ -224,18 +229,18 @@ as many spaces (possibly none) as you like; see
 
     removeTrailingWhitespace: 1
 
-Trailing white space can be removed both *before* and *after* processing
-the document, as detailed in :numref:`lst:removeTrailingWhitespace`;
-each of the fields can take the values ``0`` or ``1``. See
-:numref:`lst:removeTWS-before` and :numref:`lst:env-mlb5-modAll` and
-:numref:`lst:env-mlb5-modAll-remove-WS` for before and after results.
-Thanks to Voßkuhle (2013) for providing this feature.
-
 You can specify ``removeTrailingWhitespace`` simply as ``0`` or ``1``,
 if you wish; in this case, ``latexindent.pl`` will set both
 ``beforeProcessing`` and ``afterProcessing`` to the value you specify;
 see :numref:`lst:removeTrailingWhitespace-alt`. .. describe::
 fileContentsEnvironments:field
+
+Before ``latexindent.pl`` determines the difference between preamble (if
+any) and the main document, it first searches for any of the
+environments specified in ``fileContentsEnvironments``, see
+:numref:`lst:fileContentsEnvironments`. The behaviour of
+``latexindent.pl`` on these environments is determined by their location
+(preamble or not), and the value ``indentPreamble``, discussed next.
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
@@ -244,13 +249,6 @@ fileContentsEnvironments:field
  	:lines: 123-125
  	:linenos:
  	:lineno-start: 123
-
-Before ``latexindent.pl`` determines the difference between preamble (if
-any) and the main document, it first searches for any of the
-environments specified in ``fileContentsEnvironments``, see
-:numref:`lst:fileContentsEnvironments`. The behaviour of
-``latexindent.pl`` on these environments is determined by their location
-(preamble or not), and the value ``indentPreamble``, discussed next.
 
 .. describe:: indentPreamble:0\|1
 
@@ -262,6 +260,13 @@ by default), but if you’d like ``latexindent.pl`` to try then change
 
 .. describe:: lookForPreamble:fields
 
+Not all files contain preamble; for example, ``sty``, ``cls`` and
+``bib`` files typically do *not*. Referencing
+:numref:`lst:lookForPreamble`, if you set, for example, ``.tex`` to
+``0``, then regardless of the setting of the value of
+``indentPreamble``, preamble will not be assumed when operating upon
+``.tex`` files.
+
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: lookForPreamble 
@@ -270,12 +275,7 @@ by default), but if you’d like ``latexindent.pl`` to try then change
  	:linenos:
  	:lineno-start: 131
 
-Not all files contain preamble; for example, ``sty``, ``cls`` and
-``bib`` files typically do *not*. Referencing
-:numref:`lst:lookForPreamble`, if you set, for example, ``.tex`` to
-``0``, then regardless of the setting of the value of
-``indentPreamble``, preamble will not be assumed when operating upon
-``.tex`` files. .. describe:: preambleCommandsBeforeEnvironments:0\|1
+.. describe:: preambleCommandsBeforeEnvironments:0\|1
 
 Assuming that ``latexindent.pl`` is asked to operate upon the preamble
 of a document, when this switch is set to ``0`` then environment code
@@ -309,6 +309,14 @@ can *remove* all indentation by setting ``defaultIndent: ""``.
 
 .. _yaml:lookforaligndelims:
 
+This contains a list of environments and/or commands that are operated
+upon in a special way by ``latexindent.pl`` (see
+:numref:`lst:aligndelims:basic`). In fact, the fields in
+``lookForAlignDelims`` can actually take two different forms: the
+*basic* version is shown in :numref:`lst:aligndelims:basic` and the
+*advanced* version in :numref:`lst:aligndelims:advanced`; we will
+discuss each in turn.
+
 .. code-block:: latex
    :caption: ``lookForAlignDelims`` (basic) 
    :name: lst:aligndelims:basic
@@ -321,14 +329,6 @@ can *remove* all indentation by setting ``defaultIndent: ""``.
        matrix: 1
        ...
         
-
-This contains a list of environments and/or commands that are operated
-upon in a special way by ``latexindent.pl`` (see
-:numref:`lst:aligndelims:basic`). In fact, the fields in
-``lookForAlignDelims`` can actually take two different forms: the
-*basic* version is shown in :numref:`lst:aligndelims:basic` and the
-*advanced* version in :numref:`lst:aligndelims:advanced`; we will
-discuss each in turn.
 
 The environments specified in this field will be operated on in a
 special way by ``latexindent.pl``. In particular, it will try and align
@@ -359,10 +359,13 @@ delimiter-aligned block, then the advanced form of
 ``lookForAlignDelims`` shown in :numref:`lst:aligndelims:advanced` is
 for you.
 
- .. literalinclude:: demonstrations/tabular.yaml
+ .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
- 	:caption: ``tabular.yaml`` 
+ 	:caption: ``lookForAlignDelims`` (advanced) 
  	:name: lst:aligndelims:advanced
+ 	:lines: 148-164
+ 	:linenos:
+ 	:lineno-start: 148
 
 Note that you can use a mixture of the basic and advanced form: in
 :numref:`lst:aligndelims:advanced` ``tabular`` and ``tabularx`` are
@@ -400,12 +403,30 @@ to) receive any of the following fields:
    1);
 
 -  ``justification``: optionally specifies the justification of each
-   cell as either *left* or *right* (default: left).
+   cell as either *left* or *right* (default: left);
 
-We will explore each of these features using the file ``tabular2.tex``
+-  alignFinalDoubleBackSlash optionally specifies if the *final* double
+   back slash should be used for alignment (default: 0);
+
+-  dontMeasure optionally specifies if user-specified cells, rows or the
+   largest entries should *not* be measured (default: 0);
+
+-  delimiterRegEx optionally specifies the pattern matching to be used
+   for the alignment delimeter (default: `` '(?<!\\)(&)'``);
+
+-  delimiterJustification optionally specifies the justification for the
+   alignment delimeters (default: left); note that this feature is only
+   useful if you have delimiters of different lengths in the same
+   column, discussed in :numref:`sec:delimiter-reg-ex`.
+
+We will explore most of these features using the file ``tabular2.tex``
 in :numref:`lst:tabular2` (which contains a ``\multicolumn`` command),
 and the YAML files in :numref:`lst:tabular2YAML` –
-:numref:`lst:tabular8YAML`.
+:numref:`lst:tabular8YAML`; we will explore
+``alignFinalDoubleBackSlash`` in :numref:`lst:tabular4`; the
+``dontMeasure`` feature will be described in
+:numref:`sec:dontMeasure`, and ``delimiterRegEx`` in
+:numref:`sec:delimiter-reg-ex`.
 
  .. literalinclude:: demonstrations/tabular2.tex
  	:class: .tex
@@ -550,6 +571,43 @@ Notice in particular:
    statements have still been group correctly, because of the settings
    in :numref:`lst:tabular2YAML`.
 
+We explore the ``alignFinalDoubleBackSlash`` feature by using the file
+in :numref:`lst:tabular4`. Upon running the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular4.tex -o=+-default
+    latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalDoubleBackSlash:1"
+
+then we receive the respective outputs given in
+:numref:`lst:tabular4-default` and :numref:`lst:tabular4-FDBS`.
+
+ .. literalinclude:: demonstrations/tabular4.tex
+ 	:class: .tex
+ 	:caption: ``tabular4.tex`` 
+ 	:name: lst:tabular4
+
+ .. literalinclude:: demonstrations/tabular4-default.tex
+ 	:class: .tex
+ 	:caption: ``tabular4-default.tex`` 
+ 	:name: lst:tabular4-default
+
+ .. literalinclude:: demonstrations/tabular4-FDBS.tex
+ 	:class: .tex
+ 	:caption: ``tabular4-FDBS.tex`` 
+ 	:name: lst:tabular4-FDBS
+
+We note that in:
+
+-  :numref:`lst:tabular4-default`, by default, the *first* set of
+   double back slashes in the first row of the ``tabular`` environment
+   have been used for alignment;
+
+-  :numref:`lst:tabular4-FDBS`, the *final* set of double back slashes
+   in the first row have been used, because we specified
+   ``alignFinalDoubleBackSlash`` as 1.
+
 As of Version 3.0, the alignment routine works on mandatory and optional
 arguments within commands, and also within ‘special’ code blocks (see
 ``specialBeginEnd`` on
@@ -601,6 +659,323 @@ fields of ``noAdditionalIndent`` and ``indentRules`` (see
 :numref:`sec:noadd-indent-rules`), these comment-marked blocks are
 considered ``environments``.
 
+.. label follows
+
+.. _sec:dontMeasure:
+
+lookForAlignDelims: the dontMeasure feature
+-------------------------------------------
+
+The ``lookForAlignDelims`` field can, optionally, receive the
+``dontMeasure`` option which can be specified in a few different ways.
+We will explore this feature in relation to the code given in
+:numref:`lst:tabular-DM`; the default output is shown in
+:numref:`lst:tabular-DM-default`.
+
+ .. literalinclude:: demonstrations/tabular-DM.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` 
+ 	:name: lst:tabular-DM
+
+ .. literalinclude:: demonstrations/tabular-DM-default.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` default output 
+ 	:name: lst:tabular-DM-default
+
+The ``dontMeasure`` field can be specified as ``largest``, and in which
+case, the largest element will not be measured; with reference to the
+YAML file given in :numref:`lst:dontMeasure1`, we can run the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular-DM.tex -l=dontMeasure1.yaml
+
+and receive the output given in :numref:`lst:tabular-DM-mod1`.
+
+ .. literalinclude:: demonstrations/tabular-DM-mod1.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` using :numref:`lst:dontMeasure1` 
+ 	:name: lst:tabular-DM-mod1
+
+ .. literalinclude:: demonstrations/dontMeasure1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure1.yaml`` 
+ 	:name: lst:dontMeasure1
+
+We note that the *largest* column entries have not contributed to the
+measuring routine.
+
+The ``dontMeasure`` field can also be specified in the form demonstrated
+in :numref:`lst:dontMeasure2`. On running the following commands,
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
+
+we receive the output in :numref:`lst:tabular-DM-mod2`.
+
+ .. literalinclude:: demonstrations/tabular-DM-mod2.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` using :numref:`lst:dontMeasure2` or :numref:`lst:dontMeasure3` 
+ 	:name: lst:tabular-DM-mod2
+
+ .. literalinclude:: demonstrations/dontMeasure2.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure2.yaml`` 
+ 	:name: lst:dontMeasure2
+
+We note that in :numref:`lst:dontMeasure2` we have specified entries
+not to be measured, one entry per line.
+
+The ``dontMeasure`` field can also be specified in the forms
+demonstrated in :numref:`lst:dontMeasure3` and
+:numref:`lst:dontMeasure4`. Upon running the commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular-DM.tex -l=dontMeasure3.yaml
+    latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
+
+we receive the output given in :numref:`lst:tabular-DM-mod3`
+
+ .. literalinclude:: demonstrations/tabular-DM-mod3.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` using :numref:`lst:dontMeasure3` or :numref:`lst:dontMeasure3` 
+ 	:name: lst:tabular-DM-mod3
+
+ .. literalinclude:: demonstrations/dontMeasure3.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure3.yaml`` 
+ 	:name: lst:dontMeasure3
+
+ .. literalinclude:: demonstrations/dontMeasure4.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure4.yaml`` 
+ 	:name: lst:dontMeasure4
+
+We note that in:
+
+-  :numref:`lst:dontMeasure3` we have specified entries not to be
+   measured, each one has a *string* in the ``this`` field, together
+   with an optional specification of ``applyTo`` as ``cell``;
+
+-  :numref:`lst:dontMeasure4` we have specified entries not to be
+   measured as a *regular expression* using the ``regex`` field,
+   together with an optional specification of ``applyTo`` as ``cell``
+   field, together with an optional specification of ``applyTo`` as
+   ``cell``.
+
+In both cases, the default value of ``applyTo`` is ``cell``, and does
+not need to be specified.
+
+We may also specify the ``applyTo`` field as ``row``, a demonstration of
+which is given in :numref:`lst:dontMeasure5`; upon running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular-DM.tex -l=dontMeasure5.yaml
+
+we receive the output in :numref:`lst:tabular-DM-mod5`.
+
+ .. literalinclude:: demonstrations/tabular-DM-mod5.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` using :numref:`lst:dontMeasure5` 
+ 	:name: lst:tabular-DM-mod5
+
+ .. literalinclude:: demonstrations/dontMeasure5.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure5.yaml`` 
+ 	:name: lst:dontMeasure5
+
+Finally, the ``applyTo`` field can be specified as ``row``, together
+with a ``regex`` expression. For example, for the settings given in
+:numref:`lst:dontMeasure6`, upon running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
+
+we receive the output in :numref:`lst:tabular-DM-mod6`.
+
+ .. literalinclude:: demonstrations/tabular-DM-mod6.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM.tex`` using :numref:`lst:dontMeasure6` 
+ 	:name: lst:tabular-DM-mod6
+
+ .. literalinclude:: demonstrations/dontMeasure6.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure6.yaml`` 
+ 	:name: lst:dontMeasure6
+
+.. label follows
+
+.. _sec:delimiter-reg-ex:
+
+lookForAlignDelims: the delimiterRegEx and delimiterJustification feature
+-------------------------------------------------------------------------
+
+The delimiter alignment will, by default, align code blocks at the
+ampersand character. The behaviour is controlled by the
+``delimiterRegEx`` field within ``lookForAlignDelims``; the default
+value is ``'(?<!\\)(&)'``, which can be read as: *an ampersand, as long
+as it is not immediately preceeded by a backslash*.
+
+.. warning::	
+	
+	Important: note the ‘capturing’ parenthesis in the ``(&)`` which are
+	necessary; if you intend to customise this field, then be sure to
+	include them appropriately.
+	 
+
+We demonstrate how to customise this with respect to the code given in
+:numref:`lst:tabbing`; the default output from ``latexindent.pl`` is
+given in :numref:`lst:tabbing-default`.
+
+ .. literalinclude:: demonstrations/tabbing.tex
+ 	:class: .tex
+ 	:caption: ``tabbing.tex`` 
+ 	:name: lst:tabbing
+
+ .. literalinclude:: demonstrations/tabbing-default.tex
+ 	:class: .tex
+ 	:caption: ``tabbing.tex`` default output 
+ 	:name: lst:tabbing-default
+
+Let’s say that we wish to align the code at either the ``\=`` or ``\>``.
+We employ the settings given in :numref:`lst:delimiterRegEx1` and run
+the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
+
+to receive the output given in :numref:`lst:tabbing-mod1`.
+
+ .. literalinclude:: demonstrations/tabbing-mod1.tex
+ 	:class: .tex
+ 	:caption: ``tabbing.tex`` using :numref:`lst:delimiterRegEx1` 
+ 	:name: lst:tabbing-mod1
+
+ .. literalinclude:: demonstrations/delimiterRegEx1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``delimiterRegEx1.yaml`` 
+ 	:name: lst:delimiterRegEx1
+
+We note that:
+
+-  in :numref:`lst:tabbing-mod1` the code has been aligned, as
+   intended, at both the ``\=`` and ``\>``;
+
+-  in :numref:`lst:delimiterRegEx1` we have heeded the warning and
+   captured the expression using grouping parenthesis, specified a
+   backslash using ``\\`` and said that it must be followed by either
+   ``=`` or ``>``.
+
+We can explore ``delimiterRegEx`` a little further using the settings in
+:numref:`lst:delimiterRegEx2` and run the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
+
+to receive the output given in :numref:`lst:tabbing-mod2`.
+
+ .. literalinclude:: demonstrations/tabbing-mod2.tex
+ 	:class: .tex
+ 	:caption: ``tabbing.tex`` using :numref:`lst:delimiterRegEx2` 
+ 	:name: lst:tabbing-mod2
+
+ .. literalinclude:: demonstrations/delimiterRegEx2.yaml
+ 	:class: .baseyaml
+ 	:caption: ``delimiterRegEx2.yaml`` 
+ 	:name: lst:delimiterRegEx2
+
+We note that only the ``\>`` have been aligned.
+
+Of course, the other lookForAlignDelims options can be used alongside
+the ``delimiterRegEx``; regardless of the type of delimiter being used
+(ampersand or anything else), the fields from
+:numref:`lst:aligndelims:advanced` remain the same; for example, using
+the settings in :numref:`lst:delimiterRegEx3`, and running
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
+
+to receive the output given in :numref:`lst:tabbing-mod3`.
+
+ .. literalinclude:: demonstrations/tabbing-mod3.tex
+ 	:class: .tex
+ 	:caption: ``tabbing.tex`` using :numref:`lst:delimiterRegEx3` 
+ 	:name: lst:tabbing-mod3
+
+ .. literalinclude:: demonstrations/delimiterRegEx3.yaml
+ 	:class: .baseyaml
+ 	:caption: ``delimiterRegEx3.yaml`` 
+ 	:name: lst:delimiterRegEx3
+
+It is possible that delimiters specified within ``delimiterRegEx`` can
+be of different lengths. Consider the file in :numref:`lst:tabbing1`,
+and associated YAML in :numref:`lst:delimiterRegEx4`. Note that the
+:numref:`lst:delimiterRegEx4` specifies the option for the delimiter
+to be either ``#`` or ``\>``, *which are different lengths*. Upon
+running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
+
+we receive the output in :numref:`lst:tabbing1-mod4`.
+
+ .. literalinclude:: demonstrations/tabbing1.tex
+ 	:class: .tex
+ 	:caption: ``tabbing1.tex`` 
+ 	:name: lst:tabbing1
+
+ .. literalinclude:: demonstrations/tabbing1-mod4.tex
+ 	:class: .tex
+ 	:caption: ``tabbing1-mod4.tex`` 
+ 	:name: lst:tabbing1-mod4
+
+ .. literalinclude:: demonstrations/delimiterRegEx4.yaml
+ 	:class: .baseyaml
+ 	:caption: ``delimiterRegEx4.yaml`` 
+ 	:name: lst:delimiterRegEx4
+
+You can set the *delimiter* justification as either ``left`` (default)
+or ``right``, which will only have effect when delimiters in the same
+column have different lengths. Using the settings in
+:numref:`lst:delimiterRegEx5` and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
+
+gives the output in :numref:`lst:tabbing1-mod5`.
+
+ .. literalinclude:: demonstrations/tabbing1-mod5.tex
+ 	:class: .tex
+ 	:caption: ``tabbing1-mod5.tex`` 
+ 	:name: lst:tabbing1-mod5
+
+ .. literalinclude:: demonstrations/delimiterRegEx5.yaml
+ 	:class: .baseyaml
+ 	:caption: ``delimiterRegEx5.yaml`` 
+ 	:name: lst:delimiterRegEx5
+
+Note that in :numref:`lst:tabbing1-mod5` the second set of delimiters
+have been *right aligned* – it is quite subtle!
+
 .. describe:: indentAfterItems:fields
 
 The environment names specified in ``indentAfterItems`` tell
@@ -613,9 +988,9 @@ after each ``item``. A demonstration is given in
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 187-191
+ 	:lines: 191-195
  	:linenos:
- 	:lineno-start: 187
+ 	:lineno-start: 191
 
  .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -628,14 +1003,6 @@ after each ``item``. A demonstration is given in
  	:name: lst:itemsafter
 
 .. describe:: itemNames:fields
-
- .. literalinclude:: ../defaultSettings.yaml
- 	:class: .baseyaml
- 	:caption: ``itemNames`` 
- 	:name: lst:itemNames
- 	:lines: 197-199
- 	:linenos:
- 	:lineno-start: 197
 
 | If you have your own ``item`` commands (perhaps you prefer to use
   ``myitem``, for example) then you can put populate them in
@@ -652,6 +1019,14 @@ after each ``item``. A demonstration is given in
 
 .)
 
+ .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
+ 	:caption: ``itemNames`` 
+ 	:name: lst:itemNames
+ 	:lines: 201-203
+ 	:linenos:
+ 	:lineno-start: 201
+
 .. describe:: specialBeginEnd:fields
 
 .. label follows
@@ -667,9 +1042,9 @@ shows the default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 203-216
+ 	:lines: 207-220
  	:linenos:
- 	:lineno-start: 203
+ 	:lineno-start: 207
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath``
 represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You
@@ -830,27 +1205,25 @@ then the output in :numref:`lst:special3-mod1` is unchanged.
 
 .. describe:: indentAfterHeadings:fields
 
- .. literalinclude:: ../defaultSettings.yaml
- 	:class: .baseyaml
- 	:caption: ``indentAfterHeadings`` 
- 	:name: lst:indentAfterHeadings
- 	:lines: 226-235
- 	:linenos:
- 	:lineno-start: 226
-
 This field enables the user to specify indentation rules that take
 effect after heading commands such as ``\part``, ``\chapter``,
 ``\section``, ``\subsection*``, or indeed any user-specified command
 written in this field. [3]_
 
-| The default settings do *not* place indentation after a heading, but
-  you can easily switch them on by changing
-| ``indentAfterThisHeading: 0`` to
-| ``indentAfterThisHeading: 1``. The ``level`` field tells
-  ``latexindent.pl`` the hierarchy of the heading structure in your
-  document. You might, for example, like to have both ``section`` and
-  ``subsection`` set with ``level: 3`` because you do not want the
-  indentation to go too deep.
+ .. literalinclude:: ../defaultSettings.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentAfterHeadings`` 
+ 	:name: lst:indentAfterHeadings
+ 	:lines: 230-239
+ 	:linenos:
+ 	:lineno-start: 230
+
+The default settings do *not* place indentation after a heading, but you
+can easily switch them on by changing ``indentAfterThisHeading`` from 0
+to 1. The ``level`` field tells ``latexindent.pl`` the hierarchy of the
+heading structure in your document. You might, for example, like to have
+both ``section`` and ``subsection`` set with ``level: 3`` because you do
+not want the indentation to go too deep.
 
 You can add any of your own custom heading commands to this field,
 specifying the ``level`` as appropriate. You can also specify your own
@@ -910,8 +1283,8 @@ indentation level.
 
 You can control the maximum indentation given to your file by specifying
 the ``maximumIndentation`` field as horizontal space (but *not*
-including tabs). This feature uses the ``Text::Tabs`` module (“Text:Tabs
-Perl Module” 2017), and is *off* by default.
+including tabs). This feature uses the ``Text::Tabs`` module
+(“Text::Tabs Perl Module” 2017), and is *off* by default.
 
 For example, consider the example shown in :numref:`lst:mult-nested`
 together with the default output shown in
@@ -1294,9 +1667,9 @@ indentation.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 284-285
+ 	:lines: 288-289
  	:linenos:
- 	:lineno-start: 284
+ 	:lineno-start: 288
 
 Assuming that your environment name is not found within neither
 ``noAdditionalIndent`` nor ``indentRules``, the next place that
@@ -1380,9 +1753,9 @@ received any additional indentation.
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 300-301
+ 	:lines: 304-305
  	:linenos:
- 	:lineno-start: 300
+ 	:lineno-start: 304
 
 The final check that ``latexindent.pl`` will make is to look for
 ``indentRulesGlobal`` as detailed in
@@ -2199,17 +2572,17 @@ functions of the fields given in
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 284-296
+ 	:lines: 288-300
  	:linenos:
- 	:lineno-start: 284
+ 	:lineno-start: 288
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 300-312
+ 	:lines: 304-316
  	:linenos:
- 	:lineno-start: 300
+ 	:lineno-start: 304
 
 .. label follows
 
@@ -2233,9 +2606,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 315-329
+ 	:lines: 319-333
  	:linenos:
- 	:lineno-start: 315
+ 	:lineno-start: 319
 
 .. describe:: roundParenthesesAllowed:0\|1
 
@@ -2588,7 +2961,7 @@ http://search.cpan.org/~mschilli/Log-Log4perl-1.49/lib/Log/Log4perl.pm.
 
    <div id="ref-texttabs">
 
-“Text:Tabs Perl Module.” 2017. Accessed July 6.
+“Text::Tabs Perl Module.” 2017. Accessed July 6.
 http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
 
 .. raw:: html

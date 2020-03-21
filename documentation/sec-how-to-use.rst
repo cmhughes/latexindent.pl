@@ -359,7 +359,8 @@ the ``-y`` switch.
 
 If you wish to have backup files and ``indent.log`` written to a
 directory other than the current working directory, then you can send
-these ‘cruft’ files to another directory.
+these ‘cruft’ files to another directory. Note the use of a trailing
+forward slash.
 
 .. describe:: -g, –logfile=<name of log file>
 
@@ -416,11 +417,21 @@ details.
    :class: .commandshell
 
     cat myfile.tex | latexindent.pl
+    cat myfile.tex | latexindent.pl -
 
 ``latexindent.pl`` will allow input from STDIN, which means that you can
 pipe output from other commands directly into the script. For example
 assuming that you have content in ``myfile.tex``, then the above command
-will output the results of operating upon ``myfile.tex``
+will output the results of operating upon ``myfile.tex``.
+
+If you wish to use this feature with your own local settings, via the
+``-l`` switch, then you should finish your call to ``latexindent.pl``
+with a ``-`` sign:
+
+.. code-block:: latex
+   :class: .commandshell
+
+    cat myfile.tex | latexindent.pl -l=mysettings.yaml -
 
 Similarly, if you simply type ``latexindent.pl`` at the command line,
 then it will expect (STDIN) input from the command line.
@@ -436,7 +447,7 @@ Once you have finished typing your input, you can press
 
 -  ``CTRL+Z`` followed by ``ENTER`` on Windows
 
-to signify that your input has finished. Thanks to (xu-cheng) (2018) for
+to signify that your input has finished. Thanks to ((xu-cheng) 2018) for
 an update to this feature.
 
 .. describe:: -r, –replacement
@@ -487,7 +498,7 @@ From arara
 Using ``latexindent.pl`` from the command line is fine for some folks,
 but others may find it easier to use from ``arara``; you can find the
 arara rule for ``latexindent.pl`` and its associated documentation at
-Cereda (2013).
+(Cereda 2013).
 
 .. raw:: html
 
@@ -519,7 +530,7 @@ https://github.com/cmhughes/latexindent.pl.
 
    <div id="ref-xu-cheng">
 
-(xu-cheng), Cheng Xu. 2018. “Always Output Log/help Text to STDERR.”
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.”
 July 13. https://github.com/cmhughes/latexindent.pl/pull/121.
 
 .. raw:: html

@@ -89,7 +89,7 @@ https://github.com/cmhughes/latexindent.pl.
 
    <div id="ref-jasjuang">
 
-Juang, Jason. 2015. “Add in PATH Installation.” November 24.
+Juang, Jason. 2015. “Add in Path Installation.” November 24.
 https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
@@ -165,7 +165,7 @@ http://strawberryperl.com/.
 
    <div id="ref-texttabs">
 
-“Text:Tabs Perl Module.” 2017. Accessed July 6.
+“Text::Tabs Perl Module.” 2017. Accessed July 6.
 http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
 
 .. raw:: html
@@ -176,7 +176,7 @@ http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
 
    <div id="ref-textwrap">
 
-“Text:Wrap Perl Module.” 2017. Accessed May 1.
+“Text::Wrap Perl Module.” 2017. Accessed May 1.
 http://perldoc.perl.org/Text/Wrap.html.
 
 .. raw:: html
@@ -209,7 +209,7 @@ https://github.com/cmhughes/latexindent.pl/pull/12.
 
    <div id="ref-xu-cheng">
 
-(xu-cheng), Cheng Xu. 2018. “Always Output Log/help Text to STDERR.”
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.”
 July 13. https://github.com/cmhughes/latexindent.pl/pull/121.
 
 .. raw:: html

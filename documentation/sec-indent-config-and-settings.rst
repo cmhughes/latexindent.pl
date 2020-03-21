@@ -19,7 +19,7 @@ with the ``-d`` switch), which is a plain text file you can create that
 contains the *absolute* paths for any settings files that you wish
 ``latexindent.pl`` to load. There is no difference between
 ``indentconfig.yaml`` and ``.indentconfig.yaml``, other than the fact
-that ``.indentconfig.yaml`` is a ‘hidden’ file; thank you to Diaz (2014)
+that ``.indentconfig.yaml`` is a ‘hidden’ file; thank you to (Diaz 2014)
 for providing this feature. In what follows, we will use
 ``indentconfig.yaml``, but it is understood that this could equally
 represent ``.indentconfig.yaml``. If you have both files in existence

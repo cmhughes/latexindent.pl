@@ -289,14 +289,14 @@ lookForAlignDelims:
 		      spaces to be placed \emph{After} ampersands (default: 1);
 		\item \announce{2018-01-13}{justification of cells in ampersand alignment}\texttt{justification}: optionally specifies the justification of
 		      each cell as either \emph{left} or \emph{right} (default: left);
-		\item \announce{NEW}{align final double back slash}{alignFinalDoubleBackSlash} optionally specifies if the
+		\item \announce*{2020-03-21}{align final double back slash}{alignFinalDoubleBackSlash} optionally specifies if the
 		      \emph{final} double back slash should be used for alignment (default: 0);
-		\item \announce{NEW}{don't measure feature}{dontMeasure} optionally specifies if
+		\item \announce*{2020-03-21}{don't measure feature}{dontMeasure} optionally specifies if
 		      user-specified cells, rows or the largest entries should \emph{not} be
 		      measured (default: 0);
-		\item \announce{NEW}{delimiter RegEx feature}{delimiterRegEx} optionally specifies the pattern
+		\item \announce*{2020-03-21}{delimiter RegEx feature}{delimiterRegEx} optionally specifies the pattern
 		      matching to be used for the alignment delimeter (default: \lstinline3 '(?<!\\)(&)'3);
-		\item \announce{NEW}{delimiter justification}{delimiterJustification} optionally specifies the justification
+		\item \announce*{2020-03-21}{delimiter justification}{delimiterJustification} optionally specifies the justification
 		      for the alignment delimeters (default: left); note that this feature is only useful if
 		      you have delimiters of different lengths in the same column, discussed in
 		      \cref{sec:delimiter-reg-ex}.
@@ -395,7 +395,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 	\end{itemize}
 
 	We explore%
-	\announce{new}{alignFinalDoubleBackSlash demonstration} the
+	\announce*{2020-03-21}{alignFinalDoubleBackSlash demonstration} the
 	\texttt{alignFinalDoubleBackSlash} feature by using the file in \cref{lst:tabular4}. Upon
 	running the following commands
 	\begin{commandshell}
@@ -459,7 +459,7 @@ latexindent.pl matrix1.tex
 
 \subsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
 	The%
-	\announce{NEW}{don't measure feature} \texttt{lookForAlignDelims}
+	\announce*{2020-03-21}{don't measure feature} \texttt{lookForAlignDelims}
 	field can, optionally, receive the \texttt{dontMeasure} option which can be specified
 	in a few different ways. We will explore this feature in relation to the code given in
 	\cref{lst:tabular-DM}; the default output is shown in \cref{lst:tabular-DM-default}.
@@ -556,7 +556,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 
 \subsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification feature}\label{sec:delimiter-reg-ex}
 	The delimiter alignment%
-	\announce{new}{delimiterRegEx feature} will, by
+	\announce*{2020-03-21}{delimiterRegEx feature} will, by
 	default, align code blocks at the ampersand character. The behaviour is controlled by the
 	\texttt{delimiterRegEx} field within \texttt{lookForAlignDelims}; the default value is
 	\lstinline3'(?<!\\)(&)'3, which can be read as: \emph{an ampersand, as long as it is not immediately preceeded by a backslash}.
@@ -624,8 +624,8 @@ latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
 
 	It is possible that delimiters specified within \texttt{delimiterRegEx} can be of
 	different lengths. Consider the file in \cref{lst:tabbing1}, and associated YAML in
-	\cref{lst:delimiterRegEx4}. Note that the	\cref{lst:delimiterRegEx4} specifies the option for
-	the delimiter to be either \lstinline!#! or \lstinline!\>!,
+	\cref{lst:delimiterRegEx4}. Note that the	      \cref{lst:delimiterRegEx4} specifies the
+	option for the delimiter to be either \lstinline!#! or \lstinline!\>!,
 	\emph{which are different lengths}. Upon running the command
 	\begin{commandshell}
 latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
@@ -970,5 +970,5 @@ mand arg text
 	\end{table}
 
 	We will refer to these code blocks in what follows.%
-	\announce*{2019-07-13}{fine tuning of code blocks} Note that the fine tuning of the definition of the code blocks
+	\announce{2019-07-13}{fine tuning of code blocks} Note that the fine tuning of the definition of the code blocks
 	detailed in \cref{tab:code-blocks} is discussed in \vref{sec:finetuning}.
