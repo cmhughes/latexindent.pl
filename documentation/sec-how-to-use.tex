@@ -335,10 +335,11 @@ cat myfile.tex | latexindent.pl -
 	\announce{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can pipe output from
 	other commands directly into the script. For example assuming that you have content in
 	\texttt{myfile.tex}, then the above command will output the results of operating upon
-	\texttt{myfile.tex}. 
+	\texttt{myfile.tex}.
 
-    If you wish to use this feature with your own local settings, via the \texttt{-l} switch, 
-    then you should finish your call to \texttt{latexindent.pl} with a \texttt{-} sign:
+	If you wish to use this feature with your own local settings, via the
+	\texttt{-l} switch, then you should finish your call to
+	\texttt{latexindent.pl} with a \texttt{-} sign:
 	\begin{commandshell}
 cat myfile.tex | latexindent.pl -l=mysettings.yaml -
 \end{commandshell}
