@@ -386,7 +386,7 @@ sub align_at_ampersand{
                             or 
              (${$_}{numberOfAmpersands} < ${$self}{maximumNumberOfAmpersands} and !${$self}{alignRowsWithoutMaxDelims} and !${$_}{endPiece})      
         ){
-            ${$_}{row} = (${$_}{unformattedRow}?${$_}{unformattedRow}:q()).(${$_}{trailingComment}?${$_}{trailingComment}:q());
+            ${$_}{row} = (${$_}{unformattedRow} ne "" ? ${$_}{unformattedRow}:q()).(${$_}{trailingComment}?${$_}{trailingComment}:q());
         }
 
     }

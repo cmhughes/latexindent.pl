@@ -158,6 +158,13 @@ latexindent.pl -s tabbing2.tex -o=+-mod7 -l=delimiterRegEx7.yaml
 latexindent.pl -s tabbing2.tex -o=+-mod8 -l=delimiterRegEx8.yaml
 
 latexindent.pl -s mixed.tex -o=+-out -l=mixed.yaml
+
+# issue 201: https://github.com/cmhughes/latexindent.pl/issues/201
+latexindent.pl -s issue-201-mk1.tex -o=+-out
+latexindent.pl -s issue-201-mk2.tex -o=+-out
+latexindent.pl -s issue-201-mk3.tex -o=+-out
+latexindent.pl -s issue-201-mk4.tex -o=+-out
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
