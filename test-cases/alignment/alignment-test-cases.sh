@@ -165,6 +165,10 @@ latexindent.pl -s issue-201-mk2.tex -o=+-out
 latexindent.pl -s issue-201-mk3.tex -o=+-out
 latexindent.pl -s issue-201-mk4.tex -o=+-out
 
+# issue 207: https://github.com/cmhughes/latexindent.pl/issues/207
+latexindent.pl -s issue-207.tex -o=+-mod0
+latexindent.pl -s issue-207.tex -l alusiani.yaml -o=+-mod1
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
