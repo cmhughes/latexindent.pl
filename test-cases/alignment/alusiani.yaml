@@ -1,0 +1,22 @@
+# Default value of indentation
+defaultIndent: "  "
+
+indentRules:
+  myenvironment: "  "
+  anotherenvironment: "  "
+  chapter: ""
+  section: ""
+  item: ""
+  myitem: ""
+  ifElseFi: "  "
+
+specialBeginEnd:
+  begingroup:
+    begin: '\\begingroup'
+    end: '\\endgroup'
+    lookForThis: 1
+  bgroup:
+    begin: '\\bgroup'
+    end: '\\egroup'
+    lookForThis: 1
+  specialBeforeCommand: 1

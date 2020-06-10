@@ -51,7 +51,7 @@ sub construct_environments_regexp{
                 (
                     (?:                             # cluster-only (), don't capture 
                         (?!                         # don't include \begin in the body
-                            (?:\\begin)             # cluster-only (), don't capture
+                            (?:\\begin\{)           # cluster-only (), don't capture
                         ).                          # any character, but not \\begin
                     )*?                             # non-greedy
                             (\R*)?                  # possible line breaks (into $5)
