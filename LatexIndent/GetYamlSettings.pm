@@ -20,6 +20,7 @@ use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
+use Cwd;
 use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
 our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
@@ -169,6 +170,7 @@ sub yaml_read_settings{
     push(@localSettings,$switches{readLocalSettings}) if($switches{readLocalSettings});
   }
 
+  my $workingFileLocation = dirname (${$self}{fileName});
   # add local settings to the paths, if appropriate
   foreach (@localSettings) {
     # check for an extension (.yaml)
@@ -180,8 +182,14 @@ sub yaml_read_settings{
     # if the -l switch is called on its own, or else with +
     # and latexindent.pl is called from a different directory, then
     # we need to account for this
-    if($_ eq "localSettings.yaml"){
-        $_ = dirname (${$self}{fileName})."/".$_;
+    if($_ eq "localSettings.yaml" ){
+	    # check for existence in the directory of the file.
+        if ( (-e $workingFileLocation."/".$_) ) {
+            $_ = $workingFileLocation."/".$_;
+        # otherwise we fallback to the current directory
+    	} elsif( (-e cwd()."/".$_)){
+            $_ = cwd()."/".$_;
+	    }
     }
 
     # check for existence and non-emptiness
