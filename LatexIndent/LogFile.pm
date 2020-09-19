@@ -62,8 +62,9 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
       -t, --trace
           tracing mode: verbose information given to the log file
       -l, --local[=myyaml.yaml]
-          use localSettings.yaml (assuming it exists in the directory of your file);
-          alternatively, use myyaml.yaml, if it exists; sample usage:
+          use localSettings.yaml (assuming it exists in the directory of your file, 
+          or in the current working directory); alternatively, use myyaml.yaml, if it exists; 
+          sample usage:
                 latexindent.pl -l some.yaml myfile.tex 
                 latexindent.pl -l=another.yaml myfile.tex 
                 latexindent.pl -l=some.yaml,another.yaml myfile.tex 

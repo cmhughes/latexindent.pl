@@ -240,10 +240,11 @@ script will be affected).
 
 ``latexindent.pl`` will always load ``defaultSettings.yaml`` (rhymes
 with camel) and if it is called with the ``-l`` switch and it finds
-``localSettings.yaml`` in the same directory as ``myfile.tex`` then
-these settings will be added to the indentation scheme. Information will
-be given in ``indent.log`` on the success or failure of loading
-``localSettings.yaml``.
+``localSettings.yaml`` in the same directory as ``myfile.tex``, then, 
+if not found, it looks for ``localSettings.yaml`` in the current working 
+directory, then these settings will be added to the indentation scheme. 
+Information will be given in ``indent.log`` on the success or failure of
+loading ``localSettings.yaml``.
 
 The ``-l`` flag can take an *optional* parameter which details the name
 (or names separated by commas) of a YAML file(s) that resides in the
