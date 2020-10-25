@@ -1,0 +1,33 @@
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,on grid,semithick,
+		every state/.style={fill=red,draw=none,circular drop shadow,text=white}]
+	\path (A) edge              node {0,1,L}(B)
+	          edge              node {1,1,R} (C)
+	      (B) edge [loop above] node {1,1,L}(B)
+	          edge              node {0,1,L}(C)
+	      (C) edge              node {0,1,L}(D)
+	          edge [bend left]  node {1,0,R}(E)
+	      (D) edge [loop below] node {1,1,R}(D)
+	          edge              node {0,1,R}(A)
+	      (E) edge [bend left]  node {1,0,R} (A);
+\end{tikzpicture}
+
+\begin{align*}1 & 2 \\
+              3 & 4 \\
+              5 & 6
+\end{align*}
+
+\begin{align*} 1 & 2 \\
+               3 & 4 \\
+               5 & 6
+\end{align*}
+
+\begin{align*}
+	1 & 2 \\
+	3 & 4 \\
+	5 & 6
+\end{align*}
+\begin{tabular}{cc}
+	1 & 2 \\
+	3 & 4 \\
+	5 & 6
+\end{tabular}

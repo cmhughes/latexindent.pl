@@ -236,6 +236,10 @@ latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml -o=+-comm-first
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.yaml -o=+-special-first
 
+# specialBeginEnd with alignment
+latexindent.pl -s special-align.tex -l edge-node1.yaml -o=+-mod1
+latexindent.pl -s special-align.tex -l edge-node2.yaml -o=+-mod2
+
 # one sentence per line
 latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences -m -l=keep-sen-line-breaks.yaml -o=+-mod2

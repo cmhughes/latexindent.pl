@@ -50,8 +50,8 @@ perl latexindent-module-installer.pl
 		your operating system and \texttt{Perl} distribution.
 
 	\subsubsection{Linux}
-		Linux users may be interested in exploring Perlbrew
-		\cite{perlbrew}; an example installation would be:
+		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; an example
+		installation would be:
 		\begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
@@ -66,18 +66,18 @@ cpanm Log::Log4perl
 cpanm Log::Dispatch
 \end{commandshell}
 
-		For other distributions, the Ubuntu/Debian approach may work by visiting the software center, or else by running, 
-        for example,
-\begin{commandshell}
+		For other distributions, the Ubuntu/Debian approach may work by visiting the software
+		center, or else by running, for example,
+		\begin{commandshell}
 sudo perl -MCPAN -e'install "File::HomeDir"'
 \end{commandshell}
 
 		If you are using Alpine, some \texttt{Perl} modules are not build-compatible
 		with Alpine, but replacements are available through \texttt{apk}. For example,
-        you might use the commands given in \cref{lst:alpine-install}; thanks to \cite{jun-sheaf}
-        for providing these details.
+		you might use the commands given in \cref{lst:alpine-install}; thanks to
+		\cite{jun-sheaf} for providing these details.
 
-	 \begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
+		\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
 # Installing perl
 apk --no-cache add miniperl perl-utils
 

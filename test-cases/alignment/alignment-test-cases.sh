@@ -169,6 +169,8 @@ latexindent.pl -s issue-201-mk4.tex -o=+-out
 latexindent.pl -s issue-207.tex -o=+-mod0
 latexindent.pl -s issue-207.tex -l alusiani.yaml -o=+-mod1
 
+# issue 223 https://github.com/cmhughes/latexindent.pl/issues/223
+latexindent.pl -s vassar.tex -l vassar1.yaml -o=+-mod1
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

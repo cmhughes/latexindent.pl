@@ -624,8 +624,9 @@ latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
 
 	It is possible that delimiters specified within \texttt{delimiterRegEx} can be of
 	different lengths. Consider the file in \cref{lst:tabbing1}, and associated YAML in
-	\cref{lst:delimiterRegEx4}. Note that the			  \cref{lst:delimiterRegEx4}
-	specifies the option for the delimiter to be either \lstinline!#! or
+	\cref{lst:delimiterRegEx4}. Note that the
+	\cref{lst:delimiterRegEx4} specifies the option for the delimiter to be either
+	\lstinline!#! or
 	\lstinline!\>!, \emph{which are different lengths}. Upon running the command
 	\begin{commandshell}
 latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
@@ -803,6 +804,37 @@ latexindent.pl special3.tex -l=special-verb1
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
 		\cmhlistingsfromfile{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
+	\end{cmhtcbraster}
+
+	We can combine the \texttt{specialBeginEnd} with the \texttt{lookForAlignDelims} feature. We
+	begin with the code in \cref{lst:special-align}.
+
+	\cmhlistingsfromfile*{demonstrations/special-align.tex}{\texttt{special-align.tex}}{lst:special-align}
+
+	Let's assume that our goal is to align the code at the \texttt{edge} and
+	\texttt{node} text; we employ the code given in \cref{lst:edge-node1} and run
+	the command
+	\begin{commandshell}
+latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
+\end{commandshell}
+	to receive the output in \cref{lst:special-align-mod1}.
+
+	\begin{cmhtcbraster}[ raster left skip=-3.5cm,]
+		\cmhlistingsfromfile*{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
+		\cmhlistingsfromfile*{demonstrations/special-align-mod1.tex}{\texttt{special-align.tex} using \cref{lst:edge-node1}}{lst:special-align-mod1}
+	\end{cmhtcbraster}
+
+	The output in \cref{lst:special-align-mod1} is not quite ideal. We can tweak the settings
+	within \cref{lst:edge-node1} in order to improve the output; in particular, we employ
+	the code in \cref{lst:edge-node2} and run the command
+	\begin{commandshell}
+latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
+\end{commandshell}
+	to receive the output in \cref{lst:special-align-mod2}.
+
+	\begin{cmhtcbraster}[ raster left skip=-3.5cm,]
+		\cmhlistingsfromfile*{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
+		\cmhlistingsfromfile*{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
 	\end{cmhtcbraster}
 
 \yamltitle{indentAfterHeadings}*{fields}

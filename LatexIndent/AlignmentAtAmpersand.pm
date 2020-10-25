@@ -400,6 +400,36 @@ sub align_at_ampersand{
     # if the \end{} statement didn't originally have a line break before it, we need to remove the final 
     # line break added by the above
     ${$self}{body} =~ s/\h*\R$//s if !${$self}{linebreaksAtEnd}{body};
+
+    # if the \begin{} statement doesn't finish with a line break, then we adjust the indentation
+    # to be the length of the begin statement.
+    #
+    # example:
+    #
+    #       \begin{align*}1&2\\
+    #         3&4\\
+    #         5 &    6
+    #       \end{align*}
+    #
+    # goes to
+    #
+    #       \begin{align*}1 & 2 \\
+    #                     3 & 4 \\
+    #                     5 & 6
+    #       \end{align*}
+    #
+    # see https://github.com/cmhughes/latexindent.pl/issues/223 for example
+    if (!${${$self}{linebreaksAtEnd}}{begin} 
+            and ${$cellStorage[0][0]}{type} eq "X" 
+            and ${$cellStorage[0][0]}{measureThis}){
+
+        my $partToMeasure = ${$self}{begin};
+        if( (${$self}{begin} eq '{' | ${$self}{begin} eq '[') and ${$self}{parentBegin}){
+            $partToMeasure = ${$self}{parentBegin}."{";
+        }
+        ${$self}{indentation} = " " x Unicode::GCString->new($partToMeasure)->columns();
+        $logger->trace("Adjusting indentation of ${$self}{name} in AlignAtAmpersand routine") if($is_t_switch_active);
+    }
   }
 
 sub main_formatting {
