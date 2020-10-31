@@ -165,19 +165,49 @@ lookForAlignDelims:
    tabu: 1
    array: 1
    matrix: 1
-   bmatrix: 1
-   Bmatrix: 1
-   pmatrix: 1
-   vmatrix: 1
-   Vmatrix: 1
+   listabla: 1
+   # amsmath
    align: 1
    align*: 1
    alignat: 1
    alignat*: 1
    aligned: 1
+   bmatrix: 1
+   Bmatrix: 1
    cases: 1
+   flalign: 1
+   flalign*: 1
+   pmatrix: 1
+   vmatrix: 1
+   Vmatrix: 1
+   # mathtools
+   cases*: 1
    dcases: 1
-   listabla: 1
+   dcases*: 1
+   rcases: 1
+   rcases*: 1
+   drcases: 1
+   drcases*: 1
+   # nicematrix
+   NiceMatrix: 1
+   pNiceMatrix: 1
+   bNiceMatrix: 1
+   BNiceMatrix: 1
+   vNiceMatrix: 1
+   VNiceMatrix: 1
+   NiceArray: 1
+   pNiceArrayC: 1
+   bNiceArrayC: 1
+   BNiceArrayC: 1
+   vNiceArrayC: 1
+   VNiceArrayC: 1
+   NiceArrayCwithDelims: 1
+   pNiceArrayRC: 1
+   bNiceArrayRC: 1
+   BNiceArrayRC: 1
+   vNiceArrayRC: 1
+   VNiceArrayRC: 1
+   NiceArrayRCwithDelims: 1
 
 # if you want the script to look for \item commands 
 # and format it, as follows (for example),

@@ -171,6 +171,12 @@ latexindent.pl -s issue-207.tex -l alusiani.yaml -o=+-mod1
 
 # issue 223 https://github.com/cmhughes/latexindent.pl/issues/223
 latexindent.pl -s vassar.tex -l vassar1.yaml -o=+-mod1
+
+# including more environments for lookForAlignDelims
+latexindent.pl -s amsmath.tex -o=+-default
+latexindent.pl -s mathtools.tex -o=+-default
+latexindent.pl -s nicematrix.tex -o=+-default
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise
