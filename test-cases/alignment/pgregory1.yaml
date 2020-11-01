@@ -1,0 +1,6 @@
+lookForAlignDelims:
+    myother: 1
+
+modifyLineBreaks:
+    environments:
+        EndFinishesWithLineBreak: 1
