@@ -168,7 +168,7 @@ sub modify_line_breaks_end{
 
         # possibly modify line break *after* \end{statement}
         if(defined $_ and $_>=1 
-           and !${$self}{linebreaksAtEnd}{end}){
+           and !${$self}{linebreaksAtEnd}{end} and ${$self}{end} ne ''){
                   # if the <end> statement doesn't finish with a line break, 
                   # then we have different actions based upon the value of EndFinishesWithLineBreak:
                   #     EndFinishesWithLineBreak == 1 just add a new line
@@ -187,7 +187,7 @@ sub modify_line_breaks_end{
                       $logger->trace("Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break.") if $is_t_switch_active;
                     } else {
                       # otherwise, create a trailing comment, and tack it on 
-                      $logger->trace("Adding a % immediately after, ${$self}{end} ($EndStringLogFile==2)") if $is_t_switch_active;
+                      $logger->trace("Adding a % immediately after ${$self}{end} ($EndStringLogFile==2)") if $is_t_switch_active;
                       my $trailingCommentToken = "%".$self->add_comment_symbol;
                       ${$self}{end} =~ s/\h*$//s;
                       ${$self}{replacementText} .= "$trailingCommentToken\n";
