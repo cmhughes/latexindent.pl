@@ -20,15 +20,15 @@ do
  esac 
 done
 
-oldVersion='3.8.1'
-newVersion='3.8.2'
-oldDate='2020-05-05'
-newDate='2020-06-10'
+oldVersion='3.8.2'
+newVersion='3.8.3'
+oldDate='2020-06-10'
+newDate='2020-11-06'
 
 cd ../
 cd documentation
-find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
-find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+[[ $minorVersion == 0 ]] && find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+[[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 cd ../

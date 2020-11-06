@@ -47,15 +47,11 @@ perl latexindent-module-installer.pl
 
 	\subsection{Manually installed modules}\label{sec:manual-module-instal}
 		Manually installing the modules given in \cref{lst:helloworld} will vary depending on
-		your operating system and \texttt{Perl} distribution. For example, Ubuntu users
-		might visit the software center, or else run
-		\begin{commandshell}
-sudo perl -MCPAN -e 'install "File::HomeDir"'
-\end{commandshell}
+		your operating system and \texttt{Perl} distribution.
 
-		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; possible
-		installation and setup options follow for Ubuntu (other distributions will need slightly
-		different commands).
+	\subsubsection{Linux}
+		Linux users may be interested in exploring Perlbrew \cite{perlbrew}; an example
+		installation would be:
 		\begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
@@ -70,6 +66,44 @@ cpanm Log::Log4perl
 cpanm Log::Dispatch
 \end{commandshell}
 
+		For other distributions, the Ubuntu/Debian approach may work by visiting the software
+		center, or else by running, for example,
+		\begin{commandshell}
+sudo perl -MCPAN -e'install "File::HomeDir"'
+\end{commandshell}
+
+		If you are using Alpine, some \texttt{Perl} modules are not build-compatible
+		with Alpine, but replacements are available through \texttt{apk}. For example,
+		you might use the commands given in \cref{lst:alpine-install}; thanks to
+		\cite{jun-sheaf} for providing these details.
+
+		\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
+# Installing perl
+apk --no-cache add miniperl perl-utils
+
+# Installing incompatible latexindent perl dependencies via apk
+apk --no-cache add \
+    perl-log-log4perl \
+    perl-log-dispatch \
+    perl-namespace-autoclean \
+    perl-specio \
+    perl-unicode-linebreak
+
+# Installing remaining latexindent perl dependencies via cpan
+apk --no-cache add curl wget make
+ls /usr/share/texmf-dist/scripts/latexindent
+cd /usr/local/bin && \
+    curl -L https://cpanmin.us/ -o cpanm && \
+    chmod +x cpanm
+cpanm -n App::cpanminus
+cpanm -n File::HomeDir
+cpanm -n Params::ValidationCompiler
+cpanm -n YAML::Tiny
+cpanm -n Unicode::GCString
+\end{cmhlistings}
+
+		Users of NixOS might like to see \href{https://github.com/cmhughes/latexindent.pl/issues/222}{https://github.com/cmhughes/latexindent.pl/issues/222} for tips.
+	\subsubsection{Mac}
 		Users of the Macintosh operating system might like to explore the following commands, for
 		example:
 		\begin{commandshell}
@@ -83,6 +117,7 @@ cpanm Log::Log4perl
 cpanm Log::Dispatch
 \end{commandshell}
 
+	\subsubsection{Windows}
 		Strawberry Perl users on Windows might use \texttt{CPAN client}. All of the modules are
 		readily available on CPAN \cite{cpan}.
 
@@ -225,9 +260,9 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 		 \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingNew.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
 	 \end{minipage}%
 
-	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you would
-	 write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would write YAML as in
-	 \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m} switch,
+	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you
+	 would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would write YAML
+	 as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m} switch,
 	 \cref{lst:indentAfterThisHeadingNew2}.
 
 	 \begin{minipage}{.45\textwidth}

@@ -98,6 +98,17 @@ https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
 
+   <div id="ref-jun-sheaf">
+
+jun-sheaf. 2020. “Alpine-Linux Instructions.” August 10.
+https://github.com/cmhughes/latexindent.pl/pull/214.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-harish">
 
 Kumar, Harish. 2013. “Early Version Testing.” November 10.

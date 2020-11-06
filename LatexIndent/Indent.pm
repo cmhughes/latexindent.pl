@@ -108,9 +108,6 @@ sub indent_begin{
 sub indent_body{
     my $self = shift;
 
-    # grab the indentation of the object
-    my $indentation = ${$self}{indentation};
-
     # output to the logfile
     $logger->trace("Body (${$self}{name}) before indentation:\n${$self}{body}") if $is_tt_switch_active;
 
@@ -122,6 +119,11 @@ sub indent_body{
 
     # some objects can format their body to align at the & character
     $self->align_at_ampersand if ${$self}{lookForAlignDelims};
+
+    # grab the indentation of the object
+    # NOTE: we need this here, as ${$self}{indentation} can be updated by the align_at_ampersand routine, 
+    #       see https://github.com/cmhughes/latexindent.pl/issues/223 for example
+    my $indentation = ${$self}{indentation};
 
     # possibly remove paragraph line breaks
     $self->remove_paragraph_line_breaks if ($is_m_switch_active and ${$self}{removeParagraphLineBreaks} and !${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap});

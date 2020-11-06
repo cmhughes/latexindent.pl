@@ -118,6 +118,15 @@ sub find_opt_mand_arguments{
                 $arguments->find_round_brackets;
         }
 
+        # we need to store the parent begin in each of the arguments, for example, see
+        #   test-cases/texexchange/112343-morbusg.tex
+        # which has an alignment delimiter in the first line
+        if (${$self}{lookForAlignDelims}){
+            foreach (@{${$arguments}{children}}){
+                ${$_}{parentBegin} = ${$self}{begin};
+            }
+        }
+
         # examine *first* child
         #   situation: parent BodyStartsOnOwnLine >= 1, but first child has BeginStartsOnOwnLine == 0 || BeginStartsOnOwnLine == undef
         #   problem: the *body* of parent actually starts after the arguments

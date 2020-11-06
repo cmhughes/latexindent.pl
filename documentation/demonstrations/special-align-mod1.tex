@@ -1,0 +1,11 @@
+\begin{tikzpicture}
+	\path (A) edge              node {0,1,L}(B)
+	          edge              node {1,1,R} (C)
+	      (B) edge [loop above] node {1,1,L}(B)
+	          edge              node {0,1,L}(C)
+	      (C) edge              node {0,1,L}(D)
+	          edge [bend left]  node {1,0,R}(E)
+	      (D) edge [loop below] node {1,1,R}(D)
+	          edge              node {0,1,R}(A)
+	      (E) edge [bend left]  node {1,0,R} (A);
+\end{tikzpicture}

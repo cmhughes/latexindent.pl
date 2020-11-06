@@ -73,17 +73,13 @@ Manually installed modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Manually installing the modules given in :numref:`lst:helloworld` will
-vary depending on your operating system and ``Perl`` distribution. For
-example, Ubuntu users might visit the software center, or else run
+vary depending on your operating system and ``Perl`` distribution.
 
-.. code-block:: latex
-   :class: .commandshell
-
-    sudo perl -MCPAN -e 'install "File::HomeDir"'
+Linux
+~~~~~
 
 Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017);
-possible installation and setup options follow for Ubuntu (other
-distributions will need slightly different commands).
+an example installation would be:
 
 .. code-block:: latex
    :class: .commandshell
@@ -100,6 +96,53 @@ distributions will need slightly different commands).
     cpanm Log::Log4perl
     cpanm Log::Dispatch
 
+For other distributions, the Ubuntu/Debian approach may work by visiting
+the software center, or else by running, for example,
+
+.. code-block:: latex
+   :class: .commandshell
+
+    sudo perl -MCPAN -e'install "File::HomeDir"'
+
+If you are using Alpine, some ``Perl`` modules are not build-compatible
+with Alpine, but replacements are available through ``apk``. For
+example, you might use the commands given in
+:numref:`lst:alpine-install`; thanks to (jun-sheaf 2020) for providing
+these details.
+
+.. code-block:: latex
+   :caption: ``alpine-install.sh`` 
+   :name: lst:alpine-install
+
+    # Installing perl
+    apk --no-cache add miniperl perl-utils
+
+    # Installing incompatible latexindent perl dependencies via apk
+    apk --no-cache add \
+        perl-log-log4perl \
+        perl-log-dispatch \
+        perl-namespace-autoclean \
+        perl-specio \
+        perl-unicode-linebreak
+
+    # Installing remaining latexindent perl dependencies via cpan
+    apk --no-cache add curl wget make
+    ls /usr/share/texmf-dist/scripts/latexindent
+    cd /usr/local/bin && \
+        curl -L https://cpanmin.us/ -o cpanm && \
+        chmod +x cpanm
+    cpanm -n App::cpanminus
+    cpanm -n File::HomeDir
+    cpanm -n Params::ValidationCompiler
+    cpanm -n YAML::Tiny
+    cpanm -n Unicode::GCString
+
+Users of NixOS might like to see
+https://github.com/cmhughes/latexindent.pl/issues/222 for tips.
+
+Mac
+~~~
+
 Users of the Macintosh operating system might like to explore the
 following commands, for example:
 
@@ -114,6 +157,9 @@ following commands, for example:
     cpanm Unicode::GCString
     cpanm Log::Log4perl
     cpanm Log::Dispatch
+
+Windows
+~~~~~~~
 
 Strawberry Perl users on Windows might use ``CPAN client``. All of the
 modules are readily available on CPAN (“CPAN: Comprehensive Perl Archive
@@ -383,6 +429,17 @@ https://github.com/cmhughes/latexindent.pl.
 
 Juang, Jason. 2015. “Add in Path Installation.” November 24.
 https://github.com/cmhughes/latexindent.pl/pull/38.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-jun-sheaf">
+
+jun-sheaf. 2020. “Alpine-Linux Instructions.” August 10.
+https://github.com/cmhughes/latexindent.pl/pull/214.
 
 .. raw:: html
 

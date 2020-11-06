@@ -94,5 +94,9 @@ latexindent.pl -s -m konfekt.tex -o=+-mod2 -y="modifyLineBreaks:oneSentencePerLi
 
 # https://github.com/cmhughes/latexindent.pl/issues/188; in particular, see the WARNING message within indent.log from the following
 latexindent.pl -s -m sentence-wrap-no-columns-specified.tex -l=sentence-wrap-no-columns-specified.yaml -o=+-mod1
+
+# https://github.com/cmhughes/latexindent.pl/issues/217
+latexindent.pl -s -m psttf.tex -l psttf1.yaml -o=+-mod1
+latexindent.pl -s -m psttf.tex -l psttf2.yaml -o=+-mod2
 [[ $noisyMode == 1 ]] && makenoise
 git status

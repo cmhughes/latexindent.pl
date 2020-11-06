@@ -14,9 +14,9 @@ All features described in this section will only be relevant if the
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 445-447
+ 	:lines: 475-477
  	:linenos:
- 	:lineno-start: 445
+ 	:lineno-start: 475
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which
 permits ``latexindent.pl`` to modify line breaks, according to the
@@ -91,9 +91,9 @@ the character in the specified column.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 472-473
+ 	:lines: 502-503
  	:linenos:
- 	:lineno-start: 472
+ 	:lineno-start: 502
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -217,9 +217,7 @@ example, using the settings in :numref:`lst:textwrap2A-yaml` and
     latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 
 gives the respective output in :numref:`lst:textwrap4-mod2A` and
-:numref:`lst:textwrap4-mod2B`. You can also specify ``break`` in your
-settings, but I haven’t found a useful reason to do this; see
-(“Text::Wrap Perl Module” 2017) for more details.
+:numref:`lst:textwrap4-mod2B`.
 
  .. literalinclude:: demonstrations/textwrap4-mod2A.tex
  	:class: .tex
@@ -241,6 +239,39 @@ settings, but I haven’t found a useful reason to do this; see
  	:caption: ``textwrap2B.yaml`` 
  	:name: lst:textwrap2B-yaml
 
+You can also specify the ``tabstop`` field as an integer value, which is
+passed to the text wrap module; see (“Text::Wrap Perl Module” 2017) for
+details. Starting with the code in :numref:`lst:textwrap-ts` with
+settings in :numref:`lst:tabstop`, and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
+
+gives the code given in :numref:`lst:textwrap-ts-mod1`.
+
+ .. literalinclude:: demonstrations/textwrap-ts.tex
+ 	:class: .tex
+ 	:caption: ``textwrap-ts.tex`` 
+ 	:name: lst:textwrap-ts
+
+ .. literalinclude:: demonstrations/tabstop.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``tabstop.yaml`` 
+ 	:name: lst:tabstop
+
+ .. literalinclude:: demonstrations/textwrap-ts-mod1.tex
+ 	:class: .tex
+ 	:caption: ``textwrap-ts-mod1.tex`` 
+ 	:name: lst:textwrap-ts-mod1
+
+You can specify ``break`` and ``unexpand`` options in your settings in
+analogous ways to those demonstrated in :numref:`lst:textwrap2B-yaml`
+and :numref:`lst:tabstop`, and they will be passed to the
+``Text::Wrap`` module. I have not found a useful reason to do this; see
+(“Text::Wrap Perl Module” 2017) for more details.
+
 text wrapping on a per-code-block basis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -259,9 +290,9 @@ The full details of ``textWrapOptions`` are shown in
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 472-488
+ 	:lines: 502-518
  	:linenos:
- 	:lineno-start: 472
+ 	:lineno-start: 502
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with
 direct reference to those detailed in :numref:`tab:code-blocks`. The
@@ -535,9 +566,9 @@ controlled by the switches detailed in
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 448-471
+ 	:lines: 478-501
  	:linenos:
- 	:lineno-start: 448
+ 	:lineno-start: 478
 
 .. describe:: manipulateSentences:0\|1
 
@@ -625,25 +656,25 @@ language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 453-461
+ 	:lines: 483-491
  	:linenos:
- 	:lineno-start: 453
+ 	:lineno-start: 483
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 462-465
+ 	:lines: 492-495
  	:linenos:
- 	:lineno-start: 462
+ 	:lineno-start: 492
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 466-471
+ 	:lines: 496-501
  	:linenos:
- 	:lineno-start: 466
+ 	:lineno-start: 496
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1087,9 +1118,9 @@ feature described in :numref:`sec:onesentenceperline`.
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 489-503
+ 	:lines: 519-533
  	:linenos:
- 	:lineno-start: 489
+ 	:lineno-start: 519
 
 This routine can be turned on *globally* for *every* code block type
 known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using
@@ -1287,9 +1318,9 @@ the routine further by using the ``paragraphsStopAt`` fields, shown in
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 504-513
+ 	:lines: 534-543
  	:linenos:
- 	:lineno-start: 504
+ 	:lineno-start: 534
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to
 stop the current paragraph when it reaches a line that *begins* with any
@@ -1431,31 +1462,37 @@ Poly-switches
 -------------
 
 Every other field in the ``modifyLineBreaks`` field uses poly-switches,
-and can take one of *five* integer values:
+and can take one of the following integer values:
 
--  *remove mode*: line breaks before or after the *<part of thing>* can
-   be removed (assuming that ``preserveBlankLines`` is set to ``0``);
+:math:`-1`
+    *remove mode*: line breaks before or after the *<part of thing>* can
+    be removed (assuming that ``preserveBlankLines`` is set to ``0``);
 
--  *off mode*: line breaks will not be modified for the *<part of
-   thing>* under consideration;
+0
+    *off mode*: line breaks will not be modified for the *<part of
+    thing>* under consideration;
 
--  *add mode*: a line break will be added before or after the *<part of
-   thing>* under consideration, assuming that there is not already a
-   line break before or after the *<part of thing>*;
+1
+    *add mode*: a line break will be added before or after the *<part of
+    thing>* under consideration, assuming that there is not already a
+    line break before or after the *<part of thing>*;
 
--  *comment then add mode*: a comment symbol will be added, followed by
-   a line break before or after the *<part of thing>* under
-   consideration, assuming that there is not already a comment and line
-   break before or after the *<part of thing>*;
+2
+    *comment then add mode*: a comment symbol will be added, followed by
+    a line break before or after the *<part of thing>* under
+    consideration, assuming that there is not already a comment and line
+    break before or after the *<part of thing>*;
 
--  *add then blank line mode* : a line break will be added before or
-   after the *<part of thing>* under consideration, assuming that there
-   is not already a line break before or after the *<part of thing>*,
-   followed by a blank line;
+3
+    *add then blank line mode* : a line break will be added before or
+    after the *<part of thing>* under consideration, assuming that there
+    is not already a line break before or after the *<part of thing>*,
+    followed by a blank line;
 
--  *add blank line mode* ; a blank line will be added before or after
-   the *<part of thing>* under consideration, even if the *<part of
-   thing>* is already on its own line.
+4
+    *add blank line mode* ; a blank line will be added before or after
+    the *<part of thing>* under consideration, even if the *<part of
+    thing>* is already on its own line.
 
 In the above, *<part of thing>* refers to either the *begin statement*,
 *body* or *end statement* of the code blocks detailed in
@@ -1482,9 +1519,9 @@ to 0) by default.
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 514-523
+ 	:lines: 544-553
  	:linenos:
- 	:lineno-start: 514
+ 	:lineno-start: 544
 
 Let’s begin with the simple example given in
 :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of

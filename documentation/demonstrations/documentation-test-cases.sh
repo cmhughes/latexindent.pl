@@ -205,6 +205,7 @@ latexindent.pl -s tabular2.tex -o=+-wrap-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s tabular2.tex -o=+-wrap-mod3A.tex -l=textwrap3.yaml -m -y="modifyLineBreaks:textWrapOptions:alignAtAmpersandTakesPriority:0"
 latexindent.pl -s textwrap7.tex -o=+-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap7.tex -o=+-mod12.tex -l=textwrap12.yaml -m
+latexindent.pl -s textwrap-ts.tex -o=+-mod1.tex -l=tabstop.yaml -m
 
 # remove paragraph line breaks
 latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m
@@ -235,6 +236,10 @@ latexindent.pl -s -m env-mlb7 -o=+-no-preserve -l=env-mlb12.yaml,env-mlb13.yaml,
 # special before command
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml -o=+-comm-first
 latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.yaml -o=+-special-first
+
+# specialBeginEnd with alignment
+latexindent.pl -s special-align.tex -l edge-node1.yaml -o=+-mod1
+latexindent.pl -s special-align.tex -l edge-node2.yaml -o=+-mod2
 
 # one sentence per line
 latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1

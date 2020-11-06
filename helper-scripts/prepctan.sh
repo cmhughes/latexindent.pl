@@ -9,7 +9,7 @@ arara latexindent
 egrep -i --color=auto 'undefined' latexindent.log && read -p "Does the above look ok?"
 egrep -i --color=auto 'multiply-defined' latexindent.log && read -p "Does the above look ok?"
 egrep -i --color=auto 'fixthis' latexindent.log && read -p "Does the above look ok?"
-nohup evince latexindent.pdf
+nohup evince latexindent.pdf &
 cd ../
 # create a folder
 mkdir latexindent

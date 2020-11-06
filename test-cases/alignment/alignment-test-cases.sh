@@ -169,6 +169,20 @@ latexindent.pl -s issue-201-mk4.tex -o=+-out
 latexindent.pl -s issue-207.tex -o=+-mod0
 latexindent.pl -s issue-207.tex -l alusiani.yaml -o=+-mod1
 
+# issue 223 https://github.com/cmhughes/latexindent.pl/issues/223
+latexindent.pl -s vassar.tex -l vassar1.yaml -o=+-mod1
+
+# including more environments for lookForAlignDelims
+latexindent.pl -s amsmath.tex -o=+-default
+latexindent.pl -s mathtools.tex -o=+-default
+latexindent.pl -s nicematrix.tex -o=+-default
+
+# issue 209: https://github.com/cmhughes/latexindent.pl/issues/209
+latexindent.pl -s -m pgregory.tex -l pgregory1.yaml -o=+-mod1
+latexindent.pl -s -m pgregory.tex -l pgregory2.yaml -o=+-mod2
+latexindent.pl -s -m pgregory.tex -l pgregory3.yaml -o=+-mod3
+latexindent.pl -s -m pgregory.tex -l pgregory4.yaml -o=+-mod4
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

@@ -153,9 +153,7 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
 latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 \end{commandshell}
-	gives the respective output in \cref{lst:textwrap4-mod2A,lst:textwrap4-mod2B}. You can also specify
-	\texttt{break} in your settings, but I haven't found a useful reason to do
-	this; see \cite{textwrap} for more details.
+	gives the respective output in \cref{lst:textwrap4-mod2A,lst:textwrap4-mod2B}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
@@ -164,6 +162,30 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
 		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
 	\end{cmhtcbraster}
+
+	You can also specify the \texttt{tabstop} field%
+	\announce*{2020-11-06}{tabstop option for text wrap module} as
+	an integer value, which is passed to the text wrap module; see
+	\cite{textwrap} for details. Starting with the code in
+	\cref{lst:textwrap-ts} with settings in \cref{lst:tabstop}, and running the
+	command
+	\begin{commandshell}
+latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
+\end{commandshell}
+	gives the code given in \cref{lst:textwrap-ts-mod1}.
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile*[showtabs=true]*{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
+		\cmhlistingsfromfile*{demonstrations/tabstop.yaml}[MLB-TCB]{\texttt{tabstop.yaml}}{lst:tabstop}
+		\cmhlistingsfromfile*[showtabs=true]*{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
+	\end{cmhtcbraster}
+
+	You can specify \texttt{break} and \texttt{unexpand} options in
+	your settings in analogous ways to those demonstrated in \cref{lst:textwrap2B-yaml,lst:tabstop}, and
+	they will be passed to the \texttt{Text::Wrap} module. I have not found a useful
+	reason to do this; see \cite{textwrap} for more details.
 
 \subsubsection{text wrapping on a per-code-block basis}
 	By default, if the value of \texttt{columns} is greater than 0 and the
@@ -956,7 +978,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can
 	take one of the following%
 	\announce{2017-08-21}*{blank line poly-switch} integer values:
-	\begin{itemize}[font=\bfseries]
+	\begin{description}
 		\item[$-1$] \emph{remove mode}: line breaks before or after the
 		      \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is
 		      set to \texttt{0});
@@ -977,7 +999,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      \announce{2019-07-13}{blank line poly-switch}; a blank line will
 		      be added before or after the \emph{<part of thing>} under consideration, even if the
 		      \emph{<part of thing>} is already on its own line.
-	\end{itemize}
+	\end{description}
 	In the above, \emph{<part of thing>} refers to either the
 	\emph{begin statement}, \emph{body} or \emph{end statement}
 	of the code blocks detailed in \vref{tab:code-blocks}. All poly-switches are
@@ -1104,9 +1126,9 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\emph{blank line} has been added after adding the line break.
 
 	Let's now change%
-	\announce{2019-07-13}{demonstration of new blank line poly-switch} each of
-	the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are
-	$4$ and save them into \texttt{env-beg4.yaml} and
+	\announce{2019-07-13}{demonstration of new blank line poly-switch} each
+	of the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they
+	are $4$ and save them into \texttt{env-beg4.yaml} and
 	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
 
 	\begin{minipage}{.45\textwidth}
@@ -1117,7 +1139,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
 	\end{minipage}
 
-	We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
+	We will demonstrate this poly-switch value using the code in
+	\cref{lst:env-mlb1-text}.
 
 	\cmhlistingsfromfile{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
 

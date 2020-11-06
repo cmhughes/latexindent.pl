@@ -988,9 +988,9 @@ after each ``item``. A demonstration is given in
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 191-195
+ 	:lines: 221-225
  	:linenos:
- 	:lineno-start: 191
+ 	:lineno-start: 221
 
  .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -1023,9 +1023,9 @@ after each ``item``. A demonstration is given in
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 201-203
+ 	:lines: 231-233
  	:linenos:
- 	:lineno-start: 201
+ 	:lineno-start: 231
 
 .. describe:: specialBeginEnd:fields
 
@@ -1042,9 +1042,9 @@ shows the default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 207-220
+ 	:lines: 237-250
  	:linenos:
- 	:lineno-start: 207
+ 	:lineno-start: 237
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath``
 represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You
@@ -1203,6 +1203,57 @@ then the output in :numref:`lst:special3-mod1` is unchanged.
  	:caption: ``special3.tex`` and output using :numref:`lst:special-verb1-yaml` 
  	:name: lst:special3-mod1
 
+We can combine the ``specialBeginEnd`` with the ``lookForAlignDelims``
+feature. We begin with the code in :numref:`lst:special-align`.
+
+ .. literalinclude:: demonstrations/special-align.tex
+ 	:class: .tex
+ 	:caption: ``special-align.tex`` 
+ 	:name: lst:special-align
+
+Let’s assume that our goal is to align the code at the ``edge`` and
+``node`` text; we employ the code given in :numref:`lst:edge-node1`
+and run the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
+
+to receive the output in :numref:`lst:special-align-mod1`.
+
+ .. literalinclude:: demonstrations/edge-node1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``edge-node1.yaml`` 
+ 	:name: lst:edge-node1
+
+ .. literalinclude:: demonstrations/special-align-mod1.tex
+ 	:class: .tex
+ 	:caption: ``special-align.tex`` using :numref:`lst:edge-node1` 
+ 	:name: lst:special-align-mod1
+
+The output in :numref:`lst:special-align-mod1` is not quite ideal. We
+can tweak the settings within :numref:`lst:edge-node1` in order to
+improve the output; in particular, we employ the code in
+:numref:`lst:edge-node2` and run the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
+
+to receive the output in :numref:`lst:special-align-mod2`.
+
+ .. literalinclude:: demonstrations/edge-node2.yaml
+ 	:class: .baseyaml
+ 	:caption: ``edge-node2.yaml`` 
+ 	:name: lst:edge-node2
+
+ .. literalinclude:: demonstrations/special-align-mod2.tex
+ 	:class: .tex
+ 	:caption: ``special-align.tex`` using :numref:`lst:edge-node2` 
+ 	:name: lst:special-align-mod2
+
 .. describe:: indentAfterHeadings:fields
 
 This field enables the user to specify indentation rules that take
@@ -1214,9 +1265,9 @@ written in this field. [3]_
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 230-239
+ 	:lines: 260-269
  	:linenos:
- 	:lineno-start: 230
+ 	:lineno-start: 260
 
 The default settings do *not* place indentation after a heading, but you
 can easily switch them on by changing ``indentAfterThisHeading`` from 0
@@ -1667,9 +1718,9 @@ indentation.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 288-289
+ 	:lines: 318-319
  	:linenos:
- 	:lineno-start: 288
+ 	:lineno-start: 318
 
 Assuming that your environment name is not found within neither
 ``noAdditionalIndent`` nor ``indentRules``, the next place that
@@ -1753,9 +1804,9 @@ received any additional indentation.
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 304-305
+ 	:lines: 334-335
  	:linenos:
- 	:lineno-start: 304
+ 	:lineno-start: 334
 
 The final check that ``latexindent.pl`` will make is to look for
 ``indentRulesGlobal`` as detailed in
@@ -2572,17 +2623,17 @@ functions of the fields given in
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 288-300
+ 	:lines: 318-330
  	:linenos:
- 	:lineno-start: 288
+ 	:lineno-start: 318
 
  .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 304-316
+ 	:lines: 334-346
  	:linenos:
- 	:lineno-start: 304
+ 	:lineno-start: 334
 
 .. label follows
 
@@ -2606,9 +2657,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 319-333
+ 	:lines: 349-363
  	:linenos:
- 	:lineno-start: 319
+ 	:lineno-start: 349
 
 .. describe:: roundParenthesesAllowed:0\|1
 

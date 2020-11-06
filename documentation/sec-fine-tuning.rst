@@ -23,9 +23,9 @@ and make some fine tuning to ``latexindent.pl``\ ’s operating.
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 586-607
+ 	:lines: 616-637
  	:linenos:
- 	:lineno-start: 586
+ 	:lineno-start: 616
 
 The fields given in :numref:`lst:fineTuning` are all *regular
 expressions*. This manual is not intended to be a tutorial on regular
