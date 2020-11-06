@@ -53,9 +53,9 @@ replacement-mode switches, we will use the style given in
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 575-583
+ 	:lines: 605-613
  	:linenos:
- 	:lineno-start: 575
+ 	:lineno-start: 605
 
 The first entry within the ``replacements`` field is ``amalgamate``, and
 is *optional*; by default it is set to 1, so that replacements will be
