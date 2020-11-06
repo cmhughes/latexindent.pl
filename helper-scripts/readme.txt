@@ -9,9 +9,12 @@ Typical running order of these helper scripts:
     - create-windows-executable.bat
     - <reboot to Ubuntu>
     - <add latexindent.exe to directory>
+    - <update documentation/changelog.md>
     - <commit changes and push>
     - <pull request to master>
     - <pull from master>
     - git tag "V<number>"
     - git push --tags
+    - <update release notes on github>
     - prepctan.sh
+    - <upload to ctan>

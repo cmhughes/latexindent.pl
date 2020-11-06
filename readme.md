@@ -131,3 +131,6 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Once you understand the power that regular expressions provide, the small amount of work spent learning them will feel trivial indeed* Friedl, Mastering Regular Expressions, end of Chapter 1.
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
+
+## changelog
+[changelog.md](documentation/changelog.md) provides details of the history of the project.
