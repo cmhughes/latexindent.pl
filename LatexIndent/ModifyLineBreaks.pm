@@ -312,6 +312,8 @@ sub text_wrap{
     }
     $Text::Wrap::huge = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge};
     $Text::Wrap::break = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break};
+    $Text::Wrap::unexpand = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand};
+    $Text::Wrap::tabstop = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop};
     ${$self}{body} = wrap('','',${$self}{body});
 }
 

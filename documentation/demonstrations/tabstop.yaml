@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        tabstop: 9

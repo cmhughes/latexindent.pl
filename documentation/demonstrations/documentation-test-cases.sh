@@ -205,6 +205,7 @@ latexindent.pl -s tabular2.tex -o=+-wrap-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s tabular2.tex -o=+-wrap-mod3A.tex -l=textwrap3.yaml -m -y="modifyLineBreaks:textWrapOptions:alignAtAmpersandTakesPriority:0"
 latexindent.pl -s textwrap7.tex -o=+-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap7.tex -o=+-mod12.tex -l=textwrap12.yaml -m
+latexindent.pl -s textwrap-ts.tex -o=+-mod1.tex -l=tabstop.yaml -m
 
 # remove paragraph line breaks
 latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m
