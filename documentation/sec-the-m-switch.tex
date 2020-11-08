@@ -27,6 +27,7 @@
 	Having read the previous paragraph, it should sound reasonable that, if you call
 	\texttt{latexindent.pl} using the \texttt{-m} switch, then you give
 	it permission to modify line breaks in your file, but let's be clear:
+	\index{warning!the m switch}
 
 	\begin{warning}
 		If you call \texttt{latexindent.pl} with the \texttt{-m} switch, then you
@@ -47,6 +48,7 @@
 	\texttt{0}, \texttt{latexindent.pl} will condense multiple blank
 	lines into the number of blank lines illustrated by this switch. As an example,
 	\cref{lst:mlb-bl} shows a sample file with blank lines; upon running
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl myfile.tex -m  
 \end{commandshell}
@@ -72,6 +74,7 @@ latexindent.pl myfile.tex -m
 	\texttt{latexindent.pl} will \emph{not} wrap text; if you change it
 	to a value of \texttt{2} or more, then text will be wrapped after the
 	character in the specified column.
+	\index{modifying linebreaks! by text wrapping, globally}
 
 	\cmhlistingsfromfile[style=textWrapOptions]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
 
@@ -83,6 +86,9 @@ latexindent.pl myfile.tex -m
 
 	Using the file \texttt{textwrap1.yaml} in \cref{lst:textwrap1-yaml}, and running
 	the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -94,13 +100,17 @@ latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
 	\end{cmhtcbraster}
 
 	The text wrapping routine is performed \emph{after} verbatim environments
-	have been stored, so verbatim environments and verbatim commands are exempt from the
-	routine. For example, using the file in \cref{lst:textwrap2},
+	\index{verbatim!in relation to textWrapOptions} have been stored, so verbatim environments and verbatim
+	commands are exempt from the routine. For example, using the file in
+	\cref{lst:textwrap2},
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/textwrap2.tex}{\texttt{textwrap2.tex}}{lst:textwrap2}
 	\end{widepage}
 	and running the following command and continuing to use \texttt{textwrap1.yaml} from
 	\cref{lst:textwrap1-yaml},
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -116,6 +126,9 @@ latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
 	\end{widepage}
 	and running the following command and continuing to use \texttt{textwrap1.yaml} from
 	\cref{lst:textwrap1-yaml},
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 \end{commandshell}
@@ -134,6 +147,9 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 	\cmhlistingsfromfile{demonstrations/textwrap4.tex}{\texttt{textwrap4.tex}}{lst:textwrap4}
 	and using \texttt{textwrap2.yaml} from \cref{lst:textwrap2-yaml} with the following
 	command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 \end{commandshell}
@@ -149,6 +165,9 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 	\announce{2019-09-07}{huge option for text wrap module}. This can be helpful if you would like to forbid the
 	\texttt{Text::Wrap} routine from breaking words. For example, using the settings
 	in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
 latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
@@ -163,12 +182,15 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
 	\end{cmhtcbraster}
 
-	You can also specify the \texttt{tabstop} field%
-	\announce*{2020-11-06}{tabstop option for text wrap module} as
-	an integer value, which is passed to the text wrap module; see
-	\cite{textwrap} for details. Starting with the code in
-	\cref{lst:textwrap-ts} with settings in \cref{lst:tabstop}, and running the
-	command
+	You can also specify the \texttt{tabstop}
+	field%
+	\announce*{2020-11-06}{tabstop option for text wrap module} as an integer
+	value, which is passed to the text wrap module; see \cite{textwrap} for
+	details. Starting with the code in \cref{lst:textwrap-ts} with settings in
+	\cref{lst:tabstop}, and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 \end{commandshell}
@@ -195,9 +217,11 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 	instruct \texttt{latexindent.pl} to apply \texttt{textWrap} on a
 	per-code-block basis. Thanks to \cite{zoehneto} for their help in testing and
 	shaping this feature.
+	\index{modifying linebreaks! by text wrapping, per-code-block}
 
 	The full details of \texttt{textWrapOptions} are shown in \cref{lst:textWrapOptionsAll}.
 	In particular, note the field \texttt{perCodeBlockBasis: 0}.
+	\index{specialBeginEnd!textWrapOptions}
 
 	\cmhlistingsfromfile[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 
@@ -245,6 +269,8 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 	\end{itemize}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
@@ -262,6 +288,8 @@ latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
 	\end{widepage}
 
 	In particular, upon running
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
 \end{commandshell}
@@ -292,6 +320,8 @@ latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
 	\end{adjustwidth}
 
 	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
@@ -334,6 +364,8 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 
 	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running
 	the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
 latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
@@ -372,6 +404,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 \subsubsection{Summary of text wrapping}
 	It is important to note the following:
+	\index{verbatim!within summary of text wrapping}
 	\begin{itemize}
 		\item Verbatim environments (\vref{lst:verbatimEnvironments}) and verbatim commands
 		      (\vref{lst:verbatimCommands}) will \emph{not} be affected by the text
@@ -394,6 +427,11 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 	it puts one sentence per line. Thank you to \cite{mlep} for helping to
 	shape and test this feature. The behaviour of this part of the script is controlled by
 	the switches detailed in \cref{lst:oneSentencePerLine}, all of which we discuss next.
+	\index{modifying linebreaks! by using one sentence per line}
+	\index{sentences!oneSentencePerLine}
+	\index{sentences!one sentence per line}
+	\index{regular expressions!lowercase alph a-z}
+	\index{regular expressions!uppercase alph A-Z}
 
 	\cmhlistingsfromfile[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
@@ -408,12 +446,15 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 	internal line breaks as \texttt{removeSentenceLineBreaks} is set to
 	\texttt{1}. Setting this switch to \texttt{0} instructs
 	\texttt{latexindent.pl} not to do so.
+	\index{sentences!removing sentence line breaks}
 
 	For example, consider \texttt{multiple-sentences.tex} shown in \cref{lst:multiple-sentences}.
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
 
 	If we use the YAML files in \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
@@ -439,6 +480,9 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
 	\texttt{latexindent.pl} on how to define a sentence. From the perspective of
 	\texttt{latexindent.pl} a sentence must:
+	\index{sentences!follow}
+	\index{sentences!begin with}
+	\index{sentences!end with}
 	\begin{itemize}
 		\item \emph{follow} a certain character or set of characters (see
 		      \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a
@@ -452,6 +496,8 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	In each case, you can specify the \texttt{other} field to include any
 	pattern that you would like; you can specify anything in this field using the language of
 	regular expressions.
+	\index{regular expressions!lowercase alph a-z}
+	\index{regular expressions!uppercase alph A-Z}
 
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.5cm,
@@ -466,6 +512,9 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
 	\vref{lst:multiple-sentences}, and use the YAML settings given in
 	\cref{lst:sentences-follow1-yaml}. Using the command
+	\index{sentences!follow}
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
@@ -486,6 +535,8 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
@@ -514,10 +565,13 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	sentences to begin with lower case letters (see \cref{lst:sentencesBeginWith}), and we can
 	use the \texttt{other} field to define sentences to begin with other
 	characters.
+	\index{sentences!begin with}
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
@@ -526,6 +580,7 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\end{widepage}
 	then we obtain the respective output given in \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+	\index{regular expressions!numeric 0-9}
 
 	\begin{cmhtcbraster}[
 			raster force size=false,
@@ -547,11 +602,15 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	\vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with
 	any character that we wish; for example, using the YAML specified in
 	\cref{lst:sentences-end1-yaml} and the command
+	\index{sentences!end with}
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
 latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 \end{commandshell}
 	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
+	\index{regular expressions!lowercase alph a-z}
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
@@ -579,6 +638,8 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 	\cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
@@ -605,6 +666,8 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as
 	it does not accommodate the specifications above. For example, using the following
 	command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -625,12 +688,14 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 \subsubsection{Features of the oneSentencePerLine routine}
 	The sentence manipulation routine takes place \emph{after} verbatim
-	environments, preamble and trailing comments have been accounted for; this means that any
-	characters within these types of code blocks will not be part of the sentence
-	manipulation routine.
+	\index{verbatim!in relation to oneSentencePerLine} environments, preamble and trailing comments have been
+	accounted for; this means that any characters within these types of code blocks will not
+	be part of the sentence manipulation routine.
 
 	For example, if we begin with the \texttt{.tex} file in
 	\cref{lst:multiple-sentences3}, and run the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 \end{commandshell}
@@ -640,6 +705,8 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 	Furthermore, if sentences run across environments then, by default, the line breaks
 	internal to the sentence will be removed. For example, if we use the
 	\texttt{.tex} file in \cref{lst:multiple-sentences4} and run the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
@@ -652,6 +719,8 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 	Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
 	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
 	and the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 \end{commandshell}
@@ -666,12 +735,16 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	The \texttt{oneSentencePerLine}%
 	\announce{2018-08-13}{oneSentencePerline text wrap and indent} can be instructed to perform
 	text wrapping and indentation upon sentences.
+	\index{sentences!text wrapping}
+	\index{sentences!indenting}
 
 	Let's use the code in \cref{lst:multiple-sentences5}.
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
 
 	Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
@@ -704,6 +777,9 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 
 	By default, \texttt{latexindent.pl} will find the full-stop within the first
 	\texttt{item}, which means that, upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-y demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml 
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
@@ -724,10 +800,16 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
 	not followed by \texttt{item} commands, and that the end of sentences
 	contains \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this, ensure that you
 	remove the line breaks from the \texttt{other} field).
+	\index{regular expressions!lowercase alph a-z}
+	\index{regular expressions!uppercase alph A-Z}
+	\index{regular expressions!numeric 0-9}
+	\index{regular expressions!horizontal space \textbackslash{h}}
 
 	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
 	Upon running
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 \end{commandshell}
@@ -747,6 +829,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 \yamltitle{removeParagraphLineBreaks}*{fields}
 	This feature is considered complimentary to the \texttt{oneSentencePerLine} feature
 	described in \vref{sec:onesentenceperline}.
+	\index{specialBeginEnd!removeParagraphLineBreaks}
 
 	\cmhlistingsfromfile[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
@@ -775,6 +858,9 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 	\end{cmhtcbraster}
 
 	Upon running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 \end{commandshell}
@@ -786,6 +872,9 @@ latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
 	\cref{lst:shortlines} which has crept in to the output in
 	\cref{lst:shortlines1}. This can be fixed using the YAML file in
 	\vref{lst:removeTWS-before} and running, for example,
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
 \end{commandshell}
@@ -804,6 +893,9 @@ latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,rem
 	\end{cmhtcbraster}
 
 	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m shortlines-mand.tex -o shortlines-mand1.tex -l remove-para1.yaml
@@ -837,6 +929,9 @@ latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
 	\end{minipage}
 
 	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m shortlines-envs.tex -o shortlines-envs2.tex -l remove-para2.yaml
@@ -864,6 +959,9 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	\end{cmhtcbraster}
 
 	Upon running the following command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
@@ -881,16 +979,18 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\lstinline|\par| command to be the end of a paragraph;
 	\announce{2017-05-27}{paragraphsStopAt} you can fine tune the behaviour of the routine further by
 	using the \texttt{paragraphsStopAt} fields, shown in \cref{lst:paragraphsStopAt}.
+	\index{specialBeginEnd!paragraphsStopAt}
+	\index{verbatim!in relation to paragraphsStopAt}
 
 	\cmhlistingsfromfile[style=paragraphsStopAt]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
 
 	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to
 	stop the current paragraph when it reaches a line that \emph{begins} with
 	any of the code-block types specified as \texttt{1} in
-	\cref{lst:paragraphsStopAt}. By default, you'll see that the paragraph line break routine
-	will stop when it reaches an environment or verbatim code block at the beginning of a
-	line. It is \emph{not} possible to specify these fields on a per-name
-	basis.
+	\cref{lst:paragraphsStopAt}. By default, you'll see that the paragraph line break
+	routine will stop when it reaches an environment or verbatim code block at the beginning
+	of a line. It is \emph{not} possible to specify these fields on a
+	per-name basis.
 
 	Let's use the \texttt{.tex} file in \cref{lst:sl-stop}; we will,
 	in turn, consider the settings in \cref{lst:stop-command-yaml,lst:stop-comment-yaml}.
@@ -906,6 +1006,9 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\end{minipage}
 
 	Upon using the settings from \vref{lst:remove-para4-yaml} and running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
@@ -959,6 +1062,9 @@ latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-
 	switch.
 
 	Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 \end{commandshell}
@@ -978,6 +1084,10 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can
 	take one of the following%
 	\announce{2017-08-21}*{blank line poly-switch} integer values:
+	\index{modifying linebreaks! using poly-switches}
+	\index{poly-switches!definition}
+	\index{poly-switches!values}
+	\index{poly-switches!off by default: set to 0}
 	\begin{description}
 		\item[$-1$] \emph{remove mode}: line breaks before or after the
 		      \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is
@@ -1001,19 +1111,23 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 		      \emph{<part of thing>} is already on its own line.
 	\end{description}
 	In the above, \emph{<part of thing>} refers to either the
-	\emph{begin statement}, \emph{body} or \emph{end statement}
-	of the code blocks detailed in \vref{tab:code-blocks}. All poly-switches are
-	\emph{off} by default; \texttt{latexindent.pl} searches first of all
-	for per-name settings, and then followed by global per-thing settings.
+	\emph{begin statement}, \emph{body} or
+	\emph{end statement} of the code blocks detailed in \vref{tab:code-blocks}.
+	All poly-switches are \emph{off} by default;
+	\texttt{latexindent.pl} searches first of all for per-name settings, and then
+	followed by global per-thing settings.
 
 \subsection{modifyLineBreaks for environments}\label{sec:modifylinebreaks-environments}
 	We start by viewing a snippet of \texttt{defaultSettings.yaml} in
 	\cref{lst:environments-mlb}; note that it contains \emph{global} settings
 	(immediately after the \texttt{environments} field) and that
 	\emph{per-name} settings are also allowed -- in the case of
-	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been specified
-	for demonstration. Note that all poly-switches are \emph{off} (set to 0) by
-	default.
+	\cref{lst:environments-mlb}, settings for \texttt{equation*} have been
+	specified for demonstration. Note that all poly-switches are \emph{off} (set to 0)
+	by default.
+	\index{poly-switches!default values}
+	\index{poly-switches!environment global example}
+	\index{poly-switches!environment per-code block example}
 
 	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
@@ -1021,6 +1135,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 	have annotated key parts of the file using $\BeginStartsOnOwnLine$,
 	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$,
 	these will be related to fields specified in \cref{lst:environments-mlb}.
+	\index{poly-switches!visualisation: $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$, $\EndFinishesWithLineBreak$}
 
 	\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb1.tex}}{lst:env-mlb1-tex}
 before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$@*)body of myenv(*@$\EndStartsOnOwnLine$@*)\end{myenv}(*@$\EndFinishesWithLineBreak$@*) after words
@@ -1030,6 +1145,8 @@ before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$
 	Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in
 	\cref{lst:env-mlb1,lst:env-mlb2}, and in particular, let's allow each of them in turn to take
 	a value of $1$.
+	\index{modifying linebreaks! at the \emph{beginning} of a code block}
+	\index{poly-switches!adding line breaks: set to 1}
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
@@ -1040,6 +1157,8 @@ before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$
 	\end{minipage}
 
 	After running the following commands,
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb.tex -l env-mlb1.yaml
 latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
@@ -1071,6 +1190,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\cref{lst:env-mlb1,lst:env-mlb2} so that they are $2$ and save them
 	into \texttt{env-mlb3.yaml} and \texttt{env-mlb4.yaml} respectively (see
 	\cref{lst:env-mlb3,lst:env-mlb4}).
+	\index{poly-switches!adding comments and then line breaks: set to 2}
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
@@ -1097,10 +1217,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	horizontal space has been stripped before doing so.
 
 	Let's%
-	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each of
-	the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are
-	$3$ and save them into \texttt{env-mlb5.yaml} and
+	\announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each
+	of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they
+	are $3$ and save them into \texttt{env-mlb5.yaml} and
 	\texttt{env-mlb6.yaml} respectively (see \cref{lst:env-mlb5,lst:env-mlb6}).
+	\index{poly-switches!adding blank lines: set to 3}
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
@@ -1130,6 +1251,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	of the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they
 	are $4$ and save them into \texttt{env-beg4.yaml} and
 	\texttt{env-body4.yaml} respectively (see \cref{lst:env-beg4,lst:env-body4}).
+	\index{poly-switches!adding blank lines (again"!): set to 4}
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
@@ -1145,6 +1267,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 	\cmhlistingsfromfile{demonstrations/env-mlb1.tex}{\texttt{env-mlb1.tex}}{lst:env-mlb1-text}
 
 	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
 latexindent.pl -m env-mlb.1tex -l env-body4.yaml
@@ -1170,6 +1294,8 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
 	Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in
 	\cref{lst:env-mlb7,lst:env-mlb8}, and in particular, let's allow each of them in turn to take
 	a value of $1$.
+	\index{modifying linebreaks! at the \emph{end} of a code block}
+	\index{poly-switches!adding line breaks: set to 1}
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
@@ -1180,6 +1306,8 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
 	\end{minipage}
 
 	After running the following commands,
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb.tex -l env-mlb7.yaml
 latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
@@ -1210,6 +1338,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\cref{lst:env-mlb7,lst:env-mlb8} so that they are $2$ and save them
 	into \texttt{env-mlb9.yaml} and \texttt{env-mlb10.yaml} respectively (see
 	\cref{lst:env-mlb9,lst:env-mlb10}).
+	\index{poly-switches!adding comments and then line breaks: set to 2}
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
@@ -1240,6 +1369,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they
 	are $3$ and save them into \texttt{env-mlb11.yaml} and
 	\texttt{env-mlb12.yaml} respectively (see \cref{lst:env-mlb11,lst:env-mlb12}).
+	\index{poly-switches!adding blank lines: set to 3}
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
@@ -1269,6 +1399,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	of the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they
 	are $4$ and save them into \texttt{env-end4.yaml} and
 	\texttt{env-end-f4.yaml} respectively (see \cref{lst:env-end4,lst:env-end-f4}).
+	\index{poly-switches!adding blank lines (again"!): set to 4}
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
@@ -1282,6 +1413,8 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 	\vref{lst:env-mlb1-text}.
 
 	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb1.tex -l env-end4.yaml
 latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
@@ -1351,6 +1484,7 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
 	positions of the line break highlighters, $\BeginStartsOnOwnLine$,
 	$\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$,
 	together with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
+	\index{poly-switches!removing line breaks: set to -1}
 
 	\begin{minipage}{.45\linewidth}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
@@ -1373,6 +1507,8 @@ after words
 	\end{minipage}
 
 	After running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml
 latexindent.pl -m env-mlb4.tex -l env-mlb14.yaml
@@ -1413,6 +1549,8 @@ latexindent.pl -m env-mlb4.tex -l env-mlb16.yaml
 	combine all of the YAML settings in \crefrange{lst:env-mlb13}{lst:env-mlb16} into one file;
 	alternatively, you could tell \texttt{latexindent.pl} to load them all by using the
 	following command, for example
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
@@ -1440,6 +1578,8 @@ after words
 	\end{cmhtcbraster}
 
 	The output from the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
@@ -1459,6 +1599,7 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 
 \subsubsection{poly-switch line break removal and blank lines}
 	Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
+	\index{poly-switches!blank lines}
 
 	\begin{cmhtcbraster}
 		\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb6.tex}}{lst:mlb6}
@@ -1479,6 +1620,8 @@ after words
 	\end{cmhtcbraster}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
@@ -1510,6 +1653,8 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 	\cmhlistingsfromfile{demonstrations/env-mlb7.tex}{\texttt{env-mlb7.tex}}{lst:env-mlb7-tex}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
 latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
@@ -1538,6 +1683,9 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	special code blocks (\vref{lst:specialafter}). Note that for these poly-switches to
 	take effect, the name of the code block must necessarily be specified within
 	\texttt{lookForAlignDelims} (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
+	\index{delimiters!poly-switches for double back slash}
+	\index{modifying linebreaks! surrounding double back slash}
+	\index{poly-switches!for double back slash (delimiters)}
 
 	Consider the code given in \cref{lst:dbs-demo}.
 	\begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
@@ -1561,6 +1709,8 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 	\cref{lst:dbs-demo}, together with the YAML files given in
 	\cref{lst:DBS1} and \cref{lst:DBS2} and running the following
 	commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m tabular3.tex -l DBS1.yaml
 latexindent.pl -m tabular3.tex -l DBS2.yaml
@@ -1582,11 +1732,11 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 	\begin{itemize}
 		\item \cref{lst:DBS1} specifies \texttt{DBSStartsOnOwnLine} for
 		      \emph{every} environment (that is within \texttt{lookForAlignDelims},
-		      \vref{yaml:lookforaligndelims});
+		      \vref{lst:aligndelims:advanced});
 		      the double back slashes from \cref{lst:dbs-demo} have been moved to their own
 		      line in \cref{lst:tabular3-DBS1};
 		\item \cref{lst:DBS2} specifies \texttt{DBSStartsOnOwnLine} on a
-		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{lst:aligndelims:advanced});
 		      the double back slashes from \cref{lst:dbs-demo} have been moved to their own
 		      line in \cref{lst:tabular3-DBS2}, having added comment symbols before moving them.
 	\end{itemize}
@@ -1596,6 +1746,9 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 	\cref{lst:dbs-demo}, together with the YAML files given in
 	\cref{lst:DBS3} and \cref{lst:DBS4} and running the following
 	commands
+	\index{poly-switches!for double back slash (delimiters)}
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m tabular3.tex -l DBS3.yaml
 latexindent.pl -m tabular3.tex -l DBS4.yaml
@@ -1617,29 +1770,38 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 	\begin{itemize}
 		\item \cref{lst:DBS3} specifies \texttt{DBSFinishesWithLineBreak} for
 		      \emph{every} environment (that is within \texttt{lookForAlignDelims},
-		      \vref{yaml:lookforaligndelims});
+		      \vref{lst:aligndelims:advanced});
 		      the code following the double back slashes from \cref{lst:dbs-demo} has been
 		      moved to their own line in \cref{lst:tabular3-DBS3};
 		\item \cref{lst:DBS4} specifies \texttt{DBSFinishesWithLineBreak} on a
-		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{yaml:lookforaligndelims});
+		      \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims}, \vref{lst:aligndelims:advanced});
 		      the first double back slashes from \cref{lst:dbs-demo} have moved code following
 		      them to their own line in \cref{lst:tabular3-DBS4}, having added comment symbols
 		      before moving them; the final double back slashes have \emph{not} added
 		      a line break as they are at the end of the body within the code block.
 	\end{itemize}
 
-\subsubsection{Double back slash poly switches for specialBeginEnd}
+\subsubsection{Double back slash poly-switches for specialBeginEnd}
 	Let's explore the double back slash poly-switches for code blocks within
 	\texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with
 	the code within \cref{lst:special4}.
+	\index{specialBeginEnd!double backslash poly-switch demonstration}
+	\index{poly-switches!double backslash}
+	\index{poly-switches!for double back slash (delimiters)}
+	\index{specialBeginEnd!lookForAlignDelims}
+	\index{delimiters}
+	\index{linebreaks!summary of poly-switches}
 
 	\cmhlistingsfromfile{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
 
 	Upon using the YAML settings in \cref{lst:DBS5}, and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m special4.tex -l DBS5.yaml
 \end{commandshell}
 	then we receive the output given in \cref{lst:special4-DBS5}.
+	\index{delimiters!with specialBeginEnd and the -m switch}
 
 	\begin{cmhtcbraster}[
 			raster force size=false,
@@ -1660,14 +1822,17 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 		      symbol, followed by a line break, as it is set to a value of 2.
 	\end{itemize}
 
-\subsubsection{Double back slash poly switches for optional and mandatory arguments}
+\subsubsection{Double back slash poly-switches for optional and mandatory arguments}
 	For clarity, we provide a demonstration of controlling the double back slash
 	poly-switches for optional and mandatory arguments. We begin with the code in
 	\cref{lst:mycommand2}.
+	\index{poly-switches!for double back slash (delimiters)}
 
 	\cmhlistingsfromfile{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
 
 	Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m mycommand2.tex -l DBS6.yaml
 latexindent.pl -m mycommand2.tex -l DBS7.yaml
@@ -1694,12 +1859,15 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 	The pattern matching for the double back slash will also, optionally, allow trailing
 	square brackets that contain a measurement of vertical spacing, for example
 	\lstinline!\\[3pt]!.
+	\index{poly-switches!for double back slash (delimiters)}
 
 	For example, beginning with the code in \cref{lst:pmatrix3}
 
 	\cmhlistingsfromfile{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
 
 	and running the following command, using \cref{lst:DBS3},
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 \end{commandshell}
@@ -1723,6 +1891,9 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 	\announce{2019-05-05}*{verbatim poly-switch} However, there are two poly-switches available for
 	\texttt{verbatim} code blocks: environments (\vref{lst:verbatimEnvironments}),
 	commands (\vref{lst:verbatimCommands}) and \texttt{specialBeginEnd} (\vref{lst:special-verb1-yaml}).
+	\index{specialBeginEnd!poly-switch summary}
+	\index{verbatim!poly-switch summary}
+	\index{poly-switches!summary of all poly-switches}
 
 	\clearpage
 	\begin{longtable}{llll}

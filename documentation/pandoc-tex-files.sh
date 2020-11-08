@@ -10,8 +10,9 @@ mainFile=$1
 mainFile=${mainFile/%.tex/}
 
 echo "Processing ${mainFile}.tex"
-pandoc --filter pandoc-citeproc cmhlistings.tex ${mainFile}.tex -o ${mainFile}.rst --bibliography latex-indent.bib --bibliography contributors.bib
+pandoc --filter pandoc-citeproc cmhlistings.tex ${mainFile}.tex -o ${mainFile}.rst --bibliography latex-indent.bib --bibliography contributors.bib --columns=100
 perl -pi -e 's|:((?:num)?ref):``(.*?)``|:$1:`$2`|g' ${mainFile}.rst 
+perl -p0i -e 's|:index:@((?:(?!(?:@)).)*?)@|:index:`$1`|sg' ${mainFile}.rst 
 # re-align tables, if necessary
 perl -p0i -e 's/^(\|.*\|)/my $table_row = $1; my @cells = split(m!\|!,$table_row); foreach (@cells){ my $matches =0; $matches = () = ($_ =~ m@\:numref\:@g);$_ .= ("  " x $matches); };join("|",@cells)."\|";/mgxe' ${mainFile}.rst
 perl -pi -e 's|^\h*\.\. \\\_|\.\. \_|mg' ${mainFile}.rst 

@@ -4,6 +4,7 @@
 	involving the \emph{first} argument of a code block need to be accounted for
 	using both \texttt{BodyStartsOnOwnLine} (or its equivalent, see \vref{tab:poly-switch-mapping}) and \texttt{LCuBStartsOnOwnLine} for mandatory arguments, and
 	\texttt{LSqBStartsOnOwnLine} for optional arguments.
+	\index{poly-switches!conflicting partnering}
 
 	Let's begin with the code in \cref{lst:mycommand1} and the YAML settings in
 	\cref{lst:mycom-mlb1}; with reference to \vref{tab:poly-switch-mapping}, the key
@@ -12,6 +13,8 @@
 	\cmhlistingsfromfile{demonstrations/mycommand1.tex}{\texttt{mycommand1.tex}}{lst:mycommand1}
 
 	Upon running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 \end{commandshell}

@@ -314,9 +314,14 @@ if(!$readTheDocsMode){
                     }
                     $caption.$tabular_begin.$tabular_body.$tabular_end; /xesg;
         
-        # 
         $body =~ s/(\\label\{.*?\})/\n\n$1\n\n/sg;
         $body =~ s/\\label/\\cmhlabel/sg;
+        $body =~ s/\\index\{((?:(?!(?:\{)).)*?)\}/
+                    my $index_body = $1;
+                    if($index_body =~m|!|s){
+                        $index_body =~ s|!|;|s;
+                    }
+                    "\\cmhindex\{".$index_body."\}";/sgex;
 
         # line numbers for defaulSettings
         for (@namesAndOffsets){

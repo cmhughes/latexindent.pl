@@ -41,6 +41,7 @@
 	\texttt{noAdditionalIndentGlobal} as discussed on \cpageref{page:command:noAddGlobal}.
 
 	Upon using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 \end{commandshell}
@@ -60,6 +61,7 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 	\cref{lst:pstricks1-nrp}.
 
 	Let's explore this using the YAML given in \cref{lst:defFunction} and run the command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l defFunction.yaml
 \end{commandshell}
@@ -110,6 +112,7 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 
 	We can explore this further, for example using \cref{lst:draw} and running the
 	command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl tikz-node1.tex -l draw.yaml  
 \end{commandshell}
@@ -126,6 +129,7 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 
 	Let's compare this with the output from using the YAML settings in
 	\cref{lst:no-strings}, and running the command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl tikz-node1.tex -l no-strings.yaml  
 \end{commandshell}
@@ -183,6 +187,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 
 	Let's compare this with the output from using the YAML settings in
 	\cref{lst:foreach}, and running the command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl for-each.tex -l foreach.yaml  
 \end{commandshell}
@@ -239,6 +244,8 @@ latexindent.pl for-each.tex -l foreach.yaml
 	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for
 	\texttt{stringsAllowedBetweenArguments}. The same condition holds as stated previously, which we state
 	again here:
+	\index{warning!amalgamate field}
+
 	\begin{warning}
 		It is important to note that the \texttt{amalgamate} field, if used, in either \texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the first field,
 		and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.

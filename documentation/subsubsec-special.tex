@@ -7,6 +7,8 @@
 	`scalar' form for these type of code blocks, although the `field' form would work,
 	assuming that \texttt{body} was specified. Examples are shown in
 	\cref{lst:displayMath-noAdd,lst:displayMath-indent-rules}.
+	\index{specialBeginEnd!noAdditionalIndent}
+	\index{specialBeginEnd!indentRules example}
 
 	\begin{minipage}{.49\textwidth}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/displayMath-noAdd.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-noAdd.yaml}}{lst:displayMath-noAdd}
@@ -17,6 +19,7 @@
 	\end{minipage}
 
 	After running the following commands,
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl special1.tex -local displayMath-noAdd.yaml  
 latexindent.pl special1.tex -l displayMath-indent-rules.yaml  
@@ -46,6 +49,7 @@ latexindent.pl special1.tex -l displayMath-indent-rules.yaml
 	\end{minipage}
 
 	Upon running the following commands
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl special1.tex -local special-noAdd-glob.yaml  
 latexindent.pl special1.tex -l special-indent-rules-global.yaml  
