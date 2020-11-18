@@ -1,0 +1,16 @@
+specialBeginEnd:
+    draw:
+        begin: '\\draw'
+        end: ';'
+        lookForThis: 1
+    filldraw:
+        begin: '\\filldraw'
+        end: ';'
+        lookForThis: 1
+    specialBeforeCommand: 1
+
+lookForAlignDelims:
+   draw: 
+      delimiterRegEx: '(pic|node)'
+   filldraw: 
+      delimiterRegEx: '(--)'

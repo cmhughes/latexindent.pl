@@ -49,6 +49,8 @@ latexindent.pl -s 104498.tex -o=104498-default.tex -l indentPreamble.yaml
 latexindent.pl -s 353493.tex -o=353493-default.tex -l indentPreamble.yaml
 latexindent.pl -s 49814.tex -o=+-default -y="indentPreamble:1"
 latexindent.pl -s 49814-old.tex -o=+-default -y="indentPreamble:1" -l=fine-tune.yaml
+latexindent.pl -s 571012.tex -o=+-default -l=fine-tune.yaml
+latexindent.pl -s 571012.tex -o=+-mod1 -l=draw-filldraw.yaml
 
 # =======  pgfplots tag  =========
 # =======  pgfplots tag  =========
