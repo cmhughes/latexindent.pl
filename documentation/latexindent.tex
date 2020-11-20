@@ -1,6 +1,7 @@
 % arara: pdflatex: {shell: yes}
+% arara: makeindex: {style: latexindent.ist}
 % arara: bibtex
-% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
+% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) || changed (toFile('latexindent.ind')) 
 % arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
 % arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
 \documentclass[10pt]{article}
@@ -749,6 +750,7 @@
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
 
 \setcounter{secnumdepth}{5}
+\makeindex
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
@@ -780,4 +782,5 @@
  \input{sec-conclusions-know-limitations}
  \input{references}
  \input{appendices}
+ \printindex
 \end{document}
