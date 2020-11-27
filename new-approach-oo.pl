@@ -2,7 +2,14 @@
 use strict;
 use warnings;
 use Regexp::Grammars;
-use Data::Dumper 'Dumper';
+use Data::Dumper;           # reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper
+$Data::Dumper::Terse = 1;
+$Data::Dumper::Indent = 1;
+$Data::Dumper::Useqq = 1;
+$Data::Dumper::Deparse = 1;
+$Data::Dumper::Quotekeys = 0;
+$Data::Dumper::Sortkeys = 1;
+
 use FindBin;                   
 #use YAML;                # interpret defaultSettings.yaml and other potential settings files
 use lib $FindBin::RealBin;
@@ -17,30 +24,35 @@ my $parser = qr{
     #   https://stackoverflow.com/questions/1352657/regex-for-matching-custom-syntax
     
     # https://metacpan.org/pod/Regexp::Grammars#Debugging1
-    #   <logfile: - >
+    # <logfile: indent.log >
 
     # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
     <nocontext:>
 
     <File>
 
-    <objrule: Latex::file=File>          <[Element]>*
+    <objrule: Latex::file=File>          
+        <[Element]>*
 
-    <objrule: Latex::element=Element>    <Command> | <Literal>
+    <objrule: Latex::element=Element>    
+        <Command> | <Literal>
 
     <objrule: Latex::command=Command>    
         <begin=(\\)>
-        <Literal>  
+        <name=([^][\$&%#_{}~^\s]+)>
         (?:<[Options]>|<[MandatoryArgs]>|<[Between]>)*
+        <linebreaksAtEndEnd=(\R*)> 
 
     <objrule: Latex::mandatoryargs=MandatoryArgs> 
-        <lbrace> <linebreaksAtEndBegin=(\R*)> <[Element]>* <rbrace>
+        <begin=(\{)> 
+        <leadingHorizontalSpace=(\h*)>
+        <linebreaksAtEndBegin=(\R*)> 
+        <[Element]>* 
+        <linebreaksAtEndBody=(\R*)> 
+        <end=(\})> 
 
-    # miscellaneous tokens
-    <token: lbrace> \{
-    <token: rbrace> \}
-
-    <objrule: Latex::literal=Literal>    <body=([^][\$&%#_{}~^\s]+)>
+    <objrule: Latex::literal=Literal>    
+        <body=([^][\$&%#_{}~^]+)>
 
     # to fix
     # to fix
@@ -55,11 +67,17 @@ my $parser = qr{
 my $test_string = q{
 \cmh{
 first
-}{ second
-}
+}{ second \again{ \another{nested }
+1234 \other{ asas
+text 
+goes
+here}}
+}{  third another 
+word goes here}
 };
 #my $test_string = 'text';
 $test_string =~ $parser;
+
 print Dumper \%/;
 
 $/{File}->explain(0);
