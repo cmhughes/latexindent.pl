@@ -15,7 +15,7 @@ sub Latex::file::explain
  
 sub Latex::element::explain {
     my ($self, $level) = @_;
-    (  $self->{Command} || $self->{Literal})->explain($level)
+    ($self->{Command} || $self->{Literal})->explain($level)
 }
  
 sub Latex::command::explain {
@@ -23,14 +23,20 @@ sub Latex::command::explain {
     say $leadingSpace x $level, "Command:";
     say $leadingSpace x ($level+1), "Begin: $self->{begin}";
     say $leadingSpace x ($level+1), "Name: $self->{name}";
- 
-    for my $arg (@{$self->{MandatoryArgs}}) {
-        say $leadingSpace x $level, $leadingSpace,"Arg:";
-        $arg->explain($level+2);
-    }
+    say $leadingSpace x $level, $_->explain($level+2) foreach @{$self->{Arguments}};
 }
  
+sub Latex::arguments::explain {
+    my ($self, $level) = @_;
+    ($self->{OptionalArgs} || $self->{MandatoryArgs})->explain($level);
+  }
+
 sub Latex::mandatoryargs::explain {
+    my ($self, $level) = @_;
+    $_->explain($level) foreach @{$self->{Element}};
+}
+
+sub Latex::optionalargs::explain {
     my ($self, $level) = @_;
     $_->explain($level) foreach @{$self->{Element}};
 }
@@ -38,7 +44,8 @@ sub Latex::mandatoryargs::explain {
 sub Latex::literal::explain {
     my ($self, $level, $label) = @_;
     $label //= 'Body';
-    say $leadingSpace x $level, "$label: ", $self->{body};
+    (my $body = $self->{body}) =~ s/\R*$//sg;
+    say $leadingSpace x $level, "$label: ", $body;
 }
 
 ###########################################################
@@ -62,7 +69,7 @@ sub Latex::element::unpack {
 sub Latex::command::unpack {
     my ($self, $level) = @_;
     my $body = q();
-    $body .= $_->unpack($level+2) foreach (@{$self->{MandatoryArgs}});
+    $body .= $_->unpack($level+2) foreach (@{$self->{Arguments}});
 
     # assemble the body
     $body = $self->{begin}                  # begin
@@ -71,8 +78,34 @@ sub Latex::command::unpack {
             .$self->{linebreaksAtEndEnd};   # end
     return $body;
 }
+
+sub Latex::arguments::unpack {
+    my ($self, $level) = @_;
+    ($self->{OptionalArgs} || $self->{MandatoryArgs})->unpack($level);
+  }
  
 sub Latex::mandatoryargs::unpack {
+    my ($self, $level) = @_;
+    my $body = q();
+    $body .= $_->unpack($level) foreach @{$self->{Element}};
+
+    # indentation of the body
+    $body =~ s/^/\t/mg;
+
+    # remove the first line of indentation, if appropriate
+    $body =~ s/^\t//s if !$self->{linebreaksAtEndBegin};
+
+    # assemble the body
+    $body = $self->{begin}                   # begin
+            .$self->{leadingHorizontalSpace}
+            .$self->{linebreaksAtEndBegin}
+            .$body                           # body
+            .$self->{linebreaksAtEndBody}
+            .$self->{end};                   # end
+    return $body;
+}
+
+sub Latex::optionalargs::unpack {
     my ($self, $level) = @_;
     my $body = q();
     $body .= $_->unpack($level) foreach @{$self->{Element}};

@@ -11,7 +11,6 @@ $Data::Dumper::Quotekeys = 0;
 $Data::Dumper::Sortkeys = 1;
 
 use FindBin;                   
-#use YAML;                # interpret defaultSettings.yaml and other potential settings files
 use lib $FindBin::RealBin;
 use Latex;
 
@@ -40,8 +39,19 @@ my $parser = qr{
     <objrule: Latex::command=Command>    
         <begin=(\\)>
         <name=([^][\$&%#_{}~^\s]+)>
-        (?:<[Options]>|<[MandatoryArgs]>|<[Between]>)*
+        <[Arguments]>*
         <linebreaksAtEndEnd=(\R*)> 
+
+    <objrule: Latex::arguments=Arguments> 
+        (?:<OptionalArgs>|<MandatoryArgs>|<Between>)
+
+    <objrule: Latex::optionalargs=OptionalArgs> 
+        <begin=(\[)> 
+        <leadingHorizontalSpace=(\h*)>
+        <linebreaksAtEndBegin=(\R*)> 
+        <[Element]>* 
+        <linebreaksAtEndBody=(\R*)> 
+        <end=(\])> 
 
     <objrule: Latex::mandatoryargs=MandatoryArgs> 
         <begin=(\{)> 
@@ -51,29 +61,28 @@ my $parser = qr{
         <linebreaksAtEndBody=(\R*)> 
         <end=(\})> 
 
+
     <objrule: Latex::literal=Literal>    
-        <body=([^][\$&%#_{}~^]+)>
+        <body=([^][\\$&%#_{}~^]+)>
 
     # to fix
     # to fix
     # to fix
-    <rule: Options>                      \[  <[Option]>+ % (,)  \]
-
-    <rule: Option>                       [^][\$&%#_{}~^\s,]+
-
     <rule: Between>                      [*_]
 }xms;
 
 my $test_string = q{
-\cmh{
+before text
+
+\cmh[
 first
-}{ second \again{ \another{nested }
-1234 \other{ asas
-text 
-goes
-here}}
-}{  third another 
-word goes here}
+   more
+more]{
+second
+}[
+third][fourth]
+
+after text
 };
 #my $test_string = 'text';
 $test_string =~ $parser;
@@ -83,6 +92,6 @@ print Dumper \%/;
 $/{File}->explain(0);
 
 my $master_body = $/{File}->unpack(0);
-print "master body: $master_body\n";
+print "master body:\n$master_body\n";
 
 exit(0);
