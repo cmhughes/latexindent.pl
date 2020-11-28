@@ -76,6 +76,6 @@ if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq ''
 # allow STDIN as input, if a filename is not present
 unshift( @ARGV, '-' ) unless @ARGV;
 
-my $document = bless ({name=>"masterDocument",modifyLineBreaksYamlName=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
+my $document = bless ({fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
 $document->latexindent;
 exit(0);

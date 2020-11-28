@@ -25,9 +25,10 @@ use Log::Dispatch::File;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
-our @EXPORT_OK = qw/processSwitches $logger/;
+our @EXPORT_OK = qw/processSwitches $logger $grammarLeadingSpace/;
 our @logFileNotes;
 our $logger = get_logger("Document");
+our $grammarLeadingSpace = "  ";
 
 # log file methods, using log4perl; references
 #   pattern layout: http://search.cpan.org/~mschilli/Log-Log4perl-1.32/lib/Log/Log4perl/Layout/PatternLayout.pm
