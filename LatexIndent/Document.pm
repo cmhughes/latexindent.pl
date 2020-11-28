@@ -29,6 +29,9 @@ use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
+
+# grammar-related 
+use LatexIndent::Between;
 use LatexIndent::Element;
 use LatexIndent::File;
 use LatexIndent::Grammar qw/$latex_indent_parser/;
@@ -37,9 +40,10 @@ use LatexIndent::Literal;
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
 use LatexIndent::Arguments;
-use LatexIndent::OptionalArgument;
-use LatexIndent::MandatoryArgument;
 use LatexIndent::Command;
+use LatexIndent::Environment;
+use LatexIndent::MandatoryArgument;
+use LatexIndent::OptionalArgument;
 
 # Data::Dumper settings
 #   reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper

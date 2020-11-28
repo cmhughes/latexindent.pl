@@ -26,17 +26,36 @@ $latex_indent_parser = qr{
         <[Element]>*
 
     <objrule: LatexIndent::Element=Element>    
-        <Command> | <Literal>
+        <Environment> | <Command> | <Literal>
 
     <objrule: LatexIndent::Command=Command>    
         <begin=(\\)>
         <name=([^][\$&%#_{}~^\s]+)>
-        <[Arguments]>*
+        <[Arguments]>+
         <linebreaksAtEndEnd=(\R*)> 
 
-    <objrule: LatexIndent::Arguments=Arguments> 
-        (?:<OptionalArgs>|<MandatoryArgs>|<Between>)
+    # Environments
+    #   \begin{<name>}
+    #       body ...
+    #       body ...
+    #   \end{<name>}
+    <objrule: LatexIndent::Environment=Environment>    
+        <begin=(\\begin\{)>
+        <name=([a-zA-Z0-9]+)>\}
+        <leadingHorizontalSpace=(\h*)>
+        <linebreaksAtEndBegin=(\R*)> 
+        #<[Arguments]>*
+        <[Element]>*
+        <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
+        <linebreaksAtEndEnd=(\R*)> 
 
+    # Combination of arguments
+    #   e.g. \[...\] \{...\} ... \[ \]
+    <objrule: LatexIndent::Arguments=Arguments> 
+        <OptionalArgs>|<MandatoryArgs>|<Between>
+
+    # Optional Arguments
+    #   \[ .... \]
     <objrule: LatexIndent::OptionalArgument=OptionalArgs> 
         <begin=(\[)> 
         <leadingHorizontalSpace=(\h*)>
@@ -45,6 +64,8 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBody=(\R*)> 
         <end=(\])> 
 
+    # Mandatory Arguments
+    #   \{ .... \}
     <objrule: LatexIndent::MandatoryArgument=MandatoryArgs> 
         <begin=(\{)> 
         <leadingHorizontalSpace=(\h*)>
@@ -53,14 +74,12 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBody=(\R*)> 
         <end=(\})> 
 
+    # Between arguments
+    <objrule: LatexIndent::Between=Between>                      
+        <body=([*_^])>
 
     <objrule: LatexIndent::Literal=Literal>    
         <body=([^][\\$&%#_{}~^]+)>
-
-    # to fix
-    # to fix
-    # to fix
-    <rule: Between>                      [*_]
 }xms;
 
 1;

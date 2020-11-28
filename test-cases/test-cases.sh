@@ -168,6 +168,10 @@ cd ../replacements
 cd ../poly-switch-blank-line
 [[ $silentMode == 1 ]] && echo "./poly-switch-blank-line-test-cases.sh"
 ./poly-switch-blank-line-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+# grammar test cases
+cd ../grammar-test-cases/
+[[ $silentMode == 1 ]] && echo "./grammar-test-cases.sh"
+./grammar-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

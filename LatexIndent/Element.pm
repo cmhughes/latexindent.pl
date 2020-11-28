@@ -6,12 +6,16 @@ use LatexIndent::Literal;
 
 sub explain {
     my ($self, $level) = @_;
-    ($self->{Command} || $self->{Literal})->explain($level)
+    ($self->{Command} 
+      || $self->{Literal}
+      || $self->{Environment} )->explain($level)
 }
 
 sub indent {
     my $self = shift;
-    my $body = ($self->{Command} || $self->{Literal})->indent;
+    my $body = ($self->{Command} 
+                || $self->{Literal}
+                || $self->{Environment})->indent;
     return $body;
 }
  
