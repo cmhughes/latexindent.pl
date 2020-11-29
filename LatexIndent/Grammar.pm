@@ -26,27 +26,29 @@ $latex_indent_parser = qr{
         <[Element]>*
 
     <objrule: LatexIndent::Element=Element>    
-        <Environment> | <Command> | <Literal>
+        <Environment> | <Command> | <KeyEqualsValuesBraces> | <NamedGroupingBracesBrackets> | <Literal>
 
+    # Commands
+    #   \<name> <arguments>
     <objrule: LatexIndent::Command=Command>    
         <begin=(\\)>
-        <name=([^][\$&%#_{}~^\s]+)>
+        <name=([a-zA-Z0-9*]+)>
         <[Arguments]>+
         <linebreaksAtEndEnd=(\R*)> 
 
-    # Environments
-    #   \begin{<name>}
-    #       body ...
-    #       body ...
-    #   \end{<name>}
-    <objrule: LatexIndent::Environment=Environment>    
-        <begin=(\\begin\{)>
-        <name=([a-zA-Z0-9]+)>\}
-        <leadingHorizontalSpace=(\h*)>
-        <linebreaksAtEndBegin=(\R*)> 
-        #<[Arguments]>*
-        <[Element]>*?
-        <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
+    # key = value braces/brackets
+    #   key = <arguments>
+    <objrule: LatexIndent::KeyEqualsValuesBraces=KeyEqualsValuesBraces>    
+        <name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?)>
+        <equals=((?:\h|\R)*=(\h|\R)*)>
+        <[Arguments]>+
+        <linebreaksAtEndEnd=(\R*)> 
+
+    # NamedGroupingBracesBrackets
+    #   <name> <arguments>
+    <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
+        <name=([a-zA-Z0-9*]+)>
+        <[Arguments]>+
         <linebreaksAtEndEnd=(\R*)> 
 
     # Combination of arguments
@@ -76,8 +78,24 @@ $latex_indent_parser = qr{
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
-        <body=([*_^])>
+        <body=((\h|\R)*[*_^])>
+        
+    # Environments
+    #   \begin{<name>}
+    #       body ...
+    #       body ...
+    #   \end{<name>}
+    <objrule: LatexIndent::Environment=Environment>    
+        <begin=(\\begin\{)>
+        <name=([a-zA-Z0-9]+)>\}
+        <leadingHorizontalSpace=(\h*)>
+        <linebreaksAtEndBegin=(\R*)> 
+        #<[Arguments]>*
+        <[Element]>*?
+        <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
+        <linebreaksAtEndEnd=(\R*)> 
 
+    # anything else
     <objrule: LatexIndent::Literal=Literal>    
         <body=((?:[a-zA-Z0-9&]|\h|\R|\\\\)*)>
 }xms;

@@ -1,77 +1,26 @@
 package LatexIndent::NamedGroupingBracesBrackets;
-#	This program is free software: you can redistribute it and/or modify
-#	it under the terms of the GNU General Public License as published by
-#	the Free Software Foundation, either version 3 of the License, or
-#	(at your option) any later version.
-#
-#	This program is distributed in the hope that it will be useful,
-#	but WITHOUT ANY WARRANTY; without even the implied warranty of
-#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#	GNU General Public License for more details.
-#
-#	See http://www.gnu.org/licenses/.
-#
-#	Chris Hughes, 2017
-#
-#	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
-use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use Exporter qw/import/;
-our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/construct_grouping_braces_brackets_regexp $grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
-our $groupingBracesCounter;
-our $grouping_braces_regexp; 
-our $grouping_braces_regexpTrailingComment; 
+use feature qw(say);
+use LatexIndent::LogFile qw/$grammarLeadingSpace/;
 
-sub construct_grouping_braces_brackets_regexp{
-    my $self = shift;
-
-    # grab the arguments regexp
-    my $optAndMandRegExp = $self->get_arguments_regexp;
-
-    # read from fine tuning
-    my $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
-    my $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
-
-    # store the regular expresssion for matching and replacing 
-    $grouping_braces_regexp = qr/
-                  (
-                     $NamedGroupingFollowRegExp
-                  )
-                  (
-                   $NamedGroupingBracesBracketsRegExp  # lowercase|uppercase letters, @, *, numbers, forward slash, dots
-                  )                                    # $2 name
-                  (\h*)                                # $3 h-space
-                  (\R*)                                # $4 linebreaks
-                  ($optAndMandRegExp)                  # $5 mand|opt arguments (at least one)
-                  (\R)?                                # $8 linebreak 
-                /sx;
-
-    # something {value} grouping braces with trailing comment
-    $grouping_braces_regexpTrailingComment = qr/$grouping_braces_regexp\h*((?:$trailingCommentRegExp\h*)*)?/;
-
-}
-
-sub create_unique_id{
-    my $self = shift;
-
-    $groupingBracesCounter++;
-    ${$self}{id} = "$tokens{namedGroupingBracesBrackets}$groupingBracesCounter";
+sub explain {
+    my ($self, $level) = @_;
+    say $grammarLeadingSpace x $level, "NamedGroupingBracesBrackets";
+    say $grammarLeadingSpace x ($level+1), "Name: $self->{name}";
+    say $grammarLeadingSpace x $level, $_->explain($level+2) foreach @{$self->{Arguments}};
     return;
 }
 
-sub get_replacement_text{
+sub indent {
     my $self = shift;
+    my $body = q();
+    $body .= $_->indent foreach (@{$self->{Arguments}});
 
-    # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
-    $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
-    ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
-    delete ${$self}{beginningbit};
+    # assemble the body
+    $body = $self->{name}                   # begin
+            .$body                          # body
+            .$self->{linebreaksAtEndEnd};   # end
+    return $body;
 }
-
 1;

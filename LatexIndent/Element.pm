@@ -7,16 +7,22 @@ use LatexIndent::Literal;
 sub explain {
     my ($self, $level) = @_;
     ($self->{Command} 
+      || $self->{KeyEqualsValuesBraces}
+      || $self->{Environment} 
+      || $self->{NamedGroupingBracesBrackets} 
       || $self->{Literal}
-      || $self->{Environment} )->explain($level);
+    )->explain($level);
     return;
 }
 
 sub indent {
     my $self = shift;
     my $body = ($self->{Command} 
+                || $self->{KeyEqualsValuesBraces}
+                || $self->{Environment}
+                || $self->{NamedGroupingBracesBrackets} 
                 || $self->{Literal}
-                || $self->{Environment})->indent;
+              )->indent;
     return $body;
 }
  
