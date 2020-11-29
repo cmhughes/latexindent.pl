@@ -8,7 +8,8 @@ sub explain {
     my ($self, $level) = @_;
     ($self->{Command} 
       || $self->{Literal}
-      || $self->{Environment} )->explain($level)
+      || $self->{Environment} )->explain($level);
+    return;
 }
 
 sub indent {

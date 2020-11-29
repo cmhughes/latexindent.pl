@@ -6,9 +6,10 @@ use LatexIndent::LogFile qw/$grammarLeadingSpace/;
 
 sub explain {
     my ($self, $level, $label) = @_;
-    $label //= 'Body';
+    $label //= 'Between';
     (my $body = $self->{body}) =~ s/\R*$//sg;
     say $grammarLeadingSpace x $level, "$label: ", $body;
+    return;
 }
 
 sub indent {

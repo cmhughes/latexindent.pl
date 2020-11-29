@@ -83,6 +83,7 @@ sub operate_on_file{
     $self->{body} =~ $latex_indent_parser;
     print Dumper \%/;
     $/{File}->explain(0);
+    print "----------- end of explain --------------\n";
     $self->{body} = $/{File}->indent(0);
     $self->output_indented_text;
     return

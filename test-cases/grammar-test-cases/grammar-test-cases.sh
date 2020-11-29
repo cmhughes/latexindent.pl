@@ -7,6 +7,7 @@
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s command1.tex -o=+-default.tex
 latexindent.pl -s command2.tex -o=+-default.tex
+latexindent.pl -s command3.tex -o=+-default.tex
 latexindent.pl -s environment1.tex -o=+-default.tex
 latexindent.pl -s environment2.tex -o=+-default.tex
 

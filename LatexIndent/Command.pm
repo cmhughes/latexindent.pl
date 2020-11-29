@@ -10,6 +10,7 @@ sub explain {
     say $grammarLeadingSpace x ($level+1), "Begin: $self->{begin}";
     say $grammarLeadingSpace x ($level+1), "Name: $self->{name}";
     say $grammarLeadingSpace x $level, $_->explain($level+2) foreach @{$self->{Arguments}};
+    return;
 }
 
 sub indent {

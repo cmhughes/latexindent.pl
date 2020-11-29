@@ -45,7 +45,7 @@ $latex_indent_parser = qr{
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
         #<[Arguments]>*
-        <[Element]>*
+        <[Element]>*?
         <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
         <linebreaksAtEndEnd=(\R*)> 
 
@@ -70,7 +70,7 @@ $latex_indent_parser = qr{
         <begin=(\{)> 
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
-        <[Element]>* 
+        <[Element]>*? 
         <linebreaksAtEndBody=(\R*)> 
         <end=(\})> 
 
@@ -79,7 +79,7 @@ $latex_indent_parser = qr{
         <body=([*_^])>
 
     <objrule: LatexIndent::Literal=Literal>    
-        <body=([^][\\$&%#_{}~^]+)>
+        <body=((?:[a-zA-Z0-9&]|\h|\R|\\\\)*)>
 }xms;
 
 1;
