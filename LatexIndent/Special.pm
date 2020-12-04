@@ -4,6 +4,21 @@ use warnings;
 use feature qw(say);
 use LatexIndent::LogFile qw/$grammarLeadingSpace/;
 
+
+our $special_begin_reg_ex = qr/\$|\\\[/s;
+our %special_look_up_hash = (displayMath=>({
+                                            begin=>qr/\\\[/s,
+                                            end=>qr/\\\]/s
+                                          }),
+                            inlineMath=>({
+                                            begin=>qr/\$/s,
+                                            end=>qr/\$/s
+                                         }),
+                 );
+
+our %special_end_look_up_hash;
+
+
 sub explain {
     my ($self, $level) = @_;
     say $grammarLeadingSpace x $level, "Special";
@@ -35,3 +50,15 @@ sub indent {
     return $body;
 }
 1;
+
+# my $test_begin = '$';
+# while( my ($key,$value)= each %special_look_up_hash){
+#     if ($test_begin =~ ${$value}{begin} ){
+#         print "match found: ",$key,"\n";
+#         print "corresponding end: ",${$value}{end},"\n";
+#     }
+# }
+# 
+# print "================\n";
+# 
+# print Dumper \%special_look_up_hash; 

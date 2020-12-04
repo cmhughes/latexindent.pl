@@ -4,34 +4,8 @@ use warnings;
 use Exporter qw/import/;
 use Regexp::Grammars;
 use Data::Dumper;
-our @EXPORT_OK = qw/$latex_indent_parser find_special_end/;
+our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
-
-my $special_begin_reg_ex = qr/\$|\\\[/s;
-
-my %special_look_up_hash = (displayMath=>({
-                                            begin=>qr/\\\[/s,
-                                            end=>qr/\\\]/s
-                                          }),
-                            inlineMath=>({
-                                            begin=>qr/\$/s,
-                                            end=>qr/\$/s
-                                         }),
-                 );
-
-my %special_end_look_up_hash;
-
-# my $test_begin = '$';
-# while( my ($key,$value)= each %special_look_up_hash){
-#     if ($test_begin =~ ${$value}{begin} ){
-#         print "match found: ",$key,"\n";
-#         print "corresponding end: ",${$value}{end},"\n";
-#     }
-# }
-# 
-# print "================\n";
-# 
-# print Dumper \%special_look_up_hash; 
 
 
 $latex_indent_parser = qr{
@@ -137,7 +111,7 @@ $latex_indent_parser = qr{
     #       $ ... $
     #       \[ ... \]
     <objrule: LatexIndent::Special=Special>    
-        <begin=((??{$special_begin_reg_ex}))>
+        <begin=((??{$LatexIndent::Special::special_begin_reg_ex}))>
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
         <[Element]>*?
@@ -147,17 +121,15 @@ $latex_indent_parser = qr{
 
     <token: end_special>
         (??{
-            return $special_end_look_up_hash{ $ARG{begin} } 
-                if $special_end_look_up_hash{ $ARG{begin} }; 
+            return $LatexIndent::Special::special_end_look_up_hash{ $ARG{begin} } 
+                if $LatexIndent::Special::special_end_look_up_hash{ $ARG{begin} }; 
 
-            my $special_end = q();
-            while( my ($key,$value)= each %special_look_up_hash){
+            while( my ($key,$value)= each %LatexIndent::Special::special_look_up_hash){
                 if ($ARG{begin} =~ ${$value}{begin} ){
-                    $special_end = ${$value}{end};
-                    $special_end_look_up_hash{ $ARG{begin} } = ${$value}{end};
+                    $LatexIndent::Special::special_end_look_up_hash{ $ARG{begin} } = ${$value}{end};
                 }
             }
-            return $special_end;
+            return $LatexIndent::Special::special_end_look_up_hash{ $ARG{begin} };
            })
 
     # anything else
