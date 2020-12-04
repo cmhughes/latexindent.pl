@@ -19,10 +19,10 @@ sub indent {
     $body .= $_->indent foreach (@{$self->{Arguments}});
 
     # assemble the body
-    $body = $self->{begin}                  # begin
+    $body =  $self->{begin}               # begin
             .$self->{name}
-            .$body                          # body
-            .$self->{linebreaksAtEndEnd};   # end
+            .$body                        # body
+            .$self->{linebreaksAtEndEnd}; # end
     return $body;
 }
 1;

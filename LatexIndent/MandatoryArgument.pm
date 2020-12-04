@@ -39,12 +39,13 @@ sub indent {
     #print ${$self}{body},"\n";
 
     # assemble the body
-    $body = $self->{begin}                   # begin
+    $body =  $self->{begin}                   # begin
             .$self->{leadingHorizontalSpace}
             .$self->{linebreaksAtEndBegin}
             .$body                           # body
             .$self->{linebreaksAtEndBody}
-            .$self->{end};                   # end
+            .$self->{end}                    # end
+            .$self->{linebreaksAtEndEnd};
     return $body;
 }
 1;

@@ -54,7 +54,7 @@ $latex_indent_parser = qr{
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
     <objrule: LatexIndent::Arguments=Arguments> 
-        <OptionalArgs>|<MandatoryArgs>|<Between>
+        <Between>?(<OptionalArgs>|<MandatoryArgs>)
 
     # Optional Arguments
     #   \[ .... \]
@@ -65,6 +65,7 @@ $latex_indent_parser = qr{
         <[Element]>* 
         <linebreaksAtEndBody=(\R*)> 
         <end=(\])> 
+        <linebreaksAtEndEnd=(\R*)> 
 
     # Mandatory Arguments
     #   \{ .... \}
@@ -75,6 +76,7 @@ $latex_indent_parser = qr{
         <[Element]>*? 
         <linebreaksAtEndBody=(\R*)> 
         <end=(\})> 
+        <linebreaksAtEndEnd=(\R*)> 
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
