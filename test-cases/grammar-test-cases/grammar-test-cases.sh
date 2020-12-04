@@ -12,6 +12,8 @@ latexindent.pl -s command4.tex -o=+-default.tex
 latexindent.pl -s command5.tex -o=+-default.tex
 latexindent.pl -s command6.tex -o=+-default.tex
 
+latexindent.pl -s special1.tex -o=+-default.tex
+
 latexindent.pl -s key-equals-value-braces1.tex -o=+-default.tex
 latexindent.pl -s key-equals-value-braces2.tex -o=+-default.tex
 latexindent.pl -s key-equals-value-braces3.tex -o=+-default.tex

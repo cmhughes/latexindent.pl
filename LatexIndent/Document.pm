@@ -46,6 +46,7 @@ use LatexIndent::MandatoryArgument;
 use LatexIndent::OptionalArgument;
 use LatexIndent::NamedGroupingBracesBrackets;
 use LatexIndent::KeyEqualsValuesBraces;
+use LatexIndent::Special;
 
 # Data::Dumper settings
 #   reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper

@@ -10,6 +10,7 @@ sub explain {
       || $self->{KeyEqualsValuesBraces}
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
+      || $self->{Special}
       || $self->{Literal}
     )->explain($level);
     return;
@@ -21,6 +22,7 @@ sub indent {
                 || $self->{KeyEqualsValuesBraces}
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 
+                || $self->{Special}
                 || $self->{Literal}
               )->indent;
     return $body;
