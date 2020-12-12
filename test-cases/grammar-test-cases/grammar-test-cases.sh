@@ -20,6 +20,10 @@ latexindent.pl -s key-equals-value-braces3.tex -o=+-default.tex
 
 latexindent.pl -s environment1.tex -o=+-default.tex
 latexindent.pl -s environment2.tex -o=+-default.tex
+latexindent.pl -s environment3.tex -o=+-default.tex
+latexindent.pl -s environment4.tex -o=+-default.tex
+latexindent.pl -s environment5.tex -o=+-default.tex
+latexindent.pl -s environment6.tex -o=+-default.tex
 
 latexindent.pl -s named-grouping-braces-brackets1.tex -o=+-default.tex
 latexindent.pl -s named-grouping-braces-brackets2.tex -o=+-default.tex

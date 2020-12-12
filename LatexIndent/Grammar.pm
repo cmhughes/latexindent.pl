@@ -17,7 +17,7 @@ $latex_indent_parser = qr{
     #   https://stackoverflow.com/questions/1352657/regex-for-matching-custom-syntax
     
     # https://metacpan.org/pod/Regexp::Grammars#Debugging1
-    # <logfile: indent.log >
+    <logfile: cmh.log >
 
     # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
     <nocontext:>
@@ -28,7 +28,7 @@ $latex_indent_parser = qr{
         <[Element]>*
 
     <objrule: LatexIndent::Element=Element>    
-       <Environment> 
+        <Environment> 
       | <Command> 
       | <KeyEqualsValuesBraces> 
       | <NamedGroupingBracesBrackets> 
@@ -100,10 +100,19 @@ $latex_indent_parser = qr{
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
         #<[Arguments]>*
-        <[Element]>*?
+        <[GroupOfItems]>?
         <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
         <linebreaksAtEndEnd=(\R*)> 
         
+    <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
+        <[Item]>+ % <[itemHeading]>
+
+    <objrule: LatexIndent::Item=Item>    
+        <[Element]>+?
+
+    <token: itemHeading>
+        (\\item(?:(\h|\R)*))
+
     # Special
     #   USER specified
     #
@@ -134,7 +143,7 @@ $latex_indent_parser = qr{
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
-        <body=((?:[a-zA-Z0-9&^()]|\h|\R|\\\\)*)>
-}xms;
+        <body=((?:[a-zA-Z0-9&^()']|\h|\R|\\\\)*)>
+}xs;
 
 1;

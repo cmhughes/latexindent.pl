@@ -9,14 +9,14 @@ sub explain {
     say $grammarLeadingSpace x $level, "Environment";
     say $grammarLeadingSpace x ($level+1), "Begin: $self->{begin}";
     say $grammarLeadingSpace x ($level+1), "Name: $self->{name}";
-    say $grammarLeadingSpace x $level, $_->explain($level+2) foreach @{$self->{Element}};
+    say $grammarLeadingSpace x $level, $_->explain($level+2) foreach @{$self->{Element}||$self->{GroupOfItems}};
     return;
 }
 
 sub indent {
     my $self = shift;
     my $body = q();
-    $body .= $_->indent foreach (@{$self->{Element}});
+    $body .= $_->indent foreach (@{$self->{Element}||$self->{GroupOfItems}});
 
     # indentation of the body
     $body =~ s/^/\t/mg;
