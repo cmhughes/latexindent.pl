@@ -29,6 +29,7 @@ $latex_indent_parser = qr{
 
     <objrule: LatexIndent::Element=Element>    
         <Environment> 
+      | <IfElseFi>
       | <Command> 
       | <KeyEqualsValuesBraces> 
       | <NamedGroupingBracesBrackets> 
@@ -112,6 +113,20 @@ $latex_indent_parser = qr{
 
     <token: itemHeading>
         (\\item(?:(\h|\R)*))
+
+    # ifElseFi
+    #   \if
+    #       body ...
+    #       body ...
+    #   \fi
+    <objrule: LatexIndent::IfElseFi=IfElseFi>    
+        <begin=(\\if)>
+        <leadingHorizontalSpace=(\h*)>
+        <linebreaksAtEndBegin=(\R*)> 
+        <[Element]>*?
+        <end=(\\fi)>
+        <horizontalTrailingSpace=(\h*)> 
+        <linebreaksAtEndEnd=(\R*)> 
 
     # Special
     #   USER specified

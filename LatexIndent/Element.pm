@@ -11,6 +11,7 @@ sub explain {
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
       || $self->{Special}
+      || $self->{IfElseFi}
       || $self->{Literal}
     )->explain($level);
     return;
@@ -23,6 +24,7 @@ sub indent {
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 
                 || $self->{Special}
+                || $self->{IfElseFi}
                 || $self->{Literal}
               )->indent;
     return $body;
