@@ -90,7 +90,7 @@ $latex_indent_parser = qr{
         <body=((\h|\R)*[*_^])>
         
     # Environments
-    #   \begin{<name>}
+    #   \begin{<name>}<Arguments>
     #       body ...
     #       body ...
     #   \end{<name>}
@@ -99,7 +99,7 @@ $latex_indent_parser = qr{
         <name=([a-zA-Z0-9]+)>\}
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
-        #<[Arguments]>*
+        <[Arguments]>*?
         <[GroupOfItems]>?
         <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
         <linebreaksAtEndEnd=(\R*)> 

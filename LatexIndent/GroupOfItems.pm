@@ -15,7 +15,6 @@ sub indent {
     my $self = shift;
     my $body = q();
 
-    print "item headings?...",defined $self->{itemHeading},"\n";
     my $count = 0;
     foreach (@{$self->{Item}}){
         my $itemHeading = ( $count>0 ? ${$self->{itemHeading}}[$count-1]: q());

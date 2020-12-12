@@ -18,12 +18,9 @@ latexindent.pl -s key-equals-value-braces1.tex -o=+-default.tex
 latexindent.pl -s key-equals-value-braces2.tex -o=+-default.tex
 latexindent.pl -s key-equals-value-braces3.tex -o=+-default.tex
 
-latexindent.pl -s environment1.tex -o=+-default.tex
-latexindent.pl -s environment2.tex -o=+-default.tex
-latexindent.pl -s environment3.tex -o=+-default.tex
-latexindent.pl -s environment4.tex -o=+-default.tex
-latexindent.pl -s environment5.tex -o=+-default.tex
-latexindent.pl -s environment6.tex -o=+-default.tex
+for (( i=1 ; i <= 8 ; i++ )) do 
+latexindent.pl -s environment$i.tex -o=+-default.tex
+done
 
 latexindent.pl -s named-grouping-braces-brackets1.tex -o=+-default.tex
 latexindent.pl -s named-grouping-braces-brackets2.tex -o=+-default.tex
