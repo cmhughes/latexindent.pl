@@ -7,6 +7,7 @@ use Data::Dumper;
 our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
 
+our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
 
 $latex_indent_parser = qr{
     # starting point:
@@ -101,18 +102,24 @@ $latex_indent_parser = qr{
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
         <[Arguments]>*?
-        <[GroupOfItems]>?
-        <end=(\\end\{(??{quotemeta $MATCH{name}})\})>
+        <[GroupOfItems(:name)]>?
+        <end=(\\end\{(??{ quotemeta $MATCH{name} })\})>
         <linebreaksAtEndEnd=(\R*)> 
         
     <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
-        <[Item]>+ % <[itemHeading]>
+        <name=(?{ $ARG{name} })>              # store the name
+        <[Item]>+ % <[itemHeading(:name)]>  # pass it to the item heading
 
     <objrule: LatexIndent::Item=Item>    
         <[Element]>+?
 
     <token: itemHeading>
-        (\\item(?:(\h|\R)*))
+        (??{
+            return ${ $environment_items{ $ARG{name} } }{item}
+                if ${ $environment_items{ $ARG{name} } }{item};
+
+            return q{(\\\\item(?:(\h|\R)*))}; 
+        })
 
     # ifElseFi
     #   \if
