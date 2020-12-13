@@ -9,7 +9,7 @@ sub explain {
     $self->{Between}->explain($level) if defined $self->{Between}; 
     
     # definitely Optional or Mandatory argument
-    ($self->{OptionalArgs} || $self->{MandatoryArgs})->explain($level);
+    ($self->{OptionalArg} || $self->{MandatoryArg})->explain($level);
   }
 
 sub indent {
@@ -22,7 +22,7 @@ sub indent {
     $body .= $self->{Between}->indent if defined $self->{Between}; 
 
     # definitely Optional or Mandatory argument
-    $body .= ($self->{OptionalArgs} || $self->{MandatoryArgs})->indent;
+    $body .= ($self->{OptionalArg} || $self->{MandatoryArg})->indent;
     return $body;
   }
 1;

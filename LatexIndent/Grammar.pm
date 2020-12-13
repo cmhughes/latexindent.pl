@@ -63,28 +63,28 @@ $latex_indent_parser = qr{
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
     <objrule: LatexIndent::Arguments=Arguments> 
-        <Between>?(<OptionalArgs>|<MandatoryArgs>)
+        <Between>?(<OptionalArg>|<MandatoryArg>)
 
     # Optional Arguments
     #   \[ .... \]
-    <objrule: LatexIndent::OptionalArgument=OptionalArgs> 
-        <begin=(\[)> 
-        <leadingHorizontalSpace=(\h*)>
-        <linebreaksAtEndBegin=(\R*)> 
-        <[Element]>* 
-        <linebreaksAtEndBody=(\R*)> 
-        <end=(\])> 
+    <objrule: LatexIndent::OptionalArgument=OptionalArg> 
+        <begin=(\[)>                        # [
+        <leadingHorizontalSpace=(\h*)>      #
+        <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
+        <[Element]>*                        #   ANYTHING
+        <linebreaksAtEndBody=(\R*)>         #
+        <end=(\])>                          # ]
         <linebreaksAtEndEnd=(\R*)> 
 
     # Mandatory Arguments
     #   \{ .... \}
-    <objrule: LatexIndent::MandatoryArgument=MandatoryArgs> 
-        <begin=(\{)> 
-        <leadingHorizontalSpace=(\h*)>
-        <linebreaksAtEndBegin=(\R*)> 
-        <[Element]>*? 
-        <linebreaksAtEndBody=(\R*)> 
-        <end=(\})> 
+    <objrule: LatexIndent::MandatoryArgument=MandatoryArg> 
+        <begin=(\{)>                        # {
+        <leadingHorizontalSpace=(\h*)>      #
+        <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
+        <[Element]>*?                       #   ANYTHING
+        <linebreaksAtEndBody=(\R*)>         #
+        <end=(\})>                          # } 
         <linebreaksAtEndEnd=(\R*)> 
 
     # Between arguments
@@ -108,7 +108,7 @@ $latex_indent_parser = qr{
         
     <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
         <name=(?{ $ARG{name} })>              # store the name
-        <[Item]>+ % <[itemHeading(:name)]>  # pass it to the item heading
+        <[Item]>+ % <[itemHeading(:name)]>    # pass it to the item heading
 
     <objrule: LatexIndent::Item=Item>    
         <[Element]>+?
