@@ -7,8 +7,10 @@ use Data::Dumper;
 our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
 
+# eventually these hashes need to live in GetYamlSettings
+# to be constructed *ONCE* at time of YAML reading
 our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
-our %ifelsefi_else = (else=>qr/\\else(?:(\h|\R)*)/s );
+our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h|\R)*)/s );
 
 $latex_indent_parser = qr{
     # starting point:
