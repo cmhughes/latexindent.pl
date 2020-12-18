@@ -5,28 +5,34 @@
 
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
-latexindent.pl -s command1.tex -o=+-default.tex
-latexindent.pl -s command2.tex -o=+-default.tex
-latexindent.pl -s command3.tex -o=+-default.tex
-latexindent.pl -s command4.tex -o=+-default.tex
-latexindent.pl -s command5.tex -o=+-default.tex
-latexindent.pl -s command6.tex -o=+-default.tex
 
-latexindent.pl -s special1.tex -o=+-default.tex
+# Command
+for i in {1..6}; do 
+    latexindent.pl -s command$i.tex -o=+-default.tex
+done
 
-latexindent.pl -s key-equals-value-braces1.tex -o=+-default.tex
-latexindent.pl -s key-equals-value-braces2.tex -o=+-default.tex
-latexindent.pl -s key-equals-value-braces3.tex -o=+-default.tex
+# Special
+for i in {1..4}; do 
+    latexindent.pl -s special$i.tex -o=+-default.tex
+done
 
-for (( i=1 ; i <= 8 ; i++ )) do 
+# KeyEqualsValue
+for i in {1..3}; do 
+    latexindent.pl -s key-equals-value-braces$i.tex -o=+-default.tex
+done
+
+# Environment
+for i in {1..8}; do 
     latexindent.pl -s environment$i.tex -o=+-default.tex
 done
 
-latexindent.pl -s named-grouping-braces-brackets1.tex -o=+-default.tex
-latexindent.pl -s named-grouping-braces-brackets2.tex -o=+-default.tex
-latexindent.pl -s named-grouping-braces-brackets3.tex -o=+-default.tex
+# NamedGroupingBraces
+for i in {1..3}; do 
+    latexindent.pl -s named-grouping-braces-brackets$i.tex -o=+-default.tex
+done
 
-for i in {1..4}; do 
+# IfElseFi
+for i in {1..5}; do 
     latexindent.pl -s ifelsefi$i.tex -o=+-default.tex
 done
 

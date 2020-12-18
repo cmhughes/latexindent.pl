@@ -22,6 +22,7 @@ sub indent {
     $body =~ s/^\h*//s unless (
                                 $itemHeading =~ m/\R/s 
                             or ($self->{type} eq 'IfElseFi' and $body !~ m/^\h*$/s)
+                            or ($self->{type} eq 'Special' and $body !~ m/^\h*$/s)
                         );
     $body = $itemHeading.$body;
 

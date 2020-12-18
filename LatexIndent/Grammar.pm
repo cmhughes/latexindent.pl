@@ -7,8 +7,8 @@ use Data::Dumper;
 our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
 
-# eventually these hashes need to live in GetYamlSettings
-# to be constructed *ONCE* at time of YAML reading
+# TO DO: eventually these hashes need to live in GetYamlSettings
+# TO DO: to be constructed *ONCE* at time of YAML reading
 our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
 our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h|\R)*)/s );
 
@@ -100,34 +100,15 @@ $latex_indent_parser = qr{
     #       body ...
     #   \end{<name>}
     <objrule: LatexIndent::Environment=Environment>    
-        <begin=(\\begin\{)>
-        <name=([a-zA-Z0-9]+)>\}
-        <type=(?{'Environment'})>
-        <leadingHorizontalSpace=(\h*)>
-        <linebreaksAtEndBegin=(\R*)> 
-        <[Arguments]>*?
-        <GroupOfItems(:name,:type)>?                  
-        <end=(\\end\{(??{ quotemeta $MATCH{name} })\})>
+        <begin=(\\begin\{)>                             # \begin{
+        <name=([a-zA-Z0-9]+)>\}                         #   name
+        <type=(?{'Environment'})>                       # }
+        <leadingHorizontalSpace=(\h*)>                  #
+        <linebreaksAtEndBegin=(\R*)>                    #
+        <[Arguments]>*?                                 # possible arguments
+        <GroupOfItems(:name,:type)>?                    #   ANYTHING
+        <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
         <linebreaksAtEndEnd=(\R*)> 
-        
-    <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
-        <name=(?{ $ARG{name} })>                 # store the name
-        <type=(?{ $ARG{type} })>                 # store the type
-        <[Item]>+ % <[itemHeading(:name,:type)]> # pass it to the item heading
-
-    <objrule: LatexIndent::Item=Item>    
-        <[Element]>+?
-
-    <token: itemHeading>
-        (??{
-            return $ifelsefi_else{else}
-                if $ARG{type} eq 'IfElseFi';
-
-            return ${ $environment_items{ $ARG{name} } }{item}
-                if ${ $environment_items{ $ARG{name} } }{item};
-
-            return q{(\\\\item(?:(\h|\R)*))}; 
-        })
 
     # ifElseFi
     #   \if
@@ -135,14 +116,14 @@ $latex_indent_parser = qr{
     #       body ...
     #   \fi
     <objrule: LatexIndent::IfElseFi=IfElseFi>    
-        <begin=(\\if)>
-        <type=(?{'IfElseFi'})>
-        <leadingHorizontalSpace=(\h*)>
-        <linebreaksAtEndBegin=(\R*)> 
-        <GroupOfItems(:name,:type)>?
-        <end=(\\fi)>
-        <horizontalTrailingSpace=(\h*)> 
-        <linebreaksAtEndEnd=(\R*)> 
+        <begin=(\\if)>                   # \if
+        <type=(?{'IfElseFi'})>           # 
+        <leadingHorizontalSpace=(\h*)>   #  ANYTHING
+        <linebreaksAtEndBegin=(\R*)>     # 
+        <GroupOfItems(:name,:type)>?     #  
+        <end=(\\fi)>                     # \fi
+        <horizontalTrailingSpace=(\h*)>  # 
+        <linebreaksAtEndEnd=(\R*)>       # 
 
     # Special
     #   USER specified
@@ -152,9 +133,10 @@ $latex_indent_parser = qr{
     #       \[ ... \]
     <objrule: LatexIndent::Special=Special>    
         <begin=((??{$LatexIndent::Special::special_begin_reg_ex}))>
+        <type=(?{'Special'})>
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
-        <[Element]>*?
+        <GroupOfItems(:type,:begin)>?                  
         <end=end_special(:begin)>
         <horizontalTrailingSpace=(\h*)> 
         <linebreaksAtEndEnd=(\R*)> 
@@ -171,6 +153,61 @@ $latex_indent_parser = qr{
             }
             return $LatexIndent::Special::special_end_look_up_hash{ $ARG{begin} };
            })
+        
+    # GroupOfItems
+    # Item
+    # itemHeading
+    #
+    #   this set of OBJECTS and TOKENS is used
+    #   across a few of the different grammars,
+    #   which include
+    #       
+    #       Environments
+    #       IfElseFi
+    #       Special
+    #
+    #   the idea is that GroupOfItems captures (or Groups) 
+    #   the list of items, and then each individual
+    #   item is operated upon
+    #
+    #   the 'item' itself is stored within itemHeading
+    #
+    <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
+        <name= (?{ $ARG{name}  })>                      # store the name
+        <type= (?{ $ARG{type}  })>                      # store the type
+        <begin=(?{ $ARG{begin} })>                      # store the begin
+        <[Item]>+ % <[itemHeading(:name,:type,:begin)]> # pass them to the item heading
+
+    <objrule: LatexIndent::Item=Item>    
+        <[Element]>+?
+
+    <token: itemHeading>
+        (??{
+            # IfElseFi
+            return $ifelsefi_else{else}
+                if $ARG{type} eq 'IfElseFi';
+
+            # Environment
+            return ${ $environment_items{ $ARG{name} } }{item}
+                if ($ARG{type} eq 'Environment' and ${ $environment_items{ $ARG{name} } }{item});
+
+            # Special
+            if ($ARG{type} eq 'Special'){
+                return $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} } 
+                    if $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} }; 
+
+                while( my ($key,$value)= each %LatexIndent::Special::special_look_up_hash){
+                    if ($ARG{begin} =~ ${$value}{begin} ){
+                        if( defined ${$value}{middle} ){
+                            $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} } = ${$value}{middle};
+                        }
+                    }
+                }
+                return $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} }
+                    if defined $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} };
+            };
+            return q{(\\\\item(?:(\h|\R)*))}; 
+        })
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
