@@ -26,7 +26,9 @@ latexindent.pl -s named-grouping-braces-brackets1.tex -o=+-default.tex
 latexindent.pl -s named-grouping-braces-brackets2.tex -o=+-default.tex
 latexindent.pl -s named-grouping-braces-brackets3.tex -o=+-default.tex
 
-latexindent.pl -s ifelsefi1.tex -o=+-default.tex
+for (( i=1 ; i <= 3 ; i++ )) do 
+    latexindent.pl -s ifelsefi$i.tex -o=+-default.tex
+done
 
 [[ $silentMode == 0 ]] && set -x 
 

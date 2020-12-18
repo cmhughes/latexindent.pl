@@ -20,7 +20,10 @@ sub indent {
         my $itemHeading = ( $count>0 ? ${$self->{itemHeading}}[$count-1]: q());
 
         ${$_}{itemsPresent} = (defined $self->{itemHeading} ? 1 : 0);
+        ${$_}{type} = ${$self}{type};
+
         $body .= $_->indent($itemHeading);
+
         $count++;
     }
 

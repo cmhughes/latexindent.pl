@@ -19,7 +19,10 @@ sub indent {
     return $body unless ${$self}{itemsPresent};
 
     $body =~ s/^/      /mg;
-    $body =~ s/^\h*//s unless $itemHeading =~ m/\R/s;
+    $body =~ s/^\h*//s unless (
+                                $itemHeading =~ m/\R/s 
+                            or ($self->{type} eq 'IfElseFi' and $body !~ m/^\h*$/s)
+                        );
     $body = $itemHeading.$body;
 
     return $body;

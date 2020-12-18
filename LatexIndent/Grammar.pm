@@ -8,6 +8,7 @@ our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
 
 our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
+our %ifelsefi_else = (else=>qr/\\else(?:(\h|\R)*)/s );
 
 $latex_indent_parser = qr{
     # starting point:
@@ -99,22 +100,27 @@ $latex_indent_parser = qr{
     <objrule: LatexIndent::Environment=Environment>    
         <begin=(\\begin\{)>
         <name=([a-zA-Z0-9]+)>\}
+        <type=(?{'Environment'})>
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
         <[Arguments]>*?
-        <[GroupOfItems(:name)]>?
+        <GroupOfItems(:name,:type)>?                  
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})>
         <linebreaksAtEndEnd=(\R*)> 
         
     <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
-        <name=(?{ $ARG{name} })>              # store the name
-        <[Item]>+ % <[itemHeading(:name)]>    # pass it to the item heading
+        <name=(?{ $ARG{name} })>                 # store the name
+        <type=(?{ $ARG{type} })>                 # store the type
+        <[Item]>+ % <[itemHeading(:name,:type)]> # pass it to the item heading
 
     <objrule: LatexIndent::Item=Item>    
         <[Element]>+?
 
     <token: itemHeading>
         (??{
+            return $ifelsefi_else{else}
+                if $ARG{type} eq 'IfElseFi';
+
             return ${ $environment_items{ $ARG{name} } }{item}
                 if ${ $environment_items{ $ARG{name} } }{item};
 
@@ -128,9 +134,10 @@ $latex_indent_parser = qr{
     #   \fi
     <objrule: LatexIndent::IfElseFi=IfElseFi>    
         <begin=(\\if)>
+        <type=(?{'IfElseFi'})>
         <leadingHorizontalSpace=(\h*)>
         <linebreaksAtEndBegin=(\R*)> 
-        <[Element]>*?
+        <GroupOfItems(:name,:type)>?
         <end=(\\fi)>
         <horizontalTrailingSpace=(\h*)> 
         <linebreaksAtEndEnd=(\R*)> 
