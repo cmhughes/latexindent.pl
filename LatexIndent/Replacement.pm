@@ -17,7 +17,7 @@ package LatexIndent::Replacement;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
+use LatexIndent::TrailingComment;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_rr_switch_active/;
 use LatexIndent::LogFile qw/$logger/;

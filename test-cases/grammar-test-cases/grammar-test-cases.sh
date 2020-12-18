@@ -22,7 +22,7 @@ for i in {1..3}; do
 done
 
 # Environment
-for i in {1..8}; do 
+for i in {1..10}; do 
     latexindent.pl -s environment$i.tex -o=+-default.tex
 done
 

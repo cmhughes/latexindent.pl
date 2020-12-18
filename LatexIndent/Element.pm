@@ -13,6 +13,7 @@ sub explain {
       || $self->{Special}
       || $self->{IfElseFi}
       || $self->{Literal}
+      || $self->{TrailingComment}
     )->explain($level);
     return;
 }
@@ -26,6 +27,7 @@ sub indent {
                 || $self->{Special}
                 || $self->{IfElseFi}
                 || $self->{Literal}
+                || $self->{TrailingComment}
               )->indent;
     return $body;
 }

@@ -38,6 +38,7 @@ $latex_indent_parser = qr{
       | <KeyEqualsValuesBraces> 
       | <NamedGroupingBracesBrackets> 
       | <Special> 
+      | <TrailingComment> 
       | <Literal>
       
     # Commands
@@ -208,6 +209,12 @@ $latex_indent_parser = qr{
             };
             return q{(\\\\item(?:(\h|\R)*))}; 
         })
+      
+    # Comment
+    <objrule: LatexIndent::TrailingComment=TrailingComment>    
+        <begin=((?<!\\)\%)>
+        <body=(.*?\R)>
+
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
