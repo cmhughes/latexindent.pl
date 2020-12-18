@@ -67,7 +67,7 @@ $latex_indent_parser = qr{
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
     <objrule: LatexIndent::Arguments=Arguments> 
-        <Between>?(<OptionalArg>|<MandatoryArg>)
+        <[Between]>*?(<OptionalArg>|<MandatoryArg>)
 
     # Optional Arguments
     #   \[ .... \]
@@ -78,6 +78,7 @@ $latex_indent_parser = qr{
         <[Element]>*                        #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\])>                          # ]
+        <horizontalTrailingSpace=(\h*)>  
         <linebreaksAtEndEnd=(\R*)> 
 
     # Mandatory Arguments
@@ -89,11 +90,12 @@ $latex_indent_parser = qr{
         <[Element]>*?                       #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\})>                          # } 
+        <horizontalTrailingSpace=(\h*)>  
         <linebreaksAtEndEnd=(\R*)> 
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
-        <body=((\h|\R)*[*_^])>
+        <body=((\h|\R)*[*_^])>|<TrailingComment>
         
     # Environments
     #   \begin{<name>}<Arguments>

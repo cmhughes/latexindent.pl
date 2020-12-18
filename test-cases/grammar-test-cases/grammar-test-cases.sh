@@ -7,7 +7,7 @@
 [[ $silentMode == 0 ]] && set -x 
 
 # Command
-for i in {1..6}; do 
+for i in {1..8}; do 
     latexindent.pl -s command$i.tex -o=+-default.tex
 done
 

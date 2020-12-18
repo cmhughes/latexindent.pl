@@ -6,7 +6,7 @@ sub explain {
     my ($self, $level) = @_;
     
     # possible 'between' arguments
-    $self->{Between}->explain($level) if defined $self->{Between}; 
+    $_->explain($level) foreach (@{$self->{Between}});
     
     # definitely Optional or Mandatory argument
     ($self->{OptionalArg} || $self->{MandatoryArg})->explain($level);
@@ -19,7 +19,7 @@ sub indent {
     my $body = q();
 
     # possible 'between' arguments
-    $body .= $self->{Between}->indent if defined $self->{Between}; 
+    $body .= $_->indent foreach (@{$self->{Between}}); 
 
     # definitely Optional or Mandatory argument
     $body .= ($self->{OptionalArg} || $self->{MandatoryArg})->indent;
