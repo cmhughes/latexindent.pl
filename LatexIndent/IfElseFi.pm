@@ -33,7 +33,7 @@ sub indent {
             .$self->{linebreaksAtEndBegin}
             .$body                          # body
             .$self->{end}                   # end
-            .$self->{horizontalTrailingSpace}
+            .$self->{trailingHorizontalSpace}
             .$self->{linebreaksAtEndEnd};   
     return $body;
 }

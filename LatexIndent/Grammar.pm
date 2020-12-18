@@ -78,7 +78,7 @@ $latex_indent_parser = qr{
         <[Element]>*                        #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\])>                          # ]
-        <horizontalTrailingSpace=(\h*)>  
+        <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd=(\R*)> 
 
     # Mandatory Arguments
@@ -90,12 +90,12 @@ $latex_indent_parser = qr{
         <[Element]>*?                       #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\})>                          # } 
-        <horizontalTrailingSpace=(\h*)>  
+        <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd=(\R*)> 
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
-        <body=((\h|\R)*[*_^])>|<TrailingComment>
+        <body=((?:\h|\R|[*_^])*)>|<TrailingComment>
         
     # Environments
     #   \begin{<name>}<Arguments>
@@ -125,7 +125,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBegin=(\R*)>     # 
         <GroupOfItems(:name,:type)>?     #  
         <end=(\\fi)>                     # \fi
-        <horizontalTrailingSpace=(\h*)>  # 
+        <trailingHorizontalSpace=(\h*)>  # 
         <linebreaksAtEndEnd=(\R*)>       # 
 
     # Special
@@ -141,7 +141,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBegin=(\R*)> 
         <GroupOfItems(:type,:begin)>?                  
         <end=end_special(:begin)>
-        <horizontalTrailingSpace=(\h*)> 
+        <trailingHorizontalSpace=(\h*)> 
         <linebreaksAtEndEnd=(\R*)> 
 
     <token: end_special>

@@ -7,7 +7,7 @@
 [[ $silentMode == 0 ]] && set -x 
 
 # Command
-for i in {1..8}; do 
+for i in {1..9}; do 
     latexindent.pl -s command$i.tex -o=+-default.tex
 done
 
@@ -27,7 +27,7 @@ for i in {1..10}; do
 done
 
 # NamedGroupingBraces
-for i in {1..3}; do 
+for i in {1..4}; do 
     latexindent.pl -s named-grouping-braces-brackets$i.tex -o=+-default.tex
 done
 
