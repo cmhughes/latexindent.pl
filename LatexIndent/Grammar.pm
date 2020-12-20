@@ -43,12 +43,16 @@ $latex_indent_parser = qr{
     #   to keep track of blank lines
     #
     #   reference: https://metacpan.org/pod/Regexp::Grammars#Tokens-vs-rules-(whitespace-handling)
+    #
+    # Note: white space modification necessary!
     <objrule: LatexIndent::File=File>          
         <ws: (\h*)>
         <[Element]>*
 
     # each of the different CODE BLOCKS and COMMENTS and LINE BREAKS
     # are all ELEMENTS to latexindent.pl
+    #
+    # Note: white space modification necessary!
     <objrule: LatexIndent::Element=Element>    
         <ws: (\h*)>
         <Environment> 
@@ -67,7 +71,7 @@ $latex_indent_parser = qr{
         <begin=(\\)>
         <name=([a-zA-Z0-9*]+)>
         <[Arguments]>+
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # key = value braces/brackets
     #   key = <arguments>
@@ -75,14 +79,14 @@ $latex_indent_parser = qr{
         <name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?)>
         <equals=((?:\h|\R)*=(\h|\R)*)>
         <[Arguments]>+
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # NamedGroupingBracesBrackets
     #   <name> <arguments>
     <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
         <name=([a-zA-Z0-9*]+)>
         <[Arguments]>+
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
@@ -99,7 +103,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\])>                          # ]
         <trailingHorizontalSpace=(\h*)>  
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # Mandatory Arguments
     #   \{ .... \}
@@ -111,7 +115,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\})>                          # } 
         <trailingHorizontalSpace=(\h*)>  
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
@@ -132,7 +136,7 @@ $latex_indent_parser = qr{
         <GroupOfItems(:name,:type)>?                    #   ANYTHING
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
         <trailingHorizontalSpace=(\h*)>  
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     # ifElseFi
     #   \if
@@ -147,7 +151,7 @@ $latex_indent_parser = qr{
         <GroupOfItems(:name,:type)>?     #  
         <end=(\\fi)>                     # \fi
         <trailingHorizontalSpace=(\h*)>  # 
-        <linebreaksAtEndEnd=(\R*)>       # 
+        <linebreaksAtEndEnd> 
 
     # Special
     #   USER specified
@@ -163,7 +167,7 @@ $latex_indent_parser = qr{
         <GroupOfItems(:type,:begin)>?                  
         <end=end_special(:begin)>
         <trailingHorizontalSpace=(\h*)> 
-        <linebreaksAtEndEnd=(\R*)> 
+        <linebreaksAtEndEnd> 
 
     <token: end_special>
         (??{
@@ -233,12 +237,20 @@ $latex_indent_parser = qr{
             return q{(\\\\item(?:(\h|\R)*))}; 
         })
       
+    # linebreaksAtEndEnd, used across code blocks
+    <token: linebreaksAtEndEnd>
+        (?<!^)\h*\R?
+
     # Comment
     <objrule: LatexIndent::TrailingComment=TrailingComment>    
         <begin=((?<!\\)\%)>
         <body=(.*?\R)>
         
-    # Blank line
+    # BlankLine
+    #   matches at least one blank line and
+    #   stores into an array
+    #
+    # Note: white space modification necessary!
     <objrule: LatexIndent::BlankLine=BlankLine>    
         <ws: (\h*)>
         <[body=blanklinetoken]>+
