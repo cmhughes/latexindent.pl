@@ -37,6 +37,7 @@ use LatexIndent::File;
 use LatexIndent::Grammar qw/$latex_indent_parser/;
 use LatexIndent::Literal;
 use LatexIndent::TrailingComment;
+use LatexIndent::BlankLine;
 
 # code blocks
 use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;

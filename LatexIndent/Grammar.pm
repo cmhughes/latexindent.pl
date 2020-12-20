@@ -12,6 +12,15 @@ our $latex_indent_parser;
 our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
 our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h|\R)*)/s );
 
+# about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
+#   
+#   mode                        ^ and $ anchors consider target text as         dot
+#   -----------------------------------------------------------------------------------------
+#   default             /       a single string, without regard to newlines     doesn't match newline 
+#   single-line         /s      a single string, without regard to newlines     matches all characters
+#   mult-line           /m      multiple logical lines separated by newlines    unchanged from default
+#   clean multi-line    /sm     multiple logical lines separated by newlines    matches all characters
+
 $latex_indent_parser = qr{
     # starting point:
     #   https://perl-begin.org/uses/text-parsing/
@@ -26,12 +35,22 @@ $latex_indent_parser = qr{
     # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
     <nocontext:>
 
+    # FILE is the top-level element, everything else follows from it
     <File>
 
+    # WHITE SPACE: 
+    #   it is *vital* to re-define the whitespace <ws> element in order
+    #   to keep track of blank lines
+    #
+    #   reference: https://metacpan.org/pod/Regexp::Grammars#Tokens-vs-rules-(whitespace-handling)
     <objrule: LatexIndent::File=File>          
+        <ws: (\h*)>
         <[Element]>*
 
+    # each of the different CODE BLOCKS and COMMENTS and LINE BREAKS
+    # are all ELEMENTS to latexindent.pl
     <objrule: LatexIndent::Element=Element>    
+        <ws: (\h*)>
         <Environment> 
       | <IfElseFi>
       | <Command> 
@@ -39,6 +58,7 @@ $latex_indent_parser = qr{
       | <NamedGroupingBracesBrackets> 
       | <Special> 
       | <TrailingComment> 
+      | <BlankLine>
       | <Literal>
       
     # Commands
@@ -111,6 +131,7 @@ $latex_indent_parser = qr{
         <[Arguments]>*?                                 # possible arguments
         <GroupOfItems(:name,:type)>?                    #   ANYTHING
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
+        <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd=(\R*)> 
 
     # ifElseFi
@@ -161,19 +182,19 @@ $latex_indent_parser = qr{
     # Item
     # itemHeading
     #
-    #   this set of OBJECTS and TOKENS is used
-    #   across a few of the different grammars,
-    #   which include
-    #       
-    #       Environments
-    #       IfElseFi
-    #       Special
+    #       this set of OBJECTS and TOKENS is used
+    #       across a few of the different grammars,
+    #       which include
+    #           
+    #           Environments
+    #           IfElseFi
+    #           Special
     #
-    #   the idea is that GroupOfItems captures (or Groups) 
-    #   the list of items, and then each individual
-    #   item is operated upon
+    #       the idea is that GroupOfItems captures (or Groups) 
+    #       the list of items, and then each individual
+    #       item is operated upon
     #
-    #   the 'item' itself is stored within itemHeading
+    #       the 'item' itself is stored within itemHeading
     #
     <objrule: LatexIndent::GroupOfItems=GroupOfItems>    
         <name= (?{ $ARG{name}  })>                      # store the name
@@ -216,11 +237,19 @@ $latex_indent_parser = qr{
     <objrule: LatexIndent::TrailingComment=TrailingComment>    
         <begin=((?<!\\)\%)>
         <body=(.*?\R)>
+        
+    # Blank line
+    <objrule: LatexIndent::BlankLine=BlankLine>    
+        <ws: (\h*)>
+        <[body=blanklinetoken]>+
 
+    <token: blanklinetoken>
+        ^\h*\R
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
-        <body=((?:[a-zA-Z0-9&^()']|\h|\R|\\\\)*)>
-}xs;
+        <body=((?:[a-zA-Z0-9&^()']|\h|((?<!^)\R)|\\\\)*)>
+
+}xms;
 
 1;

@@ -2,7 +2,6 @@ package LatexIndent::Element;
 use strict;
 use warnings;
 use feature qw(say);
-use LatexIndent::Literal;
 
 sub explain {
     my ($self, $level) = @_;
@@ -14,6 +13,7 @@ sub explain {
       || $self->{IfElseFi}
       || $self->{Literal}
       || $self->{TrailingComment}
+      || $self->{BlankLine}
     )->explain($level);
     return;
 }
@@ -28,6 +28,7 @@ sub indent {
                 || $self->{IfElseFi}
                 || $self->{Literal}
                 || $self->{TrailingComment}
+                || $self->{BlankLine}
               )->indent;
     return $body;
 }

@@ -7,7 +7,7 @@
 [[ $silentMode == 0 ]] && set -x 
 
 # Command
-for i in {1..9}; do 
+for i in {1..10}; do 
     latexindent.pl -s command$i.tex -o=+-default.tex
 done
 
@@ -22,7 +22,7 @@ for i in {1..3}; do
 done
 
 # Environment
-for i in {1..10}; do 
+for i in {1..11}; do 
     latexindent.pl -s environment$i.tex -o=+-default.tex
 done
 
@@ -34,6 +34,11 @@ done
 # IfElseFi
 for i in {1..5}; do 
     latexindent.pl -s ifelsefi$i.tex -o=+-default.tex
+done
+
+# blanklines
+for i in {1..1}; do 
+    latexindent.pl -s blankline$i.tex -o=+-default.tex
 done
 
 [[ $silentMode == 0 ]] && set -x 

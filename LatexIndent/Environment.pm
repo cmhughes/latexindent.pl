@@ -28,13 +28,14 @@ sub indent {
     $body =~ s/^\t//s if !$self->{linebreaksAtEndBegin};
 
     # assemble the body
-    $body = $self->{begin}                  # begin
+    $body = $self->{begin}                    # begin
             .$self->{name}
             ."}"
             .$self->{leadingHorizontalSpace}
             .$self->{linebreaksAtEndBegin}
-            .$body                          # body
-            .$self->{end}                   # end
+            .$body                            # body
+            .$self->{end}                     # end
+            .$self->{trailingHorizontalSpace}
             .$self->{linebreaksAtEndEnd};   
     return $body;
 }
