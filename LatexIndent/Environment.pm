@@ -28,7 +28,7 @@ sub indent {
     $body =~ s/^\t//s if !$self->{linebreaksAtEndBegin};
 
     # assemble the body
-    $body = $self->{begin}                    # begin
+    $body =  $self->{begin}                   # begin
             .$self->{name}
             ."}"
             .$self->{leadingHorizontalSpace}

@@ -44,14 +44,15 @@ use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments fin
 use LatexIndent::Arguments;
 use LatexIndent::Command;
 use LatexIndent::Environment;
-use LatexIndent::MandatoryArgument;
-use LatexIndent::OptionalArgument;
-use LatexIndent::NamedGroupingBracesBrackets;
-use LatexIndent::KeyEqualsValuesBraces;
-use LatexIndent::Special;
 use LatexIndent::GroupOfItems;
-use LatexIndent::Item;
+use LatexIndent::Heading;
 use LatexIndent::IfElseFi;
+use LatexIndent::Item;
+use LatexIndent::KeyEqualsValuesBraces;
+use LatexIndent::MandatoryArgument;
+use LatexIndent::NamedGroupingBracesBrackets;
+use LatexIndent::OptionalArgument;
+use LatexIndent::Special;
 
 # Data::Dumper settings
 #   reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper

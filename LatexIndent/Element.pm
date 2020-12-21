@@ -14,6 +14,7 @@ sub explain {
       || $self->{Literal}
       || $self->{TrailingComment}
       || $self->{BlankLine}
+      || $self->{Heading}
     )->explain($level);
     return;
 }
@@ -29,6 +30,7 @@ sub indent {
                 || $self->{Literal}
                 || $self->{TrailingComment}
                 || $self->{BlankLine}
+                || $self->{Heading}
               )->indent;
     return $body;
 }

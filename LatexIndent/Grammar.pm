@@ -47,7 +47,8 @@ $latex_indent_parser = qr{
     # Note: white space modification necessary!
     <objrule: LatexIndent::File=File>          
         <ws: (\h*)>
-        <[Element]>*
+        <headinglevel=(?{1})> 
+        <[Element(:headinglevel)]>*
 
     # each of the different CODE BLOCKS and COMMENTS and LINE BREAKS
     # are all ELEMENTS to latexindent.pl
@@ -56,15 +57,58 @@ $latex_indent_parser = qr{
     <objrule: LatexIndent::Element=Element>    
         <ws: (\h*)>
         <Environment> 
-      | <IfElseFi>
-      | <Command> 
-      | <KeyEqualsValuesBraces> 
-      | <NamedGroupingBracesBrackets> 
-      | <Special> 
-      | <TrailingComment> 
-      | <BlankLine>
-      | <Literal>
-      
+        | <IfElseFi>
+        | (?: 
+              <headinglevel=(?{ $ARG{headinglevel}//=0; 
+                                $ARG{incrementHeadingLevel}//=0; 
+                                $ARG{headinglevel} + $ARG{incrementHeadingLevel}; })>
+              <Heading(:headinglevel)>
+          )
+        | <Command> 
+        | <KeyEqualsValuesBraces> 
+        | <NamedGroupingBracesBrackets> 
+        | <Special> 
+        | <TrailingComment> 
+        | <BlankLine>
+        | <Literal>
+
+    # Headings
+    #
+    #   \part, \chapter, \section etc
+    #
+    # Note: white space modification necessary!
+    <objrule: LatexIndent::Heading=Heading>    
+        <ws: (\h*)>
+        <headinglevel=(?{  $ARG{headinglevel}  })>
+        <incrementHeadingLevel=(?{1})>
+        <begin=(\\)>
+        <name=headingText(:headinglevel)>
+        <[Arguments]>+
+        <linebreaksAtEndEnd> 
+        ((?!<Heading(:headinglevel)>)<[Element(:headinglevel,:incrementHeadingLevel)]>)*
+
+    <token: headingText>
+        (??{
+            $ARG{headinglevel} //= 0;
+            return "section|paragraph" if $ARG{headinglevel} == 0;
+
+            # level 1 headings
+            return 'section' if $ARG{headinglevel} == 1;
+
+            # level 2 headings need BOTH 
+            #   - level 1 headings
+            #   AND
+            #   - level 2 headings
+            return 'section|paragraph' if $ARG{headinglevel} == 2;
+            
+            # level 3 headings need 
+            #   - level 1 headings
+            #   AND
+            #   - level 2 headings
+            #   AND
+            #   - level 3 headings
+        })
+
     # Commands
     #   \<name> <arguments>
     <objrule: LatexIndent::Command=Command>    
@@ -99,7 +143,7 @@ $latex_indent_parser = qr{
         <begin=(\[)>                        # [
         <leadingHorizontalSpace=(\h*)>      #
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
-        <[Element]>*                        #   ANYTHING
+        <[Element]>*?                       #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
         <end=(\])>                          # ]
         <trailingHorizontalSpace=(\h*)>  
