@@ -42,7 +42,7 @@ for i in {1..1}; do
 done
 
 # headings
-for i in {1..5}; do 
+for i in {1..6}; do 
     latexindent.pl -s heading$i.tex -o=+-default.tex
 done
 

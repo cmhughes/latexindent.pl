@@ -11,6 +11,7 @@ our $latex_indent_parser;
 # TO DO: to be constructed *ONCE* at time of YAML reading
 our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
 our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h|\R)*)/s );
+# TO DO: Headings names need constructing
 
 # about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
 #   
@@ -93,13 +94,13 @@ $latex_indent_parser = qr{
             return "section|paragraph" if $ARG{headinglevel} == 0;
 
             # level 1 headings
-            return 'section' if $ARG{headinglevel} == 1;
+            return 'chapter|section' if $ARG{headinglevel} == 1;
 
             # level 2 headings need BOTH 
             #   - level 1 headings
             #   AND
             #   - level 2 headings
-            return 'section|paragraph' if $ARG{headinglevel} == 2;
+            return 'chapter|section|subsection' if $ARG{headinglevel} == 2;
             
             # level 3 headings need 
             #   - level 1 headings
@@ -107,6 +108,7 @@ $latex_indent_parser = qr{
             #   - level 2 headings
             #   AND
             #   - level 3 headings
+            return 'chapter|section|subsection|paragraph' if $ARG{headinglevel} == 3;
         })
 
     # Commands
