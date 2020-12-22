@@ -9,7 +9,7 @@ use LatexIndent::LogFile qw/$grammarLeadingSpace/;
 our $special_begin_reg_ex = qr/\$|\\\[/s;
 our %special_look_up_hash = (displayMath=>({
                                             begin=>qr/\\\[/s,
-                                            middle=>qr/\\(Middle|ElsIf)(?:(\h|\R)*)/s,
+                                            middle=>qr/\\(Middle|ElsIf)(?:((\h*\R+)|(\h*)))/s,
                                             end=>qr/\\\]/s
                                           }),
                             inlineMath=>({

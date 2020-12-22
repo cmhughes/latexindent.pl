@@ -40,7 +40,6 @@ use LatexIndent::TrailingComment;
 use LatexIndent::BlankLine;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
 use LatexIndent::Arguments;
 use LatexIndent::Command;
 use LatexIndent::Environment;
@@ -53,6 +52,7 @@ use LatexIndent::MandatoryArgument;
 use LatexIndent::NamedGroupingBracesBrackets;
 use LatexIndent::OptionalArgument;
 use LatexIndent::Special;
+use LatexIndent::Verbatim;
 
 # Data::Dumper settings
 #   reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper
@@ -62,19 +62,6 @@ $Data::Dumper::Useqq = 1;
 $Data::Dumper::Deparse = 1;
 $Data::Dumper::Quotekeys = 0;
 $Data::Dumper::Sortkeys = 1;
-
-sub new{
-    # Create new objects, with optional key/value pairs
-    # passed as initializers.
-    #
-    # See Programming Perl, pg 319
-    my $invocant = shift;
-    my $class = ref($invocant) || $invocant;
-    my $self = {@_};
-    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace};
-    bless ($self,$class);
-    return $self;
-}
 
 sub latexindent{
     my $self = shift;
@@ -88,7 +75,6 @@ sub operate_on_file{
     my $self = shift;
 
     $self->create_back_up_file;
-    $self->remove_leading_space;
     $self->{body} =~ $latex_indent_parser;
     print Dumper \%/;
     $/{File}->explain(0);

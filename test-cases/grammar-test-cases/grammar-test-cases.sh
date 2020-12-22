@@ -46,6 +46,11 @@ for i in {1..6}; do
     latexindent.pl -s heading$i.tex -o=+-default.tex
 done
 
+# verbatim
+for i in {1..1}; do 
+    latexindent.pl -s verbatim$i.tex -o=+-default.tex
+done
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

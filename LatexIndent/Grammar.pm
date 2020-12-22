@@ -9,8 +9,8 @@ our $latex_indent_parser;
 
 # TO DO: eventually these hashes need to live in GetYamlSettings
 # TO DO: to be constructed *ONCE* at time of YAML reading
-our %environment_items = (cmh=>({item=>qr/\\item(?:(\h|\R)*)/s }),);
-our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h|\R)*)/s );
+our %environment_items = (cmh=>({item=>qr/\\item(?:((\h*\R+)|(\h*)))/s }),);
+our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h*\R)*)/s );
 # TO DO: Headings names need constructing
 
 # about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
@@ -57,7 +57,8 @@ $latex_indent_parser = qr{
     # Note: white space modification necessary!
     <objrule: LatexIndent::Element=Element>    
         <ws: (\h*)>
-        <Environment> 
+        <Verbatim> 
+        | <Environment>
         | <IfElseFi>
         | (?: 
               <headinglevel=(?{ $ARG{headinglevel}//=0; 
@@ -72,6 +73,17 @@ $latex_indent_parser = qr{
         | <TrailingComment> 
         | <BlankLine>
         | <Literal>
+
+    # Verbatim 
+    <objrule: LatexIndent::Verbatim=Verbatim>    
+        <ws: (\h*)>
+        <begin=(\\begin\{)>                             # \begin{
+        <name=(verbatim|lstlistings|minted)>\}          #   name
+        <type=(?{'Verbatim'})>                          # }
+        <body=(.*?)>                                    #   ANYTHING
+        <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
+        <trailingHorizontalSpace=(\h*)>  
+        <linebreaksAtEndEnd> 
 
     # Headings
     #
@@ -142,6 +154,7 @@ $latex_indent_parser = qr{
     # Optional Arguments
     #   \[ .... \]
     <objrule: LatexIndent::OptionalArgument=OptionalArg> 
+        <ws: (\h*)>
         <begin=(\[)>                        # [
         <leadingHorizontalSpace=(\h*)>      #
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -154,6 +167,7 @@ $latex_indent_parser = qr{
     # Mandatory Arguments
     #   \{ .... \}
     <objrule: LatexIndent::MandatoryArgument=MandatoryArg> 
+        <ws: (\h*)>
         <begin=(\{)>                        # {
         <leadingHorizontalSpace=(\h*)>      #
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -165,6 +179,7 @@ $latex_indent_parser = qr{
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
+        <ws: (\h*)>
         <body=((?:\h|\R|[*_^])*)>|<TrailingComment>
         
     # Environments
@@ -173,6 +188,7 @@ $latex_indent_parser = qr{
     #       body ...
     #   \end{<name>}
     <objrule: LatexIndent::Environment=Environment>    
+        <ws: (\h*)>
         <begin=(\\begin\{)>                             # \begin{
         <name=([a-zA-Z0-9]+)>\}                         #   name
         <type=(?{'Environment'})>                       # }
@@ -180,6 +196,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBegin=(\R*)>                    #
         <[Arguments]>*?                                 # possible arguments
         <GroupOfItems(:name,:type)>?                    #   ANYTHING
+        <.ws>
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
         <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd> 
@@ -190,6 +207,7 @@ $latex_indent_parser = qr{
     #       body ...
     #   \fi
     <objrule: LatexIndent::IfElseFi=IfElseFi>    
+        <ws: (\h*)>
         <begin=(\\if)>                   # \if
         <type=(?{'IfElseFi'})>           # 
         <leadingHorizontalSpace=(\h*)>   #  ANYTHING
@@ -206,6 +224,7 @@ $latex_indent_parser = qr{
     #       $ ... $
     #       \[ ... \]
     <objrule: LatexIndent::Special=Special>    
+        <ws: (\h*)>
         <begin=((??{$LatexIndent::Special::special_begin_reg_ex}))>
         <type=(?{'Special'})>
         <leadingHorizontalSpace=(\h*)>
@@ -280,7 +299,7 @@ $latex_indent_parser = qr{
                 return $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} }
                     if defined $LatexIndent::Special::special_middle_look_up_hash{ $ARG{begin} };
             };
-            return q{(\\\\item(?:(\h|\R)*))}; 
+            return q{(\\\\item(?:((\h*\R+)|(\h*))))}; 
         })
       
     # linebreaksAtEndEnd, used across code blocks
@@ -306,7 +325,7 @@ $latex_indent_parser = qr{
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
-        <body=((?:[a-zA-Z0-9&^()']|\h|((?<!^)\R)|\\\\)*)>
+        <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)*)>
 
 }xms;
 
