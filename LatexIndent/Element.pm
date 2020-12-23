@@ -7,6 +7,7 @@ sub explain {
     my ($self, $level) = @_;
     ($self->{Command} 
       || $self->{KeyEqualsValuesBraces}
+      || $self->{NoIndentBlock} 
       || $self->{Verbatim} 
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
@@ -24,6 +25,7 @@ sub indent {
     my $self = shift;
     my $body = ($self->{Command} 
                 || $self->{KeyEqualsValuesBraces}
+                || $self->{NoIndentBlock} 
                 || $self->{Verbatim} 
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 

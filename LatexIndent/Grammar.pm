@@ -57,7 +57,8 @@ $latex_indent_parser = qr{
     # Note: white space modification necessary!
     <objrule: LatexIndent::Element=Element>    
         <ws: (\h*)>
-        <Verbatim> 
+        <NoIndentBlock> 
+        | <Verbatim> 
         | <Environment>
         | <IfElseFi>
         | (?: 
@@ -73,6 +74,21 @@ $latex_indent_parser = qr{
         | <TrailingComment> 
         | <BlankLine>
         | <Literal>
+
+    # NoIndentBlock 
+    #
+    # Note: this is just a Verbatim block
+    #
+    # possible enhancement: can this be subsumed into Verbatim...?
+    <objrule: LatexIndent::Verbatim=NoIndentBlock>    
+        <ws: (\h*)>
+        <begin=((?<!\\)\%\h*\\begin\{)>                              # \begin{
+        <name=(noindent)>\}                                          #   name
+        <type=(?{'Verbatim'})>                                       # }
+        <body=(.*?)>                                                 #   ANYTHING
+        <end=((?<!\\)\%\h*\\end\{(??{ quotemeta $MATCH{name} })\})>  # \end{name}
+        <trailingHorizontalSpace=(\h*)>  
+        <linebreaksAtEndEnd> 
 
     # Verbatim 
     <objrule: LatexIndent::Verbatim=Verbatim>    

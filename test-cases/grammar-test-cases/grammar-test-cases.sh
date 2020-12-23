@@ -47,8 +47,13 @@ for i in {1..6}; do
 done
 
 # verbatim
-for i in {1..1}; do 
+for i in {1..2}; do 
     latexindent.pl -s verbatim$i.tex -o=+-default.tex
+done
+
+# noindentblock
+for i in {1..2}; do 
+    latexindent.pl -s noindentblock$i.tex -o=+-default.tex
 done
 
 [[ $silentMode == 0 ]] && set -x 
