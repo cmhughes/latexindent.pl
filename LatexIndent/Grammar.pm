@@ -31,7 +31,8 @@ $latex_indent_parser = qr{
     #   https://stackoverflow.com/questions/1352657/regex-for-matching-custom-syntax
     
     # https://metacpan.org/pod/Regexp::Grammars#Debugging1
-    <logfile: cmh.log >
+    #<logfile: cmh.log >
+    #<debug: step>
 
     # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
     <nocontext:>
@@ -158,6 +159,7 @@ $latex_indent_parser = qr{
     # NamedGroupingBracesBrackets
     #   <name> <arguments>
     <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
+        <ws: (\h*)>
         <name=([a-zA-Z0-9*]+)>
         <[Arguments]>+
         <linebreaksAtEndEnd> 
@@ -165,6 +167,7 @@ $latex_indent_parser = qr{
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
     <objrule: LatexIndent::Arguments=Arguments> 
+        <ws: (\h*)>
         <[Between]>*?(<OptionalArg>|<MandatoryArg>)
 
     # Optional Arguments
@@ -176,6 +179,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
         <[Element]>*?                       #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
+        <.ws>
         <end=(\])>                          # ]
         <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd> 
@@ -189,6 +193,7 @@ $latex_indent_parser = qr{
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
         <[Element]>*?                       #   ANYTHING
         <linebreaksAtEndBody=(\R*)>         #
+        <.ws>
         <end=(\})>                          # } 
         <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd> 
@@ -341,7 +346,7 @@ $latex_indent_parser = qr{
 
     # anything else
     <objrule: LatexIndent::Literal=Literal>    
-        <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)*)>
+        <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)+)>
 
 }xms;
 
