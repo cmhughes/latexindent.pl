@@ -3,6 +3,11 @@ use strict;
 use warnings;
 use feature qw(say);
 use LatexIndent::LogFile qw/$grammarLeadingSpace/;
+use Exporter qw/import/;
+our @EXPORT_OK = qw/put_verbatim_back_in/;
+our $verbatimCounter = 0;
+our $verbatimToken = "LaTeX-Indent-Verbatim";
+our @verbatimStorage;
 
 sub explain {
     my ($self, $level) = @_;
@@ -15,16 +20,35 @@ sub explain {
 
 sub indent {
     my $self = shift;
-    my $body = $self->{body};
 
-    # assemble the body
-    $body =  $self->{begin}                   # begin
-            .$self->{name}
-            ."}"
-            .$body                            # body
-            .$self->{end}                     # end
-            .$self->{trailingHorizontalSpace}
-            .$self->{linebreaksAtEndEnd};   
-    return $body;
+    $verbatimCounter++;
+    
+    push(@verbatimStorage,
+         ({
+            id=>$verbatimToken.$verbatimCounter,
+            begin=>$self->{begin}.$self->{name}."}",
+            body=>$self->{body},
+            end=>$self->{end}.$self->{trailingHorizontalSpace}.$self->{linebreaksAtEndEnd},
+          }));
+
+    return $verbatimToken.$verbatimCounter;   
+}
+
+sub put_verbatim_back_in{
+
+    my $self = shift;
+
+    # important:
+    #   we loop through the verbatim array in *reverse*
+    #   so that the IDs such as, for example,
+    #
+    #       LaTeX-Indent-Verbatim1
+    #
+    #   does *not* match to
+    #
+    #       LaTeX-Indent-Verbatim11
+    #   
+    ${$self}{body} =~ s/${$_}{id}/${$_}{begin}${$_}{body}${$_}{end}/s foreach(reverse @verbatimStorage);
+    return;
 }
 1;

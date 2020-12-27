@@ -53,7 +53,7 @@ use LatexIndent::MandatoryArgument;
 use LatexIndent::NamedGroupingBracesBrackets;
 use LatexIndent::OptionalArgument;
 use LatexIndent::Special;
-use LatexIndent::Verbatim;
+use LatexIndent::Verbatim qw/put_verbatim_back_in/;
 
 # Data::Dumper settings
 #   reference: https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper
@@ -81,6 +81,7 @@ sub operate_on_file{
     $/{File}->explain(0);
     print "----------- end of explain --------------\n";
     $self->{body} = $/{File}->indent(0);
+    $self->put_verbatim_back_in;
     $self->output_indented_text;
     return
 }

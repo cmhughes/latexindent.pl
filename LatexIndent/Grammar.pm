@@ -12,6 +12,7 @@ our $latex_indent_parser;
 our %environment_items = (cmh=>({item=>qr/\\item(?:((\h*\R+)|(\h*)))/s }),);
 our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h*\R)*)/s );
 # TO DO: Headings names need constructing
+# TO DO: Verbatim token needs to do a document check to ensure it isn't present in the document
 
 # about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
 #   

@@ -47,7 +47,7 @@ for i in {1..6}; do
 done
 
 # verbatim
-for i in {1..2}; do 
+for i in {1..3}; do 
     latexindent.pl -s verbatim$i.tex -o=+-default.tex
 done
 
