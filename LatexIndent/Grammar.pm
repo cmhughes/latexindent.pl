@@ -60,6 +60,7 @@ $latex_indent_parser = qr{
         <ws: (\h*)>
         <NoIndentBlock> 
         | <Verbatim> 
+        | <FileContents>
         | <Environment>
         | <IfElseFi>
         | (?: 
@@ -98,6 +99,24 @@ $latex_indent_parser = qr{
         <name=(verbatim|lstlistings|minted)>\}          #   name
         <type=(?{'Verbatim'})>                          # }
         <body=(.*?)>                                    #   ANYTHING
+        <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
+        <trailingHorizontalSpace=(\h*)>  
+        <linebreaksAtEndEnd> 
+        
+    # FileContents
+    #   \begin{<name>}
+    #       body ...
+    #       body ...
+    #   \end{<name>}
+    <objrule: LatexIndent::FileContents=FileContents>    
+        <ws: (\h*)>
+        <begin=(\\begin\{)>                             # \begin{
+        <name=(filecontents)>\}                         #   name
+        <type=(?{'FileContents'})>                      # }
+        <leadingHorizontalSpace=(\h*)>                  #
+        <linebreaksAtEndBegin=(\R*)>                    #
+        <[Element]>*?
+        <.ws>
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
         <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd> 

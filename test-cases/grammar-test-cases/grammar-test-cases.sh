@@ -56,6 +56,11 @@ for i in {1..2}; do
     latexindent.pl -s noindentblock$i.tex -o=+-default.tex
 done
 
+# filecontents
+for i in {1..2}; do 
+    latexindent.pl -s filecontents$i.tex -o=+-default.tex
+done
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

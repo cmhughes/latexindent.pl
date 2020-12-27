@@ -43,6 +43,7 @@ use LatexIndent::BlankLine;
 use LatexIndent::Arguments;
 use LatexIndent::Command;
 use LatexIndent::Environment;
+use LatexIndent::FileContents;
 use LatexIndent::GroupOfItems;
 use LatexIndent::Heading;
 use LatexIndent::IfElseFi;
