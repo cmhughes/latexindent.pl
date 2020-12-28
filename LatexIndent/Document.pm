@@ -52,6 +52,7 @@ use LatexIndent::KeyEqualsValuesBraces;
 use LatexIndent::MandatoryArgument;
 use LatexIndent::NamedGroupingBracesBrackets;
 use LatexIndent::OptionalArgument;
+use LatexIndent::Preamble;
 use LatexIndent::Special;
 use LatexIndent::Verbatim qw/put_verbatim_back_in/;
 

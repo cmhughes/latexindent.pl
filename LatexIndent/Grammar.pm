@@ -8,10 +8,11 @@ our @EXPORT_OK = qw/$latex_indent_parser/;
 our $latex_indent_parser; 
 
 # TO DO: eventually these hashes need to live in GetYamlSettings
-# TO DO: to be constructed *ONCE* at time of YAML reading
+# TO DO: environment_items and ifelsefi_else to be constructed *ONCE* at time of YAML reading
 our %environment_items = (cmh=>({item=>qr/\\item(?:((\h*\R+)|(\h*)))/s }),);
 our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h*\R)*)/s );
 # TO DO: Headings names need constructing
+#        and then add a <require> check within the Heading block
 # TO DO: Verbatim token needs to do a document check to ensure it isn't present in the document
 
 # about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
@@ -32,7 +33,7 @@ $latex_indent_parser = qr{
     #   https://stackoverflow.com/questions/1352657/regex-for-matching-custom-syntax
     
     # https://metacpan.org/pod/Regexp::Grammars#Debugging1
-    #<logfile: cmh.log >
+    <logfile: cmh.log >
     #<debug: step>
 
     # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
@@ -62,6 +63,7 @@ $latex_indent_parser = qr{
         <NoIndentBlock> 
         | <Verbatim> 
         | <FileContents>
+        | <Preamble>
         | <Environment>
         | <IfElseFi>
         | (?: 
@@ -104,6 +106,20 @@ $latex_indent_parser = qr{
         <trailingHorizontalSpace=(\h*)>  
         <linebreaksAtEndEnd> 
         
+    # Preamble
+    #   \documentclass...
+    #       ...
+    #       ...
+    #   \begin{document}
+    <objrule: LatexIndent::Preamble=Preamble>    
+        <ws: (\h*)>
+        <begin=(\\documentclass)>
+        <[Arguments]>+
+        (<!beginDocument><[Element]>)*
+        
+    <token: beginDocument>
+        \\begin\{document\}
+
     # FileContents
     #   \begin{<name>}
     #       body ...
@@ -135,7 +151,7 @@ $latex_indent_parser = qr{
         <name=headingText(:headinglevel)>
         <[Arguments]>+
         <linebreaksAtEndEnd> 
-        ((?!<Heading(:headinglevel)>)<[Element(:headinglevel,:incrementHeadingLevel)]>)*
+        (<!Heading(:headinglevel)><[Element(:headinglevel,:incrementHeadingLevel)]>)*
 
     <token: headingText>
         (??{
@@ -236,7 +252,7 @@ $latex_indent_parser = qr{
         <leadingHorizontalSpace=(\h*)>                  #
         <linebreaksAtEndBegin=(\R*)>                    #
         <[Arguments]>*?                                 # possible arguments
-        <GroupOfItems(:name,:type)>?                    #   ANYTHING
+        <GroupOfItems(:name,:type,:begin)>?             #   ANYTHING
         <.ws>
         <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
         <trailingHorizontalSpace=(\h*)>  

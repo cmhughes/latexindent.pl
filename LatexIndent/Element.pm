@@ -9,6 +9,7 @@ sub explain {
       || $self->{KeyEqualsValuesBraces}
       || $self->{NoIndentBlock} 
       || $self->{Verbatim} 
+      || $self->{Preamble} 
       || $self->{FileContents} 
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
@@ -28,6 +29,7 @@ sub indent {
                 || $self->{KeyEqualsValuesBraces}
                 || $self->{NoIndentBlock} 
                 || $self->{Verbatim} 
+                || $self->{Preamble} 
                 || $self->{FileContents} 
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 
