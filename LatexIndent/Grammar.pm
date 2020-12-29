@@ -48,18 +48,17 @@ $latex_indent_parser = qr{
     #
     #   reference: https://metacpan.org/pod/Regexp::Grammars#Tokens-vs-rules-(whitespace-handling)
     #
-    # Note: white space modification necessary!
+    <token: ws>
+        (?:\h*)
+
     <objrule: LatexIndent::File=File>          
-        <ws: (\h*)>
         <headinglevel=(?{1})> 
         <[Element(:headinglevel)]>*
 
     # each of the different CODE BLOCKS and COMMENTS and LINE BREAKS
     # are all ELEMENTS to latexindent.pl
     #
-    # Note: white space modification necessary!
     <objrule: LatexIndent::Element=Element>    
-        <ws: (\h*)>
         <NoIndentBlock> 
         | <Verbatim> 
         | <FileContents>
@@ -86,7 +85,6 @@ $latex_indent_parser = qr{
     #
     # possible enhancement: can this be subsumed into Verbatim...?
     <objrule: LatexIndent::Verbatim=NoIndentBlock>    
-        <ws: (\h*)>
         <begin=((?<!\\)\%\h*\\begin\{)>                              # \begin{
         <name=(noindent)>\}                                          #   name
         <type=(?{'Verbatim'})>                                       # }
@@ -97,7 +95,6 @@ $latex_indent_parser = qr{
 
     # Verbatim 
     <objrule: LatexIndent::Verbatim=Verbatim>    
-        <ws: (\h*)>
         <begin=(\\begin\{)>                             # \begin{
         <name=(verbatim|lstlistings|minted)>\}          #   name
         <type=(?{'Verbatim'})>                          # }
@@ -112,7 +109,6 @@ $latex_indent_parser = qr{
     #       ...
     #   \begin{document}
     <objrule: LatexIndent::Preamble=Preamble>    
-        <ws: (\h*)>
         <begin=(\\documentclass)>
         <[Arguments]>+
         (<!beginDocument><[Element]>)*
@@ -126,7 +122,6 @@ $latex_indent_parser = qr{
     #       body ...
     #   \end{<name>}
     <objrule: LatexIndent::FileContents=FileContents>    
-        <ws: (\h*)>
         <begin=(\\begin\{)>                             # \begin{
         <name=(filecontents)>\}                         #   name
         <type=(?{'FileContents'})>                      # }
@@ -142,9 +137,7 @@ $latex_indent_parser = qr{
     #
     #   \part, \chapter, \section etc
     #
-    # Note: white space modification necessary!
     <objrule: LatexIndent::Heading=Heading>    
-        <ws: (\h*)>
         <headinglevel=(?{  $ARG{headinglevel}  })>
         <incrementHeadingLevel=(?{1})>
         <begin=(\\)>
@@ -195,7 +188,6 @@ $latex_indent_parser = qr{
     # NamedGroupingBracesBrackets
     #   <name> <arguments>
     <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
-        <ws: (\h*)>
         <name=([a-zA-Z0-9*]+)>
         <[Arguments]>+
         <linebreaksAtEndEnd> 
@@ -203,13 +195,11 @@ $latex_indent_parser = qr{
     # Combination of arguments
     #   e.g. \[...\] \{...\} ... \[ \]
     <objrule: LatexIndent::Arguments=Arguments> 
-        <ws: (\h*)>
         <[Between]>*?(<OptionalArg>|<MandatoryArg>)
 
     # Optional Arguments
     #   \[ .... \]
     <objrule: LatexIndent::OptionalArgument=OptionalArg> 
-        <ws: (\h*)>
         <begin=(\[)>                        # [
         <leadingHorizontalSpace=(\h*)>      #
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -223,7 +213,6 @@ $latex_indent_parser = qr{
     # Mandatory Arguments
     #   \{ .... \}
     <objrule: LatexIndent::MandatoryArgument=MandatoryArg> 
-        <ws: (\h*)>
         <begin=(\{)>                        # {
         <leadingHorizontalSpace=(\h*)>      #
         <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -236,7 +225,6 @@ $latex_indent_parser = qr{
 
     # Between arguments
     <objrule: LatexIndent::Between=Between>                      
-        <ws: (\h*)>
         <body=((?:\h|\R|[*_^])*)>|<TrailingComment>
         
     # Environments
@@ -245,7 +233,6 @@ $latex_indent_parser = qr{
     #       body ...
     #   \end{<name>}
     <objrule: LatexIndent::Environment=Environment>    
-        <ws: (\h*)>
         <begin=(\\begin\{)>                             # \begin{
         <name=([a-zA-Z0-9]+)>\}                         #   name
         <type=(?{'Environment'})>                       # }
@@ -264,7 +251,6 @@ $latex_indent_parser = qr{
     #       body ...
     #   \fi
     <objrule: LatexIndent::IfElseFi=IfElseFi>    
-        <ws: (\h*)>
         <begin=(\\if)>                   # \if
         <type=(?{'IfElseFi'})>           # 
         <leadingHorizontalSpace=(\h*)>   #  ANYTHING
@@ -281,7 +267,6 @@ $latex_indent_parser = qr{
     #       $ ... $
     #       \[ ... \]
     <objrule: LatexIndent::Special=Special>    
-        <ws: (\h*)>
         <begin=((??{$LatexIndent::Special::special_begin_reg_ex}))>
         <type=(?{'Special'})>
         <leadingHorizontalSpace=(\h*)>
@@ -372,9 +357,7 @@ $latex_indent_parser = qr{
     #   matches at least one blank line and
     #   stores into an array
     #
-    # Note: white space modification necessary!
     <objrule: LatexIndent::BlankLine=BlankLine>    
-        <ws: (\h*)>
         <[body=blanklinetoken]>+
 
     <token: blanklinetoken>
