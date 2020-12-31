@@ -10,6 +10,7 @@ sub explain {
       || $self->{NoIndentBlock} 
       || $self->{Verbatim} 
       || $self->{Preamble} 
+      || $self->{PreambleVerbatim} 
       || $self->{FileContents} 
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
@@ -30,6 +31,7 @@ sub indent {
                 || $self->{NoIndentBlock} 
                 || $self->{Verbatim} 
                 || $self->{Preamble} 
+                || $self->{PreambleVerbatim} 
                 || $self->{FileContents} 
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 

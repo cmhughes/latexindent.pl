@@ -23,7 +23,7 @@ done
 
 # Environment
 for i in {1..15}; do 
-    latexindent.pl -s environment$i.tex -o=+-default.tex
+    latexindent.pl -s environment$i.tex -o=+-default.tex -y="indentPreamble:1"
 done
 
 # NamedGroupingBraces
@@ -47,7 +47,7 @@ for i in {1..6}; do
 done
 
 # verbatim
-for i in {1..3}; do 
+for i in {1..6}; do 
     latexindent.pl -s verbatim$i.tex -o=+-default.tex
 done
 
@@ -60,6 +60,11 @@ done
 for i in {1..2}; do 
     latexindent.pl -s filecontents$i.tex -o=+-default.tex
 done
+
+# preamble
+latexindent.pl -s preamble1.tex -o=+-default.tex
+latexindent.pl -s preamble1.tex -o=+-mod1.tex -y='indentPreamble:1'
+latexindent.pl -s preamble2.tex -o=+-default.tex
 
 [[ $silentMode == 0 ]] && set -x 
 

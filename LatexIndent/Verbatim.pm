@@ -23,11 +23,19 @@ sub indent {
 
     $verbatimCounter++;
     
+    my $body = q();
+    $body .= ($_->{lead} ? $_->{lead} : q()).$_->indent foreach @{$self->{VerbatimLiteral}};
+
+    # Preamble verbatim won't have the following fields, so set up defaults
+    $self->{end}//=q();
+    $self->{trailingHorizontalSpace}//=q();
+    $self->{linebreaksAtEndEnd}//=q();
+
     push(@verbatimStorage,
          ({
             id=>$verbatimToken.$verbatimCounter,
-            begin=>$self->{begin}.$self->{name}."}",
-            body=>$self->{body},
+            begin=>$self->{begin}.($self->{type} ne 'Preamble: verbatim' ? $self->{name}."}" : q()),
+            body=>$body,
             end=>$self->{end}.$self->{trailingHorizontalSpace}.$self->{linebreaksAtEndEnd},
           }));
 

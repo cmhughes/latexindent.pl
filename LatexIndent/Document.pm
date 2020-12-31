@@ -34,7 +34,7 @@ use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leadi
 use LatexIndent::Between;
 use LatexIndent::Element;
 use LatexIndent::File;
-use LatexIndent::Grammar qw/$latex_indent_parser/;
+use LatexIndent::Grammar qw/get_latex_indent_parser/;
 use LatexIndent::Literal;
 use LatexIndent::TrailingComment;
 use LatexIndent::BlankLine;
@@ -77,6 +77,7 @@ sub operate_on_file{
     my $self = shift;
 
     $self->create_back_up_file;
+    my $latex_indent_parser = &get_latex_indent_parser;
     $self->{body} =~ $latex_indent_parser;
     print Dumper \%/;
     $/{File}->explain(0);
