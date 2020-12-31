@@ -24,7 +24,13 @@ sub indent {
     $verbatimCounter++;
     
     my $body = q();
-    $body .= ($_->{lead} ? $_->{lead} : q()).$_->indent foreach @{$self->{VerbatimLiteral}};
+
+    if ($self->{PreambleVerbatimBody}){
+        $body .= ($_->{lead} ? $_->{lead} : q()).$_->indent foreach @{$self->{PreambleVerbatimBody}};
+    } 
+    else {
+        $body .= ($_->{lead} ? $_->{lead} : q()).$_->indent foreach @{$self->{VerbatimLiteral}};
+    }
 
     # Preamble verbatim won't have the following fields, so set up defaults
     $self->{end}//=q();

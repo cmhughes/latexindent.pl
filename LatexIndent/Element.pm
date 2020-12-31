@@ -12,11 +12,13 @@ sub explain {
       || $self->{Preamble} 
       || $self->{PreambleVerbatim} 
       || $self->{FileContents} 
+      || $self->{FileContentsVerbatim} 
       || $self->{Environment} 
       || $self->{NamedGroupingBracesBrackets} 
       || $self->{Special}
       || $self->{IfElseFi}
       || $self->{Literal}
+      || $self->{VerbatimLiteral}
       || $self->{TrailingComment}
       || $self->{BlankLine}
       || $self->{Heading}
@@ -33,11 +35,13 @@ sub indent {
                 || $self->{Preamble} 
                 || $self->{PreambleVerbatim} 
                 || $self->{FileContents} 
+                || $self->{FileContentsVerbatim} 
                 || $self->{Environment}
                 || $self->{NamedGroupingBracesBrackets} 
                 || $self->{Special}
                 || $self->{IfElseFi}
                 || $self->{Literal}
+                || $self->{VerbatimLiteral}
                 || $self->{TrailingComment}
                 || $self->{BlankLine}
                 || $self->{Heading}
