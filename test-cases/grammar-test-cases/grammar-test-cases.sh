@@ -62,9 +62,10 @@ for i in {1..2}; do
 done
 
 # preamble
-latexindent.pl -s preamble1.tex -o=+-default.tex
-latexindent.pl -s preamble1.tex -o=+-mod1.tex -y='indentPreamble:1'
-latexindent.pl -s preamble2.tex -o=+-default.tex
+for i in {1..2}; do 
+    latexindent.pl -s preamble$i.tex -o=+-default.tex
+    latexindent.pl -s preamble$i.tex -o=+-mod1.tex -y='indentPreamble:1'
+done
 
 [[ $silentMode == 0 ]] && set -x 
 

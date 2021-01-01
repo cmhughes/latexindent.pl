@@ -391,7 +391,7 @@ sub get_latex_indent_parser{
         # Comment
         <objrule: LatexIndent::TrailingComment=TrailingComment>    
             <begin=((?<!\\)\%)>
-            <body=(.*?\R)>
+            <body=([^\n]*\R)>
             
         # BlankLine
         #   matches at least one blank line and
