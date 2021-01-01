@@ -38,7 +38,7 @@ sub get_latex_indent_parser{
         #   https://stackoverflow.com/questions/1352657/regex-for-matching-custom-syntax
         
         # https://metacpan.org/pod/Regexp::Grammars#Debugging1
-        <logfile: cmh.log >
+        #<logfile: cmh.log >
         #<debug: step>
     
         # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
@@ -219,7 +219,7 @@ sub get_latex_indent_parser{
         # key = value braces/brackets
         #   key = <arguments>
         <objrule: LatexIndent::KeyEqualsValuesBraces=KeyEqualsValuesBraces>    
-            <name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?)>
+            <name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]++)>
             <equals=((?:\h|\R)*=(\h|\R)*)>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
@@ -227,7 +227,7 @@ sub get_latex_indent_parser{
         # NamedGroupingBracesBrackets
         #   <name> <arguments>
         <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
-            <name=([a-zA-Z0-9*]+)>
+            <name=([a-zA-Z0-9*]++)>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
     
@@ -257,7 +257,7 @@ sub get_latex_indent_parser{
             <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
             <[Element]>*?                       #   ANYTHING
             <linebreaksAtEndBody=(\R*)>         #
-            <.ws>
+            \h*
             <end=(\})>                          # } 
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
