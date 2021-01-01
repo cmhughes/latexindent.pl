@@ -106,14 +106,14 @@ sub get_latex_indent_parser{
             <name=(verbatim|lstlistings|minted)>\}          #   name
             <type=(?{'Verbatim'})>                          # }
             <[VerbatimLiteral]>*?                           # body
-            <end=VerbatimEnd(:name)>                        # \end{name}
+            <end=EnvironmentEnd(:name)>                     # \end{name}
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
             
         <objrule: LatexIndent::Literal=VerbatimLiteral>    
            <lead=(^\h+)>?<body=([^\n]+|\R)>
     
-        <token: VerbatimEnd>
+        <token: EnvironmentEnd>
             (\h*\\end\{(??{ quotemeta $ARG{name} })\}) # \end{name}
             
         # Preamble
@@ -149,14 +149,13 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::FileContents=FileContents>    
-            <begin=(\\begin\{)>                             # \begin{
-            <name=(filecontents)>\}                         #   name
-            <type=(?{'FileContents'})>                      # }
-            <leadingHorizontalSpace=(\h*)>                  #
-            <linebreaksAtEndBegin=(\R*)>                    #
-            <[Element]>*?
-            <.ws>
-            <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
+            <begin=(\\begin\{)>                 # \begin{
+            <name=(filecontents)>\}             #   name
+            <type=(?{'FileContents'})>          # }
+            <leadingHorizontalSpace=(\h*)>      #
+            <linebreaksAtEndBegin=(\R*)>        #
+            <[Element]>*?                       # body
+            <end=EnvironmentEnd(:name)>         # \end{name}
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
     
@@ -166,10 +165,10 @@ sub get_latex_indent_parser{
             #   important for space infront of \end{verbatim}
             <ws: ((?<!^)\h)*>
             <begin=(\h*\\begin\{)>              # \begin{
-            <name=(filecontents)>\}          #   name
-            <type=(?{'FileContentsVerbatim'})>           # }
-            <[VerbatimLiteral]>*?            # body
-            <end=VerbatimEnd(:name)>         # \end{name}
+            <name=(filecontents)>\}             #   name
+            <type=(?{'FileContentsVerbatim'})>  # }
+            <[VerbatimLiteral]>*?               # body
+            <end=EnvironmentEnd(:name)>         # \end{name}
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
 
@@ -273,15 +272,14 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::Environment=Environment>    
-            <begin=(\\begin\{)>                             # \begin{
-            <name=([a-zA-Z0-9]+)>\}                         #   name
-            <type=(?{'Environment'})>                       # }
-            <leadingHorizontalSpace=(\h*)>                  #
-            <linebreaksAtEndBegin=(\R*)>                    #
-            <[Arguments]>*?                                 # possible arguments
-            <GroupOfItems(:name,:type,:begin)>?             #   ANYTHING
-            <.ws>
-            <end=(\\end\{(??{ quotemeta $MATCH{name} })\})> # \end{name}
+            <begin=(\\begin\{)>                     # \begin{
+            <name=([a-zA-Z0-9]+)>\}                 #   name
+            <type=(?{'Environment'})>               # }
+            <leadingHorizontalSpace=(\h*)>          #
+            <linebreaksAtEndBegin=(\R*)>            #
+            <[Arguments]>*?                         # possible arguments
+            <GroupOfItems(:name,:type,:begin)>?     #   ANYTHING
+            <end=EnvironmentEnd(:name)>             # \end{name}
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
     
