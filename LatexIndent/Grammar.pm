@@ -39,7 +39,7 @@ sub get_latex_indent_parser{
         
         # https://metacpan.org/pod/Regexp::Grammars#Debugging1
         #<logfile: cmh.log >
-        #<debug: step>
+        # <debug: match>
     
         # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
         <nocontext:>
@@ -65,12 +65,7 @@ sub get_latex_indent_parser{
         #
         <objrule: LatexIndent::Element=Element>    
             <NoIndentBlock> 
-            | <Verbatim> 
-            | <PreambleVerbatim>
-            | <FileContents>
-            | <Preamble>
-            | <Environment>
-            | <IfElseFi>
+            | <BeginsWithBackSlash>
             | (?: 
                   <headinglevel=(?{ $ARG{headinglevel}//=0; 
                                     $ARG{incrementHeadingLevel}//=0; 
@@ -84,7 +79,20 @@ sub get_latex_indent_parser{
             | <TrailingComment> 
             | <BlankLine>
             | <Literal>
-    
+            
+        # Begins With Backslash
+        <objrule: LatexIndent::Element=BeginsWithBackSlash>    
+            <begin=(\\)>
+            ( <PreambleVerbatim>
+                | <Preamble>
+                | <EnvironmentStructure> 
+                | <IfElseFi> )
+
+        # Environment structure
+        <objrule: LatexIndent::Element=EnvironmentStructure>    
+            <begin=(begin\{)>
+            (<Verbatim> | <FileContents> | <Environment>)
+            
         # NoIndentBlock 
         #
         # Note: this is just a Verbatim block
@@ -102,7 +110,7 @@ sub get_latex_indent_parser{
             # REDEFINE whitespace
             #   important for space infront of \end{verbatim}
             <ws: ((?<!^)\h)*>
-            <begin=(\\begin\{)>                             # \begin{
+            <begin=(?{"\\begin\{"})>                # \begin{
             <name=(verbatim|lstlistings|minted)>\}          #   name
             <type=(?{'Verbatim'})>                          # }
             <[VerbatimLiteral]>*?                           # body
@@ -125,17 +133,19 @@ sub get_latex_indent_parser{
         # rule for INDENTING preamble
         <objrule: LatexIndent::Preamble=Preamble>    
             <require: (?{$LatexIndent::GetYamlSettings::masterSettings{indentPreamble};})>
-            <begin=(\\documentclass)>
+            <begin=(?{"\\documentclass"})>
+            documentclass
             <[Arguments]>+
             (<!beginDocument><[Element]>)*
     
         # rule for **NOT** indenting preamble
         <objrule: LatexIndent::Verbatim=PreambleVerbatim>    
             <require: (?{!$LatexIndent::GetYamlSettings::masterSettings{indentPreamble};})>
-            <begin=(\\documentclass)>
+            <begin=(?{"\\documentclass"})>
+            documentclass
             <type=(?{'Preamble: verbatim'})>
             <name=(?{'Preamble'})>
-            (<!beginDocument>(<[PreambleVerbatimBody]>))*          
+            (<!beginDocument><[PreambleVerbatimBody]>)*
             
         <objrule: LatexIndent::Element=PreambleVerbatimBody>
            <lead=(^\h+)>?(<FileContentsVerbatim>|<VerbatimLiteral>)
@@ -149,7 +159,7 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::FileContents=FileContents>    
-            <begin=(\\begin\{)>                 # \begin{
+            <begin=(?{"\\begin\{"})>                # \begin{
             <name=(filecontents)>\}             #   name
             <type=(?{'FileContents'})>          # }
             <leadingHorizontalSpace=(\h*)>      #
@@ -272,7 +282,7 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::Environment=Environment>    
-            <begin=(\\begin\{)>                     # \begin{
+            <begin=(?{"\\begin\{"})>                # \begin{
             <name=([a-zA-Z0-9]+)>\}                 #   name
             <type=(?{'Environment'})>               # }
             <leadingHorizontalSpace=(\h*)>          #
@@ -289,7 +299,8 @@ sub get_latex_indent_parser{
         #       body ...
         #   \fi
         <objrule: LatexIndent::IfElseFi=IfElseFi>    
-            <begin=(\\if)>                   # \if
+            <begin=(?{"\\if"})>              # \if
+            if
             <type=(?{'IfElseFi'})>           # 
             <leadingHorizontalSpace=(\h*)>   #  ANYTHING
             <linebreaksAtEndBegin=(\R*)>     # 

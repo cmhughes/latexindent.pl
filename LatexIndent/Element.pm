@@ -14,6 +14,8 @@ sub explain {
       || $self->{FileContents} 
       || $self->{FileContentsVerbatim} 
       || $self->{Environment} 
+      || $self->{EnvironmentStructure} 
+      || $self->{BeginsWithBackSlash}
       || $self->{NamedGroupingBracesBrackets} 
       || $self->{Special}
       || $self->{IfElseFi}
@@ -37,6 +39,8 @@ sub indent {
                 || $self->{FileContents} 
                 || $self->{FileContentsVerbatim} 
                 || $self->{Environment}
+                || $self->{EnvironmentStructure} 
+                || $self->{BeginsWithBackSlash}
                 || $self->{NamedGroupingBracesBrackets} 
                 || $self->{Special}
                 || $self->{IfElseFi}
