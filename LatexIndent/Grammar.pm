@@ -65,14 +65,12 @@ sub get_latex_indent_parser{
         #
         <objrule: LatexIndent::Element=Element>    
             <NoIndentBlock> 
-            | <BeginsWithBackSlash>
             | (?: 
                   <headinglevel=(?{ $ARG{headinglevel}//=0; 
                                     $ARG{incrementHeadingLevel}//=0; 
                                     $ARG{headinglevel} + $ARG{incrementHeadingLevel}; })>
-                  <Heading(:headinglevel)>
+                  <BeginsWithBackSlash(:headinglevel)>
               )
-            | <Command> 
             | <KeyEqualsValuesBraces> 
             | <NamedGroupingBracesBrackets> 
             | <Special> 
@@ -86,7 +84,13 @@ sub get_latex_indent_parser{
             ( <PreambleVerbatim>
                 | <Preamble>
                 | <EnvironmentStructure> 
-                | <IfElseFi> )
+                | (?: 
+                      <headinglevel=(?{ $ARG{headinglevel}//=0; })>
+                      <Heading(:headinglevel)>
+                  )
+                | <IfElseFi> 
+                | <Command> 
+            )
 
         # Environment structure
         <objrule: LatexIndent::Element=EnvironmentStructure>    
@@ -189,12 +193,14 @@ sub get_latex_indent_parser{
         <objrule: LatexIndent::Heading=Heading>    
             <headinglevel=(?{  $ARG{headinglevel}  })>
             <incrementHeadingLevel=(?{1})>
-            <begin=(\\)>
+            <begin=(?{"\\"})>
             <name=headingText(:headinglevel)>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
-            (<!Heading(:headinglevel)><[Element(:headinglevel,:incrementHeadingLevel)]>)*
+            (<!headingToken(:headinglevel)><[Element(:headinglevel,:incrementHeadingLevel)]>)*
     
+        # headingText
+        #   provides only the *name* of the headings (*NO* backslash)
         <token: headingText>
             (??{
                 $ARG{headinglevel} //= 0;
@@ -217,11 +223,17 @@ sub get_latex_indent_parser{
                 #   - level 3 headings
                 return 'chapter|section|subsection|paragraph' if $ARG{headinglevel} == 3;
             })
+
+        # headingToken
+        #   provides the *name* of the headings *AND* the backslash
+        <token: headingToken>
+            <headinglevel=(?{  $ARG{headinglevel}  })>
+            \\(<headingText(:headinglevel)>)<[Arguments]>+
     
         # Commands
         #   \<name> <arguments>
         <objrule: LatexIndent::Command=Command>    
-            <begin=(\\)>
+            <begin=(?{"\\"})>
             <name=([a-zA-Z0-9*]+)>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
