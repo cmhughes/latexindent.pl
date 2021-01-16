@@ -662,7 +662,6 @@
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
   []
 \AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
-\AtEndDocument{\addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}}
 
 % cleveref settings
 \crefname{table}{Table}{Tables}
@@ -782,5 +781,6 @@
  \input{sec-conclusions-know-limitations}
  \input{references}
  \input{appendices}
+\addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}
  \printindex
 \end{document}
