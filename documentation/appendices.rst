@@ -96,8 +96,20 @@ an example installation would be:
     cpanm Log::Log4perl
     cpanm Log::Dispatch
 
-For other distributions, the Ubuntu/Debian approach may work by visiting
-the software center, or else by running, for example,
+For other distributions, the Ubuntu/Debian approach may work as follows
+
+.. code-block:: latex
+   :class: .commandshell
+
+   sudo apt install perl
+   sudo cpan -i App::cpanminus
+   sudo cpanm YAML::Tiny
+   sudo cpanm File::HomeDir
+   sudo cpanm Unicode::GCString
+   sudo cpanm Log::Log4perl
+   sudo cpanm Log::Dispatch::File
+
+or else by running, for example,
 
 .. code-block:: latex
    :class: .commandshell
