@@ -357,6 +357,7 @@ commandCodeBlocks:
       - 'decoration'
       - '\+\+'
       - '\-\-'
+      - '\#\#\d'
     commandNameSpecial:
       - 
         amalgamate: 1
