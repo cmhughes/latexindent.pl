@@ -6,6 +6,10 @@ specialBeginEnd:
         begin: '/[CK]'
         end: '\['
         lookForThis: verbatim
+    angledBrackets:
+        begin: '\<\<'
+        end: '\>\>'
+        lookForThis: 1
 
 fineTuning:
     NamedGroupingBracesBrackets:
