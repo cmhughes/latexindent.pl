@@ -17,9 +17,13 @@ yaml settings
 --
 *Please paste your YAML settings (if any) here*
 
+actual/given output
+--
+*Please paste the output you receive here*
+
 desired or expected output
 --
-*Please paste your desired output here*
+*Please paste your desired/expected output here; that is, what do you want the output to look like*
 
 anything else
 --
