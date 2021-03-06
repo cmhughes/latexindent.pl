@@ -45,14 +45,14 @@ sub construct_list_of_items{
 
     $itemRegExp = qr/
                           (
-                              \\($listOfItems)
+                              \\((?:$listOfItems)(?:\[[^]]*?\])?(?!\S))
                               \h*
                               (\R*)?
                           )
                           (
                               (?:                 # cluster-only (), don't capture 
                                   (?!             
-                                      (?:\\(?:$listOfItems)) # cluster-only (), don't capture
+                                      (?:\\(?:(?:$listOfItems)(?:\[[^]]*?\])?(?!\S))) # cluster-only (), don't capture
                                   ).              # any character, but not \\$item
                               )*                 
                           )                       

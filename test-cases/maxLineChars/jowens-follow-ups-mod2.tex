@@ -8,10 +8,8 @@ We summarize the datasets we use for evaluation in Table~\ref{tab:dataset}. Soc-
 \caption[Dataset description table.]{Dataset Description Table. Graph types are: r: real-world, g: generated, s: scale-free, and m: mesh-like. All datasets have been converted to undirected graphs. Self-loops and duplicated edges are removed.\label{tab:dataset}}
 
 \begin{description}
-	\item[vs.\ MapGraph] MapGraph is faster than Medusa on all but one
-	      test~\cite{Fu:2014:MAH} and Gunrock is faster than MapGraph on all tests: the geometric mean of Gunrock's speedups over MapGraph on BFS, SSSP, PageRank, and CC are 4.679, 12.85, 3.076, and 5.69, respectively.
-	\item[vs.\ CuSha] Gunrock outperforms CuSha on BFS and SSSP\@. For
-	      PageRank, Gunrock achieves comparable performance with no preprocessing when compared to CuSha's G-Shard data preprocessing, which serves as the main load-balancing module in CuSha.
+	\item[vs.\ MapGraph] MapGraph is faster than Medusa on all but one test~\cite{Fu:2014:MAH} and Gunrock is faster than MapGraph on all tests: the geometric mean of Gunrock's speedups over MapGraph on BFS, SSSP, PageRank, and CC are 4.679, 12.85, 3.076, and 5.69, respectively.
+	\item[vs.\ CuSha] Gunrock outperforms CuSha on BFS and SSSP\@. For PageRank, Gunrock achieves comparable performance with no preprocessing when compared to CuSha's G-Shard data preprocessing, which serves as the main load-balancing module in CuSha.
 \end{description}
 
 \begin{table}
