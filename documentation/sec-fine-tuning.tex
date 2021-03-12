@@ -139,8 +139,8 @@ latexindent.pl finetuning2.tex
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=-3.75cm,
 			 raster right skip=0cm,]
-		 \cmhlistingsfromfile*{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
-		 \cmhlistingsfromfile*{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
+		 \cmhlistingsfromfile{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
+		 \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
 	 \end{cmhtcbraster}
 
 	 It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked as
@@ -155,8 +155,8 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=-3.75cm,
 			 raster right skip=0cm,]
-		 \cmhlistingsfromfile*{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
-		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
+		 \cmhlistingsfromfile{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
+		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
 	 \end{cmhtcbraster}
 
 	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets}

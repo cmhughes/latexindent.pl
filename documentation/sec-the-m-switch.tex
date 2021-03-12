@@ -184,7 +184,7 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 
 	You can also specify the \texttt{tabstop}
 	field%
-	\announce*{2020-11-06}{tabstop option for text wrap module} as an integer
+	\announce{2020-11-06}{tabstop option for text wrap module} as an integer
 	value, which is passed to the text wrap module; see \cite{textwrap} for
 	details. Starting with the code in \cref{lst:textwrap-ts} with settings in
 	\cref{lst:tabstop}, and running the command
@@ -199,9 +199,9 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*[showtabs=true]*{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
-		\cmhlistingsfromfile*{demonstrations/tabstop.yaml}[MLB-TCB]{\texttt{tabstop.yaml}}{lst:tabstop}
-		\cmhlistingsfromfile*[showtabs=true]*{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
+		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
+		\cmhlistingsfromfile{demonstrations/tabstop.yaml}[MLB-TCB]{\texttt{tabstop.yaml}}{lst:tabstop}
+		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
 	\end{cmhtcbraster}
 
 	You can specify \texttt{break} and \texttt{unexpand} options in

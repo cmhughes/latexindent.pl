@@ -64,15 +64,6 @@ if($switches{readLocalSettings} and scalar(@ARGV) < 1) {
     $switches{readLocalSettings} = '';
 }
 
-# default value of readLocalSettings
-#
-#       latexindent -l myfile.tex
-#
-# means that we wish to use localSettings.yaml
-if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq '')){
-    $switches{readLocalSettings} = 'localSettings.yaml';
-}
-
 # allow STDIN as input, if a filename is not present
 unshift( @ARGV, '-' ) unless @ARGV;
 

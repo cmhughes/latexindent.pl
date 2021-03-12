@@ -87,7 +87,7 @@ sub yaml_read_settings{
 
   # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
   $indentconfig = "$homeDir/.indentconfig.yaml" if(! -e $indentconfig);
-
+  
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !$switches{onlyDefault}) {
         # read the absolute paths from indentconfig.yaml
@@ -126,7 +126,17 @@ sub yaml_read_settings{
        $logger->info("Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)\nTo specify user settings you would put indentconfig.yaml here: $homeDir/indentconfig.yaml\nAlternatively, you can use the hidden file .indentconfig.yaml as: $homeDir/.indentconfig.yaml");
      }
   }
-
+  
+  # default value of readLocalSettings
+  #
+  #       latexindent -l myfile.tex
+  #
+  # means that we wish to use localSettings.yaml
+  if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq '')){
+      $logger->info('*-l switch used without filename, will search for the following files in turn:');
+      $logger->info('localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml');
+      $switches{readLocalSettings} = 'localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml';
+  }
 
   # local settings can be called with a + symbol, for example
   #     -l=+myfile.yaml
@@ -149,12 +159,14 @@ sub yaml_read_settings{
   $switches{readLocalSettings} =~ s/\h*$//g;
   $switches{readLocalSettings} =~ s/\h*,\h*/,/g;
   if($switches{readLocalSettings} =~ m/\+/){
-        $logger->info("+ found in call for -l switch: will add localSettings.yaml");
+        $logger->info("+ found in call for -l switch: will add localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml");
 
         # + can be either at the beginning or the end, which determines if where the comma should go
         my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
         my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
-        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
+        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning
+                    ."localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml"
+                    .$commaAtEnd/ex; 
         $logger->info("New value of -l switch: $switches{readLocalSettings}");
   }
 
@@ -197,7 +209,15 @@ sub yaml_read_settings{
         $logger->info("Adding $_ to YAML read paths");
         push(@absPaths,"$_");
     } elsif ( !(-e $_) ) {
-        $logger->warn("*yaml file not found: $_ not found. Proceeding without it.");
+        if ( ($_ =~ m/localSettings|latexindent/s
+                 and !(-e 'localSettings.yaml')
+                 and !(-e '.localSettings.yaml')
+                 and !(-e 'latexindent.yaml')
+                 and !(-e '.latexindent.yaml'))
+             or $_ !~ m/localSettings|latexindent/s
+                ){
+                $logger->warn("*yaml file not found: $_ not found. Proceeding without it.");
+        }
     }
   }
 
