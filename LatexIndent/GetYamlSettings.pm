@@ -347,6 +347,10 @@ sub yaml_read_settings{
             push(@yamlSettings,$switches{yaml});
         }
 
+        foreach (@yamlSettings){
+            $logger->info("YAML setting: ".$_);
+        } 
+
         # it is possible to specify, for example,
         #
         #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
@@ -367,8 +371,18 @@ sub yaml_read_settings{
             # increment the counter
             $settingsCounter++;
 
+            # need to be careful in splitting at ';'
+            #
+            # motivation as detailed in https://github.com/cmhughes/latexindent.pl/issues/243
+            #
+            #       latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,
+            #                             modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,
+            #                             fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' myfile.tex
+            #
+            # in particular, the fineTuning part needs care in treating the argument between the quotes
+            
             # check for a match of the ;
-            if($_ =~ m/(?<!\\);/){
+            if($_ !~ m/(?<!(?:\\))"/ and $_ =~ m/(?<!\\);/){
                 my (@subfield) = split(/(?<!\\);/,$_);
 
                 # the content up to the first ; is called the 'root'
@@ -422,8 +436,43 @@ sub yaml_read_settings{
 
         # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
-            # split each value at semi-colon
-            my (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
+
+            my @keysValues;
+
+            # as above, need to be careful in splitting at ':'
+            #
+            # motivation as detailed in https://github.com/cmhughes/latexindent.pl/issues/243
+            #
+            #       latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,
+            #                             modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,
+            #                             fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' myfile.tex
+            #
+            # in particular, the fineTuning part needs care in treating the argument between the quotes
+            
+            if ($_ =~ m/(?<!(?:\\))"/){
+                my (@splitAtQuote) = split(/(?<!(?:\\))"/,$_);
+                $logger->info("quote found in -y switch");
+                $logger->info("key: ".$splitAtQuote[0]);
+
+                # definition check
+                $splitAtQuote[1] = '' if not defined $splitAtQuote[1];
+
+                # then log the value
+                $logger->info("value: ".$splitAtQuote[1]);
+
+                # split at :
+                (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$splitAtQuote[0]);
+
+                # tabs need special attention
+                if ($splitAtQuote[1] =~ m/\\t/){
+                    $splitAtQuote[1] = '"'.$splitAtQuote[1].'"';
+                }
+                push(@keysValues,$splitAtQuote[1]);
+            } 
+            else {
+                # split each value at semi-colon
+                (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
+            }
 
             # $value will always be the last element
             my $value = $keysValues[-1];
@@ -917,7 +966,7 @@ sub yaml_get_indentation_information{
                 $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
                 return ${$masterSettings{$globalInformation}}{$YamlName};
             } else {
-                $logger->trace("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one") if $is_t_switch_active;
+                $logger->warn("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
           }
         }
     }
