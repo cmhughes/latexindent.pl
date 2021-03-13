@@ -12,9 +12,6 @@ install:
   - cpanm YAML::Tiny
   - cpanm File::HomeDir
   - cpanm Unicode::GCString
-  - cpanm --installdeps Log::Log4perl
-  - cpanm --force Log::Log4perl
-  - cpanm Log::Dispatch::File
 
 # the test cases
 build_script:

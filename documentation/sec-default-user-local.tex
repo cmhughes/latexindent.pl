@@ -103,11 +103,9 @@ copy myfile.bak4 to myfile.bak3
 	report the \texttt{GitHub} address of \texttt{latexindent.pl} to the log file if
 	\texttt{showGitHubInfoFooter} is set to \texttt{1}.
 
-	\texttt{latexindent.pl}%
-	\announce{2018-01-13}{log file pattern layout for log file} uses the \texttt{log4perl} module \cite{log4perl}
-	to handle the creation of the logfile. You can specify the layout of the information
-	given in the logfile using any of the \texttt{Log Layouts} detailed at
-	\cite{log4perl}.
+	Note: \texttt{latexindent.pl} no longer uses the \texttt{log4perl} module to handle
+	the creation of the logfile.%
+	\announce{NEW}*{no longer using log4perl}
 
 \yamltitle{verbatimEnvironments}*{fields}
 

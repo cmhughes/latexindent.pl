@@ -205,11 +205,10 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	\texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml} (rhymes with camel)
 	and if it is called with the \texttt{-l} switch and it finds
 	\texttt{localSettings.yaml} in the same directory as \texttt{myfile.tex}, then, if not
-    found, it looks for \texttt{localSettings.yaml} (and friends, see \vref{sec:localsettings}) 
-    in the current working directory, then these
-	\announce{NEW}*{-l switch: localSettings and friends}
-	settings will be added to the indentation scheme. Information will be given in
-	\texttt{indent.log} on the success or failure of loading \texttt{localSettings.yaml}.
+	found, it looks for \texttt{localSettings.yaml} (and friends, see \vref{sec:localsettings}) in the current working directory, then these
+	\announce{NEW}*{-l switch: localSettings and friends} settings will be added to the indentation scheme. Information
+	will be given in \texttt{indent.log} on the success or failure of loading
+	\texttt{localSettings.yaml}.
 
 	The \texttt{-l} flag can take an \emph{optional} parameter which
 	details the name (or names separated by commas) of a YAML file(s) that resides in the

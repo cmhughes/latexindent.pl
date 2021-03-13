@@ -89,10 +89,6 @@ logFilePreferences:
     showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
-    PatternLayout:
-        default: "%A%n"
-        trace: "%A%n"
-        ttrace: "%A%n"
 
 #  verbatim environments specified 
 #  in this field will not be changed at all!

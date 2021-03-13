@@ -21,8 +21,8 @@ use YAML::Tiny;                # interpret defaultSettings.yaml and other potent
 use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Cwd;
-use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
+use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 
 # Read in defaultSettings.YAML file
@@ -56,7 +56,6 @@ sub yaml_read_settings{
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) if ( -e "$FindBin::RealBin/defaultSettings.yaml" );
 
   # grab the logger object
-  my $logger = get_logger("Document");
   $logger->info("*YAML settings read: defaultSettings.yaml\nReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
@@ -491,9 +490,6 @@ sub yaml_get_indentation_settings_for_this_object{
     # create a name for previously found settings
     my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName}.(defined ${$self}{storageNameAppend}?${$self}{storageNameAppend}:q());
 
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
         $logger->trace("*Using stored settings for $storageName") if($is_t_switch_active);
@@ -593,9 +589,6 @@ sub yaml_alignment_at_ampersand_settings{
 sub yaml_modify_line_breaks_settings{
     my $self = shift;
 
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     # details to the log file
     $logger->trace("*-m modifylinebreaks switch active") if $is_t_switch_active;
     $logger->trace("looking for polyswitch, textWrapOptions, removeParagraphLineBreaks, oneSentencePerLine settings for ${$self}{name} ") if $is_t_switch_active;
@@ -621,9 +614,6 @@ sub yaml_modify_line_breaks_settings{
 sub yaml_get_textwrap_removeparagraphline_breaks{
     my $self = shift;
     
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     # textWrap and removeParagraphLineBreaks settings
     foreach ("textWrapOptions","removeParagraphLineBreaks"){
 
@@ -809,9 +799,6 @@ sub yaml_poly_switch_get_every_or_custom_value{
   my $toBeAssignedTo = $input{toBeAssignedTo};
   my $toBeAssignedToAlias = $input{toBeAssignedToAlias};
 
-  # grab the logging object
-  my $logger = get_logger("Document");
-
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
         $logger->trace("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if($is_t_switch_active);
@@ -890,9 +877,6 @@ sub yaml_get_indentation_information{
 
     # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
     my $YamlName = $self->yaml_get_object_attribute_for_indentation_settings;
-
-    # grab the logging object
-    my $logger = get_logger("Document");
 
     my $indentationInformation;
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){

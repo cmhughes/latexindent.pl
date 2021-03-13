@@ -23,6 +23,7 @@ use open ':std', ':encoding(UTF-8)';
 # gain access to subroutines in the following modules
 use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
 use LatexIndent::LogFile qw/processSwitches $logger/;
+use LatexIndent::Logger qw/@logFileLines/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
@@ -151,12 +152,24 @@ sub output_indented_text{
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-    
+
     # put the final line in the logfile
     $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}") if ${$masterSettings{logFilePreferences}}{endLogFileWith};
     
     # github info line
     $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+
+    # open log file
+    my $logfileName = $switches{logFileName}||"indent.log";
+    my $logfile;
+    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
+
+    foreach my $line (@{LatexIndent::Logger::logFileLines}){
+        print $logfile $line,"\n";
+    }
+
+    # close log file
+    close($logfile);
     
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};

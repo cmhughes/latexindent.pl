@@ -15,8 +15,6 @@ install:
  - cpanm YAML::Tiny
  - cpanm File::HomeDir
  - cpanm Unicode::GCString
- - cpanm Log::Log4perl
- - cpanm Log::Dispatch::File
 script: 
   - "cd test-cases/continuous-integration"
   - "bash ./test-travis-ci.sh"
