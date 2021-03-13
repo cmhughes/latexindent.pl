@@ -25,40 +25,40 @@ our @logFileLines;
 
 sub info{
     my $self = shift;
-    my $thing = shift;
-    if ($thing =~ m/^\*/s){
-        $thing =~ s/^\*/INFO:  /s;
-        $thing =~ s/^/        /mg;
-        $thing =~ s/^\h+INFO/INFO/s;
+    my $logfileline = shift;
+    if ($logfileline =~ m/^\*/s){
+        $logfileline =~ s/^\*/INFO:  /s;
+        $logfileline =~ s/^/        /mg;
+        $logfileline =~ s/^\h+INFO/INFO/s;
     } else {
-        $thing =~ s/^/       /mg;
+        $logfileline =~ s/^/       /mg;
     }
-    push(@logFileLines,$thing);
-    print $thing,"\n" if $switches{screenlog};
+    push(@logFileLines,$logfileline);
+    print $logfileline,"\n" if $switches{screenlog};
 }
 
 sub warn{
     my $self = shift;
-    my $thing = shift;
-    if ($thing =~ m/^\*/s){
-        $thing =~ s/^\*/WARN:  /s
+    my $logfileline = shift;
+    if ($logfileline =~ m/^\*/s){
+        $logfileline =~ s/^\*/WARN:  /s
     } else {
-        $thing =~ s/^/       /mg;
+        $logfileline =~ s/^/       /mg;
     }
-    push(@logFileLines,$thing);
-    print $thing,"\n" if $switches{screenlog};
+    push(@logFileLines,$logfileline);
+    print $logfileline,"\n" if $switches{screenlog};
 }
 
 sub trace{
     my $self = shift;
-    my $thing = shift;
-    if ($thing =~ m/^\*/s){
-        $thing =~ s/^\*/TRACE: /s
+    my $logfileline = shift;
+    if ($logfileline =~ m/^\*/s){
+        $logfileline =~ s/^\*/TRACE: /s
     } else {
-        $thing =~ s/^/       /mg;
+        $logfileline =~ s/^/       /mg;
     }
-    push(@logFileLines,$thing);
-    print $thing,"\n" if $switches{screenlog};
+    push(@logFileLines,$logfileline);
+    print $logfileline,"\n" if $switches{screenlog};
 }
 
 1;

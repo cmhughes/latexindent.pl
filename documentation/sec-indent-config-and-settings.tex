@@ -83,7 +83,7 @@ lookForAlignDelims:
 
 \subsection{localSettings.yaml and friends}\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
-	\texttt{localSettings.yaml} and friends in the \emph{same directory} as
+	\texttt{localSettings.yaml} and/or friends in the \emph{same directory} as
 	\texttt{myfile.tex}.  For%
 	\announce{NEW}*{-l switch: localSettings and friends} example, if you use the following
 	command
@@ -100,9 +100,10 @@ latexindent.pl -l myfile.tex
 		\item .latexindent.yaml
 	\end{enumerate}
 	These files will be assumed to be in the same directory as \texttt{myfile.tex}, or
-	otherwise in the current working directory. In what follows, whenever we refer to
+	otherwise in the current working directory. You do not need to have all of the above files, usually just one 
+    will be sufficient. In what follows, whenever we refer to
 	\texttt{localSettings.yaml} it is assumed that it can mean any of the four named options
-	listed above.
+	listed above. 
 
 	If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say,
 	\texttt{mysettings.yaml} as in \cref{lst:mysettings}) then you can call
