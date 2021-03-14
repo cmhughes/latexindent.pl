@@ -614,7 +614,7 @@ fineTuning:
     environments:
       name: '[a-zA-Z@\*0-9_\\]+' 
     ifElseFi:
-      name: '@?if[a-zA-Z@]*?' 
+      name: '(?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?'
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
     keyEqualsValuesBracesBrackets:

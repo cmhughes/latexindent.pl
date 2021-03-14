@@ -965,7 +965,7 @@ sub yaml_get_indentation_information{
             if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
                 $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
                 return ${$masterSettings{$globalInformation}}{$YamlName};
-            } else {
+            } elsif (${$masterSettings{$globalInformation}}{$YamlName} ne '0') {
                 $logger->warn("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
           }
         }

@@ -163,14 +163,14 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 	 and \texttt{UnNamedGroupingBracesBrackets} can follow \texttt{"} and that we allow \lstinline!---! between arguments.
  \end{example}
 
-\begin{example}
-You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use quotes appropriately.
-For example, starting with the code in \cref{lst:finetuning3} and running the following command
-\begin{commandshell}
+ \begin{example}
+	 You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use quotes appropriately.
+	 For example, starting with the code in \cref{lst:finetuning3} and running the following command
+	 \begin{commandshell}
 latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 \end{commandshell}
-gives the output shown in \cref{lst:finetuning3-mod1}.
+	 gives the output shown in \cref{lst:finetuning3-mod1}.
 
-		 \cmhlistingsfromfile*{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
-		 \cmhlistingsfromfile*{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
-\end{example}
+	 \cmhlistingsfromfile*{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
+	 \cmhlistingsfromfile*{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
+ \end{example}
