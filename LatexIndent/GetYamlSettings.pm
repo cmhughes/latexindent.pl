@@ -21,8 +21,8 @@ use YAML::Tiny;                # interpret defaultSettings.yaml and other potent
 use File::Basename;            # to get the filename and directory path
 use File::HomeDir;
 use Cwd;
-use Log::Log4perl qw(get_logger :levels);
 use Exporter qw/import/;
+use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
 
 # Read in defaultSettings.YAML file
@@ -56,7 +56,6 @@ sub yaml_read_settings{
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) if ( -e "$FindBin::RealBin/defaultSettings.yaml" );
 
   # grab the logger object
-  my $logger = get_logger("Document");
   $logger->info("*YAML settings read: defaultSettings.yaml\nReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
@@ -87,7 +86,7 @@ sub yaml_read_settings{
 
   # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
   $indentconfig = "$homeDir/.indentconfig.yaml" if(! -e $indentconfig);
-
+  
   # messages for indentconfig.yaml and/or .indentconfig.yaml
   if ( -e $indentconfig and !$switches{onlyDefault}) {
         # read the absolute paths from indentconfig.yaml
@@ -126,7 +125,17 @@ sub yaml_read_settings{
        $logger->info("Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)\nTo specify user settings you would put indentconfig.yaml here: $homeDir/indentconfig.yaml\nAlternatively, you can use the hidden file .indentconfig.yaml as: $homeDir/.indentconfig.yaml");
      }
   }
-
+  
+  # default value of readLocalSettings
+  #
+  #       latexindent -l myfile.tex
+  #
+  # means that we wish to use localSettings.yaml
+  if(defined($switches{readLocalSettings}) and ($switches{readLocalSettings} eq '')){
+      $logger->info('*-l switch used without filename, will search for the following files in turn:');
+      $logger->info('localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml');
+      $switches{readLocalSettings} = 'localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml';
+  }
 
   # local settings can be called with a + symbol, for example
   #     -l=+myfile.yaml
@@ -149,12 +158,14 @@ sub yaml_read_settings{
   $switches{readLocalSettings} =~ s/\h*$//g;
   $switches{readLocalSettings} =~ s/\h*,\h*/,/g;
   if($switches{readLocalSettings} =~ m/\+/){
-        $logger->info("+ found in call for -l switch: will add localSettings.yaml");
+        $logger->info("+ found in call for -l switch: will add localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml");
 
         # + can be either at the beginning or the end, which determines if where the comma should go
         my $commaAtBeginning = ($switches{readLocalSettings} =~ m/^\h*\+/ ? q() : ",");
         my $commaAtEnd = ($switches{readLocalSettings} =~ m/^\h*\+/ ? "," : q());
-        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning."localSettings.yaml".$commaAtEnd/e; 
+        $switches{readLocalSettings} =~ s/\h*\+\h*/$commaAtBeginning
+                    ."localSettings.yaml,latexindent.yaml,.localSettings.yaml,.latexindent.yaml"
+                    .$commaAtEnd/ex; 
         $logger->info("New value of -l switch: $switches{readLocalSettings}");
   }
 
@@ -197,7 +208,15 @@ sub yaml_read_settings{
         $logger->info("Adding $_ to YAML read paths");
         push(@absPaths,"$_");
     } elsif ( !(-e $_) ) {
-        $logger->warn("*yaml file not found: $_ not found. Proceeding without it.");
+        if ( ($_ =~ m/localSettings|latexindent/s
+                 and !(-e 'localSettings.yaml')
+                 and !(-e '.localSettings.yaml')
+                 and !(-e 'latexindent.yaml')
+                 and !(-e '.latexindent.yaml'))
+             or $_ !~ m/localSettings|latexindent/s
+                ){
+                $logger->warn("*yaml file not found: $_ not found. Proceeding without it.");
+        }
     }
   }
 
@@ -328,6 +347,10 @@ sub yaml_read_settings{
             push(@yamlSettings,$switches{yaml});
         }
 
+        foreach (@yamlSettings){
+            $logger->info("YAML setting: ".$_);
+        } 
+
         # it is possible to specify, for example,
         #
         #   -y=indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1
@@ -348,8 +371,18 @@ sub yaml_read_settings{
             # increment the counter
             $settingsCounter++;
 
+            # need to be careful in splitting at ';'
+            #
+            # motivation as detailed in https://github.com/cmhughes/latexindent.pl/issues/243
+            #
+            #       latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,
+            #                             modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,
+            #                             fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' myfile.tex
+            #
+            # in particular, the fineTuning part needs care in treating the argument between the quotes
+            
             # check for a match of the ;
-            if($_ =~ m/(?<!\\);/){
+            if($_ !~ m/(?<!(?:\\))"/ and $_ =~ m/(?<!\\);/){
                 my (@subfield) = split(/(?<!\\);/,$_);
 
                 # the content up to the first ; is called the 'root'
@@ -403,8 +436,43 @@ sub yaml_read_settings{
 
         # loop through each of the settings specified in the -y switch
         foreach(@yamlSettings){
-            # split each value at semi-colon
-            my (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
+
+            my @keysValues;
+
+            # as above, need to be careful in splitting at ':'
+            #
+            # motivation as detailed in https://github.com/cmhughes/latexindent.pl/issues/243
+            #
+            #       latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,
+            #                             modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,
+            #                             fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' myfile.tex
+            #
+            # in particular, the fineTuning part needs care in treating the argument between the quotes
+            
+            if ($_ =~ m/(?<!(?:\\))"/){
+                my (@splitAtQuote) = split(/(?<!(?:\\))"/,$_);
+                $logger->info("quote found in -y switch");
+                $logger->info("key: ".$splitAtQuote[0]);
+
+                # definition check
+                $splitAtQuote[1] = '' if not defined $splitAtQuote[1];
+
+                # then log the value
+                $logger->info("value: ".$splitAtQuote[1]);
+
+                # split at :
+                (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$splitAtQuote[0]);
+
+                # tabs need special attention
+                if ($splitAtQuote[1] =~ m/\\t/){
+                    $splitAtQuote[1] = '"'.$splitAtQuote[1].'"';
+                }
+                push(@keysValues,$splitAtQuote[1]);
+            } 
+            else {
+                # split each value at semi-colon
+                (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$_);
+            }
 
             # $value will always be the last element
             my $value = $keysValues[-1];
@@ -470,9 +538,6 @@ sub yaml_get_indentation_settings_for_this_object{
 
     # create a name for previously found settings
     my $storageName = ${$self}{name}.${$self}{modifyLineBreaksYamlName}.(defined ${$self}{storageNameAppend}?${$self}{storageNameAppend}:q());
-
-    # grab the logging object
-    my $logger = get_logger("Document");
 
     # check for storage of repeated objects
     if ($previouslyFoundSettings{$storageName}){
@@ -573,9 +638,6 @@ sub yaml_alignment_at_ampersand_settings{
 sub yaml_modify_line_breaks_settings{
     my $self = shift;
 
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     # details to the log file
     $logger->trace("*-m modifylinebreaks switch active") if $is_t_switch_active;
     $logger->trace("looking for polyswitch, textWrapOptions, removeParagraphLineBreaks, oneSentencePerLine settings for ${$self}{name} ") if $is_t_switch_active;
@@ -601,9 +663,6 @@ sub yaml_modify_line_breaks_settings{
 sub yaml_get_textwrap_removeparagraphline_breaks{
     my $self = shift;
     
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     # textWrap and removeParagraphLineBreaks settings
     foreach ("textWrapOptions","removeParagraphLineBreaks"){
 
@@ -789,9 +848,6 @@ sub yaml_poly_switch_get_every_or_custom_value{
   my $toBeAssignedTo = $input{toBeAssignedTo};
   my $toBeAssignedToAlias = $input{toBeAssignedToAlias};
 
-  # grab the logging object
-  my $logger = get_logger("Document");
-
   # alias
   if(${$self}{aliases}{$toBeAssignedTo}){
         $logger->trace("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if($is_t_switch_active);
@@ -871,9 +927,6 @@ sub yaml_get_indentation_information{
     # if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
     my $YamlName = $self->yaml_get_object_attribute_for_indentation_settings;
 
-    # grab the logging object
-    my $logger = get_logger("Document");
-
     my $indentationInformation;
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
         # check that the 'thing' is defined
@@ -912,8 +965,8 @@ sub yaml_get_indentation_information{
             if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
                 $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
                 return ${$masterSettings{$globalInformation}}{$YamlName};
-            } else {
-                $logger->trace("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one") if $is_t_switch_active;
+            } elsif (${$masterSettings{$globalInformation}}{$YamlName} ne '0') {
+                $logger->warn("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
           }
         }
     }

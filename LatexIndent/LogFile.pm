@@ -19,20 +19,10 @@ use warnings;
 use FindBin; 
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-use Log::Log4perl qw(get_logger :levels);
-use Log::Log4perl::Appender::Screen;
-use Log::Dispatch::File;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
 our @EXPORT_OK = qw/processSwitches $logger/;
-our @logFileNotes;
-our $logger = get_logger("Document");
-
-# log file methods, using log4perl; references
-#   pattern layout: http://search.cpan.org/~mschilli/Log-Log4perl-1.32/lib/Log/Log4perl/Layout/PatternLayout.pm
-#   multiple appenders: https://stackoverflow.com/questions/8620347/perl-log4perl-printing-and-logging-at-the-same-time-in-a-line?rq=1
-#   getting started: https://www.perl.com/pub/2002/09/11/log4perl.html 
+our $logger;
 
 sub processSwitches{
     # -v switch is just to show the version number
@@ -98,65 +88,13 @@ ENDQUOTE
     # if we've made it this far, the processing of switches and logging begins
     my $self = shift;
 
-    ($switches{trace}||$switches{ttrace})  ? $logger->level($TRACE): $logger->level($INFO);
+    $logger = LatexIndent::Logger->new();
     
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
     die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
 
     my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory}."/" : '').($switches{logFileName}||"indent.log");
-    
-    # layout of the logfile information, for example
-    #
-    #       2017/09/16 11:59:09 INFO: message
-    #       2017/09/16 12:23:53 INFO: LogFile.pm:156 LatexIndent::LogFile::processSwitches - message
-    # reference: https://stackoverflow.com/questions/46262844/log4perl-grouping-messages/46309392#46309392
-    Log::Log4perl::Layout::PatternLayout::add_global_cspec( 
-        'A', sub { 
-          if($_[1] =~ /^\*/){
-                $_[1]=~s/^\*//;
-                if($_[1]=~m/\R/s){
-                    my $indentation = '  '.(' ' x length $_[3]);
-                    $_[1] =~ s/\R/\n$indentation/gs;
-                }
-                return "$_[3]: ".$_[1];
-          } else {
-                my $indentation = '  '.(' ' x length $_[3]);
-                $_[1] =~ s/\R/\n$indentation/gs if($_[1]=~m/\R/s);
-                return $indentation.$_[1];
-          }
-    });
-
-    my $layout = Log::Log4perl::Layout::PatternLayout->new("%A%n");
-
-    # details for the Log4perl logging
-    my $appender = Log::Log4perl::Appender->new(
-        "Log::Dispatch::File",
-        filename => $logfileName,
-        mode     => "write",
-        utf8     => 1,
-    );
-
-    # add the layout
-    $appender->layout($layout);
-
-    # adjust the logger object
-    $logger->add_appender($appender);
-
-    # appender object for output to screen
-    my $appender_screen = q();
-
-    # output to screen, if appropriate
-    if($switches{screenlog}){
-        $appender_screen = Log::Log4perl::Appender->new(
-            "Log::Log4perl::Appender::Screen",
-            stderr => 1,
-            utf8   => 1,
-        );
-
-        $appender_screen->layout($layout);
-        $logger->add_appender($appender_screen);
-    }
     
     # details of the script to log file
     $logger->info("*$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
@@ -207,7 +145,7 @@ ENDQUOTE
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
-        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir','Unicode::GCString','Log::Log4perl');
+        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir','Unicode::GCString');
         $logger->info("*Perl modules are being loaded from the following directories:");
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;
@@ -221,33 +159,6 @@ ENDQUOTE
     # read the YAML settings
     $self->yaml_read_settings;
     
-    # the user may have specified their own settings for the rest of the log file,
-    # for example:
-    #
-    #   logFilePreferences:
-    #       PatternLayout:
-    #           default: "%p: %m{indent}%n"
-    #           trace: "%p: %m{indent}%n"
-    #           ttrace: "%d %p: %F{1}:%L %M - %m{indent}%n"
-    #
-    # e.g, default mode:
-    #       2017/09/16 11:59:09 INFO: message
-    # or trace mode:
-    #       2017/09/16 11:59:09 INFO: message
-    # or in trace mode:
-    #       2017/09/16 12:23:53 INFO: LogFile.pm:156 LatexIndent::LogFile::processSwitches - message
-    my $pattern = q();
-    if($switches{ttrace}){
-      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{ttrace};
-    } elsif($switches{trace}){
-      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{trace};
-    } else {
-      $pattern = ${${$masterSettings{logFilePreferences}}{PatternLayout}}{default};
-    }
-    $layout = Log::Log4perl::Layout::PatternLayout->new($pattern);
-    $appender->layout($layout);
-
-    $appender_screen->layout($layout) if $switches{screenlog};
     return;
 }
 

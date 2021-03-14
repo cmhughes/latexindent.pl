@@ -178,9 +178,9 @@
 % Version that doesn't add a new page
 \def\samepageassignment#1{%
 	\def\@assignmentname{#1} %store name of assignment (tma/cma, etc)
-	\setcounter{question}{0}
+	  \setcounter{question}{0}
 	% Draw a rule under end of previous assignment (if not first assignment)
-	\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\par\bigskip\fi
+  	\iffirstassignment\firstassignmentfalse\else\par\addvspace{\smallskipamount}\makebox[\textwidth][l]{\rule{\dimexpr\textwidth+\marginparwidth+\marginparsep}{2pt}}\par\bigskip\fi
 	\@ifnextchar[{\@assignmentwithcutoff}{\@assignmentnocutoff}
 }
 

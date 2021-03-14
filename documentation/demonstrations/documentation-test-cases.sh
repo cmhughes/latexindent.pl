@@ -306,6 +306,7 @@ latexindent.pl -s finetuning1.tex -o=+-default
 latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1
 latexindent.pl -s finetuning2.tex -o=+-default
 latexindent.pl -s finetuning2.tex -o=+-mod1 -l=fine-tuning2
+latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' finetuning3.tex -o=+-mod1
 
 # blank line poly-switches
 latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4

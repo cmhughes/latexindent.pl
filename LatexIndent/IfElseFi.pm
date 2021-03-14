@@ -47,7 +47,7 @@ sub construct_ifelsefi_regexp{
                 )                           # part of the tokens used for latexindent
                 (
                     (?: 
-                        (?!\\if).
+                        (?!\\$ifElseFiNameRegExp).
                     )*?                     # body, which can't include another \if
                 )
                 (\R*)                       # linebreaks after body

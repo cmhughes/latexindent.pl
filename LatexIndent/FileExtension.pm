@@ -21,16 +21,13 @@ use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-use Log::Log4perl qw(get_logger :levels);
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Switches qw/%switches/;
+use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check{
     my $self = shift;
-
-    # grab the logger object
-    my $logger = get_logger("Document");
 
     # grab the filename
     my $fileName = ${$self}{fileName};

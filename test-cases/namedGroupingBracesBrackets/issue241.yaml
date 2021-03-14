@@ -1,0 +1,17 @@
+defaultIndent: ' '
+
+specialBeginEnd:
+    specialBeforeCommand: 1
+    cmh:
+        begin: '/[CK]'
+        end: '\['
+        lookForThis: verbatim
+    angledBrackets:
+        begin: '\<\<'
+        end: '\>\>'
+        lookForThis: 1
+
+fineTuning:
+    NamedGroupingBracesBrackets:
+      name: '[0-9\.a-zA-Z@\*><\/]+?'
+      follow: '\h|\R|\{|\[|\$|\)|\('

@@ -52,6 +52,8 @@ modifyLineBreaks:
     commands:
         announce:
             CommandStartsOnOwnLine: 2
+        index:
+            CommandStartsOnOwnLine: 1
     textWrapOptions:
         columns: 90
         perCodeBlockBasis: 1

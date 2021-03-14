@@ -7,6 +7,21 @@
 
  This field is for those that would like to peek under the bonnet/hood and make some fine
  tuning to \texttt{latexindent.pl}'s operating.
+ \index{warning!fine tuning}
+ \index{regular expressions!fine tuning}
+ \index{regular expressions!environments}
+ \index{regular expressions!ifElseFi}
+ \index{regular expressions!commands}
+ \index{regular expressions!keyEqualsValuesBracesBrackets}
+ \index{regular expressions!NamedGroupingBracesBrackets}
+ \index{regular expressions!UnNamedGroupingBracesBrackets}
+ \index{regular expressions!arguments}
+ \index{regular expressions!modifyLineBreaks}
+ \index{regular expressions!lowercase alph a-z}
+ \index{regular expressions!uppercase alph A-Z}
+ \index{regular expressions!numeric 0-9}
+ \index{regular expressions!at least one +}
+ \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{warning}
 	 Making changes to the fine tuning may have significant consequences for your indentation scheme,
@@ -17,8 +32,8 @@
 	 \cmhlistingsfromfile[style=fineTuning]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
- The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual is
- not intended to be a tutorial on regular expressions; you might like to read, for
+ The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual
+ is not intended to be a tutorial on regular expressions; you might like to read, for
  example, \cite{masteringregexp} for a detailed covering of the topic.
 
  We make the following comments with reference to \cref{lst:fineTuning}:
@@ -34,6 +49,7 @@
 		       \item \lstinline!_! underscores
 		       \item \lstinline!\! backslashes
 	       \end{enumerate}
+	       \index{regular expressions!at least one +}
 	       The \texttt{+} at the end means \emph{at least one} of the above
 	       characters.
 	 \item the \texttt{ifElseFi:name} field:
@@ -99,10 +115,12 @@ latexindent.pl finetuning1.tex
 	 It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
 	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
 	 given in \cref{lst:fine-tuning1} and running the command
+	 \index{switches!-l demonstration}
 	 \begin{commandshell}
 latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 \end{commandshell}
 	 and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
+	 \index{regular expressions!at least one +}
 
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		 \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
@@ -121,13 +139,14 @@ latexindent.pl finetuning2.tex
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=-3.75cm,
 			 raster right skip=0cm,]
-		 \cmhlistingsfromfile*{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
-		 \cmhlistingsfromfile*{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
+		 \cmhlistingsfromfile{demonstrations/finetuning2.tex}{\texttt{finetuning2.tex}}{lst:finetuning2}
+		 \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
 	 \end{cmhtcbraster}
 
 	 It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked as
 	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
 	 given in \cref{lst:fine-tuning2} and running the command
+	 \index{switches!-l demonstration}
 	 \begin{commandshell}
 latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 \end{commandshell}
@@ -136,10 +155,22 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=-3.75cm,
 			 raster right skip=0cm,]
-		 \cmhlistingsfromfile*{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
-		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
+		 \cmhlistingsfromfile{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
+		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
 	 \end{cmhtcbraster}
 
 	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets}
 	 and \texttt{UnNamedGroupingBracesBrackets} can follow \texttt{"} and that we allow \lstinline!---! between arguments.
+ \end{example}
+
+ \begin{example}
+	 You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use quotes appropriately.
+	 For example, starting with the code in \cref{lst:finetuning3} and running the following command
+	 \begin{commandshell}
+latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+\end{commandshell}
+	 gives the output shown in \cref{lst:finetuning3-mod1}.
+
+	 \cmhlistingsfromfile*{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
+	 \cmhlistingsfromfile*{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
  \end{example}

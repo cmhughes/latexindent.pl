@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.8.3, 2020-11-06
+# defaultSettings.yaml for latexindent.pl, version 3.9, 2021-03-14
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -89,10 +89,6 @@ logFilePreferences:
     showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
-    PatternLayout:
-        default: "%A%n"
-        trace: "%A%n"
-        ttrace: "%A%n"
 
 #  verbatim environments specified 
 #  in this field will not be changed at all!
@@ -357,6 +353,7 @@ commandCodeBlocks:
       - 'decoration'
       - '\+\+'
       - '\-\-'
+      - '\#\#\d'
     commandNameSpecial:
       - 
         amalgamate: 1
@@ -617,7 +614,7 @@ fineTuning:
     environments:
       name: '[a-zA-Z@\*0-9_\\]+' 
     ifElseFi:
-      name: '@?if[a-zA-Z@]*?' 
+      name: '(?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?'
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
     keyEqualsValuesBracesBrackets:

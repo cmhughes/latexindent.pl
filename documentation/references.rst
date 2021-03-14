@@ -35,8 +35,7 @@ https://github.com/cereda/arara/blob/master/rules/indent.yaml.
 
    <div id="ref-cpan">
 
-“CPAN: Comprehensive Perl Archive Network.” 2017. Accessed January 23.
-http://www.cpan.org/.
+“CPAN: Comprehensive Perl Archive Network.” 2017. Accessed January 23. http://www.cpan.org/.
 
 .. raw:: html
 
@@ -46,8 +45,7 @@ http://www.cpan.org/.
 
    <div id="ref-jacobo-diaz-hidden-config">
 
-Diaz, Jacobo. 2014a. “Hiddenconfig.” July 21.
-https://github.com/cmhughes/latexindent.pl/pull/18.
+Diaz, Jacobo. 2014a. “Hiddenconfig.” July 21. https://github.com/cmhughes/latexindent.pl/pull/18.
 
 .. raw:: html
 
@@ -78,8 +76,7 @@ Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
 
    <div id="ref-latexindent-home">
 
-“Home of Latexindent.pl.” 2017. Accessed January 23.
-https://github.com/cmhughes/latexindent.pl.
+“Home of Latexindent.pl.” 2017. Accessed January 23. https://github.com/cmhughes/latexindent.pl.
 
 .. raw:: html
 
@@ -111,8 +108,7 @@ https://github.com/cmhughes/latexindent.pl/pull/214.
 
    <div id="ref-harish">
 
-Kumar, Harish. 2013. “Early Version Testing.” November 10.
-https://github.com/harishkumarholla.
+Kumar, Harish. 2013. “Early Version Testing.” November 10. https://github.com/harishkumarholla.
 
 .. raw:: html
 
@@ -165,8 +161,7 @@ https://github.com/cmhughes/latexindent.pl/issues/33.
 
    <div id="ref-strawberryperl">
 
-“Strawberry Perl.” 2017. Accessed January 23.
-http://strawberryperl.com/.
+“Strawberry Perl.” 2017. Accessed January 23. http://strawberryperl.com/.
 
 .. raw:: html
 
@@ -187,8 +182,7 @@ http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
 
    <div id="ref-textwrap">
 
-“Text::Wrap Perl Module.” 2017. Accessed May 1.
-http://perldoc.perl.org/Text/Wrap.html.
+“Text::Wrap Perl Module.” 2017. Accessed May 1. http://perldoc.perl.org/Text/Wrap.html.
 
 .. raw:: html
 
@@ -198,8 +192,8 @@ http://perldoc.perl.org/Text/Wrap.html.
 
    <div id="ref-cmh:videodemo">
 
-“Video Demonstration of Latexindent.pl on Youtube.” 2017. Accessed
-February 21. https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
+“Video Demonstration of Latexindent.pl on Youtube.” 2017. Accessed February 21.
+https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
 
 .. raw:: html
 
@@ -220,8 +214,8 @@ https://github.com/cmhughes/latexindent.pl/pull/12.
 
    <div id="ref-xu-cheng">
 
-(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.”
-July 13. https://github.com/cmhughes/latexindent.pl/pull/121.
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13.
+https://github.com/cmhughes/latexindent.pl/pull/121.
 
 .. raw:: html
 

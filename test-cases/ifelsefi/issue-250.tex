@@ -1,0 +1,10 @@
+\ifxetex
+	foo
+\else
+	\ifluatex
+		\ifnumgreater{2}{1}{
+			bar
+		}{}
+	\else
+	\fi
+\fi

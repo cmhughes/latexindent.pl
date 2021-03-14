@@ -52,6 +52,7 @@ paths:
 	the \texttt{tabbing} environment/command to the list of environments that contains
 	alignment delimiters; you might also like to refer to the many YAML files detailed
 	throughout the rest of this documentation.
+	\index{indentation!defaultIndent using YAML file}
 
 	\begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
 # Default value of indentation
@@ -68,6 +69,7 @@ lookForAlignDelims:
 	then you'll get a warning, otherwise you'll get confirmation that \texttt{latexindent.pl}
 	has read your settings file \footnote{Windows users
 		may find that they have to end \texttt{.yaml} files with a blank line}.
+	\index{warning!editing YAML files}
 
 	\begin{warning}
 		When editing \texttt{.yaml} files it is \emph{extremely} important
@@ -79,15 +81,29 @@ lookForAlignDelims:
 		will tell you so in \texttt{indent.log}.
 	\end{warning}
 
-\subsection{localSettings.yaml}\label{sec:localsettings}
+\subsection{localSettings.yaml and friends}\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
-	\texttt{localSettings.yaml} in the \emph{same directory} as \texttt{myfile.tex}.  For
+	\texttt{localSettings.yaml} and/or friends in the \emph{same directory} as
+	\texttt{myfile.tex}.  For%
+	\announce*{2021-03-14}*{-l switch: localSettings and friends}
 	example, if you use the following command
+	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl -l myfile.tex
 \end{commandshell}
-	then \texttt{latexindent.pl} will (assuming it exists) load \texttt{localSettings.yaml} from
-	the same directory as \texttt{myfile.tex}.
+	then \texttt{latexindent.pl} will search for and then, assuming they exist, load each of
+	the following files in the following order:
+	\begin{enumerate}
+		\item localSettings.yaml
+		\item latexindent.yaml
+		\item .localSettings.yaml
+		\item .latexindent.yaml
+	\end{enumerate}
+	These files will be assumed to be in the same directory as \texttt{myfile.tex}, or
+	otherwise in the current working directory. You do not need to have all of the above
+	files, usually just one will be sufficient. In what follows, whenever we refer to
+	\texttt{localSettings.yaml} it is assumed that it can mean any of the four named options
+	listed above.
 
 	If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say,
 	\texttt{mysettings.yaml} as in \cref{lst:mysettings}) then you can call
@@ -103,6 +119,7 @@ latexindent.pl -l=mysettings.yaml myfile.tex
 	Your settings file can contain any switches that you'd like to change; a sample is shown
 	in \cref{lst:localSettings}, and you'll find plenty of further examples throughout this
 	manual.
+	\index{verbatim!verbatimEnvironments demonstration (-l switch)}
 
 	\begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
 #  verbatim environments - environments specified
@@ -123,17 +140,21 @@ verbatimEnvironments:
 	\texttt{-y} switch to load your settings;  for example, if you wished to
 	specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch,
 	then you could use the following command:
+	\index{verbatim!verbatimEnvironments demonstration (-y switch)}
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
 \end{commandshell}
 	Note the use of \texttt{;} to specify another field within
 	\texttt{verbatimEnvironments}. This is shorthand, and equivalent, to using the following
 	command:
+	\index{switches!-y demonstration}
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
 \end{commandshell}
 	You may, of course, specify settings using the \texttt{-y} switch as well as,
 	for example, settings loaded using the \texttt{-l} switch; for example,
+	\index{switches!-l demonstration}
+	\index{switches!-y demonstration}
 	\begin{commandshell}
 latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
 \end{commandshell}
@@ -142,16 +163,18 @@ latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myen
 	\texttt{-l} switch.
 
 	If you wish to specify any regex-based settings using the \texttt{-y} switch,
-	it is important not to use quotes surrounding the regex; for example, with reference to
-	the `one sentence per line' feature (\vref{sec:onesentenceperline}) and the listings within
-	\vref{lst:sentencesEndWith}, the following settings give the option to have sentences end
-	with a semicolon
+	\index{regular expressions!using -y switch} it is important not to use quotes surrounding the regex; for
+	example, with reference to the `one sentence per line' feature (\vref{sec:onesentenceperline})
+	and the listings within \vref{lst:sentencesEndWith}, the following settings give the option
+	to have sentences end with a semicolon
+	\index{switches!-y demonstration}
 	\begin{commandshell}
 latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
 \end{commandshell}
 
 \subsection{Settings load order}\label{sec:loadorder}
 	\texttt{latexindent.pl} loads the settings files in the following order:
+	\index{switches!-l in relation to other settings}
 	\begin{enumerate}
 		\item \texttt{defaultSettings.yaml} is always loaded, and can not be renamed;
 		\item \texttt{anyUserSettings.yaml} and any other arbitrarily-named files specified in

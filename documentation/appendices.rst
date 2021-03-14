@@ -8,12 +8,10 @@ Appendices
 Required Perl modules
 ---------------------
 
-If you intend to use ``latexindent.pl`` and *not* one of the supplied
-standalone executable files, then you will need a few standard Perl
-modules – if you can run the minimum code in :numref:`lst:helloworld`
-(``perl helloworld.pl``) then you will be able to run
-``latexindent.pl``, otherwise you may need to install the missing
-modules – see :numref:`sec:module-installer` and
+If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone executable files,
+then you will need a few standard Perl modules – if you can run the minimum code in
+:numref:`lst:helloworld` (``perl helloworld.pl``) then you will be able to run ``latexindent.pl``,
+otherwise you may need to install the missing modules – see :numref:`sec:module-installer` and
 :numref:`sec:manual-module-instal`.
 
 .. code-block:: latex
@@ -38,7 +36,6 @@ modules – see :numref:`sec:module-installer` and
     use Getopt::Long;
     use Data::Dumper;
     use List::Util qw(max);
-    use Log::Log4perl qw(get_logger :levels);
 
     print "hello world";
     exit;
@@ -50,8 +47,8 @@ modules – see :numref:`sec:module-installer` and
 Module installer script
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-``latexindent.pl`` ships with a helper script that will install any
-missing ``perl`` modules on your system; if you run
+``latexindent.pl`` ships with a helper script that will install any missing ``perl`` modules on your
+system; if you run
 
 .. code-block:: latex
    :class: .commandshell
@@ -62,8 +59,8 @@ or
 
 perl latexindent-module-installer.pl
 
-then, once you have answered ``Y``, the appropriate modules will be
-installed onto your distribution.
+then, once you have answered ``Y``, the appropriate modules will be installed onto your
+distribution.
 
 .. label follows
 
@@ -72,14 +69,14 @@ installed onto your distribution.
 Manually installed modules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Manually installing the modules given in :numref:`lst:helloworld` will
-vary depending on your operating system and ``Perl`` distribution.
+Manually installing the modules given in :numref:`lst:helloworld` will vary depending on your
+operating system and ``Perl`` distribution.
 
 Linux
 ~~~~~
 
-Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017);
-an example installation would be:
+Linux users may be interested in exploring Perlbrew (“Perlbrew” 2017); an example installation would
+be:
 
 .. code-block:: latex
    :class: .commandshell
@@ -93,22 +90,30 @@ an example installation would be:
     cpanm YAML::Tiny
     cpanm File::HomeDir
     cpanm Unicode::GCString
-    cpanm Log::Log4perl
     cpanm Log::Dispatch
 
-For other distributions, the Ubuntu/Debian approach may work by visiting
-the software center, or else by running, for example,
+For other distributions, the Ubuntu/Debian approach may work as follows
+
+.. code-block:: latex
+   :class: .commandshell
+
+    sudo apt install perl
+    sudo cpan -i App::cpanminus
+    sudo cpanm YAML::Tiny
+    sudo cpanm File::HomeDir
+    sudo cpanm Unicode::GCString
+    sudo cpanm Log::Dispatch::File
+
+or else by running, for example,
 
 .. code-block:: latex
    :class: .commandshell
 
     sudo perl -MCPAN -e'install "File::HomeDir"'
 
-If you are using Alpine, some ``Perl`` modules are not build-compatible
-with Alpine, but replacements are available through ``apk``. For
-example, you might use the commands given in
-:numref:`lst:alpine-install`; thanks to (jun-sheaf 2020) for providing
-these details.
+If you are using Alpine, some ``Perl`` modules are not build-compatible with Alpine, but
+replacements are available through ``apk``. For example, you might use the commands given in
+:numref:`lst:alpine-install`; thanks to (jun-sheaf 2020) for providing these details.
 
 .. code-block:: latex
    :caption: ``alpine-install.sh`` 
@@ -119,7 +124,6 @@ these details.
 
     # Installing incompatible latexindent perl dependencies via apk
     apk --no-cache add \
-        perl-log-log4perl \
         perl-log-dispatch \
         perl-namespace-autoclean \
         perl-specio \
@@ -137,14 +141,12 @@ these details.
     cpanm -n YAML::Tiny
     cpanm -n Unicode::GCString
 
-Users of NixOS might like to see
-https://github.com/cmhughes/latexindent.pl/issues/222 for tips.
+Users of NixOS might like to see https://github.com/cmhughes/latexindent.pl/issues/222 for tips.
 
 Mac
 ~~~
 
-Users of the Macintosh operating system might like to explore the
-following commands, for example:
+Users of the Macintosh operating system might like to explore the following commands, for example:
 
 .. code-block:: latex
    :class: .commandshell
@@ -155,21 +157,18 @@ following commands, for example:
     cpanm YAML::Tiny
     cpanm File::HomeDir
     cpanm Unicode::GCString
-    cpanm Log::Log4perl
     cpanm Log::Dispatch
 
 Windows
 ~~~~~~~
 
-Strawberry Perl users on Windows might use ``CPAN client``. All of the
-modules are readily available on CPAN (“CPAN: Comprehensive Perl Archive
-Network” 2017).
+Strawberry Perl users on Windows might use ``CPAN client``. All of the modules are readily available
+on CPAN (“CPAN: Comprehensive Perl Archive Network” 2017).
 
-``indent.log`` will contain details of the location of the Perl modules
-on your system. ``latexindent.exe`` is a standalone executable for
-Windows (and therefore does not require a Perl distribution) and caches
-copies of the Perl modules onto your system; if you wish to see where
-they are cached, use the ``trace`` option, e.g
+``indent.log`` will contain details of the location of the Perl modules on your system.
+``latexindent.exe`` is a standalone executable for Windows (and therefore does not require a Perl
+distribution) and caches copies of the Perl modules onto your system; if you wish to see where they
+are cached, use the ``trace`` option, e.g
 
 latexindent.exe -t myfile.tex
 
@@ -180,24 +179,20 @@ latexindent.exe -t myfile.tex
 Updating the path variable
 --------------------------
 
-``latexindent.pl`` has a few scripts (available at (“Home of
-Latexindent.pl” 2017)) that can update the ``path`` variables. Thank you
-to (Juang 2015) for this feature. If you’re on a Linux or Mac machine,
-then you’ll want ``CMakeLists.txt`` from (“Home of Latexindent.pl”
-2017).
+``latexindent.pl`` has a few scripts (available at (“Home of Latexindent.pl” 2017)) that can update
+the ``path`` variables. Thank you to (Juang 2015) for this feature. If you’re on a Linux or Mac
+machine, then you’ll want ``CMakeLists.txt`` from (“Home of Latexindent.pl” 2017).
 
 Add to path for Linux
 ~~~~~~~~~~~~~~~~~~~~~
 
 To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
-#. download ``latexindent.pl`` and its associated modules,
-   ``defaultSettings.yaml``, to your chosen directory from (“Home of
-   Latexindent.pl” 2017) ;
+#. download ``latexindent.pl`` and its associated modules, ``defaultSettings.yaml``, to your chosen
+   directory from (“Home of Latexindent.pl” 2017) ;
 
-#. within your directory, create a directory called
-   ``path-helper-files`` and download ``CMakeLists.txt`` and
-   ``cmake_uninstall.cmake.in`` from (“Home of Latexindent.pl”
+#. within your directory, create a directory called ``path-helper-files`` and download
+   ``CMakeLists.txt`` and ``cmake_uninstall.cmake.in`` from (“Home of Latexindent.pl”
    2017)/path-helper-files to this directory;
 
 #. run
@@ -227,8 +222,7 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
 
        ls /usr/local/bin
 
-   again to check that ``latexindent.pl``, its modules and
-   ``defaultSettings.yaml`` have been added.
+   again to check that ``latexindent.pl``, its modules and ``defaultSettings.yaml`` have been added.
 
 To *remove* the files, run
 
@@ -242,12 +236,11 @@ Add to path for Windows
 
 To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
-#. download ``latexindent.exe``, ``defaultSettings.yaml``,
-   ``add-to-path.bat`` from (“Home of Latexindent.pl” 2017) to your
-   chosen directory;
+#. download ``latexindent.exe``, ``defaultSettings.yaml``, ``add-to-path.bat`` from (“Home of
+   Latexindent.pl” 2017) to your chosen directory;
 
-#. open a command prompt and run the following command to see what is
-   *currently* in your ``%path%`` variable;
+#. open a command prompt and run the following command to see what is *currently* in your ``%path%``
+   variable;
 
    echo
 
@@ -259,11 +252,9 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
    echo
 
-   to check that the appropriate directory has been added to your
-   ``%path%``.
+   to check that the appropriate directory has been added to your ``%path%``.
 
-To *remove* the directory from your ``%path%``, run
-``remove-from-path.bat`` as administrator.
+To *remove* the directory from your ``%path%``, run ``remove-from-path.bat`` as administrator.
 
 .. label follows
 
@@ -272,11 +263,9 @@ To *remove* the directory from your ``%path%``, run
 logFilePreferences
 ------------------
 
-:numref:`lst:logFilePreferences` describes the options for customising
-the information given to the log file, and we provide a few
-demonstrations here. Let’s say that we start with the code given in
-:numref:`lst:simple`, and the settings specified in
-:numref:`lst:logfile-prefs1-yaml`.
+:numref:`lst:logFilePreferences` describes the options for customising the information given to
+the log file, and we provide a few demonstrations here. Let’s say that we start with the code given
+in :numref:`lst:simple`, and the settings specified in :numref:`lst:logfile-prefs1-yaml`.
 
  .. literalinclude:: demonstrations/simple.tex
  	:class: .tex
@@ -295,8 +284,7 @@ If we run the following command (noting that ``-t`` is active)
 
     latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
 
-then on inspection of ``indent.log`` we will find the snippet given in
-:numref:`lst:indentlog`.
+then on inspection of ``indent.log`` we will find the snippet given in :numref:`lst:indentlog`.
 
 .. code-block:: latex
    :caption: ``indent.log`` 
@@ -318,8 +306,8 @@ then on inspection of ``indent.log`` we will find the snippet given in
            -----
          
 
-Notice that the information given about ``myenv`` is ‘framed’ using
-``+++++`` and ``-----`` respectively.
+Notice that the information given about ``myenv`` is ‘framed’ using ``+++++`` and ``-----``
+respectively.
 
 .. label follows
 
@@ -328,9 +316,10 @@ Notice that the information given about ``myenv`` is ‘framed’ using
 Differences from Version 2.2 to 3.0
 -----------------------------------
 
-There are a few (small) changes to the interface when comparing Version
-2.2 to Version 3.0. Explicitly, in previous versions you might have run,
-for example,
+There are a few (small) changes to the interface when comparing Version 2.2 to Version 3.0.
+Explicitly, in previous versions you might have run, for example,
+
+:index:`switches;-o demonstration`
 
 .. code-block:: latex
    :class: .commandshell
@@ -338,6 +327,8 @@ for example,
     latexindent.pl -o myfile.tex outputfile.tex
 
 whereas in Version 3.0 you would run any of the following, for example,
+
+:index:`switches;-o demonstration`
 
 .. code-block:: latex
    :class: .commandshell
@@ -351,17 +342,15 @@ whereas in Version 3.0 you would run any of the following, for example,
 
 noting that the *output* file is given *next to* the ``-o`` switch.
 
-The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from
-Version 3.0 onwards.
+The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 onwards.
 
  .. literalinclude:: demonstrations/obsolete.yaml
  	:class: .obsolete
  	:caption: Obsolete YAML fields from Version 3.0 
  	:name: lst:obsoleteYaml
 
-There is a slight difference when specifying indentation after headings;
-specifically, we now write ``indentAfterThisHeading`` instead of
-``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
+There is a slight difference when specifying indentation after headings; specifically, we now write
+``indentAfterThisHeading`` instead of ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
 :numref:`lst:indentAfterThisHeadingNew`
 
  .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
@@ -374,11 +363,12 @@ specifically, we now write ``indentAfterThisHeading`` instead of
  	:caption: ``indentAfterThisHeading`` in Version 3.0 
  	:name: lst:indentAfterThisHeadingNew
 
-To specify ``noAdditionalIndent`` for display-math environments in
-Version 2.2, you would write YAML as in
-:numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would
-write YAML as in :numref:`lst:indentAfterThisHeadingNew1` or, if
-you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
+To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML
+as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in
+:numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch,
+:numref:`lst:indentAfterThisHeadingNew2`.
+
+:index:`specialBeginEnd;update to displaymath V3.0`
 
  .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
  	:class: .baseyaml
@@ -405,8 +395,7 @@ you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
 
    <div id="ref-cpan">
 
-“CPAN: Comprehensive Perl Archive Network.” 2017. Accessed January 23.
-http://www.cpan.org/.
+“CPAN: Comprehensive Perl Archive Network.” 2017. Accessed January 23. http://www.cpan.org/.
 
 .. raw:: html
 
@@ -416,8 +405,7 @@ http://www.cpan.org/.
 
    <div id="ref-latexindent-home">
 
-“Home of Latexindent.pl.” 2017. Accessed January 23.
-https://github.com/cmhughes/latexindent.pl.
+“Home of Latexindent.pl.” 2017. Accessed January 23. https://github.com/cmhughes/latexindent.pl.
 
 .. raw:: html
 

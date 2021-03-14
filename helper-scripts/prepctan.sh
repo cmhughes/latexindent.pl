@@ -26,6 +26,7 @@ cp documentation/readme.txt latexindent/README
 mkdir latexindent/documentation
 cp documentation/*.tex latexindent/documentation
 cp documentation/latexindent.pdf latexindent/documentation
+cp documentation/*.png latexindent/documentation
 # zip it
 zip -r latexindent.zip latexindent
 mv latexindent.zip ~/Desktop

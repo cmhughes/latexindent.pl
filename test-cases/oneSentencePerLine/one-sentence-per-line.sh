@@ -28,7 +28,7 @@ latexindent.pl -s six-sentences-mult-blank.tex -m -o=+mod6 -l=manipulateSentence
 latexindent.pl -s other-punctuation.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 latexindent.pl -s other-punctuation.tex -m -o=+mod1 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;"
 latexindent.pl -s other-punctuation.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y="modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:"
-latexindent.pl -s other-punctuation.tex -m -o=+mod3 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:|"'
+latexindent.pl -s other-punctuation.tex -m -o=+mod3 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:|\"'
 # sentences across blank lines, note the difference between the following two
 latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:preserveBlankLines:0"
@@ -98,5 +98,8 @@ latexindent.pl -s -m sentence-wrap-no-columns-specified.tex -l=sentence-wrap-no-
 # https://github.com/cmhughes/latexindent.pl/issues/217
 latexindent.pl -s -m psttf.tex -l psttf1.yaml -o=+-mod1
 latexindent.pl -s -m psttf.tex -l psttf2.yaml -o=+-mod2
+
+# https://github.com/cmhughes/latexindent.pl/issues/243
+latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 [[ $noisyMode == 1 ]] && makenoise
 git status

@@ -20,7 +20,7 @@ use warnings;
 
 print ("============\nlatexindent.pl module installer\n============\n");
 print ("Would you like to run the following commands?\n");
-my @modulesToInstall = ("cpanm YAML::Tiny","cpanm File::HomeDir","cpanm Unicode::GCString","cpanm Log::Log4perl","cpanm Log::Dispatch");
+my @modulesToInstall = ("cpanm YAML::Tiny","cpanm File::HomeDir","cpanm Unicode::GCString");
 foreach (@modulesToInstall) {
     print $_,"\n";
 }

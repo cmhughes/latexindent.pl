@@ -1,0 +1,22 @@
+\begin{tikzpicture}[croix/.pic={\draw[thick,black] (-0.067,-0.067) --
+				(0.067,0.067) (-0.067,0.067)--(0.067,-0.067);}]
+	\filldraw[draw=black,fill=black!10!white] (0,0) circle[radius=2.8];
+	\filldraw[draw=red,fill=red!10!white,rounded corners]
+	(-0.5,2.5) -- (-0.5,-0.5) -- (2.2,-1.5) -- (2.2,1.5) -- cycle;
+	\filldraw[draw=blue,fill=blue!10!white,rounded corners]
+	(-2.2,1) -- (-1.7,1.5) -- (-1.2,1) -- (-1.2,-0.5) -- (0,-1.5) --
+	(0.5,-2) -- (0,-2.5) -- (-2.2,-1.5) -- cycle;
+	\filldraw[draw=green,fill=green!10!white,rounded corners,opacity=0.5]
+	(-2.3,1.5) -- (0,2.5) -- ((0.5,2) -- (0.5,0) -- (0,-0.5) --
+	(-2.3,0.5)  -- cycle;
+	\draw (0,0) pic {croix} node[above=1mm]{$\spt3$}
+	(90:2) pic {croix} node[below=1mm]{$\spt1$}
+	(150:2) pic {croix} node[below=1mm]{$\spt6$}
+	(210:2) pic {croix} node[below right=1mm]{$\spt2$}
+	(-90:2) pic {croix} node[left=1mm]{$\spt4$}
+	(-30:2) pic {croix} node[above=1mm]{$\spt7$}
+	(30:2) pic {croix} node[above=1mm]{$\spt5$};
+	\draw[red,thick] (2.18,1.43) -- (2.7,2) node[above right]{$A$};
+	\draw[blue,thick] (-2.17,-1.47) -- (-2.7,-2) node[below left]{$B$};
+	\draw[green,thick] (-2.27,1.47) -- (-2.8,2) node[above left]{$C$};
+\end{tikzpicture}

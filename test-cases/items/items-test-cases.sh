@@ -77,5 +77,7 @@ latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-o
 latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml,resetItem.yaml
 # poly-switch bug reported at https://github.com/cmhughes/latexindent.pl/issues/94
 latexindent.pl -s -m bug1.tex -o=+-mod0 -l=bug.yaml
+# itemsep issue https://github.com/cmhughes/latexindent.pl/issues/249
+latexindent.pl -s issue-249.tex -o=+-mod0
 [[ $noisyMode == 1 ]] && makenoise
 git status

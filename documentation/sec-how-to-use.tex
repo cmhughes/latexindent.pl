@@ -34,6 +34,7 @@
 	will be written depending on which of the following options are used.
 
 \flagbox{-v, --version}
+	\index{switches!-v, --version definition and details}
 	\announce{2017-06-25}{version}
 	\begin{commandshell}
 latexindent.pl -v
@@ -41,6 +42,7 @@ latexindent.pl -v
 	This will output only the version number to the terminal.
 
 \flagbox{-h, --help}
+	\index{switches!-h, --help definition and details}
 
 	\begin{commandshell}
 latexindent.pl -h
@@ -57,6 +59,8 @@ latexindent.pl myfile.tex
 	this command.
 
 \flagbox{-w, --overwrite}
+	\index{switches!-w, --overwrite definition and details}
+	\index{backup files!overwrite switch, -w}
 	\begin{commandshell}
 latexindent.pl -w myfile.tex
 latexindent.pl --overwrite myfile.tex
@@ -74,6 +78,7 @@ latexindent.pl myfile.tex --overwrite
 	permissions of the backup file.
 
 \flagbox{-o=output.tex,--outputfile=output.tex}
+	\index{switches!-o, --output definition and details}
 	\begin{commandshell} 
 latexindent.pl -o=output.tex myfile.tex
 latexindent.pl myfile.tex -o=output.tex 
@@ -150,6 +155,7 @@ latexindent.pl myfile.tex -o=+out++.tex
 	See \vref{app:differences} for details of how the interface has changed from Version 2.2
 	to Version 3.0 for this flag.
 \flagbox{-s, --silent}
+	\index{switches!-s, --silent definition and details}
 	\begin{commandshell}
 latexindent.pl -s myfile.tex
 latexindent.pl myfile.tex -s
@@ -158,6 +164,7 @@ latexindent.pl myfile.tex -s
 	Silent mode: no output will be given to the terminal.
 
 \flagbox{-t, --trace}
+	\index{switches!-t, --trace definition and details}
 	\begin{commandshell}
 latexindent.pl -t myfile.tex
 latexindent.pl myfile.tex -t
@@ -171,6 +178,7 @@ latexindent.pl myfile.tex -t
 	files, this does affect performance of the script.
 
 \flagbox{-tt, --ttrace}
+	\index{switches!-tt, --ttrace definition and details}
 	\begin{commandshell}
 latexindent.pl -tt myfile.tex
 latexindent.pl myfile.tex -tt
@@ -183,6 +191,7 @@ latexindent.pl myfile.tex -tt
 	affected).
 
 \flagbox{-l, --local[=myyaml.yaml,other.yaml,...]}
+	\index{switches!-l, --local definition and details}
 	\begin{commandshell}
 latexindent.pl -l myfile.tex
 latexindent.pl -l=myyaml.yaml myfile.tex
@@ -196,9 +205,10 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
 	\texttt{latexindent.pl} will always load \texttt{defaultSettings.yaml} (rhymes with camel)
 	and if it is called with the \texttt{-l} switch and it finds
 	\texttt{localSettings.yaml} in the same directory as \texttt{myfile.tex}, then, if not
-	found, it looks for \texttt{localSettings.yaml} in the current working directory, then these
-	settings will be added to the indentation scheme. Information will be given in
-	\texttt{indent.log} on the success or failure of loading \texttt{localSettings.yaml}.
+	found, it looks for \texttt{localSettings.yaml} (and friends, see \vref{sec:localsettings}) in the current working directory, then these
+	\announce*{2021-03-14}*{-l switch: localSettings and friends} settings will be added to the indentation scheme. Information
+	will be given in \texttt{indent.log} on the success or failure of loading
+	\texttt{localSettings.yaml}.
 
 	The \texttt{-l} flag can take an \emph{optional} parameter which
 	details the name (or names separated by commas) of a YAML file(s) that resides in the
@@ -247,6 +257,9 @@ latexindent.pl -l + myyaml.yaml myfile.tex
 latexindent.pl -l=localSettings,myyaml myfile.tex
 \end{commandshell}
 \flagbox{-y, --yaml=yaml settings}
+	\index{switches!-y, --yaml definition and details}
+	\index{indentation!default}
+	\index{indentation!defaultIndent using -y switch}
 	\begin{commandshell}
 latexindent.pl myfile.tex -y="defaultIndent: ' '"
 latexindent.pl myfile.tex -y="defaultIndent: ' ',maximumIndentation:' '"
@@ -266,6 +279,7 @@ latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLi
 	specified using the \texttt{-l} switch. This is discussed further in
 	\vref{sec:loadorder}.
 \flagbox{-d, --onlydefault}
+	\index{switches!-d, --onlydefault definition and details}
 	\begin{commandshell}
 latexindent.pl -d myfile.tex
 \end{commandshell}
@@ -281,6 +295,7 @@ latexindent.pl -d myfile.tex
 	\texttt{-y} switch.
 
 \flagbox{-c, --cruft=<directory>}
+	\index{switches!-c, --cruft definition and details}
 	\begin{commandshell}
 latexindent.pl -c=/path/to/directory/ myfile.tex
 \end{commandshell}
@@ -290,6 +305,7 @@ latexindent.pl -c=/path/to/directory/ myfile.tex
 	directory. Note the use of a trailing forward slash. % this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
 
 \flagbox{-g, --logfile=<name of log file>}
+	\index{switches!-g, --logfile definition and details}
 	\begin{commandshell}
 latexindent.pl -g=other.log myfile.tex
 latexindent.pl -g other.log myfile.tex
@@ -302,6 +318,7 @@ latexindent.pl myfile.tex -g other.log
 	after the \texttt{-g} switch as demonstrated above.
 
 \flagbox{-sl, --screenlog}
+	\index{switches!-sl, --screenlog definition and details}
 	\begin{commandshell}
 latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
@@ -312,6 +329,7 @@ latexindent.pl -screenlog myfile.tex
 	log file.
 
 \flagbox{-m, --modifylinebreaks}
+	\index{switches!-m, --modifylinebreaks definition and details}
 	\begin{commandshell}
 latexindent.pl -m myfile.tex
 latexindent.pl -modifylinebreaks myfile.tex
@@ -361,6 +379,7 @@ latexindent.pl
 	to signify that your input has finished. Thanks to \cite{xu-cheng} for an update
 	to this feature.
 \flagbox{-r, --replacement}
+	\index{switches!-r, --replacement definition and details}
 	\begin{commandshell}
 latexindent.pl -r myfile.tex
 latexindent.pl -replacement myfile.tex
@@ -370,8 +389,10 @@ latexindent.pl -replacement myfile.tex
 	\texttt{latexindent.pl} with the \texttt{-r} switch to instruct it to perform
 	replacements/substitutions on your file; full details and examples are given in
 	\vref{sec:replacements}.
+	\index{verbatim!rv, replacementrespectverb switch}
 
 \flagbox{-rv, --replacementrespectverb}
+	\index{switches!-rv, --replacementrespectverb definition and details}
 	\begin{commandshell}
 latexindent.pl -rv myfile.tex
 latexindent.pl -replacementrespectverb myfile.tex
@@ -383,6 +404,7 @@ latexindent.pl -replacementrespectverb myfile.tex
 	examples are given in \vref{sec:replacements}.
 
 \flagbox{-rr, --onlyreplacement}
+	\index{switches!-rr, --onlyreplacement definition and details}
 	\begin{commandshell}
 latexindent.pl -rr myfile.tex
 latexindent.pl -onlyreplacement myfile.tex

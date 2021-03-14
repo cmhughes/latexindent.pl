@@ -14,7 +14,7 @@ GetOptions (
 # store the names of each field
 my @namesAndOffsets = (
                         {name=>"fileExtensionPreference",numberOfLines=>4},
-                        {name=>"logFilePreferences",numberOfLines=>10},
+                        {name=>"logFilePreferences",numberOfLines=>6},
                         {name=>"verbatimEnvironments",numberOfLines=>3},
                         {name=>"verbatimCommands",numberOfLines=>2},
                         {name=>"noIndentBlock",numberOfLines=>2},
@@ -30,7 +30,7 @@ my @namesAndOffsets = (
                         {name=>"noAdditionalIndentGlobal",numberOfLines=>12},
                         {name=>"indentRulesGlobalEnv",numberOfLines=>1,special=>"indentRulesGlobal"},
                         {name=>"indentRulesGlobal",numberOfLines=>12},
-                        {name=>"commandCodeBlocks",numberOfLines=>14},
+                        {name=>"commandCodeBlocks",numberOfLines=>15},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>16,special=>"textWrapOptions"},
@@ -314,9 +314,14 @@ if(!$readTheDocsMode){
                     }
                     $caption.$tabular_begin.$tabular_body.$tabular_end; /xesg;
         
-        # 
         $body =~ s/(\\label\{.*?\})/\n\n$1\n\n/sg;
         $body =~ s/\\label/\\cmhlabel/sg;
+        $body =~ s/\\index\{((?:(?!(?:\{)).)*?)\}/
+                    my $index_body = $1;
+                    if($index_body =~m|!|s){
+                        $index_body =~ s|!|;|s;
+                    }
+                    "\\cmhindex\{".$index_body."\}";/sgex;
 
         # line numbers for defaulSettings
         for (@namesAndOffsets){
