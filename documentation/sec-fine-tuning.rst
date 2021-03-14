@@ -50,9 +50,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 616-637
+ 	:lines: 613-634
  	:linenos:
- 	:lineno-start: 616
+ 	:lineno-start: 613
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not
 intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl,
@@ -225,6 +225,32 @@ character.
 	In particular, note that the settings in :numref:`lst:fine-tuning2` specify that
 	``NamedGroupingBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we
 	allow ``---`` between arguments.
+	 
+
+.. proof:example::	
+	
+	You can tweak the ``fineTuning`` using the ``-y`` switch, but to be sure to use quotes
+	appropriately. For example, starting with the code in :numref:`lst:finetuning3` and running the
+	following command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+	
+	gives the output shown in :numref:`lst:finetuning3-mod1`.
+	
+	 .. literalinclude:: demonstrations/finetuning3.tex
+	 	:class: .tex
+	 	:caption: ``finetuning3.tex`` 
+	 	:name: lst:finetuning3
+	
+	 .. literalinclude:: demonstrations/finetuning3-mod1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning3.tex`` using -y switch 
+	 	:name: lst:finetuning3-mod1
+	
+	
 	 
 
 .. raw:: html
