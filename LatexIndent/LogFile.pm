@@ -43,8 +43,8 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           log file will also be output to the screen
       -o, --outputfile=<name-of-output-file>
           output to another file; sample usage:
-                latexindent.pl -o outputfile.tex myfile.tex 
-                latexindent.pl -o=outputfile.tex myfile.tex 
+                latexindent.pl -o outputfile.tex myfile.tex
+                latexindent.pl -o=outputfile.tex myfile.tex
       -w, --overwrite
           overwrite the current file; a backup will be made, but still be careful
       -s, --silent
@@ -52,12 +52,13 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
       -t, --trace
           tracing mode: verbose information given to the log file
       -l, --local[=myyaml.yaml]
-          use localSettings.yaml (assuming it exists in the directory of your file, 
-          or in the current working directory); alternatively, use myyaml.yaml, if it exists; 
+          use `localSettings.yaml`, `.localSettings.yaml`, `latexindent.yaml`,
+          or `.latexindent.yaml` (assuming one of them exists in the directory of your file or in
+          the current working directory); alternatively, use `myyaml.yaml`, if it exists;
           sample usage:
-                latexindent.pl -l some.yaml myfile.tex 
-                latexindent.pl -l=another.yaml myfile.tex 
-                latexindent.pl -l=some.yaml,another.yaml myfile.tex 
+                latexindent.pl -l some.yaml myfile.tex
+                latexindent.pl -l=another.yaml myfile.tex
+                latexindent.pl -l=some.yaml,another.yaml myfile.tex
       -y, --yaml=<yaml settings>
           specify YAML settings; sample usage:
                 latexindent.pl -y="defaultIndent:' '" myfile.tex
@@ -66,19 +67,19 @@ usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
           ONLY use defaultSettings.yaml, ignore ALL (yaml) user files
       -g, --logfile=<name of log file>
           used to specify the name of logfile (default is indent.log)
-      -c, --cruft=<cruft directory> 
+      -c, --cruft=<cruft directory>
           used to specify the location of backup files and indent.log
       -m, --modifylinebreaks
-          modify linebreaks before, during, and at the end of code blocks; 
+          modify linebreaks before, during, and at the end of code blocks;
           trailing comments and blank lines can also be added using this feature
-      -r,--replacement
+      -r, --replacement
           replacement mode, allows you to replace strings and regular expressions
           verbatim blocks not respected
-      -rv,--replacementrespectverb
+      -rv, --replacementrespectverb
           replacement mode, allows you to replace strings and regular expressions
           while respecting verbatim code blocks
-      -rr,--onlyreplacement
-          *only* replacement mode, no indentation
+      -rr, --onlyreplacement
+          *only* replacement mode, no indentation;
           verbatim blocks not respected
 ENDQUOTE
     ;
