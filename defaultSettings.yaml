@@ -618,7 +618,7 @@ fineTuning:
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
     keyEqualsValuesBracesBrackets:
-      name: '[a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?'
+      name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
       follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
     NamedGroupingBracesBrackets:
       name: '[0-9\.a-zA-Z@\*><]+?'
