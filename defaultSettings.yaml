@@ -620,7 +620,7 @@ fineTuning:
     keyEqualsValuesBracesBrackets:
       name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
       follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
-    NamedGroupingBracesBrackets:
+    namedGroupingBracesBrackets:
       name: '[0-9\.a-zA-Z@\*><]+?'
       follow: '\h|\R|\{|\[|\$|\)|\('
     UnNamedGroupingBracesBrackets: 

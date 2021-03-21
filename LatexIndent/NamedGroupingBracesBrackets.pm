@@ -35,8 +35,29 @@ sub construct_grouping_braces_brackets_regexp{
     my $optAndMandRegExp = $self->get_arguments_regexp;
 
     # read from fine tuning
-    my $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
-    my $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
+    my $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
+    my $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{namedGroupingBracesBrackets}}{follow}/;
+
+    # defaultSettings.yaml mistakenly had 
+    #
+    # fineTuning:
+    #     NamedGroupingBracesBrackets:
+    # 
+    # when it should have been 
+    #
+    # fineTuning:
+    #     namedGroupingBracesBrackets:
+    #
+    # the mistake was mine, so I feel that the following is necessary; if we 
+    # get to V4, then this will be removed and only namedGroupingBracesBrackets will be supported
+    if(${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}){
+        $logger->warn("*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used");
+        $NamedGroupingBracesBracketsRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
+    } 
+    if(${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}){
+        $logger->warn("*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used");
+        $NamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
+    }
 
     # store the regular expresssion for matching and replacing 
     $grouping_braces_regexp = qr/

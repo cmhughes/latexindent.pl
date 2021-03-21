@@ -34,7 +34,7 @@ sub processSwitches{
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
     print <<ENDQUOTE
 latexindent.pl version $versionNumber, $versionDate
-usage: latexindent.pl [options] [file][.tex|.sty|.cls|.bib|...]
+usage: latexindent.pl [options] [file]
       -v, --version
           displays the version number and date of release
       -h, --help
