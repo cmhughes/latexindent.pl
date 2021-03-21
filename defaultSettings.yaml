@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.9, 2021-03-14
+# defaultSettings.yaml for latexindent.pl, version 3.9.1, 2021-03-21
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -618,9 +618,9 @@ fineTuning:
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
     keyEqualsValuesBracesBrackets:
-      name: '[a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?'
+      name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
       follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
-    NamedGroupingBracesBrackets:
+    namedGroupingBracesBrackets:
       name: '[0-9\.a-zA-Z@\*><]+?'
       follow: '\h|\R|\{|\[|\$|\)|\('
     UnNamedGroupingBracesBrackets: 

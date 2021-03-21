@@ -514,7 +514,7 @@ documentation at (Cereda 2013).
    <div id="ref-paulo">
 
 Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23.
-https://github.com/cereda/arara/blob/master/rules/indent.yaml.
+https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
 .. raw:: html
 

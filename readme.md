@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version 
  
-    latexindent.pl, version 3.9, 2021-03-14
+    latexindent.pl, version 3.9.1, 2021-03-21
 
 ## author 
 Chris Hughes (cmhughes)
@@ -112,7 +112,7 @@ and then I merge it into the `develop` branch using
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.28.1
+I develop latexindent.pl on Ubuntu Linux, using perlbrew; I currently develop on perl version v5.30.3
 
 ## related projects
 
