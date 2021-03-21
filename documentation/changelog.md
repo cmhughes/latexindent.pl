@@ -1,5 +1,13 @@
 # changelog.md
 
+## V3.9.1, March 21, 2021
+minor updates to documentation:
+- https://github.com/cmhughes/latexindent.pl/issues/255
+- https://github.com/cmhughes/latexindent.pl/issues/259
+minor updates to fineTuning:
+- https://github.com/cmhughes/latexindent.pl/issues/257
+- https://github.com/cmhughes/latexindent.pl/issues/258
+
 ## V3.9, March 14, 2021
 - https://github.com/cmhughes/latexindent.pl/issues/229, Log4Perl module removed, logging is now
   perhaps too simple, but hopefully eases installation
