@@ -237,7 +237,7 @@ sub get_latex_indent_parser{
         <objrule: LatexIndent::Command=Command>    
             <ws: \h*>
             <begin=(?{"\\"})>
-            <name=([a-zA-Z0-9*]+)>
+            <name=([a-zA-Z0-9*]++)>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
     
@@ -291,7 +291,7 @@ sub get_latex_indent_parser{
     
         # Between arguments
         <objrule: LatexIndent::Between=Between>                      
-            <body=((?:\h|\R|[*_^])*)>|<TrailingComment>
+            <body=((?>\h|\R|[*_^])++)>|<TrailingComment>
             
         # Environments
         #   \begin{<name>}<Arguments>
@@ -301,7 +301,7 @@ sub get_latex_indent_parser{
         <objrule: LatexIndent::Environment=Environment>    
             <ws: \h*>
             <begin=(?{"\\begin\{"})>                # \begin{
-            <name=([a-zA-Z0-9]+)>\}                 #   name
+            <name=([a-zA-Z0-9]++)>\}                #   name
             <type=(?{'Environment'})>               # }
             <leadingHorizontalSpace=(\h*)>          #
             <linebreaksAtEndBegin=(\R*)>            #
@@ -423,7 +423,7 @@ sub get_latex_indent_parser{
             
         # anything else
         <objrule: LatexIndent::Literal=Literal>    
-            <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)+)>
+            <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)++)>
     
     }xms;
 
