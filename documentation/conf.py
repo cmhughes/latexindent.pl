@@ -40,6 +40,7 @@ extensions = ['sphinx.ext.autodoc',
 
 # Add any paths that contain templates here, relative to this directory.
 #   reference about index: https://stackoverflow.com/questions/25243482/how-to-add-sphinx-generated-index-to-the-sidebar-when-using-read-the-docs-theme
+#   additional reference: https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#index-generating-markup
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.

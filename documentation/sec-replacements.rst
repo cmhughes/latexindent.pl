@@ -8,7 +8,7 @@ The -r, -rv and -rr switches
 You can instruct ``latexindent.pl`` to perform replacements/substitutions on your file by using any
 of the ``-r``, ``-rv`` or ``-rr`` switches:
 
-:index:`verbatim;rv, replacementrespectverb switch`
+.. index:: verbatim;rv, replacementrespectverb switch
 
 -  the ``-r`` switch will perform indentation and replacements, not respecting verbatim code blocks;
 
@@ -47,7 +47,7 @@ in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switch
 discussing YAML settings related to the replacement-mode switches, we will use the style given in
 :numref:`lst:replacements`.
 
- .. literalinclude:: ../defaultSettings.yaml
+.. literalinclude:: ../defaultSettings.yaml
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
@@ -71,7 +71,7 @@ every instance of the text ``latexindent.pl`` with ``pl.latexindent``.
 
 Beginning with the code in :numref:`lst:replace1` and running the command
 
-:index:`switches;-r demonstration`
+.. index:: switches;-r demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -80,12 +80,12 @@ Beginning with the code in :numref:`lst:replace1` and running the command
 
 gives the output given in :numref:`lst:replace1-r1`.
 
- .. literalinclude:: demonstrations/replace1.tex
+.. literalinclude:: demonstrations/replace1.tex
  	:class: .tex
  	:caption: ``replace1.tex`` 
  	:name: lst:replace1
 
- .. literalinclude:: demonstrations/replace1-r1.tex
+.. literalinclude:: demonstrations/replace1-r1.tex
  	:class: .tex
  	:caption: ``replace1.tex`` default 
  	:name: lst:replace1-r1
@@ -94,9 +94,9 @@ If we don’t wish to perform this replacement, then we can tweak the default se
 :numref:`lst:replacements` by changing ``lookForThis`` to 0; we perform this action in
 :numref:`lst:replace1-yaml`, and run the command
 
-:index:`switches;-l demonstration`
+.. index:: switches;-l demonstration
 
-:index:`switches;-r demonstration`
+.. index:: switches;-r demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -105,12 +105,12 @@ If we don’t wish to perform this replacement, then we can tweak the default se
 
 which gives the output in :numref:`lst:replace1-mod1`.
 
- .. literalinclude:: demonstrations/replace1-mod1.tex
+.. literalinclude:: demonstrations/replace1-mod1.tex
  	:class: .tex
  	:caption: ``replace1.tex`` using :numref:`lst:replace1-yaml` 
  	:name: lst:replace1-mod1
 
- .. literalinclude:: demonstrations/replace1.yaml
+.. literalinclude:: demonstrations/replace1.yaml
  	:class: .replaceyaml
  	:caption: ``replace1.yaml`` 
  	:name: lst:replace1-yaml
@@ -130,7 +130,7 @@ There are two types of replacements:
    specify ``this`` and you do not specify ``that``, then the ``that`` field will be assumed to be
    empty.
 
-   :index:`regular expressions;replacement switch, -r`
+   .. index:: regular expressions;replacement switch, -r
 
 #. *regex*-based replacements, which use the ``substitution`` field.
 
@@ -147,7 +147,7 @@ Examples of replacements
 	
 	We begin with code given in :numref:`lst:colsep`
 	
-	 .. literalinclude:: demonstrations/colsep.tex
+	.. literalinclude:: demonstrations/colsep.tex
 	 	:class: .tex
 	 	:caption: ``colsep.tex`` 
 	 	:name: lst:colsep
@@ -157,9 +157,9 @@ Examples of replacements
 	
 	Using the YAML in :numref:`lst:colsep-yaml`, and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -168,12 +168,12 @@ Examples of replacements
 	
 	then we achieve the output in :numref:`lst:colsep-mod0`.
 	
-	 .. literalinclude:: demonstrations/colsep-mod0.tex
+	.. literalinclude:: demonstrations/colsep-mod0.tex
 	 	:class: .tex
 	 	:caption: ``colsep.tex`` using :numref:`lst:colsep` 
 	 	:name: lst:colsep-mod0
 	
-	 .. literalinclude:: demonstrations/colsep.yaml
+	.. literalinclude:: demonstrations/colsep.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``colsep.yaml`` 
 	 	:name: lst:colsep-yaml
@@ -185,9 +185,9 @@ Examples of replacements
 	We can make the YAML in :numref:`lst:colsep-yaml` more concise by exploring the ``substitution``
 	field. Using the settings in :numref:`lst:colsep1` and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -196,16 +196,16 @@ Examples of replacements
 	
 	then we achieve the output in :numref:`lst:colsep-mod1`.
 	
-	:index:`regular expressions;substitution field, arraycolsep`
+	.. index:: regular expressions;substitution field, arraycolsep
 	
-	:index:`regular expressions;at least one +`
+	.. index:: regular expressions;at least one +
 	
-	 .. literalinclude:: demonstrations/colsep-mod1.tex
+	.. literalinclude:: demonstrations/colsep-mod1.tex
 	 	:class: .tex
 	 	:caption: ``colsep.tex`` using :numref:`lst:colsep1` 
 	 	:name: lst:colsep-mod1
 	
-	 .. literalinclude:: demonstrations/colsep1.yaml
+	.. literalinclude:: demonstrations/colsep1.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``colsep1.yaml`` 
 	 	:name: lst:colsep1
@@ -239,9 +239,9 @@ Examples of replacements
 	
 	Using the YAML in :numref:`lst:multi-line`, and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -250,12 +250,12 @@ Examples of replacements
 	
 	then we achieve the output in :numref:`lst:colsep-mod2`.
 	
-	 .. literalinclude:: demonstrations/colsep-mod2.tex
+	.. literalinclude:: demonstrations/colsep-mod2.tex
 	 	:class: .tex
 	 	:caption: ``colsep.tex`` using :numref:`lst:multi-line` 
 	 	:name: lst:colsep-mod2
 	
-	 .. literalinclude:: demonstrations/multi-line.yaml
+	.. literalinclude:: demonstrations/multi-line.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``multi-line.yaml`` 
 	 	:name: lst:multi-line
@@ -271,9 +271,9 @@ Examples of replacements
 	
 	Using the YAML in :numref:`lst:multi-line1`, and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -282,12 +282,12 @@ Examples of replacements
 	
 	then we achieve the output in :numref:`lst:colsep-mod3`.
 	
-	 .. literalinclude:: demonstrations/colsep-mod3.tex
+	.. literalinclude:: demonstrations/colsep-mod3.tex
 	 	:class: .tex
 	 	:caption: ``colsep.tex`` using :numref:`lst:multi-line1` 
 	 	:name: lst:colsep-mod3
 	
-	 .. literalinclude:: demonstrations/multi-line1.yaml
+	.. literalinclude:: demonstrations/multi-line1.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``multi-line1.yaml`` 
 	 	:name: lst:multi-line1
@@ -300,9 +300,9 @@ Examples of replacements
 	
 	As a final note on this example, if you use the ``-rr`` switch, as follows,
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-rr demonstration`
+	.. index:: switches;-rr demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -322,16 +322,16 @@ Examples of replacements
 	is partly motivated by `tex stackexchange question
 	242150 <https://tex.stackexchange.com/questions/242150/good-looking-latex-code>`__.
 	
-	 .. literalinclude:: demonstrations/displaymath.tex
+	.. literalinclude:: demonstrations/displaymath.tex
 	 	:class: .tex
 	 	:caption: ``displaymath.tex`` 
 	 	:name: lst:displaymath
 	
 	We use the settings in :numref:`lst:displaymath1` and run the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -340,14 +340,14 @@ Examples of replacements
 	
 	to receive the output given in :numref:`lst:displaymath-mod1`.
 	
-	:index:`regular expressions;substitution field, equation`
+	.. index:: regular expressions;substitution field, equation
 	
-	 .. literalinclude:: demonstrations/displaymath-mod1.tex
+	.. literalinclude:: demonstrations/displaymath-mod1.tex
 	 	:class: .tex
 	 	:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` 
 	 	:name: lst:displaymath-mod1
 	
-	 .. literalinclude:: demonstrations/displaymath1.yaml
+	.. literalinclude:: demonstrations/displaymath1.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``displaymath1.yaml`` 
 	 	:name: lst:displaymath1
@@ -367,11 +367,11 @@ Examples of replacements
 	``latexindent.pl``. For example, we can combine the poly-switches of :numref:`sec:poly-switches`,
 	which we do in :numref:`lst:equation`; upon running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-m demonstration`
+	.. index:: switches;-m demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -380,12 +380,12 @@ Examples of replacements
 	
 	then we receive the output in :numref:`lst:displaymath-mod2`.
 	
-	 .. literalinclude:: demonstrations/displaymath-mod2.tex
+	.. literalinclude:: demonstrations/displaymath-mod2.tex
 	 	:class: .tex
 	 	:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` and :numref:`lst:equation` 
 	 	:name: lst:displaymath-mod2
 	
-	 .. literalinclude:: demonstrations/equation.yaml
+	.. literalinclude:: demonstrations/equation.yaml
 	 	:class: .mlbyaml
 	 	:caption: ``equation.yaml`` 
 	 	:name: lst:equation
@@ -399,7 +399,7 @@ Examples of replacements
 	490086 <https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker>`__.
 	We begin with the code in :numref:`lst:phrase`.
 	
-	 .. literalinclude:: demonstrations/phrase.tex
+	.. literalinclude:: demonstrations/phrase.tex
 	 	:class: .tex
 	 	:caption: ``phrase.tex`` 
 	 	:name: lst:phrase
@@ -407,9 +407,9 @@ Examples of replacements
 	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings
 	in :numref:`lst:hspace`, and run the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -418,14 +418,14 @@ Examples of replacements
 	
 	which gives the output in :numref:`lst:phrase-mod1`.
 	
-	:index:`regular expressions;at least one +`
+	.. index:: regular expressions;at least one +
 	
-	 .. literalinclude:: demonstrations/phrase-mod1.tex
+	.. literalinclude:: demonstrations/phrase-mod1.tex
 	 	:class: .tex
 	 	:caption: ``phrase.tex`` using :numref:`lst:hspace` 
 	 	:name: lst:phrase-mod1
 	
-	 .. literalinclude:: demonstrations/hspace.yaml
+	.. literalinclude:: demonstrations/hspace.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``hspace.yaml`` 
 	 	:name: lst:hspace
@@ -438,7 +438,7 @@ Examples of replacements
 	
 	We begin with the code in :numref:`lst:references`.
 	
-	 .. literalinclude:: demonstrations/references.tex
+	.. literalinclude:: demonstrations/references.tex
 	 	:class: .tex
 	 	:caption: ``references.tex`` 
 	 	:name: lst:references
@@ -446,9 +446,9 @@ Examples of replacements
 	Our goal is to change each reference so that both the text and the reference are contained within
 	one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -457,12 +457,12 @@ Examples of replacements
 	
 	which gives the output in :numref:`lst:references-mod1`.
 	
-	 .. literalinclude:: demonstrations/references-mod1.tex
+	.. literalinclude:: demonstrations/references-mod1.tex
 	 	:class: .tex
 	 	:caption: ``references.tex`` using :numref:`lst:reference` 
 	 	:name: lst:references-mod1
 	
-	 .. literalinclude:: demonstrations/reference.yaml
+	.. literalinclude:: demonstrations/reference.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``reference.yaml`` 
 	 	:name: lst:reference
@@ -477,29 +477,29 @@ Examples of replacements
 	context of an example that contains a verbatim code block, :numref:`lst:verb1`; we will use the
 	settings in :numref:`lst:verbatim1-yaml`.
 	
-	 .. literalinclude:: demonstrations/verb1.tex
+	.. literalinclude:: demonstrations/verb1.tex
 	 	:class: .tex
 	 	:caption: ``verb1.tex`` 
 	 	:name: lst:verb1
 	
-	 .. literalinclude:: demonstrations/verbatim1.yaml
+	.. literalinclude:: demonstrations/verbatim1.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``verbatim1.yaml`` 
 	 	:name: lst:verbatim1-yaml
 	
 	Upon running the following commands,
 	
-	:index:`verbatim;comparison with -r and -rr switches`
+	.. index:: verbatim;comparison with -r and -rr switches
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-o demonstration`
+	.. index:: switches;-o demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
-	:index:`switches;-rv demonstration`
+	.. index:: switches;-rv demonstration
 	
-	:index:`switches;-rr demonstration`
+	.. index:: switches;-rr demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -510,17 +510,17 @@ Examples of replacements
 	
 	we receive the respective output in :numref:`lst:verb1-mod1` – :numref:`lst:verb1-rr-mod1`
 	
-	 .. literalinclude:: demonstrations/verb1-mod1.tex
+	.. literalinclude:: demonstrations/verb1-mod1.tex
 	 	:class: .tex
 	 	:caption: ``verb1-mod1.tex`` 
 	 	:name: lst:verb1-mod1
 	
-	 .. literalinclude:: demonstrations/verb1-rv-mod1.tex
+	.. literalinclude:: demonstrations/verb1-rv-mod1.tex
 	 	:class: .tex
 	 	:caption: ``verb1-rv-mod1.tex`` 
 	 	:name: lst:verb1-rv-mod1
 	
-	 .. literalinclude:: demonstrations/verb1-rr-mod1.tex
+	.. literalinclude:: demonstrations/verb1-rr-mod1.tex
 	 	:class: .tex
 	 	:caption: ``verb1-rr-mod1.tex`` 
 	 	:name: lst:verb1-rr-mod1
@@ -546,33 +546,33 @@ See the summary within :numref:`tab:replacementswitches`.
 	Let’s explore the ``amalgamate`` field from :numref:`lst:replacements` in the context of the file
 	specified in :numref:`lst:amalg1`.
 	
-	 .. literalinclude:: demonstrations/amalg1.tex
+	.. literalinclude:: demonstrations/amalg1.tex
 	 	:class: .tex
 	 	:caption: ``amalg1.tex`` 
 	 	:name: lst:amalg1
 	
 	Let’s consider the YAML files given in :numref:`lst:amalg1-yaml` – :numref:`lst:amalg3-yaml`.
 	
-	 .. literalinclude:: demonstrations/amalg1-yaml.yaml
+	.. literalinclude:: demonstrations/amalg1-yaml.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``amalg1-yaml.yaml`` 
 	 	:name: lst:amalg1-yaml
 	
-	 .. literalinclude:: demonstrations/amalg2-yaml.yaml
+	.. literalinclude:: demonstrations/amalg2-yaml.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``amalg2-yaml.yaml`` 
 	 	:name: lst:amalg2-yaml
 	
-	 .. literalinclude:: demonstrations/amalg3-yaml.yaml
+	.. literalinclude:: demonstrations/amalg3-yaml.yaml
 	 	:class: .replaceyaml
 	 	:caption: ``amalg3-yaml.yaml`` 
 	 	:name: lst:amalg3-yaml
 	
 	Upon running the following commands,
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
-	:index:`switches;-r demonstration`
+	.. index:: switches;-r demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -583,17 +583,17 @@ See the summary within :numref:`tab:replacementswitches`.
 	
 	we receive the respective output in :numref:`lst:amalg1-mod1` – :numref:`lst:amalg1-mod123`.
 	
-	 .. literalinclude:: demonstrations/amalg1-mod1.tex
+	.. literalinclude:: demonstrations/amalg1-mod1.tex
 	 	:class: .tex
 	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` 
 	 	:name: lst:amalg1-mod1
 	
-	 .. literalinclude:: demonstrations/amalg1-mod12.tex
+	.. literalinclude:: demonstrations/amalg1-mod12.tex
 	 	:class: .tex
 	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` 
 	 	:name: lst:amalg1-mod12
 	
-	 .. literalinclude:: demonstrations/amalg1-mod123.tex
+	.. literalinclude:: demonstrations/amalg1-mod123.tex
 	 	:class: .tex
 	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` and :numref:`lst:amalg3-yaml` 
 	 	:name: lst:amalg1-mod123

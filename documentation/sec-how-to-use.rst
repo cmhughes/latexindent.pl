@@ -36,7 +36,7 @@ depending on which of the following options are used.
 
 .. describe:: -v, –version
 
-:index:`switches;-v, –version definition and details`
+.. index:: switches;-v, –version definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -47,7 +47,7 @@ This will output only the version number to the terminal.
 
 .. describe:: -h, –help
 
-:index:`switches;-h, –help definition and details`
+.. index:: switches;-h, –help definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -67,9 +67,9 @@ not be changed by ``latexindent.pl`` in any way using this command.
 
 .. describe:: -w, –overwrite
 
-:index:`switches;-w, –overwrite definition and details`
+.. index:: switches;-w, –overwrite definition and details
 
-:index:`backup files;overwrite switch, -w`
+.. index:: backup files;overwrite switch, -w
 
 .. code-block:: latex
    :class: .commandshell
@@ -89,7 +89,7 @@ file.
 
 .. describe:: -o=output.tex,–outputfile=output.tex
 
-:index:`switches;-o, –output definition and details`
+.. index:: switches;-o, –output definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -175,7 +175,7 @@ Version 3.0 for this flag.
 
 .. describe:: -s, –silent
 
-:index:`switches;-s, –silent definition and details`
+.. index:: switches;-s, –silent definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -187,7 +187,7 @@ Silent mode: no output will be given to the terminal.
 
 .. describe:: -t, –trace
 
-:index:`switches;-t, –trace definition and details`
+.. index:: switches;-t, –trace definition and details
 
 .. label follows
 
@@ -206,7 +206,7 @@ should be noted that, especially for large files, this does affect performance o
 
 .. describe:: -tt, –ttrace
 
-:index:`switches;-tt, –ttrace definition and details`
+.. index:: switches;-tt, –ttrace definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -220,7 +220,7 @@ of the script will be affected).
 
 .. describe:: -l, –local[=myyaml.yaml,other.yaml,...]
 
-:index:`switches;-l, –local definition and details`
+.. index:: switches;-l, –local definition and details
 
 .. label follows
 
@@ -305,11 +305,11 @@ You may also choose to omit the ``yaml`` extension, such as
 
 .. describe:: -y, –yaml=yaml settings
 
-:index:`switches;-y, –yaml definition and details`
+.. index:: switches;-y, –yaml definition and details
 
-:index:`indentation;default`
+.. index:: indentation;default
 
-:index:`indentation;defaultIndent using -y switch`
+.. index:: indentation;defaultIndent using -y switch
 
 .. label follows
 
@@ -334,7 +334,7 @@ This is discussed further in :numref:`sec:loadorder`.
 
 .. describe:: -d, –onlydefault
 
-:index:`switches;-d, –onlydefault definition and details`
+.. index:: switches;-d, –onlydefault definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -351,7 +351,7 @@ specified from the ``-y`` switch.
 
 .. describe:: -c, –cruft=<directory>
 
-:index:`switches;-c, –cruft definition and details`
+.. index:: switches;-c, –cruft definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -364,7 +364,7 @@ trailing forward slash.
 
 .. describe:: -g, –logfile=<name of log file>
 
-:index:`switches;-g, –logfile definition and details`
+.. index:: switches;-g, –logfile definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -380,7 +380,7 @@ demonstrated above.
 
 .. describe:: -sl, –screenlog
 
-:index:`switches;-sl, –screenlog definition and details`
+.. index:: switches;-sl, –screenlog definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -393,7 +393,7 @@ chosen log file.
 
 .. describe:: -m, –modifylinebreaks
 
-:index:`switches;-m, –modifylinebreaks definition and details`
+.. index:: switches;-m, –modifylinebreaks definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -452,7 +452,7 @@ to signify that your input has finished. Thanks to ((xu-cheng) 2018) for an upda
 
 .. describe:: -r, –replacement
 
-:index:`switches;-r, –replacement definition and details`
+.. index:: switches;-r, –replacement definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -464,11 +464,11 @@ You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to perform
 replacements/substitutions on your file; full details and examples are given in
 :numref:`sec:replacements`.
 
-:index:`verbatim;rv, replacementrespectverb switch`
+.. index:: verbatim;rv, replacementrespectverb switch
 
 .. describe:: -rv, –replacementrespectverb
 
-:index:`switches;-rv, –replacementrespectverb definition and details`
+.. index:: switches;-rv, –replacementrespectverb definition and details
 
 .. code-block:: latex
    :class: .commandshell
@@ -482,7 +482,7 @@ switch, but will *respect verbatim code blocks*; full details and examples are g
 
 .. describe:: -rr, –onlyreplacement
 
-:index:`switches;-rr, –onlyreplacement definition and details`
+.. index:: switches;-rr, –onlyreplacement definition and details
 
 .. code-block:: latex
    :class: .commandshell

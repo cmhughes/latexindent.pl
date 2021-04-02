@@ -54,7 +54,7 @@ tabs for the default indent, adds the ``tabbing`` environment/command to the lis
 that contains alignment delimiters; you might also like to refer to the many YAML files detailed
 throughout the rest of this documentation.
 
-:index:`indentation;defaultIndent using YAML file`
+.. index:: indentation;defaultIndent using YAML file
 
 .. code-block:: latex
    :caption: ``mysettings.yaml`` (example) 
@@ -72,7 +72,7 @@ You can make sure that your settings are loaded by checking ``indent.log`` for d
 specified a path that ``latexindent.pl`` doesn’t recognise then you’ll get a warning, otherwise
 you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_
 
-:index:`warning;editing YAML files`
+.. index:: warning;editing YAML files
 
 .. warning::	
 	
@@ -93,7 +93,7 @@ localSettings.yaml and friends
 The ``-l`` switch tells ``latexindent.pl`` to look for ``localSettings.yaml`` and/or friends in the
 *same directory* as ``myfile.tex``. For example, if you use the following command
 
-:index:`switches;-l demonstration`
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -131,7 +131,7 @@ and, assuming they exist, any user setting files specified in ``indentconfig.yam
 Your settings file can contain any switches that you’d like to change; a sample is shown in
 :numref:`lst:localSettings`, and you’ll find plenty of further examples throughout this manual.
 
-:index:`verbatim;verbatimEnvironments demonstration (-l switch)`
+.. index:: verbatim;verbatimEnvironments demonstration (-l switch)
 
 .. code-block:: latex
    :caption: ``localSettings.yaml`` (example) 
@@ -158,7 +158,7 @@ You may use the ``-y`` switch to load your settings; for example, if you wished 
 settings from :numref:`lst:localSettings` using the ``-y`` switch, then you could use the
 following command:
 
-:index:`verbatim;verbatimEnvironments demonstration (-y switch)`
+.. index:: verbatim;verbatimEnvironments demonstration (-y switch)
 
 .. code-block:: latex
    :class: .commandshell
@@ -168,7 +168,7 @@ following command:
 Note the use of ``;`` to specify another field within ``verbatimEnvironments``. This is shorthand,
 and equivalent, to using the following command:
 
-:index:`switches;-y demonstration`
+.. index:: switches;-y demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -178,9 +178,9 @@ and equivalent, to using the following command:
 You may, of course, specify settings using the ``-y`` switch as well as, for example, settings
 loaded using the ``-l`` switch; for example,
 
-:index:`switches;-l demonstration`
+.. index:: switches;-l demonstration
 
-:index:`switches;-y demonstration`
+.. index:: switches;-y demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -192,14 +192,14 @@ Any settings specified using the ``-y`` switch will be loaded *after* any specif
 
 If you wish to specify any regex-based settings using the ``-y`` switch,
 
-:index:`regular expressions;using -y switch`
+.. index:: regular expressions;using -y switch
 
 it is important not to use quotes surrounding the regex; for example, with reference to the ‘one
 sentence per line’ feature (:numref:`sec:onesentenceperline`) and the listings within
 :numref:`lst:sentencesEndWith`, the following settings give the option to have sentences end with
 a semicolon
 
-:index:`switches;-y demonstration`
+.. index:: switches;-y demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -215,7 +215,7 @@ Settings load order
 
 ``latexindent.pl`` loads the settings files in the following order:
 
-:index:`switches;-l in relation to other settings`
+.. index:: switches;-l in relation to other settings
 
 #. ``defaultSettings.yaml`` is always loaded, and can not be renamed;
 

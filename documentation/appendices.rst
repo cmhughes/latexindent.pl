@@ -264,12 +264,12 @@ logFilePreferences
 the log file, and we provide a few demonstrations here. Let’s say that we start with the code given
 in :numref:`lst:simple`, and the settings specified in :numref:`lst:logfile-prefs1-yaml`.
 
- .. literalinclude:: demonstrations/simple.tex
+.. literalinclude:: demonstrations/simple.tex
  	:class: .tex
  	:caption: ``simple.tex`` 
  	:name: lst:simple
 
- .. literalinclude:: demonstrations/logfile-prefs1.yaml
+.. literalinclude:: demonstrations/logfile-prefs1.yaml
  	:class: .baseyaml
  	:caption: ``logfile-prefs1.yaml`` 
  	:name: lst:logfile-prefs1-yaml
@@ -316,7 +316,7 @@ Differences from Version 2.2 to 3.0
 There are a few (small) changes to the interface when comparing Version 2.2 to Version 3.0.
 Explicitly, in previous versions you might have run, for example,
 
-:index:`switches;-o demonstration`
+.. index:: switches;-o demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -325,7 +325,7 @@ Explicitly, in previous versions you might have run, for example,
 
 whereas in Version 3.0 you would run any of the following, for example,
 
-:index:`switches;-o demonstration`
+.. index:: switches;-o demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -341,7 +341,7 @@ noting that the *output* file is given *next to* the ``-o`` switch.
 
 The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 onwards.
 
- .. literalinclude:: demonstrations/obsolete.yaml
+.. literalinclude:: demonstrations/obsolete.yaml
  	:class: .obsolete
  	:caption: Obsolete YAML fields from Version 3.0 
  	:name: lst:obsoleteYaml
@@ -350,12 +350,12 @@ There is a slight difference when specifying indentation after headings; specifi
 ``indentAfterThisHeading`` instead of ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
 :numref:`lst:indentAfterThisHeadingNew`
 
- .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
+.. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
  	:class: .baseyaml
  	:caption: ``indentAfterThisHeading`` in Version 2.2 
  	:name: lst:indentAfterThisHeadingOld
 
- .. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
+.. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
  	:class: .baseyaml
  	:caption: ``indentAfterThisHeading`` in Version 3.0 
  	:name: lst:indentAfterThisHeadingNew
@@ -365,19 +365,19 @@ as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YA
 :numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch,
 :numref:`lst:indentAfterThisHeadingNew2`.
 
-:index:`specialBeginEnd;update to displaymath V3.0`
+.. index:: specialBeginEnd;update to displaymath V3.0
 
- .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
+.. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
  	:class: .baseyaml
  	:caption: ``noAdditionalIndent`` in Version 2.2 
  	:name: lst:noAdditionalIndentOld
 
- .. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
+.. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
  	:class: .baseyaml
  	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
  	:name: lst:indentAfterThisHeadingNew1
 
- .. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
+.. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
  	:class: .baseyaml
  	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
  	:name: lst:indentAfterThisHeadingNew2

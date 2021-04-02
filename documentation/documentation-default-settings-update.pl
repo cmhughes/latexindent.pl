@@ -321,7 +321,7 @@ if(!$readTheDocsMode){
                     if($index_body =~m|!|s){
                         $index_body =~ s|!|;|s;
                     }
-                    "\\cmhindex\{".$index_body."\}";/sgex;
+                    "\n.. index:: ".$index_body."\n\n";/sgex;
 
         # line numbers for defaulSettings
         for (@namesAndOffsets){

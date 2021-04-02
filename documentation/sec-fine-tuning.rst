@@ -12,33 +12,33 @@ detailed in :numref:`lst:fineTuning`.
 This field is for those that would like to peek under the bonnet/hood and make some fine tuning to
 ``latexindent.pl``\ ’s operating.
 
-:index:`warning;fine tuning`
+.. index:: warning;fine tuning
 
-:index:`regular expressions;fine tuning`
+.. index:: regular expressions;fine tuning
 
-:index:`regular expressions;environments`
+.. index:: regular expressions;environments
 
-:index:`regular expressions;ifElseFi`
+.. index:: regular expressions;ifElseFi
 
-:index:`regular expressions;commands`
+.. index:: regular expressions;commands
 
-:index:`regular expressions;keyEqualsValuesBracesBrackets`
+.. index:: regular expressions;keyEqualsValuesBracesBrackets
 
-:index:`regular expressions;NamedGroupingBracesBrackets`
+.. index:: regular expressions;NamedGroupingBracesBrackets
 
-:index:`regular expressions;UnNamedGroupingBracesBrackets`
+.. index:: regular expressions;UnNamedGroupingBracesBrackets
 
-:index:`regular expressions;arguments`
+.. index:: regular expressions;arguments
 
-:index:`regular expressions;modifyLineBreaks`
+.. index:: regular expressions;modifyLineBreaks
 
-:index:`regular expressions;lowercase alph a-z`
+.. index:: regular expressions;lowercase alph a-z
 
-:index:`regular expressions;uppercase alph A-Z`
+.. index:: regular expressions;uppercase alph A-Z
 
-:index:`regular expressions;numeric 0-9`
+.. index:: regular expressions;numeric 0-9
 
-:index:`regular expressions;at least one +`
+.. index:: regular expressions;at least one +
 
 .. warning::	
 	
@@ -46,7 +46,7 @@ This field is for those that would like to peek under the bonnet/hood and make s
 	proceed with caution!
 	 
 
- .. literalinclude:: ../defaultSettings.yaml
+.. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
@@ -76,7 +76,7 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. ``\`` backslashes
 
-   :index:`regular expressions;at least one +`
+   .. index:: regular expressions;at least one +
 
    The ``+`` at the end means *at least one* of the above characters.
 
@@ -139,12 +139,12 @@ character.
 	
 	is given in :numref:`lst:finetuning1-default`.
 	
-	 .. literalinclude:: demonstrations/finetuning1.tex
+	.. literalinclude:: demonstrations/finetuning1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` 
 	 	:name: lst:finetuning1
 	
-	 .. literalinclude:: demonstrations/finetuning1-default.tex
+	.. literalinclude:: demonstrations/finetuning1-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` default 
 	 	:name: lst:finetuning1-default
@@ -153,7 +153,7 @@ character.
 	expected. We can *fine tune* the indentation scheme by employing the settings given in
 	:numref:`lst:fine-tuning1` and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -162,14 +162,14 @@ character.
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning1-mod1`.
 	
-	:index:`regular expressions;at least one +`
+	.. index:: regular expressions;at least one +
 	
-	 .. literalinclude:: demonstrations/finetuning1-mod1.tex
+	.. literalinclude:: demonstrations/finetuning1-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
 	 	:name: lst:finetuning1-mod1
 	
-	 .. literalinclude:: demonstrations/fine-tuning1.yaml
+	.. literalinclude:: demonstrations/fine-tuning1.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning1.yaml`` 
 	 	:name: lst:fine-tuning1
@@ -189,12 +189,12 @@ character.
 	
 	is given in :numref:`lst:finetuning2-default`.
 	
-	 .. literalinclude:: demonstrations/finetuning2.tex
+	.. literalinclude:: demonstrations/finetuning2.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` 
 	 	:name: lst:finetuning2
 	
-	 .. literalinclude:: demonstrations/finetuning2-default.tex
+	.. literalinclude:: demonstrations/finetuning2-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` default 
 	 	:name: lst:finetuning2-default
@@ -203,7 +203,7 @@ character.
 	expected. We can *fine tune* the indentation scheme by employing the settings given in
 	:numref:`lst:fine-tuning2` and running the command
 	
-	:index:`switches;-l demonstration`
+	.. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -212,12 +212,12 @@ character.
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
 	
-	 .. literalinclude:: demonstrations/finetuning2-mod1.tex
+	.. literalinclude:: demonstrations/finetuning2-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
 	 	:name: lst:finetuning2-mod1
 	
-	 .. literalinclude:: demonstrations/fine-tuning2.yaml
+	.. literalinclude:: demonstrations/fine-tuning2.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning2.yaml`` 
 	 	:name: lst:fine-tuning2
@@ -240,12 +240,12 @@ character.
 	
 	gives the output shown in :numref:`lst:finetuning3-mod1`.
 	
-	 .. literalinclude:: demonstrations/finetuning3.tex
+	.. literalinclude:: demonstrations/finetuning3.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` 
 	 	:name: lst:finetuning3
 	
-	 .. literalinclude:: demonstrations/finetuning3-mod1.tex
+	.. literalinclude:: demonstrations/finetuning3-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` using -y switch 
 	 	:name: lst:finetuning3-mod1

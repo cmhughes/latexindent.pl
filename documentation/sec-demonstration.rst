@@ -15,32 +15,32 @@ would be the same, regardless of the leading white space at the beginning of eac
 stripped by ``latexindent.pl`` (unless a ``verbatim``-like environment or ``noIndentBlock`` is
 specified – more on this in :numref:`sec:defuseloc`).
 
- .. literalinclude:: demonstrations/filecontents1.tex
+.. literalinclude:: demonstrations/filecontents1.tex
  	:class: .tex
  	:caption: ``filecontents1.tex`` 
  	:name: lst:filecontentsbefore
 
- .. literalinclude:: demonstrations/filecontents1-default.tex
+.. literalinclude:: demonstrations/filecontents1-default.tex
  	:class: .tex
  	:caption: ``filecontents1.tex`` default output 
  	:name: lst:filecontentsafter
 
- .. literalinclude:: demonstrations/tikzset.tex
+.. literalinclude:: demonstrations/tikzset.tex
  	:class: .tex
  	:caption: ``tikzset.tex`` 
  	:name: lst:tikzsetbefore
 
- .. literalinclude:: demonstrations/tikzset-default.tex
+.. literalinclude:: demonstrations/tikzset-default.tex
  	:class: .tex
  	:caption: ``tikzset.tex`` default output 
  	:name: lst:tikzsetafter
 
- .. literalinclude:: demonstrations/pstricks.tex
+.. literalinclude:: demonstrations/pstricks.tex
  	:class: .tex
  	:caption: ``pstricks.tex`` 
  	:name: lst:pstricksbefore
 
- .. literalinclude:: demonstrations/pstricks-default.tex
+.. literalinclude:: demonstrations/pstricks-default.tex
  	:class: .tex
  	:caption: ``pstricks.tex`` default output 
  	:name: lst:pstricksafter

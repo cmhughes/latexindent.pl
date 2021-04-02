@@ -12,7 +12,7 @@ The main limitation is to do with the alignment routine discussed in
 :ref:`page lst:aligndelims:advanced <lst:aligndelims:advanced>`; for example, consider the file
 given in :numref:`lst:matrix2`.
 
- .. literalinclude:: demonstrations/matrix2.tex
+.. literalinclude:: demonstrations/matrix2.tex
  	:class: .tex
  	:caption: ``matrix2.tex`` 
  	:name: lst:matrix2
@@ -20,7 +20,7 @@ given in :numref:`lst:matrix2`.
 The default output is given in :numref:`lst:matrix2-default`, and it is clear that the alignment
 routine has not worked as hoped, but it is *expected*.
 
- .. literalinclude:: demonstrations/matrix2-default.tex
+.. literalinclude:: demonstrations/matrix2-default.tex
  	:class: .tex
  	:caption: ``matrix2.tex`` default output 
  	:name: lst:matrix2-default

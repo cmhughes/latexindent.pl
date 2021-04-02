@@ -48,7 +48,7 @@ example as I would like to improve the code as much as possible.
 	Before you try the script on anything important (like your thesis), test it out on the sample files
 	in the ``test-case`` directory (“Home of Latexindent.pl” 2017).
 	
-	:index:`warning;be sure to test before use`
+	.. index:: warning;be sure to test before use
 	
 	
 	 
@@ -66,14 +66,14 @@ of producing.
 
 The different listings are presented using different styles:
 
- .. literalinclude:: demonstrations/demo-tex.tex
+.. literalinclude:: demonstrations/demo-tex.tex
  	:class: .tex
  	:caption: ``demo-tex.tex`` 
  	:name: lst:demo-tex
 
 This type of listing is a ``.tex`` file.
 
- .. literalinclude:: ../defaultSettings.yaml
+.. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference-demo
@@ -85,7 +85,7 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
 the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in
 :numref:`sec:defuseloc`.
 
- .. literalinclude:: ../defaultSettings.yaml
+.. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
@@ -96,7 +96,7 @@ the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is
 active; see :numref:`sec:modifylinebreaks` for more details.
 
- .. literalinclude:: ../defaultSettings.yaml
+.. literalinclude:: ../defaultSettings.yaml
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
@@ -146,7 +146,7 @@ as well as :numref:`sec:requiredmodules`.
 A word about regular expressions
 --------------------------------
 
-:index:`regular expressions;a word about`
+.. index:: regular expressions;a word about
 
 As you read this documentation, you may encounter the term *regular expressions*. I’ve tried to
 write this documentation in such a way so as to allow you to engage with them or not, as you prefer.
