@@ -36,7 +36,6 @@ otherwise you may need to install the missing modules – see :numref:`sec:modul
     use Getopt::Long;
     use Data::Dumper;
     use List::Util qw(max);
-    use Log::Log4perl qw(get_logger :levels);
 
     print "hello world";
     exit;
@@ -91,11 +90,19 @@ be:
     cpanm YAML::Tiny
     cpanm File::HomeDir
     cpanm Unicode::GCString
-    cpanm Log::Log4perl
-    cpanm Log::Dispatch
 
-For other distributions, the Ubuntu/Debian approach may work by visiting the software center, or
-else by running, for example,
+For other distributions, the Ubuntu/Debian approach may work as follows
+
+.. code-block:: latex
+   :class: .commandshell
+
+    sudo apt install perl
+    sudo cpan -i App::cpanminus
+    sudo cpanm YAML::Tiny
+    sudo cpanm File::HomeDir
+    sudo cpanm Unicode::GCString
+
+or else by running, for example,
 
 .. code-block:: latex
    :class: .commandshell
@@ -104,7 +111,7 @@ else by running, for example,
 
 If you are using Alpine, some ``Perl`` modules are not build-compatible with Alpine, but
 replacements are available through ``apk``. For example, you might use the commands given in
-:numref:`lst:alpine-install`; thanks to (jun-sheaf 2020) for providing these details.
+:numref:`lst:alpine-install`; thanks to (J. 2020) for providing these details.
 
 .. code-block:: latex
    :caption: ``alpine-install.sh`` 
@@ -115,7 +122,6 @@ replacements are available through ``apk``. For example, you might use the comma
 
     # Installing incompatible latexindent perl dependencies via apk
     apk --no-cache add \
-        perl-log-log4perl \
         perl-log-dispatch \
         perl-namespace-autoclean \
         perl-specio \
@@ -149,8 +155,6 @@ Users of the Macintosh operating system might like to explore the following comm
     cpanm YAML::Tiny
     cpanm File::HomeDir
     cpanm Unicode::GCString
-    cpanm Log::Log4perl
-    cpanm Log::Dispatch
 
 Windows
 ~~~~~~~
@@ -406,10 +410,10 @@ as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YA
 
 .. raw:: html
 
-   <div id="ref-jasjuang">
+   <div id="ref-jun-sheaf">
 
-Juang, Jason. 2015. “Add in Path Installation.” November 24.
-https://github.com/cmhughes/latexindent.pl/pull/38.
+J., Randolf. 2020. “Alpine-Linux Instructions.” August 10.
+https://github.com/cmhughes/latexindent.pl/pull/214.
 
 .. raw:: html
 
@@ -417,10 +421,10 @@ https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
 
-   <div id="ref-jun-sheaf">
+   <div id="ref-jasjuang">
 
-jun-sheaf. 2020. “Alpine-Linux Instructions.” August 10.
-https://github.com/cmhughes/latexindent.pl/pull/214.
+Juang, Jason. 2015. “Add in Path Installation.” November 24.
+https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
 

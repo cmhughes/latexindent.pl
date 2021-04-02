@@ -128,12 +128,24 @@ sub output_indented_text{
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-    
+
     # put the final line in the logfile
     $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}") if ${$masterSettings{logFilePreferences}}{endLogFileWith};
     
     # github info line
     $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+
+    # open log file
+    my $logfileName = $switches{logFileName}||"indent.log";
+    my $logfile;
+    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
+
+    foreach my $line (@{LatexIndent::Logger::logFileLines}){
+        print $logfile $line,"\n";
+    }
+
+    # close log file
+    close($logfile);
     
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};

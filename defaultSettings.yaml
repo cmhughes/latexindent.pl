@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.8.3, 2020-11-06
+# defaultSettings.yaml for latexindent.pl, version 3.9.1, 2021-03-21
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -89,10 +89,6 @@ logFilePreferences:
     showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
-    PatternLayout:
-        default: "%A%n"
-        trace: "%A%n"
-        ttrace: "%A%n"
 
 #  verbatim environments specified 
 #  in this field will not be changed at all!
@@ -357,6 +353,7 @@ commandCodeBlocks:
       - 'decoration'
       - '\+\+'
       - '\-\-'
+      - '\#\#\d'
     commandNameSpecial:
       - 
         amalgamate: 1
@@ -617,13 +614,13 @@ fineTuning:
     environments:
       name: '[a-zA-Z@\*0-9_\\]+' 
     ifElseFi:
-      name: '@?if[a-zA-Z@]*?' 
+      name: '(?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?'
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
     keyEqualsValuesBracesBrackets:
-      name: '[a-zA-Z@\*0-9_\/.\h\{\}:\#-]+?'
+      name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
       follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
-    NamedGroupingBracesBrackets:
+    namedGroupingBracesBrackets:
       name: '[0-9\.a-zA-Z@\*><]+?'
       follow: '\h|\R|\{|\[|\$|\)|\('
     UnNamedGroupingBracesBrackets: 

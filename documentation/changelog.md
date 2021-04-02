@@ -1,5 +1,26 @@
 # changelog.md
 
+## V3.9.1, March 21, 2021
+minor updates to documentation:
+- https://github.com/cmhughes/latexindent.pl/issues/255
+- https://github.com/cmhughes/latexindent.pl/issues/259
+minor updates to fineTuning:
+- https://github.com/cmhughes/latexindent.pl/issues/257
+- https://github.com/cmhughes/latexindent.pl/issues/258
+
+## V3.9, March 14, 2021
+- https://github.com/cmhughes/latexindent.pl/issues/229, Log4Perl module removed, logging is now
+  perhaps too simple, but hopefully eases installation
+
+small enhancements:
+- https://github.com/cmhughes/latexindent.pl/issues/242, update to -l switch
+- https://github.com/cmhughes/latexindent.pl/issues/239, update to commandCodeBlocks 
+
+bug fixes:
+- https://github.com/cmhughes/latexindent.pl/issues/243, bug with -y switch
+- https://github.com/cmhughes/latexindent.pl/issues/249, bug with item indentation
+- https://github.com/cmhughes/latexindent.pl/issues/250, bug with ifElseFi
+
 ## V3.8.3, November 6, 2020
 a minor release that implements fixes for the following issues:
 

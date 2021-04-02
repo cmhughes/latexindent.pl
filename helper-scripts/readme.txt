@@ -1,5 +1,6 @@
 Typical running order of these helper scripts:
     # NOTE: documentation-default-settings-update.pl is now located in documentation folder
+    - <at least one pdflatex of documentation to get total listings correct (for .rst)>
     - perl documentation-default-settings-update.pl
     - perl documentation-default-settings-update.pl -r
     - <change update-version appropriately>

@@ -61,7 +61,7 @@ latexindent.pl -s pgfkeys-equals-remove-line-breaks -m -l=equals-not-finishes-wi
 # outn.cls
 latexindent.pl -s outn-tiny.cls -o=outn-tiny-default.cls
 latexindent.pl -s outn-small.cls -o=outn-small-default.cls
-latexindent.pl -s outn.cls -o=outn-default.cls -l=notabular.yaml,resetItem.yaml -g=cmh.log
+latexindent.pl -s outn.cls -o=outn-default.cls -l=notabular.yaml,resetItem.yaml,ifstar.yaml -g=cmh.log
 # optional argument to an environment with keys, and commands
 latexindent.pl -s environment-opt-arg-with-commands1 -o=environment-opt-arg-with-commands1-default.tex
 # mixed object example

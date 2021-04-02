@@ -138,5 +138,8 @@ latexindent.pl -s ifnextchar.tex -o=+-mod1.tex -l=com-name-special1.yaml
 latexindent.pl -s ifnextchar.tex -o=+-mod2.tex -l=com-name-special2.yaml
 # issue 123: https://github.com/cmhughes/latexindent.pl/issues/123
 latexindent.pl -s issue-123.tex -o=+-default.tex
+
+# issue 239: https://github.com/cmhughes/latexindent.pl/issues/239
+latexindent.pl -s issue-239.tex -o=+-default.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 git status

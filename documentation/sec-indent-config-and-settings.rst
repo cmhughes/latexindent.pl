@@ -87,11 +87,11 @@ you’ll get confirmation that ``latexindent.pl`` has read your settings file. [
 
 .. _sec:localsettings:
 
-localSettings.yaml
-------------------
+localSettings.yaml and friends
+------------------------------
 
-The ``-l`` switch tells ``latexindent.pl`` to look for ``localSettings.yaml`` in the *same
-directory* as ``myfile.tex``. For example, if you use the following command
+The ``-l`` switch tells ``latexindent.pl`` to look for ``localSettings.yaml`` and/or friends in the
+*same directory* as ``myfile.tex``. For example, if you use the following command
 
 :index:`switches;-l demonstration`
 
@@ -100,8 +100,21 @@ directory* as ``myfile.tex``. For example, if you use the following command
 
     latexindent.pl -l myfile.tex
 
-then ``latexindent.pl`` will (assuming it exists) load ``localSettings.yaml`` from the same
-directory as ``myfile.tex``.
+then ``latexindent.pl`` will search for and then, assuming they exist, load each of the following
+files in the following order:
+
+#. localSettings.yaml
+
+#. latexindent.yaml
+
+#. .localSettings.yaml
+
+#. .latexindent.yaml
+
+These files will be assumed to be in the same directory as ``myfile.tex``, or otherwise in the
+current working directory. You do not need to have all of the above files, usually just one will be
+sufficient. In what follows, whenever we refer to ``localSettings.yaml`` it is assumed that it can
+mean any of the four named options listed above.
 
 If you’d prefer to name your ``localSettings.yaml`` file something different, (say,
 ``mysettings.yaml`` as in :numref:`lst:mysettings`) then you can call ``latexindent.pl`` using,

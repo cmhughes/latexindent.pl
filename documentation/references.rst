@@ -22,10 +22,21 @@ http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
 
 .. raw:: html
 
+   <div id="ref-sransara">
+
+Abey, Sam. 2019. “Print Usage Tip to Stderr Only If Stdin Is Tty.” September 17.
+https://github.com/cmhughes/latexindent.pl/pull/174.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-paulo">
 
 Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23.
-https://github.com/cereda/arara/blob/master/rules/indent.yaml.
+https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
 .. raw:: html
 
@@ -84,10 +95,10 @@ Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
 
 .. raw:: html
 
-   <div id="ref-jasjuang">
+   <div id="ref-jun-sheaf">
 
-Juang, Jason. 2015. “Add in Path Installation.” November 24.
-https://github.com/cmhughes/latexindent.pl/pull/38.
+J., Randolf. 2020. “Alpine-Linux Instructions.” August 10.
+https://github.com/cmhughes/latexindent.pl/pull/214.
 
 .. raw:: html
 
@@ -95,10 +106,21 @@ https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
 
-   <div id="ref-jun-sheaf">
+   <div id="ref-jeanlego">
 
-jun-sheaf. 2020. “Alpine-Linux Instructions.” August 10.
-https://github.com/cmhughes/latexindent.pl/pull/214.
+jeanlego. 2020. “Search localSettings in Cwd as Well.” September 15.
+https://github.com/cmhughes/latexindent.pl/pull/221.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-jasjuang">
+
+Juang, Jason. 2015. “Add in Path Installation.” November 24.
+https://github.com/cmhughes/latexindent.pl/pull/38.
 
 .. raw:: html
 
@@ -138,6 +160,17 @@ https://github.com/cmhughes/latexindent.pl/issues/81.
 
 .. raw:: html
 
+   <div id="ref-newptcai">
+
+newptcai. 2021. “Update Appendices.tex.” February 16.
+https://github.com/cmhughes/latexindent.pl/pull/221.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-jowens">
 
 Owens, John. 2017. “Paragraph Line Break Routine Removal.” May 27.
@@ -152,6 +185,17 @@ https://github.com/cmhughes/latexindent.pl/issues/33.
    <div id="ref-perlbrew">
 
 “Perlbrew.” 2017. Accessed January 23. http://perlbrew.pl/.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-alexreg">
+
+Regueiro, Alexander. 2021. “Update Help Screen.” March 18.
+https://github.com/cmhughes/latexindent.pl/pull/261.
 
 .. raw:: html
 
