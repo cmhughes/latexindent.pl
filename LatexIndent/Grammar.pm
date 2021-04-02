@@ -47,39 +47,36 @@ sub get_latex_indent_parser{
         # FILE is the top-level element, everything else follows from it
         <File>
     
-        # WHITE SPACE: 
-        #   it is *vital* to re-define the whitespace <ws> element in order
-        #   to keep track of blank lines
-        #
-        #   reference: https://metacpan.org/pod/Regexp::Grammars#Tokens-vs-rules-(whitespace-handling)
-        #
-        <token: ws>
-            (?:\h*)
-    
         <objrule: LatexIndent::File=File>          
+            <ws: ((?<!^)\h)*>
             <headinglevel=(?{1})> 
             <[Element(:headinglevel)]>*
-    
+            <finalLineBreaks=(^\R+)>?\Z
+     
         # each of the different CODE BLOCKS and COMMENTS and LINE BREAKS
         # are all ELEMENTS to latexindent.pl
         #
         <objrule: LatexIndent::Element=Element>    
-            <NoIndentBlock> 
-            | (?: 
-                  <headinglevel=(?{ $ARG{headinglevel}//=0; 
-                                    $ARG{incrementHeadingLevel}//=0; 
-                                    $ARG{headinglevel} + $ARG{incrementHeadingLevel}; })>
-                  <BeginsWithBackSlash(:headinglevel)>
-              )
-            | <KeyEqualsValuesBraces> 
-            | <NamedGroupingBracesBrackets> 
-            | <Special> 
-            | <TrailingComment> 
-            | <BlankLine>
-            | <Literal>
+            <ws: \h*>
+            <leadingBlankLines=(^\R+)>?
+            (
+                <NoIndentBlock> 
+                | (?: 
+                      <headinglevel=(?{ $ARG{headinglevel}//=0; 
+                                        $ARG{incrementHeadingLevel}//=0; 
+                                        $ARG{headinglevel} + $ARG{incrementHeadingLevel}; })>
+                      <BeginsWithBackSlash(:headinglevel)>
+                  )
+                | <KeyEqualsValuesBraces> 
+                | <NamedGroupingBracesBrackets> 
+                | <Special> 
+                | <TrailingComment> 
+                | <Literal>
+            )
             
         # Begins With Backslash
         <objrule: LatexIndent::Element=BeginsWithBackSlash>    
+            <ws: \h*>
             <begin=(\\)>
             ( <PreambleVerbatim>
                 | <Preamble>
@@ -101,6 +98,7 @@ sub get_latex_indent_parser{
         #
         # Note: this is just a Verbatim block
         <objrule: LatexIndent::Verbatim=NoIndentBlock>    
+            <ws: \h*>
             <begin=((?<!\\)\%\h*\\begin\{)>                              # \begin{
             <name=(noindent)>\}                                          #   name
             <type=(?{'Verbatim'})>                                       # }
@@ -136,6 +134,7 @@ sub get_latex_indent_parser{
         #
         # rule for INDENTING preamble
         <objrule: LatexIndent::Preamble=Preamble>    
+            <ws: \h*>
             <require: (?{$LatexIndent::GetYamlSettings::masterSettings{indentPreamble};})>
             <begin=(?{"\\documentclass"})>
             documentclass
@@ -163,6 +162,7 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::FileContents=FileContents>    
+            <ws: \h*>
             <begin=(?{"\\begin\{"})>                # \begin{
             <name=(filecontents)>\}             #   name
             <type=(?{'FileContents'})>          # }
@@ -191,6 +191,7 @@ sub get_latex_indent_parser{
         #   \part, \chapter, \section etc
         #
         <objrule: LatexIndent::Heading=Heading>    
+            <ws: \h*>
             <headinglevel=(?{  $ARG{headinglevel}  })>
             <incrementHeadingLevel=(?{1})>
             <begin=(?{"\\"})>
@@ -228,11 +229,13 @@ sub get_latex_indent_parser{
         #   provides the *name* of the headings *AND* the backslash
         <token: headingToken>
             <headinglevel=(?{  $ARG{headinglevel}  })>
+            <leadingBlankLines=(^\R+)>?
             \\(<headingText(:headinglevel)>)<[Arguments]>+
     
         # Commands
         #   \<name> <arguments>
         <objrule: LatexIndent::Command=Command>    
+            <ws: \h*>
             <begin=(?{"\\"})>
             <name=([a-zA-Z0-9*]+)>
             <[Arguments]>+
@@ -261,6 +264,7 @@ sub get_latex_indent_parser{
         # Optional Arguments
         #   \[ .... \]
         <objrule: LatexIndent::OptionalArgument=OptionalArg> 
+            <ws: \h*>
             <begin=(\[)>                        # [
             <leadingHorizontalSpace=(\h*)>      #
             <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -274,6 +278,7 @@ sub get_latex_indent_parser{
         # Mandatory Arguments
         #   \{ .... \}
         <objrule: LatexIndent::MandatoryArgument=MandatoryArg> 
+            <ws: \h*>
             <begin=(\{)>                        # {
             <leadingHorizontalSpace=(\h*)>      #
             <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
@@ -294,6 +299,7 @@ sub get_latex_indent_parser{
         #       body ...
         #   \end{<name>}
         <objrule: LatexIndent::Environment=Environment>    
+            <ws: \h*>
             <begin=(?{"\\begin\{"})>                # \begin{
             <name=([a-zA-Z0-9]+)>\}                 #   name
             <type=(?{'Environment'})>               # }
@@ -328,6 +334,7 @@ sub get_latex_indent_parser{
         #       $ ... $
         #       \[ ... \]
         <objrule: LatexIndent::Special=Special>    
+            <ws: \h*>
             <begin=((??{$LatexIndent::Special::special_begin_reg_ex}))>
             <type=(?{'Special'})>
             <leadingHorizontalSpace=(\h*)>
@@ -414,16 +421,6 @@ sub get_latex_indent_parser{
             <begin=((?<!\\)\%)>
             <body=([^\n]*\R)>
             
-        # BlankLine
-        #   matches at least one blank line and
-        #   stores into an array
-        #
-        <objrule: LatexIndent::BlankLine=BlankLine>    
-            <[body=blanklinetoken]>+
-    
-        <token: blanklinetoken>
-            ^\h*\R
-    
         # anything else
         <objrule: LatexIndent::Literal=Literal>    
             <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)+)>

@@ -50,7 +50,7 @@ sub indent {
                 || $self->{BlankLine}
                 || $self->{Heading}
               )->indent;
-    return $body;
+    return ($self->{leadingBlankLines}?$self->{leadingBlankLines}:q()).$body;
 }
  
 1;

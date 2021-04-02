@@ -16,7 +16,7 @@ sub indent {
     my $self = shift;
     my $body = q();
     $body .= $_->indent foreach @{$self->{Element}};
-    return $body;
+    return $body.($self->{finalLineBreaks}?$self->{finalLineBreaks}:q());
 }
  
 1;
