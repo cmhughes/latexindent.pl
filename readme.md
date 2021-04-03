@@ -1,6 +1,6 @@
 # latexindent.pl
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
+[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
@@ -18,44 +18,42 @@ can modify line breaks.
 ## author 
 Chris Hughes (cmhughes)
 
-## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
-
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=master)](https://travis-ci.org/cmhughes/latexindent.pl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=master&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
-
 ## documentation
 
 For complete details, please see:
 
-- pdf: http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf
-- online: http://latexindentpl.readthedocs.io/ (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
+- pdf: [http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf](http://mirrors.ctan.org/support/latexindent/documentation/latexindent.pdf)
+- online: [http://latexindentpl.readthedocs.io/](http://latexindentpl.readthedocs.io/) (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest)
 
+## build status
+I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
+
+[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
+
 ## Windows executable
-`latexindent.exe` is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent)
-and is created using 
+`latexindent.exe` is a standalone executable file which does not require a `perl` installation. It is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent) and also from the [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository. 
+`latexindent.exe`  is created using 
 
-      perl ppp.pl -u -o latexindent.exe latexindent.pl
+    perl ppp.pl -u -o latexindent.exe latexindent.pl
 
-using the `Par::Packer` perl module.
-
-`ppp.pl` is located in the helper-scripts directory.
+using the `Par::Packer` perl module. `ppp.pl` is located in the helper-scripts directory of this repository. 
 
 ## usage
 
 You'll need
 
-        latexindent.pl
-        LatexIndent/*.pm
-        defaultSettings.yaml
+    latexindent.pl
+    LatexIndent/*.pm
+    defaultSettings.yaml
 
-in the same directory. Windows users might prefer to get 
+in the same directory. 
 
-        latexindent.exe
-        defaultSettings.yaml
+Windows users might prefer to get 
 
-and `latexindent.exe` is available at `https://ctan.org/tex-archive/support/latexindent`.
+    latexindent.exe
+    defaultSettings.yaml
 
 ## perl modules
 You'll need a few readily-available perl modules. Full details are given within the Appendix 
@@ -68,7 +66,7 @@ and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
 A nice way to test the script is to navigate to the test-cases 
 directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case version is not available):
 
-        ./test-cases.sh
+    ./test-cases.sh
 
 ## *important*
 
@@ -96,19 +94,19 @@ page of this repository.
 I follow the development model given here: http://nvie.com/posts/a-successful-git-branching-model/
 which means that latexindent.pl always has (at least) two branches:
     
-        master
-        develop
+    main
+    develop
 
-The `master` branch always contains the released version and `develop` contains the 
+The `main` branch always contains the released version and `develop` contains the 
 development version. When developing a new feature or bug fix, I typically use:
     
-        git checkout develop
-        git checkout -b feature/name-of-feature
+    git checkout develop
+    git checkout -b feature/name-of-feature
 
 and then I merge it into the `develop` branch using
 
-        git checkout develop
-        git merge feature/name-of-feature --no-ff
+    git checkout develop
+    git merge feature/name-of-feature --no-ff
 
 ## perl version
 
