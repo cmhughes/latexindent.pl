@@ -13,6 +13,7 @@ sub explain {
 
 sub indent {
     my $self = shift;
+    $self->{body} =~ s/\R\h+/\n/sg;
     return $self->{body};
 }
 

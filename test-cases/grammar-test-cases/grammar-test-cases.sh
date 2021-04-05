@@ -67,6 +67,12 @@ for i in {1..2}; do
     latexindent.pl -s preamble$i.tex -o=+-mod1.tex -y='indentPreamble:1'
 done
 
+# literal
+for i in {1..1}; do 
+    latexindent.pl -s literal$i.tex -o=+-default.tex
+done
+
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

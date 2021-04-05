@@ -39,7 +39,7 @@ sub get_latex_indent_parser{
         
         # https://metacpan.org/pod/Regexp::Grammars#Debugging1
         #<logfile: cmh.log >
-        # <debug: match>
+        #<debug: match>
     
         # https://metacpan.org/pod/Regexp::Grammars#Subrule-results
         <nocontext:>
@@ -81,7 +81,7 @@ sub get_latex_indent_parser{
             ( <PreambleVerbatim>
                 | <Preamble>
                 | <EnvironmentStructure> 
-                | (?: 
+                | (?> 
                       <headinglevel=(?{ $ARG{headinglevel}//=0; })>
                       <Heading(:headinglevel)>
                   )
@@ -252,7 +252,7 @@ sub get_latex_indent_parser{
         # NamedGroupingBracesBrackets
         #   <name> <arguments>
         <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
-            <name=([a-zA-Z0-9*]++)>
+            <name=([a-zA-Z0-9*]++(?!(\h|\R)*[a-zA-Z0-9]))>
             <[Arguments]>+
             <linebreaksAtEndEnd> 
     
@@ -419,11 +419,11 @@ sub get_latex_indent_parser{
         # Comment
         <objrule: LatexIndent::TrailingComment=TrailingComment>    
             <begin=((?<!\\)\%)>
-            <body=([^\n]*\R)>
+            <body=([^\n]*+\R)>
             
         # anything else
         <objrule: LatexIndent::Literal=Literal>    
-            <body=((?:[a-zA-Z0-9&^()']|((?<!^)\h)|((?<!^)\R)|\\\\)++)>
+            <body=((?>[a-zA-Z0-9&^()'\h]|\\\\|((?<!^)\R))++)>
     
     }xms;
 
