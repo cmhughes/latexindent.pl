@@ -1,0 +1,16 @@
+defaultIndent: ' '
+
+specialBeginEnd:
+    path:
+        begin: '\\path'
+        end: ';'
+        lookForThis: 1
+    specialBeforeCommand: 1
+
+noAdditionalIndentGlobal:
+    namedGroupingBracesBrackets: 1
+    UnNamedGroupingBracesBrackets: 1
+
+fineTuning:
+    UnNamedGroupingBracesBrackets: 
+      follow: '\{|\[|,|&|\)|\(|\$|\R|\h'
