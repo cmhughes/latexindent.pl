@@ -41,7 +41,7 @@ sub find_noindent_block{
                             (
                                 (?!<\\)
                                 %
-                                \h*                         # possible horizontal spaces
+                                (?:\h|(?!<\\)%)*            # possible horizontal spaces
                                 \\begin\{
                                         $noIndentBlockSpec  # environment name captured into $2
                                        \}                   # % \begin{noindentblock} statement
@@ -52,7 +52,7 @@ sub find_noindent_block{
                             (
                                 (?!<\\)
                                 %                           # %
-                                \h*                         # possible horizontal spaces
+                                (?:\h|(?!<\\)%)*            # possible horizontal spaces
                                 \\end\{$noIndentBlockSpec\} # \end{noindentblock}
                             )                               # % \end{<something>} statement
                         /sx;

@@ -61,7 +61,11 @@ latexindent.pl -s  -m verbatim-trailing-comments -l=verb-begin2.yaml -o=+-mod2
 latexindent.pl -s -w verbatim-commands.tex
 latexindent.pl -s verbatim-trailing-comments1.tex -o=+-default
 
-#   verbatim noindent block -- no need to test this one...?
+#   verbatim noindent block 
+latexindent.pl -s issue-266.tex -o=+-default
+latexindent.pl -s issue-266a.tex -o=+-default
+latexindent.pl -s issue-266b.tex -o=+-default
+
 [[ $noisyMode == 1 ]] && makenoise
 git status
 verbatimTest=0
