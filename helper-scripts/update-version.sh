@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.9'
-newVersion='3.9.1'
-oldDate='2021-03-14'
-newDate='2021-03-21'
+oldVersion='3.9.1'
+newVersion='3.9.2'
+oldDate='2021-03-21'
+newDate='2021-04-06'
 
 cd ../
 cd documentation
@@ -44,6 +44,7 @@ sed -i.bak "s/version $oldVersion/version $newVersion/" documentation/readme.txt
 sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
+sed -i.bak "s/$oldDate/$newDate/" documentation/title.tex
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
 cd documentation
 ## perl documentation-default-settings-update.pl -r

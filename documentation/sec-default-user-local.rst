@@ -195,6 +195,8 @@ them with a comment symbol, ``%``, followed by as many spaces (possibly none) as
     %(*@@*)\end{noindent}
         
 
+Important note: it is assumed that the ``noindent`` block statements appear on their own line.
+
 .. describe:: removeTrailingWhitespace:fields
 
 .. label follows

@@ -1,5 +1,8 @@
 # changelog.md
 
+## V3.9.2, April 6, 2021
+minor update to include noindent block bug fix for https://github.com/cmhughes/latexindent.pl/issues/266
+
 ## V3.9.1, March 21, 2021
 minor updates to documentation:
 - https://github.com/cmhughes/latexindent.pl/issues/255
