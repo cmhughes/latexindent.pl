@@ -1,8 +1,8 @@
 #!/bin/bash
 # A little script to help me prepare the bundle for ctan
 
-# make sure to be on the master branch
-git checkout master
+# make sure to be on the main branch
+git checkout main
 # re-compile the documentation
 cd ../documentation
 arara latexindent
