@@ -81,7 +81,7 @@ sub get_latex_indent_parser{
             ( <PreambleVerbatim>
                 | <Preamble>
                 | <EnvironmentStructure> 
-                | (?> 
+                | (?: 
                       <headinglevel=(?{ $ARG{headinglevel}//=0; })>
                       <Heading(:headinglevel)>
                   )
@@ -244,15 +244,15 @@ sub get_latex_indent_parser{
         # key = value braces/brackets
         #   key = <arguments>
         <objrule: LatexIndent::KeyEqualsValuesBraces=KeyEqualsValuesBraces>    
-            <name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]++)>
-            <equals=((?:\h|\R)*=(\h|\R)*)>
+            <ws: \h*>
+            (<name=([a-zA-Z@\*0-9_\/.\h\{\}:\#-]++)><beforeEquals=Between>?<equals=(=++)><afterEquals=Between>?)
             <[Arguments]>+
             <linebreaksAtEndEnd> 
     
         # NamedGroupingBracesBrackets
         #   <name> <arguments>
         <objrule: LatexIndent::NamedGroupingBracesBrackets=NamedGroupingBracesBrackets>    
-            <name=([a-zA-Z0-9*]++(?!(\h|\R)*[a-zA-Z0-9]))>
+            (<name=([a-zA-Z0-9*]++)>(?!(<Between>?<Literal>))<Between>?)++
             <[Arguments]>+
             <linebreaksAtEndEnd> 
     
