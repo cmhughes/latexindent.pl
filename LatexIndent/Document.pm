@@ -37,7 +37,6 @@ use LatexIndent::Element;
 use LatexIndent::File;
 use LatexIndent::Grammar qw/get_latex_indent_parser/;
 use LatexIndent::Literal;
-use LatexIndent::BlankLine;
 
 # code blocks
 use LatexIndent::Arguments;

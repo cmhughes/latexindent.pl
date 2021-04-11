@@ -9,12 +9,14 @@ our $latex_indent_parser;
 
 # TO DO: eventually these hashes need to live in GetYamlSettings
 # TO DO: environment_items and ifelsefi_else to be constructed *ONCE* at time of YAML reading
-our %environment_items = (cmh=>({item=>qr/\\item(?:((\h*\R+)|(\h*)))/s }),);
-our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h*\R)*)/s );
 # TO DO: Headings names need constructing
 #        and then add a <require> check within the Heading block
 # TO DO: filecontents names need reading from YAML
 # TO DO: Verbatim token needs to do a document check to ensure it isn't present in the document
+# TO DO: Trailing Comment regex needs 'noindent' block names read from YAML, and remove hard coding
+
+our %environment_items = (cmh=>({item=>qr/\\item(?:((\h*\R+)|(\h*)))/s }),);
+our %ifelsefi_else = (else=>qr/(?:\\else|\\or)(?:(\h*\R)*)/s );
 
 # about modifiers, from Chapter 7 (page 212) Mastering Regular Expressions, Friedl
 #   
@@ -269,7 +271,6 @@ sub get_latex_indent_parser{
             <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
             <[Element]>*?                       #   ANYTHING
             <linebreaksAtEndBody=(\R*)>         #
-            <.ws>
             <end=(\])>                          # ]
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
@@ -283,7 +284,6 @@ sub get_latex_indent_parser{
             <linebreaksAtEndBegin=(\R*)>        #   ANYTHING
             <[Element]>*?                       #   ANYTHING
             <linebreaksAtEndBody=(\R*)>         #
-            \h*
             <end=(\})>                          # } 
             <trailingHorizontalSpace=(\h*)>  
             <linebreaksAtEndEnd> 
@@ -324,7 +324,7 @@ sub get_latex_indent_parser{
             <begin=(?{"\\if"})>              # \if
             if
             <type=(?{'IfElseFi'})>           # 
-            <leadingHorizontalSpace=(\h*)>   #  ANYTHING
+            <leadingHorizontalSpace=(\h*)>   #  
             <linebreaksAtEndBegin=(\R*)>     # 
             <GroupOfItems(:name,:type)>?     #  
             <end=(\\fi)>                     # \fi
@@ -420,11 +420,6 @@ sub get_latex_indent_parser{
         <token: linebreaksAtEndEnd>
             (?<!^)\h*\R?
     
-        # Comment
-        <objrule: LatexIndent::TrailingComment=TrailingComment>    
-            <begin=((?<!\\)\%)>
-            <body=([^\n]*+\R)>
-            
         # anything else
         <objrule: LatexIndent::Literal=Literal>    
             <body=((?>[a-zA-Z0-9&^()'\h]                        # literal characters 
