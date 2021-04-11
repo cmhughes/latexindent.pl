@@ -21,7 +21,6 @@ use Unicode::GCString;
 use Data::Dumper;
 use Exporter qw/import/;
 use List::Util qw/max min sum/;
-use LatexIndent::TrailingComment qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
@@ -34,6 +33,7 @@ our @formattedBody; # array for the new body
 our @minMultiColSpan;
 our @maxColumnWidth;
 our @maxDelimiterWidth;
+our $trailingCommentRegExp=q();
 
 sub find_aligned_block{
     my $self = shift;

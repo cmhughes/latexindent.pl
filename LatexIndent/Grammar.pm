@@ -290,7 +290,12 @@ sub get_latex_indent_parser{
     
         # Between arguments
         <objrule: LatexIndent::Between=Between>                      
-            <body=((?>\h|\R|[*_^])++)>|<TrailingComment>
+            <body=((?>
+                    \h                                           # horizontal space
+                    |\R                                          # line breaks
+                    |[*_^]                                       # characters allowed
+                    |(?<!\\)\%(?!\h*\\begin\{noindent\})[^\n]*   # trailing comments, but not followed by \begin{noindent}
+                   )++)>
             
         # Environments
         #   \begin{<name>}<Arguments>
