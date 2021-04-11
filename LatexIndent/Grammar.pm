@@ -62,8 +62,7 @@ sub get_latex_indent_parser{
             <ws: \h*>
             <leadingBlankLines=(^\R+)>?
             (
-                <NoIndentBlock> 
-                | (?: 
+                (?: 
                       <headinglevel=(?{ $ARG{headinglevel}//=0; 
                                         $ARG{incrementHeadingLevel}//=0; 
                                         $ARG{headinglevel} + $ARG{incrementHeadingLevel}; })>
@@ -73,6 +72,7 @@ sub get_latex_indent_parser{
                 | <NamedGroupingBracesBrackets> 
                 | <Special> 
                 | <Literal>
+                | <NoIndentBlock> 
             )
             
         # Begins With Backslash
@@ -322,8 +322,8 @@ sub get_latex_indent_parser{
         #       body ...
         #   \fi
         <objrule: LatexIndent::IfElseFi=IfElseFi>    
-            <begin=(?{"\\if"})>              # \if
             if
+            <begin=(?{"\\if"})>              # \if
             <type=(?{'IfElseFi'})>           # 
             <leadingHorizontalSpace=(\h*)>   #  
             <linebreaksAtEndBegin=(\R*)>     # 
