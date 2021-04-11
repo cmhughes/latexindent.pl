@@ -9,6 +9,7 @@ sub explain {
       || $self->{KeyEqualsValuesBraces}
       || $self->{NoIndentBlock} 
       || $self->{Verbatim} 
+      || $self->{Documentclass} 
       || $self->{Preamble} 
       || $self->{PreambleVerbatim} 
       || $self->{FileContents} 
@@ -34,6 +35,7 @@ sub indent {
                 || $self->{KeyEqualsValuesBraces}
                 || $self->{NoIndentBlock} 
                 || $self->{Verbatim} 
+                || $self->{Documentclass} 
                 || $self->{Preamble} 
                 || $self->{PreambleVerbatim} 
                 || $self->{FileContents} 

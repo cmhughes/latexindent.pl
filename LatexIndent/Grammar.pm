@@ -79,8 +79,7 @@ sub get_latex_indent_parser{
         <objrule: LatexIndent::Element=BeginsWithBackSlash>    
             <ws: \h*>
             <begin=(\\)>
-            ( <PreambleVerbatim>
-                | <Preamble>
+            (<Documentclass>
                 | <EnvironmentStructure> 
                 | (?: 
                       <headinglevel=(?{ $ARG{headinglevel}//=0; })>
@@ -133,12 +132,15 @@ sub get_latex_indent_parser{
         #       ...
         #   \begin{document}
         #
+        <objrule: LatexIndent::Element=Documentclass>    
+            documentclass
+            ( <PreambleVerbatim> | <Preamble> )
+
         # rule for INDENTING preamble
         <objrule: LatexIndent::Preamble=Preamble>    
             <ws: \h*>
             <require: (?{$LatexIndent::GetYamlSettings::masterSettings{indentPreamble};})>
             <begin=(?{"\\documentclass"})>
-            documentclass
             <[Arguments]>+
             (<!beginDocument><[Element]>)*
     
@@ -146,7 +148,6 @@ sub get_latex_indent_parser{
         <objrule: LatexIndent::Verbatim=PreambleVerbatim>    
             <require: (?{!$LatexIndent::GetYamlSettings::masterSettings{indentPreamble};})>
             <begin=(?{"\\documentclass"})>
-            documentclass
             <type=(?{'Preamble: verbatim'})>
             <name=(?{'Preamble'})>
             (<!beginDocument><[PreambleVerbatimBody]>)*
