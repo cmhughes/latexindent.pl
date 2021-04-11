@@ -68,7 +68,7 @@ for i in {1..2}; do
 done
 
 # literal
-for i in {1..1}; do 
+for i in {1..2}; do 
     latexindent.pl -s literal$i.tex -o=+-default.tex
 done
 

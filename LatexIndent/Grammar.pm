@@ -70,7 +70,6 @@ sub get_latex_indent_parser{
                 | <KeyEqualsValuesBraces> 
                 | <NamedGroupingBracesBrackets> 
                 | <Special> 
-                | <TrailingComment> 
                 | <Literal>
             )
             
@@ -423,7 +422,10 @@ sub get_latex_indent_parser{
             
         # anything else
         <objrule: LatexIndent::Literal=Literal>    
-            <body=((?>[a-zA-Z0-9&^()'\h]|\\\\|((?<!^)\R))++)>
+            <body=((?>[a-zA-Z0-9&^()'\h]                        # literal characters 
+                   |(?<!\\)\%(?!\h*\\begin\{noindent\})[^\n]*   # trailing comments, but not followed by \begin{noindent}
+                   |\\\\                                        # \\\\
+                   |((?<!^)\R))++)>                             # linebreaks ok, but *not* blanklines
     
     }xms;
 
