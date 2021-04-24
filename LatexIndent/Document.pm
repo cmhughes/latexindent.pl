@@ -162,15 +162,18 @@ sub output_indented_text{
     # open log file
     my $logfileName = $switches{logFileName}||"indent.log";
     my $logfile;
-    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
+    my $logfilePossible = 1;
+    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or $logfilePossible =0;
 
-    foreach my $line (@{LatexIndent::Logger::logFileLines}){
-        print $logfile $line,"\n";
-    }
+    if($logfilePossible){ 
+        foreach my $line (@{LatexIndent::Logger::logFileLines}){
+            print $logfile $line,"\n";
+        }
 
-    # close log file
-    close($logfile);
-    
+        # close log file
+        close($logfile);
+    } 
+
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};
 
