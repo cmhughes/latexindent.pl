@@ -378,6 +378,15 @@ By default, ``latexindent.pl`` reports information to ``indent.log``, but if you
 name of this file, simply call the script with your chosen name after the ``-g`` switch as
 demonstrated above.
 
+If ``latexindent.pl`` can not open the log file that you specify, then the script will operate, and
+no log file will be produced; this might be helpful to users who wish to specify the following, for
+example
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -g /dev/null myfile.tex
+
 .. describe:: -sl, –screenlog
 
 .. index:: switches;-sl, –screenlog definition and details

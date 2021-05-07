@@ -12,8 +12,8 @@ Typical running order of these helper scripts:
     - <add latexindent.exe to directory>
     - <update documentation/changelog.md>
     - <commit changes and push>
-    - <pull request to master>
-    - <pull from master>
+    - <pull request to main>
+    - <pull from main>
     - git tag "V<number>"
     - git push --tags
     - <update release notes on github>

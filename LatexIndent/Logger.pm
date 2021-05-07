@@ -49,6 +49,20 @@ sub warn{
     print $logfileline,"\n" if $switches{screenlog};
 }
 
+sub fatal{
+    my $self = shift;
+    my $logfileline = shift;
+    if ($logfileline =~ m/^\*/s){
+        $logfileline =~ s/^\*/FATAL /s;
+        $logfileline =~ s/^/       /mg;
+        $logfileline =~ s/^\h+FATAL/FATAL/s;
+    } else {
+        $logfileline =~ s/^/      /mg;
+    }
+    push(@logFileLines,$logfileline);
+    print $logfileline,"\n" if $switches{screenlog};
+}
+
 sub trace{
     my $self = shift;
     my $logfileline = shift;

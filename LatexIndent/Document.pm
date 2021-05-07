@@ -153,6 +153,19 @@ sub output_indented_text{
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
 
+    # output the log file information
+    $self->output_logfile();
+
+    # output to screen, unless silent mode
+    print ${$self}{body} unless $switches{silentMode};
+
+    return;
+}
+
+sub output_logfile{
+  
+    my $self = shift;
+    #
     # put the final line in the logfile
     $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}") if ${$masterSettings{logFilePreferences}}{endLogFileWith};
     
@@ -162,19 +175,18 @@ sub output_indented_text{
     # open log file
     my $logfileName = $switches{logFileName}||"indent.log";
     my $logfile;
-    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or die "Can't open $logfileName";
+    my $logfilePossible = 1;
+    open($logfile,">","${$self}{cruftDirectory}/$logfileName") or $logfilePossible =0;
 
-    foreach my $line (@{LatexIndent::Logger::logFileLines}){
-        print $logfile $line,"\n";
-    }
+    if($logfilePossible){ 
+        foreach my $line (@{LatexIndent::Logger::logFileLines}){
+            print $logfile $line,"\n";
+        }
 
-    # close log file
-    close($logfile);
-    
-    # output to screen, unless silent mode
-    print ${$self}{body} unless $switches{silentMode};
+        # close log file
+        close($logfile);
+    } 
 
-    return;
 }
 
 sub process_body_of_text{

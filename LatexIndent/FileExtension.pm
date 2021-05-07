@@ -48,8 +48,8 @@ sub file_extension_check{
     if ($fileName ne "-"){
         if (!$ext) {
             $logger->info("*File extension work:");
-            $logger->info("latexindent called to act upon $fileName without a file extension;\nsearching for file with an extension in the following order (see fileExtensionPreference):");
-            $logger->info(join("\n",@fileExtensions));
+            $logger->info("latexindent called to act upon $fileName without a file extension;\nsearching for files in the following order (see fileExtensionPreference):");
+            $logger->info($fileName.join("\n$fileName",@fileExtensions));
 
             my $fileFound = 0;
             # loop through the known file extensions (see @fileExtensions)
@@ -70,13 +70,15 @@ sub file_extension_check{
                 $logger->fatal("I searched for $fileName$_");
               }
               $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.\nExiting, no indendation done.");
-              die "I couldn't find a match for $fileName in fileExtensionPreference.\nExiting, no indendation done."; 
+              $self->output_logfile();
+              die "ERROR: I couldn't find any of the following files: ".$fileName.join(", $fileName",@fileExtensions)." (see fileExtensionPreference)\nExiting, no indendation done."; 
             }
           } else {
             # if the file has a recognised extension, check that the file exists
             unless( -e $fileName ){
-              my $message = "I couldn't find $fileName, are you sure it exists?.\nNo indentation done.\nExiting.";
+              my $message = "ERROR: I couldn't find $fileName, are you sure it exists?\nNo indentation done.\nExiting.";
               $logger->fatal("*$message");
+              $self->output_logfile();
               die $message;
             }
           }

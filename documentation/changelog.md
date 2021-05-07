@@ -1,5 +1,8 @@
 # changelog.md
 
+## V3.9.3, April 7, 2021
+minor updates to log file creation https://github.com/cmhughes/latexindent.pl/issues/145
+
 ## V3.9.2, April 6, 2021
 minor update to include noindent block bug fix for https://github.com/cmhughes/latexindent.pl/issues/266
 
