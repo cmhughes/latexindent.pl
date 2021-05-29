@@ -56,7 +56,8 @@ sub yaml_read_settings{
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) if ( -e "$FindBin::RealBin/defaultSettings.yaml" );
 
   # grab the logger object
-  $logger->info("*YAML settings read: defaultSettings.yaml\nReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
+  $logger->info("*YAML settings read: defaultSettings.yaml");
+  $logger->info("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
   # the same directory as it; we need to navigate to it

@@ -106,7 +106,7 @@ sub find_file_contents_environments_and_preamble{
               push(@fileContentsStorageArray,$fileContentsBlock);
 
               # log file output
-              $logger->trace("FILECONTENTS environment found: $fileContentsEnv");
+              $logger->trace("FILECONTENTS environment found: $fileContentsEnv")if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
@@ -171,7 +171,7 @@ sub find_file_contents_environments_and_preamble{
         $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
         # indentPreamble set to 1
         if($masterSettings{indentPreamble}){
-            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)");
+            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)") if $is_tt_switch_active;
             $needToStorePreamble = 1;
         } else {
             # indentPreamble set to 0
@@ -188,18 +188,18 @@ sub find_file_contents_environments_and_preamble{
               my $indentThisChild = 0;
               # verbatim children go in special hash
               if($preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/){
-                $logger->trace("filecontents (${$_}{id}) is within preamble");
+                $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
                 # indentPreamble set to 1
                 if($masterSettings{indentPreamble}){
-                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)");
+                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
                     $indentThisChild = 1;
                 } else {
                     # indentPreamble set to 0
-                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)");
+                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
                     ${$self}{verbatim}{${$_}{id}}=$_;
                 }
               } else {
-                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)");
+                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)") if $is_t_switch_active;
                     $indentThisChild = 1;
               }
               # store the child, if necessary
