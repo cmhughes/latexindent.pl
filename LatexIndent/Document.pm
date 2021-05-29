@@ -112,9 +112,15 @@ sub operate_on_file{
         $self->put_trailing_comments_back_in;
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
+        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
     }
     $self->output_indented_text;
     return
+}
+
+sub dos2unixlinebreaks{
+    my $self = shift;
+    ${$self}{body};
 }
 
 sub construct_regular_expressions{
