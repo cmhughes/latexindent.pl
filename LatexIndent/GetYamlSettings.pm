@@ -92,6 +92,18 @@ sub yaml_read_settings{
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read( "$indentconfig" );
 
+        # check the encoding
+        use Encode;
+        my $encoding;
+        if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{encoding}){
+            $encoding = $userSettings->[0]->{encoding};
+            $logger->info("*Encoding of the paths is $encoding");
+        }
+        else {
+            $encoding = "";
+            $logger->info("*Encoding of the paths takes the default.");
+        }
+
         # update the absolute paths
         if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{paths}){
             $logger->info("Reading path information from $indentconfig");
@@ -107,7 +119,19 @@ sub yaml_read_settings{
             # output the contents of indentconfig to the log file
             $logger->info(Dump \%{$userSettings->[0]});
         
-            @absPaths = @{$userSettings->[0]->{paths}};
+            if ($encoding)
+            {
+                foreach (@{$userSettings->[0]->{paths}})
+                {
+                    my $temp = encode($encoding,"$_");
+                    $logger->info("Transform file encoding: $_ -> $temp");
+                    push(@absPaths,$temp);
+                }
+            }
+            else
+            {
+                @absPaths = @{$userSettings->[0]->{paths}};
+            }
         } else {
             $logger->warn("*The paths field cannot be read from $indentconfig; this means it is either empty or contains invalid YAML");
             $logger->warn("See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example");
