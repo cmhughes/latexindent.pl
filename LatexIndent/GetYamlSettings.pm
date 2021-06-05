@@ -107,7 +107,7 @@ sub yaml_read_settings{
             # output the contents of indentconfig to the log file
             $logger->info(Dump \%{$userSettings->[0]});
         
-            # change according to the encoding
+            # change the encoding of the paths according to the field `encoding`
             if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{encoding}){
                 use Encode;
                 my $encoding = $userSettings->[0]->{encoding};
@@ -132,7 +132,7 @@ sub yaml_read_settings{
             }
             else # No such setting, and will take the default
             {
-                $logger->info("*Encoding of the paths takes the default.");
+                # $logger->info("*Encoding of the paths takes the default.");
                 @absPaths = @{$userSettings->[0]->{paths}};
             }
         } else {
