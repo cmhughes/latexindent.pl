@@ -108,7 +108,34 @@ sub yaml_read_settings{
             # output the contents of indentconfig to the log file
             $logger->info(Dump \%{$userSettings->[0]});
         
-            @absPaths = @{$userSettings->[0]->{paths}};
+            # change the encoding of the paths according to the field `encoding`
+            if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{encoding}){
+                use Encode;
+                my $encoding = $userSettings->[0]->{encoding};
+                my $encodingObject = find_encoding($encoding);
+                # Check if the encoding is valid.
+                if (ref($encodingObject))
+                {
+                    $logger->info("*Encoding of the paths is $encoding");
+                    foreach (@{$userSettings->[0]->{paths}})
+                    {
+                        my $temp = $encodingObject->encode("$_");
+                        $logger->info("Transform file encoding: $_ -> $temp");
+                        push(@absPaths,$temp);
+                    }
+                }
+                else
+                {
+                    $logger->warn("*encoding \"$encoding\" not found");
+                    $logger->warn("Ignore this setting and will take the default encoding.");
+                    @absPaths = @{$userSettings->[0]->{paths}};
+                }
+            }
+            else # No such setting, and will take the default
+            {
+                # $logger->info("*Encoding of the paths takes the default.");
+                @absPaths = @{$userSettings->[0]->{paths}};
+            }
         } else {
             $logger->warn("*The paths field cannot be read from $indentconfig; this means it is either empty or contains invalid YAML");
             $logger->warn("See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example");
