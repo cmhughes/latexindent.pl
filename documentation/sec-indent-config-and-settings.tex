@@ -81,14 +81,15 @@ lookForAlignDelims:
 		will tell you so in \texttt{indent.log}.
 	\end{warning}
 
-    If you find that \announce{new}{encoding option for indentconfig.yaml} \texttt{latexindent.pl}
-    does not read your YAML file, then you might like to explore the \texttt{encoding} option
-    for \texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.
+	If you find that%
+	\announce{new}{encoding option for indentconfig.yaml} \texttt{latexindent.pl} does not read your YAML
+	file, then you might like to explore the \texttt{encoding} option for
+	\texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.
 
-\cmhlistingsfromfile*{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
+	\cmhlistingsfromfile*{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
 
-    Thank you to \cite{qiancy98} for this contribution; please see \cite{encoding} for further 
-    information.
+	Thank you to \cite{qiancy98} for this contribution; please see
+	\cite{encoding} for further information.
 \subsection{localSettings.yaml and friends}\label{sec:localsettings}
 	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
 	\texttt{localSettings.yaml} and/or friends in the \emph{same directory} as
@@ -146,8 +147,8 @@ verbatimEnvironments:
 	You%
 	\announce{2017-08-21}{demonstration of the -y switch} may use the
 	\texttt{-y} switch to load your settings;  for example, if you wished to
-	specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch,
-	then you could use the following command:
+	specify the settings from \cref{lst:localSettings} using the \texttt{-y}
+	switch, then you could use the following command:
 	\index{verbatim!verbatimEnvironments demonstration (-y switch)}
 	\begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex

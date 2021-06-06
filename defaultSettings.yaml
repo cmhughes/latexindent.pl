@@ -501,6 +501,7 @@ modifyLineBreaks:
             other: 0
     textWrapOptions:
         columns: 0
+        # huge: overflow    # forbid mid-word line breaks
         separator: ""
         perCodeBlockBasis: 0
         all: 0
@@ -631,6 +632,8 @@ fineTuning:
     arguments:
       before: '(?:#\d\h*;?,?\/?)+|\<.*?\>'
       between: '_|\^|\*'
+    trailingComments:
+      notPreceededBy: '(?<!\\)'
     modifyLineBreaks:
       betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
       doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'

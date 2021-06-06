@@ -171,6 +171,44 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
 \end{commandshell}
 	 gives the output shown in \cref{lst:finetuning3-mod1}.
 
-	 \cmhlistingsfromfile*{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
-	 \cmhlistingsfromfile*{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
+	 \cmhlistingsfromfile{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
+	 \cmhlistingsfromfile{demonstrations/finetuning3-mod1.tex}{\texttt{finetuning3.tex} using -y switch}{lst:finetuning3-mod1}
  \end{example}
+
+\begin{example}
+We can tweak the \texttt{fineTuning} for how trailing comments are classified. For motivation, let's consider
+the code given in \cref{lst:finetuning4}
+
+	 \cmhlistingsfromfile*{demonstrations/finetuning4.tex}{\texttt{finetuning4.tex}}{lst:finetuning4}
+
+     We will compare the settings given in \cref{lst:href1,lst:href2}.
+
+	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+			 raster left skip=0cm,
+           raster right skip=-0.5cm,]
+         \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
+		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
+	 \end{cmhtcbraster}
+
+     Upon running the following commands
+	 \begin{commandshell}
+latexindent.pl -m finetuning4.tex -o=+-mod1 -l=href1
+latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
+\end{commandshell}
+we receive the respective output in \cref{lst:finetuning4-mod1,lst:finetuning4-mod2}.
+
+\begin{widepage}
+		 \cmhlistingsfromfile*{demonstrations/finetuning4-mod1.tex}{\texttt{finetuning4.tex} using \cref{lst:href1}}{lst:finetuning4-mod1}
+
+		 \cmhlistingsfromfile*{demonstrations/finetuning4-mod2.tex}{\texttt{finetuning4.tex} using \cref{lst:href2}}{lst:finetuning4-mod2}
+\end{widepage}
+
+         We note that in:
+         \begin{itemize}
+           \item \cref{lst:finetuning4-mod1} the trailing comments are assumed to be everything following the first comment symbol, which 
+             has meant that everything following it has been moved to the end of the line; this is undesirable, clearly!
+           \item \cref{lst:finetuning4-mod2} has fine-tuned the trailing comment matching, and says that \lstinline!%! cannot
+             be immediately preceeded by the words `Handbook', `for' or `Spoken', which means that none of the \lstinline!%! 
+             symbols have been treated as trailing comments, and the output is desirable.
+         \end{itemize}
+\end{example}

@@ -28,7 +28,9 @@ our $commentCounter = 0;
 our $trailingCommentRegExp;
 
 sub construct_trailing_comment_regexp{
-    $trailingCommentRegExp = qr/(?<!\\)%$tokens{trailingComment}\d+$tokens{endOfToken}/;
+    my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+
+    $trailingCommentRegExp = qr/$notPreceededBy%$tokens{trailingComment}\d+$tokens{endOfToken}/;
 }
 
 sub add_comment_symbol{
@@ -54,9 +56,11 @@ sub remove_trailing_comments{
     my $self = shift;
     $logger->trace("*Storing trailing comments")if $is_t_switch_active;
 
+    my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+
     # perform the substitution
     ${$self}{body} =~ s/
-                            (?<!\\)  # not preceeded by a \
+                            $notPreceededBy  # not preceeded by a \
                             %        # % 
                             (
                                 \h*? # followed by possible horizontal space
@@ -110,13 +114,14 @@ sub put_trailing_comments_back_in{
             # replace the line-broken trailing comment ID with a non-broken trailing comment ID
             ${$self}{body} =~ s/%\R?$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
       }
+      my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
       if(${$self}{body} =~ m/%$trailingcommentID
                               (
-                                  (?!          # not immediately preceeded by 
-                                      (?<!\\)  # \
-                                      %        # %
+                                  (?!                  # not immediately preceeded by 
+                                      $notPreceededBy  # \
+                                      %                # %
                                   ).*?
-                              )                # captured into $1
+                              )                        # captured into $1
                               (\h*)?$                
                           /mx and $1 ne ''){
           $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
