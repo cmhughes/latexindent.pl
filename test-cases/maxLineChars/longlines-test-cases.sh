@@ -145,5 +145,8 @@ latexindent.pl waschk.tex -s -m -l waschk.yaml -o=+-mod
 latexindent.pl waschk.tex -s -m -l waschk0.yaml -o=+-mod0
 latexindent.pl waschk.tex -s -m -l waschk1.yaml -o=+-mod1
 
+# https://github.com/cmhughes/latexindent.pl/issues/183
+latexindent.pl -s -m -l issue-183-mod1.yaml issue-183.tex -o=+-mod1
+latexindent.pl -s -m -l issue-183-mod2.yaml issue-183.tex -o=+-mod2
 git status
 [[ $noisyMode == 1 ]] && makenoise

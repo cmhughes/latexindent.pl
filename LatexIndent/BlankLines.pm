@@ -27,18 +27,6 @@ sub protect_blank_lines{
     return unless $is_m_switch_active;
     my $self = shift;
     
-    # the text wrap routine, under some circumstances, can 
-    # cause new blank lines that haven't been awarded a token; see, for example,
-    #       test-cases/maxLineChars/multi-object-all.tex -l=multi-object2.yaml -m
-    # we can circumvent this by forcing blank lines to be protected if 
-    # the text wrap option is active, which allows us to remove blank
-    # lines from wrapped text
-    if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH" 
-        or ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>0 ){
-        ${$masterSettings{modifyLineBreaks}}{preserveBlankLines} = 1;
-    }
-
-
     unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
         $logger->trace("*Blank lines will not be protected (preserveBlankLines=0)") if $is_t_switch_active;
         return
