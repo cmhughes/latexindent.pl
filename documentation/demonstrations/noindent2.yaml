@@ -1,0 +1,4 @@
+noIndentBlock:
+    demo:
+        begin: 'some\hbefore'
+        end: 'some\hafter\htext'

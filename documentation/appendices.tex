@@ -229,22 +229,20 @@ TRACE: Searching myenv for optional and mandatory arguments
 	 Notice that the information given about \texttt{myenv} is `framed' using
 	 \texttt{+++++} and \lstinline!-----! respectively.
 
-    \section{Encoding indentconfig.yaml}\label{app:encoding}
-Windows users that encounter encoding issues with \texttt{indentconfig.yaml}, may 
-wish to run the following command in either \texttt{cmd.exe} or \texttt{powershell.exe}:
-		\begin{dosprompt}
+	\section{Encoding indentconfig.yaml}\label{app:encoding}
+	 In relation to \vref{sec:indentconfig}, Windows users that encounter encoding issues with \texttt{indentconfig.yaml}, may wish to run
+	 the following command in either \texttt{cmd.exe} or \texttt{powershell.exe}:
+	 \begin{dosprompt}
 chcp
     \end{dosprompt}
-    They may receive the following result
-    \begin{dosprompt}
+	 They may receive the following result
+	 \begin{dosprompt}
 Active code page: 936
     \end{dosprompt}
-    and can then use the settings given in \cref{lst:indentconfig-encoding1} within 
-    their \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
+	 and can then use the settings given in \cref{lst:indentconfig-encoding1} within their
+	 \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
 
-	\cmhlistingsfromfile*{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
-
-	
+	 \cmhlistingsfromfile*{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
 
 	\section{Differences from Version 2.2 to 3.0}\label{app:differences}
 	 There are a few (small) changes to the interface when comparing Version 2.2 to Version

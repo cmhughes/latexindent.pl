@@ -309,6 +309,7 @@ latexindent.pl -s finetuning2.tex -o=+-mod1 -l=fine-tuning2
 latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' finetuning3.tex -o=+-mod1
 latexindent.pl -s finetuning4.tex -o=+-mod1 -l=href1 -m 
 latexindent.pl -s finetuning4.tex -o=+-mod2 -l=href2 -m 
+latexindent.pl -s finetuning4.tex -o=+-mod3 -l=href3 -m 
 
 # blank line poly-switches
 latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4
@@ -336,5 +337,10 @@ latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
 latexindent.pl -s tabbing.tex -o=+-mod3 -l=delimiterRegEx3.yaml
 latexindent.pl -s tabbing1.tex -o=+-mod4 -l=delimiterRegEx4.yaml
 latexindent.pl -s tabbing1.tex -o=+-mod5 -l=delimiterRegEx5.yaml
+
+# noindent block
+latexindent.pl -s noindentblock1.tex -l noindent1.yaml -o=+-mod1
+latexindent.pl -s noindentblock1.tex -l noindent2.yaml -o=+-mod2
+latexindent.pl -s noindentblock1.tex -l noindent3.yaml -o=+-mod3
 [[ $noisyMode == 1 ]] && makenoise
 git status
