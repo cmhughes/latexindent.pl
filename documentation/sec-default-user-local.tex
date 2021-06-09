@@ -33,6 +33,7 @@ latexindent.pl myfile
 
 	\index{backup files!extension settings}
 
+\subsection{Backup and log file preferences}
 \yamltitle{backupExtension}*{extension name}
 
 	If you call \texttt{latexindent.pl} with the \texttt{-w} switch (to overwrite
@@ -107,6 +108,7 @@ copy myfile.bak4 to myfile.bak3
 	the creation of the logfile.%
 	\announce*{2021-03-14}*{no longer using log4perl}
 
+\subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
 
 	A field that contains a list of environments that you would like left completely alone --
@@ -148,9 +150,9 @@ copy myfile.bak4 to myfile.bak3
 	their own line.
 
 	The%
-	\announce{new}{noIndentBlock specified as regex} \texttt{noIndentBlock} fields can also be specified in terms
-	of \texttt{begin} and \texttt{end} fields. We begin with the file
-	given in \cref{lst:noIndentBlock1}
+	\announce{new}{noIndentBlock specified as regex} \texttt{noIndentBlock}
+	fields can also be specified in terms of \texttt{begin} and
+	\texttt{end} fields. We begin with the file given in \cref{lst:noIndentBlock1}
 
 	\cmhlistingsfromfile*{demonstrations/noindentblock1.tex}{\texttt{noIndentBlock1.tex}}{lst:noIndentBlock1}
 
@@ -174,20 +176,21 @@ latexindent.pl -l noindent2.yaml noindent1
 
 	\cmhlistingsfromfile*{demonstrations/noindentblock1-mod1.tex}{\texttt{noIndentBlock1.tex} using \cref{lst:noindent1} or \cref{lst:noindent2}}{lst:noIndentBlock1-mod1}
 
-    The \texttt{begin}, \texttt{body} and \texttt{end} fields for \texttt{noIndentBlock} are all
-    \emph{regular expressions}. If the \texttt{body} field is not specified, then it takes a default 
-    value of \lstinline!.*?! which is written explicitly in \cref{lst:noindent1}. 
-    
-    The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
-    by default, it is assumed to be 1. Using \cref{lst:noindent3} and running the command
-\begin{commandshell}
+	The \texttt{begin}, \texttt{body} and \texttt{end} fields
+	for \texttt{noIndentBlock} are all \emph{regular expressions}. If the
+	\texttt{body} field is not specified, then it takes a default value of
+	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}.
+
+	The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
+	by default, it is assumed to be 1. Using \cref{lst:noindent3} and running the command
+	\begin{commandshell}
 latexindent.pl -l noindent3.yaml noindent1
 \end{commandshell}
-gives the output in \cref{lst:noIndentBlock1-mod3}.
+	gives the output in \cref{lst:noIndentBlock1-mod3}.
 
 	\cmhlistingsfromfile*{demonstrations/noindentblock1-mod3.tex}{\texttt{noIndentBlock1.tex} using \cref{lst:noindent3}}{lst:noIndentBlock1-mod3}
 
-    We will demonstrate this feature later in the documentation in \cref{lst:href3}.
+	We will demonstrate this feature later in the documentation in \cref{lst:href3}.
 \yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
 	Trailing white space can be removed both \emph{before} and
@@ -262,6 +265,7 @@ postfoothook=\end{mdframed},
 	If you're interested in experimenting with \texttt{latexindent.pl} then you can
 	\emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
 
+\subsection{Aligning at delimiters}
 \yamltitle{lookForAlignDelims}*{fields}
 	This contains a list of environments and/or commands that are operated upon in a special
 	way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in \texttt{lookForAlignDelims} can
@@ -740,6 +744,7 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 	Note that in \cref{lst:tabbing1-mod5} the second set of delimiters have been
 	\emph{right aligned} -- it is quite subtle!
 
+\subsection{Indent after items, specials and headings}
 \yamltitle{indentAfterItems}*{fields}
 	The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
 	to look for \lstinline!\item! commands; if these switches are set to
@@ -942,6 +947,9 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 		\cmhlistingsfromfile{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
 		\cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
 	\end{cmhtcbraster}
+
+    The \texttt{lookForThis} field can be considered optional; \announce{new}*{lookForThis optional for specialBeginEnd}
+	by default, it is assumed to be 1.
 
 \yamltitle{indentAfterHeadings}*{fields}
 	This field enables the user to specify indentation rules that take effect after heading

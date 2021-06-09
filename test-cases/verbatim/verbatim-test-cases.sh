@@ -66,6 +66,10 @@ latexindent.pl -s issue-266.tex -o=+-default
 latexindent.pl -s issue-266a.tex -o=+-default
 latexindent.pl -s issue-266b.tex -o=+-default
 
+# noindentblock
+latexindent.pl -s noindentblock1.tex -o=+-default
+latexindent.pl -s noindentblock1.tex -l noindent1 -o=+-mod1
+
 # noindentblock with begin, body, end: https://github.com/cmhughes/latexindent.pl/issues/274
 latexindent.pl -s -m href.tex -l href1.yaml -o=+-mod1
 latexindent.pl -s -m href.tex -l href2.yaml -o=+-mod2
