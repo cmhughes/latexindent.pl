@@ -268,14 +268,16 @@ sub yaml_read_settings{
                             if (ref $secondLevelValue eq "HASH"){
                                 # if masterSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
-                                if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
+                                if(defined $masterSettings{$firstLevelKey}{$secondLevelKey} 
+                                    and ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
                                     $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                     delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
-                                        if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
+                                        if (defined $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} 
+                                            and ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
                                             $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                             delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }

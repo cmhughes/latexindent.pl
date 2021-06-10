@@ -191,28 +191,8 @@ latexindent.pl -l noindent3.yaml noindent1
 	\cmhlistingsfromfile*{demonstrations/noindentblock1-mod3.tex}{\texttt{noIndentBlock1.tex} using \cref{lst:noindent3}}{lst:noIndentBlock1-mod3}
 
 	We will demonstrate this feature later in the documentation in \cref{lst:href3}.
-\yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
-	Trailing white space can be removed both \emph{before} and
-	\emph{after} processing the document, as detailed in \cref{lst:removeTrailingWhitespace};
-	each of the fields can take the values \texttt{0} or
-	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results. Thanks
-	to \cite{vosskuhle} for providing this feature.
-
-	\begin{minipage}{.4\textwidth}
-		\cmhlistingsfromfile[style=removeTrailingWhitespace]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
-	\end{minipage}%
-	\hfill
-	\begin{minipage}{.5\textwidth}
-		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[before=\centering]{lst:removeTrailingWhitespace-alt}
-removeTrailingWhitespace: 1
-\end{yaml}
-	\end{minipage}%
-
-	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or
-	\texttt{1}, if you wish; in this case,%
-	\announce{2017-06-28}{removeTrailingWhitespace} \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and
-	\texttt{afterProcessing} to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
+\subsection{filecontents and preamble}
 \yamltitle{fileContentsEnvironments}*{field}
 
 	Before \texttt{latexindent.pl} determines the difference between preamble (if any) and
@@ -257,6 +237,7 @@ postfoothook=\end{mdframed},
 
 	\index{indentation!defaultIndent description}
 
+\subsection{Indentation and horizontal space}
 \yamltitle{defaultIndent}*{horizontal space}
 	This is the default indentation (\lstinline!\t! means a tab, and is the default
 	value) used in the absence of other details for the command or environment we are working
@@ -264,6 +245,29 @@ postfoothook=\end{mdframed},
 
 	If you're interested in experimenting with \texttt{latexindent.pl} then you can
 	\emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
+
+\yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
+
+	Trailing white space can be removed both \emph{before} and
+	\emph{after} processing the document, as detailed in \cref{lst:removeTrailingWhitespace};
+	each of the fields can take the values \texttt{0} or
+	\texttt{1}. See \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before and after results. Thanks
+	to \cite{vosskuhle} for providing this feature.
+
+	\begin{minipage}{.4\textwidth}
+		\cmhlistingsfromfile[style=removeTrailingWhitespace]*{../defaultSettings.yaml}[before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.5\textwidth}
+		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[before=\centering]{lst:removeTrailingWhitespace-alt}
+removeTrailingWhitespace: 1
+\end{yaml}
+	\end{minipage}%
+
+	You can specify \texttt{removeTrailingWhitespace} simply as \texttt{0} or
+	\texttt{1}, if you wish; in this case,%
+	\announce{2017-06-28}{removeTrailingWhitespace} \texttt{latexindent.pl} will set both \texttt{beforeProcessing} and
+	\texttt{afterProcessing} to the value you specify; see \cref{lst:removeTrailingWhitespace-alt}.
 
 \subsection{Aligning at delimiters}
 \yamltitle{lookForAlignDelims}*{fields}
@@ -948,8 +952,9 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 		\cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
 	\end{cmhtcbraster}
 
-    The \texttt{lookForThis} field can be considered optional; \announce{new}*{lookForThis optional for specialBeginEnd}
-	by default, it is assumed to be 1.
+	The \texttt{lookForThis} field can be considered optional;%
+	\announce{new}*{lookForThis optional for specialBeginEnd} by
+	default, it is assumed to be 1.
 
 \yamltitle{indentAfterHeadings}*{fields}
 	This field enables the user to specify indentation rules that take effect after heading

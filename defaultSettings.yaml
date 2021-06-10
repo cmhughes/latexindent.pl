@@ -112,11 +112,6 @@ noIndentBlock:
     noindent: 1
     cmhtest: 1
 
-# remove trailing whitespace from all lines 
-removeTrailingWhitespace:
-    beforeProcessing: 0
-    afterProcessing: 1
-
 # \begin{document} and \end{document} are treated differently
 # by latexindent within filecontents environments
 fileContentsEnvironments:
@@ -142,6 +137,11 @@ preambleCommandsBeforeEnvironments: 0
 
 # default value of indentation
 defaultIndent: "\t"
+
+# remove trailing whitespace from all lines 
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1
 
 # name of code blocks that should have their body aligned at ampersand delimiters
 lookForAlignDelims:
