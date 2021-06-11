@@ -392,7 +392,7 @@ sub align_at_ampersand{
         # spaces for leadingBlankColumn in operation
         if(${$self}{leadingBlankColumn}>-1){
             $padding = " " x (${$self}{leadingBlankColumn});
-            ${$_}{row} =~ s/^\h*/$padding/s
+            ${$_}{row} =~ s/^\h*/$padding/s;
         }
     }
 
@@ -743,8 +743,16 @@ sub individual_padding{
            ${$cell}{delimiterLength} = $maxDelimiterWidth[$j];
         }
         
-        # leadingBlankColumn check
-        if ($j==0 and ${$self}{leadingBlankColumn}>-1 and ${$cell}{width} > 0){
+        # to keep leadingBlankColumn on, we need to check:
+        #
+        #   - are we in the first column?
+        #   - is leadingBlankColumn 0 or more?
+        #   - cell width of first column equal 0?
+        #   - are we measuring this cell?
+        #
+        # see test-cases/alignment/issue-275a.tex and the associated logfile
+        #
+        if ($j==0 and ${$self}{leadingBlankColumn}>-1 and ${$cell}{width} > 0 and ${$cell}{measureThis}==1){
             ${$self}{leadingBlankColumn} = -1;
         }
         

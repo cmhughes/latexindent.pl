@@ -642,6 +642,8 @@ sub yaml_alignment_at_ampersand_settings{
     #         spacesBeforeDoubleBackSlash: 2
     return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
 
+    $logger->trace("alignAtAmpersand settings for $name (see lookForAlignDelims)") if($is_t_switch_active);
+
     if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
       # specified as a hash, e.g
       #
