@@ -342,5 +342,16 @@ latexindent.pl -s tabbing1.tex -o=+-mod5 -l=delimiterRegEx5.yaml
 latexindent.pl -s noindentblock1.tex -l noindent1.yaml -o=+-mod1
 latexindent.pl -s noindentblock1.tex -l noindent2.yaml -o=+-mod2
 latexindent.pl -s noindentblock1.tex -l noindent3.yaml -o=+-mod3
+
+# spacesBeforeAmpersand demo
+latexindent.pl -s aligned1.tex -o=+-default
+latexindent.pl -s aligned1.tex -l sba1.yaml -o=+-mod1
+latexindent.pl -s aligned1.tex -l sba2.yaml -o=+-mod2
+latexindent.pl -s aligned1.tex -l sba3.yaml -o=+-mod3
+latexindent.pl -s aligned1.tex -l sba4.yaml -o=+-mod4
+latexindent.pl -s aligned1.tex -l sba5.yaml -o=+-mod5
+latexindent.pl -s aligned1.tex -l sba6.yaml -o=+-mod6
+latexindent.pl -s aligned1.tex -l sba7.yaml -o=+-mod7
+
 [[ $noisyMode == 1 ]] && makenoise
 git status

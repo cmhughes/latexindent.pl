@@ -1,0 +1,6 @@
+noAdditionalIndent:
+  aligned: 1
+lookForAlignDelims:
+   aligned: 
+      spacesBeforeAmpersand:
+        default: 1

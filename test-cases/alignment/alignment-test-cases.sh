@@ -183,6 +183,14 @@ latexindent.pl -s -m pgregory.tex -l pgregory2.yaml -o=+-mod2
 latexindent.pl -s -m pgregory.tex -l pgregory3.yaml -o=+-mod3
 latexindent.pl -s -m pgregory.tex -l pgregory4.yaml -o=+-mod4
 
+# spacesBeforeAmpersand upgrade, https://github.com/cmhughes/latexindent.pl/issues/275
+latexindent.pl -s issue-275.tex -o=+-default -y="defaultIndent: ' '"
+latexindent.pl -s issue-275.tex -o=+-mod1 -l=issue-275-1.yaml
+latexindent.pl -s issue-275.tex -o=+-mod2 -l=issue-275-2.yaml
+latexindent.pl -s issue-275.tex -o=+-mod3 -l=issue-275-3.yaml
+latexindent.pl -s issue-275.tex -o=+-mod4 -l=issue-275-4.yaml
+latexindent.pl -s issue-275.tex -o=+-mod5 -l=issue-275-5.yaml
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

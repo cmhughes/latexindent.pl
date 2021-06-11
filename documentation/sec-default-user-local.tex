@@ -454,6 +454,98 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 		      correctly, because of the settings in \cref{lst:tabular2YAML}.
 	\end{itemize}
 
+\subsubsection{lookForAlignDelims: spacesBeforeAmpersand}
+	The \texttt{spacesBeforeAmpersand}%
+	\announce{new}*{spacesBeforeAmpersand leading blank column upgrade} can be specified in a few different
+	ways. The \emph{basic} form is demonstrated in \cref{lst:tabular4YAML}, but we
+	can customise the behaviour further by specifying if we would like this value to change
+	if it encounters a \emph{leading blank column}; that is, when the first column contains only
+	zero-width entries. We refer to this as the \emph{advanced} form.
+
+	We demonstrate this feature in relation to \cref{lst:aligned1}; upon running the
+	following command
+	\begin{commandshell}
+latexindent.pl aligned1.tex -o=+-default
+\end{commandshell}
+	then we receive the default output given in \cref{lst:aligned1-default}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/aligned1.tex}{\texttt{aligned1.tex}}{lst:aligned1}
+		\cmhlistingsfromfile*{demonstrations/aligned1-default.tex}{\texttt{aligned1-default.tex}}{lst:aligned1-default}
+	\end{cmhtcbraster}
+
+	The settings in \crefrange{lst:sba1}{lst:sba4} are all equivlanent; we have used the not-yet
+	discussed \texttt{noAdditionalIndent} field (see \vref{sec:noadd-indent-rules}) which will assist
+	in the demonstration in what follows.
+	\begin{cmhtcbraster}[raster columns=2, ]
+		\cmhlistingsfromfile*{demonstrations/sba1.yaml}[yaml-TCB]{\texttt{sba1.yaml}}{lst:sba1}
+		\cmhlistingsfromfile*{demonstrations/sba2.yaml}[yaml-TCB]{\texttt{sba2.yaml}}{lst:sba2}
+		\cmhlistingsfromfile*{demonstrations/sba3.yaml}[yaml-TCB]{\texttt{sba3.yaml}}{lst:sba3}
+		\cmhlistingsfromfile*{demonstrations/sba4.yaml}[yaml-TCB]{\texttt{sba4.yaml}}{lst:sba4}
+	\end{cmhtcbraster}
+	Upon running the following commands
+	\begin{commandshell}
+latexindent.pl aligned1.tex -l sba1.yaml
+latexindent.pl aligned1.tex -l sba2.yaml
+latexindent.pl aligned1.tex -l sba3.yaml
+latexindent.pl aligned1.tex -l sba4.yaml
+\end{commandshell}
+	then we receive the (same) output given in \cref{lst:aligned1-mod1}; we note that there is
+	\emph{one space} before each ampersand.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/aligned1-mod1.tex}{\texttt{aligned1-mod1.tex}}{lst:aligned1-mod1}
+	\end{cmhtcbraster}
+
+	We note in particular:
+	\begin{itemize}
+		\item \cref{lst:sba1} demonstrates the \emph{basic} form for
+		      \texttt{lookForAlignDelims}; in this case,
+		      the default values are specified as in \vref{lst:aligndelims:advanced};
+		\item \cref{lst:sba2} demonstrates the \emph{advanced} form for
+		      \texttt{lookForAlignDelims}
+		      and specified \texttt{spacesBeforeAmpersand}. The default value is \texttt{1};
+		\item \cref{lst:sba3} demonstrates the new \emph{advanced} way to specify
+		      \texttt{spacesBeforeAmpersand}, and
+		      for us to set the \texttt{default} value that sets the number of spaces before
+		      ampersands which are \emph{not} in leading blank columns.	The default value
+		      is \texttt{1}.
+
+		      We note that \texttt{leadingBlankColumn} has not been specified in \cref{lst:sba3},
+		      and it will inherit the value from \texttt{default};
+		\item \cref{lst:sba4} demonstrates spaces to be used before amperands for
+		      \emph{leading blank columns}.
+		      We note that \emph{default} has not been specified, and it will be set to
+		      \texttt{1} by default.
+	\end{itemize}
+	We can customise the space before the ampersand in the \emph{leading blank column} of
+	\cref{lst:aligned1-mod1} by using either of \cref{lst:sba5,lst:sba6}, which are equivalent.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/sba5.yaml}[yaml-TCB]{\texttt{sba5.yaml}}{lst:sba5}
+		\cmhlistingsfromfile*{demonstrations/sba6.yaml}[yaml-TCB]{\texttt{sba6.yaml}}{lst:sba6}
+	\end{cmhtcbraster}
+
+	Upon running
+	\begin{commandshell}
+latexindent.pl aligned1.tex -l sba5.yaml
+latexindent.pl aligned1.tex -l sba6.yaml
+\end{commandshell}
+	then we receive the (same) output given in \cref{lst:aligned1-mod5}. We note that the
+	space before the ampersand in the \emph{leading blank column} has been set to
+	\texttt{0} by \cref{lst:sba6}.
+
+	We can demonstrated this feature further using the settings in \cref{lst:sba7}
+	which give the output in \cref{lst:aligned1-mod7}.
+
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.75cm,
+			raster right skip=-2cm,]
+		\cmhlistingsfromfile*{demonstrations/aligned1-mod5.tex}{\texttt{aligned1-mod5.tex}}{lst:aligned1-mod5}
+		\cmhlistingsfromfile*{demonstrations/aligned1-mod7.tex}{\texttt{aligned1.tex} using \cref{lst:sba7}}{lst:aligned1-mod7}
+		\cmhlistingsfromfile*{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
+	\end{cmhtcbraster}
+\subsubsection{lookForAlignDelims: alignFinalDoubleBackSlash}
 	We explore%
 	\announce{2020-03-21}{alignFinalDoubleBackSlash demonstration} the
 	\texttt{alignFinalDoubleBackSlash} feature by using the file in \cref{lst:tabular4}. Upon
@@ -520,7 +612,7 @@ latexindent.pl matrix1.tex
 	(see \vref{sec:noadd-indent-rules}), these comment-marked blocks are
 	considered \texttt{environments}.
 
-\subsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
+\subsubsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
 	The%
 	\announce{2020-03-21}{don't measure feature} \texttt{lookForAlignDelims}
 	field can, optionally, receive the \texttt{dontMeasure} option which can be specified
@@ -627,7 +719,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 		\cmhlistingsfromfile{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
 	\end{cmhtcbraster}
 
-\subsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification feature}\label{sec:delimiter-reg-ex}
+\subsubsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification feature}\label{sec:delimiter-reg-ex}
 	The delimiter alignment%
 	\announce{2020-03-21}{delimiterRegEx feature} will, by
 	default, align code blocks at the ampersand character. The behaviour is controlled by the
@@ -952,9 +1044,10 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 		\cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
 	\end{cmhtcbraster}
 
-	The \texttt{lookForThis} field can be considered optional;%
-	\announce{new}*{lookForThis optional for specialBeginEnd} by
-	default, it is assumed to be 1.
+	The \texttt{lookForThis} field can be considered
+	optional;%
+	\announce{new}*{lookForThis optional for specialBeginEnd} by default, it is
+	assumed to be 1.
 
 \yamltitle{indentAfterHeadings}*{fields}
 	This field enables the user to specify indentation rules that take effect after heading

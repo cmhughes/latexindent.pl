@@ -47,6 +47,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"dontMeasure",default=>0},
                                        {name=>"delimiterRegEx",default=>"(?<!\\\\)(&)"},
                                        {name=>"delimiterJustification",default=>"left"},
+                                       {name=>"leadingBlankColumn",default=>-1},
                                         );
     
 sub yaml_read_settings{
@@ -651,7 +652,57 @@ sub yaml_alignment_at_ampersand_settings{
       #         spacesBeforeDoubleBackSlash: 2
       foreach (@alignAtAmpersandInformation){
           my $yamlname = (defined ${$_}{yamlname} ? ${$_}{yamlname}: ${$_}{name});
-          ${$self}{${$_}{name}} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
+
+          # each of the following cases need to be allowed:
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           default: 1
+          #           leadingBlankColumn: 0
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           leadingBlankColumn: 0
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           default: 0
+          #
+          # approach:
+          #     - update masterSettings to have the relevant information: leadingBlankColumn and/or default
+          #     - delete the spacesBeforeAmpersand hash
+          #
+          if ($yamlname eq "spacesBeforeAmpersand" 
+              and ref(${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}) eq "HASH"){
+            $logger->trace("spacesBeforeAmpersand settings for $name") if $is_t_switch_active;
+            
+            #   lookForAlignDelims:
+            #      aligned: 
+            #         spacesBeforeAmpersand: 
+            #           leadingBlankColumn: 0
+            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn}){
+                $logger->trace("spacesBeforeAmpersand: leadingBlankColumn specified for $name") if $is_t_switch_active;
+                ${${$masterSettings{lookForAlignDelims}}{$name}}{leadingBlankColumn} 
+                    =  ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn};
+            }
+
+            #   lookForAlignDelims:
+            #      aligned: 
+            #         spacesBeforeAmpersand: 
+            #           default: 0
+            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default}){
+                ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand} 
+                    = ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default};
+            } else {
+                # deleting spacesBeforeAmpersand hash allows spacesBeforeAmpersand
+                # to pull from the default values @alignAtAmpersandInformation
+                delete ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand};
+            }
+          }
+          ${$self}{ ${$_}{name} } = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
       } 
     } else {
       # specified as a scalar, e.g

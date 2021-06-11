@@ -1,0 +1,7 @@
+noAdditionalIndent:
+  aligned: 1
+lookForAlignDelims:
+   aligned: 
+      spacesBeforeAmpersand:
+        leadingBlankColumn: 0
+        default: 1

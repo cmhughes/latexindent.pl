@@ -2,49 +2,49 @@
 --- \textbf{B} --- \nopagebreak
 
   \item backup files
-    \subitem cycle through, \hyperpage{21}
-    \subitem extension settings, \hyperpage{20}
-    \subitem maximum number of backup files, \hyperpage{21}
-    \subitem number of backup files, \hyperpage{20, 21}
-    \subitem overwrite switch, -w, \hyperpage{9}
+    \subitem cycle through, \hyperpage{20}
+    \subitem extension settings, \hyperpage{19}
+    \subitem maximum number of backup files, \hyperpage{20}
+    \subitem number of backup files, \hyperpage{19, 20}
+    \subitem overwrite switch, -w, \hyperpage{8}
 
   \indexspace
 --- \textbf{C} --- \nopagebreak
 
-  \item capturing parenthesis (regex), \hyperpage{32}
+  \item capturing parenthesis (regex), \hyperpage{33}
 
   \indexspace
 --- \textbf{D} --- \nopagebreak
 
   \item delimiters, \hyperpage{99}
-    \subitem advanced settings, \hyperpage{25}
-    \subitem advanced settings of lookForAlignDelims, \hyperpage{25}
-    \subitem ampersand \&, \hyperpage{25}
-    \subitem default settings of lookForAlignDelims, \hyperpage{25}
-    \subitem delimiter justification (left or right), \hyperpage{32}
-    \subitem delimiterRegEx, \hyperpage{32}
-    \subitem dontMeasure feature, \hyperpage{30}
-    \subitem double backslash demonstration, \hyperpage{29}
-    \subitem lookForAlignDelims, \hyperpage{25}
+    \subitem advanced settings, \hyperpage{24}
+    \subitem advanced settings of lookForAlignDelims, \hyperpage{24}
+    \subitem ampersand \&, \hyperpage{24}
+    \subitem default settings of lookForAlignDelims, \hyperpage{24}
+    \subitem delimiter justification (left or right), \hyperpage{33}
+    \subitem delimiterRegEx, \hyperpage{33}
+    \subitem dontMeasure feature, \hyperpage{31}
+    \subitem double backslash demonstration, \hyperpage{30}
+    \subitem lookForAlignDelims, \hyperpage{24}
     \subitem poly-switches for double back slash, \hyperpage{98}
-    \subitem spacing demonstration, \hyperpage{27}
+    \subitem spacing demonstration, \hyperpage{26}
     \subitem with specialBeginEnd and the -m switch, \hyperpage{99}
-    \subitem within specialBeginEnd blocks, \hyperpage{38}
+    \subitem within specialBeginEnd blocks, \hyperpage{39}
 
   \indexspace
 --- \textbf{I} --- \nopagebreak
 
   \item indentation
-    \subitem customising indentation per-code block, \hyperpage{41}
-    \subitem customising per-name, \hyperpage{41}
-    \subitem default, \hyperpage{12}
-    \subitem defaultIndent description, \hyperpage{24}
-    \subitem defaultIndent using -y switch, \hyperpage{12}
-    \subitem defaultIndent using YAML file, \hyperpage{16}
-    \subitem maximum indetation, \hyperpage{40}
-    \subitem no additional indent, \hyperpage{41}
-    \subitem no additional indent global, \hyperpage{41}
-    \subitem removing indentation per-code block, \hyperpage{41}
+    \subitem customising indentation per-code block, \hyperpage{42}
+    \subitem customising per-name, \hyperpage{42}
+    \subitem default, \hyperpage{11}
+    \subitem defaultIndent description, \hyperpage{23}
+    \subitem defaultIndent using -y switch, \hyperpage{11}
+    \subitem defaultIndent using YAML file, \hyperpage{15}
+    \subitem maximum indetation, \hyperpage{41}
+    \subitem no additional indent, \hyperpage{42}
+    \subitem no additional indent global, \hyperpage{42}
+    \subitem removing indentation per-code block, \hyperpage{42}
     \subitem summary, \hyperpage{59}
 
   \indexspace
@@ -59,9 +59,9 @@
   \item modifying linebreaks
     \subitem  at the \emph{beginning} of a code block, \hyperpage{91}
     \subitem  at the \emph{end} of a code block, \hyperpage{93}
-    \subitem  by text wrapping, globally, \hyperpage{66}
-    \subitem  by text wrapping, per-code-block, \hyperpage{69}
-    \subitem  by using one sentence per line, \hyperpage{75}
+    \subitem  by text wrapping, globally, \hyperpage{65}
+    \subitem  by text wrapping, per-code-block, \hyperpage{68}
+    \subitem  by using one sentence per line, \hyperpage{74}
     \subitem  surrounding double back slash, \hyperpage{98}
     \subitem  using poly-switches, \hyperpage{90}
 
@@ -96,67 +96,68 @@
 --- \textbf{R} --- \nopagebreak
 
   \item regular expressions
-    \subitem a word about, \hyperpage{7}
-    \subitem ampersand alignment, \hyperpage{25}
+    \subitem a word about, \hyperpage{6}
+    \subitem ampersand alignment, \hyperpage{24}
     \subitem arguments, \hyperpage{116}
     \subitem at least one +, \hyperpage{39}, \hyperpage{109}, 
 		\hyperpage{112}, \hyperpage{116--118}
-    \subitem capturing parenthesis, \hyperpage{32}
+    \subitem capturing parenthesis, \hyperpage{33}
     \subitem commands, \hyperpage{116}
-    \subitem delimiter alignment for edge or node, \hyperpage{38}
+    \subitem delimiter alignment for edge or node, \hyperpage{39}
     \subitem delimiter regex at \#, \hyperpage{34}
-    \subitem delimiter regex at \# or \textbackslash>, \hyperpage{34}
+    \subitem delimiter regex at \# or \textbackslash>, \hyperpage{35}
     \subitem delimiter regex at \textbackslash= or \textbackslash>, 
 		\hyperpage{33}
-    \subitem delimiter regex at only \textbackslash>, \hyperpage{33}
-    \subitem delimiterRegEx, \hyperpage{25}
-    \subitem dontMeasure feature, cell, \hyperpage{31}
-    \subitem dontMeasure feature, row, \hyperpage{32}
+    \subitem delimiter regex at only \textbackslash>, \hyperpage{34}
+    \subitem delimiterRegEx, \hyperpage{24}
+    \subitem dontMeasure feature, cell, \hyperpage{32}
+    \subitem dontMeasure feature, row, \hyperpage{33}
     \subitem environments, \hyperpage{116}
     \subitem fine tuning, \hyperpage{116}
     \subitem horizontal space \textbackslash{h}, \hyperpage{39}, 
-		\hyperpage{41}, \hyperpage{83}, \hyperpage{112, 113}, 
+		\hyperpage{42}, \hyperpage{82}, \hyperpage{112, 113}, 
 		\hyperpage{116}
     \subitem ifElseFi, \hyperpage{116}
     \subitem keyEqualsValuesBracesBrackets, \hyperpage{116}
-    \subitem lowercase alph a-z, \hyperpage{31, 32}, \hyperpage{41}, 
-		\hyperpage{75, 76}, \hyperpage{79}, \hyperpage{83}, 
-		\hyperpage{116}
+    \subitem lowercase alph a-z, \hyperpage{32, 33}, \hyperpage{42}, 
+		\hyperpage{74}, \hyperpage{76}, \hyperpage{78}, 
+		\hyperpage{82}, \hyperpage{116}
     \subitem modifyLineBreaks, \hyperpage{116}
     \subitem NamedGroupingBracesBrackets, \hyperpage{116}
-    \subitem numeric 0-9, \hyperpage{38}, \hyperpage{41}, 
-		\hyperpage{78}, \hyperpage{83}, \hyperpage{116}
+    \subitem numeric 0-9, \hyperpage{39}, \hyperpage{42}, 
+		\hyperpage{78}, \hyperpage{82}, \hyperpage{116}
     \subitem replacement switch, -r, \hyperpage{108}
     \subitem substitution field, arraycolsep, \hyperpage{109}
     \subitem substitution field, equation, \hyperpage{111}
     \subitem UnNamedGroupingBracesBrackets, \hyperpage{116}
-    \subitem uppercase alph A-Z, \hyperpage{38}, \hyperpage{41}, 
-		\hyperpage{75, 76}, \hyperpage{83}, \hyperpage{116}
-    \subitem using -y switch, \hyperpage{18}
+    \subitem uppercase alph A-Z, \hyperpage{39}, \hyperpage{42}, 
+		\hyperpage{74}, \hyperpage{76}, \hyperpage{82}, 
+		\hyperpage{116}
+    \subitem using -y switch, \hyperpage{17}
 
   \indexspace
 --- \textbf{S} --- \nopagebreak
 
   \item sentences
-    \subitem begin with, \hyperpage{76}, \hyperpage{78}
+    \subitem begin with, \hyperpage{76, 77}
     \subitem end with, \hyperpage{76}, \hyperpage{78}
-    \subitem follow, \hyperpage{76, 77}
+    \subitem follow, \hyperpage{76}
     \subitem indenting, \hyperpage{81}
-    \subitem one sentence per line, \hyperpage{75}
-    \subitem oneSentencePerLine, \hyperpage{75}
+    \subitem one sentence per line, \hyperpage{74}
+    \subitem oneSentencePerLine, \hyperpage{74}
     \subitem removing sentence line breaks, \hyperpage{75}
     \subitem text wrapping, \hyperpage{81}
   \item specialBeginEnd
-    \subitem alignment at delimiter, \hyperpage{38}
-    \subitem combined with lookForAlignDelims, \hyperpage{38}
-    \subitem default settings, \hyperpage{35}
-    \subitem delimiterRegEx, \hyperpage{38}
+    \subitem alignment at delimiter, \hyperpage{39}
+    \subitem combined with lookForAlignDelims, \hyperpage{39}
+    \subitem default settings, \hyperpage{36}
+    \subitem delimiterRegEx, \hyperpage{39}
     \subitem delimiterRegEx tweaked, \hyperpage{39}
     \subitem double backslash poly-switch demonstration, \hyperpage{99}
     \subitem IfElsFi example, \hyperpage{37}
     \subitem indentRules example, \hyperpage{54}
     \subitem indentRulesGlobal, \hyperpage{59}
-    \subitem introduction, \hyperpage{35}
+    \subitem introduction, \hyperpage{36}
     \subitem lookForAlignDelims, \hyperpage{99}
     \subitem middle, \hyperpage{37}
     \subitem noAdditionalIndent, \hyperpage{54}
@@ -167,80 +168,80 @@
     \subitem searching for special before commands, \hyperpage{36}
     \subitem specifying as verbatim, \hyperpage{38}
     \subitem textWrapOptions, \hyperpage{69}
-    \subitem tikz example, \hyperpage{38}
+    \subitem tikz example, \hyperpage{39}
     \subitem update to displaymath V3.0, \hyperpage{131}
   \item switches
-    \subitem -c, --cruft definition and details, \hyperpage{13}
-    \subitem -d, --onlydefault definition and details, \hyperpage{13}
-    \subitem -g, --logfile definition and details, \hyperpage{13}
-    \subitem -h, --help definition and details, \hyperpage{9}
-    \subitem -l demonstration, \hyperpage{17, 18}, \hyperpage{27}, 
-		\hyperpage{31--34}, \hyperpage{36--38}, 
-		\hyperpage{40, 41}, \hyperpage{43--56}, 
-		\hyperpage{60, 61}, \hyperpage{63}, \hyperpage{66--68}, 
-		\hyperpage{70, 71}, \hyperpage{73}, \hyperpage{76--88}, 
-		\hyperpage{90--101}, \hyperpage{103--106}, 
-		\hyperpage{108--114}, \hyperpage{117, 118}
-    \subitem -l in relation to other settings, \hyperpage{18}
-    \subitem -l, --local definition and details, \hyperpage{11}
+    \subitem -c, --cruft definition and details, \hyperpage{12}
+    \subitem -d, --onlydefault definition and details, \hyperpage{12}
+    \subitem -g, --logfile definition and details, \hyperpage{12}
+    \subitem -h, --help definition and details, \hyperpage{8}
+    \subitem -l demonstration, \hyperpage{16, 17}, \hyperpage{26}, 
+		\hyperpage{31--35}, \hyperpage{37--41}, 
+		\hyperpage{44--56}, \hyperpage{60--62}, 
+		\hyperpage{66--68}, \hyperpage{70, 71}, \hyperpage{73}, 
+		\hyperpage{75--88}, \hyperpage{90--101}, 
+		\hyperpage{103--106}, \hyperpage{108--114}, 
+		\hyperpage{117, 118}
+    \subitem -l in relation to other settings, \hyperpage{17}
+    \subitem -l, --local definition and details, \hyperpage{10}
     \subitem -m demonstration, \hyperpage{65--68}, \hyperpage{70, 71}, 
-		\hyperpage{73}, \hyperpage{76--88}, 
+		\hyperpage{73}, \hyperpage{75--88}, 
 		\hyperpage{90--101}, \hyperpage{103--106}, 
 		\hyperpage{111}
     \subitem -m, --modifylinebreaks definition and details, 
-		\hyperpage{13}
-    \subitem -o demonstration, \hyperpage{29}, \hyperpage{34}, 
-		\hyperpage{38}, \hyperpage{66--68}, \hyperpage{84--88}, 
+		\hyperpage{12}
+    \subitem -o demonstration, \hyperpage{30}, \hyperpage{34, 35}, 
+		\hyperpage{39}, \hyperpage{66--68}, \hyperpage{84--88}, 
 		\hyperpage{90}, \hyperpage{113}, \hyperpage{131}
-    \subitem -o, --output definition and details, \hyperpage{10}
+    \subitem -o, --output definition and details, \hyperpage{9}
     \subitem -r demonstration, \hyperpage{107--114}
-    \subitem -r, --replacement definition and details, \hyperpage{14}
+    \subitem -r, --replacement definition and details, \hyperpage{13}
     \subitem -rr demonstration, \hyperpage{110}, \hyperpage{113}
     \subitem -rr, --onlyreplacement definition and details, 
-		\hyperpage{14}
+		\hyperpage{13}
     \subitem -rv demonstration, \hyperpage{113}
     \subitem -rv, --replacementrespectverb definition and details, 
-		\hyperpage{14}
-    \subitem -s, --silent definition and details, \hyperpage{11}
-    \subitem -sl, --screenlog definition and details, \hyperpage{13}
-    \subitem -t, --trace definition and details, \hyperpage{11}
-    \subitem -tt, --ttrace definition and details, \hyperpage{11}
-    \subitem -v, --version definition and details, \hyperpage{9}
-    \subitem -w, --overwrite definition and details, \hyperpage{9}
-    \subitem -y demonstration, \hyperpage{18}, \hyperpage{29}, 
+		\hyperpage{13}
+    \subitem -s, --silent definition and details, \hyperpage{10}
+    \subitem -sl, --screenlog definition and details, \hyperpage{12}
+    \subitem -t, --trace definition and details, \hyperpage{10}
+    \subitem -tt, --ttrace definition and details, \hyperpage{10}
+    \subitem -v, --version definition and details, \hyperpage{8}
+    \subitem -w, --overwrite definition and details, \hyperpage{8}
+    \subitem -y demonstration, \hyperpage{17}, \hyperpage{30}, 
 		\hyperpage{82}
-    \subitem -y, --yaml definition and details, \hyperpage{12}
+    \subitem -y, --yaml definition and details, \hyperpage{11}
 
   \indexspace
 --- \textbf{V} --- \nopagebreak
 
   \item verbatim
-    \subitem commands, \hyperpage{22}
+    \subitem commands, \hyperpage{21}
     \subitem comparison with -r and -rr switches, \hyperpage{113}
-    \subitem environments, \hyperpage{22}
+    \subitem environments, \hyperpage{21}
     \subitem in relation to oneSentencePerLine, \hyperpage{80}
     \subitem in relation to paragraphsStopAt, \hyperpage{88}
     \subitem in relation to textWrapOptions, \hyperpage{66}
-    \subitem noIndentBlock, \hyperpage{22}
+    \subitem noIndentBlock, \hyperpage{21}
     \subitem poly-switch summary, \hyperpage{101}
-    \subitem rv, replacementrespectverb switch, \hyperpage{14}, 
+    \subitem rv, replacementrespectverb switch, \hyperpage{13}, 
 		\hyperpage{107}
     \subitem specialBeginEnd, \hyperpage{38}
     \subitem verbatimEnvironments demonstration (-l switch), 
-		\hyperpage{18}
+		\hyperpage{17}
     \subitem verbatimEnvironments demonstration (-y switch), 
-		\hyperpage{18}
-    \subitem within summary of text wrapping, \hyperpage{75}
+		\hyperpage{17}
+    \subitem within summary of text wrapping, \hyperpage{74}
 
   \indexspace
 --- \textbf{W} --- \nopagebreak
 
   \item warning
     \subitem amalgamate field, \hyperpage{63}
-    \subitem be sure to test before use, \hyperpage{5}
+    \subitem be sure to test before use, \hyperpage{4}
     \subitem capturing parenthesis for lookForAlignDelims, 
-		\hyperpage{32}
-    \subitem editing YAML files, \hyperpage{17}
+		\hyperpage{33}
+    \subitem editing YAML files, \hyperpage{16}
     \subitem fine tuning, \hyperpage{116}
     \subitem the m switch, \hyperpage{65}
 
