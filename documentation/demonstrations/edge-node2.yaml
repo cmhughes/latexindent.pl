@@ -2,7 +2,6 @@ specialBeginEnd:
     path:
         begin: '\\path'
         end: ';'
-        lookForThis: 1
     specialBeforeCommand: 1
 
 lookForAlignDelims:
