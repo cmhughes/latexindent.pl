@@ -21,10 +21,10 @@ use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
-our @EXPORT_OK = qw/processSwitches $logger/;
+our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 
-sub processSwitches{
+sub process_switches{
     # -v switch is just to show the version number
     if($switches{version}) {
         print $versionNumber,", ",$versionDate,"\n";
@@ -152,14 +152,11 @@ ENDQUOTE
                 (my $file = $moduleName) =~ s|::|/|g;
                 $logger->info($INC{$file .'.pm'});
               }
-        $logger->info("*Latex Indent perl modules are being loaded from, for example:");
+        $logger->info("*LatexIndent perl modules are being loaded from, for example:");
                 (my $file = 'LatexIndent::Document') =~ s|::|/|g;
         $logger->info($INC{$file .'.pm'});
     }
 
-    # read the YAML settings
-    $self->yaml_read_settings;
-    
     return;
 }
 

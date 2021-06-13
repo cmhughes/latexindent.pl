@@ -17,7 +17,7 @@ package LatexIndent::Switches;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/%switches storeSwitches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
+our @EXPORT_OK = qw/%switches store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
 our %switches;
 our $is_m_switch_active;
 our $is_t_switch_active;
@@ -26,7 +26,7 @@ our $is_r_switch_active;
 our $is_rr_switch_active;
 our $is_rv_switch_active;
 
-sub storeSwitches{
+sub store_switches{
     my $self = shift;
 
     # copy document switches into hash local to this module
