@@ -104,6 +104,7 @@ sub operate_on_file{
         $self->dodge_double_backslash;
         $self->remove_leading_space;
         $self->process_body_of_text;
+        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
         $self->remove_trailing_whitespace(when=>"after");
         $self->condense_blank_lines;
         $self->unprotect_blank_lines;
