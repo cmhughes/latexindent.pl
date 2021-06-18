@@ -245,20 +245,21 @@ Active code page: 936
 
 	 \cmhlistingsfromfile*{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
 
-\section{dos2unix linebreak adjustment}
+	\section{dos2unix linebreak adjustment}
 
-\yamltitle{dos2unixlinebreaks}*{integer}
-If you use \texttt{latexindent.pl} on a dos-based Windows file on Linux \announce{new}{dos2unix linebreaks}
-then you may find that trailing horizontal space is not removed as you hope. 
+	\yamltitle{dos2unixlinebreaks}*{integer}
+		If you use \texttt{latexindent.pl} on a dos-based Windows file on Linux
+		\announce{new}{dos2unix linebreaks} then you may find that trailing horizontal space is not removed
+		as you hope.
 
-In such a case, you may wish to try setting \texttt{dos2unixlinebreaks} to 1 and employing, 
-for example, the following command.
+		In such a case, you may wish to try setting \texttt{dos2unixlinebreaks} to 1 and employing,
+		for example, the following command.
 
-	\begin{commandshell}
+		\begin{commandshell}
 latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
 \end{commandshell}
 
-    See \cite{bersbersbers} for further dertails. 
+		See \cite{bersbersbers} for further dertails.
 
 	\section{Differences from Version 2.2 to 3.0}\label{app:differences}
 	 There are a few (small) changes to the interface when comparing Version 2.2 to Version

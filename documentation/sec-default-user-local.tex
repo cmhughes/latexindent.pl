@@ -90,7 +90,7 @@ copy myfile.bak4 to myfile.bak3
 	amalgamated settings in the log file by switching \texttt{showAmalgamatedSettings} to
 	\texttt{1}, if you wish.
 
-	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+	\cmhlistingsfromfile*[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
 	When%
 	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of the
@@ -107,6 +107,11 @@ copy myfile.bak4 to myfile.bak3
 	Note: \texttt{latexindent.pl} no longer uses the \texttt{log4perl} module to handle
 	the creation of the logfile.%
 	\announce*{2021-03-14}*{no longer using log4perl}
+
+    Some of the options \announce{new}*{logFilePreferences updated to include Dumper options}for Perl's \texttt{Dumper} module can be specified in \cref{lst:logFilePreferences};
+    see \cite{dumper} and \cite{dumperdemo} for more information; these options will mostly 
+    be helpful for those calling \texttt{latexindent.pl} with the \texttt{-tt} option described 
+    in \cref{sec:commandline}.
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
@@ -508,7 +513,7 @@ latexindent.pl aligned1.tex -l sba4.yaml
 		\item \cref{lst:sba3} demonstrates the new \emph{advanced} way to specify
 		      \texttt{spacesBeforeAmpersand}, and
 		      for us to set the \texttt{default} value that sets the number of spaces before
-		      ampersands which are \emph{not} in leading blank columns.	  The default
+		      ampersands which are \emph{not} in leading blank columns.	    The default
 		      value is \texttt{1}.
 
 		      We note that \texttt{leadingBlankColumn} has not been specified in \cref{lst:sba3},

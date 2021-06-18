@@ -16,6 +16,7 @@ package LatexIndent::GetYamlSettings;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use Data::Dumper;
 use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
@@ -72,6 +73,8 @@ sub yaml_read_settings{
    
   # master yaml settings is a hash, global to this module
   our %masterSettings = %{$defaultSettings->[0]};
+
+  &yaml_update_dumper_settings();
 
   # scalar to read user settings
   my $userSettings;
@@ -359,6 +362,9 @@ sub yaml_read_settings{
             $logger->info("specifies $settings but this file does not exist - unable to read settings from this file");
         }
     }
+
+    &yaml_update_dumper_settings();
+
   }
 
   # read settings from -y|--yaml switch
@@ -550,7 +556,10 @@ sub yaml_read_settings{
                 $logger->info("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
                 $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
             }
+          
+            &yaml_update_dumper_settings();
           }
+
   }
 
   # some users may wish to see showAmalgamatedSettings
@@ -558,7 +567,7 @@ sub yaml_read_settings{
   # from the default in various user files
   if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
       $logger->info("Amalgamated/overall settings to be used:");
-      $logger->info(Dump \%masterSettings);
+      $logger->info(Dumper(\%masterSettings));
   }
 
   return;
@@ -1074,4 +1083,16 @@ sub yaml_get_object_attribute_for_indentation_settings{
     return "body";
 }
 
+sub yaml_update_dumper_settings{
+
+  # log file preferences
+  $Data::Dumper::Terse  = ${$masterSettings{logFilePreferences}{Dumper}}{Terse};
+  $Data::Dumper::Indent = ${$masterSettings{logFilePreferences}{Dumper}}{Indent};
+  $Data::Dumper::Useqq = ${$masterSettings{logFilePreferences}{Dumper}}{Useqq};
+  $Data::Dumper::Deparse = ${$masterSettings{logFilePreferences}{Dumper}}{Deparse};
+  $Data::Dumper::Quotekeys = ${$masterSettings{logFilePreferences}{Dumper}}{Quotekeys};
+  $Data::Dumper::Sortkeys = ${$masterSettings{logFilePreferences}{Dumper}}{Sortkeys};
+  $Data::Dumper::Pair = ${$masterSettings{logFilePreferences}{Dumper}}{Pair};
+
+}
 1;

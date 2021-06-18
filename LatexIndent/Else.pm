@@ -23,7 +23,6 @@ use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
 use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/check_for_else_statement/;

@@ -120,11 +120,6 @@ sub operate_on_file{
     return
 }
 
-sub dos2unixlinebreaks{
-    my $self = shift;
-    ${$self}{body};
-}
-
 sub construct_regular_expressions{
     my $self = shift;
     $self->construct_trailing_comment_regexp;

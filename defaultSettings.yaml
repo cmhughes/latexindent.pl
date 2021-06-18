@@ -89,6 +89,14 @@ logFilePreferences:
     showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
+    Dumper:
+      Terse: 1
+      Indent: 1
+      Useqq: 1
+      Deparse: 1
+      Quotekeys: 0
+      Sortkeys: 1
+      Pair: " => "
 
 #  verbatim environments specified 
 #  in this field will not be changed at all!
