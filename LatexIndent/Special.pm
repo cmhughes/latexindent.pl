@@ -36,9 +36,17 @@ our $specialBeginBasicRegExp;
 sub construct_special_begin{
     my $self = shift;
 
+    $logger->trace("*Constructing specialBeginEnd regex (see specialBeginEnd)") if $is_t_switch_active;
+
     # put together a list of the begin terms in special
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
       if(ref($BeginEnd) eq "HASH"){
+        if (not defined ${$BeginEnd}{lookForThis}){
+            ${$BeginEnd}{lookForThis} = 1;
+            ${${$masterSettings{specialBeginEnd}}{$specialName}}{lookForThis} = 1;
+            $logger->trace("setting lookForThis:1 for $specialName (lookForThis not specified)") if $is_t_switch_active;
+        }
+
         # only append the regexps if lookForThis is 1
         $specialBegins .= ($specialBegins eq ""?q():"|").${$BeginEnd}{begin} if(${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1);
       }
@@ -48,45 +56,49 @@ sub construct_special_begin{
     while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
 
       # only append the regexps if lookForThis is 1
-      if( (ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1){
+      if( ref($BeginEnd) eq "HASH" ){
+        if ( ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 0 ){
+            $logger->trace("The specialBeginEnd regexps won't include anything from $specialName (lookForThis: 0)") if $is_t_switch_active ;
+            next;
+        }
+      } else {
+        next;
+      }
 
-        # the overall regexp
-        $specialAllMatchesRegExp .= ($specialAllMatchesRegExp eq ""?q():"|")
-                                    .qr/
+      # the overall regexp
+      $specialAllMatchesRegExp .= ($specialAllMatchesRegExp eq ""?q():"|")
+                                  .qr/
+                                  ${$BeginEnd}{begin}
+                                  (?:                        # cluster-only (), don't capture 
+                                      (?!             
+                                          (?:$specialBegins) # cluster-only (), don't capture
+                                      ).                     # any character, but not anything in $specialBegins
+                                  )*?                 
+                                  ${$BeginEnd}{end}
+                           /sx;
+
+      # store the individual special regexp
+      $individualSpecialRegExps{$specialName} = qr/
+                                (
                                     ${$BeginEnd}{begin}
+                                    \h*
+                                    (\R*)?
+                                )
+                                (
                                     (?:                        # cluster-only (), don't capture 
                                         (?!             
                                             (?:$specialBegins) # cluster-only (), don't capture
                                         ).                     # any character, but not anything in $specialBegins
                                     )*?                 
-                                    ${$BeginEnd}{end}
-                             /sx;
+                                   (\R*)?
+                                )                       
+                                (
+                                  ${$BeginEnd}{end}
+                                )
+                                (\h*)
+                                (\R)?
+                             /sx
 
-        # store the individual special regexp
-        $individualSpecialRegExps{$specialName} = qr/
-                                  (
-                                      ${$BeginEnd}{begin}
-                                      \h*
-                                      (\R*)?
-                                  )
-                                  (
-                                      (?:                        # cluster-only (), don't capture 
-                                          (?!             
-                                              (?:$specialBegins) # cluster-only (), don't capture
-                                          ).                     # any character, but not anything in $specialBegins
-                                      )*?                 
-                                     (\R*)?
-                                  )                       
-                                  (
-                                    ${$BeginEnd}{end}
-                                  )
-                                  (\h*)
-                                  (\R)?
-                               /sx
-
-        } else {
-            $logger->trace("*The special regexps won't include anything from $specialName (see lookForThis)") if $is_t_switch_active ;
-        }
     }
 
     # move $$ to the beginning
@@ -176,7 +188,7 @@ sub find_special{
                                     ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q());
                                     /xseg;
 
-    $self->wrap_up_tasks;
+                $self->wrap_up_tasks;
             }
          }
      }

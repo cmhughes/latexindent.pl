@@ -1,0 +1,10 @@
+specialBeginEnd:
+    specialBeforeCommand: 1
+    While:
+        begin: '\\While'
+        end: '\\EndWhile'
+    If:
+        begin: '\\If'
+        middle: '\\ElsIf'
+        end: '\\EndIf'
+        lookForThis: 0

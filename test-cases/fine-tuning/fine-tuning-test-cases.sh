@@ -37,5 +37,9 @@ latexindent.pl -s arguments1 -o=+-mod1 -l=fine-tuning-args1.yaml
 
 latexindent.pl -s arguments2 -o=+-mod0
 latexindent.pl -s arguments2 -o=+-mod2 -l=fine-tuning-args2.yaml
+
+# trailing comments, Larry's Speak Easy
+latexindent.pl -s href.tex -m -o=+-mod1 -l href1.yaml
+latexindent.pl -s href.tex -m -o=+-mod2 -l href2.yaml
 git status
 [[ $noisyMode == 1 ]] && makenoise

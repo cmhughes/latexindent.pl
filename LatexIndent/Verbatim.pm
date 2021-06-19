@@ -30,64 +30,100 @@ sub find_noindent_block{
     my $self = shift;
 
     # noindent block
-    $logger->trace('*Searching for NOINDENTBLOCk environments (see noIndentBlock)') if $is_t_switch_active;
+    $logger->trace('*Searching for NOINDENTBLOCk (see noIndentBlock)') if $is_t_switch_active;
     $logger->trace(Dumper(\%{$masterSettings{noIndentBlock}})) if($is_tt_switch_active);
     while( my ($noIndentBlock,$yesno)= each %{$masterSettings{noIndentBlock}}){
-        if($yesno){
-            $logger->trace("looking for $noIndentBlock:$yesno environments") if $is_t_switch_active;
+
+        # integrity check on the field for noIndentBlock
+        if ( ref($yesno) eq "HASH" ){
+          if (not defined ${$yesno}{begin}){
+            $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:begin not specified") if $is_t_switch_active;
+            next;
+          } elsif (not defined ${$yesno}{end}) {
+            $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:end not specified") if $is_t_switch_active;
+            next;
+          } elsif (defined ${$yesno}{lookForThis} and !${$yesno}{lookForThis}){
+            $logger->trace(" *not* looking for $noIndentBlock as lookForThis: 0") if $is_t_switch_active;
+            next;
+          }
+        } elsif( ref($yesno) ne "HASH" and !$yesno ){
+          $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
+          next;
+        }
+
+        # if we've made it this far, then we're good to go
+        my $noIndentRegExp;
+
+        if (ref($yesno) eq "HASH"){
+            # default value of body
+            if (not defined ${$yesno}{body}){
+                $logger->trace("looking for regex based $noIndentBlock, begin: ${$yesno}{begin}, end: ${$yesno}{end}") if $is_t_switch_active;
+                $logger->trace("body not specified for $noIndentBlock, setting default .*?") if $is_t_switch_active;
+                ${$yesno}{body} = qr/.*?/sx;
+            } else {
+                $logger->trace("looking for regex based $noIndentBlock") if $is_t_switch_active;
+                $logger->trace("begin: ${$yesno}{begin}") if $is_t_switch_active;
+                $logger->trace("body: ${$yesno}{body}") if $is_t_switch_active;
+                $logger->trace("end: ${$yesno}{end}") if $is_t_switch_active;
+            }
+
+            $noIndentRegExp = qr/
+                            (${$yesno}{begin})
+                            (${$yesno}{body})                    
+                            (${$yesno}{end})                    
+                        /sx;
+        } else {
+            $logger->trace("looking for $noIndentBlock:$yesno noIndentBlock") if $is_t_switch_active;
 
             (my $noIndentBlockSpec = $noIndentBlock) =~ s/\*/\\*/sg;
-            my $noIndentRegExp = qr/
+            $noIndentRegExp = qr/
                             (
                                 (?!<\\)
                                 %
                                 (?:\h|(?!<\\)%)*            # possible horizontal spaces
                                 \\begin\{
-                                        $noIndentBlockSpec  # environment name captured into $2
+                                        $noIndentBlockSpec  
                                        \}                   # % \begin{noindentblock} statement
-                            )
+                            )                               # begin captured into $1
                             (
                                 .*?
-                            )                               # non-greedy match (body)
+                            )                               # non-greedy match (body) into $2
                             (
                                 (?!<\\)
                                 %                           # %
                                 (?:\h|(?!<\\)%)*            # possible horizontal spaces
                                 \\end\{$noIndentBlockSpec\} # \end{noindentblock}
-                            )                               # % \end{<something>} statement
+                            )                               # % \end{<something>} statement into $3
                         /sx;
+        } 
+        while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
-            while( ${$self}{body} =~ m/$noIndentRegExp/sx){
+          # create a new Verbatim object
+          my $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
+                                                body=>$2,
+                                                end=>$3,
+                                                name=>$noIndentBlock,
+                                                type=>"noindentblock",
+                                                modifyLineBreaksYamlName=>"verbatim",
+                                                );
+        
+          # give unique id
+          $noIndentBlockObj->create_unique_id;
 
-              # create a new Verbatim object
-              my $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
-                                                    body=>$2,
-                                                    end=>$3,
-                                                    name=>$noIndentBlock,
-                                                    type=>"noindentblock",
-                                                    modifyLineBreaksYamlName=>"verbatim",
-                                                    );
-            
-              # give unique id
-              $noIndentBlockObj->create_unique_id;
+          # verbatim children go in special hash
+          ${$self}{verbatim}{${$noIndentBlockObj}{id}}=$noIndentBlockObj;
 
-              # verbatim children go in special hash
-              ${$self}{verbatim}{${$noIndentBlockObj}{id}}=$noIndentBlockObj;
+          # log file output
+          $logger->trace("NOINDENTBLOCK found: $noIndentBlock") if $is_t_switch_active;
 
-              # log file output
-              $logger->trace("*NOINDENTBLOCK environment found: $noIndentBlock") if $is_t_switch_active;
+          # remove the environment block, and replace with unique ID
+          ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlockObj}{id}/sx;
 
-              # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlockObj}{id}/sx;
-
-              $logger->trace("replaced with ID: ${$noIndentBlockObj}{id}") if $is_t_switch_active;
-              
-              # possible decoration in log file 
-              $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
-            } 
-      } else {
-            $logger->trace("*not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
-      }
+          $logger->trace("replaced with ID: ${$noIndentBlockObj}{id}") if $is_t_switch_active;
+          
+          # possible decoration in log file 
+          $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+        } 
     }
     return;
 }

@@ -1,0 +1,17 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        huge: overflow
+        all: 1
+        perCodeBlockBasis: 1
+    removeParagraphLineBreaks:
+        all: 1
+        paragraphsStopAt:
+            verbatim: 0
+
+noIndentBlock:
+    href:
+        begin: '\\href\{[^}]*?\}\{'
+        body: '[^}]*?'
+        end: '\}'
+        lookForThis: 0

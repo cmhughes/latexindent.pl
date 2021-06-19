@@ -42,80 +42,82 @@ sub find_file_contents_environments_and_preamble{
     $logger->trace('*Searching for FILE CONTENTS environments (see fileContentsEnvironments)') if $is_t_switch_active;
     $logger->trace(Dumper(\%{$masterSettings{fileContentsEnvironments}})) if($is_tt_switch_active);
     while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
-        if($yesno){
-            $logger->trace("looking for $fileContentsEnv environments") if $is_t_switch_active;
 
-            # the trailing * needs some care
-            if($fileContentsEnv =~ m/\*$/){
-                $fileContentsEnv =~ s/\*$//;
-                $fileContentsEnv .= '\*';
-            }
+        if(!$yesno){
+            $logger->trace(" *not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
+            next;
+        }
 
-            my $fileContentsRegExp = qr/
-                            (
-                            \\begin\{
-                                    $fileContentsEnv       
-                                   \}                     
-                            )
-                            (
-                                .*?
-                            )                            
-                            (
-                                \\end\{$fileContentsEnv\}  
-                                \h*
-                            )                    
-                            (\R)?  
-                        /sx;
+        $logger->trace("looking for $fileContentsEnv environments") if $is_t_switch_active;
 
-            while( ${$self}{body} =~ m/$fileContentsRegExp/sx){
+        # the trailing * needs some care
+        if($fileContentsEnv =~ m/\*$/){
+            $fileContentsEnv =~ s/\*$//;
+            $fileContentsEnv .= '\*';
+        }
 
-              # create a new Environment object
-              my $fileContentsBlock = LatexIndent::FileContents->new( begin=>$1,
-                                                    body=>$2,
-                                                    end=>$3,
-                                                    name=>$fileContentsEnv,
-                                                    linebreaksAtEnd=>{
-                                                      begin=>0,
-                                                      body=>0,
-                                                      end=>$4?1:0,
-                                                    },
-                                                    modifyLineBreaksYamlName=>"filecontents",
-                                                    );
-              # give unique id
-              $fileContentsBlock->create_unique_id;
-              
-              # text wrapping can make the ID split across lines
-              ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
+        my $fileContentsRegExp = qr/
+                        (
+                        \\begin\{
+                                $fileContentsEnv       
+                               \}                     
+                        )
+                        (
+                            .*?
+                        )                            
+                        (
+                            \\end\{$fileContentsEnv\}  
+                            \h*
+                        )                    
+                        (\R)?  
+                    /sx;
 
-              if($is_m_switch_active){
-                  my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$fileContentsBlock}{id}));
-                  ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;  
-              }
+        while( ${$self}{body} =~ m/$fileContentsRegExp/sx){
 
-              # the replacement text can be just the ID, but the ID might have a line break at the end of it
-              $fileContentsBlock->get_replacement_text;
+          # create a new Environment object
+          my $fileContentsBlock = LatexIndent::FileContents->new( begin=>$1,
+                                                body=>$2,
+                                                end=>$3,
+                                                name=>$fileContentsEnv,
+                                                linebreaksAtEnd=>{
+                                                  begin=>0,
+                                                  body=>0,
+                                                  end=>$4?1:0,
+                                                },
+                                                modifyLineBreaksYamlName=>"filecontents",
+                                                );
+          # give unique id
+          $fileContentsBlock->create_unique_id;
+          
+          # text wrapping can make the ID split across lines
+          ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
 
-              # count body line breaks
-              $fileContentsBlock->count_body_line_breaks;
+          if($is_m_switch_active){
+              my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$fileContentsBlock}{id}));
+              ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;  
+          }
 
-              # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
-              # so we compensate for it here
-              $fileContentsBlock->adjust_replacement_text_line_breaks_at_end;
+          # the replacement text can be just the ID, but the ID might have a line break at the end of it
+          $fileContentsBlock->get_replacement_text;
 
-              # store the fileContentsBlock, and determine location afterwards
-              push(@fileContentsStorageArray,$fileContentsBlock);
+          # count body line breaks
+          $fileContentsBlock->count_body_line_breaks;
 
-              # log file output
-              $logger->trace("FILECONTENTS environment found: $fileContentsEnv");
+          # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
+          # so we compensate for it here
+          $fileContentsBlock->adjust_replacement_text_line_breaks_at_end;
 
-              # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
+          # store the fileContentsBlock, and determine location afterwards
+          push(@fileContentsStorageArray,$fileContentsBlock);
 
-              $logger->trace("replaced with ID: ${$fileContentsBlock}{id}") if $is_tt_switch_active;
-            } 
-      } else {
-            $logger->trace("*not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
-      }
+          # log file output
+          $logger->trace("FILECONTENTS environment found: $fileContentsEnv")if $is_t_switch_active;
+
+          # remove the environment block, and replace with unique ID
+          ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
+
+          $logger->trace("replaced with ID: ${$fileContentsBlock}{id}") if $is_tt_switch_active;
+        } 
     }
 
     # determine if body of document contains \begin{document} -- if it does, then assume
@@ -171,7 +173,7 @@ sub find_file_contents_environments_and_preamble{
         $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
         # indentPreamble set to 1
         if($masterSettings{indentPreamble}){
-            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)");
+            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)") if $is_tt_switch_active;
             $needToStorePreamble = 1;
         } else {
             # indentPreamble set to 0
@@ -188,18 +190,18 @@ sub find_file_contents_environments_and_preamble{
               my $indentThisChild = 0;
               # verbatim children go in special hash
               if($preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/){
-                $logger->trace("filecontents (${$_}{id}) is within preamble");
+                $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
                 # indentPreamble set to 1
                 if($masterSettings{indentPreamble}){
-                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)");
+                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
                     $indentThisChild = 1;
                 } else {
                     # indentPreamble set to 0
-                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)");
+                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
                     ${$self}{verbatim}{${$_}{id}}=$_;
                 }
               } else {
-                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)");
+                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)") if $is_t_switch_active;
                     $indentThisChild = 1;
               }
               # store the child, if necessary

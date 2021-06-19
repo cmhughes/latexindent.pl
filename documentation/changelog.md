@@ -1,6 +1,16 @@
 # changelog.md
 
-## V3.9.3, April 7, 2021
+## V3.10, June 19, 2021
+enhancements:
+- logFilePreferences https://github.com/cmhughes/latexindent.pl/issues/276
+- spacesBeforeAmpersand https://github.com/cmhughes/latexindent.pl/issues/275
+- fineTuning and noIndentBlock https://github.com/cmhughes/latexindent.pl/issues/274
+- indentconfig.yaml https://github.com/cmhughes/latexindent.pl/issues/263
+- removeWhiteSpace dos2unixlinebreaks: https://github.com/cmhughes/latexindent.pl/issues/256
+bug fix:
+- https://github.com/cmhughes/latexindent.pl/issues/183
+
+## V3.9.3, May 7, 2021
 minor updates to log file creation https://github.com/cmhughes/latexindent.pl/issues/145
 
 ## V3.9.2, April 6, 2021

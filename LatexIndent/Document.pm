@@ -21,8 +21,8 @@ use utf8;
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
-use LatexIndent::Switches qw/storeSwitches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
-use LatexIndent::LogFile qw/processSwitches $logger/;
+use LatexIndent::Switches qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
+use LatexIndent::LogFile qw/process_switches $logger/;
 use LatexIndent::Logger qw/@logFileLines/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
@@ -74,8 +74,9 @@ sub new{
 
 sub latexindent{
     my $self = shift;
-    $self->storeSwitches;
-    $self->processSwitches;
+    $self->store_switches;
+    $self->process_switches;
+    $self->yaml_read_settings;
     $self->file_extension_check;
     $self->operate_on_file;
 }
@@ -103,6 +104,7 @@ sub operate_on_file{
         $self->dodge_double_backslash;
         $self->remove_leading_space;
         $self->process_body_of_text;
+        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
         $self->remove_trailing_whitespace(when=>"after");
         $self->condense_blank_lines;
         $self->unprotect_blank_lines;
@@ -112,6 +114,7 @@ sub operate_on_file{
         $self->put_trailing_comments_back_in;
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
+        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
     }
     $self->output_indented_text;
     return

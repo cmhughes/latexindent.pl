@@ -25,7 +25,6 @@ use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_environments $environmentBasicRegExp construct_environments_regexp/;

@@ -388,7 +388,12 @@ sub align_at_ampersand{
         ){
             ${$_}{row} = (${$_}{unformattedRow} ne "" ? ${$_}{unformattedRow}:q()).(${$_}{trailingComment}?${$_}{trailingComment}:q());
         }
-
+        
+        # spaces for leadingBlankColumn in operation
+        if(${$self}{leadingBlankColumn}>-1){
+            $padding = " " x (${$self}{leadingBlankColumn});
+            ${$_}{row} =~ s/^\h*/$padding/s;
+        }
     }
 
     # delete the original body
@@ -738,6 +743,19 @@ sub individual_padding{
            ${$cell}{delimiterLength} = $maxDelimiterWidth[$j];
         }
         
+        # to keep leadingBlankColumn on, we need to check:
+        #
+        #   - are we in the first column?
+        #   - is leadingBlankColumn 0 or more?
+        #   - cell width of first column equal 0?
+        #   - are we measuring this cell?
+        #
+        # see test-cases/alignment/issue-275a.tex and the associated logfile
+        #
+        if ($j==0 and ${$self}{leadingBlankColumn}>-1 and ${$cell}{width} > 0 and ${$cell}{measureThis}==1){
+            ${$self}{leadingBlankColumn} = -1;
+        }
+        
         # there are some cells that shouldn't be accounted for in measuring, 
         # for example {ccc}
         next if !${$cell}{measureThis};
@@ -748,6 +766,7 @@ sub individual_padding{
                                     max($maximumColumnWidths[$j],${$cell}{width})
                                         :
                                     ${$cell}{width});
+
     }
 
     # update the maximum number of columns
@@ -1288,14 +1307,14 @@ sub pretty_print_cell_info{
 
   $logger->trace("*cell information: $thingToPrint");
 
-  $logger->trace("minimum multi col span: ",join(",",@minMultiColSpan)) if(@minMultiColSpan);
+  $logger->trace("minimum multi col span: ".join(",",@minMultiColSpan)) if(@minMultiColSpan);
 
   foreach my $row (@cellStorage) {
     my $tmpLogFileLine = q();
     foreach my $cell (@$row) {
         $tmpLogFileLine .= ${$cell}{$thingToPrint}."\t";
     }
-    $logger->trace(' ', $tmpLogFileLine) if($is_t_switch_active);
+    $logger->trace(' '. $tmpLogFileLine) if($is_t_switch_active);
   }
 
   if($thingToPrint eq "type"){

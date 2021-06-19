@@ -14,7 +14,7 @@ GetOptions (
 # store the names of each field
 my @namesAndOffsets = (
                         {name=>"fileExtensionPreference",numberOfLines=>4},
-                        {name=>"logFilePreferences",numberOfLines=>6},
+                        {name=>"logFilePreferences",numberOfLines=>14},
                         {name=>"verbatimEnvironments",numberOfLines=>3},
                         {name=>"verbatimCommands",numberOfLines=>2},
                         {name=>"noIndentBlock",numberOfLines=>2},
@@ -33,7 +33,7 @@ my @namesAndOffsets = (
                         {name=>"commandCodeBlocks",numberOfLines=>15},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
-                        {name=>"textWrapOptionsAll",numberOfLines=>16,special=>"textWrapOptions"},
+                        {name=>"textWrapOptionsAll",numberOfLines=>17,special=>"textWrapOptions"},
                         {name=>"removeParagraphLineBreaks",numberOfLines=>14},
                         {name=>"paragraphsStopAt",numberOfLines=>9},
                         {name=>"oneSentencePerLine",numberOfLines=>23},
@@ -41,7 +41,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
-                        {name=>"fineTuning",numberOfLines=>21},
+                        {name=>"fineTuning",numberOfLines=>23},
                         {name=>"replacements",numberOfLines=>8},
                       );
 

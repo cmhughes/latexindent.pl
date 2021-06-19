@@ -22,7 +22,6 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;

@@ -1,0 +1,6 @@
+noIndentBlock:
+    demo:
+        begin: 'some\hbefore'
+        body: '.*?'
+        end: 'some\hafter\htext'
+        lookForThis: 0

@@ -107,6 +107,11 @@ latexindent.pl -s -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3; B
 latexindent.pl -s -y='modifyLineBreaks  :  environments: myenv  : EndStartsOnOwnLine:3; BeginStartsOnOwnLine:3' -t -m env-single-line.tex -o=+-yswitch2
 latexindent.pl -s -y='modifyLineBreaks:environments: myenv:EndStartsOnOwnLine:3; BeginStartsOnOwnLine:3;BodyStartsOnOwnLine:2,modifyLineBreaks:environments:EndFinishesWithLineBreak:1;BodyStartsOnOwnLine:2' -t -m env-single-line.tex -o=+-yswitch3
 
+# dos2unix line breaks https://github.com/cmhughes/latexindent.pl/issues/256
+# unix2dos issue-256.tex
+latexindent.pl -s issue-256.tex -o +-mod1
+latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256.tex -o +-mod2
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

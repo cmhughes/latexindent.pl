@@ -22,7 +22,6 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Special qw/$specialBeginBasicRegExp/;
-use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_heading construct_headings_levels $allHeadingsRegexp/;

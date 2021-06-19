@@ -13,9 +13,9 @@ All features described in this section will only be relevant if the ``-m`` switc
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 472-474
+ 	:lines: 483-485
  	:linenos:
- 	:lineno-start: 472
+ 	:lineno-start: 483
 
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``latexindent.pl`` to
 modify line breaks, according to the specifications in the ``modifyLineBreaks`` field. *The settings
@@ -87,9 +87,9 @@ specified in the ``textWrapOptions`` field, see :numref:`lst:textWrapOptions`. T
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 499-500
+ 	:lines: 510-511
  	:linenos:
- 	:lineno-start: 499
+ 	:lineno-start: 510
 
 For example, consider the file give in :numref:`lst:textwrap1`.
 
@@ -319,9 +319,9 @@ particular, note the field ``perCodeBlockBasis: 0``.
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 499-515
+ 	:lines: 510-527
  	:linenos:
- 	:lineno-start: 499
+ 	:lineno-start: 510
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with direct reference to those
 detailed in :numref:`tab:code-blocks`. The only special case is the ``masterDocument`` field; this
@@ -601,9 +601,9 @@ discuss next.
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 475-498
+ 	:lines: 486-509
  	:linenos:
- 	:lineno-start: 475
+ 	:lineno-start: 486
 
 .. describe:: manipulateSentences:0\|1
 
@@ -697,25 +697,25 @@ can specify anything in this field using the language of regular expressions.
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 480-488
+ 	:lines: 491-499
  	:linenos:
- 	:lineno-start: 480
+ 	:lineno-start: 491
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 489-492
+ 	:lines: 500-503
  	:linenos:
- 	:lineno-start: 489
+ 	:lineno-start: 500
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 493-498
+ 	:lines: 504-509
  	:linenos:
- 	:lineno-start: 493
+ 	:lineno-start: 504
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1206,9 +1206,9 @@ This feature is considered complimentary to the ``oneSentencePerLine`` feature d
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 516-530
+ 	:lines: 528-542
  	:linenos:
- 	:lineno-start: 516
+ 	:lineno-start: 528
 
 This routine can be turned on *globally* for *every* code block type known to ``latexindent.pl``
 (see :numref:`tab:code-blocks`) by using the ``all`` switch; by default, this switch is *off*.
@@ -1428,9 +1428,9 @@ fields, shown in :numref:`lst:paragraphsStopAt`.
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 531-540
+ 	:lines: 543-552
  	:linenos:
- 	:lineno-start: 531
+ 	:lineno-start: 543
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to stop the current paragraph
 when it reaches a line that *begins* with any of the code-block types specified as ``1`` in
@@ -1634,9 +1634,9 @@ that it contains *global* settings (immediately after the ``environments`` field
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 541-550
+ 	:lines: 553-562
  	:linenos:
- 	:lineno-start: 541
+ 	:lineno-start: 553
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have
 annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in

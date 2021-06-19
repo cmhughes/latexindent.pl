@@ -16,6 +16,7 @@ package LatexIndent::GetYamlSettings;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
+use Data::Dumper;
 use LatexIndent::Switches qw/%switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use YAML::Tiny;                # interpret defaultSettings.yaml and other potential settings files
 use File::Basename;            # to get the filename and directory path
@@ -47,6 +48,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"dontMeasure",default=>0},
                                        {name=>"delimiterRegEx",default=>"(?<!\\\\)(&)"},
                                        {name=>"delimiterJustification",default=>"left"},
+                                       {name=>"leadingBlankColumn",default=>-1},
                                         );
     
 sub yaml_read_settings{
@@ -56,7 +58,8 @@ sub yaml_read_settings{
   $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/defaultSettings.yaml" ) if ( -e "$FindBin::RealBin/defaultSettings.yaml" );
 
   # grab the logger object
-  $logger->info("*YAML settings read: defaultSettings.yaml\nReading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
+  $logger->info("*YAML settings read: defaultSettings.yaml");
+  $logger->info("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
   
   # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
   # the same directory as it; we need to navigate to it
@@ -70,6 +73,8 @@ sub yaml_read_settings{
    
   # master yaml settings is a hash, global to this module
   our %masterSettings = %{$defaultSettings->[0]};
+
+  &yaml_update_dumper_settings();
 
   # scalar to read user settings
   my $userSettings;
@@ -107,7 +112,34 @@ sub yaml_read_settings{
             # output the contents of indentconfig to the log file
             $logger->info(Dump \%{$userSettings->[0]});
         
-            @absPaths = @{$userSettings->[0]->{paths}};
+            # change the encoding of the paths according to the field `encoding`
+            if($userSettings and (ref($userSettings->[0]) eq 'HASH') and $userSettings->[0]->{encoding}){
+                use Encode;
+                my $encoding = $userSettings->[0]->{encoding};
+                my $encodingObject = find_encoding($encoding);
+                # Check if the encoding is valid.
+                if (ref($encodingObject))
+                {
+                    $logger->info("*Encoding of the paths is $encoding");
+                    foreach (@{$userSettings->[0]->{paths}})
+                    {
+                        my $temp = $encodingObject->encode("$_");
+                        $logger->info("Transform file encoding: $_ -> $temp");
+                        push(@absPaths,$temp);
+                    }
+                }
+                else
+                {
+                    $logger->warn("*encoding \"$encoding\" not found");
+                    $logger->warn("Ignore this setting and will take the default encoding.");
+                    @absPaths = @{$userSettings->[0]->{paths}};
+                }
+            }
+            else # No such setting, and will take the default
+            {
+                # $logger->info("*Encoding of the paths takes the default.");
+                @absPaths = @{$userSettings->[0]->{paths}};
+            }
         } else {
             $logger->warn("*The paths field cannot be read from $indentconfig; this means it is either empty or contains invalid YAML");
             $logger->warn("See https://latexindentpl.readthedocs.io/en/latest/sec-indent-config-and-settings.html for an example");
@@ -240,14 +272,16 @@ sub yaml_read_settings{
                             if (ref $secondLevelValue eq "HASH"){
                                 # if masterSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
-                                if(ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
+                                if(defined $masterSettings{$firstLevelKey}{$secondLevelKey} 
+                                    and ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
                                     $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                     delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
-                                        if (ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
+                                        if (defined $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} 
+                                            and ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
                                             $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
                                             delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }
@@ -328,6 +362,9 @@ sub yaml_read_settings{
             $logger->info("specifies $settings but this file does not exist - unable to read settings from this file");
         }
     }
+
+    &yaml_update_dumper_settings();
+
   }
 
   # read settings from -y|--yaml switch
@@ -519,7 +556,10 @@ sub yaml_read_settings{
                 $logger->info("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
                 $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
             }
+          
+            &yaml_update_dumper_settings();
           }
+
   }
 
   # some users may wish to see showAmalgamatedSettings
@@ -527,7 +567,7 @@ sub yaml_read_settings{
   # from the default in various user files
   if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
       $logger->info("Amalgamated/overall settings to be used:");
-      $logger->info(Dump \%masterSettings);
+      $logger->info(Dumper(\%masterSettings));
   }
 
   return;
@@ -611,6 +651,8 @@ sub yaml_alignment_at_ampersand_settings{
     #         spacesBeforeDoubleBackSlash: 2
     return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
 
+    $logger->trace("alignAtAmpersand settings for $name (see lookForAlignDelims)") if($is_t_switch_active);
+
     if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
       # specified as a hash, e.g
       #
@@ -621,7 +663,57 @@ sub yaml_alignment_at_ampersand_settings{
       #         spacesBeforeDoubleBackSlash: 2
       foreach (@alignAtAmpersandInformation){
           my $yamlname = (defined ${$_}{yamlname} ? ${$_}{yamlname}: ${$_}{name});
-          ${$self}{${$_}{name}} = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
+
+          # each of the following cases need to be allowed:
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           default: 1
+          #           leadingBlankColumn: 0
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           leadingBlankColumn: 0
+          #
+          #   lookForAlignDelims:
+          #      aligned: 
+          #         spacesBeforeAmpersand: 
+          #           default: 0
+          #
+          # approach:
+          #     - update masterSettings to have the relevant information: leadingBlankColumn and/or default
+          #     - delete the spacesBeforeAmpersand hash
+          #
+          if ($yamlname eq "spacesBeforeAmpersand" 
+              and ref(${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}) eq "HASH"){
+            $logger->trace("spacesBeforeAmpersand settings for $name") if $is_t_switch_active;
+            
+            #   lookForAlignDelims:
+            #      aligned: 
+            #         spacesBeforeAmpersand: 
+            #           leadingBlankColumn: 0
+            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn}){
+                $logger->trace("spacesBeforeAmpersand: leadingBlankColumn specified for $name") if $is_t_switch_active;
+                ${${$masterSettings{lookForAlignDelims}}{$name}}{leadingBlankColumn} 
+                    =  ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn};
+            }
+
+            #   lookForAlignDelims:
+            #      aligned: 
+            #         spacesBeforeAmpersand: 
+            #           default: 0
+            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default}){
+                ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand} 
+                    = ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default};
+            } else {
+                # deleting spacesBeforeAmpersand hash allows spacesBeforeAmpersand
+                # to pull from the default values @alignAtAmpersandInformation
+                delete ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand};
+            }
+          }
+          ${$self}{ ${$_}{name} } = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
       } 
     } else {
       # specified as a scalar, e.g
@@ -991,4 +1083,16 @@ sub yaml_get_object_attribute_for_indentation_settings{
     return "body";
 }
 
+sub yaml_update_dumper_settings{
+
+  # log file preferences
+  $Data::Dumper::Terse  = ${$masterSettings{logFilePreferences}{Dumper}}{Terse};
+  $Data::Dumper::Indent = ${$masterSettings{logFilePreferences}{Dumper}}{Indent};
+  $Data::Dumper::Useqq = ${$masterSettings{logFilePreferences}{Dumper}}{Useqq};
+  $Data::Dumper::Deparse = ${$masterSettings{logFilePreferences}{Dumper}}{Deparse};
+  $Data::Dumper::Quotekeys = ${$masterSettings{logFilePreferences}{Dumper}}{Quotekeys};
+  $Data::Dumper::Sortkeys = ${$masterSettings{logFilePreferences}{Dumper}}{Sortkeys};
+  $Data::Dumper::Pair = ${$masterSettings{logFilePreferences}{Dumper}}{Pair};
+
+}
 1;

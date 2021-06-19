@@ -1,0 +1,12 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        huge: overflow
+        all: 1
+        perCodeBlockBasis: 1
+    removeParagraphLineBreaks:
+        all: 1
+
+fineTuning:
+    trailingComments:
+      notPreceededBy: '(?:(?<!Handbook)(?<!for)(?<!Spoken))'

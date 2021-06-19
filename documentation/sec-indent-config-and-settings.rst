@@ -83,6 +83,19 @@ you’ll get confirmation that ``latexindent.pl`` has read your settings file. [
 	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you so in ``indent.log``.
 	 
 
+If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of
+the default commandline encoding not being UTF-8; normally this will only occcur for Windows users.
+In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as
+demonstrated in :numref:`lst:indentconfig-encoding`.
+
+.. literalinclude:: demonstrations/encoding.yaml
+ 	:class: .baseyaml
+ 	:caption: The ``encoding`` option for ``indentconfig.yaml`` 
+ 	:name: lst:indentconfig-encoding
+
+Thank you to (qiancy98 2021) for this contribution; please see :numref:`app:encoding` and details
+within (“Perldoc Encode::Supported” 2021) for further information.
+
 .. label follows
 
 .. _sec:localsettings:
@@ -252,6 +265,27 @@ A visual representation of this is given in :numref:`fig:loadorder`.
    <div id="ref-jacobo-diaz-hidden-config">
 
 Diaz, Jacobo. 2014. “Hiddenconfig.” July 21. https://github.com/cmhughes/latexindent.pl/pull/18.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-encoding">
+
+“Perldoc Encode::Supported.” 2021. Accessed May 6. https://perldoc.perl.org/Encode::Supported.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-qiancy98">
+
+qiancy98. 2021. “Locale Encoding of File System.” May 6.
+https://github.com/cmhughes/latexindent.pl/pull/273.
 
 .. raw:: html
 

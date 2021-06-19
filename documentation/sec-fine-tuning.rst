@@ -1,5 +1,7 @@
 .. label follows
 
+.. label follows
+
 .. _sec:finetuning:
 
 Fine tuning
@@ -139,12 +141,12 @@ character.
 	
 	is given in :numref:`lst:finetuning1-default`.
 	
-	.. literalinclude:: demonstrations/finetuning1.tex
+.. literalinclude:: demonstrations/finetuning1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` 
 	 	:name: lst:finetuning1
 	
-	.. literalinclude:: demonstrations/finetuning1-default.tex
+.. literalinclude:: demonstrations/finetuning1-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` default 
 	 	:name: lst:finetuning1-default
@@ -164,12 +166,12 @@ character.
 	
 	.. index:: regular expressions;at least one +
 	
-	.. literalinclude:: demonstrations/finetuning1-mod1.tex
+.. literalinclude:: demonstrations/finetuning1-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
 	 	:name: lst:finetuning1-mod1
 	
-	.. literalinclude:: demonstrations/fine-tuning1.yaml
+.. literalinclude:: demonstrations/fine-tuning1.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning1.yaml`` 
 	 	:name: lst:fine-tuning1
@@ -189,12 +191,12 @@ character.
 	
 	is given in :numref:`lst:finetuning2-default`.
 	
-	.. literalinclude:: demonstrations/finetuning2.tex
+.. literalinclude:: demonstrations/finetuning2.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` 
 	 	:name: lst:finetuning2
 	
-	.. literalinclude:: demonstrations/finetuning2-default.tex
+.. literalinclude:: demonstrations/finetuning2-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` default 
 	 	:name: lst:finetuning2-default
@@ -212,12 +214,12 @@ character.
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
 	
-	.. literalinclude:: demonstrations/finetuning2-mod1.tex
+.. literalinclude:: demonstrations/finetuning2-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
 	 	:name: lst:finetuning2-mod1
 	
-	.. literalinclude:: demonstrations/fine-tuning2.yaml
+.. literalinclude:: demonstrations/fine-tuning2.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning2.yaml`` 
 	 	:name: lst:fine-tuning2
@@ -240,12 +242,12 @@ character.
 	
 	gives the output shown in :numref:`lst:finetuning3-mod1`.
 	
-	.. literalinclude:: demonstrations/finetuning3.tex
+.. literalinclude:: demonstrations/finetuning3.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` 
 	 	:name: lst:finetuning3
 	
-	.. literalinclude:: demonstrations/finetuning3-mod1.tex
+.. literalinclude:: demonstrations/finetuning3-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` using -y switch 
 	 	:name: lst:finetuning3-mod1

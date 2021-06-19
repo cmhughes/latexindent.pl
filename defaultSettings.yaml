@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.9.3, 2021-05-07
+# defaultSettings.yaml for latexindent.pl, version 3.10, 2021-06-19
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -89,6 +89,14 @@ logFilePreferences:
     showDecorationFinishCodeBlockTrace: 0
     endLogFileWith: '--------------' 
     showGitHubInfoFooter: 1
+    Dumper:
+      Terse: 1
+      Indent: 1
+      Useqq: 1
+      Deparse: 1
+      Quotekeys: 0
+      Sortkeys: 1
+      Pair: " => "
 
 #  verbatim environments specified 
 #  in this field will not be changed at all!
@@ -108,11 +116,6 @@ verbatimCommands:
 noIndentBlock:
     noindent: 1
     cmhtest: 1
-
-# remove trailing whitespace from all lines 
-removeTrailingWhitespace:
-    beforeProcessing: 0
-    afterProcessing: 1
 
 # \begin{document} and \end{document} are treated differently
 # by latexindent within filecontents environments
@@ -139,6 +142,11 @@ preambleCommandsBeforeEnvironments: 0
 
 # default value of indentation
 defaultIndent: "\t"
+
+# remove trailing whitespace from all lines 
+removeTrailingWhitespace:
+    beforeProcessing: 0
+    afterProcessing: 1
 
 # name of code blocks that should have their body aligned at ampersand delimiters
 lookForAlignDelims:
@@ -359,6 +367,9 @@ commandCodeBlocks:
         amalgamate: 1
       - '@ifnextchar\['
 
+# change dos line breaks into unix
+dos2unixlinebreaks: 0
+
 # modifyLineBreaks will only be searched if the -m 
 # switch is active
 #
@@ -498,6 +509,7 @@ modifyLineBreaks:
             other: 0
     textWrapOptions:
         columns: 0
+        # huge: overflow    # forbid mid-word line breaks
         separator: ""
         perCodeBlockBasis: 0
         all: 0
@@ -628,6 +640,8 @@ fineTuning:
     arguments:
       before: '(?:#\d\h*;?,?\/?)+|\<.*?\>'
       between: '_|\^|\*'
+    trailingComments:
+      notPreceededBy: '(?<!\\)'
     modifyLineBreaks:
       betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
       doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
