@@ -1,7 +1,5 @@
 .. label follows
 
-.. label follows
-
 .. _sec:finetuning:
 
 Fine tuning
@@ -52,9 +50,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 613-634
+ 	:lines: 625-648
  	:linenos:
- 	:lineno-start: 613
+ 	:lineno-start: 625
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not
 intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl,
@@ -141,12 +139,12 @@ character.
 	
 	is given in :numref:`lst:finetuning1-default`.
 	
-.. literalinclude:: demonstrations/finetuning1.tex
+	.. literalinclude:: demonstrations/finetuning1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` 
 	 	:name: lst:finetuning1
 	
-.. literalinclude:: demonstrations/finetuning1-default.tex
+	.. literalinclude:: demonstrations/finetuning1-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` default 
 	 	:name: lst:finetuning1-default
@@ -166,12 +164,12 @@ character.
 	
 	.. index:: regular expressions;at least one +
 	
-.. literalinclude:: demonstrations/finetuning1-mod1.tex
+	.. literalinclude:: demonstrations/finetuning1-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
 	 	:name: lst:finetuning1-mod1
 	
-.. literalinclude:: demonstrations/fine-tuning1.yaml
+	.. literalinclude:: demonstrations/fine-tuning1.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning1.yaml`` 
 	 	:name: lst:fine-tuning1
@@ -191,12 +189,12 @@ character.
 	
 	is given in :numref:`lst:finetuning2-default`.
 	
-.. literalinclude:: demonstrations/finetuning2.tex
+	.. literalinclude:: demonstrations/finetuning2.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` 
 	 	:name: lst:finetuning2
 	
-.. literalinclude:: demonstrations/finetuning2-default.tex
+	.. literalinclude:: demonstrations/finetuning2-default.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` default 
 	 	:name: lst:finetuning2-default
@@ -214,12 +212,12 @@ character.
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
 	
-.. literalinclude:: demonstrations/finetuning2-mod1.tex
+	.. literalinclude:: demonstrations/finetuning2-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
 	 	:name: lst:finetuning2-mod1
 	
-.. literalinclude:: demonstrations/fine-tuning2.yaml
+	.. literalinclude:: demonstrations/fine-tuning2.yaml
 	 	:class: .baseyaml
 	 	:caption: ``finetuning2.yaml`` 
 	 	:name: lst:fine-tuning2
@@ -242,15 +240,94 @@ character.
 	
 	gives the output shown in :numref:`lst:finetuning3-mod1`.
 	
-.. literalinclude:: demonstrations/finetuning3.tex
+	.. literalinclude:: demonstrations/finetuning3.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` 
 	 	:name: lst:finetuning3
 	
-.. literalinclude:: demonstrations/finetuning3-mod1.tex
+	.. literalinclude:: demonstrations/finetuning3-mod1.tex
 	 	:class: .tex
 	 	:caption: ``finetuning3.tex`` using -y switch 
 	 	:name: lst:finetuning3-mod1
+	
+	
+	 
+
+.. proof:example::	
+	
+	We can tweak the ``fineTuning`` for how trailing comments are classified. For motivation, let’s
+	consider the code given in :numref:`lst:finetuning4`
+	
+	.. literalinclude:: demonstrations/finetuning4.tex
+	 	:class: .tex
+	 	:caption: ``finetuning4.tex`` 
+	 	:name: lst:finetuning4
+	
+	We will compare the settings given in :numref:`lst:href1` and :numref:`lst:href2`.
+	
+	.. literalinclude:: demonstrations/href1.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``href1.yaml`` 
+	 	:name: lst:href1
+	
+	.. literalinclude:: demonstrations/href2.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``href2.yaml`` 
+	 	:name: lst:href2
+	
+	Upon running the following commands
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl -m finetuning4.tex -o=+-mod1 -l=href1
+	    latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
+	
+	we receive the respective output in :numref:`lst:finetuning4-mod1` and
+	:numref:`lst:finetuning4-mod2`.
+	
+	.. literalinclude:: demonstrations/finetuning4-mod1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning4.tex`` using :numref:`lst:href1` 
+	 	:name: lst:finetuning4-mod1
+	
+	.. literalinclude:: demonstrations/finetuning4-mod2.tex
+	 	:class: .tex
+	 	:caption: ``finetuning4.tex`` using :numref:`lst:href2` 
+	 	:name: lst:finetuning4-mod2
+	
+	We note that in:
+	
+	-  :numref:`lst:finetuning4-mod1` the trailing comments are assumed to be everything following the
+	   first comment symbol, which has meant that everything following it has been moved to the end of
+	   the line; this is undesirable, clearly!
+	
+	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that   be
+	   immediately preceeded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the  
+	   the output is desirable.
+	
+	Another approach to this situation, which does not use ``fineTuning``, is to use ``noIndentBlock``
+	which we discussed in :numref:`lst:noIndentBlock`; using the settings in :numref:`lst:href3` and
+	running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	    latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
+	
+	then we receive the same output given in :numref:`lst:finetuning4-mod2`; see also
+	``paragraphsStopAt`` in :numref:`lst:paragraphsStopAt`.
+	
+	.. literalinclude:: demonstrations/href3.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``href3.yaml`` 
+	 	:name: lst:href3
+	
+	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can
+	be interpreted as: the fewest number of zero or more characters that are not right braces. This is
+	an example of character class.
+	
+	.. index:: regular expressions;character class demonstration
 	
 	
 	 

@@ -196,7 +196,7 @@ them with a comment symbol, ``%``, followed by as many spaces (possibly none) as
 .. literalinclude:: demonstrations/noindentblock.tex
  	:class: .tex
  	:caption: ``noIndentBlock.tex`` 
- 	:name: lst:noIndentBlock
+ 	:name: lst:noIndentBlockdemo
 
 Important note: it is assumed that the ``noindent`` block statements appear on their own line.
 

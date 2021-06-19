@@ -43,7 +43,7 @@ You can run ``latexindent`` on any file; if you don’t specify an extension, th
 you specify in ``fileExtensionPreference`` (see :numref:`lst:fileExtensionPreference`) will be
 consulted. If you find a case in which the script struggles, please feel free to report it at (“Home
 of Latexindent.pl” 2017), and in the meantime, consider using a ``noIndentBlock`` (see
-:ref:`page lst:noIndentBlockdemo <lst:noIndentBlockdemo>`).
+:ref:`page lst:noIndentBlock <lst:noIndentBlock>`).
 
 I hope that this script is useful to some; if you find an example where the script does not behave
 as you think it should, the best way to contact me is to report an issue on (“Home of

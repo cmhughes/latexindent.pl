@@ -209,9 +209,9 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 		       first comment symbol, which has meant that everything following it has been moved to the
 		       end of the line; this is undesirable, clearly!
 		 \item \cref{lst:finetuning4-mod2} has fine-tuned the trailing comment matching, and says that
-		       \lstinline!%! cannot
+		       \% cannot
 		       be immediately preceeded by the words `Handbook', `for' or `Spoken', which means that
-		       none of the \lstinline!%! symbols have been treated as trailing comments, and
+		       none of the \% symbols have been treated as trailing comments, and
 		       the output is desirable.
 	 \end{itemize}
 
@@ -226,7 +226,7 @@ latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 
 	 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
 
-	 With reference to the \texttt{body} field in \cref{lst:href3}, we note that \lstinline![^}]*?! can
+   With reference to the \texttt{body} field in \cref{lst:href3}, we note that the \texttt{body} field can
 	 be interpreted as: the fewest number of zero or more characters that are not right braces. This
 	 is an example of character class.
 	 \index{regular expressions!character class demonstration}
