@@ -54,6 +54,27 @@ https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
 .. raw:: html
 
+   <div id="ref-dumperdemo">
+
+“Data Dumper Demonstration.” 2021. Accessed June 18.
+https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-dumper">
+
+“Data::Dumper Module.” 2021. Accessed June 18. https://perldoc.perl.org/Data::Dumper.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-jacobo-diaz-hidden-config">
 
 Diaz, Jacobo. 2014a. “Hiddenconfig.” July 21. https://github.com/cmhughes/latexindent.pl/pull/18.
@@ -192,6 +213,27 @@ https://github.com/cmhughes/latexindent.pl/issues/33.
 
 .. raw:: html
 
+   <div id="ref-encoding">
+
+“Perldoc Encode::Supported.” 2021. Accessed May 6. https://perldoc.perl.org/Encode::Supported.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-qiancy98">
+
+qiancy98. 2021. “Locale Encoding of File System.” May 6.
+https://github.com/cmhughes/latexindent.pl/pull/273.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
    <div id="ref-alexreg">
 
 Regueiro, Alexander. 2021. “Update Help Screen.” March 18.
@@ -249,6 +291,17 @@ https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
 
 Voßkuhle, Michel. 2013. “Remove Trailing White Space.” November 10.
 https://github.com/cmhughes/latexindent.pl/pull/12.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-bersbersbers">
+
+“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” 2021. Accessed June
+18. https://github.com/cmhughes/latexindent.pl/issues/256.
 
 .. raw:: html
 

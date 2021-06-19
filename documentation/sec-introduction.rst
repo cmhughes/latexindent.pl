@@ -60,7 +60,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in this version of the
-documentation, there are a total of 501. This may seem a lot, but I deem it necessary in presenting
+documentation, there are a total of 527. This may seem a lot, but I deem it necessary in presenting
 the various different options of ``latexindent.pl`` and the associated output that they are capable
 of producing.
 
@@ -89,9 +89,9 @@ the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 472-474
+ 	:lines: 483-485
  	:linenos:
- 	:lineno-start: 472
+ 	:lineno-start: 483
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is
 active; see :numref:`sec:modifylinebreaks` for more details.
@@ -100,9 +100,9 @@ active; see :numref:`sec:modifylinebreaks` for more details.
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 602-610
+ 	:lines: 614-622
  	:linenos:
- 	:lineno-start: 602
+ 	:lineno-start: 614
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is
 active; see :numref:`sec:replacements` for more details.

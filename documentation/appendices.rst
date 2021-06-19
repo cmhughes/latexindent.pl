@@ -33,6 +33,7 @@ otherwise you may need to install the missing modules – see :numref:`sec:modul
     use File::Copy;
     use File::Basename;
     use File::HomeDir;
+    use Encode;
     use Getopt::Long;
     use Data::Dumper;
     use List::Util qw(max);
@@ -308,6 +309,50 @@ respectively.
 
 .. label follows
 
+.. _app:encoding:
+
+Encoding indentconfig.yaml
+--------------------------
+
+In relation to :numref:`sec:indentconfig`, Windows users that encounter encoding issues with
+``indentconfig.yaml``, may wish to run the following command in either ``cmd.exe`` or
+``powershell.exe``:
+
+chcp
+
+They may receive the following result
+
+Active code page: 936
+
+and can then use the settings given in :numref:`lst:indentconfig-encoding1` within their
+``indentconfig.yaml``, where 936 is the result of the ``chcp`` command.
+
+.. literalinclude:: demonstrations/encoding1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``encoding`` demonstration for ``indentconfig.yaml`` 
+ 	:name: lst:indentconfig-encoding1
+
+dos2unix linebreak adjustment
+-----------------------------
+
+.. describe:: dos2unixlinebreaks:integer
+
+If you use ``latexindent.pl`` on a dos-based Windows file on Linux then you may find that trailing
+horizontal space is not removed as you hope.
+
+In such a case, you may wish to try setting ``dos2unixlinebreaks`` to 1 and employing, for example,
+the following command.
+
+.. code-block:: latex
+   :class: .commandshell
+
+    latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
+
+See (“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line” 2021) for
+further dertails.
+
+.. label follows
+
 .. _app:differences:
 
 Differences from Version 2.2 to 3.0
@@ -435,6 +480,17 @@ https://github.com/cmhughes/latexindent.pl/pull/38.
    <div id="ref-perlbrew">
 
 “Perlbrew.” 2017. Accessed January 23. http://perlbrew.pl/.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-bersbersbers">
+
+“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” 2021. Accessed June
+18. https://github.com/cmhughes/latexindent.pl/issues/256.
 
 .. raw:: html
 

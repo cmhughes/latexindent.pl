@@ -106,12 +106,14 @@ copy myfile.bak4 to myfile.bak3
 
 	Note: \texttt{latexindent.pl} no longer uses the \texttt{log4perl} module to handle
 	the creation of the logfile.%
-	\announce*{2021-03-14}*{no longer using log4perl}
+	\announce{2021-03-14}*{no longer using log4perl}
 
-    Some of the options \announce{new}*{logFilePreferences updated to include Dumper options}for Perl's \texttt{Dumper} module can be specified in \cref{lst:logFilePreferences};
-    see \cite{dumper} and \cite{dumperdemo} for more information; these options will mostly 
-    be helpful for those calling \texttt{latexindent.pl} with the \texttt{-tt} option described 
-    in \cref{sec:commandline}.
+	Some of the options%
+	\announce*{2021-06-19}*{logFilePreferences updated to include Dumper options}for Perl's \texttt{Dumper} module can
+	be specified in \cref{lst:logFilePreferences}; see \cite{dumper} and
+	\cite{dumperdemo} for more information. These options will mostly be helpful for
+	those calling \texttt{latexindent.pl} with the \texttt{-tt} option described
+	in \cref{sec:commandline}.
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
@@ -155,7 +157,7 @@ copy myfile.bak4 to myfile.bak3
 	their own line.
 
 	The%
-	\announce{new}{noIndentBlock specified as regex} \texttt{noIndentBlock}
+	\announce*{2021-06-19}{noIndentBlock specified as regex} \texttt{noIndentBlock}
 	fields can also be specified in terms of \texttt{begin} and
 	\texttt{end} fields. We begin with the file given in \cref{lst:noIndentBlock1}
 
@@ -187,7 +189,10 @@ latexindent.pl -l noindent2.yaml noindent1
 	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}.
 
 	The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
-	by default, it is assumed to be 1. Using \cref{lst:noindent3} and running the command
+	by default, it is assumed to be 1 (on).
+
+	Using \cref{lst:noindent3} demonstrates setting \texttt{lookForThis} to 0 (off);
+	running the command
 	\begin{commandshell}
 latexindent.pl -l noindent3.yaml noindent1
 \end{commandshell}
@@ -244,9 +249,9 @@ postfoothook=\end{mdframed},
 
 \subsection{Indentation and horizontal space}
 \yamltitle{defaultIndent}*{horizontal space}
-	This is the default indentation (\lstinline!\t! means a tab, and is the default
-	value) used in the absence of other details for the command or environment we are working
-	with; see \texttt{indentRules} in \vref{sec:noadd-indent-rules} for more details.
+	This is the default indentation used in the absence of other details for the code block
+	with which we are working. The default value is \lstinline!\t! which means a tab;
+	we will explore customisation beyond \texttt{defaultIndent} in \vref{sec:noadd-indent-rules}.
 
 	If you're interested in experimenting with \texttt{latexindent.pl} then you can
 	\emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
@@ -276,9 +281,9 @@ removeTrailingWhitespace: 1
 
 \subsection{Aligning at delimiters}
 \yamltitle{lookForAlignDelims}*{fields}
-	This contains a list of environments and/or commands that are operated upon in a special
-	way by \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in \texttt{lookForAlignDelims} can
-	actually take two different forms: the \emph{basic} version is shown in
+	This contains a list of code blocks that are operated upon in a special way by
+	\texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in \texttt{lookForAlignDelims} can actually take
+	two different forms: the \emph{basic} version is shown in
 	\cref{lst:aligndelims:basic} and the \emph{advanced} version in
 	\cref{lst:aligndelims:advanced}; we will discuss each in turn.
 	\index{delimiters!advanced settings of lookForAlignDelims}
@@ -293,10 +298,9 @@ lookForAlignDelims:
    ...
 	\end{yaml}
 
-	The environments specified in this field will be operated on in a special way by
-	\texttt{latexindent.pl}. In particular, it will try and align each column by its
-	alignment tabs. It does have some limitations (discussed further in
-	\cref{sec:knownlimitations}), but in many cases it will produce results such as those in
+	Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
+	each column by its alignment delimiters. It does have some limitations (discussed further
+	in \cref{sec:knownlimitations}), but in many cases it will produce results such as those in
 	\cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
 
 	If you find that \texttt{latexindent.pl} does not perform satisfactorily on such
@@ -337,7 +341,8 @@ lookForAlignDelims:
 		      should be aligned (default: 1);
 		\item \texttt{spacesBeforeDoubleBackSlash}: optionally,%
 		      \announce{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment} specifies the number (integer $\geq$ 0) of spaces
-		      to be inserted before \lstinline!\\! (default: 1). \footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
+		      to be inserted before \lstinline!\\! (default: 1);
+		      %\footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
 		\item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0 or 1) that details if
 		      \texttt{latexindent.pl} should group columns
 		      above and below a \lstinline!\multicolumn! command (default: 0);
@@ -453,7 +458,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 		      output is the same as \cref{lst:tabular2-mod2};
 		\item in \cref{lst:tabular2-mod7} the \lstinline!\\! \emph{have} been
 		      aligned, and because \texttt{spacesBeforeDoubleBackSlash} is set to \texttt{0}, there are
-		      no spaces ahead of them; the output is otherwise the same as \cref{lst:tabular2-mod2}.
+		      no spaces ahead of them; the output is otherwise the same as \cref{lst:tabular2-mod2};
 		\item in \cref{lst:tabular2-mod8} the cells have been \emph{right}-justified; note
 		      that cells above and below the \lstinline!\multicol! statements have still been group
 		      correctly, because of the settings in \cref{lst:tabular2YAML}.
@@ -461,7 +466,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 
 \subsubsection{lookForAlignDelims: spacesBeforeAmpersand}
 	The \texttt{spacesBeforeAmpersand}%
-	\announce{new}*{spacesBeforeAmpersand leading blank column upgrade} can be specified in a few different
+	\announce*{2021-06-19}*{spacesBeforeAmpersand leading blank column upgrade} can be specified in a few different
 	ways. The \emph{basic} form is demonstrated in \cref{lst:tabular4YAML}, but we
 	can customise the behaviour further by specifying if we would like this value to change
 	if it encounters a \emph{leading blank column}; that is, when the first column contains only
@@ -513,7 +518,7 @@ latexindent.pl aligned1.tex -l sba4.yaml
 		\item \cref{lst:sba3} demonstrates the new \emph{advanced} way to specify
 		      \texttt{spacesBeforeAmpersand}, and
 		      for us to set the \texttt{default} value that sets the number of spaces before
-		      ampersands which are \emph{not} in leading blank columns.	    The default
+		      ampersands which are \emph{not} in leading blank columns.	      The default
 		      value is \texttt{1}.
 
 		      We note that \texttt{leadingBlankColumn} has not been specified in \cref{lst:sba3},
@@ -1051,7 +1056,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 
 	The \texttt{lookForThis} field can be considered
 	optional;%
-	\announce{new}*{lookForThis optional for specialBeginEnd} by default, it is
+	\announce*{2021-06-19}*{lookForThis optional for specialBeginEnd} by default, it is
 	assumed to be 1, which is demonstrated in \cref{lst:edge-node2}.
 
 \yamltitle{indentAfterHeadings}*{fields}
@@ -1209,19 +1214,19 @@ mand arg text
 \[
   ...
 \]
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
 				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
 				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
 				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
 				\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\
+  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\
 				\bottomrule
 			\end{tabular}
 		\end{widepage}
