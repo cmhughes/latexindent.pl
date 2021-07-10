@@ -1,0 +1,5 @@
+modifyLineBreaks: 
+   textWrapOptions: 
+       columns: 100 
+verbatimCommands:
+    lstinline: 0
