@@ -2,3 +2,4 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 5
         separator: "||"
+        huge: wrap

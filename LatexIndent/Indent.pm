@@ -324,7 +324,7 @@ sub indent_children_recursively{
                                                         :q();
 
                 # line break checks before <begin statement>
-                if(defined ${$child}{BeginStartsOnOwnLine}){
+                if(defined ${$child}{BeginStartsOnOwnLine} and ${$child}{BeginStartsOnOwnLine} !=0 ){
                     my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine}||"BeginStartsOnOwnLine";
 
                     # 

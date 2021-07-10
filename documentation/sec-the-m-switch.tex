@@ -162,9 +162,11 @@ latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
 
 	There are options to specify the \texttt{huge} option for the
 	\texttt{Text::Wrap} module \cite{textwrap}
-	\announce{2019-09-07}{huge option for text wrap module}. This can be helpful if you would like to forbid the
-	\texttt{Text::Wrap} routine from breaking words. For example, using the settings
-	in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and running the commands
+    \announce*{new}*{huge:overflow is now default}; the default value is \texttt{overflow}, which means that 
+    words will \emph{not} be broken by the text wrapping routine, implemeneted by the \texttt{Text::Wrap}. 
+    Other options for the \texttt{huge} field are \texttt{wrap} and \texttt{die}.
+
+    For example, using the settings in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and running the commands
 	\index{switches!-l demonstration}
 	\index{switches!-m demonstration}
 	\index{switches!-o demonstration}
@@ -176,10 +178,10 @@ latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
-		\cmhlistingsfromfile{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
+		\cmhlistingsfromfile*{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
 
 		\cmhlistingsfromfile{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
-		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
+		\cmhlistingsfromfile*{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
 	\end{cmhtcbraster}
 
 	You can also specify the \texttt{tabstop}
@@ -223,7 +225,7 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 	In particular, note the field \texttt{perCodeBlockBasis: 0}.
 	\index{specialBeginEnd!textWrapOptions}
 
-	\cmhlistingsfromfile[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+	\cmhlistingsfromfile*[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 
 	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to
 	those detailed in \vref{tab:code-blocks}. The only special case is the

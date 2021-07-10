@@ -1,0 +1,5 @@
++ latexindent.pl -s issue-268.tex
+
+real	0m2.003s
+user	0m1.971s
+sys	0m0.032s

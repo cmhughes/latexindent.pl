@@ -1,7 +1,6 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
-        huge: overflow
         all: 1
         perCodeBlockBasis: 1
     removeParagraphLineBreaks:
