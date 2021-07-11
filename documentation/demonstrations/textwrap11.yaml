@@ -5,6 +5,5 @@ modifyLineBreaks:
             environments: 
                 myenv: 50
                 another: 15
-        huge: wrap
         perCodeBlockBasis: 1
         all: 1

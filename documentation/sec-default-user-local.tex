@@ -12,6 +12,11 @@
  \emph{integer} in \emph{this} section, assume that it must be
  greater than or equal to \texttt{0} unless otherwise stated.
 
+ For most of the settings in \texttt{defaultSettings.yaml} that are specified as integers, 
+ then we understand \texttt{0} to represent `off' and \texttt{1} to represent `on'. For fields
+ that allow values other than \texttt{0} or \texttt{1}, it is hoped that the specific context and associated 
+ commentary should make it clear which values are allowed.
+
 \yamltitle{fileExtensionPreference}*{fields}
 	\texttt{latexindent.pl} can be called to
 	act on a file without specifying the file extension.  For example we can call
@@ -139,6 +144,10 @@ copy myfile.bak4 to myfile.bak3
 	breaking routines (only relevant if the \texttt{-m} is active, see
 	\vref{sec:modifylinebreaks}).
 
+    With reference to \cref{lst:verbatimCommands}, by default \texttt{latexindent.pl} looks for \lstinline|\verb| 
+    immediately followed by another character, and then it takes the body as anything up to the next occurrence of 
+    the character; this means that, for example, \lstinline|\verb!x+3!| is treated as a \texttt{verbatimCommands}.
+
 \yamltitle{noIndentBlock}*{fields}
 	If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if
 	\index{verbatim!noIndentBlock} it is \emph{not} a verbatim-like environment) then
@@ -153,17 +162,17 @@ copy myfile.bak4 to myfile.bak3
 
 	\cmhlistingsfromfile{demonstrations/noindentblock.tex}{\texttt{noIndentBlock.tex}}{lst:noIndentBlockdemo}
 
-	Important note: it is assumed that the \texttt{noindent} block statements appear on
-	their own line.
+	Important note: it is assumed that the \texttt{noindent} block statements specified 
+    in this way appear on their own line.
 
 	The%
 	\announce*{2021-06-19}{noIndentBlock specified as regex} \texttt{noIndentBlock}
 	fields can also be specified in terms of \texttt{begin} and
-	\texttt{end} fields. We begin with the file given in \cref{lst:noIndentBlock1}
+	\texttt{end} fields. We use the code in \cref{lst:noIndentBlock1} to demonstrate this feature.
 
 	\cmhlistingsfromfile*{demonstrations/noindentblock1.tex}{\texttt{noIndentBlock1.tex}}{lst:noIndentBlock1}
 
-	The settings given in \cref{lst:noindent1,lst:noindent2} are equivalent
+	The settings given in \cref{lst:noindent1,lst:noindent2} are equivalent:
 
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.5cm,
@@ -186,7 +195,8 @@ latexindent.pl -l noindent2.yaml noindent1
 	The \texttt{begin}, \texttt{body} and \texttt{end} fields
 	for \texttt{noIndentBlock} are all \emph{regular expressions}. If the
 	\texttt{body} field is not specified, then it takes a default value of
-	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}.
+	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}. In this context, 
+    we interpret \lstinline!.*?! in words as \emph{the fewest number of characters (possibly none) until the `end' field is reached}.
 
 	The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
 	by default, it is assumed to be 1 (on).
