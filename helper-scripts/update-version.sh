@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.9.3'
-newVersion='3.10'
-oldDate='2021-05-07'
-newDate='2021-06-19'
+oldVersion='3.10'
+newVersion='3.10.1'
+oldDate='2021-06-19'
+newDate='2021-07-23'
 
 cd ../
 cd documentation
@@ -38,9 +38,9 @@ sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" 
 sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
-sed -i.bak "s/version $oldVersion/version $newVersion/" readme.md
+sed -i.bak "s/version $oldVersion,/version $newVersion,/" readme.md
 sed -i.bak "s/$oldDate/$newDate/" readme.md
-sed -i.bak "s/version $oldVersion/version $newVersion/" documentation/readme.txt
+sed -i.bak "s/version $oldVersion,/version $newVersion,/" documentation/readme.txt
 sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex

@@ -12,10 +12,11 @@
  \emph{integer} in \emph{this} section, assume that it must be
  greater than or equal to \texttt{0} unless otherwise stated.
 
- For most of the settings in \texttt{defaultSettings.yaml} that are specified as integers, 
- then we understand \texttt{0} to represent `off' and \texttt{1} to represent `on'. For fields
- that allow values other than \texttt{0} or \texttt{1}, it is hoped that the specific context and associated 
- commentary should make it clear which values are allowed.
+ For most of the settings in \texttt{defaultSettings.yaml} that are specified as integers, then
+ we understand \texttt{0} to represent `off' and \texttt{1} to
+ represent `on'. For fields that allow values other than \texttt{0} or
+ \texttt{1}, it is hoped that the specific context and associated commentary
+ should make it clear which values are allowed.
 
 \yamltitle{fileExtensionPreference}*{fields}
 	\texttt{latexindent.pl} can be called to
@@ -114,11 +115,11 @@ copy myfile.bak4 to myfile.bak3
 	\announce{2021-03-14}*{no longer using log4perl}
 
 	Some of the options%
-	\announce*{2021-06-19}*{logFilePreferences updated to include Dumper options}for Perl's \texttt{Dumper} module can
-	be specified in \cref{lst:logFilePreferences}; see \cite{dumper} and
-	\cite{dumperdemo} for more information. These options will mostly be helpful for
-	those calling \texttt{latexindent.pl} with the \texttt{-tt} option described
-	in \cref{sec:commandline}.
+	\announce*{2021-06-19}*{logFilePreferences updated to include Dumper options}for Perl's
+	\texttt{Dumper} module can be specified in \cref{lst:logFilePreferences}; see
+	\cite{dumper} and \cite{dumperdemo} for more information. These options
+	will mostly be helpful for those calling \texttt{latexindent.pl} with the
+	\texttt{-tt} option described in \cref{sec:commandline}.
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
@@ -144,9 +145,10 @@ copy myfile.bak4 to myfile.bak3
 	breaking routines (only relevant if the \texttt{-m} is active, see
 	\vref{sec:modifylinebreaks}).
 
-    With reference to \cref{lst:verbatimCommands}, by default \texttt{latexindent.pl} looks for \lstinline|\verb| 
-    immediately followed by another character, and then it takes the body as anything up to the next occurrence of 
-    the character; this means that, for example, \lstinline|\verb!x+3!| is treated as a \texttt{verbatimCommands}.
+	With reference to \cref{lst:verbatimCommands}, by default \texttt{latexindent.pl} looks for
+	\lstinline|\verb| immediately followed by another character, and then it takes the
+	body as anything up to the next occurrence of the character; this means that, for
+	example, \lstinline|\verb!x+3!| is treated as a \texttt{verbatimCommands}.
 
 \yamltitle{noIndentBlock}*{fields}
 	If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if
@@ -162,13 +164,14 @@ copy myfile.bak4 to myfile.bak3
 
 	\cmhlistingsfromfile{demonstrations/noindentblock.tex}{\texttt{noIndentBlock.tex}}{lst:noIndentBlockdemo}
 
-	Important note: it is assumed that the \texttt{noindent} block statements specified 
-    in this way appear on their own line.
+	Important note: it is assumed that the \texttt{noindent} block statements specified
+	in this way appear on their own line.
 
 	The%
 	\announce*{2021-06-19}{noIndentBlock specified as regex} \texttt{noIndentBlock}
 	fields can also be specified in terms of \texttt{begin} and
-	\texttt{end} fields. We use the code in \cref{lst:noIndentBlock1} to demonstrate this feature.
+	\texttt{end} fields. We use the code in \cref{lst:noIndentBlock1} to demonstrate
+	this feature.
 
 	\cmhlistingsfromfile*{demonstrations/noindentblock1.tex}{\texttt{noIndentBlock1.tex}}{lst:noIndentBlock1}
 
@@ -195,8 +198,9 @@ latexindent.pl -l noindent2.yaml noindent1
 	The \texttt{begin}, \texttt{body} and \texttt{end} fields
 	for \texttt{noIndentBlock} are all \emph{regular expressions}. If the
 	\texttt{body} field is not specified, then it takes a default value of
-	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}. In this context, 
-    we interpret \lstinline!.*?! in words as \emph{the fewest number of characters (possibly none) until the `end' field is reached}.
+	\lstinline!.*?! which is written explicitly in \cref{lst:noindent1}. In this
+	context,
+	we interpret \lstinline!.*?! in words as \emph{the fewest number of characters (possibly none) until the `end' field is reached}.
 
 	The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
 	by default, it is assumed to be 1 (on).
@@ -528,8 +532,8 @@ latexindent.pl aligned1.tex -l sba4.yaml
 		\item \cref{lst:sba3} demonstrates the new \emph{advanced} way to specify
 		      \texttt{spacesBeforeAmpersand}, and
 		      for us to set the \texttt{default} value that sets the number of spaces before
-		      ampersands which are \emph{not} in leading blank columns.	      The default
-		      value is \texttt{1}.
+		      ampersands which are \emph{not} in leading blank columns.		The
+		      default value is \texttt{1}.
 
 		      We note that \texttt{leadingBlankColumn} has not been specified in \cref{lst:sba3},
 		      and it will inherit the value from \texttt{default};
@@ -1178,33 +1182,33 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 			\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}
 			\begin{tabular}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{\hspace{.25cm}}m{.2\linewidth}}
 				\toprule
-				Code block                    & characters allowed in name                                                                                     & example                                                                                                                                                                                                                                     \\
+				Code block                    & characters allowed in name                                                                  & example                                                                                                                                                               \\
 				\midrule
-				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                                        &
+				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                 &
 				\begin{lstlisting}[,nolol=true,]
 \begin{myenv}
 body of myenv
 \end{myenv}
   \end{lstlisting}
 				\\\cmidrule{2-3}
-				optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                                        &
+				optionalArguments             & \emph{inherits} name from parent (e.g environment name)                                     &
 				\begin{lstlisting}[,nolol=true,]
 [
 opt arg text
 ]
   \end{lstlisting}
 				\\\cmidrule{2-3}
-				mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                                        &
+				mandatoryArguments            & \emph{inherits} name from parent (e.g environment name)                                     &
 				\begin{lstlisting}[,nolol=true,]
 {
 mand arg text
 }
   \end{lstlisting}
 				\\\cmidrule{2-3}
-				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                                        & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                                                        & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-				namedGroupingBracesBrackets   & \lstinline!0-9\.a-zA-Z@\*><!                                                                                        & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                                                                                \\\cmidrule{2-3}
-				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                                      & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                           \\\cmidrule{2-3}
+				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                      & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                       \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!0-9\.a-zA-Z@\*><!                                                                & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                   \\\cmidrule{2-3}
+				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                   & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
 				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
 				\begin{lstlisting}[,nolol=true,]
 \ifnum...
@@ -1212,31 +1216,31 @@ mand arg text
 \else
 ...
 \fi
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                                                  &
+  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                               &
 				\begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...
 \end{enumerate}
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
-				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                                                 &
+  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                              &
 				\begin{lstlisting}[,nolol=true,]
 \[
   ...
 \]
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
-				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                                             &
+  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                          &
 				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
-				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                                        &
+  \end{lstlisting}                                                                                                                                                                                                                                              \\\cmidrule{2-3}
+				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                     &
 				\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
-  \end{lstlisting}                                                                                                                                                                                                                                                                                                                                                                     \\
+  \end{lstlisting}                                                                                                                                                                                                                                                                     \\
 				\bottomrule
 			\end{tabular}
 		\end{widepage}

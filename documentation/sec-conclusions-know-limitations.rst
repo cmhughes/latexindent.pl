@@ -8,36 +8,14 @@ Conclusions and known limitations
 There are a number of known limitations of the script, and almost certainly quite a few that are
 *unknown*!
 
-The main limitation is to do with the alignment routine discussed in
-:ref:`page lst:aligndelims:advanced <lst:aligndelims:advanced>`; for example, consider the file
-given in :numref:`lst:matrix2`.
-
-.. literalinclude:: demonstrations/matrix2.tex
- 	:class: .tex
- 	:caption: ``matrix2.tex`` 
- 	:name: lst:matrix2
-
-The default output is given in :numref:`lst:matrix2-default`, and it is clear that the alignment
-routine has not worked as hoped, but it is *expected*.
-
-.. literalinclude:: demonstrations/matrix2-default.tex
- 	:class: .tex
- 	:caption: ``matrix2.tex`` default output 
- 	:name: lst:matrix2-default
-
-The reason for the problem is that when ``latexindent.pl`` stores its code blocks (see
-:numref:`tab:code-blocks`) it uses replacement tokens. The alignment routine is using the *length
-of the replacement token* in its measuring – I hope to be able to address this in the future.
-
-There are other limitations to do with the multicolumn alignment routine (see
-:numref:`lst:tabular2-mod2`); in particular, when working with code blocks in which multicolumn
-commands overlap, the algorithm can fail.
+For example, with reference to the multicolumn alignment routine in :numref:`lst:tabular2-mod2`),
+when working with code blocks in which multicolumn commands overlap, the algorithm can fail.
 
 Another limitation is to do with efficiency, particularly when the ``-m`` switch is active, as this
 adds many checks and processes. The current implementation relies upon finding and storing *every*
-code block (see the discussion on :ref:`page page:phases <page:phases>`); it is hoped that, in a
-future version, only *nested* code blocks will need to be stored in the ‘packing’ phase, and that
-this will improve the efficiency of the script.
+code block (see the discussion on :ref:`page page:phases <page:phases>`); I hope that, in a future
+version, only *nested* code blocks will need to be stored in the ‘packing’ phase, and that this will
+improve the efficiency of the script.
 
 You can run ``latexindent`` on any file; if you don’t specify an extension, then the extensions that
 you specify in ``fileExtensionPreference`` (see :numref:`lst:fileExtensionPreference`) will be

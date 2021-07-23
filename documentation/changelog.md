@@ -1,5 +1,15 @@
 # changelog.md
 
+## V3.10.1, July 23, 2021
+changes to defauls:
+- textWrap: Huge now set to *overflow* by default
+
+enhancements:
+- users should see improved performance when the -m switch is active; see 
+benchmark details within https://github.com/cmhughes/latexindent.pl/issues/268
+- users should see improved behaviour in the alignment at ampersand routine, 
+a long standing issue detailed at https://github.com/cmhughes/latexindent.pl/issues/85
+
 ## V3.10, June 19, 2021
 enhancements:
 - logFilePreferences https://github.com/cmhughes/latexindent.pl/issues/276

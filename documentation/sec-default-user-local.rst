@@ -16,6 +16,11 @@ but here is a description of what each switch is designed to do. The default val
 case; whenever you see *integer* in *this* section, assume that it must be greater than or equal to
 ``0`` unless otherwise stated.
 
+For most of the settings in ``defaultSettings.yaml`` that are specified as integers, then we
+understand ``0`` to represent ‘off’ and ``1`` to represent ‘on’. For fields that allow values other
+than ``0`` or ``1``, it is hoped that the specific context and associated commentary should make it
+clear which values are allowed.
+
 .. describe:: fileExtensionPreference:fields
 
 ``latexindent.pl`` can be called to act on a file without specifying the file extension. For example
@@ -171,6 +176,11 @@ A field that contains a list of commands that are verbatim commands, for example
 commands populated in this field are protected from line breaking routines (only relevant if the
 ``-m`` is active, see :numref:`sec:modifylinebreaks`).
 
+With reference to :numref:`lst:verbatimCommands`, by default ``latexindent.pl`` looks for
+``\verb`` immediately followed by another character, and then it takes the body as anything up to
+the next occurrence of the character; this means that, for example, ``\verb!x+3!`` is treated as a
+``verbatimCommands``.
+
 .. describe:: noIndentBlock:fields
 
 If you have a block of code that you don’t want ``latexindent.pl`` to touch (even if
@@ -198,17 +208,18 @@ them with a comment symbol, ``%``, followed by as many spaces (possibly none) as
  	:caption: ``noIndentBlock.tex`` 
  	:name: lst:noIndentBlockdemo
 
-Important note: it is assumed that the ``noindent`` block statements appear on their own line.
+Important note: it is assumed that the ``noindent`` block statements specified in this way appear on
+their own line.
 
-The ``noIndentBlock`` fields can also be specified in terms of ``begin`` and ``end`` fields. We
-begin with the file given in :numref:`lst:noIndentBlock1`
+The ``noIndentBlock`` fields can also be specified in terms of ``begin`` and ``end`` fields. We use
+the code in :numref:`lst:noIndentBlock1` to demonstrate this feature.
 
 .. literalinclude:: demonstrations/noindentblock1.tex
  	:class: .tex
  	:caption: ``noIndentBlock1.tex`` 
  	:name: lst:noIndentBlock1
 
-The settings given in :numref:`lst:noindent1` and :numref:`lst:noindent2` are equivalent
+The settings given in :numref:`lst:noindent1` and :numref:`lst:noindent2` are equivalent:
 
 .. literalinclude:: demonstrations/noindent1.yaml
  	:class: .baseyaml
@@ -242,7 +253,8 @@ then we receive the output given in :numref:`lst:noIndentBlock1-mod1`.
 
 The ``begin``, ``body`` and ``end`` fields for ``noIndentBlock`` are all *regular expressions*. If
 the ``body`` field is not specified, then it takes a default value of ``.*?`` which is written
-explicitly in :numref:`lst:noindent1`.
+explicitly in :numref:`lst:noindent1`. In this context, we interpret ``.*?`` in words as *the
+fewest number of characters (possibly none) until the ‘end’ field is reached*.
 
 The ``lookForThis`` field is optional, and can take the values 0 (off) or 1 (on); by default, it is
 assumed to be 1 (on).
