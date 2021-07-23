@@ -24,7 +24,8 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
+use LatexIndent::Verbatim qw/%verbatimStorage/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
 
 sub modify_line_breaks_body{
@@ -105,7 +106,7 @@ sub modify_line_breaks_end{
     # switch EndStartsOnOwnLine back to 4
     #
     
-    my @polySwitchValues =(defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine}==4) ?(-1,3):(${$self}{EndStartsOnOwnLine});
+    my @polySwitchValues =(${$self}{EndStartsOnOwnLine}==4) ?(-1,3):(${$self}{EndStartsOnOwnLine});
     foreach(@polySwitchValues){
         # possibly modify line break *before* \end{statement}
         if(defined ${$self}{EndStartsOnOwnLine}){
@@ -153,6 +154,10 @@ sub modify_line_breaks_end{
         }
     }
 
+  }
+
+sub modify_line_breaks_end_after{
+    my $self = shift;
     # 
     # Blank line poly-switch notes (==4)
     #
@@ -161,7 +166,7 @@ sub modify_line_breaks_end{
     #   temporarily change EndFinishesWithLineBreak to 3, make adjustments
     # switch EndFinishesWithLineBreak back to 4
     #
-    @polySwitchValues =(defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4) ?(-1,3):(${$self}{EndFinishesWithLineBreak});
+    my @polySwitchValues =(${$self}{EndFinishesWithLineBreak}==4) ?(-1,3):(${$self}{EndFinishesWithLineBreak});
     foreach(@polySwitchValues){
         last if !(defined $_);
         ${$self}{linebreaksAtEnd}{end} = 0 if($_==3 and (defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak}==4));
@@ -242,7 +247,7 @@ sub verbatim_modify_line_breaks{
     # verbatim modify line breaks are a bit special, as they happen before 
     # any of the main processes have been done
     my $self = shift;
-    while ( my ($key,$child)= each %{${$self}{verbatim}}){
+    while ( my ($key,$child)= each %verbatimStorage){
       if(defined ${$child}{BeginStartsOnOwnLine}){
         my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine};
         $logger->trace("*$BeginStringLogFile is ${$child}{BeginStartsOnOwnLine} for ${$child}{name}") if $is_t_switch_active ;

@@ -186,46 +186,23 @@ then the output is as in :numref:`lst:textwrap3-mod1`.
  	:caption: ``textwrap3-mod1.tex`` 
  	:name: lst:textwrap3-mod1
 
-The text wrapping routine of ``latexindent.pl`` is performed by the ``Text::Wrap`` module, which
-provides a ``separator`` feature to separate lines with characters other than a new line (see
-(“Text::Wrap Perl Module” 2017)). By default, the separator is empty which means that a new line
-token will be used, but you can change it as you see fit.
+The default value of ``huge`` is ``overflow``, which means that words will *not* be broken by the
+text wrapping routine, implemented by the ``Text::Wrap`` (“Text::Wrap Perl Module” 2017). There are
+options to change the ``huge`` option for the ``Text::Wrap`` module to either ``wrap`` or ``die``.
+Before modifying the value of ``huge``, please bear in mind the following warning:
 
-For example starting with the file in :numref:`lst:textwrap4`
+.. index:: warning;changing huge (textwrap)
 
-.. literalinclude:: demonstrations/textwrap4.tex
- 	:class: .tex
- 	:caption: ``textwrap4.tex`` 
- 	:name: lst:textwrap4
+.. warning::	
+	
+	Changing the value of ``huge`` to anything other than ``overflow`` will slow down ``latexindent.pl``
+	significantly when the ``-m`` switch is active.
+	
+	Furthermore, changing ``huge`` means that you may have some words *or commands*\ (!) split across
+	lines in your .tex file, which may affect your output. I do not recommend changing this field.
+	 
 
-and using ``textwrap2.yaml`` from :numref:`lst:textwrap2-yaml` with the following command
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-    latexindent.pl -m textwrap4.tex -o textwrap4-mod2.tex -l textwrap2.yaml
-
-then we obtain the output in :numref:`lst:textwrap4-mod2`.
-
-.. literalinclude:: demonstrations/textwrap4-mod2.tex
- 	:class: .tex
- 	:caption: ``textwrap4-mod2.tex`` 
- 	:name: lst:textwrap4-mod2
-
-.. literalinclude:: demonstrations/textwrap2.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap2.yaml`` 
- 	:name: lst:textwrap2-yaml
-
-There are options to specify the ``huge`` option for the ``Text::Wrap`` module (“Text::Wrap Perl
-Module” 2017) . This can be helpful if you would like to forbid the ``Text::Wrap`` routine from
-breaking words. For example, using the settings in :numref:`lst:textwrap2A-yaml` and
+For example, using the settings in :numref:`lst:textwrap2A-yaml` and
 :numref:`lst:textwrap2B-yaml` and running the commands
 
 .. index:: switches;-l demonstration
@@ -294,10 +271,10 @@ gives the code given in :numref:`lst:textwrap-ts-mod1`.
  	:caption: ``textwrap-ts-mod1.tex`` 
  	:name: lst:textwrap-ts-mod1
 
-You can specify ``break`` and ``unexpand`` options in your settings in analogous ways to those
-demonstrated in :numref:`lst:textwrap2B-yaml` and :numref:`lst:tabstop`, and they will be passed
-to the ``Text::Wrap`` module. I have not found a useful reason to do this; see (“Text::Wrap Perl
-Module” 2017) for more details.
+You can specify ``separator``, ``break`` and ``unexpand`` options in your settings in analogous ways
+to those demonstrated in :numref:`lst:textwrap2B-yaml` and :numref:`lst:tabstop`, and they will
+be passed to the ``Text::Wrap`` module. I have not found a useful reason to do this; see
+(“Text::Wrap Perl Module” 2017) for more details.
 
 text wrapping on a per-code-block basis
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

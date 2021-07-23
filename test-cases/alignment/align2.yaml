@@ -1,0 +1,11 @@
+lookForAlignDelims:
+   align: 
+      spacesBeforeAmpersand: 0
+      spacesAfterAmpersand: 0
+   array: 
+      spacesBeforeDoubleBackSlash: 3
+      spacesBeforeAmpersand: 4
+      spacesAfterAmpersand: 5
+
+noAdditionalIndent:
+  array: 1

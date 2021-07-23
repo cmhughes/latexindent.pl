@@ -304,7 +304,7 @@ character.
 	
 	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that   be
 	   immediately preceeded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the  
-	   the output is desirable.
+	   desirable.
 	
 	Another approach to this situation, which does not use ``fineTuning``, is to use ``noIndentBlock``
 	which we discussed in :numref:`lst:noIndentBlock`; using the settings in :numref:`lst:href3` and

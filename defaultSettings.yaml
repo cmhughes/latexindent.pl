@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.10, 2021-06-19
+# defaultSettings.yaml for latexindent.pl, version 3.10.1, 2021-07-23
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -509,7 +509,7 @@ modifyLineBreaks:
             other: 0
     textWrapOptions:
         columns: 0
-        # huge: overflow    # forbid mid-word line breaks
+        huge: overflow    # forbid mid-word line breaks
         separator: ""
         perCodeBlockBasis: 0
         all: 0

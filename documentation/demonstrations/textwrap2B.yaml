@@ -1,4 +1,3 @@
 modifyLineBreaks:
   textWrapOptions:
     columns: 3
-    huge: overflow

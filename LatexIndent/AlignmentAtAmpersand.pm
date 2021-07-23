@@ -26,8 +26,10 @@ use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::GetYamlSettings qw/%masterSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::HiddenChildren qw/%familyTree/;
+use LatexIndent::Verbatim qw/%verbatimStorage/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure/;
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
 our $alignmentBlockCounter;
 our @cellStorage;   # two-dimensional storage array containing the cell information
 our @formattedBody; # array for the new body
@@ -131,6 +133,9 @@ sub create_unique_id{
 sub align_at_ampersand{
     my $self = shift;
     return if(${$self}{bodyLineBreaks}==0);
+
+    # some blocks may contain verbatim to be measured
+    ${$self}{measureVerbatim} = (${$self}{body}=~m/$tokens{verbatim}/ ? 1 : 0);
 
     my $maximumNumberOfAmpersands = 0;
 
@@ -278,6 +283,12 @@ sub align_at_ampersand{
                         delimiterLength=>0,
                         measureThis=> ($numberOfAmpersands>0 ?  ${$self}{measureRow} : 0) });
                     
+            # possible hidden children, see https://github.com/cmhughes/latexindent.pl/issues/85
+            if (  (${$self}{measureHiddenChildren} or ${$self}{measureVerbatim} )
+                 and $column =~m/.*?$tokens{beginOfToken}/s){
+                $self->hidden_child_cell_row_width($column,$rowCounter,$columnCounter);
+            }
+
             # store the maximum column width 
             $maxColumnWidth[$columnCounter] = (defined $maxColumnWidth[$columnCounter] 
                                                         ? 
@@ -424,15 +435,16 @@ sub align_at_ampersand{
     #       \end{align*}
     #
     # see https://github.com/cmhughes/latexindent.pl/issues/223 for example
+
     if (!${${$self}{linebreaksAtEnd}}{begin} 
             and ${$cellStorage[0][0]}{type} eq "X" 
             and ${$cellStorage[0][0]}{measureThis}){
 
-        my $partToMeasure = ${$self}{begin};
+        my $lengthOfBegin = ${$self}{begin};
         if( (${$self}{begin} eq '{' | ${$self}{begin} eq '[') and ${$self}{parentBegin}){
-            $partToMeasure = ${$self}{parentBegin}."{";
+            $lengthOfBegin = ${$self}{parentBegin}."{";
         }
-        ${$self}{indentation} = " " x Unicode::GCString->new($partToMeasure)->columns();
+        ${$self}{indentation} = " " x Unicode::GCString->new($lengthOfBegin)->columns();
         $logger->trace("Adjusting indentation of ${$self}{name} in AlignAtAmpersand routine") if($is_t_switch_active);
     }
   }
@@ -530,6 +542,10 @@ sub main_formatting {
       # objective (2): calculate row width and update maximumRowWidth
       # objective (2): calculate row width and update maximumRowWidth
       my $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+
+      # possibly update rowWidth if there are hidden children; see test-cases/alignment/hidden-child1.tex and friends
+      $rowWidth = $self->hidden_child_row_width($tmpRow,$rowCount,$rowWidth) if(${$self}{measureHiddenChildren} or ${$self}{measureVerbatim});
+
       ${$formattedBody[$rowCount]}{rowWidth} = $rowWidth;
       
       # update the maximum row width
@@ -537,6 +553,19 @@ sub main_formatting {
           and !(${$formattedBody[$rowCount]}{numberOfAmpersands} == 0 and !${$formattedBody[$rowCount]}{endPiece}) ){
           ${$self}{maximumRowWidth} = $rowWidth;
       }
+    }
+
+    # log file information
+    if($is_tt_switch_active and ${$self}{measureHiddenChildren}){
+        $logger->info('*FamilyTree after align for ampersand');
+        $logger->trace(Dumper(\%familyTree)) if($is_tt_switch_active);
+
+        $rowCount = -1;
+        # row loop
+        foreach my $row (@cellStorage) {
+            $rowCount++;
+            $logger->trace("row $rowCount row width: ${$formattedBody[$rowCount]}{rowWidth}");
+        }
     }
 }
 
@@ -1343,5 +1372,212 @@ sub double_back_slash_else{
               # logfile information
               logName=>"double-back-slash-block (for align at ampersand, see lookForAlignDelims)",
         );
+}
+
+# possible hidden children, see test-cases/alignment/issue-162.tex and friends
+#
+#     \begin{align}
+#     	A & =\begin{array}{cc}      % <!--- Hidden child
+#     		     BBB & CCC \\       % <!--- Hidden child
+#     		     E   & F            % <!--- Hidden child
+#     	     \end{array} \\         % <!--- Hidden child
+#
+#     	Z & =\begin{array}{cc}      % <!--- Hidden child
+#     		     Y & X \\           % <!--- Hidden child
+#     		     W & V              % <!--- Hidden child
+#     	     \end{array}            % <!--- Hidden child
+#     \end{align}
+#
+
+# PURPOSE:
+#
+#   measure CELL width that has hidden children
+#
+#     	A &     =\begin{array}{cc}
+#     	             BBB & CCC \\ 
+#     	             E   & F     
+#     	         \end{array} \\ 
+#
+#     	       ^^^^^^^^^^^^^^^^^^
+#     	       ||||||||||||||||||
+#
+#     	              Cell
+#
+sub hidden_child_cell_row_width{
+    my $self = shift;
+
+    my ($tmpCellEntry, $rowCounter, $columnCounter) = @_;
+
+    for my $hiddenChildToMeasure (@{${$self}{measureHiddenChildren}}){
+      if($tmpCellEntry =~m/.*?$hiddenChildToMeasure/s and defined $familyTree{$hiddenChildToMeasure}{bodyForMeasure}){
+           $tmpCellEntry =~ s/$hiddenChildToMeasure/$familyTree{$hiddenChildToMeasure}{bodyForMeasure}/s;
+      }
+    }
+
+    if ($tmpCellEntry =~ m/$tokens{verbatim}/){
+     #
+     # verbatim example:
+     #
+     #    \begin{tabular}{ll}
+     #      Testing & Line 1                        \\
+     #      Testing & Line 2                        \\
+     #      Testing & Line 3 \verb|X| \\
+     #      Testing & Line 4                        \\
+     #    \end{tabular}
+     while( my ($verbatimID,$child)= each %verbatimStorage){
+       if($tmpCellEntry =~m/.*?$verbatimID/s){
+           $tmpCellEntry =~ s/$verbatimID/${$child}{begin}${$child}{body}${$child}{end}/s;
+       }
+     }
+    }
+    my $bodyLineBreaks = 0;
+    $bodyLineBreaks++ while($tmpCellEntry =~ m/\R/sg);
+    if($bodyLineBreaks>0){
+        my $maxRowWidthWithinCell = 0;
+        foreach(split("\n",$tmpCellEntry)){
+           my $currentRowWidth = Unicode::GCString->new($_)->columns();
+           $maxRowWidthWithinCell = $currentRowWidth if ($currentRowWidth > $maxRowWidthWithinCell );
+        }
+        ${$cellStorage[$rowCounter][$columnCounter]}{width} = $maxRowWidthWithinCell;
+    } else {
+        ${$cellStorage[$rowCounter][$columnCounter]}{width} = Unicode::GCString->new($tmpCellEntry)->columns();
+    }
+}
+
+# PURPOSE:
+#
+#   measure ROW width that has hidden children
+#
+#     	A & =\begin{array}{cc}
+#     		     BBB & CCC \\ 
+#     		     E   & F     
+#     	     \end{array} \\ 
+#
+#     	^^^^^^^^^^^^^^^^^^^^^^
+#     	||||||||||||||||||||||
+#
+#     	          row
+#
+sub hidden_child_row_width{
+    my $self = shift;
+
+    my ($tmpRow,$rowCount,$rowWidth)  = @_;
+
+    # some alignment blocks have the 'begin' statement on the opening line:
+    #
+    #           this bit
+    #       ||||||||||||||
+    #       ``````````````
+    #       \begin{align*}1 & 2 \\
+    #                     3 & 4 \\
+    #                     5 & 6
+    #       \end{align*}
+    #
+    my $lengthOfBegin = 0;
+    if (!${${$self}{linebreaksAtEnd}}{begin} 
+            and ${$cellStorage[0][0]}{type} eq "X" 
+            and ${$cellStorage[0][0]}{measureThis}){
+
+        my $beginToMeasure = ${$self}{begin};
+        if( (${$self}{begin} eq '{' | ${$self}{begin} eq '[') and ${$self}{parentBegin}){
+            $beginToMeasure = ${$self}{parentBegin}."{";
+        }
+        $lengthOfBegin = Unicode::GCString->new($beginToMeasure)->columns();
+        $tmpRow = $beginToMeasure.$tmpRow if $rowCount == 0;
+    }
+
+    if ($tmpRow =~m/.*?$tokens{beginOfToken}/s){
+
+           $tmpRow = ("."x$lengthOfBegin).$tmpRow; 
+
+           for my $hiddenChildToMeasure (@{${$self}{measureHiddenChildren}}){
+               if($tmpRow=~m/(^.*)?$hiddenChildToMeasure/m and defined $familyTree{$hiddenChildToMeasure}{bodyForMeasure}){
+                  my $partBeforeId = $1;
+                  my $lengthPartBeforeId = Unicode::GCString->new($partBeforeId)->columns(); 
+
+                  foreach (@{$familyTree{$hiddenChildToMeasure}{ancestors}}){
+                    if (${$_}{ancestorID} eq ${$self}{id}){
+                      if($lengthOfBegin>0){ 
+                          ${$_}{ancestorIndentation} = (" " x ($lengthPartBeforeId)); 
+                      } else {
+                          ${$_}{ancestorIndentation} = ${$_}{ancestorIndentation}.(" " x ($lengthPartBeforeId)); 
+                      }
+                    }
+                  }
+                  my $tmpBodyToMeasure = join( "\n".("."x($lengthPartBeforeId)),
+                                               split("\n",$familyTree{$hiddenChildToMeasure}{bodyForMeasure}));
+
+                  # remove trailing \\ 
+                  $tmpBodyToMeasure =~ s/(\\\\\h*$)//mg;
+                               
+                  $tmpRow =~ s/$hiddenChildToMeasure/$tmpBodyToMeasure/s;
+               }
+           }
+
+           if ($tmpRow =~ m/$tokens{verbatim}/){
+            #
+            # verbatim example:
+            #
+            #    \begin{tabular}{ll}
+            #      Testing & Line 1                        \\
+            #      Testing & Line 2                        \\
+            #      Testing & Line 3 \verb|X| \\
+            #      Testing & Line 4                        \\
+            #    \end{tabular}
+            while( my ($verbatimID,$child)= each %verbatimStorage){
+              if($tmpRow =~m/.*?$verbatimID/s){
+                   $tmpRow =~ s/$verbatimID/${$child}{begin}${$child}{body}${$child}{end}/s;
+              }
+            }
+           }
+
+           my $bodyLineBreaks = 0;
+           $bodyLineBreaks++ while($tmpRow =~ m/\R/sg);
+           if($bodyLineBreaks>0){
+               my $maxRowWidth = 0;
+
+               foreach(split("\n",$tmpRow)){
+                  my $currentRowWidth = Unicode::GCString->new($_)->columns();
+                  $maxRowWidth = $currentRowWidth if ($currentRowWidth > $maxRowWidth );
+               }
+               $rowWidth  = $maxRowWidth;
+           } else {
+               $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+           }
+        } elsif (!${${$self}{linebreaksAtEnd}}{begin} 
+                  and ${$cellStorage[0][0]}{type} eq "X" 
+                  and ${$cellStorage[0][0]}{measureThis}){
+              $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+        }
+
+        # possibly draw ruler to log file
+        &draw_ruler_to_logfile($tmpRow,$rowWidth) if ($is_t_switch_active);
+        return $rowWidth;
+} 
+
+sub draw_ruler_to_logfile{
+    # draw a ruler to the log file, useful for debugging
+    #
+    # example:
+    #
+    # ----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+    #    5   10   15   20   25   30   35   40   45   50   55   60   65   70
+    #
+    
+    my ($tmpRow,$maxRowWidth) = @_;
+    $logger->trace("*tmpRow:");
+
+    foreach(split("\n",$tmpRow)){
+       my $currentRowWidth = Unicode::GCString->new($_)->columns();
+       $logger->trace("$_ \t(length: $currentRowWidth)");
+    }
+
+    my $rulerMax = int($maxRowWidth/10 +1.5 )*10;
+    $logger->trace(("----|"x(int($rulerMax/5))));
+
+    my $ruler = q();
+    for (my $i=1;$i<=$rulerMax/5;$i++){ $ruler .= "   ".$i*5 };
+    $logger->trace($ruler);
+
 }
 1;

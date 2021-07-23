@@ -1,0 +1,4 @@
+replacements:
+  -
+    substitution: s/(\w)\h{2,}(\w)/$1 $2/sg
+    when: after
