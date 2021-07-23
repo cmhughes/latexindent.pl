@@ -121,6 +121,10 @@ sub yaml_get_indentation_information{
     return q();
 }
 
+sub check_for_hidden_children{
+    return q();
+}
+
 sub create_unique_id{
     my $self = shift;
 

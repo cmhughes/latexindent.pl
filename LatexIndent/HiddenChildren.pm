@@ -21,7 +21,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children %familyTree/;
+our @EXPORT_OK = qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children %familyTree hidden_children_preparation_for_alignment unpack_children_into_body/;
 
 # hiddenChildren can be stored in a global array, it doesn't matter what level they're at
 our %familyTree;
@@ -173,13 +173,15 @@ sub check_for_hidden_children{
     }
 
     # log file
-    $logger->trace("*Hidden children check") if $is_t_switch_active;
+    $logger->trace("*Hidden children check for ${$self}{name}") if $is_t_switch_active;
     $logger->trace(join("|",@matched)) if $is_t_switch_active;
 
     my $naturalAncestors = ${$self}{naturalAncestors}; 
 
     # loop through the hidden children
     foreach my $match (@matched){
+        next if $match =~ m/$tokens{verbatim}/;
+
         # update the family tree with ancestors of self
         if(${$self}{ancestors}){
             foreach(@{${$self}{ancestors}}){
@@ -197,9 +199,82 @@ sub check_for_hidden_children{
                     my $type = ($naturalAncestors =~ m/${$self}{id}/ ) ? "natural" : "adopted";
                     $logger->trace("Adding ${$self}{id} to the $type family tree of hiddenChild $match") if($is_t_switch_active);
                     push(@{$familyTree{$match}{ancestors}},{ancestorID=>${$self}{id},ancestorIndentation=>${$self}{indentation},type=>$type});
+
+                    if(${$self}{lookForAlignDelims}){
+                        $logger->trace("$match needs measuring for ${$self}{name} (see lookForAlignDelims)") if($is_t_switch_active);
+                        push(@{${$self}{measureHiddenChildren}},$match);
+                    }
         }
     }
 
+}
+
+#
+# AlignmentAtAmpersand routine calculations are below
+#
+# PURPOSE:
+#
+# Consider the following example, which contains hidden children
+#
+#     \begin{align}
+#     	A & =\begin{array}{cc}      % <!--- Hidden child
+#     		     BBB & CCC \\       % <!--- Hidden child
+#     		     E   & F            % <!--- Hidden child
+#     	     \end{array} \\         % <!--- Hidden child
+#
+#     	Z & =\begin{array}{cc}      % <!--- Hidden child
+#     		     Y & X \\           % <!--- Hidden child
+#     		     W & V              % <!--- Hidden child
+#     	     \end{array}            % <!--- Hidden child
+#     \end{align}
+#
+# the approach that we adopt is:
+#
+#   1. for the *original* object  (align in the above), we loop through
+#       its hidden children (array in the above) and unpack their contents
+#       for measuring
+#
+#       see hidden_children_preparation_for_alignment
+#           unpack_children_into_body
+#
+#   2. we store the unpacked body in the familyTree hash, using 'bodyForMeasure'
+#
+#       see $familyTree{${$_}{id}}{bodyForMeasure} = $bodyForMeasure;
+#
+#   3. during the alignment routine, we use 'bodyForMeasure' for measuring the cells
+#
+sub hidden_children_preparation_for_alignment{
+
+    my $self = shift;
+    my $latexIndentObject = shift;
+    for my $hiddenChildToMeasure (@{${$latexIndentObject}{measureHiddenChildren}}){
+        for (@{${$self}{children}}){
+            if(${$_}{id} eq $hiddenChildToMeasure){
+
+                my $bodyForMeasure = ${$_}{begin}.${$_}{body}.${$_}{end};
+                for my $child (${$_}{children}){
+                    $bodyForMeasure = &unpack_children_into_body(\@{$child},$bodyForMeasure);
+                }
+                $familyTree{${$_}{id}}{bodyForMeasure} = $bodyForMeasure;
+            }
+        }
+    }
+    return;
+}
+
+sub unpack_children_into_body{
+    my $child = shift;
+    my $body  = shift;
+    for my $individualChild (@{$child}){
+          $body =~ s/${$individualChild}{id}/${$individualChild}{begin}${$individualChild}{body}${$individualChild}{end}/s;
+
+          if(${$individualChild}{children}){ 
+            for my $nextlevelchild (${$individualChild}{children}){
+                $body = &unpack_children_into_body(\@{$nextlevelchild},$body);
+            }
+          }
+    }
+    return $body;
 }
 
 1;

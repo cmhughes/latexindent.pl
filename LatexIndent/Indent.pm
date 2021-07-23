@@ -118,7 +118,7 @@ sub indent_body{
     $self->check_for_blank_lines_at_beginning if $is_m_switch_active; 
 
     # some objects can format their body to align at the & character
-    $self->align_at_ampersand if ${$self}{lookForAlignDelims};
+    $self->align_at_ampersand if (${$self}{lookForAlignDelims} and !${$self}{dontMeasure});
 
     # grab the indentation of the object
     # NOTE: we need this here, as ${$self}{indentation} can be updated by the align_at_ampersand routine, 

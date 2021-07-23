@@ -70,7 +70,7 @@ latexindent.pl -m -s key-equals-value.tex -l removeParaLineBreaks15.yaml -o key-
 latexindent.pl -m -s unnamed-group-braces.tex -l removeParaLineBreaks0.yaml -o unnamed-group-braces0.tex
 
 # the file that started this issue
-latexindent.pl -m -s jowens-long-mod-4.tex -l removeParaLineBreaks0.yaml -o jowens-long-para0.tex -y="modifyLineBreaks:textWrapOptions:huge:wrap"
+latexindent.pl -m -s jowens-long-mod-4.tex -l removeParaLineBreaks0.yaml,condenseSpaces.yaml -r -o jowens-long-para0.tex -y="modifyLineBreaks:textWrapOptions:huge:wrap"
 
 # test paragraph stop routine
 latexindent.pl -m -s jowens-short-multi-line-stop.tex -l removeParaLineBreaks0.yaml -o jowens-short-multi-line-stop-mod0.tex

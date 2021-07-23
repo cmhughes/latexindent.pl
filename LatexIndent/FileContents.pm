@@ -24,6 +24,7 @@ use LatexIndent::Environment qw/$environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
+use LatexIndent::Verbatim qw/%verbatimStorage/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
@@ -179,7 +180,7 @@ sub find_file_contents_environments_and_preamble{
             # indentPreamble set to 0
             $logger->trace("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)") if $is_t_switch_active;
             $preamble->unprotect_blank_lines;
-            ${$self}{verbatim}{${$preamble}{id}} = $preamble;
+            $verbatimStorage{${$preamble}{id}} = $preamble;
         }
     } else {
         ${$self}{preamblePresent} = 0;
@@ -198,7 +199,7 @@ sub find_file_contents_environments_and_preamble{
                 } else {
                     # indentPreamble set to 0
                     $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
-                    ${$self}{verbatim}{${$_}{id}}=$_;
+                    $verbatimStorage{${$_}{id}} = $_;
                 }
               } else {
                     $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)") if $is_t_switch_active;

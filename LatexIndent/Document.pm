@@ -35,12 +35,12 @@ use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comme
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
 use LatexIndent::Tokens qw/token_check %tokens/;
-use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children/;
-use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure/;
+use LatexIndent::HiddenChildren qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children hidden_children_preparation_for_alignment unpack_children_into_body/;
+use LatexIndent::AlignmentAtAmpersand qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
-use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks/;
+use LatexIndent::Verbatim qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else qw/check_for_else_statement/;
@@ -95,6 +95,8 @@ sub operate_on_file{
         $self->remove_trailing_comments;
         $self->find_verbatim_environments;
         $self->find_verbatim_special;
+        $logger->trace("*Verbatim storage:") if $is_tt_switch_active;
+        $logger->trace(Dumper(\%verbatimStorage)) if $is_tt_switch_active;
         $self->verbatim_modify_line_breaks if $is_m_switch_active; 
         $self->make_replacements(when=>"before") if $is_rv_switch_active;
         $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
@@ -311,9 +313,13 @@ sub get_settings_and_store_new_object{
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
 
+    # possible alignment preparation for hidden children
+    $self->hidden_children_preparation_for_alignment($latexIndentObject) if(${$latexIndentObject}{lookForAlignDelims} and ${$latexIndentObject}{measureHiddenChildren});
+
     # possible decoration in log file 
     $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
 }
+
 
 sub tasks_common_to_each_object{
     my $self = shift;
@@ -383,6 +389,10 @@ sub tasks_common_to_each_object{
 
     # double back slash poly-switch check
     $self->double_back_slash_else if ($is_m_switch_active and ${$self}{lookForAlignDelims});
+    
+    # some objects can format their body to align at the & character
+    $self->align_at_ampersand if (${$self}{lookForAlignDelims} and !${$self}{measureHiddenChildren});
+
     return;
 }
 

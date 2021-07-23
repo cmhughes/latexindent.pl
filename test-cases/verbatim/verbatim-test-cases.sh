@@ -47,6 +47,8 @@ do
    [[ $silentMode == 0 ]] && set +x 
 done
 
+[[ $silentMode == 0 ]] && set -x 
+
 latexindent.pl -s  -m verbatim6 -l=verb-env-1-named.yaml -o=+-mod-1
 
 # checking a named version of polyswitch
