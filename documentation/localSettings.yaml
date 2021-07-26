@@ -57,14 +57,16 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 90
         perCodeBlockBasis: 1
-        masterDocument: 1
+        beforeFindingOtherCodeBlocks: 1
         afterHeading: 1
         items: 1
     removeParagraphLineBreaks:
-        masterDocument: 1
         items: 1
         afterHeading: 1
         beforeTextWrap: 1
+        mandatoryArguments:
+          index: 1
+          announce: 1
 
 removeTrailingWhitespace:
     beforeProcessing: 1
@@ -77,10 +79,10 @@ replacements:
     substitution: s/\%+/\%/sg
     when: after
   -
-    substitution: s/(\w)\h{2,}(\w)/$1 $2/sg
+    substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
     when: before
   -
-    substitution: s/(\w)\h{2,}(\w)/$1 $2/sg
+    substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
     when: after
   -
     substitution: s/\h+(\\end\{commandshell\})/$1/sg

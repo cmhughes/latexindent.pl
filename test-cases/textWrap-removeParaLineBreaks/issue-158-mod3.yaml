@@ -1,0 +1,10 @@
+noAdditionalIndentGlobal:
+    mandatoryArguments: 1
+    specialBeginEnd: 1
+modifyLineBreaks:
+    removeParagraphLineBreaks:
+        all: 1
+    specialBeginEnd:
+        displayMath:
+            SpecialBeginStartsOnOwnLine: 1
+            SpecialEndFinishesWithLineBreak: 1

@@ -570,6 +570,27 @@ sub yaml_read_settings{
       $logger->info(Dumper(\%masterSettings));
   }
 
+  if( $is_m_switch_active 
+      and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingOtherCodeBlocks}
+      and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
+
+      # the following settings don't make sense, so we change
+      #
+      # modifyLineBreaks:
+      #     textWrapOptions:
+      #         perCodeBlockBasis: 0
+      #         beforeFindingOtherCodeBlocks: 1
+      # into
+      #
+      # modifyLineBreaks:
+      #     textWrapOptions:
+      #         perCodeBlockBasis: 0
+      #         beforeFindingOtherCodeBlocks: 0
+      $logger->warn("*textWrapOptions:beforeFindingOtherCodeBlocks:1 with textWrapOptions:perCodeBlockBasis:0");
+      $logger->warn("turning off beforeFindingOtherCodeBlocks by changing textWrapOptions:beforeFindingOtherCodeBlocks to be 0");
+      $logger->warn("you need to set *both* values to be 1 to use the beforeFindingOtherCodeBlocks feature");
+      ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingOtherCodeBlocks} = 0;
+  }
   return;
 }
 

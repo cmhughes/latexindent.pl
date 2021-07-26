@@ -1,0 +1,6 @@
+noAdditionalIndentGlobal:
+    mandatoryArguments: 1
+    specialBeginEnd: 1
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 50

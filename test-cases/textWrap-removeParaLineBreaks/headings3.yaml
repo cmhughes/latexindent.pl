@@ -1,0 +1,20 @@
+modifyLineBreaks:
+    textWrapOptions:
+        afterHeading: 1
+    removeParagraphLineBreaks:
+        afterHeading: 1
+    commands:
+        section:
+          CommandStartsOnOwnLine: 3
+    mandatoryArguments:
+        section:
+          RCuBFinishesWithLineBreak: 3
+
+indentAfterHeadings:
+    section:
+       indentAfterThisHeading: 1
+       level: 1
+
+noAdditionalIndentGlobal:
+    mandatoryArguments: 1
+    specialBeginEnd: 1

@@ -12,7 +12,7 @@
 %
 %   This program is distributed in the hope that it will be useful,
 %   but WITHOUT ANY WARRANTY; without even the implied warranty of
-%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 %   GNU General Public License for more details.
 %
 %   See <http://www.gnu.org/licenses/>.
@@ -223,18 +223,18 @@
 		raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
-%                   *    no star: not new, star: new
+%                   * no star: not new, star: new
 %                   [ listing/minted options ]
-%                   *    no star: uses minted library, star: uses listings library star: 
+%                   * no star: uses minted library, star: uses listings library star: 
 %                   {<name of listing file>}
 %                   [<options for tcolorbox>]
 %                   {<title>}
 %                   {<label>}
 %
 % for example,
-%   \cmhlistingsfromfile*[listing options]...  uses listings library and is NEW
-%   \cmhlistingsfromfile[listing options]...   uses listings library
-%   \cmhlistingsfromfile[listing options]*...  uses minted library
+%   \cmhlistingsfromfile*[listing options]... uses listings library and is NEW
+%   \cmhlistingsfromfile[listing options]... uses listings library
+%   \cmhlistingsfromfile[listing options]*... uses minted library
 %   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
 \DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
 	cmhlistings,
@@ -521,12 +521,12 @@
 			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 			decorate[decoration={stars,segment length=2cm}] {
 					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.4cm]frame.north west)
+							([xshift=-.5cm,yshift=0.1cm]frame.south west) -- ([xshift=-.5cm,yshift=0.4cm]frame.north west)
 						}};
 			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 			decorate[decoration={stars,segment length=2cm}] {
 					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=.75cm,yshift=0.1cm]frame.south east) --  ([xshift=.75cm,yshift=0.6cm]frame.north east)
+							([xshift=.75cm,yshift=0.1cm]frame.south east) -- ([xshift=.75cm,yshift=0.6cm]frame.north east)
 						}};
 			\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
 		},

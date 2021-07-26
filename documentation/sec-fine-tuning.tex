@@ -2,8 +2,9 @@
 \section{Fine tuning}\label{sec:finetuning}
  \texttt{latexindent.pl} operates by looking for the code blocks detailed in
  \vref{tab:code-blocks}.
- \announce{2019-07-13}{details of fine tuning of code blocks} The fine tuning of the details of such code blocks
- is controlled by the \texttt{fineTuning} field, detailed in \cref{lst:fineTuning}.
+ \announce{2019-07-13}{details of fine tuning of code blocks} The fine tuning of the
+ details of such code blocks is controlled by the \texttt{fineTuning} field, detailed in
+ \cref{lst:fineTuning}.
 
  This field is for those that would like to peek under the bonnet/hood and make some fine
  tuning to \texttt{latexindent.pl}'s operating.
@@ -38,8 +39,8 @@
 
  We make the following comments with reference to \cref{lst:fineTuning}:
  \begin{enumerate}
-	 \item the \texttt{environments:name} field details that the \emph{name} of an
-	       environment can contain:
+	 \item the \texttt{environments:name} field details that the \emph{name} of an environment can
+	       contain:
 	       \begin{enumerate}
 		       \item \texttt{a-z} lower case letters
 		       \item \texttt{A-Z} upper case letters
@@ -50,25 +51,23 @@
 		       \item \lstinline!\! backslashes
 	       \end{enumerate}
 	       \index{regular expressions!at least one +}
-	       The \texttt{+} at the end means \emph{at least one} of the above
-	       characters.
+	       The \texttt{+} at the end means \emph{at least one} of the above characters.
 	 \item the \texttt{ifElseFi:name} field:
 	       \begin{enumerate}
 		       \item \lstinline^@?^ means that it \emph{can possibly} begin with
 		             \lstinline^@^
 		       \item followed by \texttt{if}
-		       \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and
-		             \texttt{@}
-		       \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the
-		             match as soon as possible'
+		       \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and \texttt{@}
+		       \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the match as soon as
+		             possible'
 	       \end{enumerate}
 	 \item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
 	       \begin{enumerate}
 		       \item \lstinline!|! means `or'
 		       \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group --
 		             you don't necessarily need to worry about what this means, but just know that for the
-		             \texttt{fineTuning} feature you should only ever use \emph{non}-capturing
-		             groups, and \emph{not} capturing groups, which are simply
+		             \texttt{fineTuning} feature you should only ever use \emph{non}-capturing groups, and
+		             \emph{not} capturing groups, which are simply
 		             \lstinline!(...)!
 		       \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not}
 		             be immediately preceded by a \lstinline!\!
@@ -90,14 +89,14 @@
 		             \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double back slashes, see
 		             \vref{subsec:dbs}
 		       \item \texttt{comma} is in relation to the \texttt{CommaStartsOnOwnLine} and
-		             \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and mandatory
-		             arguments; see \vref{tab:poly-switch-mapping}
+		             \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and
+		             mandatory arguments; see \vref{tab:poly-switch-mapping}
 	       \end{enumerate}
  \end{enumerate}
 
  It is not obvious from \cref{lst:fineTuning}, but each of the \texttt{follow},
- \texttt{before} and \texttt{between} fields allow trailing comments, line
- breaks, and horizontal spaces between each character.
+ \texttt{before} and \texttt{between} fields allow trailing comments, line breaks, and
+ horizontal spaces between each character.
 
  \begin{example}
 	 As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
@@ -205,9 +204,9 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 
 	 We note that in:
 	 \begin{itemize}
-		 \item \cref{lst:finetuning4-mod1} the trailing comments are assumed to be everything following the
-		       first comment symbol, which has meant that everything following it has been moved to the
-		       end of the line; this is undesirable, clearly!
+		 \item \cref{lst:finetuning4-mod1} the trailing comments are assumed to be everything following
+		       the first comment symbol, which has meant that everything following it has been moved to
+		       the end of the line; this is undesirable, clearly!
 		 \item \cref{lst:finetuning4-mod2} has fine-tuned the trailing comment matching, and says that
 		       \% cannot
 		       be immediately preceeded by the words `Handbook', `for' or `Spoken', which means that

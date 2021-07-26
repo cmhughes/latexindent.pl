@@ -153,5 +153,27 @@ latexindent.pl -s -m -l issue-183-mod2.yaml issue-183.tex -o=+-mod2
 
 # https://github.com/cmhughes/latexindent.pl/issues/279
 latexindent.pl -s -l issue-279.yaml -m issue-279.tex -o=+-mod1
+
+# text wrap enhancement: 
+#   https://github.com/cmhughes/latexindent.pl/issues/158
+#   https://github.com/cmhughes/latexindent.pl/issues/228
+latexindent.pl -s -l textwrap-most-useful.yaml -m issue-158.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful.yaml,issue-158-mod2.yaml -m issue-158.tex -o=+-mod2
+latexindent.pl -s -l textwrap-most-useful.yaml,issue-158-mod3.yaml -m issue-158.tex -o=+-mod3
+latexindent.pl -s -l textwrap-NOT-useful.yaml -m issue-158.tex -o=+-mod4
+latexindent.pl -s -l textwrap-most-useful.yaml,issue-158-mod5.yaml -m issue-158.tex -o=+-mod5
+latexindent.pl -s -l textwrap-warning.yaml -m issue-158.tex -g=warning.log
+
+latexindent.pl -s -l textwrap-most-useful.yaml -m issue-228.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful.yaml,issue-228-mod2.yaml -m issue-228.tex -o=+-mod2
+latexindent.pl -s -l textwrap-NOT-useful.yaml -m issue-228.tex -o=+-mod3
+
+latexindent.pl -s -l textwrap-most-useful.yaml -m headings1.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful.yaml,headings2.yaml -m headings1.tex -o=+-mod2
+latexindent.pl -s -l textwrap-most-useful.yaml,headings3.yaml -m headings1.tex -o=+-mod3
+latexindent.pl -s -r -l textwrap-most-useful.yaml,headings4.yaml -m headings1-mod3.tex -o=headings1-mod4
+
+latexindent.pl -s -l textwrap-most-useful.yaml -m verbatim3.tex -o=+-mod1
+latexindent.pl -s -l textwrap-NOT-useful.yaml  -m verbatim3.tex -o=+-mod2
 git status
 [[ $noisyMode == 1 ]] && makenoise

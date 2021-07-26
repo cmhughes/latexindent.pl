@@ -1,9 +1,10 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \subsection{Partnering BodyStartsOnOwnLine with argument-based poly-switches}
 	Some poly-switches need to be partnered together; in particular, when line breaks
-	involving the \emph{first} argument of a code block need to be accounted for
-	using both \texttt{BodyStartsOnOwnLine} (or its equivalent, see \vref{tab:poly-switch-mapping}) and \texttt{LCuBStartsOnOwnLine} for mandatory arguments, and
-	\texttt{LSqBStartsOnOwnLine} for optional arguments.
+	involving the \emph{first} argument of a code block need to be accounted for using both
+	\texttt{BodyStartsOnOwnLine} (or its equivalent, see \vref{tab:poly-switch-mapping}) and
+	\texttt{LCuBStartsOnOwnLine} for mandatory arguments, and \texttt{LSqBStartsOnOwnLine}
+	for optional arguments.
 	\index{poly-switches!conflicting partnering}
 
 	Let's begin with the code in \cref{lst:mycommand1} and the YAML settings in
@@ -19,8 +20,8 @@
 latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 \end{commandshell}
 	we obtain \cref{lst:mycommand1-mlb1}; note that the \emph{second} mandatory argument
-	beginning brace \lstinline!{! has had its leading line break removed, but that
-	the \emph{first} brace has not.
+	beginning brace \lstinline!{! has had its leading line break removed, but that the
+	\emph{first} brace has not.
 
 	\begin{cmhtcbraster}[
 			raster force size=false,

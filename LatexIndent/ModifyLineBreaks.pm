@@ -274,6 +274,7 @@ sub verbatim_modify_line_breaks{
       }
     }
 }
+
 sub text_wrap_remove_paragraph_line_breaks{
     my $self = shift;
 
@@ -293,6 +294,60 @@ sub text_wrap{
     # alignment at ampersand can take priority
     return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
 
+    # goal: get an accurate measurement of verbatim objects;
+    # 
+    # example: 
+    #       Lorem \verb!x+y! ipsum dolor sit amet
+    # 
+    # is represented as 
+    #
+    #       Lorem LTXIN-TK-VERBATIM1-END ipsum dolor sit amet
+    #
+    # so we *measure* the verbatim token and replace it with 
+    # an appropriate-length string
+    #
+    #       Lorem a2A41233rt ipsum dolor sit amet
+    #
+    # and then put the body back to 
+    #
+    #       Lorem LTXIN-TK-VERBATIM1-END ipsum dolor sit amet
+    # 
+    # following the text wrapping
+    my @putVerbatimBackIn;
+
+    # check body for verbatim and get measurements
+    if (${$self}{body} =~ m/$tokens{verbatim}/s and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} eq "overflow"){
+
+      # reference: https://stackoverflow.com/questions/10336660/in-perl-how-can-i-generate-random-strings-consisting-of-eight-hex-digits
+      my @set = ('0' ..'9', 'A' .. 'Z', 'a' .. 'z');
+
+      # loop through verbatim objects
+      while( my ($verbatimID,$child)= each %verbatimStorage){
+        my $verbatimThing = ${$child}{begin}.${$child}{body}.${$child}{end};
+
+        # if the object has line breaks, don't measure it
+        next if $verbatimThing =~ m/\R/s;
+
+        if(${$self}{body} =~m/$verbatimID/s){
+
+          # measure length
+          my $verbatimLength = Unicode::GCString->new($verbatimThing)->columns();
+
+          # create temporary ID, and check that it is not contained in the body
+          my $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;
+          while(${$self}{body} =~m/$verbatimTmpID/s){
+             $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;
+          }
+
+          # store for use after the text wrapping
+          push(@putVerbatimBackIn,{origVerbatimID=>$verbatimID,tmpVerbatimID=>$verbatimTmpID});
+
+          # make the substitution
+          ${$self}{body} =~ s/$verbatimID/$verbatimTmpID/s;
+        }
+      }
+    }
+
     # call the text wrapping routine
     my $columns;
 
@@ -311,15 +366,20 @@ sub text_wrap{
         $columns = 80;
     }
 
+    # vital Text::Wrap options
     $Text::Wrap::columns=$columns;
-    if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
-        $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator};
-    }
-    $Text::Wrap::huge = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge};
+    $Text::Wrap::huge = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge};
+
+    # all other Text::Wrap options not usually needed/helpful, but available
+    $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne '');
     $Text::Wrap::break = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break};
     $Text::Wrap::unexpand = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand};
     $Text::Wrap::tabstop = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop};
+
+    # perform the text wrapping
     ${$self}{body} = wrap('','',${$self}{body});
+
+    ${$self}{body} =~ s/${$_}{tmpVerbatimID}/${$_}{origVerbatimID}/s foreach (@putVerbatimBackIn);
 }
 
 sub construct_paragraph_reg_exp{
