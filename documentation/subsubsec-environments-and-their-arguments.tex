@@ -27,9 +27,7 @@ latexindent.pl myenv.tex -l myenv-noAdd2.yaml
 	environment \texttt{myenv} has not received any \emph{additional} indentation, but that
 	the \texttt{outer} environment \emph{has} still received indentation.
 
-	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex}
-		output (using either \cref{lst:myenv-noAdd1} or
-		\cref{lst:myenv-noAdd2})}{lst:myenv-output}
+	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex} output (using either \cref{lst:myenv-noAdd1} or \cref{lst:myenv-noAdd2})}{lst:myenv-output}
 
 	Upon changing the YAML files to those shown in \cref{lst:myenv-noAdd3,lst:myenv-noAdd4},
 	and running either
@@ -48,9 +46,7 @@ latexindent.pl myenv.tex -l myenv-noAdd4.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/myenv-noAdd4.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd4.yaml}}{lst:myenv-noAdd4}
 	\end{minipage}
 
-	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex
-			output} (using either \cref{lst:myenv-noAdd3} or
-		\cref{lst:myenv-noAdd4})}{lst:myenv-output-4}
+	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body4.tex}{\texttt{myenv.tex output} (using either \cref{lst:myenv-noAdd3} or \cref{lst:myenv-noAdd4})}{lst:myenv-output-4}
 
 	Let's now allow \texttt{myenv} to have some optional and mandatory arguments, as in
 	\cref{lst:myenv-args}.
@@ -67,8 +63,7 @@ latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex
 	is because, when \texttt{noAdditionalIndent} is specified in `scalar' form (as in
 	\cref{lst:myenv-noAdd1}), then \emph{all} parts of the environment (body, optional and
 	mandatory arguments) are assumed to want no additional indent.
-	\cmhlistingsfromfile{demonstrations/myenvironment-args-noAdd-body1.tex}{\texttt{myenv-args.tex}
-		using \cref{lst:myenv-noAdd1}}{lst:myenv-args-noAdd1}
+	\cmhlistingsfromfile{demonstrations/myenvironment-args-noAdd-body1.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-noAdd1}}{lst:myenv-args-noAdd1}
 
 	We may customise \texttt{noAdditionalIndent} for optional and mandatory arguments of the
 	\texttt{myenv} environment, as shown in, for example,
@@ -122,9 +117,7 @@ latexindent.pl myenv.tex -l myenv-rules2.yaml
 	environment \texttt{myenv} has received one tab (from the \texttt{outer} environment)
 	plus three spaces from \cref{lst:myenv-rules1} or \ref{lst:myenv-rules2}.
 
-	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex}
-		output (using either \cref{lst:myenv-rules1} or
-		\cref{lst:myenv-rules2})}{lst:myenv-rules-output}
+	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenv-rules1.tex}{\texttt{myenv.tex} output (using either \cref{lst:myenv-rules1} or \cref{lst:myenv-rules2})}{lst:myenv-rules-output}
 
 	If you specify a field in \texttt{indentRules} using anything other than horizontal
 	space, it will be ignored.
@@ -138,8 +131,7 @@ latexindent.pl myenv-args.tex -l=myenv-rules1.yaml
 	we obtain the output in \cref{lst:myenv-args-rules1}; note that the body, optional
 	argument and mandatory argument of \texttt{myenv} have \emph{all} received the same
 	customised indentation.
-	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenvironment-args-rules1.tex}{\texttt{myenv-args.tex}
-		using \cref{lst:myenv-rules1}}{lst:myenv-args-rules1}
+	\cmhlistingsfromfile[showtabs=true,showspaces=true]{demonstrations/myenvironment-args-rules1.tex}{\texttt{myenv-args.tex} using \cref{lst:myenv-rules1}}{lst:myenv-args-rules1}
 
 	You can specify different indentation rules for the different features using, for
 	example, \cref{lst:myenv-rules3,lst:myenv-rules4}

@@ -2,4 +2,4 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 80
         perCodeBlockBasis: 0
-        beforeFindingOtherCodeBlocks: 1
+        beforeFindingChildCodeBlocks: 1

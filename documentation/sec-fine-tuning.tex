@@ -30,7 +30,7 @@
  \end{warning}
 
  \begin{widepage}
-	 \cmhlistingsfromfile*[style=fineTuning]*{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
+	 \cmhlistingsfromfile[style=fineTuning]*{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
  The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual
@@ -178,15 +178,15 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
 	 We can tweak the \texttt{fineTuning} for how trailing comments are classified. For motivation, let's consider
 	 the code given in \cref{lst:finetuning4}
 
-	 \cmhlistingsfromfile*{demonstrations/finetuning4.tex}{\texttt{finetuning4.tex}}{lst:finetuning4}
+	 \cmhlistingsfromfile{demonstrations/finetuning4.tex}{\texttt{finetuning4.tex}}{lst:finetuning4}
 
 	 We will compare the settings given in \cref{lst:href1,lst:href2}.
 
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=0cm,
 			 raster right skip=-0.5cm,]
-		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
-		 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
+		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
+		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
 	 \end{cmhtcbraster}
 
 	 Upon running the following commands
@@ -197,9 +197,9 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 	 we receive the respective output in \cref{lst:finetuning4-mod1,lst:finetuning4-mod2}.
 
 	 \begin{widepage}
-		 \cmhlistingsfromfile*{demonstrations/finetuning4-mod1.tex}{\texttt{finetuning4.tex} using \cref{lst:href1}}{lst:finetuning4-mod1}
+		 \cmhlistingsfromfile{demonstrations/finetuning4-mod1.tex}{\texttt{finetuning4.tex} using \cref{lst:href1}}{lst:finetuning4-mod1}
 
-		 \cmhlistingsfromfile*{demonstrations/finetuning4-mod2.tex}{\texttt{finetuning4.tex} using \cref{lst:href2}}{lst:finetuning4-mod2}
+		 \cmhlistingsfromfile{demonstrations/finetuning4-mod2.tex}{\texttt{finetuning4.tex} using \cref{lst:href2}}{lst:finetuning4-mod2}
 	 \end{widepage}
 
 	 We note that in:
@@ -223,7 +223,7 @@ latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 	 then we receive the same output given in \cref{lst:finetuning4-mod2}; see also \texttt{paragraphsStopAt}
 	 in \vref{lst:paragraphsStopAt}.
 
-	 \cmhlistingsfromfile*[style=yaml-LST]*{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
+	 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
 
 	 With reference to the \texttt{body} field in \cref{lst:href3}, we note that the \texttt{body} field can
 	 be interpreted as: the fewest number of zero or more characters that are not right braces. This

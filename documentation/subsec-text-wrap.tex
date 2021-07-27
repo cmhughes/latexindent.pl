@@ -1,0 +1,359 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{Text Wrapping}\label{subsec:textwrapping}
+	There are \emph{many} different configuration options for the text wrapping routine of
+	\texttt{latexindent.pl}, perhaps \emph{too} many. The following sections are
+	comprehensive, but quite long; in an attempt to to be brief, you might begin with the
+	settings given in \cref{subsec:textwrapping-quick-start}.
+
+\subsubsection{Text wrap quick start}\label{subsec:textwrapping-quick-start}
+
+	Of all the available text wrapping options, I consider \cref{lst:textwrap-qs-yaml} to be
+	among the most helpful starting points.
+
+	\cmhlistingsfromfile*{demonstrations/textwrap-qs.yaml}[MLB-TCB,width=1\linewidth]{\texttt{textwrap-qs.yaml}}{lst:textwrap-qs-yaml}
+
+	\index{text wrap!quick start}
+
+	You can read about \texttt{perCodeBlockBasis} in \cref{subsec:text-wrap-per-code-block}
+	and \texttt{removeParagraphLineBreaks} in \cref{subsec:removeparagraphlinebreaks}.
+
+	If the settings in \cref{lst:textwrap-qs-yaml} do not give your desired output, take a
+	look at the demonstration in \cref{subsubsec:text-wrap-remove-para-bfccb}, in particular
+	\cref{lst:textwrap-bfccb-mod14}.
+
+\subsubsection{textWrapOptions: modifying line breaks by text wrapping}
+
+	When the \texttt{-m} switch is active \texttt{latexindent.pl} has the ability to wrap
+	text using the options%
+	\announce{2017-05-27}{textWrapOptions} specified in the \texttt{textWrapOptions} field,
+	see \cref{lst:textWrapOptions}.
+
+	\index{modifying linebreaks! by text wrapping, globally}
+
+	\cmhlistingsfromfile[style=textWrapOptions]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
+
+	The value of \texttt{columns} specifies the column at which the text should be wrapped.
+
+	By default, the value of \texttt{columns} is \texttt{0}, so \texttt{latexindent.pl} will
+	\emph{not} wrap text; if you change it to a value of \texttt{2} or more, then text will
+	be wrapped after the character in the specified column.
+
+	By default, the text wrapping routine will operate \emph{before} the code blocks have
+	been searched for; text wrapping on a \emph{per-code-block} basis is discussed in
+	\cref{subsec:text-wrap-per-code-block}.
+
+	We consider the file give in \cref{lst:textwrap1} for demonstration.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap1.tex}{\texttt{textwrap1.tex}}{lst:textwrap1}
+	\end{widepage}
+
+	Using the file \texttt{textwrap1.yaml} in \cref{lst:textwrap1-yaml}, and running the
+	command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	we obtain the output in \cref{lst:textwrap1-mod1}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
+		\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
+	\end{cmhtcbraster}
+
+	The text wrapping routine is performed \emph{after} verbatim environments
+	\index{verbatim!in relation to textWrapOptions} have been stored, so verbatim
+	environments and verbatim commands are exempt from the routine. For example, using the
+	file in \cref{lst:textwrap2},
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap2.tex}{\texttt{textwrap2.tex}}{lst:textwrap2}
+	\end{widepage}
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from
+	\cref{lst:textwrap1-yaml},
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	then the output is as in \cref{lst:textwrap2-mod1}.
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap2-mod1.tex}{\texttt{textwrap2-mod1.tex}}{lst:textwrap2-mod1}
+	\end{widepage}
+	Furthermore, the text wrapping routine is performed after the trailing comments have been
+	stored, and they are also exempt from text wrapping. For example, using the file in
+	\cref{lst:textwrap3}
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap3.tex}{\texttt{textwrap3.tex}}{lst:textwrap3}
+	\end{widepage}
+	and running the following command and continuing to use \texttt{textwrap1.yaml} from
+	\cref{lst:textwrap1-yaml},
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
+\end{commandshell}
+	then the output is as in \cref{lst:textwrap3-mod1}.
+
+	\cmhlistingsfromfile{demonstrations/textwrap3-mod1.tex}{\texttt{textwrap3-mod1.tex}}{lst:textwrap3-mod1}
+
+	The%
+	\announce*{2021-07-23}*{huge:overflow is now default}
+	default value of \texttt{huge} is \texttt{overflow}, which means that words will
+	\emph{not} be broken by the text wrapping routine, implemented by the \texttt{Text::Wrap}
+	\cite{textwrap}. There are options to change the \texttt{huge} option for the
+	\texttt{Text::Wrap} module to either \texttt{wrap} or \texttt{die}. Before modifying the
+	value of \texttt{huge}, please bear in mind the following warning:
+	\index{warning!changing huge (textwrap)}
+	\begin{warning}
+		\raggedright
+		Changing the value of \texttt{huge} to anything other than \texttt{overflow} will slow down
+		\texttt{latexindent.pl} significantly when the \texttt{-m} switch is active.
+
+		Furthermore, changing \texttt{huge} means that you may have some words \emph{or commands}(!)
+		split across lines in your .tex file, which may affect your output. I do not recommend
+		changing this field.
+	\end{warning}
+
+	For example, using the settings in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and
+	running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
+latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
+\end{commandshell}
+	gives the respective output in \cref{lst:textwrap4-mod2A,lst:textwrap4-mod2B}.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2A.tex}{\texttt{textwrap4-mod2A.tex}}{lst:textwrap4-mod2A}
+		\cmhlistingsfromfile{demonstrations/textwrap2A.yaml}[MLB-TCB]{\texttt{textwrap2A.yaml}}{lst:textwrap2A-yaml}
+
+		\cmhlistingsfromfile{demonstrations/textwrap4-mod2B.tex}{\texttt{textwrap4-mod2B.tex}}{lst:textwrap4-mod2B}
+		\cmhlistingsfromfile{demonstrations/textwrap2B.yaml}[MLB-TCB]{\texttt{textwrap2B.yaml}}{lst:textwrap2B-yaml}
+	\end{cmhtcbraster}
+
+	You can also specify the \texttt{tabstop} field%
+	\announce{2020-11-06}{tabstop option for text wrap module} as an integer value, which is
+	passed to the text wrap module; see \cite{textwrap} for details. Starting with the code
+	in \cref{lst:textwrap-ts} with settings in \cref{lst:tabstop}, and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
+\end{commandshell}
+	gives the code given in \cref{lst:textwrap-ts-mod1}.
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
+		\cmhlistingsfromfile{demonstrations/tabstop.yaml}[MLB-TCB]{\texttt{tabstop.yaml}}{lst:tabstop}
+		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
+	\end{cmhtcbraster}
+
+	You can specify \texttt{separator}, \texttt{break} and \texttt{unexpand} options in your
+	settings in analogous ways to those demonstrated in
+	\cref{lst:textwrap2B-yaml,lst:tabstop}, and they will be passed to the
+	\texttt{Text::Wrap} module. I have not found a useful reason to do this; see
+	\cite{textwrap} for more details.
+
+\subsubsection{Text wrapping on a per-code-block basis}\label{subsec:text-wrap-per-code-block} By default, if the value of
+	\texttt{columns} is greater than 0 and the \texttt{-m} switch is active,
+	then%
+	\announce{2018-08-13}*{updates to textWrapOptions}
+	the text wrapping routine will operate before the code blocks have been searched for.
+	This behaviour is customisable; in particular, you can instead instruct
+	\texttt{latexindent.pl} to apply \texttt{textWrap} on a per-code-block basis. Thanks to
+	\cite{zoehneto} for their help in testing and shaping this feature.
+	\index{modifying linebreaks! by text wrapping, per-code-block}
+
+	The full details of \texttt{textWrapOptions} are shown in \cref{lst:textWrapOptionsAll}.
+	In particular, note the field \texttt{perCodeBlockBasis: 0}.
+	\index{specialBeginEnd!textWrapOptions}
+
+	\cmhlistingsfromfile*[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+
+	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to
+	those detailed in \vref{tab:code-blocks}.
+
+	The only special case is the \texttt{masterDocument} field; this is designed for
+	`chapter'-type files that may contain paragraphs that are not within any other
+	code-blocks. The same notation is used between this feature and the
+	\texttt{removeParagraphLineBreaks} described in \vref{lst:removeParagraphLineBreaks}; in
+	fact, the two features can even be combined (this is detailed in
+	\vref{subsec:removeparagraphlinebreaks:and:textwrap}).
+
+	Let's explore these switches with reference to the code given in \cref{lst:textwrap5};
+	the text outside of the environment is considered part of the \texttt{masterDocument}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
+	\end{widepage}
+
+	With reference to this code block, the settings given in
+	\cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} each give the same
+	output.
+
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap3.yaml}[MLB-TCB]{\texttt{textwrap3.yaml}}{lst:textwrap3-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap4.yaml}[MLB-TCB]{\texttt{textwrap4.yaml}}{lst:textwrap4-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap5.yaml}[MLB-TCB]{\texttt{textwrap5.yaml}}{lst:textwrap5-yaml}
+	\end{cmhtcbraster}
+
+	Let's explore the similarities and differences in the equivalent (with respect to
+	\cref{lst:textwrap5}) syntax specified in
+	\cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml}:
+	\begin{itemize}
+		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that
+		      \texttt{columns: 30};
+		\item in each of \cref{lst:textwrap3-yaml,lst:textwrap4-yaml,lst:textwrap5-yaml} notice that
+		      \texttt{perCodeBlockBasis: 1};
+		\item in \cref{lst:textwrap3-yaml} we have specified \texttt{all: 1} so that the text wrapping
+		      will operate upon \emph{all} code blocks;
+		\item in \cref{lst:textwrap4-yaml} we have \emph{not} specified \texttt{all}, and instead, have
+		      specified that text wrapping should be applied to each of \texttt{environments} and
+		      \texttt{masterDocument};
+		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for \texttt{masterDocument}
+		      and on a \emph{per-name} basis for \texttt{environments} code blocks.
+	\end{itemize}
+
+	Upon running the following commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\begin{commandshell}
+latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
+latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
+latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
+\end{commandshell}
+	we obtain the output shown in \cref{lst:textwrap5-mod3}.
+
+	\cmhlistingsfromfile{demonstrations/textwrap5-mod3.tex}{\texttt{textwrap5-mod3.tex}}{lst:textwrap5-mod3}
+
+	We can explore the idea of per-name text wrapping given in \cref{lst:textwrap5-yaml} by
+	using \cref{lst:textwrap6}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap6.tex}{\texttt{textwrap6.tex}}{lst:textwrap6}
+	\end{widepage}
+
+	In particular, upon running
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
+\end{commandshell}
+	we obtain the output given in \cref{lst:textwrap6-mod5}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod5.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap5-yaml}}{lst:textwrap6-mod5}
+	\end{widepage}
+
+	Notice that, because \texttt{environments} has been specified only for \texttt{myenv} (in
+	\cref{lst:textwrap5-yaml}) that the environment named \texttt{another} has \emph{not} had
+	text wrapping applied to it.
+
+	The {all} field can be specified with exceptions which can either be done on a
+	per-code-block or per-name basis; we explore this in relation to \cref{lst:textwrap6} in
+	the settings given in \crefrange{lst:textwrap6-yaml}{lst:textwrap8-yaml}.
+
+	\begin{adjustwidth}{-3.5cm}{-2.5cm}
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile{demonstrations/textwrap6.yaml}[MLB-TCB]{\texttt{textwrap6.yaml}}{lst:textwrap6-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile{demonstrations/textwrap7.yaml}[MLB-TCB]{\texttt{textwrap7.yaml}}{lst:textwrap7-yaml}
+		\end{minipage}%
+		\begin{minipage}{.33\linewidth}
+			\cmhlistingsfromfile{demonstrations/textwrap8.yaml}[MLB-TCB]{\texttt{textwrap8.yaml}}{lst:textwrap8-yaml}
+		\end{minipage}
+	\end{adjustwidth}
+
+	Upon running the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
+\end{commandshell}
+	we receive the respective output given in
+	\crefrange{lst:textwrap6-mod6}{lst:textwrap6-mod8}.
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod6.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap6-yaml}}{lst:textwrap6-mod6}
+
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod7.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap7-yaml}}{lst:textwrap6-mod7}
+
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod8.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap8-yaml}}{lst:textwrap6-mod8}
+	\end{widepage}
+
+	Notice that:
+	\begin{itemize}
+		\item in \cref{lst:textwrap6-mod6} the text wrapping routine has not been applied to any
+		      \texttt{environments} because it has been switched off (per-code-block) in
+		      \cref{lst:textwrap6-yaml};
+		\item in \cref{lst:textwrap6-mod7} the text wrapping routine has not been applied to
+		      \texttt{myenv} because it has been switched off (per-name) in \cref{lst:textwrap7-yaml};
+		\item in \cref{lst:textwrap6-mod8} the text wrapping routine has not been applied to
+		      \texttt{masterDocument} because of the settings in \cref{lst:textwrap8-yaml}.
+	\end{itemize}
+
+	The \texttt{columns} field has a variety of different ways that it can be specified;
+	we've seen two basic ways already: the default (set to \texttt{0}) and a positive integer
+	(see \vref{lst:textwrap6}, for example). We explore further options in
+	\crefrange{lst:textwrap9-yaml}{lst:textwrap11-yaml}.
+
+	\begin{cmhtcbraster}[raster columns=3,
+			raster left skip=-3.5cm,
+			raster right skip=-2cm,
+			raster column skip=.03\linewidth]
+		\cmhlistingsfromfile{demonstrations/textwrap9.yaml}[MLB-TCB]{\texttt{textwrap9.yaml}}{lst:textwrap9-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap10.yaml}[MLB-TCB]{\texttt{textwrap10.yaml}}{lst:textwrap10-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap11.yaml}[MLB-TCB]{\texttt{textwrap11.yaml}}{lst:textwrap11-yaml}
+	\end{cmhtcbraster}
+
+	\Cref{lst:textwrap9-yaml} and \cref{lst:textwrap10-yaml} are equivalent. Upon running
+	the commands
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\begin{commandshell}
+latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
+latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
+\end{commandshell}
+	we receive the respective output given in \cref{lst:textwrap6-mod9,lst:textwrap6-mod11}.
+
+	\begin{widepage}
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod9.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap9-yaml}}{lst:textwrap6-mod9}
+
+		\cmhlistingsfromfile{demonstrations/textwrap6-mod11.tex}{\texttt{textwrap6.tex} using \cref{lst:textwrap11-yaml}}{lst:textwrap6-mod11}
+	\end{widepage}
+
+	Notice that:
+	\begin{itemize}
+		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{masterDocument} has been wrapped
+		      using \texttt{30} columns, while \texttt{environments} has been wrapped using \texttt{50}
+		      columns;
+		\item in \cref{lst:textwrap6-mod11} the text for \texttt{myenv} has been wrapped using
+		      \texttt{50} columns, the text for \texttt{another} has been wrapped using \texttt{15}
+		      columns, and \texttt{masterDocument} has been wrapped using \texttt{30} columns.
+	\end{itemize}
+	If you don't specify a \texttt{default} value on per-code-block basis, then the
+	\texttt{default} value from \texttt{columns} will be inherited; if you don't specify a
+	default value for \texttt{columns} then \texttt{80} will be used.
+
+	\texttt{alignAtAmpersandTakesPriority} is set to \texttt{1} by default; assuming
+	that text wrapping is occurring on a per-code-block basis, and the current
+	environment/code block is specified within \vref{lst:aligndelims:basic} then text
+	wrapping will be disabled for this code block.
+
+	If you wish to specify \texttt{afterHeading} commands (see
+	\vref{lst:indentAfterHeadings}) on a per-name basis, then you need to append the name
+	with \texttt{:heading}, for example, you might use \texttt{section:heading}.

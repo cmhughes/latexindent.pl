@@ -51,13 +51,13 @@ commandCodeBlocks:
 modifyLineBreaks:
     commands:
         announce:
-            CommandStartsOnOwnLine: 2
+            CommandStartsOnOwnLine: 1
         index:
             CommandStartsOnOwnLine: 1
     textWrapOptions:
         columns: 90
         perCodeBlockBasis: 1
-        beforeFindingOtherCodeBlocks: 1
+        beforeFindingChildCodeBlocks: 1
         afterHeading: 1
         items: 1
     removeParagraphLineBreaks:
@@ -67,6 +67,9 @@ modifyLineBreaks:
         mandatoryArguments:
           index: 1
           announce: 1
+          section: 1
+          subsection: 1
+          subsubsection: 1
 
 removeTrailingWhitespace:
     beforeProcessing: 1
@@ -82,7 +85,15 @@ replacements:
     substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
     when: before
   -
-    substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
+    substitution: |-
+      s/(\\cmhlistingsfromfile\*?(?:\{|\[).*?\}\h*\{lst:[^}]*?\}\h*\R)/
+      my $body = $1;
+      $body =~ s@\R@@sg;
+      $body .= "\n";
+      /segx
+    when: after
+  -
+    substitution: s/([a-zA-Z0-9.()}{])\h{2,}([a-zA-Z0-9.()}{]|(?:\\(?!\\)))/$1 $2/sg
     when: after
   -
     substitution: s/\h+(\\end\{commandshell\})/$1/sg

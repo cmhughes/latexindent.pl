@@ -134,9 +134,9 @@ cd ../alignment
 [[ $silentMode == 1 ]] && echo "./alignment/alignment-test-cases.sh"
 ./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # long line text wrapping
-cd ../maxLineChars
-[[ $silentMode == 1 ]] && echo "./maxLineChars/longlines-test-cases.sh"
-./longlines-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+cd ../textWrap-removeParaLineBreaks
+[[ $silentMode == 1 ]] && echo "./textWrap-removeParaLineBreaks/text-wrap-remove-PLB.sh"
+./text-wrap-remove-PLB.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 # texexchange
 cd ../texexchange
 [[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"

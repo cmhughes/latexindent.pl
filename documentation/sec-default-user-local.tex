@@ -93,7 +93,7 @@ copy myfile.bak4 to myfile.bak3
 	can see the amalgamated settings in the log file by switching
 	\texttt{showAmalgamatedSettings} to \texttt{1}, if you wish.
 
-	\cmhlistingsfromfile*[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
+	\cmhlistingsfromfile[style=logFilePreferences,]*{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
 	When%
 	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of
@@ -135,7 +135,7 @@ copy myfile.bak4 to myfile.bak3
 
 	Note that if you put an environment in	\texttt{verbatimEnvironments} and in other fields
 	such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then
-	\texttt{latexindent.pl} will \emph{always} prioritize  \texttt{verbatimEnvironments}.
+	\texttt{latexindent.pl} will \emph{always} prioritize \texttt{verbatimEnvironments}.
 
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
@@ -171,7 +171,7 @@ copy myfile.bak4 to myfile.bak3
 	\texttt{end} fields. We use the code in \cref{lst:noIndentBlock1} to demonstrate this
 	feature.
 
-	\cmhlistingsfromfile*{demonstrations/noindentblock1.tex}{\texttt{noIndentBlock1.tex}}{lst:noIndentBlock1}
+	\cmhlistingsfromfile{demonstrations/noindentblock1.tex}{\texttt{noIndentBlock1.tex}}{lst:noIndentBlock1}
 
 	The settings given in \cref{lst:noindent1,lst:noindent2} are equivalent:
 
@@ -179,9 +179,9 @@ copy myfile.bak4 to myfile.bak3
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile*{demonstrations/noindent1.yaml}[yaml-TCB]{\texttt{noindent1.yaml}}{lst:noindent1}
-		\cmhlistingsfromfile*{demonstrations/noindent2.yaml}[yaml-TCB]{\texttt{noindent2.yaml}}{lst:noindent2}
-		\cmhlistingsfromfile*{demonstrations/noindent3.yaml}[yaml-TCB]{\texttt{noindent3.yaml}}{lst:noindent3}
+		\cmhlistingsfromfile{demonstrations/noindent1.yaml}[yaml-TCB]{\texttt{noindent1.yaml}}{lst:noindent1}
+		\cmhlistingsfromfile{demonstrations/noindent2.yaml}[yaml-TCB]{\texttt{noindent2.yaml}}{lst:noindent2}
+		\cmhlistingsfromfile{demonstrations/noindent3.yaml}[yaml-TCB]{\texttt{noindent3.yaml}}{lst:noindent3}
 	\end{cmhtcbraster}
 
 	Upon running the commands
@@ -191,8 +191,7 @@ latexindent.pl -l noindent2.yaml noindent1
 \end{commandshell}
 	then we receive the output given in \cref{lst:noIndentBlock1-mod1}.
 
-	\cmhlistingsfromfile*{demonstrations/noindentblock1-mod1.tex}{\texttt{noIndentBlock1.tex}
-		using \cref{lst:noindent1} or \cref{lst:noindent2}}{lst:noIndentBlock1-mod1}
+	\cmhlistingsfromfile{demonstrations/noindentblock1-mod1.tex}{\texttt{noIndentBlock1.tex} using \cref{lst:noindent1} or \cref{lst:noindent2}}{lst:noIndentBlock1-mod1}
 
 	The \texttt{begin}, \texttt{body} and \texttt{end} fields for \texttt{noIndentBlock} are
 	all \emph{regular expressions}. If the \texttt{body} field is not specified, then it
@@ -211,8 +210,7 @@ latexindent.pl -l noindent3.yaml noindent1
 \end{commandshell}
 	gives the output in \cref{lst:noIndentBlock1-mod3}.
 
-	\cmhlistingsfromfile*{demonstrations/noindentblock1-mod3.tex}{\texttt{noIndentBlock1.tex}
-		using \cref{lst:noindent3}}{lst:noIndentBlock1-mod3}
+	\cmhlistingsfromfile{demonstrations/noindentblock1-mod3.tex}{\texttt{noIndentBlock1.tex} using \cref{lst:noindent3}}{lst:noIndentBlock1-mod3}
 
 	We will demonstrate this feature later in the documentation in \cref{lst:href3}.
 
@@ -338,8 +336,7 @@ lookForAlignDelims:
 	\index{delimiters!advanced settings}
 	\index{delimiters!lookForAlignDelims}
 
-	\cmhlistingsfromfile[style=lookForAlignDelims]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims}
-		(advanced)}{lst:aligndelims:advanced}
+	\cmhlistingsfromfile[style=lookForAlignDelims]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{lookForAlignDelims} (advanced)}{lst:aligndelims:advanced}
 
 	Note that you can use a mixture of the basic and advanced form: in
 	\cref{lst:aligndelims:advanced} \texttt{tabular} and \texttt{tabularx} are advanced and
@@ -496,18 +493,18 @@ latexindent.pl aligned1.tex -o=+-default
 	then we receive the default output given in \cref{lst:aligned1-default}.
 
 	\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/aligned1.tex}{\texttt{aligned1.tex}}{lst:aligned1}
-		\cmhlistingsfromfile*{demonstrations/aligned1-default.tex}{\texttt{aligned1-default.tex}}{lst:aligned1-default}
+		\cmhlistingsfromfile{demonstrations/aligned1.tex}{\texttt{aligned1.tex}}{lst:aligned1}
+		\cmhlistingsfromfile{demonstrations/aligned1-default.tex}{\texttt{aligned1-default.tex}}{lst:aligned1-default}
 	\end{cmhtcbraster}
 
 	The settings in \crefrange{lst:sba1}{lst:sba4} are all equivlanent; we have used the
 	not-yet discussed \texttt{noAdditionalIndent} field (see \vref{sec:noadd-indent-rules})
 	which will assist in the demonstration in what follows.
 	\begin{cmhtcbraster}[raster columns=2, ]
-		\cmhlistingsfromfile*{demonstrations/sba1.yaml}[yaml-TCB]{\texttt{sba1.yaml}}{lst:sba1}
-		\cmhlistingsfromfile*{demonstrations/sba2.yaml}[yaml-TCB]{\texttt{sba2.yaml}}{lst:sba2}
-		\cmhlistingsfromfile*{demonstrations/sba3.yaml}[yaml-TCB]{\texttt{sba3.yaml}}{lst:sba3}
-		\cmhlistingsfromfile*{demonstrations/sba4.yaml}[yaml-TCB]{\texttt{sba4.yaml}}{lst:sba4}
+		\cmhlistingsfromfile{demonstrations/sba1.yaml}[yaml-TCB]{\texttt{sba1.yaml}}{lst:sba1}
+		\cmhlistingsfromfile{demonstrations/sba2.yaml}[yaml-TCB]{\texttt{sba2.yaml}}{lst:sba2}
+		\cmhlistingsfromfile{demonstrations/sba3.yaml}[yaml-TCB]{\texttt{sba3.yaml}}{lst:sba3}
+		\cmhlistingsfromfile{demonstrations/sba4.yaml}[yaml-TCB]{\texttt{sba4.yaml}}{lst:sba4}
 	\end{cmhtcbraster}
 	Upon running the following commands
 	\begin{commandshell}
@@ -520,7 +517,7 @@ latexindent.pl aligned1.tex -l sba4.yaml
 	is \emph{one space} before each ampersand.
 
 	\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/aligned1-mod1.tex}{\texttt{aligned1-mod1.tex}}{lst:aligned1-mod1}
+		\cmhlistingsfromfile{demonstrations/aligned1-mod1.tex}{\texttt{aligned1-mod1.tex}}{lst:aligned1-mod1}
 	\end{cmhtcbraster}
 
 	We note in particular:
@@ -548,8 +545,8 @@ latexindent.pl aligned1.tex -l sba4.yaml
 	equivalent.
 
 	\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/sba5.yaml}[yaml-TCB]{\texttt{sba5.yaml}}{lst:sba5}
-		\cmhlistingsfromfile*{demonstrations/sba6.yaml}[yaml-TCB]{\texttt{sba6.yaml}}{lst:sba6}
+		\cmhlistingsfromfile{demonstrations/sba5.yaml}[yaml-TCB]{\texttt{sba5.yaml}}{lst:sba5}
+		\cmhlistingsfromfile{demonstrations/sba6.yaml}[yaml-TCB]{\texttt{sba6.yaml}}{lst:sba6}
 	\end{cmhtcbraster}
 
 	Upon running
@@ -567,9 +564,9 @@ latexindent.pl aligned1.tex -l sba6.yaml
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.75cm,
 			raster right skip=-2cm,]
-		\cmhlistingsfromfile*{demonstrations/aligned1-mod5.tex}{\texttt{aligned1-mod5.tex}}{lst:aligned1-mod5}
-		\cmhlistingsfromfile*{demonstrations/aligned1-mod7.tex}{\texttt{aligned1.tex} using \cref{lst:sba7}}{lst:aligned1-mod7}
-		\cmhlistingsfromfile*{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
+		\cmhlistingsfromfile{demonstrations/aligned1-mod5.tex}{\texttt{aligned1-mod5.tex}}{lst:aligned1-mod5}
+		\cmhlistingsfromfile{demonstrations/aligned1-mod7.tex}{\texttt{aligned1.tex} using \cref{lst:sba7}}{lst:aligned1-mod7}
+		\cmhlistingsfromfile{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
 	\end{cmhtcbraster}
 \subsubsection{lookForAlignDelims: alignFinalDoubleBackSlash}
 	We explore%
@@ -746,13 +743,12 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 		\cmhlistingsfromfile{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
 	\end{cmhtcbraster}
 
-\subsubsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification
-		feature}\label{sec:delimiter-reg-ex} The delimiter
-	alignment%
-	\announce{2020-03-21}{delimiterRegEx feature}
-	will, by default, align code blocks at the ampersand character. The behaviour is
-	controlled by the \texttt{delimiterRegEx} field within \texttt{lookForAlignDelims}; the
-	default value is
+\subsubsection{lookForAlignDelims: the delimiterRegEx and delimiterJustification feature}\label{sec:delimiter-reg-ex}
+
+	The delimiter alignment%
+	\announce{2020-03-21}{delimiterRegEx feature} will, by default, align code blocks at the
+	ampersand character. The behaviour is controlled by the \texttt{delimiterRegEx} field
+	within \texttt{lookForAlignDelims}; the default value is
 	\lstinline3'(?<!\\)(&)'3, which can be read as: \emph{an ampersand, as long as it is not
 		immediately preceeded by a backslash}.
 	\index{warning!capturing parenthesis for lookForAlignDelims}
@@ -1072,7 +1068,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 	\index{regular expressions!horizontal space \textbackslash{h}}
 
 	\begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-		\cmhlistingsfromfile*{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
+		\cmhlistingsfromfile{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
 		\cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
 	\end{cmhtcbraster}
 
@@ -1178,6 +1174,7 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 	\texttt{noIndentBlock} (see \vref{lst:noIndentBlock}).
 
 \subsection{The code blocks known latexindent.pl}\label{subsubsec:code-blocks}
+
 	As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each of
 	these are shown in \cref{tab:code-blocks}.
 	\index{regular expressions!uppercase alph A-Z}

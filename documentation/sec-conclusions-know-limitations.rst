@@ -8,7 +8,7 @@ Conclusions and known limitations
 There are a number of known limitations of the script, and almost certainly quite a few that are
 *unknown*!
 
-For example, with reference to the multicolumn alignment routine in :numref:`lst:tabular2-mod2`),
+For example, with reference to the multicolumn alignment routine in :numref:`lst:tabular2-mod2`,
 when working with code blocks in which multicolumn commands overlap, the algorithm can fail.
 
 Another limitation is to do with efficiency, particularly when the ``-m`` switch is active, as this

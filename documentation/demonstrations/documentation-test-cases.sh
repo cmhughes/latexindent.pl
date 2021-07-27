@@ -206,6 +206,10 @@ latexindent.pl -s tabular2.tex -o=+-wrap-mod3A.tex -l=textwrap3.yaml -m -y="modi
 latexindent.pl -s textwrap7.tex -o=+-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap7.tex -o=+-mod12.tex -l=textwrap12.yaml -m
 latexindent.pl -s textwrap-ts.tex -o=+-mod1.tex -l=tabstop.yaml -m
+latexindent.pl -s textwrap-bfccb.tex -o=+-mod12.tex -l=textwrap12.yaml,addruler1 -m -r
+latexindent.pl -s textwrap-bfccb.tex -o=+-mod13.tex -l=textwrap13.yaml,addruler2 -m -r
+latexindent.pl -s textwrap-bfccb.tex -o=+-mod14.tex -l=textwrap14.yaml,addruler1 -m -r
+latexindent.pl -s textwrap-bfccb.tex -o=+-mod15.tex -l=textwrap15.yaml,addruler1 -m -r
 
 # remove paragraph line breaks
 latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m

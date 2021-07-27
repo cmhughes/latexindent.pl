@@ -246,8 +246,7 @@ Active code page: 936
 	 and can then use the settings given in \cref{lst:indentconfig-encoding1} within their
 	 \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
 
-	 \cmhlistingsfromfile*{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding}
-		 demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
+	 \cmhlistingsfromfile{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
 
 	\section{dos2unix linebreak adjustment}
 
@@ -285,8 +284,7 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 	 noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 
 	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
-	 \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields
-		 from Version 3.0}{lst:obsoleteYaml}
+	 \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
 
 	 There is a slight difference when specifying indentation after headings; specifically, we
 	 now write \texttt{indentAfterThisHeading} instead of \texttt{indent}. See

@@ -143,8 +143,12 @@ if(!$readTheDocsMode){
        system("cat $_ >> sec-default-user-local.tex");
     }
 
-    foreach("subsec-partnering-poly-switches.tex",
-            "subsec-conflicting-poly-switches.tex",
+    foreach("subsec-text-wrap.tex",
+            "subsec-remove-para-line-breaks.tex",
+            "subsec-combine-text-wrap-para-line-breaks.tex",
+            "subsec-text-wrap-summary.tex",
+            "subsec-one-sentence-per-line.tex",
+            "subsec-poly-switches.tex",
           ){
        system("cat $_ >> sec-the-m-switch.tex");
     }

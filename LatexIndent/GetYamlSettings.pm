@@ -571,7 +571,7 @@ sub yaml_read_settings{
   }
 
   if( $is_m_switch_active 
-      and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingOtherCodeBlocks}
+      and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks}
       and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
 
       # the following settings don't make sense, so we change
@@ -579,17 +579,17 @@ sub yaml_read_settings{
       # modifyLineBreaks:
       #     textWrapOptions:
       #         perCodeBlockBasis: 0
-      #         beforeFindingOtherCodeBlocks: 1
+      #         beforeFindingChildCodeBlocks: 1
       # into
       #
       # modifyLineBreaks:
       #     textWrapOptions:
       #         perCodeBlockBasis: 0
-      #         beforeFindingOtherCodeBlocks: 0
-      $logger->warn("*textWrapOptions:beforeFindingOtherCodeBlocks:1 with textWrapOptions:perCodeBlockBasis:0");
-      $logger->warn("turning off beforeFindingOtherCodeBlocks by changing textWrapOptions:beforeFindingOtherCodeBlocks to be 0");
-      $logger->warn("you need to set *both* values to be 1 to use the beforeFindingOtherCodeBlocks feature");
-      ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingOtherCodeBlocks} = 0;
+      #         beforeFindingChildCodeBlocks: 0
+      $logger->warn("*textWrapOptions:beforeFindingChildCodeBlocks:1 with textWrapOptions:perCodeBlockBasis:0");
+      $logger->warn("turning off beforeFindingChildCodeBlocks by changing textWrapOptions:beforeFindingOtherCodeBlocks to be 0");
+      $logger->warn("you need to set *both* values to be 1 to use the beforeFindingChildCodeBlocks feature");
+      ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} = 0;
   }
   return;
 }

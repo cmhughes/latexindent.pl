@@ -39,9 +39,9 @@ with all of the fields, you should change and/or add to this as necessary.
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference
- 	:lines: 41-45
+ 	:lines: 44-48
  	:linenos:
- 	:lineno-start: 41
+ 	:lineno-start: 44
 
 Calling ``latexindent.pl myfile`` with the (default) settings specified in
 :numref:`lst:fileExtensionPreference` means that the script will first look for ``myfile.tex``,
@@ -117,9 +117,9 @@ your settings have been loaded, you can see the amalgamated settings in the log 
  	:class: .baseyaml
  	:caption: ``logFilePreferences`` 
  	:name: lst:logFilePreferences
- 	:lines: 85-99
+ 	:lines: 88-102
  	:linenos:
- 	:lineno-start: 85
+ 	:lineno-start: 88
 
 When either of the ``trace`` modes (see :ref:`page page:traceswitch <page:traceswitch>`) are
 active, you will receive detailed information in ``indent.log``. You can specify character strings
@@ -154,17 +154,17 @@ indentation will be performed on environments that you have specified in this fi
  	:class: .baseyaml
  	:caption: ``verbatimEnvironments`` 
  	:name: lst:verbatimEnvironments
- 	:lines: 103-106
+ 	:lines: 106-109
  	:linenos:
- 	:lineno-start: 103
+ 	:lineno-start: 106
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``verbatimCommands`` 
  	:name: lst:verbatimCommands
- 	:lines: 109-111
+ 	:lines: 112-114
  	:linenos:
- 	:lineno-start: 109
+ 	:lineno-start: 112
 
 Note that if you put an environment in ``verbatimEnvironments`` and in other fields such as
 ``lookForAlignDelims`` or ``noAdditionalIndent`` then ``latexindent.pl`` will *always* prioritize
@@ -195,9 +195,9 @@ in :numref:`lst:noIndentBlock`.
  	:class: .baseyaml
  	:caption: ``noIndentBlock`` 
  	:name: lst:noIndentBlock
- 	:lines: 116-118
+ 	:lines: 119-121
  	:linenos:
- 	:lineno-start: 116
+ 	:lineno-start: 119
 
 Of course, you don’t want to have to specify these as null environments in your code, so you use
 them with a comment symbol, ``%``, followed by as many spaces (possibly none) as you like; see
@@ -289,9 +289,9 @@ is determined by their location (preamble or not), and the value ``indentPreambl
  	:class: .baseyaml
  	:caption: ``fileContentsEnvironments`` 
  	:name: lst:fileContentsEnvironments
- 	:lines: 122-124
+ 	:lines: 125-127
  	:linenos:
- 	:lineno-start: 122
+ 	:lineno-start: 125
 
 .. describe:: indentPreamble:0\|1
 
@@ -311,9 +311,9 @@ operating upon ``.tex`` files.
  	:class: .baseyaml
  	:caption: lookForPreamble 
  	:name: lst:lookForPreamble
- 	:lines: 130-134
+ 	:lines: 133-137
  	:linenos:
- 	:lineno-start: 130
+ 	:lineno-start: 133
 
 .. describe:: preambleCommandsBeforeEnvironments:0\|1
 
@@ -362,9 +362,9 @@ for providing this feature.
  	:class: .baseyaml
  	:caption: removeTrailingWhitespace 
  	:name: lst:removeTrailingWhitespace
- 	:lines: 147-149
+ 	:lines: 150-152
  	:linenos:
- 	:lineno-start: 147
+ 	:lineno-start: 150
 
 .. code-block:: latex
    :caption: removeTrailingWhitespace (alt) 
@@ -441,9 +441,9 @@ for you.
  	:class: .baseyaml
  	:caption: ``lookForAlignDelims`` (advanced) 
  	:name: lst:aligndelims:advanced
- 	:lines: 152-168
+ 	:lines: 155-171
  	:linenos:
- 	:lineno-start: 152
+ 	:lineno-start: 155
 
 Note that you can use a mixture of the basic and advanced form: in
 :numref:`lst:aligndelims:advanced` ``tabular`` and ``tabularx`` are advanced and ``longtable`` is
@@ -1221,9 +1221,9 @@ indent the code after each ``item``. A demonstration is given in :numref:`lst:it
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 225-229
+ 	:lines: 228-232
  	:linenos:
- 	:lineno-start: 225
+ 	:lineno-start: 228
 
 .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -1254,9 +1254,9 @@ indent the code after each ``item``. A demonstration is given in :numref:`lst:it
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 235-237
+ 	:lines: 238-240
  	:linenos:
- 	:lineno-start: 235
+ 	:lineno-start: 238
 
 .. describe:: specialBeginEnd:fields
 
@@ -1278,9 +1278,9 @@ default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 241-254
+ 	:lines: 244-257
  	:linenos:
- 	:lineno-start: 241
+ 	:lineno-start: 244
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and
 ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files
@@ -1537,9 +1537,9 @@ command written in this field. [2]_
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 264-273
+ 	:lines: 267-276
  	:linenos:
- 	:lineno-start: 264
+ 	:lineno-start: 267
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on
 by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the
@@ -1997,9 +1997,9 @@ three spaces of indentation.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 322-323
+ 	:lines: 325-326
  	:linenos:
- 	:lineno-start: 322
+ 	:lineno-start: 325
 
 Assuming that your environment name is not found within neither ``noAdditionalIndent`` nor
 ``indentRules``, the next place that ``latexindent.pl`` will look is ``noAdditionalIndentGlobal``,
@@ -2079,9 +2079,9 @@ indentation.
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 338-339
+ 	:lines: 341-342
  	:linenos:
- 	:lineno-start: 338
+ 	:lineno-start: 341
 
 The final check that ``latexindent.pl`` will make is to look for ``indentRulesGlobal`` as detailed
 in :numref:`lst:indentRulesGlobal:environments`; if you change the ``environments`` field to
@@ -2863,17 +2863,17 @@ sense.
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 322-334
+ 	:lines: 325-337
  	:linenos:
- 	:lineno-start: 322
+ 	:lineno-start: 325
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 338-350
+ 	:lines: 341-353
  	:linenos:
- 	:lineno-start: 338
+ 	:lineno-start: 341
 
 .. label follows
 
@@ -2895,9 +2895,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 353-368
+ 	:lines: 356-371
  	:linenos:
- 	:lineno-start: 353
+ 	:lineno-start: 356
 
 .. describe:: roundParenthesesAllowed:0\|1
 

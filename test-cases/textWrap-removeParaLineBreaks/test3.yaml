@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 40
+noAdditionalIndentGlobal:
+    commands: 1
+    mandatoryArguments: 1

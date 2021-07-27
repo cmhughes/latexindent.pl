@@ -515,7 +515,7 @@ modifyLineBreaks:
         huge: overflow    # forbid mid-word line breaks
         separator: ""
         perCodeBlockBasis: 0
-        beforeFindingOtherCodeBlocks: 0
+        beforeFindingChildCodeBlocks: 0
         all: 0
         alignAtAmpersandTakesPriority: 1
         environments: 

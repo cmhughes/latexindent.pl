@@ -175,5 +175,12 @@ latexindent.pl -s -r -l textwrap-most-useful.yaml,headings4.yaml -m headings1-mo
 
 latexindent.pl -s -l textwrap-most-useful.yaml -m verbatim3.tex -o=+-mod1
 latexindent.pl -s -l textwrap-NOT-useful.yaml  -m verbatim3.tex -o=+-mod2
+
+latexindent.pl -s -l textwrap-most-useful,test1,addruler1 -m -r textwrap-bfccb.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful,addruler1,test2 -m -r textwrap-bfccb.tex -o=+-mod2
+
+latexindent.pl -s -l textwrap-most-useful,test1,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful,test2,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod2
+latexindent.pl -s -l textwrap-most-useful,test3,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod3
 git status
 [[ $noisyMode == 1 ]] && makenoise

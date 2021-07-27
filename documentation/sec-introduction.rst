@@ -60,7 +60,7 @@ About this documentation
 ------------------------
 
 As you read through this documentation, you will see many listings; in this version of the
-documentation, there are a total of 522. This may seem a lot, but I deem it necessary in presenting
+documentation, there are a total of 530. This may seem a lot, but I deem it necessary in presenting
 the various different options of ``latexindent.pl`` and the associated output that they are capable
 of producing.
 
@@ -77,9 +77,9 @@ This type of listing is a ``.tex`` file.
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference-demo
- 	:lines: 41-45
+ 	:lines: 44-48
  	:linenos:
- 	:lineno-start: 41
+ 	:lineno-start: 44
 
 This type of listing is a ``.yaml`` file; when you see line numbers given (as here) it means that
 the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in
@@ -89,9 +89,9 @@ the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 483-485
+ 	:lines: 486-488
  	:linenos:
- 	:lineno-start: 483
+ 	:lineno-start: 486
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is
 active; see :numref:`sec:modifylinebreaks` for more details.
@@ -100,9 +100,9 @@ active; see :numref:`sec:modifylinebreaks` for more details.
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 614-622
+ 	:lines: 618-626
  	:linenos:
- 	:lineno-start: 614
+ 	:lineno-start: 618
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is
 active; see :numref:`sec:replacements` for more details.

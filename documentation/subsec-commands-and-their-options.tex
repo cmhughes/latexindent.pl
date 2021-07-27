@@ -1,10 +1,8 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\subsection{Commands and the strings between their
-		arguments}\label{subsec:commands-string-between} The \texttt{command} code blocks will
+\subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between} The \texttt{command} code blocks will
 	always look for optional (square bracketed) and mandatory (curly braced) arguments which
-	can contain comments, line breaks and `beamer' commands \lstinline!<.*?>!	between
-	them. There are switches that can allow them to contain other strings, which we discuss
-	next.
+	can contain comments, line breaks and `beamer' commands \lstinline!<.*?>! between them.
+	There are switches that can allow them to contain other strings, which we discuss next.
 
 \yamltitle{commandCodeBlocks}*{fields}
 
@@ -47,7 +45,7 @@
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 \end{commandshell}
-	we obtain the output given in  \cref{lst:pstricks1-nrp}.
+	we obtain the output given in \cref{lst:pstricks1-nrp}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/pstricks1-nrp.tex}{\texttt{pstricks1.tex} using \cref{lst:noRoundParentheses}}{lst:pstricks1-nrp}
@@ -58,8 +56,7 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 	in particular, in \cref{lst:pstricks1-nrp}, because round parentheses are \emph{not}
 	allowed, \texttt{latexindent.pl} finds that the
 	\lstinline!\defFunction! command finishes at the first opening round parenthesis. As
-	such,
-	the remaining braced, mandatory, arguments are found to be
+	such, the remaining braced, mandatory, arguments are found to be
 	\texttt{UnNamedGroupingBracesBrackets} (see \vref{tab:code-blocks}) which, by default,
 	assume indentation for their body, and hence the tabbed indentation in
 	\cref{lst:pstricks1-nrp}.

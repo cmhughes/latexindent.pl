@@ -1,7 +1,7 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
-        beforeFindingOtherCodeBlocks: 0
+        beforeFindingChildCodeBlocks: 0
         perCodeBlockBasis: 1
         masterDocument: 1
     removeParagraphLineBreaks:
