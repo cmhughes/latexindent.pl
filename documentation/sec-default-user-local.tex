@@ -113,7 +113,7 @@ copy myfile.bak4 to myfile.bak3
 	\announce{2021-03-14}*{no longer using log4perl}
 
 	Some of the options%
-	\announce*{2021-06-19}*{logFilePreferences updated to include Dumper options}for Perl's
+	\announce{2021-06-19}*{logFilePreferences updated to include Dumper options}for Perl's
 	\texttt{Dumper} module can be specified in \cref{lst:logFilePreferences}; see
 	\cite{dumper} and \cite{dumperdemo} for more information. These options will mostly be
 	helpful for those calling \texttt{latexindent.pl} with the \texttt{-tt} option described
@@ -167,7 +167,7 @@ copy myfile.bak4 to myfile.bak3
 	this way appear on their own line.
 
 	The%
-	\announce*{2021-06-19}{noIndentBlock specified as regex} \texttt{noIndentBlock} fields can also be specified in terms of \texttt{begin} and
+	\announce{2021-06-19}{noIndentBlock specified as regex} \texttt{noIndentBlock} fields can also be specified in terms of \texttt{begin} and
 	\texttt{end} fields. We use the code in \cref{lst:noIndentBlock1} to demonstrate this
 	feature.
 
@@ -478,7 +478,7 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 
 \subsubsection{lookForAlignDelims: spacesBeforeAmpersand}
 	The \texttt{spacesBeforeAmpersand}%
-	\announce*{2021-06-19}*{spacesBeforeAmpersand leading blank column upgrade} can be
+	\announce{2021-06-19}*{spacesBeforeAmpersand leading blank column upgrade} can be
 	specified in a few different ways. The \emph{basic} form is demonstrated in
 	\cref{lst:tabular4YAML}, but we can customise the behaviour further by specifying if we
 	would like this value to change if it encounters a \emph{leading blank column}; that is,
@@ -1074,7 +1074,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 
 	The \texttt{lookForThis} field can be considered
 	optional;%
-	\announce*{2021-06-19}*{lookForThis optional for specialBeginEnd} by default, it is assumed to be 1, which is demonstrated in
+	\announce{2021-06-19}*{lookForThis optional for specialBeginEnd} by default, it is assumed to be 1, which is demonstrated in
 	\cref{lst:edge-node2}.
 
 \yamltitle{indentAfterHeadings}*{fields}

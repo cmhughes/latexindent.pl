@@ -95,6 +95,8 @@ the most helpful starting points.
  	:caption: ``textwrap-qs.yaml`` 
  	:name: lst:textwrap-qs-yaml
 
+.. index:: text wrap;quick start
+
 You can read about ``perCodeBlockBasis`` in :numref:`subsec:text-wrap-per-code-block` and
 ``removeParagraphLineBreaks`` in :numref:`subsec:removeparagraphlinebreaks`.
 
@@ -957,6 +959,8 @@ features.
 
 text wrapping beforeFindingChildCodeBlocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. index:: text wrap;recommended starting point
 
 I think it likely that most users will wish to employ the ``beforeFindingChildCodeBlocks`` option
 for the text wrap routine.
