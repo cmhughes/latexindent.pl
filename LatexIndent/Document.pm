@@ -222,6 +222,21 @@ sub find_objects{
     # one sentence per line: sentences are objects, as of V3.5.1
     $self->one_sentence_per_line if ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences});
 
+    if ($is_m_switch_active and !${$self}{preamblePresent}){
+        $self->yaml_get_textwrap_removeparagraphline_breaks;
+    }
+
+    if( $is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
+        # call the remove_paragraph_line_breaks and text_wrap routines
+        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        } else {
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+        }
+    }
+
     # search for environments
     $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
     $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
@@ -238,17 +253,15 @@ sub find_objects{
     $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
     
     # documents without preamble need a manual call to the paragraph_one_line routine
-    if ($is_m_switch_active and !${$self}{preamblePresent}){
-        $self->yaml_get_textwrap_removeparagraphline_breaks;
-
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
+    if ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0 ){ 
+       # call the remove_paragraph_line_breaks and text_wrap routines
+       if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+           $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+           $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+       } else {
+           $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+           $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
+       }
     }
 
     # if there are no children, return
@@ -303,12 +316,15 @@ sub get_settings_and_store_new_object{
 
     # there are a number of tasks common to each object
     $latexIndentObject->tasks_common_to_each_object(%{$self});
+    
+    # removeParagraphLineBreaks and textWrapping fun!
+    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if( $is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
       
     # tasks particular to each object
     $latexIndentObject->tasks_particular_to_each_object;
     
     # removeParagraphLineBreaks and textWrapping fun!
-    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active);
+    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
 
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);

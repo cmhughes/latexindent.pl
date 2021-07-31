@@ -10,16 +10,16 @@
  \texttt{-rv} or \texttt{-rr} switches:
  \index{verbatim!rv, replacementrespectverb switch}
  \begin{itemize}
-	 \item the \texttt{-r} switch will perform indentation and replacements, not
-	       respecting verbatim code blocks;
-	 \item the \texttt{-rv} switch will perform indentation and replacements, and
-	       \emph{will} respect verbatim code blocks;
-	 \item the \texttt{-rr} switch will \emph{not} perform indentation,  and
-	       will perform replacements not respecting verbatim code blocks.
+	 \item the \texttt{-r} switch will perform indentation and replacements, not respecting verbatim
+	       code blocks;
+	 \item the \texttt{-rv} switch will perform indentation and replacements, and \emph{will}
+	       respect verbatim code blocks;
+	 \item the \texttt{-rr} switch will \emph{not} perform indentation,  and will perform
+	       replacements not respecting verbatim code blocks.
  \end{itemize}
 
- We will demonstrate each of the \texttt{-r}, \texttt{-rv} and
- \texttt{-rr} switches, but a summary is given in \cref{tab:replacementswitches}.
+ We will demonstrate each of the \texttt{-r}, \texttt{-rv} and \texttt{-rr} switches, but
+ a summary is given in \cref{tab:replacementswitches}.
 
  \begin{table}[!htb]
 	 \centering
@@ -35,23 +35,22 @@
 	 \end{tabular}
  \end{table}
 
- The default value of the \texttt{replacements} field is shown in
- \cref{lst:replacements}; as with all of the other fields, you are encouraged to customise
- and change this as you see fit. The options in this field will \emph{only} be
- considered if the \texttt{-r}, \texttt{-rv} or
- \texttt{-rr} switches are active; when discussing YAML settings related to the
- replacement-mode switches, we will use the style given in \cref{lst:replacements}.
+ The default value of the \texttt{replacements} field is shown in \cref{lst:replacements};
+ as with all of the other fields, you are encouraged to customise and change this as you
+ see fit. The options in this field will \emph{only} be considered if the \texttt{-r},
+ \texttt{-rv} or \texttt{-rr} switches are active; when discussing YAML settings related
+ to the replacement-mode switches, we will use the style given in \cref{lst:replacements}.
 
  \cmhlistingsfromfile[style=replacements]*{../defaultSettings.yaml}[width=0.95\linewidth,before=\centering,replace-TCB]{\texttt{replacements}}{lst:replacements}
 
- The first entry within the \texttt{replacements} field is \texttt{amalgamate}, and
- is \emph{optional}; by default it is set to 1, so that replacements will be
- amalgamated from each settings file that you specify. As you'll see in the demonstrations
- that follow, there is no need to specify this field.
+ The first entry within the \texttt{replacements} field is \texttt{amalgamate}, and is
+ \emph{optional}; by default it is set to 1, so that replacements will be amalgamated from
+ each settings file that you specify. As you'll see in the demonstrations that follow,
+ there is no need to specify this field.
 
  You'll notice that, by default, there is only \emph{one} entry in the
- \texttt{replacements} field, but it can take as many entries as you would like; each
- one needs to begin with a \texttt{-} on its own line.
+ \texttt{replacements} field, but it can take as many entries as you would like; each one
+ needs to begin with a \texttt{-} on its own line.
 
 \subsection{Introduction to replacements}
 	Let's explore the action of the default settings, and then we'll demonstrate the feature
@@ -71,8 +70,8 @@ latexindent.pl -r replace1.tex
 	\end{cmhtcbraster}
 
 	If we don't wish to perform this replacement, then we can tweak the default settings of
-	\vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action
-	in \cref{lst:replace1-yaml}, and run the command
+	\vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action in
+	\cref{lst:replace1-yaml}, and run the command
 	\index{switches!-l demonstration}
 	\index{switches!-r demonstration}
 	\begin{commandshell}
@@ -85,19 +84,19 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/replace1.yaml}[replace-TCB]{\texttt{replace1.yaml}}{lst:replace1-yaml}
 	\end{cmhtcbraster}
 
-	Note that in \cref{lst:replace1-yaml} we have specified \texttt{amalgamate} as 0 so
-	that the default replacements are overwritten.
+	Note that in \cref{lst:replace1-yaml} we have specified \texttt{amalgamate} as 0 so that
+	the default replacements are overwritten.
 
-	We haven't yet discussed the \texttt{when} field; don't worry, we'll get to it
-	as part of the discussion in what follows.
+	We haven't yet discussed the \texttt{when} field; don't worry, we'll get to it as part of
+	the discussion in what follows.
 
 \subsection{The two types of replacements}
 	There are two types of replacements:
 	\begin{enumerate}
 		\item \emph{string}-based replacements, which replace the string in
 		      \emph{this} with the string in \emph{that}.
-		      If you specify \texttt{this} and you do not specify \texttt{that}, then
-		      the \texttt{that} field will be assumed to be empty.
+		      If you specify \texttt{this} and you do not specify \texttt{that}, then the \texttt{that}
+		      field will be assumed to be empty.
 		      \index{regular expressions!replacement switch, -r}
 		\item \emph{regex}-based replacements, which use the \texttt{substitution} field.
 	\end{enumerate}
@@ -105,8 +104,8 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 
 	\texttt{latexindent.pl} chooses which type of replacement to make based on which fields
 	have been specified; if the \texttt{this} field is specified, then it will make
-	\emph{string}-based replacements, regardless of if \texttt{substitution} is
-	present or not.
+	\emph{string}-based replacements, regardless of if \texttt{substitution} is present or
+	not.
 
 \subsection{Examples of replacements}
 	\begin{example}
@@ -150,19 +149,20 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 		\end{cmhtcbraster}
 
 		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbreviate to \emph{regex}
-		in what follows.  This manual is not intended to be
+		in what follows. This manual is not intended to be
 		a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
 		covering of the topic. With reference to \cref{lst:colsep1}, we do note the following:
 		\begin{itemize}
-			\item the general form of the \texttt{substitution} field is \lstinline!s/regex/replacement/modifiers!. You can
-			      place any regular expression you like within this;
+			\item the general form of the \texttt{substitution} field is
+			      \lstinline!s/regex/replacement/modifiers!. You can place any regular expression you like
+			      within this;
 			\item we have `escaped' the backslash by using \lstinline!\\!
 			\item we have used \lstinline!\d+! to represent \emph{at least} one digit
-			\item the \texttt{s} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs \texttt{latexindent.pl} to
-			      treat your file as one single line;
-			\item the \texttt{g} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs \texttt{latexindent.pl} to
-			      make the substitution \emph{globally} throughout your file; you might try removing
-			      the \texttt{g} modifier from \cref{lst:colsep1} and observing the
+			\item the \texttt{s} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs
+			      \texttt{latexindent.pl} to treat your file as one single line;
+			\item the \texttt{g} \emph{modifier} (in the \texttt{sg} at the end of the line) instructs
+			      \texttt{latexindent.pl} to make the substitution \emph{globally} throughout your file;
+			      you might try removing the \texttt{g} modifier from \cref{lst:colsep1} and observing the
 			      difference in output.
 		\end{itemize}
 		You might like to see \href{https://perldoc.perl.org/perlre.html#Modifiers}{https://perldoc.perl.org/perlre.html\#Modifiers}
@@ -241,12 +241,11 @@ latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 
 		A few notes about \cref{lst:displaymath1}:
 		\begin{enumerate}
-			\item we have used the \texttt{x} modifier, which allows us to have white space
-			      within the regex;
-			\item we have used a capture group, \lstinline!(.*?)! which captures the content between
-			      the \lstinline!$$...$$! into the special variable, \lstinline!$1!;
-			\item we have used the content of the capture group, \lstinline!$1!, in the
-			      replacement text.
+			\item we have used the \texttt{x} modifier, which allows us to have white space within the
+			      regex;
+			\item we have used a capture group, \lstinline!(.*?)! which captures the content between the
+			      \lstinline!$$...$$! into the special variable, \lstinline!$1!;
+			\item we have used the content of the capture group, \lstinline!$1!, in the replacement text.
 		\end{enumerate}
 		See \href{https://perldoc.perl.org/perlre.html#Capture-groups}{https://perldoc.perl.org/perlre.html\#Capture-groups} for a discussion
 		of capture groups.
@@ -355,11 +354,11 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 		\item in \cref{lst:verb1-mod1} indentation has been performed, and that the replacements
 		      specified in \cref{lst:verbatim1-yaml} have been performed, even within the verbatim code
 		      block;
-		\item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements have
-		      \emph{not} been performed within the verbatim environment, because the
-		      \texttt{rv} switch is active;
-		\item in \cref{lst:verb1-rr-mod1} indentation has \emph{not} been performed, but
-		      that replacements have been performed, not respecting the verbatim code block.
+		\item in \cref{lst:verb1-rv-mod1} indentation has been performed, but that the replacements
+		      have \emph{not} been performed within the verbatim environment, because the \texttt{rv}
+		      switch is active;
+		\item in \cref{lst:verb1-rr-mod1} indentation has \emph{not} been performed, but that
+		      replacements have been performed, not respecting the verbatim code block.
 	\end{enumerate}
 	See the summary within \vref{tab:replacementswitches}.
 
@@ -399,11 +398,9 @@ latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
 		We note that:
 		\begin{enumerate}
 			\item in \cref{lst:amalg1-mod1} the replacements from \cref{lst:amalg1-yaml} have been used;
-			\item in \cref{lst:amalg1-mod12} the replacements from \cref{lst:amalg1-yaml,lst:amalg2-yaml} have
-			      \emph{both} been used, because the default value of \texttt{amalgamate}
-			      is 1;
-			\item in \cref{lst:amalg1-mod123}  \emph{only} the replacements from
-			      \cref{lst:amalg3-yaml} have been used, because the value of \texttt{amalgamate} has
-			      been set to 0.
+			\item in \cref{lst:amalg1-mod12} the replacements from \cref{lst:amalg1-yaml,lst:amalg2-yaml}
+			      have \emph{both} been used, because the default value of \texttt{amalgamate} is 1;
+			\item in \cref{lst:amalg1-mod123} \emph{only} the replacements from \cref{lst:amalg3-yaml} have
+			      been used, because the value of \texttt{amalgamate} has been set to 0.
 		\end{enumerate}
 	\end{example}

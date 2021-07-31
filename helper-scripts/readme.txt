@@ -5,17 +5,19 @@ Typical running order of these helper scripts:
     - perl documentation-default-settings-update.pl -r
     - <change update-version appropriately>
     - update-version.sh
-    - copy-to-usb.sh
-    - <reboot to Windows>
-    - create-windows-executable.bat
-    - <reboot to Ubuntu>
-    - <add latexindent.exe to directory>
+    ###### GitHub actions, so no longer needed - copy-to-usb.sh
+    ###### GitHub actions, so no longer needed - <reboot to Windows>
+    ###### GitHub actions, so no longer needed - create-windows-executable.bat
+    ###### GitHub actions, so no longer needed - <reboot to Ubuntu>
     - <update documentation/changelog.md>
-    - <commit changes and push>
+    - <commit changes and push to develop>
+    - git push
     - <pull request to main>
-    - <pull from main>
+    - git checkout main
+    - git pull
     - git tag "V<number>"
     - git push --tags
     - <update release notes on github>
+    - <add latexindent.exe to directory>
     - prepctan.sh
     - <upload to ctan>

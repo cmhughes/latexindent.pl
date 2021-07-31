@@ -12,12 +12,12 @@
 %
 %   This program is distributed in the hope that it will be useful,
 %   but WITHOUT ANY WARRANTY; without even the implied warranty of
-%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 %   GNU General Public License for more details.
 %
 %   See <http://www.gnu.org/licenses/>.
 \usepackage[left=4.5cm,right=2.5cm,showframe=false,
-	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry}                      % page setup
+	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry} % page setup
 \usepackage{lmodern}
 \usepackage{parskip}                                 % paragraph skips
 \usepackage{booktabs}                                % beautiful tables
@@ -31,7 +31,7 @@
 \usepackage{fontawesome}
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
-\usepackage{tcolorbox}                                % framed environments
+\usepackage{tcolorbox}                               % framed environments
 \usepackage{tikz}
 \usepackage{xparse}
 \usepackage[charter]{mathdesign}                     % changes font
@@ -79,9 +79,21 @@
 \tcbset{doclang/new={{\bfseries\color{green!50!black}N\normalfont\color{black}}}}
 \tcbset{doclang/updated={{\bfseries\color{green!50!black}U\normalfont\color{black}}}}
 \tcbset{doc marginnote={width=1.6cm}}
+
+% \announce * { YYYY-MM-DD }*{ <announcement text> }
+%
+%   NEW as of current version
+%       \announce*{date}*[text] means *updated* as of <date>
+%       \announce*{date}[text]  means *new* as of <date>
+%
+%   NOT new as of current version
+%       \announce{date}*[text] means *updated* as of <date>
+%       \announce{date}[text]  means *new* as of <date>
+%
 \NewDocumentCommand{\announce}{ s m s m }{%
 	\IfBooleanTF{#1}%
 	{% \announce*
+		% NEW in current version
 		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
 			\IfBooleanTF{#3}%
 			{% \announce*{date}*[text] means *updated* as of <date>
@@ -100,6 +112,7 @@
 		}%
 	}%
 	{% \announce
+		% NOT new in current version
 		\tcbdocmarginnote{%
 			\IfBooleanTF{#3}%
 			{% \announce{date}*[text] means *updated* as of <date>
@@ -223,18 +236,18 @@
 		raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
-%                   *    no star: not new, star: new
+%                   * no star: not new, star: new
 %                   [ listing/minted options ]
-%                   *    no star: uses minted library, star: uses listings library star: 
+%                   * no star: uses minted library, star: uses listings library star: 
 %                   {<name of listing file>}
 %                   [<options for tcolorbox>]
 %                   {<title>}
 %                   {<label>}
 %
 % for example,
-%   \cmhlistingsfromfile*[listing options]...  uses listings library and is NEW
-%   \cmhlistingsfromfile[listing options]...   uses listings library
-%   \cmhlistingsfromfile[listing options]*...  uses minted library
+%   \cmhlistingsfromfile*[listing options]... uses listings library and is NEW
+%   \cmhlistingsfromfile[listing options]... uses listings library
+%   \cmhlistingsfromfile[listing options]*... uses minted library
 %   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
 \DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
 	cmhlistings,
@@ -315,181 +328,181 @@
 
 \lstdefinestyle{fileExtensionPreference}{
 	style=yaml-LST,
-	firstnumber=41,linerange={41-45},
+	firstnumber=44,linerange={44-48},
 	numbers=left,
 }
 
 \lstdefinestyle{logFilePreferences}{
 	style=yaml-LST,
-	firstnumber=85,linerange={85-99},
+	firstnumber=88,linerange={88-102},
 	numbers=left,
 }
 
 \lstdefinestyle{verbatimEnvironments}{
 	style=yaml-LST,
-	firstnumber=103,linerange={103-106},
+	firstnumber=106,linerange={106-109},
 	numbers=left,
 }
 
 \lstdefinestyle{verbatimCommands}{
 	style=yaml-LST,
-	firstnumber=109,linerange={109-111},
+	firstnumber=112,linerange={112-114},
 	numbers=left,
 }
 
 \lstdefinestyle{noIndentBlock}{
 	style=yaml-LST,
-	firstnumber=116,linerange={116-118},
+	firstnumber=119,linerange={119-121},
 	numbers=left,
 }
 
 \lstdefinestyle{removeTrailingWhitespace}{
 	style=yaml-LST,
-	firstnumber=147,linerange={147-149},
+	firstnumber=150,linerange={150-152},
 	numbers=left,
 }
 
 \lstdefinestyle{fileContentsEnvironments}{
 	style=yaml-LST,
-	firstnumber=122,linerange={122-124},
+	firstnumber=125,linerange={125-127},
 	numbers=left,
 }
 
 \lstdefinestyle{lookForPreamble}{
 	style=yaml-LST,
-	firstnumber=130,linerange={130-134},
+	firstnumber=133,linerange={133-137},
 	numbers=left,
 }
 
 \lstdefinestyle{lookForAlignDelims}{
 	style=yaml-LST,
-	firstnumber=152,linerange={152-168},
+	firstnumber=155,linerange={155-171},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterItems}{
 	style=yaml-LST,
-	firstnumber=225,linerange={225-229},
+	firstnumber=228,linerange={228-232},
 	numbers=left,
 }
 
 \lstdefinestyle{itemNames}{
 	style=yaml-LST,
-	firstnumber=235,linerange={235-237},
+	firstnumber=238,linerange={238-240},
 	numbers=left,
 }
 
 \lstdefinestyle{specialBeginEnd}{
 	style=yaml-LST,
-	firstnumber=241,linerange={241-254},
+	firstnumber=244,linerange={244-257},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
 	style=yaml-LST,
-	firstnumber=264,linerange={264-273},
+	firstnumber=267,linerange={267-276},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=322,linerange={322-323},
+	firstnumber=325,linerange={325-326},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=322,linerange={322-334},
+	firstnumber=325,linerange={325-337},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=338,linerange={338-339},
+	firstnumber=341,linerange={341-342},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=338,linerange={338-350},
+	firstnumber=341,linerange={341-353},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=353,linerange={353-368},
+	firstnumber=356,linerange={356-371},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=483,linerange={483-485},
+	firstnumber=486,linerange={486-488},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=510,linerange={510-511},
+	firstnumber=513,linerange={513-514},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=510,linerange={510-527},
+	firstnumber=513,linerange={513-531},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=528,linerange={528-542},
+	firstnumber=532,linerange={532-546},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=543,linerange={543-552},
+	firstnumber=547,linerange={547-556},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=486,linerange={486-509},
+	firstnumber=489,linerange={489-512},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=491,linerange={491-499},
+	firstnumber=494,linerange={494-502},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=500,linerange={500-503},
+	firstnumber=503,linerange={503-506},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=504,linerange={504-509},
+	firstnumber=507,linerange={507-512},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=553,linerange={553-562},
+	firstnumber=557,linerange={557-566},
 	numbers=left,
 }
 
 \lstdefinestyle{replacements}{
 	style=yaml-LST,
-	firstnumber=614,linerange={614-622},
+	firstnumber=618,linerange={618-626},
 	numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
 	style=yaml-LST,
-	firstnumber=625,linerange={625-648},
+	firstnumber=629,linerange={629-652},
 	numbers=left,
 }
 
@@ -521,12 +534,12 @@
 			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 			decorate[decoration={stars,segment length=2cm}] {
 					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=-.5cm,yshift=0.1cm]frame.south west) --  ([xshift=-.5cm,yshift=0.4cm]frame.north west)
+							([xshift=-.5cm,yshift=0.1cm]frame.south west) -- ([xshift=-.5cm,yshift=0.4cm]frame.north west)
 						}};
 			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
 			decorate[decoration={stars,segment length=2cm}] {
 					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=.75cm,yshift=0.1cm]frame.south east) --  ([xshift=.75cm,yshift=0.6cm]frame.north east)
+							([xshift=.75cm,yshift=0.1cm]frame.south east) -- ([xshift=.75cm,yshift=0.6cm]frame.north east)
 						}};
 			\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
 		},
@@ -607,18 +620,13 @@
 	\marginpar{\huge \color{red} \framebox{FIX}}%
 	\typeout{FIXTHIS: p\thepage : #1^^J}%
 }
-% custom section
-\titleformat{\section}
-{\normalfont\Large\bfseries}
-{\llap{\thesection\hskip.5cm}}
-{0pt}
-{}
 
 \newcommand*\ruleline[1]{%
 	\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
 
 \newcommand{\imagetouse}{logo-bw}
 
+% custom section
 \titleformat% Formatting the header
 {\section} % command
 [block] % shape - Only managed to get it working with block
@@ -634,6 +642,7 @@
 {\llap{\thesubsection\hskip.5cm}}
 {0pt}
 {}
+
 % custom subsubsection
 \titleformat{\subsubsection}
 {\normalfont\bfseries}
@@ -641,9 +650,18 @@
 {0pt}
 {}
 
+% custom paragraph
+\titleformat{\paragraph}
+{\normalfont\bfseries}
+{\llap{\theparagraph\hskip.5cm}}
+{0pt}
+{}
+
+% title spacing
 \titlespacing\section{0pt}{12pt plus 4pt minus 2pt}{34pt plus 2pt minus 2pt}
 \titlespacing\subsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 \titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
+\titlespacing\paragraph{0pt}{12pt plus 4pt minus 2pt}{4pt plus 2pt minus 2pt}
 
 % list of listings
 \contentsuse{lstlisting}{lol}
@@ -662,6 +680,7 @@
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
   []
 \AtBeginDocument{\addtocontents{lol}{\protect\begin{widepage}\protect\begin{multicols}{2}}}
+\preto{\printindex}{\addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}}
 
 % cleveref settings
 \crefname{table}{Table}{Tables}
@@ -748,7 +767,8 @@
   {}% <numberless-entry-format>
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
 
-\setcounter{secnumdepth}{5}
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{4}
 \makeindex
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
@@ -773,14 +793,17 @@
  \stopcontents[noAdditionalIndent]
  \input{subsec-commands-and-their-options}
  \input{sec-the-m-switch}
+ \input{subsec-text-wrap}
+ \input{subsec-remove-para-line-breaks}
+ \input{subsec-combine-text-wrap-para-line-breaks}
+ \input{subsec-text-wrap-summary}
+ \input{subsec-one-sentence-per-line}
+ \input{subsec-poly-switches}
  \stopcontents[the-m-switch]
- \input{subsec-partnering-poly-switches}
- \input{subsec-conflicting-poly-switches}
  \input{sec-replacements}
  \input{sec-fine-tuning}
  \input{sec-conclusions-know-limitations}
  \input{references}
  \input{appendices}
- \addtocontents{lol}{\protect\end{multicols}\protect\end{widepage}}
  \printindex
 \end{document}

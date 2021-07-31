@@ -10,7 +10,7 @@ latexindent.pl documentation
 ======================================
 
 .. toctree::
-   :numbered: 3
+   :numbered: 4
 
    sec-introduction
    sec-demonstration

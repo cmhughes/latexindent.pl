@@ -1,11 +1,11 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \appendix
 	\section{Required Perl modules}\label{sec:requiredmodules}
-	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the
-	 supplied standalone executable files, then you will need a few standard Perl modules --
-	 if you can run the minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will be able to run
-	 \texttt{latexindent.pl}, otherwise you may need to install the missing modules -- see
-	 \cref{sec:module-installer,sec:manual-module-instal}.
+	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied
+	 standalone executable files, then you will need a few standard Perl modules -- if you can
+	 run the minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will
+	 be able to run \texttt{latexindent.pl}, otherwise you may need to install the missing
+	 modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
 
 	 \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
 #!/usr/bin/perl
@@ -33,8 +33,9 @@ exit;
 \end{cmhlistings}
 
 	\subsection{Module installer script}\label{sec:module-installer}
-		\announce{2018-01-13}{perl module helper script} \texttt{latexindent.pl} ships with a helper script that will
-		install any missing \texttt{perl} modules on your system; if you run
+		\announce{2018-01-13}{perl module helper script} \texttt{latexindent.pl} ships with a
+		helper script that will install any missing \texttt{perl} modules on your system; if you
+		run
 		\begin{commandshell}
 perl latexindent-module-installer.pl
 \end{commandshell}
@@ -42,8 +43,8 @@ perl latexindent-module-installer.pl
 		\begin{dosprompt}
 perl latexindent-module-installer.pl
  \end{dosprompt}
-		then, once you have answered \texttt{Y}, the appropriate modules will be
-		installed onto your distribution.
+		then, once you have answered \texttt{Y}, the appropriate modules will be installed onto
+		your distribution.
 
 	\subsection{Manually installed modules}\label{sec:manual-module-instal}
 		Manually installing the modules given in \cref{lst:helloworld} will vary depending on
@@ -77,10 +78,10 @@ sudo cpanm Unicode::GCString
 sudo perl -MCPAN -e'install "File::HomeDir"'
 \end{commandshell}
 
-		If you are using Alpine, some \texttt{Perl} modules are not build-compatible
-		with Alpine, but replacements are available through \texttt{apk}. For example,
-		you might use the commands given in \cref{lst:alpine-install}; thanks to
-		\cite{jun-sheaf} for providing these details.
+		If you are using Alpine, some \texttt{Perl} modules are not build-compatible with Alpine,
+		but replacements are available through \texttt{apk}. For example, you might use the
+		commands given in \cref{lst:alpine-install}; thanks to \cite{jun-sheaf} for providing
+		these details.
 
 		\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
 # Installing perl
@@ -106,7 +107,9 @@ cpanm -n YAML::Tiny
 cpanm -n Unicode::GCString
 \end{cmhlistings}
 
-		Users of NixOS might like to see \href{https://github.com/cmhughes/latexindent.pl/issues/222}{https://github.com/cmhughes/latexindent.pl/issues/222} for tips.
+		Users of NixOS might like to see
+		\href{https://github.com/cmhughes/latexindent.pl/issues/222}{https://github.com/cmhughes/latexindent.pl/issues/222}
+		for tips.
 	\subsubsection{Mac}
 		Users of the Macintosh operating system might like to explore the following commands, for
 		example:
@@ -124,7 +127,7 @@ cpanm Unicode::GCString
 		readily available on CPAN \cite{cpan}.
 
 		\texttt{indent.log} will contain details of the location
-		of the Perl modules on your system.  \texttt{latexindent.exe} is a standalone executable
+		of the Perl modules on your system. \texttt{latexindent.exe} is a standalone executable
 		for Windows (and therefore does not require a Perl distribution) and caches copies of the
 		Perl modules onto your system; if you wish to see where they are cached, use the
 		\texttt{trace} option, e.g
@@ -134,14 +137,14 @@ latexindent.exe -t myfile.tex
 
 	\section{Updating the path variable}\label{sec:updating-path}
 	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can
-	 update the \texttt{path} variables. Thank you to \cite{jasjuang} for this
-	 feature. If you're on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt}
-	 from \cite{latexindent-home}.
+	 update the \texttt{path} variables. Thank you to \cite{jasjuang} for this feature. If
+	 you're on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from
+	 \cite{latexindent-home}.
 	\subsection{Add to path for Linux}
 		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
 		\begin{enumerate}
-			\item download  \texttt{latexindent.pl} and its associated modules, \texttt{defaultSettings.yaml}, to
-			      your chosen directory from \cite{latexindent-home} ;
+			\item download \texttt{latexindent.pl} and its associated modules,
+			      \texttt{defaultSettings.yaml}, to your chosen directory from \cite{latexindent-home} ;
 			\item within your directory, create a directory called \texttt{path-helper-files} and download
 			      \texttt{CMakeLists.txt} and \lstinline!cmake_uninstall.cmake.in! from
 			      \cite{latexindent-home}/path-helper-files to this directory;
@@ -162,8 +165,8 @@ sudo make install
 			      \begin{commandshell}
 ls /usr/local/bin
 \end{commandshell}
-			      again to check that \texttt{latexindent.pl}, its modules and \texttt{defaultSettings.yaml} have
-			      been added.
+			      again to check that \texttt{latexindent.pl}, its modules and
+			      \texttt{defaultSettings.yaml} have been added.
 		\end{enumerate}
 		To \emph{remove} the files, run
 		\begin{commandshell}
@@ -172,10 +175,10 @@ sudo make uninstall
 	\subsection{Add to path for Windows}
 		To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
 		\begin{enumerate}
-			\item download  \texttt{latexindent.exe}, \texttt{defaultSettings.yaml},  \texttt{add-to-path.bat} from
-			      \cite{latexindent-home} to your chosen directory;
-			\item open a command prompt and run the following command to see what is \emph{currently}
-			      in your \lstinline!%path%! variable;
+			\item download \texttt{latexindent.exe}, \texttt{defaultSettings.yaml},
+			      \texttt{add-to-path.bat} from \cite{latexindent-home} to your chosen directory;
+			\item open a command prompt and run the following command to see what is \emph{currently} in
+			      your \lstinline!%path%! variable;
 			      \begin{dosprompt}
 echo %path%
           \end{dosprompt}
@@ -226,8 +229,8 @@ TRACE: Searching myenv for optional and mandatory arguments
        ... no arguments found
        -----
      \end{cmhlistings}
-	 Notice that the information given about \texttt{myenv} is `framed' using
-	 \texttt{+++++} and \lstinline!-----! respectively.
+	 Notice that the information given about \texttt{myenv} is `framed' using \texttt{+++++}
+	 and \lstinline!-----! respectively.
 
 	\section{Encoding indentconfig.yaml}\label{app:encoding}
 	 In relation to \vref{sec:indentconfig}, Windows users that encounter encoding issues with
@@ -243,17 +246,17 @@ Active code page: 936
 	 and can then use the settings given in \cref{lst:indentconfig-encoding1} within their
 	 \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
 
-	 \cmhlistingsfromfile*{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
+	 \cmhlistingsfromfile{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
 
 	\section{dos2unix linebreak adjustment}
 
 	\yamltitle{dos2unixlinebreaks}*{integer}
 		If you use \texttt{latexindent.pl} on a dos-based Windows file on Linux
-		\announce*{2021-06-19}{dos2unix linebreaks} then you may find that trailing horizontal space is not removed
-		as you hope.
+		\announce{2021-06-19}{dos2unix linebreaks} then you may find that trailing horizontal
+		space is not removed as you hope.
 
-		In such a case, you may wish to try setting \texttt{dos2unixlinebreaks} to 1 and employing,
-		for example, the following command.
+		In such a case, you may wish to try setting \texttt{dos2unixlinebreaks} to 1 and
+		employing, for example, the following command.
 
 		\begin{commandshell}
 latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
@@ -278,11 +281,10 @@ latexindent.pl myfile.tex -o=outputfile.tex
 latexindent.pl myfile.tex -outputfile=outputfile.tex 
 latexindent.pl myfile.tex -outputfile outputfile.tex 
 \end{commandshell}
-	 noting that the \emph{output} file is given \emph{next to} the
-	 \texttt{-o} switch.
+	 noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 
-	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0
-	 onwards. \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
+	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
+	 \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
 
 	 There is a slight difference when specifying indentation after headings; specifically, we
 	 now write \texttt{indentAfterThisHeading} instead of \texttt{indent}. See
@@ -297,9 +299,9 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 	 \end{minipage}%
 
 	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you
-	 would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would write YAML
-	 as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m} switch,
-	 \cref{lst:indentAfterThisHeadingNew2}.
+	 would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would
+	 write YAML as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m}
+	 switch, \cref{lst:indentAfterThisHeadingNew2}.
 	 \index{specialBeginEnd!update to displaymath V3.0}
 
 	 \begin{minipage}{.45\textwidth}
@@ -312,7 +314,8 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew2}
 	 \end{minipage}%
 
-	 \mbox{}\hfill	  \begin{minipage}{.25\textwidth}
+	 \mbox{}\hfill
+	 \begin{minipage}{.25\textwidth}
 		 \hrule
 
 		 \hfill\itshape End\\\mbox{}\hfill\mbox{}\rlap{\hfill\includegraphics{logo}}

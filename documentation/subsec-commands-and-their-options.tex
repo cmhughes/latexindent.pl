@@ -1,23 +1,22 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
-\subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between}
-	The \texttt{command} code blocks will always look for optional (square bracketed)
-	and mandatory (curly braced) arguments which can contain comments, line breaks and
-	`beamer' commands \lstinline!<.*?>!  between them. There are switches that can allow
-	them to contain other strings, which we discuss next.
+\subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between} The \texttt{command} code blocks will
+	always look for optional (square bracketed) and mandatory (curly braced) arguments which
+	can contain comments, line breaks and `beamer' commands \lstinline!<.*?>! between them.
+	There are switches that can allow them to contain other strings, which we discuss next.
 
 \yamltitle{commandCodeBlocks}*{fields}
 
 	The \texttt{commandCodeBlocks} field%
-	\announce{2018-04-27}*{commandCodeBlocks}
-	contains a few switches detailed in \cref{lst:commandCodeBlocks}.
+	\announce{2018-04-27}*{commandCodeBlocks} contains a few switches detailed in
+	\cref{lst:commandCodeBlocks}.
 
 	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
 	The need for this field was mostly motivated by commands found in code used to generate
-	images in \texttt{PSTricks} and \texttt{tikz}; for example, let's consider
-	the code given in \cref{lst:pstricks1}.
+	images in \texttt{PSTricks} and \texttt{tikz}; for example, let's consider the code given
+	in \cref{lst:pstricks1}.
 
 	\begin{minipage}{.45\textwidth}
 		\cmhlistingsfromfile{demonstrations/pstricks1.tex}{\texttt{pstricks1.tex}}{lst:pstricks1}
@@ -31,33 +30,35 @@
 	mandatory argument, followed by a round-parenthesis argument, $(u,v)$.
 
 	By default, because \texttt{roundParenthesesAllowed} is set to $1$ in
-	\cref{lst:commandCodeBlocks}, then \texttt{latexindent.pl} will allow round parenthesis between
-	optional and mandatory arguments. In the case of the code in \cref{lst:pstricks1},
-	\texttt{latexindent.pl} finds \emph{all} the arguments of
+	\cref{lst:commandCodeBlocks}, then \texttt{latexindent.pl} will allow round parenthesis
+	between optional and mandatory arguments. In the case of the code in
+	\cref{lst:pstricks1}, \texttt{latexindent.pl} finds \emph{all} the arguments of
 	\lstinline!defFunction!, both before and after \lstinline!(u,v)!.
 
 	The default output from running \texttt{latexindent.pl} on \cref{lst:pstricks1} actually
-	leaves it unchanged (see \cref{lst:pstricks1-default}); note in particular, this is because of
-	\texttt{noAdditionalIndentGlobal} as discussed on \cpageref{page:command:noAddGlobal}.
+	leaves it unchanged (see \cref{lst:pstricks1-default}); note in particular, this is
+	because of \texttt{noAdditionalIndentGlobal} as discussed on
+	\cpageref{page:command:noAddGlobal}.
 
 	Upon using the YAML settings in \cref{lst:noRoundParentheses}, and running the command
 	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 \end{commandshell}
-	we obtain the output given in  \cref{lst:pstricks1-nrp}.
+	we obtain the output given in \cref{lst:pstricks1-nrp}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/pstricks1-nrp.tex}{\texttt{pstricks1.tex} using \cref{lst:noRoundParentheses}}{lst:pstricks1-nrp}
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
 	\end{cmhtcbraster}
 
-	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp}; in
-	particular, in \cref{lst:pstricks1-nrp}, because round parentheses are
-	\emph{not} allowed, \texttt{latexindent.pl} finds that the
-	\lstinline!\defFunction! command finishes at the first opening round parenthesis. As such,
-	the remaining braced, mandatory, arguments are found to be \texttt{UnNamedGroupingBracesBrackets} (see \vref{tab:code-blocks}) which,
-	by default, assume indentation for their body, and hence the tabbed indentation in
+	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp};
+	in particular, in \cref{lst:pstricks1-nrp}, because round parentheses are \emph{not}
+	allowed, \texttt{latexindent.pl} finds that the
+	\lstinline!\defFunction! command finishes at the first opening round parenthesis. As
+	such, the remaining braced, mandatory, arguments are found to be
+	\texttt{UnNamedGroupingBracesBrackets} (see \vref{tab:code-blocks}) which, by default,
+	assume indentation for their body, and hence the tabbed indentation in
 	\cref{lst:pstricks1-nrp}.
 
 	Let's explore this using the YAML given in \cref{lst:defFunction} and run the command
@@ -104,14 +105,13 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 		\item the string \lstinline!to! (specified in \texttt{stringsAllowedBetweenArguments})
 		\item the optional argument \lstinline![in=110,out=-90]!
 		\item the string \lstinline!++! (specified in \texttt{stringsAllowedBetweenArguments})
-		\item the round-bracketed argument \lstinline!(0,-0.5cm)! because \texttt{roundParenthesesAllowed} is
-		      $1$ by default
+		\item the round-bracketed argument \lstinline!(0,-0.5cm)! because
+		      \texttt{roundParenthesesAllowed} is $1$ by default
 		\item the string \lstinline!node! (specified in \texttt{stringsAllowedBetweenArguments})
 		\item the optional argument \lstinline![below,align=left,scale=0.5]!
 	\end{itemize}
 
-	We can explore this further, for example using \cref{lst:draw} and running the
-	command
+	We can explore this further, for example using \cref{lst:draw} and running the command
 	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl tikz-node1.tex -l draw.yaml  
@@ -127,8 +127,8 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 	\cref{lst:tikz-node1-draw} has been given the appropriate two-spaces worth of indentation
 	specified in \cref{lst:draw}.
 
-	Let's compare this with the output from using the YAML settings in
-	\cref{lst:no-strings}, and running the command
+	Let's compare this with the output from using the YAML settings in \cref{lst:no-strings},
+	and running the command
 	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl tikz-node1.tex -l no-strings.yaml  
@@ -145,18 +145,19 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 		\item the \lstinline!\draw! command finishes after the \lstinline!(c)!, as
 		      \texttt{stringsAllowedBetweenArguments} has been set to $0$ so there are no strings
 		      allowed between arguments;
-		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see \vref{tab:code-blocks}) \emph{with}
-		      argument \lstinline![in=110,out=-90]!
-		\item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node} with
-		      argument \lstinline![below,align=left,scale=0.5]!
+		\item it finds a \texttt{namedGroupingBracesBrackets} called \texttt{to} (see
+		      \vref{tab:code-blocks}) \emph{with} argument \lstinline![in=110,out=-90]!
+		\item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node}
+		      with argument \lstinline![below,align=left,scale=0.5]!
 	\end{itemize}
 
 	Referencing \vref{lst:commandCodeBlocks},%
-	\announce{2018-04-27}*{amalgamate feature in commandCodeBlocks}, we see that the first field in the \texttt{stringsAllowedBetweenArguments} is
-	\texttt{amalgamate} and is set to \texttt{1} by default. This is for
-	users who wish to specify their settings in multiple YAML files. For example, by using
-	the settings in either \cref{lst:amalgamate-demo} or\cref{lst:amalgamate-demo1} is equivalent to
-	using the settings in \cref{lst:amalgamate-demo2}.
+	\announce{2018-04-27}*{amalgamate feature in commandCodeBlocks}, we see that the first
+	field in the \texttt{stringsAllowedBetweenArguments} is \texttt{amalgamate} and is set to
+	\texttt{1} by default. This is for users who wish to specify their settings in multiple
+	YAML files. For example, by using the settings in either \cref{lst:amalgamate-demo}
+	or\cref{lst:amalgamate-demo1} is equivalent to using the settings in
+	\cref{lst:amalgamate-demo2}.
 
 	\begin{cmhtcbraster}[raster columns=3,
 			raster left skip=-3.5cm,
@@ -167,26 +168,27 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
 	\end{cmhtcbraster}
 
-	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case
-	any settings loaded prior to those specified, including the default, will be overwritten.
-	For example, using the settings in \cref{lst:amalgamate-demo3} means that only the strings
-	specified in that field will be used.
+	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case any settings
+	loaded prior to those specified, including the default, will be overwritten. For example,
+	using the settings in \cref{lst:amalgamate-demo3} means that only the strings specified
+	in that field will be used.
 
 	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
 
-	It is important to note that the \texttt{amalgamate} field, if used, must be in the
-	first field, and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
+	It is important to note that the \texttt{amalgamate} field, if used, must be in the first
+	field, and specified using the syntax given in
+	\cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
 
-	We may explore this feature further with the code in \cref{lst:for-each}, whose
-	default output is given in \cref{lst:for-each-default}.
+	We may explore this feature further with the code in \cref{lst:for-each}, whose default
+	output is given in \cref{lst:for-each-default}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/for-each.tex}{\texttt{for-each.tex}}{lst:for-each}
 		\cmhlistingsfromfile{demonstrations/for-each-default.tex}{\texttt{for-each} default output}{lst:for-each-default}
 	\end{cmhtcbraster}
 
-	Let's compare this with the output from using the YAML settings in
-	\cref{lst:foreach}, and running the command
+	Let's compare this with the output from using the YAML settings in \cref{lst:foreach},
+	and running the command
 	\index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl for-each.tex -l foreach.yaml  
@@ -200,41 +202,42 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 	You might like to compare the output given in \cref{lst:for-each-default} and
 	\cref{lst:for-each-mod1}. Note,in particular, in \cref{lst:for-each-default} that the
-	\texttt{foreach} command has not included any of the subsequent strings, and that
-	the braces have been treated as a \texttt{namedGroupingBracesBrackets}. In \cref{lst:for-each-mod1} the
-	\texttt{foreach} command has been allowed to have \lstinline!\x/\y! and
-	\texttt{in} between arguments because of the settings given in
-	\cref{lst:foreach}.
+	\texttt{foreach} command has not included any of the subsequent strings, and that the
+	braces have been treated as a \texttt{namedGroupingBracesBrackets}. In
+	\cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have
+	\lstinline!\x/\y! and \texttt{in} between arguments because of the settings given
+	in \cref{lst:foreach}.
 
 \yamltitle{commandNameSpecial}*{fields}
 	There are some special command names%
 	\announce{2018-04-27}*{commandNameSpecial} that do not fit within the names recognised by
 	\texttt{latexindent.pl}, the first one of which is \lstinline!\@ifnextchar[!. From the
-	perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[! is
-	a command, because it is immediately followed by sets of mandatory arguments. However,
-	without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl} would not be able to
-	label it as such, because the \lstinline![! is, necessarily, not matched by a
-	closing \lstinline!]!.
+	perspective of \texttt{latexindent.pl}, the whole of the text \lstinline!\@ifnextchar[!
+	is a command, because it is immediately followed by sets of mandatory arguments. However,
+	without the \texttt{commandNameSpecial} field, \texttt{latexindent.pl} would not be able
+	to label it as such, because the \lstinline![! is, necessarily, not matched by a closing
+	\lstinline!]!.
 
-	For example, consider the sample file in \cref{lst:ifnextchar}, which has default
-	output in \cref{lst:ifnextchar-default}.
+	For example, consider the sample file in \cref{lst:ifnextchar}, which has default output
+	in \cref{lst:ifnextchar-default}.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifnextchar.tex}{\texttt{ifnextchar.tex}}{lst:ifnextchar}
 		\cmhlistingsfromfile{demonstrations/ifnextchar-default.tex}{\texttt{ifnextchar.tex} default output}{lst:ifnextchar-default}
 	\end{cmhtcbraster}
 
-	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able
-	to indent its body, because \texttt{latexindent.pl} has successfully found the command
+	Notice that in \cref{lst:ifnextchar-default} the \texttt{parbox} command has been able to
+	indent its body, because \texttt{latexindent.pl} has successfully found the command
 	\lstinline!\@ifnextchar! first; the pattern-matching of \texttt{latexindent.pl} starts
-	from \emph{the inner most <thing> and works outwards}, discussed in more detail on \cpageref{page:phases}.
+	from \emph{the inner most <thing> and works outwards}, discussed in more detail on
+	\cpageref{page:phases}.
 
-	For demonstration, we can compare this output with that given in \cref{lst:ifnextchar-off}
-	in which the settings from \cref{lst:no-ifnextchar} have dictated that no special command
-	names, including the \lstinline!\@ifnextchar[! command, should not be searched for
-	specially; as such, the \texttt{parbox} command has been \emph{unable}
-	to indent its body successfully, because the \lstinline!\@ifnextchar[! command has not been
-	found.
+	For demonstration, we can compare this output with that given in
+	\cref{lst:ifnextchar-off} in which the settings from \cref{lst:no-ifnextchar} have
+	dictated that no special command names, including the \lstinline!\@ifnextchar[! command,
+	should not be searched for specially; as such, the \texttt{parbox} command has been
+	\emph{unable} to indent its body successfully, because the \lstinline!\@ifnextchar[!
+	command has not been found.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
@@ -242,8 +245,8 @@ latexindent.pl for-each.tex -l foreach.yaml
 	\end{cmhtcbraster}
 
 	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for
-	\texttt{stringsAllowedBetweenArguments}. The same condition holds as stated previously, which we state
-	again here:
+	\texttt{stringsAllowedBetweenArguments}. The same condition holds as stated previously,
+	which we state again here:
 	\index{warning!amalgamate field}
 
 	\begin{warning}

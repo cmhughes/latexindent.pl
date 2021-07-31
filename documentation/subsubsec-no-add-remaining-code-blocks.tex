@@ -1,9 +1,9 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \subsubsection{The remaining code blocks}
 	Referencing the different types of code blocks in \vref{tab:code-blocks}, we have a few
-	code blocks yet to cover; these are very similar to the \texttt{commands} code block
-	type covered comprehensively in \vref{subsubsec:commands-arguments}, but a small discussion defining
-	these remaining code blocks is necessary.
+	code blocks yet to cover; these are very similar to the \texttt{commands} code block type
+	covered comprehensively in \vref{subsubsec:commands-arguments}, but a small discussion
+	defining these remaining code blocks is necessary.
 
 	\paragraph{keyEqualsValuesBracesBrackets}
 		\texttt{latexindent.pl} defines this type of code block by the following criteria:
@@ -15,8 +15,9 @@
 			\item then at least one set of curly braces or square brackets (comments and line breaks
 			      allowed throughout).
 		\end{itemize}
-		See the \texttt{keyEqualsValuesBracesBrackets: follow} and \texttt{keyEqualsValuesBracesBrackets: name} fields of the fine tuning
-		section in \vref{lst:fineTuning}%
+		See the \texttt{keyEqualsValuesBracesBrackets: follow} and
+		\texttt{keyEqualsValuesBracesBrackets: name} fields of the fine tuning section in
+		\vref{lst:fineTuning}%
 		\announce{2019-07-13}{fine tuning: keyEqualsValuesBracesBrackets}
 
 		An example is shown in \cref{lst:pgfkeysbefore}, with the default output given in
@@ -30,29 +31,31 @@
 			\cmhlistingsfromfile[showtabs=true]{demonstrations/pgfkeys1-default.tex}{\texttt{pgfkeys1.tex} default output}{lst:pgfkeys1:default}
 		\end{minipage}%
 
-		In \cref{lst:pgfkeys1:default}, note that the maximum indentation is three tabs, and these
-		come from:
+		In \cref{lst:pgfkeys1:default}, note that the maximum indentation is three tabs, and
+		these come from:
 		\begin{itemize}
 			\item the \lstinline!\pgfkeys! command's mandatory argument;
 			\item the \lstinline!start coordinate/.initial! key's mandatory argument;
-			\item the \lstinline!start coordinate/.initial! key's body, which is defined as any lines following the name
-			      of the key that include its arguments.	This is the part controlled by the
-			      \emph{body} field for \texttt{noAdditionalIndent} and friends from
+			\item the \lstinline!start coordinate/.initial! key's body, which is defined as any lines
+			      following the name of the key that include its arguments. This is the part controlled by
+			      the \emph{body} field for \texttt{noAdditionalIndent} and friends from
 			      \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
 	\paragraph{namedGroupingBracesBrackets}
 		This type of code block is mostly motivated by tikz-based code; we define this code block
 		as follows:
 		\begin{itemize}
-			\item it must immediately follow either \emph{horizontal space} OR \emph{one or more line breaks} OR
+			\item it must immediately follow either \emph{horizontal space} OR \emph{one or more line
+				      breaks} OR
 			      \lstinline!{! OR \lstinline![! OR \lstinline!$! OR
 			      \lstinline!)! OR \lstinline!(!
 			\item the name may contain the characters detailed in \vref{tab:code-blocks};
 			\item then at least one set of curly braces or square brackets (comments and line breaks
 			      allowed throughout).
 		\end{itemize}
-		See the \texttt{NamedGroupingBracesBrackets: follow} and \texttt{NamedGroupingBracesBrackets: name} fields of the fine tuning
-		section in \vref{lst:fineTuning}%
+		See the \texttt{NamedGroupingBracesBrackets: follow} and
+		\texttt{NamedGroupingBracesBrackets: name} fields of the fine tuning section in
+		\vref{lst:fineTuning}%
 		\announce{2019-07-13}{fine tuning: namedGroupingBracesBrackets}
 
 		A simple example is given in \cref{lst:child1}, with default output in
@@ -66,21 +69,21 @@
 			\cmhlistingsfromfile[showtabs=true]{demonstrations/child1-default.tex}{\texttt{child1.tex} default output}{lst:child1:default}
 		\end{minipage}%
 
-		In particular, \texttt{latexindent.pl} considers \texttt{child},
-		\texttt{parent} and \texttt{node} all to be
-		\texttt{namedGroupingBracesBrackets}\footnote{
-			You may like to verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }. Referencing \cref{lst:child1:default}, note
-		that the maximum indentation is two tabs, and these come from:
+		In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and
+		\texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{ You may like to
+			verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }.
+		Referencing \cref{lst:child1:default}, note that the maximum indentation is two tabs, and
+		these come from:
 		\begin{itemize}
 			\item the \lstinline!child!'s mandatory argument;
-			\item the \lstinline!child!'s body, which is defined as any lines following the name of
-			      the \texttt{namedGroupingBracesBrackets} that include its arguments. This is the part controlled by the
-			      \emph{body} field for \texttt{noAdditionalIndent} and friends from
+			\item the \lstinline!child!'s body, which is defined as any lines following the name of the
+			      \texttt{namedGroupingBracesBrackets} that include its arguments. This is the part
+			      controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from
 			      \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
 
-	\paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically, we define
-		this type of code block as satisfying the following criteria:
+	\paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically,
+		we define this type of code block as satisfying the following criteria:
 		\begin{itemize}
 			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR
 			      \lstinline!,! OR \lstinline!&! OR \lstinline!)! OR
@@ -88,7 +91,8 @@
 			\item then at least one set of curly braces or square brackets (comments and line breaks
 			      allowed throughout).
 		\end{itemize}
-		See the \texttt{UnNamedGroupingBracesBrackets: follow} field of the fine tuning section in \vref{lst:fineTuning}%
+		See the \texttt{UnNamedGroupingBracesBrackets: follow} field of the fine tuning section
+		in \vref{lst:fineTuning}%
 		\announce{2019-07-13}{fine tuning: namedGroupingBracesBrackets}
 
 		An example is shown in \cref{lst:psforeach1} with default output give in
@@ -102,20 +106,18 @@
 			\cmhlistingsfromfile[showtabs=true]{demonstrations/psforeach1-default.tex}{\texttt{psforeach1.tex} default output}{lst:psforeach:default}
 		\end{minipage}%
 
-		Referencing \cref{lst:psforeach:default}, there are \emph{three} sets of unnamed
-		braces. Note also that the maximum value of indentation is three tabs, and these come
-		from:
+		Referencing \cref{lst:psforeach:default}, there are \emph{three} sets of unnamed braces.
+		Note also that the maximum value of indentation is three tabs, and these come from:
 		\begin{itemize}
 			\item the \lstinline!\psforeach! command's mandatory argument;
 			\item the \emph{first} un-named braces mandatory argument;
-			\item the \emph{first} un-named braces \emph{body}, which we define as any
-			      lines following the first opening \lstinline!{! or \lstinline![! that
-			      defined the code block.  This is the part controlled by the \emph{body} field
-			      for \texttt{noAdditionalIndent} and friends from \cpageref{sec:noadd-indent-rules}.
+			\item the \emph{first} un-named braces \emph{body}, which we define as any lines following the
+			      first opening \lstinline!{! or \lstinline![! that defined the code block. This is the
+			      part controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from
+			      \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
-		Users wishing to customise the mandatory and/or optional arguments on a
-		\emph{per-name} basis for the \texttt{UnNamedGroupingBracesBrackets} should use
-		\texttt{always-un-named}.
+		Users wishing to customise the mandatory and/or optional arguments on a \emph{per-name}
+		basis for the \texttt{UnNamedGroupingBracesBrackets} should use \texttt{always-un-named}.
 
 	\paragraph{filecontents} code blocks behave just as \texttt{environments}, except that
 		neither arguments nor items are sought.

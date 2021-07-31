@@ -1,0 +1,13 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80                     # number of columns
+        perCodeBlockBasis: 1            # per-code-block wrap
+        beforeFindingChildCodeBlocks: 1 # wrap *before* finding child code blocks
+        masterDocument: 1               # apply to main document
+        afterHeading: 1                 #   after headings
+        items: 1                        #   within items
+    removeParagraphLineBreaks:          # remove line breaks within paragraphs 
+        masterDocument: 1
+        afterHeading: 1
+        items: 1
+        beforeTextWrap: 1               # before wrapping text

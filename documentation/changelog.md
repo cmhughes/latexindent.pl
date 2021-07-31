@@ -1,5 +1,15 @@
 # changelog.md
 
+## V3.11, July 31, 2021
+upgrade to textWrap: in particular, a new feature `beforeFindingChildCodeBlocks` to be 
+used with `perCodeBlockBasis`. 
+
+This was implemented in relation to the issues raised in [issue 158](https://github.com/cmhughes/latexindent.pl/issues/158) 
+and [issue 228](https://github.com/cmhughes/latexindent.pl/issues/228). 
+
+**GitHub Actions** implemented to create and publish `latexindent.exe` automatically. Hopefully
+more automated actions will follow.
+
 ## V3.10.1, July 23, 2021
 changes to defauls:
 - textWrap: Huge now set to *overflow* by default

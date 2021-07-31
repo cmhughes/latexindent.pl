@@ -51,9 +51,9 @@ discussing YAML settings related to the replacement-mode switches, we will use t
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 614-622
+ 	:lines: 618-626
  	:linenos:
- 	:lineno-start: 614
+ 	:lineno-start: 618
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default
 it is set to 1, so that replacements will be amalgamated from each settings file that you specify.

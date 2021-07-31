@@ -1,0 +1,5 @@
+noAdditionalIndent:
+  test: 1
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 40

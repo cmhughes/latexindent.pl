@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        perCodeBlockBasis: 0
+        beforeFindingChildCodeBlocks: 1

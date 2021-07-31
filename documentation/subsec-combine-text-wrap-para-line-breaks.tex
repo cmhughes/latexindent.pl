@@ -1,0 +1,112 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
+
+	The%
+	\announce{2018-08-13}{combine text wrap and remove paragraph line breaks} text wrapping routine (\vref{subsec:textwrapping}) and remove
+	paragraph line breaks routine (\vref{subsec:removeparagraphlinebreaks}) can be combined.
+
+	We motivate this feature with the code given in \cref{lst:textwrap7}.
+
+	\cmhlistingsfromfile{demonstrations/textwrap7.tex}{\texttt{textwrap7.tex}}{lst:textwrap7}
+
+	Applying the text wrap routine from \vref{subsec:textwrapping} with, for example,
+	\vref{lst:textwrap3-yaml} gives the output in \cref{lst:textwrap7-mod3}.
+
+	\cmhlistingsfromfile{demonstrations/textwrap7-mod3.tex}{\texttt{textwrap7.tex} using \cref{lst:textwrap3-yaml}}{lst:textwrap7-mod3}
+
+	The text wrapping routine has behaved as expected, but it may be desired to remove
+	paragraph line breaks \emph{before} performing the text wrapping routine. The desired
+	behaviour can be achieved by employing the \texttt{beforeTextWrap} switch.
+
+	Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
+	\index{switches!-l demonstration}
+	\index{switches!-m demonstration}
+	\index{switches!-o demonstration}
+	\begin{commandshell}
+latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
+\end{commandshell}
+	we obtain the output in \cref{lst:textwrap7-mod12}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
+		\cmhlistingsfromfile{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
+	\end{cmhtcbraster}
+
+	In \cref{lst:textwrap7-mod12} the paragraph line breaks have first been removed from
+	\cref{lst:textwrap7}, and then the text wrapping routine has been applied. It is
+	envisaged that variants of \cref{lst:textwrap12-yaml} will be among the most useful
+	settings for these two features.
+
+\subsubsection{text wrapping beforeFindingChildCodeBlocks}\label{subsubsec:text-wrap-remove-para-bfccb}
+
+	\index{text wrap!recommended starting point}
+
+	I%
+	\announce*{2021-07-31}{textWrapOptions new feature: beforeFindingChildCodeBlocks} think it likely that most users will wish to employ the
+	\texttt{beforeFindingChildCodeBlocks} option for the text wrap routine.
+
+	To motivate its use, we begin with the file in \cref{lst:textwrap-bfccb}.
+
+	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb.tex}{\texttt{textwrap-bfccb.tex}}{lst:textwrap-bfccb}
+
+	Using the settings in \cref{lst:textwrap12-yaml} and running
+	\begin{commandshell}
+latexindent.pl -m textwrap-bfccb.tex -l=textwrap12.yaml -o=+-mod12
+\end{commandshell}
+	gives the output in \cref{lst:textwrap-bfccb-mod12}
+
+	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod12.tex}{\texttt{textwrap-bfccb-mod12.tex}}{lst:textwrap-bfccb-mod12}
+
+	Note that we have added a `ruler' to \cref{lst:textwrap-bfccb-mod12} to assist with
+	measuring.
+
+	The output in \cref{lst:textwrap-bfccb-mod12} is not ideal, but it is \emph{expected}.
+	The reasoning is as follows:
+	\begin{itemize}
+		\item \texttt{latexindent.pl} first of all searches for code blocks (see
+		      \vref{tab:code-blocks});
+		\item it replaces each code block with a unique identifying string;
+		\item with the settings of \cref{lst:textwrap12-yaml} in place, it performs the paragraph line
+		      break removal, and then the text wrapping routine first of all on the \texttt{text}
+		      command, and then on the surrounding text;
+		\item the surrounding text does not know that \texttt{text} is a command.
+	\end{itemize}
+
+	We can instruct \texttt{latexindent.pl} to perform text wrapping \emph{before searching
+		for child code blocks} by using the \texttt{beforeFindingChildCodeBlocks} field.
+
+	We save the \emph{quick-start} settings from \cref{lst:textwrap-qs-yaml} into
+	\cref{lst:textwrap13-yaml} and change the value of \texttt{columns} for demonstration.
+	Upon running the command
+	\begin{commandshell}
+latexindent.pl -m textwrap-bfccb.tex -l=textwrap13.yaml -o=+-mod13
+\end{commandshell}
+	we receive the output in \cref{lst:textwrap-bfccb-mod13}.
+
+	\cmhlistingsfromfile*{demonstrations/textwrap13.yaml}[MLB-TCB,width=\linewidth]{\texttt{textwrap13.yaml} (tweaked quick start)}{lst:textwrap13-yaml}
+
+	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod13.tex}{\texttt{textwrap-bfccb-mod13.tex}}{lst:textwrap-bfccb-mod13}
+
+	This output is different from \cref{lst:textwrap-bfccb-mod12}, but is still not ideal, as
+	the \texttt{test} command has indented its mandatory argument. We can employ
+	\texttt{noAdditionalIndent} from \vref{sec:noadd-indent-rules} in
+	\cref{lst:textwrap14-yaml} and run the command
+	\begin{commandshell}
+latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
+\end{commandshell}
+	to receive the output in \cref{lst:textwrap-bfccb-mod14}.
+
+	\begin{widepage}
+		\begin{cmhtcbraster}
+			\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod14.tex}{\texttt{textwrap-bfccb-mod14.tex}}{lst:textwrap-bfccb-mod14}
+			\cmhlistingsfromfile*{demonstrations/textwrap14.yaml}[MLB-TCB]{\texttt{textwrap14.yaml}}{lst:textwrap14-yaml}
+		\end{cmhtcbraster}
+	\end{widepage}
+
+	For reference, let's say that we had started from \cref{lst:textwrap12-yaml}, which
+	instructs \texttt{latexindent.pl} to apply the text-wrapping and
+	paragraph-line-break-removal routines to \emph{all} code blocks. In order to achieve the
+	output in \cref{lst:textwrap-bfccb-mod14}, then we would need to employ an exception,
+	which we demonstrate in \cref{lst:textwrap15-yaml}.
+
+	\cmhlistingsfromfile*{demonstrations/textwrap15.yaml}[MLB-TCB]{\texttt{textwrap15.yaml}}{lst:textwrap15-yaml}

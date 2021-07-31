@@ -1,9 +1,10 @@
-# defaultSettings.yaml for latexindent.pl, version 3.10.1, 2021-07-23
+# defaultSettings.yaml for latexindent.pl, version 3.11, 2021-07-31
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
 # (or latexindent.exe if you're on Windows)
 #
+#---------------------------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -19,8 +20,8 @@
 # Chris Hughes, 2017
 # 
 # For all communication, please visit: https://github.com/cmhughes/latexindent.pl
-
-
+#
+#---------------------------------------------------------------------------------------
 # You should feel encouraged to change anything you like in these settings, but 
 # it would probably be better to have your own user settings 
 # files somewhere else - remember that this file may be overwritten
@@ -31,6 +32,8 @@
 # for details of how to create and configure your own settings files.
 #
 # Please read the manual (linked from above) first to understand what each switch does.
+#
+#---------------------------------------------------------------------------------------
 
 # latexindent can be called to act on a file without using the file's extension, 
 # e.g, simply
@@ -512,6 +515,7 @@ modifyLineBreaks:
         huge: overflow    # forbid mid-word line breaks
         separator: ""
         perCodeBlockBasis: 0
+        beforeFindingChildCodeBlocks: 0
         all: 0
         alignAtAmpersandTakesPriority: 1
         environments: 

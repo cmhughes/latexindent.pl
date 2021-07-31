@@ -1,0 +1,14 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 40                     
+        perCodeBlockBasis: 1           
+        beforeFindingChildCodeBlocks: 1
+        all: 1                         
+    removeParagraphLineBreaks:        
+        all:
+          except: 
+            - test
+        beforeTextWrap: 1           
+
+noAdditionalIndent:
+  test: 1

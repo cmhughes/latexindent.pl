@@ -119,3 +119,6 @@ for example, to combine the last *two* commits:
 ```
 git reset --soft HEAD~2 && git commit --edit -m"$(git log --format=%B --reverse HEAD..HEAD@{1})"
 ```
+corrupt loose object
+=
+I found this answer helpful: https://stackoverflow.com/a/18238322/1091649
