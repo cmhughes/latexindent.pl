@@ -1,0 +1,48 @@
+name: Create and publish latexindent.exe to releases
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build-windows-exe:
+    name: 'latexindent.exe creation using Strawberry Perl 5.32 on Windows'
+    runs-on: 'windows-latest'
+    steps:
+      # checkout github.com/cmhughes/latexindent.pl
+      #
+      # https://github.com/actions/checkout
+      - name: Loading the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v2
+      # install Strawberry Perl
+      #
+      # https://github.com/marketplace/actions/setup-perl-environment
+      - name: installing Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.32'
+          distribution: strawberry
+      # create latexindent.exe using Par::Packer
+      #
+      - name: creating latexindent.exe
+        run: |
+          cpanm -f PAR::Packer
+          cpanm YAML::Tiny
+          cpanm File::HomeDir
+          cpanm Unicode::GCString
+          copy helper-scripts/ppp.pl ./
+          perl ppp.pl -o latexindent.exe latexindent.pl
+          mkdir -p target/release
+          mv latexindent.exe target/release
+      # copy latexindent.exe to the release
+      #
+      # https://github.com/marketplace/actions/upload-files-to-a-github-release
+      - name: upload latexindent.exe to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/release/latexindent.exe
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: "latexindent.pl release text"

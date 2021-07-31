@@ -40,6 +40,11 @@ I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integratio
 
 using the `Par::Packer` perl module. `ppp.pl` is located in the helper-scripts directory of this repository. 
 
+## GitHub Actions
+Note: `latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the 
+file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) directory
+of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
 ## usage
 
 You'll need
@@ -87,7 +92,7 @@ I'm happy to review feature requests, but I make no promises as to if they
 will be implemented; if they can be implemented, I make no promises as to 
 how long it will take to implement them, and in which order I do so -- some 
 features are more difficult than others! Feel free to post on the issues 
-page of this repository.
+page of this repository, but please *do use the given issue template*!
 
 ## development model
 
