@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Environment qw/$environmentBasicRegExp/;
@@ -40,7 +40,7 @@ sub one_sentence_per_line{
     # sentences FOLLOW
     my $sentencesFollow = q();
 
-    while( my ($sentencesFollowEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}){
+    while( my ($sentencesFollowEachPart,$yesNo)= each %{${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}){
         if($yesNo){
             if($sentencesFollowEachPart eq "par"){
                 $sentencesFollowEachPart = qr/\R?\\par/s;
@@ -75,7 +75,7 @@ sub one_sentence_per_line{
     # if blankLine is not active from sentencesFollow then we need to set up the 
     # beginning of the string, but make sure that it is *not* followed by a 
     # blank line token, or a blank line
-    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+    if(!${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
             $sentencesFollow .= ($sentencesFollow eq '' ? q() : "|").
                                     qr/
                                         \G
@@ -83,7 +83,7 @@ sub one_sentence_per_line{
                                     /sx;
     }
 
-    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+    if(${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
         $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h|\R)*/sx );
     } else {
         $sentencesFollow = ($sentencesFollow eq '' ? q() : qr/(?:$sentencesFollow)(?:\h*\R?)/sx );
@@ -98,7 +98,7 @@ sub one_sentence_per_line{
     # sentences BEGIN with
     my $sentencesBeginWith = q();
 
-    while( my ($sentencesBeginWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesBeginWith}}){
+    while( my ($sentencesBeginWithEachPart,$yesNo)= each %{${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesBeginWith}}){
         if($yesNo){
             if($sentencesBeginWithEachPart eq "A-Z"){
                 $logger->trace("sentence BEGINS with capital letters (see oneSentencePerLine:sentencesBeginWith:A-Z)") if $is_t_switch_active;
@@ -118,17 +118,17 @@ sub one_sentence_per_line{
     # sentences END with
     # sentences END with
     # sentences END with
-    ${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}{basicFullStop} = 0 if ${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}{betterFullStop};
+    ${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}{basicFullStop} = 0 if ${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}{betterFullStop};
     my $sentencesEndWith = q();
 
-    while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
+    while( my ($sentencesEndWithEachPart,$yesNo)= each %{${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesEndWith}}){
         if($yesNo){
             if($sentencesEndWithEachPart eq "basicFullStop"){
                 $logger->trace("sentence ENDS with full stop (see oneSentencePerLine:sentencesEndWith:basicFullStop") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/\./;
             } elsif($sentencesEndWithEachPart eq "betterFullStop"){
                 $logger->trace("sentence ENDS with *better* full stop (see oneSentencePerLine:sentencesEndWith:betterFullStop") if $is_t_switch_active;
-                $sentencesEndWithEachPart = qr/${${$masterSettings{fineTuning}}{modifyLineBreaks}}{betterFullStop}/;
+                $sentencesEndWithEachPart = qr/${${$mainSettings{fineTuning}}{modifyLineBreaks}}{betterFullStop}/;
             } elsif ($sentencesEndWithEachPart eq "exclamationMark"){
                 $logger->trace("sentence ENDS with exclamation mark (see oneSentencePerLine:sentencesEndWith:exclamationMark)") if $is_t_switch_active;
                 $sentencesEndWithEachPart = qr/!/;
@@ -163,12 +163,12 @@ sub one_sentence_per_line{
     #
     # is set to 0 then we need to *exclude* the $tokens{blanklines} from the sentence routine,
     # otherwise we could begin a sentence with $tokens{blanklines}.
-    if(!${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
+    if(!${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{blankLine}){
         $notWithinSentence .= "|".qr/(?:\h*\R?$tokens{blanklines})/s;
     }
 
     # similarly for \par
-    if(${${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{par}){
+    if(${${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentencesFollow}}{par}){
         $notWithinSentence .= "|".qr/(?:\R?\\par)/s;
     }
 
@@ -193,7 +193,7 @@ sub one_sentence_per_line{
                             my $lineBreaksAtEnd = ($6? 1 : ($7?1:0) );
                             my $trailingComments = q();
                             # remove trailing comments from within the body of the sentence
-                            if (${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks}){
+                            if (${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks}){
                                 while($middle =~ m|$trailingCommentRegExp|){
                                     $middle =~ s|\h*($trailingCommentRegExp)||s;
                                     $trailingComments .= $1;
@@ -203,7 +203,7 @@ sub one_sentence_per_line{
                             $middle =~ s|
                                             (?!\A)      # not at the *beginning* of a match
                                             (\h*)\R     # possible horizontal space, then line break
-                                        |$1?$1:" ";|esgx if ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+                                        |$1?$1:" ";|esgx if ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
                             $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;
                             $logger->trace("follows: $beginning") if $is_tt_switch_active;
                             $logger->trace("sentence: $middle") if $is_tt_switch_active;
@@ -211,13 +211,13 @@ sub one_sentence_per_line{
                             # if indentation is specified for sentences, then we treat
                             # them as objects; otherwise we don't
                             my $replacementText = q();
-                            if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} =~ m|\h+|){
+                            if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} =~ m|\h+|){
                                 my $sentenceObj = LatexIndent::Sentence->new(
                                                             name=>"sentence",
                                                             begin=>q(),
                                                             body=>$middle.$end,
                                                             end=>q(),
-                                                            indentation=>${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent},
+                                                            indentation=>${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent},
                                                             modifyLineBreaksYamlName=>"sentence",
                                                             BeginStartsOnOwnLine=>1,
                                                           );
@@ -236,7 +236,7 @@ sub one_sentence_per_line{
                             $replacementText;
                             /xsge;
 
-       if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} !~ m/\h+/){
+       if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} !~ m/\h+/){
              # loop back through the sentenceStorage and replace with the sentence, adjusting line breaks
              # before and after appropriately
              while( my $sentence = pop @sentenceStorage){
@@ -244,7 +244,7 @@ sub one_sentence_per_line{
                my $sentenceStorageValue = ${$sentence}{value};
 
                # option to text wrap (and option to indent) sentences
-               if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
+               if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
                        my $sentenceObj = LatexIndent::Document->new(body=>$sentenceStorageValue,
                                                              name=>"sentence",
                                                              modifyLineBreaksYamlName=>"sentence",
@@ -257,7 +257,7 @@ sub one_sentence_per_line{
                            $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
                            $logger->info("You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
                            $logger->info("The value of oneSentencePerLine:textWrapSentences will now be set to 0, so you won't see this message again");
-                           ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences} = 0;
+                           ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences} = 0;
                        } else {
                            $sentenceObj->text_wrap;
                        }
@@ -270,7 +270,7 @@ sub one_sentence_per_line{
                                            /sx){
                            my $bodyFirstLine = $1;
                            my $remainingBody = $2;
-                           my $indentation = ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent};
+                           my $indentation = ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent};
                            $logger->trace("first line of sencent:  $bodyFirstLine") if $is_tt_switch_active;
                            $logger->trace("remaining body (before indentation):\n'$remainingBody'") if($is_tt_switch_active);
              
@@ -305,7 +305,7 @@ sub tasks_particular_to_each_object{
       my $self = shift;
 
       # option to text wrap (and option to indent) sentences
-      if(${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
+      if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
         $self->yaml_get_columns;
         $self->text_wrap;
       }
@@ -327,7 +327,7 @@ sub tasks_particular_to_each_object{
 }
 
 sub indent_body{
-      return unless ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} =~ m/\h+/;
+      return unless ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{sentenceIndent} =~ m/\h+/;
 
       my $self = shift;
 

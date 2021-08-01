@@ -17,7 +17,7 @@ package LatexIndent::BlankLines;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
@@ -27,7 +27,7 @@ sub protect_blank_lines{
     return unless $is_m_switch_active;
     my $self = shift;
     
-    unless(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}){
+    unless(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}){
         $logger->trace("*Blank lines will not be protected (preserveBlankLines=0)") if $is_t_switch_active;
         return
     }
@@ -40,16 +40,16 @@ sub protect_blank_lines{
 sub condense_blank_lines{
     return unless $is_m_switch_active;
 
-    return unless ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
+    return unless ${$mainSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     my $self = shift;
     
     $logger->trace("*condense blank lines routine") if $is_t_switch_active;
     # if preserveBlankLines is set to 0, then the blank-line-token will not be present
     # in the document -- we change that here
-    if(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}==0){
+    if(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}==0){
         # turn the switch on
-        ${$masterSettings{modifyLineBreaks}}{preserveBlankLines}=1;
+        ${$mainSettings{modifyLineBreaks}}{preserveBlankLines}=1;
 
         # log file information
         $logger->trace("Updating body to include blank line token, this requires preserveBlankLines = 1") if($is_tt_switch_active);
@@ -61,7 +61,7 @@ sub condense_blank_lines{
      }
 
     # grab the value from the settings
-    my $condenseMultipleBlankLinesInto = ${$masterSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
+    my $condenseMultipleBlankLinesInto = ${$mainSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto};
 
     # grab the blank-line-token
     my $blankLineToken = $tokens{blanklines};
@@ -82,7 +82,7 @@ sub condense_blank_lines{
 sub unprotect_blank_lines{
     return unless $is_m_switch_active;
 
-    return unless ${$masterSettings{modifyLineBreaks}}{preserveBlankLines};
+    return unless ${$mainSettings{modifyLineBreaks}}{preserveBlankLines};
     my $self = shift;
     
     # remove any empty lines that might have been added by the text_wrap routine; see, for example,

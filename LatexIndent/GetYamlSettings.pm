@@ -24,13 +24,13 @@ use File::HomeDir;
 use Cwd;
 use Exporter qw/import/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
+our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
 
 # master yaml settings is a hash, global to this module
-our %masterSettings;
+our %mainSettings;
 
 # previously found settings is a hash, global to this module
 our %previouslyFoundSettings;
@@ -72,7 +72,7 @@ sub yaml_read_settings{
   die "Could not open defaultSettings.yaml" if(!$defaultSettings);
    
   # master yaml settings is a hash, global to this module
-  our %masterSettings = %{$defaultSettings->[0]};
+  our %mainSettings = %{$defaultSettings->[0]};
 
   &yaml_update_dumper_settings();
 
@@ -270,26 +270,26 @@ sub yaml_read_settings{
                       if (ref($firstLevelValue) eq "HASH") {
                           while(my ($secondLevelKey,$secondLevelValue) = each %{$userSettings->[0]{$firstLevelKey}}) {
                             if (ref $secondLevelValue eq "HASH"){
-                                # if masterSettings already contains a *scalar* value in secondLevelKey
+                                # if mainSettings already contains a *scalar* value in secondLevelKey
                                 # then we need to delete it (test-cases/headings-first.tex with indentRules1.yaml first demonstrated this)
-                                if(defined $masterSettings{$firstLevelKey}{$secondLevelKey} 
-                                    and ref $masterSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
-                                    $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
-                                    delete $masterSettings{$firstLevelKey}{$secondLevelKey} ;
+                                if(defined $mainSettings{$firstLevelKey}{$secondLevelKey} 
+                                    and ref $mainSettings{$firstLevelKey}{$secondLevelKey} ne "HASH"){
+                                    $logger->trace("*mainSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                    delete $mainSettings{$firstLevelKey}{$secondLevelKey} ;
                                 }
                                 while(my ($thirdLevelKey,$thirdLevelValue) = each %{$secondLevelValue}) {
                                     if (ref $thirdLevelValue eq "HASH"){
                                         # similarly for third level
-                                        if (defined $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} 
-                                            and ref $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
-                                            $logger->trace("*masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
-                                            delete $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
+                                        if (defined $mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} 
+                                            and ref $mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ne "HASH"){
+                                            $logger->trace("*mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar") if($is_t_switch_active);
+                                            delete $mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} ;
                                         }
                                         while(my ($fourthLevelKey,$fourthLevelValue) = each %{$thirdLevelValue}) {
-                                            $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey}{$fourthLevelKey} = $fourthLevelValue;
+                                            $mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey}{$fourthLevelKey} = $fourthLevelValue;
                                         }
                                     } else {
-                                        $masterSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} = $thirdLevelValue;
+                                        $mainSettings{$firstLevelKey}{$secondLevelKey}{$thirdLevelKey} = $thirdLevelValue;
                                     }
                                 }
                             } else {
@@ -297,54 +297,54 @@ sub yaml_read_settings{
                                 # to be amalgamated, rather than overwritten
                                 if(ref($secondLevelValue) eq "ARRAY" 
                                     and 
-                                   ${${$masterSettings{$firstLevelKey}{$secondLevelKey}}[0]}{amalgamate}
+                                   ${${$mainSettings{$firstLevelKey}{$secondLevelKey}}[0]}{amalgamate}
                                     and
                                    !(ref(${$secondLevelValue}[0]) eq "HASH" and defined ${$secondLevelValue}[0]{amalgamate} and !${$secondLevelValue}[0]{amalgamate}) 
                                  ){
                                     $logger->trace("*$firstLevelKey -> $secondLevelKey, amalgamate: 1") if($is_t_switch_active);
                                     foreach (@{$secondLevelValue}){
                                         $logger->trace("$_") if($is_t_switch_active);
-                                        push (@{$masterSettings{$firstLevelKey}{$secondLevelKey}},$_) unless(ref($_) eq "HASH");
+                                        push (@{$mainSettings{$firstLevelKey}{$secondLevelKey}},$_) unless(ref($_) eq "HASH");
                                     }
 
                                     # remove duplicated entries, https://stackoverflow.com/questions/7651/how-do-i-remove-duplicate-items-from-an-array-in-perl
                                     my %seen = ();
-                                    my @unique = grep { ! $seen{ $_ }++ } @{$masterSettings{$firstLevelKey}{$secondLevelKey}};
-                                    @{$masterSettings{$firstLevelKey}{$secondLevelKey}} = @unique; 
+                                    my @unique = grep { ! $seen{ $_ }++ } @{$mainSettings{$firstLevelKey}{$secondLevelKey}};
+                                    @{$mainSettings{$firstLevelKey}{$secondLevelKey}} = @unique; 
 
                                     $logger->trace("*master settings for $firstLevelKey -> $secondLevelKey now look like:") if $is_t_switch_active;
-                                    foreach (@{$masterSettings{$firstLevelKey}{$secondLevelKey}}){
+                                    foreach (@{$mainSettings{$firstLevelKey}{$secondLevelKey}}){
                                         $logger->trace("$_") if($is_t_switch_active);
                                     }
                                 } else {
-                                    $masterSettings{$firstLevelKey}{$secondLevelKey} = $secondLevelValue;
+                                    $mainSettings{$firstLevelKey}{$secondLevelKey} = $secondLevelValue;
                                 }
                             }
                           }
                       } elsif (ref($firstLevelValue) eq "ARRAY") {
                             # update amalgamate in master settings
                             if(ref(${$firstLevelValue}[0]) eq "HASH" and defined ${$firstLevelValue}[0]{amalgamate}){
-                               ${$masterSettings{$firstLevelKey}[0]}{amalgamate} = ${$firstLevelValue}[0]{amalgamate};
-                               shift @{$firstLevelValue} if ${$masterSettings{$firstLevelKey}[0]}{amalgamate};
+                               ${$mainSettings{$firstLevelKey}[0]}{amalgamate} = ${$firstLevelValue}[0]{amalgamate};
+                               shift @{$firstLevelValue} if ${$mainSettings{$firstLevelKey}[0]}{amalgamate};
                             }
 
                             # if amalgamate is set to 1, then append
-                            if(${$masterSettings{$firstLevelKey}[0]}{amalgamate}){
+                            if(${$mainSettings{$firstLevelKey}[0]}{amalgamate}){
                                 # loop through the other settings
                                 foreach (@{$firstLevelValue}){
-                                    push (@{$masterSettings{$firstLevelKey}},$_);
+                                    push (@{$mainSettings{$firstLevelKey}},$_);
                                 }
                             } else {
                                 # otherwise overwrite
-                                $masterSettings{$firstLevelKey} = $firstLevelValue;
+                                $mainSettings{$firstLevelKey} = $firstLevelValue;
                             }
                       } else {
-                            $masterSettings{$firstLevelKey} = $firstLevelValue;
+                            $mainSettings{$firstLevelKey} = $firstLevelValue;
                       }
               }
 
               # output settings to $logfile
-              if($masterSettings{logFilePreferences}{showEveryYamlRead}){
+              if($mainSettings{logFilePreferences}{showEveryYamlRead}){
                   $logger->info(Dump \%{$userSettings->[0]});
               } else {
                   $logger->info("Not showing settings in the log file (see showEveryYamlRead and showAmalgamatedSettings).");
@@ -532,29 +532,29 @@ sub yaml_read_settings{
             if(scalar(@keysValues) == 2){
                 # for example, -y="defaultIndent: ' '"
                 my $key = $keysValues[0];
-                $logger->info("Updating masterSettings with $key: $value");
-                $masterSettings{$key} = $value;
+                $logger->info("Updating mainSettings with $key: $value");
+                $mainSettings{$key} = $value;
             } elsif(scalar(@keysValues) == 3){
                 # for example, -y="indentRules: one: '\t\t\t\t'"
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
-                $logger->info("Updating masterSettings with $parent: $child: $value");
-                $masterSettings{$parent}{$child} = $value;
+                $logger->info("Updating mainSettings with $parent: $child: $value");
+                $mainSettings{$parent}{$child} = $value;
             } elsif(scalar(@keysValues) == 4){
                 # for example, -y='modifyLineBreaks  :  environments: EndStartsOnOwnLine:3' -m
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
-                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $value");
-                $masterSettings{$parent}{$child}{$grandchild} = $value;
+                $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
+                $mainSettings{$parent}{$child}{$grandchild} = $value;
             } elsif(scalar(@keysValues) == 5){
                 # for example, -y='modifyLineBreaks  :  environments: one: EndStartsOnOwnLine:3' -m
                 my $parent = $keysValues[0];
                 my $child = $keysValues[1];
                 my $grandchild = $keysValues[2];
                 my $greatgrandchild = $keysValues[3];
-                $logger->info("Updating masterSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
-                $masterSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
+                $logger->info("Updating mainSettings with $parent: $child: $grandchild: $greatgrandchild: $value");
+                $mainSettings{$parent}{$child}{$grandchild}{$greatgrandchild} = $value;
             }
           
             &yaml_update_dumper_settings();
@@ -565,14 +565,14 @@ sub yaml_read_settings{
   # some users may wish to see showAmalgamatedSettings
   # which details the overall state of the settings modified
   # from the default in various user files
-  if($masterSettings{logFilePreferences}{showAmalgamatedSettings}){
+  if($mainSettings{logFilePreferences}{showAmalgamatedSettings}){
       $logger->info("Amalgamated/overall settings to be used:");
-      $logger->info(Dumper(\%masterSettings));
+      $logger->info(Dumper(\%mainSettings));
   }
 
   if( $is_m_switch_active 
-      and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks}
-      and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
+      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks}
+      and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
 
       # the following settings don't make sense, so we change
       #
@@ -589,7 +589,7 @@ sub yaml_read_settings{
       $logger->warn("*textWrapOptions:beforeFindingChildCodeBlocks:1 with textWrapOptions:perCodeBlockBasis:0");
       $logger->warn("turning off beforeFindingChildCodeBlocks by changing textWrapOptions:beforeFindingOtherCodeBlocks to be 0");
       $logger->warn("you need to set *both* values to be 1 to use the beforeFindingChildCodeBlocks feature");
-      ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} = 0;
+      ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} = 0;
   }
   return;
 }
@@ -670,11 +670,11 @@ sub yaml_alignment_at_ampersand_settings{
     #         delims: 1
     #         alignDoubleBackSlash: 1
     #         spacesBeforeDoubleBackSlash: 2
-    return unless ${$masterSettings{lookForAlignDelims}}{$name}; 
+    return unless ${$mainSettings{lookForAlignDelims}}{$name}; 
 
     $logger->trace("alignAtAmpersand settings for $name (see lookForAlignDelims)") if($is_t_switch_active);
 
-    if(ref ${$masterSettings{lookForAlignDelims}}{$name} eq "HASH"){
+    if(ref ${$mainSettings{lookForAlignDelims}}{$name} eq "HASH"){
       # specified as a hash, e.g
       #
       #   lookForAlignDelims:
@@ -704,37 +704,37 @@ sub yaml_alignment_at_ampersand_settings{
           #           default: 0
           #
           # approach:
-          #     - update masterSettings to have the relevant information: leadingBlankColumn and/or default
+          #     - update mainSettings to have the relevant information: leadingBlankColumn and/or default
           #     - delete the spacesBeforeAmpersand hash
           #
           if ($yamlname eq "spacesBeforeAmpersand" 
-              and ref(${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}) eq "HASH"){
+              and ref(${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}) eq "HASH"){
             $logger->trace("spacesBeforeAmpersand settings for $name") if $is_t_switch_active;
             
             #   lookForAlignDelims:
             #      aligned: 
             #         spacesBeforeAmpersand: 
             #           leadingBlankColumn: 0
-            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn}){
+            if(defined ${${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn}){
                 $logger->trace("spacesBeforeAmpersand: leadingBlankColumn specified for $name") if $is_t_switch_active;
-                ${${$masterSettings{lookForAlignDelims}}{$name}}{leadingBlankColumn} 
-                    =  ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn};
+                ${${$mainSettings{lookForAlignDelims}}{$name}}{leadingBlankColumn} 
+                    =  ${${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{leadingBlankColumn};
             }
 
             #   lookForAlignDelims:
             #      aligned: 
             #         spacesBeforeAmpersand: 
             #           default: 0
-            if(defined ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default}){
-                ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand} 
-                    = ${${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default};
+            if(defined ${${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default}){
+                ${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand} 
+                    = ${${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand}}{default};
             } else {
                 # deleting spacesBeforeAmpersand hash allows spacesBeforeAmpersand
                 # to pull from the default values @alignAtAmpersandInformation
-                delete ${${$masterSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand};
+                delete ${${$mainSettings{lookForAlignDelims}}{$name}}{spacesBeforeAmpersand};
             }
           }
-          ${$self}{ ${$_}{name} } = (defined ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$masterSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
+          ${$self}{ ${$_}{name} } = (defined ${${$mainSettings{lookForAlignDelims}}{$name}}{$yamlname} ) ? ${${$mainSettings{lookForAlignDelims}}{$name}}{$yamlname} : ${$_}{default};
       } 
     } else {
       # specified as a scalar, e.g
@@ -815,10 +815,10 @@ sub yaml_get_textwrap_removeparagraphline_breaks{
         #   will disable textWrapOptions for itemize
         
         # if 'all' is set as a hash, then the default value is 1, to be turned  off (possibly) later
-        ${$self}{$_} = ( ref ${$masterSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$masterSettings{modifyLineBreaks}{$_}}{all});
+        ${$self}{$_} = ( ref ${$mainSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$mainSettings{modifyLineBreaks}{$_}}{all});
 
         # get the columns
-        if($_ eq "textWrapOptions" and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
+        if($_ eq "textWrapOptions" and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
             $self->yaml_get_columns;
         }
         
@@ -835,9 +835,9 @@ sub yaml_get_textwrap_removeparagraphline_breaks{
         #
         if(${$self}{$_} 
                     and 
-                ref ${$masterSettings{modifyLineBreaks}{$_}}{all} ne "HASH" 
+                ref ${$mainSettings{modifyLineBreaks}{$_}}{all} ne "HASH" 
                     and 
-                ${$masterSettings{modifyLineBreaks}{$_}}{all}){
+                ${$mainSettings{modifyLineBreaks}{$_}}{all}){
                $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
                next;  
         };
@@ -865,11 +865,11 @@ sub yaml_get_textwrap_removeparagraphline_breaks{
         #
         if(${$self}{$_} 
                 and 
-           defined ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} 
+           defined ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} 
                 and 
-           ref ${${$masterSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY"
+           ref ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY"
          ){
-              my %except = map { $_ => 1 } @{${${$masterSettings{modifyLineBreaks}}{$_}}{all}{except}};
+              my %except = map { $_ => 1 } @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}};
               if( $except{$name} or $except{$YamlName}){
                 ${$self}{$_} = 0;
                 my $detail = ($except{$name} ? "per-name" : "per-code-block-type");
@@ -884,19 +884,19 @@ sub yaml_get_textwrap_removeparagraphline_breaks{
             #
             # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar
             # 
-            if(ref ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
+            if(ref ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
                 # textWrapOptions/removeParagraphLineBreaks:
                 #     all: 0
                 #     environments: 
                 #         quotation: 0
                 $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
-                ${$self}{$_} = ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name} if (defined ${${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name});
-            } elsif(defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}){
+                ${$self}{$_} = ${${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name} if (defined ${${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name});
+            } elsif(defined ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}){
                 # textWrapOptions/removeParagraphLineBreaks:
                 #     all: 0
                 #     environments: 0
-                $logger->trace("*$YamlName specified with just a number in $_ ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
-                ${$self}{$_} = ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName} if (defined ${$masterSettings{modifyLineBreaks}{$_}}{$YamlName});
+                $logger->trace("*$YamlName specified with just a number in $_ ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
+                ${$self}{$_} = ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName} if (defined ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName});
             }
         }
 
@@ -913,17 +913,17 @@ sub yaml_get_columns{
     my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
     # the columns settings can have a variety of different ways of being specified
-    if(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+    if(ref ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
         # assign default value of $columns
         my $columns;
-        if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
-            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+        if(defined ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
         } else {
             $columns = 80;
         }
 
         # possibly specify object wrapping on a per-name basis
-        if(ref ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
+        if(ref ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
             # for example:
             #   modifyLineBreaks:
             #       textWrapOptions:
@@ -933,10 +933,10 @@ sub yaml_get_columns{
             #                   default: 80
             #                   something: 10
             #                   another: 20
-            if(defined ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
-                $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
-            } elsif (${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
-                $columns = ${${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
+            if(defined ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
+                $columns = ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
+            } elsif (${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
+                $columns = ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
             }
         } else {
             # for example:
@@ -945,11 +945,11 @@ sub yaml_get_columns{
             #           columns: 
             #               default: 80
             #               environments: 10
-            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
+            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
         }
         ${$self}{columns} = $columns;
     } else {
-        ${$self}{columns} = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns};
+        ${$self}{columns} = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns};
     }
     return;
 }
@@ -973,8 +973,8 @@ sub yaml_poly_switch_get_every_or_custom_value{
   my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
 
   # these variables just ease the notation what follows
-  my $everyValue = ${${$masterSettings{modifyLineBreaks}}{$YamlName}}{$toBeAssignedToAlias};
-  my $customValue = ${${${$masterSettings{modifyLineBreaks}}{$YamlName}}{$name}}{$toBeAssignedToAlias};
+  my $everyValue = ${${$mainSettings{modifyLineBreaks}}{$YamlName}}{$toBeAssignedToAlias};
+  my $customValue = ${${${$mainSettings{modifyLineBreaks}}{$YamlName}}{$name}}{$toBeAssignedToAlias};
 
   # check for the *custom* value
   if (defined $customValue){
@@ -1043,12 +1043,12 @@ sub yaml_get_indentation_information{
     my $indentationInformation;
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
         # check that the 'thing' is defined
-        if(defined ${$masterSettings{$indentationAbout}}{$name}){
-            if(ref ${$masterSettings{$indentationAbout}}{$name} eq "HASH"){
+        if(defined ${$mainSettings{$indentationAbout}}{$name}){
+            if(ref ${$mainSettings{$indentationAbout}}{$name} eq "HASH"){
                 $logger->trace("$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)") if $is_t_switch_active ;
-                $indentationInformation = ${${$masterSettings{$indentationAbout}}{$name}}{$YamlName};
+                $indentationInformation = ${${$mainSettings{$indentationAbout}}{$name}}{$YamlName};
             } else {
-                $indentationInformation = ${$masterSettings{$indentationAbout}}{$name};
+                $indentationInformation = ${$mainSettings{$indentationAbout}}{$name};
                 $logger->trace("$indentationAbout indentation specified for $name (for *all* fields, body, optionalArguments, mandatoryArguments, afterHeading), using '$indentationInformation' (see $indentationAbout)") if $is_t_switch_active ;
             }
             # return, after performing an integrity check
@@ -1070,23 +1070,23 @@ sub yaml_get_indentation_information{
     foreach my $indentationAbout ("noAdditionalIndent","indentRules"){
         # global assignments in noAdditionalIndentGlobal and/or indentRulesGlobal
         my $globalInformation = $indentationAbout."Global";
-        next if(!(defined ${$masterSettings{$globalInformation}}{$YamlName})); 
-        if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$masterSettings{$globalInformation}}{$YamlName}==1){
+        next if(!(defined ${$mainSettings{$globalInformation}}{$YamlName})); 
+        if( ($globalInformation eq "noAdditionalIndentGlobal") and ${$mainSettings{$globalInformation}}{$YamlName}==1){
             $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
             return q();
         } elsif($globalInformation eq "indentRulesGlobal") {
-            if(${$masterSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
+            if(${$mainSettings{$globalInformation}}{$YamlName}=~m/^\h*$/){
                 $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)") if $is_t_switch_active;
-                return ${$masterSettings{$globalInformation}}{$YamlName};
-            } elsif (${$masterSettings{$globalInformation}}{$YamlName} ne '0') {
-                $logger->warn("$globalInformation specified (${$masterSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
+                return ${$mainSettings{$globalInformation}}{$YamlName};
+            } elsif (${$mainSettings{$globalInformation}}{$YamlName} ne '0') {
+                $logger->warn("$globalInformation specified (${$mainSettings{$globalInformation}}{$YamlName}) for $YamlName, but it needs to only contain horizontal space -- I'm ignoring this one");
           }
         }
     }
 
     # return defaultIndent, by default
     $logger->trace("Using defaultIndent for $name") if $is_t_switch_active;
-    return $masterSettings{defaultIndent};
+    return $mainSettings{defaultIndent};
 }
 
 sub yaml_get_object_attribute_for_indentation_settings{
@@ -1107,13 +1107,13 @@ sub yaml_get_object_attribute_for_indentation_settings{
 sub yaml_update_dumper_settings{
 
   # log file preferences
-  $Data::Dumper::Terse  = ${$masterSettings{logFilePreferences}{Dumper}}{Terse};
-  $Data::Dumper::Indent = ${$masterSettings{logFilePreferences}{Dumper}}{Indent};
-  $Data::Dumper::Useqq = ${$masterSettings{logFilePreferences}{Dumper}}{Useqq};
-  $Data::Dumper::Deparse = ${$masterSettings{logFilePreferences}{Dumper}}{Deparse};
-  $Data::Dumper::Quotekeys = ${$masterSettings{logFilePreferences}{Dumper}}{Quotekeys};
-  $Data::Dumper::Sortkeys = ${$masterSettings{logFilePreferences}{Dumper}}{Sortkeys};
-  $Data::Dumper::Pair = ${$masterSettings{logFilePreferences}{Dumper}}{Pair};
+  $Data::Dumper::Terse  = ${$mainSettings{logFilePreferences}{Dumper}}{Terse};
+  $Data::Dumper::Indent = ${$mainSettings{logFilePreferences}{Dumper}}{Indent};
+  $Data::Dumper::Useqq = ${$mainSettings{logFilePreferences}{Dumper}}{Useqq};
+  $Data::Dumper::Deparse = ${$mainSettings{logFilePreferences}{Dumper}}{Deparse};
+  $Data::Dumper::Quotekeys = ${$mainSettings{logFilePreferences}{Dumper}}{Quotekeys};
+  $Data::Dumper::Sortkeys = ${$mainSettings{logFilePreferences}{Dumper}}{Sortkeys};
+  $Data::Dumper::Pair = ${$mainSettings{logFilePreferences}{Dumper}}{Pair};
 
 }
 1;

@@ -17,7 +17,7 @@ package LatexIndent::UnNamedGroupingBracesBrackets;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -38,8 +38,8 @@ sub construct_unnamed_grouping_braces_brackets_regexp{
     my $blankLineToken = $tokens{blanklines};
 
     # arguments Before, by default, includes beamer special and numbered arguments, for example #1 #2, etc
-    my $argumentsBefore = qr/${${$masterSettings{fineTuning}}{arguments}}{before}/;
-    my $UnNamedGroupingFollowRegExp = qr/${${$masterSettings{fineTuning}}{UnNamedGroupingBracesBrackets}}{follow}/;
+    my $argumentsBefore = qr/${${$mainSettings{fineTuning}}{arguments}}{before}/;
+    my $UnNamedGroupingFollowRegExp = qr/${${$mainSettings{fineTuning}}{UnNamedGroupingBracesBrackets}}{follow}/;
 
     # store the regular expresssion for matching and replacing 
     $un_named_grouping_braces_RegExp = qr/

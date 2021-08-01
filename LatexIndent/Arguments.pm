@@ -19,7 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -56,7 +56,7 @@ sub find_opt_mand_arguments{
     my $objectDependentOptAndMandRegExp = (defined ${$self}{optAndMandArgsRegExp} ? ${$self}{optAndMandArgsRegExp} : $optAndMandRegExpWithLineBreaks);
 
     if(${$self}{body} =~ m/^$objectDependentOptAndMandRegExp\h*($trailingCommentRegExp)?/){
-        $logger->trace("Optional/Mandatory arguments".(${$masterSettings{commandCodeBlocks}}{roundParenthesesAllowed}?" (possibly round Parentheses)":q())." found in ${$self}{name}: $1") if $is_t_switch_active;
+        $logger->trace("Optional/Mandatory arguments".(${$mainSettings{commandCodeBlocks}}{roundParenthesesAllowed}?" (possibly round Parentheses)":q())." found in ${$self}{name}: $1") if $is_t_switch_active;
 
         # create a new Arguments object
         # The arguments object is a little different to most
@@ -179,7 +179,7 @@ sub find_opt_mand_arguments{
                     ${$self}{begin} =~ s/\h*$//s;
                 } elsif (${${${$arguments}{children}}[0]}{BeginStartsOnOwnLine}==3) {
                   $logger->trace("Adding a blank line immediately ${$self}{begin} ($BeginStringLogFile==3)") if $is_t_switch_active;
-                  $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
+                  $trailingCharacterToken = "\n".(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                 }
 
                 # modification
@@ -243,16 +243,16 @@ sub get_arguments_regexp{
     my $lineBreaksAtEnd = (defined ${input}{mode} and ${input}{mode} eq 'lineBreaksAtEnd')?'\R*':q();
 
     # arguments Before, by default, includes beamer special and numbered arguments, for example #1 #2, etc
-    my  $argumentsBefore = qr/${${$masterSettings{fineTuning}}{arguments}}{before}/;
-    my  $argumentsBetween = qr/${${$masterSettings{fineTuning}}{arguments}}{between}/;
+    my  $argumentsBefore = qr/${${$mainSettings{fineTuning}}{arguments}}{before}/;
+    my  $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
 
     # commands are allowed strings between arguments, e.g node, decoration, etc, specified in stringsAllowedBetweenArguments
     my $stringsBetweenArguments = q();
 
     if(defined ${input}{stringBetweenArguments} and ${input}{stringBetweenArguments}==1
-       and ref(${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}) eq "ARRAY"){
+       and ref(${$mainSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}) eq "ARRAY"){
         # grab the strings allowed between arguments
-        my @stringsAllowedBetweenArguments = @{${$masterSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
+        my @stringsAllowedBetweenArguments = @{${$mainSettings{commandCodeBlocks}}{stringsAllowedBetweenArguments}};
 
         $logger->trace("*Looping through array for commandCodeBlocks->stringsAllowedBetweenArguments") if $is_t_switch_active ;
 
@@ -404,7 +404,7 @@ sub comma_else{
     # check for existence of \\ statement, and associated line break information
     $self->check_for_else_statement(
               # else name regexp
-              elseNameRegExp=>qr/${${$masterSettings{fineTuning}}{modifyLineBreaks}}{comma}/,
+              elseNameRegExp=>qr/${${$mainSettings{fineTuning}}{modifyLineBreaks}}{comma}/,
               # else statements name
               ElseStartsOnOwnLine=>"CommaStartsOnOwnLine",
               # end statements

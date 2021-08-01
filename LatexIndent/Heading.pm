@@ -19,7 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 use Exporter qw/import/;
@@ -33,7 +33,7 @@ sub construct_headings_levels{
     my $self = shift;
 
     # grab the heading levels
-    my %headingsLevels = %{$masterSettings{indentAfterHeadings}};
+    my %headingsLevels = %{$mainSettings{indentAfterHeadings}};
 
     # output to log file
     $logger->trace("*Constructing headings reg exp for example, chapter, section, etc (see indentAfterThisHeading)") if $is_t_switch_active ;

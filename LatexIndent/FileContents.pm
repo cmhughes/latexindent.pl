@@ -17,7 +17,7 @@ package LatexIndent::FileContents;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Environment qw/$environmentBasicRegExp/;
@@ -41,8 +41,8 @@ sub find_file_contents_environments_and_preamble{
 
     # fileContents environments
     $logger->trace('*Searching for FILE CONTENTS environments (see fileContentsEnvironments)') if $is_t_switch_active;
-    $logger->trace(Dumper(\%{$masterSettings{fileContentsEnvironments}})) if($is_tt_switch_active);
-    while( my ($fileContentsEnv,$yesno)= each %{$masterSettings{fileContentsEnvironments}}){
+    $logger->trace(Dumper(\%{$mainSettings{fileContentsEnvironments}})) if($is_tt_switch_active);
+    while( my ($fileContentsEnv,$yesno)= each %{$mainSettings{fileContentsEnvironments}}){
 
         if(!$yesno){
             $logger->trace(" *not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
@@ -133,7 +133,7 @@ sub find_file_contents_environments_and_preamble{
     my $needToStorePreamble = 0;
 
     # try and find the preamble
-    if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$masterSettings{lookForPreamble}}{${$self}{fileExtension}}){
+    if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$mainSettings{lookForPreamble}}{${$self}{fileExtension}}){
 
         $logger->trace("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists") if $is_t_switch_active ;
 
@@ -173,7 +173,7 @@ sub find_file_contents_environments_and_preamble{
 
         $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
         # indentPreamble set to 1
-        if($masterSettings{indentPreamble}){
+        if($mainSettings{indentPreamble}){
             $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)") if $is_tt_switch_active;
             $needToStorePreamble = 1;
         } else {
@@ -193,7 +193,7 @@ sub find_file_contents_environments_and_preamble{
               if($preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/){
                 $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
                 # indentPreamble set to 1
-                if($masterSettings{indentPreamble}){
+                if($mainSettings{indentPreamble}){
                     $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
                     $indentThisChild = 1;
                 } else {
@@ -213,14 +213,14 @@ sub find_file_contents_environments_and_preamble{
                     push(@{${$self}{children}},$_);
               
                     # possible decoration in log file 
-                    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+                    $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
               }
     }
 
     if($needToStorePreamble){
         $preamble->dodge_double_backslash;
         $preamble->remove_leading_space;
-        $preamble->find_commands_or_key_equals_values_braces if($masterSettings{preambleCommandsBeforeEnvironments});
+        $preamble->find_commands_or_key_equals_values_braces if($mainSettings{preambleCommandsBeforeEnvironments});
         $preamble->tasks_particular_to_each_object;
         push(@{${$self}{children}},$preamble);
     }
@@ -255,11 +255,11 @@ sub tasks_particular_to_each_object{
         $self->yaml_get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
         } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
         }
     }

@@ -21,7 +21,7 @@ use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
@@ -36,7 +36,7 @@ sub file_extension_check{
     my ($name,$dir,$ext) = fileparse($fileName,qr/\..[^.]*$/);
     
     # grab the file extension preferences
-    my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
+    my %fileExtensionPreference= %{$mainSettings{fileExtensionPreference}};
 
     # sort the file extensions by preference 
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);

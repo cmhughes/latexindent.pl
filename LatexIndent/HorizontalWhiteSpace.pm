@@ -16,7 +16,7 @@ package LatexIndent::HorizontalWhiteSpace;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
@@ -30,27 +30,27 @@ sub remove_trailing_whitespace{
 
     # removeTrailingWhitespace can be either a hash or a scalar, but if
     # it's a scalar, we need to fix it
-    if(ref($masterSettings{removeTrailingWhitespace}) ne 'HASH'){
+    if(ref($mainSettings{removeTrailingWhitespace}) ne 'HASH'){
         $logger->trace("removeTrailingWhitespace specified as scalar, will update it to be a hash") if $is_t_switch_active;
         # grab the value
-        my $removeTWS = $masterSettings{removeTrailingWhitespace};
+        my $removeTWS = $mainSettings{removeTrailingWhitespace};
 
         # delete the scalar
-        delete $masterSettings{removeTrailingWhitespace};
+        delete $mainSettings{removeTrailingWhitespace};
 
         # redefine it as a hash
-        ${$masterSettings{removeTrailingWhitespace}}{beforeProcessing} = $removeTWS; 
-        ${$masterSettings{removeTrailingWhitespace}}{afterProcessing} = $removeTWS; 
+        ${$mainSettings{removeTrailingWhitespace}}{beforeProcessing} = $removeTWS; 
+        ${$mainSettings{removeTrailingWhitespace}}{afterProcessing} = $removeTWS; 
         $logger->trace("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: afterProcessing is now $removeTWS") if $is_t_switch_active;
     }
 
     # this method can be called before the indendation, and after, depending upon the input
     if($input{when} eq "before"){
-        return unless(${$masterSettings{removeTrailingWhitespace}}{beforeProcessing});
+        return unless(${$mainSettings{removeTrailingWhitespace}}{beforeProcessing});
         $logger->trace("Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)") if $is_t_switch_active;
     } elsif($input{when} eq "after"){
-        return unless(${$masterSettings{removeTrailingWhitespace}}{afterProcessing});
+        return unless(${$mainSettings{removeTrailingWhitespace}}{afterProcessing});
         $logger->trace("Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)") if $is_t_switch_active;
     } else {
         return;

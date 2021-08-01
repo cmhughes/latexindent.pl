@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_rr_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
@@ -34,7 +34,7 @@ sub make_replacements{
       $logger->trace("*Replacement mode, -rr switch is active") if $is_t_switch_active ;
     }
 
-	my @replacements = @{$masterSettings{replacements}};
+	my @replacements = @{$mainSettings{replacements}};
 
 	foreach ( @replacements ){
         next if !(${$_}{this} or ${$_}{substitution});

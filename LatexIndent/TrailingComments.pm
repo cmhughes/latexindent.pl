@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -28,7 +28,7 @@ our $commentCounter = 0;
 our $trailingCommentRegExp;
 
 sub construct_trailing_comment_regexp{
-    my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+    my  $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
 
     $trailingCommentRegExp = qr/$notPreceededBy%$tokens{trailingComment}\d+$tokens{endOfToken}/;
 }
@@ -56,7 +56,7 @@ sub remove_trailing_comments{
     my $self = shift;
     $logger->trace("*Storing trailing comments")if $is_t_switch_active;
 
-    my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+    my  $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
 
     # perform the substitution
     ${$self}{body} =~ s/
@@ -104,8 +104,8 @@ sub put_trailing_comments_back_in{
             my $trailingcommentIDwithLineBreaks;
             
             # construct a reg exp that contains possible line breaks in between each character
-            if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
-                $trailingcommentIDwithLineBreaks = join("\\".${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator}."?",split(//,$trailingcommentID));
+            if(${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne ''){
+                $trailingcommentIDwithLineBreaks = join("\\".${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator}."?",split(//,$trailingcommentID));
             } else {
                 $trailingcommentIDwithLineBreaks = join("(?:\\h|\\R)*",split(//,$trailingcommentID));
             }
@@ -114,7 +114,7 @@ sub put_trailing_comments_back_in{
             # replace the line-broken trailing comment ID with a non-broken trailing comment ID
             ${$self}{body} =~ s/%\R?$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
       }
-      my  $notPreceededBy = qr/${${$masterSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+      my  $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
       if(${$self}{body} =~ m/%$trailingcommentID
                               (
                                   (?!                  # not immediately preceeded by 

@@ -17,7 +17,7 @@ package LatexIndent::IfElseFi;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -33,7 +33,7 @@ our $ifElseFiBasicRegExp = qr/\\if/;
 # note: we search for \else separately in an attempt to keep this regexp a little more managable
 
 sub construct_ifelsefi_regexp{
-    my $ifElseFiNameRegExp = qr/${${$masterSettings{fineTuning}}{ifElseFi}}{name}/;
+    my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
     $ifElseFiRegExp = qr/
                 (
                     \\

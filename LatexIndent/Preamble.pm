@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_m_switch_active/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Environment qw/$environmentBasicRegExp/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
@@ -57,15 +57,15 @@ sub tasks_particular_to_each_object{
     # search for ifElseFi blocks
     $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
-    if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
+    if(${$mainSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
         $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
 
         # search for commands with arguments
-        $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
+        $self->find_commands_or_key_equals_values_braces if(!$mainSettings{preambleCommandsBeforeEnvironments});
     } else {
         # search for commands with arguments
-        $self->find_commands_or_key_equals_values_braces if(!$masterSettings{preambleCommandsBeforeEnvironments});
+        $self->find_commands_or_key_equals_values_braces if(!$mainSettings{preambleCommandsBeforeEnvironments});
 
         # search for special begin/end
         $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
@@ -76,11 +76,11 @@ sub tasks_particular_to_each_object{
         $self->yaml_get_textwrap_removeparagraphline_breaks;
 
         # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
         } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
         }
     }

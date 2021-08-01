@@ -19,7 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::HiddenChildren qw/%familyTree/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use Text::Tabs;
 use Data::Dumper;
@@ -126,7 +126,7 @@ sub indent_body{
     my $indentation = ${$self}{indentation};
 
     # possibly remove paragraph line breaks
-    $self->remove_paragraph_line_breaks if ($is_m_switch_active and ${$self}{removeParagraphLineBreaks} and !${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap});
+    $self->remove_paragraph_line_breaks if ($is_m_switch_active and ${$self}{removeParagraphLineBreaks} and !${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap});
 
     # body indendation
     if(${$self}{linebreaksAtEnd}{begin}==1){
@@ -236,7 +236,7 @@ sub final_indentation_check{
                         $indentation;
                        /xsmeg;
 
-    return unless($masterSettings{maximumIndentation} =~ m/^\h+$/);
+    return unless($mainSettings{maximumIndentation} =~ m/^\h+$/);
 
     # maximum indentation check
     $logger->trace("*Maximum indentation check") if($is_t_switch_active);
@@ -246,7 +246,7 @@ sub final_indentation_check{
     ${$self}{body} = join("",@expanded_lines);
 
     # grab the maximum indentation
-    my $maximumIndentation = $masterSettings{maximumIndentation};
+    my $maximumIndentation = $mainSettings{maximumIndentation};
     my $maximumIndentationLength = length($maximumIndentation)+1;
 
     # replace any leading space that is greater than the 
@@ -355,7 +355,7 @@ sub indent_children_recursively{
                                 $trailingCharacterToken = "%".$self->add_comment_symbol;
                             } elsif ($_==3){
                                 $logger->trace("Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)") if $is_t_switch_active;
-                                $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
+                                $trailingCharacterToken = "\n".(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                             } else {
                                 $logger->trace("Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)") if $is_t_switch_active;
                             }

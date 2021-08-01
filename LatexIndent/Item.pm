@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
@@ -36,7 +36,7 @@ sub construct_list_of_items{
     my $self = shift;
 
     # put together a list of the items
-    while( my ($item,$lookForThisItem)= each %{$masterSettings{itemNames}}){
+    while( my ($item,$lookForThisItem)= each %{$mainSettings{itemNames}}){
         $listOfItems .= ($listOfItems eq "")?"$item":"|$item" if($lookForThisItem);
     }
 
@@ -71,7 +71,7 @@ sub find_items{
 
     # otherwise loop through the item names
     $logger->trace("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
-    $logger->trace(Dumper(\%{$masterSettings{itemNames}})) if $is_tt_switch_active;
+    $logger->trace(Dumper(\%{$mainSettings{itemNames}})) if $is_tt_switch_active;
 
     while(${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/){
 
