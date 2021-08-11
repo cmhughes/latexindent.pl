@@ -1,13 +1,15 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 20
+        columns: 80
         perCodeBlockBasis: 1
-        all:
-            except:
-                - 'mainDocument'
+        all: 1
     removeParagraphLineBreaks:
         all:
             except:
-                - 'mainDocument'
+                - 'masterDocument'
                 - 'itemize'
         beforeTextWrap: 1
+
+logFilePreferences:
+    showEveryYamlRead: 1
+    showAmalgamatedSettings: 1

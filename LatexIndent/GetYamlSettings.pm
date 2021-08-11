@@ -562,14 +562,6 @@ sub yaml_read_settings{
 
   }
 
-  # some users may wish to see showAmalgamatedSettings
-  # which details the overall state of the settings modified
-  # from the default in various user files
-  if($mainSettings{logFilePreferences}{showAmalgamatedSettings}){
-      $logger->info("Amalgamated/overall settings to be used:");
-      $logger->info(Dumper(\%mainSettings));
-  }
-
   if( $is_m_switch_active 
       and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks}
       and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
@@ -591,6 +583,87 @@ sub yaml_read_settings{
       $logger->warn("you need to set *both* values to be 1 to use the beforeFindingChildCodeBlocks feature");
       ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} = 0;
   }
+
+  # modifyLineBreaks:
+  #     textWrapOptions:
+  #         columns: 80
+  #         perCodeBlockBasis: 1
+  #         masterDocument: 1
+  #
+  # needs to be interpretted as
+  #
+  # modifyLineBreaks:
+  #     textWrapOptions:
+  #         columns: 80
+  #         perCodeBlockBasis: 1
+  #         mainDocument: 1
+  #
+  if( $is_m_switch_active 
+      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} 
+      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{masterDocument} ){
+      $logger->warn("*textWrapOptions:masterDocument specified when textWrapOptions:mainDocument preferred");
+      $logger->warn("setting textWrapOptions:mainDocument: 1, but note that future versions of latexindent.pl may not support this");
+      $logger->warn("recommendation to use textWrapOptions:mainDocument: 1 in place of textWrapOptions:masterDocument:1");
+      ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{mainDocument} = 1;
+  }
+  
+  # modifyLineBreaks:
+  #     removeParagraphLineBreaks:
+  #         masterDocument: 1
+  #
+  # needs to be interpretted as
+  #
+  # modifyLineBreaks:
+  #     removeParagraphLineBreaks:
+  #         mainDocument: 1
+  #
+  if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument} ){
+      $logger->warn("*removeParagraphLineBreaks:masterDocument specified when removeParagraphLineBreaks:mainDocument preferred");
+      $logger->warn("setting removeParagraphLineBreaks:mainDocument: 1, but note that future versions of latexindent.pl may not support this");
+      $logger->warn("recommendation to use removeParagraphLineBreaks:mainDocument: 1 in place of removeParagraphLineBreaks:masterDocument:1");
+      ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{mainDocument} = 1;
+  }
+
+  # modifyLineBreaks:
+  #     textWrapOptions/removeParagraphLineBreaks:
+  #         all:
+  #             except:
+  #                 - 'masterDocument'
+  #
+  # need to be interpretted as
+  #
+  # modifyLineBreaks:
+  #     textWrapOptions/removeParagraphLineBreaks:
+  #         all:
+  #             except:
+  #                 - 'mainDocument'
+  #
+  if( $is_m_switch_active ){
+    foreach ("textWrapOptions","removeParagraphLineBreaks"){
+      if ( ref ${$mainSettings{modifyLineBreaks}{$_}}{all} eq "HASH" 
+                and
+           defined ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} 
+                and 
+           ref ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY") {
+            my %except = map { $_ => 1 } @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}};
+            if($except{masterDocument}){
+                $logger->warn("*$_:all:except:masterDocument specified when mainDocument preferred");
+                $logger->warn("setting $_:all:except:mainDocument:1, but note that future versions of latexindent.pl may not support this");
+                $logger->warn("recommendation to use $_:all:except:mainDocument:1 in place of $_:all:except:masterDocument:1");
+                push( @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}}, "mainDocument" );
+            }
+         }
+    }
+  }
+  
+  # some users may wish to see showAmalgamatedSettings
+  # which details the overall state of the settings modified
+  # from the default in various user files
+  if($mainSettings{logFilePreferences}{showAmalgamatedSettings}){
+      $logger->info("Amalgamated/overall settings to be used:");
+      $logger->info(Dumper(\%mainSettings));
+  }
+
   return;
 }
 

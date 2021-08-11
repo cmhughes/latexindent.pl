@@ -127,10 +127,17 @@ latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.ya
 	\texttt{namedGroupingBracesBrackets}, \texttt{UnNamedGroupingBracesBrackets} are
 	controlled by the \texttt{optionalArguments} and the \texttt{mandatoryArguments}.
 
-	The only special case is the \texttt{masterDocument} field; this is designed for
+	The only special case is the \texttt{mainDocument} field; this is designed for
 	`chapter'-type files that may contain paragraphs that are not within any other
 	code-blocks. For example, consider the file in \cref{lst:shortlines-md}, with the YAML
 	settings in \cref{lst:remove-para4-yaml}.
+
+	Note:
+	\announce{new}*{removeParagraphLineBreaks: masterDocument now mainDocument}
+	\texttt{mainDocument} replaces \texttt{masterDocument} which was used in previous verions
+	of \texttt{latexindent.pl}. The field \texttt{masterDocument} is still supported, but it
+	is anticipated to be removed in a future version, so I recommend using
+	\texttt{mainDocument} instead.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/shortlines-md.tex}{\texttt{shortlines-md.tex}}{lst:shortlines-md}

@@ -10,7 +10,7 @@
 	Of all the available text wrapping options, I consider \cref{lst:textwrap-qs-yaml} to be
 	among the most helpful starting points.
 
-	\cmhlistingsfromfile*{demonstrations/textwrap-qs.yaml}[MLB-TCB,width=1\linewidth]{\texttt{textwrap-qs.yaml}}{lst:textwrap-qs-yaml}
+	\cmhlistingsfromfile{demonstrations/textwrap-qs.yaml}[MLB-TCB,width=1\linewidth]{\texttt{textwrap-qs.yaml}}{lst:textwrap-qs-yaml}
 
 	\index{text wrap!quick start}
 
@@ -182,15 +182,22 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to
 	those detailed in \vref{tab:code-blocks}.
 
-	The only special case is the \texttt{masterDocument} field; this is designed for
+	The only special case is the \texttt{mainDocument} field; this is designed for
 	`chapter'-type files that may contain paragraphs that are not within any other
 	code-blocks. The same notation is used between this feature and the
 	\texttt{removeParagraphLineBreaks} described in \vref{lst:removeParagraphLineBreaks}; in
 	fact, the two features can even be combined (this is detailed in
 	\vref{subsec:removeparagraphlinebreaks:and:textwrap}).
 
+	Note:
+	\announce{new}*{textWrapOptions: masterDocument now mainDocument}
+	\texttt{mainDocument} replaces \texttt{masterDocument} which was used in previous verions
+	of \texttt{latexindent.pl}. The field \texttt{masterDocument} is still supported, but it
+	is anticipated to be removed in a future version, so I recommend using
+	\texttt{mainDocument} instead.
+
 	Let's explore these switches with reference to the code given in \cref{lst:textwrap5};
-	the text outside of the environment is considered part of the \texttt{masterDocument}.
+	the text outside of the environment is considered part of the \texttt{mainDocument}.
 
 	\begin{widepage}
 		\cmhlistingsfromfile{demonstrations/textwrap5.tex}{\texttt{textwrap5.tex}}{lst:textwrap5}
@@ -221,8 +228,8 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 		      will operate upon \emph{all} code blocks;
 		\item in \cref{lst:textwrap4-yaml} we have \emph{not} specified \texttt{all}, and instead, have
 		      specified that text wrapping should be applied to each of \texttt{environments} and
-		      \texttt{masterDocument};
-		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for \texttt{masterDocument}
+		      \texttt{mainDocument};
+		\item in \cref{lst:textwrap5-yaml} we have specified text wrapping for \texttt{mainDocument}
 		      and on a \emph{per-name} basis for \texttt{environments} code blocks.
 	\end{itemize}
 
@@ -303,7 +310,7 @@ latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
 		\item in \cref{lst:textwrap6-mod7} the text wrapping routine has not been applied to
 		      \texttt{myenv} because it has been switched off (per-name) in \cref{lst:textwrap7-yaml};
 		\item in \cref{lst:textwrap6-mod8} the text wrapping routine has not been applied to
-		      \texttt{masterDocument} because of the settings in \cref{lst:textwrap8-yaml}.
+		      \texttt{mainDocument} because of the settings in \cref{lst:textwrap8-yaml}.
 	\end{itemize}
 
 	The \texttt{columns} field has a variety of different ways that it can be specified;
@@ -338,12 +345,12 @@ latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
 
 	Notice that:
 	\begin{itemize}
-		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{masterDocument} has been wrapped
+		\item in \cref{lst:textwrap6-mod9} the text for the \texttt{mainDocument} has been wrapped
 		      using \texttt{30} columns, while \texttt{environments} has been wrapped using \texttt{50}
 		      columns;
 		\item in \cref{lst:textwrap6-mod11} the text for \texttt{myenv} has been wrapped using
 		      \texttt{50} columns, the text for \texttt{another} has been wrapped using \texttt{15}
-		      columns, and \texttt{masterDocument} has been wrapped using \texttt{30} columns.
+		      columns, and \texttt{mainDocument} has been wrapped using \texttt{30} columns.
 	\end{itemize}
 	If you don't specify a \texttt{default} value on per-code-block basis, then the
 	\texttt{default} value from \texttt{columns} will be inherited; if you don't specify a

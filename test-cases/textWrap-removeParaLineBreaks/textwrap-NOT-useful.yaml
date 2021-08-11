@@ -3,7 +3,7 @@ modifyLineBreaks:
         columns: 80
         beforeFindingChildCodeBlocks: 0
         perCodeBlockBasis: 1
-        masterDocument: 1
+        mainDocument: 1
     removeParagraphLineBreaks:
-        masterDocument: 1
+        mainDocument: 1
         beforeTextWrap: 1

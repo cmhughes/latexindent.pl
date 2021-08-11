@@ -47,7 +47,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 
 	To motivate its use, we begin with the file in \cref{lst:textwrap-bfccb}.
 
-	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb.tex}{\texttt{textwrap-bfccb.tex}}{lst:textwrap-bfccb}
+	\cmhlistingsfromfile{demonstrations/textwrap-bfccb.tex}{\texttt{textwrap-bfccb.tex}}{lst:textwrap-bfccb}
 
 	Using the settings in \cref{lst:textwrap12-yaml} and running
 	\begin{commandshell}
@@ -55,7 +55,7 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap12.yaml -o=+-mod12
 \end{commandshell}
 	gives the output in \cref{lst:textwrap-bfccb-mod12}
 
-	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod12.tex}{\texttt{textwrap-bfccb-mod12.tex}}{lst:textwrap-bfccb-mod12}
+	\cmhlistingsfromfile{demonstrations/textwrap-bfccb-mod12.tex}{\texttt{textwrap-bfccb-mod12.tex}}{lst:textwrap-bfccb-mod12}
 
 	Note that we have added a `ruler' to \cref{lst:textwrap-bfccb-mod12} to assist with
 	measuring.
@@ -83,9 +83,9 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap13.yaml -o=+-mod13
 \end{commandshell}
 	we receive the output in \cref{lst:textwrap-bfccb-mod13}.
 
-	\cmhlistingsfromfile*{demonstrations/textwrap13.yaml}[MLB-TCB,width=\linewidth]{\texttt{textwrap13.yaml} (tweaked quick start)}{lst:textwrap13-yaml}
+	\cmhlistingsfromfile{demonstrations/textwrap13.yaml}[MLB-TCB,width=\linewidth]{\texttt{textwrap13.yaml} (tweaked quick start)}{lst:textwrap13-yaml}
 
-	\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod13.tex}{\texttt{textwrap-bfccb-mod13.tex}}{lst:textwrap-bfccb-mod13}
+	\cmhlistingsfromfile{demonstrations/textwrap-bfccb-mod13.tex}{\texttt{textwrap-bfccb-mod13.tex}}{lst:textwrap-bfccb-mod13}
 
 	This output is different from \cref{lst:textwrap-bfccb-mod12}, but is still not ideal, as
 	the \texttt{test} command has indented its mandatory argument. We can employ
@@ -98,8 +98,8 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
 
 	\begin{widepage}
 		\begin{cmhtcbraster}
-			\cmhlistingsfromfile*{demonstrations/textwrap-bfccb-mod14.tex}{\texttt{textwrap-bfccb-mod14.tex}}{lst:textwrap-bfccb-mod14}
-			\cmhlistingsfromfile*{demonstrations/textwrap14.yaml}[MLB-TCB]{\texttt{textwrap14.yaml}}{lst:textwrap14-yaml}
+			\cmhlistingsfromfile{demonstrations/textwrap-bfccb-mod14.tex}{\texttt{textwrap-bfccb-mod14.tex}}{lst:textwrap-bfccb-mod14}
+			\cmhlistingsfromfile{demonstrations/textwrap14.yaml}[MLB-TCB]{\texttt{textwrap14.yaml}}{lst:textwrap14-yaml}
 		\end{cmhtcbraster}
 	\end{widepage}
 
@@ -109,4 +109,4 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
 	output in \cref{lst:textwrap-bfccb-mod14}, then we would need to employ an exception,
 	which we demonstrate in \cref{lst:textwrap15-yaml}.
 
-	\cmhlistingsfromfile*{demonstrations/textwrap15.yaml}[MLB-TCB]{\texttt{textwrap15.yaml}}{lst:textwrap15-yaml}
+	\cmhlistingsfromfile{demonstrations/textwrap15.yaml}[MLB-TCB]{\texttt{textwrap15.yaml}}{lst:textwrap15-yaml}
