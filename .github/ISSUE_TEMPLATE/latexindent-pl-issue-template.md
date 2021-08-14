@@ -11,7 +11,7 @@ Please provide the following when posting an issue:
 
 original .tex code
 --
-*Please paste your .tex code here*
+*Please paste your .tex code here. Please note in answering your issue, I may add the code you provide to the test-cases directory. Please detail explicitly if you would prefer me not to do so.*.
 
 yaml settings
 --
