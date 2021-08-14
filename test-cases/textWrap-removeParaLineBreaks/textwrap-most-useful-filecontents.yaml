@@ -1,0 +1,16 @@
+indentPreamble: 1
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 60
+        perCodeBlockBasis: 1
+        beforeFindingChildCodeBlocks: 1
+        mainDocument: 1
+        filecontents: 1
+    removeParagraphLineBreaks:
+        mainDocument: 1
+        beforeTextWrap: 1
+        filecontents: 1
+
+noAdditionalIndentGlobal:
+    filecontents: 1

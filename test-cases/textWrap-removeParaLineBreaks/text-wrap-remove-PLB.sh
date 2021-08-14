@@ -188,6 +188,9 @@ latexindent.pl -s -l textwrap-most-useful,test1,addruler1 -m -r textwrap-bfccb1.
 latexindent.pl -s -l textwrap-most-useful,test2,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod2
 latexindent.pl -s -l textwrap-most-useful,test3,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod3
 
+latexindent.pl -s -l textwrap-most-useful-preamble.yaml,addruler2 -m -r textwrap-bfccb2.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful-filecontents.yaml,addruler2 -m -r textwrap-bfccb3.tex -o=+-mod1
+
 # mainDocument instead of masterDocument
 latexindent.pl -s -l textwrap-most-useful1.yaml -m issue-158.tex -o=+-mod1A
 git status
