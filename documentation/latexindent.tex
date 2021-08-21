@@ -27,7 +27,6 @@
 \usepackage{multicol}
 \usepackage{changepage}                              % adjust width of page
 \usepackage{fancyhdr}                                % headers & footers
-\usepackage{wrapfig}
 \usepackage{fontawesome}
 \usepackage[sc,format=hang,font=small]{caption}      % captions
 \usepackage[backend=bibtex]{biblatex}                % bibliography
@@ -42,7 +41,7 @@
 \usepackage{totalcount}
 \usepackage{standalone}
 % setup gitinfo2, as in the manual, details just above begin{document}
-\usepackage[mark,grumpy]{gitinfo2}
+\usepackage[mark]{gitinfo2}
 % tikz, tcolorbox libraries
 \usetikzlibrary{positioning}
 \usetikzlibrary{decorations.pathmorphing}
@@ -767,9 +766,14 @@
   {}% <numberless-entry-format>
   {\titlerule*[0.5em]{$\cdot$}\contentspage}
 
+% to explore in the future: 
+%   partial toc customisation
+%   https://tex.stackexchange.com/questions/66345/how-to-remove-section-indentation-in-partial-toc-using-titletoc
+
 \setcounter{secnumdepth}{6}
 \setcounter{tocdepth}{4}
 \makeindex
+
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
