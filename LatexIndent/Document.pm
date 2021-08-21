@@ -100,7 +100,7 @@ sub operate_on_file{
         $self->verbatim_modify_line_breaks if $is_m_switch_active; 
         $self->make_replacements(when=>"before") if $is_rv_switch_active;
         $self->text_wrap if ($is_m_switch_active and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
-        $self->protect_blank_lines;
+        $self->protect_blank_lines if $is_m_switch_active;
         $self->remove_trailing_whitespace(when=>"before");
         $self->find_file_contents_environments_and_preamble;
         $self->dodge_double_backslash;
@@ -108,8 +108,8 @@ sub operate_on_file{
         $self->process_body_of_text;
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
         $self->remove_trailing_whitespace(when=>"after");
-        $self->condense_blank_lines;
-        $self->unprotect_blank_lines;
+        $self->condense_blank_lines  if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto} );
+        $self->unprotect_blank_lines if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{preserveBlankLines} );
         $self->un_dodge_double_backslash;
         $self->make_replacements(when=>"after") if $is_rv_switch_active;
         $self->put_verbatim_back_in (match=>"everything-except-commands");

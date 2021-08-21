@@ -179,7 +179,7 @@ sub find_file_contents_environments_and_preamble{
         } else {
             # indentPreamble set to 0
             $logger->trace("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)") if $is_t_switch_active;
-            $preamble->unprotect_blank_lines;
+            $preamble->unprotect_blank_lines if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{preserveBlankLines} );
             $verbatimStorage{${$preamble}{id}} = $preamble;
         }
     } else {

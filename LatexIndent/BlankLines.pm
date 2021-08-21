@@ -24,7 +24,6 @@ use Exporter qw/import/;
 our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 
 sub protect_blank_lines{
-    return unless $is_m_switch_active;
     my $self = shift;
     
     unless(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}){
@@ -38,9 +37,6 @@ sub protect_blank_lines{
 }
 
 sub condense_blank_lines{
-    return unless $is_m_switch_active;
-
-    return unless ${$mainSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto}>0;
 
     my $self = shift;
     
@@ -80,9 +76,6 @@ sub condense_blank_lines{
 }
 
 sub unprotect_blank_lines{
-    return unless $is_m_switch_active;
-
-    return unless ${$mainSettings{modifyLineBreaks}}{preserveBlankLines};
     my $self = shift;
     
     # remove any empty lines that might have been added by the text_wrap routine; see, for example,
