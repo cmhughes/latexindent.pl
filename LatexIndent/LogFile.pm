@@ -81,6 +81,10 @@ usage: latexindent.pl [options] [file]
       -rr, --onlyreplacement
           *only* replacement mode, no indentation;
           verbatim blocks not respected
+      -k|--check mode
+          will exit with 0 if document body unchanged, 1 if changed
+      -kv|--check mode verbose
+          as in check mode, but outputs diff to screen as well as to logfile
 ENDQUOTE
     ;
     exit(2);
@@ -135,6 +139,8 @@ ENDQUOTE
     $logger->info("-c|--cruft: cruft directory") if($switches{cruftDirectory});
     $logger->info("-r|--replacement: replacement mode") if($switches{replacement});
     $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if($switches{onlyreplacement});
+    $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if($switches{check});
+    $logger->info("-kv|--check mode verbose: as in check mode, but outputs diff to screen") if($switches{checkverbose});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){

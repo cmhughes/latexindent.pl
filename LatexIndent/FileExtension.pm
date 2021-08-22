@@ -22,7 +22,7 @@ use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/%switches/;
+use LatexIndent::Switches qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
@@ -149,5 +149,10 @@ sub file_extension_check{
 
     # the all-important step: update the body
     ${$self}{body} = join("",@lines);
+
+    # necessary extra storage if check switch is active
+    if ($is_check_switch_active){
+        ${$self}{originalBody} = ${$self}{body};
+    }
 }
 1;
