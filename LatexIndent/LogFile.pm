@@ -28,7 +28,7 @@ sub process_switches{
     # -v switch is just to show the version number
     if($switches{version}) {
         print $versionNumber,", ",$versionDate,"\n";
-        exit(2);
+        exit(0);
     }
 
     if(scalar(@ARGV) < 1 or $switches{showhelp}) {
@@ -81,13 +81,13 @@ usage: latexindent.pl [options] [file]
       -rr, --onlyreplacement
           *only* replacement mode, no indentation;
           verbatim blocks not respected
-      -k|--check mode
+      -k, --check mode
           will exit with 0 if document body unchanged, 1 if changed
-      -kv|--check mode verbose
+      -kv, --check mode verbose
           as in check mode, but outputs diff to screen as well as to logfile
 ENDQUOTE
     ;
-    exit(2);
+    exit(0);
 }
 
     # if we've made it this far, the processing of switches and logging begins
@@ -97,7 +97,14 @@ ENDQUOTE
     
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
-    die "Could not find directory ${$self}{cruftDirectory}\nExiting, no indentation done." if(!(-d ${$self}{cruftDirectory}));
+
+    # if cruft directory does not exist
+    if(!(-d ${$self}{cruftDirectory})){
+        $logger->fatal("*Could not find directory ${$self}{cruftDirectory}");
+        $logger->fatal("Exiting, no indendation done."); 
+        $self->output_logfile();
+        exit(6);
+    }
 
     my $logfileName = ($switches{cruftDirectory} ? ${$self}{cruftDirectory}."/" : '').($switches{logFileName}||"indent.log");
     

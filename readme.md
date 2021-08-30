@@ -2,6 +2,8 @@
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/publish-windows-exe.yaml/badge.svg)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -28,6 +30,8 @@ For complete details, please see:
 
 ## build status
 I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`. 
+Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection 
+of test cases on every commit.
 
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)

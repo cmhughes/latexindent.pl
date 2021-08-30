@@ -20,13 +20,13 @@ use Exporter qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_check_verbose_switch_active/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/poor_mans_diff/;
+our @EXPORT_OK = qw/simple_diff/;
 
-sub poor_mans_diff {
+sub simple_diff {
     my $self = shift;
 
-    # poor man's diff...
-    $logger->info("*poor man's diff: (check switch active)");
+    # simple diff...
+    $logger->info("*simple diff: (check switch active)");
 
     # check switch work below here
     if (${$self}{originalBody} eq ${$self}{body}){

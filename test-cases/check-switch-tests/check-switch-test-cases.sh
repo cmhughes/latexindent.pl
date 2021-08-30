@@ -7,6 +7,6 @@ verbatimTest=1
 
 for file in *.tex
 do
-   latexindent.pl --check -s $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
+   latexindent.pl --check -s -w $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
 done
 git status

@@ -109,7 +109,14 @@ sub create_back_up_file{
                         # check that the oldBackupFile exists
                         if(-e $oldBackupFile){
                         $logger->info(" copying $oldBackupFile to $newBackupFile ");
-                            copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
+                            my $backUpFilePossible = 1;
+                            copy($oldBackupFile,$newBackupFile) or ($backUpFilePossible = 0);
+                            if ($backUpFilePossible==0){ 
+                                $logger->fatal("*Could not write to backup file $backupFile. Please check permissions. Exiting.");
+                                $logger->fatal("Exiting, no indendation done."); 
+                                $self->output_logfile();
+                                exit(5);
+                            }
                         }
                     }
                 }
@@ -131,6 +138,13 @@ sub create_back_up_file{
     # output these lines to the log file
     $logger->info("Backup file: $backupFile");
     $logger->info("$fileName will be overwritten after indentation");
-    copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
+    my $backUpFilePossible = 1;
+    copy($fileName,$backupFile) or ($backUpFilePossible = 0);
+    if ($backUpFilePossible==0){ 
+        $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
+        $logger->fatal("Exiting, no indendation done."); 
+        $self->output_logfile();
+        exit(5);
+    }
 }
 1;

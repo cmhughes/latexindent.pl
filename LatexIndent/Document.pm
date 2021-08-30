@@ -24,7 +24,7 @@ use open ':std', ':encoding(UTF-8)';
 use LatexIndent::Switches qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
 use LatexIndent::LogFile qw/process_switches $logger/;
 use LatexIndent::Logger qw/@logFileLines/;
-use LatexIndent::Check qw/poor_mans_diff/;
+use LatexIndent::Check qw/simple_diff/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
@@ -147,7 +147,7 @@ sub construct_regular_expressions{
 sub output_indented_text{
     my $self = shift;
 
-    $self->poor_mans_diff() if $is_check_switch_active;
+    $self->simple_diff() if $is_check_switch_active;
 
     $logger->info("*Output routine:");
 

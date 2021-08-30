@@ -1,14 +1,31 @@
 name: Batch check of latexindent.pl
+# PURPOSE:
+#
+# run 
+# 
+#   latexindent --check <file.tex>
+#
+# on each .tex file within test-cases/check-switch-tests
+# for each of
+#
+#   Linux, MacOS, and Windows 
+#
+# and multiple Perl versions within each.
+#
+# Note: this action runs only on develop branch, there's 
+#       no need to run it on the main branch nor on 
+#       experimental feature branches
+#
+
 on:
   push:
+    branches:
+      - develop
 
 jobs:
   latexindent-batch-check:
-    # run 
-    #   latexindent --check 
-    # on each .tex file within test-cases/check-switch-tests
+    # Linux and MacOS
     #
-    # Process will fail if indented text is different from file
     name: latexindent.pl --check on test-cases/check-switch-tests/*.tex (${{ matrix.platform }}, Perl ${{ matrix.perl }})
     strategy:
       matrix:
@@ -40,6 +57,8 @@ jobs:
              perl latexindent.pl --check -s $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
           done
   latexindent-batch-check-windows:
+    # Windows, using Strawberry Perl
+    #
     name: latexindent.pl --check on test-cases/check-switch-tests/*.tex (WINDOWS, Perl ${{ matrix.perl }})
     runs-on: 'windows-latest'
     strategy:
