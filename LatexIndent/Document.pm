@@ -25,6 +25,7 @@ use LatexIndent::Switches qw/store_switches %switches $is_m_switch_active $is_t_
 use LatexIndent::LogFile qw/process_switches $logger/;
 use LatexIndent::Logger qw/@logFileLines/;
 use LatexIndent::Check qw/simple_diff/;
+use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
@@ -91,7 +92,7 @@ sub operate_on_file{
     my $self = shift;
 
     $self->create_back_up_file;
-    $self->token_check;
+    $self->token_check unless ($switches{lines}) ;
     $self->make_replacements(when=>"before") if ($is_r_switch_active and !$is_rv_switch_active);
     unless ($is_rr_switch_active){
         $self->construct_regular_expressions;

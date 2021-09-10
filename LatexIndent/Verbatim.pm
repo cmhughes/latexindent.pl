@@ -363,7 +363,7 @@ sub  put_verbatim_back_in {
     my $verbatimCount=0;
     my $toMatch = q();
     if($input{match} eq "everything-except-commands"){
-        $toMatch = "noindentblockenvironmentspecial";
+        $toMatch = "noindentblockenvironmentspeciallinesprotect";
     } else {
         $toMatch = "command";
     }
@@ -386,14 +386,32 @@ sub  put_verbatim_back_in {
     while($verbatimFound < $verbatimCount){
         while( my ($verbatimID,$child)= each %verbatimStorage){
           if($toMatch =~ m/${$child}{type}/){
-            if(${$self}{body} =~ m/$verbatimID/mx){
+            if(${$self}{body} =~ m/$verbatimID/m){
                 # possibly remove trailing line break
-                if(defined ${$child}{EndFinishesWithLineBreak} 
+                if($is_m_switch_active 
+                    and defined ${$child}{EndFinishesWithLineBreak} 
                     and ${$child}{EndFinishesWithLineBreak}==-1
                     and ${$self}{body} =~ m/$verbatimID\h*\R/s){
                     $logger->trace("m-switch active, removing trailing line breaks from ${$child}{name}") if $is_t_switch_active;
                     ${$self}{body} =~ s/$verbatimID(\h*)?(\R|\h)*/$verbatimID /s;
                 }
+
+                # line protection mode can allow line breaks to be removed 
+                # at end of verbatim; these need to be added back in
+                #
+                # see 
+                #
+                #   test-cases/line-switch-test-cases/environments-simple-nested-mod13.tex 
+                #
+                if(${$child}{type} eq "linesprotect"){
+                    # remove leading space ahead of verbatim ID
+                    ${$self}{body} =~ s/^\h*$verbatimID/$verbatimID/m;
+
+                    if($is_m_switch_active and ${$self}{body}=~ m/$verbatimID\h*\S/s){
+                        ${$self}{body} =~ s/$verbatimID\h*(\S)/$verbatimID\n$1/s;
+                    }
+                }
+
                 # replace ids with body
                 ${$self}{body} =~ s/$verbatimID/${$child}{begin}${$child}{body}${$child}{end}/s;
 

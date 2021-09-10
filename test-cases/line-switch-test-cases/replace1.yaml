@@ -1,0 +1,4 @@
+replacements:
+  -
+    this: 'first'
+    that: 'NEW NEW'

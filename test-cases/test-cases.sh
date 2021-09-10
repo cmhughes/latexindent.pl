@@ -200,6 +200,11 @@ cd ../check-switch-tests
 [[ $silentMode == 1 ]] && echo "./check-switch-test-cases.sh"
 ./check-switch-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
 
+# line switch test cases
+cd ../line-switch-test-cases
+[[ $silentMode == 1 ]] && echo "./line-switch-test-cases.sh"
+./line-switch-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

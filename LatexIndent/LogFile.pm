@@ -85,6 +85,10 @@ usage: latexindent.pl [options] [file]
           will exit with 0 if document body unchanged, 1 if changed
       -kv, --check mode verbose
           as in check mode, but outputs diff to screen as well as to logfile
+      -n, --lines=<MIN-MAX>
+          only operate on selected lines; sample usage:
+                latexindent.pl --lines 3-5 myfile.tex
+                latexindent.pl --lines 3-5,7-10 myfile.tex
 ENDQUOTE
     ;
     exit(0);
@@ -148,6 +152,7 @@ ENDQUOTE
     $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if($switches{onlyreplacement});
     $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if($switches{check});
     $logger->info("-kv|--check mode verbose: as in check mode, but outputs diff to screen") if($switches{checkverbose});
+    $logger->info("-n|--lines mode: will only operate on specific lines $switches{lines}") if($switches{lines});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){

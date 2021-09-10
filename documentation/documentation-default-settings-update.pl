@@ -166,6 +166,7 @@ if(!$readTheDocsMode){
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
                           "sec-replacements.tex",
+                          "sec-the-line-switch.tex",
                           "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
                           "references.tex",
