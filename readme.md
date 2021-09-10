@@ -2,8 +2,6 @@
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
-> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/publish-windows-exe.yaml/badge.svg)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -48,6 +46,9 @@ using the `Par::Packer` perl module. `ppp.pl` is located in the helper-scripts d
 Note: `latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the 
 file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) directory
 of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/publish-windows-exe.yaml/badge.svg)
 
 ## usage
 

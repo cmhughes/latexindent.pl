@@ -155,8 +155,13 @@ sub file_extension_check{
             push(@lines,$_) while (<>)
     }
 
-    # the all-important step: update the body
-    ${$self}{body} = join("",@lines);
+    # -n, --lines mode active
+    if($switches{lines}){
+      $self->lines_body_selected_lines(\@lines); 
+    } else {
+      # the all-important step: update the body
+      ${$self}{body} = join("",@lines);
+    }
 
     # necessary extra storage if check switch is active
     if ($is_check_switch_active){

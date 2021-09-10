@@ -49,6 +49,7 @@ GetOptions (
     "replacementrespectverb|rv"=>\$switches{replacementRespectVerb},
     "check|k"=>\$switches{check},
     "checkv|kv"=>\$switches{checkverbose},
+    "lines|n=s"=>\$switches{lines},
 );
 
 # check local settings doesn't interfer with reading the file;
