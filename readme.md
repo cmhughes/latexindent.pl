@@ -13,10 +13,38 @@ can modify line breaks.
 
 ## version 
  
-    latexindent.pl, version 3.11, 2021-07-31
+    latexindent.pl, version 3.12, 2021-09-16
 
 ## author 
 Chris Hughes (cmhughes)
+
+## example
+A simple example follows; there are *many* more features available, detailed in full within the [documentation](http://latexindentpl.readthedocs.io/).
+
+Before:
+``` tex
+\begin{one}
+latexindent.pl adds leading
+space to code blocks. 
+\begin{two}
+It aims to beautify .tex, .sty
+and .cls files. It is customisable
+via its YAML interface.
+\end{two}
+\end{one}
+```
+After:
+``` tex
+\begin{one}
+	latexindent.pl adds leading
+	space to code blocks.
+	\begin{two}
+		It aims to beautify .tex, .sty
+		and .cls files. It is customisable
+		via its YAML interface.
+	\end{two}
+\end{one}
+```
 
 ## documentation
 
@@ -34,16 +62,19 @@ of test cases on every commit.
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
-## Windows executable
-`latexindent.exe` is a standalone executable file which does not require a `perl` installation. It is available at [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent) and also from the [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository. 
-`latexindent.exe`  is created using 
+## Windows executable (does not require perl installation)
+`latexindent.exe` is a standalone executable file which does not require a `perl` installation. 
+It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository 
+and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent). 
 
-    perl ppp.pl -u -o latexindent.exe latexindent.pl
-
-using the `Par::Packer` perl module. `ppp.pl` is located in the helper-scripts directory of this repository. 
+If you wish to use `latexindent.exe` then you will need only two files:
+```
+latexindent.exe
+defaultSettings.yaml
+```
 
 ## GitHub Actions
-Note: `latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the 
+`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the 
 file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) directory
 of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
 
@@ -53,14 +84,14 @@ of this repository, and you can track the actions on the [actions page](https://
 ## usage
 
 You'll need
-
-    latexindent.pl
-    LatexIndent/*.pm
-    defaultSettings.yaml
-
+```
+latexindent.pl
+LatexIndent/*.pm
+defaultSettings.yaml
+```
 in the same directory. 
 
-Windows users might prefer to get 
+Windows users who do not have a perl installation might prefer to get 
 
     latexindent.exe
     defaultSettings.yaml
@@ -129,6 +160,9 @@ You might like to checkout the following related projects on github.
 [arara](https://github.com/cereda/arara): [![GitHub stars](https://img.shields.io/github/stars/cereda/arara.svg?style=flat-square)](https://github.com/cereda/arara/stargazers)
 
 [atom-beautify](https://github.com/Glavin001/atom-beautify): [![GitHub stars](https://img.shields.io/github/stars/Glavin001/atom-beautify.svg?style=flat-square)](https://github.com/Glavin001/atom-beautify/stargazers)
+
+## thank you
+Thank you to the [contributors](https://github.com/cmhughes/latexindent.pl/graphs/contributors) to the project!
 
 ## quotes
 

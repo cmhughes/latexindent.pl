@@ -152,16 +152,16 @@ if(!$readTheDocsMode){
           ){
        system("cat $_ >> sec-the-m-switch.tex");
     }
-    
+
     # appendix
     system("perl -p0i -e 's/\\\\subsection/\\\\subsubsection/sg' appendices.tex");
     system("perl -p0i -e 's/\\\\section/\\\\subsection/sg' appendices.tex");
     system("perl -p0i -e 's/\\\\appendix/\\\\section\{Appendices\}/sg' appendices.tex");
 
     # loop through the .tex files
-    foreach my $fileName ("sec-introduction.tex", 
-                          "sec-demonstration.tex", 
-                          "sec-how-to-use.tex", 
+    foreach my $fileName ("sec-introduction.tex",
+                          "sec-demonstration.tex",
+                          "sec-how-to-use.tex",
                           "sec-indent-config-and-settings.tex",
                           "sec-default-user-local.tex",
                           "sec-the-m-switch.tex",
@@ -172,6 +172,7 @@ if(!$readTheDocsMode){
                           "references.tex",
                           "appendices.tex",
                           , ){
+
         @lines = q();
         # read the file
         open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
@@ -211,8 +212,10 @@ if(!$readTheDocsMode){
                     $listingsbody =~ s"\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]""sg;
                     $listingsbody .= "\{".$rst_class."\}";
                     my $listingname = ($listingsbody =~ m|^\h*\[|s ? "cmhlistingsfromfilefour": "cmhlistingsfromfile");
+                    $listingname = ($listingsbody =~ m|^\h*\[style=lineNumbersTeX|s ? "cmhlistingsfromfilelines": $listingname);
                     "\n\n\\$listingname".$listingsbody."\n\n";/mgex;
         $body =~ s|\}\h*\[\h*width=.*?\]\h*\{|\}\{|sg;
+        $body =~ s|\h*\[\h*style=lineNumbersTeX\]||sg;
         
         # get rid of wrapfigure stuff
         $body =~ s/\\begin\{adjustwidth\}\{.*?\}\{.*?\}//sg;
@@ -267,7 +270,7 @@ if(!$readTheDocsMode){
                 )*?\\end\{commandshell\})(?:\R|\h)*(\\label\{.*?\})/$2\n\n$1/xsg;
         $body =~ s/\\begin\{commandshell\}/\\begin\{verbatim\}style:commandshell/sg;
         $body =~ s/\\end\{commandshell\}/\\end\{verbatim\}/sg;
-        $body =~ s/\\begin\{cmhlistings\}\*?/\\begin\{verbatim\}/sg;
+        $body =~ s/\\begin\{cmhlistings\}\*?(\[.*?\])?/\\begin\{verbatim\}/sg;
         $body =~ s/\\end\{cmhlistings\}(\[.*?\])?/\\end\{verbatim\}/sg;
         $body =~ s/\\begin\{yaml\}(\[.*?\])?(\{.*?\})(\[.*?\])?/\\begin\{verbatim\}$2/sg;
         $body =~ s/\\end\{yaml\}/\\end\{verbatim\}/sg;

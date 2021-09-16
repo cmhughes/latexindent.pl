@@ -5,46 +5,34 @@
 The -r, -rv and -rr switches
 ============================
 
-You can instruct ``latexindent.pl`` to perform replacements/substitutions on your file by using any
-of the ``-r``, ``-rv`` or ``-rr`` switches:
+You can instruct ``latexindent.pl`` to perform replacements/substitutions on your file by using any of the ``-r``, ``-rv`` or ``-rr`` switches:
 
 .. index:: verbatim;rv, replacementrespectverb switch
 
 -  the ``-r`` switch will perform indentation and replacements, not respecting verbatim code blocks;
 
--  the ``-rv`` switch will perform indentation and replacements, and *will* respect verbatim code
-   blocks;
+-  the ``-rv`` switch will perform indentation and replacements, and *will* respect verbatim code blocks;
 
--  the ``-rr`` switch will *not* perform indentation, and will perform replacements not respecting
-   verbatim code blocks.
+-  the ``-rr`` switch will *not* perform indentation, and will perform replacements not respecting verbatim code blocks.
 
-We will demonstrate each of the ``-r``, ``-rv`` and ``-rr`` switches, but a summary is given in
-:numref:`tab:replacementswitches`.
+We will demonstrate each of the ``-r``, ``-rv`` and ``-rr`` switches, but a summary is given in :numref:`tab:replacementswitches`.
 
 .. label follows
 
 .. _tab:replacementswitches:
 
-.. table::  The replacement mode switches
+.. table:: The replacement mode switches
 
-	
-	
-	+-----------+----------------+---------------------+
-	| switch    | indentation?   | respect verbatim?   |
-	+===========+================+=====================+
-	| ``-r``    | yes            | no                  |
-	+-----------+----------------+---------------------+
-	| ``-rv``   | yes            | yes                 |
-	+-----------+----------------+---------------------+
-	| ``-rr``   | no             | no                  |
-	+-----------+----------------+---------------------+
-	
+   ======= ============ =================
+   switch  indentation? respect verbatim?
+   ======= ============ =================
+   ``-r``  yes          no
+   ``-rv`` yes          yes
+   ``-rr`` no           no
+   ======= ============ =================
 
-
-The default value of the ``replacements`` field is shown in :numref:`lst:replacements`; as with
-all of the other fields, you are encouraged to customise and change this as you see fit. The options
-in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switches are active; when
-discussing YAML settings related to the replacement-mode switches, we will use the style given in
+The default value of the ``replacements`` field is shown in :numref:`lst:replacements`; as with all of the other fields, you are encouraged to customise and change this as you see fit. The options
+in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switches are active; when discussing YAML settings related to the replacement-mode switches, we will use the style given in
 :numref:`lst:replacements`.
 
 .. literalinclude:: ../defaultSettings.yaml
@@ -55,19 +43,16 @@ discussing YAML settings related to the replacement-mode switches, we will use t
  	:linenos:
  	:lineno-start: 618
 
-The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default
-it is set to 1, so that replacements will be amalgamated from each settings file that you specify.
-As you’ll see in the demonstrations that follow, there is no need to specify this field.
+The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As
+you’ll see in the demonstrations that follow, there is no need to specify this field.
 
-You’ll notice that, by default, there is only *one* entry in the ``replacements`` field, but it can
-take as many entries as you would like; each one needs to begin with a ``-`` on its own line.
+You’ll notice that, by default, there is only *one* entry in the ``replacements`` field, but it can take as many entries as you would like; each one needs to begin with a ``-`` on its own line.
 
 Introduction to replacements
 ----------------------------
 
-Let’s explore the action of the default settings, and then we’ll demonstrate the feature with
-further examples. With reference to :numref:`lst:replacements`, the default action will replace
-every instance of the text ``latexindent.pl`` with ``pl.latexindent``.
+Let’s explore the action of the default settings, and then we’ll demonstrate the feature with further examples. With reference to :numref:`lst:replacements`, the default action will replace every
+instance of the text ``latexindent.pl`` with ``pl.latexindent``.
 
 Beginning with the code in :numref:`lst:replace1` and running the command
 
@@ -76,7 +61,7 @@ Beginning with the code in :numref:`lst:replace1` and running the command
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl -r replace1.tex
+   latexindent.pl -r replace1.tex
 
 gives the output given in :numref:`lst:replace1-r1`.
 
@@ -90,8 +75,7 @@ gives the output given in :numref:`lst:replace1-r1`.
  	:caption: ``replace1.tex`` default 
  	:name: lst:replace1-r1
 
-If we don’t wish to perform this replacement, then we can tweak the default settings of
-:numref:`lst:replacements` by changing ``lookForThis`` to 0; we perform this action in
+If we don’t wish to perform this replacement, then we can tweak the default settings of :numref:`lst:replacements` by changing ``lookForThis`` to 0; we perform this action in
 :numref:`lst:replace1-yaml`, and run the command
 
 .. index:: switches;-l demonstration
@@ -101,7 +85,7 @@ If we don’t wish to perform this replacement, then we can tweak the default se
 .. code-block:: latex
    :class: .commandshell
 
-    latexindent.pl -r replace1.tex -l=replace1.yaml
+   latexindent.pl -r replace1.tex -l=replace1.yaml
 
 which gives the output in :numref:`lst:replace1-mod1`.
 
@@ -115,19 +99,16 @@ which gives the output in :numref:`lst:replace1-mod1`.
  	:caption: ``replace1.yaml`` 
  	:name: lst:replace1-yaml
 
-Note that in :numref:`lst:replace1-yaml` we have specified ``amalgamate`` as 0 so that the default
-replacements are overwritten.
+Note that in :numref:`lst:replace1-yaml` we have specified ``amalgamate`` as 0 so that the default replacements are overwritten.
 
-We haven’t yet discussed the ``when`` field; don’t worry, we’ll get to it as part of the discussion
-in what follows.
+We haven’t yet discussed the ``when`` field; don’t worry, we’ll get to it as part of the discussion in what follows.
 
 The two types of replacements
 -----------------------------
 
 There are two types of replacements:
 
-#. *string*-based replacements, which replace the string in *this* with the string in *that*. If you
-   specify ``this`` and you do not specify ``that``, then the ``that`` field will be assumed to be
+#. *string*-based replacements, which replace the string in *this* with the string in *that*. If you specify ``this`` and you do not specify ``that``, then the ``that`` field will be assumed to be
    empty.
 
    .. index:: regular expressions;replacement switch, -r
@@ -136,9 +117,8 @@ There are two types of replacements:
 
 We will demonstrate both in the examples that follow.
 
-``latexindent.pl`` chooses which type of replacement to make based on which fields have been
-specified; if the ``this`` field is specified, then it will make *string*-based replacements,
-regardless of if ``substitution`` is present or not.
+``latexindent.pl`` chooses which type of replacement to make based on which fields have been specified; if the ``this`` field is specified, then it will make *string*-based replacements, regardless of
+if ``substitution`` is present or not.
 
 Examples of replacements
 ------------------------
@@ -152,8 +132,7 @@ Examples of replacements
 	 	:caption: ``colsep.tex`` 
 	 	:name: lst:colsep
 	
-	Let’s assume that our goal is to remove both of the ``arraycolsep`` statements; we can achieve this
-	in a few different ways.
+	Let’s assume that our goal is to remove both of the ``arraycolsep`` statements; we can achieve this in a few different ways.
 	
 	Using the YAML in :numref:`lst:colsep-yaml`, and running the command
 	
@@ -164,7 +143,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r colsep.tex -l=colsep.yaml
+	   latexindent.pl -r colsep.tex -l=colsep.yaml
 	
 	then we achieve the output in :numref:`lst:colsep-mod0`.
 	
@@ -178,12 +157,10 @@ Examples of replacements
 	 	:caption: ``colsep.yaml`` 
 	 	:name: lst:colsep-yaml
 	
-	Note that in :numref:`lst:colsep-yaml`, we have specified *two* separate fields, each with their
-	own ‘*this*’ field; furthermore, for both of the separate fields, we have not specified ‘``that``’,
+	Note that in :numref:`lst:colsep-yaml`, we have specified *two* separate fields, each with their own ‘*this*’ field; furthermore, for both of the separate fields, we have not specified ‘``that``’,
 	so the ``that`` field is assumed to be blank by ``latexindent.pl``;
 	
-	We can make the YAML in :numref:`lst:colsep-yaml` more concise by exploring the ``substitution``
-	field. Using the settings in :numref:`lst:colsep1` and running the command
+	We can make the YAML in :numref:`lst:colsep-yaml` more concise by exploring the ``substitution`` field. Using the settings in :numref:`lst:colsep1` and running the command
 	
 	.. index:: switches;-l demonstration
 	
@@ -192,7 +169,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r colsep.tex -l=colsep1.yaml
+	   latexindent.pl -r colsep.tex -l=colsep1.yaml
 	
 	then we achieve the output in :numref:`lst:colsep-mod1`.
 	
@@ -210,27 +187,21 @@ Examples of replacements
 	 	:caption: ``colsep1.yaml`` 
 	 	:name: lst:colsep1
 	
-	The code given in :numref:`lst:colsep1` is an example of a *regular expression*, which we may
-	abbreviate to *regex* in what follows. This manual is not intended to be a tutorial on regular
-	expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the
-	topic. With reference to :numref:`lst:colsep1`, we do note the following:
+	The code given in :numref:`lst:colsep1` is an example of a *regular expression*, which we may abbreviate to *regex* in what follows. This manual is not intended to be a tutorial on regular
+	expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic. With reference to :numref:`lst:colsep1`, we do note the following:
 	
-	-  the general form of the ``substitution`` field is ``s/regex/replacement/modifiers``. You can
-	   place any regular expression you like within this;
+	-  the general form of the ``substitution`` field is ``s/regex/replacement/modifiers``. You can place any regular expression you like within this;
 	
 	-  we have ‘escaped’ the backslash by using ``\\``
 	
 	-  we have used ``\d+`` to represent *at least* one digit
 	
-	-  the ``s`` *modifier* (in the ``sg`` at the end of the line) instructs ``latexindent.pl`` to treat
-	   your file as one single line;
+	-  the ``s`` *modifier* (in the ``sg`` at the end of the line) instructs ``latexindent.pl`` to treat your file as one single line;
 	
-	-  the ``g`` *modifier* (in the ``sg`` at the end of the line) instructs ``latexindent.pl`` to make
-	   the substitution *globally* throughout your file; you might try removing the ``g`` modifier from
+	-  the ``g`` *modifier* (in the ``sg`` at the end of the line) instructs ``latexindent.pl`` to make the substitution *globally* throughout your file; you might try removing the ``g`` modifier from
 	   :numref:`lst:colsep1` and observing the difference in output.
 	
-	You might like to see https://perldoc.perl.org/perlre.html#Modifiers for details of modifiers; in
-	general, I recommend starting with the ``sg`` modifiers for this feature.
+	You might like to see https://perldoc.perl.org/perlre.html#Modifiers for details of modifiers; in general, I recommend starting with the ``sg`` modifiers for this feature.
 	 
 
 .. proof:example::	
@@ -246,7 +217,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r colsep.tex -l=multi-line.yaml
+	   latexindent.pl -r colsep.tex -l=multi-line.yaml
 	
 	then we achieve the output in :numref:`lst:colsep-mod2`.
 	
@@ -260,13 +231,10 @@ Examples of replacements
 	 	:caption: ``multi-line.yaml`` 
 	 	:name: lst:multi-line
 	
-	With reference to :numref:`lst:multi-line`, we have specified a *multi-line* version of ``this``
-	by employing the *literal* YAML style ``|-``. See, for example,
-	https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines for
-	further options, all of which can be used in your YAML file.
+	With reference to :numref:`lst:multi-line`, we have specified a *multi-line* version of ``this`` by employing the *literal* YAML style ``|-``. See, for example,
+	https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines for further options, all of which can be used in your YAML file.
 	
-	This is a natural point to explore the ``when`` field, specified in :numref:`lst:replacements`.
-	This field can take two values: *before* and *after*, which respectively instruct ``latexindent.pl``
+	This is a natural point to explore the ``when`` field, specified in :numref:`lst:replacements`. This field can take two values: *before* and *after*, which respectively instruct ``latexindent.pl``
 	to perform the replacements *before* indentation or *after* it. The default value is ``before``.
 	
 	Using the YAML in :numref:`lst:multi-line1`, and running the command
@@ -278,7 +246,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r colsep.tex -l=multi-line1.yaml
+	   latexindent.pl -r colsep.tex -l=multi-line1.yaml
 	
 	then we achieve the output in :numref:`lst:colsep-mod3`.
 	
@@ -292,10 +260,8 @@ Examples of replacements
 	 	:caption: ``multi-line1.yaml`` 
 	 	:name: lst:multi-line1
 	
-	We note that, because we have specified ``when: after``, that ``latexindent.pl`` has not found the
-	string specified in :numref:`lst:multi-line1` within the file in :numref:`lst:colsep`. As it has
-	looked for the string within :numref:`lst:multi-line1` *after* the indentation has been performed.
-	After indentation, the string as written in :numref:`lst:multi-line1` is no longer part of the
+	We note that, because we have specified ``when: after``, that ``latexindent.pl`` has not found the string specified in :numref:`lst:multi-line1` within the file in :numref:`lst:colsep`. As it has
+	looked for the string within :numref:`lst:multi-line1` *after* the indentation has been performed. After indentation, the string as written in :numref:`lst:multi-line1` is no longer part of the
 	file, and has therefore not been replaced.
 	
 	As a final note on this example, if you use the ``-rr`` switch, as follows,
@@ -307,20 +273,17 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -rr colsep.tex -l=multi-line1.yaml
+	   latexindent.pl -rr colsep.tex -l=multi-line1.yaml
 	
-	then the ``when`` field is ignored, no indentation is done, and the output is as in
-	:numref:`lst:colsep-mod2`.
+	then the ``when`` field is ignored, no indentation is done, and the output is as in :numref:`lst:colsep-mod2`.
 	 
 
 .. proof:example::	
 	
 	An important part of the substitution routine is in *capture groups*.
 	
-	Assuming that we start with the code in :numref:`lst:displaymath`, let’s assume that our goal is
-	to replace each occurrence of ``$$...$$`` with ``\begin{equation*}...\end{equation*}``. This example
-	is partly motivated by `tex stackexchange question
-	242150 <https://tex.stackexchange.com/questions/242150/good-looking-latex-code>`__.
+	Assuming that we start with the code in :numref:`lst:displaymath`, let’s assume that our goal is to replace each occurrence of ``$$...$$`` with ``\begin{equation*}...\end{equation*}``. This example
+	is partly motivated by `tex stackexchange question 242150 <https://tex.stackexchange.com/questions/242150/good-looking-latex-code>`__.
 	
 	.. literalinclude:: demonstrations/displaymath.tex
 	 	:class: .tex
@@ -336,7 +299,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r displaymath.tex -l=displaymath1.yaml
+	   latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 	
 	to receive the output given in :numref:`lst:displaymath-mod1`.
 	
@@ -356,15 +319,13 @@ Examples of replacements
 	
 	#. we have used the ``x`` modifier, which allows us to have white space within the regex;
 	
-	#. we have used a capture group, ``(.*?)`` which captures the content between the ``$$...$$`` into
-	   the special variable, ``$1``;
+	#. we have used a capture group, ``(.*?)`` which captures the content between the ``$$...$$`` into the special variable, ``$1``;
 	
 	#. we have used the content of the capture group, ``$1``, in the replacement text.
 	
 	See https://perldoc.perl.org/perlre.html#Capture-groups for a discussion of capture groups.
 	
-	The features of the replacement switches can, of course, be combined with others from the toolkit of
-	``latexindent.pl``. For example, we can combine the poly-switches of :numref:`sec:poly-switches`,
+	The features of the replacement switches can, of course, be combined with others from the toolkit of ``latexindent.pl``. For example, we can combine the poly-switches of :numref:`sec:poly-switches`,
 	which we do in :numref:`lst:equation`; upon running the command
 	
 	.. index:: switches;-l demonstration
@@ -376,7 +337,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
+	   latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 	
 	then we receive the output in :numref:`lst:displaymath-mod2`.
 	
@@ -395,17 +356,15 @@ Examples of replacements
 
 .. proof:example::	
 	
-	This example is motivated by `tex stackexchange question
-	490086 <https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker>`__.
-	We begin with the code in :numref:`lst:phrase`.
+	This example is motivated by `tex stackexchange question 490086 <https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker>`__. We begin with the
+	code in :numref:`lst:phrase`.
 	
 	.. literalinclude:: demonstrations/phrase.tex
 	 	:class: .tex
 	 	:caption: ``phrase.tex`` 
 	 	:name: lst:phrase
 	
-	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings
-	in :numref:`lst:hspace`, and run the command
+	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in :numref:`lst:hspace`, and run the command
 	
 	.. index:: switches;-l demonstration
 	
@@ -414,7 +373,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r phrase.tex -l=hspace.yaml
+	   latexindent.pl -r phrase.tex -l=hspace.yaml
 	
 	which gives the output in :numref:`lst:phrase-mod1`.
 	
@@ -430,8 +389,7 @@ Examples of replacements
 	 	:caption: ``hspace.yaml`` 
 	 	:name: lst:hspace
 	
-	The ``\h+`` setting in :numref:`lst:hspace` say to replace *at least one horizontal space* with a
-	single space.
+	The ``\h+`` setting in :numref:`lst:hspace` say to replace *at least one horizontal space* with a single space.
 	 
 
 .. proof:example::	
@@ -443,8 +401,7 @@ Examples of replacements
 	 	:caption: ``references.tex`` 
 	 	:name: lst:references
 	
-	Our goal is to change each reference so that both the text and the reference are contained within
-	one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command
+	Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command
 	
 	.. index:: switches;-l demonstration
 	
@@ -453,7 +410,7 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r references.tex -l=reference.yaml
+	   latexindent.pl -r references.tex -l=reference.yaml
 	
 	which gives the output in :numref:`lst:references-mod1`.
 	
@@ -467,14 +424,12 @@ Examples of replacements
 	 	:caption: ``reference.yaml`` 
 	 	:name: lst:reference
 	
-	Referencing :numref:`lst:reference`, the ``|`` means *or*, we have used *capture groups*, together
-	with an example of an *optional* pattern, ``(?:eq)?``.
+	Referencing :numref:`lst:reference`, the ``|`` means *or*, we have used *capture groups*, together with an example of an *optional* pattern, ``(?:eq)?``.
 	 
 
 .. proof:example::	
 	
-	Let’s explore the three replacement mode switches (see :numref:`tab:replacementswitches`) in the
-	context of an example that contains a verbatim code block, :numref:`lst:verb1`; we will use the
+	Let’s explore the three replacement mode switches (see :numref:`tab:replacementswitches`) in the context of an example that contains a verbatim code block, :numref:`lst:verb1`; we will use the
 	settings in :numref:`lst:verbatim1-yaml`.
 	
 	.. literalinclude:: demonstrations/verb1.tex
@@ -504,9 +459,9 @@ Examples of replacements
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
-	    latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
-	    latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
+	   latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
+	   latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
+	   latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 	
 	we receive the respective output in :numref:`lst:verb1-mod1` – :numref:`lst:verb1-rr-mod1`
 	
@@ -530,21 +485,17 @@ Examples of replacements
 
 We note that:
 
-#. in :numref:`lst:verb1-mod1` indentation has been performed, and that the replacements specified
-   in :numref:`lst:verbatim1-yaml` have been performed, even within the verbatim code block;
+#. in :numref:`lst:verb1-mod1` indentation has been performed, and that the replacements specified in :numref:`lst:verbatim1-yaml` have been performed, even within the verbatim code block;
 
-#. in :numref:`lst:verb1-rv-mod1` indentation has been performed, but that the replacements have
-   *not* been performed within the verbatim environment, because the ``rv`` switch is active;
+#. in :numref:`lst:verb1-rv-mod1` indentation has been performed, but that the replacements have *not* been performed within the verbatim environment, because the ``rv`` switch is active;
 
-#. in :numref:`lst:verb1-rr-mod1` indentation has *not* been performed, but that replacements have
-   been performed, not respecting the verbatim code block.
+#. in :numref:`lst:verb1-rr-mod1` indentation has *not* been performed, but that replacements have been performed, not respecting the verbatim code block.
 
 See the summary within :numref:`tab:replacementswitches`.
 
 .. proof:example::	
 	
-	Let’s explore the ``amalgamate`` field from :numref:`lst:replacements` in the context of the file
-	specified in :numref:`lst:amalg1`.
+	Let’s explore the ``amalgamate`` field from :numref:`lst:replacements` in the context of the file specified in :numref:`lst:amalg1`.
 	
 	.. literalinclude:: demonstrations/amalg1.tex
 	 	:class: .tex
@@ -577,9 +528,9 @@ See the summary within :numref:`tab:replacementswitches`.
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -r amalg1.tex -l=amalg1-yaml
-	    latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml
-	    latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
+	   latexindent.pl -r amalg1.tex -l=amalg1-yaml
+	   latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml
+	   latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml,amalg3-yaml
 	
 	we receive the respective output in :numref:`lst:amalg1-mod1` – :numref:`lst:amalg1-mod123`.
 	
@@ -602,30 +553,17 @@ See the summary within :numref:`tab:replacementswitches`.
 	
 	#. in :numref:`lst:amalg1-mod1` the replacements from :numref:`lst:amalg1-yaml` have been used;
 	
-	#. in :numref:`lst:amalg1-mod12` the replacements from :numref:`lst:amalg1-yaml` and
-	   :numref:`lst:amalg2-yaml` have *both* been used, because the default value of ``amalgamate`` is
-	   1;
+	#. in :numref:`lst:amalg1-mod12` the replacements from :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` have *both* been used, because the default value of ``amalgamate`` is 1;
 	
-	#. in :numref:`lst:amalg1-mod123` *only* the replacements from :numref:`lst:amalg3-yaml` have
-	   been used, because the value of ``amalgamate`` has been set to 0.
+	#. in :numref:`lst:amalg1-mod123` *only* the replacements from :numref:`lst:amalg3-yaml` have been used, because the value of ``amalgamate`` has been set to 0.
 	
 	
 	 
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-masteringregexp
 
-.. raw:: html
-
-   <div id="ref-masteringregexp">
-
-Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.

@@ -1,7 +1,7 @@
 % arara: pdflatex: {shell: yes, files: [latexindent]}
 \section{The --lines switch}\label{sec:line-switch}
  \texttt{latexindent.pl}
- \announce{new}{line switch demonstration} can
+ \announce*{2021-09-16}{line switch demonstration} can
  operate on a \emph{selection} of lines of the file using the \texttt{--lines} or
  \texttt{-n} switch.
 
@@ -17,17 +17,17 @@ latexindent.pl -n 3-7 myfile.tex
 
  The options for the \texttt{lines} switch are:
  \begin{itemize}
-	 \item line range, as in \texttt{--lines 3-7};
-	 \item single line, as in \texttt{--lines 5};
-	 \item multiple line ranges separated by commas, as in \texttt{--lines 3-5,8-10};
+	 \item line range, as in \texttt{--lines 3-7}
+	 \item single line, as in \texttt{--lines 5}
+	 \item multiple line ranges separated by commas, as in \texttt{--lines 3-5,8-10}
 	 \item negated line ranges, as in \texttt{--lines !3-5} which translates to \texttt{--lines
-		       1-2,6-N}, where N is the number of lines in your file;
+		       1-2,6-N}, where N is the number of lines in your file.
  \end{itemize}
 
  We demonstrate this feature, and the available variations in what follows. We will use
  the file in \cref{lst:myfile}.
 
- \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile.tex}[tex-TCB]{\texttt{myfile.tex}}{lst:myfile}
+ \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile.tex}[tex-TCB]{\texttt{myfile.tex}}{lst:myfile}
 
  \begin{example}
 	 We demonstrate the basic usage using the command
@@ -36,7 +36,7 @@ latexindent.pl --lines 3-7 myfile.tex -o=+-mod1
 \end{commandshell}
 	 which instructs \texttt{latexindent.pl} to only operate on lines 3 to 7; the output is given in \cref{lst:myfile-mod1}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod1.tex}[tex-TCB]{\texttt{myfile-mod1.tex}}{lst:myfile-mod1}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod1.tex}[tex-TCB]{\texttt{myfile-mod1.tex}}{lst:myfile-mod1}
 
 	 The following two calls to \texttt{latexindent.pl} are equivalent
 	 \begin{commandshell}
@@ -54,7 +54,7 @@ latexindent.pl --lines 5 myfile.tex -o=+-mod2
 \end{commandshell}
 	 instructs \texttt{latexindent.pl} to only operate on line 5; the output is given in \cref{lst:myfile-mod2}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod2.tex}[tex-TCB]{\texttt{myfile-mod2.tex}}{lst:myfile-mod2}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod2.tex}[tex-TCB]{\texttt{myfile-mod2.tex}}{lst:myfile-mod2}
 
 	 The following two calls are equivalent:
 	 \begin{commandshell}
@@ -88,7 +88,7 @@ latexindent.pl --lines 3-5,8-10 myfile.tex -o=+-mod3
 \end{commandshell}
 	 which instructs \texttt{latexindent.pl} to operate upon lines 3 to 5 and lines 8 to 10; the output is given in \cref{lst:myfile-mod3}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod3.tex}[tex-TCB]{\texttt{myfile-mod3.tex}}{lst:myfile-mod3}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod3.tex}[tex-TCB]{\texttt{myfile-mod3.tex}}{lst:myfile-mod3}
 
 	 The following calls to \texttt{latexindent.pl} are all equivalent
 	 \begin{commandshell}
@@ -108,7 +108,7 @@ latexindent.pl --lines 1-2,4-5,9-10,12 myfile.tex -o=+-mod4
 \end{commandshell}
 	 has four line ranges: lines 1 to 2, lines 4 to 5, lines 9 to 10 and line 12. The output is given in \cref{lst:myfile-mod4}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod4.tex}[tex-TCB]{\texttt{myfile-mod4.tex}}{lst:myfile-mod4}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod4.tex}[tex-TCB]{\texttt{myfile-mod4.tex}}{lst:myfile-mod4}
 
 	 As previously, the ordering does not matter, and the following calls to \texttt{latexindent.pl} are all equivalent
 	 \begin{commandshell}
@@ -137,7 +137,7 @@ latexindent.pl --lines 1-4,8-12 myfile.tex
 \end{commandshell}
 	 The output is given in \cref{lst:myfile-mod5}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod5.tex}[tex-TCB]{\texttt{myfile-mod5.tex}}{lst:myfile-mod5}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod5.tex}[tex-TCB]{\texttt{myfile-mod5.tex}}{lst:myfile-mod5}
 
  \end{example}
 
@@ -153,7 +153,7 @@ latexindent.pl --lines 1-4,8,11-12 myfile.tex -o=+-mod6
    \end{commandshell}
 	 The output is given in \cref{lst:myfile-mod6}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile-mod6.tex}[tex-TCB]{\texttt{myfile-mod6.tex}}{lst:myfile-mod6}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod6.tex}[tex-TCB]{\texttt{myfile-mod6.tex}}{lst:myfile-mod6}
  \end{example}
 
  \begin{example}
@@ -172,7 +172,7 @@ latexindent.pl --lines !y-3 myfile.tex
 
 	 For example, let's use with the file in \cref{lst:myfile1}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile1.tex}[tex-TCB]{\texttt{myfile1.tex}}{lst:myfile1}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile1.tex}[tex-TCB]{\texttt{myfile1.tex}}{lst:myfile1}
 
 	 We can demonstrate interaction with the \texttt{-m} switch (see \vref{sec:modifylinebreaks}); in particular,
 	 if we use \vref{lst:mlb2}, \vref{lst:env-mlb7} and \vref{lst:env-mlb8} and run
@@ -183,5 +183,5 @@ latexindent.pl --lines 6 myfile1.tex -o=+-mod1 -m -l env-mlb2,env-mlb7,env-mlb8 
 	 \end{widepage}
 	 then we receive the output in \cref{lst:myfile1-mod1}.
 
-	 \cmhlistingsfromfile*[numbers=left,numberstyle=\color{blue},]*{demonstrations/myfile1-mod1.tex}[tex-TCB]{\texttt{myfile1-mod1.tex}}{lst:myfile1-mod1}
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile1-mod1.tex}[tex-TCB]{\texttt{myfile1-mod1.tex}}{lst:myfile1-mod1}
  \end{example}

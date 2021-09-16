@@ -5,12 +5,10 @@
 Fine tuning
 ===========
 
-``latexindent.pl`` operates by looking for the code blocks detailed in :numref:`tab:code-blocks`.
-The fine tuning of the details of such code blocks is controlled by the ``fineTuning`` field,
+``latexindent.pl`` operates by looking for the code blocks detailed in :numref:`tab:code-blocks`. The fine tuning of the details of such code blocks is controlled by the ``fineTuning`` field,
 detailed in :numref:`lst:fineTuning`.
 
-This field is for those that would like to peek under the bonnet/hood and make some fine tuning to
-``latexindent.pl``\ ’s operating.
+This field is for those that would like to peek under the bonnet/hood and make some fine tuning to ``latexindent.pl``\ ’s operating.
 
 .. index:: warning;fine tuning
 
@@ -42,8 +40,7 @@ This field is for those that would like to peek under the bonnet/hood and make s
 
 .. warning::	
 	
-	Making changes to the fine tuning may have significant consequences for your indentation scheme,
-	proceed with caution!
+	Making changes to the fine tuning may have significant consequences for your indentation scheme, proceed with caution!
 	 
 
 .. literalinclude:: ../defaultSettings.yaml
@@ -54,9 +51,8 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:linenos:
  	:lineno-start: 629
 
-The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not
-intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl,
-n.d.) for a detailed covering of the topic.
+The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.)
+for a detailed covering of the topic.
 
 We make the following comments with reference to :numref:`lst:fineTuning`:
 
@@ -94,9 +90,8 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. ``|`` means ‘or’
 
-   #. ``(?:(?<!\\)\{)`` the ``(?:...)`` uses a *non-capturing* group – you don’t necessarily need to
-      worry about what this means, but just know that for the ``fineTuning`` feature you should only
-      ever use *non*-capturing groups, and *not* capturing groups, which are simply ``(...)``
+   #. ``(?:(?<!\\)\{)`` the ``(?:...)`` uses a *non-capturing* group – you don’t necessarily need to worry about what this means, but just know that for the ``fineTuning`` feature you should only ever
+      use *non*-capturing groups, and *not* capturing groups, which are simply ``(...)``
 
    #. ``(?<!\\)\{)`` means a ``{`` but it can *not* be immediately preceded by a ``\``
 
@@ -106,36 +101,27 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
    #. ``;?,?`` means *possibly* a semi-colon, and possibly a comma
 
-   #. ``\<.*?\>`` is designed for ’beamer’-type commands; the ``.*?`` means anything in between
-      ``<...>``
+   #. ``\<.*?\>`` is designed for ’beamer’-type commands; the ``.*?`` means anything in between ``<...>``
 
-#. the ``modifyLineBreaks`` field refers to fine tuning settings detailed in
-   :numref:`sec:modifylinebreaks`. In particular:
+#. the ``modifyLineBreaks`` field refers to fine tuning settings detailed in :numref:`sec:modifylinebreaks`. In particular:
 
-   #. ``betterFullStop`` is in relation to the one sentence per line routine, detailed in
-      :numref:`sec:onesentenceperline`
+   #. ``betterFullStop`` is in relation to the one sentence per line routine, detailed in :numref:`sec:onesentenceperline`
 
-   #. ``doubleBackSlash`` is in relation to the ``DBSStartsOnOwnLine`` and
-      ``DBSFinishesWithLineBreak`` polyswitches surrounding double back slashes, see
-      :numref:`subsec:dbs`
+   #. ``doubleBackSlash`` is in relation to the ``DBSStartsOnOwnLine`` and ``DBSFinishesWithLineBreak`` polyswitches surrounding double back slashes, see :numref:`subsec:dbs`
 
-   #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and ``CommaFinishesWithLineBreak``
-      polyswitches surrounding commas in optional and mandatory arguments; see
+   #. ``comma`` is in relation to the ``CommaStartsOnOwnLine`` and ``CommaFinishesWithLineBreak`` polyswitches surrounding commas in optional and mandatory arguments; see
       :numref:`tab:poly-switch-mapping`
 
-It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``before`` and
-``between`` fields allow trailing comments, line breaks, and horizontal spaces between each
-character.
+It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``before`` and ``between`` fields allow trailing comments, line breaks, and horizontal spaces between each character.
 
 .. proof:example::	
 	
-	As a demonstration, consider the file given in :numref:`lst:finetuning1`, together with its
-	default output using the command
+	As a demonstration, consider the file given in :numref:`lst:finetuning1`, together with its default output using the command
 	
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl finetuning1.tex 
+	   latexindent.pl finetuning1.tex 
 	
 	is given in :numref:`lst:finetuning1-default`.
 	
@@ -149,8 +135,7 @@ character.
 	 	:caption: ``finetuning1.tex`` default 
 	 	:name: lst:finetuning1-default
 	
-	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as
-	expected. We can *fine tune* the indentation scheme by employing the settings given in
+	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
 	:numref:`lst:fine-tuning1` and running the command
 	
 	.. index:: switches;-l demonstration
@@ -158,7 +143,7 @@ character.
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
+	   latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning1-mod1`.
 	
@@ -179,13 +164,12 @@ character.
 
 .. proof:example::	
 	
-	Let’s have another demonstration; consider the file given in :numref:`lst:finetuning2`, together
-	with its default output using the command
+	Let’s have another demonstration; consider the file given in :numref:`lst:finetuning2`, together with its default output using the command
 	
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl finetuning2.tex 
+	   latexindent.pl finetuning2.tex 
 	
 	is given in :numref:`lst:finetuning2-default`.
 	
@@ -199,8 +183,7 @@ character.
 	 	:caption: ``finetuning2.tex`` default 
 	 	:name: lst:finetuning2-default
 	
-	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as
-	expected. We can *fine tune* the indentation scheme by employing the settings given in
+	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
 	:numref:`lst:fine-tuning2` and running the command
 	
 	.. index:: switches;-l demonstration
@@ -208,7 +191,7 @@ character.
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
+	   latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 	
 	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
 	
@@ -222,21 +205,19 @@ character.
 	 	:caption: ``finetuning2.yaml`` 
 	 	:name: lst:fine-tuning2
 	
-	In particular, note that the settings in :numref:`lst:fine-tuning2` specify that
-	``NamedGroupingBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we
-	allow ``---`` between arguments.
+	In particular, note that the settings in :numref:`lst:fine-tuning2` specify that ``NamedGroupingBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we allow ``---``
+	between arguments.
 	 
 
 .. proof:example::	
 	
-	You can tweak the ``fineTuning`` using the ``-y`` switch, but to be sure to use quotes
-	appropriately. For example, starting with the code in :numref:`lst:finetuning3` and running the
-	following command
+	You can tweak the ``fineTuning`` using the ``-y`` switch, but to be sure to use quotes appropriately. For example, starting with the code in :numref:`lst:finetuning3` and running the following
+	command
 	
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+	   latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 	
 	gives the output shown in :numref:`lst:finetuning3-mod1`.
 	
@@ -255,8 +236,7 @@ character.
 
 .. proof:example::	
 	
-	We can tweak the ``fineTuning`` for how trailing comments are classified. For motivation, let’s
-	consider the code given in :numref:`lst:finetuning4`
+	We can tweak the ``fineTuning`` for how trailing comments are classified. For motivation, let’s consider the code given in :numref:`lst:finetuning4`
 	
 	.. literalinclude:: demonstrations/finetuning4.tex
 	 	:class: .tex
@@ -280,11 +260,10 @@ character.
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -m finetuning4.tex -o=+-mod1 -l=href1
-	    latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
+	   latexindent.pl -m finetuning4.tex -o=+-mod1 -l=href1
+	   latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 	
-	we receive the respective output in :numref:`lst:finetuning4-mod1` and
-	:numref:`lst:finetuning4-mod2`.
+	we receive the respective output in :numref:`lst:finetuning4-mod1` and :numref:`lst:finetuning4-mod2`.
 	
 	.. literalinclude:: demonstrations/finetuning4-mod1.tex
 	 	:class: .tex
@@ -298,54 +277,39 @@ character.
 	
 	We note that in:
 	
-	-  :numref:`lst:finetuning4-mod1` the trailing comments are assumed to be everything following the
-	   first comment symbol, which has meant that everything following it has been moved to the end of
-	   the line; this is undesirable, clearly!
+	-  :numref:`lst:finetuning4-mod1` the trailing comments are assumed to be everything following the first comment symbol, which has meant that everything following it has been moved to the end of the
+	   line; this is undesirable, clearly!
 	
-	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that   be
-	   immediately preceeded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the  
-	   desirable.
+	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that % cannot be immediately preceeded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of
+	   the % symbols have been treated as trailing comments, and the output is desirable.
 	
-	Another approach to this situation, which does not use ``fineTuning``, is to use ``noIndentBlock``
-	which we discussed in :numref:`lst:noIndentBlock`; using the settings in :numref:`lst:href3` and
+	Another approach to this situation, which does not use ``fineTuning``, is to use ``noIndentBlock`` which we discussed in :numref:`lst:noIndentBlock`; using the settings in :numref:`lst:href3` and
 	running the command
 	
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	    latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
+	   latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 	
-	then we receive the same output given in :numref:`lst:finetuning4-mod2`; see also
-	``paragraphsStopAt`` in :numref:`lst:paragraphsStopAt`.
+	then we receive the same output given in :numref:`lst:finetuning4-mod2`; see also ``paragraphsStopAt`` in :numref:`lst:paragraphsStopAt`.
 	
 	.. literalinclude:: demonstrations/href3.yaml
 	 	:class: .mlbyaml
 	 	:caption: ``href3.yaml`` 
 	 	:name: lst:href3
 	
-	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can
-	be interpreted as: the fewest number of zero or more characters that are not right braces. This is
-	an example of character class.
+	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can be interpreted as: the fewest number of zero or more characters that are not right braces. This is an
+	example of character class.
 	
 	.. index:: regular expressions;character class demonstration
 	
 	
 	 
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-masteringregexp
 
-.. raw:: html
-
-   <div id="ref-masteringregexp">
-
-Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.

@@ -4,6 +4,13 @@
 ^^I:caption: #2^^J
 ^^I:name: #3^^J
 }
+\newcommand{\cmhlistingsfromfilelines}[4]{
+.. literalinclude:: #1^^J
+^^I:class: .#4^^J
+^^I:caption: #2^^J
+^^I:name: #3^^J
+^^I:linenos:^^J
+}
 \newcommand{\cmhlistingsfromfilefour}[6]{
 .. literalinclude:: #3^^J
 ^^I:class: .#6^^J
@@ -14,7 +21,7 @@
 ^^I:lineno-start: #1^^J
 }
 \newcommand{\cmhlabel}[1]{
-.. _#1:^^J
+.. \_#1:^^J
 }
 \newcommand{\warning}[1]{
 .. warning::^^J
