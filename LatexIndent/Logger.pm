@@ -60,7 +60,7 @@ sub fatal{
         $logfileline =~ s/^/      /mg;
     }
     push(@logFileLines,$logfileline);
-    print $logfileline,"\n" if $switches{screenlog};
+    print $logfileline,"\n";
 }
 
 sub trace{

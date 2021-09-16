@@ -6,6 +6,6 @@ modifyLineBreaks:
     removeParagraphLineBreaks:
         all:
             except:
-                - 'masterDocument'
+                - 'mainDocument'
                 - 'itemize'
         beforeTextWrap: 1

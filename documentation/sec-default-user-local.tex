@@ -375,7 +375,7 @@ lookForAlignDelims:
 		      0);
 		\item \announce{2020-03-21}{delimiter RegEx feature}{delimiterRegEx} optionally specifies the
 		      pattern matching to be used for the alignment delimeter (default:
-		      \lstinline3 '(?<!\\)(&)'3);
+		      \lstinline* '(?<!\\)(&)'*);
 		\item \announce{2020-03-21}{delimiter justification}{delimiterJustification} optionally
 		      specifies the justification for the alignment delimeters (default: left); note that this
 		      feature is only useful if you have delimiters of different lengths in the same column,
@@ -749,7 +749,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 	\announce{2020-03-21}{delimiterRegEx feature} will, by default, align code blocks at the
 	ampersand character. The behaviour is controlled by the \texttt{delimiterRegEx} field
 	within \texttt{lookForAlignDelims}; the default value is
-	\lstinline3'(?<!\\)(&)'3, which can be read as: \emph{an ampersand, as long as it is not
+	\lstinline*'(?<!\\)(&)'*, which can be read as: \emph{an ampersand, as long as it is not
 		immediately preceeded by a backslash}.
 	\index{warning!capturing parenthesis for lookForAlignDelims}
 	\index{capturing parenthesis (regex)}
@@ -1098,7 +1098,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 	\texttt{indentRules} (see \vref{sec:noadd-indent-rules}); you will find the default
 	\texttt{indentRules} contains
 	\lstinline!chapter: " "! which tells \texttt{latexindent.pl} simply to use a space
-	character after \texttt{\chapter} headings (once \texttt{indent} is set to \texttt{1} for
+	character after \texttt{chapter} headings (once \texttt{indent} is set to \texttt{1} for
 	\texttt{chapter}).
 
 	For example, assuming that you have the code in \cref{lst:headings1yaml} saved into
@@ -1185,10 +1185,11 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 	\begin{table}[!htp]
 		\begin{widepage}
 			\centering
-			\caption{Code blocks known to \texttt{latexindent.pl}}\label{tab:code-blocks}
+			\caption{Code blocks known to \texttt{latexindent.pl}}
+			\label{tab:code-blocks}
 			\begin{tabular}{m{.3\linewidth}@{\hspace{.25cm}}m{.4\linewidth}@{\hspace{.25cm}}m{.2\linewidth}}
 				\toprule
-				Code block                    & characters allowed in name                                                                  & example                                                                                                                                                               \\
+				Code block                    & characters allowed in name                                                                  & example                                                                                                                                                                \\
 				\midrule
 				environments                  & \lstinline!a-zA-Z@\*0-9_\\!                                                                 &
 				\begin{lstlisting}[,nolol=true,]
@@ -1211,10 +1212,10 @@ mand arg text
 }
   \end{lstlisting}
 				\\\cmidrule{2-3}
-				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                           \\\cmidrule{2-3}
-				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                      & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                       \\\cmidrule{2-3}
-				namedGroupingBracesBrackets   & \lstinline!0-9\.a-zA-Z@\*><!                                                                & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                   \\\cmidrule{2-3}
-				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                   & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
+				commands                      & \lstinline!+a-zA-Z@\*0-9_\:!                                                                & \lstinline!\mycommand!$\langle$\itshape{arguments}$\rangle$                                                                                                            \\\cmidrule{2-3}
+				keyEqualsValuesBracesBrackets & \lstinline!a-zA-Z@\*0-9_\/.\h\{\}:\#-!                                                      & \lstinline!my key/.style=!$\langle$\itshape{arguments}$\rangle$                                                                                                        \\\cmidrule{2-3}
+				namedGroupingBracesBrackets   & \lstinline!0-9\.a-zA-Z@\*><!                                                                & \lstinline!in!$\langle$\itshape{arguments}$\rangle$                                                                                                                    \\\cmidrule{2-3}
+				UnNamedGroupingBracesBrackets & \centering\emph{No name!}                                                                   & \lstinline!{! or \lstinline![! or \lstinline!,! or \lstinline!\&! or \lstinline!)! or \lstinline!(! or \lstinline!$! followed by $\langle$\itshape{arguments}$\rangle$ \\\cmidrule{2-3}
 				ifElseFi                      & \lstinline!@a-zA-Z! but must begin with either \newline \lstinline!\if! of \lstinline!\@if! &
 				\begin{lstlisting}[,nolol=true,]
 \ifnum...
@@ -1222,31 +1223,31 @@ mand arg text
 \else
 ...
 \fi
-  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 				items                         & User specified, see \vref{lst:indentafteritems,lst:itemNames}                               &
 				\begin{lstlisting}[,nolol=true,]
 \begin{enumerate}
   \item ...
 \end{enumerate}
-  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 				specialBeginEnd               & User specified, see \vref{lst:specialBeginEnd}                                              &
 				\begin{lstlisting}[,nolol=true,]
 \[
   ...
 \]
-  \end{lstlisting}                                                                                                                                                                                                                                                                     \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                                                      \\\cmidrule{2-3}
 				afterHeading                  & User specified, see \vref{lst:indentAfterHeadings}                                          &
 				\begin{lstlisting}[,morekeywords={chapter},nolol=true,]
 \chapter{title}
   ...
 \section{title}
-  \end{lstlisting}                                                                                                                                                                                                                                              \\\cmidrule{2-3}
+  \end{lstlisting}                                                                                                                                                                                                                                               \\\cmidrule{2-3}
 				filecontents                  & User specified, see \vref{lst:fileContentsEnvironments}                                     &
 				\begin{lstlisting}[,nolol=true,]
 \begin{filecontents}
 ...
 \end{filecontents}
-  \end{lstlisting}                                                                                                                                                                                                                                                                     \\
+  \end{lstlisting}                                                                                                                                                                                                                                                                      \\
 				\bottomrule
 			\end{tabular}
 		\end{widepage}

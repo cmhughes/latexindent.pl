@@ -2,7 +2,7 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 
             items: 20
-            masterDocument: 40
+            mainDocument: 40
         perCodeBlockBasis: 1
         items: 1
-        masterDocument: 1
+        mainDocument: 1

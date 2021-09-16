@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.11, 2021-07-31
+#   latexindent.pl, version 3.12, 2021-09-16
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -47,6 +47,9 @@ GetOptions (
     "replacement|r"=>\$switches{replacement},
     "onlyreplacement|rr"=>\$switches{onlyreplacement},
     "replacementrespectverb|rv"=>\$switches{replacementRespectVerb},
+    "check|k"=>\$switches{check},
+    "checkv|kv"=>\$switches{checkverbose},
+    "lines|n=s"=>\$switches{lines},
 );
 
 # check local settings doesn't interfer with reading the file;
@@ -67,6 +70,6 @@ if($switches{readLocalSettings} and scalar(@ARGV) < 1) {
 # allow STDIN as input, if a filename is not present
 unshift( @ARGV, '-' ) unless @ARGV;
 
-my $document = bless ({name=>"masterDocument",modifyLineBreaksYamlName=>"masterDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
+my $document = bless ({name=>"mainDocument",modifyLineBreaksYamlName=>"mainDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
 $document->latexindent;
 exit(0);

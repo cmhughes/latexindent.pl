@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
@@ -39,11 +39,11 @@ sub construct_special_begin{
     $logger->trace("*Constructing specialBeginEnd regex (see specialBeginEnd)") if $is_t_switch_active;
 
     # put together a list of the begin terms in special
-    while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+    while( my ($specialName,$BeginEnd)= each %{$mainSettings{specialBeginEnd}}){
       if(ref($BeginEnd) eq "HASH"){
         if (not defined ${$BeginEnd}{lookForThis}){
             ${$BeginEnd}{lookForThis} = 1;
-            ${${$masterSettings{specialBeginEnd}}{$specialName}}{lookForThis} = 1;
+            ${${$mainSettings{specialBeginEnd}}{$specialName}}{lookForThis} = 1;
             $logger->trace("setting lookForThis:1 for $specialName (lookForThis not specified)") if $is_t_switch_active;
         }
 
@@ -53,7 +53,7 @@ sub construct_special_begin{
     }
 
     # put together a list of the begin terms in special
-    while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+    while( my ($specialName,$BeginEnd)= each %{$mainSettings{specialBeginEnd}}){
 
       # only append the regexps if lookForThis is 1
       if( ref($BeginEnd) eq "HASH" ){
@@ -129,13 +129,13 @@ sub find_special{
 
     # otherwise loop through the special begin/end
     $logger->trace("*Searching ${$self}{name} for special begin/end (see specialBeginEnd)") if $is_t_switch_active ;
-    $logger->trace(Dumper(\%{$masterSettings{specialBeginEnd}})) if $is_tt_switch_active;
+    $logger->trace(Dumper(\%{$mainSettings{specialBeginEnd}})) if $is_tt_switch_active;
 
     # keep looping as long as there is a special match of some kind
     while(${$self}{body} =~ m/$specialAllMatchesRegExp/sx){
 
         # loop through each special match
-        while( my ($specialName,$BeginEnd)= each %{$masterSettings{specialBeginEnd}}){
+        while( my ($specialName,$BeginEnd)= each %{$mainSettings{specialBeginEnd}}){
 
             # log file
             if((ref($BeginEnd) eq "HASH") and ${$BeginEnd}{lookForThis}=~m/\d/s and ${$BeginEnd}{lookForThis} == 1){
@@ -197,21 +197,21 @@ sub find_special{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
-    if( defined ${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}){
+    if( defined ${${$mainSettings{specialBeginEnd}}{${$self}{name}}}{middle}){
             $logger->trace("middle specified for ${$self}{name} (see specialBeginEnd -> ${$self}{name} -> middle)") if $is_t_switch_active ;
 
             # initiate the middle regexp
             my $specialMiddle = q();
 
             # we can specify middle as either an array or a hash
-            if(ref(${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}) eq "ARRAY"){
+            if(ref(${${$mainSettings{specialBeginEnd}}{${$self}{name}}}{middle}) eq "ARRAY"){
                 $logger->trace("looping through middle array for ${$self}{name}") if $is_t_switch_active ;
-                foreach(@{${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}}){
+                foreach(@{${${$mainSettings{specialBeginEnd}}{${$self}{name}}}{middle}}){
                     $specialMiddle .= ($specialMiddle eq ""?q():"|").$_;
                 }
                 $specialMiddle = qr/$specialMiddle/; 
             } else {
-                $specialMiddle = qr/${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle}/;
+                $specialMiddle = qr/${${$mainSettings{specialBeginEnd}}{${$self}{name}}}{middle}/;
             }
 
             $logger->trace("overall middle regexp for ${$self}{name}: $specialMiddle") if $is_t_switch_active ;
@@ -236,7 +236,7 @@ sub tasks_particular_to_each_object{
     
     }
 
-    return unless(${$masterSettings{specialBeginEnd}}{specialBeforeCommand});
+    return unless(${$mainSettings{specialBeginEnd}}{specialBeforeCommand});
 
     # search for commands with arguments
     $self->find_commands_or_key_equals_values_braces;
@@ -253,7 +253,7 @@ sub post_indentation_check{
     # needed to remove leading horizontal space before \else
     my $self = shift;
 
-    return unless ( defined ${${$masterSettings{specialBeginEnd}}{${$self}{name}}}{middle});
+    return unless ( defined ${${$mainSettings{specialBeginEnd}}{${$self}{name}}}{middle});
 
     $logger->trace("post indentation check for ${$self}{name} to account for middle") if $is_t_switch_active ;
 

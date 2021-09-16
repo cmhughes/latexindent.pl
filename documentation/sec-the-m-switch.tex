@@ -12,9 +12,6 @@
  \printcontents[the-m-switch]{}{0}{}
 
 \yamltitle{modifylinebreaks}*{fields}
-	\begin{wrapfigure}[7]{r}[0pt]{8cm}
-		\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
-	\end{wrapfigure}
 	\makebox[0pt][r]{%
 		\raisebox{-\totalheight}[0pt][0pt]{%
 			\tikz\node[opacity=1] at (0,0)
@@ -24,6 +21,8 @@
 	\texttt{modifyLineBreaks} field. \emph{The settings in this field will only be considered
 		if the \texttt{-m} switch has been used}. A snippet of the default settings of this field
 	is shown in \cref{lst:modifylinebreaks}.
+
+	\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 
 	Having read the previous paragraph, it should sound reasonable that, if you call
 	\texttt{latexindent.pl} using the \texttt{-m} switch, then you give it permission to

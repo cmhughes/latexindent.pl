@@ -5,330 +5,155 @@
 References
 ==========
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-sransara
 
-.. raw:: html
+      Abey, Sam. 2019. “Print Usage Tip to Stderr Only If Stdin Is Tty.” September 17, 2019. https://github.com/cmhughes/latexindent.pl/pull/174.
 
-   <div id="ref-cmhblog">
+   .. container::
+      :name: ref-cmhblog
 
-“A Perl Script for Indenting Tex Files.” 2017. Accessed January 23.
-http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
+      “A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
 
-.. raw:: html
+   .. container::
+      :name: ref-paulo
 
-   </div>
+      Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
-.. raw:: html
+   .. container::
+      :name: ref-cpan
 
-   <div id="ref-sransara">
+      “CPAN: Comprehensive Perl Archive Network.” n.d. Accessed January 23, 2017. http://www.cpan.org/.
 
-Abey, Sam. 2019. “Print Usage Tip to Stderr Only If Stdin Is Tty.” September 17.
-https://github.com/cmhughes/latexindent.pl/pull/174.
+   .. container::
+      :name: ref-dumperdemo
 
-.. raw:: html
+      “Data Dumper Demonstration.” n.d. Accessed June 18, 2021. https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper.
 
-   </div>
+   .. container::
+      :name: ref-dumper
 
-.. raw:: html
+      “Data::Dumper Module.” n.d. Accessed June 18, 2021. https://perldoc.perl.org/Data::Dumper.
 
-   <div id="ref-paulo">
+   .. container::
+      :name: ref-jacobo-diaz-hidden-config
 
-Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23.
-https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
+      Diaz, Jacobo. 2014a. “Hiddenconfig.” July 21, 2014. https://github.com/cmhughes/latexindent.pl/pull/18.
 
-.. raw:: html
+   .. container::
+      :name: ref-jacobo-diaz-she-bang
 
-   </div>
+      ———. 2014b. “Changed Shebang to Make the Script More Portable.” July 23, 2014. https://github.com/cmhughes/latexindent.pl/pull/17.
 
-.. raw:: html
+   .. container::
+      :name: ref-masteringregexp
 
-   <div id="ref-cpan">
+      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
 
-“CPAN: Comprehensive Perl Archive Network.” 2017. Accessed January 23. http://www.cpan.org/.
+   .. container::
+      :name: ref-latexindent-home
 
-.. raw:: html
+      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
-   </div>
+   .. container::
+      :name: ref-jun-sheaf
 
-.. raw:: html
+      J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
 
-   <div id="ref-dumperdemo">
+   .. container::
+      :name: ref-jeanlego
 
-“Data Dumper Demonstration.” 2021. Accessed June 18.
-https://stackoverflow.com/questions/7466825/how-do-you-sort-the-output-of-datadumper.
+      jeanlego. 2020. “Search localSettings in Cwd as Well.” September 15, 2020. https://github.com/cmhughes/latexindent.pl/pull/221.
 
-.. raw:: html
+   .. container::
+      :name: ref-jasjuang
 
-   </div>
+      Juang, Jason. 2015. “Add in Path Installation.” November 24, 2015. https://github.com/cmhughes/latexindent.pl/pull/38.
 
-.. raw:: html
+   .. container::
+      :name: ref-harish
 
-   <div id="ref-dumper">
+      Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.
 
-“Data::Dumper Module.” 2021. Accessed June 18. https://perldoc.perl.org/Data::Dumper.
+   .. container::
+      :name: ref-log4perl
 
-.. raw:: html
+      “Log4perl Perl Module.” n.d. Accessed September 24, 2017. http://search.cpan.org/~mschilli/Log-Log4perl-1.49/lib/Log/Log4perl.pm.
 
-   </div>
+   .. container::
+      :name: ref-mlep
 
-.. raw:: html
+      mlep. 2017. “One Sentence Per Line.” August 16, 2017. https://github.com/cmhughes/latexindent.pl/issues/81.
 
-   <div id="ref-jacobo-diaz-hidden-config">
+   .. container::
+      :name: ref-newptcai
 
-Diaz, Jacobo. 2014a. “Hiddenconfig.” July 21. https://github.com/cmhughes/latexindent.pl/pull/18.
+      newptcai. 2021. “Update Appendices.tex.” February 16, 2021. https://github.com/cmhughes/latexindent.pl/pull/221.
 
-.. raw:: html
+   .. container::
+      :name: ref-jowens
 
-   </div>
+      Owens, John. 2017. “Paragraph Line Break Routine Removal.” May 27, 2017. https://github.com/cmhughes/latexindent.pl/issues/33.
 
-.. raw:: html
+   .. container::
+      :name: ref-perlbrew
 
-   <div id="ref-jacobo-diaz-she-bang">
+      “Perlbrew.” n.d. Accessed January 23, 2017. http://perlbrew.pl/.
 
-———. 2014b. “Changed Shebang to Make the Script More Portable.” July 23.
-https://github.com/cmhughes/latexindent.pl/pull/17.
+   .. container::
+      :name: ref-encoding
 
-.. raw:: html
+      “Perldoc Encode::Supported.” n.d. Accessed May 6, 2021. https://perldoc.perl.org/Encode::Supported.
 
-   </div>
+   .. container::
+      :name: ref-qiancy98
 
-.. raw:: html
+      qiancy98. 2021. “Locale Encoding of File System.” May 6, 2021. https://github.com/cmhughes/latexindent.pl/pull/273.
 
-   <div id="ref-masteringregexp">
+   .. container::
+      :name: ref-alexreg
 
-Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
+      Regueiro, Alexander. 2021. “Update Help Screen.” March 18, 2021. https://github.com/cmhughes/latexindent.pl/pull/261.
 
-.. raw:: html
+   .. container::
+      :name: ref-strawberryperl
 
-   </div>
+      “Strawberry Perl.” n.d. Accessed January 23, 2017. http://strawberryperl.com/.
 
-.. raw:: html
+   .. container::
+      :name: ref-texttabs
 
-   <div id="ref-latexindent-home">
+      “Text::Tabs Perl Module.” n.d. Accessed July 6, 2017. http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
 
-“Home of Latexindent.pl.” 2017. Accessed January 23. https://github.com/cmhughes/latexindent.pl.
+   .. container::
+      :name: ref-textwrap
 
-.. raw:: html
+      “Text::Wrap Perl Module.” n.d. Accessed May 1, 2017. http://perldoc.perl.org/Text/Wrap.html.
 
-   </div>
+   .. container::
+      :name: ref-cmh:videodemo
 
-.. raw:: html
+      “Video Demonstration of Latexindent.pl on Youtube.” n.d. Accessed February 21, 2017. https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
 
-   <div id="ref-jun-sheaf">
+   .. container::
+      :name: ref-vosskuhle
 
-J., Randolf. 2020. “Alpine-Linux Instructions.” August 10.
-https://github.com/cmhughes/latexindent.pl/pull/214.
+      Voßkuhle, Michel. 2013. “Remove Trailing White Space.” November 10, 2013. https://github.com/cmhughes/latexindent.pl/pull/12.
 
-.. raw:: html
+   .. container::
+      :name: ref-bersbersbers
 
-   </div>
+      “Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” n.d. Accessed June 18, 2021. https://github.com/cmhughes/latexindent.pl/issues/256.
 
-.. raw:: html
+   .. container::
+      :name: ref-xu-cheng
 
-   <div id="ref-jeanlego">
+      (xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
 
-jeanlego. 2020. “Search localSettings in Cwd as Well.” September 15.
-https://github.com/cmhughes/latexindent.pl/pull/221.
+   .. container::
+      :name: ref-zoehneto
 
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-jasjuang">
-
-Juang, Jason. 2015. “Add in Path Installation.” November 24.
-https://github.com/cmhughes/latexindent.pl/pull/38.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-harish">
-
-Kumar, Harish. 2013. “Early Version Testing.” November 10. https://github.com/harishkumarholla.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-log4perl">
-
-“Log4perl Perl Module.” 2017. Accessed September 24.
-http://search.cpan.org/~mschilli/Log-Log4perl-1.49/lib/Log/Log4perl.pm.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-mlep">
-
-mlep. 2017. “One Sentence Per Line.” August 16.
-https://github.com/cmhughes/latexindent.pl/issues/81.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-newptcai">
-
-newptcai. 2021. “Update Appendices.tex.” February 16.
-https://github.com/cmhughes/latexindent.pl/pull/221.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-jowens">
-
-Owens, John. 2017. “Paragraph Line Break Routine Removal.” May 27.
-https://github.com/cmhughes/latexindent.pl/issues/33.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-perlbrew">
-
-“Perlbrew.” 2017. Accessed January 23. http://perlbrew.pl/.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-encoding">
-
-“Perldoc Encode::Supported.” 2021. Accessed May 6. https://perldoc.perl.org/Encode::Supported.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-qiancy98">
-
-qiancy98. 2021. “Locale Encoding of File System.” May 6.
-https://github.com/cmhughes/latexindent.pl/pull/273.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-alexreg">
-
-Regueiro, Alexander. 2021. “Update Help Screen.” March 18.
-https://github.com/cmhughes/latexindent.pl/pull/261.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-strawberryperl">
-
-“Strawberry Perl.” 2017. Accessed January 23. http://strawberryperl.com/.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-texttabs">
-
-“Text::Tabs Perl Module.” 2017. Accessed July 6.
-http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-textwrap">
-
-“Text::Wrap Perl Module.” 2017. Accessed May 1. http://perldoc.perl.org/Text/Wrap.html.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-cmh:videodemo">
-
-“Video Demonstration of Latexindent.pl on Youtube.” 2017. Accessed February 21.
-https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-vosskuhle">
-
-Voßkuhle, Michel. 2013. “Remove Trailing White Space.” November 10.
-https://github.com/cmhughes/latexindent.pl/pull/12.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-bersbersbers">
-
-“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” 2021. Accessed June
-18. https://github.com/cmhughes/latexindent.pl/issues/256.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-xu-cheng">
-
-(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13.
-https://github.com/cmhughes/latexindent.pl/pull/121.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-zoehneto">
-
-(zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4.
-https://github.com/cmhughes/latexindent.pl/issues/103.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      (zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4, 2018. https://github.com/cmhughes/latexindent.pl/issues/103.

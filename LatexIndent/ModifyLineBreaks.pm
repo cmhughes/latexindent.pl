@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use Exporter qw/import/;
 use Text::Wrap;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -74,7 +74,7 @@ sub modify_line_breaks_body{
             my $trailingCharacterToken = q();
             $logger->trace("Adding a blank line at the end of begin ${$self}{begin} followed by a linebreak ($BodyStringLogFile == 3)") if $is_t_switch_active;
             ${$self}{begin} =~ s/\h*$//;       
-            ${$self}{begin} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";       
+            ${$self}{begin} .= (${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";       
             ${$self}{linebreaksAtEnd}{begin} = 1;
             $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)") if $is_t_switch_active;
             ${$self}{body} =~ s/^\h*//;       
@@ -127,7 +127,7 @@ sub modify_line_breaks_end{
                     ${$self}{body} =~ s/\h*$//s;
                   } elsif ($_==3) {
                     $logger->trace("Adding a blank line immediately after body of ${$self}{name} ($EndStringLogFile==3)") if $is_t_switch_active;
-                    $trailingCharacterToken = "\n".(${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
+                    $trailingCharacterToken = "\n".(${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:q());
                     ${$self}{body} =~ s/\h*$//s;
                   }
                   
@@ -203,7 +203,7 @@ sub modify_line_breaks_end_after{
                     ${$self}{linebreaksAtEnd}{end} = 1;
 
                     # modified end statement
-                    ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
+                    ${$self}{replacementText} .= (${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
                   } 
         }
     }
@@ -278,11 +278,11 @@ sub verbatim_modify_line_breaks{
 sub text_wrap_remove_paragraph_line_breaks{
     my $self = shift;
 
-    if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+    if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
         $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
     } else {
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+        $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
     }
 
 }
@@ -292,7 +292,7 @@ sub text_wrap{
     my $self = shift;
     
     # alignment at ampersand can take priority
-    return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
+    return if(${$self}{lookForAlignDelims} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
 
     # goal: get an accurate measurement of verbatim objects;
     # 
@@ -316,7 +316,7 @@ sub text_wrap{
     my @putVerbatimBackIn;
 
     # check body for verbatim and get measurements
-    if (${$self}{body} =~ m/$tokens{verbatim}/s and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} eq "overflow"){
+    if (${$self}{body} =~ m/$tokens{verbatim}/s and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} eq "overflow"){
 
       # reference: https://stackoverflow.com/questions/10336660/in-perl-how-can-i-generate-random-strings-consisting-of-eight-hex-digits
       my @set = ('0' ..'9', 'A' .. 'Z', 'a' .. 'z');
@@ -354,27 +354,27 @@ sub text_wrap{
     # columns might have been defined by the user
     if(defined ${$self}{columns}){
         $columns = ${$self}{columns};
-    } elsif(ref ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
-        if(defined ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
-            $columns = ${${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
+    } elsif(ref ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
+        if(defined ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
+            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
         } else {
             $columns = 80;
         }
-    } elsif (defined ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}){
-        $columns = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns} ;
+    } elsif (defined ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}){
+        $columns = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} ;
     } else {
         $columns = 80;
     }
 
     # vital Text::Wrap options
     $Text::Wrap::columns=$columns;
-    $Text::Wrap::huge = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge};
+    $Text::Wrap::huge = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge};
 
     # all other Text::Wrap options not usually needed/helpful, but available
-    $Text::Wrap::separator=${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} if(${$masterSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne '');
-    $Text::Wrap::break = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{break};
-    $Text::Wrap::unexpand = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{unexpand};
-    $Text::Wrap::tabstop = ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop} if ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{tabstop};
+    $Text::Wrap::separator=${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator} if(${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne '');
+    $Text::Wrap::break = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{break};
+    $Text::Wrap::unexpand = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{unexpand} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{unexpand};
+    $Text::Wrap::tabstop = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{tabstop} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{tabstop};
 
     # perform the text wrapping
     ${$self}{body} = wrap('','',${$self}{body});
@@ -387,7 +387,7 @@ sub construct_paragraph_reg_exp{
 
     $logger->trace("*Constructing the paragraph-stop regexp (see paragraphsStopAt)") if $is_t_switch_active ;
     my $stopAtRegExp = q();
-    while( my ($paragraphStopAt,$yesNo)= each %{${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{paragraphsStopAt}}){
+    while( my ($paragraphStopAt,$yesNo)= each %{${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{paragraphsStopAt}}){
         if($yesNo){
             # the headings (chapter, section, etc) need a slightly special treatment
             $paragraphStopAt = "afterHeading" if($paragraphStopAt eq "heading");
@@ -436,7 +436,7 @@ sub remove_paragraph_line_breaks{
     return unless ${$self}{removeParagraphLineBreaks};
 
     # alignment at ampersand can take priority
-    return if(${$self}{lookForAlignDelims} and ${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{alignAtAmpersandTakesPriority});
+    return if(${$self}{lookForAlignDelims} and ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{alignAtAmpersandTakesPriority});
 
     $logger->trace("Checking ${$self}{name} for paragraphs (see removeParagraphLineBreaks)") if $is_t_switch_active;
 

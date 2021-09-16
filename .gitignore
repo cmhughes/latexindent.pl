@@ -21,6 +21,7 @@ documentation/*.new
 documentation/*.out
 documentation/*.pyg
 documentation/*.run.xml
+documentation/arara.yaml
 documentation/*.toc
 documentation/latexindent.pdf
 nytprof*

@@ -21,11 +21,13 @@ use utf8;
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
-use LatexIndent::Switches qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
+use LatexIndent::Switches qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
 use LatexIndent::LogFile qw/process_switches $logger/;
 use LatexIndent::Logger qw/@logFileLines/;
+use LatexIndent::Check qw/simple_diff/;
+use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
-use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %masterSettings yaml_get_columns/;
+use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
 use LatexIndent::FileExtension qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -67,7 +69,7 @@ sub new{
     my $invocant = shift;
     my $class = ref($invocant) || $invocant;
     my $self = {@_};
-    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace};
+    $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationStartCodeBlockTrace};
     bless ($self,$class);
     return $self;
 }
@@ -79,13 +81,18 @@ sub latexindent{
     $self->yaml_read_settings;
     $self->file_extension_check;
     $self->operate_on_file;
+
+    # check switch active, and file changed, gives different exit code
+    if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body}){
+        exit(1);
+    }
 }
 
 sub operate_on_file{
     my $self = shift;
 
     $self->create_back_up_file;
-    $self->token_check;
+    $self->token_check unless ($switches{lines}) ;
     $self->make_replacements(when=>"before") if ($is_r_switch_active and !$is_rv_switch_active);
     unless ($is_rr_switch_active){
         $self->construct_regular_expressions;
@@ -99,24 +106,24 @@ sub operate_on_file{
         $logger->trace(Dumper(\%verbatimStorage)) if $is_tt_switch_active;
         $self->verbatim_modify_line_breaks if $is_m_switch_active; 
         $self->make_replacements(when=>"before") if $is_rv_switch_active;
-        $self->text_wrap if ($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
-        $self->protect_blank_lines;
+        $self->text_wrap if ($is_m_switch_active and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
+        $self->protect_blank_lines if $is_m_switch_active;
         $self->remove_trailing_whitespace(when=>"before");
         $self->find_file_contents_environments_and_preamble;
         $self->dodge_double_backslash;
         $self->remove_leading_space;
         $self->process_body_of_text;
-        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
+        ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
         $self->remove_trailing_whitespace(when=>"after");
-        $self->condense_blank_lines;
-        $self->unprotect_blank_lines;
+        $self->condense_blank_lines  if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{condenseMultipleBlankLinesInto} );
+        $self->unprotect_blank_lines if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{preserveBlankLines} );
         $self->un_dodge_double_backslash;
         $self->make_replacements(when=>"after") if $is_rv_switch_active;
         $self->put_verbatim_back_in (match=>"everything-except-commands");
         $self->put_trailing_comments_back_in;
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
-        ${$self}{body} =~ s/\r\n/\n/sg if $masterSettings{dos2unixlinebreaks};
+        ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
     }
     $self->output_indented_text;
     return
@@ -140,6 +147,8 @@ sub construct_regular_expressions{
 
 sub output_indented_text{
     my $self = shift;
+
+    $self->simple_diff() if $is_check_switch_active;
 
     $logger->info("*Output routine:");
 
@@ -172,10 +181,10 @@ sub output_logfile{
     my $self = shift;
     #
     # put the final line in the logfile
-    $logger->info("${$masterSettings{logFilePreferences}}{endLogFileWith}") if ${$masterSettings{logFilePreferences}}{endLogFileWith};
+    $logger->info("${$mainSettings{logFilePreferences}}{endLogFileWith}") if ${$mainSettings{logFilePreferences}}{endLogFileWith};
     
     # github info line
-    $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$masterSettings{logFilePreferences}}{showGitHubInfoFooter};
+    $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl") if ${$mainSettings{logFilePreferences}}{showGitHubInfoFooter};
 
     # open log file
     my $logfileName = $switches{logFileName}||"indent.log";
@@ -220,19 +229,19 @@ sub find_objects{
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line if ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences});
+    $self->one_sentence_per_line if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences});
 
     if ($is_m_switch_active and !${$self}{preamblePresent}){
         $self->yaml_get_textwrap_removeparagraphline_breaks;
     }
 
-    if( $is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
+    if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
         # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
         } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
             $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
         }
     }
@@ -253,13 +262,13 @@ sub find_objects{
     $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
     
     # documents without preamble need a manual call to the paragraph_one_line routine
-    if ($is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0 ){ 
+    if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0 ){ 
        # call the remove_paragraph_line_breaks and text_wrap routines
-       if(${$masterSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
+       if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-           $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+           $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
        } else {
-           $self->text_wrap if (${$self}{textWrapOptions} and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
+           $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
        }
     }
@@ -283,7 +292,7 @@ sub find_commands_or_key_equals_values_braces_and_special{
 
     # the order in which we search for specialBeginEnd and commands/key/braces
     # can change depending upon specialBeforeCommand
-    if(${$masterSettings{specialBeginEnd}}{specialBeforeCommand}){
+    if(${$mainSettings{specialBeginEnd}}{specialBeforeCommand}){
         # search for special begin/end
         $logger->trace('looking for SPECIAL begin/end *before* looking for commands (see specialBeforeCommand)') if $is_t_switch_active;
         $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
@@ -318,13 +327,13 @@ sub get_settings_and_store_new_object{
     $latexIndentObject->tasks_common_to_each_object(%{$self});
     
     # removeParagraphLineBreaks and textWrapping fun!
-    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if( $is_m_switch_active and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
+    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
       
     # tasks particular to each object
     $latexIndentObject->tasks_particular_to_each_object;
     
     # removeParagraphLineBreaks and textWrapping fun!
-    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active and !${$masterSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
+    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
 
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
@@ -333,7 +342,7 @@ sub get_settings_and_store_new_object{
     $self->hidden_children_preparation_for_alignment($latexIndentObject) if(${$latexIndentObject}{lookForAlignDelims} and ${$latexIndentObject}{measureHiddenChildren});
 
     # possible decoration in log file 
-    $logger->trace(${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$masterSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+    $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
 }
 
 
@@ -381,7 +390,7 @@ sub tasks_common_to_each_object{
     ${$self}{idRegExp} = ${$self}{id};
 
     if($is_m_switch_active
-        and ${$masterSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
+        and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
         my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$self}{id}));
         ${$self}{idRegExp} = qr/$IDwithLineBreaks/s;  
     }

@@ -1,9 +1,9 @@
 modifyLineBreaks:
     textWrapOptions:
         afterHeading: 1
-        masterDocument: 0
+        mainDocument: 0
     removeParagraphLineBreaks:
-        masterDocument: 0
+        mainDocument: 0
         afterHeading: 1
     commands:
         section:

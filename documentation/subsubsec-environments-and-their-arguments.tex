@@ -172,13 +172,13 @@ latexindent.pl myenv-args.tex -l myenv-rules4.yaml
 	has received three spaces of indentation.
 
 \yamltitle{noAdditionalIndentGlobal}*{fields}
-	\begin{wrapfigure}[6]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
-	\end{wrapfigure}
 	Assuming that your environment name is not found within neither
 	\texttt{noAdditionalIndent} nor \texttt{indentRules}, the next place that
 	\texttt{latexindent.pl} will look is \texttt{noAdditionalIndentGlobal}, and in particular
 	\emph{for the environments} key (see \cref{lst:noAdditionalIndentGlobal:environments}).
+
+	\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]*{../defaultSettings.yaml}[width=.5\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
+
 	Let's say that you change the value of \texttt{environments} to \texttt{1} in
 	\cref{lst:noAdditionalIndentGlobal:environments}, and that you run
 	\index{switches!-l demonstration}
@@ -240,12 +240,12 @@ latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
 	\end{minipage}
 
 \yamltitle{indentRulesGlobal}*{fields}
-	\begin{wrapfigure}[4]{r}[0pt]{7cm}
-		\cmhlistingsfromfile[style=indentRulesGlobalEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
-	\end{wrapfigure}
 	The final check that \texttt{latexindent.pl} will make is to look for
-	\texttt{indentRulesGlobal} as detailed in \cref{lst:indentRulesGlobal:environments}; if
-	you change the \texttt{environments} field to anything involving horizontal space, say
+	\texttt{indentRulesGlobal} as detailed in \cref{lst:indentRulesGlobal:environments}.
+
+	\cmhlistingsfromfile[style=indentRulesGlobalEnv]*{../defaultSettings.yaml}[width=.5\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
+
+	If you change the \texttt{environments} field to anything involving horizontal space, say
 	\lstinline!" "!, and then run the following commands
 	\index{switches!-l demonstration}
 

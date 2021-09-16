@@ -100,6 +100,6 @@ latexindent.pl -s -m psttf.tex -l psttf1.yaml -o=+-mod1
 latexindent.pl -s -m psttf.tex -l psttf2.yaml -o=+-mod2
 
 # https://github.com/cmhughes/latexindent.pl/issues/243
-latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 [[ $noisyMode == 1 ]] && makenoise
 git status

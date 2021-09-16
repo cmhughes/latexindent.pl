@@ -4,4 +4,4 @@ modifyLineBreaks:
         perCodeBlockBasis: 1
         environments:
           myenv: 1
-        masterDocument: 1
+        mainDocument: 1

@@ -357,5 +357,14 @@ latexindent.pl -s aligned1.tex -l sba5.yaml -o=+-mod5
 latexindent.pl -s aligned1.tex -l sba6.yaml -o=+-mod6
 latexindent.pl -s aligned1.tex -l sba7.yaml -o=+-mod7
 
+# lines switch
+latexindent.pl --lines 3-7 -s myfile.tex -o=+-mod1
+latexindent.pl --lines 5 -s myfile.tex -o=+-mod2
+latexindent.pl --lines 3-5,8-10 -s myfile.tex -o=+-mod3
+latexindent.pl --lines 1-2,4-5,9-10,12 -s myfile.tex -o=+-mod4
+latexindent.pl --lines !5-7 -s myfile.tex -o=+-mod5
+latexindent.pl --lines !5-7,!9-10 myfile.tex -s -o=+-mod6
+latexindent.pl --lines 6 myfile1.tex -m -s -l env-mlb2,env-mlb7,env-mlb8 -o=+-mod1 
+
 [[ $noisyMode == 1 ]] && makenoise
 git status

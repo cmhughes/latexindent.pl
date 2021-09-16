@@ -17,7 +17,7 @@ package LatexIndent::KeyEqualsValuesBraces;
 use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
@@ -38,8 +38,8 @@ sub construct_key_equals_values_regexp{
     my $blankLineToken = $tokens{blanklines};
 
     # read from fine tuning
-    my  $keyEqualsValuesBracesBrackets = qr/${${$masterSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}/;
-    my  $keyEqualsValuesBracesBracketsFollow = qr/${${$masterSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{follow}/;
+    my  $keyEqualsValuesBracesBrackets = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}/;
+    my  $keyEqualsValuesBracesBracketsFollow = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{follow}/;
 
     # store the regular expresssion for matching and replacing 
     $key_equals_values_bracesRegExp = qr/

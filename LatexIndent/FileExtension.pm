@@ -21,8 +21,8 @@ use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path
 use Exporter qw/import/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
-use LatexIndent::Switches qw/%switches/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::Switches qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
@@ -36,7 +36,7 @@ sub file_extension_check{
     my ($name,$dir,$ext) = fileparse($fileName,qr/\..[^.]*$/);
     
     # grab the file extension preferences
-    my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
+    my %fileExtensionPreference= %{$mainSettings{fileExtensionPreference}};
 
     # sort the file extensions by preference 
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
@@ -69,17 +69,18 @@ sub file_extension_check{
               foreach (@fileExtensions ){
                 $logger->fatal("I searched for $fileName$_");
               }
-              $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.\nExiting, no indendation done.");
+              $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
+              $logger->fatal("*Exiting, no indendation done."); 
               $self->output_logfile();
-              die "ERROR: I couldn't find any of the following files: ".$fileName.join(", $fileName",@fileExtensions)." (see fileExtensionPreference)\nExiting, no indendation done."; 
+              exit(3);
             }
           } else {
             # if the file has a recognised extension, check that the file exists
             unless( -e $fileName ){
-              my $message = "ERROR: I couldn't find $fileName, are you sure it exists?\nNo indentation done.\nExiting.";
-              $logger->fatal("*$message");
+              $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
+              $logger->fatal("Exiting, no indendation done."); 
               $self->output_logfile();
-              die $message;
+              exit(3);
             }
           }
      }
@@ -140,14 +141,31 @@ sub file_extension_check{
     # read the file into the Document body
     my @lines;
     if($fileName ne "-"){
-        open(MAINFILE, $fileName) or die "Could not open input file, $fileName";
+        my $openFilePossible=1;
+        open(MAINFILE, $fileName) or ($openFilePossible=0);
+        if($openFilePossible==0){
+            $logger->fatal("*$fileName exists, but could not open it");
+            $logger->fatal("Exiting, no indendation done."); 
+            $self->output_logfile();
+            exit(4);
+        }
         push(@lines,$_) while(<MAINFILE>);
         close(MAINFILE);
     } else {
             push(@lines,$_) while (<>)
     }
 
-    # the all-important step: update the body
-    ${$self}{body} = join("",@lines);
+    # -n, --lines mode active
+    if($switches{lines}){
+      $self->lines_body_selected_lines(\@lines); 
+    } else {
+      # the all-important step: update the body
+      ${$self}{body} = join("",@lines);
+    }
+
+    # necessary extra storage if check switch is active
+    if ($is_check_switch_active){
+        ${$self}{originalBody} = ${$self}{body};
+    }
 }
 1;

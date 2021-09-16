@@ -17,7 +17,7 @@ package LatexIndent::Switches;
 use strict;
 use warnings;
 use Exporter qw/import/;
-our @EXPORT_OK = qw/%switches store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active/;
+our @EXPORT_OK = qw/%switches store_switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active $is_check_verbose_switch_active/;
 our %switches;
 our $is_m_switch_active;
 our $is_t_switch_active;
@@ -25,6 +25,8 @@ our $is_tt_switch_active;
 our $is_r_switch_active;
 our $is_rr_switch_active;
 our $is_rv_switch_active;
+our $is_check_switch_active;
+our $is_check_verbose_switch_active;
 
 sub store_switches{
     my $self = shift;
@@ -39,6 +41,9 @@ sub store_switches{
     $is_rr_switch_active = defined $switches{onlyreplacement}?$switches{onlyreplacement}: 0;
     $is_rv_switch_active = defined $switches{replacementRespectVerb}?$switches{replacementRespectVerb}: 0;
     $is_r_switch_active = ($is_rr_switch_active|$is_rv_switch_active) ? ($is_rr_switch_active|$is_rv_switch_active) : $is_r_switch_active;
+    $is_check_switch_active = defined $switches{check}?$switches{check}: 0;
+    $is_check_verbose_switch_active = defined $switches{checkverbose}?$switches{checkverbose}: 0;
+    $is_check_switch_active = $is_check_verbose_switch_active ? $is_check_verbose_switch_active : $is_check_switch_active; 
     delete ${$self}{switches};
   }
 1;

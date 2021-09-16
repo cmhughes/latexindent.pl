@@ -1,4 +1,11 @@
 name: Create and publish latexindent.exe to releases
+# PURPOSE:
+#
+#  1. *create* latexindent.exe using PAR::Packer on Strawberry Perl
+#  2. *publish* latexindent.exe to the most recent tag (release)
+#
+# Note: this action only runs on *each release*, i.e. when tags are pushed
+#
 
 on:
   push:

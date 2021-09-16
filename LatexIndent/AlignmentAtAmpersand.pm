@@ -23,7 +23,7 @@ use Exporter qw/import/;
 use List::Util qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::HiddenChildren qw/%familyTree/;
@@ -48,8 +48,8 @@ sub find_aligned_block{
 	#         5 &   & 6 &   \\
 	#        %* \end{tabular}
     $logger->trace('*Searching for ALIGNED blocks marked by comments')if($is_t_switch_active);
-    $logger->trace(Dumper(\%{$masterSettings{lookForAlignDelims}})) if($is_tt_switch_active);
-    while( my ($alignmentBlock,$yesno)= each %{$masterSettings{lookForAlignDelims}}){
+    $logger->trace(Dumper(\%{$mainSettings{lookForAlignDelims}})) if($is_tt_switch_active);
+    while( my ($alignmentBlock,$yesno)= each %{$mainSettings{lookForAlignDelims}}){
         if(ref $yesno eq "HASH"){
               $yesno = (defined ${$yesno}{delims} ) ? ${$yesno}{delims} : 1;
             }
@@ -1362,7 +1362,7 @@ sub double_back_slash_else{
     # check for existence of \\ statement, and associated line break information
     $self->check_for_else_statement(
               # else name regexp
-              elseNameRegExp=>qr/${${$masterSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash}/,
+              elseNameRegExp=>qr/${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash}/,
               # else statements name: note that DBS stands for 'Double Back Slash'
               ElseStartsOnOwnLine=>"DBSStartsOnOwnLine",
               # end statements

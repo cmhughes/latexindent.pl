@@ -4,4 +4,4 @@ modifyLineBreaks:
         perCodeBlockBasis: 1
         all:
           except:
-            - masterDocument
+            - mainDocument

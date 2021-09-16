@@ -1,5 +1,10 @@
 # changelog.md
 
+## V3.12, September 16, 2021
+new features:
+- check switch available, full details at [issue 215](https://github.com/cmhughes/latexindent.pl/issues/215)
+- lines switch available, full details at [issue 247](https://github.com/cmhughes/latexindent.pl/issues/247)
+
 ## V3.11, July 31, 2021
 upgrade to textWrap: in particular, a new feature `beforeFindingChildCodeBlocks` to be 
 used with `perCodeBlockBasis`. 

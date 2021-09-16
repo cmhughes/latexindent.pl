@@ -1,4 +1,4 @@
 modifyLineBreaks:
     removeParagraphLineBreaks:
         all: 0
-        masterDocument: 1
+        mainDocument: 1

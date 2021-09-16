@@ -19,7 +19,7 @@ use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -36,19 +36,19 @@ sub construct_command_regexp{
     my $self = shift;
 
     $optAndMandAndRoundBracketsRegExp = $self->get_arguments_regexp(
-                                                                    roundBrackets=>${$masterSettings{commandCodeBlocks}}{roundParenthesesAllowed},
+                                                                    roundBrackets=>${$mainSettings{commandCodeBlocks}}{roundParenthesesAllowed},
                                                                     stringBetweenArguments=>1);
 
     $optAndMandAndRoundBracketsRegExpLineBreaks = $self->get_arguments_regexp(
-                                                                    roundBrackets=>${$masterSettings{commandCodeBlocks}}{roundParenthesesAllowed},
+                                                                    roundBrackets=>${$mainSettings{commandCodeBlocks}}{roundParenthesesAllowed},
                                                                     mode=>"lineBreaksAtEnd",
                                                                     stringBetweenArguments=>1);
 
     # put together a list of the special command names (this was mostly motivated by the \@ifnextchar[ issue)
     my $commandNameSpecialRegExp = q();
-    if(ref(${$masterSettings{commandCodeBlocks}}{commandNameSpecial}) eq "ARRAY"){
+    if(ref(${$mainSettings{commandCodeBlocks}}{commandNameSpecial}) eq "ARRAY"){
 
-        my @commandNameSpecial = @{${$masterSettings{commandCodeBlocks}}{commandNameSpecial}};
+        my @commandNameSpecial = @{${$mainSettings{commandCodeBlocks}}{commandNameSpecial}};
         $logger->trace("*Looping through array for commandCodeBlocks->commandNameSpecial") if $is_t_switch_active ;
 
         # note that the zero'th element in this array contains the amalgamate switch, which we don't want!
@@ -65,7 +65,7 @@ sub construct_command_regexp{
     $logger->trace("*The special command names regexp is: $commandNameSpecialRegExp (see commandNameSpecial)") if $is_t_switch_active;
 
     # read from fine tuning
-    my  $commandNameRegExp = qr/${${$masterSettings{fineTuning}}{commands}}{name}/;
+    my  $commandNameRegExp = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
 
     # construct the command regexp
     $commandRegExp = qr/
@@ -132,7 +132,7 @@ sub tasks_particular_to_each_object{
         if (${${${${$self}{children}}[0]}{children}[-1]}{EndFinishesWithLineBreak} == 3 ){
               my $EndStringLogFile = ${${${${$self}{children}}[0]}{children}[-1]}{aliases}{EndFinishesWithLineBreak}||"EndFinishesWithLineBreak";
               $logger->trace("Adding another blank line to replacement text for ${$self}{name} as last argument has $EndStringLogFile == 3 ") if $is_t_switch_active;
-              ${$self}{replacementText} .= (${$masterSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
+              ${$self}{replacementText} .= (${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";
         }
 
         # update the argument object

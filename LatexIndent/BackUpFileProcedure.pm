@@ -16,7 +16,7 @@ package LatexIndent::BackUpFileProcedure;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::LogFile qw/$logger/;
 use File::Basename;             # to get the filename and directory path
@@ -37,7 +37,7 @@ sub create_back_up_file{
     my $fileName = ${$self}{fileName};
 
     # grab the file extension preferences
-    my %fileExtensionPreference= %{$masterSettings{fileExtensionPreference}};
+    my %fileExtensionPreference= %{$mainSettings{fileExtensionPreference}};
 
     # sort the file extensions by preference 
     my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
@@ -49,10 +49,10 @@ sub create_back_up_file{
     $backupFile = "${$self}{cruftDirectory}/$backupFile";
 
     # local variables, determined from the YAML settings
-    my $onlyOneBackUp = $masterSettings{onlyOneBackUp};
-    my $maxNumberOfBackUps = $masterSettings{maxNumberOfBackUps};
-    my $cycleThroughBackUps= $masterSettings{cycleThroughBackUps};
-    my $backupExtension= $masterSettings{backupExtension};
+    my $onlyOneBackUp = $mainSettings{onlyOneBackUp};
+    my $maxNumberOfBackUps = $mainSettings{maxNumberOfBackUps};
+    my $cycleThroughBackUps= $mainSettings{cycleThroughBackUps};
+    my $backupExtension= $mainSettings{backupExtension};
     
     # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have
     # a conflict- er on the side of caution and turn off onlyOneBackUp
@@ -109,7 +109,14 @@ sub create_back_up_file{
                         # check that the oldBackupFile exists
                         if(-e $oldBackupFile){
                         $logger->info(" copying $oldBackupFile to $newBackupFile ");
-                            copy($oldBackupFile,$newBackupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
+                            my $backUpFilePossible = 1;
+                            copy($oldBackupFile,$newBackupFile) or ($backUpFilePossible = 0);
+                            if ($backUpFilePossible==0){ 
+                                $logger->fatal("*Could not write to backup file $backupFile. Please check permissions. Exiting.");
+                                $logger->fatal("Exiting, no indendation done."); 
+                                $self->output_logfile();
+                                exit(5);
+                            }
                         }
                     }
                 }
@@ -131,6 +138,13 @@ sub create_back_up_file{
     # output these lines to the log file
     $logger->info("Backup file: $backupFile");
     $logger->info("$fileName will be overwritten after indentation");
-    copy($fileName,$backupFile) or die "Could not write to backup file $backupFile. Please check permissions. Exiting.";
+    my $backUpFilePossible = 1;
+    copy($fileName,$backupFile) or ($backUpFilePossible = 0);
+    if ($backUpFilePossible==0){ 
+        $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
+        $logger->fatal("Exiting, no indendation done."); 
+        $self->output_logfile();
+        exit(5);
+    }
 }
 1;

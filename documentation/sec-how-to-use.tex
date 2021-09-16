@@ -415,7 +415,84 @@ latexindent.pl -onlyreplacement myfile.tex
 	and \emph{only} perform replacements/substitutions by using the \texttt{-rr} switch; full
 	details and examples are given in \vref{sec:replacements}.
 
+\flagbox{-k, --check}
+	\index{switches!-k, --check definition and details}
+	\begin{commandshell}
+latexindent.pl -k myfile.tex
+latexindent.pl -check myfile.tex
+\end{commandshell}
+	You can%
+	\announce*{2021-09-16}{-k,-check switch} instruct
+	\texttt{latexindent.pl} to check if the text after indentation matches that given in the
+	original file.
+
+	The \texttt{exit} code
+	\index{exit code} of \texttt{latexindent.pl} is 0 by default. If
+	you use the \texttt{-k} switch then
+	\begin{itemize}
+		\item if the text after indentation matches that given in the original file, then the exit code
+		      is 0;
+		\item if the text after indentation does \emph{not} match that given in the original file, then
+		      the exit code is 1.
+	\end{itemize}
+
+	The value of the exit code may be important to those wishing to, for example, check the
+	status of the indentation in continuous integration tools such as GitHub Actions. Full
+	details of the exit codes of \texttt{latexindent.pl} are given in \cref{tab:exit-codes}.
+
+	A simple \texttt{diff} will be given in \texttt{indent.log}.
+
+\flagbox{-kv, --checkv}
+	\index{switches!-kv, --checkv definition and details}
+	\begin{commandshell}
+latexindent.pl -kv myfile.tex
+latexindent.pl -checkv myfile.tex
+\end{commandshell}
+	\announce*{2021-09-16}{-kv, -checkv: check verbose switch} The \texttt{check verbose} switch is
+	exactly the same as the \texttt{-k} switch, except that it is \emph{verbose}, and it will
+	output the (simple) diff to the terminal, as well as to \texttt{indent.log}.
+
+\flagbox{-n, --lines=MIN-MAX}
+	\index{switches!-n, --lines definition and details}
+	\begin{commandshell}
+latexindent.pl -n 5-8 myfile.tex
+latexindent.pl -lines 5-8 myfile.tex
+\end{commandshell}
+	\announce*{2021-09-16}{-n, -lines switch} The \texttt{lines} switch instructs
+	\texttt{latexindent.pl} to operate only on specific line ranges within
+	\texttt{myfile.tex}.
+
+	Complete demonstrations are given in \cref{sec:line-switch}.
+
 \subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but others
 	may find it easier to use from \texttt{arara}; you can find the arara rule for
 	\texttt{latexindent.pl} and its associated documentation at \cite{paulo}.
+
+\subsection{Summary of exit codes}
+	\index{exit code!summary}
+	Assuming that you call \texttt{latexindent.pl} on \texttt{myfile.tex}
+	\begin{commandshell}
+latexindent.pl myfile.tex
+\end{commandshell}
+	then \texttt{latexindent.pl} can exit with the exit codes given in \cref{tab:exit-codes}.
+
+	\begin{table}[!htb]
+		\caption{Exit codes for \texttt{latexindent.pl}}
+		\label{tab:exit-codes}
+		\begin{tabular}{ccl}
+			\toprule
+			exit code & indentation & status                                                                                        \\
+			\midrule
+			0         & \faCheck    & success; if \texttt{-k} or \texttt{-kv} active, indented text matches original                \\
+			0         & \faClose    & success; if \texttt{-version} or \texttt{-help}, no indentation performed                     \\
+			1         & \faCheck    & success, and \texttt{-k} or \texttt{-kv} active; indented text \emph{different} from original \\
+			\midrule
+			2         & \faClose    & failure, \texttt{defaultSettings.yaml} could not be read                                      \\
+			3         & \faClose    & failure, myfile.tex not found                                                                 \\
+			4         & \faClose    & failure, myfile.tex exists but cannot be read                                                 \\
+			5         & \faClose    & failure, \texttt{-w} active, and back-up file cannot be written                               \\
+			6         & \faClose    & failure, \texttt{-c} active, and cruft directory does not exist                               \\
+			\bottomrule
+		\end{tabular}
+	\end{table}

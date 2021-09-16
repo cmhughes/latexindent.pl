@@ -1,0 +1,187 @@
+% arara: pdflatex: {shell: yes, files: [latexindent]}
+\section{The --lines switch}\label{sec:line-switch}
+ \texttt{latexindent.pl}
+ \announce*{2021-09-16}{line switch demonstration} can
+ operate on a \emph{selection} of lines of the file using the \texttt{--lines} or
+ \texttt{-n} switch.
+
+ \index{switches!-lines demonstration}
+
+ The basic syntax is \texttt{--lines MIN-MAX}, so for example
+ \begin{commandshell}
+latexindent.pl --lines 3-7 myfile.tex
+latexindent.pl -n 3-7 myfile.tex
+\end{commandshell}
+ will only operate upon lines 3 to 7 in \texttt{myfile.tex}. All of the other lines will
+ \emph{not} be operated upon by \texttt{latexindent.pl}.
+
+ The options for the \texttt{lines} switch are:
+ \begin{itemize}
+	 \item line range, as in \texttt{--lines 3-7}
+	 \item single line, as in \texttt{--lines 5}
+	 \item multiple line ranges separated by commas, as in \texttt{--lines 3-5,8-10}
+	 \item negated line ranges, as in \texttt{--lines !3-5} which translates to \texttt{--lines
+		       1-2,6-N}, where N is the number of lines in your file.
+ \end{itemize}
+
+ We demonstrate this feature, and the available variations in what follows. We will use
+ the file in \cref{lst:myfile}.
+
+ \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile.tex}[tex-TCB]{\texttt{myfile.tex}}{lst:myfile}
+
+ \begin{example}
+	 We demonstrate the basic usage using the command
+	 \begin{commandshell}
+latexindent.pl --lines 3-7 myfile.tex -o=+-mod1
+\end{commandshell}
+	 which instructs \texttt{latexindent.pl} to only operate on lines 3 to 7; the output is given in \cref{lst:myfile-mod1}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod1.tex}[tex-TCB]{\texttt{myfile-mod1.tex}}{lst:myfile-mod1}
+
+	 The following two calls to \texttt{latexindent.pl} are equivalent
+	 \begin{commandshell}
+latexindent.pl --lines 3-7 myfile.tex -o=+-mod1
+latexindent.pl --lines 7-3 myfile.tex -o=+-mod1
+\end{commandshell}
+	 as \texttt{latexindent.pl} performs a check to put the lowest number first.
+ \end{example}
+
+ \begin{example}
+	 You can call the \texttt{lines} switch with only \emph{one number} and
+	 in which case only that line will be operated upon. For example
+	 \begin{commandshell}
+latexindent.pl --lines 5 myfile.tex -o=+-mod2
+\end{commandshell}
+	 instructs \texttt{latexindent.pl} to only operate on line 5; the output is given in \cref{lst:myfile-mod2}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod2.tex}[tex-TCB]{\texttt{myfile-mod2.tex}}{lst:myfile-mod2}
+
+	 The following two calls are equivalent:
+	 \begin{commandshell}
+latexindent.pl --lines 5 myfile.tex
+latexindent.pl --lines 5-5 myfile.tex
+\end{commandshell}
+ \end{example}
+
+ \begin{example}
+	 If you specify a value outside of the line range of the file then \texttt{latexindent.pl} will ignore the
+	 \texttt{lines} argument, detail as such in the log file, and proceed to operate on the entire file.
+
+	 For example, in the following call
+	 \begin{commandshell}
+latexindent.pl --lines 11-13 myfile.tex
+  \end{commandshell}
+	 \texttt{latexindent.pl} will ignore the \texttt{lines} argument, and \emph{operate on the entire file} because \cref{lst:myfile} only has 12 lines.
+
+	 Similarly, in the call
+	 \begin{commandshell}
+latexindent.pl --lines -1-3 myfile.tex
+  \end{commandshell}
+	 \texttt{latexindent.pl} will ignore the \texttt{lines} argument, and \emph{operate on the entire file} because we assume that negatively numbered
+	 lines in a file do not exist.
+ \end{example}
+
+ \begin{example}
+	 You can specify \emph{multiple line ranges} as in the following
+	 \begin{commandshell}
+latexindent.pl --lines 3-5,8-10 myfile.tex -o=+-mod3
+\end{commandshell}
+	 which instructs \texttt{latexindent.pl} to operate upon lines 3 to 5 and lines 8 to 10; the output is given in \cref{lst:myfile-mod3}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod3.tex}[tex-TCB]{\texttt{myfile-mod3.tex}}{lst:myfile-mod3}
+
+	 The following calls to \texttt{latexindent.pl} are all equivalent
+	 \begin{commandshell}
+latexindent.pl --lines 3-5,8-10 myfile.tex
+latexindent.pl --lines 8-10,3-5 myfile.tex
+latexindent.pl --lines 10-8,3-5 myfile.tex
+latexindent.pl --lines 10-8,5-3 myfile.tex
+\end{commandshell}
+	 as \texttt{latexindent.pl} performs a check to put the lowest line ranges first, and within each line range, it puts
+	 the lowest number first.
+ \end{example}
+
+ \begin{example}
+	 There's no limit to the number of line ranges that you can specify, they just need to be separated by commas. For example
+	 \begin{commandshell}
+latexindent.pl --lines 1-2,4-5,9-10,12 myfile.tex -o=+-mod4
+\end{commandshell}
+	 has four line ranges: lines 1 to 2, lines 4 to 5, lines 9 to 10 and line 12. The output is given in \cref{lst:myfile-mod4}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod4.tex}[tex-TCB]{\texttt{myfile-mod4.tex}}{lst:myfile-mod4}
+
+	 As previously, the ordering does not matter, and the following calls to \texttt{latexindent.pl} are all equivalent
+	 \begin{commandshell}
+latexindent.pl --lines 1-2,4-5,9-10,12 myfile.tex
+latexindent.pl --lines 2-1,4-5,9-10,12 myfile.tex
+latexindent.pl --lines 4-5,1-2,9-10,12 myfile.tex
+latexindent.pl --lines 12,4-5,1-2,9-10 myfile.tex
+\end{commandshell}
+	 as \texttt{latexindent.pl} performs a check to put the lowest line ranges first, and within each line range, it puts
+	 the lowest number first.
+ \end{example}
+
+ \begin{example}
+	 \index{switches!-lines demonstration, negation}
+	 You can specify \emph{negated line ranges} by using \texttt{!} as in
+	 \begin{commandshell}
+latexindent.pl --lines !5-7 myfile.tex -o=+-mod5
+\end{commandshell}
+	 which instructs \texttt{latexindent.pl} to operate upon all of the lines \emph{except} lines 5 to 7.
+
+	 In other words, \texttt{latexindent.pl} \emph{will} operate on lines 1 to 4, and 8 to 12, so the following
+	 two calls are equivalent:
+	 \begin{commandshell}
+latexindent.pl --lines !5-7 myfile.tex 
+latexindent.pl --lines 1-4,8-12 myfile.tex 
+\end{commandshell}
+	 The output is given in \cref{lst:myfile-mod5}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod5.tex}[tex-TCB]{\texttt{myfile-mod5.tex}}{lst:myfile-mod5}
+
+ \end{example}
+
+ \begin{example}
+	 \index{switches!-lines demonstration, negation}
+	 You can specify \emph{multiple negated line ranges} such as
+	 \begin{commandshell}
+latexindent.pl --lines !5-7,!9-10 myfile.tex -o=+-mod6
+   \end{commandshell}
+	 which is equivalent to:
+	 \begin{commandshell}
+latexindent.pl --lines 1-4,8,11-12 myfile.tex -o=+-mod6
+   \end{commandshell}
+	 The output is given in \cref{lst:myfile-mod6}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile-mod6.tex}[tex-TCB]{\texttt{myfile-mod6.tex}}{lst:myfile-mod6}
+ \end{example}
+
+ \begin{example}
+	 If you specify a line range with anything other than an integer, then
+	 \texttt{latexindent.pl} will ignore the \texttt{lines} argument, and \emph{operate on the entire file}.
+
+	 Sample calls that result in the \texttt{lines} argument being ignored include the following:
+	 \begin{commandshell}
+latexindent.pl --lines 1-x myfile.tex 
+latexindent.pl --lines !y-3 myfile.tex 
+     \end{commandshell}
+ \end{example}
+
+ \begin{example}
+	 We can, of course, use the \texttt{lines} switch in combination with other switches.
+
+	 For example, let's use with the file in \cref{lst:myfile1}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile1.tex}[tex-TCB]{\texttt{myfile1.tex}}{lst:myfile1}
+
+	 We can demonstrate interaction with the \texttt{-m} switch (see \vref{sec:modifylinebreaks}); in particular,
+	 if we use \vref{lst:mlb2}, \vref{lst:env-mlb7} and \vref{lst:env-mlb8} and run
+	 \begin{widepage}
+		 \begin{commandshell}
+latexindent.pl --lines 6 myfile1.tex -o=+-mod1 -m -l env-mlb2,env-mlb7,env-mlb8 -o=+-mod1
+     \end{commandshell}
+	 \end{widepage}
+	 then we receive the output in \cref{lst:myfile1-mod1}.
+
+	 \cmhlistingsfromfile*[style=lineNumbersTeX]*{demonstrations/myfile1-mod1.tex}[tex-TCB]{\texttt{myfile1-mod1.tex}}{lst:myfile1-mod1}
+ \end{example}

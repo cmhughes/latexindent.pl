@@ -123,16 +123,21 @@ latexindent.pl -m -s zoehneto4.tex -l=zoehneto13.yaml -o=+-mod13 -y="modifyLineB
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto14.yaml -o=+-mod14
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto15.yaml -o=+-mod15 -y="modifyLineBreaks:textWrapOptions:huge:wrap"
 latexindent.pl -m -s zoehneto4.tex -l=zoehneto16.yaml -o=+-mod16 -y="modifyLineBreaks:textWrapOptions:huge:wrap"
+
 # except test cases
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto17.yaml -o=+-mod17
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto18.yaml -o=+-mod18
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto19.yaml -o=+-mod19
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto19A.yaml -o=+-mod19A
 latexindent.pl -m -s zoehneto3.tex -l=zoehneto20.yaml -o=+-mod20
+latexindent.pl -m -s zoehneto3.tex -l=zoehneto20A.yaml -o=+-mod20A
+
 # preamble
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto21.yaml -o=+-mod21
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto22.yaml -o=+-mod22
 latexindent.pl -m -s zoehneto5.tex -l=zoehneto23.yaml -o=+-mod23
-# suit of 'all' objects test cases
+
+# suite of 'all' objects test cases
 loopmax=47
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
@@ -182,5 +187,11 @@ latexindent.pl -s -l textwrap-most-useful,addruler1,test2 -m -r textwrap-bfccb.t
 latexindent.pl -s -l textwrap-most-useful,test1,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod1
 latexindent.pl -s -l textwrap-most-useful,test2,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod2
 latexindent.pl -s -l textwrap-most-useful,test3,addruler1 -m -r textwrap-bfccb1.tex -o=+-mod3
+
+latexindent.pl -s -l textwrap-most-useful-preamble.yaml,addruler2 -m -r textwrap-bfccb2.tex -o=+-mod1
+latexindent.pl -s -l textwrap-most-useful-filecontents.yaml,addruler2 -m -r textwrap-bfccb3.tex -o=+-mod1
+
+# mainDocument instead of masterDocument
+latexindent.pl -s -l textwrap-most-useful1.yaml -m issue-158.tex -o=+-mod1A
 git status
 [[ $noisyMode == 1 ]] && makenoise

@@ -18,7 +18,7 @@ use strict;
 use warnings;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%masterSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
@@ -36,7 +36,7 @@ our $environmentRegExp;
 sub construct_environments_regexp{
   
     # read from fine tuning
-    my  $environmentNameRegExp = qr/${${$masterSettings{fineTuning}}{environments}}{name}/;
+    my  $environmentNameRegExp = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
     $environmentRegExp = qr/
                 (
                     \\begin\{
@@ -110,7 +110,7 @@ sub tasks_particular_to_each_object{
     }
 
     # search for items as the first order of business
-    $self->find_items if ${$masterSettings{indentAfterItems}}{${$self}{name}};
+    $self->find_items if ${$mainSettings{indentAfterItems}}{${$self}{name}};
 
     # search for headings (important to do this before looking for commands!)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;

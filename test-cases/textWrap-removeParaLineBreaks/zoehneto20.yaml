@@ -4,10 +4,10 @@ modifyLineBreaks:
         perCodeBlockBasis: 1
         all:
             except:
-                - 'masterDocument'
+                - 'mainDocument'
     removeParagraphLineBreaks:
         all:
             except:
-                - 'masterDocument'
+                - 'mainDocument'
                 - 'itemize'
         beforeTextWrap: 1
