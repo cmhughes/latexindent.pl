@@ -1,0 +1,13 @@
+lookForAlignDelims:
+   article: 
+      delimiterRegEx: '(=)'
+   book: 
+      delimiterRegEx: '(=)'
+   online: 
+      delimiterRegEx: '(?<!v)(?<!spfreload)(=)'
+
+fineTuning:
+    keyEqualsValuesBracesBrackets:
+      follow: '(?:(?<!\\)\{)|(?:(?<!\\)\[)'
+    UnNamedGroupingBracesBrackets: 
+      follow: '\{|\[|,|&|\)|\(|\$|='

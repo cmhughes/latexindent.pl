@@ -1,0 +1,3 @@
+lookForAlignDelims:
+   online: 
+      delimiterRegEx: '(?<!v)(?<!spfreload)(=)'

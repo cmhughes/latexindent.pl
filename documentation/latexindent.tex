@@ -798,7 +798,6 @@
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
 \tableofcontents
-{\small\lstlistoflistings}
 % start sections on new page
 \newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
  \input{sec-introduction}
@@ -830,5 +829,6 @@
  \input{sec-conclusions-know-limitations}
  \input{references}
  \input{appendices}
+ {\clearpage\small\lstlistoflistings}
  \printindex
 \end{document}
