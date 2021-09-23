@@ -61,23 +61,22 @@ sub find_aligned_block{
                                 (?!<\\)
                                 %
                                 \*
-                                \h*                     # possible horizontal spaces
+                                \h*                       # possible horizontal spaces
                                 \\begin\{
-                                        $alignmentBlock  # environment name captured into $2
-                                       \}               # %* \begin{alignmentBlock} statement
+                                        ($alignmentBlock) # environment name captured into $2
+                                       \}                 # \begin{alignmentBlock} statement captured into $1
                             )
                             (
-                                .*?
+                                .*?                       # non-greedy match (body) into $3
                             )
-                            \R
-                            \h*
+                            \R                            # a line break
+                            \h*                           # possible horizontal spaces
                             (
                                 (?!<\\)
-                                %\*                     # %
-                                \h*                     # possible horizontal spaces
-                                \\end\{$alignmentBlock\} # \end{alignmentBlock}
-                            )                           # %* \end{<something>} statement
-                            #\R
+                                %\*                       # %
+                                \h*                       # possible horizontal spaces
+                                \\end\{\2\}               # \end{alignmentBlock} statement captured into $4
+                            )
                         /sx;
 
             while( ${$self}{body} =~ m/$alignmentRegExp/sx){
@@ -87,9 +86,9 @@ sub find_aligned_block{
                                 /
                                     # create a new Environment object
                                     my $alignmentBlockObj = LatexIndent::AlignmentAtAmpersand->new( begin=>$1,
-                                                                          body=>$2,
-                                                                          end=>$3,
-                                                                          name=>$alignmentBlock,
+                                                                          body=>$3,
+                                                                          end=>$4,
+                                                                          name=>$2,
                                                                           modifyLineBreaksYamlName=>"environments",
                                                                           linebreaksAtEnd=>{
                                                                             begin=>1,
@@ -99,7 +98,7 @@ sub find_aligned_block{
                                                                           );
             
                                     # log file output
-                                    $logger->trace("*Alignment block found: %*\\begin\{$alignmentBlock\}") if $is_t_switch_active;
+                                    $logger->trace("*Alignment block found: %*\\begin\{${$alignmentBlock}{name}\}") if $is_t_switch_active;
 
                                     # the settings and storage of most objects has a lot in common
                                     $self->get_settings_and_store_new_object($alignmentBlockObj);

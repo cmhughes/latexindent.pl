@@ -60,30 +60,30 @@ sub find_file_contents_environments_and_preamble{
         my $fileContentsRegExp = qr/
                         (
                         \\begin\{
-                                $fileContentsEnv       
-                               \}                     
+                                ($fileContentsEnv) # environment name captured into $2
+                               \}                  # begin statement captured into $1
                         )
                         (
-                            .*?
+                            .*?                    # non-greedy match (body) into $3
                         )                            
                         (
-                            \\end\{$fileContentsEnv\}  
-                            \h*
+                        \\end\{\2\}                # end statement captured into $4
+                        \h*                        # possible horizontal spaces
                         )                    
-                        (\R)?  
+                        (\R)?                      # possibly followed by a line break
                     /sx;
 
         while( ${$self}{body} =~ m/$fileContentsRegExp/sx){
 
           # create a new Environment object
           my $fileContentsBlock = LatexIndent::FileContents->new( begin=>$1,
-                                                body=>$2,
-                                                end=>$3,
-                                                name=>$fileContentsEnv,
+                                                body=>$3,
+                                                end=>$4,
+                                                name=>$2,
                                                 linebreaksAtEnd=>{
                                                   begin=>0,
                                                   body=>0,
-                                                  end=>$4?1:0,
+                                                  end=>$5?1:0,
                                                 },
                                                 modifyLineBreaksYamlName=>"filecontents",
                                                 );
@@ -112,7 +112,7 @@ sub find_file_contents_environments_and_preamble{
           push(@fileContentsStorageArray,$fileContentsBlock);
 
           # log file output
-          $logger->trace("FILECONTENTS environment found: $fileContentsEnv")if $is_t_switch_active;
+          $logger->trace("FILECONTENTS environment found: ${$fileContentsEnv}{name}")if $is_t_switch_active;
 
           # remove the environment block, and replace with unique ID
           ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;

@@ -54,6 +54,7 @@ sub find_noindent_block{
 
         # if we've made it this far, then we're good to go
         my $noIndentRegExp;
+        my $noIndentBlockObj;
 
         if (ref($yesno) eq "HASH"){
             # default value of body
@@ -81,32 +82,42 @@ sub find_noindent_block{
                             (
                                 (?!<\\)
                                 %
-                                (?:\h|(?!<\\)%)*            # possible horizontal spaces
+                                (?:\h|(?!<\\)%)*             # possible horizontal spaces
                                 \\begin\{
-                                        $noIndentBlockSpec  
-                                       \}                   # % \begin{noindentblock} statement
-                            )                               # begin captured into $1
+                                        ($noIndentBlockSpec) # environment name captured into $2
+                                       \}                    # % \begin{noindentblock} statement
+                            )                                # begin statement captured into $1
                             (
-                                .*?
-                            )                               # non-greedy match (body) into $2
+                                .*?                          # non-greedy match (body) into $3
+                            )                              
                             (
                                 (?!<\\)
-                                %                           # %
-                                (?:\h|(?!<\\)%)*            # possible horizontal spaces
-                                \\end\{$noIndentBlockSpec\} # \end{noindentblock}
-                            )                               # % \end{<something>} statement into $3
+                                %                            # %
+                                (?:\h|(?!<\\)%)*             # possible horizontal spaces
+                                \\end\{\2\}                  # % \end{noindentblock} statement
+                            )                                # end statement captured into $4
                         /sx;
         } 
         while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
           # create a new Verbatim object
-          my $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
+          if (ref($yesno) eq "HASH"){
+            $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
                                                 body=>$2,
                                                 end=>$3,
                                                 name=>$noIndentBlock,
                                                 type=>"noindentblock",
                                                 modifyLineBreaksYamlName=>"verbatim",
                                                 );
+          } else {
+            $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
+                                                body=>$3,
+                                                end=>$4,
+                                                name=>$2,
+                                                type=>"noindentblock",
+                                                modifyLineBreaksYamlName=>"verbatim",
+                                                );
+          }
         
           # give unique id
           $noIndentBlockObj->create_unique_id;
@@ -115,7 +126,7 @@ sub find_noindent_block{
           $verbatimStorage{${$noIndentBlockObj}{id}}=$noIndentBlockObj;
 
           # log file output
-          $logger->trace("NOINDENTBLOCK found: $noIndentBlock") if $is_t_switch_active;
+          $logger->trace("NOINDENTBLOCK found: ${$noIndentBlockObj}{name}") if $is_t_switch_active;
 
           # remove the environment block, and replace with unique ID
           ${$self}{body} =~ s/$noIndentRegExp/${$noIndentBlockObj}{id}/sx;
@@ -143,32 +154,32 @@ sub find_verbatim_environments{
             my $verbatimRegExp = qr/
                             (
                             \\begin\{
-                                    $verbEnvSpec      # environment name captured into $1
-                                   \}                 # \begin{<something>} statement
+                                    ($verbEnvSpec) # environment name captured into $2
+                                   \}              # \begin{<something>} statement captured into $1
                             )
                             (
-                                .*?
-                            )                         # any character, but not \\begin
+                                .*?                # non-greedy match (body) into $3
+                            )                      # any character, but not \\begin
                             (
-                                \\end\{$verbEnvSpec\} # \end{<something>} statement
+                            \\end\{\2\}            # \end{<something>} statement captured into $4
                             )                    
-                            (\h*)?                    # possibly followed by horizontal space
-                            (\R)?                     # possibly followed by a line break 
+                            (\h*)?                 # possibly followed by horizontal space
+                            (\R)?                  # possibly followed by a line break
                         /sx;
 
             while( ${$self}{body} =~ m/$verbatimRegExp/sx){
 
               # create a new Verbatim object
               my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
-                                                    body=>$2,
-                                                    end=>$3,
-                                                    name=>$verbEnv,
+                                                    body=>$3,
+                                                    end=>$4,
+                                                    name=>$2,
                                                     type=>"environment",
                                                     modifyLineBreaksYamlName=>"verbatim",
                                                     linebreaksAtEnd=>{
-                                                      end=>$5?1:0,
+                                                      end=>$6?1:0,
                                                     },
-                                                    horizontalTrailingSpace=>$4?$4:q(),
+                                                    horizontalTrailingSpace=>$5?$5:q(),
                                                     aliases=>{
                                                       # begin statements
                                                       BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
@@ -184,7 +195,7 @@ sub find_verbatim_environments{
               $verbatimStorage{${$verbatimBlock}{id}}=$verbatimBlock;
 
               # log file output
-              $logger->trace("*VERBATIM environment found: $verbEnv") if $is_t_switch_active;
+              $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
 
               # remove the environment block, and replace with unique ID
               ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
