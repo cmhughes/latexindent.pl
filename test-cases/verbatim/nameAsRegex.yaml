@@ -1,0 +1,12 @@
+noIndentBlock:
+    nameAsRegex:
+      name: '\w+noindent\*?'
+      lookForThis: 1
+
+verbatimEnvironments:
+    nameAsRegex:
+      lookForThis: 1
+
+verbatimCommands:
+    nameAsRegex:
+      lookForThis: 1

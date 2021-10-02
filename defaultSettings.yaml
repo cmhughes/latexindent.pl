@@ -107,11 +107,17 @@ verbatimEnvironments:
     verbatim: 1
     lstlisting: 1
     minted: 1
+    nameAsRegex:
+      name: '\w+code\*?'  # allows followed by 'code', optionally followed by *
+      lookForThis: 0
 
 #  verbatim commands such as \verb! body !, \lstinline$something else$
 verbatimCommands:
     verb: 1
     lstinline: 1
+    nameAsRegex:
+      name: '\w+inline'  # allows followed by 'inline'
+      lookForThis: 0
 
 #  no indent blocks (not necessarily verbatim 
 #  environments) which are marked as %\begin{noindent}
