@@ -31,25 +31,31 @@ sub find_noindent_block{
     my $self = shift;
 
     # noindent block
-    $logger->trace('*Searching for NOINDENTBLOCk (see noIndentBlock)') if $is_t_switch_active;
+    $logger->trace('*Searching for NOINDENTBLOCK (see noIndentBlock)') if $is_t_switch_active;
     $logger->trace(Dumper(\%{$mainSettings{noIndentBlock}})) if($is_tt_switch_active);
     while( my ($noIndentBlock,$yesno)= each %{$mainSettings{noIndentBlock}}){
 
         # integrity check on the field for noIndentBlock
         if ( ref($yesno) eq "HASH" ){
-          if (not defined ${$yesno}{begin}){
-            $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:begin not specified") if $is_t_switch_active;
-            next;
-          } elsif (not defined ${$yesno}{end}) {
-            $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:end not specified") if $is_t_switch_active;
-            next;
-          } elsif (defined ${$yesno}{lookForThis} and !${$yesno}{lookForThis}){
-            $logger->trace(" *not* looking for $noIndentBlock as lookForThis: 0") if $is_t_switch_active;
-            next;
-          }
+            if (defined ${$yesno}{lookForThis} and !${$yesno}{lookForThis}){
+                $logger->trace(" *not* looking for $noIndentBlock as lookForThis: 0") if $is_t_switch_active;
+                next;
+            }
+            if (not defined ${$yesno}{name}) {
+                if (not defined ${$yesno}{begin}){
+                    $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:begin not specified") if $is_t_switch_active;
+                    next;
+                } elsif (not defined ${$yesno}{end}) {
+                    $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:end not specified") if $is_t_switch_active;
+                    next;
+                }
+            } elsif (defined ${$yesno}{begin} or defined ${$yesno}{end}){
+                $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:name specified with begin and/or end") if $is_t_switch_active;
+                next;
+            }
         } elsif( ref($yesno) ne "HASH" and !$yesno ){
-          $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
-          next;
+            $logger->trace(" *not* looking for $noIndentBlock as $noIndentBlock:$yesno") if $is_t_switch_active;
+            next;
         }
 
         # if we've made it this far, then we're good to go
@@ -57,6 +63,14 @@ sub find_noindent_block{
         my $noIndentBlockObj;
 
         if (ref($yesno) eq "HASH"){
+            # default value of begin and end
+            if (defined ${$yesno}{name} and not defined ${$yesno}{begin} and not defined ${$yesno}{end}){
+                ${$yesno}{begin} = "\\\\begin\\{(${$yesno}{name})\\}";
+                ${$yesno}{end} = "\\\\end\\{\\2\\}";
+                $logger->trace("looking for regex based $noIndentBlock, name: ${$yesno}{name}") if $is_t_switch_active;
+                $logger->trace("begin not specified for $noIndentBlock, setting default ${$yesno}{begin}") if $is_t_switch_active;
+                $logger->trace("end not specified for $noIndentBlock, setting default ${$yesno}{end}") if $is_t_switch_active;
+            }
             # default value of body
             if (not defined ${$yesno}{body}){
                 $logger->trace("looking for regex based $noIndentBlock, begin: ${$yesno}{begin}, end: ${$yesno}{end}") if $is_t_switch_active;
@@ -71,8 +85,8 @@ sub find_noindent_block{
 
             $noIndentRegExp = qr/
                             (${$yesno}{begin})
-                            (${$yesno}{body})                    
-                            (${$yesno}{end})                    
+                            (${$yesno}{body})
+                            (${$yesno}{end})
                         /sx;
         } else {
             $logger->trace("looking for $noIndentBlock:$yesno noIndentBlock") if $is_t_switch_active;
@@ -89,7 +103,7 @@ sub find_noindent_block{
                             )                                # begin statement captured into $1
                             (
                                 .*?                          # non-greedy match (body) into $3
-                            )                              
+                            )
                             (
                                 (?!<\\)
                                 %                            # %
@@ -101,7 +115,8 @@ sub find_noindent_block{
         while( ${$self}{body} =~ m/$noIndentRegExp/sx){
 
           # create a new Verbatim object
-          if (ref($yesno) eq "HASH"){
+          if (ref($yesno) eq "HASH" and not defined ${$yesno}{name}){
+            # user defined begin and end statements
             $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
                                                 body=>$2,
                                                 end=>$3,
@@ -110,6 +125,7 @@ sub find_noindent_block{
                                                 modifyLineBreaksYamlName=>"verbatim",
                                                 );
           } else {
+            # specified by name (entry:1 or entry: name: regex)
             $noIndentBlockObj = LatexIndent::Verbatim->new( begin=>$1,
                                                 body=>$3,
                                                 end=>$4,
@@ -147,67 +163,83 @@ sub find_verbatim_environments{
     $logger->trace('*Searching for VERBATIM environments (see verbatimEnvironments)') if $is_t_switch_active;
     $logger->trace(Dumper(\%{$mainSettings{verbatimEnvironments}})) if($is_tt_switch_active);
     while( my ($verbEnv,$yesno)= each %{$mainSettings{verbatimEnvironments}}){
-        if($yesno){
+        my $verbEnvSpec;
+
+        # integrity check on the field for noIndentBlock
+        if ( ref($yesno) eq "HASH" ){
+            if (defined ${$yesno}{lookForThis} and !${$yesno}{lookForThis}){
+                $logger->trace(" *not* looking for $verbEnv as lookForThis: 0") if $is_t_switch_active;
+                next;
+            } elsif (not defined ${$yesno}{name}){
+                $logger->trace(" *not* looking for $verbEnv as $verbEnv:name not specified") if $is_t_switch_active;
+                next;
+            } else {
+                $logger->trace("looking for VERBATIM-environments $verbEnv, name: ${$yesno}{name}") if $is_t_switch_active;
+                $verbEnvSpec = ${$yesno}{name};
+            }
+        } elsif( ref($yesno) ne "HASH" and $yesno ){
             $logger->trace("looking for $verbEnv:$yesno environments") if $is_t_switch_active;
+            ($verbEnvSpec = $verbEnv) =~ s/\*/\\*/sg;
+        } else {
+            $logger->trace(" *not* looking for $verbEnv as $verbEnv:$yesno") if $is_t_switch_active;
+            next;
+        }
 
-            (my $verbEnvSpec = $verbEnv) =~ s/\*/\\*/sg;
-            my $verbatimRegExp = qr/
-                            (
-                            \\begin\{
-                                    ($verbEnvSpec) # environment name captured into $2
-                                   \}              # \begin{<something>} statement captured into $1
-                            )
-                            (
-                                .*?                # non-greedy match (body) into $3
-                            )                      # any character, but not \\begin
-                            (
-                            \\end\{\2\}            # \end{<something>} statement captured into $4
-                            )                    
-                            (\h*)?                 # possibly followed by horizontal space
-                            (\R)?                  # possibly followed by a line break
-                        /sx;
+        # if we've made it this far, then we're good to go
+        my $verbatimRegExp = qr/
+                        (
+                        \\begin\{
+                                ($verbEnvSpec) # environment name captured into $2
+                               \}              # \begin{<something>} statement captured into $1
+                        )
+                        (
+                            .*?                # non-greedy match (body) into $3
+                        )                      # any character, but not \\begin
+                        (
+                        \\end\{\2\}            # \end{<something>} statement captured into $4
+                        )
+                        (\h*)?                 # possibly followed by horizontal space
+                        (\R)?                  # possibly followed by a line break
+                    /sx;
 
-            while( ${$self}{body} =~ m/$verbatimRegExp/sx){
+        while( ${$self}{body} =~ m/$verbatimRegExp/sx){
 
-              # create a new Verbatim object
-              my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
-                                                    body=>$3,
-                                                    end=>$4,
-                                                    name=>$2,
-                                                    type=>"environment",
-                                                    modifyLineBreaksYamlName=>"verbatim",
-                                                    linebreaksAtEnd=>{
-                                                      end=>$6?1:0,
-                                                    },
-                                                    horizontalTrailingSpace=>$5?$5:q(),
-                                                    aliases=>{
-                                                      # begin statements
-                                                      BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
-                                                      # after end statements
-                                                      EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
-                                                    },
-                                                    );
+            # create a new Verbatim object
+            my $verbatimBlock = LatexIndent::Verbatim->new( begin=>$1,
+                                                body=>$3,
+                                                end=>$4,
+                                                name=>$2,
+                                                type=>"environment",
+                                                modifyLineBreaksYamlName=>"verbatim",
+                                                linebreaksAtEnd=>{
+                                                    end=>$6?1:0,
+                                                },
+                                                horizontalTrailingSpace=>$5?$5:q(),
+                                                aliases=>{
+                                                    # begin statements
+                                                    BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
+                                                    # after end statements
+                                                    EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
+                                                },
+                                                );
 
-              # there are common tasks for each of the verbatim objects
-              $verbatimBlock->verbatim_common_tasks;
-              
-              # verbatim children go in special hash
-              $verbatimStorage{${$verbatimBlock}{id}}=$verbatimBlock;
+            # there are common tasks for each of the verbatim objects
+            $verbatimBlock->verbatim_common_tasks;
+            
+            # verbatim children go in special hash
+            $verbatimStorage{${$verbatimBlock}{id}}=$verbatimBlock;
 
-              # log file output
-              $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
+            # log file output
+            $logger->trace("*VERBATIM environment found: ${$verbatimBlock}{name}") if $is_t_switch_active;
 
-              # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
+            # remove the environment block, and replace with unique ID
+            ${$self}{body} =~ s/$verbatimRegExp/${$verbatimBlock}{replacementText}/sx;
 
-              $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
-              
-              # possible decoration in log file 
-              $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
-            } 
-      } else {
-            $logger->trace("*not* looking for $verbEnv as $verbEnv:$yesno") if $is_t_switch_active;
-      }
+            $logger->trace("replaced with ID: ${$verbatimBlock}{id}") if $is_t_switch_active;
+            
+            # possible decoration in log file
+            $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+        } 
     }
     return;
 }
@@ -223,80 +255,97 @@ sub find_verbatim_commands{
     $logger->trace('*Searching for VERBATIM commands (see verbatimCommands)') if $is_t_switch_active;
     $logger->trace(Dumper(\%{$mainSettings{verbatimCommands}})) if($is_tt_switch_active);
     while( my ($verbCommand,$yesno)= each %{$mainSettings{verbatimCommands}}){
-        if($yesno){
+        my $verbCommandSpec;
+
+        # integrity check on the field for noIndentBlock
+        if ( ref($yesno) eq "HASH" ){
+            if (defined ${$yesno}{lookForThis} and !${$yesno}{lookForThis}){
+                $logger->trace(" *not* looking for $verbCommand as lookForThis: 0") if $is_t_switch_active;
+                next;
+            } elsif (not defined ${$yesno}{name}){
+                $logger->trace(" *not* looking for $verbCommand as $verbCommand:name not specified") if $is_t_switch_active;
+                next;
+            } else {
+                $logger->trace("looking for regex based VERBATIM-commands $verbCommand, name: ${$yesno}{name}") if $is_t_switch_active;
+                $verbCommandSpec = ${$yesno}{name};
+            }
+        } elsif( ref($yesno) ne "HASH" and $yesno ){
             $logger->trace("looking for $verbCommand:$yesno Commands") if $is_t_switch_active;
-
-            my $verbatimRegExp = qr/
-                            (
-                                \\$verbCommand     
-                                \h*                                             
-                            )                                                   # name of command into $1
-                            (
-                                \[
-                                    (?:
-                                        (?!
-                                            (?:(?<!\\)\[) 
-                                        ).
-                                    )*?     # not including [, but \[ ok
-                                (?<!\\)     # not immediately pre-ceeded by \
-                                \]          # [optional arguments]
-                                \h*
-                            )?              # opt arg into $2
-                            (
-                              .
-                            )               # delimiter into $3
-                            (
-                              .*?
-                            )               # body into $4
-                            \3
-                            (\h*)?          # possibly followed by horizontal space
-                            (\R)?           # possibly followed by a line break 
-                        /mx;
-
-            while( ${$self}{body} =~ m/$verbatimRegExp/){
-
-              # create a new Verbatim object
-              my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($2?$2:q()).$3,
-                                                    body=>$4,
-                                                    end=>$3,
-                                                    name=>$verbCommand,
-                                                    type=>"command",
-                                                    modifyLineBreaksYamlName=>"verbatim",
-                                                    linebreaksAtEnd=>{
-                                                      end=>$6?1:0,
-                                                    },
-                                                    horizontalTrailingSpace=>$5?$5:q(),
-                                                    aliases=>{
-                                                      # begin statements
-                                                      BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
-                                                      # after end statements
-                                                      EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
-                                                    },
-                                                    optArg=>$2?$2:q(),
-                                                    );
-              # there are common tasks for each of the verbatim objects
-              $verbatimCommand->verbatim_common_tasks;
-
-              # output, if desired
-              $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
-
-              # verbatim children go in special hash
-              $verbatimStorage{${$verbatimCommand}{id}}=$verbatimCommand;
-
-              # log file output
-              $logger->trace("*VERBATIM command found: $verbCommand") if $is_t_switch_active;
-
-              # remove the environment block, and replace with unique ID
-              ${$self}{body} =~ s/$verbatimRegExp/${$verbatimCommand}{replacementText}/sx;
-
-              $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
-              
-              # possible decoration in log file 
-              $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
-            } 
-      } else {
+            $verbCommandSpec = $verbCommand;
+        } else {
             $logger->trace("*not* looking for $verbCommand as $verbCommand:$yesno") if $is_t_switch_active;
-      }
+            next;
+        }
+
+        # if we've made it this far, then we're good to go
+        my $verbatimRegExp = qr/
+                        (
+                            \\($verbCommandSpec) # name of command into $2
+                            \h*
+                        )
+                        (
+                            \[
+                                (?:
+                                    (?!
+                                        (?:(?<!\\)\[) 
+                                    ).
+                                )*?     # not including [, but \[ ok
+                            (?<!\\)     # not immediately pre-ceeded by \
+                            \]          # [optional arguments]
+                            \h*
+                        )?              # opt arg into $3
+                        (
+                            .
+                        )               # delimiter into $4
+                        (
+                            .*?
+                        )               # body into $5
+                        \4
+                        (\h*)?          # possibly followed by horizontal space
+                        (\R)?           # possibly followed by a line break 
+                    /mx;
+
+        while( ${$self}{body} =~ m/$verbatimRegExp/){
+
+            # create a new Verbatim object
+            my $verbatimCommand = LatexIndent::Verbatim->new( begin=>$1.($3?$3:q()).$4,
+                                                body=>$5,
+                                                end=>$4,
+                                                name=>$2,
+                                                type=>"command",
+                                                modifyLineBreaksYamlName=>"verbatim",
+                                                linebreaksAtEnd=>{
+                                                    end=>$7?1:0,
+                                                },
+                                                horizontalTrailingSpace=>$6?$6:q(),
+                                                aliases=>{
+                                                    # begin statements
+                                                    BeginStartsOnOwnLine=>"VerbatimBeginStartsOnOwnLine",
+                                                    # after end statements
+                                                    EndFinishesWithLineBreak=>"VerbatimEndFinishesWithLineBreak",
+                                                },
+                                                optArg=>$3?$3:q(),
+                                                );
+            # there are common tasks for each of the verbatim objects
+            $verbatimCommand->verbatim_common_tasks;
+
+            # output, if desired
+            $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
+
+            # verbatim children go in special hash
+            $verbatimStorage{${$verbatimCommand}{id}}=$verbatimCommand;
+
+            # log file output
+            $logger->trace("*VERBATIM command found: ${$verbatimCommand}{name}") if $is_t_switch_active;
+
+            # remove the environment block, and replace with unique ID
+            ${$self}{body} =~ s/$verbatimRegExp/${$verbatimCommand}{replacementText}/sx;
+
+            $logger->trace("replaced with ID: ${$verbatimCommand}{id}") if $is_t_switch_active;
+            
+            # possible decoration in log file 
+            $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
+        }
     }
     return;
 
