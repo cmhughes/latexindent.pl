@@ -19,6 +19,6 @@ use warnings;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/$versionNumber $versionDate/;
 
-our $versionNumber = '3.12';
-our $versionDate = '2021-09-16';
+our $versionNumber = '3.13';
+our $versionDate = '2021-10-30';
 1

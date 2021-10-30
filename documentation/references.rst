@@ -154,6 +154,11 @@ References
       (xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
 
    .. container::
+      :name: ref-XuehaiPan
+
+      XuehaiPan. 2021. “Verbatim Block Upgrade.” October 3, 2021. https://github.com/cmhughes/latexindent.pl/pull/290.
+
+   .. container::
       :name: ref-zoehneto
 
       (zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4, 2018. https://github.com/cmhughes/latexindent.pl/issues/103.

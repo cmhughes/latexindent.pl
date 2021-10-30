@@ -52,6 +52,8 @@ done
 latexindent.pl -s  -m verbatim6 -l=verb-env-1-named.yaml -o=+-mod-1
 latexindent.pl -s  -m verbatim7 -o=+-mod-1-default
 latexindent.pl -s  -m verbatim7 -l=nameAsRegex.yaml -o=+-mod-1
+latexindent.pl -s  -m verbatim7 -l=nameAsRegex2.yaml -o=+-mod-2
+latexindent.pl -s  -m verbatim7a -l=nameAsRegex.yaml -o=+-mod-1
 
 # checking a named version of polyswitch
 latexindent.pl -s  -m verbatim5 -l=verb-env-1-named.yaml -o=+-mod-1-named

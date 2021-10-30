@@ -1,5 +1,9 @@
 # changelog.md
 
+## V3.13, October 30, 2021
+Upgrade to verbatimEnvironments, verbatimCommands and noIndentBlock, full details at [issue 288](https://github.com/cmhughes/latexindent.pl/issues/288)
+and [pull 290](https://github.com/cmhughes/latexindent.pl/pull/290).
+
 ## V3.12, September 16, 2021
 new features:
 - check switch available, full details at [issue 215](https://github.com/cmhughes/latexindent.pl/issues/215)

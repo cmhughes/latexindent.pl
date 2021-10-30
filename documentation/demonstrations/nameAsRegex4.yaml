@@ -1,0 +1,4 @@
+verbatimCommands:
+    nameAsRegex:
+      name: '\w+inline'
+      lookForThis: 1

@@ -1,0 +1,10 @@
+noIndentBlock:
+    cmh:
+      begin: '\\begin\{testnoindent\*?\}'
+      end: '\\end\{testnoindent\*?\}'
+
+verbatimEnvironments:
+    latexcode: 1
+    latexcode*: 1
+    pythoncode: 1
+    pythoncode*: 1
