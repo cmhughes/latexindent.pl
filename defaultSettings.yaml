@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.12, 2021-09-16
+# defaultSettings.yaml for latexindent.pl, version 3.13, 2021-10-30
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -621,7 +621,7 @@ replacements:
   -
     this: 'latexindent.pl'
     that: 'pl.latexindent'
-    lookForThis: 1
+    lookForThis: 0
     when: before
 
 # fineTuning allows you to tweak the internal pattern matching that 

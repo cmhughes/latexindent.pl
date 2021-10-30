@@ -1,0 +1,4 @@
+noIndentBlock:
+    mytest:
+      begin: '\\begin\{testnoindent\*?\}'
+      end: '\\end\{testnoindent\*?\}'

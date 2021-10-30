@@ -1,0 +1,4 @@
+verbatimEnvironments:
+    nameAsRegex:
+      name: '\w+code\*?'
+      lookForThis: 1

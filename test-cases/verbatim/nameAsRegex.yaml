@@ -1,0 +1,14 @@
+noIndentBlock:
+    nameAsRegex:
+      name: '\w+noindent\*?'
+      lookForThis: 1
+
+verbatimEnvironments:
+    nameAsRegex:
+      name: '\w+code\*?'  # allows for a word and then 'code' and optionally *
+      lookForThis: 1
+
+verbatimCommands:
+    nameAsRegex:
+      name: '\w+inline'  # allows for a word and then 'inline'
+      lookForThis: 1

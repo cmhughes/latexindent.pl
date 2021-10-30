@@ -422,7 +422,7 @@ latexindent.pl -k myfile.tex
 latexindent.pl -check myfile.tex
 \end{commandshell}
 	You can%
-	\announce*{2021-09-16}{-k,-check switch} instruct
+	\announce{2021-09-16}{-k,-check switch} instruct
 	\texttt{latexindent.pl} to check if the text after indentation matches that given in the
 	original file.
 
@@ -448,9 +448,9 @@ latexindent.pl -check myfile.tex
 latexindent.pl -kv myfile.tex
 latexindent.pl -checkv myfile.tex
 \end{commandshell}
-	\announce*{2021-09-16}{-kv, -checkv: check verbose switch} The \texttt{check verbose} switch is
-	exactly the same as the \texttt{-k} switch, except that it is \emph{verbose}, and it will
-	output the (simple) diff to the terminal, as well as to \texttt{indent.log}.
+	\announce{2021-09-16}{-kv, -checkv: check verbose switch} The \texttt{check verbose}
+	switch is exactly the same as the \texttt{-k} switch, except that it is \emph{verbose},
+	and it will output the (simple) diff to the terminal, as well as to \texttt{indent.log}.
 
 \flagbox{-n, --lines=MIN-MAX}
 	\index{switches!-n, --lines definition and details}
@@ -458,7 +458,7 @@ latexindent.pl -checkv myfile.tex
 latexindent.pl -n 5-8 myfile.tex
 latexindent.pl -lines 5-8 myfile.tex
 \end{commandshell}
-	\announce*{2021-09-16}{-n, -lines switch} The \texttt{lines} switch instructs
+	\announce{2021-09-16}{-n, -lines switch} The \texttt{lines} switch instructs
 	\texttt{latexindent.pl} to operate only on specific line ranges within
 	\texttt{myfile.tex}.
 

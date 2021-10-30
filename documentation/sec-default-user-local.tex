@@ -137,6 +137,30 @@ copy myfile.bak4 to myfile.bak3
 	such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then
 	\texttt{latexindent.pl} will \emph{always} prioritize \texttt{verbatimEnvironments}.
 
+	You can, optionally, specify
+	\announce*{2021-10-30}{verbatim name feature} the
+	\texttt{verbatim} field using the \texttt{name} field which takes a regular expression as
+	its argument; thank you to \cite{XuehaiPan} for contributing this feature.
+
+	For demonstration, then assuming that your file contains the environments
+	\texttt{latexcode}, \texttt{latexcode*}, \texttt{pythoncode} and \texttt{pythoncode*},
+	then the listings given in \cref{lst:nameAsRegex1,lst:nameAsRegex2} are equivalent.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/nameAsRegex1.yaml}[yaml-TCB]{\texttt{nameAsRegex1.yaml}}{lst:nameAsRegex1}
+		\cmhlistingsfromfile*{demonstrations/nameAsRegex2.yaml}[yaml-TCB]{\texttt{nameAsRegex2.yaml}}{lst:nameAsRegex2}
+	\end{cmhtcbraster}
+
+	With reference to \cref{lst:nameAsRegex2}:
+	\begin{itemize}
+		\item the \texttt{name} field as specified here means \emph{any word followed by the word code,
+			      optionally followed by *};
+		\item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
+		      you like;
+		\item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
+		      default, it is assumed to be 1 (on).
+	\end{itemize}
+
 \yamltitle{verbatimCommands}*{fields}
 	A field that contains a list of commands that are verbatim commands, for example
 	\lstinline|\lstinline|; any commands populated in this field are protected from line
@@ -148,6 +172,30 @@ copy myfile.bak4 to myfile.bak3
 	\lstinline|\verb| immediately followed by another character, and then it takes the
 	body as anything up to the next occurrence of the character; this means that, for
 	example, \lstinline|\verb!x+3!| is treated as a \texttt{verbatimCommands}.
+
+	You can, optionally, specify
+	\announce*{2021-10-30}{verbatimCommands name feature} the
+	\texttt{verbatimCommands} field using the \texttt{name} field which takes a regular
+	expression as its argument; thank you to \cite{XuehaiPan} for contributing this feature.
+
+	For demonstration, then assuming that your file contains the commands
+	\texttt{verbinline}, \texttt{myinline} then the listings given in
+	\cref{lst:nameAsRegex3,lst:nameAsRegex4} are equivalent.
+
+	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+		\cmhlistingsfromfile*{demonstrations/nameAsRegex3.yaml}[yaml-TCB]{\texttt{nameAsRegex3.yaml}}{lst:nameAsRegex3}
+		\cmhlistingsfromfile*{demonstrations/nameAsRegex4.yaml}[yaml-TCB]{\texttt{nameAsRegex4.yaml}}{lst:nameAsRegex4}
+	\end{cmhtcbraster}
+
+	With reference to \cref{lst:nameAsRegex4}:
+	\begin{itemize}
+		\item the \texttt{name} field as specified here means \emph{any word followed by the word
+			      inline};
+		\item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
+		      you like;
+		\item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
+		      default, it is assumed to be 1 (on).
+	\end{itemize}
 
 \yamltitle{noIndentBlock}*{fields}
 	If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if
@@ -214,6 +262,31 @@ latexindent.pl -l noindent3.yaml noindent1
 
 	We will demonstrate this feature later in the documentation in \cref{lst:href3}.
 
+	You can, optionally, specify
+	\announce*{2021-10-30}{noIndentBlock name feature} the
+	\texttt{noIndentBlock} field using the \texttt{name} field which takes a regular
+	expression as its argument; thank you to \cite{XuehaiPan} for contributing this feature.
+
+	For demonstration, then assuming that your file contains the environments
+	\texttt{testnoindent}, \texttt{testnoindent*} then the listings given in
+	\cref{lst:nameAsRegex5,lst:nameAsRegex6} are equivalent.
+
+	\begin{widepage}
+		\begin{cmhtcbraster}[raster column skip=.1\linewidth]
+			\cmhlistingsfromfile*{demonstrations/nameAsRegex5.yaml}[yaml-TCB]{\texttt{nameAsRegex5.yaml}}{lst:nameAsRegex5}
+			\cmhlistingsfromfile*{demonstrations/nameAsRegex6.yaml}[yaml-TCB]{\texttt{nameAsRegex6.yaml}}{lst:nameAsRegex6}
+		\end{cmhtcbraster}
+	\end{widepage}
+
+	With reference to \cref{lst:nameAsRegex6}:
+	\begin{itemize}
+		\item the \texttt{name} field as specified here means \emph{any word followed by the word
+			      noindent, optionally followed by *};
+		\item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
+		      you like;
+		\item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
+		      default, it is assumed to be 1 (on).
+	\end{itemize}
 \subsection{filecontents and preamble}
 \yamltitle{fileContentsEnvironments}*{field}
 
