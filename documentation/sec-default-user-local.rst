@@ -1577,7 +1577,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``                         ``\ifnum......\else...\fi``
    items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames`     ``\begin{enumerate}  \item ...\end{enumerate}``
    specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                  ``\[  ...\]``
-   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}``
+   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}`` 
    filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                         ``\begin{filecontents}...\end{filecontents}``
    ============================= ================================================================================== ====================================================================================
 
