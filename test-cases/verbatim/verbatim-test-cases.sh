@@ -50,6 +50,10 @@ done
 [[ $silentMode == 0 ]] && set -x 
 
 latexindent.pl -s  -m verbatim6 -l=verb-env-1-named.yaml -o=+-mod-1
+latexindent.pl -s  -m verbatim7 -o=+-mod-1-default
+latexindent.pl -s  -m verbatim7 -l=nameAsRegex.yaml -o=+-mod-1
+latexindent.pl -s  -m verbatim7 -l=nameAsRegex2.yaml -o=+-mod-2
+latexindent.pl -s  -m verbatim7a -l=nameAsRegex.yaml -o=+-mod-1
 
 # checking a named version of polyswitch
 latexindent.pl -s  -m verbatim5 -l=verb-env-1-named.yaml -o=+-mod-1-named
@@ -60,7 +64,7 @@ latexindent.pl -s  -m verbatim-special3 -l=verb-special.yaml,verb-spec2-named.ya
 latexindent.pl -s  -m verbatim-trailing-comments -l=verb-begin2.yaml -o=+-mod2
 
 # verbatim command
-latexindent.pl -s -w verbatim-commands.tex
+latexindent.pl -s -w verbatim-commands.tex -l=nameAsRegex.yaml
 latexindent.pl -s verbatim-trailing-comments1.tex -o=+-default
 
 #   verbatim noindent block 

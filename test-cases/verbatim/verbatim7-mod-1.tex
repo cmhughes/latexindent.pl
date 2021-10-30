@@ -1,0 +1,33 @@
+\begin{surround}
+	before text \begin{testnoindent}
+    body text
+      body text
+body text
+\end{testnoindent} after text
+
+	before text \begin{testnoindent*}
+  body text
+    body text
+body text
+\end{testnoindent*} after text
+
+	before text \begin{latexcode}
+    body text
+      body text
+        body text \begin{pythoncode}
+            for i in range(10):
+                print("Hello, world!")
+        \end{pythoncode} body text
+body text
+\end{latexcode} after text
+
+	before text \begin{latexcode*}{linenos=true}
+  body text
+    body text
+      body text \begin{pythoncode}
+          for i in range(10):
+              print("Hello, world!")
+      \end{pythoncode} body text
+body text
+\end{latexcode*} after text
+\end{surround}

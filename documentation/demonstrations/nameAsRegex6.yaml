@@ -1,0 +1,4 @@
+noIndentBlock:
+    nameAsRegex:
+      name: '\w+noindent\*?'
+      lookForThis: 1

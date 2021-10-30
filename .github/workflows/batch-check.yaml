@@ -26,11 +26,11 @@ jobs:
   latexindent-batch-check:
     # Linux and MacOS
     #
-    name: latexindent.pl --check on test-cases/check-switch-tests/*.tex (${{ matrix.platform }}, Perl ${{ matrix.perl }})
+    name: ${{ matrix.platform }}, Perl ${{ matrix.perl }}, latexindent.pl --check on test-cases/check-switch-tests/*.tex
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest]
-        perl: [ '5.34', '5.32', '5.30' ]
+        platform: [ubuntu-latest, macos-latest, windows-latest]
+        perl: [ '5.32', '5.30', '5.28' ]
     runs-on: ${{ matrix.platform }}
     steps:
       # checkout github.com/cmhughes/latexindent.pl
@@ -41,39 +41,13 @@ jobs:
       # install Perl
       #
       # https://github.com/marketplace/actions/setup-perl-environment
-      - name: installing Perl
+      - if: ${{ matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest' }}
+        name: installing Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-      - name: installing perl modules for latexindent.pl
-        run: |
-          cpanm YAML::Tiny
-          cpanm File::HomeDir
-          cpanm Unicode::GCString
-      - name: loop for running latexindent.pl --check test-cases/check-switch-tests/*.tex
-        run: |
-          for file in test-cases/check-switch-tests/*.tex
-          do
-             perl latexindent.pl --check -s $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
-          done
-  latexindent-batch-check-windows:
-    # Windows, using Strawberry Perl
-    #
-    name: latexindent.pl --check on test-cases/check-switch-tests/*.tex (WINDOWS, Perl ${{ matrix.perl }})
-    runs-on: 'windows-latest'
-    strategy:
-      matrix:
-        perl: ['5.32', '5.30' ]
-    steps:
-      # checkout github.com/cmhughes/latexindent.pl
-      #
-      # https://github.com/actions/checkout
-      - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v2
-      # install Strawberry Perl
-      #
-      # https://github.com/marketplace/actions/setup-perl-environment
-      - name: installing Perl
+      - if: ${{ matrix.platform == 'windows-latest' }}
+        name: installing Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
@@ -83,7 +57,15 @@ jobs:
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
-      - name: loop for running latexindent.pl --check test-cases/check-switch-tests/*.tex
+      - if: ${{ matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest' }}
+        name: loop for running latexindent.pl --check test-cases/check-switch-tests/*.tex
+        run: |
+          for file in test-cases/check-switch-tests/*.tex
+          do
+             perl latexindent.pl --check -s $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
+          done
+      - if: ${{ matrix.platform == 'windows-latest' }}
+        name: loop for running latexindent.pl --check test-cases/check-switch-tests/*.tex
         run: |
           $files = Get-ChildItem test-cases\check-switch-tests\*tex
           foreach ($file in $files) {perl latexindent.pl --check -s $file}

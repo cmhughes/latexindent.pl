@@ -142,6 +142,29 @@ A field that contains a list of environments that you would like left completely
 Note that if you put an environment in ``verbatimEnvironments`` and in other fields such as ``lookForAlignDelims`` or ``noAdditionalIndent`` then ``latexindent.pl`` will *always* prioritize
 ``verbatimEnvironments``.
 
+You can, optionally, specify the ``verbatim`` field using the ``name`` field which takes a regular expression as its argument; thank you to (XuehaiPan 2021) for contributing this feature.
+
+For demonstration, then assuming that your file contains the environments ``latexcode``, ``latexcode*``, ``pythoncode`` and ``pythoncode*``, then the listings given in :numref:`lst:nameAsRegex1` and
+:numref:`lst:nameAsRegex2` are equivalent.
+
+.. literalinclude:: demonstrations/nameAsRegex1.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex1.yaml`` 
+ 	:name: lst:nameAsRegex1
+
+.. literalinclude:: demonstrations/nameAsRegex2.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex2.yaml`` 
+ 	:name: lst:nameAsRegex2
+
+With reference to :numref:`lst:nameAsRegex2`:
+
+-  the ``name`` field as specified here means *any word followed by the word code, optionally followed by \**;
+
+-  we have used ``nameAsRegex`` to identify this field, but you can use any description you like;
+
+-  the ``lookForThis`` field is optional, and can take the values 0 (off) or 1 (on); by default, it is assumed to be 1 (on).
+
 .. describe:: verbatimCommands:fields
 
 A field that contains a list of commands that are verbatim commands, for example ``\verb``; any commands populated in this field are protected from line breaking routines (only relevant if the ``-m``
@@ -149,6 +172,29 @@ is active, see :numref:`sec:modifylinebreaks`).
 
 With reference to :numref:`lst:verbatimCommands`, by default ``latexindent.pl`` looks for ``\verb`` immediately followed by another character, and then it takes the body as anything up to the next
 occurrence of the character; this means that, for example, ``\verb!x+3!`` is treated as a ``verbatimCommands``.
+
+You can, optionally, specify the ``verbatimCommands`` field using the ``name`` field which takes a regular expression as its argument; thank you to (XuehaiPan 2021) for contributing this feature.
+
+For demonstration, then assuming that your file contains the commands ``verbinline``, ``myinline`` then the listings given in :numref:`lst:nameAsRegex3` and :numref:`lst:nameAsRegex4` are
+equivalent.
+
+.. literalinclude:: demonstrations/nameAsRegex3.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex3.yaml`` 
+ 	:name: lst:nameAsRegex3
+
+.. literalinclude:: demonstrations/nameAsRegex4.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex4.yaml`` 
+ 	:name: lst:nameAsRegex4
+
+With reference to :numref:`lst:nameAsRegex4`:
+
+-  the ``name`` field as specified here means *any word followed by the word inline*;
+
+-  we have used ``nameAsRegex`` to identify this field, but you can use any description you like;
+
+-  the ``lookForThis`` field is optional, and can take the values 0 (off) or 1 (on); by default, it is assumed to be 1 (on).
 
 .. describe:: noIndentBlock:fields
 
@@ -236,6 +282,29 @@ gives the output in :numref:`lst:noIndentBlock1-mod3`.
  	:name: lst:noIndentBlock1-mod3
 
 We will demonstrate this feature later in the documentation in :numref:`lst:href3`.
+
+You can, optionally, specify the ``noIndentBlock`` field using the ``name`` field which takes a regular expression as its argument; thank you to (XuehaiPan 2021) for contributing this feature.
+
+For demonstration, then assuming that your file contains the environments ``testnoindent``, ``testnoindent*`` then the listings given in :numref:`lst:nameAsRegex5` and :numref:`lst:nameAsRegex6`
+are equivalent.
+
+.. literalinclude:: demonstrations/nameAsRegex5.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex5.yaml`` 
+ 	:name: lst:nameAsRegex5
+
+.. literalinclude:: demonstrations/nameAsRegex6.yaml
+ 	:class: .baseyaml
+ 	:caption: ``nameAsRegex6.yaml`` 
+ 	:name: lst:nameAsRegex6
+
+With reference to :numref:`lst:nameAsRegex6`:
+
+-  the ``name`` field as specified here means *any word followed by the word noindent, optionally followed by \**;
+
+-  we have used ``nameAsRegex`` to identify this field, but you can use any description you like;
+
+-  the ``lookForThis`` field is optional, and can take the values 0 (off) or 1 (on); by default, it is assumed to be 1 (on).
 
 filecontents and preamble
 -------------------------
@@ -1506,10 +1575,10 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    namedGroupingBracesBrackets   ``0-9\.a-zA-Z@\*><``                                                               ``in``\ <arguments>
    UnNamedGroupingBracesBrackets *No name!*                                                                         ``{`` or ``[`` or ``,`` or ``\&`` or ``)`` or ``(`` or ``$`` followed by <arguments>
    ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``                         ``\ifnum......\else...\fi``
-   items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames`     ``\begin{enumerate}  \item ...\end{enumerate}``
-   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                  ``\[  ...\]``
-   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}``
-   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                         ``\begin{filecontents}...\end{filecontents}``
+   items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames` ``\begin{enumerate}  \item ...\end{enumerate}``
+   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                ``\[  ...\]``
+   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                            ``\chapter{title}  ...\section{title}``
+   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                       ``\begin{filecontents}...\end{filecontents}``
    ============================= ================================================================================== ====================================================================================
 
 We will refer to these code blocks in what follows. Note that the fine tuning of the definition of the code blocks detailed in :numref:`tab:code-blocks` is discussed in :numref:`sec:finetuning`.
@@ -2879,6 +2948,11 @@ The ``amalgamate`` field can be used for ``commandNameSpecial``, just as for ``s
       :name: ref-vosskuhle
 
       Voßkuhle, Michel. 2013. “Remove Trailing White Space.” November 10, 2013. https://github.com/cmhughes/latexindent.pl/pull/12.
+
+   .. container::
+      :name: ref-XuehaiPan
+
+      XuehaiPan. 2021. “Verbatim Block Upgrade.” October 3, 2021. https://github.com/cmhughes/latexindent.pl/pull/290.
 
 .. [1]
    Throughout this manual, listings shown with line numbers represent code taken directly from ``defaultSettings.yaml``.

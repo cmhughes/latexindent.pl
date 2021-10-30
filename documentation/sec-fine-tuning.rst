@@ -306,6 +306,120 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	 
 
+.. proof:example::	
+	
+	We can use the ``fineTuning`` field to assist in the formatting of bibliography files.
+	
+	.. index:: bibliography files
+	
+	.. index:: regular expressions;delimiterRegEx
+	
+	.. index:: regular expressions;capturing parenthesis
+	
+	.. index:: regular expressions;ampersand alignment
+	
+	.. index:: delimiters;delimiterRegEx
+	
+	Starting with the file in :numref:`lst:bib1` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl bib1.tex -o=+-mod1 
+	
+	gives the output in :numref:`lst:bib1-mod1`.
+	
+	.. literalinclude:: demonstrations/bib1.bib
+	 	:class: .tex
+	 	:caption: ``bib1.bib`` 
+	 	:name: lst:bib1
+	
+	.. literalinclude:: demonstrations/bib1-mod1.bib
+	 	:class: .tex
+	 	:caption: ``bib1-mod1.bib`` 
+	 	:name: lst:bib1-mod1
+	
+	Let’s assume that we would like to format the output so as to align the ``=`` symbols. Using the settings in :numref:`lst:bibsettings1` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
+	
+	gives the output in :numref:`lst:bib1-mod2`.
+	
+	.. literalinclude:: demonstrations/bib1-mod2.bib
+	 	:class: .tex
+	 	:caption: ``bib1.bib`` using :numref:`lst:bibsettings1` 
+	 	:name: lst:bib1-mod2
+	
+	.. literalinclude:: demonstrations/bibsettings1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``bibsettings1.yaml`` 
+	 	:name: lst:bibsettings1
+	
+	Some notes about :numref:`lst:bibsettings1`:
+	
+	-  we have populated the ``lookForAlignDelims`` field with the ``online`` command, and have used the ``delimiterRegEx``, discussed in :numref:`sec:delimiter-reg-ex`;
+	
+	-  we have tweaked the ``keyEqualsValuesBracesBrackets`` code block so that it will *not* be found following a comma; this means that, in contrast to the default behaviour, the lines such as
+	   ``date={2013-05-23},`` will *not* be treated as key-equals-value braces;
+	
+	-  the adjustment to ``keyEqualsValuesBracesBrackets`` necessitates the associated change to the ``UnNamedGroupingBracesBrackets`` field so that they will be searched for following ``=`` symbols.
+	
+	
+	 
+
+.. proof:example::	
+	
+	We can build upon :numref:`lst:bibsettings1` for slightly more complicated bibliography files.
+	
+	Starting with the file in :numref:`lst:bib2` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:bib2-mod1`.
+	
+	.. literalinclude:: demonstrations/bib2.bib
+	 	:class: .tex
+	 	:caption: ``bib2.bib`` 
+	 	:name: lst:bib2
+	
+	.. literalinclude:: demonstrations/bib2-mod1.bib
+	 	:class: .tex
+	 	:caption: ``bib2-mod1.bib`` 
+	 	:name: lst:bib2-mod1
+	
+	The output in :numref:`lst:bib2-mod1` is not ideal, as the ``=`` symbol within the url field has been incorrectly used as an alignment delimiter.
+	
+	We address this by tweaking the ``delimiterRegEx`` field in :numref:`lst:bibsettings2`.
+	
+	.. literalinclude:: demonstrations/bibsettings2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``bibsettings2.yaml`` 
+	 	:name: lst:bibsettings2
+	
+	Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
+	
+	we receive the *desired* output in :numref:`lst:bib2-mod2`.
+	
+	.. literalinclude:: demonstrations/bib2-mod2.bib
+	 	:class: .tex
+	 	:caption: ``bib2-mod2.bib`` 
+	 	:name: lst:bib2-mod2
+	
+	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceeded* by either
+	``v`` or ``spfreload``.
+	 
+
 .. container:: references
    :name: refs
 

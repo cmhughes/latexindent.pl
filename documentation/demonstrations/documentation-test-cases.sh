@@ -314,6 +314,10 @@ latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences
 latexindent.pl -s finetuning4.tex -o=+-mod1 -l=href1 -m 
 latexindent.pl -s finetuning4.tex -o=+-mod2 -l=href2 -m 
 latexindent.pl -s finetuning4.tex -o=+-mod3 -l=href3 -m 
+latexindent.pl -s bib1.bib -o=+-mod1 
+latexindent.pl -s bib1.bib -l bibsettings1.yaml -o=+-mod2 
+latexindent.pl -s bib2.bib -l bibsettings1.yaml -o=+-mod1 
+latexindent.pl -s bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
 
 # blank line poly-switches
 latexindent.pl -s -m env-mlb1.tex -l env-beg4.yaml -o=+-beg4
