@@ -1566,8 +1566,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ============================= ================================================================================== ====================================================================================
    Code block                    characters allowed in name                                                         example
    ============================= ================================================================================== ====================================================================================
-   environments                                                                                                    
-   !                             ``\begin{myenv}body of myenv\end{myenv}``                                         
+   environments                  ``a-zA-Z@\*0-9_\\``                                                                ``\begin{myenv}body of myenv\end{myenv}``                                         
    optionalArguments             *inherits* name from parent (e.g environment name)                                 ``[opt arg text]``
    mandatoryArguments            *inherits* name from parent (e.g environment name)                                 ``{mand arg text}``
    commands                      ``+a-zA-Z@\*0-9_\:``                                                               ``\mycommand``\ <arguments>
