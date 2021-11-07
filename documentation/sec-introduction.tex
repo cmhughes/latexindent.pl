@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \section{Introduction}
 \subsection{Thanks}
 	I first created \texttt{latexindent.pl} to help me format chapter files in a big project.
@@ -68,7 +68,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.4\textwidth}
-		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
+		\cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -78,7 +78,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.55\textwidth}
-		\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
+		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -88,7 +88,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.55\textwidth}
-		\cmhlistingsfromfile[style=replacements]*{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
+		\cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}

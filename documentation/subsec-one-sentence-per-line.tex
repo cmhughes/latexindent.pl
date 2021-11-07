@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 
 	You can instruct \texttt{latexindent.pl} to format%
@@ -12,7 +12,7 @@
 	\index{regular expressions!lowercase alph a-z}
 	\index{regular expressions!uppercase alph A-Z}
 
-	\cmhlistingsfromfile[style=oneSentencePerLine]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+	\cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
 	This is a binary switch that details if \texttt{latexindent.pl} should perform the
@@ -46,12 +46,12 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
 	\end{cmhtcbraster}
 
 	Notice, in particular, that the `internal' sentence line breaks in
@@ -84,9 +84,9 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
 			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile[style=sentencesFollow]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
-		\cmhlistingsfromfile[style=sentencesBeginWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-		\cmhlistingsfromfile[style=sentencesEndWith]*{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+		\cmhlistingsfromfile[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+		\cmhlistingsfromfile[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+		\cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 	\end{cmhtcbraster}
 
 \subsubsection{sentencesFollow}
@@ -103,7 +103,7 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
 	\end{cmhtcbraster}
 
 	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl}
@@ -133,7 +133,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 			raster column 1/.style={add to width=1cm},
 		]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
 	\end{cmhtcbraster}
 
 	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
@@ -170,7 +170,7 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 			raster column 1/.style={add to width=1cm},
 		]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
 	\end{cmhtcbraster}
 	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted
 	for but that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2},
@@ -197,12 +197,12 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
 	\end{cmhtcbraster}
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
 	\end{cmhtcbraster}
 
 	There is a subtle difference between the output in
@@ -260,7 +260,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 			raster column 1/.style={add to width=.1\textwidth},
 			raster column skip=.06\linewidth]
 		\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
 	\end{cmhtcbraster}
 
 	Notice that the full stop within the URL has not been accommodated correctly because of
@@ -312,7 +312,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
 	\end{cmhtcbraster}
 
 \subsubsection{Text wrapping and indenting sentences}
@@ -340,7 +340,7 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 			raster column 1/.style={add to width=.1\textwidth},
 			raster column skip=.06\linewidth]
 		\cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
 	\end{cmhtcbraster}
 
 	If you wish to specify the \texttt{columns} field on a per-code-block basis for
@@ -388,7 +388,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
 	\index{regular expressions!numeric 0-9}
 	\index{regular expressions!horizontal space \textbackslash{h}}
 
-	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
+	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
 	Upon running
 	\index{switches!-l demonstration}

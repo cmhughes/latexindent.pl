@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsubsection{Environments with items}
 	With reference to \vref{lst:indentafteritems,lst:itemNames}, some commands may contain
 	\texttt{item} commands; for the purposes of this discussion, we will use the code from
@@ -11,8 +11,8 @@
 	\texttt{item} receives using \texttt{indentRules}, as in \cref{lst:item-rules1}
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-noAdd1.yaml}[yaml-TCB]{\texttt{item-noAdd1.yaml}}{lst:item-noAdd1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/item-rules1.yaml}[yaml-TCB]{\texttt{item-rules1.yaml}}{lst:item-rules1}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-noAdd1.yaml}[yaml-TCB]{\texttt{item-noAdd1.yaml}}{lst:item-noAdd1}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules1.yaml}[yaml-TCB]{\texttt{item-rules1.yaml}}{lst:item-rules1}
 	\end{cmhtcbraster}
 
 	Upon running the following commands
@@ -43,11 +43,11 @@ latexindent.pl items1.tex -local item-rules1.yaml
 	\texttt{item} command is a member of \texttt{indentRules} by default.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/items-noAdditionalGlobal.yaml}[yaml-TCB]{\texttt{items-noAdditionalGlobal.yaml}}{lst:items-noAdditionalGlobal}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-noAdditionalGlobal.yaml}[yaml-TCB]{\texttt{items-noAdditionalGlobal.yaml}}{lst:items-noAdditionalGlobal}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/items-indentRulesGlobal.yaml}[yaml-TCB]{\texttt{items-indentRulesGlobal.yaml}}{lst:items-indentRulesGlobal}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/items-indentRulesGlobal.yaml}[yaml-TCB]{\texttt{items-indentRulesGlobal.yaml}}{lst:items-indentRulesGlobal}
 	\end{minipage}
 
 	Upon running the following commands,

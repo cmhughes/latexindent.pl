@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsubsection{ifelsefi code blocks}
 	Let's use the simple example shown in \cref{lst:ifelsefi1}; when \texttt{latexindent.pl}
 	operates on this file, the output as in \cref{lst:ifelsefi1-default}; note that the body
@@ -19,11 +19,11 @@
 	\cref{lst:ifnum-noAdd,lst:ifnum-indent-rules}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifnum-noAdd.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-noAdd.yaml}}{lst:ifnum-noAdd}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-noAdd.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-noAdd.yaml}}{lst:ifnum-noAdd}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
 	\end{minipage}
 
 	After running the following commands,
@@ -50,11 +50,11 @@ latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml
 	\cref{lst:ifelsefi-noAdd-glob,lst:ifelsefi-indent-rules-global}.
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifelsefi-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-noAdd-glob.yaml}}{lst:ifelsefi-noAdd-glob}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-noAdd-glob.yaml}}{lst:ifelsefi-noAdd-glob}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
 	\end{minipage}
 
 	Upon running the following commands

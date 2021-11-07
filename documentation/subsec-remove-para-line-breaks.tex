@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsection{removeParagraphLineBreaks: modifying line breaks for paragraphs}\label{subsec:removeparagraphlinebreaks} When the \texttt{-m} switch is active
 	\texttt{latexindent.pl} has the ability to remove line
 	breaks%
@@ -12,7 +12,7 @@
 	described in \vref{sec:onesentenceperline}.
 	\index{specialBeginEnd!removeParagraphLineBreaks}
 
-	\cmhlistingsfromfile[style=removeParagraphLineBreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
+	\cmhlistingsfromfile[style=removeParagraphLineBreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{removeParagraphLineBreaks}}{lst:removeParagraphLineBreaks}
 
 	This routine can be turned on \emph{globally} for \emph{every} code block type known to
 	\texttt{latexindent.pl} (see \vref{tab:code-blocks}) by using the \texttt{all} switch; by
@@ -169,7 +169,7 @@ latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
 	\index{specialBeginEnd!paragraphsStopAt}
 	\index{verbatim!in relation to paragraphsStopAt}
 
-	\cmhlistingsfromfile[style=paragraphsStopAt]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
+	\cmhlistingsfromfile[style=paragraphsStopAt]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{paragraphsStopAt}}{lst:paragraphsStopAt}
 
 	The fields specified in \texttt{paragraphsStopAt} tell \texttt{latexindent.pl} to stop
 	the current paragraph when it reaches a line that \emph{begins} with any of the
