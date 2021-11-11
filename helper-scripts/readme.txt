@@ -18,6 +18,7 @@ Typical running order of these helper scripts:
     - git tag "V<number>"
     - git push --tags
     - <update release notes on github>
-    - <add latexindent.exe to directory>
-    - prepctan.sh
-    - <upload to ctan>
+    ###### GitHub actions, so no longer needed - <add latexindent.exe to directory>
+    ###### GitHub actions, so no longer needed - prepctan.sh
+    - <download latexindent-ctan.zip>
+    - <upload latexindent-ctan.zip to ctan>
