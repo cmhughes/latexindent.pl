@@ -25,8 +25,8 @@
  \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{warning}
-	 Making changes to the fine tuning may have significant consequences for your indentation scheme,
-	 proceed with caution!
+	 Making changes to the fine tuning may have significant consequences for your indentation
+	 scheme, proceed with caution!
  \end{warning}
 
  \begin{widepage}
@@ -97,6 +97,12 @@
  It is not obvious from \cref{lst:fineTuning}, but each of the \texttt{follow},
  \texttt{before} and \texttt{between} fields allow trailing comments, line breaks, and
  horizontal spaces between each character.
+
+ \index{warning!capture groups}
+ \begin{warning}
+	 For the \texttt{fineTuning} feature you should only ever use \emph{non}-capturing groups,
+	 such as \lstinline!(?:...)! and \emph{not} capturing groups, which are \lstinline!(...)!
+ \end{warning}
 
  \begin{example}
 	 As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its

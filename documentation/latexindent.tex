@@ -129,7 +129,14 @@
 \addbibresource{contributors}
 
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
-\newtcolorbox{warning}{parbox=false,breakable,enhanced,arc=0mm,colback=red!5,colframe=red,leftrule=12mm,%
+\newtcolorbox{warning}{parbox=false,
+	breakable,
+	enhanced,
+	arc=0mm,
+	colback=red!5,
+	colframe=red,
+	leftrule=12mm,%
+	title={Warning!},
 	overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }
 }
 
