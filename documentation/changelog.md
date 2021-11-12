@@ -1,5 +1,12 @@
 # changelog.md
 
+## V3.13.1, November 12, 2021
+Upgrade to `-y` switch, full details at [issue 296](https://github.com/cmhughes/latexindent.pl/issues/296) and 
+[pull 297](https://github.com/cmhughes/latexindent.pl/pull/297).
+
+Minor documentation updated, [issue 299](https://github.com/cmhughes/latexindent.pl/issues/299) and
+[issue 300](https://github.com/cmhughes/latexindent.pl/issues/300).
+
 ## V3.13, October 30, 2021
 Upgrade to verbatimEnvironments, verbatimCommands and noIndentBlock, full details at [issue 288](https://github.com/cmhughes/latexindent.pl/issues/288)
 and [pull 290](https://github.com/cmhughes/latexindent.pl/pull/290).
