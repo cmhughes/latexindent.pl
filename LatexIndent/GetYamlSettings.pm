@@ -510,10 +510,7 @@ sub yaml_read_settings{
                 # split at :
                 (@keysValues) = split(/(?<!(?:\\|\[)):(?!\])/,$splitAtQuote[0]);
 
-                # tabs need special attention
-                if ($splitAtQuote[1] =~ m/\\t/){
-                    $splitAtQuote[1] = '"'.$splitAtQuote[1].'"';
-                }
+                $splitAtQuote[1] = '"'.$splitAtQuote[1].'"';
                 push(@keysValues,$splitAtQuote[1]);
             } 
             else {
@@ -528,15 +525,29 @@ sub yaml_read_settings{
             # semi-colon, so we replace it with just a semi-colon
             $value =~ s/\\:/:/;
 
-            # horizontal space needs special treatment
-            if($value =~ m/^(?:"|')(\h*)(?:"|')$/){
-                # pure horizontal space
+            # strings need special treatment
+            if($value =~ m/^"(.*)"$/){
+                # double-quoted string
+                # translate: '\t', '\n', '\"', '\\'
+                my $raw_value = $value;
                 $value = $1;
-            } elsif($value =~ m/^(?:"|')((?:\\t)*)(?:"|')$/){
-                # tabs
-                $value =~ s/^(?:"|')//;
-                $value =~ s/(?:"|')$//;
-                $value =~ s/\\t/\t/g;
+                # only translate string starts with an odd number of escape characters '\'
+                $value =~ s/(?<!\\)((\\\\)*)\\t/$1\t/g;
+                $value =~ s/(?<!\\)((\\\\)*)\\n/$1\n/g;
+                $value =~ s/(?<!\\)((\\\\)*)\\"/$1"/g;
+                # translate '\\' in double-quoted strings, but not in single-quoted strings
+                $value =~ s/\\\\/\\/g;
+                $logger->info("double-quoted string found in -y switch: $raw_value, substitute to $value");
+            } elsif($value =~ m/^'(.*)'$/){
+                # single-quoted string
+                my $raw_value = $value;
+                $value = $1;
+                # special treatment for tabs and newlines
+                # translate: '\t', '\n'
+                # only translate string starts with an odd number of escape characters '\'
+                $value =~ s/(?<!\\)((\\\\)*)\\t/$1\t/g;
+                $value =~ s/(?<!\\)((\\\\)*)\\n/$1\n/g;
+                $logger->info("single-quoted string found in -y switch: $raw_value, substitute to $value");
             }
 
             if(scalar(@keysValues) == 2){

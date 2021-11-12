@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsection{Commands and the strings between their arguments}\label{subsec:commands-string-between} The \texttt{command} code blocks will
 	always look for optional (square bracketed) and mandatory (curly braced) arguments which
 	can contain comments, line breaks and `beamer' commands \lstinline!<.*?>! between them.
@@ -10,7 +10,7 @@
 	\announce{2018-04-27}*{commandCodeBlocks} contains a few switches detailed in
 	\cref{lst:commandCodeBlocks}.
 
-	\cmhlistingsfromfile[style=commandCodeBlocks]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
+	\cmhlistingsfromfile[style=commandCodeBlocks]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{commandCodeBlocks}}{lst:commandCodeBlocks}
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
@@ -49,7 +49,7 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/pstricks1-nrp.tex}{\texttt{pstricks1.tex} using \cref{lst:noRoundParentheses}}{lst:pstricks1-nrp}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/noRoundParentheses.yaml}[yaml-TCB]{\texttt{noRoundParentheses.yaml}}{lst:noRoundParentheses}
 	\end{cmhtcbraster}
 
 	Notice the difference between \cref{lst:pstricks1-default} and \cref{lst:pstricks1-nrp};
@@ -70,7 +70,7 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/pstricks1-indent-rules.tex}{\texttt{pstricks1.tex} using \cref{lst:defFunction}}{lst:pstricks1-indent-rules}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/defFunction.yaml}[yaml-TCB]{\texttt{defFunction.yaml}}{lst:defFunction}
 	\end{cmhtcbraster}
 
 	Notice in \cref{lst:pstricks1-indent-rules} that the \emph{body} of the
@@ -84,11 +84,11 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
 	\texttt{latexindent.pl} gives the default output in \cref{lst:tikz-node1-default}.
 
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]*{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.45\textwidth}
-		\cmhlistingsfromfile[columns=fixed]*{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
+		\cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
 	\end{minipage}
 
 	With reference to \vref{lst:commandCodeBlocks}, we see that the strings
@@ -120,7 +120,7 @@ latexindent.pl tikz-node1.tex -l draw.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/tikz-node1-draw.tex}{\texttt{tikz-node1.tex} using \cref{lst:draw}}{lst:tikz-node1-draw}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/draw.yaml}[yaml-TCB]{\texttt{draw.yaml}}{lst:draw}
 	\end{cmhtcbraster}
 
 	Notice that each line after the \lstinline!\draw! command (its `body') in
@@ -137,7 +137,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/tikz-node1-no-strings.tex}{\texttt{tikz-node1.tex} using \cref{lst:no-strings}}{lst:tikz-node1-no-strings}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-strings.yaml}[yaml-TCB]{\texttt{no-strings.yaml}}{lst:no-strings}
 	\end{cmhtcbraster}
 
 	In this case, \texttt{latexindent.pl} sees that:
@@ -163,9 +163,9 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalgamate-demo.yaml}[yaml-TCB]{\texttt{amalgamate-demo.yaml}}{lst:amalgamate-demo}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalgamate-demo1.yaml}[yaml-TCB]{\texttt{amalgamate-demo1.yaml}}{lst:amalgamate-demo1}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalgamate-demo2.yaml}[yaml-TCB]{\texttt{amalgamate-demo2.yaml}}{lst:amalgamate-demo2}
 	\end{cmhtcbraster}
 
 	We specify \texttt{amalgamate} to be set to \texttt{0} and in which case any settings
@@ -173,7 +173,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
 	using the settings in \cref{lst:amalgamate-demo3} means that only the strings specified
 	in that field will be used.
 
-	\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
+	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalgamate-demo3.yaml}[yaml-TCB]{\texttt{amalgamate-demo3.yaml}}{lst:amalgamate-demo3}
 
 	It is important to note that the \texttt{amalgamate} field, if used, must be in the first
 	field, and specified using the syntax given in
@@ -197,7 +197,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/for-each-mod1.tex}{\texttt{for-each.tex} using \cref{lst:foreach}}{lst:for-each-mod1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/foreach.yaml}[yaml-TCB]{\texttt{foreach.yaml}}{lst:foreach}
 	\end{cmhtcbraster}
 
 	You might like to compare the output given in \cref{lst:for-each-default} and
@@ -241,7 +241,7 @@ latexindent.pl for-each.tex -l foreach.yaml
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
 	\end{cmhtcbraster}
 
 	The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for
@@ -250,6 +250,8 @@ latexindent.pl for-each.tex -l foreach.yaml
 	\index{warning!amalgamate field}
 
 	\begin{warning}
-		It is important to note that the \texttt{amalgamate} field, if used, in either \texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the first field,
-		and specified using the syntax given in \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
+		It is important to note that the \texttt{amalgamate} field, if used, in either
+		\texttt{commandNameSpecial} or \texttt{stringsAllowedBetweenArguments} must be in the
+		first field, and specified using the syntax given in
+		\cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
 	\end{warning}

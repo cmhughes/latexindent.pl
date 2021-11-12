@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsection{Text Wrapping}\label{subsec:textwrapping}
 	There are \emph{many} different configuration options for the text wrapping routine of
 	\texttt{latexindent.pl}, perhaps \emph{too} many. The following sections are
@@ -30,7 +30,7 @@
 
 	\index{modifying linebreaks! by text wrapping, globally}
 
-	\cmhlistingsfromfile[style=textWrapOptions]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
+	\cmhlistingsfromfile[style=textWrapOptions]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptions}
 
 	The value of \texttt{columns} specifies the column at which the text should be wrapped.
 
@@ -110,12 +110,12 @@ latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
 	\index{warning!changing huge (textwrap)}
 	\begin{warning}
 		\raggedright
-		Changing the value of \texttt{huge} to anything other than \texttt{overflow} will slow down
-		\texttt{latexindent.pl} significantly when the \texttt{-m} switch is active.
+		Changing the value of \texttt{huge} to anything other than \texttt{overflow} will slow
+		down \texttt{latexindent.pl} significantly when the \texttt{-m} switch is active.
 
-		Furthermore, changing \texttt{huge} means that you may have some words \emph{or commands}(!)
-		split across lines in your .tex file, which may affect your output. I do not recommend
-		changing this field.
+		Furthermore, changing \texttt{huge} means that you may have some words \emph{or
+			commands}(!) split across lines in your .tex file, which may affect your output. I do not
+		recommend changing this field.
 	\end{warning}
 
 	For example, using the settings in \cref{lst:textwrap2A-yaml,lst:textwrap2B-yaml} and
@@ -152,9 +152,9 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 			raster left skip=-3.5cm,
 			raster right skip=-2cm,
 			raster column skip=.03\linewidth]
-		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
+		\cmhlistingsfromfile[showtabs=true]{demonstrations/textwrap-ts.tex}{\texttt{textwrap-ts.tex}}{lst:textwrap-ts}
 		\cmhlistingsfromfile{demonstrations/tabstop.yaml}[MLB-TCB]{\texttt{tabstop.yaml}}{lst:tabstop}
-		\cmhlistingsfromfile[showtabs=true]*{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
+		\cmhlistingsfromfile[showtabs=true]{demonstrations/textwrap-ts-mod1.tex}{\texttt{textwrap-ts-mod1.tex}}{lst:textwrap-ts-mod1}
 	\end{cmhtcbraster}
 
 	You can specify \texttt{separator}, \texttt{break} and \texttt{unexpand} options in your
@@ -177,7 +177,7 @@ latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 	In particular, note the field \texttt{perCodeBlockBasis: 0}.
 	\index{specialBeginEnd!textWrapOptions}
 
-	\cmhlistingsfromfile[style=textWrapOptionsAll]*{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+	\cmhlistingsfromfile[style=textWrapOptionsAll]{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 
 	The code blocks detailed in \cref{lst:textWrapOptionsAll} are with direct reference to
 	those detailed in \vref{tab:code-blocks}.

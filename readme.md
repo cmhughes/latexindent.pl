@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version 
  
-    latexindent.pl, version 3.13, 2021-10-30
+    latexindent.pl, version 3.13.1, 2021-11-12
 
 ## author 
 Chris Hughes (cmhughes)
@@ -160,6 +160,10 @@ You might like to checkout the following related projects on github.
 [arara](https://github.com/cereda/arara): [![GitHub stars](https://img.shields.io/github/stars/cereda/arara.svg?style=flat-square)](https://github.com/cereda/arara/stargazers)
 
 [atom-beautify](https://github.com/Glavin001/atom-beautify): [![GitHub stars](https://img.shields.io/github/stars/Glavin001/atom-beautify.svg?style=flat-square)](https://github.com/Glavin001/atom-beautify/stargazers)
+
+[LaTeX-Workshop](https://github.com/James-Yu/LaTeX-Workshop): [![GitHub stars](https://img.shields.io/github/stars/James-Yu/LaTeX-Workshop.svg?style=flat-square)](https://github.com/James-Yu/LaTeX-Workshop/stargazers)
+
+[Neelfrost/dotfiles](https://github.com/Neelfrost/dotfiles): [![GitHub stars](https://img.shields.io/github/stars/Neelfrost/dotfiles.svg?style=flat-square)](https://github.com/Neelfrost/dotfiles/stargazers)
 
 ## thank you
 Thank you to the [contributors](https://github.com/cmhughes/latexindent.pl/graphs/contributors) to the project!

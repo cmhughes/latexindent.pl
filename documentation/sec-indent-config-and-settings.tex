@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \section{indentconfig.yaml, local settings and the -y switch }\label{sec:indentconfig}
  The behaviour of \texttt{latexindent.pl} is controlled from the settings specified in any
  of the YAML files that you tell it to load. By default, \texttt{latexindent.pl} will only
@@ -72,13 +72,13 @@ lookForAlignDelims:
 	\index{warning!editing YAML files}
 
 	\begin{warning}
-		When editing \texttt{.yaml} files it is \emph{extremely} important
-		to remember how sensitive they are to spaces. I highly recommend copying
-		and pasting from \texttt{defaultSettings.yaml} when you create your
-		first \texttt{whatevernameyoulike.yaml} file.
+		When editing \texttt{.yaml} files it is \emph{extremely} important to remember how
+		sensitive they are to spaces. I highly recommend copying and pasting from
+		\texttt{defaultSettings.yaml} when you create your first
+		\texttt{whatevernameyoulike.yaml} file.
 
-		If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it
-		will tell you so in \texttt{indent.log}.
+		If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it will tell you so in
+		\texttt{indent.log}.
 	\end{warning}
 
 	If you find that%

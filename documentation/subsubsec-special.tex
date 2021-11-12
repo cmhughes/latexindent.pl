@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: {files: [latexindent]}
 \subsubsection{specialBeginEnd code blocks}
 	Let's use the example from \vref{lst:specialbefore} which has default output shown in
 	\vref{lst:specialafter}.
@@ -11,11 +11,11 @@
 	\index{specialBeginEnd!indentRules example}
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/displayMath-noAdd.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-noAdd.yaml}}{lst:displayMath-noAdd}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/displayMath-noAdd.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-noAdd.yaml}}{lst:displayMath-noAdd}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/displayMath-indent-rules.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-indent-rules.yaml}}{lst:displayMath-indent-rules}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/displayMath-indent-rules.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{displayMath-indent-rules.yaml}}{lst:displayMath-indent-rules}
 	\end{minipage}
 
 	After running the following commands,
@@ -42,11 +42,11 @@ latexindent.pl special1.tex -l displayMath-indent-rules.yaml
 	\cref{lst:special-noAdd-glob,lst:special-indent-rules-global}.
 
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/special-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-noAdd-glob.yaml}}{lst:special-noAdd-glob}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-noAdd-glob.yaml}}{lst:special-noAdd-glob}
 	\end{minipage}
 	\hfill
 	\begin{minipage}{.49\textwidth}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/special-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-indent-rules-global.yaml}}{lst:special-indent-rules-global}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{special-indent-rules-global.yaml}}{lst:special-indent-rules-global}
 	\end{minipage}
 
 	Upon running the following commands

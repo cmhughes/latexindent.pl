@@ -1,9 +1,9 @@
-% arara: pdflatex: {shell: yes}
+% arara: pdflatex
 % arara: makeindex: {style: latexindent.ist}
 % arara: bibtex
-% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) || changed (toFile('latexindent.ind')) 
-% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
-% arara: pdflatex: {shell: yes} if changed (toFile('latexindent.aux')) 
+% arara: pdflatex if changed (toFile('latexindent.aux')) || changed (toFile('latexindent.ind')) 
+% arara: pdflatex if changed (toFile('latexindent.aux')) 
+% arara: pdflatex if changed (toFile('latexindent.aux')) 
 \documentclass[10pt]{article}
 %   This program is free software: you can redistribute it and/or modify
 %   it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations,shapes}
 \usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
-\tcbuselibrary{breakable,minted,xparse,documentation,hooks,raster}
+\tcbuselibrary{breakable,xparse,documentation,hooks,raster}
 \hypersetup{
 	pdfauthor={Chris Hughes},
 	pdftitle={latexindent.pl package},
@@ -129,7 +129,14 @@
 \addbibresource{contributors}
 
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
-\newtcolorbox{warning}{parbox=false,breakable,enhanced,arc=0mm,colback=red!5,colframe=red,leftrule=12mm,%
+\newtcolorbox{warning}{parbox=false,
+	breakable,
+	enhanced,
+	arc=0mm,
+	colback=red!5,
+	colframe=red,
+	leftrule=12mm,%
+	title={Warning!},
 	overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }
 }
 
@@ -142,8 +149,6 @@
 	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
 	addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
 	cmhlistings/.style={
-			%	width=\linewidth,
-			%breakable,
 			colback=blue!5!white,
 			colframe=white!25!black,colback=white,
 			top=0cm,
@@ -151,9 +156,8 @@
 			left=0mm,
 			listing only,
 			center title,
-			listing engine=minted,
-			minted style=colorful,
-			minted options={obeytabs=true,showtabs=true,tabsize=4,showspaces=true},
+			listing engine=listings,
+			listing options={showtabs=true,tabsize=4,showspaces=true},
 			boxrule=0pt,
 			toprule=1pt,bottomrule=1pt,
 			titlerule=1pt,
@@ -250,25 +254,22 @@
 		raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
-%                   * no star: not new, star: new
-%                   [ listing/minted options ]
-%                   * no star: uses minted library, star: uses listings library star: 
-%                   {<name of listing file>}
-%                   [<options for tcolorbox>]
-%                   {<title>}
-%                   {<label>}
+%                   * no star: not new, star: new   #1
+%                   [ listing options ]             #2
+%                   {<name of listing file>}        #3
+%                   [<options for tcolorbox>]       #4
+%                   {<title>}                       #5
+%                   {<label>}                       #6
 %
 % for example,
-%   \cmhlistingsfromfile*[listing options]... uses listings library and is NEW
-%   \cmhlistingsfromfile[listing options]... uses listings library
-%   \cmhlistingsfromfile[listing options]*... uses minted library
-%   \cmhlistingsfromfile*[listing options]*... uses minted library and is NEW
-\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} s m O{} m m}{%
+%   \cmhlistingsfromfile*[listing options]... is NEW
+%   \cmhlistingsfromfile[listing options]...  is not new
+\DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} m O{} m m}{%
 	cmhlistings,
-	listing file={#4},
-	IfBooleanTF={#3}{listing options={style=tcblatex,showspaces=false,#2}}{minted options={obeytabs=true,showtabs=false,tabsize=4,showspaces=false,#2}},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#6},label={#7},
-	#5,
+	listing file={#3},
+	listing options={style=tcblatex,showspaces=false,#2},
+	title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
+	#4,
 	IfBooleanTF={#1}{new-to-this-version}{addtolol},
 }
 

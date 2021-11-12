@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \section{Introduction}
 \subsection{Thanks}
 	I first created \texttt{latexindent.pl} to help me format chapter files in a big project.
@@ -42,8 +42,8 @@
 	complete minimum working example as I would like to improve the code as much as possible.
 
 	\begin{warning}
-		Before you try the script on anything important (like your thesis), test it
-		out on the sample files in the \texttt{test-case} directory \cite{latexindent-home}.
+		Before you try the script on anything important (like your thesis), test it out on the
+		sample files in the \texttt{test-case} directory \cite{latexindent-home}.
 		\index{warning!be sure to test before use}
 	\end{warning}
 
@@ -68,7 +68,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.4\textwidth}
-		\cmhlistingsfromfile[style=fileExtensionPreference]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
+		\cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -78,7 +78,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.55\textwidth}
-		\cmhlistingsfromfile[style=modifylinebreaks]*{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
+		\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}
@@ -88,7 +88,7 @@
 	\end{minipage}%
 
 	\begin{minipage}{.55\textwidth}
-		\cmhlistingsfromfile[style=replacements]*{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
+		\cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
 	\end{minipage}%
 	\hfill
 	\begin{minipage}{.4\textwidth}

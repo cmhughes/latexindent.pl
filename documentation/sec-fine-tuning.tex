@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \section{Fine tuning}\label{sec:finetuning}
  \texttt{latexindent.pl} operates by looking for the code blocks detailed in
  \vref{tab:code-blocks}.
@@ -25,12 +25,12 @@
  \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{warning}
-	 Making changes to the fine tuning may have significant consequences for your indentation scheme,
-	 proceed with caution!
+	 Making changes to the fine tuning may have significant consequences for your indentation
+	 scheme, proceed with caution!
  \end{warning}
 
  \begin{widepage}
-	 \cmhlistingsfromfile[style=fineTuning]*{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
+	 \cmhlistingsfromfile[style=fineTuning]{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
  The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual
@@ -98,6 +98,12 @@
  \texttt{before} and \texttt{between} fields allow trailing comments, line breaks, and
  horizontal spaces between each character.
 
+ \index{warning!capture groups}
+ \begin{warning}
+	 For the \texttt{fineTuning} feature you should only ever use \emph{non}-capturing groups,
+	 such as \lstinline!(?:...)! and \emph{not} capturing groups, which are \lstinline!(...)!
+ \end{warning}
+
  \begin{example}
 	 As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
 	 default output using the command
@@ -123,7 +129,7 @@ latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth]
 		 \cmhlistingsfromfile{demonstrations/finetuning1-mod1.tex}{\texttt{finetuning1.tex} using \cref{lst:fine-tuning1}}{lst:finetuning1-mod1}
-		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
+		 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning1.yaml}[yaml-TCB]{\texttt{finetuning1.yaml}}{lst:fine-tuning1}
 	 \end{cmhtcbraster}
  \end{example}
 
@@ -155,7 +161,7 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 			 raster left skip=-3.75cm,
 			 raster right skip=0cm,]
 		 \cmhlistingsfromfile{demonstrations/finetuning2-mod1.tex}{\texttt{finetuning2.tex} using \cref{lst:fine-tuning2}}{lst:finetuning2-mod1}
-		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
+		 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
 	 \end{cmhtcbraster}
 
 	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets}
@@ -185,8 +191,8 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
 	 \begin{cmhtcbraster}[raster column skip=.01\linewidth,
 			 raster left skip=0cm,
 			 raster right skip=-0.5cm,]
-		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
-		 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
+		 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href1.yaml}[MLB-TCB]{\texttt{href1.yaml}}{lst:href1}
+		 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href2.yaml}[MLB-TCB]{\texttt{href2.yaml}}{lst:href2}
 	 \end{cmhtcbraster}
 
 	 Upon running the following commands
@@ -223,7 +229,7 @@ latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 	 then we receive the same output given in \cref{lst:finetuning4-mod2}; see also \texttt{paragraphsStopAt}
 	 in \vref{lst:paragraphsStopAt}.
 
-	 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
+	 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
 
 	 With reference to the \texttt{body} field in \cref{lst:href3}, we note that the \texttt{body} field can
 	 be interpreted as: the fewest number of zero or more characters that are not right braces. This
@@ -262,7 +268,7 @@ latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2
 	 \begin{widepage}
 		 \begin{cmhtcbraster}[raster column skip=.1\linewidth]
 			 \cmhlistingsfromfile{demonstrations/bib1-mod2.bib}{\texttt{bib1.bib} using \cref{lst:bibsettings1}}{lst:bib1-mod2}
-			 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/bibsettings1.yaml}[yaml-TCB]{\texttt{bibsettings1.yaml}}{lst:bibsettings1}
+			 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings1.yaml}[yaml-TCB]{\texttt{bibsettings1.yaml}}{lst:bibsettings1}
 		 \end{cmhtcbraster}
 	 \end{widepage}
 	 Some notes about \cref{lst:bibsettings1}:
@@ -298,7 +304,7 @@ latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1
 
 	 We address this by tweaking the \texttt{delimiterRegEx} field in \cref{lst:bibsettings2}.
 
-	 \cmhlistingsfromfile[style=yaml-LST]*{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
+	 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
 
 	 Upon running the command
 	 \begin{commandshell}

@@ -60,10 +60,14 @@ modifyLineBreaks:
         beforeFindingChildCodeBlocks: 1
         afterHeading: 1
         items: 1
+        environments:
+          warning: 1
     removeParagraphLineBreaks:
         items: 1
         afterHeading: 1
         beforeTextWrap: 1
+        environments:
+          warning: 1
         mandatoryArguments:
           index: 1
           announce: 1

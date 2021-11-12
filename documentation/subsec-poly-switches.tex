@@ -1,4 +1,4 @@
-% arara: pdflatex: {shell: yes, files: [latexindent]}
+% arara: pdflatex: { files: [latexindent]}
 \subsection{Poly-switches}\label{sec:poly-switches}
 	Every other field in the \texttt{modifyLineBreaks} field uses poly-switches, and can take
 	one of the following%
@@ -45,7 +45,7 @@
 	\index{poly-switches!environment global example}
 	\index{poly-switches!environment per-code block example}
 
-	\cmhlistingsfromfile[style=modifylinebreaksEnv]*{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
+	\cmhlistingsfromfile[style=modifylinebreaksEnv]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,MLB-TCB]{\texttt{environments}}{lst:environments-mlb}
 
 	Let's begin with the simple example given in \cref{lst:env-mlb1-tex}; note that we have
 	annotated key parts of the file using $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$,
@@ -65,11 +65,11 @@ before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$
 		\index{poly-switches!adding line breaks: set to 1}
 
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb2.yaml}[MLB-TCB]{\texttt{env-mlb2.yaml}}{lst:env-mlb2}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb2.yaml}[MLB-TCB]{\texttt{env-mlb2.yaml}}{lst:env-mlb2}
 		\end{minipage}
 
 		After running the following commands,
@@ -107,11 +107,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\index{poly-switches!adding comments and then line breaks: set to 2}
 
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
 		\end{minipage}
 
 		Upon running commands analogous to the above, we obtain
@@ -139,11 +139,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\index{poly-switches!adding blank lines: set to 3}
 
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
 		\end{minipage}
 
 		Upon running commands analogous to the above, we obtain
@@ -170,11 +170,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 		\index{poly-switches!adding blank lines (again"!): set to 4}
 
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
 		\end{minipage}
 
 		We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
@@ -213,11 +213,11 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
 		\index{poly-switches!adding line breaks: set to 1}
 
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb8.yaml}[MLB-TCB]{\texttt{env-mlb8.yaml}}{lst:env-mlb8}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb8.yaml}[MLB-TCB]{\texttt{env-mlb8.yaml}}{lst:env-mlb8}
 		\end{minipage}
 
 		After running the following commands,
@@ -255,11 +255,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\index{poly-switches!adding comments and then line breaks: set to 2}
 
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
 		\end{minipage}
 
 		Upon running commands analogous to the above, we obtain
@@ -287,11 +287,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\index{poly-switches!adding blank lines: set to 3}
 
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.49\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
 		\end{minipage}
 
 		Upon running commands analogous to the above, we obtain
@@ -318,11 +318,11 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 		\index{poly-switches!adding blank lines (again"!): set to 4}
 
 		\begin{minipage}{.45\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
 		\end{minipage}
 		\hfill
 		\begin{minipage}{.5\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
 		\end{minipage}
 
 		We will demonstrate this poly-switch value using the code from \vref{lst:env-mlb1-text}.
@@ -410,13 +410,13 @@ after words
 		\end{minipage}%
 		\hfill
 		\begin{minipage}{.51\textwidth}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb13.yaml}[MLB-TCB]{\texttt{env-mlb13.yaml}}{lst:env-mlb13}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb13.yaml}[MLB-TCB]{\texttt{env-mlb13.yaml}}{lst:env-mlb13}
 
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb14.yaml}[MLB-TCB]{\texttt{env-mlb14.yaml}}{lst:env-mlb14}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb14.yaml}[MLB-TCB]{\texttt{env-mlb14.yaml}}{lst:env-mlb14}
 
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb15.yaml}[MLB-TCB]{\texttt{env-mlb15.yaml}}{lst:env-mlb15}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb15.yaml}[MLB-TCB]{\texttt{env-mlb15.yaml}}{lst:env-mlb15}
 
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/env-mlb16.yaml}[MLB-TCB]{\texttt{env-mlb16.yaml}}{lst:env-mlb16}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb16.yaml}[MLB-TCB]{\texttt{env-mlb16.yaml}}{lst:env-mlb16}
 		\end{minipage}
 
 		After running the commands
@@ -487,7 +487,7 @@ body of myenv      (*@$\EndStartsOnOwnLine$@*)
 \end{myenv}     (*@$\EndFinishesWithLineBreak$@*)
 after words
 \end{cmhlistings}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/removeTWS-before.yaml}[yaml-TCB]{\texttt{removeTWS-before.yaml}}{lst:removeTWS-before}
 		\end{cmhtcbraster}
 
 		The output from the following commands
@@ -529,7 +529,7 @@ body of myenv(*@$\EndStartsOnOwnLine$@*)
 
 after words
 \end{cmhlistings}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/UnpreserveBlankLines.yaml}[MLB-TCB]{\texttt{UnpreserveBlankLines.yaml}}{lst:UnpreserveBlankLines}
 		\end{cmhtcbraster}
 
 		Upon running the following commands
@@ -633,12 +633,12 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
 
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 			\cmhlistingsfromfile{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
 		\end{cmhtcbraster}
 
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 			\cmhlistingsfromfile{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
 		\end{cmhtcbraster}
 
 		We note that
@@ -672,12 +672,12 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 			\cmhlistingsfromfile{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
 		\end{cmhtcbraster}
 
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth]
 			\cmhlistingsfromfile{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
 		\end{cmhtcbraster}
 
 		We note that
@@ -723,7 +723,7 @@ latexindent.pl -m special4.tex -l DBS5.yaml
 				raster column 1/.style={add to width=-.1\textwidth},
 				raster column skip=.06\linewidth]
 			\cmhlistingsfromfile{demonstrations/special4-mod5.tex}{\texttt{special4.tex} using \cref{lst:DBS5}}{lst:special4-DBS5}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS5.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS5.yaml}}{lst:DBS5}
 		\end{cmhtcbraster}
 
 		There are a few things to note:
@@ -758,7 +758,7 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 				raster column 1/.style={add to width=-.1\textwidth},
 				raster column skip=.03\linewidth]
 			\cmhlistingsfromfile{demonstrations/mycommand2-mod6.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS6}}{lst:mycommand2-DBS6}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS6.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS6.yaml}}{lst:DBS6}
 		\end{cmhtcbraster}
 
 		\begin{cmhtcbraster}[
@@ -766,7 +766,7 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
 				raster column 1/.style={add to width=-.1\textwidth},
 				raster column skip=.03\linewidth]
 			\cmhlistingsfromfile{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
-			\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
+			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
 		\end{cmhtcbraster}
 
 	\paragraph{Double back slash optional square brackets}
@@ -852,7 +852,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 		                                                       & \verb!\mycommand!$\BodyStartsOnOwnLine$                           & $\BodyStartsOnOwnLine$                  & CommandNameFinishesWithLineBreak                                  \\
 		                                                       & $\langle$\itshape{arguments}$\rangle$                             &                                         &                                                                   \\
 		\cmidrule{2-4}
-		namedGroupingBraces Brackets                           & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
+		namedGroupingBracesBrackets                            & before words$\BeginStartsOnOwnLine$                               & $\BeginStartsOnOwnLine$                 & NameStartsOnOwnLine                                               \\
 		                                                       & myname$\BodyStartsOnOwnLine$                                      & $\BodyStartsOnOwnLine$                  & NameFinishesWithLineBreak                                         \\
 		                                                       & $\langle$\itshape{braces/brackets}$\rangle$                       &                                         &                                                                   \\
 		\cmidrule{2-4}
@@ -907,7 +907,7 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 			raster column 1/.style={add to width=-1cm},
 		]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb1.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb1}}{lst:mycommand1-mlb1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb1.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb1.yaml}}{lst:mycom-mlb1}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb1.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb1.yaml}}{lst:mycom-mlb1}
 	\end{cmhtcbraster}
 
 	Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb2}; upon running
@@ -919,7 +919,7 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 			raster column 1/.style={add to width=-1cm},
 		]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb2.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb2}}{lst:mycommand1-mlb2}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb2.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb2.yaml}}{lst:mycom-mlb2}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb2.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb2.yaml}}{lst:mycom-mlb2}
 	\end{cmhtcbraster}
 
 	Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb3}; upon running
@@ -930,7 +930,7 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 			raster column 1/.style={add to width=-1cm},
 		]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb3.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb3}}{lst:mycommand1-mlb3}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb3.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb3.yaml}}{lst:mycom-mlb3}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb3.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb3.yaml}}{lst:mycom-mlb3}
 	\end{cmhtcbraster}
 
 \subsubsection{Conflicting poly-switches: sequential code blocks}
@@ -947,7 +947,7 @@ latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb4.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb4}}{lst:mycommand1-mlb4}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb4.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb4.yaml}}{lst:mycom-mlb4}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb4.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb4.yaml}}{lst:mycom-mlb4}
 	\end{cmhtcbraster}
 
 	Studying \cref{lst:mycom-mlb4}, we see that the two poly-switches are at opposition with
@@ -974,7 +974,7 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb5.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb5}}{lst:mycommand1-mlb5}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb5.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb5.yaml}}{lst:mycom-mlb5}
 	\end{cmhtcbraster}
 
 	As previously, the most-recently-processed code block takes priority -- as before, the
@@ -983,7 +983,7 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/mycommand1-mlb6.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb6}}{lst:mycommand1-mlb6}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/mycom-mlb6.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb6.yaml}}{lst:mycom-mlb6}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb6.yaml}[MLB-TCB,width=\linewidth]{\texttt{mycom-mlb6.yaml}}{lst:mycom-mlb6}
 	\end{cmhtcbraster}
 
 	Note that a \lstinline!%! \emph{has} been added to the trailing first
@@ -1014,7 +1014,7 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 
 	\begin{cmhtcbraster}[raster column skip=.05\linewidth]
 		\cmhlistingsfromfile{demonstrations/nested-env-mlb1.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb1-yaml}}{lst:nested-env-mlb1}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1-yaml}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb1.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb1.yaml}}{lst:nested-env-mlb1-yaml}
 	\end{cmhtcbraster}
 
 	In \cref{lst:nested-env-mlb1}, let's first of all note that both environments have
@@ -1081,7 +1081,7 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/nested-env-mlb2.tex}{\texttt{nested-env.tex} using \cref{lst:nested-env-mlb2}}{lst:nested-env-mlb2-output}
-		\cmhlistingsfromfile[style=yaml-LST]*{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
+		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/nested-env-mlb2.yaml}[MLB-TCB,width=\linewidth]{\texttt{nested-env-mlb2.yaml}}{lst:nested-env-mlb2}
 	\end{cmhtcbraster}
 
 	During Phase 1:

@@ -114,6 +114,13 @@ We make the following comments with reference to :numref:`lst:fineTuning`:
 
 It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``before`` and ``between`` fields allow trailing comments, line breaks, and horizontal spaces between each character.
 
+.. index:: warning;capture groups
+
+.. warning::	
+	
+	For the ``fineTuning`` feature you should only ever use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
+	 
+
 .. proof:example::	
 	
 	As a demonstration, consider the file given in :numref:`lst:finetuning1`, together with its default output using the command
