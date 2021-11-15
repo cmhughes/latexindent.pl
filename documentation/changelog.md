@@ -1,5 +1,9 @@
 # changelog.md
 
+## V3.13.2, November 15, 2021
+`defaultSettings.yaml` can now be located in `LatexIndent/` folder. 
+This was proposed in https://github.com/conda-forge/staged-recipes/pull/16914
+
 ## V3.13.1, November 12, 2021
 Upgrade to `-y` switch, full details at [issue 296](https://github.com/cmhughes/latexindent.pl/issues/296) and 
 [pull 297](https://github.com/cmhughes/latexindent.pl/pull/297).
