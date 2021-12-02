@@ -43,17 +43,19 @@ sub construct_list_of_items{
     # detail items in the log
     $logger->trace("*List of items: $listOfItems (see itemNames)") if $is_t_switch_active;
 
+    my $itemCanBeFollowedBy = qr/${${$mainSettings{fineTuning}}{items}}{canBeFollowedBy}/;
+
     $itemRegExp = qr/
                           (
-                              \\((?:$listOfItems)(?:\[[^]]*?\])?(?!\S))
+                              \\((?:$listOfItems)(?:$itemCanBeFollowedBy)?(?!\S))
                               \h*
                               (\R*)?
                           )
                           (
                               (?:                 # cluster-only (), don't capture 
                                   (?!             
-                                      (?:\\(?:(?:$listOfItems)(?:\[[^]]*?\])?(?!\S))) # cluster-only (), don't capture
-                                  ).              # any character, but not \\$item
+                                      (?:\\(?:(?:$listOfItems)(?:$itemCanBeFollowedBy)?(?!\S))) # cluster-only (), don't capture
+                                  ).                                                            # any character, but not \\$item
                               )*                 
                           )                       
                           (\R)?

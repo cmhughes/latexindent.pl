@@ -41,7 +41,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
-                        {name=>"fineTuning",numberOfLines=>23},
+                        {name=>"fineTuning",numberOfLines=>25},
                         {name=>"replacements",numberOfLines=>8},
                       );
 
