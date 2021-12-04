@@ -147,8 +147,8 @@ copy myfile.bak4 to myfile.bak3
 	then the listings given in \cref{lst:nameAsRegex1,lst:nameAsRegex2} are equivalent.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/nameAsRegex1.yaml}[yaml-TCB]{\texttt{nameAsRegex1.yaml}}{lst:nameAsRegex1}
-		\cmhlistingsfromfile*{demonstrations/nameAsRegex2.yaml}[yaml-TCB]{\texttt{nameAsRegex2.yaml}}{lst:nameAsRegex2}
+		\cmhlistingsfromfile{demonstrations/nameAsRegex1.yaml}[yaml-TCB]{\texttt{nameAsRegex1.yaml}}{lst:nameAsRegex1}
+		\cmhlistingsfromfile{demonstrations/nameAsRegex2.yaml}[yaml-TCB]{\texttt{nameAsRegex2.yaml}}{lst:nameAsRegex2}
 	\end{cmhtcbraster}
 
 	With reference to \cref{lst:nameAsRegex2}:
@@ -183,8 +183,8 @@ copy myfile.bak4 to myfile.bak3
 	\cref{lst:nameAsRegex3,lst:nameAsRegex4} are equivalent.
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-		\cmhlistingsfromfile*{demonstrations/nameAsRegex3.yaml}[yaml-TCB]{\texttt{nameAsRegex3.yaml}}{lst:nameAsRegex3}
-		\cmhlistingsfromfile*{demonstrations/nameAsRegex4.yaml}[yaml-TCB]{\texttt{nameAsRegex4.yaml}}{lst:nameAsRegex4}
+		\cmhlistingsfromfile{demonstrations/nameAsRegex3.yaml}[yaml-TCB]{\texttt{nameAsRegex3.yaml}}{lst:nameAsRegex3}
+		\cmhlistingsfromfile{demonstrations/nameAsRegex4.yaml}[yaml-TCB]{\texttt{nameAsRegex4.yaml}}{lst:nameAsRegex4}
 	\end{cmhtcbraster}
 
 	With reference to \cref{lst:nameAsRegex4}:
@@ -273,8 +273,8 @@ latexindent.pl -l noindent3.yaml noindent1
 
 	\begin{widepage}
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-			\cmhlistingsfromfile*{demonstrations/nameAsRegex5.yaml}[yaml-TCB]{\texttt{nameAsRegex5.yaml}}{lst:nameAsRegex5}
-			\cmhlistingsfromfile*{demonstrations/nameAsRegex6.yaml}[yaml-TCB]{\texttt{nameAsRegex6.yaml}}{lst:nameAsRegex6}
+			\cmhlistingsfromfile{demonstrations/nameAsRegex5.yaml}[yaml-TCB]{\texttt{nameAsRegex5.yaml}}{lst:nameAsRegex5}
+			\cmhlistingsfromfile{demonstrations/nameAsRegex6.yaml}[yaml-TCB]{\texttt{nameAsRegex6.yaml}}{lst:nameAsRegex6}
 		\end{cmhtcbraster}
 	\end{widepage}
 
@@ -452,7 +452,9 @@ lookForAlignDelims:
 		\item \announce{2020-03-21}{delimiter justification}{delimiterJustification} optionally
 		      specifies the justification for the alignment delimeters (default: left); note that this
 		      feature is only useful if you have delimiters of different lengths in the same column,
-		      discussed in \cref{sec:delimiter-reg-ex}.
+		      discussed in \cref{sec:delimiter-reg-ex};
+            \item \announce{new}{lookForChildCodeBlocks feature} optionally instructs \texttt{latexindent.pl} 
+              to search for child code blocks or not (default: 1), discussed in \cref{sec:lookForChildCodeBlocks}.
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
@@ -938,6 +940,32 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 
 	Note that in \cref{lst:tabbing1-mod5} the second set of delimiters have been \emph{right
 		aligned} -- it is quite subtle!
+
+        \subsection{The lookForChildCodeBlocks feature}\label{sec:lookForChildCodeBlocks}
+        There \announce{new}{lookForChildCodeBlocks demonstration} may be scenarios in which you would prefer to instruct \texttt{latexindent.pl} 
+        \emph{not} to search for child blocks; in which case setting \texttt{lookForChildCodeBlocks}
+        to 0 may be a good way to proceed.
+
+        Using the settings from \vref{lst:dontMeasure1} on the file in \cref{lst:tabular-DM-1} and running the command
+	\begin{commandshell}
+latexindent.pl tabular-DM-1.tex -l=dontMeasure1.yaml -o=+-mod1
+\end{commandshell}
+gives the output in \cref{lst:tabular-DM-1-mod1}. 
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-1.tex}{\texttt{tabular-DM-1.tex}}{lst:tabular-DM-1}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1.tex}{\texttt{tabular-DM-1-mod1.tex}}{lst:tabular-DM-1-mod1}
+	\end{cmhtcbraster}
+
+    We can improve the output from \cref{lst:tabular-DM-1-mod1} by employing the settings in \cref{lst:dontMeasure1a}
+	\begin{commandshell}
+latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
+\end{commandshell}
+which gives the output in \cref{lst:dontMeasure1a}.
+
+	\begin{cmhtcbraster}
+		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1a.tex}{\texttt{tabular-DM-1-mod1a.tex}}{lst:tabular-DM-1-mod1a}
+		\cmhlistingsfromfile*{demonstrations/dontMeasure1a.yaml}[yaml-TCB]{\texttt{dontMeasure1a.yaml}}{lst:dontMeasure1a}
+	\end{cmhtcbraster}
 
 \subsection{Indent after items, specials and headings}
 \yamltitle{indentAfterItems}*{fields}

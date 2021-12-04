@@ -1,0 +1,4 @@
+defaultIndent: "  "
+lookForAlignDelims:
+  tabular:
+    dontMeasure: largest

@@ -338,6 +338,9 @@ latexindent.pl -s tabular-DM -o=+-mod4 -l=dontMeasure4.yaml
 latexindent.pl -s tabular-DM -o=+-mod5 -l=dontMeasure5.yaml
 latexindent.pl -s tabular-DM -o=+-mod6 -l=dontMeasure6.yaml
 
+latexindent.pl -s tabular-DM-1 -o=+-mod1 -l=dontMeasure1.yaml
+latexindent.pl -s tabular-DM-1 -o=+-mod1a -l=dontMeasure1a.yaml
+
 # delimiterRegEx
 latexindent.pl -s tabbing.tex -o=+-default
 latexindent.pl -s tabbing.tex -o=+-mod1 -l=delimiterRegEx1.yaml

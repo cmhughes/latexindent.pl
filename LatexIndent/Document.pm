@@ -247,15 +247,15 @@ sub find_objects{
     }
 
     # search for environments
-    $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
+    $logger->trace('*looking for ENVIRONMENTS') if $is_t_switch_active;
     $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
     # search for ifElseFi blocks
-    $logger->trace('looking for IFELSEFI') if $is_t_switch_active;
+    $logger->trace('*looking for IFELSEFI') if $is_t_switch_active;
     $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
-    $logger->trace('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
+    $logger->trace('*looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # the ordering of finding commands and special code blocks can change

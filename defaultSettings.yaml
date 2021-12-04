@@ -166,6 +166,7 @@ lookForAlignDelims:
       dontMeasure: 0
       delimiterRegEx: '(?<!\\)(&)'
       delimiterJustification: left
+      lookForChildCodeBlocks: 1
    tabularx:
       delims: 1
    longtable: 1

@@ -1,0 +1,5 @@
+defaultIndent: "  "
+lookForAlignDelims:
+  tabular:
+    dontMeasure: largest
+    lookForChildCodeBlocks: 0
