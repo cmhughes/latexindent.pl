@@ -3,6 +3,27 @@ Appendices
 
 .. label follows
 
+.. _sec:conda:
+
+Using conda
+-----------
+
+If you use conda you'll only need
+
+.. code-block:: bash
+
+   conda install latexindent.pl -c conda-forge
+
+this will install the executable and all its dependencies (including perl) in the activate environment.
+You don't even have to worry about ``defaultSettings.yaml`` as it included too,
+you can thus skip :ref:`sec:requiredmodules`, :ref:`sec:module-installer`, :ref:`sec:manual-module-instal`, and :ref:`sec:updating-path`.
+
+.. tip::
+
+   You can get a conda installation for example from `conda-forge <https://github.com/conda-forge/miniforge>`__ or from `anaconda <https://www.anaconda.com/products/individual>`__.
+
+.. label follows
+
 .. _sec:requiredmodules:
 
 Required Perl modules
@@ -13,7 +34,7 @@ If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone
 :numref:`sec:manual-module-instal`.
 
 .. code-block:: latex
-   :caption: ``helloworld.pl`` 
+   :caption: ``helloworld.pl``
    :name: lst:helloworld
 
    #!/usr/bin/perl
@@ -22,7 +43,6 @@ If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone
    use warnings;
    use utf8;
    use PerlIO::encoding;
-   use Unicode::GCString;
    use open ':std', ':encoding(UTF-8)';
    use Text::Wrap;
    use Text::Tabs;
@@ -87,7 +107,6 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
    cpanm File::HomeDir
-   cpanm Unicode::GCString
 
 Ubuntu/Debian
 ^^^^^^^^^^^^^
@@ -101,7 +120,6 @@ For other distributions, the Ubuntu/Debian approach may work as follows
    sudo cpan -i App::cpanminus
    sudo cpanm YAML::Tiny
    sudo cpanm File::HomeDir
-   sudo cpanm Unicode::GCString
 
 or else by running, for example,
 
@@ -126,7 +144,7 @@ may need the following additional command to work with ``latexindent.pl``
 .. code-block:: latex
    :class: .commandshell
 
-   sudo apt install texlive-extra-utils 
+   sudo apt install texlive-extra-utils
 
 Alpine
 ^^^^^^
@@ -135,7 +153,7 @@ If you are using Alpine, some ``Perl`` modules are not build-compatible with Alp
 :numref:`lst:alpine-install`; thanks to (J. 2020) for providing these details.
 
 .. code-block:: latex
-   :caption: ``alpine-install.sh`` 
+   :caption: ``alpine-install.sh``
    :name: lst:alpine-install
 
    # Installing perl
@@ -158,7 +176,6 @@ If you are using Alpine, some ``Perl`` modules are not build-compatible with Alp
    cpanm -n File::HomeDir
    cpanm -n Params::ValidationCompiler
    cpanm -n YAML::Tiny
-   cpanm -n Unicode::GCString
 
 Users of NixOS might like to see https://github.com/cmhughes/latexindent.pl/issues/222 for tips.
 
@@ -175,7 +192,6 @@ Users of the Macintosh operating system might like to explore the following comm
 
    cpanm YAML::Tiny
    cpanm File::HomeDir
-   cpanm Unicode::GCString
 
 Windows
 ~~~~~~~
@@ -278,12 +294,12 @@ logFilePreferences
 
 .. literalinclude:: demonstrations/simple.tex
  	:class: .tex
- 	:caption: ``simple.tex`` 
+ 	:caption: ``simple.tex``
  	:name: lst:simple
 
 .. literalinclude:: demonstrations/logfile-prefs1.yaml
  	:class: .baseyaml
- 	:caption: ``logfile-prefs1.yaml`` 
+ 	:caption: ``logfile-prefs1.yaml``
  	:name: lst:logfile-prefs1-yaml
 
 If we run the following command (noting that ``-t`` is active)
@@ -291,12 +307,12 @@ If we run the following command (noting that ``-t`` is active)
 .. code-block:: latex
    :class: .commandshell
 
-   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
+   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
 
 then on inspection of ``indent.log`` we will find the snippet given in :numref:`lst:indentlog`.
 
 .. code-block:: latex
-   :caption: ``indent.log`` 
+   :caption: ``indent.log``
    :name: lst:indentlog
 
           +++++
@@ -335,7 +351,7 @@ and can then use the settings given in :numref:`lst:indentconfig-encoding1` with
 
 .. literalinclude:: demonstrations/encoding1.yaml
  	:class: .baseyaml
- 	:caption: ``encoding`` demonstration for ``indentconfig.yaml`` 
+ 	:caption: ``encoding`` demonstration for ``indentconfig.yaml``
  	:name: lst:indentconfig-encoding1
 
 dos2unix linebreak adjustment
@@ -379,10 +395,10 @@ whereas in Version 3.0 you would run any of the following, for example,
 
    latexindent.pl -o=outputfile.tex myfile.tex
    latexindent.pl -o outputfile.tex myfile.tex
-   latexindent.pl myfile.tex -o outputfile.tex 
-   latexindent.pl myfile.tex -o=outputfile.tex 
-   latexindent.pl myfile.tex -outputfile=outputfile.tex 
-   latexindent.pl myfile.tex -outputfile outputfile.tex 
+   latexindent.pl myfile.tex -o outputfile.tex
+   latexindent.pl myfile.tex -o=outputfile.tex
+   latexindent.pl myfile.tex -outputfile=outputfile.tex
+   latexindent.pl myfile.tex -outputfile outputfile.tex
 
 noting that the *output* file is given *next to* the ``-o`` switch.
 
@@ -390,7 +406,7 @@ The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 o
 
 .. literalinclude:: demonstrations/obsolete.yaml
  	:class: .obsolete
- 	:caption: Obsolete YAML fields from Version 3.0 
+ 	:caption: Obsolete YAML fields from Version 3.0
  	:name: lst:obsoleteYaml
 
 There is a slight difference when specifying indentation after headings; specifically, we now write ``indentAfterThisHeading`` instead of ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and
@@ -398,12 +414,12 @@ There is a slight difference when specifying indentation after headings; specifi
 
 .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
  	:class: .baseyaml
- 	:caption: ``indentAfterThisHeading`` in Version 2.2 
+ 	:caption: ``indentAfterThisHeading`` in Version 2.2
  	:name: lst:indentAfterThisHeadingOld
 
 .. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
  	:class: .baseyaml
- 	:caption: ``indentAfterThisHeading`` in Version 3.0 
+ 	:caption: ``indentAfterThisHeading`` in Version 3.0
  	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in
@@ -413,17 +429,17 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
 
 .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
  	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` in Version 2.2 
+ 	:caption: ``noAdditionalIndent`` in Version 2.2
  	:name: lst:noAdditionalIndentOld
 
 .. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
  	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0
  	:name: lst:indentAfterThisHeadingNew1
 
 .. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
  	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+ 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0
  	:name: lst:indentAfterThisHeadingNew2
 
 --------------
