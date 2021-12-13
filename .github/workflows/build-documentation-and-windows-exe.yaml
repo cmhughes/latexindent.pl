@@ -71,7 +71,6 @@ jobs:
           cpanm -f PAR::Packer
           cpanm YAML::Tiny
           cpanm File::HomeDir
-          cpanm Unicode::GCString
           copy helper-scripts/ppp.pl ./
           perl ppp.pl -o latexindent.exe latexindent.pl
           mkdir -p target/release

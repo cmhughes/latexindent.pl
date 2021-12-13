@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use Exporter qw/import/;
 use Text::Wrap;
+use LatexIndent::AlignmentAtAmpersand qw/get_column_width/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
@@ -331,7 +332,7 @@ sub text_wrap{
         if(${$self}{body} =~m/$verbatimID/s){
 
           # measure length
-          my $verbatimLength = Unicode::GCString->new($verbatimThing)->columns();
+          my $verbatimLength = &get_column_width($verbatimThing);
 
           # create temporary ID, and check that it is not contained in the body
           my $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;

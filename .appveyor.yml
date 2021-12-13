@@ -11,7 +11,6 @@ install:
   - set PATH=C:\strawberry\perl\bin;C:\strawberry\perl\site\bin;C:\strawberry\c\bin;%PATH%
   - cpanm YAML::Tiny
   - cpanm File::HomeDir
-  - cpanm Unicode::GCString
 
 # the test cases
 build_script:

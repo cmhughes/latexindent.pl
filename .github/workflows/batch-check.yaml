@@ -56,7 +56,6 @@ jobs:
         run: |
           cpanm YAML::Tiny
           cpanm File::HomeDir
-          cpanm Unicode::GCString
       - if: ${{ matrix.platform == 'ubuntu-latest' || matrix.platform == 'macos-latest' }}
         name: loop for running latexindent.pl --check test-cases/check-switch-tests/*.tex
         run: |

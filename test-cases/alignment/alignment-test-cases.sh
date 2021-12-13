@@ -11,6 +11,7 @@ latexindent.pl -s simple-multi-column.tex -o=+-mod2 -y="lookForAlignDelims:tabul
 latexindent.pl -s simple-multi-column.tex -o=+-mod3 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s simple-multi-column.tex -o=+-mod4 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesAfterAmpersand:3;justification:right"
 latexindent.pl -s table1.tex -o table1-default.tex
+latexindent.pl -s unicode1.tex -o unicode1-default.tex
 
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 

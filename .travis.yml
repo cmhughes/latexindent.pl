@@ -15,7 +15,6 @@ install:
  - curl -L http://cpanmin.us | perl - App::cpanminus
  - cpanm YAML::Tiny
  - cpanm File::HomeDir
- - cpanm Unicode::GCString
 script: 
   - "cd test-cases/continuous-integration"
   - "bash ./test-travis-ci.sh"
