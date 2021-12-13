@@ -1,5 +1,10 @@
 # changelog.md
 
+## V3.13.3, December 13, 2021
+minor updates:
+- `fineTuning` update following [issue 307](https://github.com/cmhughes/latexindent.pl/issues/307)
+- `lookForChildCodeBlocks` in align at ampersand routine [issue 308](https://github.com/cmhughes/latexindent.pl/issues/308)
+
 ## V3.13.2, November 15, 2021
 `defaultSettings.yaml` can now be located in `LatexIndent/` folder. 
 This was proposed in https://github.com/conda-forge/staged-recipes/pull/16914

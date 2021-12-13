@@ -138,7 +138,7 @@ copy myfile.bak4 to myfile.bak3
 	\texttt{latexindent.pl} will \emph{always} prioritize \texttt{verbatimEnvironments}.
 
 	You can, optionally, specify
-	\announce*{2021-10-30}{verbatim name feature} the
+	\announce{2021-10-30}{verbatim name feature} the
 	\texttt{verbatim} field using the \texttt{name} field which takes a regular expression as
 	its argument; thank you to \cite{XuehaiPan} for contributing this feature.
 
@@ -174,7 +174,7 @@ copy myfile.bak4 to myfile.bak3
 	example, \lstinline|\verb!x+3!| is treated as a \texttt{verbatimCommands}.
 
 	You can, optionally, specify
-	\announce*{2021-10-30}{verbatimCommands name feature} the
+	\announce{2021-10-30}{verbatimCommands name feature} the
 	\texttt{verbatimCommands} field using the \texttt{name} field which takes a regular
 	expression as its argument; thank you to \cite{XuehaiPan} for contributing this feature.
 
@@ -263,7 +263,7 @@ latexindent.pl -l noindent3.yaml noindent1
 	We will demonstrate this feature later in the documentation in \cref{lst:href3}.
 
 	You can, optionally, specify
-	\announce*{2021-10-30}{noIndentBlock name feature} the
+	\announce{2021-10-30}{noIndentBlock name feature} the
 	\texttt{noIndentBlock} field using the \texttt{name} field which takes a regular
 	expression as its argument; thank you to \cite{XuehaiPan} for contributing this feature.
 
@@ -453,8 +453,10 @@ lookForAlignDelims:
 		      specifies the justification for the alignment delimeters (default: left); note that this
 		      feature is only useful if you have delimiters of different lengths in the same column,
 		      discussed in \cref{sec:delimiter-reg-ex};
-            \item \announce{new}{lookForChildCodeBlocks feature} optionally instructs \texttt{latexindent.pl} 
-              to search for child code blocks or not (default: 1), discussed in \cref{sec:lookForChildCodeBlocks}.
+		\item \announce*{2021-12-13}{lookForChildCodeBlocks feature} optionally instructs
+		      \texttt{latexindent.pl}
+		      to search for child code blocks or not (default: 1), discussed in
+		      \cref{sec:lookForChildCodeBlocks}.
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
@@ -941,26 +943,30 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 	Note that in \cref{lst:tabbing1-mod5} the second set of delimiters have been \emph{right
 		aligned} -- it is quite subtle!
 
-        \subsection{The lookForChildCodeBlocks feature}\label{sec:lookForChildCodeBlocks}
-        There \announce{new}{lookForChildCodeBlocks demonstration} may be scenarios in which you would prefer to instruct \texttt{latexindent.pl} 
-        \emph{not} to search for child blocks; in which case setting \texttt{lookForChildCodeBlocks}
-        to 0 may be a good way to proceed.
+\subsection{The lookForChildCodeBlocks feature}\label{sec:lookForChildCodeBlocks}
+	There
+	\announce*{2021-12-13}{lookForChildCodeBlocks demonstration} may be scenarios in
+	which you would prefer to instruct \texttt{latexindent.pl} \emph{not} to search for child
+	blocks; in which case setting \texttt{lookForChildCodeBlocks} to 0 may be a good way to
+	proceed.
 
-        Using the settings from \vref{lst:dontMeasure1} on the file in \cref{lst:tabular-DM-1} and running the command
+	Using the settings from \vref{lst:dontMeasure1} on the file in \cref{lst:tabular-DM-1}
+	and running the command
 	\begin{commandshell}
 latexindent.pl tabular-DM-1.tex -l=dontMeasure1.yaml -o=+-mod1
 \end{commandshell}
-gives the output in \cref{lst:tabular-DM-1-mod1}. 
+	gives the output in \cref{lst:tabular-DM-1-mod1}.
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-1.tex}{\texttt{tabular-DM-1.tex}}{lst:tabular-DM-1}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1.tex}{\texttt{tabular-DM-1-mod1.tex}}{lst:tabular-DM-1-mod1}
 	\end{cmhtcbraster}
 
-    We can improve the output from \cref{lst:tabular-DM-1-mod1} by employing the settings in \cref{lst:dontMeasure1a}
+	We can improve the output from \cref{lst:tabular-DM-1-mod1} by employing the settings in
+	\cref{lst:dontMeasure1a}
 	\begin{commandshell}
 latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 \end{commandshell}
-which gives the output in \cref{lst:dontMeasure1a}.
+	which gives the output in \cref{lst:dontMeasure1a}.
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1a.tex}{\texttt{tabular-DM-1-mod1a.tex}}{lst:tabular-DM-1-mod1a}

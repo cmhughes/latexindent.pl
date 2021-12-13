@@ -16,9 +16,9 @@ this field will only be considered if the ``-m`` switch has been used*. A snippe
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 486-488
+ 	:lines: 487-489
  	:linenos:
- 	:lineno-start: 486
+ 	:lineno-start: 487
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s
 be clear:
@@ -102,9 +102,9 @@ When the ``-m`` switch is active ``latexindent.pl`` has the ability to wrap text
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptions
- 	:lines: 513-514
+ 	:lines: 514-515
  	:linenos:
- 	:lineno-start: 513
+ 	:lineno-start: 514
 
 The value of ``columns`` specifies the column at which the text should be wrapped.
 
@@ -307,9 +307,9 @@ The full details of ``textWrapOptions`` are shown in :numref:`lst:textWrapOption
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 513-531
+ 	:lines: 514-532
  	:linenos:
- 	:lineno-start: 513
+ 	:lineno-start: 514
 
 The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with direct reference to those detailed in :numref:`tab:code-blocks`.
 
@@ -536,9 +536,9 @@ This feature is considered complimentary to the ``oneSentencePerLine`` feature d
  	:class: .mlbyaml
  	:caption: ``removeParagraphLineBreaks`` 
  	:name: lst:removeParagraphLineBreaks
- 	:lines: 532-546
+ 	:lines: 533-547
  	:linenos:
- 	:lineno-start: 532
+ 	:lineno-start: 533
 
 This routine can be turned on *globally* for *every* code block type known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using the ``all`` switch; by default, this switch is *off*.
 Assuming that the ``all`` switch is off, then the routine can be controlled on a per-code-block-type basis, and within that, on a per-name basis. We will consider examples of each of these in turn,
@@ -743,9 +743,9 @@ fields, shown in :numref:`lst:paragraphsStopAt`.
  	:class: .mlbyaml
  	:caption: ``paragraphsStopAt`` 
  	:name: lst:paragraphsStopAt
- 	:lines: 547-556
+ 	:lines: 548-557
  	:linenos:
- 	:lineno-start: 547
+ 	:lineno-start: 548
 
 The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to stop the current paragraph when it reaches a line that *begins* with any of the code-block types specified as ``1`` in
 :numref:`lst:paragraphsStopAt`. By default, you’ll see that the paragraph line break routine will stop when it reaches an environment or verbatim code block at the beginning of a line. It is *not*
@@ -1004,9 +1004,9 @@ script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 489-512
+ 	:lines: 490-513
  	:linenos:
- 	:lineno-start: 489
+ 	:lineno-start: 490
 
 .. describe:: manipulateSentences:0|1
 
@@ -1089,25 +1089,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 494-502
+ 	:lines: 495-503
  	:linenos:
- 	:lineno-start: 494
+ 	:lineno-start: 495
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 503-506
+ 	:lines: 504-507
  	:linenos:
- 	:lineno-start: 503
+ 	:lineno-start: 504
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 507-512
+ 	:lines: 508-513
  	:linenos:
- 	:lineno-start: 507
+ 	:lineno-start: 508
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1598,9 +1598,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 557-566
+ 	:lines: 558-567
  	:linenos:
- 	:lineno-start: 557
+ 	:lineno-start: 558
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
 :numref:`lst:environments-mlb`.
@@ -2535,7 +2535,7 @@ two poly-switches available for ``verbatim`` code blocks: environments (:numref:
    commands                      ``before words``\ ♠                    ♠ CommandStartsOnOwnLine
    \                             ``\mycommand``\ ♥                      ♥ CommandNameFinishesWithLineBreak
    \                             <arguments>                             
-   namedGroupingBraces Brackets  before words♠                          ♠ NameStartsOnOwnLine
+   namedGroupingBracesBrackets   before words♠                          ♠ NameStartsOnOwnLine
    \                             myname♥                                ♥ NameFinishesWithLineBreak
    \                             <braces/brackets>                       
    keyEqualsValuesBracesBrackets before words♠                          ♠ KeyStartsOnOwnLine
