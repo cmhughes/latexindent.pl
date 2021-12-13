@@ -156,7 +156,12 @@ References
    .. container::
       :name: ref-XuehaiPan
 
-      XuehaiPan. 2021. “Verbatim Block Upgrade.” October 3, 2021. https://github.com/cmhughes/latexindent.pl/pull/290.
+      XuehaiPan. 2021a. “Verbatim Block Upgrade.” October 3, 2021. https://github.com/cmhughes/latexindent.pl/pull/290.
+
+   .. container::
+      :name: ref-XuehaiPan1
+
+      ———. 2021b. “-Y Switch Upgrade.” November 12, 2021. https://github.com/cmhughes/latexindent.pl/pull/297.
 
    .. container::
       :name: ref-zoehneto

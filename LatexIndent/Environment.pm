@@ -109,6 +109,14 @@ sub tasks_particular_to_each_object{
           ${${$self}{linebreaksAtEnd}}{body} = 1;
     }
 
+    # lookForAlignDelims: lookForChildCodeBlocks set to 0 means no child objects searched for
+    #   see: test-cases/alignment/issue-308.tex
+    #
+    if( defined ${$self}{lookForChildCodeBlocks} and !${$self}{lookForChildCodeBlocks} ){
+          $logger->trace("lookForAlignDelims: lookForChildCodeBlocks set to 0, so child objects will *NOT* be searched for") if($is_t_switch_active);
+          return;
+    }
+
     # search for items as the first order of business
     $self->find_items if ${$mainSettings{indentAfterItems}}{${$self}{name}};
 

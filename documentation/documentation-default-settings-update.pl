@@ -21,7 +21,7 @@ my @namesAndOffsets = (
                         {name=>"removeTrailingWhitespace",numberOfLines=>2},
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
                         {name=>"lookForPreamble",numberOfLines=>4},
-                        {name=>"lookForAlignDelims",numberOfLines=>16},
+                        {name=>"lookForAlignDelims",numberOfLines=>17},
                         {name=>"indentAfterItems",numberOfLines=>4},
                         {name=>"itemNames",numberOfLines=>2},
                         {name=>"specialBeginEnd",numberOfLines=>13,mustBeAtBeginning=>1},
@@ -41,7 +41,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
-                        {name=>"fineTuning",numberOfLines=>23},
+                        {name=>"fineTuning",numberOfLines=>25},
                         {name=>"replacements",numberOfLines=>8},
                       );
 

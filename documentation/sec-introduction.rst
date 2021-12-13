@@ -44,7 +44,7 @@ then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a comp
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 553. This may seem a lot, but I deem it necessary in presenting the
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 557. This may seem a lot, but I deem it necessary in presenting the
 various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
@@ -71,9 +71,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 486-488
+ 	:lines: 487-489
  	:linenos:
- 	:lineno-start: 486
+ 	:lineno-start: 487
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -81,9 +81,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 618-626
+ 	:lines: 619-627
  	:linenos:
- 	:lineno-start: 618
+ 	:lineno-start: 619
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 

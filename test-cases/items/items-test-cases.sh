@@ -62,6 +62,7 @@ done
 [[ $silentMode == 0 ]] && set -x 
 latexindent.pl -s items13.tex -m -l=items-mod2.yaml -o items13-mod2.tex
 latexindent.pl -s items13.tex -m -l=items-mod2.yaml,removeTWS-before.yaml -o items13-remove-before-mod2.tex
+
 # ifelsefi within an item
 latexindent.pl -s items8.tex -o=items8-mod0.tex -l=../environments/env-all-on.yaml
 latexindent.pl -s items9.tex -o=items9-mod0.tex -l=../environments/env-all-on.yaml
@@ -71,13 +72,21 @@ latexindent.pl -s items10.tex -o=items10-items-noAdditionalIndent.tex -l=../envi
 latexindent.pl -s items11.tex -w
 latexindent.pl -s items12.tex -o=items12-mod0.tex -l=../environments/env-all-on.yaml
 latexindent.pl -s items12.tex -m -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,env-mod-lines1.yaml -o=items12-mod1.tex
+
 # noAdditionalIndent
 latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml,resetItem.yaml
+
 # indentRules
 latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml,resetItem.yaml
+
 # poly-switch bug reported at https://github.com/cmhughes/latexindent.pl/issues/94
 latexindent.pl -s -m bug1.tex -o=+-mod0 -l=bug.yaml
+
 # itemsep issue https://github.com/cmhughes/latexindent.pl/issues/249
 latexindent.pl -s issue-249.tex -o=+-mod0
+
+# can be followed by, beamer stuff
+latexindent.pl -s issue-307.tex -o=+-mod0
+
 [[ $noisyMode == 1 ]] && makenoise
 git status

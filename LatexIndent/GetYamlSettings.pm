@@ -49,6 +49,7 @@ our @alignAtAmpersandInformation = (   {name=>"lookForAlignDelims",yamlname=>"de
                                        {name=>"delimiterRegEx",default=>"(?<!\\\\)(&)"},
                                        {name=>"delimiterJustification",default=>"left"},
                                        {name=>"leadingBlankColumn",default=>-1},
+                                       {name=>"lookForChildCodeBlocks",default=>1},
                                         );
     
 sub yaml_read_settings{

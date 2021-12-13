@@ -1,0 +1,7 @@
+defaultIndent: "  "
+lookForAlignDelims:
+  displayMath: 
+    dontMeasure: largest
+
+specialBeginEnd:
+    specialBeforeCommand: 1

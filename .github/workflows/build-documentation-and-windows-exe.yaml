@@ -4,8 +4,8 @@ name: Create and publish latexindent.exe and documentation latexindent.pdf to re
 #  1. *create* latexindent.exe using PAR::Packer on Strawberry Perl
 #  2. *publish* latexindent.exe to the most recent tag (release)
 #  3. *create* latexindent.pdf 
-#  4. *create* latexindent-ctan.zip
-#  5. *publish* latexindent-ctan.zip to the most recent tag (release)
+#  4. *create* latexindent.zip
+#  5. *publish* latexindent.zip to the most recent tag (release)
 #
 # Note: this action only runs on *each release*, i.e. when tags are pushed
 #
@@ -96,7 +96,7 @@ jobs:
           overwrite: true
           body: "latexindent.pl release text"
   zip-files:
-    name: 'Creating latexindent-ctan.zip and uploading to release'
+    name: 'Creating latexindent.zip and uploading to release'
     needs: [build-latexindent-doc-pdf, build-windows-exe]
     runs-on: ubuntu-latest
     steps:
@@ -123,19 +123,17 @@ jobs:
         with:
           name: latexindent.pdf
           path: latexindent/documentation/
-      - name: creating latexindent-ctan.zip
-        uses: papeloto/action-zip@v1
-        with:
-          files: latexindent/
-          dest: latexindent-ctan.zip
-      # copy latexindent-ctan.zip to the release
+      - name: creating latexindent.zip
+        run: |
+          zip -r latexindent.zip latexindent/
+      # copy latexindent.zip to the release
       #
       # https://github.com/marketplace/actions/upload-files-to-a-github-release
-      - name: upload latexindent-ctan.zip to release
+      - name: upload latexindent.zip to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: latexindent-ctan.zip
+          file: latexindent.zip
           tag: ${{ github.ref }}
           overwrite: true
           body: "latexindent.pl release text"
