@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.13.2, 2021-11-15
+# defaultSettings.yaml for latexindent.pl, version 3.13.3, 2021-12-13
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -166,6 +166,7 @@ lookForAlignDelims:
       dontMeasure: 0
       delimiterRegEx: '(?<!\\)(&)'
       delimiterJustification: left
+      lookForChildCodeBlocks: 1
    tabularx:
       delims: 1
    longtable: 1
@@ -633,6 +634,8 @@ fineTuning:
       name: '(?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?'
     commands:
       name: '[+a-zA-Z@\*0-9_\:]+?'
+    items:
+      canBeFollowedBy: '(?:\[[^]]*?\])|(?:<[^>]*?>)'
     keyEqualsValuesBracesBrackets:
       name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
       follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'

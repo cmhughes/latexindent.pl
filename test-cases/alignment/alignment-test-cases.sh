@@ -237,6 +237,18 @@ latexindent.pl -s issue-251.tex -o=+-default
 latexindent.pl -s issue-251.tex -o=+-mod1 -y="lookForAlignDelims:tabular:spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s issue-251.tex -o=+-mod2 -y="lookForAlignDelims:tabular:spacesAfterAmpersand:5;justification:right"
 
+# don't search for child code blocks, issue 308
+latexindent.pl -s issue-308.tex -l issue-308.yaml  -o=+-mod1
+latexindent.pl -s issue-308.tex -l issue-308a.yaml -o=+-mod1a
+
+latexindent.pl -s issue-308-special.tex -l issue-308-special.yaml  -o=+-mod1
+latexindent.pl -s issue-308-special.tex -l issue-308-special-a.yaml -o=+-mod1a
+
+latexindent.pl -s issue-308-mand-arg.tex -l issue-308-mand-arg.yaml  -o=+-mod1
+latexindent.pl -s issue-308-mand-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
+
+latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg.yaml  -o=+-mod1
+latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

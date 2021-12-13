@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version 
  
-    latexindent.pl, version 3.13.2, 2021-11-15
+    latexindent.pl, version 3.13.3, 2021-12-13
 
 ## author 
 Chris Hughes (cmhughes)
@@ -79,7 +79,7 @@ file that controls this is available within the [github/workflows](https://githu
 of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
 
 > ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/publish-windows-exe.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
 
 ## usage
 
