@@ -124,10 +124,8 @@ jobs:
           name: latexindent.pdf
           path: latexindent/documentation/
       - name: creating latexindent.zip
-        uses: papeloto/action-zip@v1
-        with:
-          files: latexindent/
-          dest: latexindent.zip
+        run: |
+          zip -r latexindent.zip latexindent/
       # copy latexindent.zip to the release
       #
       # https://github.com/marketplace/actions/upload-files-to-a-github-release
