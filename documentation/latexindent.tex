@@ -402,127 +402,127 @@
 
 \lstdefinestyle{indentAfterItems}{
 	style=yaml-LST,
-	firstnumber=228,linerange={228-232},
+	firstnumber=229,linerange={229-233},
 	numbers=left,
 }
 
 \lstdefinestyle{itemNames}{
 	style=yaml-LST,
-	firstnumber=238,linerange={238-240},
+	firstnumber=239,linerange={239-241},
 	numbers=left,
 }
 
 \lstdefinestyle{specialBeginEnd}{
 	style=yaml-LST,
-	firstnumber=244,linerange={244-257},
+	firstnumber=245,linerange={245-258},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-276},
+	firstnumber=268,linerange={268-277},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=325,linerange={325-326},
+	firstnumber=326,linerange={326-327},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=325,linerange={325-337},
+	firstnumber=326,linerange={326-338},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=341,linerange={341-342},
+	firstnumber=342,linerange={342-343},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=341,linerange={341-353},
+	firstnumber=342,linerange={342-354},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=356,linerange={356-371},
+	firstnumber=357,linerange={357-372},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=486,linerange={486-488},
+	firstnumber=487,linerange={487-489},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=513,linerange={513-514},
+	firstnumber=514,linerange={514-515},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=513,linerange={513-531},
+	firstnumber=514,linerange={514-532},
 	numbers=left,
 }
 
 \lstdefinestyle{removeParagraphLineBreaks}{
 	style=yaml-LST,
-	firstnumber=532,linerange={532-546},
+	firstnumber=533,linerange={533-547},
 	numbers=left,
 }
 
 \lstdefinestyle{paragraphsStopAt}{
 	style=yaml-LST,
-	firstnumber=547,linerange={547-556},
+	firstnumber=548,linerange={548-557},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=489,linerange={489-512},
+	firstnumber=490,linerange={490-513},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=494,linerange={494-502},
+	firstnumber=495,linerange={495-503},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=503,linerange={503-506},
+	firstnumber=504,linerange={504-507},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=507,linerange={507-512},
+	firstnumber=508,linerange={508-513},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=557,linerange={557-566},
+	firstnumber=558,linerange={558-567},
 	numbers=left,
 }
 
 \lstdefinestyle{replacements}{
 	style=yaml-LST,
-	firstnumber=618,linerange={618-626},
+	firstnumber=619,linerange={619-627},
 	numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
 	style=yaml-LST,
-	firstnumber=629,linerange={629-654},
+	firstnumber=630,linerange={630-655},
 	numbers=left,
 }
 
@@ -795,12 +795,19 @@
 \setcounter{tocdepth}{4}
 \makeindex
 
+\newif\iftestdefaultsettings
+\testdefaultsettingsfalse
+%\testdefaultsettingstrue
+
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
 \tableofcontents
 % start sections on new page
 \newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
+ \iftestdefaultsettings
+ \input{test-default-settings}
+ \else
  \input{sec-introduction}
  \input{sec-demonstration}
  \input{sec-how-to-use}
@@ -832,4 +839,5 @@
  \input{appendices}
  {\clearpage\small\lstlistoflistings}
  \printindex
+ \fi
 \end{document}
