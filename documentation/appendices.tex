@@ -207,6 +207,18 @@ echo %path%
 		To \emph{remove} the directory from your \lstinline!%path%!, run
 		\texttt{remove-from-path.bat} as administrator.
 
+        \section{Using conda}
+        If you use conda you'll only need
+
+        \begin{commandshell}
+conda install latexindent.pl -c conda-forge
+\end{commandshell}
+this will install the executable and all its dependencies (including perl) in the activate environment.
+You don't even have to worry about \texttt{defaultSettings.yaml} as it included too,
+you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
+
+You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
+
 	\section{logFilePreferences}\label{app:logfile-demo}
 	 \Vref{lst:logFilePreferences} describes the options for customising the information given
 	 to the log file, and we provide a few demonstrations here. Let's say that we start with

@@ -14,6 +14,11 @@ References
       Abey, Sam. 2019. “Print Usage Tip to Stderr Only If Stdin Is Tty.” September 17, 2019. https://github.com/cmhughes/latexindent.pl/pull/174.
 
    .. container::
+      :name: ref-anacoda
+
+      “Anacoda.” n.d. Accessed December 22, 2021. https://www.anaconda.com/products/individual.
+
+   .. container::
       :name: ref-cmhblog
 
       “A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
@@ -22,6 +27,11 @@ References
       :name: ref-paulo
 
       Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
+
+   .. container::
+      :name: ref-conda
+
+      “Conda Forge.” n.d. Accessed December 22, 2021. https://github.com/conda-forge/miniforge.
 
    .. container::
       :name: ref-cpan

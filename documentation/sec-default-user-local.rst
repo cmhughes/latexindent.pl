@@ -450,7 +450,7 @@ you.
  	:class: .baseyaml
  	:caption: ``lookForAlignDelims`` (advanced) 
  	:name: lst:aligndelims:advanced
-    :lines: 155-171
+ 	:lines: 155-171
  	:linenos:
  	:lineno-start: 155
 

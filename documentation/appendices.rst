@@ -266,6 +266,21 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 To *remove* the directory from your ``%path%``, run ``remove-from-path.bat`` as administrator.
 
+Using conda
+-----------
+
+If you use conda you’ll only need
+
+.. code-block:: latex
+   :class: .commandshell
+
+   conda install latexindent.pl -c conda-forge
+
+this will install the executable and all its dependencies (including perl) in the activate environment. You don’t even have to worry about ``defaultSettings.yaml`` as it included too, you can thus
+skip :numref:`sec:requiredmodules` and :numref:`sec:updating-path`.
+
+You can get a conda installation for example from (“Conda Forge” n.d.) or from (“Anacoda” n.d.).
+
 .. label follows
 
 .. _app:logfile-demo:
@@ -430,6 +445,16 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
 
 .. container:: references
    :name: refs
+
+   .. container::
+      :name: ref-anacoda
+
+      “Anacoda.” n.d. Accessed December 22, 2021. https://www.anaconda.com/products/individual.
+
+   .. container::
+      :name: ref-conda
+
+      “Conda Forge.” n.d. Accessed December 22, 2021. https://github.com/conda-forge/miniforge.
 
    .. container::
       :name: ref-cpan
