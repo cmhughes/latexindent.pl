@@ -113,6 +113,7 @@ jobs:
           cp documentation/*.tex latexindent/documentation/
           cp documentation/*.png latexindent/documentation/
           cp documentation/readme.txt latexindent/README
+          cp documentation/*.json latexindent/documentation/
       - name: downloading latexindent.exe
         uses: actions/download-artifact@master
         with:

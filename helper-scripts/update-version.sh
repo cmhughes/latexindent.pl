@@ -38,6 +38,7 @@ sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" 
 sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
+sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent-yaml-schema.json
 sed -i.bak "s/version $oldVersion,/version $newVersion,/" readme.md
 sed -i.bak "s/$oldDate/$newDate/" readme.md
 sed -i.bak "s/version $oldVersion,/version $newVersion,/" documentation/readme.txt
