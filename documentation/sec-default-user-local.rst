@@ -484,7 +484,7 @@ form, each field should receive at least 1 sub-field, and *can* (but does not ha
 -  delimiterJustification optionally specifies the justification for the alignment delimeters (default: left); note that this feature is only useful if you have delimiters of different lengths in the
    same column, discussed in :numref:`sec:delimiter-reg-ex`;
 
--  optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`.
+-  lookForChildCodeBlocks optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`.
 
 We will explore most of these features using the file ``tabular2.tex`` in :numref:`lst:tabular2` (which contains a ``\multicolumn`` command), and the YAML files in :numref:`lst:tabular2YAML` –
 :numref:`lst:tabular8YAML`; we will explore ``alignFinalDoubleBackSlash`` in :numref:`lst:tabular4`; the ``dontMeasure`` feature will be described in :numref:`sec:dontMeasure`, and

@@ -44,7 +44,7 @@ then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a comp
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 557. This may seem a lot, but I deem it necessary in presenting the
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 560. This may seem a lot, but I deem it necessary in presenting the
 various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:

@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "/usr/local/texlive/2021/texmf-dist/doc/support/latexindent/latexindent-yaml-schema.json": "/home/cmhughes/projects/latexindent/defaultSettings.yaml"
+  }
+}

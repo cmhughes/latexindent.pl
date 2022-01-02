@@ -20,10 +20,10 @@ do
  esac 
 done
 
-oldVersion='3.13.3'
-newVersion='3.13.4'
-oldDate='2021-12-13'
-newDate='2021-12-22'
+oldVersion='3.13.4'
+newVersion='3.13.5'
+oldDate='2021-12-22'
+newDate='2022-01-02'
 
 cd ../
 cd documentation
@@ -32,19 +32,31 @@ cd documentation
 find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 cd ../
+
 sed -i.bak "s/version = u'$oldVersion'/version = u'$newVersion'/" documentation/conf.py
 sed -i.bak "s/release = u'$oldVersion'/release = u'$newVersion'/" documentation/conf.py
+
 sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
 sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
+
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
 sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
+
 sed -i.bak "s/version $oldVersion,/version $newVersion,/" readme.md
 sed -i.bak "s/$oldDate/$newDate/" readme.md
+
 sed -i.bak "s/version $oldVersion,/version $newVersion,/" documentation/readme.txt
+
 sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
+
+sed -i.bak "s/V$oldVersion/V$newVersion/g" documentation/latexindent-yaml-schema.json
+sed -i.bak "s/$oldDate/$newDate/" documentation/latexindent-yaml-schema.json
+
 sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
+
 sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
 sed -i.bak "s/$oldDate/$newDate/" documentation/title.tex
+
 sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
 cd documentation
 ## perl documentation-default-settings-update.pl -r

@@ -1,7 +1,14 @@
-# purpose:
-#    comment on pull requests to the main
-#    branch, asking them to be submitted 
-#    to develop. 
+name: latexindent.pl main branch pull request monitor and feedback
+# PURPOSE:
+#
+#       comment on pull requests to the MAIN
+#       branch, asking them to be submitted 
+#       to develop. 
+#
+# Note: 
+#       
+#       this action runs only on MAIN branch
+#
   
 on:
   pull_request:
