@@ -69,6 +69,12 @@ References
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
    .. container::
+      :name: ref-vscode-yaml-demo
+
+      “How to Create Your Own Auto-Completion for Json and Yaml Files on Vs Code with the Help of Json Schema.” n.d. Accessed January 1, 2022.
+      https://dev.to/brpaz/how-to-create-your-own-auto-completion-for-json-and-yaml-files-on-vs-code-with-the-help-of-json-schema-k1i.
+
+   .. container::
       :name: ref-jun-sheaf
 
       J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
@@ -152,6 +158,11 @@ References
       :name: ref-vosskuhle
 
       Voßkuhle, Michel. 2013. “Remove Trailing White Space.” November 10, 2013. https://github.com/cmhughes/latexindent.pl/pull/12.
+
+   .. container::
+      :name: ref-vscode-yaml-extentions
+
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml.
 
    .. container::
       :name: ref-bersbersbers

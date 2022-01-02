@@ -266,6 +266,46 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 To *remove* the directory from your ``%path%``, run ``remove-from-path.bat`` as administrator.
 
+latexindent-yaml-schema.json
+----------------------------
+
+``latexindent.pl`` ships with ``latexindent-yaml-schema.json`` which might help you when constructing your YAML files.
+
+VSCode demonstration
+~~~~~~~~~~~~~~~~~~~~
+
+To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps:
+
+#. download ``latexindent-yaml-schema.json`` from the ``documentation`` folder of (“Home of Latexindent.pl” n.d.), save it in whichever directory you would like, noting it for reference;
+
+#. following the instructions from (“How to Create Your Own Auto-Completion for Json and Yaml Files on Vs Code with the Help of Json Schema” n.d.), for example, you should install the VSCode YAML
+   extension (“VSCode Yaml Extension” n.d.);
+
+#. set up your ``settings.json`` file using the directory you saved the file by adapting :numref:`lst:settings.json`; on my Ubuntu laptop this file lives at
+   ``/home/cmhughes/.config/Code/User/settings.json``.
+
+.. literalinclude:: settings.json
+ 	:class: .baseyaml
+ 	:caption: ``settings.json`` 
+ 	:name: lst:settings.json
+
+Alternatively, if you would prefer not to download the json file, you might be able to use an adapted version of :numref:`lst:settings-alt.json`.
+
+.. literalinclude:: settings-alt.json
+ 	:class: .baseyaml
+ 	:caption: ``settings-alt.json`` 
+ 	:name: lst:settings-alt.json
+
+Finally, if your TeX distribution is up to date, then ``latexindent-yaml-schema.json`` *should* be in the documentation folder of your installation, so an adapted version of
+:numref:`lst:settings-alt1.json` may work.
+
+.. literalinclude:: settings-alt1.json
+ 	:class: .baseyaml
+ 	:caption: ``settings-alt1.json`` 
+ 	:name: lst:settings-alt1.json
+
+If you have details of how to implement this schema in other editors, please feel encouraged to contribute to this documentation.
+
 Using conda
 -----------
 
@@ -467,6 +507,12 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
    .. container::
+      :name: ref-vscode-yaml-demo
+
+      “How to Create Your Own Auto-Completion for Json and Yaml Files on Vs Code with the Help of Json Schema.” n.d. Accessed January 1, 2022.
+      https://dev.to/brpaz/how-to-create-your-own-auto-completion-for-json-and-yaml-files-on-vs-code-with-the-help-of-json-schema-k1i.
+
+   .. container::
       :name: ref-jun-sheaf
 
       J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
@@ -480,6 +526,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-perlbrew
 
       “Perlbrew.” n.d. Accessed January 23, 2017. http://perlbrew.pl/.
+
+   .. container::
+      :name: ref-vscode-yaml-extentions
+
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml.
 
    .. container::
       :name: ref-bersbersbers

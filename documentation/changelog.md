@@ -1,5 +1,9 @@
 # changelog.md
 
+## V3.13.5, January 2, 2022
+`latexindent-yaml-schema.json` created and documented, discussion at 
+[issue 206](https://github.com/cmhughes/latexindent.pl/issues/206).
+
 ## V3.13.4, December 22, 2021
 documentation updated to include: https://github.com/cmhughes/latexindent.pl/pull/310 and https://github.com/cmhughes/latexindent.pl/pull/311
 

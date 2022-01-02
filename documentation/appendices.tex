@@ -207,55 +207,60 @@ echo %path%
 		To \emph{remove} the directory from your \lstinline!%path%!, run
 		\texttt{remove-from-path.bat} as administrator.
 
-        \section{latexindent-yaml-schema.json}
+	\section{latexindent-yaml-schema.json}
 
-        \texttt{latexindent.pl} \announce{new}{latexindent-yaml-schema.json} ships with \texttt{latexindent-yaml-schema.json} 
-        which might help you when constructing your YAML files. 
+	 \texttt{latexindent.pl}
+	 \announce*{2022-01-02}{latexindent-yaml-schema.json} ships with
+	 \texttt{latexindent-yaml-schema.json}
+	 which might help you when constructing your YAML files.
 
-        \subsection{VSCode demonstration}
-        To use \texttt{latexindent-yaml-schema.json} with \texttt{VSCode}, you can use the following steps:
-        \begin{enumerate}
-          \item download \texttt{latexindent-yaml-schema.json} from the \texttt{documentation} folder of 
-            \cite{latexindent-home}, save it in whichever directory you would like, noting it for reference;
-          \item following the instructions from \cite{vscode-yaml-demo}, for example, you should install the VSCode YAML
-            extension \cite{vscode-yaml-extentions};
-          \item set up your \texttt{settings.json} file using the directory you saved the file by 
-            adapting \cref{lst:settings.json}; on my Ubuntu laptop this file lives at \texttt{/home/cmhughes/.config/Code/User/settings.json}.
-        \end{enumerate}
+	\subsection{VSCode demonstration}
+		To use \texttt{latexindent-yaml-schema.json} with \texttt{VSCode}, you can use the
+		following steps:
+		\begin{enumerate}
+			\item download \texttt{latexindent-yaml-schema.json} from the \texttt{documentation} folder of
+			      \cite{latexindent-home}, save it in whichever directory you would like, noting it for
+			      reference;
+			\item following the instructions from \cite{vscode-yaml-demo}, for example, you should install
+			      the VSCode YAML extension \cite{vscode-yaml-extentions};
+			\item set up your \texttt{settings.json} file using the directory you saved the file by
+			      adapting \cref{lst:settings.json}; on my Ubuntu laptop this file lives at
+			      \texttt{/home/cmhughes/.config/Code/User/settings.json}.
+		\end{enumerate}
 
-        \begin{widepage}
-		 \cmhlistingsfromfile*{settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
-        \end{widepage}
+		\begin{widepage}
+			\cmhlistingsfromfile*{settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
+		\end{widepage}
 
-         Alternatively, if you would prefer not to download the json file, you might be able to use
-         an adapted version of \cref{lst:settings-alt.json}.
+		Alternatively, if you would prefer not to download the json file, you might be able to
+		use an adapted version of \cref{lst:settings-alt.json}.
 
-        \begin{widepage}
-		 \cmhlistingsfromfile*{settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
-        \end{widepage}
+		\begin{widepage}
+			\cmhlistingsfromfile*{settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
+		\end{widepage}
 
-         Finally, if your TeX distribution is up to date, then \texttt{latexindent-yaml-schema.json} \emph{should} 
-         be in the documentation folder of your installation, so an adapted version of \cref{lst:settings-alt1.json}
-         may work.
+		Finally, if your TeX distribution is up to date, then
+		\texttt{latexindent-yaml-schema.json} \emph{should} be in the documentation folder of
+		your installation, so an adapted version of \cref{lst:settings-alt1.json} may work.
 
-        \begin{widepage}
-		 \cmhlistingsfromfile*{settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
-        \end{widepage}
+		\begin{widepage}
+			\cmhlistingsfromfile*{settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
+		\end{widepage}
 
-        If you have details of how to implement this schema in other editors, please feel encouraged to contribute 
-        to this documentation.
+		If you have details of how to implement this schema in other editors, please feel
+		encouraged to contribute to this documentation.
 
-        \section{Using conda}
-        If you use conda you'll only need
+	\section{Using conda}
+	 If you use conda you'll only need
 
-        \begin{commandshell}
+	 \begin{commandshell}
 conda install latexindent.pl -c conda-forge
 \end{commandshell}
-this will install the executable and all its dependencies (including perl) in the activate environment.
-You don't even have to worry about \texttt{defaultSettings.yaml} as it included too,
-you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
+	 this will install the executable and all its dependencies (including perl) in the
+	 activate environment. You don't even have to worry about \texttt{defaultSettings.yaml} as
+	 it included too, you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
 
-You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
+	 You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
 
 	\section{logFilePreferences}\label{app:logfile-demo}
 	 \Vref{lst:logFilePreferences} describes the options for customising the information given
