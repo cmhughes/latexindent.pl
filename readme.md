@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.13.4, 2021-12-22
+    latexindent.pl, version 3.13.5, 2022-01-02
 
 ## author
 Chris Hughes (cmhughes)
@@ -94,9 +94,9 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 <details>
 <summary>conda users</summary>
 If you use conda you'll only need
-```
-conda install latexindent.pl -c conda-forge
-```
+
+    conda install latexindent.pl -c conda-forge
+
 this will install the executable and all its dependencies (including perl) in the activate environment.
 You don't even have to worry about `defaultSettings.yaml` as it included too.
 

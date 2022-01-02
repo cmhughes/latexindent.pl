@@ -1,0 +1,6 @@
+{
+  "yaml.schemas": {
+    "/home/cmhughes/projects/latexindent/documentation/latexindent-yaml-schema.json": "/home/cmhughes/projects/latexindent/defaultSettings.yaml"
+  },
+  "redhat.telemetry.enabled": true
+}
