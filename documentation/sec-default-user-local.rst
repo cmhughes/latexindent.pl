@@ -1145,7 +1145,7 @@ Note that in :numref:`lst:tabbing1-mod5` the second set of delimiters have been 
 .. _sec:lookForChildCodeBlocks:
 
 lookForAlignDelims: lookForChildCodeBlocks
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There may be scenarios in which you would prefer to instruct ``latexindent.pl`` *not* to search for child blocks; in which case setting ``lookForChildCodeBlocks`` to 0 may be a good way to proceed.
 

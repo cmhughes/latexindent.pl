@@ -1,0 +1,24 @@
+# purpose:
+#    comment on pull requests to the main
+#    branch, asking them to be submitted 
+#    to develop. 
+  
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v5
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Thank you for your contribution! Please can you change this pull request so that it goes to the `develop` branch? Thank you" 
+            })
