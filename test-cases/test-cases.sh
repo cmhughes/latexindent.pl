@@ -252,7 +252,6 @@ checkgitdiff
 cd ../
 [[ $silentMode == 1 ]] && echo "./latex-indent.sh"
 ./latex-indent.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
-checkgitdiff
 
 # play sounds
 for i in {1..5}
