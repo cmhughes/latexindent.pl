@@ -147,6 +147,7 @@ latexindent.pl -s -m pmatrix3.tex -o=+-mod1 -l=double-back-slash-finish1.yaml,pm
 latexindent.pl -s douglasrizzo.tex -o=+-mod1 -l=multiColumnGrouping.yaml
 latexindent.pl -s douglasrizzo1.tex -o=+-mod1 -l=multiColumnGrouping.yaml
 latexindent.pl -s douglasrizzo2.tex -o=+-mod1 -l=multiColumnGrouping.yaml
+latexindent.pl -s issue-301 -o=+-mod1 -l=issue-301.yaml
 
 # alignFinalDoubleBackSlash, as in https://github.com/cmhughes/latexindent.pl/issues/179
 latexindent.pl -s hudcap.tex -o=+-default
@@ -249,6 +250,7 @@ latexindent.pl -s issue-308-mand-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
 
 latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg.yaml  -o=+-mod1
 latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

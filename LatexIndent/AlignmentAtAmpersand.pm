@@ -899,7 +899,7 @@ sub multicolumn_pre_check {
         $j++;
         
         # multicolumn entry
-        if(${$cell}{type} =~ m/(\d)/) {
+        if(${$cell}{type} =~ m/(\d+)/) {
 
            my $multiColumnSpan = $1;
 
@@ -1005,7 +1005,7 @@ sub multicolumn_padding{
           $j++;
           
           # multicolumn entry
-          next unless (${$cell}{type} =~ m/(\d)/);
+          next unless (${$cell}{type} =~ m/(\d+)/);
 
           my $multiColumnSpan = $1;
 
