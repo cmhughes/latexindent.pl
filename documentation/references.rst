@@ -75,6 +75,11 @@ References
       https://dev.to/brpaz/how-to-create-your-own-auto-completion-for-json-and-yaml-files-on-vs-code-with-the-help-of-json-schema-k1i.
 
    .. container::
+      :name: ref-miktex-guide
+
+      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
+
+   .. container::
       :name: ref-jun-sheaf
 
       J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
@@ -162,7 +167,8 @@ References
    .. container::
       :name: ref-vscode-yaml-extentions
 
-      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml.
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022.
+      `https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
 
    .. container::
       :name: ref-bersbersbers

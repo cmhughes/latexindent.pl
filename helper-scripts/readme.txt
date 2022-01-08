@@ -12,9 +12,9 @@ Typical running order of these helper scripts:
     - <update documentation/changelog.md>
     - <commit changes and push to develop>
     - git push
-    - <pull request to main>
+    ###### - <pull request to main>
     - git checkout main
-    - git pull
+    - git merge --no-ff develop
     - git tag "V<number>"
     - git push --tags
     - <update release notes on github>
