@@ -28,6 +28,17 @@ sub process_switches{
     # -v switch is just to show the version number
     if($switches{version}) {
         print $versionNumber,", ",$versionDate,"\n";
+        if ($switches{vversion}) {
+            print "$FindBin::Script lives here: $FindBin::RealBin/$FindBin::Script\n";
+            if ( -e "$FindBin::RealBin/defaultSettings.yaml" ){
+                print "defaultSettings.yaml lives here $FindBin::RealBin/defaultSettings.yaml\n";
+            } elsif ( -e "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml" ){
+                print "defaultSettings.yaml lives here $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n";
+            } elsif ( -e "$FindBin::RealBin/LatexIndent/defaultSettings.yaml" ) {
+                print "defaultSettings.yaml lives here $FindBin::RealBin/LatexIndent/defaultSettings.yaml\n";
+            }
+            print "project home: https://github.com/cmhughes/latexindent.pl\n";
+        }
         exit(0);
     }
 
@@ -37,6 +48,9 @@ latexindent.pl version $versionNumber, $versionDate
 usage: latexindent.pl [options] [file]
       -v, --version
           displays the version number and date of release
+      -vv, --vversion
+          displays verbose version details: the version number, date of release, 
+          and location details of latexindent.pl and defaultSettings.yaml
       -h, --help
           help (see the documentation for detailed instructions and examples)
       -sl, --screenlog

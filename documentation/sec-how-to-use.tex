@@ -43,14 +43,26 @@
 	\announce{2017-06-25}{version}
 	\begin{commandshell}
 latexindent.pl -v
+latexindent.pl --version
 \end{commandshell}
 	This will output only the version number to the terminal.
+
+\flagbox{-vv, --vversion}
+	\index{switches!-vv, --vversion definition and details}
+	\announce{new}{vversion switch}
+	\begin{commandshell}
+latexindent.pl -vv
+latexindent.pl --vversion
+\end{commandshell}
+	This will output \emph{verbose} version details to the terminal, including the location
+	of \texttt{latexindent.pl} and \texttt{defaultSettings.yaml}.
 
 \flagbox{-h, --help}
 	\index{switches!-h, --help definition and details}
 
 	\begin{commandshell}
 latexindent.pl -h
+latexindent.pl --help
 \end{commandshell}
 
 	As above this will output a welcome message to the terminal, including the version number
@@ -490,7 +502,7 @@ latexindent.pl myfile.tex
 			exit code & indentation & status                                                                                        \\
 			\midrule
 			0         & \faCheck    & success; if \texttt{-k} or \texttt{-kv} active, indented text matches original                \\
-			0         & \faClose    & success; if \texttt{-version} or \texttt{-help}, no indentation performed                     \\
+			0         & \faClose    & success; if \texttt{-version}, \texttt{-vversion} or \texttt{-help}, no indentation performed \\
 			1         & \faCheck    & success, and \texttt{-k} or \texttt{-kv} active; indented text \emph{different} from original \\
 			\midrule
 			2         & \faClose    & failure, \texttt{defaultSettings.yaml} could not be read                                      \\

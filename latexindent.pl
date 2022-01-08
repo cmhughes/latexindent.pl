@@ -31,6 +31,7 @@ my %switches = (readLocalSettings=>0);
 
 GetOptions (
     "version|v"=>\$switches{version},
+    "vversion|vv"=>\$switches{vversion},
     "silent|s"=>\$switches{silentMode},
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},
