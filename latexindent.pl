@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.13.5, 2022-01-02
+#   latexindent.pl, version 3.14, 2022-01-08
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ my %switches = (readLocalSettings=>0);
 
 GetOptions (
     "version|v"=>\$switches{version},
+    "vversion|vv"=>\$switches{vversion},
     "silent|s"=>\$switches{silentMode},
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},

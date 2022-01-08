@@ -1,9 +1,11 @@
 How to use the script
 =====================
 
-``latexindent.pl`` ships as part of the TeXLive distribution for Linux and Mac users; ``latexindent.exe`` ships as part of the TeXLive and MiKTeX distributions for Windows users. These files are also
-available from github (“Home of Latexindent.pl” n.d.) should you wish to use them without a TeX distribution; in this case, you may like to read :numref:`sec:updating-path` which details how the
-``path`` variable can be updated.
+``latexindent.pl`` ships as part of the TeXLive distribution for Linux and Mac users; ``latexindent.exe`` ships as part of the TeXLive for Windows users. These files are also available from github
+(“Home of Latexindent.pl” n.d.) should you wish to use them without a TeX distribution; in this case, you may like to read :numref:`sec:updating-path` which details how the ``path`` variable can be
+updated.
+
+.. index:: TeXLive
 
 In what follows, we will always refer to ``latexindent.pl``, but depending on your operating system and preference, you might substitute ``latexindent.exe`` or simply ``latexindent``.
 
@@ -12,6 +14,12 @@ change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 
 ``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution. If you plan to use ``latexindent.pl`` (i.e, the original Perl
 script) then you will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
+
+MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
+
+.. index:: MiKTeX
+
+.. index:: latexindent.exe
 
 .. label follows
 
@@ -32,8 +40,21 @@ information that is written to ``indent.log``, but other additional information 
    :class: .commandshell
 
    latexindent.pl -v
+   latexindent.pl --version
 
 This will output only the version number to the terminal.
+
+.. describe:: -vv, –vversion
+
+.. index:: switches;-vv, –vversion definition and details
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -vv
+   latexindent.pl --vversion
+
+This will output *verbose* version details to the terminal, including the location of ``latexindent.pl`` and ``defaultSettings.yaml``.
 
 .. describe:: -h, –help
 
@@ -43,6 +64,7 @@ This will output only the version number to the terminal.
    :class: .commandshell
 
    latexindent.pl -h
+   latexindent.pl --help
 
 As above this will output a welcome message to the terminal, including the version number and available options.
 
@@ -535,7 +557,7 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
    exit code indentation status
    ========= =========== ==============================================================================
    0         yes         success; if ``-k`` or ``-kv`` active, indented text matches original
-   0         no          success; if ``-version`` or ``-help``, no indentation performed
+   0         no          success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed
    1         yes         success, and ``-k`` or ``-kv`` active; indented text *different* from original
    2         no          failure, ``defaultSettings.yaml`` could not be read
    3         no          failure, myfile.tex not found
@@ -556,6 +578,11 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
       :name: ref-latexindent-home
 
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
+
+   .. container::
+      :name: ref-miktex-guide
+
+      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
 
    .. container::
       :name: ref-xu-cheng

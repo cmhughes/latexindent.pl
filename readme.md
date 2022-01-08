@@ -13,7 +13,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.13.5, 2022-01-02
+    latexindent.pl, version 3.14, 2022-01-08
 
 ## author
 Chris Hughes (cmhughes)
@@ -106,8 +106,7 @@ You don't even have to worry about `defaultSettings.yaml` as it included too.
 ## GitHub Actions
 `latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
 file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
-directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this reposito
-ry.
+directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
 
 > ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
 ![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)

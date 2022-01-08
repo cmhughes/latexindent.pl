@@ -271,10 +271,16 @@ latexindent-yaml-schema.json
 
 ``latexindent.pl`` ships with ``latexindent-yaml-schema.json`` which might help you when constructing your YAML files.
 
+.. index:: json;schema for YAML files
+
 VSCode demonstration
 ~~~~~~~~~~~~~~~~~~~~
 
 To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps:
+
+.. index:: VSCode
+
+.. index:: json;VSCode
 
 #. download ``latexindent-yaml-schema.json`` from the ``documentation`` folder of (“Home of Latexindent.pl” n.d.), save it in whichever directory you would like, noting it for reference;
 
@@ -284,14 +290,14 @@ To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the followi
 #. set up your ``settings.json`` file using the directory you saved the file by adapting :numref:`lst:settings.json`; on my Ubuntu laptop this file lives at
    ``/home/cmhughes/.config/Code/User/settings.json``.
 
-.. literalinclude:: settings.json
+.. literalinclude:: demonstrations/settings.json
  	:class: .baseyaml
  	:caption: ``settings.json`` 
  	:name: lst:settings.json
 
 Alternatively, if you would prefer not to download the json file, you might be able to use an adapted version of :numref:`lst:settings-alt.json`.
 
-.. literalinclude:: settings-alt.json
+.. literalinclude:: demonstrations/settings-alt.json
  	:class: .baseyaml
  	:caption: ``settings-alt.json`` 
  	:name: lst:settings-alt.json
@@ -299,7 +305,7 @@ Alternatively, if you would prefer not to download the json file, you might be a
 Finally, if your TeX distribution is up to date, then ``latexindent-yaml-schema.json`` *should* be in the documentation folder of your installation, so an adapted version of
 :numref:`lst:settings-alt1.json` may work.
 
-.. literalinclude:: settings-alt1.json
+.. literalinclude:: demonstrations/settings-alt1.json
  	:class: .baseyaml
  	:caption: ``settings-alt1.json`` 
  	:name: lst:settings-alt1.json
@@ -318,6 +324,8 @@ If you use conda you’ll only need
 
 this will install the executable and all its dependencies (including perl) in the activate environment. You don’t even have to worry about ``defaultSettings.yaml`` as it included too, you can thus
 skip :numref:`sec:requiredmodules` and :numref:`sec:updating-path`.
+
+.. index:: conda
 
 You can get a conda installation for example from (“Conda Forge” n.d.) or from (“Anacoda” n.d.).
 
@@ -530,7 +538,8 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
    .. container::
       :name: ref-vscode-yaml-extentions
 
-      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml.
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022.
+      `https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
 
    .. container::
       :name: ref-bersbersbers

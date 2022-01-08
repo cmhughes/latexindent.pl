@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.13.5, 2022-01-02
+# defaultSettings.yaml for latexindent.pl, version 3.14, 2022-01-08
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -650,6 +650,6 @@ fineTuning:
     trailingComments:
       notPreceededBy: '(?<!\\)'
     modifyLineBreaks:
-      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
+      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:E\.g)|(?:i\.e)|(?:I\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
       doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
       comma: ','

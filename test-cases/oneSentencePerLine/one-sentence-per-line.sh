@@ -101,5 +101,8 @@ latexindent.pl -s -m psttf.tex -l psttf2.yaml -o=+-mod2
 
 # https://github.com/cmhughes/latexindent.pl/issues/243
 latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1,modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1,fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
+
+# issue 321
+latexindent.pl -s issue-321.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 [[ $noisyMode == 1 ]] && makenoise
 git status

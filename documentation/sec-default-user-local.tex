@@ -453,11 +453,9 @@ lookForAlignDelims:
 		      specifies the justification for the alignment delimeters (default: left); note that this
 		      feature is only useful if you have delimiters of different lengths in the same column,
 		      discussed in \cref{sec:delimiter-reg-ex};
-		\item \announce*{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks} optionally
-		      instructs
-		      \texttt{latexindent.pl}
-		      to search for child code blocks or not (default: 1), discussed in
-		      \cref{sec:lookForChildCodeBlocks}.
+		\item \announce{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks} optionally
+		      instructs \texttt{latexindent.pl} to search for child code blocks or not (default: 1),
+		      discussed in \cref{sec:lookForChildCodeBlocks}.
 	\end{itemize}
 
 	We will explore most of these features using the file \texttt{tabular2.tex} in
@@ -946,7 +944,7 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 
 \subsubsection{lookForAlignDelims: lookForChildCodeBlocks}\label{sec:lookForChildCodeBlocks}
 	There
-	\announce*{2021-12-13}{lookForChildCodeBlocks demonstration} may be scenarios in
+	\announce{2021-12-13}{lookForChildCodeBlocks demonstration} may be scenarios in
 	which you would prefer to instruct \texttt{latexindent.pl} \emph{not} to search for child
 	blocks; in which case setting \texttt{lookForChildCodeBlocks} to 0 may be a good way to
 	proceed.
@@ -958,8 +956,8 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1.yaml -o=+-mod1
 \end{commandshell}
 	gives the output in \cref{lst:tabular-DM-1-mod1}.
 	\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/tabular-DM-1.tex}{\texttt{tabular-DM-1.tex}}{lst:tabular-DM-1}
-		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1.tex}{\texttt{tabular-DM-1-mod1.tex}}{lst:tabular-DM-1-mod1}
+		\cmhlistingsfromfile{demonstrations/tabular-DM-1.tex}{\texttt{tabular-DM-1.tex}}{lst:tabular-DM-1}
+		\cmhlistingsfromfile{demonstrations/tabular-DM-1-mod1.tex}{\texttt{tabular-DM-1-mod1.tex}}{lst:tabular-DM-1-mod1}
 	\end{cmhtcbraster}
 
 	We can improve the output from \cref{lst:tabular-DM-1-mod1} by employing the settings in
@@ -970,8 +968,8 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 	which gives the output in \cref{lst:dontMeasure1a}.
 
 	\begin{cmhtcbraster}
-		\cmhlistingsfromfile*{demonstrations/tabular-DM-1-mod1a.tex}{\texttt{tabular-DM-1-mod1a.tex}}{lst:tabular-DM-1-mod1a}
-		\cmhlistingsfromfile*{demonstrations/dontMeasure1a.yaml}[yaml-TCB]{\texttt{dontMeasure1a.yaml}}{lst:dontMeasure1a}
+		\cmhlistingsfromfile{demonstrations/tabular-DM-1-mod1a.tex}{\texttt{tabular-DM-1-mod1a.tex}}{lst:tabular-DM-1-mod1a}
+		\cmhlistingsfromfile{demonstrations/dontMeasure1a.yaml}[yaml-TCB]{\texttt{dontMeasure1a.yaml}}{lst:dontMeasure1a}
 	\end{cmhtcbraster}
 
 \subsection{Indent after items, specials and headings}
