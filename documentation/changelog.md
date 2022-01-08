@@ -1,5 +1,11 @@
 # changelog.md
 
+## V3.14, January 8, 2022
+* new feature: `-vv` switch for verbose version
+* bug fix: https://github.com/cmhughes/latexindent.pl/issues/301
+* fineTuning update: https://github.com/cmhughes/latexindent.pl/issues/321
+* documentation update: https://github.com/cmhughes/latexindent.pl/issues/314
+
 ## V3.13.5, January 2, 2022
 `latexindent-yaml-schema.json` created and documented, discussion at 
 [issue 206](https://github.com/cmhughes/latexindent.pl/issues/206).
