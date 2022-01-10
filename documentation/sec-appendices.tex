@@ -265,6 +265,72 @@ conda install latexindent.pl -c conda-forge
 
 	 You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
 
+	\section{Using pre-commit}
+
+	\subsection{Using CPAN}
+
+	 To use \texttt{latexindent.pl} with \texttt{pre-commit},
+	 create section in the file \texttt{.pre-commit-config.yaml} in your git-repository:
+	 \begin{cmhlistings}[style=tcblatex,language=yaml]{\texttt{.pre-commit-config.yaml}}{lst:.pre-commit-config.yaml}
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: 3.13.5
+  hooks:
+  - id: latexindent
+    args: [-s, -w]
+\end{cmhlistings}
+	 whereby \texttt{CPAN} will be used to get dependencies.
+	 This requires \texttt{pre-commit} and \texttt{perl} to be installed on your system.
+	 Note that \texttt{args} lists selected command-line options.
+	 The specified \texttt{-s} (``silent'') and \texttt{-w} (``overwrite'' to remove in place)
+	 are common for use with \texttt{pre-commit}.
+	 Naturally you can add options, or omit \texttt{-s} and \texttt{-w}, according to your preference,
+	 see also example below.
+
+	\subsection{Using conda}
+
+	 You can also rely on \texttt{conda} instead of \texttt{CPAN} for all dependencies
+	 (include \texttt{latexindent.pl} itself in the case of \texttt{conda})
+	 \begin{cmhlistings}[style=tcblatex,language=yaml]{\texttt{.pre-commit-config.yaml}}{lst:.pre-commit-config.yaml}
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: 3.13.5
+  hooks:
+  - id: latexindent-conda
+    args: [-s, -w]
+\end{cmhlistings}
+ 	 This requires \texttt{pre-commit} and \texttt{conda} to be installed on your system.
+ 	 See comments above and below about command-line options under \texttt{args}.
+
+	\subsection{Example}
+
+	Let's consider a small example, with local \texttt{latexindent.pl} settings
+	in \texttt{.latexindent.yaml}:
+
+	\begin{cmhlistings}[style=tcblatex,language=yaml]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+onlyOneBackUp: 1
+removeTrailingWhitespace: 1
+modifyLineBreaks:
+ textWrapOptions:
+   columns: 100
+ oneSentencePerLine:
+   manipulateSentences: 1
+   removeSentenceLineBreaks: 0
+\end{cmhlistings}
+
+	 and \texttt{.pre-commit-config.yaml} as follows:
+	 \begin{cmhlistings}[style=tcblatex,language=yaml]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+repos:
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: 3.13.5
+  hooks:
+  - id: latexindent
+    args: [-l, -m, -s, -w]
+\end{cmhlistings}
+	 where the \texttt{-l} option was added to use the local \texttt{.latexindent.yaml}
+	 (where it was specified not to create back-up files,
+	 as \texttt{git} typically takes care of this when you use \texttt{pre-commit}),
+	 \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line output,
+	 and \texttt{-w} to format files in place.
+
 	\section{logFilePreferences}\label{app:logfile-demo}
 	 \Vref{lst:logFilePreferences} describes the options for customising the information given
 	 to the log file, and we provide a few demonstrations here. Let's say that we start with
