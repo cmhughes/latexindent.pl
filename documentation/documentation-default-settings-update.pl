@@ -154,9 +154,9 @@ if(!$readTheDocsMode){
     }
 
     # appendix
-    system("perl -p0i -e 's/\\\\subsection/\\\\subsubsection/sg' appendices.tex");
-    system("perl -p0i -e 's/\\\\section/\\\\subsection/sg' appendices.tex");
-    system("perl -p0i -e 's/\\\\appendix/\\\\section\{Appendices\}/sg' appendices.tex");
+    system("perl -p0i -e 's/\\\\subsection/\\\\subsubsection/sg' sec-appendices.tex");
+    system("perl -p0i -e 's/\\\\section/\\\\subsection/sg' sec-appendices.tex");
+    system("perl -p0i -e 's/\\\\appendix/\\\\section\{Appendices\}/sg' sec-appendices.tex");
 
     # loop through the .tex files
     foreach my $fileName ("sec-introduction.tex",
@@ -169,8 +169,8 @@ if(!$readTheDocsMode){
                           "sec-the-line-switch.tex",
                           "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
-                          "references.tex",
-                          "appendices.tex",
+                          "sec-references.tex",
+                          "sec-appendices.tex",
                           , ){
 
         @lines = q();
