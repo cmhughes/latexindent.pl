@@ -1,0 +1,13 @@
+lookForAlignDelims:
+   xeCJKsetup: 
+      delimiterRegEx: '(=)'
+
+indentRules:
+  xeCJKsetup:
+    body: '  '
+  mxendarticle: '                          '
+
+specialBeginEnd:
+    mxendarticle:
+        begin: '\\mxendarticle'
+        end: ','

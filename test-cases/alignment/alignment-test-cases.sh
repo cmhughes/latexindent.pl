@@ -251,6 +251,14 @@ latexindent.pl -s issue-308-mand-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
 latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg.yaml  -o=+-mod1
 latexindent.pl -s issue-308-opt-arg.tex -l issue-308-mand-arg-a.yaml -o=+-mod1a
 
+# issue-326 demo
+latexindent.pl -s -w -r -l issue-326.yaml issue-326.tex
+latexindent.pl -s -w -l issue-326a.yaml issue-326a.tex
+latexindent.pl -s -w -l issue-326b.yaml issue-326b.tex
+latexindent.pl -s -w -l issue-326c.yaml issue-326c.tex
+latexindent.pl -s -w -l issue-326d.yaml issue-326d.tex
+latexindent.pl -s    -l issue-326d2.yaml issue-326d.tex -o +-mod2
+
 [[ $silentMode == 0 ]] && set -x 
 git status
 [[ $noisyMode == 1 ]] && makenoise

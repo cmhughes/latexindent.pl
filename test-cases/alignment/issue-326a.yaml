@@ -1,0 +1,13 @@
+lookForAlignDelims:
+   geometry: 
+      delimiterRegEx: '(=)'
+
+specialBeginEnd:
+    papersize:
+        begin: '\{\h*[0-9]+'
+        end: 'mm\h*\}'
+    specialBeforeCommand: 1
+
+indentRules:
+  geometry:
+    body: '  '

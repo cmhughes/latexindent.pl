@@ -1,0 +1,20 @@
+replacements:
+  -
+    # change {\\... into { \\...
+    substitution: |-
+      s/\{\h*(\\|[a-z]|[A-Z])/\{ $1/sgx
+    when: after
+  -
+    # change <letter>} into <letter> }
+    substitution: |-
+      s/([a-z]|[A-Z])\h*\}/$1 \}/sgx
+    when: after
+  -
+    # change <letter>{ into <letter> {
+    substitution: |-
+      s/([a-z]|[A-Z])\h*\{/$1 \{/sgx
+    when: after
+
+indentRules:
+  maoxuan_hyper_link:nn:
+    body: '  '
