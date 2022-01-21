@@ -1,3 +1,8 @@
+# Makefile.PL
+#   
+#   this file is needed for the pre-commit tool
+#   to work with latexindent.pl
+#
 use ExtUtils::MakeMaker;
 use File::Copy;
 

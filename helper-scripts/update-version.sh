@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.13.5'
-newVersion='3.14'
-oldDate='2022-01-02'
-newDate='2022-01-08'
+oldVersion='3.14'
+newVersion='3.15'
+oldDate='2022-01-08'
+newDate='2022-01-21'
 
 while getopts "hmv" OPTION
 do

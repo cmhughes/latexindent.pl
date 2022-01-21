@@ -14,7 +14,7 @@
 function checkgitdiff
 {
     git diff --quiet
-    result=$? && [[ result -gt 0  ]]&&   echo "git diff has differences, something has changed" && exit
+    result=$? && [[ result -gt 0  ]] &&   echo "git diff has differences, something has changed" && exit
 }
 
 silentMode=0

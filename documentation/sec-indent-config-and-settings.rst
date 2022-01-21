@@ -214,29 +214,53 @@ A visual representation of this is given in :numref:`fig:loadorder`.
 
 .. _fig:loadorder:
 
+.. raw:: latex
+
+   \centering
+
 .. figure:: figure-schematic.png
    
 
    Schematic of the load order described in :numref:`sec:loadorder`; solid lines represent mandatory files, dotted lines represent optional files. ``indentconfig.yaml`` can contain as many files as
    you like. The files will be loaded in order; if you specify settings for the same field in more than one file, the most recent takes priority. 
 
-.. container:: references
-   :name: refs
+.. raw:: html
 
-   .. container::
-      :name: ref-jacobo-diaz-hidden-config
+   <div id="refs" class="references">
 
-      Diaz, Jacobo. 2014. “Hiddenconfig.” July 21, 2014. https://github.com/cmhughes/latexindent.pl/pull/18.
+.. raw:: html
 
-   .. container::
-      :name: ref-encoding
+   <div id="ref-jacobo-diaz-hidden-config">
 
-      “Perldoc Encode::Supported.” n.d. Accessed May 6, 2021. https://perldoc.perl.org/Encode::Supported.
+Diaz, Jacobo. 2014. “Hiddenconfig.” July 21, 2014. https://github.com/cmhughes/latexindent.pl/pull/18.
 
-   .. container::
-      :name: ref-qiancy98
+.. raw:: html
 
-      qiancy98. 2021. “Locale Encoding of File System.” May 6, 2021. https://github.com/cmhughes/latexindent.pl/pull/273.
+   </div>
+
+.. raw:: html
+
+   <div id="ref-encoding">
+
+“Perldoc Encode::Supported.” n.d. Accessed May 6, 2021. https://perldoc.perl.org/Encode::Supported.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-qiancy98">
+
+qiancy98. 2021. “Locale Encoding of File System.” May 6, 2021. https://github.com/cmhughes/latexindent.pl/pull/273.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
 
 .. [1]
    If you’re not sure where to put ``indentconfig.yaml``, don’t worry ``latexindent.pl`` will tell you in the log file exactly where to put it assuming it doesn’t exist already.

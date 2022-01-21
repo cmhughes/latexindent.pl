@@ -553,41 +553,73 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
 
 .. table:: Exit codes for ``latexindent.pl``
 
-   ========= =========== ==============================================================================
-   exit code indentation status
-   ========= =========== ==============================================================================
-   0         yes         success; if ``-k`` or ``-kv`` active, indented text matches original
-   0         no          success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed
-   1         yes         success, and ``-k`` or ``-kv`` active; indented text *different* from original
-   2         no          failure, ``defaultSettings.yaml`` could not be read
-   3         no          failure, myfile.tex not found
-   4         no          failure, myfile.tex exists but cannot be read
-   5         no          failure, ``-w`` active, and back-up file cannot be written
-   6         no          failure, ``-c`` active, and cruft directory does not exist
-   ========= =========== ==============================================================================
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | exit code | indentation | status                                                                         |
+   +===========+=============+================================================================================+
+   | 0         | yes         | success; if ``-k`` or ``-kv`` active, indented text matches original           |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 0         | no          | success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 1         | yes         | success, and ``-k`` or ``-kv`` active; indented text *different* from original |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 2         | no          | failure, ``defaultSettings.yaml`` could not be read                            |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 3         | no          | failure, myfile.tex not found                                                  |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 4         | no          | failure, myfile.tex exists but cannot be read                                  |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 5         | no          | failure, ``-w`` active, and back-up file cannot be written                     |
+   +-----------+-------------+--------------------------------------------------------------------------------+
+   | 6         | no          | failure, ``-c`` active, and cruft directory does not exist                     |
+   +-----------+-------------+--------------------------------------------------------------------------------+
 
-.. container:: references
-   :name: refs
+.. raw:: html
 
-   .. container::
-      :name: ref-paulo
+   <div id="refs" class="references">
 
-      Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
+.. raw:: html
 
-   .. container::
-      :name: ref-latexindent-home
+   <div id="ref-paulo">
 
-      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
+Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
-   .. container::
-      :name: ref-miktex-guide
+.. raw:: html
 
-      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
+   </div>
 
-   .. container::
-      :name: ref-xu-cheng
+.. raw:: html
 
-      (xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
+   <div id="ref-latexindent-home">
+
+“Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-miktex-guide">
+
+“How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   <div id="ref-xu-cheng">
+
+(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
 
 .. [1]
    Users of version 2.\* should note the subtle change in syntax

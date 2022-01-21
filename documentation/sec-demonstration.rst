@@ -11,6 +11,10 @@ In each of the samples given in :numref:`lst:filecontentsbefore` – :numref:`ls
 would be the same, regardless of the leading white space at the beginning of each line which is stripped by ``latexindent.pl`` (unless a ``verbatim``-like environment or ``noIndentBlock`` is specified
 – more on this in :numref:`sec:defuseloc`).
 
+.. raw:: latex
+
+   \centering
+
 .. literalinclude:: demonstrations/filecontents1.tex
  	:class: .tex
  	:caption: ``filecontents1.tex`` 
@@ -41,10 +45,20 @@ would be the same, regardless of the leading white space at the beginning of eac
  	:caption: ``pstricks.tex`` default output 
  	:name: lst:pstricksafter
 
-.. container:: references
-   :name: refs
+.. raw:: html
 
-   .. container::
-      :name: ref-cmh:videodemo
+   <div id="refs" class="references">
 
-      “Video Demonstration of Latexindent.pl on Youtube.” n.d. Accessed February 21, 2017. https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
+.. raw:: html
+
+   <div id="ref-cmh:videodemo">
+
+“Video Demonstration of Latexindent.pl on Youtube.” n.d. Accessed February 21, 2017. https://www.youtube.com/watch?v=wo38aaH2F4E&spfreload=10.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>
