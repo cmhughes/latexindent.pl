@@ -333,6 +333,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib1.tex -o=+-mod1 
+	      
 	
 	gives the output in :numref:`lst:bib1-mod1`.
 	
@@ -352,6 +353,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
+	        
 	
 	gives the output in :numref:`lst:bib1-mod2`.
 	
@@ -387,6 +389,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
+	      
 	
 	gives the output in :numref:`lst:bib2-mod1`.
 	
@@ -415,6 +418,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
+	            
 	
 	we receive the *desired* output in :numref:`lst:bib2-mod2`.
 	
@@ -427,10 +431,20 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	``v`` or ``spfreload``.
 	 
 
-.. container:: references
-   :name: refs
+.. raw:: html
 
-   .. container::
-      :name: ref-masteringregexp
+   <div id="refs" class="references">
 
-      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
+.. raw:: html
+
+   <div id="ref-masteringregexp">
+
+Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
+
+.. raw:: html
+
+   </div>
+
+.. raw:: html
+
+   </div>

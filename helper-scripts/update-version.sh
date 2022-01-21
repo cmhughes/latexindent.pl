@@ -1,67 +1,130 @@
 #!/bin/bash
+# PURPOSE
+#
+#   helper script to assist with pre-release tasks
+#
+# sample usage
+#
+#   update-version.sh -h
+#   update-version.sh -m
+#   update-version.sh 
 
-generatePDFmode=0
 minorVersion=0
-while getopts "mp" OPTION
+oldVersion='3.14'
+newVersion='3.15'
+oldDate='2022-01-08'
+newDate='2022-01-21'
+
+while getopts "hmv" OPTION
 do
  case $OPTION in 
-  p)    
-   echo "re-generating pdf..."
-   generatePDFmode=1
-   ;;
+  h)
+    cat <<-____PLEH
+
+${0##*/} [OPTIONS]
+    
+    -h  help, outputs this message
+
+    -m  minor version, not removing most recently updated stars from documentation
+
+Typical running order pre-release:
+
+    update-version.sh
+    - <update documentation/changelog.md>
+    - <check everything has changed as you'd like using git diff>
+    - <commit changes and push to develop>
+    - git push
+    - git checkout main
+    - git merge --no-ff develop
+    - git tag "V<number>"
+    - git push --tags
+    - <update release notes on github>
+    - <download latexindent.zip>
+    - <upload latexindent.zip to ctan>
+____PLEH
+    exit 0
+    ;;
   m)    
    echo "minor version, not removing most recently updated stars from documentation..."
    minorVersion=1
    ;;
+  v)    
+   echo "version details:"
+   echo "old version details: $oldVersion, $oldDate"
+   echo "NEW version details: $newVersion, $newDate"
+   exit 0
+   ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
-        exit 2
+        exit 1
         ;;
  # end case
  esac 
 done
 
-oldVersion='3.13.5'
-newVersion='3.14'
-oldDate='2022-01-02'
-newDate='2022-01-08'
+echo "old version details: $oldVersion, $oldDate"
+echo "NEW version details: $newVersion, $newDate"
 
 cd ../
 cd documentation
-[[ $minorVersion == 0 ]] && find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 [[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
-find -name "a*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+
+set -x
+pdflatex --interaction=batchmode latexindent
+
+# update .rst
+perl documentation-default-settings-update.pl
+perl documentation-default-settings-update.pl -r
+
+# change \announce{new}{message} into \announce*{message}
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+set +x
+
 cd ../
 
-sed -i.bak "s/version = u'$oldVersion'/version = u'$newVersion'/" documentation/conf.py
-sed -i.bak "s/release = u'$oldVersion'/release = u'$newVersion'/" documentation/conf.py
+# change
+#
+#   oldDate to newDate
+#   oldVersion to newVersion
+#
+filesToUpdate=( 
+  latexindent.pl
+  defaultSettings.yaml
+  LatexIndent/Version.pm 
+  readme.md
+  documentation/conf.py 
+  documentation/readme.txt
+  documentation/latexindent-yaml-schema.json
+  documentation/title.tex
+  ) 
 
-sed -i.bak "s/\$versionNumber = '$oldVersion'/\$versionNumber = '$newVersion'/" LatexIndent/Version.pm
-sed -i.bak "s/\$versionDate = '$oldDate'/\$versionDate = '$newDate'/" LatexIndent/Version.pm
+# loop through the files
+for file in "${filesToUpdate[@]}"
+do
+  echo "updating $file"
+  sed -i.bak "s/$oldDate/$newDate/" $file
+  sed -i.bak "s/$oldVersion/$newVersion/" $file
+done
 
-sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" latexindent.pl
-sed -i.bak "s/version $oldVersion, $oldDate/version $newVersion, $newDate/" defaultSettings.yaml
+# check for new announcements in the documentation
+egrep -i --color=auto 'announce{new' documentation/*.tex
 
-sed -i.bak "s/version $oldVersion,/version $newVersion,/" readme.md
-sed -i.bak "s/$oldDate/$newDate/" readme.md
+# update changelog.md manually
+gedit documentation/changelog.md
 
-sed -i.bak "s/version $oldVersion,/version $newVersion,/" documentation/readme.txt
+cat <<-____TXEN
 
-sed -i.bak "s/version $oldVersion/version $newVersion/g" documentation/conf.py
-
-sed -i.bak "s/V$oldVersion/V$newVersion/g" documentation/latexindent-yaml-schema.json
-sed -i.bak "s/$oldDate/$newDate/" documentation/latexindent-yaml-schema.json
-
-sed -i.bak "s/$oldDate/$newDate/" documentation/readme.txt
-
-sed -i.bak "s/Version $oldVersion/Version $newVersion/" documentation/title.tex
-sed -i.bak "s/$oldDate/$newDate/" documentation/title.tex
-
-sed -i.bak "s/\\documentclass\[10pt,draft\]/\\documentclass\[10pt\]/" documentation/latexindent.tex
-cd documentation
-## perl documentation-default-settings-update.pl -r
-egrep -i --color=auto 'announce{new' *.tex
-cd ../
-# possibly generate the pdf
-[[ $generatePDFmode == 1 ]] && cd documentation && arara latexindent
-exit
+Next steps:
+    - <update documentation/changelog.md>
+    - <check everything has changed as you'd like using git diff>
+    - <commit changes and push to develop>
+    - git push
+    - git checkout main
+    - git merge --no-ff develop
+    - git tag "V<number>"
+    - git push --tags
+    - <update release notes on github>
+    - <download latexindent.zip>
+    - <upload latexindent.zip to ctan>
+____TXEN
+    
+exit 0

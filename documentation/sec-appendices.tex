@@ -65,6 +65,7 @@ cpanm YAML::Tiny
 cpanm File::HomeDir
 cpanm Unicode::GCString
 \end{commandshell}
+			\index{cpan}
 
 		\paragraph{Ubuntu/Debian}
 			For other distributions, the Ubuntu/Debian approach may work as follows
@@ -232,14 +233,14 @@ echo %path%
 		\end{enumerate}
 
 		\begin{widepage}
-			\cmhlistingsfromfile*{demonstrations/settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
+			\cmhlistingsfromfile{demonstrations/settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
 		\end{widepage}
 
 		Alternatively, if you would prefer not to download the json file, you might be able to
 		use an adapted version of \cref{lst:settings-alt.json}.
 
 		\begin{widepage}
-			\cmhlistingsfromfile*{demonstrations/settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
+			\cmhlistingsfromfile{demonstrations/settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
 		\end{widepage}
 
 		Finally, if your TeX distribution is up to date, then
@@ -247,13 +248,13 @@ echo %path%
 		your installation, so an adapted version of \cref{lst:settings-alt1.json} may work.
 
 		\begin{widepage}
-			\cmhlistingsfromfile*{demonstrations/settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
+			\cmhlistingsfromfile{demonstrations/settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
 		\end{widepage}
 
 		If you have details of how to implement this schema in other editors, please feel
 		encouraged to contribute to this documentation.
 
-	\section{Using conda}
+	\section{Using conda}\label{sec:app:conda}
 	 If you use conda you'll only need
 	 \begin{commandshell}
 conda install latexindent.pl -c conda-forge
@@ -264,6 +265,159 @@ conda install latexindent.pl -c conda-forge
 	 \index{conda}
 
 	 You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
+
+	\subsection{Sample conda installation on Ubuntu}
+		On Ubuntu I followed the 64-bit installation instructions at \cite{condainstallubuntu}
+		and then I ran the following commands:
+		\begin{commandshell}
+conda create -n latexindent.pl
+conda activate latexindent.pl
+conda install latexindent.pl -c conda-forge
+conda info --envs
+conda list
+conda run latexindent.pl -vv
+\end{commandshell}
+		I found the details given at \cite{condainstallhelp} to be helpful.
+
+	\section{pre-commit}
+
+	 Users of \texttt{.git} may be interested
+	 \announce*{2022-01-21}{pre-commit for latexindent.pl} in
+	 exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is supported by
+	 \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for contributing this
+	 feature.
+
+	 To use the \texttt{pre-commit} tool, you will need to install \texttt{pre-commit}; sample
+	 instructions for Ubuntu are given in \cref{sec:pre-commit-ubuntu}. Once installed, there
+	 are two ways to use \texttt{pre-commit}: using \texttt{CPAN} or using \texttt{conda},
+	 detailed in \cref{sec:pre-commit-cpan} and \cref{sec:pre-commit-conda} respectively.
+
+	\subsection{Sample pre-commit installation on Ubuntu}\label{sec:pre-commit-ubuntu}
+		On Ubuntu I ran the following command:
+		\begin{commandshell}
+python3 -m pip install pre-commit
+\end{commandshell}
+		I then updated my path via .bashrc so that it includes the line in
+		\cref{lst:bashrc-update}.
+		\begin{cmhlistings}*[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
+...
+export PATH=$PATH:/home/cmhughes/.local/bin
+\end{cmhlistings}
+
+	\subsection{pre-commit using CPAN}\label{sec:pre-commit-cpan}
+
+		To use \texttt{latexindent.pl} with \texttt{pre-commit}, create the file
+		\texttt{.pre-commit-config.yaml} given in \cref{lst:.pre-commit-config.yaml-cpan} in your
+		git-repository.
+		\index{cpan}
+		\index{git}
+		\index{pre-commit!cpan}
+		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: V3.15
+  hooks:
+  - id: latexindent
+    args: [-s]
+\end{cmhlistings}
+		Once created, you should then be able to run the following command:
+		\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+		A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
+		\begin{itemize}
+			\item the settings given in \cref{lst:.pre-commit-config.yaml-cpan} instruct
+			      \texttt{pre-commit} to use \texttt{CPAN} to get dependencies;
+			\item this requires \texttt{pre-commit} and \texttt{perl} to be installed on your system;
+			\item the \texttt{args} lists selected command-line options; the settings in
+			      \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+			      \begin{commandshell}
+latexindent.pl -s myfile.tex       
+\end{commandshell}
+			      for each \texttt{.tex} file in your repository;
+			\item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
+			      can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
+		\end{itemize}
+
+		Naturally you can add options, or omit \texttt{-s} and \texttt{-w}, according to your
+		preference.
+
+	\subsection{pre-commit using conda}\label{sec:pre-commit-conda}
+
+		You can also rely on \texttt{conda} (detailed in \cref{sec:app:conda}) instead of
+		\texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
+		\index{conda}
+		\index{git}
+		\index{pre-commit!conda}
+
+		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: V3.15
+  hooks:
+  - id: latexindent-conda
+    args: [-s]
+\end{cmhlistings}
+		Once created, you should then be able to run the following command:
+		\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+		A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
+		\begin{itemize}
+			\item the settings given in \cref{lst:.pre-commit-config.yaml-conda} instruct
+			      \texttt{pre-commit} to use \texttt{conda} to get dependencies;
+			\item this requires \texttt{pre-commit} and \texttt{conda} to be installed on your system;
+			\item the \texttt{args} lists selected command-line options; the settings in
+			      \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+			      \begin{commandshell}
+conda run latexindent.pl -s myfile.tex       
+\end{commandshell}
+			      for each \texttt{.tex} file in your repository;
+			\item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
+			      can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
+		\end{itemize}
+
+	\subsection{pre-commit example using -l, -m switches}
+		Let's consider a small example, with local \texttt{latexindent.pl} settings in
+		\texttt{.latexindent.yaml}.
+
+		\begin{example}
+			We use the local settings given in \cref{lst:.latexindent.yaml}.
+			\begin{cmhlistings}*[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+onlyOneBackUp: 1
+
+modifyLineBreaks:
+ oneSentencePerLine:
+   manipulateSentences: 1
+\end{cmhlistings}
+
+			and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
+			\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml}}{lst:.latexindent.yaml-switches}
+repos:
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: V3.15
+  hooks:
+  - id: latexindent
+    args: [-l, -m, -s, -w]
+\end{cmhlistings}
+			Now running
+			\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+			is equivalent to running
+			\begin{commandshell}
+latexindent.pl -l -m -s -w myfile.tex
+\end{commandshell}
+			for each \texttt{.tex} file in your repository.
+
+			A few notes about \cref{lst:.latexindent.yaml-switches}:
+			\begin{itemize}
+				\item the \texttt{-l} option was added to use the local \texttt{.latexindent.yaml} (where it
+				      was specified to only create one back-up file, as \texttt{git} typically takes care of
+				      this when you use \texttt{pre-commit});
+				\item \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line
+				      output,
+				      and \texttt{-w} to format files in place.
+			\end{itemize}
+		\end{example}
 
 	\section{logFilePreferences}\label{app:logfile-demo}
 	 \Vref{lst:logFilePreferences} describes the options for customising the information given

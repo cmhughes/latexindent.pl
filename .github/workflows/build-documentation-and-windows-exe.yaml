@@ -32,7 +32,7 @@ jobs:
             github_release=$(echo ${{ github.ref }}|cut -d'/' -f 3)
             sed -i.bak s/\\\\gitAbbrevHash/$github_sha_short/ documentation/latexindent.tex
             sed -i.bak s/\\\\gitBranch/main/ documentation/latexindent.tex
-            sed -i.bak s/\\\\gitRel/$github_release/ documentation/latexindent.tex
+            sed -i.bak s/\\\\gitRel/$github_release/ documentation/*.tex
             sed -i.bak "s|\\\\gitAuthorDate|$(date +'%Y-%m-%d')|g" documentation/latexindent.tex
             cd documentation
             arara -v latexindent.tex

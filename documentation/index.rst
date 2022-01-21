@@ -22,5 +22,5 @@ latexindent.pl documentation
    sec-the-line-switch
    sec-fine-tuning
    sec-conclusions-know-limitations
-   references
-   appendices
+   sec-references
+   sec-appendices

@@ -1,4 +1,7 @@
 # changelog.md
+## V3.15, January 21, 2022
+* new feature: `pre-commit` tool now supported, full details
+at [pull 322](https://github.com/cmhughes/latexindent.pl/pull/322) and [issue 316](https://github.com/cmhughes/latexindent.pl/issues/316)
 
 ## V3.14, January 8, 2022
 * new feature: `-vv` switch for verbose version
