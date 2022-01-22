@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
