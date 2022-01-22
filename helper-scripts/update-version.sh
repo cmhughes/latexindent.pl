@@ -95,6 +95,9 @@ filesToUpdate=(
   documentation/readme.txt
   documentation/latexindent-yaml-schema.json
   documentation/title.tex
+  documentation/demonstrations/pre-commit-config-cpan.yaml
+  documentation/demonstrations/pre-commit-config-conda.yaml
+  documentation/demonstrations/pre-commit-config-demo.yaml
   ) 
 
 # loop through the files

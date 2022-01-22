@@ -312,14 +312,9 @@ export PATH=$PATH:/home/cmhughes/.local/bin
 		\index{cpan}
 		\index{git}
 		\index{pre-commit!cpan}
-		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent
-    args: [-s]
-\end{cmhlistings}
-		Once created, you should then be able to run the following command:
+
+		\cmhlistingsfromfile*{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
+Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
 \end{commandshell}
@@ -349,13 +344,7 @@ latexindent.pl -s myfile.tex
 		\index{git}
 		\index{pre-commit!conda}
 
-		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent-conda
-    args: [-s]
-\end{cmhlistings}
+		\cmhlistingsfromfile*{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
 		Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
@@ -390,14 +379,8 @@ modifyLineBreaks:
 \end{cmhlistings}
 
 			and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
-			\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml}}{lst:.latexindent.yaml-switches}
-repos:
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent
-    args: [-l, -m, -s, -w]
-\end{cmhlistings}
+
+		\cmhlistingsfromfile*{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
 			Now running
 			\begin{commandshell}
 pre-commit run --all-files  
