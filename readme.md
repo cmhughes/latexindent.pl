@@ -101,6 +101,8 @@ If you use conda you'll only need
 this will install the executable and all its dependencies (including perl) in the activate environment.
 You don't even have to worry about `defaultSettings.yaml` as it included too.
 
+**Important**: the executable name is `latexindent.pl` (not `latexindent`). 
+	
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
 </details>
 
