@@ -170,8 +170,8 @@ ls /usr/local/bin
 			      to see what is \emph{currently} in there;
 			\item run the following commands
 			      \begin{commandshell}
-sudo apt-get install cmake
-sudo apt-get update && sudo apt-get install build-essential
+sudo apt-get update
+sudo apt-get install --no-install-recommends cmake make # or any other generator
 mkdir build && cd build
 cmake ../path-helper-files
 sudo make install
