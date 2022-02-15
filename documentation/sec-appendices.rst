@@ -223,8 +223,8 @@ To add ``latexindent.pl`` to the path for Linux, follow these steps:
    .. code-block:: latex
       :class: .commandshell
 
-      sudo apt-get install cmake
-      sudo apt-get update && sudo apt-get install build-essential
+      sudo apt-get update
+      sudo apt-get install --no-install-recommends cmake make # or any other generator
       mkdir build && cd build
       cmake ../path-helper-files
       sudo make install
