@@ -35,7 +35,13 @@ jobs:
             sed -i.bak s/\\\\gitRel/$github_release/ documentation/*.tex
             sed -i.bak "s|\\\\gitAuthorDate|$(date +'%Y-%m-%d')|g" documentation/latexindent.tex
             cd documentation
-            arara -v latexindent.tex
+            #arara -v latexindent.tex
+            pdflatex latexindent
+            makeindex -s latexindent.ist -t latexindent.ilg latexindent.idx -o latexindent.ind
+            bibtex latexindent
+            pdflatex latexindent
+            pdflatex latexindent
+            pdflatex latexindent
             cd ..
             mkdir -p target/release
             mv documentation/latexindent.pdf target/release
