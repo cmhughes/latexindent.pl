@@ -37,9 +37,9 @@ in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switch
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 599-607
+ 	:lines: 603-611
  	:linenos:
- 	:lineno-start: 599
+ 	:lineno-start: 603
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As
 you’ll see in the demonstrations that follow, there is no need to specify this field.

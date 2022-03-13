@@ -216,6 +216,10 @@ lookForAlignDelims:
    vNiceArrayRC: 1
    VNiceArrayRC: 1
    NiceArrayRCwithDelims: 1
+   # tabularray
+   tblr: 1
+   longtblr: 1
+   talltblr: 1
 
 # if you want the script to look for \item commands
 # and format it, as follows (for example),

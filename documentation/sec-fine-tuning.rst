@@ -45,9 +45,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 610-635
+ 	:lines: 614-639
  	:linenos:
- 	:lineno-start: 610
+ 	:lineno-start: 614
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.)
 for a detailed covering of the topic.
