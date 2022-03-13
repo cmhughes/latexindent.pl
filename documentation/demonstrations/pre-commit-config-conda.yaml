@@ -1,5 +1,5 @@
 - repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
+  rev: V3.16
   hooks:
   - id: latexindent-conda
     args: [-s]

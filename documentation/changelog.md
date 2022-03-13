@@ -1,4 +1,8 @@
 # changelog.md
+## V3.16, March 13, 2022
+* text wrap overhaul, [issue 346](https://github.com/cmhughes/latexindent.pl/issues/346)
+* support for `tabulararray`, [issue 343](https://github.com/cmhughes/latexindent.pl/issues/343)
+
 ## V3.15, January 21, 2022
 * new feature: `pre-commit` tool now supported, full details
 at [pull 322](https://github.com/cmhughes/latexindent.pl/pull/322) and [issue 316](https://github.com/cmhughes/latexindent.pl/issues/316)

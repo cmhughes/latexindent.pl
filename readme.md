@@ -14,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.15, 2022-01-21
+    latexindent.pl, version 3.16, 2022-03-13
 
 ## author
 Chris Hughes (cmhughes)

@@ -307,7 +307,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
 		\texttt{.pre-commit-config.yaml} given in \cref{lst:.pre-commit-config.yaml-cpan} in your
 		git-repository. \index{cpan} \index{git} \index{pre-commit!cpan}
 
-		\cmhlistingsfromfile*{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
 		Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
@@ -336,7 +336,7 @@ latexindent.pl -s myfile.tex
 		\texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
 		\index{conda} \index{git} \index{pre-commit!conda}
 
-		\cmhlistingsfromfile*{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
 		Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
@@ -372,7 +372,7 @@ modifyLineBreaks:
 
 			and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
 
-			\cmhlistingsfromfile*{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
+			\cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
 			Now running
 			\begin{commandshell}
 pre-commit run --all-files  
