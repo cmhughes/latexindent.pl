@@ -142,4 +142,4 @@ latexindent.pl -s issue-123.tex -o=+-default.tex
 # issue 239: https://github.com/cmhughes/latexindent.pl/issues/239
 latexindent.pl -s issue-239.tex -o=+-default.tex
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
-git status
+[[ $gitStatus == 1 ]] && git status

@@ -1,0 +1,10 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x) \\item(?:\[[^]]*?\])?
+                |
+                \\caption\[
+        blocksEndBefore:
+           other: 0

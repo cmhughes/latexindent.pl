@@ -534,7 +534,7 @@ sub create_unique_id{
     my $self = shift;
 
     $verbatimCounter++;
-    ${$self}{id} = "$tokens{verbatim}$verbatimCounter$tokens{endOfToken}";
+    ${$self}{id} = (${$self}{type} eq 'command' ? $tokens{verbatimInline} : $tokens{verbatim}).$verbatimCounter.$tokens{endOfToken};
     return;
 }
 

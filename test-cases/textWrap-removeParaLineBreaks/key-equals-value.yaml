@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x)=\{
+        blocksBeginWith:
+           0-9: 1
+        blocksEndBefore:
+           other: |-
+             (?x)\}

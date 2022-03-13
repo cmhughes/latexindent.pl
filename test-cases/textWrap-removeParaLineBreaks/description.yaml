@@ -1,2 +1,6 @@
 indentAfterItems:
     description: 1
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 40

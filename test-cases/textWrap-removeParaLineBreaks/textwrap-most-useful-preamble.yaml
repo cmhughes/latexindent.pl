@@ -3,11 +3,6 @@ indentPreamble: 1
 modifyLineBreaks:
     textWrapOptions:
         columns: 60
-        perCodeBlockBasis: 1
-        beforeFindingChildCodeBlocks: 1
-        mainDocument: 1
-        preamble: 1
-    removeParagraphLineBreaks:
-        mainDocument: 1
-        beforeTextWrap: 1
-        preamble: 1
+        blocksFollow:
+            other: |-
+              (?x)\\documentclass\{[^}]*?\}

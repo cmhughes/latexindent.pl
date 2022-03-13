@@ -6,5 +6,5 @@ loopmax=0
 latexindent.pl -s whitespace -l=remove-TWS.yaml -o +-rm-yes
 latexindent.pl -s whitespace -l=remove-TWS1.yaml -o +-rm-no
 
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

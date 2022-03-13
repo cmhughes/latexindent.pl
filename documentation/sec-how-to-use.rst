@@ -15,9 +15,7 @@ change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 ``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution. If you plan to use ``latexindent.pl`` (i.e, the original Perl
 script) then you will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
 
-MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
-
-.. index:: MiKTeX
+MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation. .. index:: MiKTeX
 
 .. index:: latexindent.exe
 
@@ -168,9 +166,7 @@ There is no need to specify a file extension when using the ``++`` feature, but 
 
    latexindent.pl myfile.tex -o=+out++.tex
 
-See :numref:`app:differences` for details of how the interface has changed from Version 2.2 to Version 3.0 for this flag.
-
-.. describe:: -s, –silent
+See :numref:`app:differences` for details of how the interface has changed from Version 2.2 to Version 3.0 for this flag. .. describe:: -s, –silent
 
 .. index:: switches;-s, –silent definition and details
 
@@ -313,9 +309,7 @@ You may also choose to omit the ``yaml`` extension, such as
 You can specify YAML settings from the command line using the ``-y`` or ``–yaml`` switch; sample demonstrations are given above. Note, in particular, that multiple settings can be specified by
 separating them via commas. There is a further option to use a ``;`` to separate fields, which is demonstrated in :numref:`sec:yamlswitch`.
 
-Any settings specified via this switch will be loaded *after* any specified using the ``-l`` switch. This is discussed further in :numref:`sec:loadorder`.
-
-.. describe:: -d, –onlydefault
+Any settings specified via this switch will be loaded *after* any specified using the ``-l`` switch. This is discussed further in :numref:`sec:loadorder`. .. describe:: -d, –onlydefault
 
 .. index:: switches;-d, –onlydefault definition and details
 
@@ -395,9 +389,7 @@ One of the most exciting developments in Version 3.0 is the ability to modify l
 
    latexindent.pl myfile
 
-and in which case, you can specify the order in which extensions are searched for; see :numref:`lst:fileExtensionPreference` for full details.
-
-.. describe:: STDIN
+and in which case, you can specify the order in which extensions are searched for; see :numref:`lst:fileExtensionPreference` for full details. .. describe:: STDIN
 
 .. code-block:: latex
    :class: .commandshell
@@ -440,9 +432,8 @@ to signify that your input has finished. Thanks to ((xu-cheng) 2018) for an upda
    latexindent.pl -r myfile.tex
    latexindent.pl -replacement myfile.tex
 
-You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to perform replacements/substitutions on your file; full details and examples are given in :numref:`sec:replacements`.
-
-.. index:: verbatim;rv, replacementrespectverb switch
+You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to perform replacements/substitutions on your file; full details and examples are given in :numref:`sec:replacements`. ..
+index:: verbatim;rv, replacementrespectverb switch
 
 .. describe:: -rv, –replacementrespectverb
 
@@ -482,9 +473,7 @@ You can instruct ``latexindent.pl`` to skip all of its other indentation operati
 
 You can instruct ``latexindent.pl`` to check if the text after indentation matches that given in the original file.
 
-The ``exit`` code
-
-.. index:: exit code
+The ``exit`` code .. index:: exit code
 
 of ``latexindent.pl`` is 0 by default. If you use the ``-k`` switch then
 
@@ -553,73 +542,41 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
 
 .. table:: Exit codes for ``latexindent.pl``
 
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | exit code | indentation | status                                                                         |
-   +===========+=============+================================================================================+
-   | 0         | yes         | success; if ``-k`` or ``-kv`` active, indented text matches original           |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 0         | no          | success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 1         | yes         | success, and ``-k`` or ``-kv`` active; indented text *different* from original |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 2         | no          | failure, ``defaultSettings.yaml`` could not be read                            |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 3         | no          | failure, myfile.tex not found                                                  |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 4         | no          | failure, myfile.tex exists but cannot be read                                  |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 5         | no          | failure, ``-w`` active, and back-up file cannot be written                     |
-   +-----------+-------------+--------------------------------------------------------------------------------+
-   | 6         | no          | failure, ``-c`` active, and cruft directory does not exist                     |
-   +-----------+-------------+--------------------------------------------------------------------------------+
+   ========= =========== ==============================================================================
+   exit code indentation status
+   ========= =========== ==============================================================================
+   0         yes         success; if ``-k`` or ``-kv`` active, indented text matches original
+   0         no          success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed
+   1         yes         success, and ``-k`` or ``-kv`` active; indented text *different* from original
+   2         no          failure, ``defaultSettings.yaml`` could not be read
+   3         no          failure, myfile.tex not found
+   4         no          failure, myfile.tex exists but cannot be read
+   5         no          failure, ``-w`` active, and back-up file cannot be written
+   6         no          failure, ``-c`` active, and cruft directory does not exist
+   ========= =========== ==============================================================================
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-paulo
 
-.. raw:: html
+      Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
 
-   <div id="ref-paulo">
+   .. container::
+      :name: ref-latexindent-home
 
-Cereda, Paulo. 2013. “Arara Rule, Indent.yaml.” May 23, 2013. https://github.com/islandoftex/arara/blob/master/rules/arara-rule-indent.yaml.
+      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
-.. raw:: html
+   .. container::
+      :name: ref-miktex-guide
 
-   </div>
+      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
 
-.. raw:: html
+   .. container::
+      :name: ref-xu-cheng
 
-   <div id="ref-latexindent-home">
-
-“Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-miktex-guide">
-
-“How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-xu-cheng">
-
-(xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      (xu-cheng), Cheng Xu. 2018. “Always Output Log/Help Text to Stderr.” July 13, 2018. https://github.com/cmhughes/latexindent.pl/pull/121.
 
 .. [1]
    Users of version 2.\* should note the subtle change in syntax

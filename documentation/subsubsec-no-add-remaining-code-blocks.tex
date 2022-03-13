@@ -8,8 +8,8 @@
 	\paragraph{keyEqualsValuesBracesBrackets}
 		\texttt{latexindent.pl} defines this type of code block by the following criteria:
 		\begin{itemize}
-			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR
-			      \lstinline!,! with comments and blank lines allowed.
+			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR \lstinline!,! with
+			      comments and blank lines allowed.
 			\item then it has a name made up of the characters detailed in \vref{tab:code-blocks};
 			\item then an $=$ symbol;
 			\item then at least one set of curly braces or square brackets (comments and line breaks
@@ -41,14 +41,12 @@
 			      the \emph{body} field for \texttt{noAdditionalIndent} and friends from
 			      \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
-	\paragraph{namedGroupingBracesBrackets}
-		This type of code block is mostly motivated by tikz-based code; we define this code block
-		as follows:
+	\paragraph{namedGroupingBracesBrackets} This type of code block is mostly motivated by
+		tikz-based code; we define this code block as follows:
 		\begin{itemize}
 			\item it must immediately follow either \emph{horizontal space} OR \emph{one or more line
-				      breaks} OR
-			      \lstinline!{! OR \lstinline![! OR \lstinline!$! OR
-			      \lstinline!)! OR \lstinline!(!
+			      breaks} OR \lstinline!{! OR \lstinline![! OR \lstinline!$! OR \lstinline!)! OR
+			      \lstinline!(!
 			\item the name may contain the characters detailed in \vref{tab:code-blocks};
 			\item then at least one set of curly braces or square brackets (comments and line breaks
 			      allowed throughout).
@@ -71,7 +69,7 @@
 
 		In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and
 		\texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{ You may like to
-			verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }.
+		verify this by using the \texttt{-tt} option and checking \texttt{indent.log}! }.
 		Referencing \cref{lst:child1:default}, note that the maximum indentation is two tabs, and
 		these come from:
 		\begin{itemize}
@@ -82,12 +80,11 @@
 			      \cpageref{sec:noadd-indent-rules}.
 		\end{itemize}
 
-	\paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically,
-		we define this type of code block as satisfying the following criteria:
+	\paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically, we
+		define this type of code block as satisfying the following criteria:
 		\begin{itemize}
-			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR
-			      \lstinline!,! OR \lstinline!&! OR \lstinline!)! OR
-			      \lstinline!(! OR \lstinline!$!;
+			\item it must immediately follow either \lstinline!{! OR \lstinline![! OR \lstinline!,! OR
+			      \lstinline!&! OR \lstinline!)! OR \lstinline!(! OR \lstinline!$!;
 			\item then at least one set of curly braces or square brackets (comments and line breaks
 			      allowed throughout).
 		\end{itemize}

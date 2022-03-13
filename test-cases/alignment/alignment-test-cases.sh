@@ -260,5 +260,5 @@ latexindent.pl -s -w -l issue-326d.yaml issue-326d.tex
 latexindent.pl -s    -l issue-326d2.yaml issue-326d.tex -o +-mod2
 
 [[ $silentMode == 0 ]] && set -x 
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

@@ -1,4 +1,6 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        environments: 
-            one: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x) \\begin\{(?:one)\}

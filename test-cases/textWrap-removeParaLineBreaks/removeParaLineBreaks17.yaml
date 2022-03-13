@@ -1,4 +1,10 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 0
-        afterHeading: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           par: 0
+           blankLine: 0
+           filecontents: 0
+           verbatim: 0
+           commentOnPreviousLine: 0
+           other: 0

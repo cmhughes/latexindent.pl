@@ -51,23 +51,6 @@ sub indent{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
-    # text wrapping, remove paragraph line breaks
-    if ($is_m_switch_active){
-        $self->yaml_get_textwrap_removeparagraphline_breaks;
-    }
-
-    # option to textWrap beforeFindingChildCodeBlocks
-    if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
-    }
-
     # search for environments
     $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/;
 
@@ -87,19 +70,6 @@ sub tasks_particular_to_each_object{
         # search for special begin/end
         $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
     }
-
-    # text wrapping, remove paragraph line breaks
-    if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0){
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
-    }
-
 }
 
 1;

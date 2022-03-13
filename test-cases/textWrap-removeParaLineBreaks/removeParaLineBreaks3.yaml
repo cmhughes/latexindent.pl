@@ -1,5 +1,7 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 0
-        environments: 
-            document: 1
+    textWrapOptions:
+        columns: -1
+        blocksBeginWith:
+           0-9: 1
+        blocksFollow:
+           other: 0

@@ -1,9 +1,6 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
-        perCodeBlockBasis: 1
-        environments: 
-            another: 1
-    removeParagraphLineBreaks:
-        all: 1
-        beforeTextWrap: 1
+        blocksFollow:
+           other: |-
+             (?x)\\begin\{[^}]*?\}

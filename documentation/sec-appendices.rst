@@ -278,9 +278,7 @@ latexindent-yaml-schema.json
 VSCode demonstration
 ~~~~~~~~~~~~~~~~~~~~
 
-To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps:
-
-.. index:: VSCode
+To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps: .. index:: VSCode
 
 .. index:: json;VSCode
 
@@ -391,23 +389,16 @@ I then updated my path via .bashrc so that it includes the line in :numref:`lst:
 pre-commit using CPAN
 ~~~~~~~~~~~~~~~~~~~~~
 
-To use ``latexindent.pl`` with ``pre-commit``, create the file ``.pre-commit-config.yaml`` given in :numref:`lst:.pre-commit-config.yaml-cpan` in your git-repository.
-
-.. index:: cpan
+To use ``latexindent.pl`` with ``pre-commit``, create the file ``.pre-commit-config.yaml`` given in :numref:`lst:.pre-commit-config.yaml-cpan` in your git-repository. .. index:: cpan
 
 .. index:: git
 
 .. index:: pre-commit;cpan
 
-.. code-block:: latex
-   :caption: ``.pre-commit-config.yaml`` (cpan) 
-   :name: lst:.pre-commit-config.yaml-cpan
-
-   - repo: https://github.com/cmhughes/latexindent.pl
-     rev: V3.15
-     hooks:
-     - id: latexindent
-       args: [-s]
+.. literalinclude:: demonstrations/pre-commit-config-cpan.yaml
+ 	:class: .baseyaml
+ 	:caption: ``.pre-commit-config.yaml`` (cpan) 
+ 	:name: lst:.pre-commit-config.yaml-cpan
 
 Once created, you should then be able to run the following command:
 
@@ -450,15 +441,10 @@ You can also rely on ``conda`` (detailed in :numref:`sec:app:conda`) instead of 
 
 .. index:: pre-commit;conda
 
-.. code-block:: latex
-   :caption: ``.pre-commit-config.yaml`` (conda) 
-   :name: lst:.pre-commit-config.yaml-conda
-
-   - repo: https://github.com/cmhughes/latexindent.pl
-     rev: V3.15
-     hooks:
-     - id: latexindent-conda
-       args: [-s]
+.. literalinclude:: demonstrations/pre-commit-config-conda.yaml
+ 	:class: .baseyaml
+ 	:caption: ``.pre-commit-config.yaml`` (conda) 
+ 	:name: lst:.pre-commit-config.yaml-conda
 
 Once created, you should then be able to run the following command:
 
@@ -505,16 +491,10 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 	
 	and ``.pre-commit-config.yaml`` as in :numref:`lst:.latexindent.yaml-switches`:
 	
-	.. code-block:: latex
-	   :caption: ``.pre-commit-config.yaml`` 
-	   :name: lst:.latexindent.yaml-switches
-	
-	   repos:
-	   - repo: https://github.com/cmhughes/latexindent.pl
-	     rev: V3.15
-	     hooks:
-	     - id: latexindent
-	       args: [-l, -m, -s, -w]
+	.. literalinclude:: demonstrations/pre-commit-config-demo.yaml
+	 	:class: .baseyaml
+	 	:caption: ``.pre-commit-config.yaml`` (demo) 
+	 	:name: lst:.latexindent.yaml-switches
 	
 	Now running
 	
@@ -588,7 +568,6 @@ then on inspection of ``indent.log`` we will find the snippet given in :numref:`
    TRACE: Searching myenv for optional and mandatory arguments
           ... no arguments found
           -----
-        
 
 Notice that the information given about ``myenv`` is ‘framed’ using ``+++++`` and ``-----`` respectively.
 
@@ -683,9 +662,7 @@ There is a slight difference when specifying indentation after headings; specifi
  	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in
-:numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
-
-.. index:: specialBeginEnd;update to displaymath V3.0
+:numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`. .. index:: specialBeginEnd;update to displaymath V3.0
 
 .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
  	:class: .baseyaml
@@ -702,158 +679,79 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
  	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
  	:name: lst:indentAfterThisHeadingNew2
 
-.. raw:: latex
-
-   \mbox{}
-
 --------------
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-anacoda
 
-.. raw:: html
+      “Anacoda.” n.d. Accessed December 22, 2021. https://www.anaconda.com/products/individual.
 
-   <div id="ref-anacoda">
+   .. container::
+      :name: ref-conda
 
-“Anacoda.” n.d. Accessed December 22, 2021. https://www.anaconda.com/products/individual.
+      “Conda Forge.” n.d. Accessed December 22, 2021. https://github.com/conda-forge/miniforge.
 
-.. raw:: html
+   .. container::
+      :name: ref-cpan
 
-   </div>
+      “CPAN: Comprehensive Perl Archive Network.” n.d. Accessed January 23, 2017. http://www.cpan.org/.
 
-.. raw:: html
+   .. container::
+      :name: ref-tdegeusprecommit
 
-   <div id="ref-conda">
+      Geus, Tom de. 2022. “Adding Perl Installation + Pre-Commit Hook.” January 21, 2022. https://github.com/cmhughes/latexindent.pl/pull/322.
 
-“Conda Forge.” n.d. Accessed December 22, 2021. https://github.com/conda-forge/miniforge.
+   .. container::
+      :name: ref-latexindent-home
 
-.. raw:: html
+      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
-   </div>
+   .. container::
+      :name: ref-vscode-yaml-demo
 
-.. raw:: html
+      “How to Create Your Own Auto-Completion for Json and Yaml Files on Vs Code with the Help of Json Schema.” n.d. Accessed January 1, 2022.
+      https://dev.to/brpaz/how-to-create-your-own-auto-completion-for-json-and-yaml-files-on-vs-code-with-the-help-of-json-schema-k1i.
 
-   <div id="ref-cpan">
+   .. container::
+      :name: ref-condainstallubuntu
 
-“CPAN: Comprehensive Perl Archive Network.” n.d. Accessed January 23, 2017. http://www.cpan.org/.
+      “How to Install Anaconda on Ubuntu?” n.d. Accessed January 21, 2022. https://askubuntu.com/questions/505919/how-to-install-anaconda-on-ubuntu.
 
-.. raw:: html
+   .. container::
+      :name: ref-jun-sheaf
 
-   </div>
+      J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
 
-.. raw:: html
+   .. container::
+      :name: ref-jasjuang
 
-   <div id="ref-tdegeusprecommit">
+      Juang, Jason. 2015. “Add in Path Installation.” November 24, 2015. https://github.com/cmhughes/latexindent.pl/pull/38.
 
-Geus, Tom de. 2022. “Adding Perl Installation + Pre-Commit Hook.” January 21, 2022. https://github.com/cmhughes/latexindent.pl/pull/322.
+   .. container::
+      :name: ref-perlbrew
 
-.. raw:: html
+      “Perlbrew.” n.d. Accessed January 23, 2017. http://perlbrew.pl/.
 
-   </div>
+   .. container::
+      :name: ref-pre-commithome
 
-.. raw:: html
+      “Pre-Commit: A Framework for Managing and Maintaining Multi-Language Pre-Commit Hooks.” n.d. Accessed January 8, 2022. https://pre-commit.com/.
 
-   <div id="ref-latexindent-home">
+   .. container::
+      :name: ref-condainstallhelp
 
-“Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
+      “Solving Environment: Failed with Initial Frozen Solve. Retrying with Flexible Solve.” n.d. Accessed January 21, 2022. https://github.com/conda/conda/issues/9367#issuecomment-558863143.
 
-.. raw:: html
+   .. container::
+      :name: ref-vscode-yaml-extentions
 
-   </div>
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022.
+      `https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
 
-.. raw:: html
+   .. container::
+      :name: ref-bersbersbers
 
-   <div id="ref-vscode-yaml-demo">
-
-“How to Create Your Own Auto-Completion for Json and Yaml Files on Vs Code with the Help of Json Schema.” n.d. Accessed January 1, 2022.
-https://dev.to/brpaz/how-to-create-your-own-auto-completion-for-json-and-yaml-files-on-vs-code-with-the-help-of-json-schema-k1i.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-condainstallubuntu">
-
-“How to Install Anaconda on Ubuntu?” n.d. Accessed January 21, 2022. https://askubuntu.com/questions/505919/how-to-install-anaconda-on-ubuntu.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-jun-sheaf">
-
-J., Randolf. 2020. “Alpine-Linux Instructions.” August 10, 2020. https://github.com/cmhughes/latexindent.pl/pull/214.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-jasjuang">
-
-Juang, Jason. 2015. “Add in Path Installation.” November 24, 2015. https://github.com/cmhughes/latexindent.pl/pull/38.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-perlbrew">
-
-“Perlbrew.” n.d. Accessed January 23, 2017. http://perlbrew.pl/.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-pre-commithome">
-
-“Pre-Commit: A Framework for Managing and Maintaining Multi-Language Pre-Commit Hooks.” n.d. Accessed January 8, 2022. https://pre-commit.com/.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-condainstallhelp">
-
-“Solving Environment: Failed with Initial Frozen Solve. Retrying with Flexible Solve.” n.d. Accessed January 21, 2022. https://github.com/conda/conda/issues/9367#issuecomment-558863143.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-vscode-yaml-extentions">
-
-“VSCode Yaml Extension.” n.d. Accessed January 1, 2022.
-`https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-bersbersbers">
-
-“Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” n.d. Accessed June 18, 2021. https://github.com/cmhughes/latexindent.pl/issues/256.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      “Windows Line Breaks on Linux Prevent Removal of White Space from End of Line.” n.d. Accessed June 18, 2021. https://github.com/cmhughes/latexindent.pl/issues/256.

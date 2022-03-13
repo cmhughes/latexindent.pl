@@ -50,4 +50,4 @@ latexindent.pl -s headings-blank-line.tex -o +-mod2.tex -l=levels3.yaml,headingS
 # testing the -y switch
 latexindent.pl -s headings1.tex -o=+-mod1 -y=' indentAfterHeadings:paragraph:indentAfterThisHeading:1;level:1 '
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
-git status
+[[ $gitStatus == 1 ]] && git status

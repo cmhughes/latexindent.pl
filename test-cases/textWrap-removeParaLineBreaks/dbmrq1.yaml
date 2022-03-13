@@ -1,8 +1,8 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 
-            items: 20
-            mainDocument: 40
-        perCodeBlockBasis: 1
-        items: 1
-        mainDocument: 1
+        columns: 20 
+        blocksFollow:
+           other: |-
+             (?x)\\item
+        blocksBeginWith:
+           a-z: 1

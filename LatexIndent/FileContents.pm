@@ -112,7 +112,7 @@ sub find_file_contents_environments_and_preamble{
           push(@fileContentsStorageArray,$fileContentsBlock);
 
           # log file output
-          $logger->trace("FILECONTENTS environment found: ${$fileContentsEnv}{name}")if $is_t_switch_active;
+          $logger->trace("FILECONTENTS environment found: ${$fileContentsBlock}{name}")if $is_t_switch_active;
 
           # remove the environment block, and replace with unique ID
           ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
@@ -220,6 +220,8 @@ sub find_file_contents_environments_and_preamble{
     if($needToStorePreamble){
         $preamble->dodge_double_backslash;
         $preamble->remove_leading_space;
+        # text wrapping
+        $preamble->text_wrap() if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} !=0 );
         $preamble->find_commands_or_key_equals_values_braces if($mainSettings{preambleCommandsBeforeEnvironments});
         $preamble->tasks_particular_to_each_object;
         push(@{${$self}{children}},$preamble);
@@ -238,23 +240,6 @@ sub create_unique_id{
 sub tasks_particular_to_each_object{
     my $self = shift;
 
-    # text wrapping, remove paragraph line breaks
-    if ($is_m_switch_active){
-        $self->yaml_get_textwrap_removeparagraphline_breaks;
-    }
-
-    # option to textWrap beforeFindingChildCodeBlocks
-    if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
-    }
-
     # search for environments
     $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
@@ -266,18 +251,6 @@ sub tasks_particular_to_each_object{
     
     # search for commands and special code blocks
     $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
-    
-    # text wrapping, remove paragraph line breaks
-    if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0){
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
-    }
 }
 
 1;

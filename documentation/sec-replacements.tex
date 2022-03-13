@@ -1,20 +1,19 @@
 % arara: pdflatex: { files: [latexindent]}
 \section{The -r, -rv and -rr switches}\label{sec:replacements}
  \fancyhead[R]{\bfseries\thepage%
-	 \tikz[remember picture,overlay] {
-		 \node at (1,0){\includegraphics{logo-bw}}; }
+ \tikz[remember picture,overlay] {
+ \node at (1,0){\includegraphics{logo-bw}}; }
  }
 
  You can instruct \texttt{latexindent.pl} to perform replacements/substitutions on your
  \announce{2019-07-13}{replacement mode switches} file by using any of the \texttt{-r},
- \texttt{-rv} or \texttt{-rr} switches:
- \index{verbatim!rv, replacementrespectverb switch}
+ \texttt{-rv} or \texttt{-rr} switches: \index{verbatim!rv, replacementrespectverb switch}
  \begin{itemize}
 	 \item the \texttt{-r} switch will perform indentation and replacements, not respecting verbatim
 	       code blocks;
 	 \item the \texttt{-rv} switch will perform indentation and replacements, and \emph{will}
 	       respect verbatim code blocks;
-	 \item the \texttt{-rr} switch will \emph{not} perform indentation,  and will perform
+	 \item the \texttt{-rr} switch will \emph{not} perform indentation, and will perform
 	       replacements not respecting verbatim code blocks.
  \end{itemize}
 
@@ -57,8 +56,8 @@
 	with further examples. With reference to \cref{lst:replacements}, the default action will
 	replace every instance of the text \texttt{latexindent.pl} with \texttt{pl.latexindent}.
 
-	Beginning with the code in \cref{lst:replace1} and running the command
-	\index{switches!-r demonstration}
+	Beginning with the code in \cref{lst:replace1} and running the command \index{switches!-r
+	demonstration}
 	\begin{commandshell}
 latexindent.pl -r replace1.tex
 \end{commandshell}
@@ -71,8 +70,7 @@ latexindent.pl -r replace1.tex
 
 	If we don't wish to perform this replacement, then we can tweak the default settings of
 	\vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action in
-	\cref{lst:replace1-yaml}, and run the command
-	\index{switches!-l demonstration}
+	\cref{lst:replace1-yaml}, and run the command \index{switches!-l demonstration}
 	\index{switches!-r demonstration}
 	\begin{commandshell}
 latexindent.pl -r replace1.tex -l=replace1.yaml
@@ -113,12 +111,11 @@ latexindent.pl -r replace1.tex -l=replace1.yaml
 
 		\cmhlistingsfromfile{demonstrations/colsep.tex}{\texttt{colsep.tex}}{lst:colsep}
 
-		Let's assume that our goal is to remove both of the \texttt{arraycolsep} statements; we can achieve this in
-		a few different ways.
+		Let's assume that our goal is to remove both of the \texttt{arraycolsep} statements; we
+		can achieve this in a few different ways.
 
-		Using the YAML in \cref{lst:colsep-yaml}, and running the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		Using the YAML in \cref{lst:colsep-yaml}, and running the command \index{switches!-l
+		demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=colsep.yaml
 \end{commandshell}
@@ -131,16 +128,14 @@ latexindent.pl -r colsep.tex -l=colsep.yaml
 		furthermore, for both of the separate fields, we have not specified `\texttt{that}', so the \texttt{that} field
 		is assumed to be blank by \texttt{latexindent.pl};
 
-		We can make the YAML in \cref{lst:colsep-yaml} more concise by exploring the \texttt{substitution} field. Using
-		the settings in \cref{lst:colsep1} and running the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		We can make the YAML in \cref{lst:colsep-yaml} more concise by exploring the
+		\texttt{substitution} field. Using the settings in \cref{lst:colsep1} and running the
+		command \index{switches!-l demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=colsep1.yaml
 \end{commandshell}
-		then we achieve the output in \cref{lst:colsep-mod1}.
-		\index{regular expressions!substitution field, arraycolsep}
-		\index{regular expressions!at least one +}
+		then we achieve the output in \cref{lst:colsep-mod1}. \index{regular
+		expressions!substitution field, arraycolsep} \index{regular expressions!at least one +}
 		\begin{cmhtcbraster}[raster column skip=.01\linewidth,
 				raster force size=false,
 				raster column 1/.style={add to width=-.1\textwidth}]
@@ -148,10 +143,11 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/colsep1.yaml}[replace-TCB,width=0.6\textwidth]{\texttt{colsep1.yaml}}{lst:colsep1}
 		\end{cmhtcbraster}
 
-		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which we may abbreviate to \emph{regex}
-		in what follows. This manual is not intended to be
-		a tutorial on regular expressions; you might like to read, for example, \cite{masteringregexp} for a detailed
-		covering of the topic. With reference to \cref{lst:colsep1}, we do note the following:
+		The code given in \cref{lst:colsep1} is an example of a \emph{regular expression}, which
+		we may abbreviate to \emph{regex} in what follows. This manual is not intended to be a
+		tutorial on regular expressions; you might like to read, for example,
+		\cite{masteringregexp} for a detailed covering of the topic. With reference to
+		\cref{lst:colsep1}, we do note the following:
 		\begin{itemize}
 			\item the general form of the \texttt{substitution} field is
 			      \lstinline!s/regex/replacement/modifiers!. You can place any regular expression you like
@@ -172,9 +168,8 @@ latexindent.pl -r colsep.tex -l=colsep1.yaml
 	\begin{example}
 		We'll keep working with the file in \vref{lst:colsep} for this example.
 
-		Using the YAML in \cref{lst:multi-line}, and running the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		Using the YAML in \cref{lst:multi-line}, and running the command \index{switches!-l
+		demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=multi-line.yaml
 \end{commandshell}
@@ -187,13 +182,13 @@ latexindent.pl -r colsep.tex -l=multi-line.yaml
 		YAML style \lstinline!|-!. See, for example, \href{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}{https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines}
 		for further options, all of which can be used in your YAML file.
 
-		This is a natural point to explore the \texttt{when} field, specified in \vref{lst:replacements}. This field can take two values: \emph{before}
-		and \emph{after}, which respectively instruct \texttt{latexindent.pl} to perform the replacements \emph{before} indentation or \emph{after} it.
-		The default value is \texttt{before}.
+		This is a natural point to explore the \texttt{when} field, specified in
+		\vref{lst:replacements}. This field can take two values: \emph{before} and \emph{after},
+		which respectively instruct \texttt{latexindent.pl} to perform the replacements
+		\emph{before} indentation or \emph{after} it. The default value is \texttt{before}.
 
-		Using the YAML in \cref{lst:multi-line1}, and running the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		Using the YAML in \cref{lst:multi-line1}, and running the command \index{switches!-l
+		demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r colsep.tex -l=multi-line1.yaml
 \end{commandshell}
@@ -207,31 +202,32 @@ latexindent.pl -r colsep.tex -l=multi-line1.yaml
 		indentation, the string as written in \cref{lst:multi-line1} is no longer part of the file, and has therefore not been replaced.
 
 		As a final note on this example, if you use the \texttt{-rr} switch, as follows,
-		\index{switches!-l demonstration}
-		\index{switches!-rr demonstration}
+		\index{switches!-l demonstration} \index{switches!-rr demonstration}
 		\begin{commandshell}
 latexindent.pl -rr colsep.tex -l=multi-line1.yaml
 \end{commandshell}
-		then the \texttt{when} field is ignored, no indentation is done, and the output is as in \cref{lst:colsep-mod2}.
+		then the \texttt{when} field is ignored, no indentation is done, and the output is as in
+		\cref{lst:colsep-mod2}.
 	\end{example}
 
 	\begin{example}
 		An important part of the substitution routine is in \emph{capture groups}.
 
-		Assuming that we start with
-		the code in \cref{lst:displaymath}, let's assume that our goal is to replace each occurrence of \lstinline!$$...$$!
-		with \lstinline!\begin{equation*}...\end{equation*}!. This example is partly motivated by \href{https://tex.stackexchange.com/questions/242150/good-looking-latex-code}{tex stackexchange question 242150}.
+		Assuming that we start with the code in \cref{lst:displaymath}, let's assume that our
+		goal is to replace each occurrence of \lstinline!$$...$$! with
+		\lstinline!\begin{equation*}...\end{equation*}!. This example is partly motivated by
+		\href{https://tex.stackexchange.com/questions/242150/good-looking-latex-code}{tex
+		stackexchange question 242150}.
 
 		\cmhlistingsfromfile{demonstrations/displaymath.tex}{\texttt{displaymath.tex}}{lst:displaymath}
 
-		We use the settings in \cref{lst:displaymath1} and run the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		We use the settings in \cref{lst:displaymath1} and run the command \index{switches!-l
+		demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 \end{commandshell}
-		to receive the output given in \cref{lst:displaymath-mod1}.
-		\index{regular expressions!substitution field, equation}
+		to receive the output given in \cref{lst:displaymath-mod1}. \index{regular
+		expressions!substitution field, equation}
 
 		\begin{cmhtcbraster}[raster left skip=-3.75cm,
 				raster right skip=-2cm,]
@@ -250,11 +246,11 @@ latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 		See \href{https://perldoc.perl.org/perlre.html#Capture-groups}{https://perldoc.perl.org/perlre.html\#Capture-groups} for a discussion
 		of capture groups.
 
-		The features of the replacement switches can, of course, be combined with others from the toolkit of \texttt{latexindent.pl}. For example,
-		we can combine the poly-switches of \vref{sec:poly-switches}, which we do in \cref{lst:equation}; upon running the command
-		\index{switches!-l demonstration}
-		\index{switches!-m demonstration}
-		\index{switches!-r demonstration}
+		The features of the replacement switches can, of course, be combined with others from the
+		toolkit of \texttt{latexindent.pl}. For example, we can combine the poly-switches of
+		\vref{sec:poly-switches}, which we do in \cref{lst:equation}; upon running the command
+		\index{switches!-l demonstration} \index{switches!-m demonstration} \index{switches!-r
+		demonstration}
 		\begin{commandshell}
 latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 \end{commandshell}
@@ -270,28 +266,28 @@ latexindent.pl -r -m displaymath.tex -l=displaymath1.yaml,equation.yaml
 	\end{example}
 
 	\begin{example}
-		This example is motivated by \href{https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker}{tex stackexchange question 490086}.
-		We begin with the code in \cref{lst:phrase}.
+		This example is motivated by
+		\href{https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker}{tex
+		stackexchange question 490086}. We begin with the code in \cref{lst:phrase}.
 
 		\cmhlistingsfromfile{demonstrations/phrase.tex}{\texttt{phrase.tex}}{lst:phrase}
 
-		Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in \cref{lst:hspace},
-		and run the command
-		\index{switches!-l demonstration}
+		Our goal is to make the spacing uniform between the phrases. To achieve this, we employ
+		the settings in \cref{lst:hspace}, and run the command \index{switches!-l demonstration}
 		\index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r phrase.tex -l=hspace.yaml
 \end{commandshell}
-		which gives the output in \cref{lst:phrase-mod1}.
-		\index{regular expressions!at least one +}
-		\index{regular expressions!horizontal space \textbackslash{h}}
+		which gives the output in \cref{lst:phrase-mod1}. \index{regular expressions!at least one
+		+} \index{regular expressions!horizontal space \textbackslash{h}}
 
 		\begin{cmhtcbraster}
 			\cmhlistingsfromfile{demonstrations/phrase-mod1.tex}{\texttt{phrase.tex} using \cref{lst:hspace}}{lst:phrase-mod1}
 			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/hspace.yaml}[replace-TCB]{\texttt{hspace.yaml}}{lst:hspace}
 		\end{cmhtcbraster}
 
-		The \lstinline!\h+! setting in \cref{lst:hspace} say to replace \emph{at least one horizontal space} with a single space.
+		The \lstinline!\h+! setting in \cref{lst:hspace} say to replace \emph{at least one
+		horizontal space} with a single space.
 	\end{example}
 
 	\begin{example}
@@ -299,40 +295,37 @@ latexindent.pl -r phrase.tex -l=hspace.yaml
 
 		\cmhlistingsfromfile{demonstrations/references.tex}{\texttt{references.tex}}{lst:references}
 
-		Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We
-		achieve this by employing \cref{lst:reference} and running the command
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		Our goal is to change each reference so that both the text and the reference are
+		contained within one hyperlink. We achieve this by employing \cref{lst:reference} and
+		running the command \index{switches!-l demonstration} \index{switches!-r demonstration}
 		\begin{commandshell}
 latexindent.pl -r references.tex -l=reference.yaml
 \end{commandshell}
-		which gives the output in \cref{lst:references-mod1}.
-		\index{regular expressions!horizontal space \textbackslash{h}}
+		which gives the output in \cref{lst:references-mod1}. \index{regular
+		expressions!horizontal space \textbackslash{h}}
 
 		\cmhlistingsfromfile{demonstrations/references-mod1.tex}{\texttt{references.tex} using \cref{lst:reference}}{lst:references-mod1}
 
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/reference.yaml}[replace-TCB]{\texttt{reference.yaml}}{lst:reference}
 
-		Referencing \cref{lst:reference}, the \lstinline!|! means \emph{or}, we have used \emph{capture groups}, together with an example
-		of an \emph{optional} pattern, \lstinline!(?:eq)?!.
+		Referencing \cref{lst:reference}, the \lstinline!|! means \emph{or}, we have used
+		\emph{capture groups}, together with an example of an \emph{optional} pattern,
+		\lstinline!(?:eq)?!.
 	\end{example}
 
 	\begin{example}
-		Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in the context of
-		an example that contains a verbatim code block, \cref{lst:verb1}; we will use the settings in \cref{lst:verbatim1-yaml}.
+		Let's explore the three replacement mode switches (see \vref{tab:replacementswitches}) in
+		the context of an example that contains a verbatim code block, \cref{lst:verb1}; we will
+		use the settings in \cref{lst:verbatim1-yaml}.
 
 		\begin{cmhtcbraster}
 			\cmhlistingsfromfile{demonstrations/verb1.tex}{\texttt{verb1.tex}}{lst:verb1}
 			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/verbatim1.yaml}[replace-TCB]{\texttt{verbatim1.yaml}}{lst:verbatim1-yaml}
 		\end{cmhtcbraster}
 
-		Upon running the following commands,
-		\index{verbatim!comparison with -r and -rr switches}
-		\index{switches!-l demonstration}
-		\index{switches!-o demonstration}
-		\index{switches!-r demonstration}
-		\index{switches!-rv demonstration}
-		\index{switches!-rr demonstration}
+		Upon running the following commands, \index{verbatim!comparison with -r and -rr switches}
+		\index{switches!-l demonstration} \index{switches!-o demonstration} \index{switches!-r
+		demonstration} \index{switches!-rv demonstration} \index{switches!-rr demonstration}
 		\begin{commandshell}
 latexindent.pl -r verb1.tex -l=verbatim1.yaml -o=+mod1
 latexindent.pl -rv verb1.tex -l=verbatim1.yaml -o=+-rv-mod1
@@ -363,8 +356,8 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 	See the summary within \vref{tab:replacementswitches}.
 
 	\begin{example}
-		Let's explore the \texttt{amalgamate} field from \vref{lst:replacements} in the context of the file specified
-		in \cref{lst:amalg1}.
+		Let's explore the \texttt{amalgamate} field from \vref{lst:replacements} in the context
+		of the file specified in \cref{lst:amalg1}.
 
 		\cmhlistingsfromfile{demonstrations/amalg1.tex}{\texttt{amalg1.tex}}{lst:amalg1}
 
@@ -378,9 +371,8 @@ latexindent.pl -rr verb1.tex -l=verbatim1.yaml -o=+-rr-mod1
 			\cmhlistingsfromfile[style=yaml-LST]{demonstrations/amalg3-yaml.yaml}[replace-TCB]{\texttt{amalg3-yaml.yaml}}{lst:amalg3-yaml}
 		\end{cmhtcbraster}
 
-		Upon running the following commands,
-		\index{switches!-l demonstration}
-		\index{switches!-r demonstration}
+		Upon running the following commands, \index{switches!-l demonstration} \index{switches!-r
+		demonstration}
 		\begin{commandshell}
 latexindent.pl -r amalg1.tex -l=amalg1-yaml
 latexindent.pl -r amalg1.tex -l=amalg1-yaml,amalg2-yaml

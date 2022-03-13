@@ -17,7 +17,6 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter qw/import/;
-use Text::Wrap;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
@@ -25,7 +24,7 @@ use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_swit
 use LatexIndent::Item qw/$listOfItems/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Verbatim qw/%verbatimStorage/;
-our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
+our @EXPORT_OK = qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
 
 sub modify_line_breaks_body{
@@ -247,6 +246,7 @@ sub verbatim_modify_line_breaks{
     # verbatim modify line breaks are a bit special, as they happen before 
     # any of the main processes have been done
     my $self = shift;
+    my %input = @_;
     while ( my ($key,$child)= each %verbatimStorage){
       if(defined ${$child}{BeginStartsOnOwnLine}){
         my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine};
@@ -272,191 +272,32 @@ sub verbatim_modify_line_breaks{
             ${$self}{body} =~ s/\h*${$child}{id}/$trailingCharacterToken\n${$child}{id}/s;
         }
       }
-    }
-}
+      # after text wrap poly-switch check
+      if ($input{when} eq "afterTextWrap"){
+        $logger->trace("*post text wrap poly-switch check for EndFinishesWithLineBreak") if $is_t_switch_active ;
+        if (defined ${$child}{EndFinishesWithLineBreak}
+            and ${$child}{EndFinishesWithLineBreak}>=1 
+            and ${$self}{body} =~m/${$child}{id}\h*\S+/m){
+          ${$child}{linebreaksAtEnd}{end} = 1;
 
-sub text_wrap_remove_paragraph_line_breaks{
-    my $self = shift;
+          # by default, assume that no trailing comment token is needed
+          my $trailingCommentToken = q();
+          my $lineBreakCharacter = q();
+          my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine}||"EndStartsOnOwnLine";
 
-    if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-        $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-    } else {
-        $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-    }
-
-}
-
-sub text_wrap{
-
-    my $self = shift;
-    
-    # alignment at ampersand can take priority
-    return if(${$self}{lookForAlignDelims} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{alignAtAmpersandTakesPriority});
-
-    # goal: get an accurate measurement of verbatim objects;
-    # 
-    # example: 
-    #       Lorem \verb!x+y! ipsum dolor sit amet
-    # 
-    # is represented as 
-    #
-    #       Lorem LTXIN-TK-VERBATIM1-END ipsum dolor sit amet
-    #
-    # so we *measure* the verbatim token and replace it with 
-    # an appropriate-length string
-    #
-    #       Lorem a2A41233rt ipsum dolor sit amet
-    #
-    # and then put the body back to 
-    #
-    #       Lorem LTXIN-TK-VERBATIM1-END ipsum dolor sit amet
-    # 
-    # following the text wrapping
-    my @putVerbatimBackIn;
-
-    # check body for verbatim and get measurements
-    if (${$self}{body} =~ m/$tokens{verbatim}/s and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} eq "overflow"){
-
-      # reference: https://stackoverflow.com/questions/10336660/in-perl-how-can-i-generate-random-strings-consisting-of-eight-hex-digits
-      my @set = ('0' ..'9', 'A' .. 'Z', 'a' .. 'z');
-
-      # loop through verbatim objects
-      while( my ($verbatimID,$child)= each %verbatimStorage){
-        my $verbatimThing = ${$child}{begin}.${$child}{body}.${$child}{end};
-
-        # if the object has line breaks, don't measure it
-        next if $verbatimThing =~ m/\R/s;
-
-        if(${$self}{body} =~m/$verbatimID/s){
-
-          # measure length
-          my $verbatimLength = Unicode::GCString->new($verbatimThing)->columns();
-
-          # create temporary ID, and check that it is not contained in the body
-          my $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;
-          while(${$self}{body} =~m/$verbatimTmpID/s){
-             $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;
+          if(${$child}{EndFinishesWithLineBreak}==1){
+            $logger->trace("Adding a linebreak at the end of ${$child}{end} (post text wrap $EndStringLogFile==1)") if $is_t_switch_active;
+            $lineBreakCharacter = "\n";
+          } elsif(${$child}{EndFinishesWithLineBreak}==2 and ${$self}{body} !~ m/${$child}{id}\h*$trailingCommentRegExp/s){
+            $logger->trace("Adding a % immediately after ${$child}{end} (post text wrap $EndStringLogFile==2)") if $is_t_switch_active;
+            $trailingCommentToken = "%".$self->add_comment_symbol."\n";
+          } elsif(${$child}{EndFinishesWithLineBreak}==3){
+            $lineBreakCharacter .= (${$mainSettings{modifyLineBreaks}}{preserveBlankLines}?$tokens{blanklines}:"\n")."\n";       
           }
-
-          # store for use after the text wrapping
-          push(@putVerbatimBackIn,{origVerbatimID=>$verbatimID,tmpVerbatimID=>$verbatimTmpID});
-
-          # make the substitution
-          ${$self}{body} =~ s/$verbatimID/$verbatimTmpID/s;
+          ${$self}{body} =~s/${$child}{id}(\h*)/${$child}{id}$1$trailingCommentToken$lineBreakCharacter/s;
         }
       }
     }
-
-    # call the text wrapping routine
-    my $columns;
-
-    # columns might have been defined by the user
-    if(defined ${$self}{columns}){
-        $columns = ${$self}{columns};
-    } elsif(ref ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
-        if(defined ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
-            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
-        } else {
-            $columns = 80;
-        }
-    } elsif (defined ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}){
-        $columns = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} ;
-    } else {
-        $columns = 80;
-    }
-
-    # vital Text::Wrap options
-    $Text::Wrap::columns=$columns;
-    $Text::Wrap::huge = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge};
-
-    # all other Text::Wrap options not usually needed/helpful, but available
-    $Text::Wrap::separator=${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator} if(${$mainSettings{modifyLineBreaks}{textWrapOptions}}{separator} ne '');
-    $Text::Wrap::break = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{break} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{break};
-    $Text::Wrap::unexpand = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{unexpand} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{unexpand};
-    $Text::Wrap::tabstop = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{tabstop} if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{tabstop};
-
-    # perform the text wrapping
-    ${$self}{body} = wrap('','',${$self}{body});
-
-    ${$self}{body} =~ s/${$_}{tmpVerbatimID}/${$_}{origVerbatimID}/s foreach (@putVerbatimBackIn);
 }
-
-sub construct_paragraph_reg_exp{
-    my $self = shift;
-
-    $logger->trace("*Constructing the paragraph-stop regexp (see paragraphsStopAt)") if $is_t_switch_active ;
-    my $stopAtRegExp = q();
-    while( my ($paragraphStopAt,$yesNo)= each %{${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{paragraphsStopAt}}){
-        if($yesNo){
-            # the headings (chapter, section, etc) need a slightly special treatment
-            $paragraphStopAt = "afterHeading" if($paragraphStopAt eq "heading");
-
-            # the comment need a slightly special treatment
-            $paragraphStopAt = "trailingComment" if($paragraphStopAt eq "comments");
-
-            # output to log file
-            $logger->trace("The paragraph-stop regexp WILL include $tokens{$paragraphStopAt} (see paragraphsStopAt)") if $is_t_switch_active ;
-
-            # update the regexp
-            if($paragraphStopAt eq "items"){
-                $stopAtRegExp .= "|(?:\\\\(?:".$listOfItems."))";
-            } else {
-                $stopAtRegExp .= "|(?:".($paragraphStopAt eq "trailingComment" ? "%" : q() ).$tokens{$paragraphStopAt}."\\d+)";
-            }
-        } else {
-            $logger->trace("The paragraph-stop regexp won't include $tokens{$paragraphStopAt} (see paragraphsStopAt)") if ($tokens{$paragraphStopAt} and $is_t_switch_active);
-        }
-    }
-
-    $paragraphRegExp = qr/
-                        ^
-                        (?!$tokens{beginOfToken})
-                        (\w
-                            (?:
-                                (?!
-                                    (?:$tokens{blanklines}|\\par) 
-                                ).
-                            )*?
-                         )
-                         (
-                            (?:
-                                ^(?:(\h*\R)|\\par|$tokens{blanklines}$stopAtRegExp)
-                            )
-                            |
-                            \z      # end of string
-                         )/sxm;
-
-    $logger->trace("The paragraph-stop-regexp is:") if $is_tt_switch_active ;
-    $logger->trace($paragraphRegExp) if $is_tt_switch_active ;
-}
-
-sub remove_paragraph_line_breaks{
-    my $self = shift;
-    return unless ${$self}{removeParagraphLineBreaks};
-
-    # alignment at ampersand can take priority
-    return if(${$self}{lookForAlignDelims} and ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{alignAtAmpersandTakesPriority});
-
-    $logger->trace("Checking ${$self}{name} for paragraphs (see removeParagraphLineBreaks)") if $is_t_switch_active;
-
-    my $paragraphCounter;
-    my @paragraphStorage;
-
-    ${$self}{body} =~ s/$paragraphRegExp/
-                            $paragraphCounter++;
-                            push(@paragraphStorage,{id=>$tokens{paragraph}.$paragraphCounter.$tokens{endOfToken},value=>$1});
-
-                            # replace comment with dummy text
-                            $tokens{paragraph}.$paragraphCounter.$tokens{endOfToken}.$2;
-                        /xsmeg;
-
-    while( my $paragraph = pop @paragraphStorage){
-      # remove all line breaks from paragraph, except for any at the very end
-      ${$paragraph}{value} =~ s/\R(?!\z)/ /sg; 
-      ${$self}{body} =~ s/${$paragraph}{id}/${$paragraph}{value}/; 
-    }
-}
-
 
 1;

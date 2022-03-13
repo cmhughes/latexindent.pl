@@ -3,21 +3,20 @@
 
 \renewcommand{\cite}[1]{}
 
-
 \begin{document}
 
 \begin{abstract}
-	In this paper, we investigate the potential of GPUs for performing link
-	structure analysis of social graphs.  Specifically, we implement Twitter's
-	WTF (``Who to Follow'') recommendation system on a single GPU\@. Our
-	implementation shows promising results on moderate-sized social graphs. It
-	can return the top-K relevant users for a single user in 172~ms when
-	running on a subset of the 2009 Twitter follow graph with 16 million users
-	and 85 million social relations. For our largest dataset, which contains
-	75\% of the users (30 million) and 50\% of the social relations (680
-	million) of the complete follow graph, this calculation takes 1.0~s. We
-	also propose possible solutions to apply our system to follow graphs of
-	larger sizes that do not fit into the on-board memory of a single GPU\@.
+  In this paper, we investigate the potential of GPUs for performing link
+  structure analysis of social graphs. Specifically, we implement Twitter's
+  WTF (``Who to Follow'') recommendation system on a single GPU\@. Our
+  implementation shows promising results on moderate-sized social graphs. It
+  can return the top-K relevant users for a single user in 172~ms when
+  running on a subset of the 2009 Twitter follow graph with 16 million users
+  and 85 million social relations. For our largest dataset, which contains
+  75\% of the users (30 million) and 50\% of the social relations (680
+  million) of the complete follow graph, this calculation takes 1.0~s. We
+  also propose possible solutions to apply our system to follow graphs of
+  larger sizes that do not fit into the on-board memory of a single GPU\@.
 \end{abstract}
 
 \section{Introduction}
@@ -49,15 +48,15 @@ highly parallel architecture that is potentially well-suited for this kind
 of large-scale graph analysis.
 
 \begin{figure*}
-	\centering
-	\caption{Overview of Twitter's WTF algorithm. \emph{Frame 1:} The initial
-		graph (red [dark] node is the user for whom recommendations are being
-		computed). \emph{Frame 2:} The Circle of Trust (nodes in pink [dark]) is
-		found using Personalized PageRank. \emph{Frame 3:} The graph is pruned to
-		include only the CoT and the users they follow. \emph{Frame 4:} The
-		relevance scores of all users on the right side are computed with Twitter's
-		Money algorithm. Node 4 will be suggested for Node 0 to follow because it
-		has the highest value of all nodes the user is not already following.}
+  \centering
+  \caption{Overview of Twitter's WTF algorithm. \emph{Frame 1:} The initial graph (red
+      [dark] node is the user for whom recommendations are being computed).
+    \emph{Frame 2:} The Circle of Trust (nodes in pink [dark]) is found using
+    Personalized PageRank. \emph{Frame 3:} The graph is pruned to include only
+    the CoT and the users they follow. \emph{Frame 4:} The relevance scores of
+    all users on the right side are computed with Twitter's Money algorithm.
+    Node 4 will be suggested for Node 0 to follow because it has the highest
+    value of all nodes the user is not already following.}
 \end{figure*}
 
 GPUs are throughput-oriented, highly parallel architectures that have
@@ -160,7 +159,7 @@ and assign rank values for a subset of nodes. Like many other graph
 algorithms, they can be viewed as iterative convergent processes. There is
 a data dependency between iterative steps, but within each step, a large
 number of independent edge-centric or vertex-centric operations can be
-parallelized.  However, to fully exploit the compute capabilities of GPUs,
+parallelized. However, to fully exploit the compute capabilities of GPUs,
 we need special strategies to handle irregular memory access and work
 distribution.
 
@@ -178,7 +177,7 @@ primitives: \emph{graph traversal} and \emph{filtering}. Graph traversal
 starts with a queue of vertices we call the \emph{frontier}. Traversal then
 takes several iterations to advance toward other vertices by visiting the
 neighbor list of all vertices in the current frontier in parallel and
-adding the neighbor vertices to the new frontier.  Filtering starts with a
+adding the neighbor vertices to the new frontier. Filtering starts with a
 frontier that contains either edges or vertices, does a user-defined
 validation test for every item in the frontier in parallel, then generates
 a new frontier containing only the items that have passed the validation
@@ -191,7 +190,7 @@ and forth between two disjoint sets in a bipartite graph: the CoT and the
 union of all CoT vertices' neighbor lists. Since in graph traversal
 primitives, the neighbor lists can vary greatly in size, traversing these
 neighbor lists in parallel efficiently and in a load-balanced way is
-critical for the performance of our system.  Merrill et
+critical for the performance of our system. Merrill et
 al.~\cite{Merrill:2012:SGG} uses specialized strategies according to
 neighbor list size in the context of a parallel breadth-first search (BFS)
 algorithm. The algorithm efficiently reduces the amount of overhead within
@@ -243,19 +242,16 @@ run the Money algorithm, sort the vertices that the CoT follows, and
 finally extract the vertices with the top relevance scores to use for our
 recommendation.
 
-\subsection{Personalized PageRank} Algorithm~\ref{alg:ppr} shows our
-implementation of PPR using the graph primitives and functors we design. We
-update PPR using the following equation:
+\subsection{Personalized PageRank} Algorithm~\ref{alg:ppr} shows our implementation of PPR using the graph
+primitives and functors we design. We update PPR using the following
+equation:
 \begin{equation}
-	\textit{PPR}(v_i) = \left\{
-	\begin{array}{l l}
-		(1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in
-		\textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} &
-		\text{$v_i$ is seed}                                                                   \\
-		\delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)}
-		\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                         & \text{otherwise}
-	\end{array}
-	\right.
+  \textit{PPR}(v_i) = \left\{
+  \begin{array}{l l}
+    (1-\delta) + \delta \cdot \!\!\!\!\!\sum\limits_{v_j \in \textit{pred}(v_i)} \!\!\frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)} & \text{$v_i$ is seed} \\
+    \delta \cdot \sum\limits_{v_j \in \textit{pred}(v_i)} \frac{\textit{PPR}(v_j)}{d_\text{OUT}(v_j)}                            & \text{otherwise}
+  \end{array}
+  \right.
 \end{equation}
 where $\delta$ is a constant damping factor (typically set to 0.85),
 $d_\text{OUT}(v_j)$ is the number of outbound edges on vertex $v_j$, and
@@ -275,70 +271,50 @@ the frontier (line~\ref{alg:ppr:filter}). The algorithm ends when all the
 PPR values converge and the frontier is empty.
 
 \begin{algorithm}
-	\caption{Personalized PageRank} \label{alg:ppr}
-	\begin{algorithmic}[1]
-		\Procedure{Set\_Problem\_Data}{$G, P, \textit{seed}, \textit{delta}$}
-		\label{alg:ppr:problemdata}
-		\State $P.\textit{ranks\_curr}[1..G.\textit{verts}] \gets
-			\frac{1}{N}$
-		\State $P.\textit{src} \gets \textit{seed}, P.\textit{delta} \gets
-			\textit{delta}$
-		\State $P.\textit{frontier.Insert}(G.\textit{nodes})$
-		\EndProcedure
+  \caption{Personalized PageRank} \label{alg:ppr}
+  \begin{algorithmic}[1]
+    \Procedure{Set\_Problem\_Data}{$G, P, \textit{seed}, \textit{delta}$} \label{alg:ppr:problemdata}
+      \State $P.\textit{ranks\_curr}[1..G.\textit{verts}] \gets \frac{1}{N}$
+      \State $P.\textit{src} \gets \textit{seed}, P.\textit{delta} \gets \textit{delta}$
+      \State $P.\textit{frontier.Insert}(G.\textit{nodes})$
+    \EndProcedure
 
-		\Procedure{DistributePPRValue}{$s\_\textit{id}, d\_\textit{id}, P$}
-		\State
-		$\textit{atomicAdd}(P.\textit{rank\_next}[d\_\textit{id}],\frac{P.\textit{r
-					ank\_curr}[s\_\textit{id}]}{P.\textit{out\_degree}[s\_\textit{id}]})$
-		\label{alg:ppr:distribute}
-		\EndProcedure
+    \Procedure{DistributePPRValue}{$s\_\textit{id}, d\_\textit{id}, P$}
+      \State $\textit{atomicAdd}(P.\textit{rank\_next}[d\_\textit{id}],\frac{P.\textit{rank\_curr}[s\_\textit{id}]}{P.\textit{out\_degree}[s\_\textit{id}]})$ \label{alg:ppr:distribute}
+    \EndProcedure
 
-		\Procedure{UpdatePPRValue}{$\textit{node}\_\textit{id}, P$}
-		\State $P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]
-			\gets (P.\textit{delta} \cdot
-			P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]) +
-			(P.\textit{src} == \textit{node}\_\textit{id}) ? (1.0 - P.\textit{delta}) :
-			0$ \label{alg:ppr:seed}
-		\State $\textit{diff} \gets
-			\textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr
-			}[\textit{node}\_\textit{id}])$
-		\State \textbf{return} $\textit{diff} > P.\textit{threshold}$
-		\label{alg:ppr:filter}
-		\EndProcedure
+    \Procedure{UpdatePPRValue}{$\textit{node}\_\textit{id}, P$}
+      \State $P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}] \gets (P.\textit{delta} \cdot P.\textit{rank}\_\textit{next}[\textit{node}\_\textit{id}]) + (P.\textit{src} == \textit{node}\_\textit{id}) ? (1.0 - P.\textit{delta}) : 0$ \label{alg:ppr:seed}
+      \State $\textit{diff} \gets \textit{fabs}(P.\textit{rank\_next}[\textit{node\_id}]-P.\textit{rank\_curr}[\textit{node}\_\textit{id}])$
+      \State \textbf{return} $\textit{diff} > P.\textit{threshold}$ \label{alg:ppr:filter}
+    \EndProcedure
 
-		\Procedure{Compute\_PPR}{$G,P,\textit{seed}, \textit{delta},
-				\textit{max\_iter}$}
-		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed},
-				\textit{delta}$}
-		\While {$P.\textit{frontier.Size}() > 0$}
-		\State \Call {GraphTraversal}{$G,P,\textit{DistributePPRValue}$}
-		\State \Call {Filtering}{$G,P,\textit{UpdatePPRValue}$}
-		\State $swap(P.\textit{rank\_next}, P.\textit{rank\_curr})$
-		\EndWhile
-		\EndProcedure
-	\end{algorithmic}
+    \Procedure{Compute\_PPR}{$G,P,\textit{seed}, \textit{delta}, \textit{max\_iter}$}
+      \State \Call {Set\_Problem\_Data}{$G,P,\textit{seed}, \textit{delta}$}
+      \While {$P.\textit{frontier.Size}() > 0$}
+        \State \Call {GraphTraversal}{$G,P,\textit{DistributePPRValue}$}
+        \State \Call {Filtering}{$G,P,\textit{UpdatePPRValue}$}
+        \State $swap(P.\textit{rank\_next}, P.\textit{rank\_curr})$
+      \EndWhile
+    \EndProcedure
+  \end{algorithmic}
 \end{algorithm}
 
-\subsection{Twitter's Money Algorithm} Algorithm~\ref{alg:money} shows our
-implementation of Twitter's Money algorithm. We treat people in the CoT and
-people they follow as two disjoint sets $X$ and $Y$ in the bipartite graph
-$G = (X \cup Y, E)$ they form. For each node in $X$ (the CoT), the Money
-algorithm computes its similarity score; for each node in $Y$, the Money
-algorithm computes its relevance score. We use the following equations in
-our implementation:
+\subsection{Twitter's Money Algorithm} Algorithm~\ref{alg:money} shows our implementation of Twitter's Money
+algorithm. We treat people in the CoT and people they follow as two
+disjoint sets $X$ and $Y$ in the bipartite graph $G = (X \cup Y, E)$ they
+form. For each node in $X$ (the CoT), the Money algorithm computes its
+similarity score; for each node in $Y$, the Money algorithm computes its
+relevance score. We use the following equations in our implementation:
 \begin{equation}
-	sim(x) = \left\{
-	\begin{array}{l l}
-		\alpha + (1-\alpha) \cdot \sum\limits_{(x,y) \in E}
-		\frac{\textit{relevance}(y)}{d_\text{IN}(y)} & \text{$x$ \textrm{is
-		seed}}                                                              \\
-		(1-\alpha) \cdot \sum\limits_{(x,y) \in E}
-		\frac{\textit{relevance}(y)}{d_\text{IN}(y)} & \text{otherwise}
-	\end{array} \right.
+  sim(x) = \left\{
+  \begin{array}{l l}
+    \alpha + (1-\alpha) \cdot \sum\limits_{(x,y) \in E} \frac{\textit{relevance}(y)}{d_\text{IN}(y)} & \text{$x$ \textrm{is seed}} \\
+    (1-\alpha) \cdot \sum\limits_{(x,y) \in E} \frac{\textit{relevance}(y)}{d_\text{IN}(y)}          & \text{otherwise}
+  \end{array} \right.
 \end{equation}
 \begin{equation}
-	\textit{relevance}(y) = \sum\limits_{(x,y)\in E}
-	\frac{\textit{sim}(x)}{d_\text{OUT}(x)}
+  \textit{relevance}(y) = \sum\limits_{(x,y)\in E} \frac{\textit{sim}(x)}{d_\text{OUT}(x)}
 \end{equation}
 
 In the Money algorithm, we also initialize problem data first
@@ -363,48 +339,35 @@ algorithm~\cite{Goel:2014:TWT}, we end our main loop after $1/\alpha$
 iterations.
 
 \begin{algorithm}
-	\caption{Twitter's Money Algorithm} \label{alg:money}
-	\begin{algorithmic}[1]
-		\Procedure{Set\_Problem\_Data}{$G, P, \textit{seed},
-				\textit{alpha}$}\label{alg:money:problemdata}
-		\State $P.\textit{relevance\_curr}[1..G.\textit{verts}] \gets 0$
-		\State $P.\textit{sim\_curr}[1..G.\textit{verts}] \gets 0$
-		\State $P.\textit{src} \gets \textit{seed}, P.\textit{alpha} \gets
-			\textit{alpha}$
-		\State $P.\textit{sim\_curr}[\textit{seed}] \gets 1$
-		\State $P.\textit{frontier.Insert}(G.\textit{cot\_queue})$
-		\EndProcedure
+  \caption{Twitter's Money Algorithm} \label{alg:money}
+  \begin{algorithmic}[1]
+    \Procedure{Set\_Problem\_Data}{$G, P, \textit{seed}, \textit{alpha}$}\label{alg:money:problemdata}
+      \State $P.\textit{relevance\_curr}[1..G.\textit{verts}] \gets 0$
+      \State $P.\textit{sim\_curr}[1..G.\textit{verts}] \gets 0$
+      \State $P.\textit{src} \gets \textit{seed}, P.\textit{alpha} \gets \textit{alpha}$
+      \State $P.\textit{sim\_curr}[\textit{seed}] \gets 1$
+      \State $P.\textit{frontier.Insert}(G.\textit{cot\_queue})$
+    \EndProcedure
 
-		\Procedure{DistributeRelevance}{$s\_\textit{id}, d\_\textit{id}, P$}
-		\State
-		$atomicAdd(P.\textit{relevance\_next}[d\_\textit{id}],\frac{P.\textit{sim\_
-					curr}[s\_\textit{id}]}{P.\textit{out\_degree}[s\_\textit{id}]})$
-		\label{alg:money:relevance}
-		\EndProcedure
+    \Procedure{DistributeRelevance}{$s\_\textit{id}, d\_\textit{id}, P$}
+      \State $atomicAdd(P.\textit{relevance\_next}[d\_\textit{id}],\frac{P.\textit{sim\_curr}[s\_\textit{id}]}{P.\textit{out\_degree}[s\_\textit{id}]})$ \label{alg:money:relevance}
+    \EndProcedure
 
-		\Procedure{DistributeSim}{$s\_id, d\_id, P$}
-		\State $val \gets (1-P.\textit{alpha}) \cdot
-			\frac{P.\textit{relevance\_curr}[d\_\textit{id}]}{P.\textit{in\_degree}[d\_
-					\textit{id}]} + (P.\textit{src} == s\_\textit{id}) ?
-			(\frac{P.\textit{alpha}}{P.\textit{out\_degree}[s\_\textit{id}]}) : 0$
-		\label{alg:money:similarity}
-		\State $\textit{atomicAdd}(P.\textit{sim\_next}[d\_\textit{id}],
-			\textit{val})$
-		\EndProcedure
+    \Procedure{DistributeSim}{$s\_id, d\_id, P$}
+      \State $val \gets (1-P.\textit{alpha}) \cdot \frac{P.\textit{relevance\_curr}[d\_\textit{id}]}{P.\textit{in\_degree}[d\_\textit{id}]} + (P.\textit{src} == s\_\textit{id}) ? (\frac{P.\textit{alpha}}{P.\textit{out\_degree}[s\_\textit{id}]}) : 0$    \label{alg:money:similarity}
+      \State $\textit{atomicAdd}(P.\textit{sim\_next}[d\_\textit{id}], \textit{val})$
+    \EndProcedure
 
-		\Procedure{Compute\_Money}{$G,P,\textit{seed}, \textit{alpha}$}
-		\State \Call {Set\_Problem\_Data}{$G,P,\textit{seed},
-				\textit{alpha}$}
-		\For {$iter\text{\raisebox{.4ex}{\tiny{++}}} < 1/\textit{alpha}$}
-		\State \Call {GraphTraversal}{$G,P,\textit{DistributeRelevance}$}
-		\State $swap(P.\textit{relevance\_next},
-			P.\textit{relevance\_curr})$ \label{alg:money:swaprel}
-		\State \Call {GraphTraversal}{$G,P,\textit{DistributeSim}$}
-		\State $swap(P.\textit{sim\_next}, P.\textit{sim\_curr})$
-		\label{alg:money:swapsim}
-		\EndFor
-		\EndProcedure
-	\end{algorithmic}
+    \Procedure{Compute\_Money}{$G,P,\textit{seed}, \textit{alpha}$}
+      \State \Call {Set\_Problem\_Data}{$G,P,\textit{seed}, \textit{alpha}$}
+      \For {$iter\text{\raisebox{.4ex}{\tiny{++}}} < 1/\textit{alpha}$}
+        \State \Call {GraphTraversal}{$G,P,\textit{DistributeRelevance}$}
+        \State $swap(P.\textit{relevance\_next}, P.\textit{relevance\_curr})$ \label{alg:money:swaprel}
+        \State \Call {GraphTraversal}{$G,P,\textit{DistributeSim}$}
+        \State $swap(P.\textit{sim\_next}, P.\textit{sim\_curr})$ \label{alg:money:swapsim}
+      \EndFor
+    \EndProcedure
+  \end{algorithmic}
 \end{algorithm}
 
 \section{Experiments}\label{sec:experiment}
@@ -426,31 +389,31 @@ and 50\% of its social relation edge size to form a partial graph that can
 fit into the GPU's memory.
 
 \begin{table}
-	\centering
-	\caption{Experimental Datasets\label{tab:dataset}}
-	\begin{tabular}{*{6}{l}}
-		\toprule Dataset   & Vertices & Edges  \\
-		\midrule wiki-Vote & 7.1k     & 103.7k \\
-		twitter-SNAP       & 81.3k    & 2.4M   \\
-		gplus-SNAP         & 107.6k   & 30.5M  \\
-		twitter09          & 30.7M    & 680M   \\
-		\bottomrule
-	\end{tabular}
+  \centering
+  \caption{Experimental Datasets\label{tab:dataset}}
+  \begin{tabular}{*{6}{l}}
+    \toprule Dataset   & Vertices & Edges  \\
+    \midrule wiki-Vote & 7.1k     & 103.7k \\
+    twitter-SNAP       & 81.3k    & 2.4M   \\
+    gplus-SNAP         & 107.6k   & 30.5M  \\
+    twitter09          & 30.7M    & 680M   \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 \subsection{Scalability}
 
 \begin{table}
-	\centering
-	\caption{Runtimes for Different Graph Sizes\label{tab:runtimes}}
-	\begin{tabular}{*{6}{r}}
-		\toprule Time (ms) & wiki-Vote & twitter & gplus & twitter09 \\
-		\midrule PPR       & 0.45      & 0.84    & 4.74  & 832.69    \\
-		CoT                & 0.54      & 1.28    & 2.11  & 51.61     \\
-		Money              & 2.70      & 5.16    & 18.56 & 158.37    \\
-		Total              & 4.37      & 8.36    & 26.57 & 1044.99   \\
-		\bottomrule
-	\end{tabular}
+  \centering
+  \caption{Runtimes for Different Graph Sizes\label{tab:runtimes}}
+  \begin{tabular}{*{6}{r}}
+    \toprule Time (ms) & wiki-Vote & twitter & gplus & twitter09 \\
+    \midrule PPR       & 0.45      & 0.84    & 4.74  & 832.69    \\
+    CoT                & 0.54      & 1.28    & 2.11  & 51.61     \\
+    Money              & 2.70      & 5.16    & 18.56 & 158.37    \\
+    Total              & 4.37      & 8.36    & 26.57 & 1044.99   \\
+    \bottomrule
+  \end{tabular}
 \end{table}
 
 In order to test the scalability of our WTF-on-GPU recommendation system,
@@ -467,9 +430,9 @@ graph size each time, the CoT size is fixed at 1000. We address scalability
 beyond a single GPU in Section~\ref{sec:discussion}.
 
 \begin{figure}
-	\centering
-	\caption{Scalability of runtime versus edge count for our GPU
-		recommendation system.\label{fig:runtime-vs-edge-count}}
+  \centering
+  \caption{Scalability of runtime versus edge count for our GPU recommendation
+    system.\label{fig:runtime-vs-edge-count}}
 \end{figure}
 
 \subsection{Comparison to Cassovary}
@@ -480,24 +443,18 @@ Twitter. It was the library Twitter used in their first WTF
 implementation~\cite{Gupta:2013:WTW}. The parameters and Cassovary function
 calls for this implementation can be found in the Appendix.
 \begin{table*}
-	\centering
-	\caption{Runtime comparison to Cassovary.\label{tab:cassovary}}
-	\begin{tabular}{*{10}{r}}
-		\toprule                   & \multicolumn{2}{c}{wiki-Vote} & \multicolumn{2}{c}{twitter}
-		                           & \multicolumn{2}{c}{gplus}     & \multicolumn{2}{c}{twitter09}                                                        \\
-		\midrule Step (runtime)    & Cassovary                     & GPU                           & Cassovary & GPU  & Cassovary
-		                           & GPU                           & Cassovary                     & GPU                                                  \\
-		\midrule PPR (ms)          & 418                           & 0.45                          & 480       & 0.84 & 463       & 4.74  & 884   &
-		832.69                                                                                                                                            \\
-		CoT (ms)                   & 262                           & 0.54                          & 2173      & 1.28 & 25616     & 2.11  & 2192  & 51.61 \\
-		Money/SALSA (ms)           & 357                           & 2.70                          & 543       & 5.16 & 2023      & 18.56 & 11216 &
-		158.37                                                                                                                                            \\
-		Total (ms)                 & 1037                          & 4.37                          & 3196      & 8.36 & 28102     & 26.57 & 14292 &
-		1044.99                                                                                                                                           \\
-		Speedup                    & \multicolumn{2}{r}{235.7}     & \multicolumn{2}{r}{380.5}     &
-		\multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}                                                                                             \\
-		\bottomrule
-	\end{tabular}
+  \centering
+  \caption{Runtime comparison to Cassovary.\label{tab:cassovary}}
+  \begin{tabular}{*{10}{r}}
+    \toprule                & \multicolumn{2}{c}{wiki-Vote} & \multicolumn{2}{c}{twitter} & \multicolumn{2}{c}{gplus}  & \multicolumn{2}{c}{twitter09}                                           \\
+    \midrule Step (runtime) & Cassovary                     & GPU                         & Cassovary                  & GPU                           & Cassovary & GPU   & Cassovary & GPU     \\
+    \midrule PPR (ms)       & 418                           & 0.45                        & 480                        & 0.84                          & 463       & 4.74  & 884       & 832.69  \\
+    CoT (ms)                & 262                           & 0.54                        & 2173                       & 1.28                          & 25616     & 2.11  & 2192      & 51.61   \\
+    Money/SALSA (ms)        & 357                           & 2.70                        & 543                        & 5.16                          & 2023      & 18.56 & 11216     & 158.37  \\
+    Total (ms)              & 1037                          & 4.37                        & 3196                       & 8.36                          & 28102     & 26.57 & 14292     & 1044.99 \\
+    Speedup                 & \multicolumn{2}{r}{235.7}     & \multicolumn{2}{r}{380.5}   & \multicolumn{2}{r}{1056.5} & \multicolumn{2}{r}{13.7}                                                \\
+    \bottomrule
+  \end{tabular}
 \end{table*}
 
 We achieve speedups of up to 1000x over Cassovary for the Google Plus
@@ -511,13 +468,12 @@ Who-To-Follow paper~\cite{Gupta:2013:WTW}, Gupta et al.\ use a form of
 SALSA for this step, so this is reasonable for a comparison.
 
 \section{Discussion}
-\label{sec:discussion} On a graph with more than 175 million nodes and 20
-billion edges, the WTF algorithm currently takes around 500~ms in Twitter's
-data center~\cite{Myers:2014:INS}. In contrast, our implementation can
-process a graph with 25 million nodes and 340 million edges in a similar
-amount of time (524~ms), and it takes 1 second to process our largest
-dataset, which is still significantly smaller than the complete Twitter
-graph.
+\label{sec:discussion} On a graph with more than 175 million nodes and 20 billion edges, the WTF
+algorithm currently takes around 500~ms in Twitter's data
+center~\cite{Myers:2014:INS}. In contrast, our implementation can process a
+graph with 25 million nodes and 340 million edges in a similar amount of
+time (524~ms), and it takes 1 second to process our largest dataset, which
+is still significantly smaller than the complete Twitter graph.
 
 The Personalized PageRank calculation takes up the vast majority of the
 runtime for larger graphs (Table~\ref{tab:runtimes}). This is because PPR
@@ -575,8 +531,8 @@ design partitioning and synchronization strategies for such graphs.
 
 Another limitation is the bandwidth of the connection between main memory
 and GPU memory. Results in Section~\ref{sec:experiment} do not include the
-data transfer time from CPU memory to the GPU\@. For our largest graph,
-the transfer time is 852.24~ms---about 85\% of the compute time. In our
+data transfer time from CPU memory to the GPU\@. For our largest graph, the
+transfer time is 852.24~ms---about 85\% of the compute time. In our
 experiments, we assume that graph data will be resident on the GPU, because
 it will be used to run a variety of algorithms on the follow graph, so
 transfer time will not be significant overall; however, for a different use
@@ -592,22 +548,21 @@ CPU and GPU\@). While such systems will still require careful memory
 management, they eliminate the current performance disadvantage in the case
 data fits in CPU memory but not GPU memory.
 
-\section{Conclusions and Future Work} In this work, we have shown that it
-is possible to use a GPU for recommendation algorithms on social graphs,
-but there are still many ways in which the performance could be improved.
-Software platforms for large-scale online social network analysis on hybrid
-CPU-GPU architectures could potentially offer better throughput and
-performance on systems that are more cost-effective than today's CPU-based
-cluster architectures. However, moving workloads to GPUs is challenging for
-the following reasons:
+\section{Conclusions and Future Work} In this work, we have shown that it is possible to use a GPU for
+recommendation algorithms on social graphs, but there are still many ways
+in which the performance could be improved. Software platforms for
+large-scale online social network analysis on hybrid CPU-GPU architectures
+could potentially offer better throughput and performance on systems that
+are more cost-effective than today's CPU-based cluster architectures.
+However, moving workloads to GPUs is challenging for the following reasons:
 
 \begin{itemize}
-	\item Designing parallel algorithms for such systems is both difficult and
-	      time consuming.
-	\item Today, limited PCIe bandwidth is a constraint for using discrete GPUs
-	      for communication-bounded tasks.
-	\item The limited memory size on current GPUs makes it difficult to run
-	      algorithms on datasets that cannot fit in the GPU memory.
+  \item Designing parallel algorithms for such systems is both difficult and time
+        consuming.
+  \item Today, limited PCIe bandwidth is a constraint for using discrete GPUs for
+        communication-bounded tasks.
+  \item The limited memory size on current GPUs makes it difficult to run
+        algorithms on datasets that cannot fit in the GPU memory.
 \end{itemize}
 
 With the appearance of more graph processing libraries on the GPU, the
@@ -623,11 +578,11 @@ the second level cache, sitting atop data stored on hard disks/SSDs. In our
 case of building a recommendation system, the entire follow graph will be
 stored in CPU memory with disk as backing store. Multiple nodes, each
 containing one or more GPUs, will store the CoT for each user in the graph.
-Currently Twitter has 250 million users.  If we keep the size of CoT at
-1000 and use unsigned integers for vertex IDs, then we will need 2~TB to
-store CoTs for all users. That can be easily partitioned by user ID to fit
-on 4 or more machines with 512~GB or less of main memory. In this case, we
-can run PPR as an offline algorithm that runs only once per day or after a
+Currently Twitter has 250 million users. If we keep the size of CoT at 1000
+and use unsigned integers for vertex IDs, then we will need 2~TB to store
+CoTs for all users. That can be easily partitioned by user ID to fit on 4
+or more machines with 512~GB or less of main memory. In this case, we can
+run PPR as an offline algorithm that runs only once per day or after a
 certain number of graph updates. The recommendation system can then work in
 real time with around 100~ms running time. Because the number of vertices
 in CoT is a constant 1000, the pruned graph that contains only vertices in
@@ -638,94 +593,76 @@ GPU memory requirements.
 \bibliographystyle{abbrv} %\bibliography{wtf}
 \begin{thebibliography}{10}
 
-	\bibitem{Avrachenkov:2007:MCM}
-	K.~Avrachenkov, N.~Litvak, D.~Nemirovsky, and N.~Osipova.
-	\newblock {M}onte {C}arlo methods in {PageRank} computation: When one
-	iteration is sufficient.
-	\newblock {\em SIAM Journal of Numerical Analysis}, 45(2):890--904, Feb.
-	2007.
+  \bibitem{Avrachenkov:2007:MCM}
+  K.~Avrachenkov, N.~Litvak, D.~Nemirovsky, and N.~Osipova.
+  \newblock {M}onte {C}arlo methods in {PageRank} computation: When one iteration is sufficient.
+  \newblock {\em SIAM Journal of Numerical Analysis}, 45(2):890--904, Feb. 2007.
 
-	\bibitem{Bahmani:2010:FIP}
-	B.~Bahmani, A.~Chowdhury, and A.~Goel.
-	\newblock Fast incremental and personalized {PageRank}.
-	\newblock {\em Proceedings of the VLDB Endowment}, 4(3):173--184, Dec.
-	2010.
+  \bibitem{Bahmani:2010:FIP}
+  B.~Bahmani, A.~Chowdhury, and A.~Goel.
+  \newblock Fast incremental and personalized {PageRank}.
+  \newblock {\em Proceedings of the VLDB Endowment}, 4(3):173--184, Dec. 2010.
 
-	\bibitem{Goel:2014:TWT}
-	A.~Goel.
-	\newblock The ``who-to-follow'' system at {T}witter: Algorithms, impact,
-	and further research.
-	\newblock WWW 2014 industry track, 2014.
+  \bibitem{Goel:2014:TWT}
+  A.~Goel.
+  \newblock The ``who-to-follow'' system at {T}witter: Algorithms, impact, and further research.
+  \newblock WWW 2014 industry track, 2014.
 
-	\bibitem{Gupta:2013:WTW}
-	P.~Gupta, A.~Goel, J.~Lin, A.~Sharma, D.~Wang, and R.~Zadeh.
-	\newblock {WTF}: The who to follow service at {T}witter.
-	\newblock In {\em Proceedings of the International Conference on the
-			World Wide Web}, pages 505--514, May 2013.
+  \bibitem{Gupta:2013:WTW}
+  P.~Gupta, A.~Goel, J.~Lin, A.~Sharma, D.~Wang, and R.~Zadeh.
+  \newblock {WTF}: The who to follow service at {T}witter.
+  \newblock In {\em Proceedings of the International Conference on the World Wide Web}, pages 505--514, May 2013.
 
-	\bibitem{Kleinberg:1999:ASH}
-	J.~M. Kleinberg.
-	\newblock Authoritative sources in a hyperlinked environment.
-	\newblock {\em Journal of the ACM}, 46(5):604--632, Sept. 1999.
+  \bibitem{Kleinberg:1999:ASH}
+  J.~M. Kleinberg.
+  \newblock Authoritative sources in a hyperlinked environment.
+  \newblock {\em Journal of the ACM}, 46(5):604--632, Sept. 1999.
 
-	\bibitem{Kwak:2010:WIT}
-	H.~Kwak, C.~Lee, H.~Park, and S.~Moon.
-	\newblock {W}hat is {T}witter, a social network or a news media?
-	\newblock In {\em Proceedings of the International Conference on the
-			World Wide Web}, pages 591--600, Apr. 2010.
+  \bibitem{Kwak:2010:WIT}
+  H.~Kwak, C.~Lee, H.~Park, and S.~Moon.
+  \newblock {W}hat is {T}witter, a social network or a news media?
+  \newblock In {\em Proceedings of the International Conference on the World Wide Web}, pages 591--600, Apr. 2010.
 
-	\bibitem{Lempel:2001:STS}
-	R.~Lempel and S.~Moran.
-	\newblock {SALSA}: The stochastic approach for link-structure analysis.
-	\newblock {\em ACM Transactions on Information Systems}, 19(2):131--160,
-	Apr. 2001.
+  \bibitem{Lempel:2001:STS}
+  R.~Lempel and S.~Moran.
+  \newblock {SALSA}: The stochastic approach for link-structure analysis.
+  \newblock {\em ACM Transactions on Information Systems}, 19(2):131--160, Apr. 2001.
 
-	\bibitem{Leslovec:2014:SLN}
-	J.~Leskovec.
-	\newblock {SNAP}: Stanford large network dataset collection.
-	\newblock \url{http://snap.stanford.edu/data/}.
-	\newblock Accessed: 2014-05-18.
+  \bibitem{Leslovec:2014:SLN}
+  J.~Leskovec.
+  \newblock {SNAP}: Stanford large network dataset collection.
+  \newblock \url{http://snap.stanford.edu/data/}.
+  \newblock Accessed: 2014-05-18.
 
-	\bibitem{Merrill:2012:SGG}
-	D.~Merrill, M.~Garland, and A.~Grimshaw.
-	\newblock Scalable {GPU} graph traversal.
-	\newblock In {\em Proceedings of the 17th ACM SIGPLAN Symposium on
-			Principles and Practice of Parallel Programming}, PPoPP '12, pages
-	117--128, Feb. 2012.
+  \bibitem{Merrill:2012:SGG}
+  D.~Merrill, M.~Garland, and A.~Grimshaw.
+  \newblock Scalable {GPU} graph traversal.
+  \newblock In {\em Proceedings of the 17th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming}, PPoPP '12, pages 117--128, Feb. 2012.
 
-	\bibitem{Myers:2014:INS}
-	S.~A. Myers, A.~Sharma, P.~Gupta, and J.~Lin.
-	\newblock Information network or social network?: The structure of the
-		{T}witter follow graph.
-	\newblock In {\em Proceedings of the Companion Publication of the
-			International Conference on the World Wide Web}, WWW Companion '14, pages
-	493--498, Apr. 2014.
+  \bibitem{Myers:2014:INS}
+  S.~A. Myers, A.~Sharma, P.~Gupta, and J.~Lin.
+  \newblock Information network or social network?: The structure of the {T}witter follow graph.
+  \newblock In {\em Proceedings of the Companion Publication of the International Conference on the World Wide Web}, WWW Companion '14, pages 493--498, Apr. 2014.
 
-	\b  ibitem{Page:1999:TPC}
-	L.~Page, S.~Brin, R.~Motwani, and T.~Winograd.
-	\newblock The {PageRank} citation ranking: Bringing order to the web.
-	\newblock Technical Report 1999-66, Stanford InfoLab, Nov. 1999.
+  \b  ibitem{Page:1999:TPC}
+  L.~Page, S.~Brin, R.~Motwani, and T.~Winograd.
+  \newblock The {PageRank} citation ranking: Bringing order to the web.
+  \newblock Technical Report 1999-66, Stanford InfoLab, Nov. 1999.
 
-	\bibitem{Rungsawang:2012:FPC}
-	A.~Rungsawang and B.~Manaskasemsak.
-	\newblock Fast {PageRank} computation on a {GPU} cluster.
-	\newblock In {\em Proceedings of the 2012 20th Euromicro International
-			Conference on Parallel, Distributed and Network-Based Processing (PDP)},
-	pages 450--456, Feb. 2012.
+  \bibitem{Rungsawang:2012:FPC}
+  A.~Rungsawang and B.~Manaskasemsak.
+  \newblock Fast {PageRank} computation on a {GPU} cluster.
+  \newblock In {\em Proceedings of the 2012 20th Euromicro International Conference on Parallel, Distributed and Network-Based Processing (PDP)}, pages 450--456, Feb. 2012.
 
-	\bibitem{Srinivasa:2013:GIO}
-	K.~G. Srinivasa, K.~Mishra, C.~S. Prajeeth, and A.~M. Talha.
-	\newblock {GPU} implementation of friend recommendation system using
-		{CUDA} for social networking services.
-	\newblock In {\em Proceedings of the International Conference on Emerging
-			Research in Computing, Information, Communication, and Applications}, pages
-	890--895, Aug. 2013.
+  \bibitem{Srinivasa:2013:GIO}
+  K.~G. Srinivasa, K.~Mishra, C.~S. Prajeeth, and A.~M. Talha.
+  \newblock {GPU} implementation of friend recommendation system using {CUDA} for social networking services.
+  \newblock In {\em Proceedings of the International Conference on Emerging Research in Computing, Information, Communication, and Applications}, pages  890--895, Aug. 2013.
 
-	\bibitem{Wu:2010:EPS}
-	T.~Wu, B.~Wang, Y.~Shan, F.~Yan, Y.~Wang, and N.~Xu.
-	\newblock Efficient {PageRank} and {SpMV} computation on {AMD} {GPU}s.
-	\newblock In {\em Proceedings of the 39th International Conference on
-			Parallel   Processing}, pages 81--89, Sept. 2010.
+  \bibitem{Wu:2010:EPS}
+  T.~Wu, B.~Wang, Y.~Shan, F.~Yan, Y.~Wang, and N.~Xu.
+  \newblock Efficient {PageRank} and {SpMV} computation on {AMD} {GPU}s.
+  \newblock In {\em Proceedings of the 39th International Conference on Parallel   Processing}, pages 81--89, Sept. 2010.
 
 \end{thebibliography}
 
@@ -735,7 +672,7 @@ Cassovary graph library. Our inputs for the personalized PageRank
 computation are as follows:
 
 \begin{small}
-	\begin{verbatim}
+  \begin{verbatim}
 val numSteps = 100L * 1000L
 val resetProb = 0.15
 val maxSteps = None
@@ -750,7 +687,7 @@ val (topNeighbors, paths) = graphUtils.calculatePersonalizedReputation(startNode
 Parameters for the SALSA calculation:
 
 \begin{small}
-	\begin{verbatim}
+  \begin{verbatim}
 val leftResetProb = 0.2
 val rightResetProb = 0
 val numTopContributors = 5

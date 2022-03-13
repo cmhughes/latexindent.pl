@@ -1,0 +1,12 @@
+modifyLineBreaks:
+    textWrapOptions:
+        blocksFollow:
+           other: |-
+             (?x)
+                \\\]
+                |
+                \\item(?:\h|\[)
+                |
+                \\begin|{myenv\} # <--- new bit
+                |                # <--- new bit
+                \\end|{myenv\}   # <--- new bit

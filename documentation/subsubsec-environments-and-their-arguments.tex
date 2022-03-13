@@ -17,8 +17,7 @@
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd2.yaml}}{lst:myenv-noAdd2}
 	\end{minipage}
 
-	On applying either of the following commands,
-	\index{switches!-l demonstration}
+	On applying either of the following commands, \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv.tex -l myenv-noAdd1.yaml  
 latexindent.pl myenv.tex -l myenv-noAdd2.yaml  
@@ -30,8 +29,7 @@ latexindent.pl myenv.tex -l myenv-noAdd2.yaml
 	\cmhlistingsfromfile{demonstrations/myenvironment-simple-noAdd-body1.tex}{\texttt{myenv.tex} output (using either \cref{lst:myenv-noAdd1} or \cref{lst:myenv-noAdd2})}{lst:myenv-output}
 
 	Upon changing the YAML files to those shown in \cref{lst:myenv-noAdd3,lst:myenv-noAdd4},
-	and running either
-	\index{switches!-l demonstration}
+	and running either \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv.tex -l myenv-noAdd3.yaml  
 latexindent.pl myenv.tex -l myenv-noAdd4.yaml  
@@ -53,8 +51,7 @@ latexindent.pl myenv.tex -l myenv-noAdd4.yaml
 
 	\cmhlistingsfromfile{demonstrations/myenvironment-args.tex}{\texttt{myenv-args.tex}}{lst:myenv-args}
 
-	Upon running
-	\index{switches!-l demonstration}
+	Upon running \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex  
 \end{commandshell}
@@ -77,8 +74,7 @@ latexindent.pl -l=myenv-noAdd1.yaml myenv-args.tex
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-noAdd6.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-noAdd6.yaml}}{lst:myenv-noAdd6}
 	\end{minipage}
 
-	Upon running
-	\index{switches!-l demonstration}
+	Upon running \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv.tex -l myenv-noAdd5.yaml  
 latexindent.pl myenv.tex -l myenv-noAdd6.yaml  
@@ -107,8 +103,7 @@ latexindent.pl myenv.tex -l myenv-noAdd6.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules2.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules2.yaml}}{lst:myenv-rules2}
 	\end{cmhtcbraster}
 
-	On applying either of the following commands,
-	\index{switches!-l demonstration}
+	On applying either of the following commands, \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv.tex -l myenv-rules1.yaml  
 latexindent.pl myenv.tex -l myenv-rules2.yaml  
@@ -123,8 +118,7 @@ latexindent.pl myenv.tex -l myenv-rules2.yaml
 	space, it will be ignored.
 
 	Returning to the example in \cref{lst:myenv-args} that contains optional and mandatory
-	arguments. Upon using \cref{lst:myenv-rules1} as in
-	\index{switches!-l demonstration}
+	arguments. Upon using \cref{lst:myenv-rules1} as in \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -l=myenv-rules1.yaml  
 \end{commandshell}
@@ -144,8 +138,7 @@ latexindent.pl myenv-args.tex -l=myenv-rules1.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/myenv-rules4.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{myenv-rules4.yaml}}{lst:myenv-rules4}
 	\end{minipage}
 
-	After running
-	\index{switches!-l demonstration}
+	After running \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -l myenv-rules3.yaml  
 latexindent.pl myenv-args.tex -l myenv-rules4.yaml  
@@ -180,8 +173,8 @@ latexindent.pl myenv-args.tex -l myenv-rules4.yaml
 	\cmhlistingsfromfile[style=noAdditionalIndentGlobalEnv]{../defaultSettings.yaml}[width=.5\linewidth,before=\centering,yaml-TCB]{\texttt{noAdditionalIndentGlobal}}{lst:noAdditionalIndentGlobal:environments}
 
 	Let's say that you change the value of \texttt{environments} to \texttt{1} in
-	\cref{lst:noAdditionalIndentGlobal:environments}, and that you run
-	\index{switches!-l demonstration}
+	\cref{lst:noAdditionalIndentGlobal:environments}, and that you run \index{switches!-l
+	demonstration}
 
 	\begin{widepage}
 		\begin{commandshell}
@@ -219,8 +212,7 @@ latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-noAdditionalGlobal.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mand-args-no-add-glob.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-no-add-glob.yaml}}{lst:mand-args-no-add-glob}
 	\end{minipage}
 
-	we may run the commands
-	\index{switches!-l demonstration}
+	we may run the commands \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -local opt-args-no-add-glob.yaml
 latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
@@ -246,8 +238,7 @@ latexindent.pl myenv-args.tex -local mand-args-no-add-glob.yaml
 	\cmhlistingsfromfile[style=indentRulesGlobalEnv]{../defaultSettings.yaml}[width=.5\linewidth,before=\centering,yaml-TCB]{\texttt{indentRulesGlobal}}{lst:indentRulesGlobal:environments}
 
 	If you change the \texttt{environments} field to anything involving horizontal space, say
-	\lstinline!" "!, and then run the following commands
-	\index{switches!-l demonstration}
+	\lstinline!" "!, and then run the following commands \index{switches!-l demonstration}
 
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -l env-indentRules.yaml
@@ -281,8 +272,7 @@ latexindent.pl myenv-args.tex -l myenv-rules1.yaml,env-indentRules.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/mand-args-indent-rules-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{mand-args-indent-rules-glob.yaml}}{lst:mand-args-indent-rules-glob}
 	\end{minipage}
 
-	Upon running the following commands
-	\index{switches!-l demonstration}
+	Upon running the following commands \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl myenv-args.tex -local opt-args-indent-rules-glob.yaml
 latexindent.pl myenv-args.tex -local mand-args-indent-rules-glob.yaml

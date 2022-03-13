@@ -126,6 +126,8 @@ sub put_trailing_comments_back_in{
                           /mx and $1 ne ''){
           $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
           ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+          #####if(${$self}{body} =~ m/%$trailingcommentID\h*[^%]+?$/mx){
+          #####    $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line") if $is_t_switch_active;
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }

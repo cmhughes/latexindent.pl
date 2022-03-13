@@ -44,7 +44,7 @@ then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a comp
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 565. This may seem a lot, but I deem it necessary in presenting the
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 538. This may seem a lot, but I deem it necessary in presenting the
 various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
@@ -81,9 +81,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 619-627
+ 	:lines: 599-607
  	:linenos:
- 	:lineno-start: 619
+ 	:lineno-start: 599
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 
@@ -127,50 +127,25 @@ A word about regular expressions
 As you read this documentation, you may encounter the term *regular expressions*. I’ve tried to write this documentation in such a way so as to allow you to engage with them or not, as you prefer.
 This documentation is not designed to be a guide to regular expressions, and if you’d like to read about them, I recommend (Friedl, n.d.).
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-cmhblog
 
-.. raw:: html
+      “A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
 
-   <div id="ref-cmhblog">
+   .. container::
+      :name: ref-masteringregexp
 
-“A Perl Script for Indenting Tex Files.” n.d. Accessed January 23, 2017. http://tex.blogoverflow.com/2012/08/a-perl-script-for-indenting-tex-files/.
+      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
 
-.. raw:: html
+   .. container::
+      :name: ref-latexindent-home
 
-   </div>
+      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
 
-.. raw:: html
+   .. container::
+      :name: ref-harish
 
-   <div id="ref-masteringregexp">
-
-Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-latexindent-home">
-
-“Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   <div id="ref-harish">
-
-Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.

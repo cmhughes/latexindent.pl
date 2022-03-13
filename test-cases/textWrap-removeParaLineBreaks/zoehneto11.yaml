@@ -1,13 +1,8 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 
-            default: 80
-            environments:
-                default: 80
-                something: 10
-                another: 30
-        perCodeBlockBasis: 1
-        all: 1
-    removeParagraphLineBreaks:
-        all: 1
-        beforeTextWrap: 1
+        columns: 30
+        blocksFollow:
+           other: |-
+             (?x)\\begin\{[^}]*?\}
+                |
+                \\ifnum\\x>0

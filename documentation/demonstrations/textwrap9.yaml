@@ -1,7 +1,3 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 
-            default: 30
-            environments: 50
-        perCodeBlockBasis: 1
-        all: 1
+        columns: 30

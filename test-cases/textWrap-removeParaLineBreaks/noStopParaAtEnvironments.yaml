@@ -1,4 +1,26 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        paragraphsStopAt:
-            environments: 0
+    textWrapOptions:
+        blocksFollow:
+           other: |-
+             (?x)\\item
+                 |
+                 \\ifnum
+                 |
+                 \\mycommand\{
+                 |
+                 \\\[
+                 |
+                 \\\]
+                 |
+                 \[
+        blocksEndBefore:
+           other: |-
+             (?x)\\\[
+                 |
+                    \\end\{
+                 |
+                    \\fi
+                 | 
+                    \}
+                 | 
+                    \]

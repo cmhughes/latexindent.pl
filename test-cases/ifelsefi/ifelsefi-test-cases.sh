@@ -99,6 +99,6 @@ done
 
 # https://github.com/cmhughes/latexindent.pl/issues/250
 latexindent.pl -s issue-250.tex -o=+-mod1
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

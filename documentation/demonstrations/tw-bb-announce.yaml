@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    textWrapOptions:
+        blocksBeginWith:
+           other: '\\announce'

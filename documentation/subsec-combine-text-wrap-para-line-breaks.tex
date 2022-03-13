@@ -1,9 +1,9 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsection{Combining removeParagraphLineBreaks and textWrapOptions}\label{subsec:removeparagraphlinebreaks:and:textwrap}
 
-	The%
-	\announce{2018-08-13}{combine text wrap and remove paragraph line breaks} text wrapping routine (\vref{subsec:textwrapping}) and remove
-	paragraph line breaks routine (\vref{subsec:removeparagraphlinebreaks}) can be combined.
+	The \announce{2018-08-13}{combine text wrap and remove paragraph line breaks} text
+	wrapping routine (\vref{subsec:textwrapping}) and remove paragraph line breaks routine
+	(\vref{subsec:removeparagraphlinebreaks}) can be combined.%
 
 	We motivate this feature with the code given in \cref{lst:textwrap7}.
 
@@ -19,9 +19,8 @@
 	behaviour can be achieved by employing the \texttt{beforeTextWrap} switch.
 
 	Explicitly, using the settings in \cref{lst:textwrap12-yaml} and running the command
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
-	\index{switches!-o demonstration}
+	\index{switches!-l demonstration} \index{switches!-m demonstration} \index{switches!-o
+	demonstration}
 	\begin{commandshell}
 latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 \end{commandshell}
@@ -41,9 +40,9 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 
 	\index{text wrap!recommended starting point}
 
-	I%
-	\announce{2021-07-31}{textWrapOptions new feature: beforeFindingChildCodeBlocks} think it likely that most users will wish to employ the
-	\texttt{beforeFindingChildCodeBlocks} option for the text wrap routine.
+	I \announce{2021-07-31}{textWrapOptions new feature: beforeFindingChildCodeBlocks} think
+	it likely that most users will wish to employ the \texttt{beforeFindingChildCodeBlocks}
+	option for the text wrap routine.%
 
 	To motivate its use, we begin with the file in \cref{lst:textwrap-bfccb}.
 
@@ -73,7 +72,7 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap12.yaml -o=+-mod12
 	\end{itemize}
 
 	We can instruct \texttt{latexindent.pl} to perform text wrapping \emph{before searching
-		for child code blocks} by using the \texttt{beforeFindingChildCodeBlocks} field.
+	for child code blocks} by using the \texttt{beforeFindingChildCodeBlocks} field.
 
 	We save the \emph{quick-start} settings from \cref{lst:textwrap-qs-yaml} into
 	\cref{lst:textwrap13-yaml} and change the value of \texttt{columns} for demonstration.

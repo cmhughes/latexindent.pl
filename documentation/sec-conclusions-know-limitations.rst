@@ -20,20 +20,10 @@ consulted. If you find a case in which the script struggles, please feel free to
 I hope that this script is useful to some; if you find an example where the script does not behave as you think it should, the best way to contact me is to report an issue on (“Home of Latexindent.pl”
 n.d.); otherwise, feel free to find me on the http://tex.stackexchange.com/users/6621/cmhughes.
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-latexindent-home
 
-.. raw:: html
-
-   <div id="ref-latexindent-home">
-
-“Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.

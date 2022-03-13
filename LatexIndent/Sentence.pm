@@ -251,8 +251,7 @@ sub one_sentence_per_line{
                                                              );
 
                        # text wrapping
-                       $sentenceObj->yaml_get_columns;
-                       if(${$sentenceObj}{columns}<=0){
+                       if(${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}==0){
                            $logger->warn("*Sentence text wrap warning:");
                            $logger->info("You have specified oneSentencePerLine:textWrapSentences, but columns is set to 0");
                            $logger->info("You might wish to specify, for example: modifyLineBreaks: textWrapOptions: columns: 80");
@@ -305,8 +304,8 @@ sub tasks_particular_to_each_object{
       my $self = shift;
 
       # option to text wrap (and option to indent) sentences
-      if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}){
-        $self->yaml_get_columns;
+      if(${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}
+        and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} !=0 ){
         $self->text_wrap;
       }
       

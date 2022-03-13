@@ -52,5 +52,5 @@ latexindent.pl cmh.tex -o myfile++.tex -s
 # part of fileExtensionPreference
 latexindent.pl -w cmh.txt -s
 latexindent.pl -w cmh.jab -s
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

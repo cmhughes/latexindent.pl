@@ -2,3 +2,4 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 80
         tabstop: 10
+        multipleSpacesToSingle: 0

@@ -1,3 +1,0 @@
-modifyLineBreaks:
-    removeParagraphLineBreaks:
-        alignAtAmpersandTakesPriority: 0

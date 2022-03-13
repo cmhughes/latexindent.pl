@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    textWrapOptions:
+        blocksFollow:
+           commentOnPreviousLine: 0
+        blocksEndBefore:
+           commentOnOwnLine: 0

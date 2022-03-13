@@ -60,4 +60,5 @@ latexindent.pl --lines 1 blank-lines.tex -s -o=+-mod1
 latexindent.pl --lines 4 blank-lines.tex -s -o=+-mod4
 latexindent.pl --lines 6 blank-lines.tex -s -o=+-mod6
 latexindent.pl --lines 8 blank-lines.tex -s -o=+-mod8
-git status
+[[ $gitStatus == 1 ]] && git status
+[[ $noisyMode == 1 ]] && makenoise

@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        blocksFollow:
+            other: 0
+        blocksEndBefore:
+           other: 0
+
+noAdditionalIndentGlobal:
+    specialBeginEnd: 1
+    mandatoryArguments: 1
