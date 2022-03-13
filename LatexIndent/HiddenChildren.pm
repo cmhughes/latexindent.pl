@@ -19,6 +19,7 @@ use warnings;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children %familyTree hidden_children_preparation_for_alignment unpack_children_into_body/;
@@ -158,7 +159,7 @@ sub check_for_hidden_children{
 
     my @matched;
     # grab the matches
-    if($is_m_switch_active){
+    if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
         # if modifyLineBreaks is active, then the IDS can be split across lines
         my $ifElseFiSpecialBegin = join("\\R?\\h*",split(//,$tokens{ifelsefiSpecial}));
         my $BeginwithLineBreaks = join("\\R?\\h*",split(//,$tokens{beginOfToken}));

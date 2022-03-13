@@ -187,4 +187,4 @@ latexindent.pl -s pcc-pr-presentation.tex -o=pcc-pr-presentation-default.tex -l 
 latexindent.pl -s pcc-pr.tex -o=+-max-indentation -l indentPreamble.yaml,../environments/max-indentation1.yaml
 
 [[ $noisyMode == 1 ]] && makenoise
-git status
+[[ $gitStatus == 1 ]] && git status

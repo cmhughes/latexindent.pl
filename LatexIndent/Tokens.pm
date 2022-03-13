@@ -48,6 +48,7 @@ our %tokens = (
                 arguments=>$beginningToken."ARGUMENTS",
                 roundBracket=>$beginningToken."ROUND-BRACKET",
                 verbatim=>$beginningToken."VERBATIM",
+                verbatimInline=>$beginningToken."VERBATIM-inline",
                 preamble=>$beginningToken."preamble",
                 beginOfToken=>$beginningToken,
                 doubleBackSlash=>$beginningToken."DOUBLEBACKSLASH",

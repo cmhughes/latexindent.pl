@@ -1,4 +1,4 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        paragraphsStopAt:
-            commands: 1
+    textWrapOptions:
+        blocksEndBefore:
+           other: '\\emph|\\footnote|\{|\\\[|\\end\{'    # regex

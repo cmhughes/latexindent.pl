@@ -26,8 +26,7 @@
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
 	\end{minipage}
 
-	After running the following commands,
-	\index{switches!-l demonstration}
+	After running the following commands, \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl ifelsefi1.tex -local ifnum-noAdd.yaml  
 latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml  
@@ -57,8 +56,7 @@ latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
 	\end{minipage}
 
-	Upon running the following commands
-	\index{switches!-l demonstration}
+	Upon running the following commands \index{switches!-l demonstration}
 	\begin{commandshell}
 latexindent.pl ifelsefi1.tex -local ifelsefi-noAdd-glob.yaml  
 latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml  
@@ -78,11 +76,10 @@ latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml
 		\cmhlistingsfromfile[showspaces=true]{demonstrations/ifelsefi1-indent-rules-global.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifelsefi-indent-rules-global}}{lst:ifelsefi1-output-indent-rules-global}
 	\end{minipage}
 
-	We can further explore the treatment of \texttt{ifElseFi} code
-	blocks%
-	\announce{2018-04-27}*{updates to ifElseFi code blocks} in \cref{lst:ifelsefi2}, and the associated default output given in
-	\cref{lst:ifelsefi2-default}; note, in particular, that the bodies of each of the `or
-	statements' have been indented.
+	We can further explore the treatment of \texttt{ifElseFi} code blocks
+	\announce{2018-04-27}*{updates to ifElseFi code blocks} in \cref{lst:ifelsefi2}, and the
+	associated default output given in \cref{lst:ifelsefi2-default}; note, in particular,
+	that the bodies of each of the `or statements' have been indented.%
 
 	\begin{cmhtcbraster}[raster column skip=.1\linewidth]
 		\cmhlistingsfromfile{demonstrations/ifelsefi2.tex}{\texttt{ifelsefi2.tex}}{lst:ifelsefi2}

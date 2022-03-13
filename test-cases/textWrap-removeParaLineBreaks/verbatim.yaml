@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    textWrapOptions:
+        blocksFollow:
+           verbatim: 0
+        blocksEndBefore:
+           verbatim: 0

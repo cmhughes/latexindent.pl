@@ -1,9 +1,9 @@
 modifyLineBreaks:
     commands:
         announce:
-            CommandStartsOnOwnLine: 2
+            CommandStartsOnOwnLine: 1
     textWrapOptions:
-        columns: 90
+        columns: 95
         perCodeBlockBasis: 1
         mainDocument: 1
         afterHeading: 1

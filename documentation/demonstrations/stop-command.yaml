@@ -1,4 +1,0 @@
-modifyLineBreaks:
-    removeParagraphLineBreaks:
-        paragraphsStopAt:
-            commands: 1

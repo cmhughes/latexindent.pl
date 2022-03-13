@@ -37,4 +37,4 @@ latexindent.pl -s filecontents6.tex -o filecontents6-indent-preamble.tex -l=inde
 latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-default.tex
 latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-indent-preamble.tex -l=indentPreambleYes.yaml
 latexindent.pl -s headings-preamble-verbatim.tex -o headings-preamble-verbatim-indent-preamble-with-headings.tex -l=indentPreambleYes.yaml,../headings/levels1.yaml
-git status
+[[ $gitStatus == 1 ]] && git status

@@ -170,8 +170,8 @@ ls /usr/local/bin
 			      to see what is \emph{currently} in there;
 			\item run the following commands
 			      \begin{commandshell}
-sudo apt-get install cmake
-sudo apt-get update && sudo apt-get install build-essential
+sudo apt-get update
+sudo apt-get install --no-install-recommends cmake make # or any other generator
 mkdir build && cd build
 cmake ../path-helper-files
 sudo make install
@@ -218,9 +218,7 @@ echo %path%
 
 	\subsection{VSCode demonstration}
 		To use \texttt{latexindent-yaml-schema.json} with \texttt{VSCode}, you can use the
-		following steps:
-		\index{VSCode}
-		\index{json!VSCode}
+		following steps: \index{VSCode} \index{json!VSCode}
 		\begin{enumerate}
 			\item download \texttt{latexindent-yaml-schema.json} from the \texttt{documentation} folder of
 			      \cite{latexindent-home}, save it in whichever directory you would like, noting it for
@@ -281,11 +279,10 @@ conda run latexindent.pl -vv
 
 	\section{pre-commit}
 
-	 Users of \texttt{.git} may be interested
-	 \announce*{2022-01-21}{pre-commit for latexindent.pl} in
-	 exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is supported by
-	 \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for contributing this
-	 feature.
+	 Users of \texttt{.git} may be interested \announce*{2022-01-21}{pre-commit for
+	 latexindent.pl} in exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is
+	 supported by \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for
+	 contributing this feature.
 
 	 To use the \texttt{pre-commit} tool, you will need to install \texttt{pre-commit}; sample
 	 instructions for Ubuntu are given in \cref{sec:pre-commit-ubuntu}. Once installed, there
@@ -308,17 +305,9 @@ export PATH=$PATH:/home/cmhughes/.local/bin
 
 		To use \texttt{latexindent.pl} with \texttt{pre-commit}, create the file
 		\texttt{.pre-commit-config.yaml} given in \cref{lst:.pre-commit-config.yaml-cpan} in your
-		git-repository.
-		\index{cpan}
-		\index{git}
-		\index{pre-commit!cpan}
-		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent
-    args: [-s]
-\end{cmhlistings}
+		git-repository. \index{cpan} \index{git} \index{pre-commit!cpan}
+
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
 		Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
@@ -345,17 +334,9 @@ latexindent.pl -s myfile.tex
 
 		You can also rely on \texttt{conda} (detailed in \cref{sec:app:conda}) instead of
 		\texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
-		\index{conda}
-		\index{git}
-		\index{pre-commit!conda}
+		\index{conda} \index{git} \index{pre-commit!conda}
 
-		\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent-conda
-    args: [-s]
-\end{cmhlistings}
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
 		Once created, you should then be able to run the following command:
 		\begin{commandshell}
 pre-commit run --all-files  
@@ -390,14 +371,8 @@ modifyLineBreaks:
 \end{cmhlistings}
 
 			and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
-			\begin{cmhlistings}*[style=tcblatex]{\texttt{.pre-commit-config.yaml}}{lst:.latexindent.yaml-switches}
-repos:
-- repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.15
-  hooks:
-  - id: latexindent
-    args: [-l, -m, -s, -w]
-\end{cmhlistings}
+
+			\cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
 			Now running
 			\begin{commandshell}
 pre-commit run --all-files  
@@ -527,8 +502,8 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
 	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you
 	 would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would
 	 write YAML as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m}
-	 switch, \cref{lst:indentAfterThisHeadingNew2}.
-	 \index{specialBeginEnd!update to displaymath V3.0}
+	 switch, \cref{lst:indentAfterThisHeadingNew2}. \index{specialBeginEnd!update to
+	 displaymath V3.0}
 
 	 \begin{minipage}{.45\textwidth}
 		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentOld.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}

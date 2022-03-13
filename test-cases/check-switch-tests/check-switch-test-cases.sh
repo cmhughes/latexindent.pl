@@ -9,4 +9,5 @@ for file in *.tex
 do
    latexindent.pl --check -s -w $file && echo "latexindent.pl check passed for $file (file unchanged by latexindent.pl)"
 done
-git status
+[[ $gitStatus == 1 ]] && git status
+[[ $noisyMode == 1 ]] && makenoise

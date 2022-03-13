@@ -1,16 +1,6 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 40                     
-        perCodeBlockBasis: 1           
-        beforeFindingChildCodeBlocks: 1
-        mainDocument: 1
-        afterHeading: 1
-        items: 1
-    removeParagraphLineBreaks:        
-        mainDocument: 1
-        afterHeading: 1
-        items: 1
-        beforeTextWrap: 1           
 
 noAdditionalIndent:     #<--- NEW BIT
   test: 1               #<--- NEW BIT

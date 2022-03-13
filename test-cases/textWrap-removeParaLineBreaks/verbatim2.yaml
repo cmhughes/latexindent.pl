@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksBeginWith:
+           a-z: 1
+        blocksFollow:
+           verbatim: 0

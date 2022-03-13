@@ -1,3 +1,37 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x)\\begin\{(?:quotation)\}
+                 |
+                 \\item
+                 |
+                 \\ifnum
+                 |
+                 \\mycommand\{
+                 |
+                 \\\[
+                 |
+                 \\\]
+                 |
+                 \[
+                 |
+                 \\begin\{myenv\}
+                 |
+                 \\begin\{enumerate\}
+        blocksBeginWith:
+           0-9: 1
+        blocksEndBefore:
+           other: |-
+             (?x)\\begin\{
+                 |
+                    \\\[
+                 |
+                    \\end\{
+                 |
+                    \\fi
+                 | 
+                    \}
+                 | 
+                    \]

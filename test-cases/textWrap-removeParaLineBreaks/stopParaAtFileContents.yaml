@@ -1,4 +1,8 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        paragraphsStopAt:
-            filecontents: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: 0
+        blocksEndBefore:
+           filecontents: 1
+           other: 0

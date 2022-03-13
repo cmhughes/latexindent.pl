@@ -11,7 +11,7 @@ name: latexindent.pl main branch pull request monitor and feedback
 #
   
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main
 

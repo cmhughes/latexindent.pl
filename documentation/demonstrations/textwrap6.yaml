@@ -1,7 +1,3 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 30
-        perCodeBlockBasis: 1
-        all:
-          except:
-            - environments

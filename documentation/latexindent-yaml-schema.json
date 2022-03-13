@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/schema",
     "$id": "latexindent-yaml-schema.json",
     "title": "latexindent.pl YAML schema",
-    "description": "latexindent.pl YAML schema helper, V3.15 2022-01-21",
+    "description": "latexindent.pl YAML schema helper, V3.16 2022-03-13",
     "type": "object",
     "properties": {
       "fileExtensionPreference": {
@@ -672,9 +672,9 @@
             "type":"object",
             "properties": {
               "columns": {
-                "description": "integer > 0 sets the number of columns for the text wrap routine",
+                "description": "integer > 0 sets the number of columns for the text wrap routine, or if -1 then text wrap blocks simply have line breaks removed",
                 "type": "integer",
-                "minimum": 0
+                "minimum": -1
               },
               "huge": {
                 "description": "WARNING: I don't recommend changing this from overflow",
@@ -684,177 +684,22 @@
                 "description": "can be any string, but I haven't found a good use case to change this from ''",
                 "type": "string"
               },
-              "perCodeBlockBasis": {
-                "description": "0/1, binary switch to determine if text wrap should operate on a per-code-block basis or not",
+              "multipleSpacesToSingle": {
+                "description": "0/1, binary switch to determine if text wrap should convert multiple spaces to single space",
                 "type": "integer",
                 "enum": [0,1]
               },
-              "beforeFindingChildCodeBlocks": {
-                "description": "0/1, binary switch to determine if text wrap should operate *before* finding code-blocks or not",
-                "type": "integer",
-                "enum": [0,1]
+              "blocksFollow": {
+                "description": "field containing switches that text wrap blocks *follow*",
+                "type": ["object"]
               },
-              "all": {
-                "description": "0/1, binary switch to determine if text wrap should operate on *all* code blocks or not",
-                "type": "integer",
-                "enum": [0,1]
+              "blocksBeginWith": {
+                "description": "field containing switches that text wrap blocks *begin with*",
+                "type": ["object"]
               },
-              "alignAtAmpersandTakesPriority": {
-                "description": "0/1, binary switch to determine if align at ampersand (lookForAlignDelims) takes priority over text wrap routine or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "environments": {
-                "description": "can either be 0/1 (for all environments or not) or otherwise list of environments",
-                "type": ["integer","object"]
-              },
-              "ifElseFi": {
-                "description": "can either be 0/1 (for all ifElseFi or not) or otherwise list of ifElseFi",
-                "type": ["integer","object"]
-              },
-              "optionalArguments": {
-                "description": "can either be 0/1 (for all optionalArguments or not) or otherwise list of optionalArguments",
-                "type": ["integer","object"]
-              },
-              "mandatoryArguments": {
-                "description": "can either be 0/1 (for all mandatoryArguments or not) or otherwise list of mandatoryArguments",
-                "type": ["integer","object"]
-              },
-              "items": {
-                "description": "can either be 0/1 (for all items or not) or otherwise list of items",
-                "type": ["integer","object"]
-              },
-              "specialBeginEnd": {
-                "description": "can either be 0/1 (for all specialBeginEnd or not) or otherwise list of specialBeginEnd",
-                "type": ["integer","object"]
-              },
-              "afterHeading": {
-                "description": "can either be 0/1 (for all afterHeading or not) or otherwise list of headings",
-                "type": ["integer","object"]
-              },
-              "preamble": {
-                "description": "0/1, binary switch to determine if text wrap to operate on preamble or not",
-                "type": ["integer","object"]
-              },
-              "filecontents": {
-                "description": "can either be 0/1 (for all filecontents or not) or otherwise list of filecontents",
-                "type": ["integer","object"]
-              },
-              "mainDocument": {
-                "description": "0/1, binary switch to determine if text wrap to operate on mainDocument or not",
-                "type": ["integer","object"]
-              }
-            }
-          },
-          "removeParagraphLineBreaks":{
-            "description": "options for the remove paragraph line breaks routine",
-            "type":"object",
-            "properties": {
-              "all": {
-                "description": "0/1, binary switch to determine if remove paragraph line breaks should operate on *all* code blocks or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "beforeTextWrap": {
-                "description": "0/1, binary switch to determine if remove paragraph line breaks should operate *before* text wrap routine",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "alignAtAmpersandTakesPriority": {
-                "description": "0/1, binary switch to determine if align at ampersand (lookForAlignDelims) takes priority over remove paragraph line break routine or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "environments": {
-                "description": "can either be 0/1 (for all environments or not) or otherwise list of environments",
-                "type": ["integer","object"]
-              },
-              "ifElseFi": {
-                "description": "can either be 0/1 (for all ifElseFi or not) or otherwise list of ifElseFi",
-                "type": ["integer","object"]
-              },
-              "optionalArguments": {
-                "description": "can either be 0/1 (for all optionalArguments or not) or otherwise list of optionalArguments",
-                "type": ["integer","object"]
-              },
-              "mandatoryArguments": {
-                "description": "can either be 0/1 (for all mandatoryArguments or not) or otherwise list of mandatoryArguments",
-                "type": ["integer","object"]
-              },
-              "items": {
-                "description": "can either be 0/1 (for all items or not) or otherwise list of items",
-                "type": ["integer","object"]
-              },
-              "specialBeginEnd": {
-                "description": "can either be 0/1 (for all specialBeginEnd or not) or otherwise list of specialBeginEnd",
-                "type": ["integer","object"]
-              },
-              "afterHeading": {
-                "description": "can either be 0/1 (for all afterHeading or not) or otherwise list of headings",
-                "type": ["integer","object"]
-              },
-              "preamble": {
-                "description": "0/1, binary switch to determine if text wrap to operate on preamble or not",
-                "type": ["integer","object"]
-              },
-              "filecontents": {
-                "description": "can either be 0/1 (for all filecontents or not) or otherwise list of filecontents",
-                "type": ["integer","object"]
-              },
-              "mainDocument": {
-                "description": "0/1, binary switch to determine if text wrap to operate on mainDocument or not",
-                "type": ["integer","object"]
-              },
-              "paragraphsStopAt": {
-                "description": "list of binary switches to determine the points at which paragraphs stop",
-                "type": "object",
-                "properties": {
-                  "environments": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at environments",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "verbatim": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at verbatim",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "commands": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at commands",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "ifElseFi": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at ifElseFi",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "items": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at items",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "specialBeginEnd": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at specialBeginEnd",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "heading": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at heading",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "filecontents": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at filecontents",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "comments": {
-                    "description": "0/1, binary switch to determine if paragraphStopsAt stops at comments",
-                    "type": "integer",
-                    "enum": [0,1]
-                  }
-                }
+              "blocksEndBefore": {
+                "description": "field containing switches that text wrap blocks *end before*",
+                "type": ["object"]
               }
             }
           },

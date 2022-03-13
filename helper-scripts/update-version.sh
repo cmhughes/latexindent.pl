@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.14'
-newVersion='3.15'
-oldDate='2022-01-08'
-newDate='2022-01-21'
+oldVersion='3.15'
+newVersion='3.16'
+oldDate='2022-01-21'
+newDate='2022-03-13'
 
 while getopts "hmv" OPTION
 do
@@ -95,6 +95,9 @@ filesToUpdate=(
   documentation/readme.txt
   documentation/latexindent-yaml-schema.json
   documentation/title.tex
+  documentation/demonstrations/pre-commit-config-cpan.yaml
+  documentation/demonstrations/pre-commit-config-conda.yaml
+  documentation/demonstrations/pre-commit-config-demo.yaml
   ) 
 
 # loop through the files

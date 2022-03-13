@@ -78,7 +78,6 @@ latexindent.pl -s noindentblock1.tex -l noindent1 -o=+-mod1
 
 # noindentblock with begin, body, end: https://github.com/cmhughes/latexindent.pl/issues/274
 latexindent.pl -s -m href.tex -l href1.yaml -o=+-mod1
-latexindent.pl -s -m href.tex -l href2.yaml -o=+-mod2
 
 # the following will *not* work, as they are missing end and begin statements (check the log files)
 latexindent.pl -s -m href.tex -l href3.yaml -o=+-mod3 -g=one.log
@@ -88,5 +87,5 @@ latexindent.pl -s -m href.tex -l href5.yaml -o=+-mod5
 latexindent.pl -s -m href.tex -l href6.yaml -o=+-mod6
 
 [[ $noisyMode == 1 ]] && makenoise
-git status
+[[ $gitStatus == 1 ]] && git status
 verbatimTest=0

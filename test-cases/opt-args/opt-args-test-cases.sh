@@ -64,6 +64,6 @@ latexindent.pl environments-third-opt-args-mod1.tex -l=opt-args-remove-all.yaml,
 # forrest syntax bug, see https://github.com/cmhughes/latexindent.pl/issues/107
 latexindent.pl -s forrest -o=+-mod1 -y="defaultIndent:' '"
 [[ $silentMode == 0 ]] && set -x
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

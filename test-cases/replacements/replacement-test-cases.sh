@@ -70,5 +70,5 @@ latexindent.pl -r test7.tex -l=replace23,replace24 -s -o=+-mod2324
 # subscripts and superscripts, https://tex.stackexchange.com/questions/30595/is-there-such-a-thing-as-a-latex-code-formatter
 latexindent.pl -r test14.tex -l=replace25 -s -o=+-mod25
 latexindent.pl -r test14.tex -l=replace26 -s -o=+-mod26
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

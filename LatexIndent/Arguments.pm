@@ -82,7 +82,7 @@ sub find_opt_mand_arguments{
         # text wrapping can make the ID split across lines
         ${$arguments}{idRegExp} = ${$arguments}{id};
 
-        if($is_m_switch_active){
+        if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
             my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$arguments}{id}));
             ${$arguments}{idRegExp} = qr/$IDwithLineBreaks/s;  
         }

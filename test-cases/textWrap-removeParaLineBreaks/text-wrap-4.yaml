@@ -1,4 +1,44 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 76
-        separator: ""
+        blocksFollow:
+           # https://stackoverflow.com/questions/64445822/yaml-multiline-regex
+           headings: 0
+           other: |-
+             (?x)(?:\\begin\{(?:quotation|abstract|myenv)\})
+                 |
+                    \\item
+                 |
+                    \\appendix
+                 |
+                    \\caption\{
+                 |
+                    \\(?:sub)?section\{[^}]*?\}(?:\h*\R*\\label\{[^}]*?\})?
+                 |
+                    (?:\\end\{(?:equation)\})
+        blocksBeginWith:
+           a-z: 1
+
+replacements:
+  -
+    substitution: |-
+      s!\z!
+        my $rulerMax = int(75/10 +1.5 )*10;
+        my $ruler    = (("----|"x(int($rulerMax/5))))."\n";
+        for (my $i=1;$i<=$rulerMax/5;$i++){ $ruler .= "   ".$i*5 };
+        $ruler;!sxe
+    when: after
+
+defaultIndent: '  '
+indentPreamble: 1
+specialBeginEnd:
+    procedure:
+        begin: '\\Procedure\{[^}]*?\}'
+        end: '\\EndProcedure'
+    forEndFor:
+        begin: '\\For'
+        end: '\\EndFor'
+    whileEndwhile:
+        begin: '\\While'
+        end: '\\EndWhile'
+    specialBeforeCommand: 1

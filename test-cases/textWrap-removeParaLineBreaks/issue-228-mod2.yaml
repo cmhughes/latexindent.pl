@@ -1,4 +1,0 @@
-modifyLineBreaks:
-    environments:
-        document:
-            EndStartsOnOwnLine: 1

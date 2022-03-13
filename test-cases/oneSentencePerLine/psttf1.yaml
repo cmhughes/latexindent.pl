@@ -1,3 +1,4 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
+        multipleSpacesToSingle: 0

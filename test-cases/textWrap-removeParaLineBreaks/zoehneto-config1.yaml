@@ -1,11 +1,6 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
-        perCodeBlockBasis: 1
-        items: 1
-        mainDocument: 1
-    removeParagraphLineBreaks:
-        items: 1
-        mainDocument: 1
-        beforeTextWrap: 1  
-
+        blocksFollow:
+           other: |-
+             (?x)\\item

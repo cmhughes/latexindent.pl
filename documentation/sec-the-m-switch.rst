@@ -16,14 +16,12 @@ this field will only be considered if the ``-m`` switch has been used*. A snippe
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 487-489
+ 	:lines: 491-493
  	:linenos:
- 	:lineno-start: 487
+ 	:lineno-start: 491
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s
-be clear:
-
-.. index:: warning;the m switch
+be clear: .. index:: warning;the m switch
 
 .. warning::	
 	
@@ -39,9 +37,7 @@ regardless of this setting, multiple blank lines can be condensed if ``condenseM
 .. describe:: condenseMultipleBlankLinesInto:positive integer
 
 Assuming that this switch takes an integer value greater than ``0``, ``latexindent.pl`` will condense multiple blank lines into the number of blank lines illustrated by this switch. As an example,
-:numref:`lst:mlb-bl` shows a sample file with blank lines; upon running
-
-.. index:: switches;-m demonstration
+:numref:`lst:mlb-bl` shows a sample file with blank lines; upon running .. index:: switches;-m demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -67,147 +63,506 @@ the output is shown in :numref:`lst:mlb-bl-out`; note that the multiple blank li
 Text Wrapping
 -------------
 
-There are *many* different configuration options for the text wrapping routine of ``latexindent.pl``, perhaps *too* many. The following sections are comprehensive, but quite long; in an attempt to to
-be brief, you might begin with the settings given in :numref:`subsec:textwrapping-quick-start`.
+*The text wrapping routine has been over-hauled as of V3.16; I hope that the interface is simpler, and most importantly, the results are better*.
+
+The complete settings for this feature are given in :numref:`lst:textWrapOptionsAll`.
+
+.. literalinclude:: ../defaultSettings.yaml
+ 	:class: .mlbyaml
+ 	:caption: ``textWrapOptions`` 
+ 	:name: lst:textWrapOptionsAll
+ 	:lines: 518-540
+ 	:linenos:
+ 	:lineno-start: 518
+
+Text wrap: overview
+~~~~~~~~~~~~~~~~~~~
+
+An overview of how the text wrapping feature works:
+
+#. the default value of ``columns`` is 0, which means that text wrapping will *not* happen by default;
+
+#. it happens *after* verbatim blocks have been found;
+
+#. it happens *after* the oneSentencePerLine routine (see :numref:`sec:onesentenceperline`);
+
+#. it happens *before* all of the other code blocks are found and does *not* operate on a per-code-block basis;
+
+#. code blocks to be text wrapped will:
+
+   #. *follow* the fields specified in ``blocksFollow``
+
+   #. *begin* with the fields specified in ``blocksBeginWith``
+
+   #. *end* before the fields specified in ``blocksEndBefore``
+
+#. setting ``columns`` to a value :math:`>0` will text wrap blocks by first removing line breaks, and then wrapping according to the specified value of ``columns``;
+
+#. setting ``columns`` to :math:`-1` will *only* remove line breaks within the text wrap block.
+
+We demonstrate this feature using a series of examples.
 
 .. label follows
 
 .. _subsec:textwrapping-quick-start:
 
-Text wrap quick start
-~~~~~~~~~~~~~~~~~~~~~
+Text wrap: simple examples
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Of all the available text wrapping options, I consider :numref:`lst:textwrap-qs-yaml` to be among the most helpful starting points.
+.. proof:example::	
+	
+	Let’s use the sample text given in :numref:`lst:textwrap1`. .. index:: text wrap;quick start
+	
+	.. literalinclude:: demonstrations/textwrap1.tex
+	 	:class: .tex
+	 	:caption: ``textwrap1.tex`` 
+	 	:name: lst:textwrap1
+	
+	We will change the value of ``columns`` in :numref:`lst:textwrap1-yaml` and then run the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml textwrap1.tex
+	
+	then we receive the output given in :numref:`lst:textwrap1-mod1`.
+	
+	.. literalinclude:: demonstrations/textwrap1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``textwrap1-mod1.tex`` 
+	 	:name: lst:textwrap1-mod1
+	
+	.. literalinclude:: demonstrations/textwrap1.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``textwrap1.yaml`` 
+	 	:name: lst:textwrap1-yaml
+	
+	
+	 
 
-.. literalinclude:: demonstrations/textwrap-qs.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap-qs.yaml`` 
- 	:name: lst:textwrap-qs-yaml
+.. proof:example::	
+	
+	If we set ``columns`` to :math:`-1` then ``latexindent.pl`` remove line breaks within the text wrap block, and will *not* perform text wrapping. We can use this to undo text wrapping. .. index:: text
+	wrap;setting columns to -1
+	
+	Starting from the file in :numref:`lst:textwrap1-mod1` and using the settings in :numref:`lst:textwrap1A-yaml`
+	
+	.. literalinclude:: demonstrations/textwrap1A.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``textwrap1A.yaml`` 
+	 	:name: lst:textwrap1A-yaml
+	
+	and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1A.yaml textwrap1-mod1.tex
+	
+	gives the output in :numref:`lst:textwrap1-mod1A`.
+	
+	.. literalinclude:: demonstrations/textwrap1-mod1A.tex
+	 	:class: .tex
+	 	:caption: ``textwrap1-mod1A.tex`` 
+	 	:name: lst:textwrap1-mod1A
+	
+	
+	 
 
-.. index:: text wrap;quick start
+.. proof:example::	
+	
+	By default, the text wrapping routine will convert multiple spaces into single spaces. You can change this behaviour by flicking the switch ``multipleSpacesToSingle`` which we have done in
+	:numref:`lst:textwrap1B-yaml`
+	
+	Using the settings in :numref:`lst:textwrap1B-yaml` and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1B.yaml textwrap1-mod1.tex
+	
+	gives the output in :numref:`lst:textwrap1-mod1B`.
+	
+	.. literalinclude:: demonstrations/textwrap1B.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``textwrap1B.yaml`` 
+	 	:name: lst:textwrap1B-yaml
+	
+	.. literalinclude:: demonstrations/textwrap1-mod1B.tex
+	 	:class: .tex
+	 	:caption: ``textwrap1-mod1B.tex`` 
+	 	:name: lst:textwrap1-mod1B
+	
+	We note that in :numref:`lst:textwrap1-mod1B` the multiple spaces have *not* been condensed into single spaces.
+	 
 
-You can read about ``perCodeBlockBasis`` in :numref:`subsec:text-wrap-per-code-block` and ``removeParagraphLineBreaks`` in :numref:`subsec:removeparagraphlinebreaks`.
+Text wrap: ``blocksFollow`` examples
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the settings in :numref:`lst:textwrap-qs-yaml` do not give your desired output, take a look at the demonstration in :numref:`subsubsec:text-wrap-remove-para-bfccb`, in particular
-:numref:`lst:textwrap-bfccb-mod14`.
+We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`. .. index:: text wrap;blocksFollow
 
-textWrapOptions: modifying line breaks by text wrapping
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. proof:example::	
+	 [label=example:tw:headings] Let’s use the sample text given in :numref:`lst:tw-headings1`. .. index:: text wrap;blocksFollow!headings
+	
+	.. literalinclude:: demonstrations/tw-headings1.tex
+	 	:class: .tex
+	 	:caption: ``tw-headings1.tex`` 
+	 	:name: lst:tw-headings1
+	
+	We note that :numref:`lst:tw-headings1` contains the heading commands ``section`` and ``subsection``. Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-headings1.tex
+	
+	then we receive the output given in :numref:`lst:tw-headings1-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-headings1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-headings1-mod1.tex`` 
+	 	:name: lst:tw-headings1-mod1
+	
+	We reference :numref:`lst:textWrapOptionsAll` and also :numref:`lst:indentAfterHeadings`:
+	
+	-  in :numref:`lst:textWrapOptionsAll` the ``headings`` field is set to ``1``, which instructs ``latexindent.pl`` to read the fields from :numref:`lst:indentAfterHeadings`, *regardless of the
+	   value of indentAfterThisHeading or level*;
+	
+	-  the default is to assume that the heading command can, optionally, be followed by a ``label`` command.
+	
+	If you find scenarios in which the default value of ``headings`` does not work, then you can explore the ``other`` field.
+	
+	We can turn off ``headings`` as in :numref:`lst:bf-no-headings-yaml` and then run
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,bf-no-headings.yaml tw-headings1.tex
+	
+	gives the output in :numref:`lst:tw-headings1-mod2`, in which text wrapping has been instructed *not to happen* following headings.
+	
+	.. literalinclude:: demonstrations/bf-no-headings.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``bf-no-headings.yaml`` 
+	 	:name: lst:bf-no-headings-yaml
+	
+	.. literalinclude:: demonstrations/tw-headings1-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-headings1-mod2.tex`` 
+	 	:name: lst:tw-headings1-mod2
+	
+	
+	 
 
-When the ``-m`` switch is active ``latexindent.pl`` has the ability to wrap text using the options specified in the ``textWrapOptions`` field, see :numref:`lst:textWrapOptions`.
+.. proof:example::	
+	 [label=example:tw:comments] Let’s use the sample text given in :numref:`lst:tw-comments1`. .. index:: text wrap;blocksFollow!comments
+	
+	.. literalinclude:: demonstrations/tw-comments1.tex
+	 	:class: .tex
+	 	:caption: ``tw-comments1.tex`` 
+	 	:name: lst:tw-comments1
+	
+	We note that :numref:`lst:tw-comments1` contains trailing comments. Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-comments1.tex
+	
+	then we receive the output given in :numref:`lst:tw-comments1-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-comments1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-comments1-mod1.tex`` 
+	 	:name: lst:tw-comments1-mod1
+	
+	With reference to :numref:`lst:textWrapOptionsAll` the ``commentOnPreviousLine`` field is set to ``1``, which instructs ``latexindent.pl`` to find text wrap blocks after a comment on its own line.
+	
+	We can turn off ``comments`` as in :numref:`lst:bf-no-comments-yaml` and then run
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,bf-no-comments.yaml tw-comments1.tex
+	
+	gives the output in :numref:`lst:tw-comments1-mod2`, in which text wrapping has been instructed *not to happen* following comments on their own line.
+	
+	.. literalinclude:: demonstrations/bf-no-comments.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``bf-no-comments.yaml`` 
+	 	:name: lst:bf-no-comments-yaml
+	
+	.. literalinclude:: demonstrations/tw-comments1-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-comments1-mod2.tex`` 
+	 	:name: lst:tw-comments1-mod2
+	
+	
+	 
 
-.. index:: modifying linebreaks; by text wrapping, globally
+Referencing :numref:`lst:textWrapOptionsAll` the ``blocksFollow`` fields ``par``, ``blankline``, ``verbatim`` and ``filecontents`` fields operate in analogous ways to those demonstrated in the
+above.
 
-.. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``textWrapOptions`` 
- 	:name: lst:textWrapOptions
- 	:lines: 514-515
- 	:linenos:
- 	:lineno-start: 514
+The ``other`` field of the ``blocksFollow`` can either be ``0`` (turned off) or set as a regular expression. The default value is set to ``\\\]|\\item(?:\h|\[)`` which can be translated to *backslash
+followed by a square bracket* or *backslash item followed by horizontal space or a square bracket*, or in other words, *end of display math* or an item command.
 
-The value of ``columns`` specifies the column at which the text should be wrapped.
+.. proof:example::	
+	
+	Let’s use the sample text given in :numref:`lst:tw-disp-math1`. .. index:: text wrap;blocksFollow!other
+	
+	.. index:: regular expressions;text wrap!blocksFollow
+	
+	.. literalinclude:: demonstrations/tw-disp-math1.tex
+	 	:class: .tex
+	 	:caption: ``tw-disp-math1.tex`` 
+	 	:name: lst:tw-disp-math1
+	
+	We note that :numref:`lst:tw-disp-math1` contains display math. Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-disp-math1.tex
+	
+	then we receive the output given in :numref:`lst:tw-disp-math1-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-disp-math1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-disp-math1-mod1.tex`` 
+	 	:name: lst:tw-disp-math1-mod1
+	
+	With reference to :numref:`lst:textWrapOptionsAll` the ``other`` field is set to ``\\\]``, which instructs ``latexindent.pl`` to find text wrap blocks after the end of display math.
+	
+	We can turn off this switch as in :numref:`lst:bf-no-disp-math-yaml` and then run
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex
+	
+	gives the output in :numref:`lst:tw-disp-math1-mod2`, in which text wrapping has been instructed *not to happen* following display math.
+	
+	.. literalinclude:: demonstrations/bf-no-disp-math.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``bf-no-disp-math.yaml`` 
+	 	:name: lst:bf-no-disp-math-yaml
+	
+	.. literalinclude:: demonstrations/tw-disp-math1-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-disp-math1-mod2.tex`` 
+	 	:name: lst:tw-disp-math1-mod2
+	
+	Naturally, you should feel encouraged to customise this as you see fit.
+	 
 
-By default, the value of ``columns`` is ``0``, so ``latexindent.pl`` will *not* wrap text; if you change it to a value of ``2`` or more, then text will be wrapped after the character in the specified
-column.
+The ``blocksFollow`` field *deliberately* does not default to allowing text wrapping to occur after ``begin environment`` statements. You are encouraged to customize the ``other`` field to accomodate
+the environments that you would like to text wrap individually, as in the next example.
 
-By default, the text wrapping routine will operate *before* the code blocks have been searched for; text wrapping on a *per-code-block* basis is discussed in
-:numref:`subsec:text-wrap-per-code-block`.
+.. proof:example::	
+	
+	Let’s use the sample text given in :numref:`lst:tw-bf-myenv1`. .. index:: text wrap;blocksFollow!other
+	
+	.. index:: regular expressions;text wrap!blocksFollow
+	
+	.. literalinclude:: demonstrations/tw-bf-myenv1.tex
+	 	:class: .tex
+	 	:caption: ``tw-bf-myenv1.tex`` 
+	 	:name: lst:tw-bf-myenv1
+	
+	We note that :numref:`lst:tw-bf-myenv1` contains ``myenv`` environment. Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-bf-myenv1.tex
+	
+	then we receive the output given in :numref:`lst:tw-bf-myenv1-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-bf-myenv1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-bf-myenv1-mod1.tex`` 
+	 	:name: lst:tw-bf-myenv1-mod1
+	
+	We note that we have *not* received much text wrapping. We can turn do better by employing :numref:`lst:tw-bf-myenv-yaml` and then run
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex
+	
+	which gives the output in :numref:`lst:tw-bf-myenv1-mod2`, in which text wrapping has been implemented across the file.
+	
+	.. literalinclude:: demonstrations/tw-bf-myenv.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``tw-bf-myenv.yaml`` 
+	 	:name: lst:tw-bf-myenv-yaml
+	
+	.. literalinclude:: demonstrations/tw-bf-myenv1-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-bf-myenv1-mod2.tex`` 
+	 	:name: lst:tw-bf-myenv1-mod2
+	
+	
+	 
 
-We consider the file give in :numref:`lst:textwrap1` for demonstration.
+Text wrap: ``blocksBeginWith`` examples
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. literalinclude:: demonstrations/textwrap1.tex
- 	:class: .tex
- 	:caption: ``textwrap1.tex`` 
- 	:name: lst:textwrap1
+We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` with a series of examples. .. index:: text wrap;blocksBeginWith
 
-Using the file ``textwrap1.yaml`` in :numref:`lst:textwrap1-yaml`, and running the command
+.. proof:example::	
+	
+	By default, text wrap blocks can begin with the characters ``a-z`` and ``A-Z``.
+	
+	If we start with the file given in :numref:`lst:tw-0-9`
+	
+	.. literalinclude:: demonstrations/tw-0-9.tex
+	 	:class: .tex
+	 	:caption: ``tw-0-9.tex`` 
+	 	:name: lst:tw-0-9
+	
+	and run the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-0-9.tex
+	
+	then we receive the output given in :numref:`lst:tw-0-9-mod1` in which text wrapping has *not* occured.
+	
+	.. literalinclude:: demonstrations/tw-0-9-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-0-9-mod1.tex`` 
+	 	:name: lst:tw-0-9-mod1
+	
+	We can allow paragraphs to begin with ``0-9`` characters by using the settings in :numref:`lst:bb-0-9-yaml` and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,bb-0-9-yaml tw-0-9.tex
+	
+	gives the output in :numref:`lst:tw-0-9-mod2`, in which text wrapping *has* happened.
+	
+	.. literalinclude:: demonstrations/bb-0-9.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``bb-0-9.yaml.yaml`` 
+	 	:name: lst:bb-0-9-yaml
+	
+	.. literalinclude:: demonstrations/tw-0-9-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-0-9-mod2.tex`` 
+	 	:name: lst:tw-0-9-mod2
+	
+	
+	 
 
-.. index:: switches;-l demonstration
+.. proof:example::	
+	
+	Let’s now use the file given in :numref:`lst:tw-bb-announce1`
+	
+	.. literalinclude:: demonstrations/tw-bb-announce1.tex
+	 	:class: .tex
+	 	:caption: ``tw-bb-announce1.tex`` 
+	 	:name: lst:tw-bb-announce1
+	
+	and run the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml tw-bb-announce1.tex
+	
+	then we receive the output given in :numref:`lst:tw-bb-announce1-mod1` in which text wrapping has *not* occured.
+	
+	.. literalinclude:: demonstrations/tw-bb-announce1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-bb-announce1-mod1.tex`` 
+	 	:name: lst:tw-bb-announce1-mod1
+	
+	We can allow ``\announce`` to be at the beginning of paragraphs by using the settings in :numref:`lst:tw-bb-announce-yaml` and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex
+	
+	gives the output in :numref:`lst:tw-bb-announce1-mod2`, in which text wrapping *has* happened.
+	
+	.. literalinclude:: demonstrations/tw-bb-announce.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``tw-bb-announce.yaml`` 
+	 	:name: lst:tw-bb-announce-yaml
+	
+	.. literalinclude:: demonstrations/tw-bb-announce1-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-bb-announce1-mod2.tex`` 
+	 	:name: lst:tw-bb-announce1-mod2
+	
+	
+	 
 
-.. index:: switches;-m demonstration
+Text wrap: ``blocksEndBefore`` examples
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. index:: switches;-o demonstration
+We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` with a series of examples. .. index:: text wrap;blocksEndBefore
 
-.. code-block:: latex
-   :class: .commandshell
+.. proof:example::	
+	
+	Let’s use the sample text given in :numref:`lst:tw-be-equation`. .. index:: text wrap;blocksFollow!other
+	
+	.. index:: regular expressions;text wrap!blocksFollow
+	
+	.. literalinclude:: demonstrations/tw-be-equation.tex
+	 	:class: .tex
+	 	:caption: ``tw-be-equation.tex`` 
+	 	:name: lst:tw-be-equation
+	
+	We note that :numref:`lst:tw-be-equation` contains an environment. Upon running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1A.yaml tw-be-equation.tex
+	
+	then we receive the output given in :numref:`lst:tw-be-equation-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-be-equation-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-be-equation-mod1.tex`` 
+	 	:name: lst:tw-be-equation-mod1
+	
+	With reference to :numref:`lst:textWrapOptionsAll` the ``other`` field is set to ``\\begin\{|\\\[|\\end\{``, which instructs ``latexindent.pl`` to *stop* text wrap blocks before ``begin``
+	statements, display math, and ``end`` statements.
+	
+	We can turn off this switch as in :numref:`lst:tw-be-equation-yaml` and then run
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l textwrap1A.yaml,tw-be-equation.yaml tw-be-equation.tex
+	
+	gives the output in :numref:`lst:tw-be-equation-mod2`, in which text wrapping has been instructed *not* to stop at these statements.
+	
+	.. literalinclude:: demonstrations/tw-be-equation.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``tw-be-equation.yaml`` 
+	 	:name: lst:tw-be-equation-yaml
+	
+	.. literalinclude:: demonstrations/tw-be-equation-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tw-be-equation-mod2.tex`` 
+	 	:name: lst:tw-be-equation-mod2
+	
+	Naturally, you should feel encouraged to customise this as you see fit.
+	 
 
-   latexindent.pl -m textwrap1.tex -o textwrap1-mod1.tex -l textwrap1.yaml
-
-we obtain the output in :numref:`lst:textwrap1-mod1`.
-
-.. literalinclude:: demonstrations/textwrap1-mod1.tex
- 	:class: .tex
- 	:caption: ``textwrap1-mod1.tex`` 
- 	:name: lst:textwrap1-mod1
-
-.. literalinclude:: demonstrations/textwrap1.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap1.yaml`` 
- 	:name: lst:textwrap1-yaml
-
-The text wrapping routine is performed *after* verbatim environments
-
-.. index:: verbatim;in relation to textWrapOptions
-
-have been stored, so verbatim environments and verbatim commands are exempt from the routine. For example, using the file in :numref:`lst:textwrap2`,
-
-.. literalinclude:: demonstrations/textwrap2.tex
- 	:class: .tex
- 	:caption: ``textwrap2.tex`` 
- 	:name: lst:textwrap2
-
-and running the following command and continuing to use ``textwrap1.yaml`` from :numref:`lst:textwrap1-yaml`,
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap2.tex -o textwrap2-mod1.tex -l textwrap1.yaml
-
-then the output is as in :numref:`lst:textwrap2-mod1`.
-
-.. literalinclude:: demonstrations/textwrap2-mod1.tex
- 	:class: .tex
- 	:caption: ``textwrap2-mod1.tex`` 
- 	:name: lst:textwrap2-mod1
-
-Furthermore, the text wrapping routine is performed after the trailing comments have been stored, and they are also exempt from text wrapping. For example, using the file in :numref:`lst:textwrap3`
-
-.. literalinclude:: demonstrations/textwrap3.tex
- 	:class: .tex
- 	:caption: ``textwrap3.tex`` 
- 	:name: lst:textwrap3
-
-and running the following command and continuing to use ``textwrap1.yaml`` from :numref:`lst:textwrap1-yaml`,
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap3.tex -o textwrap3-mod1.tex -l textwrap1.yaml
-
-then the output is as in :numref:`lst:textwrap3-mod1`.
-
-.. literalinclude:: demonstrations/textwrap3-mod1.tex
- 	:class: .tex
- 	:caption: ``textwrap3-mod1.tex`` 
- 	:name: lst:textwrap3-mod1
+Text wrap: huge, tabstop and separator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The default value of ``huge`` is ``overflow``, which means that words will *not* be broken by the text wrapping routine, implemented by the ``Text::Wrap`` (“Text::Wrap Perl Module” n.d.). There are
-options to change the ``huge`` option for the ``Text::Wrap`` module to either ``wrap`` or ``die``. Before modifying the value of ``huge``, please bear in mind the following warning:
-
-.. index:: warning;changing huge (textwrap)
+options to change the ``huge`` option for the ``Text::Wrap`` module to either ``wrap`` or ``die``. Before modifying the value of ``huge``, please bear in mind the following warning: .. index::
+warning;changing huge (textwrap)
 
 .. warning::	
 	
@@ -216,9 +571,7 @@ options to change the ``huge`` option for the ``Text::Wrap`` module to either ``
 	Furthermore, changing ``huge`` means that you may have some words *or commands*\ (!) split across lines in your .tex file, which may affect your output. I do not recommend changing this field.
 	 
 
-For example, using the settings in :numref:`lst:textwrap2A-yaml` and :numref:`lst:textwrap2B-yaml` and running the commands
-
-.. index:: switches;-l demonstration
+For example, using the settings in :numref:`lst:textwrap2A-yaml` and :numref:`lst:textwrap2B-yaml` and running the commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -227,8 +580,8 @@ For example, using the settings in :numref:`lst:textwrap2A-yaml` and :numref:`ls
 .. code-block:: latex
    :class: .commandshell
 
-   latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
-   latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
+        latexindent.pl -m textwrap4.tex -o=+-mod2A -l textwrap2A.yaml
+        latexindent.pl -m textwrap4.tex -o=+-mod2B -l textwrap2B.yaml
 
 gives the respective output in :numref:`lst:textwrap4-mod2A` and :numref:`lst:textwrap4-mod2B`.
 
@@ -253,9 +606,7 @@ gives the respective output in :numref:`lst:textwrap4-mod2A` and :numref:`lst:te
  	:name: lst:textwrap2B-yaml
 
 You can also specify the ``tabstop`` field as an integer value, which is passed to the text wrap module; see (“Text::Wrap Perl Module” n.d.) for details. Starting with the code in
-:numref:`lst:textwrap-ts` with settings in :numref:`lst:tabstop`, and running the command
-
-.. index:: switches;-l demonstration
+:numref:`lst:textwrap-ts` with settings in :numref:`lst:tabstop`, and running the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -264,7 +615,7 @@ You can also specify the ``tabstop`` field as an integer value, which is passed 
 .. code-block:: latex
    :class: .commandshell
 
-   latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
+        latexindent.pl -m textwrap-ts.tex -o=+-mod1 -l tabstop.yaml
 
 gives the code given in :numref:`lst:textwrap-ts-mod1`.
 
@@ -288,709 +639,13 @@ be passed to the ``Text::Wrap`` module. I have not found a useful reason to do t
 
 .. label follows
 
-.. _subsec:text-wrap-per-code-block:
-
-Text wrapping on a per-code-block basis
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-By default, if the value of ``columns`` is greater than 0 and the ``-m`` switch is active, then the text wrapping routine will operate before the code blocks have been searched for. This behaviour is
-customisable; in particular, you can instead instruct ``latexindent.pl`` to apply ``textWrap`` on a per-code-block basis. Thanks to ((zoehneto) 2018) for their help in testing and shaping this
-feature.
-
-.. index:: modifying linebreaks; by text wrapping, per-code-block
-
-The full details of ``textWrapOptions`` are shown in :numref:`lst:textWrapOptionsAll`. In particular, note the field ``perCodeBlockBasis: 0``.
-
-.. index:: specialBeginEnd;textWrapOptions
-
-.. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``textWrapOptions`` 
- 	:name: lst:textWrapOptionsAll
- 	:lines: 514-532
- 	:linenos:
- 	:lineno-start: 514
-
-The code blocks detailed in :numref:`lst:textWrapOptionsAll` are with direct reference to those detailed in :numref:`tab:code-blocks`.
-
-The only special case is the ``mainDocument`` field; this is designed for ‘chapter’-type files that may contain paragraphs that are not within any other code-blocks. The same notation is used between
-this feature and the ``removeParagraphLineBreaks`` described in :numref:`lst:removeParagraphLineBreaks`; in fact, the two features can even be combined (this is detailed in
-:numref:`subsec:removeparagraphlinebreaks:and:textwrap`).
-
-Note: ``mainDocument`` replaces ``masterDocument`` which was used in previous verions of ``latexindent.pl``. The field ``masterDocument`` is still supported, but it is anticipated to be removed in a
-future version, so I recommend using ``mainDocument`` instead.
-
-Let’s explore these switches with reference to the code given in :numref:`lst:textwrap5`; the text outside of the environment is considered part of the ``mainDocument``.
-
-.. literalinclude:: demonstrations/textwrap5.tex
- 	:class: .tex
- 	:caption: ``textwrap5.tex`` 
- 	:name: lst:textwrap5
-
-With reference to this code block, the settings given in :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and :numref:`lst:textwrap5-yaml` each give the same output.
-
-.. literalinclude:: demonstrations/textwrap3.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap3.yaml`` 
- 	:name: lst:textwrap3-yaml
-
-.. literalinclude:: demonstrations/textwrap4.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap4.yaml`` 
- 	:name: lst:textwrap4-yaml
-
-.. literalinclude:: demonstrations/textwrap5.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap5.yaml`` 
- 	:name: lst:textwrap5-yaml
-
-Let’s explore the similarities and differences in the equivalent (with respect to :numref:`lst:textwrap5`) syntax specified in :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and
-:numref:`lst:textwrap5-yaml`:
-
--  in each of :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and :numref:`lst:textwrap5-yaml` notice that ``columns: 30``;
-
--  in each of :numref:`lst:textwrap3-yaml` and :numref:`lst:textwrap4-yaml` and :numref:`lst:textwrap5-yaml` notice that ``perCodeBlockBasis: 1``;
-
--  in :numref:`lst:textwrap3-yaml` we have specified ``all: 1`` so that the text wrapping will operate upon *all* code blocks;
-
--  in :numref:`lst:textwrap4-yaml` we have *not* specified ``all``, and instead, have specified that text wrapping should be applied to each of ``environments`` and ``mainDocument``;
-
--  in :numref:`lst:textwrap5-yaml` we have specified text wrapping for ``mainDocument`` and on a *per-name* basis for ``environments`` code blocks.
-
-Upon running the following commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -s textwrap5.tex -l=textwrap3.yaml -m
-   latexindent.pl -s textwrap5.tex -l=textwrap4.yaml -m
-   latexindent.pl -s textwrap5.tex -l=textwrap5.yaml -m
-
-we obtain the output shown in :numref:`lst:textwrap5-mod3`.
-
-.. literalinclude:: demonstrations/textwrap5-mod3.tex
- 	:class: .tex
- 	:caption: ``textwrap5-mod3.tex`` 
- 	:name: lst:textwrap5-mod3
-
-We can explore the idea of per-name text wrapping given in :numref:`lst:textwrap5-yaml` by using :numref:`lst:textwrap6`.
-
-.. literalinclude:: demonstrations/textwrap6.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` 
- 	:name: lst:textwrap6
-
-In particular, upon running
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -s textwrap6.tex -l=textwrap5.yaml -m
-
-we obtain the output given in :numref:`lst:textwrap6-mod5`.
-
-.. literalinclude:: demonstrations/textwrap6-mod5.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap5-yaml` 
- 	:name: lst:textwrap6-mod5
-
-Notice that, because ``environments`` has been specified only for ``myenv`` (in :numref:`lst:textwrap5-yaml`) that the environment named ``another`` has *not* had text wrapping applied to it.
-
-The all field can be specified with exceptions which can either be done on a per-code-block or per-name basis; we explore this in relation to :numref:`lst:textwrap6` in the settings given in
-:numref:`lst:textwrap6-yaml` – :numref:`lst:textwrap8-yaml`.
-
-.. literalinclude:: demonstrations/textwrap6.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap6.yaml`` 
- 	:name: lst:textwrap6-yaml
-
-.. literalinclude:: demonstrations/textwrap7.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap7.yaml`` 
- 	:name: lst:textwrap7-yaml
-
-.. literalinclude:: demonstrations/textwrap8.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap8.yaml`` 
- 	:name: lst:textwrap8-yaml
-
-Upon running the commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -s textwrap6.tex -l=textwrap6.yaml -m
-   latexindent.pl -s textwrap6.tex -l=textwrap7.yaml -m
-   latexindent.pl -s textwrap6.tex -l=textwrap8.yaml -m
-
-we receive the respective output given in :numref:`lst:textwrap6-mod6` – :numref:`lst:textwrap6-mod8`.
-
-.. literalinclude:: demonstrations/textwrap6-mod6.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap6-yaml` 
- 	:name: lst:textwrap6-mod6
-
-.. literalinclude:: demonstrations/textwrap6-mod7.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap7-yaml` 
- 	:name: lst:textwrap6-mod7
-
-.. literalinclude:: demonstrations/textwrap6-mod8.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap8-yaml` 
- 	:name: lst:textwrap6-mod8
-
-Notice that:
-
--  in :numref:`lst:textwrap6-mod6` the text wrapping routine has not been applied to any ``environments`` because it has been switched off (per-code-block) in :numref:`lst:textwrap6-yaml`;
-
--  in :numref:`lst:textwrap6-mod7` the text wrapping routine has not been applied to ``myenv`` because it has been switched off (per-name) in :numref:`lst:textwrap7-yaml`;
-
--  in :numref:`lst:textwrap6-mod8` the text wrapping routine has not been applied to ``mainDocument`` because of the settings in :numref:`lst:textwrap8-yaml`.
-
-The ``columns`` field has a variety of different ways that it can be specified; we’ve seen two basic ways already: the default (set to ``0``) and a positive integer (see :numref:`lst:textwrap6`, for
-example). We explore further options in :numref:`lst:textwrap9-yaml` – :numref:`lst:textwrap11-yaml`.
-
-.. literalinclude:: demonstrations/textwrap9.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap9.yaml`` 
- 	:name: lst:textwrap9-yaml
-
-.. literalinclude:: demonstrations/textwrap10.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap10.yaml`` 
- 	:name: lst:textwrap10-yaml
-
-.. literalinclude:: demonstrations/textwrap11.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap11.yaml`` 
- 	:name: lst:textwrap11-yaml
-
-:numref:`lst:textwrap9-yaml` and :numref:`lst:textwrap10-yaml` are equivalent. Upon running the commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -s textwrap6.tex -l=textwrap9.yaml -m
-   latexindent.pl -s textwrap6.tex -l=textwrap11.yaml -m
-
-we receive the respective output given in :numref:`lst:textwrap6-mod9` and :numref:`lst:textwrap6-mod11`.
-
-.. literalinclude:: demonstrations/textwrap6-mod9.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap9-yaml` 
- 	:name: lst:textwrap6-mod9
-
-.. literalinclude:: demonstrations/textwrap6-mod11.tex
- 	:class: .tex
- 	:caption: ``textwrap6.tex`` using :numref:`lst:textwrap11-yaml` 
- 	:name: lst:textwrap6-mod11
-
-Notice that:
-
--  in :numref:`lst:textwrap6-mod9` the text for the ``mainDocument`` has been wrapped using ``30`` columns, while ``environments`` has been wrapped using ``50`` columns;
-
--  in :numref:`lst:textwrap6-mod11` the text for ``myenv`` has been wrapped using ``50`` columns, the text for ``another`` has been wrapped using ``15`` columns, and ``mainDocument`` has been
-   wrapped using ``30`` columns.
-
-If you don’t specify a ``default`` value on per-code-block basis, then the ``default`` value from ``columns`` will be inherited; if you don’t specify a default value for ``columns`` then ``80`` will
-be used.
-
-``alignAtAmpersandTakesPriority`` is set to ``1`` by default; assuming that text wrapping is occurring on a per-code-block basis, and the current environment/code block is specified within
-:numref:`lst:aligndelims:basic` then text wrapping will be disabled for this code block.
-
-If you wish to specify ``afterHeading`` commands (see :numref:`lst:indentAfterHeadings`) on a per-name basis, then you need to append the name with ``:heading``, for example, you might use
-``section:heading``.
-
-.. label follows
-
-.. _subsec:removeparagraphlinebreaks:
-
-removeParagraphLineBreaks: modifying line breaks for paragraphs
----------------------------------------------------------------
-
-When the ``-m`` switch is active ``latexindent.pl`` has the ability to remove line breaks from within paragraphs; the behaviour is controlled by the ``removeParagraphLineBreaks`` field, detailed in
-:numref:`lst:removeParagraphLineBreaks`. Thank you to (Owens 2017) for shaping and assisting with the testing of this feature. .. describe:: removeParagraphLineBreaks:fields
-
-This feature is considered complimentary to the ``oneSentencePerLine`` feature described in :numref:`sec:onesentenceperline`.
-
-.. index:: specialBeginEnd;removeParagraphLineBreaks
-
-.. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``removeParagraphLineBreaks`` 
- 	:name: lst:removeParagraphLineBreaks
- 	:lines: 533-547
- 	:linenos:
- 	:lineno-start: 533
-
-This routine can be turned on *globally* for *every* code block type known to ``latexindent.pl`` (see :numref:`tab:code-blocks`) by using the ``all`` switch; by default, this switch is *off*.
-Assuming that the ``all`` switch is off, then the routine can be controlled on a per-code-block-type basis, and within that, on a per-name basis. We will consider examples of each of these in turn,
-but before we do, let’s specify what ``latexindent.pl`` considers as a paragraph:
-
--  it must begin on its own line with either an alphabetic or numeric character, and not with any of the code-block types detailed in :numref:`tab:code-blocks`;
-
--  it can include line breaks, but finishes when it meets either a blank line, a ``\par`` command, or any of the user-specified settings in the ``paragraphsStopAt`` field, detailed in
-   :numref:`lst:paragraphsStopAt`.
-
-Let’s start with the ``.tex`` file in :numref:`lst:shortlines`, together with the YAML settings in :numref:`lst:remove-para1-yaml`.
-
-.. literalinclude:: demonstrations/shortlines.tex
- 	:class: .tex
- 	:caption: ``shortlines.tex`` 
- 	:name: lst:shortlines
-
-.. literalinclude:: demonstrations/remove-para1.yaml
- 	:class: .mlbyaml
- 	:caption: ``remove-para1.yaml`` 
- 	:name: lst:remove-para1-yaml
-
-Upon running the command
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m shortlines.tex -o shortlines1.tex -l remove-para1.yaml
-
-then we obtain the output given in :numref:`lst:shortlines1`.
-
-.. literalinclude:: demonstrations/shortlines1.tex
- 	:class: .tex
- 	:caption: ``shortlines1.tex`` 
- 	:name: lst:shortlines1
-
-Keen readers may notice that some trailing white space must be present in the file in :numref:`lst:shortlines` which has crept in to the output in :numref:`lst:shortlines1`. This can be fixed
-using the YAML file in :numref:`lst:removeTWS-before` and running, for example,
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m shortlines.tex -o shortlines1-tws.tex -l remove-para1.yaml,removeTWS-before.yaml  
-
-in which case the output is as in :numref:`lst:shortlines1-tws`; notice that the double spaces present in :numref:`lst:shortlines1` have been addressed.
-
-.. literalinclude:: demonstrations/shortlines1-tws.tex
- 	:class: .tex
- 	:caption: ``shortlines1-tws.tex`` 
- 	:name: lst:shortlines1-tws
-
-Keeping with the settings in :numref:`lst:remove-para1-yaml`, we note that the ``all`` switch applies to *all* code block types. So, for example, let’s consider the files in
-:numref:`lst:shortlines-mand` and :numref:`lst:shortlines-opt`
-
-.. literalinclude:: demonstrations/shortlines-mand.tex
- 	:class: .tex
- 	:caption: ``shortlines-mand.tex`` 
- 	:name: lst:shortlines-mand
-
-.. literalinclude:: demonstrations/shortlines-opt.tex
- 	:class: .tex
- 	:caption: ``shortlines-opt.tex`` 
- 	:name: lst:shortlines-opt
-
-Upon running the commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m shortlines-mand.tex -o shortlines-mand1.tex -l remove-para1.yaml
-   latexindent.pl -m shortlines-opt.tex -o shortlines-opt1.tex -l remove-para1.yaml
-
-then we obtain the respective output given in :numref:`lst:shortlines-mand1` and :numref:`lst:shortlines-opt1`.
-
-.. literalinclude:: demonstrations/shortlines-mand1.tex
- 	:class: .tex
- 	:caption: ``shortlines-mand1.tex`` 
- 	:name: lst:shortlines-mand1
-
-.. literalinclude:: demonstrations/shortlines-opt1.tex
- 	:class: .tex
- 	:caption: ``shortlines-opt1.tex`` 
- 	:name: lst:shortlines-opt1
-
-Assuming that we turn *off* the ``all`` switch (by setting it to ``0``), then we can control the behaviour of ``removeParagraphLineBreaks`` either on a per-code-block-type basis, or on a per-name
-basis.
-
-For example, let’s use the code in :numref:`lst:shortlines-envs`, and consider the settings in :numref:`lst:remove-para2-yaml` and :numref:`lst:remove-para3-yaml`; note that in
-:numref:`lst:remove-para2-yaml` we specify that *every* environment should receive treatment from the routine, while in :numref:`lst:remove-para3-yaml` we specify that *only* the ``one``
-environment should receive the treatment.
-
-.. literalinclude:: demonstrations/shortlines-envs.tex
- 	:class: .tex
- 	:caption: ``shortlines-envs.tex`` 
- 	:name: lst:shortlines-envs
-
-.. literalinclude:: demonstrations/remove-para2.yaml
- 	:class: .mlbyaml
- 	:caption: ``remove-para2.yaml`` 
- 	:name: lst:remove-para2-yaml
-
-.. literalinclude:: demonstrations/remove-para3.yaml
- 	:class: .mlbyaml
- 	:caption: ``remove-para3.yaml`` 
- 	:name: lst:remove-para3-yaml
-
-Upon running the commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m shortlines-envs.tex -o shortlines-envs2.tex -l remove-para2.yaml
-   latexindent.pl -m shortlines-envs.tex -o shortlines-envs3.tex -l remove-para3.yaml
-
-then we obtain the respective output given in :numref:`lst:shortlines-envs2` and :numref:`lst:shortlines-envs3`.
-
-.. literalinclude:: demonstrations/shortlines-envs2.tex
- 	:class: .tex
- 	:caption: ``shortlines-envs2.tex`` 
- 	:name: lst:shortlines-envs2
-
-.. literalinclude:: demonstrations/shortlines-envs3.tex
- 	:class: .tex
- 	:caption: ``shortlines-envs3.tex`` 
- 	:name: lst:shortlines-envs3
-
-The remaining code-block types can be customised in analogous ways, although note that ``commands``, ``keyEqualsValuesBracesBrackets``, ``namedGroupingBracesBrackets``,
-``UnNamedGroupingBracesBrackets`` are controlled by the ``optionalArguments`` and the ``mandatoryArguments``.
-
-The only special case is the ``mainDocument`` field; this is designed for ‘chapter’-type files that may contain paragraphs that are not within any other code-blocks. For example, consider the file in
-:numref:`lst:shortlines-md`, with the YAML settings in :numref:`lst:remove-para4-yaml`.
-
-Note: ``mainDocument`` replaces ``masterDocument`` which was used in previous verions of ``latexindent.pl``. The field ``masterDocument`` is still supported, but it is anticipated to be removed in a
-future version, so I recommend using ``mainDocument`` instead.
-
-.. literalinclude:: demonstrations/shortlines-md.tex
- 	:class: .tex
- 	:caption: ``shortlines-md.tex`` 
- 	:name: lst:shortlines-md
-
-.. literalinclude:: demonstrations/remove-para4.yaml
- 	:class: .mlbyaml
- 	:caption: ``remove-para4.yaml`` 
- 	:name: lst:remove-para4-yaml
-
-Upon running the following command
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m shortlines-md.tex -o shortlines-md4.tex -l remove-para4.yaml
-
-then we obtain the output in :numref:`lst:shortlines-md4`.
-
-.. literalinclude:: demonstrations/shortlines-md4.tex
- 	:class: .tex
- 	:caption: ``shortlines-md4.tex`` 
- 	:name: lst:shortlines-md4
-
-Note that the ``all`` field can take the same exceptions detailed in :numref:`lst:textwrap6-yaml` – :numref:`lst:textwrap8-yaml`.
-
-.. describe:: paragraphsStopAt:fields
-
-The paragraph line break routine considers blank lines and the ``\par`` command to be the end of a paragraph; you can fine tune the behaviour of the routine further by using the ``paragraphsStopAt``
-fields, shown in :numref:`lst:paragraphsStopAt`.
-
-.. index:: specialBeginEnd;paragraphsStopAt
-
-.. index:: verbatim;in relation to paragraphsStopAt
-
-.. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``paragraphsStopAt`` 
- 	:name: lst:paragraphsStopAt
- 	:lines: 548-557
- 	:linenos:
- 	:lineno-start: 548
-
-The fields specified in ``paragraphsStopAt`` tell ``latexindent.pl`` to stop the current paragraph when it reaches a line that *begins* with any of the code-block types specified as ``1`` in
-:numref:`lst:paragraphsStopAt`. By default, you’ll see that the paragraph line break routine will stop when it reaches an environment or verbatim code block at the beginning of a line. It is *not*
-possible to specify these fields on a per-name basis.
-
-Let’s use the ``.tex`` file in :numref:`lst:sl-stop`; we will, in turn, consider the settings in :numref:`lst:stop-command-yaml` and :numref:`lst:stop-comment-yaml`.
-
-.. literalinclude:: demonstrations/sl-stop.tex
- 	:class: .tex
- 	:caption: ``sl-stop.tex`` 
- 	:name: lst:sl-stop
-
-.. literalinclude:: demonstrations/stop-command.yaml
- 	:class: .mlbyaml
- 	:caption: ``stop-command.yaml`` 
- 	:name: lst:stop-command-yaml
-
-.. literalinclude:: demonstrations/stop-comment.yaml
- 	:class: .mlbyaml
- 	:caption: ``stop-comment.yaml`` 
- 	:name: lst:stop-comment-yaml
-
-Upon using the settings from :numref:`lst:remove-para4-yaml` and running the commands
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m sl-stop.tex -o sl-stop4.tex -l remove-para4.yaml
-   latexindent.pl -m sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml
-   latexindent.pl -m sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml
-
-we obtain the respective outputs in :numref:`lst:sl-stop4` – :numref:`lst:sl-stop4-comment`; notice in particular that:
-
--  in :numref:`lst:sl-stop4` the paragraph line break routine has included commands and comments;
-
--  in :numref:`lst:sl-stop4-command` the paragraph line break routine has *stopped* at the ``emph`` command, because in :numref:`lst:stop-command-yaml` we have specified ``commands`` to be ``1``,
-   and ``emph`` is at the beginning of a line;
-
--  in :numref:`lst:sl-stop4-comment` the paragraph line break routine has *stopped* at the comments, because in :numref:`lst:stop-comment-yaml` we have specified ``comments`` to be ``1``, and the
-   comment is at the beginning of a line.
-
-In all outputs in :numref:`lst:sl-stop4` – :numref:`lst:sl-stop4-comment` we notice that the paragraph line break routine has stopped at ``\begin{myenv}`` because, by default, ``environments`` is
-set to ``1`` in :numref:`lst:paragraphsStopAt`.
-
-.. literalinclude:: demonstrations/sl-stop4.tex
- 	:class: .tex
- 	:caption: ``sl-stop4.tex`` 
- 	:name: lst:sl-stop4
-
-.. literalinclude:: demonstrations/sl-stop4-command.tex
- 	:class: .tex
- 	:caption: ``sl-stop4-command.tex`` 
- 	:name: lst:sl-stop4-command
-
-.. literalinclude:: demonstrations/sl-stop4-comment.tex
- 	:class: .tex
- 	:caption: ``sl-stop4-comment.tex`` 
- 	:name: lst:sl-stop4-comment
-
-.. label follows
-
-.. _subsec:removeparagraphlinebreaks:and:textwrap:
-
-Combining removeParagraphLineBreaks and textWrapOptions
--------------------------------------------------------
-
-The text wrapping routine (:numref:`subsec:textwrapping`) and remove paragraph line breaks routine (:numref:`subsec:removeparagraphlinebreaks`) can be combined.
-
-We motivate this feature with the code given in :numref:`lst:textwrap7`.
-
-.. literalinclude:: demonstrations/textwrap7.tex
- 	:class: .tex
- 	:caption: ``textwrap7.tex`` 
- 	:name: lst:textwrap7
-
-Applying the text wrap routine from :numref:`subsec:textwrapping` with, for example, :numref:`lst:textwrap3-yaml` gives the output in :numref:`lst:textwrap7-mod3`.
-
-.. literalinclude:: demonstrations/textwrap7-mod3.tex
- 	:class: .tex
- 	:caption: ``textwrap7.tex`` using :numref:`lst:textwrap3-yaml` 
- 	:name: lst:textwrap7-mod3
-
-The text wrapping routine has behaved as expected, but it may be desired to remove paragraph line breaks *before* performing the text wrapping routine. The desired behaviour can be achieved by
-employing the ``beforeTextWrap`` switch.
-
-Explicitly, using the settings in :numref:`lst:textwrap12-yaml` and running the command
-
-.. index:: switches;-l demonstration
-
-.. index:: switches;-m demonstration
-
-.. index:: switches;-o demonstration
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
-
-we obtain the output in :numref:`lst:textwrap7-mod12`.
-
-.. literalinclude:: demonstrations/textwrap7-mod12.tex
- 	:class: .tex
- 	:caption: ``textwrap7-mod12.tex`` 
- 	:name: lst:textwrap7-mod12
-
-.. literalinclude:: demonstrations/textwrap12.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap12.yaml`` 
- 	:name: lst:textwrap12-yaml
-
-In :numref:`lst:textwrap7-mod12` the paragraph line breaks have first been removed from :numref:`lst:textwrap7`, and then the text wrapping routine has been applied. It is envisaged that variants
-of :numref:`lst:textwrap12-yaml` will be among the most useful settings for these two features.
-
-.. label follows
-
-.. _subsubsec:text-wrap-remove-para-bfccb:
-
-text wrapping beforeFindingChildCodeBlocks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. index:: text wrap;recommended starting point
-
-I think it likely that most users will wish to employ the ``beforeFindingChildCodeBlocks`` option for the text wrap routine.
-
-To motivate its use, we begin with the file in :numref:`lst:textwrap-bfccb`.
-
-.. literalinclude:: demonstrations/textwrap-bfccb.tex
- 	:class: .tex
- 	:caption: ``textwrap-bfccb.tex`` 
- 	:name: lst:textwrap-bfccb
-
-Using the settings in :numref:`lst:textwrap12-yaml` and running
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap-bfccb.tex -l=textwrap12.yaml -o=+-mod12
-
-gives the output in :numref:`lst:textwrap-bfccb-mod12`
-
-.. literalinclude:: demonstrations/textwrap-bfccb-mod12.tex
- 	:class: .tex
- 	:caption: ``textwrap-bfccb-mod12.tex`` 
- 	:name: lst:textwrap-bfccb-mod12
-
-Note that we have added a ‘ruler’ to :numref:`lst:textwrap-bfccb-mod12` to assist with measuring.
-
-The output in :numref:`lst:textwrap-bfccb-mod12` is not ideal, but it is *expected*. The reasoning is as follows:
-
--  ``latexindent.pl`` first of all searches for code blocks (see :numref:`tab:code-blocks`);
-
--  it replaces each code block with a unique identifying string;
-
--  with the settings of :numref:`lst:textwrap12-yaml` in place, it performs the paragraph line break removal, and then the text wrapping routine first of all on the ``text`` command, and then on the
-   surrounding text;
-
--  the surrounding text does not know that ``text`` is a command.
-
-We can instruct ``latexindent.pl`` to perform text wrapping *before searching for child code blocks* by using the ``beforeFindingChildCodeBlocks`` field.
-
-We save the *quick-start* settings from :numref:`lst:textwrap-qs-yaml` into :numref:`lst:textwrap13-yaml` and change the value of ``columns`` for demonstration. Upon running the command
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap-bfccb.tex -l=textwrap13.yaml -o=+-mod13
-
-we receive the output in :numref:`lst:textwrap-bfccb-mod13`.
-
-.. literalinclude:: demonstrations/textwrap13.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap13.yaml`` (tweaked quick start) 
- 	:name: lst:textwrap13-yaml
-
-.. literalinclude:: demonstrations/textwrap-bfccb-mod13.tex
- 	:class: .tex
- 	:caption: ``textwrap-bfccb-mod13.tex`` 
- 	:name: lst:textwrap-bfccb-mod13
-
-This output is different from :numref:`lst:textwrap-bfccb-mod12`, but is still not ideal, as the ``test`` command has indented its mandatory argument. We can employ ``noAdditionalIndent`` from
-:numref:`sec:noadd-indent-rules` in :numref:`lst:textwrap14-yaml` and run the command
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
-
-to receive the output in :numref:`lst:textwrap-bfccb-mod14`.
-
-.. literalinclude:: demonstrations/textwrap-bfccb-mod14.tex
- 	:class: .tex
- 	:caption: ``textwrap-bfccb-mod14.tex`` 
- 	:name: lst:textwrap-bfccb-mod14
-
-.. literalinclude:: demonstrations/textwrap14.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap14.yaml`` 
- 	:name: lst:textwrap14-yaml
-
-For reference, let’s say that we had started from :numref:`lst:textwrap12-yaml`, which instructs ``latexindent.pl`` to apply the text-wrapping and paragraph-line-break-removal routines to *all* code
-blocks. In order to achieve the output in :numref:`lst:textwrap-bfccb-mod14`, then we would need to employ an exception, which we demonstrate in :numref:`lst:textwrap15-yaml`.
-
-.. literalinclude:: demonstrations/textwrap15.yaml
- 	:class: .mlbyaml
- 	:caption: ``textwrap15.yaml`` 
- 	:name: lst:textwrap15-yaml
-
-Summary of text wrapping
-------------------------
-
-I consider the most useful starting point for text wrapping to be given in :numref:`subsec:textwrapping-quick-start` and :numref:`subsubsec:text-wrap-remove-para-bfccb`.
-
-Starting from :numref:`lst:textwrap-qs-yaml`, it is likely that you will have to experiment with making adjustments (such as that given in :numref:`lst:textwrap14-yaml`) depending on your
-preference.
-
-It is important to note the following:
-
-.. index:: verbatim;within summary of text wrapping
-
--  verbatim code blocks of all types will *not* be affected by the text wrapping routine. See the demonstration in :numref:`lst:textwrap2-mod1`, together with environments:
-   :numref:`lst:verbatimEnvironments`, commands: :numref:`lst:verbatimCommands`, ``noIndentBlock``: :numref:`lst:noIndentBlock`, ``specialBeginEnd``: :numref:`lst:special3-mod1`;
-
--  comments will *not* be affected by the text wrapping routine (see :numref:`lst:textwrap3-mod1`);
-
--  it is possible to wrap text on a per-code-block and a per-name basis;
-
--  indentation is performed *after* the text wrapping routine; as such, indented code will likely exceed any maximum value set in the ``columns`` field.
-
-.. label follows
-
 .. _sec:onesentenceperline:
 
 oneSentencePerLine: modifying line breaks for sentences
 -------------------------------------------------------
 
 You can instruct ``latexindent.pl`` to format your file so that it puts one sentence per line. Thank you to (mlep 2017) for helping to shape and test this feature. The behaviour of this part of the
-script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine`, all of which we discuss next.
-
-.. index:: modifying linebreaks; by using one sentence per line
+script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine`, all of which we discuss next. .. index:: modifying linebreaks; by using one sentence per line
 
 .. index:: sentences;oneSentencePerLine
 
@@ -1004,9 +659,9 @@ script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 490-513
+ 	:lines: 494-517
  	:linenos:
- 	:lineno-start: 490
+ 	:lineno-start: 494
 
 .. describe:: manipulateSentences:0|1
 
@@ -1064,9 +719,8 @@ then we obtain the respective output given in :numref:`lst:multiple-sentences-mo
 Notice, in particular, that the ‘internal’ sentence line breaks in :numref:`lst:multiple-sentences` have been removed in :numref:`lst:multiple-sentences-mod1`, but have not been removed in
 :numref:`lst:multiple-sentences-mod2`.
 
-The remainder of the settings displayed in :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to define a sentence. From the perspective of ``latexindent.pl`` a sentence must:
-
-.. index:: sentences;follow
+The remainder of the settings displayed in :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to define a sentence. From the perspective of ``latexindent.pl`` a sentence must: ..
+index:: sentences;follow
 
 .. index:: sentences;begin with
 
@@ -1089,33 +743,31 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 495-503
+ 	:lines: 499-507
  	:linenos:
- 	:lineno-start: 495
+ 	:lineno-start: 499
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 504-507
+ 	:lines: 508-511
  	:linenos:
- 	:lineno-start: 504
+ 	:lineno-start: 508
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 508-513
+ 	:lines: 512-517
  	:linenos:
- 	:lineno-start: 508
+ 	:lineno-start: 512
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
 
 Let’s explore a few of the switches in ``sentencesFollow``; let’s start with :numref:`lst:multiple-sentences`, and use the YAML settings given in :numref:`lst:sentences-follow1-yaml`. Using the
-command
-
-.. index:: sentences;follow
+command .. index:: sentences;follow
 
 .. index:: switches;-l demonstration
 
@@ -1147,9 +799,7 @@ We can explore the ``other`` field in :numref:`lst:sentencesFollow` with the ``.
  	:caption: ``multiple-sentences1.tex`` 
  	:name: lst:multiple-sentences1
 
-Upon running the following commands
-
-.. index:: switches;-l demonstration
+Upon running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1183,18 +833,14 @@ sentencesBeginWith
 ~~~~~~~~~~~~~~~~~~
 
 By default, ``latexindent.pl`` will only assume that sentences begin with the upper case letters ``A-Z``; you can instruct the script to define sentences to begin with lower case letters (see
-:numref:`lst:sentencesBeginWith`), and we can use the ``other`` field to define sentences to begin with other characters.
-
-.. index:: sentences;begin with
+:numref:`lst:sentencesBeginWith`), and we can use the ``other`` field to define sentences to begin with other characters. .. index:: sentences;begin with
 
 .. literalinclude:: demonstrations/multiple-sentences2.tex
  	:class: .tex
  	:caption: ``multiple-sentences2.tex`` 
  	:name: lst:multiple-sentences2
 
-Upon running the following commands
-
-.. index:: switches;-l demonstration
+Upon running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1231,9 +877,7 @@ sentencesEndWith
 
 Let’s return to :numref:`lst:multiple-sentences`; we have already seen the default way in which ``latexindent.pl`` will operate on the sentences in this file in
 :numref:`lst:multiple-sentences-mod1`. We can populate the ``other`` field with any character that we wish; for example, using the YAML specified in :numref:`lst:sentences-end1-yaml` and the
-command
-
-.. index:: sentences;end with
+command .. index:: sentences;end with
 
 .. index:: switches;-l demonstration
 
@@ -1245,9 +889,7 @@ command
    latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
    latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
-then we obtain the output in :numref:`lst:multiple-sentences-mod4`.
-
-.. index:: regular expressions;lowercase alph a-z
+then we obtain the output in :numref:`lst:multiple-sentences-mod4`. .. index:: regular expressions;lowercase alph a-z
 
 .. literalinclude:: demonstrations/multiple-sentences-mod4.tex
  	:class: .tex
@@ -1282,9 +924,7 @@ Let’s consider the file shown in :numref:`lst:url`.
  	:caption: ``url.tex`` 
  	:name: lst:url
 
-Upon running the following commands
-
-.. index:: switches;-l demonstration
+Upon running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1339,15 +979,11 @@ Notice that the full stop within the URL has not been accommodated correctly bec
 Features of the oneSentencePerLine routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The sentence manipulation routine takes place *after* verbatim
-
-.. index:: verbatim;in relation to oneSentencePerLine
+The sentence manipulation routine takes place *after* verbatim .. index:: verbatim;in relation to oneSentencePerLine
 
 environments, preamble and trailing comments have been accounted for; this means that any characters within these types of code blocks will not be part of the sentence manipulation routine.
 
-For example, if we begin with the ``.tex`` file in :numref:`lst:multiple-sentences3`, and run the command
-
-.. index:: switches;-l demonstration
+For example, if we begin with the ``.tex`` file in :numref:`lst:multiple-sentences3`, and run the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1369,9 +1005,7 @@ then we obtain the output in :numref:`lst:multiple-sentences3-mod1`.
  	:name: lst:multiple-sentences3-mod1
 
 Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed. For example, if we use the ``.tex`` file in
-:numref:`lst:multiple-sentences4` and run the commands
-
-.. index:: switches;-l demonstration
+:numref:`lst:multiple-sentences4` and run the commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1399,9 +1033,7 @@ then we obtain the output in :numref:`lst:multiple-sentences4-mod1` and :numref:
  	:name: lst:multiple-sentences4-mod2
 
 Once you’ve read :numref:`sec:poly-switches`, you will know that you can accommodate the removal of internal sentence line breaks by using the YAML in :numref:`lst:item-rules2-yaml` and the
-command
-
-.. index:: switches;-l demonstration
+command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1461,9 +1093,6 @@ we receive the output given in :numref:`lst:multiple-sentences5-mod1`.
  	:caption: ``sentence-wrap1.yaml`` 
  	:name: lst:sentence-wrap1-yaml
 
-If you wish to specify the ``columns`` field on a per-code-block basis for sentences, then you would use ``sentence``; explicitly, starting with :numref:`lst:textwrap9-yaml`, for example, you would
-replace/append ``environments`` with, for example, ``sentence: 50``.
-
 If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``columns`` then the text wrapping will *not* operate on sentences, and you will see a warning in ``indent.log``.
 
 The indentation of sentences requires that sentences are stored as code blocks. This means that you may need to tweak :numref:`lst:sentencesEndWith`. Let’s explore this in relation to
@@ -1474,9 +1103,7 @@ The indentation of sentences requires that sentences are stored as code blocks. 
  	:caption: ``multiple-sentences6.tex`` 
  	:name: lst:multiple-sentences6
 
-By default, ``latexindent.pl`` will find the full-stop within the first ``item``, which means that, upon running the following commands
-
-.. index:: switches;-l demonstration
+By default, ``latexindent.pl`` will find the full-stop within the first ``item``, which means that, upon running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1504,9 +1131,7 @@ We note that :numref:`lst:multiple-sentences6-mod1` the ``itemize`` code block h
 (because :numref:`lst:sentence-wrap1-yaml`); each sentence is then searched for code blocks.
 
 We can tweak the settings in :numref:`lst:sentencesEndWith` to ensure that full stops are not followed by ``item`` commands, and that the end of sentences contains ``\end{itemize}`` as in
-:numref:`lst:itemize-yaml` (if you intend to use this, ensure that you remove the line breaks from the ``other`` field).
-
-.. index:: regular expressions;lowercase alph a-z
+:numref:`lst:itemize-yaml` (if you intend to use this, ensure that you remove the line breaks from the ``other`` field). .. index:: regular expressions;lowercase alph a-z
 
 .. index:: regular expressions;uppercase alph A-Z
 
@@ -1517,9 +1142,7 @@ We can tweak the settings in :numref:`lst:sentencesEndWith` to ensure that full 
  	:caption: ``itemize.yaml`` 
  	:name: lst:itemize-yaml
 
-Upon running
-
-.. index:: switches;-l demonstration
+Upon running .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1586,9 +1209,7 @@ Poly-switches for environments
 
 We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:environments-mlb`; note that it contains *global* settings (immediately after the ``environments`` field) and that
 *per-name* settings are also allowed – in the case of :numref:`lst:environments-mlb`, settings for ``equation*`` have been specified for demonstration. Note that all poly-switches are *off* (set to
-0) by default.
-
-.. index:: poly-switches;default values
+0) by default. .. index:: poly-switches;default values
 
 .. index:: poly-switches;environment global example
 
@@ -1598,14 +1219,12 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 558-567
+ 	:lines: 542-551
  	:linenos:
- 	:lineno-start: 558
+ 	:lineno-start: 542
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
-:numref:`lst:environments-mlb`.
-
-.. index:: poly-switches;visualisation: ♠, ♥, ◆, ♣
+:numref:`lst:environments-mlb`. .. index:: poly-switches;visualisation: ♠, ♥, ◆, ♣
 
 .. code-block:: latex
    :caption: ``env-mlb1.tex`` 
@@ -1617,9 +1236,7 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let’s explore ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine`` in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2`, and in particular, let’s allow each of them in turn to take a value of
-:math:`1`.
-
-.. index:: poly-switches;adding line breaks: set to 1
+:math:`1`. .. index:: poly-switches;adding line breaks: set to 1
 
 .. literalinclude:: demonstrations/env-mlb1.yaml
  	:class: .mlbyaml
@@ -1631,9 +1248,7 @@ Let’s explore ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine`` in :numref:
  	:caption: ``env-mlb2.yaml`` 
  	:name: lst:env-mlb2
 
-After running the following commands,
-
-.. index:: switches;-l demonstration
+After running the following commands, .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1663,9 +1278,7 @@ There are a couple of points to note:
    (default) indentation.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2` so that they are :math:`2` and save them into ``env-mlb3.yaml`` and ``env-mlb4.yaml`` respectively
-(see :numref:`lst:env-mlb3` and :numref:`lst:env-mlb4`).
-
-.. index:: poly-switches;adding comments and then line breaks: set to 2
+(see :numref:`lst:env-mlb3` and :numref:`lst:env-mlb4`). .. index:: poly-switches;adding comments and then line breaks: set to 2
 
 .. literalinclude:: demonstrations/env-mlb3.yaml
  	:class: .mlbyaml
@@ -1693,9 +1306,7 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numr
 trailing horizontal space has been stripped before doing so.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2` so that they are :math:`3` and save them into ``env-mlb5.yaml`` and ``env-mlb6.yaml`` respectively
-(see :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6`).
-
-.. index:: poly-switches;adding blank lines: set to 3
+(see :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6`). .. index:: poly-switches;adding blank lines: set to 3
 
 .. literalinclude:: demonstrations/env-mlb5.yaml
  	:class: .mlbyaml
@@ -1722,9 +1333,7 @@ Upon running commands analogous to the above, we obtain :numref:`lst:env-mlb-mod
 Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been added after adding the line break.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6` so that they are :math:`4` and save them into ``env-beg4.yaml`` and ``env-body4.yaml`` respectively
-(see :numref:`lst:env-beg4` and :numref:`lst:env-body4`).
-
-.. index:: poly-switches;adding blank lines (again"!): set to 4
+(see :numref:`lst:env-beg4` and :numref:`lst:env-body4`). .. index:: poly-switches;adding blank lines (again"!): set to 4
 
 .. literalinclude:: demonstrations/env-beg4.yaml
  	:class: .mlbyaml
@@ -1743,9 +1352,7 @@ We will demonstrate this poly-switch value using the code in :numref:`lst:env-ml
  	:caption: ``env-mlb1.tex`` 
  	:name: lst:env-mlb1-text
 
-Upon running the commands
-
-.. index:: switches;-l demonstration
+Upon running the commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1791,9 +1398,7 @@ Let’s explore ``EndStartsOnOwnLine`` and ``EndFinishesWithLineBreak`` in :numr
  	:caption: ``env-mlb8.yaml`` 
  	:name: lst:env-mlb8
 
-After running the following commands,
-
-.. index:: switches;-l demonstration
+After running the following commands, .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1823,9 +1428,7 @@ There are a couple of points to note:
 -  in :numref:`lst:env-mlb-mod8` a line break has been added at the point denoted by ♣ in :numref:`lst:env-mlb1-tex`.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` so that they are :math:`2` and save them into ``env-mlb9.yaml`` and ``env-mlb10.yaml`` respectively
-(see :numref:`lst:env-mlb9` and :numref:`lst:env-mlb10`).
-
-.. index:: poly-switches;adding comments and then line breaks: set to 2
+(see :numref:`lst:env-mlb9` and :numref:`lst:env-mlb10`). .. index:: poly-switches;adding comments and then line breaks: set to 2
 
 .. literalinclude:: demonstrations/env-mlb9.yaml
  	:class: .mlbyaml
@@ -1853,9 +1456,7 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numr
 trailing horizontal space has been stripped before doing so.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` so that they are :math:`3` and save them into ``env-mlb11.yaml`` and ``env-mlb12.yaml`` respectively
-(see :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12`).
-
-.. index:: poly-switches;adding blank lines: set to 3
+(see :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12`). .. index:: poly-switches;adding blank lines: set to 3
 
 .. literalinclude:: demonstrations/env-mlb11.yaml
  	:class: .mlbyaml
@@ -1882,9 +1483,7 @@ Upon running commands analogous to the above, we obtain :numref:`lst:env-mlb-mod
 Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numref:`lst:env-mlb-mod8`, and that a *blank line* has been added after the line break.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12` so that they are :math:`4` and save them into ``env-end4.yaml`` and ``env-end-f4.yaml``
-respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`).
-
-.. index:: poly-switches;adding blank lines (again"!): set to 4
+respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`). .. index:: poly-switches;adding blank lines (again"!): set to 4
 
 .. literalinclude:: demonstrations/env-end4.yaml
  	:class: .mlbyaml
@@ -1898,9 +1497,7 @@ respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`).
 
 We will demonstrate this poly-switch value using the code from :numref:`lst:env-mlb1-text`.
 
-Upon running the commands
-
-.. index:: switches;-l demonstration
+Upon running the commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1969,9 +1566,8 @@ Removing line breaks (poly-switches set to :math:`-1`)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Setting poly-switches to :math:`-1` tells ``latexindent.pl`` to remove line breaks of the *<part of the thing>*, if necessary. We will consider the example code given in :numref:`lst:mlb4`, noting
-in particular the positions of the line break highlighters, ♠, ♥, ◆ and ♣, together with the associated YAML files in :numref:`lst:env-mlb13` – :numref:`lst:env-mlb16`.
-
-.. index:: poly-switches;removing line breaks: set to -1
+in particular the positions of the line break highlighters, ♠, ♥, ◆ and ♣, together with the associated YAML files in :numref:`lst:env-mlb13` – :numref:`lst:env-mlb16`. .. index::
+poly-switches;removing line breaks: set to -1
 
 .. code-block:: latex
    :caption: ``env-mlb4.tex`` 
@@ -2005,9 +1601,7 @@ After
  	:caption: ``env-mlb16.yaml`` 
  	:name: lst:env-mlb16
 
-running the commands
-
-.. index:: switches;-l demonstration
+running the commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2089,9 +1683,7 @@ The
  	:caption: ``removeTWS-before.yaml`` 
  	:name: lst:removeTWS-before
 
-output from the following commands
-
-.. index:: switches;-l demonstration
+output from the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2145,9 +1737,7 @@ Upon
  	:caption: ``UnpreserveBlankLines.yaml`` 
  	:name: lst:UnpreserveBlankLines
 
-running the following commands
-
-.. index:: switches;-l demonstration
+running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2179,9 +1769,7 @@ We can explore this further using the blank-line poly-switch value of :math:`3`;
  	:caption: ``env-mlb7.tex`` 
  	:name: lst:env-mlb7-tex
 
-Upon running the following commands
-
-.. index:: switches;-l demonstration
+Upon running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2251,9 +1839,7 @@ Double back slash starts on own line
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We explore ``DBSStartsOnOwnLine`` (★ in :numref:`lst:dbs-demo`); starting with the code in :numref:`lst:dbs-demo`, together with the YAML files given in :numref:`lst:DBS1` and
-:numref:`lst:DBS2` and running the following commands
-
-.. index:: switches;-l demonstration
+:numref:`lst:DBS2` and running the following commands .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2297,9 +1883,7 @@ Double back slash finishes with line break
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let’s now explore ``DBSFinishesWithLineBreak`` (□ in :numref:`lst:dbs-demo`); starting with the code in :numref:`lst:dbs-demo`, together with the YAML files given in :numref:`lst:DBS3` and
-:numref:`lst:DBS4` and running the following commands
-
-.. index:: poly-switches;for double back slash (delimiters)
+:numref:`lst:DBS4` and running the following commands .. index:: poly-switches;for double back slash (delimiters)
 
 .. index:: switches;-l demonstration
 
@@ -2345,9 +1929,8 @@ We note that
 Double back slash poly-switches for specialBeginEnd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Let’s explore the double back slash poly-switches for code blocks within ``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we begin with the code within :numref:`lst:special4`.
-
-.. index:: specialBeginEnd;double backslash poly-switch demonstration
+Let’s explore the double back slash poly-switches for code blocks within ``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we begin with the code within :numref:`lst:special4`. ..
+index:: specialBeginEnd;double backslash poly-switch demonstration
 
 .. index:: poly-switches;double backslash
 
@@ -2375,9 +1958,7 @@ Upon using the YAML settings in :numref:`lst:DBS5`, and running the command
 
    latexindent.pl -m special4.tex -l DBS5.yaml
 
-then we receive the output given in :numref:`lst:special4-DBS5`.
-
-.. index:: delimiters;with specialBeginEnd and the -m switch
+then we receive the output given in :numref:`lst:special4-DBS5`. .. index:: delimiters;with specialBeginEnd and the -m switch
 
 .. literalinclude:: demonstrations/special4-mod5.tex
  	:class: .tex
@@ -2400,9 +1981,8 @@ There are a few things to note:
 Double back slash poly-switches for optional and mandatory arguments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For clarity, we provide a demonstration of controlling the double back slash poly-switches for optional and mandatory arguments. We begin with the code in :numref:`lst:mycommand2`.
-
-.. index:: poly-switches;for double back slash (delimiters)
+For clarity, we provide a demonstration of controlling the double back slash poly-switches for optional and mandatory arguments. We begin with the code in :numref:`lst:mycommand2`. .. index::
+poly-switches;for double back slash (delimiters)
 
 .. literalinclude:: demonstrations/mycommand2.tex
  	:class: .tex
@@ -2446,9 +2026,8 @@ then we receive the output given in :numref:`lst:mycommand2-DBS6` and :numref:`l
 Double back slash optional square brackets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The pattern matching for the double back slash will also, optionally, allow trailing square brackets that contain a measurement of vertical spacing, for example ``\\[3pt]``.
-
-.. index:: poly-switches;for double back slash (delimiters)
+The pattern matching for the double back slash will also, optionally, allow trailing square brackets that contain a measurement of vertical spacing, for example ``\\[3pt]``. .. index::
+poly-switches;for double back slash (delimiters)
 
 For example, beginning with the code in :numref:`lst:pmatrix3`
 
@@ -2457,9 +2036,7 @@ For example, beginning with the code in :numref:`lst:pmatrix3`
  	:caption: ``pmatrix3.tex`` 
  	:name: lst:pmatrix3
 
-and running the following command, using :numref:`lst:DBS3`,
-
-.. index:: switches;-l demonstration
+and running the following command, using :numref:`lst:DBS3`, .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2560,9 +2137,8 @@ Partnering BodyStartsOnOwnLine with argument-based poly-switches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some poly-switches need to be partnered together; in particular, when line breaks involving the *first* argument of a code block need to be accounted for using both ``BodyStartsOnOwnLine`` (or its
-equivalent, see :numref:`tab:poly-switch-mapping`) and ``LCuBStartsOnOwnLine`` for mandatory arguments, and ``LSqBStartsOnOwnLine`` for optional arguments.
-
-.. index:: poly-switches;conflicting partnering
+equivalent, see :numref:`tab:poly-switch-mapping`) and ``LCuBStartsOnOwnLine`` for mandatory arguments, and ``LSqBStartsOnOwnLine`` for optional arguments. .. index:: poly-switches;conflicting
+partnering
 
 Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in :numref:`lst:mycom-mlb1`; with reference to :numref:`tab:poly-switch-mapping`, the key
 ``CommandNameFinishesWithLineBreak`` is an alias for ``BodyStartsOnOwnLine``.
@@ -2572,9 +2148,7 @@ Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in
  	:caption: ``mycommand1.tex`` 
  	:name: lst:mycommand1
 
-Upon running the command
-
-.. index:: switches;-l demonstration
+Upon running the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2623,9 +2197,8 @@ Now let’s change the YAML file so that it is as in :numref:`lst:mycom-mlb3`; u
 Conflicting poly-switches: sequential code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is very easy to have conflicting poly-switches; if we use the example from :numref:`lst:mycommand1`, and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running
-
-.. index:: poly-switches;conflicting switches
+It is very easy to have conflicting poly-switches; if we use the example from :numref:`lst:mycommand1`, and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running ..
+index:: poly-switches;conflicting switches
 
 .. index:: switches;-l demonstration
 
@@ -2657,9 +2230,7 @@ Studying :numref:`lst:mycom-mlb4`, we see that the two poly-switches are at oppo
 So, which should win the conflict? As demonstrated in :numref:`lst:mycommand1-mlb4`, it is clear that ``LCuBStartsOnOwnLine`` won this conflict, and the reason is that *the second argument was
 processed after the first* – in general, the most recently-processed code block and associated poly-switch takes priority.
 
-We can explore this further by considering the YAML settings in :numref:`lst:mycom-mlb5`; upon running the command
-
-.. index:: switches;-l demonstration
+We can explore this further by considering the YAML settings in :numref:`lst:mycom-mlb5`; upon running the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2712,9 +2283,7 @@ Now let’s consider an example when nested code blocks have conflicting poly-sw
  	:caption: ``nested-env.tex`` 
  	:name: lst:nested-env
 
-Let’s use the YAML settings given in :numref:`lst:nested-env-mlb1-yaml`, which upon running the command
-
-.. index:: switches;-l demonstration
+Let’s use the YAML settings given in :numref:`lst:nested-env-mlb1-yaml`, which upon running the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2774,9 +2343,7 @@ The indentation is done in Phase 2; in Phase 3 *there is no option to add a line
 will be found and processed first, followed by the ``two`` environment. If the ``two`` environment were to add a line break after the ``\end{two}`` statement, then ``latexindent.pl`` would have no way
 of knowing how much indentation to add to the subsequent text (in this case, ``\end{one}``).
 
-We can explore this further using the poly-switches in :numref:`lst:nested-env-mlb2`; upon running the command
-
-.. index:: switches;-l demonstration
+We can explore this further using the poly-switches in :numref:`lst:nested-env-mlb2`; upon running the command .. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2816,19 +2383,9 @@ The indentation is done in Phase 2, and then in Phase 3, the ``one`` environment
       mlep. 2017. “One Sentence Per Line.” August 16, 2017. https://github.com/cmhughes/latexindent.pl/issues/81.
 
    .. container::
-      :name: ref-jowens
-
-      Owens, John. 2017. “Paragraph Line Break Routine Removal.” May 27, 2017. https://github.com/cmhughes/latexindent.pl/issues/33.
-
-   .. container::
       :name: ref-textwrap
 
       “Text::Wrap Perl Module.” n.d. Accessed May 1, 2017. http://perldoc.perl.org/Text/Wrap.html.
-
-   .. container::
-      :name: ref-zoehneto
-
-      (zoehneto), Tom Zöhner. 2018. “Improving Text Wrap.” February 4, 2018. https://github.com/cmhughes/latexindent.pl/issues/103.
 
 .. [1]
    LSqB stands for Left Square Bracket

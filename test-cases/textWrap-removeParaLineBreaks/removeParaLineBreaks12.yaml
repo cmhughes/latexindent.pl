@@ -1,4 +1,0 @@
-modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 0
-        mainDocument: 1

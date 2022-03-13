@@ -1,9 +1,10 @@
 modifyLineBreaks:
     textWrapOptions:
         columns: 80
-        perCodeBlockBasis: 1
-        beforeFindingChildCodeBlocks: 1
-        mainDocument: 1
-    removeParagraphLineBreaks:
-        mainDocument: 1
-        beforeTextWrap: 1
+        blocksFollow:
+            other: |-
+              (?x)\\\]
+    specialBeginEnd:
+      displayMath:
+        SpecialBeginStartsOnOwnLine: 1
+        SpecialEndFinishesWithLineBreak: 1

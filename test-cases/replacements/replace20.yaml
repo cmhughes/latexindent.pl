@@ -6,9 +6,14 @@ modifyLineBreaks:
         DBSFinishesWithLineBreak: 1
     items:
         ItemStartsOnOwnLine: 1
-    removeParagraphLineBreaks:
-        environments: 
-            equation: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x) \\begin\{equation\}
+        blocksBeginWith:
+           other: |-
+             (?x) \\ell
 
 replacements:
   -

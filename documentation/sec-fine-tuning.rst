@@ -8,9 +8,7 @@ Fine tuning
 ``latexindent.pl`` operates by looking for the code blocks detailed in :numref:`tab:code-blocks`. The fine tuning of the details of such code blocks is controlled by the ``fineTuning`` field,
 detailed in :numref:`lst:fineTuning`.
 
-This field is for those that would like to peek under the bonnet/hood and make some fine tuning to ``latexindent.pl``\ ’s operating.
-
-.. index:: warning;fine tuning
+This field is for those that would like to peek under the bonnet/hood and make some fine tuning to ``latexindent.pl``\ ’s operating. .. index:: warning;fine tuning
 
 .. index:: regular expressions;fine tuning
 
@@ -47,9 +45,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 630-655
+ 	:lines: 614-639
  	:linenos:
- 	:lineno-start: 630
+ 	:lineno-start: 614
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.)
 for a detailed covering of the topic.
@@ -143,9 +141,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:finetuning1-default
 	
 	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
-	:numref:`lst:fine-tuning1` and running the command
-	
-	.. index:: switches;-l demonstration
+	:numref:`lst:fine-tuning1` and running the command .. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -191,9 +187,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:finetuning2-default
 	
 	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
-	:numref:`lst:fine-tuning2` and running the command
-	
-	.. index:: switches;-l demonstration
+	:numref:`lst:fine-tuning2` and running the command .. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -298,7 +292,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	   latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 	
-	then we receive the same output given in :numref:`lst:finetuning4-mod2`; see also ``paragraphsStopAt`` in :numref:`lst:paragraphsStopAt`.
+	then we receive the same output given in :numref:`lst:finetuning4-mod2`.
 	
 	.. literalinclude:: demonstrations/href3.yaml
 	 	:class: .mlbyaml
@@ -306,18 +300,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:href3
 	
 	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can be interpreted as: the fewest number of zero or more characters that are not right braces. This is an
-	example of character class.
-	
-	.. index:: regular expressions;character class demonstration
+	example of character class. .. index:: regular expressions;character class demonstration
 	
 	
 	 
 
 .. proof:example::	
 	
-	We can use the ``fineTuning`` field to assist in the formatting of bibliography files.
-	
-	.. index:: bibliography files
+	We can use the ``fineTuning`` field to assist in the formatting of bibliography files. .. index:: bibliography files
 	
 	.. index:: regular expressions;delimiterRegEx
 	
@@ -333,7 +323,6 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib1.tex -o=+-mod1 
-	      
 	
 	gives the output in :numref:`lst:bib1-mod1`.
 	
@@ -353,7 +342,6 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
-	        
 	
 	gives the output in :numref:`lst:bib1-mod2`.
 	
@@ -389,7 +377,6 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
-	      
 	
 	gives the output in :numref:`lst:bib2-mod1`.
 	
@@ -418,7 +405,6 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	   :class: .commandshell
 	
 	   latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
-	            
 	
 	we receive the *desired* output in :numref:`lst:bib2-mod2`.
 	
@@ -431,20 +417,10 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	``v`` or ``spfreload``.
 	 
 
-.. raw:: html
+.. container:: references
+   :name: refs
 
-   <div id="refs" class="references">
+   .. container::
+      :name: ref-masteringregexp
 
-.. raw:: html
-
-   <div id="ref-masteringregexp">
-
-Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
-
-.. raw:: html
-
-   </div>
-
-.. raw:: html
-
-   </div>
+      Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
