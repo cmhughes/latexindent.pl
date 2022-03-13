@@ -83,7 +83,11 @@ sub unprotect_blank_lines{
     ${$self}{body} =~ s/^\h*\R//mg;
 
     $logger->trace("Unprotecting blank lines (see preserveBlankLines)") if $is_t_switch_active;
-    my $blankLineToken = join("(?:\\h|\\R)*",split(//,$tokens{blanklines}));
+    my $blankLineToken = $tokens{blanklines};
+
+    if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
+        $blankLineToken = join("(?:\\h|\\R)*",split(//,$tokens{blanklines}));
+    }
 
     # loop through the body, looking for the blank line token
     while(${$self}{body} =~ m/$blankLineToken/s){

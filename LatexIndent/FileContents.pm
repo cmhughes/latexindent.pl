@@ -93,7 +93,7 @@ sub find_file_contents_environments_and_preamble{
           # text wrapping can make the ID split across lines
           ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
 
-          if($is_m_switch_active){
+          if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
               my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$fileContentsBlock}{id}));
               ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;  
           }
@@ -157,7 +157,7 @@ sub find_file_contents_environments_and_preamble{
         # text wrapping can make the ID split across lines
         ${$preamble}{idRegExp} = ${$preamble}{id};
 
-        if($is_m_switch_active){
+        if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
             my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$preamble}{id}));
             ${$preamble}{idRegExp} = qr/$IDwithLineBreaks/s;  
         }

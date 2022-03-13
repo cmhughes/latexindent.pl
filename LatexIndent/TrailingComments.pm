@@ -99,7 +99,9 @@ sub put_trailing_comments_back_in{
 
       # the -m switch can modify max characters per line, and trailing comment IDs can 
       # be split across lines
-      if($is_m_switch_active and ${$self}{body} !~ m/%$trailingcommentID/m){
+      if($is_m_switch_active 
+          and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"
+          and ${$self}{body} !~ m/%$trailingcommentID/m){
             $logger->trace("$trailingcommentID not found in body using /m matching, assuming it has been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
             my $trailingcommentIDwithLineBreaks;
             

@@ -105,12 +105,8 @@ sub text_wrap{
                                     /sx;
     }
 
-    if(${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{blocksFollow}}{blankLine}){
-        $blocksFollow = ($blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/sx );
-    } else {
-        $blocksFollow = ($blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h*\R?)/sx );
-    }
-
+    # followed by 0 or more h-space and line breaks
+    $blocksFollow = ($blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/sx );
 
     $logger->trace("textWrap blocks follow regexp:") if $is_tt_switch_active;
     $logger->trace($blocksFollow) if $is_tt_switch_active;
