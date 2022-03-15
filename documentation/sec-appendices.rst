@@ -268,6 +268,110 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 To *remove* the directory from your ``%path%``, run ``remove-from-path.bat`` as administrator.
 
+batches of files
+----------------
+
+You can call instruct ``latexindent.pl`` to operate on multiple files. For example, the following calls are all valid
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile1.tex          
+   latexindent.pl myfile1.tex myfile2.tex
+   latexindent.pl myfile*.tex
+
+We note the following features of the script in relation to the switches detailed in :numref:`sec:how:to:use`.
+
+location of indent.log
+~~~~~~~~~~~~~~~~~~~~~~
+
+If ``-c`` switch is *not* active, then ``indent.log`` goes to the directory of the final file called.
+
+If ``-c`` switch *is* active, then ``indent.log`` goes to the specified directory.
+
+interaction with -w switch
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If ``-w`` switch is active, as in
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -w myfile*.tex
+
+then files will be overwritten individually. Back-up files can be re-directed via ``-c`` switch.
+
+interaction with -o switch
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If ``latexindent.pl`` is called using the ``-o`` switch as in
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile*.tex -o=my-output-file.tex 
+
+and there are multiple files to operate upon, then the ``-o`` switch is ignored because there is only *one* output file specified.
+
+More generally, if the ``-o`` switch does *not* have a ``+`` symbol at the beginning, then the ``-o`` switch will be ignored, and is turned it off.
+
+For example
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile*.tex -o=+myfile
+
+will work fine because *each* ``.tex`` file will output to ``<basename>myfile.tex``
+
+Similarly,
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile*.tex -o=++
+
+will work because the ‘existence check/incrementation’ routine will be applied.
+
+interaction with lines switch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This takes behaves naturally by attempting to operate on the line numbers specified for each file. See the examples in :numref:`sec:line-switch`.
+
+interaction with check switches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The exit codes for ``latexindent.pl`` are given in :numref:`tab:exit-codes`.
+
+When operating on multiple files with the check switch active, as in
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile*.tex --check
+
+then
+
+-  exit code 0 means that the text from *none* of the files has been changed;
+
+-  exit code 1 means that the text from *at least one* of the files been file changed.
+
+The interaction with checkv switch is as in the check switch, but with verbose output.
+
+when a file does not exist
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+What happens if one of the files can not be operated upon?
+
+-  if at least one of the files does not exist and ``latexindent.pl`` has been called to act upon multiple files, then the exit code is 3; note that ``latexindent.pl`` will try to operate on each file
+   that it is called upon, and will not exit with a fatal message in this case;
+
+-  if at least one of the files can not be read and ``latexindent.pl`` has been called to act upon multiple files, then the exit code is 4; note that ``latexindent.pl`` will try to operate on each
+   file that it is called upon, and will not exit with a fatal message in this case;
+
+-  if ``latexindent.pl`` has been told to operate on multiple files, and some do not exist and some cannot be read, then the exit code will be either 3 or 4, depending upon which it scenario it
+   encountered most recently.
+
 latexindent-yaml-schema.json
 ----------------------------
 

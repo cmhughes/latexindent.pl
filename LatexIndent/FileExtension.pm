@@ -65,22 +65,34 @@ sub file_extension_check{
                 }
             }
             unless($fileFound){
-              $logger->fatal("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
-              foreach (@fileExtensions ){
-                $logger->fatal("I searched for $fileName$_");
+              if (defined ${$self}{multipleFiles}){
+                $logger->warn("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
+                $logger->warn("moving on, no indendation done for ${$self}{fileName}."); 
+                return 3;
+              } else {
+                $logger->fatal("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
+                foreach (@fileExtensions ){
+                  $logger->fatal("I searched for $fileName$_");
+                }
+                $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
+                $logger->fatal("*Exiting, no indendation done."); 
+                $self->output_logfile();
+                exit(3);
               }
-              $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
-              $logger->fatal("*Exiting, no indendation done."); 
-              $self->output_logfile();
-              exit(3);
             }
           } else {
             # if the file has a recognised extension, check that the file exists
             unless( -e $fileName ){
-              $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
-              $logger->fatal("Exiting, no indendation done."); 
-              $self->output_logfile();
-              exit(3);
+              if (defined ${$self}{multipleFiles}){
+                $logger->warn("*I couldn't find $fileName, are you sure it exists?");
+                $logger->warn("moving on, no indendation done for ${$self}{fileName}."); 
+                return 3;
+              } else {
+                $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
+                $logger->fatal("Exiting, no indendation done."); 
+                $self->output_logfile();
+                exit(3);
+              }
             }
           }
      }
@@ -93,15 +105,17 @@ sub file_extension_check{
         
         $logger->info("*-o switch active: output file check");
 
+        ${$self}{outputToFile} = $switches{outputToFile};
+
         if ($fileName eq "-" and $switches{outputToFile} =~ m/^\+/){
             $logger->info("STDIN input mode active, -o switch is removing all + symbols");
-            $switches{outputToFile} =~ s/\+//g;
+            ${$self}{outputToFile} =~ s/\+//g;
         }
         # the -o file name might begin with a + symbol
         if($switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+"){
-            $logger->info("-o switch called with + symbol at the beginning: $switches{outputToFile}");
-            $switches{outputToFile} = ${$self}{baseName}.$1;
-            $logger->info("output file is now: $switches{outputToFile}");
+            $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
+            ${$self}{outputToFile} = ${$self}{baseName}.$1;
+            $logger->info("output file is now: ${$self}{outputToFile}");
         }
 
         my $strippedFileExtension = ${$self}{fileExtension};
@@ -109,20 +123,20 @@ sub file_extension_check{
         $strippedFileExtension = "tex" if ($strippedFileExtension eq "");
 
         # grab the name, directory, and extension of the output file
-        my ($name, $dir, $ext) = fileparse($switches{outputToFile}, $strippedFileExtension);
+        my ($name, $dir, $ext) = fileparse(${$self}{outputToFile}, $strippedFileExtension);
 
         # if there is no extension, then add the extension from the file to be operated upon
         if(!$ext){
             $logger->info("-o switch called with file name without extension: $switches{outputToFile}");
-            $switches{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
-            $logger->info("Updated to $switches{outputToFile} as the file extension of the input file is $strippedFileExtension");
+            ${$self}{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
+            $logger->info("Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
         }
 
         # the -o file name might end with ++ in which case we wish to search for existence, 
         # and then increment accordingly
         $name =~ s/\.$//;
         if($name =~ m/\+\+$/){
-            $logger->info("-o switch called with file name ending with ++: $switches{outputToFile}");
+            $logger->info("-o switch called with file name ending with ++: ${$self}{outputToFile}");
             $name =~ s/\+\+$//;
             $name = ${$self}{baseName} if ($name eq "");
             my $outputFileCounter = 0;
@@ -134,7 +148,7 @@ sub file_extension_check{
                 $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
             }
             $logger->info("$fileName does not exist, and will be the output file");
-            $switches{outputToFile} = $fileName;
+            ${$self}{outputToFile} = $fileName;
         }
     }
 
@@ -144,10 +158,16 @@ sub file_extension_check{
         my $openFilePossible=1;
         open(MAINFILE, $fileName) or ($openFilePossible=0);
         if($openFilePossible==0){
-            $logger->fatal("*$fileName exists, but could not open it");
-            $logger->fatal("Exiting, no indendation done."); 
-            $self->output_logfile();
-            exit(4);
+            if (defined ${$self}{multipleFiles}){
+              $logger->warn("*$fileName exists, but could not open it");
+              $logger->warn("moving on, no indendation done for $fileName"); 
+              return 4;
+            } else {
+              $logger->fatal("*$fileName exists, but could not open it");
+              $logger->fatal("Exiting, no indendation done."); 
+              $self->output_logfile();
+              exit(4);
+            }
         }
         push(@lines,$_) while(<MAINFILE>);
         close(MAINFILE);
@@ -167,5 +187,7 @@ sub file_extension_check{
     if ($is_check_switch_active){
         ${$self}{originalBody} = ${$self}{body};
     }
+
+    return 0;
 }
 1;

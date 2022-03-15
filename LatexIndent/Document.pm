@@ -17,6 +17,7 @@ package LatexIndent::Document;
 use strict;
 use warnings;
 use Data::Dumper;
+use File::Basename; # to get the filename and directory path
 use utf8;
 use open ':std', ':encoding(UTF-8)';
 
@@ -77,14 +78,68 @@ sub new{
 
 sub latexindent{
     my $self = shift;
+    my @fileNames = @{$_[0]};
+
+    my $check_switch_status_across_files = 0;
+
+    my $file_extension_status_across_files = 0;
+
+    # one-time operations
     $self->store_switches;
-    $self->process_switches;
+    ${$self}{fileName} = $fileNames[0];
+    $self->process_switches(\@fileNames);
     $self->yaml_read_settings;
-    $self->file_extension_check;
-    $self->operate_on_file;
+
+    ${$self}{multipleFiles} = 1 if ( (scalar (@fileNames)) >1 );
+        
+    my $fileCount = 0;
+
+    # per-file operations
+    foreach (@fileNames) {
+      $fileCount++;
+      if ( (scalar (@fileNames)) >1 ){
+        $logger->info("*Filename: $_ (".$fileCount." of ".(scalar (@fileNames)).")") ;
+      }
+      ${$self}{fileName} = $_;
+      ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
+
+      # file existence/extension checks
+      my $file_existence = $self->file_extension_check;
+      if ($file_existence>0){
+         $file_extension_status_across_files=$file_existence;
+         next 
+      }
+
+      # the main operations
+      $self->operate_on_file;
+
+      # keep track of check status across files
+      $check_switch_status_across_files = 1 if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body});
+    }
+
+    # check switch summary across multiple files
+    if ( $is_check_switch_active and (scalar (@fileNames)) >1 ){
+      if($check_switch_status_across_files){
+        $logger->info("*check switch across multiple files: differences to report from at least one file");
+      } else {
+        $logger->info("*check switch across multiple files: no differences to report");
+      }
+    }
+    
+    # logging of existence check
+    if ($file_extension_status_across_files>2){
+       $logger->warn("*at least one of the files you specified does not exist or could not be read");
+    }
+
+    # output the log file information
+    $self->output_logfile();
+
+    if ($file_extension_status_across_files>2){
+       exit($file_extension_status_across_files);
+    }
 
     # check switch active, and file changed, gives different exit code
-    if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body}){
+    if ($check_switch_status_across_files){
         exit(1);
     }
 }
@@ -158,16 +213,13 @@ sub output_indented_text{
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } elsif($switches{outputToFile}) {
-        $logger->info("Outputting to file $switches{outputToFile}");
-        open(OUTPUTFILE,">",$switches{outputToFile});
+        $logger->info("Outputting to file ${$self}{outputToFile}");
+        open(OUTPUTFILE,">",${$self}{outputToFile});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-
-    # output the log file information
-    $self->output_logfile();
 
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};

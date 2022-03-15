@@ -110,6 +110,7 @@ ENDQUOTE
 
     # if we've made it this far, the processing of switches and logging begins
     my $self = shift;
+    my @fileNames = @{$_[0]};
 
     $logger = LatexIndent::Logger->new();
     
@@ -134,7 +135,16 @@ ENDQUOTE
     $logger->info($time);
 
     if (${$self}{fileName} ne "-"){
-        $logger->info("Filename: ${$self}{fileName}");
+        # multiple filenames or not
+        if ( (scalar (@fileNames)) >1 ){
+           $logger->info("Filenames:");
+           foreach (@fileNames) {
+              $logger->info("   $_");
+           }
+           $logger->info("total number of files: ".(scalar (@fileNames)));
+        } else {
+           $logger->info("Filename: ${$self}{fileName}");
+        }
     } else {
         $logger->info("Reading input from STDIN");
         if (-t STDIN) {
@@ -155,7 +165,7 @@ ENDQUOTE
     $logger->info("-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)") if($switches{ttrace});
     $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)") if($switches{silentMode});
     $logger->info("-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)") if($switches{onlyDefault});
-    $logger->info("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
+    $logger->info("-w|--overwrite: Overwrite mode active, will make a back up before overwriting") if($switches{overwrite});
     $logger->info("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
     $logger->info("-y|--yaml: YAML settings specified via command line") if($switches{yaml});
     $logger->info("-o|--outputfile: output to file") if($switches{outputToFile});
@@ -174,7 +184,26 @@ ENDQUOTE
         $switches{overwrite}=0;
     }
 
-    $logger->info("*Directory for backup files and $logfileName: ${$self}{cruftDirectory}");
+    # multiple files with the -o switch needs care
+    #
+    # example
+    #
+    #       latexindent.pl *.tex -o myfile.tex
+    #
+    # would result in only the final file being written to myfile.tex
+    #
+    # So, if -o switch does *not* match having a + symbol at the beginning, then 
+    # we ignore it, and turn it off
+    #
+    if ( (scalar @fileNames>1) and $switches{outputToFile} and ($switches{outputToFile} !~ m/^h*\+/) ){
+        $logger->warn("*-o switch specified as single file, but multiple files given as input");
+        $logger->warn("ignoring your specification -o $switches{outputToFile}");
+        $logger->warn("perhaps you migh specify it using, for example, -o=++ or -o=+myoutput");
+        $switches{outputToFile} =0;
+    }
+
+    $logger->info("*Directory for backup files and $logfileName:");
+    $logger->info("${$self}{cruftDirectory}");
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {

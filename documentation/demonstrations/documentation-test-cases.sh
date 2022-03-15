@@ -202,8 +202,8 @@ latexindent.pl -s -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex -o
 latexindent.pl -s -m -l textwrap1.yaml tw-bf-myenv1.tex -o=+-mod1
 latexindent.pl -s -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex -o=+-mod2
 
-latexindent.pl -m -l textwrap1.yaml tw-0-9.tex -o=+-mod1
-latexindent.pl -m -l textwrap1.yaml,bb-0-9.yaml tw-0-9.tex -o=+-mod2
+latexindent.pl -s -m -l textwrap1.yaml tw-0-9.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,bb-0-9.yaml tw-0-9.tex -o=+-mod2
 
 latexindent.pl -s -m -l textwrap1.yaml tw-bb-announce1.tex -o=+-mod1
 latexindent.pl -s -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex -o=+-mod2

@@ -249,6 +249,12 @@ cd ../line-switch-test-cases
 ./line-switch-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
+# batch test cases
+cd ../batch-tests
+[[ $silentMode == 1 ]] && echo "./batch-tests.sh"
+./batch-tests.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
+checkgitdiff
+
 # documentation demonstrations
 cd ../../documentation/demonstrations
 [[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"

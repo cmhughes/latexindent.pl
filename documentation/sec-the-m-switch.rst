@@ -202,7 +202,8 @@ Text wrap: ``blocksFollow`` examples
 We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`. .. index:: text wrap;blocksFollow
 
 .. proof:example::	
-	 [label=example:tw:headings] Let’s use the sample text given in :numref:`lst:tw-headings1`. .. index:: text wrap;blocksFollow!headings
+	
+	Let’s use the sample text given in :numref:`lst:tw-headings1`. .. index:: text wrap;blocksFollow!headings
 	
 	.. literalinclude:: demonstrations/tw-headings1.tex
 	 	:class: .tex
@@ -255,7 +256,8 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`. .. in
 	 
 
 .. proof:example::	
-	 [label=example:tw:comments] Let’s use the sample text given in :numref:`lst:tw-comments1`. .. index:: text wrap;blocksFollow!comments
+	
+	Let’s use the sample text given in :numref:`lst:tw-comments1`. .. index:: text wrap;blocksFollow!comments
 	
 	.. literalinclude:: demonstrations/tw-comments1.tex
 	 	:class: .tex

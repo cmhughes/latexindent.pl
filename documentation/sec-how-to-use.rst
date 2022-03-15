@@ -1,3 +1,7 @@
+.. label follows
+
+.. _sec:how:to:use:
+
 How to use the script
 =====================
 

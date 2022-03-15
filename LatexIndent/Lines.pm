@@ -30,6 +30,9 @@ sub lines_body_selected_lines {
     # strip all space from lines switch
     $switches{lines} =~ s/\h//sg;
 
+    # convert multiple - into single
+    $switches{lines} =~ s/-+/-/sg;
+
     $logger->info("*-n,--lines switch is active, operating on lines $switches{lines}"); 
     $logger->info("number of lines in file: ".($#lines+1));
     $logger->info("*interpretting $switches{lines}"); 

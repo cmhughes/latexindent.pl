@@ -1,0 +1,34 @@
+% arara: pdflatex: { files: [latexindent]}
+\section{defaultSettings.yaml}\label{sec:defuseloc}
+\subsection{Backup and log file preferences}
+\yamltitle{logFilePreferences}*{fields}
+	When%
+	\announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either of
+	the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will receive
+	detailed information in \texttt{indent.log}. You can specify character strings to appear
+	before and after the notification of a found code block using, respectively,
+	\texttt{showDecorationStartCodeBlockTrace} and
+	\texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in
+	\vref{app:logfile-demo}.
+
+	Note: \texttt{latexindent.pl} no longer uses the \texttt{log4perl} module to handle the
+	creation of the logfile. \announce{2021-03-14}*{no longer using log4perl}%
+
+	Some of the options \announce{2021-06-19}*{logFilePreferences updated to include Dumper
+		options} for Perl's \texttt{Dumper} module can be specified in
+	\cref{lst:logFilePreferences}; see \cite{dumper} and \cite{dumperdemo} for more
+	information. These options will mostly be helpful for those calling
+	\texttt{latexindent.pl} with the \texttt{-tt} option described in \cref{sec:commandline}.%
+
+\subsection{Indentation and horizontal space}
+\yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
+
+	\begin{minipage}{.4\textwidth}
+		\cmhlistingsfromfile[style=removeTrailingWhitespace]{../defaultSettings.yaml}[before=\centering,yaml-TCB]{removeTrailingWhitespace}{lst:removeTrailingWhitespace}
+	\end{minipage}%
+	\hfill
+	\begin{minipage}{.5\textwidth}
+		\begin{yaml}[numbers=none]{removeTrailingWhitespace (alt)}[before=\centering]{lst:removeTrailingWhitespace-alt}
+removeTrailingWhitespace: 1
+\end{yaml}
+	\end{minipage}%
