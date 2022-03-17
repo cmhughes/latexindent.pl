@@ -74,6 +74,13 @@ latexindent.pl myfile.tex
 	\texttt{myfile.tex} will not be changed by \texttt{latexindent.pl} in any way using this
 	command.
 
+	You can \announce{new}{batches of files demonstration} instruct \texttt{latexindent.pl}
+	to operate on multiple (batches) of files, for example
+	\begin{commandshell}
+latexindent.pl myfile1.tex myfile2.tex
+\end{commandshell}
+	Full details are given in \vref{sec:batches}.
+
 \flagbox{-w, --overwrite}
 	\index{switches!-w, --overwrite definition and details}
 	\index{backup files!overwrite switch, -w}

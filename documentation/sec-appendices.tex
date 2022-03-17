@@ -208,10 +208,10 @@ echo %path%
 		To \emph{remove} the directory from your \lstinline!%path%!, run
 		\texttt{remove-from-path.bat} as administrator.
 
-	\section{batches of files}
+	\section{Batches of files}\label{sec:batches}
 
-	 You can call \announce{new}{batches of files} instruct \texttt{latexindent.pl} to operate
-	 on multiple files. For example, the following calls are all valid
+	 You can \announce{new}{batches of files details} instruct \texttt{latexindent.pl} to
+	 operate on multiple files. For example, the following calls are all valid
 	 \begin{commandshell}
 latexindent.pl myfile1.tex          
 latexindent.pl myfile1.tex myfile2.tex
@@ -222,17 +222,17 @@ latexindent.pl myfile*.tex
 	 \cref{sec:how:to:use}.
 
 	\subsection{location of indent.log}
-		If \texttt{-c} switch is \emph{not} active, then \texttt{indent.log} goes to the directory of the final file called.
+		If the \texttt{-c} switch is \emph{not} active, then \texttt{indent.log} goes to the directory of the final file called.
 
-		If \texttt{-c} switch \emph{is} active, then \texttt{indent.log} goes to the specified
-		directory.
+		If the \texttt{-c} switch \emph{is} active, then \texttt{indent.log} goes to the
+		specified directory.
 
 	\subsection{interaction with -w switch}
-		If \texttt{-w} switch is active, as in
+		If the \texttt{-w} switch is active, as in
 		\begin{commandshell}
 latexindent.pl -w myfile*.tex
-        \end{commandshell}
-		then files will be overwritten individually. Back-up files can be re-directed via
+\end{commandshell}
+		then files will be overwritten individually. Back-up files can be re-directed via the
 		\texttt{-c} switch.
 
 	\subsection{interaction with -o switch}
@@ -250,17 +250,17 @@ latexindent.pl myfile*.tex -o=my-output-file.tex
 		\begin{commandshell}
 latexindent.pl myfile*.tex -o=+myfile
 \end{commandshell}
-		will work fine because \emph{each} \texttt{.tex} file will output to
+		\emph{will} work fine because \emph{each} \texttt{.tex} file will output to
 		\texttt{<basename>myfile.tex}
 
 		Similarly,
 		\begin{commandshell}
 latexindent.pl myfile*.tex -o=++
 \end{commandshell}
-		will work because the `existence check/incrementation' routine will be applied.
+		\emph{will} work because the `existence check/incrementation' routine will be applied.
 
 	\subsection{interaction with lines switch}
-		This takes behaves naturally by attempting to operate on the line numbers specified for each file. See
+		This behaves as expected by attempting to operate on the line numbers specified for each file. See
 		the examples in \cref{sec:line-switch}.
 
 	\subsection{interaction with check switches}
@@ -276,23 +276,24 @@ latexindent.pl myfile*.tex --check
 			\item exit code 1 means that the text from \emph{at least one} of the files been file changed.
 		\end{itemize}
 
-		The interaction with checkv switch is as in the check switch, but with verbose output.
+		The interaction with \texttt{checkv} switch is as in the check switch, but with verbose
+		output.
 
 	\subsection{when a file does not exist}
-    What happens if one of the files can not be operated upon? 
-    \begin{itemize}
-      \item if at least one of the files does not exist and \texttt{latexindent.pl} has been called to 
-          act upon multiple files, then the exit code is 3; note that \texttt{latexindent.pl} will 
-          try to operate on each file that it is called upon, and will not exit with a fatal message
-          in this case;
-        \item if at least one of the files can not be read and \texttt{latexindent.pl} has been called to 
-          act upon multiple files, then the exit code is 4; note that \texttt{latexindent.pl} will 
-          try to operate on each file that it is called upon, and will not exit with a fatal message
-          in this case;
-        \item if \texttt{latexindent.pl} has been told to operate on multiple files, and some do not 
-          exist and some cannot be read, then the exit code will be either 3 or 4, depending
-          upon which it scenario it encountered most recently.
-        \end{itemize}
+		What happens if one of the files can not be operated upon?
+		\begin{itemize}
+			\item if at least one of the files does not exist and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 3; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if at least one of the files can not be read and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 4; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if \texttt{latexindent.pl} has been told to operate on multiple files, and some do not
+			      exist and some cannot be read, then the exit code will be either 3 or 4, depending upon
+			      which it scenario it encountered most recently.
+		\end{itemize}
 
 	\section{latexindent-yaml-schema.json}
 

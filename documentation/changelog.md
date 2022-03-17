@@ -285,3 +285,5 @@ help in the TeXLive implementation
  bundled into TeXLive 2013. Some other updates, too, detailed in
  the documentation. 
 
+## first commit, August 28, 2012
+[first commit](https://github.com/cmhughes/latexindent.pl/commit/ac8a07df62b87a4b663a64125c33bca51e48dffa)
