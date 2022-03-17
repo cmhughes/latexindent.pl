@@ -21,7 +21,9 @@ this field will only be considered if the ``-m`` switch has been used*. A snippe
  	:lineno-start: 491
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s
-be clear: .. index:: warning;the m switch
+be clear:
+
+.. index:: warning;the m switch
 
 .. warning::	
 	
@@ -37,7 +39,9 @@ regardless of this setting, multiple blank lines can be condensed if ``condenseM
 .. describe:: condenseMultipleBlankLinesInto:positive integer
 
 Assuming that this switch takes an integer value greater than ``0``, ``latexindent.pl`` will condense multiple blank lines into the number of blank lines illustrated by this switch. As an example,
-:numref:`lst:mlb-bl` shows a sample file with blank lines; upon running .. index:: switches;-m demonstration
+:numref:`lst:mlb-bl` shows a sample file with blank lines; upon running
+
+.. index:: switches;-m demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -111,7 +115,9 @@ Text wrap: simple examples
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:textwrap1`. .. index:: text wrap;quick start
+	Let’s use the sample text given in :numref:`lst:textwrap1`.
+	
+	.. index:: text wrap;quick start
 	
 	.. literalinclude:: demonstrations/textwrap1.tex
 	 	:class: .tex
@@ -142,8 +148,9 @@ Text wrap: simple examples
 
 .. proof:example::	
 	
-	If we set ``columns`` to :math:`-1` then ``latexindent.pl`` remove line breaks within the text wrap block, and will *not* perform text wrapping. We can use this to undo text wrapping. .. index:: text
-	wrap;setting columns to -1
+	If we set ``columns`` to :math:`-1` then ``latexindent.pl`` remove line breaks within the text wrap block, and will *not* perform text wrapping. We can use this to undo text wrapping.
+	
+	.. index:: text wrap;setting columns to -1
 	
 	Starting from the file in :numref:`lst:textwrap1-mod1` and using the settings in :numref:`lst:textwrap1A-yaml`
 	
@@ -199,11 +206,15 @@ Text wrap: simple examples
 Text wrap: ``blocksFollow`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`. .. index:: text wrap;blocksFollow
+We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
+
+.. index:: text wrap;blocksFollow
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:tw-headings1`. .. index:: text wrap;blocksFollow!headings
+	Let’s use the sample text given in :numref:`lst:tw-headings1`.
+	
+	.. index:: text wrap;blocksFollow!headings
 	
 	.. literalinclude:: demonstrations/tw-headings1.tex
 	 	:class: .tex
@@ -257,7 +268,9 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`. .. in
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:tw-comments1`. .. index:: text wrap;blocksFollow!comments
+	Let’s use the sample text given in :numref:`lst:tw-comments1`.
+	
+	.. index:: text wrap;blocksFollow!comments
 	
 	.. literalinclude:: demonstrations/tw-comments1.tex
 	 	:class: .tex
@@ -310,7 +323,9 @@ followed by a square bracket* or *backslash item followed by horizontal space or
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:tw-disp-math1`. .. index:: text wrap;blocksFollow!other
+	Let’s use the sample text given in :numref:`lst:tw-disp-math1`.
+	
+	.. index:: text wrap;blocksFollow!other
 	
 	.. index:: regular expressions;text wrap!blocksFollow
 	
@@ -362,7 +377,9 @@ the environments that you would like to text wrap individually, as in the next e
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:tw-bf-myenv1`. .. index:: text wrap;blocksFollow!other
+	Let’s use the sample text given in :numref:`lst:tw-bf-myenv1`.
+	
+	.. index:: text wrap;blocksFollow!other
 	
 	.. index:: regular expressions;text wrap!blocksFollow
 	
@@ -410,7 +427,9 @@ the environments that you would like to text wrap individually, as in the next e
 Text wrap: ``blocksBeginWith`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` with a series of examples. .. index:: text wrap;blocksBeginWith
+We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` with a series of examples.
+
+.. index:: text wrap;blocksBeginWith
 
 .. proof:example::	
 	
@@ -507,11 +526,15 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 Text wrap: ``blocksEndBefore`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` with a series of examples. .. index:: text wrap;blocksEndBefore
+We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` with a series of examples.
+
+.. index:: text wrap;blocksEndBefore
 
 .. proof:example::	
 	
-	Let’s use the sample text given in :numref:`lst:tw-be-equation`. .. index:: text wrap;blocksFollow!other
+	Let’s use the sample text given in :numref:`lst:tw-be-equation`.
+	
+	.. index:: text wrap;blocksFollow!other
 	
 	.. index:: regular expressions;text wrap!blocksFollow
 	
@@ -563,8 +586,9 @@ Text wrap: huge, tabstop and separator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The default value of ``huge`` is ``overflow``, which means that words will *not* be broken by the text wrapping routine, implemented by the ``Text::Wrap`` (“Text::Wrap Perl Module” n.d.). There are
-options to change the ``huge`` option for the ``Text::Wrap`` module to either ``wrap`` or ``die``. Before modifying the value of ``huge``, please bear in mind the following warning: .. index::
-warning;changing huge (textwrap)
+options to change the ``huge`` option for the ``Text::Wrap`` module to either ``wrap`` or ``die``. Before modifying the value of ``huge``, please bear in mind the following warning:
+
+.. index:: warning;changing huge (textwrap)
 
 .. warning::	
 	
@@ -573,7 +597,9 @@ warning;changing huge (textwrap)
 	Furthermore, changing ``huge`` means that you may have some words *or commands*\ (!) split across lines in your .tex file, which may affect your output. I do not recommend changing this field.
 	 
 
-For example, using the settings in :numref:`lst:textwrap2A-yaml` and :numref:`lst:textwrap2B-yaml` and running the commands .. index:: switches;-l demonstration
+For example, using the settings in :numref:`lst:textwrap2A-yaml` and :numref:`lst:textwrap2B-yaml` and running the commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -608,7 +634,9 @@ gives the respective output in :numref:`lst:textwrap4-mod2A` and :numref:`lst:te
  	:name: lst:textwrap2B-yaml
 
 You can also specify the ``tabstop`` field as an integer value, which is passed to the text wrap module; see (“Text::Wrap Perl Module” n.d.) for details. Starting with the code in
-:numref:`lst:textwrap-ts` with settings in :numref:`lst:tabstop`, and running the command .. index:: switches;-l demonstration
+:numref:`lst:textwrap-ts` with settings in :numref:`lst:tabstop`, and running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -647,7 +675,9 @@ oneSentencePerLine: modifying line breaks for sentences
 -------------------------------------------------------
 
 You can instruct ``latexindent.pl`` to format your file so that it puts one sentence per line. Thank you to (mlep 2017) for helping to shape and test this feature. The behaviour of this part of the
-script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine`, all of which we discuss next. .. index:: modifying linebreaks; by using one sentence per line
+script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine`, all of which we discuss next.
+
+.. index:: modifying linebreaks; by using one sentence per line
 
 .. index:: sentences;oneSentencePerLine
 
@@ -721,8 +751,9 @@ then we obtain the respective output given in :numref:`lst:multiple-sentences-mo
 Notice, in particular, that the ‘internal’ sentence line breaks in :numref:`lst:multiple-sentences` have been removed in :numref:`lst:multiple-sentences-mod1`, but have not been removed in
 :numref:`lst:multiple-sentences-mod2`.
 
-The remainder of the settings displayed in :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to define a sentence. From the perspective of ``latexindent.pl`` a sentence must: ..
-index:: sentences;follow
+The remainder of the settings displayed in :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to define a sentence. From the perspective of ``latexindent.pl`` a sentence must:
+
+.. index:: sentences;follow
 
 .. index:: sentences;begin with
 
@@ -769,7 +800,9 @@ sentencesFollow
 ~~~~~~~~~~~~~~~
 
 Let’s explore a few of the switches in ``sentencesFollow``; let’s start with :numref:`lst:multiple-sentences`, and use the YAML settings given in :numref:`lst:sentences-follow1-yaml`. Using the
-command .. index:: sentences;follow
+command
+
+.. index:: sentences;follow
 
 .. index:: switches;-l demonstration
 
@@ -801,7 +834,9 @@ We can explore the ``other`` field in :numref:`lst:sentencesFollow` with the ``.
  	:caption: ``multiple-sentences1.tex`` 
  	:name: lst:multiple-sentences1
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -835,14 +870,18 @@ sentencesBeginWith
 ~~~~~~~~~~~~~~~~~~
 
 By default, ``latexindent.pl`` will only assume that sentences begin with the upper case letters ``A-Z``; you can instruct the script to define sentences to begin with lower case letters (see
-:numref:`lst:sentencesBeginWith`), and we can use the ``other`` field to define sentences to begin with other characters. .. index:: sentences;begin with
+:numref:`lst:sentencesBeginWith`), and we can use the ``other`` field to define sentences to begin with other characters.
+
+.. index:: sentences;begin with
 
 .. literalinclude:: demonstrations/multiple-sentences2.tex
  	:class: .tex
  	:caption: ``multiple-sentences2.tex`` 
  	:name: lst:multiple-sentences2
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -879,7 +918,9 @@ sentencesEndWith
 
 Let’s return to :numref:`lst:multiple-sentences`; we have already seen the default way in which ``latexindent.pl`` will operate on the sentences in this file in
 :numref:`lst:multiple-sentences-mod1`. We can populate the ``other`` field with any character that we wish; for example, using the YAML specified in :numref:`lst:sentences-end1-yaml` and the
-command .. index:: sentences;end with
+command
+
+.. index:: sentences;end with
 
 .. index:: switches;-l demonstration
 
@@ -891,7 +932,9 @@ command .. index:: sentences;end with
    latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
    latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
-then we obtain the output in :numref:`lst:multiple-sentences-mod4`. .. index:: regular expressions;lowercase alph a-z
+then we obtain the output in :numref:`lst:multiple-sentences-mod4`.
+
+.. index:: regular expressions;lowercase alph a-z
 
 .. literalinclude:: demonstrations/multiple-sentences-mod4.tex
  	:class: .tex
@@ -926,7 +969,9 @@ Let’s consider the file shown in :numref:`lst:url`.
  	:caption: ``url.tex`` 
  	:name: lst:url
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -981,11 +1026,15 @@ Notice that the full stop within the URL has not been accommodated correctly bec
 Features of the oneSentencePerLine routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The sentence manipulation routine takes place *after* verbatim .. index:: verbatim;in relation to oneSentencePerLine
+The sentence manipulation routine takes place *after* verbatim
+
+.. index:: verbatim;in relation to oneSentencePerLine
 
 environments, preamble and trailing comments have been accounted for; this means that any characters within these types of code blocks will not be part of the sentence manipulation routine.
 
-For example, if we begin with the ``.tex`` file in :numref:`lst:multiple-sentences3`, and run the command .. index:: switches;-l demonstration
+For example, if we begin with the ``.tex`` file in :numref:`lst:multiple-sentences3`, and run the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1007,7 +1056,9 @@ then we obtain the output in :numref:`lst:multiple-sentences3-mod1`.
  	:name: lst:multiple-sentences3-mod1
 
 Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed. For example, if we use the ``.tex`` file in
-:numref:`lst:multiple-sentences4` and run the commands .. index:: switches;-l demonstration
+:numref:`lst:multiple-sentences4` and run the commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1035,7 +1086,9 @@ then we obtain the output in :numref:`lst:multiple-sentences4-mod1` and :numref:
  	:name: lst:multiple-sentences4-mod2
 
 Once you’ve read :numref:`sec:poly-switches`, you will know that you can accommodate the removal of internal sentence line breaks by using the YAML in :numref:`lst:item-rules2-yaml` and the
-command .. index:: switches;-l demonstration
+command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1105,7 +1158,9 @@ The indentation of sentences requires that sentences are stored as code blocks. 
  	:caption: ``multiple-sentences6.tex`` 
  	:name: lst:multiple-sentences6
 
-By default, ``latexindent.pl`` will find the full-stop within the first ``item``, which means that, upon running the following commands .. index:: switches;-l demonstration
+By default, ``latexindent.pl`` will find the full-stop within the first ``item``, which means that, upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1133,7 +1188,9 @@ We note that :numref:`lst:multiple-sentences6-mod1` the ``itemize`` code block h
 (because :numref:`lst:sentence-wrap1-yaml`); each sentence is then searched for code blocks.
 
 We can tweak the settings in :numref:`lst:sentencesEndWith` to ensure that full stops are not followed by ``item`` commands, and that the end of sentences contains ``\end{itemize}`` as in
-:numref:`lst:itemize-yaml` (if you intend to use this, ensure that you remove the line breaks from the ``other`` field). .. index:: regular expressions;lowercase alph a-z
+:numref:`lst:itemize-yaml` (if you intend to use this, ensure that you remove the line breaks from the ``other`` field).
+
+.. index:: regular expressions;lowercase alph a-z
 
 .. index:: regular expressions;uppercase alph A-Z
 
@@ -1144,7 +1201,9 @@ We can tweak the settings in :numref:`lst:sentencesEndWith` to ensure that full 
  	:caption: ``itemize.yaml`` 
  	:name: lst:itemize-yaml
 
-Upon running .. index:: switches;-l demonstration
+Upon running
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1211,7 +1270,9 @@ Poly-switches for environments
 
 We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:environments-mlb`; note that it contains *global* settings (immediately after the ``environments`` field) and that
 *per-name* settings are also allowed – in the case of :numref:`lst:environments-mlb`, settings for ``equation*`` have been specified for demonstration. Note that all poly-switches are *off* (set to
-0) by default. .. index:: poly-switches;default values
+0) by default.
+
+.. index:: poly-switches;default values
 
 .. index:: poly-switches;environment global example
 
@@ -1226,7 +1287,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:lineno-start: 542
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
-:numref:`lst:environments-mlb`. .. index:: poly-switches;visualisation: ♠, ♥, ◆, ♣
+:numref:`lst:environments-mlb`.
+
+.. index:: poly-switches;visualisation: ♠, ♥, ◆, ♣
 
 .. code-block:: latex
    :caption: ``env-mlb1.tex`` 
@@ -1238,7 +1301,9 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let’s explore ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine`` in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2`, and in particular, let’s allow each of them in turn to take a value of
-:math:`1`. .. index:: poly-switches;adding line breaks: set to 1
+:math:`1`.
+
+.. index:: poly-switches;adding line breaks: set to 1
 
 .. literalinclude:: demonstrations/env-mlb1.yaml
  	:class: .mlbyaml
@@ -1250,7 +1315,9 @@ Let’s explore ``BeginStartsOnOwnLine`` and ``BodyStartsOnOwnLine`` in :numref:
  	:caption: ``env-mlb2.yaml`` 
  	:name: lst:env-mlb2
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1280,7 +1347,9 @@ There are a couple of points to note:
    (default) indentation.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2` so that they are :math:`2` and save them into ``env-mlb3.yaml`` and ``env-mlb4.yaml`` respectively
-(see :numref:`lst:env-mlb3` and :numref:`lst:env-mlb4`). .. index:: poly-switches;adding comments and then line breaks: set to 2
+(see :numref:`lst:env-mlb3` and :numref:`lst:env-mlb4`).
+
+.. index:: poly-switches;adding comments and then line breaks: set to 2
 
 .. literalinclude:: demonstrations/env-mlb3.yaml
  	:class: .mlbyaml
@@ -1308,7 +1377,9 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numr
 trailing horizontal space has been stripped before doing so.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb1` and :numref:`lst:env-mlb2` so that they are :math:`3` and save them into ``env-mlb5.yaml`` and ``env-mlb6.yaml`` respectively
-(see :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6`). .. index:: poly-switches;adding blank lines: set to 3
+(see :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6`).
+
+.. index:: poly-switches;adding blank lines: set to 3
 
 .. literalinclude:: demonstrations/env-mlb5.yaml
  	:class: .mlbyaml
@@ -1335,7 +1406,9 @@ Upon running commands analogous to the above, we obtain :numref:`lst:env-mlb-mod
 Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been added after adding the line break.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb5` and :numref:`lst:env-mlb6` so that they are :math:`4` and save them into ``env-beg4.yaml`` and ``env-body4.yaml`` respectively
-(see :numref:`lst:env-beg4` and :numref:`lst:env-body4`). .. index:: poly-switches;adding blank lines (again"!): set to 4
+(see :numref:`lst:env-beg4` and :numref:`lst:env-body4`).
+
+.. index:: poly-switches;adding blank lines (again"!): set to 4
 
 .. literalinclude:: demonstrations/env-beg4.yaml
  	:class: .mlbyaml
@@ -1354,7 +1427,9 @@ We will demonstrate this poly-switch value using the code in :numref:`lst:env-ml
  	:caption: ``env-mlb1.tex`` 
  	:name: lst:env-mlb1-text
 
-Upon running the commands .. index:: switches;-l demonstration
+Upon running the commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1400,7 +1475,9 @@ Let’s explore ``EndStartsOnOwnLine`` and ``EndFinishesWithLineBreak`` in :numr
  	:caption: ``env-mlb8.yaml`` 
  	:name: lst:env-mlb8
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1430,7 +1507,9 @@ There are a couple of points to note:
 -  in :numref:`lst:env-mlb-mod8` a line break has been added at the point denoted by ♣ in :numref:`lst:env-mlb1-tex`.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` so that they are :math:`2` and save them into ``env-mlb9.yaml`` and ``env-mlb10.yaml`` respectively
-(see :numref:`lst:env-mlb9` and :numref:`lst:env-mlb10`). .. index:: poly-switches;adding comments and then line breaks: set to 2
+(see :numref:`lst:env-mlb9` and :numref:`lst:env-mlb10`).
+
+.. index:: poly-switches;adding comments and then line breaks: set to 2
 
 .. literalinclude:: demonstrations/env-mlb9.yaml
  	:class: .mlbyaml
@@ -1458,7 +1537,9 @@ Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numr
 trailing horizontal space has been stripped before doing so.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` so that they are :math:`3` and save them into ``env-mlb11.yaml`` and ``env-mlb12.yaml`` respectively
-(see :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12`). .. index:: poly-switches;adding blank lines: set to 3
+(see :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12`).
+
+.. index:: poly-switches;adding blank lines: set to 3
 
 .. literalinclude:: demonstrations/env-mlb11.yaml
  	:class: .mlbyaml
@@ -1485,7 +1566,9 @@ Upon running commands analogous to the above, we obtain :numref:`lst:env-mlb-mod
 Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numref:`lst:env-mlb-mod8`, and that a *blank line* has been added after the line break.
 
 Let’s now change each of the ``1`` values in :numref:`lst:env-mlb11` and :numref:`lst:env-mlb12` so that they are :math:`4` and save them into ``env-end4.yaml`` and ``env-end-f4.yaml``
-respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`). .. index:: poly-switches;adding blank lines (again"!): set to 4
+respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`).
+
+.. index:: poly-switches;adding blank lines (again"!): set to 4
 
 .. literalinclude:: demonstrations/env-end4.yaml
  	:class: .mlbyaml
@@ -1499,7 +1582,9 @@ respectively (see :numref:`lst:env-end4` and :numref:`lst:env-end-f4`). .. index
 
 We will demonstrate this poly-switch value using the code from :numref:`lst:env-mlb1-text`.
 
-Upon running the commands .. index:: switches;-l demonstration
+Upon running the commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1568,8 +1653,9 @@ Removing line breaks (poly-switches set to :math:`-1`)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Setting poly-switches to :math:`-1` tells ``latexindent.pl`` to remove line breaks of the *<part of the thing>*, if necessary. We will consider the example code given in :numref:`lst:mlb4`, noting
-in particular the positions of the line break highlighters, ♠, ♥, ◆ and ♣, together with the associated YAML files in :numref:`lst:env-mlb13` – :numref:`lst:env-mlb16`. .. index::
-poly-switches;removing line breaks: set to -1
+in particular the positions of the line break highlighters, ♠, ♥, ◆ and ♣, together with the associated YAML files in :numref:`lst:env-mlb13` – :numref:`lst:env-mlb16`.
+
+.. index:: poly-switches;removing line breaks: set to -1
 
 .. code-block:: latex
    :caption: ``env-mlb4.tex`` 
@@ -1603,7 +1689,9 @@ After
  	:caption: ``env-mlb16.yaml`` 
  	:name: lst:env-mlb16
 
-running the commands .. index:: switches;-l demonstration
+running the commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1685,7 +1773,9 @@ The
  	:caption: ``removeTWS-before.yaml`` 
  	:name: lst:removeTWS-before
 
-output from the following commands .. index:: switches;-l demonstration
+output from the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1739,7 +1829,9 @@ Upon
  	:caption: ``UnpreserveBlankLines.yaml`` 
  	:name: lst:UnpreserveBlankLines
 
-running the following commands .. index:: switches;-l demonstration
+running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1771,7 +1863,9 @@ We can explore this further using the blank-line poly-switch value of :math:`3`;
  	:caption: ``env-mlb7.tex`` 
  	:name: lst:env-mlb7-tex
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1841,7 +1935,9 @@ Double back slash starts on own line
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We explore ``DBSStartsOnOwnLine`` (★ in :numref:`lst:dbs-demo`); starting with the code in :numref:`lst:dbs-demo`, together with the YAML files given in :numref:`lst:DBS1` and
-:numref:`lst:DBS2` and running the following commands .. index:: switches;-l demonstration
+:numref:`lst:DBS2` and running the following commands
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -1885,7 +1981,9 @@ Double back slash finishes with line break
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let’s now explore ``DBSFinishesWithLineBreak`` (□ in :numref:`lst:dbs-demo`); starting with the code in :numref:`lst:dbs-demo`, together with the YAML files given in :numref:`lst:DBS3` and
-:numref:`lst:DBS4` and running the following commands .. index:: poly-switches;for double back slash (delimiters)
+:numref:`lst:DBS4` and running the following commands
+
+.. index:: poly-switches;for double back slash (delimiters)
 
 .. index:: switches;-l demonstration
 
@@ -1931,8 +2029,9 @@ We note that
 Double back slash poly-switches for specialBeginEnd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Let’s explore the double back slash poly-switches for code blocks within ``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we begin with the code within :numref:`lst:special4`. ..
-index:: specialBeginEnd;double backslash poly-switch demonstration
+Let’s explore the double back slash poly-switches for code blocks within ``specialBeginEnd`` code blocks (:numref:`lst:specialBeginEnd`); we begin with the code within :numref:`lst:special4`.
+
+.. index:: specialBeginEnd;double backslash poly-switch demonstration
 
 .. index:: poly-switches;double backslash
 
@@ -1960,7 +2059,9 @@ Upon using the YAML settings in :numref:`lst:DBS5`, and running the command
 
    latexindent.pl -m special4.tex -l DBS5.yaml
 
-then we receive the output given in :numref:`lst:special4-DBS5`. .. index:: delimiters;with specialBeginEnd and the -m switch
+then we receive the output given in :numref:`lst:special4-DBS5`.
+
+.. index:: delimiters;with specialBeginEnd and the -m switch
 
 .. literalinclude:: demonstrations/special4-mod5.tex
  	:class: .tex
@@ -1983,8 +2084,9 @@ There are a few things to note:
 Double back slash poly-switches for optional and mandatory arguments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-For clarity, we provide a demonstration of controlling the double back slash poly-switches for optional and mandatory arguments. We begin with the code in :numref:`lst:mycommand2`. .. index::
-poly-switches;for double back slash (delimiters)
+For clarity, we provide a demonstration of controlling the double back slash poly-switches for optional and mandatory arguments. We begin with the code in :numref:`lst:mycommand2`.
+
+.. index:: poly-switches;for double back slash (delimiters)
 
 .. literalinclude:: demonstrations/mycommand2.tex
  	:class: .tex
@@ -2028,8 +2130,9 @@ then we receive the output given in :numref:`lst:mycommand2-DBS6` and :numref:`l
 Double back slash optional square brackets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The pattern matching for the double back slash will also, optionally, allow trailing square brackets that contain a measurement of vertical spacing, for example ``\\[3pt]``. .. index::
-poly-switches;for double back slash (delimiters)
+The pattern matching for the double back slash will also, optionally, allow trailing square brackets that contain a measurement of vertical spacing, for example ``\\[3pt]``.
+
+.. index:: poly-switches;for double back slash (delimiters)
 
 For example, beginning with the code in :numref:`lst:pmatrix3`
 
@@ -2038,7 +2141,9 @@ For example, beginning with the code in :numref:`lst:pmatrix3`
  	:caption: ``pmatrix3.tex`` 
  	:name: lst:pmatrix3
 
-and running the following command, using :numref:`lst:DBS3`, .. index:: switches;-l demonstration
+and running the following command, using :numref:`lst:DBS3`,
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2139,8 +2244,9 @@ Partnering BodyStartsOnOwnLine with argument-based poly-switches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Some poly-switches need to be partnered together; in particular, when line breaks involving the *first* argument of a code block need to be accounted for using both ``BodyStartsOnOwnLine`` (or its
-equivalent, see :numref:`tab:poly-switch-mapping`) and ``LCuBStartsOnOwnLine`` for mandatory arguments, and ``LSqBStartsOnOwnLine`` for optional arguments. .. index:: poly-switches;conflicting
-partnering
+equivalent, see :numref:`tab:poly-switch-mapping`) and ``LCuBStartsOnOwnLine`` for mandatory arguments, and ``LSqBStartsOnOwnLine`` for optional arguments.
+
+.. index:: poly-switches;conflicting partnering
 
 Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in :numref:`lst:mycom-mlb1`; with reference to :numref:`tab:poly-switch-mapping`, the key
 ``CommandNameFinishesWithLineBreak`` is an alias for ``BodyStartsOnOwnLine``.
@@ -2150,7 +2256,9 @@ Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in
  	:caption: ``mycommand1.tex`` 
  	:name: lst:mycommand1
 
-Upon running the command .. index:: switches;-l demonstration
+Upon running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2199,8 +2307,9 @@ Now let’s change the YAML file so that it is as in :numref:`lst:mycom-mlb3`; u
 Conflicting poly-switches: sequential code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is very easy to have conflicting poly-switches; if we use the example from :numref:`lst:mycommand1`, and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running ..
-index:: poly-switches;conflicting switches
+It is very easy to have conflicting poly-switches; if we use the example from :numref:`lst:mycommand1`, and consider the YAML settings given in :numref:`lst:mycom-mlb4`. The output from running
+
+.. index:: poly-switches;conflicting switches
 
 .. index:: switches;-l demonstration
 
@@ -2232,7 +2341,9 @@ Studying :numref:`lst:mycom-mlb4`, we see that the two poly-switches are at oppo
 So, which should win the conflict? As demonstrated in :numref:`lst:mycommand1-mlb4`, it is clear that ``LCuBStartsOnOwnLine`` won this conflict, and the reason is that *the second argument was
 processed after the first* – in general, the most recently-processed code block and associated poly-switch takes priority.
 
-We can explore this further by considering the YAML settings in :numref:`lst:mycom-mlb5`; upon running the command .. index:: switches;-l demonstration
+We can explore this further by considering the YAML settings in :numref:`lst:mycom-mlb5`; upon running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2285,7 +2396,9 @@ Now let’s consider an example when nested code blocks have conflicting poly-sw
  	:caption: ``nested-env.tex`` 
  	:name: lst:nested-env
 
-Let’s use the YAML settings given in :numref:`lst:nested-env-mlb1-yaml`, which upon running the command .. index:: switches;-l demonstration
+Let’s use the YAML settings given in :numref:`lst:nested-env-mlb1-yaml`, which upon running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 
@@ -2345,7 +2458,9 @@ The indentation is done in Phase 2; in Phase 3 *there is no option to add a line
 will be found and processed first, followed by the ``two`` environment. If the ``two`` environment were to add a line break after the ``\end{two}`` statement, then ``latexindent.pl`` would have no way
 of knowing how much indentation to add to the subsequent text (in this case, ``\end{one}``).
 
-We can explore this further using the poly-switches in :numref:`lst:nested-env-mlb2`; upon running the command .. index:: switches;-l demonstration
+We can explore this further using the poly-switches in :numref:`lst:nested-env-mlb2`; upon running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-m demonstration
 

@@ -118,7 +118,9 @@ Verbatim code blocks
 .. describe:: verbatimEnvironments:fields
 
 A field that contains a list of environments that you would like left completely alone – no indentation will be performed on environments that you have specified in this field, see
-:numref:`lst:verbatimEnvironments`. .. index:: verbatim;environments
+:numref:`lst:verbatimEnvironments`.
+
+.. index:: verbatim;environments
 
 .. index:: verbatim;commands
 
@@ -398,8 +400,9 @@ Aligning at delimiters
 .. describe:: lookForAlignDelims:fields
 
 This contains a list of code blocks that are operated upon in a special way by ``latexindent.pl`` (see :numref:`lst:aligndelims:basic`). In fact, the fields in ``lookForAlignDelims`` can actually
-take two different forms: the *basic* version is shown in :numref:`lst:aligndelims:basic` and the *advanced* version in :numref:`lst:aligndelims:advanced`; we will discuss each in turn. .. index::
-delimiters;advanced settings of lookForAlignDelims
+take two different forms: the *basic* version is shown in :numref:`lst:aligndelims:basic` and the *advanced* version in :numref:`lst:aligndelims:advanced`; we will discuss each in turn.
+
+.. index:: delimiters;advanced settings of lookForAlignDelims
 
 .. code-block:: latex
    :caption: ``lookForAlignDelims`` (basic) 
@@ -430,7 +433,9 @@ ignore *specific* instances of the environment, you could wrap them in something
  	:name: lst:tabularafter:basic
 
 If, for example, you wish to remove the alignment of the ``\\`` within a delimiter-aligned block, then the advanced form of ``lookForAlignDelims`` shown in :numref:`lst:aligndelims:advanced` is for
-you. .. index:: regular expressions;delimiterRegEx
+you.
+
+.. index:: regular expressions;delimiterRegEx
 
 .. index:: regular expressions;ampersand alignment
 
@@ -526,7 +531,9 @@ We will explore most of these features using the file ``tabular2.tex`` in :numre
  	:caption: ``tabular8.yaml`` 
  	:name: lst:tabular8YAML
 
-On running the commands .. index:: delimiters;spacing demonstration
+On running the commands
+
+.. index:: delimiters;spacing demonstration
 
 .. index:: switches;-l demonstration
 
@@ -731,7 +738,9 @@ We can demonstrated this feature further using the settings in :numref:`lst:sba7
 lookForAlignDelims: alignFinalDoubleBackSlash
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We explore the ``alignFinalDoubleBackSlash`` feature by using the file in :numref:`lst:tabular4`. Upon running the following commands .. index:: delimiters;double backslash demonstration
+We explore the ``alignFinalDoubleBackSlash`` feature by using the file in :numref:`lst:tabular4`. Upon running the following commands
+
+.. index:: delimiters;double backslash demonstration
 
 .. index:: switches;-y demonstration
 
@@ -827,7 +836,9 @@ The ``lookForAlignDelims`` field can, optionally, receive the ``dontMeasure`` op
  	:name: lst:tabular-DM-default
 
 The ``dontMeasure`` field can be specified as ``largest``, and in which case, the largest element will not be measured; with reference to the YAML file given in :numref:`lst:dontMeasure1`, we can
-run the command .. index:: switches;-l demonstration
+run the command
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -848,14 +859,18 @@ and receive the output given in :numref:`lst:tabular-DM-mod1`.
 
 We note that the *largest* column entries have not contributed to the measuring routine.
 
-The ``dontMeasure`` field can also be specified in the form demonstrated in :numref:`lst:dontMeasure2`. On running the following commands, .. index:: switches;-l demonstration
+The ``dontMeasure`` field can also be specified in the form demonstrated in :numref:`lst:dontMeasure2`. On running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
 
    latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
 
-we receive the output in :numref:`lst:tabular-DM-mod2`. .. index:: regular expressions;dontMeasure feature, cell
+we receive the output in :numref:`lst:tabular-DM-mod2`.
+
+.. index:: regular expressions;dontMeasure feature, cell
 
 .. literalinclude:: demonstrations/tabular-DM-mod2.tex
  	:class: .tex
@@ -879,7 +894,9 @@ The ``dontMeasure`` field can also be specified in the forms demonstrated in :nu
    latexindent.pl tabular-DM.tex -l=dontMeasure3.yaml
    latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
 
-we receive the output given in :numref:`lst:tabular-DM-mod3` .. index:: regular expressions;lowercase alph a-z
+we receive the output given in :numref:`lst:tabular-DM-mod3`
+
+.. index:: regular expressions;lowercase alph a-z
 
 .. literalinclude:: demonstrations/tabular-DM-mod3.tex
  	:class: .tex
@@ -905,7 +922,9 @@ We note that in:
 
 In both cases, the default value of ``applyTo`` is ``cell``, and does not need to be specified.
 
-We may also specify the ``applyTo`` field as ``row``, a demonstration of which is given in :numref:`lst:dontMeasure5`; upon running .. index:: switches;-l demonstration
+We may also specify the ``applyTo`` field as ``row``, a demonstration of which is given in :numref:`lst:dontMeasure5`; upon running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -924,15 +943,18 @@ we receive the output in :numref:`lst:tabular-DM-mod5`.
  	:caption: ``dontMeasure5.yaml`` 
  	:name: lst:dontMeasure5
 
-Finally, the ``applyTo`` field can be specified as ``row``, together with a ``regex`` expression. For example, for the settings given in :numref:`lst:dontMeasure6`, upon running .. index::
-switches;-l demonstration
+Finally, the ``applyTo`` field can be specified as ``row``, together with a ``regex`` expression. For example, for the settings given in :numref:`lst:dontMeasure6`, upon running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
 
    latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 
-we receive the output in :numref:`lst:tabular-DM-mod6`. .. index:: regular expressions;dontMeasure feature, row
+we receive the output in :numref:`lst:tabular-DM-mod6`.
+
+.. index:: regular expressions;dontMeasure feature, row
 
 .. index:: regular expressions;lowercase alph a-z
 
@@ -954,7 +976,9 @@ lookForAlignDelims: the delimiterRegEx and delimiterJustification feature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The delimiter alignment will, by default, align code blocks at the ampersand character. The behaviour is controlled by the ``delimiterRegEx`` field within ``lookForAlignDelims``; the default value is
-``(?<!\\)(&)``\ \*, which can be read as: *an ampersand, as long as it is not immediately preceeded by a backslash*. .. index:: warning;capturing parenthesis for lookForAlignDelims
+``(?<!\\)(&)``\ \*, which can be read as: *an ampersand, as long as it is not immediately preceeded by a backslash*.
+
+.. index:: warning;capturing parenthesis for lookForAlignDelims
 
 .. index:: capturing parenthesis (regex)
 
@@ -990,7 +1014,9 @@ Let’s say that we wish to align the code at either the ``\=`` or ``\>``. We em
 
    latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
 
-to receive the output given in :numref:`lst:tabbing-mod1`. .. index:: regular expressions;delimiter regex at \\= or \\>
+to receive the output given in :numref:`lst:tabbing-mod1`.
+
+.. index:: regular expressions;delimiter regex at \\= or \\>
 
 .. literalinclude:: demonstrations/tabbing-mod1.tex
  	:class: .tex
@@ -1018,7 +1044,9 @@ We can explore ``delimiterRegEx`` a little further using the settings in :numref
 
    latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
 
-to receive the output given in :numref:`lst:tabbing-mod2`. .. index:: regular expressions;delimiter regex at only \\>
+to receive the output given in :numref:`lst:tabbing-mod2`.
+
+.. index:: regular expressions;delimiter regex at only \\>
 
 .. literalinclude:: demonstrations/tabbing-mod2.tex
  	:class: .tex
@@ -1033,7 +1061,9 @@ to receive the output given in :numref:`lst:tabbing-mod2`. .. index:: regular ex
 We note that only the ``\>`` have been aligned.
 
 Of course, the other lookForAlignDelims options can be used alongside the ``delimiterRegEx``; regardless of the type of delimiter being used (ampersand or anything else), the fields from
-:numref:`lst:aligndelims:advanced` remain the same; for example, using the settings in :numref:`lst:delimiterRegEx3`, and running .. index:: switches;-l demonstration
+:numref:`lst:aligndelims:advanced` remain the same; for example, using the settings in :numref:`lst:delimiterRegEx3`, and running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1053,8 +1083,9 @@ to receive the output given in :numref:`lst:tabbing-mod3`.
  	:name: lst:delimiterRegEx3
 
 It is possible that delimiters specified within ``delimiterRegEx`` can be of different lengths. Consider the file in :numref:`lst:tabbing1`, and associated YAML in :numref:`lst:delimiterRegEx4`.
-Note that the :numref:`lst:delimiterRegEx4` specifies the option for the delimiter to be either ``#`` or ``\>``, *which are different lengths*. Upon running the command .. index:: switches;-l
-demonstration
+Note that the :numref:`lst:delimiterRegEx4` specifies the option for the delimiter to be either ``#`` or ``\>``, *which are different lengths*. Upon running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-o demonstration
 
@@ -1063,7 +1094,9 @@ demonstration
 
    latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
 
-we receive the output in :numref:`lst:tabbing1-mod4`. .. index:: regular expressions;delimiter regex at #
+we receive the output in :numref:`lst:tabbing1-mod4`.
+
+.. index:: regular expressions;delimiter regex at #
 
 .. literalinclude:: demonstrations/tabbing1.tex
  	:class: .tex
@@ -1081,7 +1114,9 @@ we receive the output in :numref:`lst:tabbing1-mod4`. .. index:: regular express
  	:name: lst:delimiterRegEx4
 
 You can set the *delimiter* justification as either ``left`` (default) or ``right``, which will only have effect when delimiters in the same column have different lengths. Using the settings in
-:numref:`lst:delimiterRegEx5` and running the command .. index:: switches;-l demonstration
+:numref:`lst:delimiterRegEx5` and running the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-o demonstration
 
@@ -1090,7 +1125,9 @@ You can set the *delimiter* justification as either ``left`` (default) or ``righ
 
    latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 
-gives the output in :numref:`lst:tabbing1-mod5`. .. index:: regular expressions;delimiter regex at # or \\>
+gives the output in :numref:`lst:tabbing1-mod5`.
+
+.. index:: regular expressions;delimiter regex at # or \\>
 
 .. literalinclude:: demonstrations/tabbing1-mod5.tex
  	:class: .tex
@@ -1204,10 +1241,14 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
 
 .. _yaml:specialBeginEnd:
 
-The fields specified .. index:: specialBeginEnd;introduction
+The fields specified
+
+.. index:: specialBeginEnd;introduction
 
 in ``specialBeginEnd`` are, in their default state, focused on math mode begin and end statements, but there is no requirement for this to be the case; :numref:`lst:specialBeginEnd` shows the
-default settings of ``specialBeginEnd``. .. index:: specialBeginEnd;default settings
+default settings of ``specialBeginEnd``.
+
+.. index:: specialBeginEnd;default settings
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
@@ -1257,7 +1298,9 @@ Now consider the YAML files shown in :numref:`lst:specialsLeftRight-yaml` and :n
  	:caption: ``specialBeforeCommand.yaml`` 
  	:name: lst:specialBeforeCommand-yaml
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1295,7 +1338,9 @@ You can,optionally, specify the ``middle`` field for anything that you specify i
  	:caption: ``special2.tex`` 
  	:name: lst:special2
 
-Upon saving the YAML settings in :numref:`lst:middle-yaml` and :numref:`lst:middle1-yaml` and running the commands .. index:: switches;-l demonstration
+Upon saving the YAML settings in :numref:`lst:middle-yaml` and :numref:`lst:middle1-yaml` and running the commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1334,9 +1379,13 @@ We note that:
 -  we have specified multiple settings for the ``middle`` field using the syntax demonstrated in :numref:`lst:middle1-yaml` so that the body of the ``Else`` statement has been indented appropriately
    in :numref:`lst:special2-mod2`.
 
-You may specify fields in ``specialBeginEnd`` to be treated as verbatim code blocks by changing ``lookForThis`` to be ``verbatim``. .. index:: verbatim;specialBeginEnd
+You may specify fields in ``specialBeginEnd`` to be treated as verbatim code blocks by changing ``lookForThis`` to be ``verbatim``.
 
-For example, beginning with the code in :numref:`lst:special3-mod1` and the YAML in :numref:`lst:special-verb1-yaml`, and running .. index:: switches;-l demonstration
+.. index:: verbatim;specialBeginEnd
+
+For example, beginning with the code in :numref:`lst:special3-mod1` and the YAML in :numref:`lst:special-verb1-yaml`, and running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1375,7 +1424,9 @@ Let’s assume that our goal is to align the code at the ``edge`` and ``node`` t
 
    latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
 
-to receive the output in :numref:`lst:special-align-mod1`. .. index:: specialBeginEnd;combined with lookForAlignDelims
+to receive the output in :numref:`lst:special-align-mod1`.
+
+.. index:: specialBeginEnd;combined with lookForAlignDelims
 
 .. index:: specialBeginEnd;delimiterRegEx
 
@@ -1400,7 +1451,9 @@ to receive the output in :numref:`lst:special-align-mod1`. .. index:: specialBeg
  	:name: lst:special-align-mod1
 
 The output in :numref:`lst:special-align-mod1` is not quite ideal. We can tweak the settings within :numref:`lst:edge-node1` in order to improve the output; in particular, we employ the code in
-:numref:`lst:edge-node2` and run the command .. index:: switches;-l demonstration
+:numref:`lst:edge-node2` and run the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-o demonstration
 
@@ -1462,7 +1515,9 @@ For example, assuming that you have the code in :numref:`lst:headings1yaml` save
  	:caption: ``headings1.tex`` 
  	:name: lst:headings1
 
-If you run the command .. index:: switches;-l demonstration
+If you run the command
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1481,7 +1536,9 @@ then you should receive the output given in :numref:`lst:headings1-mod1`.
  	:caption: ``headings1.tex`` second modification 
  	:name: lst:headings1-mod2
 
-Now say that you modify the ``YAML`` from :numref:`lst:headings1yaml` so that the ``paragraph`` ``level`` is ``1``; after running .. index:: switches;-l demonstration
+Now say that you modify the ``YAML`` from :numref:`lst:headings1yaml` so that the ``paragraph`` ``level`` is ``1``; after running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1542,7 +1599,9 @@ In general, when using the ``maximumIndentation`` feature, any leading tabs will
 The code blocks known latexindent.pl
 ------------------------------------
 
-As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; each of these are shown in :numref:`tab:code-blocks`. .. index:: regular expressions;uppercase alph A-Z
+As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; each of these are shown in :numref:`tab:code-blocks`.
+
+.. index:: regular expressions;uppercase alph A-Z
 
 .. index:: regular expressions;lowercase alph a-z
 
@@ -1634,7 +1693,9 @@ If we do not wish ``myenv`` to receive any additional indentation, we have a few
  	:caption: ``myenv-noAdd2.yaml`` 
  	:name: lst:myenv-noAdd2
 
-On applying either of the following commands, .. index:: switches;-l demonstration
+On applying either of the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1650,7 +1711,9 @@ still received indentation.
  	:caption: ``myenv.tex`` output (using either :numref:`lst:myenv-noAdd1` or :numref:`lst:myenv-noAdd2`) 
  	:name: lst:myenv-output
 
-Upon changing the YAML files to those shown in :numref:`lst:myenv-noAdd3` and :numref:`lst:myenv-noAdd4`, and running either .. index:: switches;-l demonstration
+Upon changing the YAML files to those shown in :numref:`lst:myenv-noAdd3` and :numref:`lst:myenv-noAdd4`, and running either
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1682,7 +1745,9 @@ Let’s now allow ``myenv`` to have some optional and mandatory arguments, as in
  	:caption: ``myenv-args.tex`` 
  	:name: lst:myenv-args
 
-Upon running .. index:: switches;-l demonstration
+Upon running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1710,7 +1775,9 @@ We may customise ``noAdditionalIndent`` for optional and mandatory arguments of 
  	:caption: ``myenv-noAdd6.yaml`` 
  	:name: lst:myenv-noAdd6
 
-Upon running .. index:: switches;-l demonstration
+Upon running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1746,7 +1813,9 @@ We may also specify indentation rules for environment code blocks using the ``in
  	:caption: ``myenv-rules2.yaml`` 
  	:name: lst:myenv-rules2
 
-On applying either of the following commands, .. index:: switches;-l demonstration
+On applying either of the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1764,7 +1833,9 @@ we obtain the output given in :numref:`lst:myenv-rules-output`; note in particul
 
 If you specify a field in ``indentRules`` using anything other than horizontal space, it will be ignored.
 
-Returning to the example in :numref:`lst:myenv-args` that contains optional and mandatory arguments. Upon using :numref:`lst:myenv-rules1` as in .. index:: switches;-l demonstration
+Returning to the example in :numref:`lst:myenv-args` that contains optional and mandatory arguments. Upon using :numref:`lst:myenv-rules1` as in
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1790,7 +1861,9 @@ You can specify different indentation rules for the different features using, fo
  	:caption: ``myenv-rules4.yaml`` 
  	:name: lst:myenv-rules4
 
-After running .. index:: switches;-l demonstration
+After running
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1829,7 +1902,9 @@ particular *for the environments* key (see :numref:`lst:noAdditionalIndentGlobal
  	:linenos:
  	:lineno-start: 330
 
-Let’s say that you change the value of ``environments`` to ``1`` in :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run .. index:: switches;-l demonstration
+Let’s say that you change the value of ``environments`` to ``1`` in :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1865,7 +1940,9 @@ In fact, ``noAdditionalIndentGlobal`` also contains keys that control the indent
  	:caption: ``mand-args-no-add-glob.yaml`` 
  	:name: lst:mand-args-no-add-glob
 
-we may run the commands .. index:: switches;-l demonstration
+we may run the commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1898,7 +1975,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
  	:linenos:
  	:lineno-start: 346
 
-If you change the ``environments`` field to anything involving horizontal space, say ``" "``, and then run the following commands .. index:: switches;-l demonstration
+If you change the ``environments`` field to anything involving horizontal space, say ``" "``, and then run the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1933,7 +2012,9 @@ You can specify ``indentRulesGlobal`` for both optional and mandatory arguments,
  	:caption: ``mand-args-indent-rules-glob.yaml`` 
  	:name: lst:mand-args-indent-rules-glob
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -1973,7 +2054,9 @@ may be to change the relevant field in ``itemNames`` to ``0``. Similarly, you ca
  	:caption: ``item-rules1.yaml`` 
  	:name: lst:item-rules1
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2008,7 +2091,9 @@ Alternatively, you might like to populate ``noAdditionalIndentGlobal`` or ``inde
  	:caption: ``items-indentRulesGlobal.yaml`` 
  	:name: lst:items-indentRulesGlobal
 
-Upon running the following commands, .. index:: switches;-l demonstration
+Upon running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2051,7 +2136,9 @@ As in the environment-based case (see :numref:`lst:myenv-noAdd1` and :numref:`ls
  	:caption: ``mycommand-noAdd2.yaml`` 
  	:name: lst:mycommand-noAdd2
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2088,7 +2175,9 @@ We may further customise ``noAdditionalIndent`` for ``mycommand`` as we did in :
  	:caption: ``mycommand-noAdd4.yaml`` 
  	:name: lst:mycommand-noAdd4
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2126,7 +2215,9 @@ Attentive readers will note that the body of ``mycommand`` in both :numref:`lst:
  	:caption: ``mycommand-noAdd6.yaml`` 
  	:name: lst:mycommand-noAdd6
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2178,7 +2269,9 @@ specified. Examples are shown in :numref:`lst:ifnum-noAdd` and :numref:`lst:ifnu
  	:caption: ``ifnum-indent-rules.yaml`` 
  	:name: lst:ifnum-indent-rules
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2211,7 +2304,9 @@ We may specify ``noAdditionalIndentGlobal`` and ``indentRulesGlobal`` as in :num
  	:caption: ``ifelsefi-indent-rules-global.yaml`` 
  	:name: lst:ifelsefi-indent-rules-global
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2267,7 +2362,9 @@ Examples are shown in :numref:`lst:displayMath-noAdd` and :numref:`lst:displayMa
  	:caption: ``displayMath-indent-rules.yaml`` 
  	:name: lst:displayMath-indent-rules
 
-After running the following commands, .. index:: switches;-l demonstration
+After running the following commands,
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2301,7 +2398,9 @@ We may specify ``noAdditionalIndentGlobal`` and ``indentRulesGlobal`` as in :num
  	:caption: ``special-indent-rules-global.yaml`` 
  	:name: lst:special-indent-rules-global
 
-Upon running the following commands .. index:: switches;-l demonstration
+Upon running the following commands
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2359,7 +2458,9 @@ indentation.
  	:caption: ``headings3.yaml`` 
  	:name: lst:headings3yaml
 
-If we specify ``noAdditionalIndent`` as in :numref:`lst:headings4yaml` and run the command .. index:: switches;-l demonstration
+If we specify ``noAdditionalIndent`` as in :numref:`lst:headings4yaml` and run the command
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2733,7 +2834,9 @@ we receive the output given in :numref:`lst:tikz-node1-draw`.
 
 Notice that each line after the ``\draw`` command (its ‘body’) in :numref:`lst:tikz-node1-draw` has been given the appropriate two-spaces worth of indentation specified in :numref:`lst:draw`.
 
-Let’s compare this with the output from using the YAML settings in :numref:`lst:no-strings`, and running the command .. index:: switches;-l demonstration
+Let’s compare this with the output from using the YAML settings in :numref:`lst:no-strings`, and running the command
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2802,7 +2905,9 @@ We may explore this feature further with the code in :numref:`lst:for-each`, who
  	:caption: ``for-each`` default output 
  	:name: lst:for-each-default
 
-Let’s compare this with the output from using the YAML settings in :numref:`lst:foreach`, and running the command .. index:: switches;-l demonstration
+Let’s compare this with the output from using the YAML settings in :numref:`lst:foreach`, and running the command
+
+.. index:: switches;-l demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -2860,8 +2965,9 @@ has not been found.
  	:caption: ``no-ifnextchar.yaml`` 
  	:name: lst:no-ifnextchar
 
-The ``amalgamate`` field can be used for ``commandNameSpecial``, just as for ``stringsAllowedBetweenArguments``. The same condition holds as stated previously, which we state again here: .. index::
-warning;amalgamate field
+The ``amalgamate`` field can be used for ``commandNameSpecial``, just as for ``stringsAllowedBetweenArguments``. The same condition holds as stated previously, which we state again here:
+
+.. index:: warning;amalgamate field
 
 .. warning::	
 	

@@ -8,7 +8,9 @@ Fine tuning
 ``latexindent.pl`` operates by looking for the code blocks detailed in :numref:`tab:code-blocks`. The fine tuning of the details of such code blocks is controlled by the ``fineTuning`` field,
 detailed in :numref:`lst:fineTuning`.
 
-This field is for those that would like to peek under the bonnet/hood and make some fine tuning to ``latexindent.pl``\ ’s operating. .. index:: warning;fine tuning
+This field is for those that would like to peek under the bonnet/hood and make some fine tuning to ``latexindent.pl``\ ’s operating.
+
+.. index:: warning;fine tuning
 
 .. index:: regular expressions;fine tuning
 
@@ -141,7 +143,9 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:finetuning1-default
 	
 	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
-	:numref:`lst:fine-tuning1` and running the command .. index:: switches;-l demonstration
+	:numref:`lst:fine-tuning1` and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -187,7 +191,9 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:finetuning2-default
 	
 	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in
-	:numref:`lst:fine-tuning2` and running the command .. index:: switches;-l demonstration
+	:numref:`lst:fine-tuning2` and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. code-block:: latex
 	   :class: .commandshell
@@ -300,14 +306,18 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:href3
 	
 	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can be interpreted as: the fewest number of zero or more characters that are not right braces. This is an
-	example of character class. .. index:: regular expressions;character class demonstration
+	example of character class.
+	
+	.. index:: regular expressions;character class demonstration
 	
 	
 	 
 
 .. proof:example::	
 	
-	We can use the ``fineTuning`` field to assist in the formatting of bibliography files. .. index:: bibliography files
+	We can use the ``fineTuning`` field to assist in the formatting of bibliography files.
+	
+	.. index:: bibliography files
 	
 	.. index:: regular expressions;delimiterRegEx
 	

@@ -268,10 +268,14 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 To *remove* the directory from your ``%path%``, run ``remove-from-path.bat`` as administrator.
 
-batches of files
+.. label follows
+
+.. _sec:batches:
+
+Batches of files
 ----------------
 
-You can call instruct ``latexindent.pl`` to operate on multiple files. For example, the following calls are all valid
+You can instruct ``latexindent.pl`` to operate on multiple files. For example, the following calls are all valid
 
 .. code-block:: latex
    :class: .commandshell
@@ -285,21 +289,21 @@ We note the following features of the script in relation to the switches detaile
 location of indent.log
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If ``-c`` switch is *not* active, then ``indent.log`` goes to the directory of the final file called.
+If the ``-c`` switch is *not* active, then ``indent.log`` goes to the directory of the final file called.
 
-If ``-c`` switch *is* active, then ``indent.log`` goes to the specified directory.
+If the ``-c`` switch *is* active, then ``indent.log`` goes to the specified directory.
 
 interaction with -w switch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If ``-w`` switch is active, as in
+If the ``-w`` switch is active, as in
 
 .. code-block:: latex
    :class: .commandshell
 
    latexindent.pl -w myfile*.tex
 
-then files will be overwritten individually. Back-up files can be re-directed via ``-c`` switch.
+then files will be overwritten individually. Back-up files can be re-directed via the ``-c`` switch.
 
 interaction with -o switch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -322,7 +326,7 @@ For example
 
    latexindent.pl myfile*.tex -o=+myfile
 
-will work fine because *each* ``.tex`` file will output to ``<basename>myfile.tex``
+*will* work fine because *each* ``.tex`` file will output to ``<basename>myfile.tex``
 
 Similarly,
 
@@ -331,12 +335,12 @@ Similarly,
 
    latexindent.pl myfile*.tex -o=++
 
-will work because the ‘existence check/incrementation’ routine will be applied.
+*will* work because the ‘existence check/incrementation’ routine will be applied.
 
 interaction with lines switch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This takes behaves naturally by attempting to operate on the line numbers specified for each file. See the examples in :numref:`sec:line-switch`.
+This behaves as expected by attempting to operate on the line numbers specified for each file. See the examples in :numref:`sec:line-switch`.
 
 interaction with check switches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -356,7 +360,7 @@ then
 
 -  exit code 1 means that the text from *at least one* of the files been file changed.
 
-The interaction with checkv switch is as in the check switch, but with verbose output.
+The interaction with ``checkv`` switch is as in the check switch, but with verbose output.
 
 when a file does not exist
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -382,7 +386,9 @@ latexindent-yaml-schema.json
 VSCode demonstration
 ~~~~~~~~~~~~~~~~~~~~
 
-To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps: .. index:: VSCode
+To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the following steps:
+
+.. index:: VSCode
 
 .. index:: json;VSCode
 
@@ -493,7 +499,9 @@ I then updated my path via .bashrc so that it includes the line in :numref:`lst:
 pre-commit using CPAN
 ~~~~~~~~~~~~~~~~~~~~~
 
-To use ``latexindent.pl`` with ``pre-commit``, create the file ``.pre-commit-config.yaml`` given in :numref:`lst:.pre-commit-config.yaml-cpan` in your git-repository. .. index:: cpan
+To use ``latexindent.pl`` with ``pre-commit``, create the file ``.pre-commit-config.yaml`` given in :numref:`lst:.pre-commit-config.yaml-cpan` in your git-repository.
+
+.. index:: cpan
 
 .. index:: git
 
@@ -766,7 +774,9 @@ There is a slight difference when specifying indentation after headings; specifi
  	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in
-:numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`. .. index:: specialBeginEnd;update to displaymath V3.0
+:numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
+
+.. index:: specialBeginEnd;update to displaymath V3.0
 
 .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
  	:class: .baseyaml

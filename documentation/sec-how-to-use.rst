@@ -19,7 +19,9 @@ change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 ``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution. If you plan to use ``latexindent.pl`` (i.e, the original Perl
 script) then you will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
 
-MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation. .. index:: MiKTeX
+MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
+
+.. index:: MiKTeX
 
 .. index:: latexindent.exe
 
@@ -77,6 +79,15 @@ As above this will output a welcome message to the terminal, including the versi
 
 This will operate on ``myfile.tex``, but will simply output to your terminal; ``myfile.tex`` will not be changed by ``latexindent.pl`` in any way using this command.
 
+You can instruct ``latexindent.pl`` to operate on multiple (batches) of files, for example
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile1.tex myfile2.tex
+
+Full details are given in :numref:`sec:batches`.
+
 .. describe:: -w, –overwrite
 
 .. index:: switches;-w, –overwrite definition and details
@@ -95,6 +106,25 @@ on this in :numref:`sec:defuseloc`, and in particular see ``backupExtension`` an
 
 Note that if ``latexindent.pl`` can not create the backup, then it will exit without touching your original file; an error message will be given asking you to check the permissions of the backup file.
 
+.. describe:: -wd, –overwriteIfDifferent
+
+.. index:: switches;-wd, –overwriteIfDifferent definition and details
+
+.. index:: backup files;overwriteIfDifferent switch, -wd
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -wd myfile.tex
+   latexindent.pl --overwriteIfDifferent myfile.tex
+   latexindent.pl myfile.tex --overwriteIfDifferent
+
+This *will* overwrite ``myfile.tex`` but only *if the indented text is different from the original*. If the indented text is *not* different from the original, then ``myfile.tex`` will *not* be
+overwritten.
+
+All other details from the ``-w`` switch are relevant here. If you call ``latexindent.pl`` with both the ``-wd`` and the ``-w`` switch, then the ``-w`` switch will be deactivated and the ``-wd``
+switch takes priority.
+
 .. describe:: -o=output.tex,–outputfile=output.tex
 
 .. index:: switches;-o, –output definition and details
@@ -107,8 +137,10 @@ Note that if ``latexindent.pl`` can not create the backup, then it will exit wit
    latexindent.pl --outputfile=output.tex myfile.tex
    latexindent.pl --outputfile output.tex myfile.tex
 
-This will indent ``myfile.tex`` and output it to ``output.tex``, overwriting it (``output.tex``) if it already exists [1]_. Note that if ``latexindent.pl`` is called with both the ``-w`` and ``-o``
-switches, then ``-w`` will be ignored and ``-o`` will take priority (this seems safer than the other way round).
+This will indent ``myfile.tex`` and output it to ``output.tex``, overwriting it (``output.tex``) if it already exists [1]_.
+
+Note that if ``latexindent.pl`` is called with both the ``-w`` and ``-o`` switches, then ``-w`` will be ignored and ``-o`` will take priority (this seems safer than the other way round). The same is
+true for the ``-wd`` switch, and the ``-o`` switch takes priority over it.
 
 Note that using ``-o`` as above is equivalent to using
 
@@ -436,8 +468,9 @@ to signify that your input has finished. Thanks to ((xu-cheng) 2018) for an upda
    latexindent.pl -r myfile.tex
    latexindent.pl -replacement myfile.tex
 
-You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to perform replacements/substitutions on your file; full details and examples are given in :numref:`sec:replacements`. ..
-index:: verbatim;rv, replacementrespectverb switch
+You can call ``latexindent.pl`` with the ``-r`` switch to instruct it to perform replacements/substitutions on your file; full details and examples are given in :numref:`sec:replacements`.
+
+.. index:: verbatim;rv, replacementrespectverb switch
 
 .. describe:: -rv, –replacementrespectverb
 
@@ -477,7 +510,9 @@ You can instruct ``latexindent.pl`` to skip all of its other indentation operati
 
 You can instruct ``latexindent.pl`` to check if the text after indentation matches that given in the original file.
 
-The ``exit`` code .. index:: exit code
+The ``exit`` code
+
+.. index:: exit code
 
 of ``latexindent.pl`` is 0 by default. If you use the ``-k`` switch then
 

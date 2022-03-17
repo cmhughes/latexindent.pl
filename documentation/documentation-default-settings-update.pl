@@ -326,6 +326,8 @@ if(!$readTheDocsMode){
                     }
                     "\n.. index:: ".$index_body."\n\n";/sgex;
 
+        $body =~ s/\.\. index::/\n\n.. index::/sg;
+
         # line numbers for defaulSettings
         for (@namesAndOffsets){
             my $firstLine = ${$_}{firstLine}; 
