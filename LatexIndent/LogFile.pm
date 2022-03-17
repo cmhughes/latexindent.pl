@@ -61,6 +61,9 @@ usage: latexindent.pl [options] [file]
                 latexindent.pl -o=outputfile.tex myfile.tex
       -w, --overwrite
           overwrite the current file; a backup will be made, but still be careful
+      -wd, --overwriteIfDifferent
+          overwrite the current file IF the indented text is different from original; 
+          a backup will be made, but still be careful
       -s, --silent
           silent mode: no output will be given to the terminal
       -t, --trace
@@ -166,6 +169,7 @@ ENDQUOTE
     $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)") if($switches{silentMode});
     $logger->info("-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)") if($switches{onlyDefault});
     $logger->info("-w|--overwrite: Overwrite mode active, will make a back up before overwriting") if($switches{overwrite});
+    $logger->info("-wd|--overwriteIfDifferent: will overwrite ONLY if indented text is different") if($switches{overwriteIfDifferent});
     $logger->info("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
     $logger->info("-y|--yaml: YAML settings specified via command line") if($switches{yaml});
     $logger->info("-o|--outputfile: output to file") if($switches{outputToFile});
@@ -180,8 +184,26 @@ ENDQUOTE
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
-        $logger->info("Options check, -w and -o specified\nYou have called latexindent.pl with both -o and -w\noutput to file) will take priority, and -w (over write) will be ignored");
+        $logger->info("*Options check: -w and -o specified");
+        $logger->info("You have called latexindent.pl with both -o and -w");
+        $logger->info("The -o switch will take priority, and -w (overwrite) will be ignored");
         $switches{overwrite}=0;
+    }
+
+    # check if overwrite and outputfile are active similtaneously
+    if($switches{overwrite} and $switches{overwriteIfDifferent}){
+        $logger->info("*Options check: -w and -wd specified");
+        $logger->info("You have called latexindent.pl with both -w and -wd.");
+        $logger->info("The -wd switch will take priority, and -w (overwrite) will be ignored");
+        $switches{overwrite}=0;
+    }
+
+    # check if overwriteIfDifferent and outputfile are active similtaneously
+    if($switches{overwriteIfDifferent} and $switches{outputToFile}){
+        $logger->info("*Options check: -wd and -o specified");
+        $logger->info("You have called latexindent.pl with both -o and -wd");
+        $logger->info("The -o switch will take priority, and -wd (overwriteIfDifferent) will be ignored");
+        $switches{overwriteIfDifferent}=0;
     }
 
     # multiple files with the -o switch needs care

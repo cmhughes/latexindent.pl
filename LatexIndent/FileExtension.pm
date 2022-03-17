@@ -183,8 +183,15 @@ sub file_extension_check{
       ${$self}{body} = join("",@lines);
     }
 
-    # necessary extra storage if check switch is active
-    if ($is_check_switch_active){
+    # necessary extra storage if 
+    #
+    #   check switch is active
+    #
+    # or
+    #
+    #   $switches{overwriteIfDifferent}
+    #
+    if ($is_check_switch_active or $switches{overwriteIfDifferent}){
         ${$self}{originalBody} = ${$self}{body};
     }
 

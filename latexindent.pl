@@ -39,6 +39,7 @@ GetOptions (
     "yaml|y=s"=>\$switches{yaml},
     "onlydefault|d"=>\$switches{onlyDefault},
     "overwrite|w"=>\$switches{overwrite},
+    "overwriteIfDifferent|wd"=>\$switches{overwriteIfDifferent},
     "outputfile|o=s"=>\$switches{outputToFile},
     "modifylinebreaks|m"=>\$switches{modifyLineBreaks},
     "logfile|g=s"=>\$switches{logFileName},

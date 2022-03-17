@@ -30,7 +30,7 @@ use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_b
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings /;
 use LatexIndent::FileExtension qw/file_extension_check/;
-use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
+use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
@@ -110,6 +110,10 @@ sub latexindent{
          next 
       }
 
+      # overwrite and overwriteIfDifferent switches, per file
+      ${$self}{overwrite} = $switches{overwrite};
+      ${$self}{overwriteIfDifferent} = $switches{overwriteIfDifferent};
+
       # the main operations
       $self->operate_on_file;
 
@@ -179,6 +183,7 @@ sub operate_on_file{
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
+        $self->check_if_different if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
     return
@@ -207,7 +212,7 @@ sub output_indented_text{
     $logger->info("*Output routine:");
 
     # if -overwrite is active then output to original fileName
-    if($switches{overwrite}) {
+    if(${$self}{overwrite}){
         $logger->info("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};

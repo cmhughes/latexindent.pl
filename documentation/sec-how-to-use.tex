@@ -48,7 +48,7 @@ latexindent.pl --version
 
 \flagbox{-vv, --vversion}
 	\index{switches!-vv, --vversion definition and details}
-	\announce*{2022-01-08}{vversion switch}
+	\announce{2022-01-08}{vversion switch}
 	\begin{commandshell}
 latexindent.pl -vv
 latexindent.pl --vversion
@@ -100,6 +100,24 @@ latexindent.pl myfile.tex --overwrite
 	touching your original file; an error message will be given asking you to check the
 	permissions of the backup file.
 
+\flagbox{-wd, --overwriteIfDifferent}
+	\index{switches!-wd, --overwriteIfDifferent definition and details}
+	\index{backup files!overwriteIfDifferent switch, -wd}
+	\announce{new}{overwriteIfDifferent switch}
+	\begin{commandshell}
+latexindent.pl -wd myfile.tex
+latexindent.pl --overwriteIfDifferent myfile.tex
+latexindent.pl myfile.tex --overwriteIfDifferent
+\end{commandshell}
+
+	This \emph{will} overwrite \texttt{myfile.tex} but only \emph{if the indented text is
+	different from the original}. If the indented text is \emph{not} different from the
+	original, then \texttt{myfile.tex} will \emph{not} be overwritten.
+
+	All other details from the \texttt{-w} switch are relevant here. If you call
+	\texttt{latexindent.pl} with both the \texttt{-wd} and the \texttt{-w} switch, then the
+	\texttt{-w} switch will be deactivated and the \texttt{-wd} switch takes priority.
+
 \flagbox{-o=output.tex,--outputfile=output.tex}
 	\index{switches!-o, --output definition and details}
 	\begin{commandshell} 
@@ -111,9 +129,12 @@ latexindent.pl --outputfile output.tex myfile.tex
 
 	This will indent \texttt{myfile.tex} and output it to \texttt{output.tex}, overwriting it
 	(\texttt{output.tex}) if it already exists\footnote{Users of version 2.* should note the
-	subtle change in syntax}. Note that if \texttt{latexindent.pl} is called with both the
-	\texttt{-w} and \texttt{-o} switches, then \texttt{-w} will be ignored and \texttt{-o}
-	will take priority (this seems safer than the other way round).
+	subtle change in syntax}.
+
+	Note that if \texttt{latexindent.pl} is called with both the \texttt{-w} and \texttt{-o}
+	switches, then \texttt{-w} will be ignored and \texttt{-o} will take priority (this seems
+	safer than the other way round). The same is true for the \texttt{-wd} switch, and the
+	\texttt{-o} switch takes priority over it.
 
 	Note that using \texttt{-o} as above is equivalent to using
 	\begin{commandshell}
