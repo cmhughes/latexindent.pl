@@ -1,9 +1,6 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 
-            environments: 40
-        perCodeBlockBasis: 1
-        environments: 1
-    removeParagraphLineBreaks:
-        all: 1
-        beforeTextWrap: 1
+        columns: 40
+        blocksFollow:
+           other: |-
+             (?x)\\begin\{(?:something)\}

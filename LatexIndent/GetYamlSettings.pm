@@ -24,7 +24,7 @@ use File::HomeDir;
 use Cwd;
 use Exporter qw/import/;
 use LatexIndent::LogFile qw/$logger/;
-our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
+our @EXPORT_OK = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -61,8 +61,9 @@ sub yaml_read_settings{
   # grab the logger object
   $logger->info("*YAML settings read: defaultSettings.yaml");
   $logger->info("Reading defaultSettings.yaml from $FindBin::RealBin/defaultSettings.yaml");
-  
-  # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in 
+  my $myLibDir = dirname(__FILE__);
+
+  # if latexindent.exe is invoked from TeXLive, then defaultSettings.yaml won't be in
   # the same directory as it; we need to navigate to it
   if(!$defaultSettings) {
     $logger->info("Reading defaultSettings.yaml (2nd attempt) from $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
@@ -71,6 +72,8 @@ sub yaml_read_settings{
         $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml");
     } elsif ( -e "$FindBin::RealBin/LatexIndent/defaultSettings.yaml" ) {
         $defaultSettings = YAML::Tiny->read( "$FindBin::RealBin/LatexIndent/defaultSettings.yaml");
+    } elsif ( -e "$myLibDir/defaultSettings.yaml" ) {
++        $defaultSettings = YAML::Tiny->read( "$myLibDir/defaultSettings.yaml");
     } else {
         $logger->fatal("*Could not open defaultSettings.yaml");
         $self->output_logfile();
@@ -587,100 +590,6 @@ sub yaml_read_settings{
 
   }
 
-  if( $is_m_switch_active 
-      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks}
-      and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} ){
-
-      # the following settings don't make sense, so we change
-      #
-      # modifyLineBreaks:
-      #     textWrapOptions:
-      #         perCodeBlockBasis: 0
-      #         beforeFindingChildCodeBlocks: 1
-      # into
-      #
-      # modifyLineBreaks:
-      #     textWrapOptions:
-      #         perCodeBlockBasis: 0
-      #         beforeFindingChildCodeBlocks: 0
-      $logger->warn("*textWrapOptions:beforeFindingChildCodeBlocks:1 with textWrapOptions:perCodeBlockBasis:0");
-      $logger->warn("turning off beforeFindingChildCodeBlocks by changing textWrapOptions:beforeFindingOtherCodeBlocks to be 0");
-      $logger->warn("you need to set *both* values to be 1 to use the beforeFindingChildCodeBlocks feature");
-      ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} = 0;
-  }
-
-  # modifyLineBreaks:
-  #     textWrapOptions:
-  #         columns: 80
-  #         perCodeBlockBasis: 1
-  #         masterDocument: 1
-  #
-  # needs to be interpretted as
-  #
-  # modifyLineBreaks:
-  #     textWrapOptions:
-  #         columns: 80
-  #         perCodeBlockBasis: 1
-  #         mainDocument: 1
-  #
-  if( $is_m_switch_active 
-      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} 
-      and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{masterDocument} ){
-      $logger->warn("*textWrapOptions:masterDocument specified when textWrapOptions:mainDocument preferred");
-      $logger->warn("setting textWrapOptions:mainDocument: 1, but note that future versions of latexindent.pl may not support this");
-      $logger->warn("recommendation to use textWrapOptions:mainDocument: 1 in place of textWrapOptions:masterDocument:1");
-      ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{mainDocument} = 1;
-  }
-  
-  # modifyLineBreaks:
-  #     removeParagraphLineBreaks:
-  #         masterDocument: 1
-  #
-  # needs to be interpretted as
-  #
-  # modifyLineBreaks:
-  #     removeParagraphLineBreaks:
-  #         mainDocument: 1
-  #
-  if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{masterDocument} ){
-      $logger->warn("*removeParagraphLineBreaks:masterDocument specified when removeParagraphLineBreaks:mainDocument preferred");
-      $logger->warn("setting removeParagraphLineBreaks:mainDocument: 1, but note that future versions of latexindent.pl may not support this");
-      $logger->warn("recommendation to use removeParagraphLineBreaks:mainDocument: 1 in place of removeParagraphLineBreaks:masterDocument:1");
-      ${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{mainDocument} = 1;
-  }
-
-  # modifyLineBreaks:
-  #     textWrapOptions/removeParagraphLineBreaks:
-  #         all:
-  #             except:
-  #                 - 'masterDocument'
-  #
-  # need to be interpretted as
-  #
-  # modifyLineBreaks:
-  #     textWrapOptions/removeParagraphLineBreaks:
-  #         all:
-  #             except:
-  #                 - 'mainDocument'
-  #
-  if( $is_m_switch_active ){
-    foreach ("textWrapOptions","removeParagraphLineBreaks"){
-      if ( ref ${$mainSettings{modifyLineBreaks}{$_}}{all} eq "HASH" 
-                and
-           defined ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} 
-                and 
-           ref ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY") {
-            my %except = map { $_ => 1 } @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}};
-            if($except{masterDocument}){
-                $logger->warn("*$_:all:except:masterDocument specified when mainDocument preferred");
-                $logger->warn("setting $_:all:except:mainDocument:1, but note that future versions of latexindent.pl may not support this");
-                $logger->warn("recommendation to use $_:all:except:mainDocument:1 in place of $_:all:except:masterDocument:1");
-                push( @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}}, "mainDocument" );
-            }
-         }
-    }
-  }
-  
   # some users may wish to see showAmalgamatedSettings
   # which details the overall state of the settings modified
   # from the default in various user files
@@ -867,188 +776,6 @@ sub yaml_modify_line_breaks_settings{
                                   );
       };
 
-    $self->yaml_get_textwrap_removeparagraphline_breaks;
-    return;
-}
-
-sub yaml_get_textwrap_removeparagraphline_breaks{
-    my $self = shift;
-    
-    # textWrap and removeParagraphLineBreaks settings
-    foreach ("textWrapOptions","removeParagraphLineBreaks"){
-
-        # first check for either
-        #
-        # textWrapOptions:
-        #     all: 0
-        #
-        # or
-        #
-        # removeParagraphLineBreaks:
-        #     all: 0
-        #
-        # *IMPORTANT*
-        # even if all is set to 1, then it can still be disabled on either a
-        # 
-        # per-object:
-        #   
-        #   for example
-        #
-        #       textWrapOptions:
-        #           all:
-        #               except:
-        #                   - environments
-        #
-        #   will disable textWrapOptions for *all* environments
-        #
-        # per-name
-        # 
-        #   for example
-        #
-        #       textWrapOptions:
-        #           all: 
-        #               except:
-        #                   - itemize
-        #
-        #   will disable textWrapOptions for itemize
-        
-        # if 'all' is set as a hash, then the default value is 1, to be turned  off (possibly) later
-        ${$self}{$_} = ( ref ${$mainSettings{modifyLineBreaks}{$_}}{all} eq "HASH" ? 1 : ${$mainSettings{modifyLineBreaks}{$_}}{all});
-
-        # get the columns
-        if($_ eq "textWrapOptions" and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis}){
-            $self->yaml_get_columns;
-        }
-        
-        # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
-        my $YamlName = ${$self}{modifyLineBreaksYamlName};
-        
-        # if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-        my $name = ($YamlName =~ m/Arguments/) ? ${$self}{parent} : ${$self}{name};
-
-        # move to the next <thing> if
-        #
-        #   textWrapOptions/removeParagraphLineBreaks::
-        #       all: 1
-        #
-        if(${$self}{$_} 
-                    and 
-                ref ${$mainSettings{modifyLineBreaks}{$_}}{all} ne "HASH" 
-                    and 
-                ${$mainSettings{modifyLineBreaks}{$_}}{all}){
-               $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
-               next;  
-        };
-
-        # otherwise, look for exceptions, either through
-        #
-        #   textWrapOptions/removeParagraphLineBreaks:
-        #       all:
-        #           except:
-        #               - <*type* of thing or *name* of thing>
-        #
-        # so, for example, the following (per code-block) is acceptable
-        # which makes an exception for all *environments*
-        #
-        #       all:
-        #           except:
-        #               - 'environments'
-        #
-        # the following (per-name) is acceptable 
-        # which only makes an exception for things called itemize
-        #
-        #       all:
-        #           except:
-        #               - 'itemize'
-        #
-        if(${$self}{$_} 
-                and 
-           defined ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} 
-                and 
-           ref ${${$mainSettings{modifyLineBreaks}{$_}}{all}}{except} eq "ARRAY"
-         ){
-              my %except = map { $_ => 1 } @{${${$mainSettings{modifyLineBreaks}}{$_}}{all}{except}};
-              if( $except{$name} or $except{$YamlName}){
-                ${$self}{$_} = 0;
-                my $detail = ($except{$name} ? "per-name" : "per-code-block-type");
-                $logger->trace("$_ for $name is ${$self}{$_} (found as exception $detail, see $_:all:except)") if $is_t_switch_active;
-                next;
-              }
-        } else {
-            # or otherwise through, for example
-            #
-            #   all: 0
-            #   ifElseFi: 1
-            #
-            # the textWrapOptions/removeParagraphLineBreaks can contain fields that are hashes or scalar
-            # 
-            if(ref ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName} eq "HASH"){
-                # textWrapOptions/removeParagraphLineBreaks:
-                #     all: 0
-                #     environments: 
-                #         quotation: 0
-                $logger->trace("*$YamlName specified with fields in $_, looking for $name") if $is_t_switch_active;
-                ${$self}{$_} = ${${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name} if (defined ${${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}}{$name});
-            } elsif(defined ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}){
-                # textWrapOptions/removeParagraphLineBreaks:
-                #     all: 0
-                #     environments: 0
-                $logger->trace("*$YamlName specified with just a number in $_ ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName}") if $is_t_switch_active;
-                ${$self}{$_} = ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName} if (defined ${$mainSettings{modifyLineBreaks}{$_}}{$YamlName});
-            }
-        }
-
-        # summary to log file
-        $logger->trace("$_ for $name is ${$self}{$_}") if $is_t_switch_active;
-    }
-
-    return;
-}
-
-sub yaml_get_columns{
-    my $self = shift;
-
-    my $YamlName = ${$self}{modifyLineBreaksYamlName};
-
-    # the columns settings can have a variety of different ways of being specified
-    if(ref ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} eq "HASH"){
-        # assign default value of $columns
-        my $columns;
-        if(defined ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default}){
-            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{default};
-        } else {
-            $columns = 80;
-        }
-
-        # possibly specify object wrapping on a per-name basis
-        if(ref ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName} eq "HASH"){
-            # for example:
-            #   modifyLineBreaks:
-            #       textWrapOptions:
-            #           columns: 
-            #               default: 80
-            #               environments:
-            #                   default: 80
-            #                   something: 10
-            #                   another: 20
-            if(defined ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}}){
-                $columns = ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{${$self}{name}};
-            } elsif (${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default}){
-                $columns = ${${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName}}{default};
-            }
-        } else {
-            # for example:
-            #   modifyLineBreaks:
-            #       textWrapOptions:
-            #           columns: 
-            #               default: 80
-            #               environments: 10
-            $columns = ${${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}}{$YamlName};
-        }
-        ${$self}{columns} = $columns;
-    } else {
-        ${$self}{columns} = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns};
-    }
     return;
 }
 

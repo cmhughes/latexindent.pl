@@ -74,4 +74,4 @@ latexindent.pl -s special4.tex -o=+-mod1 -l=special-verb1.yaml
 latexindent.pl -s special4.tex -o=+-mod2 -l=special-verb2.yaml
 latexindent.pl -s special4.tex -o=+-mod3 -l=special-verb1.yaml,special-verb2.yaml
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
-git status
+[[ $gitStatus == 1 ]] && git status

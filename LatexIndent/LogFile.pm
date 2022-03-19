@@ -28,6 +28,17 @@ sub process_switches{
     # -v switch is just to show the version number
     if($switches{version}) {
         print $versionNumber,", ",$versionDate,"\n";
+        if ($switches{vversion}) {
+            print "$FindBin::Script lives here: $FindBin::RealBin/$FindBin::Script\n";
+            if ( -e "$FindBin::RealBin/defaultSettings.yaml" ){
+                print "defaultSettings.yaml lives here $FindBin::RealBin/defaultSettings.yaml\n";
+            } elsif ( -e "$FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml" ){
+                print "defaultSettings.yaml lives here $FindBin::RealBin/../../texmf-dist/scripts/latexindent/defaultSettings.yaml\n";
+            } elsif ( -e "$FindBin::RealBin/LatexIndent/defaultSettings.yaml" ) {
+                print "defaultSettings.yaml lives here $FindBin::RealBin/LatexIndent/defaultSettings.yaml\n";
+            }
+            print "project home: https://github.com/cmhughes/latexindent.pl\n";
+        }
         exit(0);
     }
 
@@ -37,6 +48,9 @@ latexindent.pl version $versionNumber, $versionDate
 usage: latexindent.pl [options] [file]
       -v, --version
           displays the version number and date of release
+      -vv, --vversion
+          displays verbose version details: the version number, date of release, 
+          and location details of latexindent.pl and defaultSettings.yaml
       -h, --help
           help (see the documentation for detailed instructions and examples)
       -sl, --screenlog
@@ -47,6 +61,9 @@ usage: latexindent.pl [options] [file]
                 latexindent.pl -o=outputfile.tex myfile.tex
       -w, --overwrite
           overwrite the current file; a backup will be made, but still be careful
+      -wd, --overwriteIfDifferent
+          overwrite the current file IF the indented text is different from original; 
+          a backup will be made, but still be careful
       -s, --silent
           silent mode: no output will be given to the terminal
       -t, --trace
@@ -96,6 +113,7 @@ ENDQUOTE
 
     # if we've made it this far, the processing of switches and logging begins
     my $self = shift;
+    my @fileNames = @{$_[0]};
 
     $logger = LatexIndent::Logger->new();
     
@@ -120,7 +138,16 @@ ENDQUOTE
     $logger->info($time);
 
     if (${$self}{fileName} ne "-"){
-        $logger->info("Filename: ${$self}{fileName}");
+        # multiple filenames or not
+        if ( (scalar (@fileNames)) >1 ){
+           $logger->info("Filenames:");
+           foreach (@fileNames) {
+              $logger->info("   $_");
+           }
+           $logger->info("total number of files: ".(scalar (@fileNames)));
+        } else {
+           $logger->info("Filename: ${$self}{fileName}");
+        }
     } else {
         $logger->info("Reading input from STDIN");
         if (-t STDIN) {
@@ -141,7 +168,8 @@ ENDQUOTE
     $logger->info("-tt|--ttrace: TTrace mode active (you have used either -tt or --ttrace)") if($switches{ttrace});
     $logger->info("-s|--silent: Silent mode active (you have used either -s or --silent)") if($switches{silentMode});
     $logger->info("-d|--onlydefault: Only defaultSettings.yaml will be used (you have used either -d or --onlydefault)") if($switches{onlyDefault});
-    $logger->info("-w|--overwrite: Overwrite mode active, will make a back up of ${$self}{fileName} first") if($switches{overwrite});
+    $logger->info("-w|--overwrite: Overwrite mode active, will make a back up before overwriting") if($switches{overwrite});
+    $logger->info("-wd|--overwriteIfDifferent: will overwrite ONLY if indented text is different") if($switches{overwriteIfDifferent});
     $logger->info("-l|--localSettings: Read localSettings YAML file") if($switches{readLocalSettings});
     $logger->info("-y|--yaml: YAML settings specified via command line") if($switches{yaml});
     $logger->info("-o|--outputfile: output to file") if($switches{outputToFile});
@@ -156,11 +184,48 @@ ENDQUOTE
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){
-        $logger->info("Options check, -w and -o specified\nYou have called latexindent.pl with both -o and -w\noutput to file) will take priority, and -w (over write) will be ignored");
+        $logger->info("*Options check: -w and -o specified");
+        $logger->info("You have called latexindent.pl with both -o and -w");
+        $logger->info("The -o switch will take priority, and -w (overwrite) will be ignored");
         $switches{overwrite}=0;
     }
 
-    $logger->info("*Directory for backup files and $logfileName: ${$self}{cruftDirectory}");
+    # check if overwrite and outputfile are active similtaneously
+    if($switches{overwrite} and $switches{overwriteIfDifferent}){
+        $logger->info("*Options check: -w and -wd specified");
+        $logger->info("You have called latexindent.pl with both -w and -wd.");
+        $logger->info("The -wd switch will take priority, and -w (overwrite) will be ignored");
+        $switches{overwrite}=0;
+    }
+
+    # check if overwriteIfDifferent and outputfile are active similtaneously
+    if($switches{overwriteIfDifferent} and $switches{outputToFile}){
+        $logger->info("*Options check: -wd and -o specified");
+        $logger->info("You have called latexindent.pl with both -o and -wd");
+        $logger->info("The -o switch will take priority, and -wd (overwriteIfDifferent) will be ignored");
+        $switches{overwriteIfDifferent}=0;
+    }
+
+    # multiple files with the -o switch needs care
+    #
+    # example
+    #
+    #       latexindent.pl *.tex -o myfile.tex
+    #
+    # would result in only the final file being written to myfile.tex
+    #
+    # So, if -o switch does *not* match having a + symbol at the beginning, then 
+    # we ignore it, and turn it off
+    #
+    if ( (scalar @fileNames>1) and $switches{outputToFile} and ($switches{outputToFile} !~ m/^h*\+/) ){
+        $logger->warn("*-o switch specified as single file, but multiple files given as input");
+        $logger->warn("ignoring your specification -o $switches{outputToFile}");
+        $logger->warn("perhaps you migh specify it using, for example, -o=++ or -o=+myoutput");
+        $switches{outputToFile} =0;
+    }
+
+    $logger->info("*Directory for backup files and $logfileName:");
+    $logger->info("${$self}{cruftDirectory}");
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {

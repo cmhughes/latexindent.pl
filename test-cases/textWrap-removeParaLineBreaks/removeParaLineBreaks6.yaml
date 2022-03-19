@@ -1,7 +1,12 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 0
-        environments: 
-            document: 0
-        ifElseFi: 
-            ifnum: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           blankLine: 0
+           other: |-
+             (?x)\\ifnum
+        blocksBeginWith:
+           0-9: 1
+        blocksEndBefore:
+           other: |-
+             (?x)\\fi

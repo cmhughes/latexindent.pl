@@ -1,9 +1,0 @@
-modifyLineBreaks:
-    textWrapOptions:
-        columns: 
-            mainDocument: 10
-        perCodeBlockBasis: 1
-        mainDocument: 0
-    removeParagraphLineBreaks:
-        all: 1
-        beforeTextWrap: 1

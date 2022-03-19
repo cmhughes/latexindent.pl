@@ -2,3 +2,11 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 5
         separator: ""
+        blocksBeginWith:
+           a-z: 1
+        blocksFollow:
+           other: |-
+             (?x)(?:\\begin\{(?:myenv)\})
+
+noAdditionalIndent:
+    myenv: 1

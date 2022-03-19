@@ -1,4 +1,29 @@
 # changelog.md
+## V3.16, March 13, 2022
+* text wrap overhaul, [issue 346](https://github.com/cmhughes/latexindent.pl/issues/346)
+* support for `tabulararray`, [issue 343](https://github.com/cmhughes/latexindent.pl/issues/343)
+
+## V3.15, January 21, 2022
+* new feature: `pre-commit` tool now supported, full details
+at [pull 322](https://github.com/cmhughes/latexindent.pl/pull/322) and [issue 316](https://github.com/cmhughes/latexindent.pl/issues/316)
+
+## V3.14, January 8, 2022
+* new feature: `-vv` switch for verbose version
+* bug fix: https://github.com/cmhughes/latexindent.pl/issues/301
+* fineTuning update: https://github.com/cmhughes/latexindent.pl/issues/321
+* documentation update: https://github.com/cmhughes/latexindent.pl/issues/314
+
+## V3.13.5, January 2, 2022
+`latexindent-yaml-schema.json` created and documented, discussion at 
+[issue 206](https://github.com/cmhughes/latexindent.pl/issues/206).
+
+## V3.13.4, December 22, 2021
+documentation updated to include: https://github.com/cmhughes/latexindent.pl/pull/310 and https://github.com/cmhughes/latexindent.pl/pull/311
+
+## V3.13.3, December 13, 2021
+minor updates:
+- `fineTuning` update following [issue 307](https://github.com/cmhughes/latexindent.pl/issues/307)
+- `lookForChildCodeBlocks` in align at ampersand routine [issue 308](https://github.com/cmhughes/latexindent.pl/issues/308)
 
 ## V3.13.2, November 15, 2021
 `defaultSettings.yaml` can now be located in `LatexIndent/` folder. 
@@ -260,3 +285,5 @@ help in the TeXLive implementation
  bundled into TeXLive 2013. Some other updates, too, detailed in
  the documentation. 
 
+## first commit, August 28, 2012
+[first commit](https://github.com/cmhughes/latexindent.pl/commit/ac8a07df62b87a4b663a64125c33bca51e48dffa)

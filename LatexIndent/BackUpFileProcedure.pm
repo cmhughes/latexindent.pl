@@ -22,14 +22,14 @@ use LatexIndent::LogFile qw/$logger/;
 use File::Basename;             # to get the filename and directory path
 use File::Copy;                 # to copy the original file to backup (if overwrite option set)
 use Exporter qw/import/;
-our @EXPORT_OK = qw/create_back_up_file/;
+our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
 # copy main file to a back up in the case of the overwrite switch being active
 
 sub create_back_up_file{
     my $self = shift;
 
-    return unless($switches{overwrite});
+    return unless(${$self}{overwrite});
 
     # if we want to over write the current file create a backup first
     $logger->info("*Backup procedure (-w flag active):");
@@ -146,5 +146,22 @@ sub create_back_up_file{
         $self->output_logfile();
         exit(5);
     }
+}
+
+sub check_if_different{
+    my $self = shift;
+
+    if (${$self}{originalBody} eq ${$self}{body}){
+        $logger->info("*-wd switch active");
+        $logger->info("Original body matches indented body, NOT overwriting, no back up files created");
+        return;
+    }
+
+    # otherwise, continue
+    $logger->info("*-wd switch active");
+    $logger->info("Original body is *different* from indented body");
+    $logger->info("activating overwrite switch, -w");
+    ${$self}{overwrite}=1;
+    $self->create_back_up_file;
 }
 1;

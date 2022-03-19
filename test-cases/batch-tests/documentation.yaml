@@ -1,0 +1,81 @@
+onlyOneBackUp: 1
+
+indentPreamble: 1
+
+preambleCommandsBeforeEnvironments: 1
+
+verbatimEnvironments:
+    cmhlistings: 1
+    yaml: 1
+    commandshell: 1
+    dosprompt: 1
+    lstlisting: 1
+
+indentAfterHeadings:
+    appendix:
+       indentAfterThisHeading: 1
+       level: 1
+    section:
+       indentAfterThisHeading: 1
+       level: 2
+    subsection:
+       indentAfterThisHeading: 1
+       level: 2
+    yamltitle:
+       indentAfterThisHeading: 1
+       level: 2
+    flagbox:
+       indentAfterThisHeading: 1
+       level: 2
+    subsubsection:
+       indentAfterThisHeading: 1
+       level: 2
+    paragraph:
+       indentAfterThisHeading: 1
+       level: 3
+
+indentRules:
+   titleformat:
+       body: "  " 
+   titlecontents:
+       body: "  " 
+
+noAdditionalIndent:
+    widepage: 0
+
+commandCodeBlocks:
+    roundParenthesesAllowed: 1
+    stringsAllowedBetweenArguments:
+      - '\*'
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 90
+
+removeTrailingWhitespace:
+    beforeProcessing: 1
+    afterProcessing: 1
+
+replacements:
+  - 
+    amalgamate: 0
+  -
+    substitution: s/\%+/\%/sg
+    when: after
+  -
+    substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
+    when: before
+  -
+    substitution: |-
+      s/(\\cmhlistingsfromfile\*?(?:\{|\[).*?\}\h*\{lst:[^}]*?\}\h*\R)/
+      my $body = $1;
+      $body =~ s@\R@@sg;
+      $body .= "\n";
+      /segx
+    when: after
+  -
+    substitution: s/([a-zA-Z0-9.()}{])\h{2,}([a-zA-Z0-9.()}{]|(?:\\(?!\\)))/$1 $2/sg
+    when: after
+  -
+    substitution: s/\h+(\\end\{commandshell\})/$1/sg
+    when: after

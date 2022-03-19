@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x)\{
+        blocksEndBefore:
+           other: |-
+             (?x)\}

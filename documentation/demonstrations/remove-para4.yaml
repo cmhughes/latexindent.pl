@@ -1,3 +1,6 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        mainDocument: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x) \\begin\{(?:myenv)\}

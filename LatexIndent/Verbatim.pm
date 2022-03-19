@@ -332,6 +332,13 @@ sub find_verbatim_commands{
             # output, if desired
             $logger->trace(Dumper($verbatimCommand),'ttrace') if($is_tt_switch_active);
 
+            # check for nested verbatim commands
+            if(${$verbatimCommand}{body} =~ m/($tokens{verbatimInline}\d+$tokens{endOfToken})/s){
+                my $verbatimNestedID = $1;
+                my $verbatimBody = ${$verbatimStorage{$verbatimNestedID}}{begin}.${$verbatimStorage{$verbatimNestedID}}{body}.${$verbatimStorage{$verbatimNestedID}}{end};
+                ${$verbatimCommand}{body} =~ s/$verbatimNestedID/$verbatimBody/s;
+                delete $verbatimStorage{$verbatimNestedID};
+            }
             # verbatim children go in special hash
             $verbatimStorage{${$verbatimCommand}{id}}=$verbatimCommand;
 
@@ -534,7 +541,7 @@ sub create_unique_id{
     my $self = shift;
 
     $verbatimCounter++;
-    ${$self}{id} = "$tokens{verbatim}$verbatimCounter$tokens{endOfToken}";
+    ${$self}{id} = (${$self}{type} eq 'command' ? $tokens{verbatimInline} : $tokens{verbatim}).$verbatimCounter.$tokens{endOfToken};
     return;
 }
 

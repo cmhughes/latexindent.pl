@@ -115,4 +115,4 @@ latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256.tex -o +-mod2
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise
-git status
+[[ $gitStatus == 1 ]] && git status

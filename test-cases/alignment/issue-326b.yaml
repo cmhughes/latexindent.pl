@@ -1,0 +1,8 @@
+lookForAlignDelims:
+   mybegin: 
+      delimiterRegEx: '(=)'
+
+specialBeginEnd:
+    mybegin:
+        begin: '\\mybegin'
+        end: '\\myend'

@@ -185,15 +185,44 @@ latexindent.pl -s for-each.tex -o=+-default
 latexindent.pl -s for-each.tex -o=+-mod1 -l=foreach.yaml
 
 # text wrap demonstration
-latexindent.pl -s textwrap1.tex -o textwrap1-mod1.tex -l=textwrap1.yaml -m
-latexindent.pl -s textwrap2.tex -o textwrap2-mod1.tex -l=textwrap1.yaml -m
-latexindent.pl -s textwrap3.tex -o textwrap3-mod1.tex -l=textwrap1.yaml -m
-latexindent.pl -s textwrap4.tex -o textwrap4-mod2.tex -l=textwrap2.yaml -m
+latexindent.pl -s textwrap1.tex -o=+-mod1.tex -l=textwrap1.yaml -m
+latexindent.pl -s textwrap1-mod1.tex -o=+A.tex -l=textwrap1A.yaml -m
+latexindent.pl -s textwrap1.tex -o=+-mod1B.tex -l=textwrap1B.yaml -m
+
+# blocksFollow
+latexindent.pl -s -m -l textwrap1.yaml tw-headings1.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,bf-no-headings.yaml tw-headings1.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1.yaml tw-comments1.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,bf-no-comments.yaml tw-comments1.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1.yaml tw-disp-math1.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1.yaml tw-bf-myenv1.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1.yaml tw-0-9.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,bb-0-9.yaml tw-0-9.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1.yaml tw-bb-announce1.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex -o=+-mod2
+
+latexindent.pl -s -m -l textwrap1A.yaml tw-be-equation.tex -o=+-mod1
+latexindent.pl -s -m -l textwrap1A.yaml,tw-be-equation.yaml tw-be-equation.tex -o=+-mod2
+
+latexindent.pl -s textwrap2.tex -o=+-mod1.tex -l=textwrap1.yaml -m
+
+latexindent.pl -s textwrap3.tex -o=+-mod1.tex -l=textwrap1.yaml -m
+
+latexindent.pl -s textwrap4.tex -o=+-mod2.tex -l=textwrap2.yaml -m
 latexindent.pl -s textwrap4.tex -o=+-mod2A -l=textwrap2A.yaml -m
 latexindent.pl -s textwrap4.tex -o=+-mod2B -l=textwrap2B.yaml -m
+
 latexindent.pl -s textwrap5.tex -o=+-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s textwrap5.tex -o=+-mod4.tex -l=textwrap4.yaml -m
 latexindent.pl -s textwrap5.tex -o=+-mod5.tex -l=textwrap5.yaml -m
+
 latexindent.pl -s textwrap6.tex -o=+-mod5.tex -l=textwrap5.yaml -m
 latexindent.pl -s textwrap6.tex -o=+-mod6.tex -l=textwrap6.yaml -m
 latexindent.pl -s textwrap6.tex -o=+-mod7.tex -l=textwrap7.yaml -m
@@ -201,6 +230,7 @@ latexindent.pl -s textwrap6.tex -o=+-mod8.tex -l=textwrap8.yaml -m
 latexindent.pl -s textwrap6.tex -o=+-mod9.tex -l=textwrap9.yaml -m
 latexindent.pl -s textwrap6.tex -o=+-mod10.tex -l=textwrap10.yaml -m
 latexindent.pl -s textwrap6.tex -o=+-mod11.tex -l=textwrap11.yaml -m
+
 latexindent.pl -s tabular2.tex -o=+-wrap-mod3.tex -l=textwrap3.yaml -m
 latexindent.pl -s tabular2.tex -o=+-wrap-mod3A.tex -l=textwrap3.yaml -m -y="modifyLineBreaks:textWrapOptions:alignAtAmpersandTakesPriority:0"
 latexindent.pl -s textwrap7.tex -o=+-mod3.tex -l=textwrap3.yaml -m
@@ -209,21 +239,19 @@ latexindent.pl -s textwrap-ts.tex -o=+-mod1.tex -l=tabstop.yaml -m
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod12.tex -l=textwrap12.yaml,addruler1 -m -r
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod13.tex -l=textwrap13.yaml,addruler2 -m -r
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod14.tex -l=textwrap14.yaml,addruler1 -m -r
-latexindent.pl -s textwrap-bfccb.tex -o=+-mod15.tex -l=textwrap15.yaml,addruler1 -m -r
 
 # remove paragraph line breaks
-latexindent.pl -s shortlines.tex -o shortlines1.tex -l=remove-para1.yaml -m
-latexindent.pl -s shortlines.tex -o shortlines1-tws.tex -l=remove-para1.yaml,removeTWS-before.yaml  -m
-latexindent.pl -s shortlines-mand.tex -o shortlines-mand1.tex -l=remove-para1.yaml -m
-latexindent.pl -s shortlines-opt.tex -o shortlines-opt1.tex -l=remove-para1.yaml -m
-latexindent.pl -s shortlines-envs.tex -o shortlines-envs2.tex -l=remove-para2.yaml -m
-latexindent.pl -s shortlines-envs.tex -o shortlines-envs3.tex -l=remove-para3.yaml -m
-latexindent.pl -s shortlines-md.tex -o shortlines-md4.tex -l=remove-para4.yaml -m
+latexindent.pl -s shortlines.tex -o=+1.tex -l=remove-para1,remove-para4 -m
+latexindent.pl -s shortlines.tex -o=+1-tws.tex -l=remove-para1,removeTWS-before,remove-para4  -m
+latexindent.pl -s shortlines-mand.tex -o=+1.tex -l=remove-para1.yaml,mycommand.yaml -m
+latexindent.pl -s shortlines-opt.tex -o=+1.tex -l=remove-para1.yaml,mycommand-opt.yaml -m
+latexindent.pl -s shortlines-envs.tex -o=+2.tex -l=remove-para2.yaml -m
+latexindent.pl -s shortlines-envs.tex -o=+3.tex -l=remove-para3.yaml -m
+latexindent.pl -s shortlines-md.tex -o=+4.tex -l=remove-para4.yaml -m
 
 # paragraph stops at routine
 latexindent.pl -s sl-stop.tex -o sl-stop4.tex -l=remove-para4.yaml -m
-latexindent.pl -s sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml,stop-command.yaml -m
-latexindent.pl -s sl-stop.tex -o sl-stop4-comment.tex -l=remove-para4.yaml,stop-comment.yaml -m
+latexindent.pl -s sl-stop.tex -o sl-stop4-command.tex -l=remove-para4.yaml -m
 
 # maximum indentation
 latexindent.pl -s mult-nested.tex -o=+-default
@@ -374,4 +402,4 @@ latexindent.pl --lines !5-7,!9-10 myfile.tex -s -o=+-mod6
 latexindent.pl --lines 6 myfile1.tex -m -s -l env-mlb2,env-mlb7,env-mlb8 -o=+-mod1 
 
 [[ $noisyMode == 1 ]] && makenoise
-git status
+[[ $gitStatus == 1 ]] && git status

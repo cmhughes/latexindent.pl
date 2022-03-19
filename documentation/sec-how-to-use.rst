@@ -1,9 +1,15 @@
+.. label follows
+
+.. _sec:how:to:use:
+
 How to use the script
 =====================
 
-``latexindent.pl`` ships as part of the TeXLive distribution for Linux and Mac users; ``latexindent.exe`` ships as part of the TeXLive and MiKTeX distributions for Windows users. These files are also
-available from github (“Home of Latexindent.pl” n.d.) should you wish to use them without a TeX distribution; in this case, you may like to read :numref:`sec:updating-path` which details how the
-``path`` variable can be updated.
+``latexindent.pl`` ships as part of the TeXLive distribution for Linux and Mac users; ``latexindent.exe`` ships as part of the TeXLive for Windows users. These files are also available from github
+(“Home of Latexindent.pl” n.d.) should you wish to use them without a TeX distribution; in this case, you may like to read :numref:`sec:updating-path` which details how the ``path`` variable can be
+updated.
+
+.. index:: TeXLive
 
 In what follows, we will always refer to ``latexindent.pl``, but depending on your operating system and preference, you might substitute ``latexindent.exe`` or simply ``latexindent``.
 
@@ -12,6 +18,12 @@ change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 
 ``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution. If you plan to use ``latexindent.pl`` (i.e, the original Perl
 script) then you will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
+
+MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
+
+.. index:: MiKTeX
+
+.. index:: latexindent.exe
 
 .. label follows
 
@@ -32,8 +44,21 @@ information that is written to ``indent.log``, but other additional information 
    :class: .commandshell
 
    latexindent.pl -v
+   latexindent.pl --version
 
 This will output only the version number to the terminal.
+
+.. describe:: -vv, –vversion
+
+.. index:: switches;-vv, –vversion definition and details
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -vv
+   latexindent.pl --vversion
+
+This will output *verbose* version details to the terminal, including the location of ``latexindent.pl`` and ``defaultSettings.yaml``.
 
 .. describe:: -h, –help
 
@@ -43,6 +68,7 @@ This will output only the version number to the terminal.
    :class: .commandshell
 
    latexindent.pl -h
+   latexindent.pl --help
 
 As above this will output a welcome message to the terminal, including the version number and available options.
 
@@ -52,6 +78,15 @@ As above this will output a welcome message to the terminal, including the versi
    latexindent.pl myfile.tex
 
 This will operate on ``myfile.tex``, but will simply output to your terminal; ``myfile.tex`` will not be changed by ``latexindent.pl`` in any way using this command.
+
+You can instruct ``latexindent.pl`` to operate on multiple (batches) of files, for example
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile1.tex myfile2.tex
+
+Full details are given in :numref:`sec:batches`.
 
 .. describe:: -w, –overwrite
 
@@ -71,6 +106,25 @@ on this in :numref:`sec:defuseloc`, and in particular see ``backupExtension`` an
 
 Note that if ``latexindent.pl`` can not create the backup, then it will exit without touching your original file; an error message will be given asking you to check the permissions of the backup file.
 
+.. describe:: -wd, –overwriteIfDifferent
+
+.. index:: switches;-wd, –overwriteIfDifferent definition and details
+
+.. index:: backup files;overwriteIfDifferent switch, -wd
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl -wd myfile.tex
+   latexindent.pl --overwriteIfDifferent myfile.tex
+   latexindent.pl myfile.tex --overwriteIfDifferent
+
+This *will* overwrite ``myfile.tex`` but only *if the indented text is different from the original*. If the indented text is *not* different from the original, then ``myfile.tex`` will *not* be
+overwritten.
+
+All other details from the ``-w`` switch are relevant here. If you call ``latexindent.pl`` with both the ``-wd`` and the ``-w`` switch, then the ``-w`` switch will be deactivated and the ``-wd``
+switch takes priority.
+
 .. describe:: -o=output.tex,–outputfile=output.tex
 
 .. index:: switches;-o, –output definition and details
@@ -83,8 +137,10 @@ Note that if ``latexindent.pl`` can not create the backup, then it will exit wit
    latexindent.pl --outputfile=output.tex myfile.tex
    latexindent.pl --outputfile output.tex myfile.tex
 
-This will indent ``myfile.tex`` and output it to ``output.tex``, overwriting it (``output.tex``) if it already exists [1]_. Note that if ``latexindent.pl`` is called with both the ``-w`` and ``-o``
-switches, then ``-w`` will be ignored and ``-o`` will take priority (this seems safer than the other way round).
+This will indent ``myfile.tex`` and output it to ``output.tex``, overwriting it (``output.tex``) if it already exists [1]_.
+
+Note that if ``latexindent.pl`` is called with both the ``-w`` and ``-o`` switches, then ``-w`` will be ignored and ``-o`` will take priority (this seems safer than the other way round). The same is
+true for the ``-wd`` switch, and the ``-o`` switch takes priority over it.
 
 Note that using ``-o`` as above is equivalent to using
 
@@ -146,9 +202,7 @@ There is no need to specify a file extension when using the ``++`` feature, but 
 
    latexindent.pl myfile.tex -o=+out++.tex
 
-See :numref:`app:differences` for details of how the interface has changed from Version 2.2 to Version 3.0 for this flag.
-
-.. describe:: -s, –silent
+See :numref:`app:differences` for details of how the interface has changed from Version 2.2 to Version 3.0 for this flag. .. describe:: -s, –silent
 
 .. index:: switches;-s, –silent definition and details
 
@@ -291,9 +345,7 @@ You may also choose to omit the ``yaml`` extension, such as
 You can specify YAML settings from the command line using the ``-y`` or ``–yaml`` switch; sample demonstrations are given above. Note, in particular, that multiple settings can be specified by
 separating them via commas. There is a further option to use a ``;`` to separate fields, which is demonstrated in :numref:`sec:yamlswitch`.
 
-Any settings specified via this switch will be loaded *after* any specified using the ``-l`` switch. This is discussed further in :numref:`sec:loadorder`.
-
-.. describe:: -d, –onlydefault
+Any settings specified via this switch will be loaded *after* any specified using the ``-l`` switch. This is discussed further in :numref:`sec:loadorder`. .. describe:: -d, –onlydefault
 
 .. index:: switches;-d, –onlydefault definition and details
 
@@ -373,9 +425,7 @@ One of the most exciting developments in Version 3.0 is the ability to modify l
 
    latexindent.pl myfile
 
-and in which case, you can specify the order in which extensions are searched for; see :numref:`lst:fileExtensionPreference` for full details.
-
-.. describe:: STDIN
+and in which case, you can specify the order in which extensions are searched for; see :numref:`lst:fileExtensionPreference` for full details. .. describe:: STDIN
 
 .. code-block:: latex
    :class: .commandshell
@@ -535,7 +585,7 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
    exit code indentation status
    ========= =========== ==============================================================================
    0         yes         success; if ``-k`` or ``-kv`` active, indented text matches original
-   0         no          success; if ``-version`` or ``-help``, no indentation performed
+   0         no          success; if ``-version``, ``-vversion`` or ``-help``, no indentation performed
    1         yes         success, and ``-k`` or ``-kv`` active; indented text *different* from original
    2         no          failure, ``defaultSettings.yaml`` could not be read
    3         no          failure, myfile.tex not found
@@ -556,6 +606,11 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
       :name: ref-latexindent-home
 
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.
+
+   .. container::
+      :name: ref-miktex-guide
+
+      “How to Use Latexindent on Windows?” n.d. Accessed January 8, 2022. https://tex.stackexchange.com/questions/577250/how-to-use-latexindent-on-windows.
 
    .. container::
       :name: ref-xu-cheng

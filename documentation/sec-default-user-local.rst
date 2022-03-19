@@ -107,9 +107,10 @@ appear before and after the notification of a found code block using, respective
 
 The log file will end with the characters given in ``endLogFileWith``, and will report the ``GitHub`` address of ``latexindent.pl`` to the log file if ``showGitHubInfoFooter`` is set to ``1``.
 
-Note: ``latexindent.pl`` no longer uses the ``log4perl`` module to handle the creation of the logfile. Some of the options for Perl’s ``Dumper`` module can be specified in
-:numref:`lst:logFilePreferences`; see (“Data::Dumper Module” n.d.) and (“Data Dumper Demonstration” n.d.) for more information. These options will mostly be helpful for those calling
-``latexindent.pl`` with the ``-tt`` option described in :numref:`sec:commandline`.
+Note: ``latexindent.pl`` no longer uses the ``log4perl`` module to handle the creation of the logfile.
+
+Some of the options for Perl’s ``Dumper`` module can be specified in :numref:`lst:logFilePreferences`; see (“Data::Dumper Module” n.d.) and (“Data Dumper Demonstration” n.d.) for more information.
+These options will mostly be helpful for those calling ``latexindent.pl`` with the ``-tt`` option described in :numref:`sec:commandline`.
 
 Verbatim code blocks
 --------------------
@@ -482,7 +483,9 @@ form, each field should receive at least 1 sub-field, and *can* (but does not ha
 -  delimiterRegEx optionally specifies the pattern matching to be used for the alignment delimeter (default: ``(?<!\\)(&)``\ \*);
 
 -  delimiterJustification optionally specifies the justification for the alignment delimeters (default: left); note that this feature is only useful if you have delimiters of different lengths in the
-   same column, discussed in :numref:`sec:delimiter-reg-ex`.
+   same column, discussed in :numref:`sec:delimiter-reg-ex`;
+
+-  lookForChildCodeBlocks optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`.
 
 We will explore most of these features using the file ``tabular2.tex`` in :numref:`lst:tabular2` (which contains a ``\multicolumn`` command), and the YAML files in :numref:`lst:tabular2YAML` –
 :numref:`lst:tabular8YAML`; we will explore ``alignFinalDoubleBackSlash`` in :numref:`lst:tabular4`; the ``dontMeasure`` feature will be described in :numref:`sec:dontMeasure`, and
@@ -793,7 +796,7 @@ then the before-and-after results shown in :numref:`lst:matrixbefore` and :numre
  	:caption: ``matrix1.tex`` default output 
  	:name: lst:matrixafter
 
-If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` … ``\end{tabular}``, then you can use the mark up illustrated in
+If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` …\ ``\end{tabular}``, then you can use the mark up illustrated in
 :numref:`lst:alignmentmarkup`; the default output is shown in :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be next to each other, but that there can be any number of spaces
 (possibly none) between the ``*`` and ``\begin{tabular}``; note also that you may use any environment name that you have specified in ``lookForAlignDelims``.
 
@@ -1138,6 +1141,53 @@ gives the output in :numref:`lst:tabbing1-mod5`.
 
 Note that in :numref:`lst:tabbing1-mod5` the second set of delimiters have been *right aligned* – it is quite subtle!
 
+.. label follows
+
+.. _sec:lookForChildCodeBlocks:
+
+lookForAlignDelims: lookForChildCodeBlocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There may be scenarios in which you would prefer to instruct ``latexindent.pl`` *not* to search for child blocks; in which case setting ``lookForChildCodeBlocks`` to 0 may be a good way to proceed.
+
+Using the settings from :numref:`lst:dontMeasure1` on the file in :numref:`lst:tabular-DM-1` and running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl tabular-DM-1.tex -l=dontMeasure1.yaml -o=+-mod1
+
+gives the output in :numref:`lst:tabular-DM-1-mod1`.
+
+.. literalinclude:: demonstrations/tabular-DM-1.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM-1.tex`` 
+ 	:name: lst:tabular-DM-1
+
+.. literalinclude:: demonstrations/tabular-DM-1-mod1.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM-1-mod1.tex`` 
+ 	:name: lst:tabular-DM-1-mod1
+
+We can improve the output from :numref:`lst:tabular-DM-1-mod1` by employing the settings in :numref:`lst:dontMeasure1a`
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
+
+which gives the output in :numref:`lst:dontMeasure1a`.
+
+.. literalinclude:: demonstrations/tabular-DM-1-mod1a.tex
+ 	:class: .tex
+ 	:caption: ``tabular-DM-1-mod1a.tex`` 
+ 	:name: lst:tabular-DM-1-mod1a
+
+.. literalinclude:: demonstrations/dontMeasure1a.yaml
+ 	:class: .baseyaml
+ 	:caption: ``dontMeasure1a.yaml`` 
+ 	:name: lst:dontMeasure1a
+
 Indent after items, specials and headings
 -----------------------------------------
 
@@ -1150,9 +1200,9 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 228-232
+ 	:lines: 233-237
  	:linenos:
- 	:lineno-start: 228
+ 	:lineno-start: 233
 
 .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -1181,9 +1231,9 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 238-240
+ 	:lines: 243-245
  	:linenos:
- 	:lineno-start: 238
+ 	:lineno-start: 243
 
 .. describe:: specialBeginEnd:fields
 
@@ -1204,9 +1254,9 @@ default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 244-257
+ 	:lines: 249-262
  	:linenos:
- 	:lineno-start: 244
+ 	:lineno-start: 249
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files (see
 :numref:`sec:localsettings`); indeed, you might like to set up your own special begin and end statements.
@@ -1441,9 +1491,9 @@ written in this field. [2]_
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 267-276
+ 	:lines: 272-281
  	:linenos:
- 	:lineno-start: 267
+ 	:lineno-start: 272
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the
 hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too
@@ -1566,7 +1616,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ============================= ================================================================================== ====================================================================================
    Code block                    characters allowed in name                                                         example
    ============================= ================================================================================== ====================================================================================
-   environments                  ``a-zA-Z@\*0-9_\\``                                                                ``\begin{myenv}body of myenv\end{myenv}``                                         
+   environments                  !a-zA-Z@\*0-9_\\!                                                                  ``\begin{myenv}body of myenv\end{myenv}``                                         
    optionalArguments             *inherits* name from parent (e.g environment name)                                 ``[opt arg text]``
    mandatoryArguments            *inherits* name from parent (e.g environment name)                                 ``{mand arg text}``
    commands                      ``+a-zA-Z@\*0-9_\:``                                                               ``\mycommand``\ <arguments>
@@ -1576,7 +1626,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``                         ``\ifnum......\else...\fi``
    items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames`     ``\begin{enumerate}  \item ...\end{enumerate}``
    specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                  ``\[  ...\]``
-   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}`` 
+   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}``
    filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                         ``\begin{filecontents}...\end{filecontents}``
    ============================= ================================================================================== ====================================================================================
 
@@ -1848,9 +1898,9 @@ particular *for the environments* key (see :numref:`lst:noAdditionalIndentGlobal
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 325-326
+ 	:lines: 330-331
  	:linenos:
- 	:lineno-start: 325
+ 	:lineno-start: 330
 
 Let’s say that you change the value of ``environments`` to ``1`` in :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run
 
@@ -1921,9 +1971,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 341-342
+ 	:lines: 346-347
  	:linenos:
- 	:lineno-start: 341
+ 	:lineno-start: 346
 
 If you change the ``environments`` field to anything involving horizontal space, say ``" "``, and then run the following commands
 
@@ -2619,17 +2669,17 @@ Having considered all of the different types of code blocks, the functions of th
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 325-337
+ 	:lines: 330-342
  	:linenos:
- 	:lineno-start: 325
+ 	:lineno-start: 330
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 341-353
+ 	:lines: 346-358
  	:linenos:
- 	:lineno-start: 341
+ 	:lineno-start: 346
 
 .. label follows
 
@@ -2649,9 +2699,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in :numref:`lst
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 356-371
+ 	:lines: 361-376
  	:linenos:
- 	:lineno-start: 356
+ 	:lineno-start: 361
 
 .. describe:: roundParenthesesAllowed:0|1
 

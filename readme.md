@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -13,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.13.2, 2021-11-15
+    latexindent.pl, version 3.16, 2022-03-13
 
 ## author
 Chris Hughes (cmhughes)
@@ -64,7 +65,8 @@ of test cases on every commit.
 
 ## getting started
 
-### by hand
+<details>
+<summary>perl users</summary>
 
 You'll need
 ```
@@ -78,7 +80,9 @@ You'll need a few readily-available perl modules. Full details are given within 
 of the [documentation](https://latexindentpl.readthedocs.io/en/latest/);
 you might also like to see [.travis.yml](.travis.yml) for Linux/MacOS users,
 and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
-
+</details>
+<details>
+<summary>Windows users without perl</summary>
 Windows users who do not have a perl installation might prefer to get
 
     latexindent.exe
@@ -87,24 +91,28 @@ Windows users who do not have a perl installation might prefer to get
 `latexindent.exe` is a standalone executable file which does not require a `perl` installation.
 It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
 and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
-
-`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
-file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) directory
-of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
-
-> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
-
-### with conda
-
+</details>
+<details>
+<summary>conda users</summary>
 If you use conda you'll only need
-```
-conda install latexindent.pl -c conda-forge
-```
+
+    conda install latexindent.pl -c conda-forge
+
 this will install the executable and all its dependencies (including perl) in the activate environment.
 You don't even have to worry about `defaultSettings.yaml` as it included too.
 
+**Important**: the executable name is `latexindent.pl` (not `latexindent`). 
+	
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
+</details>
+
+## GitHub Actions
+`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
+file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
+directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
 
 ## testing
 

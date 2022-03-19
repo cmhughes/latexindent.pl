@@ -402,127 +402,115 @@
 
 \lstdefinestyle{indentAfterItems}{
 	style=yaml-LST,
-	firstnumber=228,linerange={228-232},
+	firstnumber=233,linerange={233-237},
 	numbers=left,
 }
 
 \lstdefinestyle{itemNames}{
 	style=yaml-LST,
-	firstnumber=238,linerange={238-240},
+	firstnumber=243,linerange={243-245},
 	numbers=left,
 }
 
 \lstdefinestyle{specialBeginEnd}{
 	style=yaml-LST,
-	firstnumber=244,linerange={244-257},
+	firstnumber=249,linerange={249-262},
 	numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
 	style=yaml-LST,
-	firstnumber=267,linerange={267-276},
+	firstnumber=272,linerange={272-281},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=325,linerange={325-326},
+	firstnumber=330,linerange={330-331},
 	numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
 	style=yaml-LST,
-	firstnumber=325,linerange={325-337},
+	firstnumber=330,linerange={330-342},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
 	style=yaml-LST,
-	firstnumber=341,linerange={341-342},
+	firstnumber=346,linerange={346-347},
 	numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
 	style=yaml-LST,
-	firstnumber=341,linerange={341-353},
+	firstnumber=346,linerange={346-358},
 	numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
 	style=yaml-LST,
-	firstnumber=356,linerange={356-371},
+	firstnumber=361,linerange={361-376},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
 	style=yaml-LST,
-	firstnumber=486,linerange={486-488},
+	firstnumber=491,linerange={491-493},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
 	style=yaml-LST,
-	firstnumber=513,linerange={513-514},
+	firstnumber=518,linerange={518-519},
 	numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
 	style=yaml-LST,
-	firstnumber=513,linerange={513-531},
-	numbers=left,
-}
-
-\lstdefinestyle{removeParagraphLineBreaks}{
-	style=yaml-LST,
-	firstnumber=532,linerange={532-546},
-	numbers=left,
-}
-
-\lstdefinestyle{paragraphsStopAt}{
-	style=yaml-LST,
-	firstnumber=547,linerange={547-556},
+	firstnumber=518,linerange={518-540},
 	numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
 	style=yaml-LST,
-	firstnumber=489,linerange={489-512},
+	firstnumber=494,linerange={494-517},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
 	style=yaml-LST,
-	firstnumber=494,linerange={494-502},
+	firstnumber=499,linerange={499-507},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
 	style=yaml-LST,
-	firstnumber=503,linerange={503-506},
+	firstnumber=508,linerange={508-511},
 	numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
 	style=yaml-LST,
-	firstnumber=507,linerange={507-512},
+	firstnumber=512,linerange={512-517},
 	numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
 	style=yaml-LST,
-	firstnumber=557,linerange={557-566},
+	firstnumber=542,linerange={542-551},
 	numbers=left,
 }
 
 \lstdefinestyle{replacements}{
 	style=yaml-LST,
-	firstnumber=618,linerange={618-626},
+	firstnumber=603,linerange={603-611},
 	numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
 	style=yaml-LST,
-	firstnumber=629,linerange={629-654},
+	firstnumber=614,linerange={614-639},
 	numbers=left,
 }
 
@@ -795,12 +783,19 @@
 \setcounter{tocdepth}{4}
 \makeindex
 
+\newif\iftestdefaultsettings
+\testdefaultsettingsfalse
+%\testdefaultsettingstrue
+
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
 \input{title.tex}
 \tableofcontents
 % start sections on new page
 \newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
+ \iftestdefaultsettings
+ \input{test-default-settings}
+ \else
  \input{sec-introduction}
  \input{sec-demonstration}
  \input{sec-how-to-use}
@@ -818,9 +813,6 @@
  \input{subsec-commands-and-their-options}
  \input{sec-the-m-switch}
  \input{subsec-text-wrap}
- \input{subsec-remove-para-line-breaks}
- \input{subsec-combine-text-wrap-para-line-breaks}
- \input{subsec-text-wrap-summary}
  \input{subsec-one-sentence-per-line}
  \input{subsec-poly-switches}
  \stopcontents[the-m-switch]
@@ -828,8 +820,9 @@
  \input{sec-the-line-switch}
  \input{sec-fine-tuning}
  \input{sec-conclusions-know-limitations}
- \input{references}
- \input{appendices}
- {\clearpage\small\lstlistoflistings}
+ \input{sec-references}
+ \input{sec-appendices}
+ {\clearpage\addcontentsline{toc}{section}{List of listings}\small\lstlistoflistings}
  \printindex
+ \fi
 \end{document}

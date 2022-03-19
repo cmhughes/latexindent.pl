@@ -7,22 +7,16 @@
  \cref{lst:fineTuning}.
 
  This field is for those that would like to peek under the bonnet/hood and make some fine
- tuning to \texttt{latexindent.pl}'s operating.
- \index{warning!fine tuning}
- \index{regular expressions!fine tuning}
- \index{regular expressions!environments}
- \index{regular expressions!ifElseFi}
- \index{regular expressions!commands}
- \index{regular expressions!keyEqualsValuesBracesBrackets}
- \index{regular expressions!NamedGroupingBracesBrackets}
- \index{regular expressions!UnNamedGroupingBracesBrackets}
- \index{regular expressions!arguments}
- \index{regular expressions!modifyLineBreaks}
- \index{regular expressions!lowercase alph a-z}
- \index{regular expressions!uppercase alph A-Z}
- \index{regular expressions!numeric 0-9}
- \index{regular expressions!at least one +}
- \index{regular expressions!horizontal space \textbackslash{h}}
+ tuning to \texttt{latexindent.pl}'s operating. \index{warning!fine tuning} \index{regular
+ expressions!fine tuning} \index{regular expressions!environments} \index{regular
+ expressions!ifElseFi} \index{regular expressions!commands} \index{regular
+ expressions!keyEqualsValuesBracesBrackets} \index{regular
+ expressions!NamedGroupingBracesBrackets} \index{regular
+ expressions!UnNamedGroupingBracesBrackets} \index{regular expressions!arguments}
+ \index{regular expressions!modifyLineBreaks} \index{regular expressions!lowercase alph
+ a-z} \index{regular expressions!uppercase alph A-Z} \index{regular expressions!numeric
+ 0-9} \index{regular expressions!at least one +} \index{regular expressions!horizontal
+ space \textbackslash{h}}
 
  \begin{warning}
 	 Making changes to the fine tuning may have significant consequences for your indentation
@@ -64,18 +58,15 @@
 	 \item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
 	       \begin{enumerate}
 		       \item \lstinline!|! means `or'
-		       \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group --
-		             you don't necessarily need to worry about what this means, but just know that for the
-		             \texttt{fineTuning} feature you should only ever use \emph{non}-capturing groups, and
-		             \emph{not} capturing groups, which are simply
+		       \item \lstinline^(?:(?<!\\)\{)^ the \lstinline^(?:...)^ uses a \emph{non-capturing} group -- you don't necessarily need to worry about what this
+		             means, but just know that for the \texttt{fineTuning} feature you should only ever use
+		             \emph{non}-capturing groups, and \emph{not} capturing groups, which are simply
 		             \lstinline!(...)!
-		       \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not}
-		             be immediately preceded by a \lstinline!\!
+		       \item \lstinline^(?<!\\)\{)^ means a \lstinline^{^ but it can \emph{not} be immediately preceded by a \lstinline!\!
 	       \end{enumerate}
 	 \item in the \texttt{arguments:before} field
 	       \begin{enumerate}
-		       \item \lstinline^\d\h*^ means a digit (i.e. a number), followed by 0 or more horizontal
-		             spaces
+		       \item \lstinline^\d\h*^ means a digit (i.e. a number), followed by 0 or more horizontal spaces
 		       \item \lstinline^;?,?^ means \emph{possibly} a semi-colon, and possibly a comma
 		       \item \lstinline^\<.*?\>^ is designed for 'beamer'-type commands; the
 		             \lstinline^.*?^ means anything in between \lstinline^<...>^
@@ -117,10 +108,10 @@ latexindent.pl finetuning1.tex
 		 \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
 	 \end{cmhtcbraster}
 
-	 It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked as
-	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
-	 given in \cref{lst:fine-tuning1} and running the command
-	 \index{switches!-l demonstration}
+	 It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked
+	 as expected. We can \emph{fine tune} the indentation scheme by employing the settings
+	 given in \cref{lst:fine-tuning1} and running the command \index{switches!-l
+	 demonstration}
 	 \begin{commandshell}
 latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 \end{commandshell}
@@ -134,8 +125,8 @@ latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
  \end{example}
 
  \begin{example}
-	 Let's have another demonstration; consider the file given in \cref{lst:finetuning2}, together with its
-	 default output using the command
+	 Let's have another demonstration; consider the file given in \cref{lst:finetuning2},
+	 together with its default output using the command
 	 \begin{commandshell}
 latexindent.pl finetuning2.tex 
 \end{commandshell}
@@ -148,10 +139,10 @@ latexindent.pl finetuning2.tex
 		 \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
 	 \end{cmhtcbraster}
 
-	 It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked as
-	 expected. We can \emph{fine tune} the indentation scheme by employing the settings
-	 given in \cref{lst:fine-tuning2} and running the command
-	 \index{switches!-l demonstration}
+	 It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked
+	 as expected. We can \emph{fine tune} the indentation scheme by employing the settings
+	 given in \cref{lst:fine-tuning2} and running the command \index{switches!-l
+	 demonstration}
 	 \begin{commandshell}
 latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 \end{commandshell}
@@ -164,13 +155,15 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 		 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning2.yaml}[yaml-TCB]{\texttt{finetuning2.yaml}}{lst:fine-tuning2}
 	 \end{cmhtcbraster}
 
-	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that \texttt{NamedGroupingBracesBrackets}
-	 and \texttt{UnNamedGroupingBracesBrackets} can follow \texttt{"} and that we allow \lstinline!---! between arguments.
+	 In particular, note that the settings in \cref{lst:fine-tuning2} specify that
+	 \texttt{NamedGroupingBracesBrackets} and \texttt{UnNamedGroupingBracesBrackets} can
+	 follow \texttt{"} and that we allow \lstinline!---! between arguments.
  \end{example}
 
  \begin{example}
-	 You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use quotes appropriately.
-	 For example, starting with the code in \cref{lst:finetuning3} and running the following command
+	 You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use
+	 quotes appropriately. For example, starting with the code in \cref{lst:finetuning3} and
+	 running the following command
 	 \begin{commandshell}
 latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 \end{commandshell}
@@ -181,8 +174,8 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
  \end{example}
 
  \begin{example}
-	 We can tweak the \texttt{fineTuning} for how trailing comments are classified. For motivation, let's consider
-	 the code given in \cref{lst:finetuning4}
+	 We can tweak the \texttt{fineTuning} for how trailing comments are classified. For
+	 motivation, let's consider the code given in \cref{lst:finetuning4}
 
 	 \cmhlistingsfromfile{demonstrations/finetuning4.tex}{\texttt{finetuning4.tex}}{lst:finetuning4}
 
@@ -220,30 +213,27 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 		       desirable.
 	 \end{itemize}
 
-	 Another approach to this situation, which does not use \texttt{fineTuning}, is to use \texttt{noIndentBlock}
-	 which we discussed in \vref{lst:noIndentBlock};
-	 using the settings in \cref{lst:href3} and running the command
+	 Another approach to this situation, which does not use \texttt{fineTuning}, is to use
+	 \texttt{noIndentBlock} which we discussed in \vref{lst:noIndentBlock}; using the settings
+	 in \cref{lst:href3} and running the command
 	 \begin{commandshell}
 latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 \end{commandshell}
-	 then we receive the same output given in \cref{lst:finetuning4-mod2}; see also \texttt{paragraphsStopAt}
-	 in \vref{lst:paragraphsStopAt}.
+	 then we receive the same output given in \cref{lst:finetuning4-mod2}.
 
 	 \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
 
-	 With reference to the \texttt{body} field in \cref{lst:href3}, we note that the \texttt{body} field can
-	 be interpreted as: the fewest number of zero or more characters that are not right braces. This
-	 is an example of character class.
-	 \index{regular expressions!character class demonstration}
+	 With reference to the \texttt{body} field in \cref{lst:href3}, we note that the
+	 \texttt{body} field can be interpreted as: the fewest number of zero or more characters
+	 that are not right braces. This is an example of character class. \index{regular
+	 expressions!character class demonstration}
  \end{example}
 
  \begin{example}
-	 We can use the \texttt{fineTuning} field to assist in the formatting of bibliography files.
-	 \index{bibliography files}
-	 \index{regular expressions!delimiterRegEx}
-	 \index{regular expressions!capturing parenthesis}
-	 \index{regular expressions!ampersand alignment}
-	 \index{delimiters!delimiterRegEx}
+	 We can use the \texttt{fineTuning} field to assist in the formatting of bibliography
+	 files. \index{bibliography files} \index{regular expressions!delimiterRegEx}
+	 \index{regular expressions!capturing parenthesis} \index{regular expressions!ampersand
+	 alignment} \index{delimiters!delimiterRegEx}
 
 	 Starting with the file in \cref{lst:bib1} and running the command
 	 \begin{commandshell}
@@ -258,8 +248,8 @@ latexindent.pl bib1.tex -o=+-mod1
 		 \end{cmhtcbraster}
 	 \end{widepage}
 
-	 Let's assume that we would like to format the output so as to align the \texttt{=} symbols.
-	 Using the settings in \cref{lst:bibsettings1} and running the command
+	 Let's assume that we would like to format the output so as to align the \texttt{=}
+	 symbols. Using the settings in \cref{lst:bibsettings1} and running the command
 	 \begin{commandshell}
 latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
      \end{commandshell}
@@ -286,7 +276,8 @@ latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2
  \end{example}
 
  \begin{example}
-	 We can build upon \cref{lst:bibsettings1} for slightly more complicated bibliography files.
+	 We can build upon \cref{lst:bibsettings1} for slightly more complicated bibliography
+	 files.
 
 	 Starting with the file in \cref{lst:bib2} and running the command
 	 \begin{commandshell}
@@ -314,6 +305,7 @@ latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2
 
 	 \cmhlistingsfromfile{demonstrations/bib2-mod2.bib}{\texttt{bib2-mod2.bib}}{lst:bib2-mod2}
 
-	 With reference to \cref{lst:bibsettings2} we note that the \texttt{delimiterRegEx} has been adjusted so that \texttt{=} symbols are used as the delimiter,
-	 but only when they are \emph{not preceeded} by either \texttt{v} or \texttt{spfreload}.
+	 With reference to \cref{lst:bibsettings2} we note that the \texttt{delimiterRegEx} has
+	 been adjusted so that \texttt{=} symbols are used as the delimiter, but only when they
+	 are \emph{not preceeded} by either \texttt{v} or \texttt{spfreload}.
  \end{example}

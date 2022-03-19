@@ -78,6 +78,6 @@ latexindent.pl -s hea-senior-fellowship-application.tex -o=+-max-indentation -l=
 latexindent.pl -s hea-senior-fellowship-application.tex -o=+-max-indentation5 -l=../filecontents/indentPreambleYes.yaml,../environments/max-indentation5.yaml
 # double back slash dodge, motivated by texexchange/29293-christian-feuersanger.tex
 latexindent.pl -s dodge-double-back-slash.tex -o dodge-double-back-slash-default.tex
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

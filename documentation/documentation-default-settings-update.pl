@@ -21,7 +21,7 @@ my @namesAndOffsets = (
                         {name=>"removeTrailingWhitespace",numberOfLines=>2},
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
                         {name=>"lookForPreamble",numberOfLines=>4},
-                        {name=>"lookForAlignDelims",numberOfLines=>17},
+                        {name=>"lookForAlignDelims",numberOfLines=>16},
                         {name=>"indentAfterItems",numberOfLines=>4},
                         {name=>"itemNames",numberOfLines=>2},
                         {name=>"specialBeginEnd",numberOfLines=>13,mustBeAtBeginning=>1},
@@ -33,9 +33,7 @@ my @namesAndOffsets = (
                         {name=>"commandCodeBlocks",numberOfLines=>15},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
-                        {name=>"textWrapOptionsAll",numberOfLines=>18,special=>"textWrapOptions"},
-                        {name=>"removeParagraphLineBreaks",numberOfLines=>14},
-                        {name=>"paragraphsStopAt",numberOfLines=>9},
+                        {name=>"textWrapOptionsAll",numberOfLines=>22,special=>"textWrapOptions"},
                         {name=>"oneSentencePerLine",numberOfLines=>23},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
@@ -95,7 +93,7 @@ if(!$readTheDocsMode){
     close(OUTPUTFILE);
     
     # and operate upon it with latexindent.pl
-    system('latexindent.pl -w -s -m -l ../documentation/latexindent.tex');
+    system('latexindent.pl -w -l=+mainfile.yaml -s -m ../documentation/latexindent.tex');
 } else {
 
     # read informatino from latexindent.aux
@@ -144,9 +142,6 @@ if(!$readTheDocsMode){
     }
 
     foreach("subsec-text-wrap.tex",
-            "subsec-remove-para-line-breaks.tex",
-            "subsec-combine-text-wrap-para-line-breaks.tex",
-            "subsec-text-wrap-summary.tex",
             "subsec-one-sentence-per-line.tex",
             "subsec-poly-switches.tex",
           ){
@@ -154,9 +149,9 @@ if(!$readTheDocsMode){
     }
 
     # appendix
-    system("perl -p0i -e 's/\\\\subsection/\\\\subsubsection/sg' appendices.tex");
-    system("perl -p0i -e 's/\\\\section/\\\\subsection/sg' appendices.tex");
-    system("perl -p0i -e 's/\\\\appendix/\\\\section\{Appendices\}/sg' appendices.tex");
+    system("perl -p0i -e 's/\\\\subsection/\\\\subsubsection/sg' sec-appendices.tex");
+    system("perl -p0i -e 's/\\\\section/\\\\subsection/sg' sec-appendices.tex");
+    system("perl -p0i -e 's/\\\\appendix/\\\\section\{Appendices\}/sg' sec-appendices.tex");
 
     # loop through the .tex files
     foreach my $fileName ("sec-introduction.tex",
@@ -169,8 +164,8 @@ if(!$readTheDocsMode){
                           "sec-the-line-switch.tex",
                           "sec-fine-tuning.tex",
                           "sec-conclusions-know-limitations.tex",
-                          "references.tex",
-                          "appendices.tex",
+                          "sec-references.tex",
+                          "sec-appendices.tex",
                           , ){
 
         @lines = q();
@@ -330,6 +325,8 @@ if(!$readTheDocsMode){
                         $index_body =~ s|!|;|s;
                     }
                     "\n.. index:: ".$index_body."\n\n";/sgex;
+
+        $body =~ s/\.\. index::/\n\n.. index::/sg;
 
         # line numbers for defaulSettings
         for (@namesAndOffsets){

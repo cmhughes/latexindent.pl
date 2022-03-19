@@ -1,8 +1,10 @@
 modifyLineBreaks:
     textWrapOptions:
-        columns: 80
-        huge: overflow
-        all: 1
-        perCodeBlockBasis: 1
-    removeParagraphLineBreaks:
-        all: 1
+        columns: -1
+        blocksEndBefore:
+           verbatim: 0
+        blocksFollow:
+           verbatim: 0
+
+removeTrailingWhitespace:
+    beforeProcessing: 1

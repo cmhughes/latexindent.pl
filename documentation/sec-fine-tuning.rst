@@ -47,9 +47,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 629-652
+ 	:lines: 614-639
  	:linenos:
- 	:lineno-start: 629
+ 	:lineno-start: 614
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.)
 for a detailed covering of the topic.
@@ -298,7 +298,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	   latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 	
-	then we receive the same output given in :numref:`lst:finetuning4-mod2`; see also ``paragraphsStopAt`` in :numref:`lst:paragraphsStopAt`.
+	then we receive the same output given in :numref:`lst:finetuning4-mod2`.
 	
 	.. literalinclude:: demonstrations/href3.yaml
 	 	:class: .mlbyaml

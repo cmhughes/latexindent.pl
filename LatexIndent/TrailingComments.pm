@@ -54,6 +54,9 @@ sub add_comment_symbol{
 
 sub remove_trailing_comments{
     my $self = shift;
+
+    $commentCounter = 0;
+
     $logger->trace("*Storing trailing comments")if $is_t_switch_active;
 
     my  $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
@@ -99,7 +102,9 @@ sub put_trailing_comments_back_in{
 
       # the -m switch can modify max characters per line, and trailing comment IDs can 
       # be split across lines
-      if($is_m_switch_active and ${$self}{body} !~ m/%$trailingcommentID/m){
+      if($is_m_switch_active 
+          and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"
+          and ${$self}{body} !~ m/%$trailingcommentID/m){
             $logger->trace("$trailingcommentID not found in body using /m matching, assuming it has been split across line (see modifyLineBreaks: textWrapOptions)") if($is_t_switch_active);
             my $trailingcommentIDwithLineBreaks;
             
@@ -126,6 +131,8 @@ sub put_trailing_comments_back_in{
                           /mx and $1 ne ''){
           $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")if $is_t_switch_active;
           ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
+          #####if(${$self}{body} =~ m/%$trailingcommentID\h*[^%]+?$/mx){
+          #####    $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line") if $is_t_switch_active;
       } else {
           ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;
       }

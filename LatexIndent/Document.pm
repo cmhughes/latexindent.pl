@@ -17,6 +17,7 @@ package LatexIndent::Document;
 use strict;
 use warnings;
 use Data::Dumper;
+use File::Basename; # to get the filename and directory path
 use utf8;
 use open ':std', ':encoding(UTF-8)';
 
@@ -27,12 +28,13 @@ use LatexIndent::Logger qw/@logFileLines/;
 use LatexIndent::Check qw/simple_diff/;
 use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
-use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings yaml_get_textwrap_removeparagraphline_breaks %mainSettings yaml_get_columns/;
+use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings /;
 use LatexIndent::FileExtension qw/file_extension_check/;
-use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
+use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
-use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent text_wrap remove_paragraph_line_breaks construct_paragraph_reg_exp text_wrap_remove_paragraph_line_breaks verbatim_modify_line_breaks/;
+use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
+use LatexIndent::Wrap qw/text_wrap/;
 use LatexIndent::TrailingComments qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
@@ -76,14 +78,72 @@ sub new{
 
 sub latexindent{
     my $self = shift;
+    my @fileNames = @{$_[0]};
+
+    my $check_switch_status_across_files = 0;
+
+    my $file_extension_status_across_files = 0;
+
+    # one-time operations
     $self->store_switches;
-    $self->process_switches;
+    ${$self}{fileName} = $fileNames[0];
+    $self->process_switches(\@fileNames);
     $self->yaml_read_settings;
-    $self->file_extension_check;
-    $self->operate_on_file;
+
+    ${$self}{multipleFiles} = 1 if ( (scalar (@fileNames)) >1 );
+        
+    my $fileCount = 0;
+
+    # per-file operations
+    foreach (@fileNames) {
+      $fileCount++;
+      if ( (scalar (@fileNames)) >1 ){
+        $logger->info("*Filename: $_ (".$fileCount." of ".(scalar (@fileNames)).")") ;
+      }
+      ${$self}{fileName} = $_;
+      ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
+
+      # file existence/extension checks
+      my $file_existence = $self->file_extension_check;
+      if ($file_existence>0){
+         $file_extension_status_across_files=$file_existence;
+         next 
+      }
+
+      # overwrite and overwriteIfDifferent switches, per file
+      ${$self}{overwrite} = $switches{overwrite};
+      ${$self}{overwriteIfDifferent} = $switches{overwriteIfDifferent};
+
+      # the main operations
+      $self->operate_on_file;
+
+      # keep track of check status across files
+      $check_switch_status_across_files = 1 if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body});
+    }
+
+    # check switch summary across multiple files
+    if ( $is_check_switch_active and (scalar (@fileNames)) >1 ){
+      if($check_switch_status_across_files){
+        $logger->info("*check switch across multiple files: differences to report from at least one file");
+      } else {
+        $logger->info("*check switch across multiple files: no differences to report");
+      }
+    }
+    
+    # logging of existence check
+    if ($file_extension_status_across_files>2){
+       $logger->warn("*at least one of the files you specified does not exist or could not be read");
+    }
+
+    # output the log file information
+    $self->output_logfile();
+
+    if ($file_extension_status_across_files>2){
+       exit($file_extension_status_across_files);
+    }
 
     # check switch active, and file changed, gives different exit code
-    if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body}){
+    if ($check_switch_status_across_files){
         exit(1);
     }
 }
@@ -104,9 +164,8 @@ sub operate_on_file{
         $self->find_verbatim_special;
         $logger->trace("*Verbatim storage:") if $is_tt_switch_active;
         $logger->trace(Dumper(\%verbatimStorage)) if $is_tt_switch_active;
-        $self->verbatim_modify_line_breaks if $is_m_switch_active; 
+        $self->verbatim_modify_line_breaks (when=>"beforeTextWrap") if $is_m_switch_active; 
         $self->make_replacements(when=>"before") if $is_rv_switch_active;
-        $self->text_wrap if ($is_m_switch_active and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns}>1);
         $self->protect_blank_lines if $is_m_switch_active;
         $self->remove_trailing_whitespace(when=>"before");
         $self->find_file_contents_environments_and_preamble;
@@ -124,6 +183,7 @@ sub operate_on_file{
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
+        $self->check_if_different if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
     return
@@ -142,7 +202,6 @@ sub construct_regular_expressions{
     $self->construct_key_equals_values_regexp;
     $self->construct_grouping_braces_brackets_regexp;
     $self->construct_unnamed_grouping_braces_brackets_regexp;
-    $self->construct_paragraph_reg_exp if $is_m_switch_active;
 }
 
 sub output_indented_text{
@@ -153,22 +212,19 @@ sub output_indented_text{
     $logger->info("*Output routine:");
 
     # if -overwrite is active then output to original fileName
-    if($switches{overwrite}) {
+    if(${$self}{overwrite}){
         $logger->info("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } elsif($switches{outputToFile}) {
-        $logger->info("Outputting to file $switches{outputToFile}");
-        open(OUTPUTFILE,">",$switches{outputToFile});
+        $logger->info("Outputting to file ${$self}{outputToFile}");
+        open(OUTPUTFILE,">",${$self}{outputToFile});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-
-    # output the log file information
-    $self->output_logfile();
 
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};
@@ -231,19 +287,23 @@ sub find_objects{
     # one sentence per line: sentences are objects, as of V3.5.1
     $self->one_sentence_per_line if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences});
 
-    if ($is_m_switch_active and !${$self}{preamblePresent}){
-        $self->yaml_get_textwrap_removeparagraphline_breaks;
-    }
+    # text wrapping
+    #
+    # note: this routine will *not* be called if
+    #
+    #    modifyLineBreaks:
+    #        oneSentencePerLine:
+    #            manipulateSentences: 1
+    #            textWrapSentences: 1
+    #  
+    if ($is_m_switch_active 
+        and !${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{manipulateSentences}
+        and !${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{textWrapSentences}
+        and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} !=0 ){
+        $self->text_wrap();
 
-    if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 1){ 
-        # call the remove_paragraph_line_breaks and text_wrap routines
-        if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-        } else {
-            $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-            $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-        }
+        # text wrapping can affect verbatim poly-switches, so we run it again
+        $self->verbatim_modify_line_breaks(when=>"afterTextWrap"); 
     }
 
     # search for environments
@@ -261,18 +321,6 @@ sub find_objects{
     # the ordering of finding commands and special code blocks can change
     $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
     
-    # documents without preamble need a manual call to the paragraph_one_line routine
-    if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} == 0 ){ 
-       # call the remove_paragraph_line_breaks and text_wrap routines
-       if(${$mainSettings{modifyLineBreaks}{removeParagraphLineBreaks}}{beforeTextWrap}){
-           $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-           $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-       } else {
-           $self->text_wrap if (${$self}{textWrapOptions} and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{perCodeBlockBasis});
-           $self->remove_paragraph_line_breaks if ${$self}{removeParagraphLineBreaks};
-       }
-    }
-
     # if there are no children, return
     if(${$self}{children}){
         $logger->trace("*Objects have been found.") if $is_t_switch_active;
@@ -326,15 +374,9 @@ sub get_settings_and_store_new_object{
     # there are a number of tasks common to each object
     $latexIndentObject->tasks_common_to_each_object(%{$self});
     
-    # removeParagraphLineBreaks and textWrapping fun!
-    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
-      
     # tasks particular to each object
     $latexIndentObject->tasks_particular_to_each_object;
     
-    # removeParagraphLineBreaks and textWrapping fun!
-    $latexIndentObject->text_wrap_remove_paragraph_line_breaks if($is_m_switch_active and !${$mainSettings{modifyLineBreaks}{textWrapOptions}}{beforeFindingChildCodeBlocks} );
-
     # store children in special hash
     push(@{${$self}{children}},$latexIndentObject);
 

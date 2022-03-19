@@ -1,0 +1,4 @@
+modifyLineBreaks:
+    textWrapOptions:
+        blocksFollow:
+           headings: 0

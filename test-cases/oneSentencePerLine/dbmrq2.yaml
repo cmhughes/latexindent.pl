@@ -8,5 +8,4 @@ modifyLineBreaks:
             betterFullStop: 0
             other: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\]|\-|\,|[0-9]))'
     textWrapOptions:
-        columns: 
-          default: 45
+        columns: 45

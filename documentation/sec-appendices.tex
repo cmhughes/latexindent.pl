@@ -1,0 +1,605 @@
+% arara: pdflatex: { files: [latexindent]}
+\appendix
+	\section{Required Perl modules}\label{sec:requiredmodules}
+	 If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied
+	 standalone executable files, then you will need a few standard Perl modules -- if you can
+	 run the minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will
+	 be able to run \texttt{latexindent.pl}, otherwise you may need to install the missing
+	 modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
+
+	 \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use utf8;
+use PerlIO::encoding;
+use open ':std', ':encoding(UTF-8)';
+use Text::Wrap;
+use Text::Tabs;
+use FindBin;
+use YAML::Tiny;
+use File::Copy;
+use File::Basename;
+use File::HomeDir;
+use Encode;
+use Getopt::Long;
+use Data::Dumper;
+use List::Util qw(max);
+
+print "hello world";
+exit;
+\end{cmhlistings}
+
+	\subsection{Module installer script}\label{sec:module-installer}
+		\announce{2018-01-13}{perl module helper script} \texttt{latexindent.pl} ships with a
+		helper script that will install any missing \texttt{perl} modules on your system; if you
+		run
+		\begin{commandshell}
+perl latexindent-module-installer.pl
+\end{commandshell}
+		or
+		\begin{dosprompt}
+perl latexindent-module-installer.pl
+ \end{dosprompt}
+		then, once you have answered \texttt{Y}, the appropriate modules will be installed onto
+		your distribution.
+
+	\subsection{Manually installing modules}\label{sec:manual-module-instal}
+		Manually installing the modules given in \cref{lst:helloworld} will vary depending on
+		your operating system and \texttt{Perl} distribution.
+
+	\subsubsection{Linux}
+		\paragraph{perlbrew}
+			Linux users may be interested in exploring Perlbrew \cite{perlbrew}; an example
+			installation would be:
+			\begin{commandshell}
+sudo apt-get install perlbrew
+perlbrew init
+perlbrew install perl-5.28.1
+perlbrew switch perl-5.28.1
+sudo apt-get install curl
+curl -L http://cpanmin.us | perl - App::cpanminus
+cpanm YAML::Tiny
+cpanm File::HomeDir
+\end{commandshell}
+			\index{cpan}
+
+		\paragraph{Ubuntu/Debian}
+			For other distributions, the Ubuntu/Debian approach may work as follows
+			\begin{commandshell}
+sudo apt install perl
+sudo cpan -i App::cpanminus
+sudo cpanm YAML::Tiny
+sudo cpanm File::HomeDir
+\end{commandshell}
+			or else by running, for example,
+			\begin{commandshell}
+sudo perl -MCPAN -e'install "File::HomeDir"'
+\end{commandshell}
+
+		\paragraph{Ubuntu: using the texlive from apt-get}
+			Ubuntu users that install texlive using \texttt{apt-get} as in the following
+			\begin{commandshell}
+sudo apt install texlive
+sudo apt install texlive-latex-recommended
+\end{commandshell}
+			may need the following additional command to work with \texttt{latexindent.pl}
+			\begin{commandshell}
+sudo apt install texlive-extra-utils 
+\end{commandshell}
+
+		\paragraph{Alpine}
+			If you are using Alpine, some \texttt{Perl} modules are not build-compatible with Alpine,
+			but replacements are available through \texttt{apk}. For example, you might use the
+			commands given in \cref{lst:alpine-install}; thanks to \cite{jun-sheaf} for providing
+			these details.
+
+			\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
+# Installing perl
+apk --no-cache add miniperl perl-utils
+
+# Installing incompatible latexindent perl dependencies via apk
+apk --no-cache add \
+    perl-log-dispatch \
+    perl-namespace-autoclean \
+    perl-specio \
+    perl-unicode-linebreak
+
+# Installing remaining latexindent perl dependencies via cpan
+apk --no-cache add curl wget make
+ls /usr/share/texmf-dist/scripts/latexindent
+cd /usr/local/bin && \
+    curl -L https://cpanmin.us/ -o cpanm && \
+    chmod +x cpanm
+cpanm -n App::cpanminus
+cpanm -n File::HomeDir
+cpanm -n Params::ValidationCompiler
+cpanm -n YAML::Tiny
+\end{cmhlistings}
+
+			Users of NixOS might like to see
+			\href{https://github.com/cmhughes/latexindent.pl/issues/222}{https://github.com/cmhughes/latexindent.pl/issues/222}
+			for tips.
+	\subsubsection{Mac}
+		Users of the Macintosh operating system might like to explore the following commands, for
+		example:
+		\begin{commandshell}
+brew install perl
+brew install cpanm
+
+cpanm YAML::Tiny
+cpanm File::HomeDir
+\end{commandshell}
+
+	\subsubsection{Windows}
+		Strawberry Perl users on Windows might use \texttt{CPAN client}. All of the modules are
+		readily available on CPAN \cite{cpan}.
+
+		\texttt{indent.log} will contain details of the location
+		of the Perl modules on your system. \texttt{latexindent.exe} is a standalone executable
+		for Windows (and therefore does not require a Perl distribution) and caches copies of the
+		Perl modules onto your system; if you wish to see where they are cached, use the
+		\texttt{trace} option, e.g
+		\begin{dosprompt}
+latexindent.exe -t myfile.tex
+ \end{dosprompt}
+
+	\section{Updating the path variable}\label{sec:updating-path}
+	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can
+	 update the \texttt{path} variables. Thank you to \cite{jasjuang} for this feature. If
+	 you're on a Linux or Mac machine, then you'll want \texttt{CMakeLists.txt} from
+	 \cite{latexindent-home}.
+	\subsection{Add to path for Linux}
+		To add \texttt{latexindent.pl} to the path for Linux, follow these steps:
+		\begin{enumerate}
+			\item download \texttt{latexindent.pl} and its associated modules,
+			      \texttt{defaultSettings.yaml}, to your chosen directory from \cite{latexindent-home} ;
+			\item within your directory, create a directory called \texttt{path-helper-files} and download
+			      \texttt{CMakeLists.txt} and \lstinline!cmake_uninstall.cmake.in! from
+			      \cite{latexindent-home}/path-helper-files to this directory;
+			\item run
+			      \begin{commandshell}
+ls /usr/local/bin
+\end{commandshell}
+			      to see what is \emph{currently} in there;
+			\item run the following commands
+			      \begin{commandshell}
+sudo apt-get update
+sudo apt-get install --no-install-recommends cmake make # or any other generator
+mkdir build && cd build
+cmake ../path-helper-files
+sudo make install
+\end{commandshell}
+			\item run
+			      \begin{commandshell}
+ls /usr/local/bin
+\end{commandshell}
+			      again to check that \texttt{latexindent.pl}, its modules and
+			      \texttt{defaultSettings.yaml} have been added.
+		\end{enumerate}
+		To \emph{remove} the files, run
+		\begin{commandshell}
+sudo make uninstall
+\end{commandshell}
+	\subsection{Add to path for Windows}
+		To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
+		\begin{enumerate}
+			\item download \texttt{latexindent.exe}, \texttt{defaultSettings.yaml},
+			      \texttt{add-to-path.bat} from \cite{latexindent-home} to your chosen directory;
+			\item open a command prompt and run the following command to see what is \emph{currently} in
+			      your \lstinline!%path%! variable;
+			      \begin{dosprompt}
+echo %path%
+          \end{dosprompt}
+			\item right click on \texttt{add-to-path.bat} and \emph{Run as administrator};
+			\item log out, and log back in;
+			\item open a command prompt and run
+			      \begin{dosprompt}
+echo %path%
+          \end{dosprompt}
+			      to check that the appropriate directory has been added to your \lstinline!%path%!.
+		\end{enumerate}
+		To \emph{remove} the directory from your \lstinline!%path%!, run
+		\texttt{remove-from-path.bat} as administrator.
+
+	\section{Batches of files}\label{sec:batches}
+
+	 You can \announce{new}{batches of files details} instruct \texttt{latexindent.pl} to
+	 operate on multiple files. For example, the following calls are all valid
+	 \begin{commandshell}
+latexindent.pl myfile1.tex          
+latexindent.pl myfile1.tex myfile2.tex
+latexindent.pl myfile*.tex
+        \end{commandshell}
+
+	 We note the following features of the script in relation to the switches detailed in
+	 \cref{sec:how:to:use}.
+
+	\subsection{location of indent.log}
+		If the \texttt{-c} switch is \emph{not} active, then \texttt{indent.log} goes to the directory of the final file called.
+
+		If the \texttt{-c} switch \emph{is} active, then \texttt{indent.log} goes to the
+		specified directory.
+
+	\subsection{interaction with -w switch}
+		If the \texttt{-w} switch is active, as in
+		\begin{commandshell}
+latexindent.pl -w myfile*.tex
+\end{commandshell}
+		then files will be overwritten individually. Back-up files can be re-directed via the
+		\texttt{-c} switch.
+
+	\subsection{interaction with -o switch}
+		If \texttt{latexindent.pl} is called using the \texttt{-o} switch as in
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=my-output-file.tex 
+        \end{commandshell}
+		and there are multiple files to operate upon, then the \texttt{-o} switch is ignored
+		because there is only \emph{one} output file specified.
+
+		More generally, if the \texttt{-o} switch does \emph{not} have a \texttt{+} symbol at the
+		beginning, then the \texttt{-o} switch will be ignored, and is turned it off.
+
+		For example
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=+myfile
+\end{commandshell}
+		\emph{will} work fine because \emph{each} \texttt{.tex} file will output to
+		\texttt{<basename>myfile.tex}
+
+		Similarly,
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=++
+\end{commandshell}
+		\emph{will} work because the `existence check/incrementation' routine will be applied.
+
+	\subsection{interaction with lines switch}
+		This behaves as expected by attempting to operate on the line numbers specified for each file. See
+		the examples in \cref{sec:line-switch}.
+
+	\subsection{interaction with check switches}
+		The exit codes for \texttt{latexindent.pl} are given in \vref{tab:exit-codes}.
+
+		When operating on multiple files with the check switch active, as in
+		\begin{commandshell}
+latexindent.pl myfile*.tex --check
+        \end{commandshell}
+		then
+		\begin{itemize}
+			\item exit code 0 means that the text from \emph{none} of the files has been changed;
+			\item exit code 1 means that the text from \emph{at least one} of the files been file changed.
+		\end{itemize}
+
+		The interaction with \texttt{checkv} switch is as in the check switch, but with verbose
+		output.
+
+	\subsection{when a file does not exist}
+		What happens if one of the files can not be operated upon?
+		\begin{itemize}
+			\item if at least one of the files does not exist and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 3; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if at least one of the files can not be read and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 4; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if \texttt{latexindent.pl} has been told to operate on multiple files, and some do not
+			      exist and some cannot be read, then the exit code will be either 3 or 4, depending upon
+			      which it scenario it encountered most recently.
+		\end{itemize}
+
+	\section{latexindent-yaml-schema.json}
+
+	 \texttt{latexindent.pl}
+	 \announce{2022-01-02}{latexindent-yaml-schema.json} ships with
+	 \texttt{latexindent-yaml-schema.json}
+	 which might help you when constructing your YAML files.
+	 \index{json!schema for YAML files}
+
+	\subsection{VSCode demonstration}
+		To use \texttt{latexindent-yaml-schema.json} with \texttt{VSCode}, you can use the
+		following steps: \index{VSCode} \index{json!VSCode}
+		\begin{enumerate}
+			\item download \texttt{latexindent-yaml-schema.json} from the \texttt{documentation} folder of
+			      \cite{latexindent-home}, save it in whichever directory you would like, noting it for
+			      reference;
+			\item following the instructions from \cite{vscode-yaml-demo}, for example, you should install
+			      the VSCode YAML extension \cite{vscode-yaml-extentions};
+			\item set up your \texttt{settings.json} file using the directory you saved the file by
+			      adapting \cref{lst:settings.json}; on my Ubuntu laptop this file lives at
+			      \texttt{/home/cmhughes/.config/Code/User/settings.json}.
+		\end{enumerate}
+
+		\begin{widepage}
+			\cmhlistingsfromfile{demonstrations/settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
+		\end{widepage}
+
+		Alternatively, if you would prefer not to download the json file, you might be able to
+		use an adapted version of \cref{lst:settings-alt.json}.
+
+		\begin{widepage}
+			\cmhlistingsfromfile{demonstrations/settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
+		\end{widepage}
+
+		Finally, if your TeX distribution is up to date, then
+		\texttt{latexindent-yaml-schema.json} \emph{should} be in the documentation folder of
+		your installation, so an adapted version of \cref{lst:settings-alt1.json} may work.
+
+		\begin{widepage}
+			\cmhlistingsfromfile{demonstrations/settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
+		\end{widepage}
+
+		If you have details of how to implement this schema in other editors, please feel
+		encouraged to contribute to this documentation.
+
+	\section{Using conda}\label{sec:app:conda}
+	 If you use conda you'll only need
+	 \begin{commandshell}
+conda install latexindent.pl -c conda-forge
+\end{commandshell}
+	 this will install the executable and all its dependencies (including perl) in the
+	 activate environment. You don't even have to worry about \texttt{defaultSettings.yaml} as
+	 it included too, you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
+	 \index{conda}
+
+	 You can get a conda installation for example from \cite{conda} or from \cite{anacoda}.
+
+	\subsection{Sample conda installation on Ubuntu}
+		On Ubuntu I followed the 64-bit installation instructions at \cite{condainstallubuntu}
+		and then I ran the following commands:
+		\begin{commandshell}
+conda create -n latexindent.pl
+conda activate latexindent.pl
+conda install latexindent.pl -c conda-forge
+conda info --envs
+conda list
+conda run latexindent.pl -vv
+\end{commandshell}
+		I found the details given at \cite{condainstallhelp} to be helpful.
+
+	\section{pre-commit}
+
+	 Users of \texttt{.git} may be interested \announce{2022-01-21}{pre-commit for
+	 latexindent.pl} in exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is
+	 supported by \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for
+	 contributing this feature.
+
+	 To use the \texttt{pre-commit} tool, you will need to install \texttt{pre-commit}; sample
+	 instructions for Ubuntu are given in \cref{sec:pre-commit-ubuntu}. Once installed, there
+	 are two ways to use \texttt{pre-commit}: using \texttt{CPAN} or using \texttt{conda},
+	 detailed in \cref{sec:pre-commit-cpan} and \cref{sec:pre-commit-conda} respectively.
+
+	\subsection{Sample pre-commit installation on Ubuntu}\label{sec:pre-commit-ubuntu}
+		On Ubuntu I ran the following command:
+		\begin{commandshell}
+python3 -m pip install pre-commit
+\end{commandshell}
+		I then updated my path via .bashrc so that it includes the line in
+		\cref{lst:bashrc-update}.
+		\begin{cmhlistings}*[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
+...
+export PATH=$PATH:/home/cmhughes/.local/bin
+\end{cmhlistings}
+
+	\subsection{pre-commit using CPAN}\label{sec:pre-commit-cpan}
+
+		To use \texttt{latexindent.pl} with \texttt{pre-commit}, create the file
+		\texttt{.pre-commit-config.yaml} given in \cref{lst:.pre-commit-config.yaml-cpan} in your
+		git-repository. \index{cpan} \index{git} \index{pre-commit!cpan}
+
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
+		Once created, you should then be able to run the following command:
+		\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+		A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
+		\begin{itemize}
+			\item the settings given in \cref{lst:.pre-commit-config.yaml-cpan} instruct
+			      \texttt{pre-commit} to use \texttt{CPAN} to get dependencies;
+			\item this requires \texttt{pre-commit} and \texttt{perl} to be installed on your system;
+			\item the \texttt{args} lists selected command-line options; the settings in
+			      \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+			      \begin{commandshell}
+latexindent.pl -s myfile.tex       
+\end{commandshell}
+			      for each \texttt{.tex} file in your repository;
+			\item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
+			      can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
+		\end{itemize}
+
+		Naturally you can add options, or omit \texttt{-s} and \texttt{-w}, according to your
+		preference.
+
+	\subsection{pre-commit using conda}\label{sec:pre-commit-conda}
+
+		You can also rely on \texttt{conda} (detailed in \cref{sec:app:conda}) instead of
+		\texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
+		\index{conda} \index{git} \index{pre-commit!conda}
+
+		\cmhlistingsfromfile{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
+		Once created, you should then be able to run the following command:
+		\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+		A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
+		\begin{itemize}
+			\item the settings given in \cref{lst:.pre-commit-config.yaml-conda} instruct
+			      \texttt{pre-commit} to use \texttt{conda} to get dependencies;
+			\item this requires \texttt{pre-commit} and \texttt{conda} to be installed on your system;
+			\item the \texttt{args} lists selected command-line options; the settings in
+			      \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+			      \begin{commandshell}
+conda run latexindent.pl -s myfile.tex       
+\end{commandshell}
+			      for each \texttt{.tex} file in your repository;
+			\item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
+			      can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
+		\end{itemize}
+
+	\subsection{pre-commit example using -l, -m switches}
+		Let's consider a small example, with local \texttt{latexindent.pl} settings in
+		\texttt{.latexindent.yaml}.
+
+		\begin{example}
+			We use the local settings given in \cref{lst:.latexindent.yaml}.
+			\begin{cmhlistings}*[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+onlyOneBackUp: 1
+
+modifyLineBreaks:
+ oneSentencePerLine:
+   manipulateSentences: 1
+\end{cmhlistings}
+
+			and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
+
+			\cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
+			Now running
+			\begin{commandshell}
+pre-commit run --all-files  
+\end{commandshell}
+			is equivalent to running
+			\begin{commandshell}
+latexindent.pl -l -m -s -w myfile.tex
+\end{commandshell}
+			for each \texttt{.tex} file in your repository.
+
+			A few notes about \cref{lst:.latexindent.yaml-switches}:
+			\begin{itemize}
+				\item the \texttt{-l} option was added to use the local \texttt{.latexindent.yaml} (where it
+				      was specified to only create one back-up file, as \texttt{git} typically takes care of
+				      this when you use \texttt{pre-commit});
+				\item \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line
+				      output, and \texttt{-w} to format files in place.
+			\end{itemize}
+		\end{example}
+
+	\section{logFilePreferences}\label{app:logfile-demo}
+	 \Vref{lst:logFilePreferences} describes the options for customising the information given
+	 to the log file, and we provide a few demonstrations here. Let's say that we start with
+	 the code given in \cref{lst:simple}, and the settings specified in
+	 \cref{lst:logfile-prefs1-yaml}.
+
+	 \begin{minipage}{.35\linewidth}
+		 \cmhlistingsfromfile{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
+	 \end{minipage}
+	 \hfill
+	 \begin{minipage}{.6\linewidth}
+		 \cmhlistingsfromfile{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
+	 \end{minipage}
+
+	 If we run the following command (noting that \texttt{-t} is active)
+	 \begin{commandshell}
+latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
+\end{commandshell}
+	 then on inspection of \texttt{indent.log} we will find the snippet given in
+	 \cref{lst:indentlog}.
+	 \begin{cmhlistings}[style=tcblatex,morekeywords={TRACE}]{\texttt{indent.log}}{lst:indentlog}
+       +++++
+TRACE: environment found: myenv
+       No ancestors found for myenv
+       Storing settings for myenvenvironments
+       indentRulesGlobal specified (0) for environments, ...
+       Using defaultIndent for myenv
+       Putting linebreak after replacementText for myenv
+       looking for COMMANDS and key = {value}
+TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
+       looking for SPECIAL begin/end
+TRACE: Searching myenv for special begin/end (see specialBeginEnd)
+TRACE: Searching myenv for optional and mandatory arguments
+       ... no arguments found
+       -----
+     \end{cmhlistings}
+	 Notice that the information given about \texttt{myenv} is `framed' using \texttt{+++++}
+	 and \lstinline!-----! respectively.
+
+	\section{Encoding indentconfig.yaml}\label{app:encoding}
+	 In relation to \vref{sec:indentconfig}, Windows users that encounter encoding issues with
+	 \texttt{indentconfig.yaml}, may wish to run the following command in either
+	 \texttt{cmd.exe} or \texttt{powershell.exe}:
+	 \begin{dosprompt}
+chcp
+    \end{dosprompt}
+	 They may receive the following result
+	 \begin{dosprompt}
+Active code page: 936
+    \end{dosprompt}
+	 and can then use the settings given in \cref{lst:indentconfig-encoding1} within their
+	 \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
+
+	 \cmhlistingsfromfile{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
+
+	\section{dos2unix linebreak adjustment}
+
+	\yamltitle{dos2unixlinebreaks}*{integer}
+		If you use \texttt{latexindent.pl} on a dos-based Windows file on Linux
+		\announce{2021-06-19}{dos2unix linebreaks} then you may find that trailing horizontal
+		space is not removed as you hope.
+
+		In such a case, you may wish to try setting \texttt{dos2unixlinebreaks} to 1 and
+		employing, for example, the following command.
+
+		\begin{commandshell}
+latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
+\end{commandshell}
+
+		See \cite{bersbersbers} for further dertails.
+
+	\section{Differences from Version 2.2 to 3.0}\label{app:differences}
+	 There are a few (small) changes to the interface when comparing Version 2.2 to Version
+	 3.0. Explicitly, in previous versions you might have run, for example,
+	 \index{switches!-o demonstration}
+	 \begin{commandshell}
+latexindent.pl -o myfile.tex outputfile.tex
+\end{commandshell}
+	 whereas in Version 3.0 you would run any of the following, for example,
+	 \index{switches!-o demonstration}
+	 \begin{commandshell}
+latexindent.pl -o=outputfile.tex myfile.tex
+latexindent.pl -o outputfile.tex myfile.tex
+latexindent.pl myfile.tex -o outputfile.tex 
+latexindent.pl myfile.tex -o=outputfile.tex 
+latexindent.pl myfile.tex -outputfile=outputfile.tex 
+latexindent.pl myfile.tex -outputfile outputfile.tex 
+\end{commandshell}
+	 noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
+
+	 The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
+	 \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
+
+	 There is a slight difference when specifying indentation after headings; specifically, we
+	 now write \texttt{indentAfterThisHeading} instead of \texttt{indent}. See
+	 \cref{lst:indentAfterThisHeadingOld,lst:indentAfterThisHeadingNew}
+
+	 \begin{minipage}{.45\textwidth}
+		 \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingOld.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
+	 \end{minipage}%
+	 \hfill
+	 \begin{minipage}{.45\textwidth}
+		 \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingNew.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
+	 \end{minipage}%
+
+	 To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you
+	 would write YAML as in \cref{lst:noAdditionalIndentOld}; as of Version 3.0, you would
+	 write YAML as in \cref{lst:indentAfterThisHeadingNew1} or, if you're using \texttt{-m}
+	 switch, \cref{lst:indentAfterThisHeadingNew2}. \index{specialBeginEnd!update to
+	 displaymath V3.0}
+
+	 \begin{minipage}{.45\textwidth}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentOld.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
+	 \end{minipage}%
+	 \hfill
+	 \begin{minipage}{.45\textwidth}
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
+
+		 \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew2}
+	 \end{minipage}%
+
+	 \mbox{}\hfill
+	 \begin{minipage}{.25\textwidth}
+		 \hrule
+
+		 \hfill\itshape End\\\mbox{}\hfill\mbox{}\rlap{\hfill\includegraphics{logo}}
+
+	 \end{minipage}

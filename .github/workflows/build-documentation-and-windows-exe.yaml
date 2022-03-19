@@ -32,10 +32,16 @@ jobs:
             github_release=$(echo ${{ github.ref }}|cut -d'/' -f 3)
             sed -i.bak s/\\\\gitAbbrevHash/$github_sha_short/ documentation/latexindent.tex
             sed -i.bak s/\\\\gitBranch/main/ documentation/latexindent.tex
-            sed -i.bak s/\\\\gitRel/$github_release/ documentation/latexindent.tex
+            sed -i.bak s/\\\\gitRel/$github_release/ documentation/*.tex
             sed -i.bak "s|\\\\gitAuthorDate|$(date +'%Y-%m-%d')|g" documentation/latexindent.tex
             cd documentation
-            arara -v latexindent.tex
+            #arara -v latexindent.tex
+            pdflatex latexindent
+            makeindex -s latexindent.ist -t latexindent.ilg latexindent.idx -o latexindent.ind
+            bibtex latexindent
+            pdflatex latexindent
+            pdflatex latexindent
+            pdflatex latexindent
             cd ..
             mkdir -p target/release
             mv documentation/latexindent.pdf target/release
@@ -112,6 +118,7 @@ jobs:
           cp documentation/*.tex latexindent/documentation/
           cp documentation/*.png latexindent/documentation/
           cp documentation/readme.txt latexindent/README
+          cp documentation/*.json latexindent/documentation/
       - name: downloading latexindent.exe
         uses: actions/download-artifact@master
         with:
@@ -123,10 +130,8 @@ jobs:
           name: latexindent.pdf
           path: latexindent/documentation/
       - name: creating latexindent.zip
-        uses: papeloto/action-zip@v1
-        with:
-          files: latexindent/
-          dest: latexindent.zip
+        run: |
+          zip -r latexindent.zip latexindent/
       # copy latexindent.zip to the release
       #
       # https://github.com/marketplace/actions/upload-files-to-a-github-release

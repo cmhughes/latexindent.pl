@@ -1,0 +1,13 @@
+verbatimEnvironments:
+    commandshell: 1
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           verbatim: 0
+        blocksEndBefore:
+           verbatim: 0
+    verbatim:
+        VerbatimBeginStartsOnOwnLine: 1
+        VerbatimEndFinishesWithLineBreak: 2

@@ -89,4 +89,4 @@ latexindent.pl -s issue-249.tex -o=+-mod0
 latexindent.pl -s issue-307.tex -o=+-mod0
 
 [[ $noisyMode == 1 ]] && makenoise
-git status
+[[ $gitStatus == 1 ]] && git status

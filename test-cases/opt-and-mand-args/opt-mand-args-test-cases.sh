@@ -43,6 +43,6 @@ do
     [[ $silentMode == 0 ]] && set +x 
 done
 latexindent.pl -s -m heart.tex -o=+-mod0 -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:-1"
-git status
+[[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
 exit

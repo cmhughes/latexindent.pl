@@ -1,16 +1,14 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 
-	You can instruct \texttt{latexindent.pl} to format%
-	\announce{2018-01-13}{one sentence per line} your file so that it puts one sentence per
-	line. Thank you to \cite{mlep} for helping to shape and test this feature. The behaviour
-	of this part of the script is controlled by the switches detailed in
-	\cref{lst:oneSentencePerLine}, all of which we discuss next.
-	\index{modifying linebreaks! by using one sentence per line}
-	\index{sentences!oneSentencePerLine}
-	\index{sentences!one sentence per line}
-	\index{regular expressions!lowercase alph a-z}
-	\index{regular expressions!uppercase alph A-Z}
+	You can instruct \texttt{latexindent.pl} to format \announce{2018-01-13}{one sentence per
+	line} your file so that it puts one sentence per line. Thank you to \cite{mlep} for
+	helping to shape and test this feature. The behaviour of this part of the script is
+	controlled by the switches detailed in \cref{lst:oneSentencePerLine}, all of which we
+	discuss next. \index{modifying linebreaks! by using one sentence per line}
+	\index{sentences!oneSentencePerLine} \index{sentences!one sentence per line}
+	\index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
+	A-Z}%
 
 	\cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
@@ -33,8 +31,7 @@
 
 	If we use the YAML files in
 	\cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	\index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
@@ -60,10 +57,8 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
 	\texttt{latexindent.pl} on how to define a sentence. From the perspective of
-	\texttt{latexindent.pl} a sentence must:
-	\index{sentences!follow}
-	\index{sentences!begin with}
-	\index{sentences!end with}
+	\texttt{latexindent.pl} a sentence must: \index{sentences!follow} \index{sentences!begin
+	with} \index{sentences!end with}
 	\begin{itemize}
 		\item \emph{follow} a certain character or set of characters (see
 		      \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a
@@ -92,10 +87,8 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 \subsubsection{sentencesFollow}
 	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
 	\vref{lst:multiple-sentences}, and use the YAML settings given in
-	\cref{lst:sentences-follow1-yaml}. Using the command
-	\index{sentences!follow}
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	\cref{lst:sentences-follow1-yaml}. Using the command \index{sentences!follow}
+	\index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
@@ -115,9 +108,8 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
-	Upon running the following commands
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+	demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
@@ -146,14 +138,12 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
 	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
 	case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
 	lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other}
-	field to define sentences to begin with other characters.
-	\index{sentences!begin with}
+	field to define sentences to begin with other characters. \index{sentences!begin with}
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
-	Upon running the following commands
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+	demonstration}
 	\begin{widepage}
 		\begin{commandshell}
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
@@ -184,16 +174,14 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
 	which \texttt{latexindent.pl} will operate on the sentences in this file in
 	\vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any
 	character that we wish; for example, using the YAML specified in
-	\cref{lst:sentences-end1-yaml} and the command
-	\index{sentences!end with}
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	\cref{lst:sentences-end1-yaml} and the command \index{sentences!end with}
+	\index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
 latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 \end{commandshell}
-	then we obtain the output in \cref{lst:multiple-sentences-mod4}.
-	\index{regular expressions!lowercase alph a-z}
+	then we obtain the output in \cref{lst:multiple-sentences-mod4}. \index{regular
+	expressions!lowercase alph a-z}
 
 	\begin{cmhtcbraster}
 		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
@@ -221,9 +209,8 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 
 	\cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
-	Upon running the following commands
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+	demonstration}
 	\begin{commandshell}
 latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
@@ -247,8 +234,7 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 
 	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it
 	does not accommodate the specifications above. For example, using the following command
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	\index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -267,15 +253,13 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the oneSentencePerLine routine}
-	The sentence manipulation routine takes place \emph{after} verbatim
-	\index{verbatim!in relation to oneSentencePerLine} environments, preamble and trailing comments have been
+	The sentence manipulation routine takes place \emph{after} verbatim \index{verbatim!in
+	relation to oneSentencePerLine} environments, preamble and trailing comments have been
 	accounted for; this means that any characters within these types of code blocks will not
 	be part of the sentence manipulation routine.
 
 	For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3},
-	and run the command
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 \end{commandshell}
@@ -285,8 +269,7 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 
 	Furthermore, if sentences run across environments then, by default, the line breaks
 	internal to the sentence will be removed. For example, if we use the \texttt{.tex} file
-	in \cref{lst:multiple-sentences4} and run the commands
-	\index{switches!-l demonstration}
+	in \cref{lst:multiple-sentences4} and run the commands \index{switches!-l demonstration}
 	\index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
@@ -302,9 +285,7 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 
 	Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
 	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
-	and the command
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	and the command \index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 \end{commandshell}
@@ -316,19 +297,16 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 	\end{cmhtcbraster}
 
 \subsubsection{Text wrapping and indenting sentences}
-	The \texttt{oneSentencePerLine}%
-	\announce{2018-08-13}{oneSentencePerline text wrap and indent} can be instructed to
-	perform text wrapping and indentation upon sentences.
-	\index{sentences!text wrapping}
-	\index{sentences!indenting}
+	The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
+	indent} can be instructed to perform text wrapping and indentation upon sentences.
+	\index{sentences!text wrapping} \index{sentences!indenting}%
 
 	Let's use the code in \cref{lst:multiple-sentences5}.
 
 	\cmhlistingsfromfile{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
 
 	Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	\index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
@@ -343,11 +321,6 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
 	\end{cmhtcbraster}
 
-	If you wish to specify the \texttt{columns} field on a per-code-block basis for
-	sentences, then you would use \texttt{sentence}; explicitly, starting with
-	\vref{lst:textwrap9-yaml}, for example, you would replace/append \texttt{environments}
-	with, for example, \texttt{sentence: 50}.
-
 	If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for
 	\texttt{columns} then the text wrapping will \emph{not} operate on sentences, and you
 	will see a warning in \texttt{indent.log}.
@@ -359,10 +332,8 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 	\cmhlistingsfromfile{demonstrations/multiple-sentences6.tex}{\texttt{multiple-sentences6.tex}}{lst:multiple-sentences6}
 
 	By default, \texttt{latexindent.pl} will find the full-stop within the first
-	\texttt{item}, which means that, upon running the following commands
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
-	\index{switches!-y demonstration}
+	\texttt{item}, which means that, upon running the following commands \index{switches!-l
+	demonstration} \index{switches!-m demonstration} \index{switches!-y demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml 
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
@@ -382,17 +353,14 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
 	We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
 	not followed by \texttt{item} commands, and that the end of sentences contains
 	\lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
-	ensure that you remove the line breaks from the \texttt{other} field).
-	\index{regular expressions!lowercase alph a-z}
-	\index{regular expressions!uppercase alph A-Z}
-	\index{regular expressions!numeric 0-9}
-	\index{regular expressions!horizontal space \textbackslash{h}}
+	ensure that you remove the line breaks from the \texttt{other} field). \index{regular
+	expressions!lowercase alph a-z} \index{regular expressions!uppercase alph A-Z}
+	\index{regular expressions!numeric 0-9} \index{regular expressions!horizontal space
+	\textbackslash{h}}
 
 	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
-	Upon running
-	\index{switches!-l demonstration}
-	\index{switches!-m demonstration}
+	Upon running \index{switches!-l demonstration} \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 \end{commandshell}

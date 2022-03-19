@@ -1,4 +1,8 @@
 modifyLineBreaks:
-    removeParagraphLineBreaks:
-        all: 0
-        environments: 1
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x)\\begin\{(?:quotation)\}
+        blocksBeginWith:
+           0-9: 1

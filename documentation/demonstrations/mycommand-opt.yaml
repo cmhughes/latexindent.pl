@@ -1,0 +1,8 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: -1
+        blocksFollow:
+           other: |-
+             (?x) \\mycommand\[
+        blocksEndBefore:
+           other: '\]'

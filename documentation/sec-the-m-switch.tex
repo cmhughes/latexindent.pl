@@ -2,9 +2,9 @@
 \renewcommand{\imagetouse}{logo}
 \section{The -m (modifylinebreaks) switch}\label{sec:modifylinebreaks}
  \fancyhead[R]{\bfseries\thepage%
-	 \tikz[remember picture,overlay] {
-		 \node at (1,0){\includegraphics{logo}};
-	 }}
+ \tikz[remember picture,overlay] {
+ \node at (1,0){\includegraphics{logo}};
+ }}
  All features described in this section will only be relevant if the \texttt{-m} switch is
  used.
 
@@ -13,21 +13,20 @@
 
 \yamltitle{modifylinebreaks}*{fields}
 	\makebox[0pt][r]{%
-		\raisebox{-\totalheight}[0pt][0pt]{%
-			\tikz\node[opacity=1] at (0,0)
-			{\includegraphics[width=4cm]{logo}};}}%	
+	\raisebox{-\totalheight}[0pt][0pt]{%
+	\tikz\node[opacity=1] at (0,0)
+	{\includegraphics[width=4cm]{logo}};}}%	
 	As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m} switch, which permits
 	\texttt{latexindent.pl} to modify line breaks, according to the specifications in the
 	\texttt{modifyLineBreaks} field. \emph{The settings in this field will only be considered
-		if the \texttt{-m} switch has been used}. A snippet of the default settings of this field
+	if the \texttt{-m} switch has been used}. A snippet of the default settings of this field
 	is shown in \cref{lst:modifylinebreaks}.
 
 	\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 
 	Having read the previous paragraph, it should sound reasonable that, if you call
 	\texttt{latexindent.pl} using the \texttt{-m} switch, then you give it permission to
-	modify line breaks in your file, but let's be clear:
-	\index{warning!the m switch}
+	modify line breaks in your file, but let's be clear: \index{warning!the m switch}
 
 	\begin{warning}
 		If you call \texttt{latexindent.pl} with the \texttt{-m} switch, then you are giving it
@@ -47,8 +46,7 @@
 	Assuming that this switch takes an integer value greater than \texttt{0},
 	\texttt{latexindent.pl} will condense multiple blank lines into the number of blank lines
 	illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file with
-	blank lines; upon running
-	\index{switches!-m demonstration}
+	blank lines; upon running \index{switches!-m demonstration}
 	\begin{commandshell}
 latexindent.pl myfile.tex -m -o=+-mod1 
 \end{commandshell}

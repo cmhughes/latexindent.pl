@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-#   latexindent.pl, version 3.13.2, 2021-11-15
+#   latexindent.pl, version 3.16, 2022-03-13
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ my %switches = (readLocalSettings=>0);
 
 GetOptions (
     "version|v"=>\$switches{version},
+    "vversion|vv"=>\$switches{vversion},
     "silent|s"=>\$switches{silentMode},
     "trace|t"=>\$switches{trace},
     "ttrace|tt"=>\$switches{ttrace},
@@ -38,6 +39,7 @@ GetOptions (
     "yaml|y=s"=>\$switches{yaml},
     "onlydefault|d"=>\$switches{onlyDefault},
     "overwrite|w"=>\$switches{overwrite},
+    "overwriteIfDifferent|wd"=>\$switches{overwriteIfDifferent},
     "outputfile|o=s"=>\$switches{outputToFile},
     "modifylinebreaks|m"=>\$switches{modifyLineBreaks},
     "logfile|g=s"=>\$switches{logFileName},
@@ -70,6 +72,6 @@ if($switches{readLocalSettings} and scalar(@ARGV) < 1) {
 # allow STDIN as input, if a filename is not present
 unshift( @ARGV, '-' ) unless @ARGV;
 
-my $document = bless ({name=>"mainDocument",modifyLineBreaksYamlName=>"mainDocument",fileName=>$ARGV[0],switches=>\%switches},"LatexIndent::Document");
-$document->latexindent;
+my $document = bless ({name=>"mainDocument",modifyLineBreaksYamlName=>"mainDocument",switches=>\%switches},"LatexIndent::Document");
+$document->latexindent( \@ARGV );
 exit(0);

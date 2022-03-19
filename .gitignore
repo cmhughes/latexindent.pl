@@ -15,6 +15,7 @@ documentation/*.blg
 documentation/figure-schematic.pdf
 documentation/*.idx
 documentation/*.ilg
+documentation/*.ind
 documentation/*.listing
 documentation/*.lol
 documentation/*.new
