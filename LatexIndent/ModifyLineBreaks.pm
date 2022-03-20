@@ -17,7 +17,6 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter qw/import/;
-use LatexIndent::AlignmentAtAmpersand qw/get_column_width/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;

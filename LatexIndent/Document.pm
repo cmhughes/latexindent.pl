@@ -18,7 +18,6 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Basename; # to get the filename and directory path
-use utf8;
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules

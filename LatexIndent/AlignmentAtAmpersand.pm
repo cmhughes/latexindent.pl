@@ -16,12 +16,11 @@ package LatexIndent::AlignmentAtAmpersand;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use utf8;
 use Data::Dumper;
 use Exporter qw/import/;
 use List::Util qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active %switches/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
@@ -37,6 +36,7 @@ our @maxColumnWidth;
 our @maxDelimiterWidth;
 
 sub find_aligned_block{
+
     my $self = shift;
 
     return unless (${$self}{body} =~ m/(?!<\\)%\*\h*\\begin\{/s);
@@ -1580,6 +1580,18 @@ sub draw_ruler_to_logfile{
 }
 
 sub get_column_width{
-    return length(Encode::decode('UTF-8', $_[0]));
+
+    my $stringToBeMeasured = $_[0];
+
+    # default length measurement
+    # credit/reference: https://perldoc.perl.org/perlunicook#%E2%84%9E-33:-String-length-in-graphemes
+    unless ($switches{GCString}){
+        my $count = 0;
+        while ($stringToBeMeasured =~ /\X/g) { $count++ }
+        return $count;
+    }
+
+    # if GCString actice, then use Unicode::GCString
+    return Unicode::GCString->new($stringToBeMeasured)->columns();
 }
 1;

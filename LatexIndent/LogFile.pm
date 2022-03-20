@@ -230,6 +230,8 @@ ENDQUOTE
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
         my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir');
+        push(@listOfModules,'Unicode::GCString') if $switches{GCString};
+
         $logger->info("*Perl modules are being loaded from the following directories:");
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;

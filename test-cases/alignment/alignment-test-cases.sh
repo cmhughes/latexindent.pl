@@ -260,6 +260,10 @@ latexindent.pl -s -w -l issue-326c.yaml issue-326c.tex
 latexindent.pl -s -w -l issue-326d.yaml issue-326d.tex
 latexindent.pl -s    -l issue-326d2.yaml issue-326d.tex -o +-mod2
 
+# optional loading of GCString testing
+latexindent.pl unicode-quick-brown.tex -s -o=+-no-GCString
+latexindent.pl unicode-quick-brown.tex -s --GCString -o=+-with-GCString
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
