@@ -14,8 +14,9 @@ oldVersion='3.15'
 newVersion='3.16'
 oldDate='2022-01-21'
 newDate='2022-03-13'
+updateVersion=0
 
-while getopts "hmv" OPTION
+while getopts "hmuv" OPTION
 do
  case $OPTION in 
   h)
@@ -26,6 +27,8 @@ ${0##*/} [OPTIONS]
     -h  help, outputs this message
 
     -m  minor version, not removing most recently updated stars from documentation
+
+    -u  update version
 
 Typical running order pre-release:
 
@@ -48,6 +51,10 @@ ____PLEH
    echo "minor version, not removing most recently updated stars from documentation..."
    minorVersion=1
    ;;
+  u)    
+   echo "update switch active"
+   updateVersion=1
+   ;;
   v)    
    echo "version details:"
    echo "old version details: $oldVersion, $oldDate"
@@ -64,19 +71,23 @@ done
 echo "old version details: $oldVersion, $oldDate"
 echo "NEW version details: $newVersion, $newDate"
 
+[[ $updateVersion == 0 ]] && echo "not updating, you can run 'update-version.sh -u' to do so" && exit 0
+
 cd ../
 cd documentation
 [[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 
 set -x
+
+# change \announce{new}{message} into \announce*{message}
+find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
+
 pdflatex --interaction=batchmode latexindent
 
 # update .rst
 perl documentation-default-settings-update.pl
 perl documentation-default-settings-update.pl -r
 
-# change \announce{new}{message} into \announce*{message}
-find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 set +x
 
 cd ../
@@ -112,6 +123,7 @@ done
 egrep -i --color=auto 'announce{new' documentation/*.tex
 
 # update changelog.md manually
+cat ../documentation/latexindent.new
 gedit documentation/changelog.md
 
 cat <<-____TXEN

@@ -45,9 +45,9 @@ latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml,i
 latexindent.pl -s more-code-blocks.tex -m -o=+mod1 -l=manipulateSentences.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 latexindent.pl -s more-code-blocks.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml,item.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 # webwork guide
-latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml,basic-full-stop.yaml
-latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop
-latexindent.pl -s webwork-guide -m -o=+mod2 -l=manipulateSentences.yaml,alt-full-stop,itemize
+latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml
+latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop,keepMultipleSpaces.yaml
+latexindent.pl -s webwork-guide -m -o=+mod2 -l=manipulateSentences.yaml,alt-full-stop,itemize,keepMultipleSpaces.yaml
 # trailing comments
 latexindent.pl -s trailing-comments -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s trailing-comments -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
@@ -65,8 +65,8 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do
     [[ $showCounter == 1 ]] && echo $i of $loopmax
     [[ $silentMode == 0 ]] && set -x 
-    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml
-    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod2 -l=manipulateSentences.yaml,item,pcc-program-review
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod2 -l=manipulateSentences.yaml,item,pcc-program-review,keepMultipleSpaces.yaml
     [[ $silentMode == 0 ]] && set +x 
 done
 

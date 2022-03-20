@@ -192,18 +192,19 @@ sub one_sentence_per_line{
                             my $trailing  = ($5?$5:q()).($6?$6:q()).($7?$7:q());
                             my $lineBreaksAtEnd = ($6? 1 : ($7?1:0) );
                             my $trailingComments = q();
-                            # remove trailing comments from within the body of the sentence
                             if (${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks}){
+                                # remove trailing comments from within the body of the sentence
                                 while($middle =~ m|$trailingCommentRegExp|){
                                     $middle =~ s|\h*($trailingCommentRegExp)||s;
                                     $trailingComments .= $1;
                                 }
+                                # remove line breaks from within a sentence
+                                $middle =~ s|
+                                                (?!\A)      # not at the *beginning* of a match
+                                                (\h*)\R     # possible horizontal space, then line break
+                                            |$1?$1:" ";|esgx 
                             }
-                            # remove line breaks from within a sentence
-                            $middle =~ s|
-                                            (?!\A)      # not at the *beginning* of a match
-                                            (\h*)\R     # possible horizontal space, then line break
-                                        |$1?$1:" ";|esgx if ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+                            $middle =~ s|\h{2,}| |sg if ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{multipleSpacesToSingle};
                             $middle =~ s|$tokens{blanklines}\h*\R?|$tokens{blanklines}\n|sg;
                             $logger->trace("follows: $beginning") if $is_tt_switch_active;
                             $logger->trace("sentence: $middle") if $is_tt_switch_active;

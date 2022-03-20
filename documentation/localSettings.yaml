@@ -71,7 +71,7 @@ modifyLineBreaks:
                 |
                 \\paragraph\{.*?\}\h*$
                 |
-                \\yamltitle\{.*?\}\*\{.*?\}\h*$
+                \\yamltitle\{.*?\}\*?\{.*?\}\h*$
                 |
                 \\cmhlistingsfromfile
         blocksBeginWith:

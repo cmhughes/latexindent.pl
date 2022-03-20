@@ -34,7 +34,7 @@ my @namesAndOffsets = (
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
                         {name=>"textWrapOptionsAll",numberOfLines=>22,special=>"textWrapOptions"},
-                        {name=>"oneSentencePerLine",numberOfLines=>23},
+                        {name=>"oneSentencePerLine",numberOfLines=>24},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
