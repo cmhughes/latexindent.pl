@@ -75,9 +75,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 518-540
+ 	:lines: 519-541
  	:linenos:
- 	:lineno-start: 518
+ 	:lineno-start: 519
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -691,7 +691,7 @@ script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 494-517
+ 	:lines: 494-518
  	:linenos:
  	:lineno-start: 494
 
@@ -751,6 +751,10 @@ then we obtain the respective output given in :numref:`lst:multiple-sentences-mo
 Notice, in particular, that the ‘internal’ sentence line breaks in :numref:`lst:multiple-sentences` have been removed in :numref:`lst:multiple-sentences-mod1`, but have not been removed in
 :numref:`lst:multiple-sentences-mod2`.
 
+.. describe:: multipleSpacesToSingle:0|1
+
+By default, the one-sentence-per-line routine will convert multiple spaces into single spaces. You can change this behaviour by changing the switch ``multipleSpacesToSingle`` to a value of ``0``.
+
 The remainder of the settings displayed in :numref:`lst:oneSentencePerLine` instruct ``latexindent.pl`` on how to define a sentence. From the perspective of ``latexindent.pl`` a sentence must:
 
 .. index:: sentences;follow
@@ -776,25 +780,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 499-507
+ 	:lines: 500-508
  	:linenos:
- 	:lineno-start: 499
+ 	:lineno-start: 500
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 508-511
+ 	:lines: 509-512
  	:linenos:
- 	:lineno-start: 508
+ 	:lineno-start: 509
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 512-517
+ 	:lines: 513-518
  	:linenos:
- 	:lineno-start: 512
+ 	:lineno-start: 513
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1282,9 +1286,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 542-551
+ 	:lines: 543-552
  	:linenos:
- 	:lineno-start: 542
+ 	:lineno-start: 543
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
 :numref:`lst:environments-mlb`.

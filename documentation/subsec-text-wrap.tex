@@ -1,12 +1,12 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsection{Text Wrapping}\label{subsec:textwrapping}
-	\announce*{2022-03-13}{text wrap overhaul}\emph{The text wrapping routine has been over-hauled as
+	\announce{2022-03-13}{text wrap overhaul}\emph{The text wrapping routine has been over-hauled as
 	of V3.16; I hope that the interface is simpler, and most importantly, the results are
 	better}.
 
 	The complete settings for this feature are given in \cref{lst:textWrapOptionsAll}.
 
-	\cmhlistingsfromfile*[style=textWrapOptionsAll]{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
+	\cmhlistingsfromfile[style=textWrapOptionsAll]{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{textWrapOptions}}{lst:textWrapOptionsAll}
 
 \subsubsection{Text wrap: overview}
 	An overview of how the text wrapping feature works:
@@ -37,7 +37,7 @@
 	\begin{example}
 		Let's use the sample text given in \cref{lst:textwrap1}. \index{text wrap!quick start}
 
-		\cmhlistingsfromfile*{demonstrations/textwrap1.tex}{\texttt{textwrap1.tex}}{lst:textwrap1}
+		\cmhlistingsfromfile{demonstrations/textwrap1.tex}{\texttt{textwrap1.tex}}{lst:textwrap1}
 
 		We will change the value of \texttt{columns} in \cref{lst:textwrap1-yaml} and then run
 		the command
@@ -47,8 +47,8 @@ latexindent.pl -m -l textwrap1.yaml textwrap1.tex
 		then we receive the output given in \cref{lst:textwrap1-mod1}.
 
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-			\cmhlistingsfromfile*{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
-			\cmhlistingsfromfile*{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
+			\cmhlistingsfromfile{demonstrations/textwrap1-mod1.tex}{\texttt{textwrap1-mod1.tex}}{lst:textwrap1-mod1}
+			\cmhlistingsfromfile{demonstrations/textwrap1.yaml}[MLB-TCB]{\texttt{textwrap1.yaml}}{lst:textwrap1-yaml}
 		\end{cmhtcbraster}
 	\end{example}
 
@@ -60,7 +60,7 @@ latexindent.pl -m -l textwrap1.yaml textwrap1.tex
 		Starting from the file in \cref{lst:textwrap1-mod1} and using the settings in
 		\cref{lst:textwrap1A-yaml}
 
-		\cmhlistingsfromfile*{demonstrations/textwrap1A.yaml}[MLB-TCB]{\texttt{textwrap1A.yaml}}{lst:textwrap1A-yaml}
+		\cmhlistingsfromfile{demonstrations/textwrap1A.yaml}[MLB-TCB]{\texttt{textwrap1A.yaml}}{lst:textwrap1A-yaml}
 
 		and running
 		\begin{commandshell}
@@ -68,7 +68,7 @@ latexindent.pl -m -l textwrap1A.yaml textwrap1-mod1.tex
 \end{commandshell}
 		gives the output in \cref{lst:textwrap1-mod1A}.
 
-		\cmhlistingsfromfile*{demonstrations/textwrap1-mod1A.tex}{\texttt{textwrap1-mod1A.tex}}{lst:textwrap1-mod1A}
+		\cmhlistingsfromfile{demonstrations/textwrap1-mod1A.tex}{\texttt{textwrap1-mod1A.tex}}{lst:textwrap1-mod1A}
 	\end{example}
 
 	\begin{example}
@@ -82,8 +82,8 @@ latexindent.pl -m -l textwrap1B.yaml textwrap1-mod1.tex
 \end{commandshell}
 		gives the output in \cref{lst:textwrap1-mod1B}.
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-			\cmhlistingsfromfile*{demonstrations/textwrap1B.yaml}[MLB-TCB]{\texttt{textwrap1B.yaml}}{lst:textwrap1B-yaml}
-			\cmhlistingsfromfile*[showspaces=true]{demonstrations/textwrap1-mod1B.tex}{\texttt{textwrap1-mod1B.tex}}{lst:textwrap1-mod1B}
+			\cmhlistingsfromfile{demonstrations/textwrap1B.yaml}[MLB-TCB]{\texttt{textwrap1B.yaml}}{lst:textwrap1B-yaml}
+			\cmhlistingsfromfile[showspaces=true]{demonstrations/textwrap1-mod1B.tex}{\texttt{textwrap1-mod1B.tex}}{lst:textwrap1-mod1B}
 		\end{cmhtcbraster}
 		We note that in \cref{lst:textwrap1-mod1B} the multiple spaces have \emph{not} been condensed into single spaces.
 	\end{example}
@@ -96,7 +96,7 @@ latexindent.pl -m -l textwrap1B.yaml textwrap1-mod1.tex
 		Let's use the sample text given in \cref{lst:tw-headings1}. \index{text
 		wrap!blocksFollow!headings}
 
-		\cmhlistingsfromfile*{demonstrations/tw-headings1.tex}{\texttt{tw-headings1.tex}}{lst:tw-headings1}
+		\cmhlistingsfromfile{demonstrations/tw-headings1.tex}{\texttt{tw-headings1.tex}}{lst:tw-headings1}
 
 		We note that \cref{lst:tw-headings1} contains the heading commands \texttt{section} and
 		\texttt{subsection}. Upon running the command
@@ -105,7 +105,7 @@ latexindent.pl -m -l textwrap1.yaml tw-headings1.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-headings1-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/tw-headings1-mod1.tex}{\texttt{tw-headings1-mod1.tex}}{lst:tw-headings1-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-headings1-mod1.tex}{\texttt{tw-headings1-mod1.tex}}{lst:tw-headings1-mod1}
 
 		We reference \vref{lst:textWrapOptionsAll} and also \vref{lst:indentAfterHeadings}:
 		\begin{itemize}
@@ -128,8 +128,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-headings.yaml tw-headings1.tex
 				raster left skip=-3.5cm,
 				raster right skip=-2cm,
 			]
-			\cmhlistingsfromfile*{demonstrations/bf-no-headings.yaml}[MLB-TCB]{\texttt{bf-no-headings.yaml}}{lst:bf-no-headings-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-headings1-mod2.tex}{\texttt{tw-headings1-mod2.tex}}{lst:tw-headings1-mod2}
+			\cmhlistingsfromfile{demonstrations/bf-no-headings.yaml}[MLB-TCB]{\texttt{bf-no-headings.yaml}}{lst:bf-no-headings-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-headings1-mod2.tex}{\texttt{tw-headings1-mod2.tex}}{lst:tw-headings1-mod2}
 		\end{cmhtcbraster}
 	\end{example}
 
@@ -137,7 +137,7 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-headings.yaml tw-headings1.tex
 		Let's use the sample text given in \cref{lst:tw-comments1}. \index{text
 		wrap!blocksFollow!comments}
 
-		\cmhlistingsfromfile*{demonstrations/tw-comments1.tex}{\texttt{tw-comments1.tex}}{lst:tw-comments1}
+		\cmhlistingsfromfile{demonstrations/tw-comments1.tex}{\texttt{tw-comments1.tex}}{lst:tw-comments1}
 
 		We note that \cref{lst:tw-comments1} contains trailing comments. Upon running the command
 		\begin{commandshell}
@@ -145,7 +145,7 @@ latexindent.pl -m -l textwrap1.yaml tw-comments1.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-comments1-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/tw-comments1-mod1.tex}{\texttt{tw-comments1-mod1.tex}}{lst:tw-comments1-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-comments1-mod1.tex}{\texttt{tw-comments1-mod1.tex}}{lst:tw-comments1-mod1}
 
 		With reference to \vref{lst:textWrapOptionsAll} the \texttt{commentOnPreviousLine} field
 		is set to \texttt{1}, which instructs \texttt{latexindent.pl} to find text wrap blocks
@@ -161,8 +161,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-comments.yaml tw-comments1.tex
 				raster left skip=-3.5cm,
 				raster right skip=-2cm,
 			]
-			\cmhlistingsfromfile*{demonstrations/bf-no-comments.yaml}[MLB-TCB]{\texttt{bf-no-comments.yaml}}{lst:bf-no-comments-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-comments1-mod2.tex}{\texttt{tw-comments1-mod2.tex}}{lst:tw-comments1-mod2}
+			\cmhlistingsfromfile{demonstrations/bf-no-comments.yaml}[MLB-TCB]{\texttt{bf-no-comments.yaml}}{lst:bf-no-comments-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-comments1-mod2.tex}{\texttt{tw-comments1-mod2.tex}}{lst:tw-comments1-mod2}
 		\end{cmhtcbraster}
 	\end{example}
 
@@ -180,7 +180,7 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-comments.yaml tw-comments1.tex
 		Let's use the sample text given in \cref{lst:tw-disp-math1}. \index{text
 		wrap!blocksFollow!other} \index{regular expressions!text wrap!blocksFollow}
 
-		\cmhlistingsfromfile*{demonstrations/tw-disp-math1.tex}{\texttt{tw-disp-math1.tex}}{lst:tw-disp-math1}
+		\cmhlistingsfromfile{demonstrations/tw-disp-math1.tex}{\texttt{tw-disp-math1.tex}}{lst:tw-disp-math1}
 
 		We note that \cref{lst:tw-disp-math1} contains display math. Upon running the command
 		\begin{commandshell}
@@ -188,7 +188,7 @@ latexindent.pl -m -l textwrap1.yaml tw-disp-math1.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-disp-math1-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/tw-disp-math1-mod1.tex}{\texttt{tw-disp-math1-mod1.tex}}{lst:tw-disp-math1-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-disp-math1-mod1.tex}{\texttt{tw-disp-math1-mod1.tex}}{lst:tw-disp-math1-mod1}
 
 		With reference to \vref{lst:textWrapOptionsAll} the \texttt{other} field is set to
 		\lstinline!\\\]!, which instructs \texttt{latexindent.pl} to find text wrap blocks after
@@ -203,8 +203,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex
 		gives the output in \cref{lst:tw-disp-math1-mod2}, in which text wrapping has been
 		instructed \emph{not to happen} following display math.
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth]
-			\cmhlistingsfromfile*{demonstrations/bf-no-disp-math.yaml}[MLB-TCB]{\texttt{bf-no-disp-math.yaml}}{lst:bf-no-disp-math-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-disp-math1-mod2.tex}{\texttt{tw-disp-math1-mod2.tex}}{lst:tw-disp-math1-mod2}
+			\cmhlistingsfromfile{demonstrations/bf-no-disp-math.yaml}[MLB-TCB]{\texttt{bf-no-disp-math.yaml}}{lst:bf-no-disp-math-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-disp-math1-mod2.tex}{\texttt{tw-disp-math1-mod2.tex}}{lst:tw-disp-math1-mod2}
 		\end{cmhtcbraster}
 
 		Naturally, you should feel encouraged to customise this as you see fit.
@@ -219,7 +219,7 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex
 		Let's use the sample text given in \cref{lst:tw-bf-myenv1}. \index{text
 		wrap!blocksFollow!other} \index{regular expressions!text wrap!blocksFollow}
 
-		\cmhlistingsfromfile*{demonstrations/tw-bf-myenv1.tex}{\texttt{tw-bf-myenv1.tex}}{lst:tw-bf-myenv1}
+		\cmhlistingsfromfile{demonstrations/tw-bf-myenv1.tex}{\texttt{tw-bf-myenv1.tex}}{lst:tw-bf-myenv1}
 
 		We note that \cref{lst:tw-bf-myenv1} contains \texttt{myenv} environment. Upon running
 		the command
@@ -228,7 +228,7 @@ latexindent.pl -m -l textwrap1.yaml tw-bf-myenv1.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-bf-myenv1-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/tw-bf-myenv1-mod1.tex}{\texttt{tw-bf-myenv1-mod1.tex}}{lst:tw-bf-myenv1-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-bf-myenv1-mod1.tex}{\texttt{tw-bf-myenv1-mod1.tex}}{lst:tw-bf-myenv1-mod1}
 
 		We note that we have \emph{not} received much text wrapping. We can turn do better by
 		employing \cref{lst:tw-bf-myenv-yaml} and then run
@@ -241,8 +241,8 @@ latexindent.pl -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex
 				raster left skip=-3.5cm,
 				raster right skip=-2cm,
 			]
-			\cmhlistingsfromfile*{demonstrations/tw-bf-myenv.yaml}[MLB-TCB]{\texttt{tw-bf-myenv.yaml}}{lst:tw-bf-myenv-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-bf-myenv1-mod2.tex}{\texttt{tw-bf-myenv1-mod2.tex}}{lst:tw-bf-myenv1-mod2}
+			\cmhlistingsfromfile{demonstrations/tw-bf-myenv.yaml}[MLB-TCB]{\texttt{tw-bf-myenv.yaml}}{lst:tw-bf-myenv-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-bf-myenv1-mod2.tex}{\texttt{tw-bf-myenv1-mod2.tex}}{lst:tw-bf-myenv1-mod2}
 		\end{cmhtcbraster}
 
 	\end{example}
@@ -255,14 +255,14 @@ latexindent.pl -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex
 		By default, text wrap blocks can begin with the characters \texttt{a-z} and \texttt{A-Z}.
 
 		If we start with the file given in \cref{lst:tw-0-9}
-		\cmhlistingsfromfile*{demonstrations/tw-0-9.tex}{\texttt{tw-0-9.tex}}{lst:tw-0-9}
+		\cmhlistingsfromfile{demonstrations/tw-0-9.tex}{\texttt{tw-0-9.tex}}{lst:tw-0-9}
 		and run the command
 		\begin{commandshell}
 latexindent.pl -m -l textwrap1.yaml tw-0-9.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-0-9-mod1} in which text wrapping has
 		\emph{not} occured.
-		\cmhlistingsfromfile*{demonstrations/tw-0-9-mod1.tex}{\texttt{tw-0-9-mod1.tex}}{lst:tw-0-9-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-0-9-mod1.tex}{\texttt{tw-0-9-mod1.tex}}{lst:tw-0-9-mod1}
 
 		We can allow paragraphs to begin with \texttt{0-9} characters by using the settings in
 		\cref{lst:bb-0-9-yaml} and running
@@ -271,14 +271,14 @@ latexindent.pl -m -l textwrap1.yaml,bb-0-9-yaml tw-0-9.tex
 \end{commandshell}
 		gives the output in \cref{lst:tw-0-9-mod2}, in which text wrapping \emph{has} happened.
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth,]
-			\cmhlistingsfromfile*{demonstrations/bb-0-9.yaml}[MLB-TCB]{\texttt{bb-0-9.yaml.yaml}}{lst:bb-0-9-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-0-9-mod2.tex}{\texttt{tw-0-9-mod2.tex}}{lst:tw-0-9-mod2}
+			\cmhlistingsfromfile{demonstrations/bb-0-9.yaml}[MLB-TCB]{\texttt{bb-0-9.yaml.yaml}}{lst:bb-0-9-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-0-9-mod2.tex}{\texttt{tw-0-9-mod2.tex}}{lst:tw-0-9-mod2}
 		\end{cmhtcbraster}
 	\end{example}
 
 	\begin{example}
 		Let's now use the file given in \cref{lst:tw-bb-announce1}
-		\cmhlistingsfromfile*{demonstrations/tw-bb-announce1.tex}{\texttt{tw-bb-announce1.tex}}{lst:tw-bb-announce1}
+		\cmhlistingsfromfile{demonstrations/tw-bb-announce1.tex}{\texttt{tw-bb-announce1.tex}}{lst:tw-bb-announce1}
 		and run the command
 		\begin{commandshell}
 latexindent.pl -m -l textwrap1.yaml tw-bb-announce1.tex
@@ -286,7 +286,7 @@ latexindent.pl -m -l textwrap1.yaml tw-bb-announce1.tex
 		then we receive the output given in \cref{lst:tw-bb-announce1-mod1} in which text
 		wrapping has \emph{not} occured.
 
-		\cmhlistingsfromfile*{demonstrations/tw-bb-announce1-mod1.tex}{\texttt{tw-bb-announce1-mod1.tex}}{lst:tw-bb-announce1-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-bb-announce1-mod1.tex}{\texttt{tw-bb-announce1-mod1.tex}}{lst:tw-bb-announce1-mod1}
 
 		We can allow \lstinline!\announce! to be at the beginning of paragraphs by using the
 		settings in \cref{lst:tw-bb-announce-yaml} and running
@@ -298,8 +298,8 @@ latexindent.pl -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex
 		gives the output in \cref{lst:tw-bb-announce1-mod2}, in which text wrapping \emph{has}
 		happened.
 		\begin{cmhtcbraster}[raster column skip=.1\linewidth,]
-			\cmhlistingsfromfile*{demonstrations/tw-bb-announce.yaml}[MLB-TCB]{\texttt{tw-bb-announce.yaml}}{lst:tw-bb-announce-yaml}
-			\cmhlistingsfromfile*{demonstrations/tw-bb-announce1-mod2.tex}{\texttt{tw-bb-announce1-mod2.tex}}{lst:tw-bb-announce1-mod2}
+			\cmhlistingsfromfile{demonstrations/tw-bb-announce.yaml}[MLB-TCB]{\texttt{tw-bb-announce.yaml}}{lst:tw-bb-announce-yaml}
+			\cmhlistingsfromfile{demonstrations/tw-bb-announce1-mod2.tex}{\texttt{tw-bb-announce1-mod2.tex}}{lst:tw-bb-announce1-mod2}
 		\end{cmhtcbraster}
 
 	\end{example}
@@ -312,7 +312,7 @@ latexindent.pl -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex
 		Let's use the sample text given in \cref{lst:tw-be-equation}. \index{text
 		wrap!blocksFollow!other} \index{regular expressions!text wrap!blocksFollow}
 
-		\cmhlistingsfromfile*{demonstrations/tw-be-equation.tex}{\texttt{tw-be-equation.tex}}{lst:tw-be-equation}
+		\cmhlistingsfromfile{demonstrations/tw-be-equation.tex}{\texttt{tw-be-equation.tex}}{lst:tw-be-equation}
 
 		We note that \cref{lst:tw-be-equation} contains an environment. Upon running the command
 		\begin{commandshell}
@@ -320,7 +320,7 @@ latexindent.pl -m -l textwrap1A.yaml tw-be-equation.tex
 \end{commandshell}
 		then we receive the output given in \cref{lst:tw-be-equation-mod1}.
 
-		\cmhlistingsfromfile*{demonstrations/tw-be-equation-mod1.tex}{\texttt{tw-be-equation-mod1.tex}}{lst:tw-be-equation-mod1}
+		\cmhlistingsfromfile{demonstrations/tw-be-equation-mod1.tex}{\texttt{tw-be-equation-mod1.tex}}{lst:tw-be-equation-mod1}
 
 		With reference to \vref{lst:textWrapOptionsAll} the \texttt{other} field is set to
 		\lstinline!\\begin\{|\\\[|\\end\{!, which instructs \texttt{latexindent.pl} to
@@ -336,10 +336,10 @@ latexindent.pl -m -l textwrap1A.yaml,tw-be-equation.yaml tw-be-equation.tex
 		gives the output in \cref{lst:tw-be-equation-mod2}, in which text wrapping has been
 		instructed \emph{not} to stop at these statements.
 
-		\cmhlistingsfromfile*{demonstrations/tw-be-equation.yaml}[MLB-TCB]{\texttt{tw-be-equation.yaml}}{lst:tw-be-equation-yaml}
+		\cmhlistingsfromfile{demonstrations/tw-be-equation.yaml}[MLB-TCB]{\texttt{tw-be-equation.yaml}}{lst:tw-be-equation-yaml}
 
 		\begin{widepage}
-			\cmhlistingsfromfile*{demonstrations/tw-be-equation-mod2.tex}{\texttt{tw-be-equation-mod2.tex}}{lst:tw-be-equation-mod2}
+			\cmhlistingsfromfile{demonstrations/tw-be-equation-mod2.tex}{\texttt{tw-be-equation-mod2.tex}}{lst:tw-be-equation-mod2}
 		\end{widepage}
 
 		Naturally, you should feel encouraged to customise this as you see fit.

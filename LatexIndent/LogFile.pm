@@ -184,6 +184,7 @@ ENDQUOTE
     $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if($switches{check});
     $logger->info("-kv|--check mode verbose: as in check mode, but outputs diff to screen") if($switches{checkverbose});
     $logger->info("-n|--lines mode: will only operate on specific lines $switches{lines}") if($switches{lines});
+    $logger->info("--GCString switch active, loading Unicode::GCString module") if($switches{GCString});
 
     # check if overwrite and outputfile are active similtaneously
     if($switches{overwrite} and $switches{outputToFile}){

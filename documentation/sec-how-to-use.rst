@@ -551,6 +551,18 @@ The ``lines`` switch instructs ``latexindent.pl`` to operate only on specific li
 
 Complete demonstrations are given in :numref:`sec:line-switch`.
 
+.. describe:: –GCString
+
+.. index:: switches;–GCString
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl --GCString myfile.tex
+
+instructs ``latexindent.pl`` to load the ``Unicode::GCString`` module. This should only be necessary if you find that the alignment at ampersand routine (described in
+:numref:`subsec:align-at-delimiters`) does not work for your language. Further details are given in :numref:`subsec:the-GCString`.
+
 .. label follows
 
 .. _sec:arara:

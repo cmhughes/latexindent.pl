@@ -93,7 +93,7 @@ sudo apt install texlive-extra-utils
 sudo pacman -S perl cpanminus
 \end{commandshell}
 			then run the latexindent-module-installer.pl file located at helper-scripts/
-		
+
 		\paragraph{Alpine}
 			If you are using Alpine, some \texttt{Perl} modules are not build-compatible with Alpine,
 			but replacements are available through \texttt{apk}. For example, you might use the
@@ -153,7 +153,7 @@ latexindent.exe -t myfile.tex
 
 	\subsection{The GCString switch}\label{subsec:the-GCString}
 		If you find that the \texttt{lookForAlignDelims} (as in \cref{subsec:align-at-delimiters}) does not work correctly
-		for your language, then you may with to use the \texttt{Unicode::GCString} module \announce{new}{Unicode::GCString}.
+		for your language, then you may with to use the \texttt{Unicode::GCString} module \announce*{2022-03-25}{Unicode::GCString}.
 		\index{perl!Unicode GCString module}
 		\index{switches!--GCString demonstration}
 
@@ -233,8 +233,8 @@ echo %path%
 
 	\section{Batches of files}\label{sec:batches}
 
-	 You can \announce{new}{batches of files details} instruct \texttt{latexindent.pl} to
-	 operate on multiple files. For example, the following calls are all valid
+	 You can \announce*{2022-03-25}{batches of files details} instruct \texttt{latexindent.pl}
+	 to operate on multiple files. For example, the following calls are all valid
 	 \begin{commandshell}
 latexindent.pl myfile1.tex          
 latexindent.pl myfile1.tex myfile2.tex
@@ -406,7 +406,7 @@ python3 -m pip install pre-commit
 \end{commandshell}
 		I then updated my path via .bashrc so that it includes the line in
 		\cref{lst:bashrc-update}.
-		\begin{cmhlistings}*[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
+		\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
 ...
 export PATH=$PATH:/home/cmhughes/.local/bin
 \end{cmhlistings}
@@ -472,7 +472,7 @@ conda run latexindent.pl -s myfile.tex
 
 		\begin{example}
 			We use the local settings given in \cref{lst:.latexindent.yaml}.
-			\begin{cmhlistings}*[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+			\begin{cmhlistings}[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
 onlyOneBackUp: 1
 
 modifyLineBreaks:

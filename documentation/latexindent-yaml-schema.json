@@ -2,7 +2,7 @@
     "$schema": "http://json-schema.org/schema",
     "$id": "latexindent-yaml-schema.json",
     "title": "latexindent.pl YAML schema",
-    "description": "latexindent.pl YAML schema helper, V3.16 2022-03-13",
+    "description": "latexindent.pl YAML schema helper, V3.17 2022-03-25",
     "type": "object",
     "properties": {
       "fileExtensionPreference": {

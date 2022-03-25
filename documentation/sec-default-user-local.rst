@@ -394,6 +394,10 @@ feature.
 You can specify ``removeTrailingWhitespace`` simply as ``0`` or ``1``, if you wish; in this case, ``latexindent.pl`` will set both ``beforeProcessing`` and ``afterProcessing`` to the value you
 specify; see :numref:`lst:removeTrailingWhitespace-alt`.
 
+.. label follows
+
+.. _subsec:align-at-delimiters:
+
 Aligning at delimiters
 ----------------------
 

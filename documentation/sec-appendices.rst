@@ -20,9 +20,7 @@ If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone
 
    use strict;
    use warnings;
-   use utf8;
    use PerlIO::encoding;
-   use Unicode::GCString;
    use open ':std', ':encoding(UTF-8)';
    use Text::Wrap;
    use Text::Tabs;
@@ -87,7 +85,6 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
    cpanm File::HomeDir
-   cpanm Unicode::GCString
 
 .. index:: cpan
 
@@ -103,7 +100,6 @@ For other distributions, the Ubuntu/Debian approach may work as follows
    sudo cpan -i App::cpanminus
    sudo cpanm YAML::Tiny
    sudo cpanm File::HomeDir
-   sudo cpanm Unicode::GCString
 
 or else by running, for example,
 
@@ -130,6 +126,18 @@ may need the following additional command to work with ``latexindent.pl``
 
    sudo apt install texlive-extra-utils 
 
+Arch-based distributions
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+First install the dependencies
+
+.. code-block:: latex
+   :class: .commandshell
+
+   sudo pacman -S perl cpanminus
+
+then run the latexindent-module-installer.pl file located at helper-scripts/
+
 Alpine
 ^^^^^^
 
@@ -140,6 +148,7 @@ If you are using Alpine, some ``Perl`` modules are not build-compatible with Alp
    :caption: ``alpine-install.sh`` 
    :name: lst:alpine-install
 
+           
    # Installing perl
    apk --no-cache add miniperl perl-utils
 
@@ -160,7 +169,6 @@ If you are using Alpine, some ``Perl`` modules are not build-compatible with Alp
    cpanm -n File::HomeDir
    cpanm -n Params::ValidationCompiler
    cpanm -n YAML::Tiny
-   cpanm -n Unicode::GCString
 
 Users of NixOS might like to see https://github.com/cmhughes/latexindent.pl/issues/222 for tips.
 
@@ -177,7 +185,6 @@ Users of the Macintosh operating system might like to explore the following comm
 
    cpanm YAML::Tiny
    cpanm File::HomeDir
-   cpanm Unicode::GCString
 
 Windows
 ~~~~~~~
@@ -188,6 +195,36 @@ Strawberry Perl users on Windows might use ``CPAN client``. All of the modules a
 and caches copies of the Perl modules onto your system; if you wish to see where they are cached, use the ``trace`` option, e.g
 
 latexindent.exe -t myfile.tex
+
+.. label follows
+
+.. _subsec:the-GCString:
+
+The GCString switch
+~~~~~~~~~~~~~~~~~~~
+
+If you find that the ``lookForAlignDelims`` (as in :numref:`subsec:align-at-delimiters`) does not work correctly for your language, then you may with to use the ``Unicode::GCString`` module .
+
+.. index:: perl;Unicode GCString module
+
+.. index:: switches;–GCString demonstration
+
+This can be loaded by calling ``latexindent.pl`` with the ``GCString`` switch as in
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl --GCString myfile.tex
+
+In this case, you will need to have the ``Unicode::GCString`` installed in your ``perl`` distribution by using, for example,
+
+.. code-block:: latex
+   :class: .commandshell
+
+   cpanm YAML::Tiny
+
+Note: this switch does *nothing* for ``latexindent.exe`` which loads the module by default. Users of ``latexindent.exe`` should not see any difference in behaviour whether they use this switch or not,
+as ``latexindent.exe`` loads the ``Unicode::GCString`` module.
 
 .. label follows
 

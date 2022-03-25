@@ -1,11 +1,12 @@
 # changelog.md
 
-UPDATE-CMH-UPDATE-CMH-UPDATE-CMH-UPDATE-CMH
+## V3.17, March 25, 2022
 
 * batches of files now supported, [issue 332](https://github.com/cmhughes/latexindent.pl/issues/332)
 * `-wd` switch which means 'overwrite if different'; similar to the `-w` switch, but will only activate 
 the overwrite and back-up file procedure if the indented text is different from the original
 * `multipleSpacesToSingle` feature for `oneSentencePerLine`
+* `--GCString` switch available to *optionally* load the `Unicode::GCString` module, [issue 303](https://github.com/cmhughes/latexindent.pl/issues/303)
 
 ## V3.16, March 13, 2022
 * text wrap overhaul, [issue 346](https://github.com/cmhughes/latexindent.pl/issues/346)
