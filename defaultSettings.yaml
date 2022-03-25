@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.16, 2022-03-13
+# defaultSettings.yaml for latexindent.pl, version 3.17, 2022-03-25
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -494,6 +494,7 @@ modifyLineBreaks:
     oneSentencePerLine:
         manipulateSentences: 0
         removeSentenceLineBreaks: 1
+        multipleSpacesToSingle: 1
         textWrapSentences: 0   # setting to 1 disables main textWrap routine
         sentenceIndent: ""
         sentencesFollow:

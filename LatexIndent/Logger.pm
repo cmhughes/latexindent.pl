@@ -26,6 +26,7 @@ our @logFileLines;
 sub info{
     my $self = shift;
     my $logfileline = shift;
+    return unless (defined $logfileline); 
     if ($logfileline =~ m/^\*/s){
         $logfileline =~ s/^\*/INFO:  /s;
         $logfileline =~ s/^/        /mg;

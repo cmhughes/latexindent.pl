@@ -16,20 +16,18 @@ package LatexIndent::AlignmentAtAmpersand;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use utf8;
-use Unicode::GCString;
 use Data::Dumper;
 use Exporter qw/import/;
 use List::Util qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active %switches/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::HiddenChildren qw/%familyTree/;
 use LatexIndent::Verbatim qw/%verbatimStorage/;
 our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
+our @EXPORT_OK = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width get_column_width/;
 our $alignmentBlockCounter;
 our @cellStorage;   # two-dimensional storage array containing the cell information
 our @formattedBody; # array for the new body
@@ -38,6 +36,7 @@ our @maxColumnWidth;
 our @maxDelimiterWidth;
 
 sub find_aligned_block{
+
     my $self = shift;
 
     return unless (${$self}{body} =~ m/(?!<\\)%\*\h*\\begin\{/s);
@@ -246,7 +245,7 @@ sub align_at_ampersand{
                 # for the *previous* cell
                 my $spanningOffSet = ($spanning > 0 ?  $spanning - 1 : 0);
                 ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiter} = $1;
-                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength} = Unicode::GCString->new($1)->columns();
+                ${$cellStorage[$rowCounter][$columnCounter - $spanningOffSet]}{delimiterLength} = &get_column_width($1);
 
                 # keep track of maximum delimiter width
                 $maxDelimiterWidth[$columnCounter - $spanningOffSet] = 
@@ -273,7 +272,7 @@ sub align_at_ampersand{
 
             # basic cell storage
             $cellStorage[$rowCounter][$columnCounter] 
-                    = ({width=>Unicode::GCString->new($column)->columns(),
+                    = ({width=>&get_column_width($column),
                         entry=>$column,
                         type=>($numberOfAmpersands>0 ? "X" : "*"),
                         groupPadding=>0,
@@ -443,7 +442,7 @@ sub align_at_ampersand{
         if( (${$self}{begin} eq '{' | ${$self}{begin} eq '[') and ${$self}{parentBegin}){
             $lengthOfBegin = ${$self}{parentBegin}."{";
         }
-        ${$self}{indentation} = " " x Unicode::GCString->new($lengthOfBegin)->columns();
+        ${$self}{indentation} = " " x (&get_column_width($lengthOfBegin));
         $logger->trace("Adjusting indentation of ${$self}{name} in AlignAtAmpersand routine") if($is_t_switch_active);
     }
   }
@@ -540,7 +539,7 @@ sub main_formatting {
       # objective (2): calculate row width and update maximumRowWidth
       # objective (2): calculate row width and update maximumRowWidth
       # objective (2): calculate row width and update maximumRowWidth
-      my $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+      my $rowWidth  = &get_column_width($tmpRow);
 
       # possibly update rowWidth if there are hidden children; see test-cases/alignment/hidden-child1.tex and friends
       $rowWidth = $self->hidden_child_row_width($tmpRow,$rowCount,$rowWidth) if(${$self}{measureHiddenChildren} or ${$self}{measureVerbatim});
@@ -1434,12 +1433,12 @@ sub hidden_child_cell_row_width{
     if($bodyLineBreaks>0){
         my $maxRowWidthWithinCell = 0;
         foreach(split("\n",$tmpCellEntry)){
-           my $currentRowWidth = Unicode::GCString->new($_)->columns();
+           my $currentRowWidth = &get_column_width($_);
            $maxRowWidthWithinCell = $currentRowWidth if ($currentRowWidth > $maxRowWidthWithinCell );
         }
         ${$cellStorage[$rowCounter][$columnCounter]}{width} = $maxRowWidthWithinCell;
     } else {
-        ${$cellStorage[$rowCounter][$columnCounter]}{width} = Unicode::GCString->new($tmpCellEntry)->columns();
+        ${$cellStorage[$rowCounter][$columnCounter]}{width} = &get_column_width($tmpCellEntry);
     }
 }
 
@@ -1481,7 +1480,7 @@ sub hidden_child_row_width{
         if( (${$self}{begin} eq '{' | ${$self}{begin} eq '[') and ${$self}{parentBegin}){
             $beginToMeasure = ${$self}{parentBegin}."{";
         }
-        $lengthOfBegin = Unicode::GCString->new($beginToMeasure)->columns();
+        $lengthOfBegin = &get_column_width($beginToMeasure);
         $tmpRow = $beginToMeasure.$tmpRow if $rowCount == 0;
     }
 
@@ -1492,7 +1491,7 @@ sub hidden_child_row_width{
            for my $hiddenChildToMeasure (@{${$self}{measureHiddenChildren}}){
                if($tmpRow=~m/(^.*)?$hiddenChildToMeasure/m and defined $familyTree{$hiddenChildToMeasure}{bodyForMeasure}){
                   my $partBeforeId = $1;
-                  my $lengthPartBeforeId = Unicode::GCString->new($partBeforeId)->columns(); 
+                  my $lengthPartBeforeId = &get_column_width($partBeforeId); 
 
                   foreach (@{$familyTree{$hiddenChildToMeasure}{ancestors}}){
                     if (${$_}{ancestorID} eq ${$self}{id}){
@@ -1536,17 +1535,17 @@ sub hidden_child_row_width{
                my $maxRowWidth = 0;
 
                foreach(split("\n",$tmpRow)){
-                  my $currentRowWidth = Unicode::GCString->new($_)->columns();
+                  my $currentRowWidth = &get_column_width($_);
                   $maxRowWidth = $currentRowWidth if ($currentRowWidth > $maxRowWidth );
                }
                $rowWidth  = $maxRowWidth;
            } else {
-               $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+               $rowWidth  = &get_column_width($tmpRow);
            }
         } elsif (!${${$self}{linebreaksAtEnd}}{begin} 
                   and ${$cellStorage[0][0]}{type} eq "X" 
                   and ${$cellStorage[0][0]}{measureThis}){
-              $rowWidth  = Unicode::GCString->new($tmpRow)->columns();
+              $rowWidth  = &get_column_width($tmpRow);
         }
 
         # possibly draw ruler to log file
@@ -1567,7 +1566,7 @@ sub draw_ruler_to_logfile{
     $logger->trace("*tmpRow:");
 
     foreach(split("\n",$tmpRow)){
-       my $currentRowWidth = Unicode::GCString->new($_)->columns();
+       my $currentRowWidth = &get_column_width($_);
        $logger->trace("$_ \t(length: $currentRowWidth)");
     }
 
@@ -1578,5 +1577,21 @@ sub draw_ruler_to_logfile{
     for (my $i=1;$i<=$rulerMax/5;$i++){ $ruler .= "   ".$i*5 };
     $logger->trace($ruler);
 
+}
+
+sub get_column_width{
+
+    my $stringToBeMeasured = $_[0];
+
+    # default length measurement
+    # credit/reference: https://perldoc.perl.org/perlunicook#%E2%84%9E-33:-String-length-in-graphemes
+    unless ($switches{GCString}){
+        my $count = 0;
+        while ($stringToBeMeasured =~ /\X/g) { $count++ }
+        return $count;
+    }
+
+    # if GCString actice, then use Unicode::GCString
+    return Unicode::GCString->new($stringToBeMeasured)->columns();
 }
 1;

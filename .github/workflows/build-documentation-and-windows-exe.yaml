@@ -78,6 +78,7 @@ jobs:
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
+          sed -i.bak 's/eval "use Unicode::GCString" if $switches{GCString}/use Unicode::GCString/' latexindent.pl
           copy helper-scripts/ppp.pl ./
           perl ppp.pl -o latexindent.exe latexindent.pl
           mkdir -p target/release

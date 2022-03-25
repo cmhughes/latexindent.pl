@@ -81,9 +81,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 603-611
+ 	:lines: 604-612
  	:linenos:
- 	:lineno-start: 603
+ 	:lineno-start: 604
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 

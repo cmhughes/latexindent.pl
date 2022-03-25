@@ -35,6 +35,8 @@ our $itemRegExp;
 sub construct_list_of_items{
     my $self = shift;
 
+    $listOfItems = q();
+
     # put together a list of the items
     while( my ($item,$lookForThisItem)= each %{$mainSettings{itemNames}}){
         $listOfItems .= ($listOfItems eq "")?"$item":"|$item" if($lookForThisItem);

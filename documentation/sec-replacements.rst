@@ -5,7 +5,9 @@
 The -r, -rv and -rr switches
 ============================
 
-You can instruct ``latexindent.pl`` to perform replacements/substitutions on your file by using any of the ``-r``, ``-rv`` or ``-rr`` switches: .. index:: verbatim;rv, replacementrespectverb switch
+You can instruct ``latexindent.pl`` to perform replacements/substitutions on your file by using any of the ``-r``, ``-rv`` or ``-rr`` switches:
+
+.. index:: verbatim;rv, replacementrespectverb switch
 
 -  the ``-r`` switch will perform indentation and replacements, not respecting verbatim code blocks;
 
@@ -37,9 +39,9 @@ in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switch
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 603-611
+ 	:lines: 604-612
  	:linenos:
- 	:lineno-start: 603
+ 	:lineno-start: 604
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As
 you’ll see in the demonstrations that follow, there is no need to specify this field.
@@ -52,7 +54,9 @@ Introduction to replacements
 Let’s explore the action of the default settings, and then we’ll demonstrate the feature with further examples. With reference to :numref:`lst:replacements`, the default action will replace every
 instance of the text ``latexindent.pl`` with ``pl.latexindent``.
 
-Beginning with the code in :numref:`lst:replace1` and running the command .. index:: switches;-r demonstration
+Beginning with the code in :numref:`lst:replace1` and running the command
+
+.. index:: switches;-r demonstration
 
 .. code-block:: latex
    :class: .commandshell
@@ -72,7 +76,9 @@ gives the output given in :numref:`lst:replace1-r1`.
  	:name: lst:replace1-r1
 
 If we don’t wish to perform this replacement, then we can tweak the default settings of :numref:`lst:replacements` by changing ``lookForThis`` to 0; we perform this action in
-:numref:`lst:replace1-yaml`, and run the command .. index:: switches;-l demonstration
+:numref:`lst:replace1-yaml`, and run the command
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-r demonstration
 
@@ -128,7 +134,9 @@ Examples of replacements
 	
 	Let’s assume that our goal is to remove both of the ``arraycolsep`` statements; we can achieve this in a few different ways.
 	
-	Using the YAML in :numref:`lst:colsep-yaml`, and running the command .. index:: switches;-l demonstration
+	Using the YAML in :numref:`lst:colsep-yaml`, and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -152,8 +160,9 @@ Examples of replacements
 	Note that in :numref:`lst:colsep-yaml`, we have specified *two* separate fields, each with their own ‘*this*’ field; furthermore, for both of the separate fields, we have not specified ‘``that``’,
 	so the ``that`` field is assumed to be blank by ``latexindent.pl``;
 	
-	We can make the YAML in :numref:`lst:colsep-yaml` more concise by exploring the ``substitution`` field. Using the settings in :numref:`lst:colsep1` and running the command .. index:: switches;-l
-	demonstration
+	We can make the YAML in :numref:`lst:colsep-yaml` more concise by exploring the ``substitution`` field. Using the settings in :numref:`lst:colsep1` and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -162,7 +171,9 @@ Examples of replacements
 	
 	   latexindent.pl -r colsep.tex -l=colsep1.yaml
 	
-	then we achieve the output in :numref:`lst:colsep-mod1`. .. index:: regular expressions;substitution field, arraycolsep
+	then we achieve the output in :numref:`lst:colsep-mod1`.
+	
+	.. index:: regular expressions;substitution field, arraycolsep
 	
 	.. index:: regular expressions;at least one +
 	
@@ -197,7 +208,9 @@ Examples of replacements
 	
 	We’ll keep working with the file in :numref:`lst:colsep` for this example.
 	
-	Using the YAML in :numref:`lst:multi-line`, and running the command .. index:: switches;-l demonstration
+	Using the YAML in :numref:`lst:multi-line`, and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -224,7 +237,9 @@ Examples of replacements
 	This is a natural point to explore the ``when`` field, specified in :numref:`lst:replacements`. This field can take two values: *before* and *after*, which respectively instruct ``latexindent.pl``
 	to perform the replacements *before* indentation or *after* it. The default value is ``before``.
 	
-	Using the YAML in :numref:`lst:multi-line1`, and running the command .. index:: switches;-l demonstration
+	Using the YAML in :numref:`lst:multi-line1`, and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -275,7 +290,9 @@ Examples of replacements
 	 	:caption: ``displaymath.tex`` 
 	 	:name: lst:displaymath
 	
-	We use the settings in :numref:`lst:displaymath1` and run the command .. index:: switches;-l demonstration
+	We use the settings in :numref:`lst:displaymath1` and run the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -284,7 +301,9 @@ Examples of replacements
 	
 	   latexindent.pl -r displaymath.tex -l=displaymath1.yaml
 	
-	to receive the output given in :numref:`lst:displaymath-mod1`. .. index:: regular expressions;substitution field, equation
+	to receive the output given in :numref:`lst:displaymath-mod1`.
+	
+	.. index:: regular expressions;substitution field, equation
 	
 	.. literalinclude:: demonstrations/displaymath-mod1.tex
 	 	:class: .tex
@@ -345,7 +364,9 @@ Examples of replacements
 	 	:caption: ``phrase.tex`` 
 	 	:name: lst:phrase
 	
-	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in :numref:`lst:hspace`, and run the command .. index:: switches;-l demonstration
+	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in :numref:`lst:hspace`, and run the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -354,7 +375,9 @@ Examples of replacements
 	
 	   latexindent.pl -r phrase.tex -l=hspace.yaml
 	
-	which gives the output in :numref:`lst:phrase-mod1`. .. index:: regular expressions;at least one +
+	which gives the output in :numref:`lst:phrase-mod1`.
+	
+	.. index:: regular expressions;at least one +
 	
 	.. literalinclude:: demonstrations/phrase-mod1.tex
 	 	:class: .tex
@@ -378,8 +401,9 @@ Examples of replacements
 	 	:caption: ``references.tex`` 
 	 	:name: lst:references
 	
-	Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command ..
-	index:: switches;-l demonstration
+	Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	
@@ -418,7 +442,9 @@ Examples of replacements
 	 	:caption: ``verbatim1.yaml`` 
 	 	:name: lst:verbatim1-yaml
 	
-	Upon running the following commands, .. index:: verbatim;comparison with -r and -rr switches
+	Upon running the following commands,
+	
+	.. index:: verbatim;comparison with -r and -rr switches
 	
 	.. index:: switches;-l demonstration
 	
@@ -493,7 +519,9 @@ See the summary within :numref:`tab:replacementswitches`.
 	 	:caption: ``amalg3-yaml.yaml`` 
 	 	:name: lst:amalg3-yaml
 	
-	Upon running the following commands, .. index:: switches;-l demonstration
+	Upon running the following commands,
+	
+	.. index:: switches;-l demonstration
 	
 	.. index:: switches;-r demonstration
 	

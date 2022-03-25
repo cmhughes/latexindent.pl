@@ -18,6 +18,7 @@ use strict;
 use warnings;
 use Text::Wrap;
 use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::AlignmentAtAmpersand qw/get_column_width/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
@@ -266,7 +267,7 @@ sub text_wrap{
             if($textWrapBlockStorageValue =~m/$verbatimID/s){
 
               # measure length
-              my $verbatimLength = Unicode::GCString->new($verbatimThing)->columns();
+              my $verbatimLength = &get_column_width($verbatimThing);
 
               # create temporary ID, and check that it is not contained in the body
               my $verbatimTmpID = join '' => map $set[rand @set], 1 .. $verbatimLength;

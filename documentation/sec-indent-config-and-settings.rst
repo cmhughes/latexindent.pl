@@ -41,7 +41,9 @@ fact, I recommend that you only keep the switches that you want to *change* in t
 To get started with your own settings file, you might like to save a copy of ``defaultSettings.yaml`` in another directory and call it, for example, ``mysettings.yaml``. Once you have added the path
 to ``indentconfig.yaml`` you can change the switches and add more code-block names to it as you see fit – have a look at :numref:`lst:mysettings` for an example that uses four tabs for the default
 indent, adds the ``tabbing`` environment/command to the list of environments that contains alignment delimiters; you might also like to refer to the many YAML files detailed throughout the rest of
-this documentation. .. index:: indentation;defaultIndent using YAML file
+this documentation.
+
+.. index:: indentation;defaultIndent using YAML file
 
 .. code-block:: latex
    :caption: ``mysettings.yaml`` (example) 
@@ -56,7 +58,9 @@ this documentation. .. index:: indentation;defaultIndent using YAML file
        tabbing: 1
 
 You can make sure that your settings are loaded by checking ``indent.log`` for details – if you have specified a path that ``latexindent.pl`` doesn’t recognise then you’ll get a warning, otherwise
-you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_ .. index:: warning;editing YAML files
+you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_
+
+.. index:: warning;editing YAML files
 
 .. warning::	
 	
@@ -114,8 +118,9 @@ If you’d prefer to name your ``localSettings.yaml`` file something different, 
 
 Any settings file(s) specified using the ``-l`` switch will be read *after* ``defaultSettings.yaml`` and, assuming they exist, any user setting files specified in ``indentconfig.yaml``.
 
-Your settings file can contain any switches that you’d like to change; a sample is shown in :numref:`lst:localSettings`, and you’ll find plenty of further examples throughout this manual. .. index::
-verbatim;verbatimEnvironments demonstration (-l switch)
+Your settings file can contain any switches that you’d like to change; a sample is shown in :numref:`lst:localSettings`, and you’ll find plenty of further examples throughout this manual.
+
+.. index:: verbatim;verbatimEnvironments demonstration (-l switch)
 
 .. code-block:: latex
    :caption: ``localSettings.yaml`` (example) 
@@ -147,14 +152,18 @@ command:
 
    latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
 
-Note the use of ``;`` to specify another field within ``verbatimEnvironments``. This is shorthand, and equivalent, to using the following command: .. index:: switches;-y demonstration
+Note the use of ``;`` to specify another field within ``verbatimEnvironments``. This is shorthand, and equivalent, to using the following command:
+
+.. index:: switches;-y demonstration
 
 .. code-block:: latex
    :class: .commandshell
 
    latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
 
-You may, of course, specify settings using the ``-y`` switch as well as, for example, settings loaded using the ``-l`` switch; for example, .. index:: switches;-l demonstration
+You may, of course, specify settings using the ``-y`` switch as well as, for example, settings loaded using the ``-l`` switch; for example,
+
+.. index:: switches;-l demonstration
 
 .. index:: switches;-y demonstration
 

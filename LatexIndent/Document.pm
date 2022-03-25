@@ -17,7 +17,7 @@ package LatexIndent::Document;
 use strict;
 use warnings;
 use Data::Dumper;
-use utf8;
+use File::Basename; # to get the filename and directory path
 use open ':std', ':encoding(UTF-8)';
 
 # gain access to subroutines in the following modules
@@ -29,7 +29,7 @@ use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_b
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings /;
 use LatexIndent::FileExtension qw/file_extension_check/;
-use LatexIndent::BackUpFileProcedure qw/create_back_up_file/;
+use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
@@ -77,14 +77,72 @@ sub new{
 
 sub latexindent{
     my $self = shift;
+    my @fileNames = @{$_[0]};
+
+    my $check_switch_status_across_files = 0;
+
+    my $file_extension_status_across_files = 0;
+
+    # one-time operations
     $self->store_switches;
-    $self->process_switches;
+    ${$self}{fileName} = $fileNames[0];
+    $self->process_switches(\@fileNames);
     $self->yaml_read_settings;
-    $self->file_extension_check;
-    $self->operate_on_file;
+
+    ${$self}{multipleFiles} = 1 if ( (scalar (@fileNames)) >1 );
+        
+    my $fileCount = 0;
+
+    # per-file operations
+    foreach (@fileNames) {
+      $fileCount++;
+      if ( (scalar (@fileNames)) >1 ){
+        $logger->info("*Filename: $_ (".$fileCount." of ".(scalar (@fileNames)).")") ;
+      }
+      ${$self}{fileName} = $_;
+      ${$self}{cruftDirectory} = $switches{cruftDirectory}||(dirname ${$self}{fileName});
+
+      # file existence/extension checks
+      my $file_existence = $self->file_extension_check;
+      if ($file_existence>0){
+         $file_extension_status_across_files=$file_existence;
+         next 
+      }
+
+      # overwrite and overwriteIfDifferent switches, per file
+      ${$self}{overwrite} = $switches{overwrite};
+      ${$self}{overwriteIfDifferent} = $switches{overwriteIfDifferent};
+
+      # the main operations
+      $self->operate_on_file;
+
+      # keep track of check status across files
+      $check_switch_status_across_files = 1 if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body});
+    }
+
+    # check switch summary across multiple files
+    if ( $is_check_switch_active and (scalar (@fileNames)) >1 ){
+      if($check_switch_status_across_files){
+        $logger->info("*check switch across multiple files: differences to report from at least one file");
+      } else {
+        $logger->info("*check switch across multiple files: no differences to report");
+      }
+    }
+    
+    # logging of existence check
+    if ($file_extension_status_across_files>2){
+       $logger->warn("*at least one of the files you specified does not exist or could not be read");
+    }
+
+    # output the log file information
+    $self->output_logfile();
+
+    if ($file_extension_status_across_files>2){
+       exit($file_extension_status_across_files);
+    }
 
     # check switch active, and file changed, gives different exit code
-    if ($is_check_switch_active and ${$self}{originalBody} ne ${$self}{body}){
+    if ($check_switch_status_across_files){
         exit(1);
     }
 }
@@ -124,6 +182,7 @@ sub operate_on_file{
         $self->put_verbatim_back_in (match=>"just-commands");
         $self->make_replacements(when=>"after") if ($is_r_switch_active and !$is_rv_switch_active);
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
+        $self->check_if_different if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
     return
@@ -152,22 +211,19 @@ sub output_indented_text{
     $logger->info("*Output routine:");
 
     # if -overwrite is active then output to original fileName
-    if($switches{overwrite}) {
+    if(${$self}{overwrite}){
         $logger->info("Overwriting file ${$self}{fileName}");
         open(OUTPUTFILE,">",${$self}{fileName});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } elsif($switches{outputToFile}) {
-        $logger->info("Outputting to file $switches{outputToFile}");
-        open(OUTPUTFILE,">",$switches{outputToFile});
+        $logger->info("Outputting to file ${$self}{outputToFile}");
+        open(OUTPUTFILE,">",${$self}{outputToFile});
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     } else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
     }
-
-    # output the log file information
-    $self->output_logfile();
 
     # output to screen, unless silent mode
     print ${$self}{body} unless $switches{silentMode};

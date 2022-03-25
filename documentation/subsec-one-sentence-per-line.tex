@@ -10,7 +10,7 @@
 	\index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
 	A-Z}%
 
-	\cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+	\cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
 	This is a binary switch that details if \texttt{latexindent.pl} should perform the
@@ -54,6 +54,12 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 	Notice, in particular, that the `internal' sentence line breaks in
 	\cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1},
 	but have not been removed in \cref{lst:multiple-sentences-mod2}.
+
+\yamltitle{multipleSpacesToSingle}{0|1}
+	\announce*{2022-03-25}*{multipleSpacesToSingle for oneSentencePerLine} By default, the
+	one-sentence-per-line routine will convert multiple spaces into single spaces. You can
+	change this behaviour by changing the switch \texttt{multipleSpacesToSingle} to a value
+	of \texttt{0}.
 
 	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
 	\texttt{latexindent.pl} on how to define a sentence. From the perspective of

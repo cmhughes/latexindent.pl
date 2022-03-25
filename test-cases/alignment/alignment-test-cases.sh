@@ -11,6 +11,7 @@ latexindent.pl -s simple-multi-column.tex -o=+-mod2 -y="lookForAlignDelims:tabul
 latexindent.pl -s simple-multi-column.tex -o=+-mod3 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesBeforeAmpersand:3;justification:right"
 latexindent.pl -s simple-multi-column.tex -o=+-mod4 -y="lookForAlignDelims:tabular:multiColumnGrouping:1;spacesAfterAmpersand:3;justification:right"
 latexindent.pl -s table1.tex -o table1-default.tex
+latexindent.pl -s unicode1.tex -o unicode1-default.tex
 
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
@@ -258,6 +259,10 @@ latexindent.pl -s -w -l issue-326b.yaml issue-326b.tex
 latexindent.pl -s -w -l issue-326c.yaml issue-326c.tex
 latexindent.pl -s -w -l issue-326d.yaml issue-326d.tex
 latexindent.pl -s    -l issue-326d2.yaml issue-326d.tex -o +-mod2
+
+# optional loading of GCString testing
+latexindent.pl unicode-quick-brown.tex -s -o=+-no-GCString
+latexindent.pl unicode-quick-brown.tex -s --GCString -o=+-with-GCString
 
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status

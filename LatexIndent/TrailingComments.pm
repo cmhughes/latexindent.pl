@@ -54,6 +54,9 @@ sub add_comment_symbol{
 
 sub remove_trailing_comments{
     my $self = shift;
+
+    $commentCounter = 0;
+
     $logger->trace("*Storing trailing comments")if $is_t_switch_active;
 
     my  $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;

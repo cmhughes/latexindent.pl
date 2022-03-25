@@ -12,9 +12,7 @@
 
 use strict;
 use warnings;
-use utf8;
 use PerlIO::encoding;
-use Unicode::GCString;
 use open ':std', ':encoding(UTF-8)';
 use Text::Wrap;
 use Text::Tabs;
@@ -63,7 +61,6 @@ sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
 cpanm File::HomeDir
-cpanm Unicode::GCString
 \end{commandshell}
 			\index{cpan}
 
@@ -74,7 +71,6 @@ sudo apt install perl
 sudo cpan -i App::cpanminus
 sudo cpanm YAML::Tiny
 sudo cpanm File::HomeDir
-sudo cpanm Unicode::GCString
 \end{commandshell}
 			or else by running, for example,
 			\begin{commandshell}
@@ -91,6 +87,12 @@ sudo apt install texlive-latex-recommended
 			\begin{commandshell}
 sudo apt install texlive-extra-utils 
 \end{commandshell}
+		\paragraph{Arch-based distributions}
+			First install the dependencies
+			\begin{commandshell}
+sudo pacman -S perl cpanminus
+\end{commandshell}
+			then run the latexindent-module-installer.pl file located at helper-scripts/
 
 		\paragraph{Alpine}
 			If you are using Alpine, some \texttt{Perl} modules are not build-compatible with Alpine,
@@ -99,6 +101,7 @@ sudo apt install texlive-extra-utils
 			these details.
 
 			\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
+		
 # Installing perl
 apk --no-cache add miniperl perl-utils
 
@@ -119,7 +122,6 @@ cpanm -n App::cpanminus
 cpanm -n File::HomeDir
 cpanm -n Params::ValidationCompiler
 cpanm -n YAML::Tiny
-cpanm -n Unicode::GCString
 \end{cmhlistings}
 
 			Users of NixOS might like to see
@@ -134,7 +136,6 @@ brew install cpanm
 
 cpanm YAML::Tiny
 cpanm File::HomeDir
-cpanm Unicode::GCString
 \end{commandshell}
 
 	\subsubsection{Windows}
@@ -149,6 +150,28 @@ cpanm Unicode::GCString
 		\begin{dosprompt}
 latexindent.exe -t myfile.tex
  \end{dosprompt}
+
+	\subsection{The GCString switch}\label{subsec:the-GCString}
+		If you find that the \texttt{lookForAlignDelims} (as in \cref{subsec:align-at-delimiters}) does not work correctly
+		for your language, then you may with to use the \texttt{Unicode::GCString} module \announce*{2022-03-25}{Unicode::GCString}.
+		\index{perl!Unicode GCString module}
+		\index{switches!--GCString demonstration}
+
+		This can be loaded by calling \texttt{latexindent.pl} with the \texttt{GCString} switch
+		as in
+		\begin{commandshell}
+latexindent.pl --GCString myfile.tex
+\end{commandshell}
+		In this case, you will need to have the \texttt{Unicode::GCString} installed in your
+		\texttt{perl} distribution by using, for example,
+		\begin{commandshell}
+cpanm YAML::Tiny
+\end{commandshell}
+
+		Note: this switch does \emph{nothing} for \texttt{latexindent.exe} which loads the module
+		by default. Users of \texttt{latexindent.exe} should not see any difference in behaviour
+		whether they use this switch or not, as \texttt{latexindent.exe} loads the
+		\texttt{Unicode::GCString} module.
 
 	\section{Updating the path variable}\label{sec:updating-path}
 	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can
@@ -207,6 +230,93 @@ echo %path%
 		\end{enumerate}
 		To \emph{remove} the directory from your \lstinline!%path%!, run
 		\texttt{remove-from-path.bat} as administrator.
+
+	\section{Batches of files}\label{sec:batches}
+
+	 You can \announce*{2022-03-25}{batches of files details} instruct \texttt{latexindent.pl}
+	 to operate on multiple files. For example, the following calls are all valid
+	 \begin{commandshell}
+latexindent.pl myfile1.tex          
+latexindent.pl myfile1.tex myfile2.tex
+latexindent.pl myfile*.tex
+        \end{commandshell}
+
+	 We note the following features of the script in relation to the switches detailed in
+	 \cref{sec:how:to:use}.
+
+	\subsection{location of indent.log}
+		If the \texttt{-c} switch is \emph{not} active, then \texttt{indent.log} goes to the directory of the final file called.
+
+		If the \texttt{-c} switch \emph{is} active, then \texttt{indent.log} goes to the
+		specified directory.
+
+	\subsection{interaction with -w switch}
+		If the \texttt{-w} switch is active, as in
+		\begin{commandshell}
+latexindent.pl -w myfile*.tex
+\end{commandshell}
+		then files will be overwritten individually. Back-up files can be re-directed via the
+		\texttt{-c} switch.
+
+	\subsection{interaction with -o switch}
+		If \texttt{latexindent.pl} is called using the \texttt{-o} switch as in
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=my-output-file.tex 
+        \end{commandshell}
+		and there are multiple files to operate upon, then the \texttt{-o} switch is ignored
+		because there is only \emph{one} output file specified.
+
+		More generally, if the \texttt{-o} switch does \emph{not} have a \texttt{+} symbol at the
+		beginning, then the \texttt{-o} switch will be ignored, and is turned it off.
+
+		For example
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=+myfile
+\end{commandshell}
+		\emph{will} work fine because \emph{each} \texttt{.tex} file will output to
+		\texttt{<basename>myfile.tex}
+
+		Similarly,
+		\begin{commandshell}
+latexindent.pl myfile*.tex -o=++
+\end{commandshell}
+		\emph{will} work because the `existence check/incrementation' routine will be applied.
+
+	\subsection{interaction with lines switch}
+		This behaves as expected by attempting to operate on the line numbers specified for each file. See
+		the examples in \cref{sec:line-switch}.
+
+	\subsection{interaction with check switches}
+		The exit codes for \texttt{latexindent.pl} are given in \vref{tab:exit-codes}.
+
+		When operating on multiple files with the check switch active, as in
+		\begin{commandshell}
+latexindent.pl myfile*.tex --check
+        \end{commandshell}
+		then
+		\begin{itemize}
+			\item exit code 0 means that the text from \emph{none} of the files has been changed;
+			\item exit code 1 means that the text from \emph{at least one} of the files been file changed.
+		\end{itemize}
+
+		The interaction with \texttt{checkv} switch is as in the check switch, but with verbose
+		output.
+
+	\subsection{when a file does not exist}
+		What happens if one of the files can not be operated upon?
+		\begin{itemize}
+			\item if at least one of the files does not exist and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 3; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if at least one of the files can not be read and \texttt{latexindent.pl} has been called
+			      to act upon multiple files, then the exit code is 4; note that \texttt{latexindent.pl}
+			      will try to operate on each file that it is called upon, and will not exit with a fatal
+			      message in this case;
+			\item if \texttt{latexindent.pl} has been told to operate on multiple files, and some do not
+			      exist and some cannot be read, then the exit code will be either 3 or 4, depending upon
+			      which it scenario it encountered most recently.
+		\end{itemize}
 
 	\section{latexindent-yaml-schema.json}
 
@@ -279,7 +389,7 @@ conda run latexindent.pl -vv
 
 	\section{pre-commit}
 
-	 Users of \texttt{.git} may be interested \announce*{2022-01-21}{pre-commit for
+	 Users of \texttt{.git} may be interested \announce{2022-01-21}{pre-commit for
 	 latexindent.pl} in exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is
 	 supported by \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for
 	 contributing this feature.
@@ -296,7 +406,7 @@ python3 -m pip install pre-commit
 \end{commandshell}
 		I then updated my path via .bashrc so that it includes the line in
 		\cref{lst:bashrc-update}.
-		\begin{cmhlistings}*[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
+		\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
 ...
 export PATH=$PATH:/home/cmhughes/.local/bin
 \end{cmhlistings}
@@ -362,7 +472,7 @@ conda run latexindent.pl -s myfile.tex
 
 		\begin{example}
 			We use the local settings given in \cref{lst:.latexindent.yaml}.
-			\begin{cmhlistings}*[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+			\begin{cmhlistings}[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
 onlyOneBackUp: 1
 
 modifyLineBreaks:
@@ -389,8 +499,7 @@ latexindent.pl -l -m -s -w myfile.tex
 				      was specified to only create one back-up file, as \texttt{git} typically takes care of
 				      this when you use \texttt{pre-commit});
 				\item \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line
-				      output,
-				      and \texttt{-w} to format files in place.
+				      output, and \texttt{-w} to format files in place.
 			\end{itemize}
 		\end{example}
 

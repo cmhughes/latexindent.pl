@@ -24,6 +24,7 @@ gitStatus=0
 loopmin=1
 [[ $verbatimTest == 1 ]] && loopmin=-1
 noisyMode=0
+
 # check flags, and change defaults appropriately
 while getopts 'cgl:no:s' OPTION
 do
@@ -50,7 +51,6 @@ do
     loopmax=$OPTARG
    ;;
   s)    
-   echo "Silent mode on...next thing you'll see is git status."
    silentMode=1
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
@@ -60,8 +60,8 @@ do
  esac 
 done
 
-echo "loopmin is $loopmin"
-echo "loopmax is $loopmax"
+### echo "loopmin is $loopmin"
+### echo "loopmax is $loopmax"
 
 function makenoise
 {
