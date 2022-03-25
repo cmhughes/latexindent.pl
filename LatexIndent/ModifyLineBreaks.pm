@@ -272,6 +272,7 @@ sub verbatim_modify_line_breaks{
             ${$self}{body} =~ s/\h*${$child}{id}/$trailingCharacterToken\n${$child}{id}/s;
         }
       }
+
       # after text wrap poly-switch check
       if ($input{when} eq "afterTextWrap"){
         $logger->trace("*post text wrap poly-switch check for EndFinishesWithLineBreak") if $is_t_switch_active ;

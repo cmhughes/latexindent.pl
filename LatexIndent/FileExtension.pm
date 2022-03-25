@@ -16,7 +16,6 @@ package LatexIndent::FileExtension;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use utf8;
 use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename; # to get the filename and directory path

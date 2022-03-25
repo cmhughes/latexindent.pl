@@ -106,6 +106,9 @@ usage: latexindent.pl [options] [file]
           only operate on selected lines; sample usage:
                 latexindent.pl --lines 3-5 myfile.tex
                 latexindent.pl --lines 3-5,7-10 myfile.tex
+      --GCString
+          loads the Unicode::GCString module for the align-at-ampersand routine
+          Note: this requires the Unicode::GCString module to be installed on your system
 ENDQUOTE
     ;
     exit(0);
@@ -229,7 +232,9 @@ ENDQUOTE
 
     # output location of modules
     if($FindBin::Script eq 'latexindent.pl' or ($FindBin::Script eq 'latexindent.exe' and $switches{trace} )) {
-        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir','Unicode::GCString');
+        my @listOfModules = ('FindBin', 'YAML::Tiny', 'File::Copy', 'File::Basename', 'Getopt::Long','File::HomeDir');
+        push(@listOfModules,'Unicode::GCString') if $switches{GCString};
+
         $logger->info("*Perl modules are being loaded from the following directories:");
         foreach my $moduleName (@listOfModules) {
                 (my $file = $moduleName) =~ s|::|/|g;

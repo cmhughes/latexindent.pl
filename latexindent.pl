@@ -52,7 +52,11 @@ GetOptions (
     "check|k"=>\$switches{check},
     "checkv|kv"=>\$switches{checkverbose},
     "lines|n=s"=>\$switches{lines},
+    "GCString"=>\$switches{GCString},
 );
+
+# conditionally load the GCString module
+eval "use Unicode::GCString" if $switches{GCString};
 
 # check local settings doesn't interfer with reading the file;
 # this can happen if the script is called as follows:

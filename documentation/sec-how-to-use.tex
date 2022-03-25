@@ -493,6 +493,16 @@ latexindent.pl -lines 5-8 myfile.tex
 
 	Complete demonstrations are given in \cref{sec:line-switch}.
 
+\flagbox{--GCString}
+	\index{switches!--GCString}
+	\begin{commandshell}
+latexindent.pl --GCString myfile.tex
+\end{commandshell}
+	\announce{new}{GCString switch} instructs \texttt{latexindent.pl} to load the
+	\texttt{Unicode::GCString} module. This should only be necessary if you find that the
+	alignment at ampersand routine (described in \cref{subsec:align-at-delimiters}) does not
+	work for your language. Further details are given in \cref{subsec:the-GCString}.
+
 \subsection{From arara}\label{sec:arara}
 	Using \texttt{latexindent.pl} from the command line is fine for some folks, but others
 	may find it easier to use from \texttt{arara}; you can find the arara rule for
