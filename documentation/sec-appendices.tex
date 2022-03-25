@@ -91,7 +91,13 @@ sudo apt install texlive-latex-recommended
 			\begin{commandshell}
 sudo apt install texlive-extra-utils 
 \end{commandshell}
-
+		\paragraph{Arch-based distributions}
+			First install the dependencies
+			\begin{commandshell}
+sudo pacman -S perl cpanminus
+\end{commandshell}
+			then run the latexindent-module-installer.pl file located at helper-scripts/
+		
 		\paragraph{Alpine}
 			If you are using Alpine, some \texttt{Perl} modules are not build-compatible with Alpine,
 			but replacements are available through \texttt{apk}. For example, you might use the
@@ -99,6 +105,7 @@ sudo apt install texlive-extra-utils
 			these details.
 
 			\begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
+		
 # Installing perl
 apk --no-cache add miniperl perl-utils
 
