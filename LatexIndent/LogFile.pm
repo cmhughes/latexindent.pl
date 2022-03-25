@@ -106,6 +106,9 @@ usage: latexindent.pl [options] [file]
           only operate on selected lines; sample usage:
                 latexindent.pl --lines 3-5 myfile.tex
                 latexindent.pl --lines 3-5,7-10 myfile.tex
+      --GCString
+          loads the Unicode::GCString module for the align-at-ampersand routine
+          Note: this requires the Unicode::GCString module to be installed on your system
 ENDQUOTE
     ;
     exit(0);

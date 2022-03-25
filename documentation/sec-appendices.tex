@@ -144,6 +144,28 @@ cpanm File::HomeDir
 latexindent.exe -t myfile.tex
  \end{dosprompt}
 
+	\subsection{The GCString switch}\label{subsec:the-GCString}
+		If you find that the \texttt{lookForAlignDelims} (as in \cref{subsec:align-at-delimiters}) does not work correctly
+		for your language, then you may with to use the \texttt{Unicode::GCString} module \announce{new}{Unicode::GCString}.
+		\index{perl!Unicode GCString module}
+		\index{switches!--GCString demonstration}
+
+		This can be loaded by calling \texttt{latexindent.pl} with the \texttt{GCString} switch
+		as in
+		\begin{commandshell}
+latexindent.pl --GCString myfile.tex
+\end{commandshell}
+		In this case, you will need to have the \texttt{Unicode::GCString} installed in your
+		\texttt{perl} distribution by using, for example,
+		\begin{commandshell}
+cpanm YAML::Tiny
+\end{commandshell}
+
+		Note: this switch does \emph{nothing} for \texttt{latexindent.exe} which loads the module
+		by default. Users of \texttt{latexindent.exe} should not see any difference in behaviour
+		whether they use this switch or not, as \texttt{latexindent.exe} loads the
+		\texttt{Unicode::GCString} module.
+
 	\section{Updating the path variable}\label{sec:updating-path}
 	 \texttt{latexindent.pl} has a few scripts (available at \cite{latexindent-home}) that can
 	 update the \texttt{path} variables. Thank you to \cite{jasjuang} for this feature. If
