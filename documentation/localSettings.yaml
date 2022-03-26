@@ -1,3 +1,5 @@
+defaultIndent: ' '
+
 onlyOneBackUp: 1
 
 indentPreamble: 1
@@ -74,6 +76,8 @@ modifyLineBreaks:
                 \\yamltitle\{.*?\}\*?\{.*?\}\h*$
                 |
                 \\cmhlistingsfromfile
+                |
+                \\end\{[^}]+?\}
         blocksBeginWith:
            other: '\\announce'
         blocksEndBefore:

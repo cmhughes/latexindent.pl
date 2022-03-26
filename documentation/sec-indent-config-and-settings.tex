@@ -6,25 +6,25 @@
  your own settings files.
 
 \subsection{indentconfig.yaml and .indentconfig.yaml}
-	\texttt{latexindent.pl} will always check your home directory for
-	\texttt{indentconfig.yaml}
-	and \texttt{.indentconfig.yaml} (unless it is called with the \texttt{-d} switch), which
-	is a plain text file you can create that contains the \emph{absolute} paths for any
-	settings files that you wish \texttt{latexindent.pl} to load. There is no difference
-	between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the fact
-	that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to
-	\cite{jacobo-diaz-hidden-config} for providing this feature. In what follows, we will use
-	\texttt{indentconfig.yaml}, but it is understood that this could equally represent
-	\texttt{.indentconfig.yaml}. If you have both files in existence then
-	\texttt{indentconfig.yaml} takes priority.
+ \texttt{latexindent.pl} will always check your home directory for
+ \texttt{indentconfig.yaml}
+ and \texttt{.indentconfig.yaml} (unless it is called with the \texttt{-d} switch), which
+ is a plain text file you can create that contains the \emph{absolute} paths for any
+ settings files that you wish \texttt{latexindent.pl} to load. There is no difference
+ between \texttt{indentconfig.yaml} and \texttt{.indentconfig.yaml}, other than the fact
+ that \texttt{.indentconfig.yaml} is a `hidden' file; thank you to
+ \cite{jacobo-diaz-hidden-config} for providing this feature. In what follows, we will use
+ \texttt{indentconfig.yaml}, but it is understood that this could equally represent
+ \texttt{.indentconfig.yaml}. If you have both files in existence then
+ \texttt{indentconfig.yaml} takes priority.
 
-	For Mac and Linux users, their home directory is \texttt{~/username} while Windows (Vista
-	onwards) is \lstinline!C:\Users\username!\footnote{If you're not sure where to put
-	\texttt{indentconfig.yaml}, don't worry \texttt{latexindent.pl} will tell you in the log
-	file exactly where to put it assuming it doesn't exist already.} \Cref{lst:indentconfig}
-	shows a sample \texttt{indentconfig.yaml} file.
+ For Mac and Linux users, their home directory is \texttt{~/username} while Windows (Vista
+ onwards) is \lstinline!C:\Users\username!\footnote{If you're not sure where to put
+ \texttt{indentconfig.yaml}, don't worry \texttt{latexindent.pl} will tell you in the log
+ file exactly where to put it assuming it doesn't exist already.} \Cref{lst:indentconfig}
+ shows a sample \texttt{indentconfig.yaml} file.
 
-	\begin{yaml}{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
+ \begin{yaml}{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
 # Paths to user settings for latexindent.pl
 #
 # Note that the settings will be read in the order you
@@ -39,22 +39,22 @@ paths:
 - C:\Users\chughes\Desktop\test spaces\more spaces.yaml
 \end{yaml}
 
-	Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml} will be
-	loaded in the order in which you write them. Each file doesn't have to have every switch
-	from \texttt{defaultSettings.yaml}; in fact, I recommend that you only keep the switches
-	that you want to \emph{change} in these settings files.
+ Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml} will be
+ loaded in the order in which you write them. Each file doesn't have to have every switch
+ from \texttt{defaultSettings.yaml}; in fact, I recommend that you only keep the switches
+ that you want to \emph{change} in these settings files.
 
-	To get started with your own settings file, you might like to save a copy of
-	\texttt{defaultSettings.yaml} in another directory and call it, for example,
-	\texttt{mysettings.yaml}. Once you have added the path to \texttt{indentconfig.yaml} you
-	can change the switches and add more code-block names to it as you see fit -- have a look
-	at \cref{lst:mysettings} for an example that uses four tabs for the default indent, adds
-	the \texttt{tabbing} environment/command to the list of environments that contains
-	alignment delimiters; you might also like to refer to the many YAML files detailed
-	throughout the rest of this documentation. \index{indentation!defaultIndent using YAML
-	file}
+ To get started with your own settings file, you might like to save a copy of
+ \texttt{defaultSettings.yaml} in another directory and call it, for example,
+ \texttt{mysettings.yaml}. Once you have added the path to \texttt{indentconfig.yaml} you
+ can change the switches and add more code-block names to it as you see fit -- have a look
+ at \cref{lst:mysettings} for an example that uses four tabs for the default indent, adds
+ the \texttt{tabbing} environment/command to the list of environments that contains
+ alignment delimiters; you might also like to refer to the many YAML files detailed
+ throughout the rest of this documentation. \index{indentation!defaultIndent using YAML
+ file}
 
-	\begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
+ \begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
 # Default value of indentation
 defaultIndent: "\t\t\t\t"
 
@@ -64,73 +64,73 @@ lookForAlignDelims:
     tabbing: 1
 \end{yaml}
 
-	You can make sure that your settings are loaded by checking \texttt{indent.log} for
-	details -- if you have specified a path that \texttt{latexindent.pl} doesn't recognise
-	then you'll get a warning, otherwise you'll get confirmation that \texttt{latexindent.pl}
-	has read your settings file \footnote{Windows users may find that they have to end
-	\texttt{.yaml} files with a blank line}. \index{warning!editing YAML files}
+ You can make sure that your settings are loaded by checking \texttt{indent.log} for
+ details -- if you have specified a path that \texttt{latexindent.pl} doesn't recognise
+ then you'll get a warning, otherwise you'll get confirmation that \texttt{latexindent.pl}
+ has read your settings file \footnote{Windows users may find that they have to end
+ \texttt{.yaml} files with a blank line}. \index{warning!editing YAML files}
 
-	\begin{warning}
-		When editing \texttt{.yaml} files it is \emph{extremely} important to remember how
-		sensitive they are to spaces. I highly recommend copying and pasting from
-		\texttt{defaultSettings.yaml} when you create your first
-		\texttt{whatevernameyoulike.yaml} file.
+ \begin{warning}
+  When editing \texttt{.yaml} files it is \emph{extremely} important to remember how
+  sensitive they are to spaces. I highly recommend copying and pasting from
+  \texttt{defaultSettings.yaml} when you create your first
+  \texttt{whatevernameyoulike.yaml} file.
 
-		If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it will tell you so in
-		\texttt{indent.log}.
-	\end{warning}
+  If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it will tell you so in
+  \texttt{indent.log}.
+ \end{warning}
 
-	If you find that \announce{2021-06-19}{encoding option for indentconfig.yaml}
-	\texttt{latexindent.pl} does not read your YAML file, then it might be as a result of the
-	default commandline encoding not being UTF-8; normally this will only occcur for Windows
-	users. In this case, you might like to explore the \texttt{encoding} option for
-	\texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.%
+ If you find that \announce{2021-06-19}{encoding option for indentconfig.yaml}
+ \texttt{latexindent.pl} does not read your YAML file, then it might be as a result of the
+ default commandline encoding not being UTF-8; normally this will only occcur for Windows
+ users. In this case, you might like to explore the \texttt{encoding} option for
+ \texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.%
 
-	\cmhlistingsfromfile{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
+ \cmhlistingsfromfile{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
 
-	Thank you to \cite{qiancy98} for this contribution; please see \vref{app:encoding} and
-	details within \cite{encoding} for further information.
+ Thank you to \cite{qiancy98} for this contribution; please see \vref{app:encoding} and
+ details within \cite{encoding} for further information.
 
 \subsection{localSettings.yaml and friends}\label{sec:localsettings}
-	The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
-	\texttt{localSettings.yaml} and/or friends in the \emph{same directory} as
-	\texttt{myfile.tex}. For%
-	\announce{2021-03-14}*{-l
-	switch: localSettings and friends} example, if you use the following command
-	\index{switches!-l demonstration}
-	\begin{commandshell}
+ The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
+ \texttt{localSettings.yaml} and/or friends in the \emph{same directory} as
+ \texttt{myfile.tex}. For%
+ \announce{2021-03-14}*{-l
+ switch: localSettings and friends} example, if you use the following command
+ \index{switches!-l demonstration}
+ \begin{commandshell}
 latexindent.pl -l myfile.tex
 \end{commandshell}
-	then \texttt{latexindent.pl} will search for and then, assuming they exist, load each of
-	the following files in the following order:
-	\begin{enumerate}
-		\item localSettings.yaml
-		\item latexindent.yaml
-		\item .localSettings.yaml
-		\item .latexindent.yaml
-	\end{enumerate}
-	These files will be assumed to be in the same directory as \texttt{myfile.tex}, or
-	otherwise in the current working directory. You do not need to have all of the above
-	files, usually just one will be sufficient. In what follows, whenever we refer to
-	\texttt{localSettings.yaml} it is assumed that it can mean any of the four named options
-	listed above.
+ then \texttt{latexindent.pl} will search for and then, assuming they exist, load each of
+ the following files in the following order:
+ \begin{enumerate}
+  \item localSettings.yaml
+  \item latexindent.yaml
+  \item .localSettings.yaml
+  \item .latexindent.yaml
+ \end{enumerate}
+ These files will be assumed to be in the same directory as \texttt{myfile.tex}, or
+ otherwise in the current working directory. You do not need to have all of the above
+ files, usually just one will be sufficient. In what follows, whenever we refer to
+ \texttt{localSettings.yaml} it is assumed that it can mean any of the four named options
+ listed above.
 
-	If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say,
-	\texttt{mysettings.yaml} as in \cref{lst:mysettings}) then you can call
-	\texttt{latexindent.pl} using, for example,
-	\begin{commandshell}
+ If you'd prefer to name your \texttt{localSettings.yaml} file something different, (say,
+ \texttt{mysettings.yaml} as in \cref{lst:mysettings}) then you can call
+ \texttt{latexindent.pl} using, for example,
+ \begin{commandshell}
 latexindent.pl -l=mysettings.yaml myfile.tex
 \end{commandshell}
 
-	Any settings file(s) specified using the \texttt{-l} switch will be read \emph{after}
-	\texttt{defaultSettings.yaml} and, assuming they exist, any user setting files specified
-	in \texttt{indentconfig.yaml}.
+ Any settings file(s) specified using the \texttt{-l} switch will be read \emph{after}
+ \texttt{defaultSettings.yaml} and, assuming they exist, any user setting files specified
+ in \texttt{indentconfig.yaml}.
 
-	Your settings file can contain any switches that you'd like to change; a sample is shown
-	in \cref{lst:localSettings}, and you'll find plenty of further examples throughout this
-	manual. \index{verbatim!verbatimEnvironments demonstration (-l switch)}
+ Your settings file can contain any switches that you'd like to change; a sample is shown
+ in \cref{lst:localSettings}, and you'll find plenty of further examples throughout this
+ manual. \index{verbatim!verbatimEnvironments demonstration (-l switch)}
 
-	\begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
+ \begin{yaml}{\texttt{localSettings.yaml} (example)}{lst:localSettings}
 #  verbatim environments - environments specified
 #  here will not be changed at all!
 verbatimEnvironments:
@@ -138,70 +138,70 @@ verbatimEnvironments:
     myenv: 1
 \end{yaml}
 
-	You can make sure that your settings file has been loaded by checking \texttt{indent.log}
-	for details; if it can not be read then you receive a warning, otherwise you'll get
-	confirmation that \texttt{latexindent.pl} has read your settings file.
+ You can make sure that your settings file has been loaded by checking \texttt{indent.log}
+ for details; if it can not be read then you receive a warning, otherwise you'll get
+ confirmation that \texttt{latexindent.pl} has read your settings file.
 
 \subsection{The -y|yaml switch}\label{sec:yamlswitch}
-	You%
-	\announce{2017-08-21}{demonstration of the -y switch}
-	may use the \texttt{-y} switch to load your settings;  for example, if you wished to
-	specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch, then you
-	could use the following command:
-	\index{verbatim!verbatimEnvironments demonstration (-y switch)}
-	\begin{commandshell}
+ You%
+ \announce{2017-08-21}{demonstration of the -y switch}
+ may use the \texttt{-y} switch to load your settings;  for example, if you wished to
+ specify the settings from \cref{lst:localSettings} using the \texttt{-y} switch, then you
+ could use the following command:
+ \index{verbatim!verbatimEnvironments demonstration (-y switch)}
+ \begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
 \end{commandshell}
-	Note the use of \texttt{;} to specify another field within \texttt{verbatimEnvironments}.
-	This is shorthand, and equivalent, to using the following command: \index{switches!-y
-	demonstration}
-	\begin{commandshell}
+ Note the use of \texttt{;} to specify another field within \texttt{verbatimEnvironments}.
+ This is shorthand, and equivalent, to using the following command: \index{switches!-y
+ demonstration}
+ \begin{commandshell}
 latexindent.pl -y="verbatimEnvironments:cmhenvironment:0,verbatimEnvironments:myenv:1" myfile.tex
 \end{commandshell}
-	You may, of course, specify settings using the \texttt{-y} switch as well as, for
-	example, settings loaded using the \texttt{-l} switch; for example, \index{switches!-l
-	demonstration} \index{switches!-y demonstration}
-	\begin{commandshell}
+ You may, of course, specify settings using the \texttt{-y} switch as well as, for
+ example, settings loaded using the \texttt{-l} switch; for example, \index{switches!-l
+ demonstration} \index{switches!-y demonstration}
+ \begin{commandshell}
 latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myenv:1" myfile.tex
 \end{commandshell}
-	Any settings specified using the \texttt{-y} switch will be loaded \emph{after} any
-	specified using \texttt{indentconfig.yaml} and the \texttt{-l} switch.
+ Any settings specified using the \texttt{-y} switch will be loaded \emph{after} any
+ specified using \texttt{indentconfig.yaml} and the \texttt{-l} switch.
 
-	If you wish to specify any regex-based settings using the \texttt{-y} switch,
-	\index{regular expressions!using -y switch} it is important not to use quotes surrounding
-	the regex; for example, with reference to the `one sentence per line' feature
-	(\vref{sec:onesentenceperline}) and the listings within \vref{lst:sentencesEndWith}, the
-	following settings give the option to have sentences end with a semicolon
-	\index{switches!-y demonstration}
-	\begin{commandshell}
+ If you wish to specify any regex-based settings using the \texttt{-y} switch,
+ \index{regular expressions!using -y switch} it is important not to use quotes surrounding
+ the regex; for example, with reference to the `one sentence per line' feature
+ (\vref{sec:onesentenceperline}) and the listings within \vref{lst:sentencesEndWith}, the
+ following settings give the option to have sentences end with a semicolon
+ \index{switches!-y demonstration}
+ \begin{commandshell}
 latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
 \end{commandshell}
 
 \subsection{Settings load order}\label{sec:loadorder}
-	\texttt{latexindent.pl} loads the settings files in the following order:
-	\index{switches!-l in relation to other settings}
-	\begin{enumerate}
-		\item \texttt{defaultSettings.yaml} is always loaded, and can not be renamed;
-		\item \texttt{anyUserSettings.yaml} and any other arbitrarily-named files specified in
-		      \texttt{indentconfig.yaml};
-		\item \texttt{localSettings.yaml} but only if found in the same directory as
-		      \texttt{myfile.tex}
-		      and called with \texttt{-l} switch; this file can be renamed, provided that the call to
-		      \texttt{latexindent.pl} is adjusted accordingly (see \cref{sec:localsettings}). You may
-		      specify both relative and absolute%
-		      \announce{2017-08-21}*{-l absolute paths} paths to other YAML files using the \texttt{-l}
-		      switch, separating multiple files using commas;
-		\item any settings \announce{2017-08-21}{-y switch load order} specified in the \texttt{-y}
-		      switch.%
-	\end{enumerate}
-	A visual representation of this is given in \cref{fig:loadorder}.
+ \texttt{latexindent.pl} loads the settings files in the following order:
+ \index{switches!-l in relation to other settings}
+ \begin{enumerate}
+  \item \texttt{defaultSettings.yaml} is always loaded, and can not be renamed;
+  \item \texttt{anyUserSettings.yaml} and any other arbitrarily-named files specified in
+        \texttt{indentconfig.yaml};
+  \item \texttt{localSettings.yaml} but only if found in the same directory as
+        \texttt{myfile.tex}
+        and called with \texttt{-l} switch; this file can be renamed, provided that the call to
+        \texttt{latexindent.pl} is adjusted accordingly (see \cref{sec:localsettings}). You may
+        specify both relative and absolute%
+        \announce{2017-08-21}*{-l absolute paths} paths to other YAML files using the \texttt{-l}
+        switch, separating multiple files using commas;
+  \item any settings \announce{2017-08-21}{-y switch load order} specified in the \texttt{-y}
+        switch.%
+ \end{enumerate}
+ A visual representation of this is given in \cref{fig:loadorder}.
 
-	\begin{figure}[!htb]
-		\centering
-		\input{figure-schematic}
-		\caption{Schematic of the load order described in \cref{sec:loadorder}; solid lines represent
-		mandatory files, dotted lines represent optional files. \texttt{indentconfig.yaml} can
-		contain as many files as you like. The files will be loaded in order; if you specify
-		settings for the same field in more than one file, the most recent takes priority. }
-		\label{fig:loadorder}
-	\end{figure}
+ \begin{figure}[!htb]
+  \centering
+  \input{figure-schematic}
+  \caption{Schematic of the load order described in \cref{sec:loadorder}; solid lines represent
+  mandatory files, dotted lines represent optional files. \texttt{indentconfig.yaml} can
+  contain as many files as you like. The files will be loaded in order; if you specify
+  settings for the same field in more than one file, the most recent takes priority. }
+  \label{fig:loadorder}
+ \end{figure}
