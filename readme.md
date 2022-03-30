@@ -120,7 +120,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: ""  # Use the sha / tag you want to point at
+        rev: V3.17
         hooks:
           - id: latexindent
 
