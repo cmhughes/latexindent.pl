@@ -22,7 +22,7 @@ my @namesAndOffsets = (
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
                         {name=>"lookForPreamble",numberOfLines=>4},
                         {name=>"lookForAlignDelims",numberOfLines=>16},
-                        {name=>"indentAfterItems",numberOfLines=>4},
+                        {name=>"indentAfterItems",numberOfLines=>7},
                         {name=>"itemNames",numberOfLines=>2},
                         {name=>"specialBeginEnd",numberOfLines=>13,mustBeAtBeginning=>1},
                         {name=>"indentAfterHeadings",numberOfLines=>9},

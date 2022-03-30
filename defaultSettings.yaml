@@ -232,8 +232,11 @@ lookForAlignDelims:
 # then populate indentAfterItems. See also itemNames
 indentAfterItems:
     itemize: 1
+    itemize*: 1
     enumerate: 1
+    enumerate*: 1
     description: 1
+    description*: 1
     list: 1
 
 # if you want to use other names for your items (for example, \part)
