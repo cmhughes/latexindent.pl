@@ -114,6 +114,19 @@ directory of this repository, and you can track the actions on the [actions page
 > ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
 ![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
 
+## pre-commit
+You can use `latexindent` with the [pre-commit
+framework](https://pre-commit.com) by adding this to your
+`.pre-commit-config.yaml`:
+
+      - repo: https://github.com/cmhughes/latexindent.pl.git
+        rev: V3.17
+        hooks:
+          - id: latexindent
+
+You can add a `.latexindent.yaml` to the root of the git repo to customize the
+behavior.
+
 ## testing
 
 A nice way to test the script is to navigate to the test-cases
