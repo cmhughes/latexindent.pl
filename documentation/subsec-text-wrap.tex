@@ -28,7 +28,9 @@
   \item setting \texttt{columns} to a value $>0$ will text wrap blocks by first removing line
         breaks, and then wrapping according to the specified value of \texttt{columns};
   \item setting \texttt{columns} to $-1$ will \emph{only} remove line breaks within the text wrap
-        block.
+        block;
+  \item by default, the text wrapping routine will remove line breaks within text blocks because
+        \texttt{removeBlockLineBreaks} is set to 1; switch it to 0 if you wish to change this.
  \end{enumerate}
 
  We demonstrate this feature using a series of examples.

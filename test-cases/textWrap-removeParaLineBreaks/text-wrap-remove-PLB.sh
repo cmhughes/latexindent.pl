@@ -156,6 +156,7 @@ latexindent.pl -s -m -l commandshell1.yaml verbatim6.tex -o=+-mod1
 
 # flurry of text wrap issues, early 2022, which motivated text wrap overhaul
 latexindent.pl -s issue-337.tex -m -l issue-337.yaml -o=+-mod1
+latexindent.pl -s issue-337.tex -m -l issue-337a.yaml -o=+-mod2
 latexindent.pl -s issue-344.tex -m -l issue-344.yaml -o=+-mod1
 latexindent.pl -s issue-341.tex -m -l issue-341.yaml -o=+-mod1
 latexindent.pl -s issue-341-mod1.tex -m -l issue-341.yaml -w

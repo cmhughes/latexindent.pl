@@ -522,6 +522,7 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 0
         multipleSpacesToSingle: 1            
+        removeBlockLineBreaks: 1
         blocksFollow:
            headings: 1
            commentOnPreviousLine: 1

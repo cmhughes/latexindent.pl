@@ -33,7 +33,7 @@ my @namesAndOffsets = (
                         {name=>"commandCodeBlocks",numberOfLines=>15},
                         {name=>"modifylinebreaks",numberOfLines=>2,special=>"modifyLineBreaks",mustBeAtBeginning=>1},
                         {name=>"textWrapOptions",numberOfLines=>1},
-                        {name=>"textWrapOptionsAll",numberOfLines=>22,special=>"textWrapOptions"},
+                        {name=>"textWrapOptionsAll",numberOfLines=>23,special=>"textWrapOptions"},
                         {name=>"oneSentencePerLine",numberOfLines=>24},
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
