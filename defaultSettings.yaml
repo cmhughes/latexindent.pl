@@ -638,6 +638,33 @@ fineTuning:
     trailingComments:
       notPreceededBy: '(?<!\\)'
     modifyLineBreaks:
-      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:E\.g)|(?:i\.e)|(?:I\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
       doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
       comma: ','
+      betterFullStop: |-
+        (?x)                                # ignore spaces in the below
+        (?:                                 #
+          \.\)                              # .) 
+          (?!\h*[a-z])                      # not *followed by* a-z
+        )                                   #
+        |                                   # OR
+        (?:                                 #
+          (?<!                              # not *preceeded by*
+            (?:                             #
+              (?:[eE]\.[gG])                # e.g OR E.g OR e.G OR E.G
+              |                             #
+              (?:[iI]\.[eE])                # i.e OR I.e OR i.E OR I.E
+              |                             #
+              (?:etc)                       # etc
+            )                               #
+          )                                 #
+        )                                   # 
+        \.                                  # .
+        (?!                                 # not *followed by*
+          (?:                               #
+            [a-zA-Z0-9-~,]                  #
+            |                               #
+            \),                             # ),
+            |                               #
+            \)\.                            # ).
+          )                                 #
+        )                                   #
