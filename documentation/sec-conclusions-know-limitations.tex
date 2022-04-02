@@ -1,18 +1,19 @@
 % arara: pdflatex: { files: [latexindent]}
 \section{Conclusions and known limitations}\label{sec:knownlimitations}
  There are a number of known limitations of the script, and almost certainly quite a few
- that are \emph{unknown}!
-
- For example, with reference to the multicolumn alignment routine in
- \vref{lst:tabular2-mod2}, when working with code blocks in which multicolumn commands
- overlap, the algorithm can fail.
-
- Another limitation is to do with efficiency, particularly when the \texttt{-m} switch is
- active, as this adds many checks and processes. The current implementation relies upon
- finding and storing \emph{every} code block (see the discussion on
- \cpageref{page:phases}); I hope that, in a future version, only \emph{nested} code blocks
- will need to be stored in the `packing' phase, and that this will improve the efficiency
- of the script.
+ that are \emph{unknown}!  The known issues include:
+ \begin{description}
+  \item[multicolumn alignment] when working with code blocks in which multicolumn commands
+   overlap, the algorithm can fail; see \vref{lst:tabular2-mod2}.
+  \item[text wrap] routine operates \emph{before} indentation occurs; this means that it is
+   likely that your final, indented, text wrapped text may exceed the value of
+   \texttt{columns} that you specify; see \vref{subsec:textwrapping}.
+  \item[efficiency] particularly when the \texttt{-m} switch is active, as this adds many checks
+   and processes. The current implementation relies upon finding and storing \emph{every}
+   code block (see the discussion on \cpageref{page:phases}); I hope that, in a future
+   version, only \emph{nested} code blocks will need to be stored in the `packing' phase,
+   and that this will improve the efficiency of the script.
+ \end{description}
 
  You can run \texttt{latexindent} on any file; \announce{2019-07-13}*{ability to call
  latexindent on any file} if you don't specify an extension, then the extensions that you

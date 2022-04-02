@@ -392,7 +392,7 @@ conda run latexindent.pl -vv
   Users of \texttt{.git} may be interested \announce{2022-01-21}{pre-commit for
   latexindent.pl} in exploring the \texttt{pre-commit} tool \cite{pre-commithome}, which is
   supported by \texttt{latexindent.pl}. Thank you to \cite{tdegeusprecommit} for
-  contributing this feature.
+  contributing this feature, and to \cite{holzhausprecommit} for their contribution to it.
 
   To use the \texttt{pre-commit} tool, you will need to install \texttt{pre-commit}; sample
   instructions for Ubuntu are given in \cref{sec:pre-commit-ubuntu}. Once installed, there
@@ -410,6 +410,23 @@ python3 -m pip install pre-commit
 ...
 export PATH=$PATH:/home/cmhughes/.local/bin
 \end{cmhlistings}
+
+ \subsection{pre-commit defaults}
+ The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
+\index{pre-commit!default}
+
+  \cmhlistingsfromfile{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
+
+  In particular, the decision has deliberately been made (in collaboration with \cite{holzhausprecommit}) 
+  to have the default to employ the following switches: \texttt{overwriteIfDifferent}, \texttt{silent}, \texttt{local}; 
+  this is detailed in the lines that specify \texttt{args} in \cref{lst:.pre-commit-yaml-default}.
+
+\index{pre-commit!warning}
+\index{warning!pre-commit}
+  \begin{warning}
+    Users of \texttt{pre-commit} will, by default, have the \texttt{overwriteIfDifferent} switch employed. It is 
+    assumed that such users have version control in place, and are intending to overwrite their files.
+  \end{warning}
 
  \subsection{pre-commit using CPAN}\label{sec:pre-commit-cpan}
 

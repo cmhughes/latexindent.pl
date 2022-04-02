@@ -34,7 +34,11 @@ via its YAML interface.
 \end{two}
 \end{one}
 ```
-After:
+After running
+```
+latexindent.pl myfile.tex
+```
+then you receive:
 ``` tex
 \begin{one}
 	latexindent.pl adds leading
