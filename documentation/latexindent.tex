@@ -17,7 +17,7 @@
 %
 %   See <http://www.gnu.org/licenses/>.
 \usepackage[left=4.5cm,right=2.5cm,showframe=false,
-	top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry} % page setup
+ top=2cm,bottom=1.5cm,marginparsep=2cm]{geometry} % page setup
 \usepackage{lmodern}
 \usepackage{parskip}                                 % paragraph skips
 \usepackage{booktabs}                                % beautiful tables
@@ -29,7 +29,7 @@
 \usepackage{fancyhdr}                                % headers & footers
 \usepackage{fontawesome}
 \usepackage[sc,format=hang,font=small]{caption}      % captions
-\usepackage[backend=bibtex]{biblatex}                % bibliography
+\usepackage[backend=bibtex,sorting=ynt]{biblatex}    % bibliography
 \usepackage{tcolorbox}                               % framed environments
 \usepackage{tikz}
 \usepackage{xparse}
@@ -49,15 +49,15 @@
 \usepackage{varioref}                                % the documentation library from tcolorbox loads hyperref
 \tcbuselibrary{breakable,xparse,documentation,hooks,raster}
 \hypersetup{
-	pdfauthor={Chris Hughes},
-	pdftitle={latexindent.pl package},
-	pdfkeywords={perl;beautify;indentation},
-	bookmarksnumbered,
-	bookmarksopen,
-	linktocpage,
-	colorlinks=true,
-	linkcolor=blue,
-	citecolor=black,
+ pdfauthor={Chris Hughes},
+ pdftitle={latexindent.pl package},
+ pdfkeywords={perl;beautify;indentation},
+ bookmarksnumbered,
+ bookmarksopen,
+ linktocpage,
+ colorlinks=true,
+ linkcolor=blue,
+ citecolor=black,
 }
 \usepackage{cleveref}
 
@@ -66,10 +66,10 @@
 
 % shortcut command for displaying star in documentation
 \newcommand{\stardemo}[1][]{\begin{tikzpicture}
-	\node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
-	\node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
-	\node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
-	\end{tikzpicture}}
+ \node at (10:.1cm)[very thin,cmhstar,scale=0.25,rotate=20,#1]{};
+ \node at (120:.1cm)[very thin,cmhstar,scale=0.15,rotate=-10,#1]{};
+ \node at (235:.1cm)[very thin,cmhstar,scale=0.2,rotate=-20,#1]{};
+ \end{tikzpicture}}
 
 % totalcount
 \DeclareTotalCounter{lstlisting}
@@ -90,38 +90,38 @@
 %       \announce{date}[text]  means *new* as of <date>
 %
 \NewDocumentCommand{\announce}{ s m s m }{%
-	\IfBooleanTF{#1}%
-	{% \announce*
-		% NEW in current version
-		\tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
-			\IfBooleanTF{#3}%
-			{% \announce*{date}*[text] means *updated* as of <date>
-				\tcbdocupdated{#2}%
-			}%
-			{% \announce*{date}[text] means *new* as of <date>
-				\tcbdocnew{#2}%
-			}%
-		}%
-		\IfBooleanTF{#3}%
-		{%
-			\addcontentsline{new}{cmhtitle}{#4 (U)}%
-		}%
-		{%
-			\addcontentsline{new}{cmhtitle}{#4 (N)}%
-		}%
-	}%
-	{% \announce
-		% NOT new in current version
-		\tcbdocmarginnote{%
-			\IfBooleanTF{#3}%
-			{% \announce{date}*[text] means *updated* as of <date>
-				\tcbdocupdated{#2}%
-			}%
-			{% \announce{date}[text] means *new* as of <date>
-				\tcbdocnew{#2}%
-			}%
-		}%
-	}}
+ \IfBooleanTF{#1}%
+ {% \announce*
+  % NEW in current version
+  \tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
+   \IfBooleanTF{#3}%
+   {% \announce*{date}*[text] means *updated* as of <date>
+    \tcbdocupdated{#2}%
+   }%
+   {% \announce*{date}[text] means *new* as of <date>
+    \tcbdocnew{#2}%
+   }%
+  }%
+  \IfBooleanTF{#3}%
+  {%
+   \addcontentsline{new}{cmhtitle}{#4 (U)}%
+  }%
+  {%
+   \addcontentsline{new}{cmhtitle}{#4 (N)}%
+  }%
+ }%
+ {% \announce
+  % NOT new in current version
+  \tcbdocmarginnote{%
+   \IfBooleanTF{#3}%
+   {% \announce{date}*[text] means *updated* as of <date>
+    \tcbdocupdated{#2}%
+   }%
+   {% \announce{date}[text] means *new* as of <date>
+    \tcbdocnew{#2}%
+   }%
+  }%
+ }}
 
 \reversemarginpar
 % bibliographies
@@ -130,14 +130,14 @@
 
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
 \newtcolorbox{warning}{parbox=false,
-	breakable,
-	enhanced,
-	arc=0mm,
-	colback=red!5,
-	colframe=red,
-	leftrule=12mm,%
-	title={Warning!},
-	overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }
+ breakable,
+ enhanced,
+ arc=0mm,
+ colback=red!5,
+ colframe=red,
+ leftrule=12mm,%
+ title={Warning!},
+ overlay={\node[anchor=north west,outer sep=2pt] at (frame.north west) {\includegraphics[width=8mm]{warning}}; }
 }
 
 \definecolor{harvestgold}{cmyk}{0.00, 0.05, 0.51, 0.07}  %EDE275
@@ -146,112 +146,112 @@
 
 \makeatletter
 \tcbset{
-	addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
-	addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
-	cmhlistings/.style={
-			colback=blue!5!white,
-			colframe=white!25!black,colback=white,
-			top=0cm,
-			bottom=0cm,
-			left=0mm,
-			listing only,
-			center title,
-			listing engine=listings,
-			listing options={showtabs=true,tabsize=4,showspaces=true},
-			boxrule=0pt,
-			toprule=1pt,bottomrule=1pt,
-			titlerule=1pt,
-			colframe=white!40!black,
-			colback=white,
-			sharp corners,
-			colbacktitle=white!75!black
-		},
-	tex-TCB/.style={
-			listing only,
-			listing engine=listings,
-			left=0cm,
-			boxrule=0pt,
-			sharp corners,
-			center title,
-			colframe=white!40!black,
-			colback=white,
-			sharp corners,
-			colbacktitle=white!75!black,
-			toprule=1pt,
-			bottomrule=1pt,
-			titlerule=1pt,
-		},
-	yaml-TCB/.style={
-			listing only,
-			listing engine=listings,
-			left=0cm,
-			boxrule=0pt,
-			sharp corners,
-			center title,
-			colbacktitle=white!75!blue,
-			colframe=white!25!blue,
-			colback=white!90!blue,
-			toprule=2pt,
-			titlerule=2pt,
-		},
-	MLB-TCB/.style={
-			yaml-TCB,
-			center title,
-			colframe=cmhgold,
-			colbacktitle=harvestgold,
-			colback=white!60!cmhgold,
-			width=0.9\linewidth,
-			before=\centering,
-			enhanced,
-			overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
-		},
-	replace-TCB/.style={
-			yaml-TCB,
-			center title,
-			colbacktitle=white!75!green,
-			colframe=white!25!green,
-			colback=white!90!green,
-			width=0.9\linewidth,
-			before=\centering,
-			enhanced,
-			overlay={\node[anchor=north east,outer sep=2pt,draw=white!25!green,very thick,circle,fill=white!75!green,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-r}}; }
-		},
-	yaml-obsolete/.style={
-			listing only,
-			listing engine=listings,
-			left=0cm,
-			boxrule=0pt,
-			sharp corners,
-			center title,
-			toprule=2pt,
-			titlerule=2pt,
-			colframe=white!25!red,
-			colbacktitle=white!75!red,
-			colback=white!90!red,
-		},
-	new-to-this-version/.style={
-			enhanced,
-			overlay app={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
-			addtololstar,
-		},
+ addtolol/.style={list entry={\kvtcb@title},add to list={lol}{lstlisting}},
+ addtololstar/.style={list entry={\kvtcb@title},add to list={lol}{lstlistingstar}},
+ cmhlistings/.style={
+   colback=blue!5!white,
+   colframe=white!25!black,colback=white,
+   top=0cm,
+   bottom=0cm,
+   left=0mm,
+   listing only,
+   center title,
+   listing engine=listings,
+   listing options={showtabs=true,tabsize=4,showspaces=true},
+   boxrule=0pt,
+   toprule=1pt,bottomrule=1pt,
+   titlerule=1pt,
+   colframe=white!40!black,
+   colback=white,
+   sharp corners,
+   colbacktitle=white!75!black
+  },
+ tex-TCB/.style={
+   listing only,
+   listing engine=listings,
+   left=0cm,
+   boxrule=0pt,
+   sharp corners,
+   center title,
+   colframe=white!40!black,
+   colback=white,
+   sharp corners,
+   colbacktitle=white!75!black,
+   toprule=1pt,
+   bottomrule=1pt,
+   titlerule=1pt,
+  },
+ yaml-TCB/.style={
+   listing only,
+   listing engine=listings,
+   left=0cm,
+   boxrule=0pt,
+   sharp corners,
+   center title,
+   colbacktitle=white!75!blue,
+   colframe=white!25!blue,
+   colback=white!90!blue,
+   toprule=2pt,
+   titlerule=2pt,
+  },
+ MLB-TCB/.style={
+   yaml-TCB,
+   center title,
+   colframe=cmhgold,
+   colbacktitle=harvestgold,
+   colback=white!60!cmhgold,
+   width=0.9\linewidth,
+   before=\centering,
+   enhanced,
+   overlay={\node[anchor=north east,outer sep=2pt,draw=cmhgold,very thick,double,fill=harvestgold,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-m}}; }
+  },
+ replace-TCB/.style={
+   yaml-TCB,
+   center title,
+   colbacktitle=white!75!green,
+   colframe=white!25!green,
+   colback=white!90!green,
+   width=0.9\linewidth,
+   before=\centering,
+   enhanced,
+   overlay={\node[anchor=north east,outer sep=2pt,draw=white!25!green,very thick,circle,fill=white!75!green,font =\small] at ([yshift=-3mm]frame.north east) {\texttt{-r}}; }
+  },
+ yaml-obsolete/.style={
+   listing only,
+   listing engine=listings,
+   left=0cm,
+   boxrule=0pt,
+   sharp corners,
+   center title,
+   toprule=2pt,
+   titlerule=2pt,
+   colframe=white!25!red,
+   colbacktitle=white!75!red,
+   colback=white!90!red,
+  },
+ new-to-this-version/.style={
+   enhanced,
+   overlay app={\node at ([yshift=0mm,xshift=0mm]frame.north east) {\stardemo[scale=1.2]}; },
+   addtololstar,
+  },
 }
 
 \DeclareTCBListing[use counter=lstlisting]{cmhlistings}{s O{} m m}{%
-	cmhlistings,
-	IfBooleanTF={#1}{new-to-this-version}{addtolol},
-	center title,
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#3},label={#4},
-	listing engine=listings,
-	listing options={#2},
+ cmhlistings,
+ IfBooleanTF={#1}{new-to-this-version}{addtolol},
+ center title,
+ title={\color{black}{\scshape Listing \thetcbcounter}: ~#3},label={#4},
+ listing engine=listings,
+ listing options={#2},
 }
 
 \DeclareDocumentEnvironment{cmhtcbraster}{O{}}{\begin{tcbraster}[
-		new-to-this-version/.style={
-				enhanced,
-				overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
-				addtololstar,
-			},
-		raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
+  new-to-this-version/.style={
+    enhanced,
+    overlay app={\node[anchor=south east] at ([yshift=-3mm,xshift=3mm]frame.north east) {\stardemo[scale=1.2]}; },
+    addtololstar,
+   },
+  raster valign=top,raster columns=2,#1]}{\end{tcbraster}}
 
 % \cmhlistingsfromfile
 %                   * no star: not new, star: new   #1
@@ -265,12 +265,12 @@
 %   \cmhlistingsfromfile*[listing options]... is NEW
 %   \cmhlistingsfromfile[listing options]...  is not new
 \DeclareTCBInputListing[use counter=lstlisting]{\cmhlistingsfromfile}{s O{} m O{} m m}{%
-	cmhlistings,
-	listing file={#3},
-	listing options={style=tcblatex,showspaces=false,#2},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
-	#4,
-	IfBooleanTF={#1}{new-to-this-version}{addtolol},
+ cmhlistings,
+ listing file={#3},
+ listing options={style=tcblatex,showspaces=false,#2},
+ title={\color{black}{\scshape Listing \thetcbcounter}: ~#5},label={#6},
+ #4,
+ IfBooleanTF={#1}{new-to-this-version}{addtolol},
 }
 
 \makeatletter
@@ -279,358 +279,358 @@
 \@for\next:=\@classoptionslist\do
 {\ifx\next\@tempa\@tempswatrue\fi}
 \if@tempswa % draft option is active
-	\RenewDocumentCommand{\cmhlistingsfromfile}{s O{} s m O{} m m}{\captionof{lstlisting}{#6}\label{#7}}
-	\renewcommand{\stardemo}[1][]{$\star$}
+ \RenewDocumentCommand{\cmhlistingsfromfile}{s O{} s m O{} m m}{\captionof{lstlisting}{#6}\label{#7}}
+ \renewcommand{\stardemo}[1][]{$\star$}
 \fi
 
 % command shell
 \newtcblisting{commandshell}{colback=black,colupper=white,colframe=yellow!75!black,
-	listing only,listing options={style=tcblatex,language=sh,
-			morekeywords={latexindent,pl},
-			keywordstyle=\color{blue!35!white}\bfseries,
-		},
-	listing engine=listings,
-	left=0cm,
-	every listing line={\textcolor{red}{\small\ttfamily\fontseries{b}\selectfont cmh:$\sim$\$ }}}
+ listing only,listing options={style=tcblatex,language=sh,
+   morekeywords={latexindent,pl},
+   keywordstyle=\color{blue!35!white}\bfseries,
+  },
+ listing engine=listings,
+ left=0cm,
+ every listing line={\textcolor{red}{\small\ttfamily\fontseries{b}\selectfont cmh:$\sim$\$ }}}
 
 % dosprompt
 \newtcblisting{dosprompt}{
-	colback=black,
-	colupper=white,
-	colframe=yellow!75!black,
-	listing only,
-	listing options={
-			language=command.com,
-			morekeywords={latexindent,pl},
-			keywordstyle=\color{blue!35!white}\bfseries,
-			basicstyle=\small\color{white}\ttfamily
-		},
-	listing engine=listings,
-	left=0cm,
-	every listing line={\textcolor{white}{\small\ttfamily\fontseries{b}\selectfont C:\textbackslash Users\textbackslash cmh$>$}}}
+ colback=black,
+ colupper=white,
+ colframe=yellow!75!black,
+ listing only,
+ listing options={
+   language=command.com,
+   morekeywords={latexindent,pl},
+   keywordstyle=\color{blue!35!white}\bfseries,
+   basicstyle=\small\color{white}\ttfamily
+  },
+ listing engine=listings,
+ left=0cm,
+ every listing line={\textcolor{white}{\small\ttfamily\fontseries{b}\selectfont C:\textbackslash Users\textbackslash cmh$>$}}}
 
 \lstset{%
-	basicstyle=\small\ttfamily,language={[LaTeX]TeX},
-	numberstyle=\ttfamily%\small,
-	breaklines=true,
-	keywordstyle=\color{blue},                    % keywords
-	commentstyle=\color{purple},    % comments
-	tabsize=3,
+ basicstyle=\small\ttfamily,language={[LaTeX]TeX},
+ numberstyle=\ttfamily%\small,
+ breaklines=true,
+ keywordstyle=\color{blue},                    % keywords
+ commentstyle=\color{purple},    % comments
+ tabsize=3,
 }%
 \DeclareTCBListing[use counter=lstlisting]{yaml}{O{} m O{} m}{
-	yaml-TCB,
-	listing options={
-			style=tcblatex,
-			numbers=none,
-			numberstyle=\color{red},
-			#1,
-		},
-	title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#4},
-	#3,
+ yaml-TCB,
+ listing options={
+   style=tcblatex,
+   numbers=none,
+   numberstyle=\color{red},
+   #1,
+  },
+ title={\color{black}{\scshape Listing \thetcbcounter}: ~#2},label={#4},
+ #3,
 }
 
 \lstdefinestyle{yaml-LST}{
-	style=tcblatex,
-	numbers=none,
-	numberstyle=\color{red},
+ style=tcblatex,
+ numbers=none,
+ numberstyle=\color{red},
 }
 
 \lstdefinestyle{demo}{
-	numbers=none,
-	linewidth=1.25\textwidth,
-	columns=fullflexible,
+ numbers=none,
+ linewidth=1.25\textwidth,
+ columns=fullflexible,
 }
 
 \lstdefinestyle{lineNumbersTeX}{
-	numbers=left,
-	numberstyle=\color{blue},
+ numbers=left,
+ numberstyle=\color{blue},
 }
 
 \lstdefinestyle{fileExtensionPreference}{
-	style=yaml-LST,
-	firstnumber=44,linerange={44-48},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=44,linerange={44-48},
+ numbers=left,
 }
 
 \lstdefinestyle{logFilePreferences}{
-	style=yaml-LST,
-	firstnumber=88,linerange={88-102},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=88,linerange={88-102},
+ numbers=left,
 }
 
 \lstdefinestyle{verbatimEnvironments}{
-	style=yaml-LST,
-	firstnumber=106,linerange={106-109},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=106,linerange={106-109},
+ numbers=left,
 }
 
 \lstdefinestyle{verbatimCommands}{
-	style=yaml-LST,
-	firstnumber=112,linerange={112-114},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=112,linerange={112-114},
+ numbers=left,
 }
 
 \lstdefinestyle{noIndentBlock}{
-	style=yaml-LST,
-	firstnumber=119,linerange={119-121},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=119,linerange={119-121},
+ numbers=left,
 }
 
 \lstdefinestyle{removeTrailingWhitespace}{
-	style=yaml-LST,
-	firstnumber=150,linerange={150-152},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=150,linerange={150-152},
+ numbers=left,
 }
 
 \lstdefinestyle{fileContentsEnvironments}{
-	style=yaml-LST,
-	firstnumber=125,linerange={125-127},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=125,linerange={125-127},
+ numbers=left,
 }
 
 \lstdefinestyle{lookForPreamble}{
-	style=yaml-LST,
-	firstnumber=133,linerange={133-137},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=133,linerange={133-137},
+ numbers=left,
 }
 
 \lstdefinestyle{lookForAlignDelims}{
-	style=yaml-LST,
-	firstnumber=155,linerange={155-171},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=155,linerange={155-171},
+ numbers=left,
 }
 
 \lstdefinestyle{indentAfterItems}{
-	style=yaml-LST,
-	firstnumber=233,linerange={233-237},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=233,linerange={233-240},
+ numbers=left,
 }
 
 \lstdefinestyle{itemNames}{
-	style=yaml-LST,
-	firstnumber=243,linerange={243-245},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=246,linerange={246-248},
+ numbers=left,
 }
 
 \lstdefinestyle{specialBeginEnd}{
-	style=yaml-LST,
-	firstnumber=249,linerange={249-262},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=252,linerange={252-265},
+ numbers=left,
 }
 
 \lstdefinestyle{indentAfterHeadings}{
-	style=yaml-LST,
-	firstnumber=272,linerange={272-281},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=275,linerange={275-284},
+ numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobalEnv}{
-	style=yaml-LST,
-	firstnumber=330,linerange={330-331},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=333,linerange={333-334},
+ numbers=left,
 }
 
 \lstdefinestyle{noAdditionalIndentGlobal}{
-	style=yaml-LST,
-	firstnumber=330,linerange={330-342},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=333,linerange={333-345},
+ numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobalEnv}{
-	style=yaml-LST,
-	firstnumber=346,linerange={346-347},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=349,linerange={349-350},
+ numbers=left,
 }
 
 \lstdefinestyle{indentRulesGlobal}{
-	style=yaml-LST,
-	firstnumber=346,linerange={346-358},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=349,linerange={349-361},
+ numbers=left,
 }
 
 \lstdefinestyle{commandCodeBlocks}{
-	style=yaml-LST,
-	firstnumber=361,linerange={361-376},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=364,linerange={364-379},
+ numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaks}{
-	style=yaml-LST,
-	firstnumber=491,linerange={491-493},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=494,linerange={494-496},
+ numbers=left,
 }
 
 \lstdefinestyle{textWrapOptions}{
-	style=yaml-LST,
-	firstnumber=519,linerange={519-520},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=522,linerange={522-523},
+ numbers=left,
 }
 
 \lstdefinestyle{textWrapOptionsAll}{
-	style=yaml-LST,
-	firstnumber=519,linerange={519-541},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=522,linerange={522-545},
+ numbers=left,
 }
 
 \lstdefinestyle{oneSentencePerLine}{
-	style=yaml-LST,
-	firstnumber=494,linerange={494-518},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=497,linerange={497-521},
+ numbers=left,
 }
 
 \lstdefinestyle{sentencesFollow}{
-	style=yaml-LST,
-	firstnumber=500,linerange={500-508},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=503,linerange={503-511},
+ numbers=left,
 }
 
 \lstdefinestyle{sentencesBeginWith}{
-	style=yaml-LST,
-	firstnumber=509,linerange={509-512},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=512,linerange={512-515},
+ numbers=left,
 }
 
 \lstdefinestyle{sentencesEndWith}{
-	style=yaml-LST,
-	firstnumber=513,linerange={513-518},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=516,linerange={516-521},
+ numbers=left,
 }
 
 \lstdefinestyle{modifylinebreaksEnv}{
-	style=yaml-LST,
-	firstnumber=543,linerange={543-552},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=547,linerange={547-556},
+ numbers=left,
 }
 
 \lstdefinestyle{replacements}{
-	style=yaml-LST,
-	firstnumber=604,linerange={604-612},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=608,linerange={608-616},
+ numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
-	style=yaml-LST,
-	firstnumber=615,linerange={615-640},
-	numbers=left,
+ style=yaml-LST,
+ firstnumber=619,linerange={619-671},
+ numbers=left,
 }
 
 % stars around contributors
 \pgfdeclaredecoration{stars}{initial}{
-	\state{initial}[width=15pt]
-	{
-		\pgfmathparse{round(rnd*100)}
-		\pgfsetfillcolor{yellow!\pgfmathresult!orange}
-		\pgfsetstrokecolor{yellow!\pgfmathresult!red}
-		\pgfnode{star}{center}{}{}{\pgfusepath{stroke,fill}}
-	}
-	\state{final}
-	{
-		\pgfpathmoveto{\pgfpointdecoratedpathlast}
-	}
+ \state{initial}[width=15pt]
+ {
+  \pgfmathparse{round(rnd*100)}
+  \pgfsetfillcolor{yellow!\pgfmathresult!orange}
+  \pgfsetstrokecolor{yellow!\pgfmathresult!red}
+  \pgfnode{star}{center}{}{}{\pgfusepath{stroke,fill}}
+ }
+ \state{final}
+ {
+  \pgfpathmoveto{\pgfpointdecoratedpathlast}
+ }
 }
 
 \newtcolorbox{stars}{%
-	enhanced jigsaw,
-	breakable, % allow page breaks
-	left=0cm,
-	top=0cm,
-	before skip=0.2cm,
-	boxsep=0cm,
-	frame style={draw=none,fill=none}, % hide the default frame
-	colback=white,
-	overlay={
-			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
-			decorate[decoration={stars,segment length=2cm}] {
-					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=-.5cm,yshift=0.1cm]frame.south west) -- ([xshift=-.5cm,yshift=0.4cm]frame.north west)
-						}};
-			\draw[inner sep=0,minimum size=rnd*15pt+2pt]
-			decorate[decoration={stars,segment length=2cm}] {
-					decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
-							([xshift=.75cm,yshift=0.1cm]frame.south east) -- ([xshift=.75cm,yshift=0.6cm]frame.north east)
-						}};
-			\node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
-		},
-	% paragraph skips obeyed within tcolorbox
-	parbox=false,
+ enhanced jigsaw,
+ breakable, % allow page breaks
+ left=0cm,
+ top=0cm,
+ before skip=0.2cm,
+ boxsep=0cm,
+ frame style={draw=none,fill=none}, % hide the default frame
+ colback=white,
+ overlay={
+   \draw[inner sep=0,minimum size=rnd*15pt+2pt]
+   decorate[decoration={stars,segment length=2cm}] {
+     decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+       ([xshift=-.5cm,yshift=0.1cm]frame.south west) -- ([xshift=-.5cm,yshift=0.4cm]frame.north west)
+      }};
+   \draw[inner sep=0,minimum size=rnd*15pt+2pt]
+   decorate[decoration={stars,segment length=2cm}] {
+     decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}] {
+       ([xshift=.75cm,yshift=0.1cm]frame.south east) -- ([xshift=.75cm,yshift=0.6cm]frame.north east)
+      }};
+   \node[anchor=north west,outer sep=2pt,opacity=0.25] at ([xshift=-4.25cm]frame.north west) {\resizebox{3cm}{!}{\faGithub}};
+  },
+ % paragraph skips obeyed within tcolorbox
+ parbox=false,
 }
 
 \newtcolorbox[auto counter]{example}{breakable,
-	enhanced jigsaw,
-	before skip=6pt,after skip=6pt,
-	frame hidden,
-	title={\llap{Example~\thetcbcounter\hspace{3mm}}},
-	fonttitle=\bfseries,
-	coltitle=black,
-	attach title to upper,
-	grow to left by=5mm,
-	top=3mm,
-	overlay unbroken={%
-			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-			\path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-			\path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
-		},
-	overlay first={%
-			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-			\path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-			%\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
-		},
-	overlay last={%
-			\draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-			%\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-			\path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
-		},
-	parbox=false,
+ enhanced jigsaw,
+ before skip=6pt,after skip=6pt,
+ frame hidden,
+ title={\llap{Example~\thetcbcounter\hspace{3mm}}},
+ fonttitle=\bfseries,
+ coltitle=black,
+ attach title to upper,
+ grow to left by=5mm,
+ top=3mm,
+ overlay unbroken={%
+   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+   \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+   \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+  },
+ overlay first={%
+   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+   \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+   %\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
+  },
+ overlay last={%
+   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
+   %\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
+   \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+  },
+ parbox=false,
 }
 
 % copied from /usr/local/texlive/2013/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
 % the only modification is the \stars and \endstars
 \defbibenvironment{specialbib}
 {\stars\list
-	{\printtext[labelnumberwidth]{%
-			\printfield{prefixnumber}%
-			\printfield{labelnumber}}}
-	{\setlength{\labelwidth}{\labelnumberwidth}%
-		\setlength{\leftmargin}{\labelwidth}%
-		\setlength{\labelsep}{\biblabelsep}%
-		\addtolength{\leftmargin}{\labelsep}%
-		\setlength{\itemsep}{\bibitemsep}%
-		\setlength{\parsep}{\bibparsep}}%
-	\renewcommand*{\makelabel}[1]{\hss##1}}
+ {\printtext[labelnumberwidth]{%
+   \printfield{prefixnumber}%
+   \printfield{labelnumber}}}
+ {\setlength{\labelwidth}{\labelnumberwidth}%
+  \setlength{\leftmargin}{\labelwidth}%
+  \setlength{\labelsep}{\biblabelsep}%
+  \addtolength{\leftmargin}{\labelsep}%
+  \setlength{\itemsep}{\bibitemsep}%
+  \setlength{\parsep}{\bibparsep}}%
+ \renewcommand*{\makelabel}[1]{\hss##1}}
 {\endlist\endstars}
 {\item}
 
 \newtcbox{yamltitlebox}[1][]{colframe=black!50!white,boxrule=.5pt,sharp corners,#1}
 
 \newcommand{\flagbox}[1]{%
-	\par
-	\makebox[30pt][l]{%
-		\hspace{-1cm}%
-		\ttfamily\fontseries{b}\selectfont #1
-	}%
+ \par
+ \makebox[30pt][l]{%
+  \hspace{-1cm}%
+  \ttfamily\fontseries{b}\selectfont #1
+ }%
 }
 
 \NewDocumentCommand{\yamltitle}{O{} m s m}{%
-	\par
-	\makebox[30pt][l]{%
-		\hspace{-2cm}%
-		\yamltitlebox[#1]{%
-			{\ttfamily\fontseries{b}\selectfont{\color{blue!80!white}#2}}: %
-			\IfBooleanTF{#3}
-			{$\langle$\itshape #4$\rangle$}
-			{{\bfseries #4}}
-		}}
-	\par\nobreak%
+ \par
+ \makebox[30pt][l]{%
+  \hspace{-2cm}%
+  \yamltitlebox[#1]{%
+   {\ttfamily\fontseries{b}\selectfont{\color{blue!80!white}#2}}: %
+   \IfBooleanTF{#3}
+   {$\langle$\itshape #4$\rangle$}
+   {{\bfseries #4}}
+  }}
+ \par\nobreak%
 }
 
 \newcommand{\fixthis}[1]
 {%
-	\marginpar{\huge \color{red} \framebox{FIX}}%
-	\typeout{FIXTHIS: p\thepage : #1^^J}%
+ \marginpar{\huge \color{red} \framebox{FIX}}%
+ \typeout{FIXTHIS: p\thepage : #1^^J}%
 }
 
 \newcommand*\ruleline[1]{%
-	\par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
+ \par\noindent\raisebox{.8ex}{\makebox[\linewidth]{\hrulefill\hspace{1ex}\raisebox{-1.8ex}{#1}\hspace{1ex}\hrulefill}}}
 
 \newcommand{\imagetouse}{logo-bw}
 
@@ -642,7 +642,7 @@
 {\centering {\scshape Section \thesection}\\} % the section
 {0pt} % sep
 {\centering \ruleline{\includegraphics{\imagetouse}}\\ % The horizontal rule
-	\centering} % And the actual title
+ \centering} % And the actual title
 
 % custom subsection
 \titleformat{\subsection}
@@ -703,8 +703,8 @@
 % headers and footers
 \fancyhf{} % delete current header and footer
 \fancyhead[R]{\bfseries\thepage%
-	\tikz[remember picture,overlay] {
-		\node at (1,0){\includegraphics{logo-bw}}; }
+ \tikz[remember picture,overlay] {
+  \node at (1,0){\includegraphics{logo-bw}}; }
 }
 \fancyhead[L]{\rightmark}
 \fancyheadoffset[L]{3cm}
@@ -712,9 +712,9 @@
 
 % renew plain style
 \fancypagestyle{plain}{%
-	\fancyhf{} % clear all header and footer fields
-	\renewcommand{\headrulewidth}{0pt}
-	\renewcommand{\footrulewidth}{0pt}}
+ \fancyhf{} % clear all header and footer fields
+ \renewcommand{\headrulewidth}{0pt}
+ \renewcommand{\footrulewidth}{0pt}}
 
 % widepage environment
 \newenvironment{widepage}{\begin{adjustwidth}{-3cm}{0cm}}{\end{adjustwidth}}

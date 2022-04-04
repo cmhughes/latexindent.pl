@@ -224,8 +224,16 @@ sub text_wrap{
             $trailingComments .= $1;
         }
 
+        # determine if text wrapping will remove paragraph line breaks
+        my $removeBlockLineBreaks = ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{removeBlockLineBreaks};
+
+        # sentence remove line breaks is determined by removeSentenceLineBreaks
+        if (${$self}{modifyLineBreaksYamlName} eq 'sentence'){
+            $removeBlockLineBreaks = ${$mainSettings{modifyLineBreaks}{oneSentencePerLine}}{removeSentenceLineBreaks};
+        }
+
         # remove internal line breaks
-        $textWrapBlockStorageValue =~ s/\R(?!\Z)/ /sg; 
+        $textWrapBlockStorageValue =~ s/\R(?!\Z)/ /sg if $removeBlockLineBreaks; 
 
         # convert multiple spaces into single
         $textWrapBlockStorageValue =~ s/\h{2,}/ /sg if ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{multipleSpacesToSingle};

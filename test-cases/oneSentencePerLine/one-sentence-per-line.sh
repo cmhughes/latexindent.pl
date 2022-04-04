@@ -104,5 +104,10 @@ latexindent.pl -s -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences
 
 # issue 321
 latexindent.pl -s issue-321.tex -m -o=+mod0 -l=manipulateSentences.yaml 
+
+# issue 355
+latexindent.pl -s -m -l issue-355.yaml issue-355.tex -o=+-mod1
+latexindent.pl -s -m -l issue-355a.yaml issue-355.tex -o=+-mod2
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

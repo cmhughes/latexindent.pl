@@ -1,4 +1,4 @@
-# defaultSettings.yaml for latexindent.pl, version 3.17, 2022-03-25
+# defaultSettings.yaml for latexindent.pl, version 3.17.1, 2022-04-04
 #                      a script that aims to
 #                      beautify .tex, .sty, .cls files
 #
@@ -232,8 +232,11 @@ lookForAlignDelims:
 # then populate indentAfterItems. See also itemNames
 indentAfterItems:
     itemize: 1
+    itemize*: 1
     enumerate: 1
+    enumerate*: 1
     description: 1
+    description*: 1
     list: 1
 
 # if you want to use other names for your items (for example, \part)
@@ -519,6 +522,7 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 0
         multipleSpacesToSingle: 1            
+        removeBlockLineBreaks: 1
         blocksFollow:
            headings: 1
            commentOnPreviousLine: 1
@@ -635,6 +639,33 @@ fineTuning:
     trailingComments:
       notPreceededBy: '(?<!\\)'
     modifyLineBreaks:
-      betterFullStop: '(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:E\.g)|(?:i\.e)|(?:I\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))'
       doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
       comma: ','
+      betterFullStop: |-
+        (?x)                                # ignore spaces in the below
+        (?:                                 #
+          \.\)                              # .) 
+          (?!\h*[a-z])                      # not *followed by* a-z
+        )                                   #
+        |                                   # OR
+        (?:                                 #
+          (?<!                              # not *preceeded by*
+            (?:                             #
+              (?:[eE]\.[gG])                # e.g OR E.g OR e.G OR E.G
+              |                             #
+              (?:[iI]\.[eE])                # i.e OR I.e OR i.E OR I.E
+              |                             #
+              (?:etc)                       # etc
+            )                               #
+          )                                 #
+        )                                   # 
+        \.                                  # .
+        (?!                                 # not *followed by*
+          (?:                               #
+            [a-zA-Z0-9-~,]                  #
+            |                               #
+            \),                             # ),
+            |                               #
+            \)\.                            # ).
+          )                                 #
+        )                                   #

@@ -1,0 +1,7 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        removeBlockLineBreaks: 0
+        blocksBeginWith:
+           A-Z: 1
+           a-z: 1

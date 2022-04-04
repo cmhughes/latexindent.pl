@@ -16,9 +16,9 @@ this field will only be considered if the ``-m`` switch has been used*. A snippe
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 491-493
+ 	:lines: 494-496
  	:linenos:
- 	:lineno-start: 491
+ 	:lineno-start: 494
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s
 be clear:
@@ -75,9 +75,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 519-541
+ 	:lines: 522-545
  	:linenos:
- 	:lineno-start: 519
+ 	:lineno-start: 522
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -90,7 +90,8 @@ An overview of how the text wrapping feature works:
 
 #. it happens *after* the oneSentencePerLine routine (see :numref:`sec:onesentenceperline`);
 
-#. it happens *before* all of the other code blocks are found and does *not* operate on a per-code-block basis;
+#. it happens *before* all of the other code blocks are found and does *not* operate on a per-code-block basis; this means that, including indentation, you may receive a column width wider than that
+   which you specify in ``columns``
 
 #. code blocks to be text wrapped will:
 
@@ -102,7 +103,9 @@ An overview of how the text wrapping feature works:
 
 #. setting ``columns`` to a value :math:`>0` will text wrap blocks by first removing line breaks, and then wrapping according to the specified value of ``columns``;
 
-#. setting ``columns`` to :math:`-1` will *only* remove line breaks within the text wrap block.
+#. setting ``columns`` to :math:`-1` will *only* remove line breaks within the text wrap block;
+
+#. by default, the text wrapping routine will remove line breaks within text blocks because ``removeBlockLineBreaks`` is set to 1; switch it to 0 if you wish to change this.
 
 We demonstrate this feature using a series of examples.
 
@@ -691,9 +694,9 @@ script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 494-518
+ 	:lines: 497-521
  	:linenos:
- 	:lineno-start: 494
+ 	:lineno-start: 497
 
 .. describe:: manipulateSentences:0|1
 
@@ -780,25 +783,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 500-508
+ 	:lines: 503-511
  	:linenos:
- 	:lineno-start: 500
+ 	:lineno-start: 503
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 509-512
+ 	:lines: 512-515
  	:linenos:
- 	:lineno-start: 509
+ 	:lineno-start: 512
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 513-518
+ 	:lines: 516-521
  	:linenos:
- 	:lineno-start: 513
+ 	:lineno-start: 516
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1225,6 +1228,8 @@ we receive the output in :numref:`lst:multiple-sentences6-mod3`.
 
 Notice that the sentence has received indentation, and that the ``itemize`` code block has been found and indented correctly.
 
+Text wrapping when using the ``oneSentencePerLine`` routine determines if it will remove line breaks while text wrapping, from the value of ``removeSentenceLineBreaks``.
+
 .. label follows
 
 .. _sec:poly-switches:
@@ -1286,9 +1291,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 543-552
+ 	:lines: 547-556
  	:linenos:
- 	:lineno-start: 543
+ 	:lineno-start: 547
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
 :numref:`lst:environments-mlb`.

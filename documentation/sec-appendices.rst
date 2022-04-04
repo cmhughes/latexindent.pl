@@ -501,7 +501,7 @@ pre-commit
 ----------
 
 Users of ``.git`` may be interested in exploring the ``pre-commit`` tool (“Pre-Commit: A Framework for Managing and Maintaining Multi-Language Pre-Commit Hooks.” n.d.), which is supported by
-``latexindent.pl``. Thank you to (Geus 2022) for contributing this feature.
+``latexindent.pl``. Thank you to (Geus 2022) for contributing this feature, and to (Holthuis 2022) for their contribution to it.
 
 To use the ``pre-commit`` tool, you will need to install ``pre-commit``; sample instructions for Ubuntu are given in :numref:`sec:pre-commit-ubuntu`. Once installed, there are two ways to use
 ``pre-commit``: using ``CPAN`` or using ``conda``, detailed in :numref:`sec:pre-commit-cpan` and :numref:`sec:pre-commit-conda` respectively.
@@ -528,6 +528,30 @@ I then updated my path via .bashrc so that it includes the line in :numref:`lst:
 
    ...
    export PATH=$PATH:/home/cmhughes/.local/bin
+
+pre-commit defaults
+~~~~~~~~~~~~~~~~~~~
+
+The default values that are employed by ``pre-commit`` are shown in :numref:`lst:.pre-commit-yaml-default`.
+
+.. index:: pre-commit;default
+
+.. literalinclude:: ../.pre-commit-hooks.yaml
+ 	:class: .baseyaml
+ 	:caption: ``.pre-commit-hooks.yaml`` (default) 
+ 	:name: lst:.pre-commit-yaml-default
+
+In particular, the decision has deliberately been made (in collaboration with (Holthuis 2022)) to have the default to employ the following switches: ``overwriteIfDifferent``, ``silent``, ``local``;
+this is detailed in the lines that specify ``args`` in :numref:`lst:.pre-commit-yaml-default`.
+
+.. index:: pre-commit;warning
+
+.. index:: warning;pre-commit
+
+.. warning::	
+	
+	Users of ``pre-commit`` will, by default, have the ``overwriteIfDifferent`` switch employed. It is assumed that such users have version control in place, and are intending to overwrite their files.
+	 
 
 .. label follows
 
@@ -854,6 +878,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-tdegeusprecommit
 
       Geus, Tom de. 2022. “Adding Perl Installation + Pre-Commit Hook.” January 21, 2022. https://github.com/cmhughes/latexindent.pl/pull/322.
+
+   .. container::
+      :name: ref-holzhausprecommit
+
+      Holthuis, Jan. 2022. “Fix Pre-Commit Usage.” March 31, 2022. https://github.com/cmhughes/latexindent.pl/pull/354.
 
    .. container::
       :name: ref-latexindent-home

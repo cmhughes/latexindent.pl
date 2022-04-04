@@ -12,49 +12,49 @@
  \printcontents[the-m-switch]{}{0}{}
 
 \yamltitle{modifylinebreaks}*{fields}
-	\makebox[0pt][r]{%
-	\raisebox{-\totalheight}[0pt][0pt]{%
-	\tikz\node[opacity=1] at (0,0)
-	{\includegraphics[width=4cm]{logo}};}}%	
-	As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m} switch, which permits
-	\texttt{latexindent.pl} to modify line breaks, according to the specifications in the
-	\texttt{modifyLineBreaks} field. \emph{The settings in this field will only be considered
-	if the \texttt{-m} switch has been used}. A snippet of the default settings of this field
-	is shown in \cref{lst:modifylinebreaks}.
+ \makebox[0pt][r]{%
+ \raisebox{-\totalheight}[0pt][0pt]{%
+ \tikz\node[opacity=1] at (0,0)
+ {\includegraphics[width=4cm]{logo}};}}%	
+ As of Version 3.0, \texttt{latexindent.pl} has the \texttt{-m} switch, which permits
+ \texttt{latexindent.pl} to modify line breaks, according to the specifications in the
+ \texttt{modifyLineBreaks} field. \emph{The settings in this field will only be considered
+ if the \texttt{-m} switch has been used}. A snippet of the default settings of this field
+ is shown in \cref{lst:modifylinebreaks}.
 
-	\cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
+ \cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks}
 
-	Having read the previous paragraph, it should sound reasonable that, if you call
-	\texttt{latexindent.pl} using the \texttt{-m} switch, then you give it permission to
-	modify line breaks in your file, but let's be clear: \index{warning!the m switch}
+ Having read the previous paragraph, it should sound reasonable that, if you call
+ \texttt{latexindent.pl} using the \texttt{-m} switch, then you give it permission to
+ modify line breaks in your file, but let's be clear: \index{warning!the m switch}
 
-	\begin{warning}
-		If you call \texttt{latexindent.pl} with the \texttt{-m} switch, then you are giving it
-		permission to modify line breaks. By default, the only thing that will happen is that
-		multiple blank lines will be condensed into one blank line; many other settings are
-		possible, discussed next.
-	\end{warning}
+ \begin{warning}
+  If you call \texttt{latexindent.pl} with the \texttt{-m} switch, then you are giving it
+  permission to modify line breaks. By default, the only thing that will happen is that
+  multiple blank lines will be condensed into one blank line; many other settings are
+  possible, discussed next.
+ \end{warning}
 
 \yamltitle{preserveBlankLines}{0|1}
-	This field is directly related to \emph{poly-switches}, discussed in
-	\cref{sec:poly-switches}. By default, it is set to \texttt{1}, which means that blank
-	lines will be \emph{protected} from removal; however, regardless of this setting,
-	multiple blank lines can be condensed if \texttt{condenseMultipleBlankLinesInto} is
-	greater than \texttt{0}, discussed next.
+ This field is directly related to \emph{poly-switches}, discussed in
+ \cref{sec:poly-switches}. By default, it is set to \texttt{1}, which means that blank
+ lines will be \emph{protected} from removal; however, regardless of this setting,
+ multiple blank lines can be condensed if \texttt{condenseMultipleBlankLinesInto} is
+ greater than \texttt{0}, discussed next.
 
 \yamltitle{condenseMultipleBlankLinesInto}*{positive integer}
-	Assuming that this switch takes an integer value greater than \texttt{0},
-	\texttt{latexindent.pl} will condense multiple blank lines into the number of blank lines
-	illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file with
-	blank lines; upon running \index{switches!-m demonstration}
-	\begin{commandshell}
+ Assuming that this switch takes an integer value greater than \texttt{0},
+ \texttt{latexindent.pl} will condense multiple blank lines into the number of blank lines
+ illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file with
+ blank lines; upon running \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl myfile.tex -m -o=+-mod1 
 \end{commandshell}
-	the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines have
-	been condensed into one blank line, and note also that we have used the \texttt{-m}
-	switch!
+ the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines have
+ been condensed into one blank line, and note also that we have used the \texttt{-m}
+ switch!
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb-bl}
-		\cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1-mod1.tex}}{lst:mlb-bl-out}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb-bl}
+  \cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1-mod1.tex}}{lst:mlb-bl-out}
+ \end{cmhtcbraster}

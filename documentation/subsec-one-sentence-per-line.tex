@@ -1,378 +1,380 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 
-	You can instruct \texttt{latexindent.pl} to format \announce{2018-01-13}{one sentence per
-	line} your file so that it puts one sentence per line. Thank you to \cite{mlep} for
-	helping to shape and test this feature. The behaviour of this part of the script is
-	controlled by the switches detailed in \cref{lst:oneSentencePerLine}, all of which we
-	discuss next. \index{modifying linebreaks! by using one sentence per line}
-	\index{sentences!oneSentencePerLine} \index{sentences!one sentence per line}
-	\index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
-	A-Z}%
+ You can instruct \texttt{latexindent.pl} to format \announce{2018-01-13}{one sentence per
+ line} your file so that it puts one sentence per line. Thank you to \cite{mlep} for
+ helping to shape and test this feature. The behaviour of this part of the script is
+ controlled by the switches detailed in \cref{lst:oneSentencePerLine}, all of which we
+ discuss next. \index{modifying linebreaks! by using one sentence per line}
+ \index{sentences!oneSentencePerLine} \index{sentences!one sentence per line}
+ \index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
+ A-Z}%
 
-	\cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+ \cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \yamltitle{manipulateSentences}{0|1}
-	This is a binary switch that details if \texttt{latexindent.pl} should perform the
-	sentence manipulation routine; it is \emph{off} (set to \texttt{0}) by default, and you
-	will need to turn it on (by setting it to \texttt{1}) if you want the script to modify
-	line breaks surrounding and within sentences.
+ This is a binary switch that details if \texttt{latexindent.pl} should perform the
+ sentence manipulation routine; it is \emph{off} (set to \texttt{0}) by default, and you
+ will need to turn it on (by setting it to \texttt{1}) if you want the script to modify
+ line breaks surrounding and within sentences.
 
 \yamltitle{removeSentenceLineBreaks}{0|1}
-	When operating upon sentences \texttt{latexindent.pl} will, by default, remove internal
-	line breaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}. Setting this
-	switch to \texttt{0} instructs \texttt{latexindent.pl} not to do so.
-	\index{sentences!removing sentence line breaks}
+ When operating upon sentences \texttt{latexindent.pl} will, by default, remove internal
+ line breaks as \texttt{removeSentenceLineBreaks} is set to \texttt{1}. Setting this
+ switch to \texttt{0} instructs \texttt{latexindent.pl} not to do so.
+ \index{sentences!removing sentence line breaks}
 
-	For example, consider \texttt{multiple-sentences.tex} shown in
-	\cref{lst:multiple-sentences}.
+ For example, consider \texttt{multiple-sentences.tex} shown in
+ \cref{lst:multiple-sentences}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences.tex}{\texttt{multiple-sentences.tex}}{lst:multiple-sentences}
 
-	If we use the YAML files in
-	\cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
-	\index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{widepage}
-		\begin{commandshell}
+ If we use the YAML files in
+ \cref{lst:manipulate-sentences-yaml,lst:keep-sen-line-breaks-yaml}, and run the commands
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{widepage}
+  \begin{commandshell}
 latexindent.pl multiple-sentences -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 \end{commandshell}
-	\end{widepage}
-	then we obtain the respective output given in
-	\cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
+ \end{widepage}
+ then we obtain the respective output given in
+ \cref{lst:multiple-sentences-mod1,lst:multiple-sentences-mod2}.
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences-mod1.tex}{\texttt{multiple-sentences.tex} using \cref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/manipulate-sentences.yaml}[MLB-TCB]{\texttt{manipulate-sentences.yaml}}{lst:manipulate-sentences-yaml}
+ \end{cmhtcbraster}
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences-mod2.tex}{\texttt{multiple-sentences.tex} using \cref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/keep-sen-line-breaks.yaml}[MLB-TCB]{\texttt{keep-sen-line-breaks.yaml}}{lst:keep-sen-line-breaks-yaml}
+ \end{cmhtcbraster}
 
-	Notice, in particular, that the `internal' sentence line breaks in
-	\cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1},
-	but have not been removed in \cref{lst:multiple-sentences-mod2}.
+ Notice, in particular, that the `internal' sentence line breaks in
+ \cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1},
+ but have not been removed in \cref{lst:multiple-sentences-mod2}.
 
 \yamltitle{multipleSpacesToSingle}{0|1}
-	\announce*{2022-03-25}*{multipleSpacesToSingle for oneSentencePerLine} By default, the
-	one-sentence-per-line routine will convert multiple spaces into single spaces. You can
-	change this behaviour by changing the switch \texttt{multipleSpacesToSingle} to a value
-	of \texttt{0}.
+ \announce*{2022-03-25}*{multipleSpacesToSingle for oneSentencePerLine} By default, the
+ one-sentence-per-line routine will convert multiple spaces into single spaces. You can
+ change this behaviour by changing the switch \texttt{multipleSpacesToSingle} to a value
+ of \texttt{0}.
 
-	The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
-	\texttt{latexindent.pl} on how to define a sentence. From the perspective of
-	\texttt{latexindent.pl} a sentence must: \index{sentences!follow} \index{sentences!begin
-	with} \index{sentences!end with}
-	\begin{itemize}
-		\item \emph{follow} a certain character or set of characters (see
-		      \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a
-		      blank line, a full stop/period (.), exclamation mark (!), question mark (?) right brace
-		      (\}) or a comment on the previous line;
-		\item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by
-		      default, this is only capital letters;
-		\item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by
-		      default, these are full stop/period (.), exclamation mark (!) and question mark (?).
-	\end{itemize}
-	In each case, you can specify the \texttt{other} field to include any pattern that you
-	would like; you can specify anything in this field using the language of regular
-	expressions.
-	\index{regular expressions!lowercase alph a-z}
-	\index{regular expressions!uppercase alph A-Z}
+ The remainder of the settings displayed in \vref{lst:oneSentencePerLine} instruct
+ \texttt{latexindent.pl} on how to define a sentence. From the perspective of
+ \texttt{latexindent.pl} a sentence must: \index{sentences!follow} \index{sentences!begin
+ with} \index{sentences!end with}
+ \begin{itemize}
+  \item \emph{follow} a certain character or set of characters (see
+        \cref{lst:sentencesFollow}); by default, this is either \lstinline!\par!, a
+        blank line, a full stop/period (.), exclamation mark (!), question mark (?) right brace
+        (\}) or a comment on the previous line;
+  \item \emph{begin} with a character type (see \cref{lst:sentencesBeginWith}); by
+        default, this is only capital letters;
+  \item \emph{end} with a character (see \cref{lst:sentencesEndWith}); by
+        default, these are full stop/period (.), exclamation mark (!) and question mark (?).
+ \end{itemize}
+ In each case, you can specify the \texttt{other} field to include any pattern that you
+ would like; you can specify anything in this field using the language of regular
+ expressions. \index{regular expressions!lowercase alph a-z} \index{regular
+ expressions!uppercase alph A-Z}
 
-	\begin{cmhtcbraster}[raster columns=3,
-			raster left skip=-3.5cm,
-			raster right skip=-2cm,
-			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
-		\cmhlistingsfromfile[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-		\cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}[raster columns=3,
+   raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
+  \cmhlistingsfromfile[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
+  \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+ \end{cmhtcbraster}
 
 \subsubsection{sentencesFollow}
-	Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
-	\vref{lst:multiple-sentences}, and use the YAML settings given in
-	\cref{lst:sentences-follow1-yaml}. Using the command \index{sentences!follow}
-	\index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
+ \vref{lst:multiple-sentences}, and use the YAML settings given in
+ \cref{lst:sentences-follow1-yaml}. Using the command \index{sentences!follow}
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
 \end{commandshell}
-	we obtain the output given in \cref{lst:multiple-sentences-mod3}.
+ we obtain the output given in \cref{lst:multiple-sentences-mod3}.
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences-mod3.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-follow1-yaml}}{lst:multiple-sentences-mod3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow1.yaml}[MLB-TCB]{\texttt{sentences-follow1.yaml}}{lst:sentences-follow1-yaml}
+ \end{cmhtcbraster}
 
-	Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl}
-	will not seek sentences following a blank line, and so the fourth sentence has not been
-	accounted for.
+ Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl}
+ will not seek sentences following a blank line, and so the fourth sentence has not been
+ accounted for.
 
-	We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the
-	\texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
+ We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the
+ \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences1.tex}{\texttt{multiple-sentences1.tex}}{lst:multiple-sentences1}
 
-	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
-	demonstration}
-	\begin{widepage}
-		\begin{commandshell}
+ Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+ demonstration}
+ \begin{widepage}
+  \begin{commandshell}
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-follow2.yaml
 \end{commandshell}
-	\end{widepage}
-	then we obtain the respective output given in
-	\cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
+ \end{widepage}
+ then we obtain the respective output given in
+ \cref{lst:multiple-sentences1-mod1,lst:multiple-sentences1-mod2}.
+ \cmhlistingsfromfile{demonstrations/multiple-sentences1-mod1.tex}{\texttt{multiple-sentences1.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences1-mod1}
 
-	\begin{cmhtcbraster}[
-			raster force size=false,
-			raster column 1/.style={add to width=1cm},
-		]
-		\cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}[
+   raster force size=false,
+   raster column 1/.style={add to width=1cm},
+  ]
+  \cmhlistingsfromfile{demonstrations/multiple-sentences1-mod2.tex}{\texttt{multiple-sentences1.tex} using \cref{lst:sentences-follow2-yaml}}{lst:multiple-sentences1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-follow2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-follow2.yaml}}{lst:sentences-follow2-yaml}
+ \end{cmhtcbraster}
 
-	Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
-	\texttt{)} has not been accounted for, but that following the inclusion of
-	\cref{lst:sentences-follow2-yaml}, the output given in
-	\cref{lst:multiple-sentences1-mod2} demonstrates that the sentence \emph{has} been
-	accounted for correctly.
+ Notice that in \cref{lst:multiple-sentences1-mod1} the first sentence after the
+ \texttt{)} has not been accounted for, but that following the inclusion of
+ \cref{lst:sentences-follow2-yaml}, the output given in
+ \cref{lst:multiple-sentences1-mod2} demonstrates that the sentence \emph{has} been
+ accounted for correctly.
 
 \subsubsection{sentencesBeginWith}
-	By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
-	case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
-	lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other}
-	field to define sentences to begin with other characters. \index{sentences!begin with}
+ By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
+ case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
+ lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other}
+ field to define sentences to begin with other characters. \index{sentences!begin with}
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
-	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
-	demonstration}
-	\begin{widepage}
-		\begin{commandshell}
+ Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+ demonstration}
+ \begin{widepage}
+  \begin{commandshell}
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-begin1.yaml
 \end{commandshell}
-	\end{widepage}
-	then we obtain the respective output given in
-	\cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
-	\index{regular expressions!numeric 0-9}
+ \end{widepage}
+ then we obtain the respective output given in
+ \cref{lst:multiple-sentences2-mod1,lst:multiple-sentences2-mod2}.
+ \cmhlistingsfromfile{demonstrations/multiple-sentences2-mod1.tex}{\texttt{multiple-sentences2.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences2-mod1}
+ \index{regular expressions!numeric 0-9}
 
-	\begin{cmhtcbraster}[
-			raster force size=false,
-			raster column 1/.style={add to width=1cm},
-		]
-		\cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
-	\end{cmhtcbraster}
-	Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted
-	for but that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2},
-	all of the sentences have been accounted for, because the \texttt{other} field in
-	\cref{lst:sentences-begin1-yaml} has defined sentences to begin with either
-	\lstinline!$! or any numeric digit, \texttt{0} to
-	\texttt{9}.
+ \begin{cmhtcbraster}[
+   raster force size=false,
+   raster column 1/.style={add to width=1cm},
+  ]
+  \cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
+ \end{cmhtcbraster}
+ Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted
+ for but that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2},
+ all of the sentences have been accounted for, because the \texttt{other} field in
+ \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$!
+ or any numeric digit, \texttt{0} to \texttt{9}.
 
 \subsubsection{sentencesEndWith}
-	Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
-	which \texttt{latexindent.pl} will operate on the sentences in this file in
-	\vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any
-	character that we wish; for example, using the YAML specified in
-	\cref{lst:sentences-end1-yaml} and the command \index{sentences!end with}
-	\index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
+ which \texttt{latexindent.pl} will operate on the sentences in this file in
+ \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any
+ character that we wish; for example, using the YAML specified in
+ \cref{lst:sentences-end1-yaml} and the command \index{sentences!end with}
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
 latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
 \end{commandshell}
-	then we obtain the output in \cref{lst:multiple-sentences-mod4}. \index{regular
-	expressions!lowercase alph a-z}
+ then we obtain the output in \cref{lst:multiple-sentences-mod4}. \index{regular
+ expressions!lowercase alph a-z}
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences-mod4.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end1-yaml}}{lst:multiple-sentences-mod4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end1.yaml}[MLB-TCB]{\texttt{sentences-end1.yaml}}{lst:sentences-end1-yaml}
+ \end{cmhtcbraster}
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences-mod5.tex}{\texttt{multiple-sentences.tex} using \cref{lst:sentences-end2-yaml}}{lst:multiple-sentences-mod5}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-end2.yaml}[MLB-TCB]{\texttt{sentences-end2.yaml}}{lst:sentences-end2-yaml}
+ \end{cmhtcbraster}
 
-	There is a subtle difference between the output in
-	\cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular, in
-	\cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a
-	sentence, because we have not instructed \texttt{latexindent.pl} to begin sentences with
-	lower case letters. We have changed this by using the settings in
-	\cref{lst:sentences-end2-yaml}, and the associated output in
-	\cref{lst:multiple-sentences-mod5} reflects this.
+ There is a subtle difference between the output in
+ \cref{lst:multiple-sentences-mod4,lst:multiple-sentences-mod5}; in particular, in
+ \cref{lst:multiple-sentences-mod4} the word \texttt{sentence} has not been defined as a
+ sentence, because we have not instructed \texttt{latexindent.pl} to begin sentences with
+ lower case letters. We have changed this by using the settings in
+ \cref{lst:sentences-end2-yaml}, and the associated output in
+ \cref{lst:multiple-sentences-mod5} reflects this.
 
-	Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called
-	\texttt{basicFullStop}, which is set to \texttt{0}, and that the \texttt{betterFullStop}
-	is set to \texttt{1} by default.
+ Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called
+ \texttt{basicFullStop}, which is set to \texttt{0}, and that the \texttt{betterFullStop}
+ is set to \texttt{1} by default.
 
-	Let's consider the file shown in \cref{lst:url}.
+ Let's consider the file shown in \cref{lst:url}.
 
-	\cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
+ \cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
 
-	Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
-	demonstration}
-	\begin{commandshell}
+ Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
+ demonstration}
+ \begin{commandshell}
 latexindent.pl url -m -l=manipulate-sentences.yaml
 \end{commandshell}
-	we obtain the output given in \cref{lst:url-mod1}.
+ we obtain the output given in \cref{lst:url-mod1}.
 
-	\cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
+ \cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
-	Notice that the full stop within the url has been interpreted correctly. This is because,
-	within the \texttt{betterFullStop}, full stops at the end of sentences have the following
-	properties:
-	\begin{itemize}
-		\item they are ignored within \texttt{e.g.} and \texttt{i.e.};
-		\item they can not be immediately followed by a lower case or upper case letter;
-		\item they can not be immediately followed by a hyphen, comma, or number.
-	\end{itemize}
-	If you find that the \texttt{betterFullStop} does not work for your purposes, then you
-	can switch it off by setting it to \texttt{0}, and you can experiment with the
-	\texttt{other} field.%
-	\announce{2019-07-13}{fine tuning the betterFullStop} You can also seek to customise the \texttt{betterFullStop}
-	routine by using the \emph{fine tuning}, detailed in \vref{lst:fineTuning}.
+ Notice that the full stop within the url has been interpreted correctly. This is because,
+ within the \texttt{betterFullStop}, full stops at the end of sentences have the following
+ properties:
+ \begin{itemize}
+  \item they are ignored within \texttt{e.g.} and \texttt{i.e.};
+  \item they can not be immediately followed by a lower case or upper case letter;
+  \item they can not be immediately followed by a hyphen, comma, or number.
+ \end{itemize}
+ If you find that the \texttt{betterFullStop} does not work for your purposes, then you
+ can switch it off by setting it to \texttt{0}, and you can experiment with the
+ \texttt{other} field. \announce{2019-07-13}{fine tuning the betterFullStop} You can also
+ seek to customise the \texttt{betterFullStop} routine by using the \emph{fine tuning},
+ detailed in \vref{lst:fineTuning}.%
 
-	The \texttt{basicFullStop} routine should probably be avoided in most situations, as it
-	does not accommodate the specifications above. For example, using the following command
-	\index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ The \texttt{basicFullStop} routine should probably be avoided in most situations, as it
+ does not accommodate the specifications above. For example, using the following command
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
-	and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in \cref{lst:url-mod2}.
+ and the YAML in \cref{lst:alt-full-stop1-yaml} gives the output in \cref{lst:url-mod2}.
 
-	\begin{cmhtcbraster}[ raster left skip=-3.5cm,
-			raster right skip=-2cm,
-			raster force size=false,
-			raster column 1/.style={add to width=.1\textwidth},
-			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}[ raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster force size=false,
+   raster column 1/.style={add to width=.1\textwidth},
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile{demonstrations/url-mod2.tex}{\texttt{url.tex} using \cref{lst:alt-full-stop1-yaml}}{lst:url-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/alt-full-stop1.yaml}[MLB-TCB,width=.5\textwidth]{\texttt{alt-full-stop1.yaml}}{lst:alt-full-stop1-yaml}
+ \end{cmhtcbraster}
 
-	Notice that the full stop within the URL has not been accommodated correctly because of
-	the non-default settings in \cref{lst:alt-full-stop1-yaml}.
+ Notice that the full stop within the URL has not been accommodated correctly because of
+ the non-default settings in \cref{lst:alt-full-stop1-yaml}.
 
 \subsubsection{Features of the oneSentencePerLine routine}
-	The sentence manipulation routine takes place \emph{after} verbatim \index{verbatim!in
-	relation to oneSentencePerLine} environments, preamble and trailing comments have been
-	accounted for; this means that any characters within these types of code blocks will not
-	be part of the sentence manipulation routine.
+ The sentence manipulation routine takes place \emph{after} verbatim \index{verbatim!in
+ relation to oneSentencePerLine} environments, preamble and trailing comments have been
+ accounted for; this means that any characters within these types of code blocks will not
+ be part of the sentence manipulation routine.
 
-	For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3},
-	and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3},
+ and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
 \end{commandshell}
-	then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
-	\cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+ then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
+ \cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
 
-	Furthermore, if sentences run across environments then, by default, the line breaks
-	internal to the sentence will be removed. For example, if we use the \texttt{.tex} file
-	in \cref{lst:multiple-sentences4} and run the commands \index{switches!-l demonstration}
-	\index{switches!-m demonstration}
-	\begin{commandshell}
+ Furthermore, if sentences run across environments then, by default, the line breaks
+ internal to the sentence will be removed. For example, if we use the \texttt{.tex} file
+ in \cref{lst:multiple-sentences4} and run the commands \index{switches!-l demonstration}
+ \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 \end{commandshell}
-	then we obtain the output in
-	\cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
-	\cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
-	\begin{widepage}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
-	\end{widepage}
-	\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+ then we obtain the output in
+ \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
+ \cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+ \begin{widepage}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
+ \end{widepage}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
 
-	Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
-	removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
-	and the command \index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
+ removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
+ and the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
 \end{commandshell}
-	the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
+ the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
 
-	\begin{cmhtcbraster}
-		\cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
+ \end{cmhtcbraster}
 
 \subsubsection{Text wrapping and indenting sentences}
-	The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
-	indent} can be instructed to perform text wrapping and indentation upon sentences.
-	\index{sentences!text wrapping} \index{sentences!indenting}%
+ The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
+ indent} can be instructed to perform text wrapping and indentation upon sentences.
+ \index{sentences!text wrapping} \index{sentences!indenting}%
 
-	Let's use the code in \cref{lst:multiple-sentences5}.
+ Let's use the code in \cref{lst:multiple-sentences5}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
 
-	Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
-	\index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ Referencing \cref{lst:sentence-wrap1-yaml}, and running the following command
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
 \end{commandshell}
-	we receive the output given in \cref{lst:multiple-sentences5-mod1}.
+ we receive the output given in \cref{lst:multiple-sentences5-mod1}.
 
-	\begin{cmhtcbraster}[ raster left skip=-3.5cm,
-			raster right skip=-2cm,
-			raster force size=false,
-			raster column 1/.style={add to width=.1\textwidth},
-			raster column skip=.06\linewidth]
-		\cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
-		\cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
-	\end{cmhtcbraster}
+ \begin{cmhtcbraster}[ raster left skip=-3.5cm,
+   raster right skip=-2cm,
+   raster force size=false,
+   raster column 1/.style={add to width=.1\textwidth},
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
+ \end{cmhtcbraster}
 
-	If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for
-	\texttt{columns} then the text wrapping will \emph{not} operate on sentences, and you
-	will see a warning in \texttt{indent.log}.
+ If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for
+ \texttt{columns} then the text wrapping will \emph{not} operate on sentences, and you
+ will see a warning in \texttt{indent.log}.
 
-	The indentation of sentences requires that sentences are stored as code blocks. This
-	means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
-	relation to \cref{lst:multiple-sentences6}.
+ The indentation of sentences requires that sentences are stored as code blocks. This
+ means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
+ relation to \cref{lst:multiple-sentences6}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences6.tex}{\texttt{multiple-sentences6.tex}}{lst:multiple-sentences6}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences6.tex}{\texttt{multiple-sentences6.tex}}{lst:multiple-sentences6}
 
-	By default, \texttt{latexindent.pl} will find the full-stop within the first
-	\texttt{item}, which means that, upon running the following commands \index{switches!-l
-	demonstration} \index{switches!-m demonstration} \index{switches!-y demonstration}
-	\begin{commandshell}
+ By default, \texttt{latexindent.pl} will find the full-stop within the first
+ \texttt{item}, which means that, upon running the following commands \index{switches!-l
+ demonstration} \index{switches!-m demonstration} \index{switches!-y demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml 
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreaks:oneSentencePerLine:sentenceIndent:''"
 \end{commandshell}
-	we receive the respective output in \cref{lst:multiple-sentences6-mod1} and
-	\cref{lst:multiple-sentences6-mod2}.
+ we receive the respective output in \cref{lst:multiple-sentences6-mod1} and
+ \cref{lst:multiple-sentences6-mod2}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences6-mod1.tex}{\texttt{multiple-sentences6-mod1.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences6-mod1}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences6-mod1.tex}{\texttt{multiple-sentences6-mod1.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences6-mod1}
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences6-mod2.tex}{\texttt{multiple-sentences6-mod2.tex} using \cref{lst:sentence-wrap1-yaml} and no sentence indentation}{lst:multiple-sentences6-mod2}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences6-mod2.tex}{\texttt{multiple-sentences6-mod2.tex} using \cref{lst:sentence-wrap1-yaml} and no sentence indentation}{lst:multiple-sentences6-mod2}
 
-	We note that \cref{lst:multiple-sentences6-mod1} the \texttt{itemize} code block has
-	\emph{not} been indented appropriately. This is because the oneSentencePerLine has been
-	instructed to store sentences (because \cref{lst:sentence-wrap1-yaml}); each sentence is
-	then searched for code blocks.
+ We note that \cref{lst:multiple-sentences6-mod1} the \texttt{itemize} code block has
+ \emph{not} been indented appropriately. This is because the oneSentencePerLine has been
+ instructed to store sentences (because \cref{lst:sentence-wrap1-yaml}); each sentence is
+ then searched for code blocks.
 
-	We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
-	not followed by \texttt{item} commands, and that the end of sentences contains
-	\lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
-	ensure that you remove the line breaks from the \texttt{other} field). \index{regular
-	expressions!lowercase alph a-z} \index{regular expressions!uppercase alph A-Z}
-	\index{regular expressions!numeric 0-9} \index{regular expressions!horizontal space
-	\textbackslash{h}}
+ We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
+ not followed by \texttt{item} commands, and that the end of sentences contains
+ \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
+ ensure that you remove the line breaks from the \texttt{other} field). \index{regular
+ expressions!lowercase alph a-z} \index{regular expressions!uppercase alph A-Z}
+ \index{regular expressions!numeric 0-9} \index{regular expressions!horizontal space
+ \textbackslash{h}}
 
-	\cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
-	Upon running \index{switches!-l demonstration} \index{switches!-m demonstration}
-	\begin{commandshell}
+ Upon running \index{switches!-l demonstration} \index{switches!-m demonstration}
+ \begin{commandshell}
 latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 \end{commandshell}
-	we receive the output in \cref{lst:multiple-sentences6-mod3}.
+ we receive the output in \cref{lst:multiple-sentences6-mod3}.
 
-	\cmhlistingsfromfile{demonstrations/multiple-sentences6-mod3.tex}{\texttt{multiple-sentences6-mod3.tex} using \cref{lst:sentence-wrap1-yaml} and \cref{lst:itemize-yaml}}{lst:multiple-sentences6-mod3}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences6-mod3.tex}{\texttt{multiple-sentences6-mod3.tex} using \cref{lst:sentence-wrap1-yaml} and \cref{lst:itemize-yaml}}{lst:multiple-sentences6-mod3}
 
-	Notice that the sentence has received indentation, and that the \texttt{itemize} code
-	block has been found and indented correctly.
+ Notice that the sentence has received indentation, and that the \texttt{itemize} code
+ block has been found and indented correctly.
+
+ Text \announce*{2022-04-04}*{oneSentencePerLine text wrapping update} wrapping when using
+ the \texttt{oneSentencePerLine} routine determines if it will remove line breaks while
+ text wrapping, from the value of \texttt{removeSentenceLineBreaks}.

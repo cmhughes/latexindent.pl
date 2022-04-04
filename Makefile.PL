@@ -23,7 +23,6 @@ WriteMakefile(
     PREREQ_PM => {
         'YAML::Tiny'        => 0,
         'File::HomeDir'     => 0,
-        ### 'Unicode::GCString' => 0,
     },
 
     EXE_FILES  => ['latexindent.pl'],

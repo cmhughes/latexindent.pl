@@ -1204,7 +1204,7 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 233-237
+ 	:lines: 233-240
  	:linenos:
  	:lineno-start: 233
 
@@ -1235,9 +1235,9 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 243-245
+ 	:lines: 246-248
  	:linenos:
- 	:lineno-start: 243
+ 	:lineno-start: 246
 
 .. describe:: specialBeginEnd:fields
 
@@ -1258,9 +1258,9 @@ default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 249-262
+ 	:lines: 252-265
  	:linenos:
- 	:lineno-start: 249
+ 	:lineno-start: 252
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files (see
 :numref:`sec:localsettings`); indeed, you might like to set up your own special begin and end statements.
@@ -1495,9 +1495,9 @@ written in this field. [2]_
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 272-281
+ 	:lines: 275-284
  	:linenos:
- 	:lineno-start: 272
+ 	:lineno-start: 275
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the
 hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too
@@ -1620,7 +1620,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ============================= ================================================================================== ====================================================================================
    Code block                    characters allowed in name                                                         example
    ============================= ================================================================================== ====================================================================================
-   environments                  !a-zA-Z@\*0-9_\\!                                                                  ``\begin{myenv}body of myenv\end{myenv}``                                         
+   environments                  !a-zA-Z@\*0-9_\\!                                                                  ``\begin{myenv}body of myenv\end{myenv}``               
    optionalArguments             *inherits* name from parent (e.g environment name)                                 ``[opt arg text]``
    mandatoryArguments            *inherits* name from parent (e.g environment name)                                 ``{mand arg text}``
    commands                      ``+a-zA-Z@\*0-9_\:``                                                               ``\mycommand``\ <arguments>
@@ -1902,9 +1902,9 @@ particular *for the environments* key (see :numref:`lst:noAdditionalIndentGlobal
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 330-331
+ 	:lines: 333-334
  	:linenos:
- 	:lineno-start: 330
+ 	:lineno-start: 333
 
 Let’s say that you change the value of ``environments`` to ``1`` in :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run
 
@@ -1975,9 +1975,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 346-347
+ 	:lines: 349-350
  	:linenos:
- 	:lineno-start: 346
+ 	:lineno-start: 349
 
 If you change the ``environments`` field to anything involving horizontal space, say ``" "``, and then run the following commands
 
@@ -2566,8 +2566,9 @@ keyEqualsValuesBracesBrackets
 
 -  then at least one set of curly braces or square brackets (comments and line breaks allowed throughout).
 
-See the ``keyEqualsValuesBracesBrackets: follow`` and ``keyEqualsValuesBracesBrackets: name`` fields of the fine tuning section in :numref:`lst:fineTuning` An example is shown in
-:numref:`lst:pgfkeysbefore`, with the default output given in :numref:`lst:pgfkeys1:default`.
+See the ``keyEqualsValuesBracesBrackets: follow`` and ``keyEqualsValuesBracesBrackets: name`` fields of the fine tuning section in :numref:`lst:fineTuning`
+
+An example is shown in :numref:`lst:pgfkeysbefore`, with the default output given in :numref:`lst:pgfkeys1:default`.
 
 .. literalinclude:: demonstrations/pgfkeys1.tex
  	:class: .tex
@@ -2599,8 +2600,9 @@ This type of code block is mostly motivated by tikz-based code; we define this c
 
 -  then at least one set of curly braces or square brackets (comments and line breaks allowed throughout).
 
-See the ``NamedGroupingBracesBrackets: follow`` and ``NamedGroupingBracesBrackets: name`` fields of the fine tuning section in :numref:`lst:fineTuning` A simple example is given in
-:numref:`lst:child1`, with default output in :numref:`lst:child1:default`.
+See the ``NamedGroupingBracesBrackets: follow`` and ``NamedGroupingBracesBrackets: name`` fields of the fine tuning section in :numref:`lst:fineTuning`
+
+A simple example is given in :numref:`lst:child1`, with default output in :numref:`lst:child1:default`.
 
 .. literalinclude:: demonstrations/child1.tex
  	:class: .tex
@@ -2629,8 +2631,9 @@ occur in a variety of situations; specifically, we define this type of code bloc
 
 -  then at least one set of curly braces or square brackets (comments and line breaks allowed throughout).
 
-See the ``UnNamedGroupingBracesBrackets: follow`` field of the fine tuning section in :numref:`lst:fineTuning` An example is shown in :numref:`lst:psforeach1` with default output give in
-:numref:`lst:psforeach:default`.
+See the ``UnNamedGroupingBracesBrackets: follow`` field of the fine tuning section in :numref:`lst:fineTuning`
+
+An example is shown in :numref:`lst:psforeach1` with default output give in :numref:`lst:psforeach:default`.
 
 .. literalinclude:: demonstrations/psforeach1.tex
  	:class: .tex
@@ -2673,17 +2676,17 @@ Having considered all of the different types of code blocks, the functions of th
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 330-342
+ 	:lines: 333-345
  	:linenos:
- 	:lineno-start: 330
+ 	:lineno-start: 333
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 346-358
+ 	:lines: 349-361
  	:linenos:
- 	:lineno-start: 346
+ 	:lineno-start: 349
 
 .. label follows
 
@@ -2703,9 +2706,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in :numref:`lst
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 361-376
+ 	:lines: 364-379
  	:linenos:
- 	:lineno-start: 361
+ 	:lineno-start: 364
 
 .. describe:: roundParenthesesAllowed:0|1
 

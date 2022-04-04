@@ -1,5 +1,12 @@
 # changelog.md
 
+## V3.17.1, April 4, 2022
+
+* `oneSentencePerLine` with text wrapping now respects `removeSentenceLineBreaks`, [issue-355](https://github.com/cmhughes/latexindent.pl/issues/355)
+* `textWrapOptions` can be customised further with `removeBlockLineBreaks`
+* `indentAfterItems` defaults updated to include `enumerate*`, `itemize*`, `description*`, [issue-356](https://github.com/cmhughes/latexindent.pl/issues/356)
+* `pre-commit` defaults updated, see [pull 354](https://github.com/cmhughes/latexindent.pl/pull/354)
+
 ## V3.17, March 25, 2022
 
 * batches of files now supported, [issue 332](https://github.com/cmhughes/latexindent.pl/issues/332)

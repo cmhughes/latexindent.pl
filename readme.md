@@ -14,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.17, 2022-03-25
+    latexindent.pl, version 3.17.1, 2022-04-04
 
 ## author
 Chris Hughes (cmhughes)
@@ -34,7 +34,11 @@ via its YAML interface.
 \end{two}
 \end{one}
 ```
-After:
+After running
+```
+latexindent.pl myfile.tex
+```
+then you receive:
 ``` tex
 \begin{one}
 	latexindent.pl adds leading
@@ -114,6 +118,19 @@ directory of this repository, and you can track the actions on the [actions page
 > ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
 ![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
 
+## pre-commit
+You can use `latexindent` with the [pre-commit
+framework](https://pre-commit.com) by adding this to your
+`.pre-commit-config.yaml`:
+
+      - repo: https://github.com/cmhughes/latexindent.pl.git
+        rev: V3.17.1
+        hooks:
+          - id: latexindent
+
+You can add a `.latexindent.yaml` to the root of the git repo to customize the
+behavior.
+
 ## testing
 
 A nice way to test the script is to navigate to the test-cases
@@ -163,7 +180,7 @@ and then I merge it into the `develop` branch using
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.32.1
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.34.1
 
 ## related projects
 
