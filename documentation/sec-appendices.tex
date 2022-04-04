@@ -412,20 +412,22 @@ export PATH=$PATH:/home/cmhughes/.local/bin
 \end{cmhlistings}
 
  \subsection{pre-commit defaults}
- The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
-\index{pre-commit!default}
+  The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
+  \index{pre-commit!default}
 
   \cmhlistingsfromfile{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
 
-  In particular, the decision has deliberately been made (in collaboration with \cite{holzhausprecommit}) 
-  to have the default to employ the following switches: \texttt{overwriteIfDifferent}, \texttt{silent}, \texttt{local}; 
-  this is detailed in the lines that specify \texttt{args} in \cref{lst:.pre-commit-yaml-default}.
+  In particular, the decision has deliberately been made (in collaboration with
+  \cite{holzhausprecommit}) to have the default to employ the following switches:
+  \texttt{overwriteIfDifferent}, \texttt{silent}, \texttt{local}; this is detailed in the
+  lines that specify \texttt{args} in \cref{lst:.pre-commit-yaml-default}.
 
-\index{pre-commit!warning}
-\index{warning!pre-commit}
+  \index{pre-commit!warning}
+  \index{warning!pre-commit}
   \begin{warning}
-    Users of \texttt{pre-commit} will, by default, have the \texttt{overwriteIfDifferent} switch employed. It is 
-    assumed that such users have version control in place, and are intending to overwrite their files.
+   Users of \texttt{pre-commit} will, by default, have the \texttt{overwriteIfDifferent}
+   switch employed. It is assumed that such users have version control in place, and are
+   intending to overwrite their files.
   \end{warning}
 
  \subsection{pre-commit using CPAN}\label{sec:pre-commit-cpan}

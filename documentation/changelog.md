@@ -1,6 +1,6 @@
 # changelog.md
 
-UPDATE CMH UPDATE CMH
+## V3.17.1, April 4, 2022
 
 * `oneSentencePerLine` with text wrapping now respects `removeSentenceLineBreaks`, [issue-355](https://github.com/cmhughes/latexindent.pl/issues/355)
 * `textWrapOptions` can be customised further with `removeBlockLineBreaks`

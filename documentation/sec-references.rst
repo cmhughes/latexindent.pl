@@ -69,6 +69,11 @@ References
       Geus, Tom de. 2022. “Adding Perl Installation + Pre-Commit Hook.” January 21, 2022. https://github.com/cmhughes/latexindent.pl/pull/322.
 
    .. container::
+      :name: ref-holzhausprecommit
+
+      Holthuis, Jan. 2022. “Fix Pre-Commit Usage.” March 31, 2022. https://github.com/cmhughes/latexindent.pl/pull/354.
+
+   .. container::
       :name: ref-latexindent-home
 
       “Home of Latexindent.pl.” n.d. Accessed January 23, 2017. https://github.com/cmhughes/latexindent.pl.

@@ -456,9 +456,7 @@ Once you have finished typing your input, you can press
 
 -  ``CTRL+Z`` followed by ``ENTER`` on Windows
 
-to signify that your input has finished. Thanks to ((xu-cheng) 2018) for an update to this feature.
-
-.. describe:: -r, –replacement
+to signify that your input has finished. Thanks to ((xu-cheng) 2018) for an update to this feature. .. describe:: -r, –replacement
 
 .. index:: switches;-r, –replacement definition and details
 
