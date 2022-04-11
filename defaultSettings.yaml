@@ -197,6 +197,7 @@ lookForAlignDelims:
    drcases: 1
    drcases*: 1
    # nicematrix
+   NiceTabular: 1
    NiceMatrix: 1
    pNiceMatrix: 1
    bNiceMatrix: 1
