@@ -1,4 +1,5 @@
 package LatexIndent::RoundBrackets;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -20,7 +21,7 @@ use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_round_brackets/;
 our $roundBracketCounter;
 our $roundBracketRegExp = qr/      
@@ -40,15 +41,16 @@ our $roundBracketRegExp = qr/
                             (\R)?
                            /sx;
 
-sub indent{
+sub indent {
     return;
 }
 
-sub find_round_brackets{
+sub find_round_brackets {
     my $self = shift;
 
     # pick out the optional arguments
-    while(${$self}{body} =~ m/$roundBracketRegExp\h*($trailingCommentRegExp)*(.*)/s){
+    while ( ${$self}{body} =~ m/$roundBracketRegExp\h*($trailingCommentRegExp)*(.*)/s ) {
+
         # log file output
 
         ${$self}{body} =~ s/
@@ -76,16 +78,16 @@ sub find_round_brackets{
                             $self->get_settings_and_store_new_object($roundBracket);
                             ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q()).($10?$10:q());
                             /xseg;
-        }
-  }
+    }
+}
 
-sub yaml_get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings {
     my $self = shift;
-    
+
     return ${$self}{modifyLineBreaksYamlName};
 }
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $roundBracketCounter++;
@@ -93,7 +95,7 @@ sub create_unique_id{
     return;
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     return;
 }
 

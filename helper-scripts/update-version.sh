@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.17'
-newVersion='3.17.1'
-oldDate='2022-03-25'
-newDate='2022-04-04'
+oldVersion='3.17.1'
+newVersion='3.17.2'
+oldDate='2022-04-04'
+newDate='2022-04-14'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -73,7 +73,10 @@ echo "NEW version details: $newVersion, $newDate"
 
 [[ $updateVersion == 0 ]] && printf "not updating, you can run the following instead\n\n    update-version.sh -u\n\n" && exit 0
 
+# back to project route directory
 cd ../
+
+# into documentation
 cd documentation
 [[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 
@@ -88,9 +91,15 @@ pdflatex --interaction=batchmode latexindent
 perl documentation-default-settings-update.pl
 perl documentation-default-settings-update.pl -r
 
-set +x
+# perltidy
+cd ../LatexIndent
+perltidy -b *.pm
 
+# back to project route directory
 cd ../
+perltidy -b latexindent.pl
+
+set +x
 
 # change
 #

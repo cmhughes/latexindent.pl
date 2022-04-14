@@ -1,4 +1,5 @@
 package LatexIndent::DoubleBackSlash;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -25,9 +26,9 @@ our @EXPORT_OK = qw/dodge_double_backslash un_dodge_double_backslash/;
 #       cycle list={blue,mark=none\\},
 # see test-cases/texexchange/29293-christian-feuersanger.tex
 #
-# This is problematic, as the argument regexp won't count the right } because it has a 
+# This is problematic, as the argument regexp won't count the right } because it has a
 # backslash immediately infront of it!
-sub dodge_double_backslash{
+sub dodge_double_backslash {
     my $self = shift;
 
     ${$self}{body} =~ s/(?:\\\\(\{|\}|\]))/$tokens{doubleBackSlash}$1/sg;
@@ -35,7 +36,7 @@ sub dodge_double_backslash{
 }
 
 # this routine replaces the token with the \\\\
-sub un_dodge_double_backslash{
+sub un_dodge_double_backslash {
     my $self = shift;
 
     ${$self}{body} =~ s/$tokens{doubleBackSlash}/\\\\/sg;

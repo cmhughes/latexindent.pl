@@ -1204,9 +1204,9 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 233-240
+ 	:lines: 234-241
  	:linenos:
- 	:lineno-start: 233
+ 	:lineno-start: 234
 
 .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -1235,9 +1235,9 @@ code after each ``item``. A demonstration is given in :numref:`lst:itemsbefore` 
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 246-248
+ 	:lines: 247-249
  	:linenos:
- 	:lineno-start: 246
+ 	:lineno-start: 247
 
 .. describe:: specialBeginEnd:fields
 
@@ -1258,9 +1258,9 @@ default settings of ``specialBeginEnd``.
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 252-265
+ 	:lines: 253-266
  	:linenos:
- 	:lineno-start: 252
+ 	:lineno-start: 253
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files (see
 :numref:`sec:localsettings`); indeed, you might like to set up your own special begin and end statements.
@@ -1495,9 +1495,9 @@ written in this field. [2]_
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 275-284
+ 	:lines: 276-285
  	:linenos:
- 	:lineno-start: 275
+ 	:lineno-start: 276
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the
 hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too
@@ -1620,7 +1620,7 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    ============================= ================================================================================== ====================================================================================
    Code block                    characters allowed in name                                                         example
    ============================= ================================================================================== ====================================================================================
-   environments                  !a-zA-Z@\*0-9_\\!                                                                  ``\begin{myenv}body of myenv\end{myenv}``               
+   environments                  !a-zA-Z@\*0-9_\\!                                                                  ``\begin{myenv}body of myenv\end{myenv}``                                         
    optionalArguments             *inherits* name from parent (e.g environment name)                                 ``[opt arg text]``
    mandatoryArguments            *inherits* name from parent (e.g environment name)                                 ``{mand arg text}``
    commands                      ``+a-zA-Z@\*0-9_\:``                                                               ``\mycommand``\ <arguments>
@@ -1902,9 +1902,9 @@ particular *for the environments* key (see :numref:`lst:noAdditionalIndentGlobal
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 333-334
+ 	:lines: 334-335
  	:linenos:
- 	:lineno-start: 333
+ 	:lineno-start: 334
 
 Let’s say that you change the value of ``environments`` to ``1`` in :numref:`lst:noAdditionalIndentGlobal:environments`, and that you run
 
@@ -1975,9 +1975,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 349-350
+ 	:lines: 350-351
  	:linenos:
- 	:lineno-start: 349
+ 	:lineno-start: 350
 
 If you change the ``environments`` field to anything involving horizontal space, say ``" "``, and then run the following commands
 
@@ -2676,17 +2676,17 @@ Having considered all of the different types of code blocks, the functions of th
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 333-345
+ 	:lines: 334-346
  	:linenos:
- 	:lineno-start: 333
+ 	:lineno-start: 334
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 349-361
+ 	:lines: 350-362
  	:linenos:
- 	:lineno-start: 349
+ 	:lineno-start: 350
 
 .. label follows
 
@@ -2706,9 +2706,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in :numref:`lst
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 364-379
+ 	:lines: 365-380
  	:linenos:
- 	:lineno-start: 364
+ 	:lineno-start: 365
 
 .. describe:: roundParenthesesAllowed:0|1
 
