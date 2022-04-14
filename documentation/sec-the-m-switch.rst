@@ -16,9 +16,9 @@ this field will only be considered if the ``-m`` switch has been used*. A snippe
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 494-496
+ 	:lines: 495-497
  	:linenos:
- 	:lineno-start: 494
+ 	:lineno-start: 495
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s
 be clear:
@@ -75,9 +75,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 522-545
+ 	:lines: 523-546
  	:linenos:
- 	:lineno-start: 522
+ 	:lineno-start: 523
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -694,9 +694,9 @@ script is controlled by the switches detailed in :numref:`lst:oneSentencePerLine
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 497-521
+ 	:lines: 498-522
  	:linenos:
- 	:lineno-start: 497
+ 	:lineno-start: 498
 
 .. describe:: manipulateSentences:0|1
 
@@ -783,25 +783,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 503-511
+ 	:lines: 504-512
  	:linenos:
- 	:lineno-start: 503
+ 	:lineno-start: 504
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 512-515
+ 	:lines: 513-516
  	:linenos:
- 	:lineno-start: 512
+ 	:lineno-start: 513
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 516-521
+ 	:lines: 517-522
  	:linenos:
- 	:lineno-start: 516
+ 	:lineno-start: 517
 
 sentencesFollow
 ~~~~~~~~~~~~~~~
@@ -1291,9 +1291,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 547-556
+ 	:lines: 548-557
  	:linenos:
- 	:lineno-start: 547
+ 	:lineno-start: 548
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in
 :numref:`lst:environments-mlb`.

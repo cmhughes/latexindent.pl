@@ -41,10 +41,236 @@ then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a comp
 
 *If you have used any version 2.\* of ``latexindent.pl``, there are a few changes to the interface; see :numref:`app:differences` and the comments throughout this document for details*.
 
+.. label follows
+
+.. _sec:quickstart:
+
+Quick start
+-----------
+
+If you’d like to get started with ``latexindent.pl`` then simply type
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl myfile.tex
+
+from the command line.
+
+We give an introduction to ``latexindent.pl`` using :numref:`lst:quick-start`; there is no explanation in this section, which is deliberate for a quick start. The rest of the manual is more verbose.
+
+.. literalinclude:: demonstrations/quick-start.tex
+ 	:class: .tex
+ 	:caption: ``quick-start.tex`` 
+ 	:name: lst:quick-start
+
+Running
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl quick-start.tex
+
+gives :numref:`lst:quick-start-default`.
+
+.. literalinclude:: demonstrations/quick-start-default.tex
+ 	:class: .tex
+ 	:caption: ``quick-start-default.tex`` 
+ 	:name: lst:quick-start-default
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l quick-start1.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod1`.
+	
+	.. literalinclude:: demonstrations/quick-start1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start1.yaml`` 
+	 	:name: lst:quick-start1yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod1.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod1.tex`` 
+	 	:name: lst:quick-start-mod1
+	
+	
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l quick-start2.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod2`.
+	
+	.. literalinclude:: demonstrations/quick-start2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start2.yaml`` 
+	 	:name: lst:quick-start2yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod2.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod2.tex`` 
+	 	:name: lst:quick-start-mod2
+	
+	
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l quick-start3.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod3`.
+	
+	.. literalinclude:: demonstrations/quick-start3.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start3.yaml`` 
+	 	:name: lst:quick-start3yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod3.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod3.tex`` 
+	 	:name: lst:quick-start-mod3
+	
+	
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l quick-start4.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod4`.
+	
+	.. literalinclude:: demonstrations/quick-start4.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start4.yaml`` 
+	 	:name: lst:quick-start4yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod4.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod4.tex`` 
+	 	:name: lst:quick-start-mod4
+	
+	Full details of text wrapping in :numref:`subsec:textwrapping`.
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l quick-start5.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod5`.
+	
+	.. literalinclude:: demonstrations/quick-start5.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start5.yaml`` 
+	 	:name: lst:quick-start5yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod5.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod5.tex`` 
+	 	:name: lst:quick-start-mod5
+	
+	Full details of text wrapping in :numref:`subsec:textwrapping`.
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l quick-start6.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod6`.
+	
+	.. literalinclude:: demonstrations/quick-start6.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start6.yaml`` 
+	 	:name: lst:quick-start6yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod6.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod6.tex`` 
+	 	:name: lst:quick-start-mod6
+	
+	This is an example of a *poly-switch*; full details of *poly-switches* are covered in :numref:`sec:poly-switches`.
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m -l quick-start7.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod7`.
+	
+	.. literalinclude:: demonstrations/quick-start7.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start7.yaml`` 
+	 	:name: lst:quick-start7yaml
+	
+	.. literalinclude:: demonstrations/quick-start-mod7.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod7.tex`` 
+	 	:name: lst:quick-start-mod7
+	
+	Full details of *poly-switches* are covered in :numref:`sec:poly-switches`.
+	 
+
+Required perl modules
+---------------------
+
+If you receive an error message such as that given in :numref:`lst:poss-errors`, then you need to install the missing perl modules.
+
+.. code-block:: latex
+   :caption: Possible error messages 
+   :name: lst:poss-errors
+
+   Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
+   BEGIN failed--compilation aborted at helloworld.pl line 10.
+
+``latexindent.pl`` ships with a script to help with this process; if you run the following script, you should be prompted to install the appropriate modules.
+
+.. code-block:: latex
+   :class: .commandshell
+
+   perl latexindent-module-installer.pl
+
+You might also like to see https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc, for example, as well as :numref:`sec:requiredmodules`.
+
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 539. This may seem a lot, but I deem it necessary in presenting the
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 555. This may seem a lot, but I deem it necessary in presenting the
 various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
@@ -71,9 +297,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 494-496
+ 	:lines: 495-497
  	:linenos:
- 	:lineno-start: 494
+ 	:lineno-start: 495
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -81,43 +307,11 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 608-616
+ 	:lines: 609-617
  	:linenos:
- 	:lineno-start: 608
+ 	:lineno-start: 609
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
-
-.. label follows
-
-.. _sec:quickstart:
-
-Quick start
------------
-
-If you’d like to get started with ``latexindent.pl`` then simply type
-
-.. code-block:: latex
-   :class: .commandshell
-
-   latexindent.pl myfile.tex
-
-from the command line. If you receive an error message such as that given in :numref:`lst:poss-errors`, then you need to install the missing perl modules.
-
-.. code-block:: latex
-   :caption: Possible error messages 
-   :name: lst:poss-errors
-
-   Can't locate File/HomeDir.pm in @INC (@INC contains: /Library/Perl/5.12/darwin-thread-multi-2level /Library/Perl/5.12 /Network/Library/Perl/5.12/darwin-thread-multi-2level /Network/Library/Perl/5.12 /Library/Perl/Updates/5.12.4/darwin-thread-multi-2level /Library/Perl/Updates/5.12.4 /System/Library/Perl/5.12/darwin-thread-multi-2level /System/Library/Perl/5.12 /System/Library/Perl/Extras/5.12/darwin-thread-multi-2level /System/Library/Perl/Extras/5.12 .) at helloworld.pl line 10.
-   BEGIN failed--compilation aborted at helloworld.pl line 10.
-
-``latexindent.pl`` ships with a script to help with this process; if you run the following script, you should be prompted to install the appropriate modules.
-
-.. code-block:: latex
-   :class: .commandshell
-
-   perl latexindent-module-installer.pl
-
-You might also like to see https://stackoverflow.com/questions/19590042/error-cant-locate-file-homedir-pm-in-inc, for example, as well as :numref:`sec:requiredmodules`.
 
 A word about regular expressions
 --------------------------------

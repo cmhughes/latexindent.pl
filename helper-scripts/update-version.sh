@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.17'
-newVersion='3.17.1'
-oldDate='2022-03-25'
-newDate='2022-04-04'
+oldVersion='3.17.1'
+newVersion='3.17.2'
+oldDate='2022-04-04'
+newDate='2022-04-14'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -91,8 +91,6 @@ pdflatex --interaction=batchmode latexindent
 perl documentation-default-settings-update.pl
 perl documentation-default-settings-update.pl -r
 
-set +x
-
 # perltidy
 cd ../LatexIndent
 perltidy -b *.pm
@@ -100,6 +98,8 @@ perltidy -b *.pm
 # back to project route directory
 cd ../
 perltidy -b latexindent.pl
+
+set +x
 
 # change
 #

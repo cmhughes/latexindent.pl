@@ -18,21 +18,21 @@ If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone
 
    #!/usr/bin/perl
 
-   use strict;
-   use warnings;
-   use PerlIO::encoding;
-   use open ':std', ':encoding(UTF-8)';
-   use Text::Wrap;
-   use Text::Tabs;
-   use FindBin;
-   use YAML::Tiny;
-   use File::Copy;
-   use File::Basename;
-   use File::HomeDir;
-   use Encode;
-   use Getopt::Long;
-   use Data::Dumper;
-   use List::Util qw(max);
+   use strict;                         #     |
+   use warnings;                       #     |
+   use Encode;                         #     |
+   use Getopt::Long;                   #     |
+   use Data::Dumper;                   #  these modules are      
+   use List::Util qw(max);             #  generally part         
+   use PerlIO::encoding;               #  of a default perl distribution 
+   use open ':std', ':encoding(UTF-8)';#     |
+   use Text::Wrap;                     #     |
+   use Text::Tabs;                     #     |
+   use FindBin;                        #     |
+   use File::Copy;                     #     |
+   use File::Basename;                 #     |
+   use File::HomeDir;                  # <--- typically requires install via cpanm
+   use YAML::Tiny;                     # <--- typically requires install via cpanm
 
    print "hello world";
    exit;
