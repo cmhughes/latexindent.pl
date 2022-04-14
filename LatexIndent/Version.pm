@@ -1,4 +1,5 @@
 package LatexIndent::Version;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -20,5 +21,5 @@ use Exporter qw/import/;
 our @EXPORT_OK = qw/$versionNumber $versionDate/;
 
 our $versionNumber = '3.17.1';
-our $versionDate = '2022-04-04';
+our $versionDate   = '2022-04-04';
 1

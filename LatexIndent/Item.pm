@@ -1,4 +1,5 @@
 package LatexIndent::Item;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -26,20 +27,20 @@ use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";                               # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_items construct_list_of_items $listOfItems/;
 our $itemCounter;
 our $listOfItems = q();
-our $itemRegExp; 
+our $itemRegExp;
 
-sub construct_list_of_items{
+sub construct_list_of_items {
     my $self = shift;
 
     $listOfItems = q();
 
     # put together a list of the items
-    while( my ($item,$lookForThisItem)= each %{$mainSettings{itemNames}}){
-        $listOfItems .= ($listOfItems eq "")?"$item":"|$item" if($lookForThisItem);
+    while ( my ( $item, $lookForThisItem ) = each %{ $mainSettings{itemNames} } ) {
+        $listOfItems .= ( $listOfItems eq "" ) ? "$item" : "|$item" if ($lookForThisItem);
     }
 
     # detail items in the log
@@ -62,22 +63,23 @@ sub construct_list_of_items{
                           )                       
                           (\R)?
                        /sx;
-    
 
     return;
 }
 
-sub find_items{
+sub find_items {
+
     # no point carrying on if the list of items is empty
-    return if($listOfItems eq "");
+    return if ( $listOfItems eq "" );
 
     my $self = shift;
 
     # otherwise loop through the item names
-    $logger->trace("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)") if $is_t_switch_active;
-    $logger->trace(Dumper(\%{$mainSettings{itemNames}})) if $is_tt_switch_active;
+    $logger->trace("Searching for items (see itemNames) in ${$self}{name} (see indentAfterItems)")
+        if $is_t_switch_active;
+    $logger->trace( Dumper( \%{ $mainSettings{itemNames} } ) ) if $is_tt_switch_active;
 
-    while(${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/){
+    while ( ${$self}{body} =~ m/$itemRegExp\h*($trailingCommentRegExp)?/ ) {
 
         # log file output
         $logger->trace("*Item found: $2") if $is_t_switch_active;
@@ -111,8 +113,7 @@ sub find_items{
     }
 }
 
-
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $itemCounter++;
@@ -121,31 +122,34 @@ sub create_unique_id{
     return;
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     my $self = shift;
 
     # the item body could hoover up line breaks; we do an additional check
-    ${${$self}{linebreaksAtEnd}}{body}=1 if(${$self}{body} =~ m/\R+$/s );
+    ${ ${$self}{linebreaksAtEnd} }{body} = 1 if ( ${$self}{body} =~ m/\R+$/s );
 
     # search for ifElseFi blocks
     $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
-    
+
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
+    $self->find_commands_or_key_equals_values_braces_and_special
+        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
 
 }
 
-sub remove_line_breaks_begin{
+sub remove_line_breaks_begin {
+
     # the \item command can need a trailing white space if the line breaks have been removed after it and
     # there is no white space
-    my $self = shift;
-    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+    my $self              = shift;
+    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
     $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)");
     ${$self}{begin} =~ s/\R*$//sx;
-    ${$self}{begin} .= " " unless(${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
+    ${$self}{begin} .= " "
+        unless ( ${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 

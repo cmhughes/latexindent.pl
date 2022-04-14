@@ -1,4 +1,5 @@
 package LatexIndent::FileContents;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -28,23 +29,23 @@ use LatexIndent::Verbatim qw/%verbatimStorage/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK = qw/find_file_contents_environments_and_preamble/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";                            # class inheritance, Programming Perl, pg 321
 our $fileContentsCounter;
 
-sub find_file_contents_environments_and_preamble{
+sub find_file_contents_environments_and_preamble {
     my $self = shift;
 
-    # store the file contents blocks in an array which, depending on the value 
-    # of indentPreamble, will be put into the verbatim hash, or otherwise 
+    # store the file contents blocks in an array which, depending on the value
+    # of indentPreamble, will be put into the verbatim hash, or otherwise
     # stored as children to be operated upon
-    my @fileContentsStorageArray; 
+    my @fileContentsStorageArray;
 
     # fileContents environments
     $logger->trace('*Searching for FILE CONTENTS environments (see fileContentsEnvironments)') if $is_t_switch_active;
-    $logger->trace(Dumper(\%{$mainSettings{fileContentsEnvironments}})) if($is_tt_switch_active);
-    while( my ($fileContentsEnv,$yesno)= each %{$mainSettings{fileContentsEnvironments}}){
+    $logger->trace( Dumper( \%{ $mainSettings{fileContentsEnvironments} } ) ) if ($is_tt_switch_active);
+    while ( my ( $fileContentsEnv, $yesno ) = each %{ $mainSettings{fileContentsEnvironments} } ) {
 
-        if(!$yesno){
+        if ( !$yesno ) {
             $logger->trace(" *not* looking for $fileContentsEnv as $fileContentsEnv:$yesno");
             next;
         }
@@ -52,7 +53,7 @@ sub find_file_contents_environments_and_preamble{
         $logger->trace("looking for $fileContentsEnv environments") if $is_t_switch_active;
 
         # the trailing * needs some care
-        if($fileContentsEnv =~ m/\*$/){
+        if ( $fileContentsEnv =~ m/\*$/ ) {
             $fileContentsEnv =~ s/\*$//;
             $fileContentsEnv .= '\*';
         }
@@ -73,52 +74,54 @@ sub find_file_contents_environments_and_preamble{
                         (\R)?                      # possibly followed by a line break
                     /sx;
 
-        while( ${$self}{body} =~ m/$fileContentsRegExp/sx){
+        while ( ${$self}{body} =~ m/$fileContentsRegExp/sx ) {
 
-          # create a new Environment object
-          my $fileContentsBlock = LatexIndent::FileContents->new( begin=>$1,
-                                                body=>$3,
-                                                end=>$4,
-                                                name=>$2,
-                                                linebreaksAtEnd=>{
-                                                  begin=>0,
-                                                  body=>0,
-                                                  end=>$5?1:0,
-                                                },
-                                                modifyLineBreaksYamlName=>"filecontents",
-                                                );
-          # give unique id
-          $fileContentsBlock->create_unique_id;
-          
-          # text wrapping can make the ID split across lines
-          ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
+            # create a new Environment object
+            my $fileContentsBlock = LatexIndent::FileContents->new(
+                begin           => $1,
+                body            => $3,
+                end             => $4,
+                name            => $2,
+                linebreaksAtEnd => {
+                    begin => 0,
+                    body  => 0,
+                    end   => $5 ? 1 : 0,
+                },
+                modifyLineBreaksYamlName => "filecontents",
+            );
 
-          if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
-              my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$fileContentsBlock}{id}));
-              ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;  
-          }
+            # give unique id
+            $fileContentsBlock->create_unique_id;
 
-          # the replacement text can be just the ID, but the ID might have a line break at the end of it
-          $fileContentsBlock->get_replacement_text;
+            # text wrapping can make the ID split across lines
+            ${$fileContentsBlock}{idRegExp} = ${$fileContentsBlock}{id};
 
-          # count body line breaks
-          $fileContentsBlock->count_body_line_breaks;
+            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
+                my $IDwithLineBreaks = join( "\\R?\\h*", split( //, ${$fileContentsBlock}{id} ) );
+                ${$fileContentsBlock}{idRegExp} = qr/$IDwithLineBreaks/s;
+            }
 
-          # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
-          # so we compensate for it here
-          $fileContentsBlock->adjust_replacement_text_line_breaks_at_end;
+            # the replacement text can be just the ID, but the ID might have a line break at the end of it
+            $fileContentsBlock->get_replacement_text;
 
-          # store the fileContentsBlock, and determine location afterwards
-          push(@fileContentsStorageArray,$fileContentsBlock);
+            # count body line breaks
+            $fileContentsBlock->count_body_line_breaks;
 
-          # log file output
-          $logger->trace("FILECONTENTS environment found: ${$fileContentsBlock}{name}")if $is_t_switch_active;
+            # the above regexp, when used below, will remove the trailing linebreak in ${$self}{linebreaksAtEnd}{end}
+            # so we compensate for it here
+            $fileContentsBlock->adjust_replacement_text_line_breaks_at_end;
 
-          # remove the environment block, and replace with unique ID
-          ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
+            # store the fileContentsBlock, and determine location afterwards
+            push( @fileContentsStorageArray, $fileContentsBlock );
 
-          $logger->trace("replaced with ID: ${$fileContentsBlock}{id}") if $is_tt_switch_active;
-        } 
+            # log file output
+            $logger->trace("FILECONTENTS environment found: ${$fileContentsBlock}{name}") if $is_t_switch_active;
+
+            # remove the environment block, and replace with unique ID
+            ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
+
+            $logger->trace("replaced with ID: ${$fileContentsBlock}{id}") if $is_tt_switch_active;
+        }
     }
 
     # determine if body of document contains \begin{document} -- if it does, then assume
@@ -133,33 +136,36 @@ sub find_file_contents_environments_and_preamble{
     my $needToStorePreamble = 0;
 
     # try and find the preamble
-    if( ${$self}{body} =~ m/$preambleRegExp/sx and ${$mainSettings{lookForPreamble}}{${$self}{fileExtension}}){
+    if ( ${$self}{body} =~ m/$preambleRegExp/sx and ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} } ) {
 
-        $logger->trace("\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists") if $is_t_switch_active ;
+        $logger->trace(
+            "\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists")
+            if $is_t_switch_active;
 
         # create a preamble object
-        $preamble = LatexIndent::Preamble->new( begin=>q(),
-                                              body=>$1,
-                                              end=>q(),
-                                              name=>"preamble",
-                                              linebreaksAtEnd=>{
-                                                begin=>0,
-                                                body=>$2?1:0,
-                                                end=>0,
-                                              },
-                                              afterbit=>($2?$2:q())."\\begin{document}",
-                                              modifyLineBreaksYamlName=>"preamble",
-                                              );
+        $preamble = LatexIndent::Preamble->new(
+            begin           => q(),
+            body            => $1,
+            end             => q(),
+            name            => "preamble",
+            linebreaksAtEnd => {
+                begin => 0,
+                body  => $2 ? 1 : 0,
+                end   => 0,
+            },
+            afterbit                 => ( $2 ? $2 : q() ) . "\\begin{document}",
+            modifyLineBreaksYamlName => "preamble",
+        );
 
         # give unique id
         $preamble->create_unique_id;
-        
+
         # text wrapping can make the ID split across lines
         ${$preamble}{idRegExp} = ${$preamble}{id};
 
-        if($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{huge} ne "overflow"){
-            my $IDwithLineBreaks = join("\\R?\\h*",split(//,${$preamble}{id}));
-            ${$preamble}{idRegExp} = qr/$IDwithLineBreaks/s;  
+        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
+            my $IDwithLineBreaks = join( "\\R?\\h*", split( //, ${$preamble}{id} ) );
+            ${$preamble}{idRegExp} = qr/$IDwithLineBreaks/s;
         }
 
         # get the replacement_text
@@ -172,64 +178,79 @@ sub find_file_contents_environments_and_preamble{
         ${$self}{body} =~ s/$preambleRegExp/${$preamble}{replacementText}/sx;
 
         $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
+
         # indentPreamble set to 1
-        if($mainSettings{indentPreamble}){
+        if ( $mainSettings{indentPreamble} ) {
             $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)") if $is_tt_switch_active;
             $needToStorePreamble = 1;
-        } else {
-            # indentPreamble set to 0
-            $logger->trace("NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)") if $is_t_switch_active;
-            $preamble->unprotect_blank_lines if( $is_m_switch_active and ${$mainSettings{modifyLineBreaks}}{preserveBlankLines} );
-            $verbatimStorage{${$preamble}{id}} = $preamble;
         }
-    } else {
+        else {
+            # indentPreamble set to 0
+            $logger->trace(
+                "NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)"
+            ) if $is_t_switch_active;
+            $preamble->unprotect_blank_lines
+                if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
+            $verbatimStorage{ ${$preamble}{id} } = $preamble;
+        }
+    }
+    else {
         ${$self}{preamblePresent} = 0;
     }
 
     # loop through the fileContents array, check if it's in the preamble
-    foreach(@fileContentsStorageArray){
-              my $indentThisChild = 0;
-              # verbatim children go in special hash
-              if($preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/){
-                $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
-                # indentPreamble set to 1
-                if($mainSettings{indentPreamble}){
-                    $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
-                    $indentThisChild = 1;
-                } else {
-                    # indentPreamble set to 0
-                    $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
-                    $verbatimStorage{${$_}{id}} = $_;
-                }
-              } else {
-                    $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)") if $is_t_switch_active;
-                    $indentThisChild = 1;
-              }
-              # store the child, if necessary
-              if($indentThisChild){
-                    $_->remove_leading_space;
-                    $_->yaml_get_indentation_settings_for_this_object;
-                    $_->tasks_particular_to_each_object;
-                    push(@{${$self}{children}},$_);
-              
-                    # possible decoration in log file 
-                    $logger->trace(${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace}) if ${$mainSettings{logFilePreferences}}{showDecorationFinishCodeBlockTrace};
-              }
+    foreach (@fileContentsStorageArray) {
+        my $indentThisChild = 0;
+
+        # verbatim children go in special hash
+        if ( $preamble ne '' and ${$preamble}{body} =~ m/${$_}{id}/ ) {
+            $logger->trace("filecontents (${$_}{id}) is within preamble") if $is_t_switch_active;
+
+            # indentPreamble set to 1
+            if ( $mainSettings{indentPreamble} ) {
+                $logger->trace("storing ${$_}{id} for indentation (indentPreamble is 1)") if $is_t_switch_active;
+                $indentThisChild = 1;
+            }
+            else {
+                # indentPreamble set to 0
+                $logger->trace("Storing ${$_}{id} as a VERBATIM object (indentPreamble is 0)") if $is_t_switch_active;
+                $verbatimStorage{ ${$_}{id} } = $_;
+            }
+        }
+        else {
+            $logger->trace("storing ${$_}{id} for indentation (${$_}{name} found outside of preamble)")
+                if $is_t_switch_active;
+            $indentThisChild = 1;
+        }
+
+        # store the child, if necessary
+        if ($indentThisChild) {
+            $_->remove_leading_space;
+            $_->yaml_get_indentation_settings_for_this_object;
+            $_->tasks_particular_to_each_object;
+            push( @{ ${$self}{children} }, $_ );
+
+            # possible decoration in log file
+            $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
+                if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
+        }
     }
 
-    if($needToStorePreamble){
+    if ($needToStorePreamble) {
         $preamble->dodge_double_backslash;
         $preamble->remove_leading_space;
+
         # text wrapping
-        $preamble->text_wrap() if ($is_m_switch_active and ${$mainSettings{modifyLineBreaks}{textWrapOptions}}{columns} !=0 );
-        $preamble->find_commands_or_key_equals_values_braces if($mainSettings{preambleCommandsBeforeEnvironments});
+        $preamble->text_wrap()
+            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 );
+        $preamble->find_commands_or_key_equals_values_braces if ( $mainSettings{preambleCommandsBeforeEnvironments} );
         $preamble->tasks_particular_to_each_object;
-        push(@{${$self}{children}},$preamble);
+        push( @{ ${$self}{children} }, $preamble );
     }
     return;
 }
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $fileContentsCounter++;
@@ -237,7 +258,7 @@ sub create_unique_id{
     return;
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     my $self = shift;
 
     # search for environments
@@ -248,9 +269,10 @@ sub tasks_particular_to_each_object{
 
     # search for headings (part, chapter, section, setc)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
-    
+
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
+    $self->find_commands_or_key_equals_values_braces_and_special
+        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
 }
 
 1;

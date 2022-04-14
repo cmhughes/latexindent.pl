@@ -1,4 +1,5 @@
 package LatexIndent::MandatoryArgument;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -23,20 +24,21 @@ use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";                             # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 our $mandatoryArgumentCounter;
 
-sub find_mandatory_arguments{
+sub find_mandatory_arguments {
     my $self = shift;
 
     my $mandArgRegExp = $self->get_mand_arg_reg_exp;
 
     # pick out the mandatory arguments
-    while(${$self}{body} =~ m/$mandArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
+    while ( ${$self}{body} =~ m/$mandArgRegExp\h*($trailingCommentRegExp)*(.*)/s ) {
+
         # log file output
         $logger->trace("*Mandatory argument found, body in ${$self}{name}") if $is_t_switch_active;
-        $logger->trace("(last argument)") if($9 eq '' and $is_t_switch_active);
+        $logger->trace("(last argument)") if ( $9 eq '' and $is_t_switch_active );
 
         ${$self}{body} =~ s/
                             $mandArgRegExp(\h*)($trailingCommentRegExp)*(.*)
@@ -73,11 +75,11 @@ sub find_mandatory_arguments{
                             $self->get_settings_and_store_new_object($mandatoryArg);
                             ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q()).($10?$10:q());
                             /xseg;
-    $self->wrap_up_tasks;
-        }
-  }
+        $self->wrap_up_tasks;
+    }
+}
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $mandatoryArgumentCounter++;
@@ -85,7 +87,7 @@ sub create_unique_id{
     return;
 }
 
-sub get_mand_arg_reg_exp{
+sub get_mand_arg_reg_exp {
 
     my $mandArgRegExp = qr/      
                                    (?<!\\)     # not immediately pre-ceeded by \
@@ -113,21 +115,23 @@ sub get_mand_arg_reg_exp{
     return $mandArgRegExp;
 }
 
-sub yaml_get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings {
     my $self = shift;
-    
+
     return ${$self}{modifyLineBreaksYamlName};
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     my $self = shift;
 
     # lookForAlignDelims: lookForChildCodeBlocks set to 0 means no child objects searched for
     #   see: test-cases/alignment/issue-308-command.tex
     #
-    if( defined ${$self}{lookForChildCodeBlocks} and !${$self}{lookForChildCodeBlocks} ){
-          $logger->trace("lookForAlignDelims: lookForChildCodeBlocks set to 0, so child objects will *NOT* be searched for") if($is_t_switch_active);
-          return;
+    if ( defined ${$self}{lookForChildCodeBlocks} and !${$self}{lookForChildCodeBlocks} ) {
+        $logger->trace(
+            "lookForAlignDelims: lookForChildCodeBlocks set to 0, so child objects will *NOT* be searched for")
+            if ($is_t_switch_active);
+        return;
     }
 
     # search for ifElseFi blocks

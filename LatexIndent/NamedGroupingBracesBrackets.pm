@@ -1,4 +1,5 @@
 package LatexIndent::NamedGroupingBracesBrackets;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -22,13 +23,14 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Command"; # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/construct_grouping_braces_brackets_regexp $grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
+our @ISA = "LatexIndent::Command";    # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK
+    = qw/construct_grouping_braces_brackets_regexp $grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
 our $groupingBracesCounter;
-our $grouping_braces_regexp; 
-our $grouping_braces_regexpTrailingComment; 
+our $grouping_braces_regexp;
+our $grouping_braces_regexpTrailingComment;
 
-sub construct_grouping_braces_brackets_regexp{
+sub construct_grouping_braces_brackets_regexp {
     my $self = shift;
 
     # grab the arguments regexp
@@ -36,30 +38,34 @@ sub construct_grouping_braces_brackets_regexp{
 
     # read from fine tuning
     my $NamedGroupingBracesBracketsRegExp = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
-    my $NamedGroupingFollowRegExp = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{follow}/;
+    my $NamedGroupingFollowRegExp         = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{follow}/;
 
-    # defaultSettings.yaml mistakenly had 
+    # defaultSettings.yaml mistakenly had
     #
     # fineTuning:
     #     NamedGroupingBracesBrackets:
-    # 
-    # when it should have been 
+    #
+    # when it should have been
     #
     # fineTuning:
     #     namedGroupingBracesBrackets:
     #
-    # the mistake was mine, so I feel that the following is necessary; if we 
+    # the mistake was mine, so I feel that the following is necessary; if we
     # get to V4, then this will be removed and only namedGroupingBracesBrackets will be supported
-    if(${${$mainSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}){
-        $logger->warn("*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used");
+    if ( ${ ${ $mainSettings{fineTuning} }{NamedGroupingBracesBrackets} }{name} ) {
+        $logger->warn(
+            "*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used"
+        );
         $NamedGroupingBracesBracketsRegExp = qr/${${$mainSettings{fineTuning}}{NamedGroupingBracesBrackets}}{name}/;
-    } 
-    if(${${$mainSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}){
-        $logger->warn("*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used");
+    }
+    if ( ${ ${ $mainSettings{fineTuning} }{NamedGroupingBracesBrackets} }{follow} ) {
+        $logger->warn(
+            "*fineTuning:NamedGroupingBracesBrackets is ok for now, but in future versions, fineTuning:namedGroupingBracesBrackets will be used"
+        );
         $NamedGroupingFollowRegExp = qr/${${$mainSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
     }
 
-    # store the regular expresssion for matching and replacing 
+    # store the regular expresssion for matching and replacing
     $grouping_braces_regexp = qr/
                   (
                      $NamedGroupingFollowRegExp
@@ -78,7 +84,7 @@ sub construct_grouping_braces_brackets_regexp{
 
 }
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $groupingBracesCounter++;
@@ -86,12 +92,12 @@ sub create_unique_id{
     return;
 }
 
-sub get_replacement_text{
+sub get_replacement_text {
     my $self = shift;
 
-    # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
+ # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
     $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
-    ${$self}{replacementText} = ${$self}{beginningbit}.${$self}{id};
+    ${$self}{replacementText} = ${$self}{beginningbit} . ${$self}{id};
     delete ${$self}{beginningbit};
 }
 

@@ -1,4 +1,5 @@
 package LatexIndent::Else;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -24,11 +25,11 @@ use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
 use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading qw/$allHeadingsRegexp/;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";        # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/check_for_else_statement/;
 our $elseCounter;
 
-sub check_for_else_statement{
+sub check_for_else_statement {
     my $self = shift;
 
     # we call the else routine from different places; see IfElseFi.pm and Special.pm
@@ -51,7 +52,7 @@ sub check_for_else_statement{
 
     $logger->trace("*Looking for $input{elseNameRegExp} statement (${$self}{name})") if $is_t_switch_active;
 
-    while(${$self}{body} =~ m/$elseRegExp(\h*)($trailingCommentRegExp)?/){
+    while ( ${$self}{body} =~ m/$elseRegExp(\h*)($trailingCommentRegExp)?/ ) {
         ${$self}{body} =~ s/$elseRegExp(\h*)($trailingCommentRegExp)?
                            /   
                           # create a new Else object
@@ -91,41 +92,44 @@ sub check_for_else_statement{
     return;
 }
 
-sub remove_line_breaks_begin{
+sub remove_line_breaks_begin {
+
     # the \else command can need a trailing white space if the line breaks have been removed after it and
     # there is no white space
-    my $self = shift;
-    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine}||"BodyStartsOnOwnLine";
+    my $self              = shift;
+    my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
     $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)");
     ${$self}{begin} =~ s/\R*$//sx;
-    ${$self}{begin} .= " " unless(${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
+    ${$self}{begin} .= " "
+        unless ( ${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     my $self = shift;
 
     # search for headings (important to do this before looking for commands!)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
-    
+    $self->find_commands_or_key_equals_values_braces_and_special
+        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
+
     # search for arguments
     $self->find_opt_mand_arguments if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
 
     return;
 }
 
-sub yaml_get_indentation_information{
+sub yaml_get_indentation_information {
     return q();
 }
 
-sub check_for_hidden_children{
+sub check_for_hidden_children {
     return q();
 }
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $elseCounter++;

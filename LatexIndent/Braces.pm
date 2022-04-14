@@ -1,4 +1,5 @@
 package LatexIndent::Braces;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -18,37 +19,37 @@ use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Command qw/$commandRegExp $commandRegExpTrailingComment $optAndMandAndRoundBracketsRegExpLineBreaks/;
-use LatexIndent::KeyEqualsValuesBraces qw/$key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
+use LatexIndent::KeyEqualsValuesBraces
+    qw/$key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
 use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
-use LatexIndent::UnNamedGroupingBracesBrackets qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
+use LatexIndent::UnNamedGroupingBracesBrackets
+    qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
 our $commandCounter;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
-sub find_commands_or_key_equals_values_braces{
+sub find_commands_or_key_equals_values_braces {
 
     my $self = shift;
 
-    $logger->trace("*Searching for commands with optional and/or mandatory arguments AND key = {value}") if $is_t_switch_active ;
+    $logger->trace("*Searching for commands with optional and/or mandatory arguments AND key = {value}")
+        if $is_t_switch_active;
 
     # match either a \\command or key={value}
-    while( ${$self}{body} =~ m/$commandRegExpTrailingComment/
-                            or  
-           ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
-                            or
-           ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/
-                            or
-           ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/
-         ){
-      if(${$self}{body} =~ m/$commandRegExpTrailingComment/){ 
+    while (${$self}{body} =~ m/$commandRegExpTrailingComment/
+        or ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
+        or ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/
+        or ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/ )
+    {
+        if ( ${$self}{body} =~ m/$commandRegExpTrailingComment/ ) {
 
-        # global substitution
-        ${$self}{body} =~ s/
+            # global substitution
+            ${$self}{body} =~ s/
                             $commandRegExpTrailingComment
                           /
                             # create a new command object
@@ -79,10 +80,11 @@ sub find_commands_or_key_equals_values_braces{
                             ${@{${$self}{children}}[-1]}{replacementText}.($8?($10?$10:q()):q());
                          /xseg;
 
-      } elsif (${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/){
+        }
+        elsif ( ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/ ) {
 
-        # global substitution
-        ${$self}{body} =~ s/
+            # global substitution
+            ${$self}{body} =~ s/
                               $key_equals_values_bracesRegExpTrailingComment
                            /
                            # create a new key_equals_values_braces object
@@ -114,11 +116,12 @@ sub find_commands_or_key_equals_values_braces{
                            $self->get_settings_and_store_new_object($key_equals_values_braces);
                            ${@{${$self}{children}}[-1]}{replacementText}.($9?($11?$11:q()):q());
                            /xseg;
-                    
-      } elsif (${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/){
 
-        # global substitution
-        ${$self}{body} =~ s/
+        }
+        elsif ( ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ ) {
+
+            # global substitution
+            ${$self}{body} =~ s/
                             $grouping_braces_regexpTrailingComment
                             /
                             # create a new key_equals_values_braces object
@@ -149,9 +152,11 @@ sub find_commands_or_key_equals_values_braces{
                             ${@{${$self}{children}}[-1]}{replacementText}.($8?($9?$9:q()):q());
                            /xseg;
 
-    } elsif (${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/) {
-        # global substitution
-        ${$self}{body} =~ s/
+        }
+        elsif ( ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/ ) {
+
+            # global substitution
+            ${$self}{body} =~ s/
                             $un_named_grouping_braces_RegExp_trailing_comment
                           /
                             # create a new Un-named-grouping-braces-brackets object
@@ -181,8 +186,8 @@ sub find_commands_or_key_equals_values_braces{
                             ${@{${$self}{children}}[-1]}{replacementText}.($6?($8?$8:q()):q());
                          /xseg;
 
+        }
     }
-  }
     return;
 }
 

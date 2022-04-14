@@ -1,4 +1,5 @@
 package LatexIndent::FileExtension;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -18,133 +19,144 @@ use strict;
 use warnings;
 use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
-use File::Basename; # to get the filename and directory path
+use File::Basename;    # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
-sub file_extension_check{
+sub file_extension_check {
     my $self = shift;
 
     # grab the filename
     my $fileName = ${$self}{fileName};
 
     # see if an extension exists for the fileName
-    my ($name,$dir,$ext) = fileparse($fileName,qr/\..[^.]*$/);
-    
-    # grab the file extension preferences
-    my %fileExtensionPreference= %{$mainSettings{fileExtensionPreference}};
+    my ( $name, $dir, $ext ) = fileparse( $fileName, qr/\..[^.]*$/ );
 
-    # sort the file extensions by preference 
-    my @fileExtensions = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
-    
+    # grab the file extension preferences
+    my %fileExtensionPreference = %{ $mainSettings{fileExtensionPreference} };
+
+    # sort the file extensions by preference
+    my @fileExtensions
+        = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
+
     # store the base name
     ${$self}{baseName} = $name;
 
     # if no extension, search according to fileExtensionPreference
-    if ($fileName ne "-"){
-        if (!$ext) {
+    if ( $fileName ne "-" ) {
+        if ( !$ext ) {
             $logger->info("*File extension work:");
-            $logger->info("latexindent called to act upon $fileName without a file extension;\nsearching for files in the following order (see fileExtensionPreference):");
-            $logger->info($fileName.join("\n$fileName",@fileExtensions));
+            $logger->info(
+                "latexindent called to act upon $fileName without a file extension;\nsearching for files in the following order (see fileExtensionPreference):"
+            );
+            $logger->info( $fileName . join( "\n$fileName", @fileExtensions ) );
 
             my $fileFound = 0;
+
             # loop through the known file extensions (see @fileExtensions)
-            foreach (@fileExtensions ){
-                if ( -e $fileName.$_ ) {
-                   $logger->info("$fileName$_ found!");
-                   $fileName .= $_;
-                   $logger->info("Updated fileName to $fileName");
-                   ${$self}{fileName} = $fileName ;
-                   $fileFound = 1;
-                   $ext = $_;
-                   last;
+            foreach (@fileExtensions) {
+                if ( -e $fileName . $_ ) {
+                    $logger->info("$fileName$_ found!");
+                    $fileName .= $_;
+                    $logger->info("Updated fileName to $fileName");
+                    ${$self}{fileName} = $fileName;
+                    $fileFound = 1;
+                    $ext       = $_;
+                    last;
                 }
             }
-            unless($fileFound){
-              if (defined ${$self}{multipleFiles}){
-                $logger->warn("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
-                $logger->warn("moving on, no indendation done for ${$self}{fileName}."); 
-                return 3;
-              } else {
-                $logger->fatal("*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
-                foreach (@fileExtensions ){
-                  $logger->fatal("I searched for $fileName$_");
+            unless ($fileFound) {
+                if ( defined ${$self}{multipleFiles} ) {
+                    $logger->warn(
+                        "*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
+                    $logger->warn("moving on, no indendation done for ${$self}{fileName}.");
+                    return 3;
                 }
-                $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
-                $logger->fatal("*Exiting, no indendation done."); 
-                $self->output_logfile();
-                exit(3);
-              }
+                else {
+                    $logger->fatal(
+                        "*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
+                    foreach (@fileExtensions) {
+                        $logger->fatal("I searched for $fileName$_");
+                    }
+                    $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
+                    $logger->fatal("*Exiting, no indendation done.");
+                    $self->output_logfile();
+                    exit(3);
+                }
             }
-          } else {
+        }
+        else {
             # if the file has a recognised extension, check that the file exists
-            unless( -e $fileName ){
-              if (defined ${$self}{multipleFiles}){
-                $logger->warn("*I couldn't find $fileName, are you sure it exists?");
-                $logger->warn("moving on, no indendation done for ${$self}{fileName}."); 
-                return 3;
-              } else {
-                $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
-                $logger->fatal("Exiting, no indendation done."); 
-                $self->output_logfile();
-                exit(3);
-              }
+            unless ( -e $fileName ) {
+                if ( defined ${$self}{multipleFiles} ) {
+                    $logger->warn("*I couldn't find $fileName, are you sure it exists?");
+                    $logger->warn("moving on, no indendation done for ${$self}{fileName}.");
+                    return 3;
+                }
+                else {
+                    $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
+                    $logger->fatal("Exiting, no indendation done.");
+                    $self->output_logfile();
+                    exit(3);
+                }
             }
-          }
-     }
+        }
+    }
 
     # store the file extension
     ${$self}{fileExtension} = $ext;
 
     # check to see if -o switch is active
-    if($switches{outputToFile}){
-        
+    if ( $switches{outputToFile} ) {
+
         $logger->info("*-o switch active: output file check");
 
         ${$self}{outputToFile} = $switches{outputToFile};
 
-        if ($fileName eq "-" and $switches{outputToFile} =~ m/^\+/){
+        if ( $fileName eq "-" and $switches{outputToFile} =~ m/^\+/ ) {
             $logger->info("STDIN input mode active, -o switch is removing all + symbols");
             ${$self}{outputToFile} =~ s/\+//g;
         }
+
         # the -o file name might begin with a + symbol
-        if($switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+"){
+        if ( $switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
             $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
-            ${$self}{outputToFile} = ${$self}{baseName}.$1;
+            ${$self}{outputToFile} = ${$self}{baseName} . $1;
             $logger->info("output file is now: ${$self}{outputToFile}");
         }
 
         my $strippedFileExtension = ${$self}{fileExtension};
-        $strippedFileExtension =~ s/\.//; 
-        $strippedFileExtension = "tex" if ($strippedFileExtension eq "");
+        $strippedFileExtension =~ s/\.//;
+        $strippedFileExtension = "tex" if ( $strippedFileExtension eq "" );
 
         # grab the name, directory, and extension of the output file
-        my ($name, $dir, $ext) = fileparse(${$self}{outputToFile}, $strippedFileExtension);
+        my ( $name, $dir, $ext ) = fileparse( ${$self}{outputToFile}, $strippedFileExtension );
 
         # if there is no extension, then add the extension from the file to be operated upon
-        if(!$ext){
+        if ( !$ext ) {
             $logger->info("-o switch called with file name without extension: $switches{outputToFile}");
-            ${$self}{outputToFile} = $name.($name=~m/\.\z/ ? q() : ".").$strippedFileExtension;
-            $logger->info("Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
+            ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
+            $logger->info(
+                "Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
         }
 
-        # the -o file name might end with ++ in which case we wish to search for existence, 
+        # the -o file name might end with ++ in which case we wish to search for existence,
         # and then increment accordingly
         $name =~ s/\.$//;
-        if($name =~ m/\+\+$/){
+        if ( $name =~ m/\+\+$/ ) {
             $logger->info("-o switch called with file name ending with ++: ${$self}{outputToFile}");
             $name =~ s/\+\+$//;
-            $name = ${$self}{baseName} if ($name eq "");
+            $name = ${$self}{baseName} if ( $name eq "" );
             my $outputFileCounter = 0;
-            my $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+            my $fileName          = $name . $outputFileCounter . "." . $strippedFileExtension;
             $logger->info("will search for existence and increment counter, starting with $fileName");
-            while( -e $fileName ){
+            while ( -e $fileName ) {
                 $logger->info("$fileName exists, incrementing counter");
                 $outputFileCounter++;
-                $fileName = $name.$outputFileCounter.".".$strippedFileExtension; 
+                $fileName = $name . $outputFileCounter . "." . $strippedFileExtension;
             }
             $logger->info("$fileName does not exist, and will be the output file");
             ${$self}{outputToFile} = $fileName;
@@ -153,36 +165,39 @@ sub file_extension_check{
 
     # read the file into the Document body
     my @lines;
-    if($fileName ne "-"){
-        my $openFilePossible=1;
-        open(MAINFILE, $fileName) or ($openFilePossible=0);
-        if($openFilePossible==0){
-            if (defined ${$self}{multipleFiles}){
-              $logger->warn("*$fileName exists, but could not open it");
-              $logger->warn("moving on, no indendation done for $fileName"); 
-              return 4;
-            } else {
-              $logger->fatal("*$fileName exists, but could not open it");
-              $logger->fatal("Exiting, no indendation done."); 
-              $self->output_logfile();
-              exit(4);
+    if ( $fileName ne "-" ) {
+        my $openFilePossible = 1;
+        open( MAINFILE, $fileName ) or ( $openFilePossible = 0 );
+        if ( $openFilePossible == 0 ) {
+            if ( defined ${$self}{multipleFiles} ) {
+                $logger->warn("*$fileName exists, but could not open it");
+                $logger->warn("moving on, no indendation done for $fileName");
+                return 4;
+            }
+            else {
+                $logger->fatal("*$fileName exists, but could not open it");
+                $logger->fatal("Exiting, no indendation done.");
+                $self->output_logfile();
+                exit(4);
             }
         }
-        push(@lines,$_) while(<MAINFILE>);
+        push( @lines, $_ ) while (<MAINFILE>);
         close(MAINFILE);
-    } else {
-            push(@lines,$_) while (<>)
+    }
+    else {
+        push( @lines, $_ ) while (<>);
     }
 
     # -n, --lines mode active
-    if($switches{lines}){
-      $self->lines_body_selected_lines(\@lines); 
-    } else {
-      # the all-important step: update the body
-      ${$self}{body} = join("",@lines);
+    if ( $switches{lines} ) {
+        $self->lines_body_selected_lines( \@lines );
+    }
+    else {
+        # the all-important step: update the body
+        ${$self}{body} = join( "", @lines );
     }
 
-    # necessary extra storage if 
+    # necessary extra storage if
     #
     #   check switch is active
     #
@@ -190,7 +205,7 @@ sub file_extension_check{
     #
     #   $switches{overwriteIfDifferent}
     #
-    if ($is_check_switch_active or $switches{overwriteIfDifferent}){
+    if ( $is_check_switch_active or $switches{overwriteIfDifferent} ) {
         ${$self}{originalBody} = ${$self}{body};
     }
 

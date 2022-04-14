@@ -73,7 +73,10 @@ echo "NEW version details: $newVersion, $newDate"
 
 [[ $updateVersion == 0 ]] && printf "not updating, you can run the following instead\n\n    update-version.sh -u\n\n" && exit 0
 
+# back to project route directory
 cd ../
+
+# into documentation
 cd documentation
 [[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 
@@ -90,7 +93,13 @@ perl documentation-default-settings-update.pl -r
 
 set +x
 
+# perltidy
+cd ../LatexIndent
+perltidy -b *.pm
+
+# back to project route directory
 cd ../
+perltidy -b latexindent.pl
 
 # change
 #

@@ -1,4 +1,5 @@
 package LatexIndent::OptionalArgument;
+
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
 #	the Free Software Foundation, either version 3 of the License, or
@@ -23,7 +24,7 @@ use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Special qw/$specialBeginBasicRegExp/;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document"; # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";       # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_optional_arguments/;
 our $optionalArgumentCounter;
 our $optArgRegExp = qr/      
@@ -43,14 +44,15 @@ our $optArgRegExp = qr/
                                (\R)?
                            /sx;
 
-sub find_optional_arguments{
+sub find_optional_arguments {
     my $self = shift;
 
     # pick out the optional arguments
-    while(${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s){
+    while ( ${$self}{body} =~ m/$optArgRegExp\h*($trailingCommentRegExp)*(.*)/s ) {
+
         # log file output
         $logger->trace("*Optional argument found, body in ${$self}{name}") if $is_t_switch_active;
-        $logger->trace("(last argument)") if($9 eq '' and $is_t_switch_active);
+        $logger->trace("(last argument)") if ( $9 eq '' and $is_t_switch_active );
 
         ${$self}{body} =~ s/
                             $optArgRegExp(\h*)($trailingCommentRegExp)*(.*)
@@ -87,16 +89,16 @@ sub find_optional_arguments{
                             $self->get_settings_and_store_new_object($optionalArg);
                             ${@{${$self}{children}}[-1]}{replacementText}.($8?$8:q()).($9?$9:q()).($10?$10:q());
                             /xseg;
-        }
-  }
+    }
+}
 
-sub yaml_get_object_attribute_for_indentation_settings{
+sub yaml_get_object_attribute_for_indentation_settings {
     my $self = shift;
-    
+
     return ${$self}{modifyLineBreaksYamlName};
 }
 
-sub create_unique_id{
+sub create_unique_id {
     my $self = shift;
 
     $optionalArgumentCounter++;
@@ -104,15 +106,17 @@ sub create_unique_id{
     return;
 }
 
-sub tasks_particular_to_each_object{
+sub tasks_particular_to_each_object {
     my $self = shift;
 
     # lookForAlignDelims: lookForChildCodeBlocks set to 0 means no child objects searched for
     #   see: test-cases/alignment/issue-308-command.tex
     #
-    if( defined ${$self}{lookForChildCodeBlocks} and !${$self}{lookForChildCodeBlocks} ){
-          $logger->trace("lookForAlignDelims: lookForChildCodeBlocks set to 0, so child objects will *NOT* be searched for") if($is_t_switch_active);
-          return;
+    if ( defined ${$self}{lookForChildCodeBlocks} and !${$self}{lookForChildCodeBlocks} ) {
+        $logger->trace(
+            "lookForAlignDelims: lookForChildCodeBlocks set to 0, so child objects will *NOT* be searched for")
+            if ($is_t_switch_active);
+        return;
     }
 
     # search for ifElseFi blocks
