@@ -93,7 +93,8 @@
  \IfBooleanTF{#1}%
  {% \announce*
   % NEW in current version
-  \tcbdocmarginnote[overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
+  \tcbdocmarginnote[colframe=orange,
+    overlay={\node at ([yshift=0mm,xshift=1mm]frame.north east) {\stardemo}; }]{%
    \IfBooleanTF{#3}%
    {% \announce*{date}*[text] means *updated* as of <date>
     \tcbdocupdated{#2}%
@@ -112,7 +113,10 @@
  }%
  {% \announce
   % NOT new in current version
-  \tcbdocmarginnote{%
+   \tcbdocmarginnote[colframe=gray!50!white,
+   doclang/new={{\color{gray}N\normalfont\color{gray}}},
+   doclang/updated={{\color{gray}U\normalfont\color{gray}}},
+ ]{%
    \IfBooleanTF{#3}%
    {% \announce{date}*[text] means *updated* as of <date>
     \tcbdocupdated{#2}%

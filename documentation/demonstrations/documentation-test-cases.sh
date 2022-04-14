@@ -7,6 +7,16 @@ loopmax=12
 # if silentMode is not active, verbose
 [[ $silentMode == 0 ]] && set -x 
 
+# quick start
+latexindent.pl -s quick-start.tex -o=+-default
+latexindent.pl -s quick-start.tex -o=+-mod1 -l quick-start1
+latexindent.pl -s quick-start.tex -o=+-mod2 -l quick-start2
+latexindent.pl -s quick-start.tex -o=+-mod3 -l quick-start3
+latexindent.pl -s quick-start.tex -o=+-mod4 -l quick-start4 -m
+latexindent.pl -s quick-start.tex -o=+-mod5 -l quick-start5 -m
+latexindent.pl -s quick-start.tex -o=+-mod6 -l quick-start6 -m
+latexindent.pl -s quick-start.tex -o=+-mod7 -l quick-start7 -m
+
 # demonstration
 latexindent.pl -s filecontents1.tex -o filecontents1-default.tex
 latexindent.pl -s tikzset.tex -o tikzset-default.tex
