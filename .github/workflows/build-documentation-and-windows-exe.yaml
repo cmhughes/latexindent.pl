@@ -114,7 +114,8 @@ jobs:
           mkdir latexindent
           cp latexindent.pl latexindent/
           cp defaultSettings.yaml latexindent/
-          cp -r LatexIndent latexindent/
+          mkdir latexindent/LatexIndent/
+          cp LatexIndent/*.pm latexindent/LatexIndent/
           cp helper-scripts/latexindent-module-installer.pl latexindent/
           mkdir latexindent/documentation/
           cp documentation/*.tex latexindent/documentation/
@@ -134,6 +135,10 @@ jobs:
       - name: creating latexindent.zip
         run: |
           zip -r latexindent.zip latexindent/
+          echo ""
+          echo "graphical representation of latexindent directory:"
+          echo ""
+          find latexindent -print | sed -e 's;[^/]*/;|-- ;g;s;-- |; |;g'
       # copy latexindent.zip to the release
       #
       # https://github.com/marketplace/actions/upload-files-to-a-github-release
