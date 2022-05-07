@@ -7,6 +7,6 @@ modifyLineBreaks:
                 |
                 \\item(?:\h|\[)
                 |
-                \\begin|{myenv\} # <--- new bit
+                \\begin\{myenv\} # <--- new bit
                 |                # <--- new bit
-                \\end|{myenv\}   # <--- new bit
+                \\end\{myenv\}   # <--- new bit

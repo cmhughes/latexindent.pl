@@ -16,17 +16,25 @@
  respectively. We will discuss how to change the settings and behaviour of the script in
  \vref{sec:defuseloc}.
 
+\subsection{Requirements}
+\subsubsection{Perl users}
+ Perl users will need a few standard Perl modules -- see \vref{sec:requiredmodules} for
+ details; \announce{2018-01-13}{perl module installer helper script} in particular, note
+ that a module installer helper script is shipped with \texttt{latexindent.pl}.%
+
+\subsubsection{Windows users without perl}\label{subsubsec:latexindent:exe}
  \texttt{latexindent.pl} ships with \texttt{latexindent.exe} for Windows
- users, so that you can use the script with or without a Perl distribution. If you plan to
- use \texttt{latexindent.pl} (i.e, the original Perl script) then you will need a few
- standard Perl modules -- see \vref{sec:requiredmodules} for
- details;%
- \announce{2018-01-13}{perl module installer helper script} in particular, note that a module installer helper script is shipped with
- \texttt{latexindent.pl}.
+ users, so that you can use the script with or without a Perl distribution.
+
+ Users of \texttt{latexindent.exe} need only two files: \texttt{latexindent.exe} and
+ \texttt{defaultSettings.yaml}, both of which are available from \cite{latexindent-home}.
 
  MiKTeX users on Windows may like to see \cite{miktex-guide} for details of how to use
  \texttt{latexindent.exe} without a Perl installation. \index{MiKTeX}
- \index{latexindent.exe}
+ \index{latexindent.exe} \index{Windows}
+
+\subsubsection{conda users}
+ Users of \texttt{conda} should see the details given in \cref{sec:app:conda}.
 
 \subsection{From the command line}\label{sec:commandline}
  \texttt{latexindent.pl} has a number of different switches/flags/options, which

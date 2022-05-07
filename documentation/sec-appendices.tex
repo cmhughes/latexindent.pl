@@ -2,10 +2,16 @@
 \appendix
  \section{Required Perl modules}\label{sec:requiredmodules}
   If you intend to use \texttt{latexindent.pl} and \emph{not} one of the supplied
-  standalone executable files, then you will need a few standard Perl modules -- if you can
-  run the minimum code in \cref{lst:helloworld} (\texttt{perl helloworld.pl}) then you will
-  be able to run \texttt{latexindent.pl}, otherwise you may need to install the missing
-  modules -- see \cref{sec:module-installer,sec:manual-module-instal}.
+  standalone executable files (\texttt{latexindent.exe} is available for Windows users
+  without Perl, see \cref{subsubsec:latexindent:exe}), then you will need a few standard
+  Perl modules.
+
+  If you can run the minimum code in \cref{lst:helloworld} as in
+  \begin{commandshell}
+perl helloworld.pl
+  \end{commandshell}
+  then you will be able to run \texttt{latexindent.pl}, otherwise you may need to install
+  the missing modules; see \cref{sec:module-installer,sec:manual-module-instal}.
 
   \begin{cmhlistings}[style=tcblatex,language=Perl]{\texttt{helloworld.pl}}{lst:helloworld}
 #!/usr/bin/perl
@@ -595,8 +601,8 @@ latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
 
  \section{Differences from Version 2.2 to 3.0}\label{app:differences}
   There are a few (small) changes to the interface when comparing Version 2.2 to Version
-  3.0. Explicitly, in previous versions you might have run, for example,
-  \index{switches!-o demonstration}
+  3.0. Explicitly, in previous versions you might have run, for example, \index{switches!-o
+  demonstration}
   \begin{commandshell}
 latexindent.pl -o myfile.tex outputfile.tex
 \end{commandshell}

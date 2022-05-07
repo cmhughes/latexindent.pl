@@ -69,6 +69,8 @@ modifyLineBreaks:
                 |
                 \\item(?:\h|\[)
                 |
+                \\section\{.*?$
+                |
                 \\subsubsection\{.*?\}\h*$
                 |
                 \\paragraph\{.*?\}\h*$
