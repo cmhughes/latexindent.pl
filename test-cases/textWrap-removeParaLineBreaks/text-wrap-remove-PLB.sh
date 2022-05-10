@@ -161,5 +161,8 @@ latexindent.pl -s issue-344.tex -m -l issue-344.yaml -o=+-mod1
 latexindent.pl -s issue-341.tex -m -l issue-341.yaml -o=+-mod1
 latexindent.pl -s issue-341-mod1.tex -m -l issue-341.yaml -w
 
+# warning to log file if m switch not active; check issue-362-warn.log for warning 
+latexindent.pl -s issue-362.tex -l issue-362.yaml -g issue-362-warn.log
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
