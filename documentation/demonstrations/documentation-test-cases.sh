@@ -250,6 +250,12 @@ latexindent.pl -s textwrap-bfccb.tex -o=+-mod12.tex -l=textwrap12.yaml,addruler1
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod13.tex -l=textwrap13.yaml,addruler2 -m -r
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod14.tex -l=textwrap14.yaml,addruler1 -m -r
 
+# text wrap trailing comments
+for i in {1..6};
+do
+latexindent.pl -s -m -l textwrap1A.yaml tw-tc$i.tex -o=+-mod1
+done
+
 # remove paragraph line breaks
 latexindent.pl -s shortlines.tex -o=+1.tex -l=remove-para1,remove-para4 -m
 latexindent.pl -s shortlines.tex -o=+1-tws.tex -l=remove-para1,removeTWS-before,remove-para4  -m

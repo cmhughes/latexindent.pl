@@ -14,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.17.2, 2022-04-14
+    latexindent.pl, version 3.17.3, 2022-06-05
 
 ## author
 Chris Hughes (cmhughes)
@@ -50,6 +50,8 @@ then you receive:
 	\end{two}
 \end{one}
 ```
+tl;dr, a [quick-start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
+section is available for those short of time.
 
 ## documentation
 
@@ -110,21 +112,13 @@ You don't even have to worry about `defaultSettings.yaml` as it included too.
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
 </details>
 
-## GitHub Actions
-`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
-file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
-directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
-
-> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
-
 ## pre-commit
 You can use `latexindent` with the [pre-commit
 framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.17.2
+        rev: V3.17.3
         hooks:
           - id: latexindent
 
@@ -206,6 +200,14 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Once you understand the power that regular expressions provide, the small amount of work spent learning them will feel trivial indeed* Friedl, Mastering Regular Expressions, end of Chapter 1.
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
+
+## GitHub Actions
+`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
+file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
+directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.

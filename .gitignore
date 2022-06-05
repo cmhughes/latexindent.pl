@@ -25,5 +25,7 @@ documentation/*.run.xml
 documentation/arara.yaml
 documentation/*.toc
 documentation/latexindent.pdf
+test-cases/*/*.aux
+test-cases/*/*.pdf
 nytprof*
 *.out
