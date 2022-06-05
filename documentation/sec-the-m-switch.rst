@@ -105,7 +105,16 @@ An overview of how the text wrapping feature works:
 
 #. setting ``columns`` to :math:`-1` will *only* remove line breaks within the text wrap block;
 
-#. by default, the text wrapping routine will remove line breaks within text blocks because ``removeBlockLineBreaks`` is set to 1; switch it to 0 if you wish to change this.
+#. by default, the text wrapping routine will remove line breaks within text blocks because ``removeBlockLineBreaks`` is set to 1; switch it to 0 if you wish to change this;
+
+#. about trailing comments within text wrap blocks:
+
+   #. trailing comments that do *not* have leading space instruct the text wrap routine to connect the lines *without* space (see :numref:`lst:tw-tc2`);
+
+   #. multiple trailing comments will be connected at the end of the text wrap block (see :numref:`lst:tw-tc4`);
+
+   #. the number of spaces between the end of the text wrap block and the (possibly combined) trailing comments is determined by the spaces (if any) at the end of the text wrap block (see
+      :numref:`lst:tw-tc5`).
 
 We demonstrate this feature using a series of examples.
 
@@ -583,6 +592,167 @@ We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` wit
 	 	:name: lst:tw-be-equation-mod2
 	
 	Naturally, you should feel encouraged to customise this as you see fit.
+	 
+
+Text wrap: trailing comments and spaces
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We explore the behaviour of the text wrap routine in relation to trailing comments using the following examples.
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc1` contains a trailing comment which *does* have a space infront of it.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc1.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output given in :numref:`lst:tw-tc1-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc1.tex`` 
+	 	:name: lst:tw-tc1
+	
+	.. literalinclude:: demonstrations/tw-tc1-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc1-mod1.tex`` 
+	 	:name: lst:tw-tc1-mod1
+	
+	
+	 
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc2` contains a trailing comment which does *not* have a space infront of it.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc2.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:tw-tc2-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc2.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc2.tex`` 
+	 	:name: lst:tw-tc2
+	
+	.. literalinclude:: demonstrations/tw-tc2-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc2-mod1.tex`` 
+	 	:name: lst:tw-tc2-mod1
+	
+	We note that, because there is *not* a space before the trailing comment, that the lines have been joined *without* a space.
+	 
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc3` contains multiple trailing comments.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc3.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:tw-tc3-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc3.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc3.tex`` 
+	 	:name: lst:tw-tc3
+	
+	.. literalinclude:: demonstrations/tw-tc3-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc3-mod1.tex`` 
+	 	:name: lst:tw-tc3-mod1
+	
+	
+	 
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc4` contains multiple trailing comments.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc4.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:tw-tc4-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc4.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc4.tex`` 
+	 	:name: lst:tw-tc4
+	
+	.. literalinclude:: demonstrations/tw-tc4-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc4-mod1.tex`` 
+	 	:name: lst:tw-tc4-mod1
+	
+	
+	 
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc5` contains multiple trailing comments.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc5.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:tw-tc5-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc5.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc5.tex`` 
+	 	:name: lst:tw-tc5
+	
+	.. literalinclude:: demonstrations/tw-tc5-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc5-mod1.tex`` 
+	 	:name: lst:tw-tc5-mod1
+	
+	The space at the end of the text block has been preserved.
+	 
+
+.. proof:example::	
+	
+	The file in :numref:`lst:tw-tc6` contains multiple trailing comments.
+	
+	Running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -m tw-tc6.tex -l textwrap1A.yaml -o=+-mod1 
+	
+	gives the output in :numref:`lst:tw-tc6-mod1`.
+	
+	.. literalinclude:: demonstrations/tw-tc6.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc6.tex`` 
+	 	:name: lst:tw-tc6
+	
+	.. literalinclude:: demonstrations/tw-tc6-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tw-tc6-mod1.tex`` 
+	 	:name: lst:tw-tc6-mod1
+	
+	The space at the end of the text block has been preserved.
 	 
 
 Text wrap: huge, tabstop and separator

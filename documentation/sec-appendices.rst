@@ -8,9 +8,17 @@ Appendices
 Required Perl modules
 ---------------------
 
-If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone executable files, then you will need a few standard Perl modules – if you can run the minimum code in
-:numref:`lst:helloworld` (``perl helloworld.pl``) then you will be able to run ``latexindent.pl``, otherwise you may need to install the missing modules – see :numref:`sec:module-installer` and
-:numref:`sec:manual-module-instal`.
+If you intend to use ``latexindent.pl`` and *not* one of the supplied standalone executable files (``latexindent.exe`` is available for Windows users without Perl, see
+:numref:`subsubsec:latexindent:exe`), then you will need a few standard Perl modules.
+
+If you can run the minimum code in :numref:`lst:helloworld` as in
+
+.. code-block:: latex
+   :class: .commandshell
+
+   perl helloworld.pl
+
+then you will be able to run ``latexindent.pl``, otherwise you may need to install the missing modules; see :numref:`sec:module-installer` and :numref:`sec:manual-module-instal`.
 
 .. code-block:: latex
    :caption: ``helloworld.pl`` 
@@ -185,6 +193,13 @@ Users of the Macintosh operating system might like to explore the following comm
 
    cpanm YAML::Tiny
    cpanm File::HomeDir
+
+Alternatively,
+
+.. code-block:: latex
+   :class: .commandshell
+
+   brew install latexindent  
 
 Windows
 ~~~~~~~

@@ -14,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.17.2, 2022-04-14
+    latexindent.pl, version 3.17.3, 2022-06-05
 
 ## author
 Chris Hughes (cmhughes)
@@ -118,7 +118,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.17.2
+        rev: V3.17.3
         hooks:
           - id: latexindent
 

@@ -437,7 +437,7 @@ sub yaml_read_settings {
                 }
 
                 # warning to log file if modifyLineBreaks specified and m switch not active
-                if (${$userSettings->[0]}{modifyLineBreaks} and !$is_m_switch_active){
+                if ( ${ $userSettings->[0] }{modifyLineBreaks} and !$is_m_switch_active ) {
                     $logger->warn("*modifyLineBreaks specified and m switch is *not* active");
                     $logger->warn("perhaps you intended to call");
                     $logger->warn("     latexindent.pl -m -l $settings ${$self}{fileName}");

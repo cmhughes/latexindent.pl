@@ -1,5 +1,8 @@
 # changelog.md
 
+## V3.17.3, June 05, 2022
+* update to the text wrap routine focused on trailing comments, see [issue 367](https://github.com/cmhughes/latexindent.pl/issues/367)
+
 ## V3.17.2, April 14, 2022
 * minor updates to the quick-start section
 * add `NiceTabular` to `defaultSettings`, [pull 358](https://github.com/cmhughes/latexindent.pl/pull/358), thanks to @yzhang-gh

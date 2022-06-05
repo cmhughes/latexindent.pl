@@ -16,14 +16,37 @@ In what follows, we will always refer to ``latexindent.pl``, but depending on yo
 There are two ways to use ``latexindent.pl``: from the command line, and using ``arara``; we discuss these in :numref:`sec:commandline` and :numref:`sec:arara` respectively. We will discuss how to
 change the settings and behaviour of the script in :numref:`sec:defuseloc`.
 
-``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution. If you plan to use ``latexindent.pl`` (i.e, the original Perl
-script) then you will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
+Requirements
+------------
+
+Perl users
+~~~~~~~~~~
+
+Perl users will need a few standard Perl modules – see :numref:`sec:requiredmodules` for details; in particular, note that a module installer helper script is shipped with ``latexindent.pl``.
+
+.. label follows
+
+.. _subsubsec:latexindent:exe:
+
+Windows users without perl
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``latexindent.pl`` ships with ``latexindent.exe`` for Windows users, so that you can use the script with or without a Perl distribution.
+
+Users of ``latexindent.exe`` need only two files: ``latexindent.exe`` and ``defaultSettings.yaml``, both of which are available from (“Home of Latexindent.pl” n.d.).
 
 MiKTeX users on Windows may like to see (“How to Use Latexindent on Windows?” n.d.) for details of how to use ``latexindent.exe`` without a Perl installation.
 
 .. index:: MiKTeX
 
 .. index:: latexindent.exe
+
+.. index:: Windows
+
+conda users
+~~~~~~~~~~~
+
+Users of ``conda`` should see the details given in :numref:`sec:app:conda`.
 
 .. label follows
 
