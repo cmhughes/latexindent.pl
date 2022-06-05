@@ -249,11 +249,35 @@ sub text_wrap {
             # initiate the trailing comments storage
             my $trailingComments = q();
 
-            # grab all *internal* trailing comments from the block
-            while ( $textWrapBlockStorageValue =~ m|$trailingCommentRegExp| ) {
-                $textWrapBlockStorageValue =~ s|(\h*$trailingCommentRegExp)||s;
-                $trailingComments .= $1;
+            # about trailing comments
+            # 
+            #   - trailing comments that do *not* have leading space instruct the text 
+            #     wrap routine to connect the lines *without* space
+            #
+            #   - multiple trailing comments will be connected at the end of the text wrap block
+            #
+            #   - the number of spaces between the end of the text wrap block and 
+            #     the (possibly combined) trailing comments is determined by the 
+            #     spaces (if any) at the end of the text wrap block
+            
+            # for trailing comments that 
+            #
+            #   do *NOT* have a leading space
+            #   do have a trailing line break
+            #
+            # then we *remove* the trailing line break
+            while ( $textWrapBlockStorageValue =~ m|\H$trailingCommentRegExp\h*\R|s ) {
+                $textWrapBlockStorageValue =~ s|(\H)($trailingCommentRegExp)\h*\R|$1$2|s;
             }
+
+            # now we put all of the trailing comments together
+            while ( $textWrapBlockStorageValue =~ m|$trailingCommentRegExp|s ) {
+                $textWrapBlockStorageValue =~ s|($trailingCommentRegExp)||s;
+                $trailingComments = $trailingComments.$1;
+            }
+
+            $trailingComments =~ s/\h{2,}/ /sg
+if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{multipleSpacesToSingle};
 
             # determine if text wrapping will remove paragraph line breaks
             my $removeBlockLineBreaks = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{removeBlockLineBreaks};
@@ -333,7 +357,6 @@ sub text_wrap {
 
             # append trailing comments from WITHIN the block
             $textWrapBlockStorageValue =~ s/\R?$/$trailingComments\n/s if ( $trailingComments ne '' );
-
             # append blocksEndBefore and the stuff following it
             if ( scalar @textWrapBeforeEndWith > 1 ) {
                 $textWrapBlockStorageValue .= $textWrapBeforeEndWith[1] . $textWrapBeforeEndWith[2];

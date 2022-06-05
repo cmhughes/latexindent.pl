@@ -12,16 +12,17 @@ latexindent.pl -s long-lines2.tex -o=+-default.tex
 latexindent.pl -s jowens-short.tex -o=+-mod-4.tex -l=text-wrap-4.yaml -m -r
 latexindent.pl -s jowens-long.tex -o=+-mod-4.tex -l=text-wrap-4.yaml -m 
 
+set +x
 # long lines test cases
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-    [[ $silentMode == 0 ]] && set -x 
     # basic tests
     [[ $showCounter == 1 ]] && echo $i of $loopmax
+    [[ $silentMode == 0 ]] && set -x 
     latexindent.pl -s long-lines1.tex -o=+-mod-$i.tex -l=text-wrap-$i.yaml -m -y="modifyLineBreaks:textWrapOptions:huge:wrap"
     latexindent.pl -s long-lines2.tex -o=+-mod-$i.tex -l=text-wrap-$i.yaml -m -y="modifyLineBreaks:textWrapOptions:huge:wrap"
     latexindent.pl -s long-lines3.tex -o=+-mod-$i.tex -l=text-wrap-$i.yaml -m -y="modifyLineBreaks:textWrapOptions:huge:wrap"
-   [[ $silentMode == 0 ]] && set +x 
+    set +x
 done
 
 set +x
@@ -55,7 +56,7 @@ latexindent.pl -m -s multi-object.tex -l removeParaLineBreaks9.yaml -o=+9.tex
 
 # trailing comments
 latexindent.pl -m -s trailingComments.tex -l removeParaLineBreaks0.yaml -o=+0.tex
-latexindent.pl -m -s trailingComments.tex -l removeParaLineBreaks0.yaml,unprotect-blank-lines.yaml -o trailingComments-unprotect0.tex
+latexindent.pl -m -s trailingComments.tex -l removeParaLineBreaks0.yaml,unprotect-blank-lines.yaml -o=+-unprotect0.tex
 
 # chapter file
 latexindent.pl -m -s chapter-file.tex -l removeParaLineBreaks0.yaml -o=+0.tex
@@ -164,5 +165,18 @@ latexindent.pl -s issue-341-mod1.tex -m -l issue-341.yaml -w
 # warning to log file if m switch not active; check issue-362-warn.log for warning 
 latexindent.pl -s issue-362.tex -l issue-362.yaml -g issue-362-warn.log
 
+latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:-1' issue-367  -o=+-mod1
+latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:-1' issue-367a -o=+-mod1
+latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:-1' issue-367b -o=+-mod1
+
+set +x
+for i in {1..7}; 
+  do 
+    [[ $silentMode == 0 ]] && set -x 
+    latexindent.pl -s -m -y 'modifyLineBreaks:textWrapOptions:columns:-1' tw-tc$i.tex -o=+-mod1
+    set +x
+  done
+
+set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
