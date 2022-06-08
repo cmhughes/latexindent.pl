@@ -1,5 +1,19 @@
 FROM perl:5.36.0-slim-threaded-buster
 
+# Build:
+#   docker build . \
+#     -t <maintainer>/latexindent:<version tag> \
+#     --build-arg LATEXINDENT_VERSION=<version tag>
+#
+# Run:
+#   docker run --rm -it <maintainer>/latexindent:<version tag> -h
+#
+# Publish:
+#   docker push <maintainer>/latexindent:<version tag>
+
+ARG LATEXINDENT_VERSION
+ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.17.3}
+
 RUN apt-get update \
     && apt-get install \
     build-essential \
@@ -15,7 +29,7 @@ RUN git clone --depth 1 https://github.com/cmhughes/latexindent.pl
 
 WORKDIR /latexindent.pl/helper-scripts
 
-RUN echo "Y" | perl latexindent-module-installer.pl
+RUN git checkout "${LATEXINDENT_VERSION}" && echo "Y" | perl latexindent-module-installer.pl
 
 WORKDIR /latexindent.pl/build
 
