@@ -111,8 +111,17 @@ You don't even have to worry about `defaultSettings.yaml` as it included too.
 	
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
 </details>
+<details>
+<summary>docker users</summary>
+If you use latexindent via docker you'll only need
+
+    docker pull ghcr.io/cmhughes/latexindent.pl
+    docker run -v /path/to/local/myfile.tex:/myfile.tex --rm -it ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
+
+</details>
 
 ## pre-commit
+
 You can use `latexindent` with the [pre-commit
 framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
