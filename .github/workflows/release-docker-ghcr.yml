@@ -1,13 +1,19 @@
 name: Release GHCR Package
+# PURPOSE:
+#
+#  1. *build* latexindent docker image
+#  2. *publish* latexindent docker image to https://github.com/cmhughes?tab=packages
+#
+# Note: this action only runs on *each release*, i.e. when tags are pushed
+#
 
 on:
   push:
     tags:
-      - 'V*'
+      - '*'
 
 jobs:
-  ghcr:
-    needs: release
+  latexindent-ghcr:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,7 +32,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: get tag
+      - name: get latexindent tag
         run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - uses: docker/build-push-action@v3
         with:

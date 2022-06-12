@@ -1,5 +1,7 @@
 FROM perl:5.36.0-slim-threaded-buster
-
+#
+# Docker necessary file
+#
 # Build:
 #   docker build . \
 #     -t <maintainer>/latexindent:<version tag> \
@@ -10,9 +12,12 @@ FROM perl:5.36.0-slim-threaded-buster
 #
 # Publish:
 #   docker push <maintainer>/latexindent:<version tag>
+#
+# Note: see also .github/workflows/release-docker-ghcr.yml
+#
 
 ARG LATEXINDENT_VERSION
-ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.17.3}
+ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.18}
 
 RUN apt-get update \
     && apt-get install \

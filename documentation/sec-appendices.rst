@@ -156,7 +156,6 @@ If you are using Alpine, some ``Perl`` modules are not build-compatible with Alp
    :caption: ``alpine-install.sh`` 
    :name: lst:alpine-install
 
-           
    # Installing perl
    apk --no-cache add miniperl perl-utils
 
@@ -488,7 +487,7 @@ If you use conda you’ll only need
 
    conda install latexindent.pl -c conda-forge
 
-this will install the executable and all its dependencies (including perl) in the activate environment. You don’t even have to worry about ``defaultSettings.yaml`` as it included too, you can thus
+This will install the executable and all its dependencies (including perl) in the activate environment. You don’t even have to worry about ``defaultSettings.yaml`` as it included too, you can thus
 skip :numref:`sec:requiredmodules` and :numref:`sec:updating-path`.
 
 .. index:: conda
@@ -511,6 +510,58 @@ On Ubuntu I followed the 64-bit installation instructions at (“How to Install 
    conda run latexindent.pl -vv
 
 I found the details given at (“Solving Environment: Failed with Initial Frozen Solve. Retrying with Flexible Solve.” n.d.) to be helpful.
+
+.. label follows
+
+.. _sec:app:docker:
+
+Using docker
+------------
+
+If you use docker you’ll only need
+
+.. code-block:: latex
+   :class: .commandshell
+
+   docker pull ghcr.io/cmhughes/latexindent.pl
+
+This will download the image packed ``latexindent``\ ’s executable and its all dependencies.
+
+.. index:: docker
+
+Thank you to (eggplants 2022) for contributing this feature; see also (“Latexindent.pl Ghcr (Github Container Repository) Location” n.d.). For reference, *ghcr* stands for *GitHub Container
+Repository*.
+
+Sample docker installation on Ubuntu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To pull the image and show ``latexindent``\ ’s help on Ubuntu:
+
+.. code-block:: latex
+   :caption: ``docker-install.sh`` 
+   :name: lst:docker-install
+
+   # setup docker if not already installed
+   if ! command -v docker &> /dev/null; then
+     sudo apt install docker.io -y
+     sudo groupadd docker
+     sudo gpasswd -a "$USER" docker
+     sudo systemctl restart docker
+   fi
+
+   # download image and execute
+   docker pull ghcr.io/cmhughes/latexindent.pl
+   docker run ghcr.io/cmhughes/latexindent.pl -h
+
+How to format on Docker
+~~~~~~~~~~~~~~~~~~~~~~~
+
+When you use ``latexindent`` with the docker image, you have to mount target ``tex`` file like this:
+
+.. code-block:: latex
+   :class: .commandshell
+
+   docker run -v /path/to/local/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
 
 pre-commit
 ----------
@@ -653,6 +704,50 @@ A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
       :class: .commandshell
 
       conda run latexindent.pl -s myfile.tex       
+
+   for each ``.tex`` file in your repository;
+
+-  to instruct ``latexindent.pl`` to overwrite the files in your repository, then you can update :numref:`lst:.pre-commit-config.yaml-cpan` so that ``args: [-s, -w]``.
+
+.. label follows
+
+.. _sec:pre-commit-docker:
+
+pre-commit using docker
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also rely on ``docker`` (detailed in :numref:`sec:app:docker`) instead of ``CPAN`` for all dependencies, including ``latexindent.pl`` itself.
+
+.. index:: docker
+
+.. index:: git
+
+.. index:: pre-commit;docker
+
+.. literalinclude:: demonstrations/pre-commit-config-docker.yaml
+ 	:class: .baseyaml
+ 	:caption: ``.pre-commit-config.yaml`` (docker) 
+ 	:name: lst:.pre-commit-config.yaml-docker
+
+Once created, you should then be able to run the following command:
+
+.. code-block:: latex
+   :class: .commandshell
+
+   pre-commit run --all-files
+
+A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
+
+-  the settings given in :numref:`lst:.pre-commit-config.yaml-docker` instruct ``pre-commit`` to use ``docker`` to get dependencies;
+
+-  this requires ``pre-commit`` and ``docker`` to be installed on your system;
+
+-  the ``args`` lists selected command-line options; the settings in :numref:`lst:.pre-commit-config.yaml-cpan` are equivalent to calling
+
+   .. code-block:: latex
+      :class: .commandshell
+
+      docker run -v /path/to/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s myfile.tex
 
    for each ``.tex`` file in your repository;
 
@@ -890,6 +985,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       “CPAN: Comprehensive Perl Archive Network.” n.d. Accessed January 23, 2017. http://www.cpan.org/.
 
    .. container::
+      :name: ref-eggplants
+
+      eggplants. 2022. “Add Dockerfile and Its Updater/Releaser.” June 12, 2022. https://github.com/cmhughes/latexindent.pl/pull/370.
+
+   .. container::
       :name: ref-tdegeusprecommit
 
       Geus, Tom de. 2022. “Adding Perl Installation + Pre-Commit Hook.” January 21, 2022. https://github.com/cmhughes/latexindent.pl/pull/322.
@@ -924,6 +1024,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-jasjuang
 
       Juang, Jason. 2015. “Add in Path Installation.” November 24, 2015. https://github.com/cmhughes/latexindent.pl/pull/38.
+
+   .. container::
+      :name: ref-cmhughesio
+
+      “Latexindent.pl Ghcr (Github Container Repository) Location.” n.d. Accessed June 12, 2022. https://github.com/cmhughes?tab=packages.
 
    .. container::
       :name: ref-perlbrew
