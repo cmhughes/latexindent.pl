@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: installing texlive full
         uses: xu-cheng/texlive-action/full@v1
         with:
@@ -61,7 +61,7 @@ jobs:
       #
       # https://github.com/actions/checkout
       - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # install Strawberry Perl
       #
       # https://github.com/marketplace/actions/setup-perl-environment
@@ -108,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Loading the "base actions/checkout" so as to access the repository latexindent.pl
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: copying files from repository into temporary folder
         run: |
           mkdir latexindent
