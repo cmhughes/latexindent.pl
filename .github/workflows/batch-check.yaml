@@ -37,7 +37,7 @@ jobs:
       #
       # https://github.com/actions/checkout
       - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # install Perl
       #
       # https://github.com/marketplace/actions/setup-perl-environment
