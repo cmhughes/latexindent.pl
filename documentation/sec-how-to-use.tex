@@ -87,7 +87,7 @@ latexindent.pl myfile.tex
  \texttt{myfile.tex} will not be changed by \texttt{latexindent.pl} in any way using this
  command.
 
- You can \announce*{2022-03-25}{batches of files demonstration} instruct
+ You can \announce{2022-03-25}{batches of files demonstration} instruct
  \texttt{latexindent.pl} to operate on multiple (batches) of files, for example
  \begin{commandshell}
 latexindent.pl myfile1.tex myfile2.tex
@@ -116,7 +116,7 @@ latexindent.pl myfile.tex --overwrite
 \flagbox{-wd, --overwriteIfDifferent}
  \index{switches!-wd, --overwriteIfDifferent definition and details}
  \index{backup files!overwriteIfDifferent switch, -wd}
- \announce*{2022-03-25}{overwriteIfDifferent switch}
+ \announce{2022-03-25}{overwriteIfDifferent switch}
  \begin{commandshell}
 latexindent.pl -wd myfile.tex
 latexindent.pl --overwriteIfDifferent myfile.tex
@@ -510,7 +510,7 @@ latexindent.pl -lines 5-8 myfile.tex
  \begin{commandshell}
 latexindent.pl --GCString myfile.tex
 \end{commandshell}
- \announce*{2022-03-25}{GCString switch} instructs \texttt{latexindent.pl} to load the
+ \announce{2022-03-25}{GCString switch} instructs \texttt{latexindent.pl} to load the
  \texttt{Unicode::GCString} module. This should only be necessary if you find that the
  alignment at ampersand routine (described in \cref{subsec:align-at-delimiters}) does not
  work for your language. Further details are given in \cref{subsec:the-GCString}.
