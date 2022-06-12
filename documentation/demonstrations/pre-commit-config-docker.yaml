@@ -1,0 +1,5 @@
+- repo: https://github.com/cmhughes/latexindent.pl
+  rev: V3.17.3
+  hooks:
+    - id: latexindent-docker
+      args: [-s]
