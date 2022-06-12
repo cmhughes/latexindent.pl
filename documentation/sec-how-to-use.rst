@@ -48,6 +48,15 @@ conda users
 
 Users of ``conda`` should see the details given in :numref:`sec:app:conda`.
 
+.. index:: conda
+
+docker users
+~~~~~~~~~~~~
+
+Users of ``docker`` should see the details given in :numref:`sec:app:docker`.
+
+.. index:: docker
+
 .. label follows
 
 .. _sec:commandline:

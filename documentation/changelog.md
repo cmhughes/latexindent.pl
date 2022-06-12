@@ -1,6 +1,8 @@
 # changelog.md
+## V3.18, June 12, 2022
+* docker now supported, full details at [pull 370](https://github.com/cmhughes/latexindent.pl/pull/370), thanks to @eggplants
 
-## V3.17.3, June 05, 2022
+## V3.17.3, June 5, 2022
 * update to the text wrap routine focused on trailing comments, see [issue 367](https://github.com/cmhughes/latexindent.pl/issues/367)
 
 ## V3.17.2, April 14, 2022

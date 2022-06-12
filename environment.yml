@@ -1,3 +1,6 @@
+#
+# conda-necessary file
+#
 channels:
 - conda-forge
 dependencies:

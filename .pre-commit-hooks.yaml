@@ -14,3 +14,11 @@
   args: ["--overwriteIfDifferent", "--silent", "--local"]
   language: conda
   types: [tex]
+- id: latexindent-docker
+  name: latexindent.pl
+  description: Run latexindent.pl (get dependencies using Docker)
+  minimum_pre_commit_version: 2.1.0
+  entry: ghcr.io/cmhughes/latexindent.pl
+  language: docker_image
+  types: [tex]
+  args: ["--overwriteIfDifferent", "--silent", "--local"]

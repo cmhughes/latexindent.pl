@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.17.2'
-newVersion='3.17.3'
-oldDate='2022-04-14'
-newDate='2022-06-05'
+oldVersion='3.17.3'
+newVersion='3.18'
+oldDate='2022-06-05'
+newDate='2022-06-12'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -111,12 +111,14 @@ filesToUpdate=(
   defaultSettings.yaml
   LatexIndent/Version.pm 
   readme.md
+  Dockerfile
   documentation/conf.py 
   documentation/readme.txt
   documentation/latexindent-yaml-schema.json
   documentation/title.tex
   documentation/demonstrations/pre-commit-config-cpan.yaml
   documentation/demonstrations/pre-commit-config-conda.yaml
+  documentation/demonstrations/pre-commit-config-docker.yaml
   documentation/demonstrations/pre-commit-config-demo.yaml
   ) 
 

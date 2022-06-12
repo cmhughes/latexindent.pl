@@ -14,7 +14,7 @@ can modify line breaks.
 
 ## version
 
-    latexindent.pl, version 3.17.3, 2022-06-05
+    latexindent.pl, version 3.18, 2022-06-12
 
 ## author
 Chris Hughes (cmhughes)
@@ -61,14 +61,6 @@ For complete details, please see:
 - online: [http://latexindentpl.readthedocs.io/](http://latexindentpl.readthedocs.io/) (if you find discrepancies between the pdf and readthedocs, defer to the pdf)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest)
 
-## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
-Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
-of test cases on every commit.
-
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
-
 ## getting started
 
 <details>
@@ -111,14 +103,23 @@ You don't even have to worry about `defaultSettings.yaml` as it included too.
 	
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
 </details>
+<details>
+<summary>docker users</summary>
+If you use latexindent via docker you'll only need
+
+    docker pull ghcr.io/cmhughes/latexindent.pl
+    docker run -v /path/to/local/myfile.tex:/myfile.tex --rm -it ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
+
+</details>
 
 ## pre-commit
+
 You can use `latexindent` with the [pre-commit
 framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.17.3
+        rev: V3.18
         hooks:
           - id: latexindent
 
@@ -208,6 +209,15 @@ directory of this repository, and you can track the actions on the [actions page
 
 > ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
 ![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
+![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
+
+## build status
+I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
+Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
+of test cases on every commit.
+
+[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.

@@ -107,7 +107,6 @@ sudo pacman -S perl cpanminus
    these details.
 
    \begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{alpine-install.sh}}{lst:alpine-install}
-		
 # Installing perl
 apk --no-cache add miniperl perl-utils
 
@@ -377,7 +376,7 @@ latexindent.pl myfile*.tex --check
   \begin{commandshell}
 conda install latexindent.pl -c conda-forge
 \end{commandshell}
-  this will install the executable and all its dependencies (including perl) in the
+  This will install the executable and all its dependencies (including perl) in the
   activate environment. You don't even have to worry about \texttt{defaultSettings.yaml} as
   it included too, you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
   \index{conda}
@@ -396,6 +395,39 @@ conda list
 conda run latexindent.pl -vv
 \end{commandshell}
   I found the details given at \cite{condainstallhelp} to be helpful.
+
+ \section{Using docker}\label{sec:app:docker}
+  If you use docker you'll only need \announce*{2022-06-12}{docker support}
+  \begin{commandshell}
+docker pull ghcr.io/cmhughes/latexindent.pl
+\end{commandshell}
+  This will download the image packed \texttt{latexindent}'s executable and its all
+  dependencies. \index{docker} Thank you to \cite{eggplants} for contributing this feature;
+  see also \cite{cmhughesio}. For reference, \emph{ghcr} stands for \emph{GitHub Container
+  Repository}.
+
+ \subsection{Sample docker installation on Ubuntu}
+  To pull the image and show \texttt{latexindent}'s help on Ubuntu:
+
+  \begin{cmhlistings}*[style=tcblatex,language=Bash]{\texttt{docker-install.sh}}{lst:docker-install}
+# setup docker if not already installed
+if ! command -v docker &> /dev/null; then
+  sudo apt install docker.io -y
+  sudo groupadd docker
+  sudo gpasswd -a "$USER" docker
+  sudo systemctl restart docker
+fi
+
+# download image and execute
+docker pull ghcr.io/cmhughes/latexindent.pl
+docker run ghcr.io/cmhughes/latexindent.pl -h
+\end{cmhlistings}
+
+ \subsection{How to format on Docker}
+  When you use \texttt{latexindent} with the docker image, you have to mount target \texttt{tex} file like this:
+  \begin{commandshell}
+docker run -v /path/to/local/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
+\end{commandshell}
 
  \section{pre-commit}
 
@@ -425,7 +457,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
   The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
   \index{pre-commit!default}
 
-  \cmhlistingsfromfile{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
+  \cmhlistingsfromfile*{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
 
   In particular, the decision has deliberately been made (in collaboration with
   \cite{holzhausprecommit}) to have the default to employ the following switches:
@@ -489,6 +521,32 @@ pre-commit run --all-files
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
          \begin{commandshell}
 conda run latexindent.pl -s myfile.tex       
+\end{commandshell}
+         for each \texttt{.tex} file in your repository;
+   \item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
+         can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
+  \end{itemize}
+
+ \subsection{pre-commit using docker}\label{sec:pre-commit-docker}
+
+  You can also rely on \texttt{docker} (detailed in \cref{sec:app:docker}) instead of
+  \texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
+  \index{docker} \index{git} \index{pre-commit!docker}
+
+  \cmhlistingsfromfile*{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
+  Once created, you should then be able to run the following command:
+  \begin{commandshell}
+pre-commit run --all-files
+\end{commandshell}
+  A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
+  \begin{itemize}
+   \item the settings given in \cref{lst:.pre-commit-config.yaml-docker} instruct
+         \texttt{pre-commit} to use \texttt{docker} to get dependencies;
+   \item this requires \texttt{pre-commit} and \texttt{docker} to be installed on your system;
+   \item the \texttt{args} lists selected command-line options; the settings in
+         \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+         \begin{commandshell}
+docker run -v /path/to/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s myfile.tex
 \end{commandshell}
          for each \texttt{.tex} file in your repository;
    \item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you

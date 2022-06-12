@@ -1,5 +1,6 @@
 # Makefile.PL
 #   
+#   pre-commit necessary file: 
 #   this file is needed for the pre-commit tool
 #   to work with latexindent.pl
 #

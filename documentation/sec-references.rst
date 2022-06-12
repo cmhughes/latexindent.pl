@@ -59,6 +59,11 @@ References
       ———. 2014b. “Changed Shebang to Make the Script More Portable.” July 23, 2014. https://github.com/cmhughes/latexindent.pl/pull/17.
 
    .. container::
+      :name: ref-eggplants
+
+      eggplants. 2022. “Add Dockerfile and Its Updater/Releaser.” June 12, 2022. https://github.com/cmhughes/latexindent.pl/pull/370.
+
+   .. container::
       :name: ref-masteringregexp
 
       Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
@@ -113,6 +118,11 @@ References
       :name: ref-harish
 
       Kumar, Harish. 2013. “Early Version Testing.” November 10, 2013. https://github.com/harishkumarholla.
+
+   .. container::
+      :name: ref-cmhughesio
+
+      “Latexindent.pl Ghcr (Github Container Repository) Location.” n.d. Accessed June 12, 2022. https://github.com/cmhughes?tab=packages.
 
    .. container::
       :name: ref-log4perl
