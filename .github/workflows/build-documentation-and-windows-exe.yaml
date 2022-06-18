@@ -36,7 +36,7 @@ jobs:
             sed -i.bak "s|\\\\gitAuthorDate|$(date +'%Y-%m-%d')|g" documentation/latexindent.tex
             cd documentation
             #arara -v latexindent.tex
-            pdflatex latexindent
+            pdflatex --interaction=batchmode latexindent
             makeindex -s latexindent.ist -t latexindent.ilg latexindent.idx -o latexindent.ind
             bibtex latexindent
             pdflatex --interaction=batchmode latexindent

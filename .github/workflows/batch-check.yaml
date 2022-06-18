@@ -57,13 +57,22 @@ jobs:
              latexindent.pl
              defaultSettings.yaml
              LatexIndent/*.pm
-      - name: List all relevant changed files
+      - if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
+        name: List all relevant changed files
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             echo "$file has changed since last commit"
           done
+      - if: ${{ steps.changed-files.outputs.any_changed == 'false' }}
+        name: No perl based files have changed
+        run: |
+            echo ""
+            echo "none of latexindent.pl, defaultSettings.yaml, LatexIndent/*.pm have changed since last commit"
+            echo "no need to run the rest of batch-check.yaml :)"
+            echo ""
   latexindent-batch-check:
     needs: check-pm-files-changed
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     #
     # Linux and MacOS
     #
@@ -73,7 +82,6 @@ jobs:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         perl: [ '5.32', '5.30', '5.28' ]
     runs-on: ${{ matrix.platform }}
-    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     steps:
       # checkout github.com/cmhughes/latexindent.pl
       #
