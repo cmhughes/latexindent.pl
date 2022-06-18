@@ -1,10 +1,12 @@
-name: Release GHCR Package
+name: Release GitHub Container Registry Package
 # PURPOSE:
 #
 #  1. *build* latexindent docker image
 #  2. *publish* latexindent docker image to https://github.com/cmhughes?tab=packages
 #
 # Note: this action only runs on *each release*, i.e. when tags are pushed
+#
+#       GHCR: GitHub Container Registry
 #
 
 on:

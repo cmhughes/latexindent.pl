@@ -12,9 +12,19 @@ name: Batch check of latexindent.pl
 #
 # and multiple Perl versions within each.
 #
-# Note: this action runs only on develop branch, there's 
+# Notes: 
+#
+#   (1) this action only runs on develop branch, there's 
 #       no need to run it on the main branch nor on 
 #       experimental feature branches
+#
+#   (2) this action only runs when when at least one of
+#
+#           latexindent.pl
+#           defaultSettings.yaml
+#           LatexIndent/*.pm
+#
+#       have been changed since the last commit
 #
 
 on:
@@ -23,7 +33,38 @@ on:
       - develop
 
 jobs:
+  check-pm-files-changed:
+    #
+    # check if any key files have changed
+    #
+    # reference: https://github.com/marketplace/actions/changed-files
+    #            https://docs.github.com/en/actions/learn-github-actions/expressions
+    #            https://www.integralist.co.uk/posts/github-actions/#terminology
+    #
+    runs-on: ubuntu-latest
+    outputs:
+      anychanged: ${{ steps.changed-files.outputs.any_changed }}
+    steps:
+      - name: Loading the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml
+        uses: tj-actions/changed-files@v23
+        id: changed-files
+        with:
+          files: |
+             latexindent.pl
+             defaultSettings.yaml
+             LatexIndent/*.pm
+      - name: List all relevant changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file has changed since last commit"
+          done
   latexindent-batch-check:
+    needs: check-pm-files-changed
+    #
     # Linux and MacOS
     #
     name: ${{ matrix.platform }}, Perl ${{ matrix.perl }}, latexindent.pl --check on test-cases/check-switch-tests/*.tex
@@ -32,6 +73,7 @@ jobs:
         platform: [ubuntu-latest, macos-latest, windows-latest]
         perl: [ '5.32', '5.30', '5.28' ]
     runs-on: ${{ matrix.platform }}
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     steps:
       # checkout github.com/cmhughes/latexindent.pl
       #
