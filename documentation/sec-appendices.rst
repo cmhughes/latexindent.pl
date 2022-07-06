@@ -144,6 +144,13 @@ First install the dependencies
 
    sudo pacman -S perl cpanminus
 
+In addition, install ``perl-file-homedir`` from AUR, using your AUR helper of choice,
+
+.. code-block:: latex
+   :class: .commandshell
+
+   sudo paru -S perl-file-homedir
+
 then run the latexindent-module-installer.pl file located at helper-scripts/
 
 Alpine
