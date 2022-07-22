@@ -1,0 +1,10 @@
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    removeSentenceLineBreaks: 1
+    textWrapSentences: 1
+    sentencesEndWith:                   # <----
+        other: |-                       # <----
+          (?x) \\begin\{[a-zA-Z]+?\}    # <---- NEW
+  environments:                         # <----
+      BeginStartsOnOwnLine: 1           # <----

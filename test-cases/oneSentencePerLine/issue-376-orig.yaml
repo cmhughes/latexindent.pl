@@ -1,0 +1,22 @@
+onlyOneBackUp: 1
+defaultIndent: '    '
+removeTrailingWhitespace: 1
+
+lookForAlignDelims:
+  align: 0
+
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    removeSentenceLineBreaks: 1
+    textWrapSentences: 1
+fineTuning:
+  namedGroupingBracesBrackets:
+    name: '[0-9\.a-zA-Z@\*><_]+?'
+
+# remove recurrent spaces
+replacements:
+- substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
+  when: before
+- substitution: s/([a-zA-Z0-9.()}{])\h{2,}([a-zA-Z0-9.()}{]|(?:\\(?!\\)))/$1 $2/sg
+  when: after
