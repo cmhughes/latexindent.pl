@@ -1,3 +1,9 @@
+/* 
+ * latexindent.css
+ *
+ * PURPOSE: css file for readthedocs version of the documentation
+ *
+ * */
 /* base YAML */
 div.baseyaml > div.highlight{background-color: #b3d9ff; border-top: 5px solid #0066cc;}
 div.baseyaml > table.highlighttable{background-color: #b3d9ff; border-top: 5px solid #0066cc;}
