@@ -1,0 +1,24 @@
+noAdditionalIndent:
+    tblr: 
+        mandatoryArguments: 1
+
+fineTuning:
+    keyEqualsValuesBracesBrackets:
+      name: |-
+          (?x)
+          [                 #        |           
+             a-z            #        |
+             A-Z            #  at least one of these
+             0-9            #        | 
+             @\*            #        | 
+             _\/.:\#\-      #        | 
+          ]+                #        | 
+          [                 #    <
+             a-z            #    <
+             A-Z            #    <
+             0-9            #  0 or more of these
+             @\*            #    <
+             _\/.           #    <
+             \h\{\}:\#\-    #    <
+             ,              # <!-------NEW BIT: allow commas
+          ]*?               #

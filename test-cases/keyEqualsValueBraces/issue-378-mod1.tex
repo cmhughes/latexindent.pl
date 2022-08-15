@@ -1,0 +1,21 @@
+\documentclass{article}
+\usepackage{tabularray}
+
+\begin{document}
+\begin{tblr}{
+	hlines = {white},
+	vlines = {white},
+	cell{1,6}{odd} = {teal7},
+	cell{1,6}{even} = {green7},
+	cell{2,4}{1,4} = {red7},
+	cell{3,5}{1,4} = {purple7},
+	cell{2}{2} = {r=4,c=2}{c,azure7},
+	}
+	Alpha   & Beta  & Gamma   & Delta   \\
+	Epsilon & Zeta  & Eta     & Theta   \\
+	Iota    & Kappa & Lambda  & Mu      \\
+	Nu      & Xi    & Omicron & Pi      \\
+	Rho     & Sigma & Tau     & Upsilon \\
+	Phi     & Chi   & Psi     & Omega   \\
+\end{tblr}
+\end{document}
