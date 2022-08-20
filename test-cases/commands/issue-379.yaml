@@ -1,0 +1,7 @@
+commandCodeBlocks:
+    stringsAllowedBetweenArguments:
+      - 'in'
+      - '\\[a-z]\/\\[a-z]'
+noAdditionalIndent:
+    foreach: 
+        body: 1
