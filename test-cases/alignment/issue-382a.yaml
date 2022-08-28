@@ -1,0 +1,103 @@
+defaultIndent: '  '
+specialBeginEnd:
+    draw:
+        begin: '\\draw'
+        end: ';'
+    specialBeforeCommand: 1
+    inlineMath:        # <---- NEW BIT           
+        lookForThis: 0 # <---- NEW BIT 
+
+lookForAlignDelims:
+    draw:
+        delimiterRegEx: |-
+          (?x)
+          (                    # main capturing group
+            (?:                #
+              (?:              #
+                edge|node      #    edge OR node
+              )                #
+              \h*              #    optional horizontal space
+              (?:              #
+                \[             #       
+                  [^]]*?       #        []
+                \]             #
+              )?               #    optionally
+              \h*              #    optional horizontal space
+              (?:              #
+                \{             #
+                  [^}]*?       #        {}
+                \}             #
+              )?               #    optionally
+            )+                 #    at least one of the above
+          )                    #
+                               #
+replacements:
+  -
+    when: after
+    substitution: |-
+        s&(\h*\\draw[^;]*?)(;)&
+           my $body = $1;
+           my $end = $2;
+           # operate on the body of \draw
+           my @bodylines = split("\n",$body);
+           my $maxLengthBeforeNode = 0;
+           my $maxRowLength = 0;
+           # step 1 of 2: get the *maximum* length of everything before every node
+           foreach (@bodylines){
+             my $line = $_;
+             # measure row length, excluding (a), (b), etc
+             my $rowForMeasure = $line; 
+             $rowForMeasure =~ s@\h*\([a-z]+\)\h*$@@s;
+             my $currentRowLength = 0;
+             while ( $rowForMeasure =~ /\X/g ) { $currentRowLength++;};
+             $maxRowLength = $currentRowLength if ($currentRowLength > $maxRowLength); 
+             # only need the next bit if we've got a node in the line
+             next if $line !~ m@node@;
+             $_ =~ s@^(\h*)(.*?)node@$1$2node@;
+             # measure leading space
+             my $leadingSpace = ($1?$1:q());
+             # measure anything before node
+             my $beforeNode = ($2?$2:q());
+             my $currentLengthBeforeNode = 0; 
+             my $toBeMeasured = $leadingSpace.$beforeNode;
+             while ( $toBeMeasured =~ /\X/g ) { $currentLengthBeforeNode++;};
+             # update the maximum length of <leading space + stuff before node>
+             $maxLengthBeforeNode = $currentLengthBeforeNode if ($currentLengthBeforeNode>$maxLengthBeforeNode); 
+           } 
+           # step 2 of 2: now loop back through, and pad appropriately
+           foreach (@bodylines){
+             my $line = $_;
+             # remove <space and then (a), (b), etc>
+             my $finalPiece = q();
+             if ($_ =~ m@\h*(\([a-z]+\))$@){
+                $_ =~ s@\h*(\([a-z]+\))$@@s;
+                $finalPiece = $1;
+             }
+             if ($line !~ m@node@) {
+                my $currentRowLength = 0;
+                while ( $_ =~ /\X/g ) { $currentRowLength++;};
+                my $finalPadding = " " x ($maxRowLength - $currentRowLength+1);
+                $_ = $_.$finalPadding.$finalPiece; 
+                next;
+             }
+             # *remove* <leading space + stuff before node>
+             $_ =~ s@^(\h*)(.*?)node@node@;
+             my $leadingSpace = ($1?$1:q());
+             my $beforeNode = ($2?$2:q());
+             # *measure* <leading space + stuff before node>
+             my $currentLengthBeforeNode = 0;
+             my $toBeMeasured = $leadingSpace.$beforeNode;
+             while ( $toBeMeasured =~ /\X/g ) { $currentLengthBeforeNode++;};
+             # *pad* <leading space + stuff before node>
+             my $padding = " " x ( $maxLengthBeforeNode - $currentLengthBeforeNode);
+             $_ = $leadingSpace.$beforeNode.$padding.$_; 
+             # *measure* row length
+             my $currentRowLength = 0;
+             while ( $_ =~ /\X/g ) { $currentRowLength++;};
+             # *pad* row length
+             my $finalPadding = " " x ($maxRowLength - $currentRowLength +1);
+             $_ = $_.$finalPadding.$finalPiece; 
+           } 
+           # put body back together
+           $body = join("\n",@bodylines);
+           $body.$end;&sgxe

@@ -264,6 +264,10 @@ latexindent.pl -s    -l issue-326d2.yaml issue-326d.tex -o +-mod2
 latexindent.pl unicode-quick-brown.tex -s -o=+-no-GCString
 latexindent.pl unicode-quick-brown.tex -s --GCString -o=+-with-GCString
 
+# tikz edge/node replacement example
+latexindent.pl -s -r -l issue-382.yaml issue-382.tex -o=+-mod1
+latexindent.pl -s -r -l issue-382a.yaml issue-382.tex -o=+-mod1a
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+  \draw[some option] (short) edge (x)
+  edge node{1,1,R} (y)
+  (loooooooooong) edge [bend left] node [auto] {\small some (blabla) text} (aaa)
+  edge (bbb)
+  edge [bend right] (ccc);
+
+% taken from tikz manual (version 3.1.9a, page 258), changed a little
+\draw(u) edge node[above right] {$5$} (a)
+edge (c)
+edge [-,dotted] node[below,sloped] {missing} (d)
+(v) edge (a)
+edge (d)
+(w) edge [red] node[above,sloped] {very}
+node[below,sloped] {bad} (a);
+\end{tikzpicture}
