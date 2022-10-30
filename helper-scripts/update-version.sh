@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.17.3'
-newVersion='3.18'
-oldDate='2022-06-05'
-newDate='2022-06-12'
+oldVersion='3.18'
+newVersion='3.19'
+oldDate='2022-06-12'
+newDate='2022-10-30'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -78,7 +78,6 @@ cd ../
 
 # into documentation
 cd documentation
-[[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 
 set -x
 
@@ -90,6 +89,11 @@ pdflatex --interaction=batchmode latexindent
 # update .rst
 perl documentation-default-settings-update.pl
 perl documentation-default-settings-update.pl -r
+
+[[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+
+# change \announce{new}{message} into \announce*{message}
+find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 
 # perltidy
 cd ../LatexIndent

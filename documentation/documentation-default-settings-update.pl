@@ -258,6 +258,8 @@ if(!$readTheDocsMode){
         $body =~ s/\\crefrange\{(.*?)\}\{(.*?)\}/:numref:\\texttt\{$1\} -- :numref:\\texttt\{$2\}/sg;
 
         # verbatim-like environments
+        $body =~ s/\\begin\{dosprompt\}/\\begin\{commandshell\}/sg;
+        $body =~ s/\\end\{dosprompt\}/\\end\{commandshell\}/sg;
         $body =~ s/(\\begin\{commandshell\}(?:                       # cluster-only (), don't capture 
                     (?!                   # don't include \begin in the body
                         (?:\\begin)       # cluster-only (), don't capture

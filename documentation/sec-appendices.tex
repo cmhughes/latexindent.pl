@@ -93,12 +93,20 @@ sudo apt install texlive-latex-recommended
    \begin{commandshell}
 sudo apt install texlive-extra-utils 
 \end{commandshell}
+
+  \paragraph{Ubuntu: users without perl}
+
+   \texttt{latexindent-linux} is a standalone executable \announce*{2022-10-30}{Linux Ubuntu standalone executable} for Ubuntu Linux (and therefore does not require a Perl distribution)
+   and caches copies of the Perl modules onto your system. It is available from \cite{latexindent-home}.
+   \index{latexindent-linux} \index{linux} \index{TeXLive}
+
   \paragraph{Arch-based distributions}
    First install the dependencies
    \begin{commandshell}
 sudo pacman -S perl cpanminus
 \end{commandshell}
-   In addition, install \texttt{perl-file-homedir} from AUR, using your AUR helper of choice,
+   In addition, install \texttt{perl-file-homedir} from AUR, using your AUR helper of
+   choice,
    \begin{commandshell}
 sudo paru -S perl-file-homedir
 \end{commandshell}
@@ -151,12 +159,16 @@ cpanm File::HomeDir
 brew install latexindent  
 \end{commandshell}
 
+  \texttt{latexindent-macos} is a standalone executable \announce*{2022-10-30}{macOS standalone executable} for macOS (and therefore does not require a Perl distribution)
+  and caches copies of the Perl modules onto your system. It is available from \cite{latexindent-home}.
+  \index{latexindent-macos} \index{macOS} \index{TeXLive}
+
  \subsubsection{Windows}
   Strawberry Perl users on Windows might use \texttt{CPAN client}. All of the modules are
-  readily available on CPAN \cite{cpan}.
+  readily available on CPAN \cite{cpan}. \texttt{indent.log} will contain details of the
+  location of the Perl modules on your system.
 
-  \texttt{indent.log} will contain details of the location
-  of the Perl modules on your system. \texttt{latexindent.exe} is a standalone executable
+  \texttt{latexindent.exe} is a standalone executable
   for Windows (and therefore does not require a Perl distribution) and caches copies of the
   Perl modules onto your system; if you wish to see where they are cached, use the
   \texttt{trace} option, e.g
@@ -166,7 +178,7 @@ latexindent.exe -t myfile.tex
 
  \subsection{The GCString switch}\label{subsec:the-GCString}
   If you find that the \texttt{lookForAlignDelims} (as in \cref{subsec:align-at-delimiters}) does not work correctly
-  for your language, then you may with to use the \texttt{Unicode::GCString} module \announce{2022-03-25}{Unicode::GCString}.
+  for your language, then you may wish to use the \texttt{Unicode::GCString} module \announce{2022-03-25}{Unicode::GCString}.
   \index{perl!Unicode GCString module}
   \index{switches!--GCString demonstration}
 
@@ -401,7 +413,7 @@ conda run latexindent.pl -vv
   I found the details given at \cite{condainstallhelp} to be helpful.
 
  \section{Using docker}\label{sec:app:docker}
-  If you use docker you'll only need \announce*{2022-06-12}{docker support}
+  If you use docker you'll only need \announce{2022-06-12}{docker support}
   \begin{commandshell}
 docker pull ghcr.io/cmhughes/latexindent.pl
 \end{commandshell}
@@ -461,7 +473,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
   The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
   \index{pre-commit!default}
 
-  \cmhlistingsfromfile*{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
+  \cmhlistingsfromfile{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
 
   In particular, the decision has deliberately been made (in collaboration with
   \cite{holzhausprecommit}) to have the default to employ the following switches:
@@ -537,7 +549,7 @@ conda run latexindent.pl -s myfile.tex
   \texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
   \index{docker} \index{git} \index{pre-commit!docker}
 
-  \cmhlistingsfromfile*{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
+  \cmhlistingsfromfile{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
   Once created, you should then be able to run the following command:
   \begin{commandshell}
 pre-commit run --all-files

@@ -17,12 +17,12 @@ including [text wrapping](https://latexindentpl.readthedocs.io/en/latest/sec-the
 It can also perform string-based and regex-based 
 [substitutions/replacements](https://latexindentpl.readthedocs.io/en/latest/sec-replacements.html). The script is customisable through its YAML interface. 
 
-It has support for [Conda users](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-conda), [docker users](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-docker)
-and [pre-commit users](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit).
+It has support for [Conda](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-conda), [docker](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-docker)
+and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit).
 
 ## version
 
-    latexindent.pl, version 3.18, 2022-06-12
+    latexindent.pl, version 3.19, 2022-10-30
 
 ## author
 Chris Hughes (cmhughes)
@@ -93,7 +93,6 @@ and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
 Windows users who do not have a perl installation might prefer to get
 
     latexindent.exe
-    defaultSettings.yaml
 
 `latexindent.exe` is a standalone executable file which does not require a `perl` installation.
 It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
@@ -104,8 +103,26 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux). 
 </details>
 <details>
+<summary>Ubuntu Linux users without perl</summary>
+Ubuntu Linux users who do not have a perl installation might try the standalone executable
+
+    latexindent-linux
+
+which should be saved as simply `latexindent`. It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
+and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
+</details>
+<details>
 <summary>Mac users</summary>
 Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac).
+</details>
+<details>
+<summary>Mac users without perl</summary>
+Mac users who do not have a perl installation might try the standalone executable
+
+    latexindent-macos
+
+which should be saved as simply `latexindent`. It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
+and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
 </details>
 <details>
 <summary>conda users</summary>
@@ -139,7 +156,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.18
+        rev: V3.19
         hooks:
           - id: latexindent
 
@@ -204,6 +221,24 @@ and then I merge it into the `develop` branch using
 
 I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.34.1
 
+## GitHub Actions
+The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the
+file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
+directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-executables.yaml/badge.svg)
+![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
+
+## build status
+I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
+Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
+of test cases on every commit.
+
+[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
+
+
 ## related projects
 
 You might like to checkout the following related projects on github.
@@ -228,23 +263,6 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Once you understand the power that regular expressions provide, the small amount of work spent learning them will feel trivial indeed* Friedl, Mastering Regular Expressions, end of Chapter 1.
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
-
-## GitHub Actions
-`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
-file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
-directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
-
-> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
-![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
-
-## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
-Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
-of test cases on every commit.
-
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.

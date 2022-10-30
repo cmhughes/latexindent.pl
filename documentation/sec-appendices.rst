@@ -61,7 +61,10 @@ Module installer script
 
 or
 
-perl latexindent-module-installer.pl
+.. code-block:: latex
+   :class: .commandshell
+
+   perl latexindent-module-installer.pl
 
 then, once you have answered ``Y``, the appropriate modules will be installed onto your distribution.
 
@@ -133,6 +136,12 @@ may need the following additional command to work with ``latexindent.pl``
    :class: .commandshell
 
    sudo apt install texlive-extra-utils 
+
+Ubuntu: users without perl
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``latexindent-linux`` is a standalone executable for Ubuntu Linux (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system. It is available from
+(“Home of Latexindent.pl” n.d.).
 
 Arch-based distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -207,15 +216,22 @@ Alternatively,
 
    brew install latexindent  
 
+``latexindent-macos`` is a standalone executable for MacOS (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system. It is available from (“Home of
+Latexindent.pl” n.d.).
+
 Windows
 ~~~~~~~
 
-Strawberry Perl users on Windows might use ``CPAN client``. All of the modules are readily available on CPAN (“CPAN: Comprehensive Perl Archive Network” n.d.).
+Strawberry Perl users on Windows might use ``CPAN client``. All of the modules are readily available on CPAN (“CPAN: Comprehensive Perl Archive Network” n.d.). ``indent.log`` will contain details of
+the location of the Perl modules on your system.
 
-``indent.log`` will contain details of the location of the Perl modules on your system. ``latexindent.exe`` is a standalone executable for Windows (and therefore does not require a Perl distribution)
-and caches copies of the Perl modules onto your system; if you wish to see where they are cached, use the ``trace`` option, e.g
+``latexindent.exe`` is a standalone executable for Windows (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system; if you wish to see where they
+are cached, use the ``trace`` option, e.g
 
-latexindent.exe -t myfile.tex
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.exe -t myfile.tex
 
 .. label follows
 
@@ -224,7 +240,7 @@ latexindent.exe -t myfile.tex
 The GCString switch
 ~~~~~~~~~~~~~~~~~~~
 
-If you find that the ``lookForAlignDelims`` (as in :numref:`subsec:align-at-delimiters`) does not work correctly for your language, then you may with to use the ``Unicode::GCString`` module .
+If you find that the ``lookForAlignDelims`` (as in :numref:`subsec:align-at-delimiters`) does not work correctly for your language, then you may wish to use the ``Unicode::GCString`` module .
 
 .. index:: perl;Unicode GCString module
 
@@ -242,7 +258,7 @@ In this case, you will need to have the ``Unicode::GCString`` installed in your 
 .. code-block:: latex
    :class: .commandshell
 
-   cpanm YAML::Tiny
+   cpanm Unicode::GCString
 
 Note: this switch does *nothing* for ``latexindent.exe`` which loads the module by default. Users of ``latexindent.exe`` should not see any difference in behaviour whether they use this switch or not,
 as ``latexindent.exe`` loads the ``Unicode::GCString`` module.
@@ -312,7 +328,10 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 #. open a command prompt and run the following command to see what is *currently* in your ``%path%`` variable;
 
-   echo
+   .. code-block:: latex
+      :class: .commandshell
+
+      echo %path%
 
 #. right click on ``add-to-path.bat`` and *Run as administrator*;
 
@@ -320,7 +339,10 @@ To add ``latexindent.exe`` to the path for Windows, follow these steps:
 
 #. open a command prompt and run
 
-   echo
+   .. code-block:: latex
+      :class: .commandshell
+
+      echo %path%
 
    to check that the appropriate directory has been added to your ``%path%``.
 
@@ -870,11 +892,17 @@ Encoding indentconfig.yaml
 
 In relation to :numref:`sec:indentconfig`, Windows users that encounter encoding issues with ``indentconfig.yaml``, may wish to run the following command in either ``cmd.exe`` or ``powershell.exe``:
 
-chcp
+.. code-block:: latex
+   :class: .commandshell
+
+   chcp
 
 They may receive the following result
 
-Active code page: 936
+.. code-block:: latex
+   :class: .commandshell
+
+   Active code page: 936
 
 and can then use the settings given in :numref:`lst:indentconfig-encoding1` within their ``indentconfig.yaml``, where 936 is the result of the ``chcp`` command.
 

@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    latexindent.pl, version 3.18, 2022-06-12
+    latexindent.pl, version 3.19, 2022-10-30
 
     PERL script to indent code within environments, and align delimited 
     environments in .tex files.
@@ -24,9 +24,14 @@
 
 FOR COMPLETE DETAILS, PLEASE SEE documentation/latexindent.pdf
 
-Note: latexindent.exe was created using 
+Note: The standalone executable files (in the bin directory) are created using commands
+      such as the following:
 
-      perl ppp.pl -u -o latexindent.exe latexindent.pl
+      pp 
+      --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
+      --cachedeps=scancache
+      --output latexindent-linux
+      latexindent.pl
 
       using the Par::Packer perl module.
 
@@ -43,15 +48,14 @@ USAGE
 
 * IMPORTANT *
 
-This script may not work for your style of formatting; I highly 
-recommend comparing the outputfile.tex to make sure that 
+This script may not work for your style of formatting; I highly
+recommend that when you first use the script you use the `-o` switch
+to output to a separate file; something like
+
+    latexindent.pl myfile.tex -o myfile-output.tex
+
+and then check `myfile-output.tex` carefully to make sure that
 nothing has been changed (or removed) in a way that will damage
 your file.
-
-I recommend both using the following:
-    - a visual check, at the very least, make sure that 
-      each file has the same number of lines
-    - a check using latexdiff inputfile.tex outputfile.tex
-    - git status myfile.tex
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

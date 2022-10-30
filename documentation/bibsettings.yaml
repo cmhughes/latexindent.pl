@@ -4,7 +4,7 @@ lookForAlignDelims:
    book: 
       delimiterRegEx: '(=)'
    online: 
-      delimiterRegEx: '(?<!v)(?<!spfreload)(=)'
+      delimiterRegEx: '(?<!v)(?<!spfreload)(?<!tab)(=)'
 
 fineTuning:
     keyEqualsValuesBracesBrackets:
