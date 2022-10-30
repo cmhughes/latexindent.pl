@@ -604,8 +604,6 @@
 {\endlist\endstars}
 {\item}
 
-\newtcbox{yamltitlebox}[1][]{colframe=black!50!white,boxrule=.5pt,sharp corners,#1}
-
 \newcommand{\flagbox}[1]{%
  \par
  \makebox[30pt][l]{%
@@ -618,7 +616,7 @@
  \par
  \makebox[30pt][l]{%
   \hspace{-2cm}%
-  \yamltitlebox[#1]{%
+  \tcbox[colframe=black!50!white,boxrule=.5pt,sharp corners,#1]{%
    {\ttfamily\fontseries{b}\selectfont{\color{blue!80!white}#2}}: %
    \IfBooleanTF{#3}
    {$\langle$\itshape #4$\rangle$}
@@ -793,7 +791,7 @@
 
 \begin{document}
 \renewcommand*{\thefootnote}{\arabic{footnote}}
-\input{title.tex}
+\input{title}
 \tableofcontents
 % start sections on new page
 \newcommand{\sectionbreak}{\clearpage\thispagestyle{plain}}
@@ -803,7 +801,7 @@
  \input{sec-introduction}
  \input{sec-demonstration}
  \input{sec-how-to-use}
- \input{sec-indent-config-and-settings.tex}
+ \input{sec-indent-config-and-settings}
  \input{sec-default-user-local}
  \input{subsec-noAdditionalIndent-indentRules}
  \input{subsubsec-environments-and-their-arguments}

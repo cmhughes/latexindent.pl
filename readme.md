@@ -6,21 +6,28 @@
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
-`latexindent.pl` is a `perl` script to indent (add horizontal leading space to)
+`latexindent.pl` is a `perl` script to *beautify/tidy/format/indent* (add horizontal leading space to)
 code within environments, commands, after headings and within special code blocks.
 
-It has the ability to align delimiters in environments and commands, and
-can modify line breaks.
+It has the ability to [align delimiters](https://latexindentpl.readthedocs.io/en/latest/sec-default-user-local.html#aligning-at-delimiters)
+in environments and commands, and can [modify line breaks](https://latexindentpl.readthedocs.io/en/latest/sec-the-m-switch.html) 
+including [text wrapping](https://latexindentpl.readthedocs.io/en/latest/sec-the-m-switch.html#text-wrapping) and 
+[one-sentence-per-line](https://latexindentpl.readthedocs.io/en/latest/sec-the-m-switch.html#onesentenceperline-modifying-line-breaks-for-sentences). 
+
+It can also perform string-based and regex-based 
+[substitutions/replacements](https://latexindentpl.readthedocs.io/en/latest/sec-replacements.html). The script is customisable through its YAML interface. 
+
+It has support for [Conda](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-conda), [docker](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-docker)
+and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit).
 
 ## version
 
-    latexindent.pl, version 3.18, 2022-06-12
+    latexindent.pl, version 3.19, 2022-10-30
 
 ## author
 Chris Hughes (cmhughes)
 
 ## example
-A simple example follows; there are *many* more features available, detailed in full within the [documentation](http://latexindentpl.readthedocs.io/).
 
 Before:
 ``` tex
@@ -53,6 +60,8 @@ then you receive:
 tl;dr, a [quick-start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
 section is available for those short of time.
 
+There are *many* more features available, detailed in full within the [documentation](http://latexindentpl.readthedocs.io/).
+
 ## documentation
 
 For complete details, please see:
@@ -84,10 +93,35 @@ and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
 Windows users who do not have a perl installation might prefer to get
 
     latexindent.exe
-    defaultSettings.yaml
 
 `latexindent.exe` is a standalone executable file which does not require a `perl` installation.
 It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
+and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
+</details>
+<details>
+<summary>Linux users</summary>
+Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux). 
+</details>
+<details>
+<summary>Ubuntu Linux users without perl</summary>
+Ubuntu Linux users who do not have a perl installation might try the standalone executable
+
+    latexindent-linux
+
+which should be saved as simply `latexindent`. It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
+and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
+</details>
+<details>
+<summary>Mac users</summary>
+Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac).
+</details>
+<details>
+<summary>Mac users without perl</summary>
+Mac users who do not have a perl installation might try the standalone executable
+
+    latexindent-macos
+
+which should be saved as simply `latexindent`. It is available at [releases](https://github.com/cmhughes/latexindent.pl/releases) page of this repository
 and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.org/tex-archive/support/latexindent).
 </details>
 <details>
@@ -97,10 +131,12 @@ If you use conda you'll only need
     conda install latexindent.pl -c conda-forge
 
 this will install the executable and all its dependencies (including perl) in the activate environment.
-You don't even have to worry about `defaultSettings.yaml` as it included too.
+You don't even have to worry about `defaultSettings.yaml` as it is included too.
+
+Full details at [using conda](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-conda). 
 
 **Important**: the executable name is `latexindent.pl` (not `latexindent`). 
-	
+
 > [![Conda Version](https://img.shields.io/conda/vn/conda-forge/latexindent.pl.svg)](https://anaconda.org/conda-forge/latexindent.pl)
 </details>
 <details>
@@ -110,6 +146,7 @@ If you use latexindent via docker you'll only need
     docker pull ghcr.io/cmhughes/latexindent.pl
     docker run -v /path/to/local/myfile.tex:/myfile.tex --rm -it ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
 
+Full details at [using docker](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#using-docker).
 </details>
 
 ## pre-commit
@@ -119,12 +156,13 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.18
+        rev: V3.19
         hooks:
           - id: latexindent
 
-You can add a `.latexindent.yaml` to the root of the git repo to customize the
-behavior.
+Full details at [pre-commit users](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit), 
+including a [worked example](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit-example-using-l-m-switches)
+demonstrating how you can add a `.latexindent.yaml` to the root of the git repo to customize the behavior.
 
 ## testing
 
@@ -136,15 +174,21 @@ directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case 
 ## *important*
 
 This script may not work for your style of formatting; I highly
-recommend comparing the outputfile.tex to make sure that
+recommend that when you first use the script you use the `-o` switch
+to output to a separate file; something like
+```
+latexindent.pl myfile.tex -o myfile-output.tex
+```
+and then check `myfile-output.tex` carefully to make sure that
 nothing has been changed (or removed) in a way that will damage
 your file.
 
 I recommend using each of the following:
-* a visual check, at the very least, make sure that
-      each file has the same number of lines
-* a check using `latexdiff inputfile.tex outputfile.tex`
-* `git status myfile.tex`
+* a visual check, at the very least;
+* a check using `latexdiff myfile.tex myfile-output.tex`.
+
+I recommend using a version control system to track your files, especially if you intend 
+to use `latexindent.pl` to modify files.
 
 ## feature requests
 
@@ -177,6 +221,24 @@ and then I merge it into the `develop` branch using
 
 I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.34.1
 
+## GitHub Actions
+The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the
+file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
+directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
+
+> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
+![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-executables.yaml/badge.svg)
+![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
+
+## build status
+I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
+Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
+of test cases on every commit.
+
+[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
+
+
 ## related projects
 
 You might like to checkout the following related projects on github.
@@ -202,23 +264,5 @@ I find that the following quotes resonate with me with regards to my approach to
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
 
-## GitHub Actions
-`latexindent.exe` is created and released by [GitHub Actions](https://github.com/features/actions); the
-file that controls this is available within the [github/workflows](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) 
-directory of this repository, and you can track the actions on the [actions page](https://github.com/cmhughes/latexindent.pl/actions/) of this repository.
-
-> ![Batch latexindent.pl check](https://github.com/cmhughes/latexindent.pl/actions/workflows/batch-check.yaml/badge.svg)
-![Publish latexindent.exe](https://github.com/cmhughes/latexindent.pl/actions/workflows/build-documentation-and-windows-exe.yaml/badge.svg)
-![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
-
-## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
-Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
-of test cases on every commit.
-
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
-
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.
-

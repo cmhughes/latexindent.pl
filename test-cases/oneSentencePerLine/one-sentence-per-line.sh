@@ -123,5 +123,14 @@ latexindent.pl -s issue-321.tex -m -o=+mod0 -l=manipulateSentences.yaml
 latexindent.pl -s -m -l issue-355.yaml issue-355.tex -o=+-mod1
 latexindent.pl -s -m -l issue-355a.yaml issue-355.tex -o=+-mod2
 
+# issue 376
+latexindent.pl -s -m -l issue-376-orig.yaml issue-376.tex -o=+-mod0 -r
+latexindent.pl -s -m -l issue-376.yaml issue-376.tex -o=+-mod1
+latexindent.pl -s -m -l issue-376a.yaml issue-376.tex -o=+-mod2
+latexindent.pl -s -m -l issue-376b.yaml issue-376.tex -o=+-mod3
+
+# issue 377
+latexindent.pl -s -m -l issue-377a.yaml issue-377.tex -o=+-mod1
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

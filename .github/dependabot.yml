@@ -1,5 +1,8 @@
 # 
-# docker related file
+# PURPOSE:
+#
+#   1. keep *github actions* files up to date
+#   2. keep *docker* related files up to date
 #
 version: 2
 updates:

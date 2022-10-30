@@ -1,3 +1,9 @@
+/* 
+ * latexindent.css
+ *
+ * PURPOSE: css file for readthedocs version of the documentation
+ *
+ * */
 /* base YAML */
 div.baseyaml > div.highlight{background-color: #b3d9ff; border-top: 5px solid #0066cc;}
 div.baseyaml > table.highlighttable{background-color: #b3d9ff; border-top: 5px solid #0066cc;}
@@ -19,4 +25,25 @@ div.commandshell div.highlight pre {color: white;}
 /* obsolete */
 div.obsolete div.highlight{background-color: #ff8080; border-top: 5px solid #ff1a1a;}
 /* example 
- * should be able to use https://sphinxcontrib-proof.readthedocs.io/en/latest/usage/#css-and-javascript */
+ * 
+ * reference: https://sphinxcontrib-proof.readthedocs.io/en/latest/usage/#css-and-javascript
+ *            https://framagit.org/spalax/sphinxcontrib-proof/-/issues/8#note_448269
+ * 
+ */
+.proof {   
+     margin-top: 1em;   
+     margin-bottom: 1em; 
+   } 
+/* Titles */ 
+.proof .proof-title {   
+     background-color: #9fb1b4;   
+     border: 1px solid #86989b;   
+     color: white;   
+     font-size: 120%;   
+   } 
+/* Content */ 
+.proof-content {   
+     border: 1px solid #9fb1b4;   
+     background-color: #F5F7F9;   
+     padding: 0em 1em; 
+   }

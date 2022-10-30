@@ -1,4 +1,13 @@
 # changelog.md
+## V3.19, October 30, 2022
+Standalone executables/binaries avaialble for Ubuntu Linux and MacOS (to accompany `latexindent.exe`), all available from the [releases](https://github.com/cmhughes/latexindent.pl/releases) page:
+
+- `latexindent.exe`
+- `latexindent-linux`
+- `latexindent-macos`
+
+All 3 files contain `defaultSettings.yaml`, so should standalone.
+
 ## V3.18, June 12, 2022
 * docker now supported, full details at [pull 370](https://github.com/cmhughes/latexindent.pl/pull/370), thanks to @eggplants
 
