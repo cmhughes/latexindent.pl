@@ -87,8 +87,8 @@ modifyLineBreaks:
            other: '\\cmhlistingsfromfile|\\begin\{|\\\[|\\end\{'    # regex
     verbatim:
         commandshell:
-           VerbatimBeginStartsOnOwnLine: 3
-           VerbatimEndFinishesWithLineBreak: 3
+           VerbatimBeginStartsOnOwnLine: 4
+           VerbatimEndFinishesWithLineBreak: 4
     mandatoryArguments:
       cmhlistingsfromfile*:
         RCuBFinishesWithLineBreak: 1

@@ -98,9 +98,11 @@
  \begin{example}
  As a demonstration, consider the file given in \cref{lst:finetuning1}, together with its
  default output using the command
+
  \begin{commandshell}
 latexindent.pl finetuning1.tex 
 \end{commandshell}
+
  is given in \cref{lst:finetuning1-default}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
@@ -112,9 +114,11 @@ latexindent.pl finetuning1.tex
  as expected. We can \emph{fine tune} the indentation scheme by employing the settings
  given in \cref{lst:fine-tuning1} and running the command \index{switches!-l
  demonstration}
+
  \begin{commandshell}
 latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
 \end{commandshell}
+
  and the associated (desired) output is given in \cref{lst:finetuning1-mod1}.
  \index{regular expressions!at least one +}
 
@@ -127,9 +131,11 @@ latexindent.pl finetuning1.tex -l=fine-tuning1.yaml
  \begin{example}
  Let's have another demonstration; consider the file given in \cref{lst:finetuning2},
  together with its default output using the command
+
  \begin{commandshell}
 latexindent.pl finetuning2.tex 
 \end{commandshell}
+
  is given in \cref{lst:finetuning2-default}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth,
@@ -143,9 +149,11 @@ latexindent.pl finetuning2.tex
  as expected. We can \emph{fine tune} the indentation scheme by employing the settings
  given in \cref{lst:fine-tuning2} and running the command \index{switches!-l
  demonstration}
+
  \begin{commandshell}
 latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
 \end{commandshell}
+
  and the associated (desired) output is given in \cref{lst:finetuning2-mod1}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth,
@@ -164,9 +172,11 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
  You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use
  quotes appropriately. For example, starting with the code in \cref{lst:finetuning3} and
  running the following command
+
  \begin{commandshell}
 latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
 \end{commandshell}
+
  gives the output shown in \cref{lst:finetuning3-mod1}.
 
  \cmhlistingsfromfile{demonstrations/finetuning3.tex}{\texttt{finetuning3.tex}}{lst:finetuning3}
@@ -189,10 +199,12 @@ latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1
  \end{cmhtcbraster}
 
  Upon running the following commands
+
  \begin{commandshell}
 latexindent.pl -m finetuning4.tex -o=+-mod1 -l=href1
 latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 \end{commandshell}
+
  we receive the respective output in \cref{lst:finetuning4-mod1,lst:finetuning4-mod2}.
 
  \begin{widepage}
@@ -218,9 +230,11 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
  Another approach to this situation, which does not use \texttt{fineTuning}, is to use
  \texttt{noIndentBlock} which we discussed in \vref{lst:noIndentBlock}; using the settings
  in \cref{lst:href3} and running the command
+
  \begin{commandshell}
 latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
 \end{commandshell}
+
  then we receive the same output given in \cref{lst:finetuning4-mod2}.
 
  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/href3.yaml}[MLB-TCB]{\texttt{href3.yaml}}{lst:href3}
@@ -238,9 +252,11 @@ latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
  alignment} \index{delimiters!delimiterRegEx}
 
  Starting with the file in \cref{lst:bib1} and running the command
+
  \begin{commandshell}
 latexindent.pl bib1.tex -o=+-mod1 
    \end{commandshell}
+
  gives the output in \cref{lst:bib1-mod1}.
 
  \begin{widepage}
@@ -252,9 +268,11 @@ latexindent.pl bib1.tex -o=+-mod1
 
  Let's assume that we would like to format the output so as to align the \texttt{=}
  symbols. Using the settings in \cref{lst:bibsettings1} and running the command
+
  \begin{commandshell}
 latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2 
      \end{commandshell}
+
  gives the output in \cref{lst:bib1-mod2}.
 
  \begin{widepage}
@@ -282,9 +300,11 @@ latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2
  files.
 
  Starting with the file in \cref{lst:bib2} and running the command
+
  \begin{commandshell}
 latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1 
    \end{commandshell}
+
  gives the output in \cref{lst:bib2-mod1}.
 
  \begin{widepage}
@@ -300,9 +320,11 @@ latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1
  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
 
  Upon running the command
+
  \begin{commandshell}
 latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2 
          \end{commandshell}
+
  we receive the \emph{desired} output in \cref{lst:bib2-mod2}.
 
  \cmhlistingsfromfile{demonstrations/bib2-mod2.bib}{\texttt{bib2-mod2.bib}}{lst:bib2-mod2}

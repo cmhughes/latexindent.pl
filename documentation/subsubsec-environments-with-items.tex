@@ -19,10 +19,12 @@
  \end{cmhtcbraster}
 
  Upon running the following commands \index{switches!-l demonstration}
+
  \begin{commandshell}
 latexindent.pl items1.tex -local item-noAdd1.yaml  
 latexindent.pl items1.tex -local item-rules1.yaml  
 \end{commandshell}
+
  the respective outputs are given in \cref{lst:items1-noAdd1,lst:items1-rules1}; note that
  in \cref{lst:items1-noAdd1} that the text after each \texttt{item} has not received any
  additional indentation, and in \cref{lst:items1-rules1}, the text after each
@@ -49,10 +51,12 @@ latexindent.pl items1.tex -local item-rules1.yaml
  \end{cmhtcbraster}
 
  Upon running the following commands, \index{switches!-l demonstration}
+
  \begin{commandshell}
 latexindent.pl items1.tex -local items-noAdditionalGlobal.yaml
 latexindent.pl items1.tex -local items-indentRulesGlobal.yaml
 \end{commandshell}
+
  the respective outputs from \cref{lst:items1-noAdd1,lst:items1-rules1} are obtained;
  note, however, that \emph{all} such \texttt{item} commands without their own individual
  \texttt{noAdditionalIndent} or \texttt{indentRules} settings would behave as in these

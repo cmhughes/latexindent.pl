@@ -7,9 +7,11 @@
   Perl modules.
 
   If you can run the minimum code in \cref{lst:helloworld} as in
+
   \begin{commandshell}
 perl helloworld.pl
   \end{commandshell}
+
   then you will be able to run \texttt{latexindent.pl}, otherwise you may need to install
   the missing modules; see \cref{sec:module-installer,sec:manual-module-instal}.
 
@@ -40,9 +42,11 @@ exit;
   \announce{2018-01-13}{perl module helper script} \texttt{latexindent.pl} ships with a
   helper script that will install any missing \texttt{perl} modules on your system; if you
   run
+
   \begin{commandshell}
 perl latexindent-module-installer.pl
 \end{commandshell}
+
   or
   \begin{dosprompt}
 perl latexindent-module-installer.pl
@@ -58,6 +62,7 @@ perl latexindent-module-installer.pl
   \paragraph{perlbrew}
    Linux users may be interested in exploring Perlbrew \cite{perlbrew}; an example
    installation would be:
+
    \begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
@@ -68,28 +73,35 @@ curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
 cpanm File::HomeDir
 \end{commandshell}
+
    \index{cpan}
 
   \paragraph{Ubuntu/Debian}
    For other distributions, the Ubuntu/Debian approach may work as follows
+
    \begin{commandshell}
 sudo apt install perl
 sudo cpan -i App::cpanminus
 sudo cpanm YAML::Tiny
 sudo cpanm File::HomeDir
 \end{commandshell}
+
    or else by running, for example,
+
    \begin{commandshell}
 sudo perl -MCPAN -e'install "File::HomeDir"'
 \end{commandshell}
 
   \paragraph{Ubuntu: using the texlive from apt-get}
    Ubuntu users that install texlive using \texttt{apt-get} as in the following
+
    \begin{commandshell}
 sudo apt install texlive
 sudo apt install texlive-latex-recommended
 \end{commandshell}
+
    may need the following additional command to work with \texttt{latexindent.pl}
+
    \begin{commandshell}
 sudo apt install texlive-extra-utils 
 \end{commandshell}
@@ -102,14 +114,18 @@ sudo apt install texlive-extra-utils
 
   \paragraph{Arch-based distributions}
    First install the dependencies
+
    \begin{commandshell}
 sudo pacman -S perl cpanminus
 \end{commandshell}
+
    In addition, install \texttt{perl-file-homedir} from AUR, using your AUR helper of
    choice,
+
    \begin{commandshell}
 sudo paru -S perl-file-homedir
 \end{commandshell}
+
    then run the latexindent-module-installer.pl file located at helper-scripts/
 
   \paragraph{Alpine}
@@ -147,6 +163,7 @@ cpanm -n YAML::Tiny
  \subsubsection{Mac}
   Users of the Macintosh operating system might like to explore the following commands, for
   example:
+
   \begin{commandshell}
 brew install perl
 brew install cpanm
@@ -154,7 +171,9 @@ brew install cpanm
 cpanm YAML::Tiny
 cpanm File::HomeDir
 \end{commandshell}
+
   Alternatively,
+
   \begin{commandshell}
 brew install latexindent  
 \end{commandshell}
@@ -184,11 +203,14 @@ latexindent.exe -t myfile.tex
 
   This can be loaded by calling \texttt{latexindent.pl} with the \texttt{GCString} switch
   as in
+
   \begin{commandshell}
 latexindent.pl --GCString myfile.tex
 \end{commandshell}
+
   In this case, you will need to have the \texttt{Unicode::GCString} installed in your
   \texttt{perl} distribution by using, for example,
+
   \begin{commandshell}
 cpanm Unicode::GCString
 \end{commandshell}
@@ -212,11 +234,14 @@ cpanm Unicode::GCString
          \texttt{CMakeLists.txt} and \lstinline!cmake_uninstall.cmake.in! from
          \cite{latexindent-home}/path-helper-files to this directory;
    \item run
+
          \begin{commandshell}
 ls /usr/local/bin
 \end{commandshell}
+
          to see what is \emph{currently} in there;
    \item run the following commands
+
          \begin{commandshell}
 sudo apt-get update
 sudo apt-get install --no-install-recommends cmake make # or any other generator
@@ -224,17 +249,22 @@ mkdir build && cd build
 cmake ../path-helper-files
 sudo make install
 \end{commandshell}
+
    \item run
+
          \begin{commandshell}
 ls /usr/local/bin
 \end{commandshell}
+
          again to check that \texttt{latexindent.pl}, its modules and
          \texttt{defaultSettings.yaml} have been added.
   \end{enumerate}
   To \emph{remove} the files, run
+
   \begin{commandshell}
 sudo make uninstall
 \end{commandshell}
+
  \subsection{Add to path for Windows}
   To add \texttt{latexindent.exe} to the path for Windows, follow these steps:
   \begin{enumerate}
@@ -260,6 +290,7 @@ echo %path%
 
   You can \announce{2022-03-25}{batches of files details} instruct \texttt{latexindent.pl}
   to operate on multiple files. For example, the following calls are all valid
+
   \begin{commandshell}
 latexindent.pl myfile1.tex          
 latexindent.pl myfile1.tex myfile2.tex
@@ -277,17 +308,21 @@ latexindent.pl myfile*.tex
 
  \subsection{interaction with -w switch}
   If the \texttt{-w} switch is active, as in
+
   \begin{commandshell}
 latexindent.pl -w myfile*.tex
 \end{commandshell}
+
   then files will be overwritten individually. Back-up files can be re-directed via the
   \texttt{-c} switch.
 
  \subsection{interaction with -o switch}
   If \texttt{latexindent.pl} is called using the \texttt{-o} switch as in
+
   \begin{commandshell}
 latexindent.pl myfile*.tex -o=my-output-file.tex 
         \end{commandshell}
+
   and there are multiple files to operate upon, then the \texttt{-o} switch is ignored
   because there is only \emph{one} output file specified.
 
@@ -295,16 +330,20 @@ latexindent.pl myfile*.tex -o=my-output-file.tex
   beginning, then the \texttt{-o} switch will be ignored, and is turned it off.
 
   For example
+
   \begin{commandshell}
 latexindent.pl myfile*.tex -o=+myfile
 \end{commandshell}
+
   \emph{will} work fine because \emph{each} \texttt{.tex} file will output to
   \texttt{<basename>myfile.tex}
 
   Similarly,
+
   \begin{commandshell}
 latexindent.pl myfile*.tex -o=++
 \end{commandshell}
+
   \emph{will} work because the `existence check/incrementation' routine will be applied.
 
  \subsection{interaction with lines switch}
@@ -315,9 +354,11 @@ latexindent.pl myfile*.tex -o=++
   The exit codes for \texttt{latexindent.pl} are given in \vref{tab:exit-codes}.
 
   When operating on multiple files with the check switch active, as in
+
   \begin{commandshell}
 latexindent.pl myfile*.tex --check
         \end{commandshell}
+
   then
   \begin{itemize}
    \item exit code 0 means that the text from \emph{none} of the files has been changed;
@@ -389,9 +430,11 @@ latexindent.pl myfile*.tex --check
 
  \section{Using conda}\label{sec:app:conda}
   If you use conda you'll only need
+
   \begin{commandshell}
 conda install latexindent.pl -c conda-forge
 \end{commandshell}
+
   This will install the executable and all its dependencies (including perl) in the
   activate environment. You don't even have to worry about \texttt{defaultSettings.yaml} as
   it included too, you can thus skip \cref{sec:requiredmodules,sec:updating-path}.
@@ -402,6 +445,7 @@ conda install latexindent.pl -c conda-forge
  \subsection{Sample conda installation on Ubuntu}
   On Ubuntu I followed the 64-bit installation instructions at \cite{condainstallubuntu}
   and then I ran the following commands:
+
   \begin{commandshell}
 conda create -n latexindent.pl
 conda activate latexindent.pl
@@ -410,13 +454,16 @@ conda info --envs
 conda list
 conda run latexindent.pl -vv
 \end{commandshell}
+
   I found the details given at \cite{condainstallhelp} to be helpful.
 
  \section{Using docker}\label{sec:app:docker}
   If you use docker you'll only need \announce{2022-06-12}{docker support}
+
   \begin{commandshell}
 docker pull ghcr.io/cmhughes/latexindent.pl
 \end{commandshell}
+
   This will download the image packed \texttt{latexindent}'s executable and its all
   dependencies. \index{docker} Thank you to \cite{eggplants} for contributing this feature;
   see also \cite{cmhughesio}. For reference, \emph{ghcr} stands for \emph{GitHub Container
@@ -441,6 +488,7 @@ docker run ghcr.io/cmhughes/latexindent.pl -h
 
  \subsection{How to format on Docker}
   When you use \texttt{latexindent} with the docker image, you have to mount target \texttt{tex} file like this:
+
   \begin{commandshell}
 docker run -v /path/to/local/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s -w myfile.tex
 \end{commandshell}
@@ -459,9 +507,11 @@ docker run -v /path/to/local/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent
 
  \subsection{Sample pre-commit installation on Ubuntu}\label{sec:pre-commit-ubuntu}
   On Ubuntu I ran the following command:
+
   \begin{commandshell}
 python3 -m pip install pre-commit
 \end{commandshell}
+
   I then updated my path via .bashrc so that it includes the line in
   \cref{lst:bashrc-update}.
   \begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{.bashrc} update}{lst:bashrc-update}
@@ -496,9 +546,11 @@ export PATH=$PATH:/home/cmhughes/.local/bin
 
   \cmhlistingsfromfile{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
   Once created, you should then be able to run the following command:
+
   \begin{commandshell}
 pre-commit run --all-files  
 \end{commandshell}
+
   A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
   \begin{itemize}
    \item the settings given in \cref{lst:.pre-commit-config.yaml-cpan} instruct
@@ -506,9 +558,11 @@ pre-commit run --all-files
    \item this requires \texttt{pre-commit} and \texttt{perl} to be installed on your system;
    \item the \texttt{args} lists selected command-line options; the settings in
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+
          \begin{commandshell}
 latexindent.pl -s myfile.tex       
 \end{commandshell}
+
          for each \texttt{.tex} file in your repository;
    \item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
          can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
@@ -525,9 +579,11 @@ latexindent.pl -s myfile.tex
 
   \cmhlistingsfromfile{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
   Once created, you should then be able to run the following command:
+
   \begin{commandshell}
 pre-commit run --all-files  
 \end{commandshell}
+
   A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
   \begin{itemize}
    \item the settings given in \cref{lst:.pre-commit-config.yaml-conda} instruct
@@ -535,9 +591,11 @@ pre-commit run --all-files
    \item this requires \texttt{pre-commit} and \texttt{conda} to be installed on your system;
    \item the \texttt{args} lists selected command-line options; the settings in
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+
          \begin{commandshell}
 conda run latexindent.pl -s myfile.tex       
 \end{commandshell}
+
          for each \texttt{.tex} file in your repository;
    \item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
          can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
@@ -551,9 +609,11 @@ conda run latexindent.pl -s myfile.tex
 
   \cmhlistingsfromfile{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
   Once created, you should then be able to run the following command:
+
   \begin{commandshell}
 pre-commit run --all-files
 \end{commandshell}
+
   A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
   \begin{itemize}
    \item the settings given in \cref{lst:.pre-commit-config.yaml-docker} instruct
@@ -561,9 +621,11 @@ pre-commit run --all-files
    \item this requires \texttt{pre-commit} and \texttt{docker} to be installed on your system;
    \item the \texttt{args} lists selected command-line options; the settings in
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
+
          \begin{commandshell}
 docker run -v /path/to/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s myfile.tex
 \end{commandshell}
+
          for each \texttt{.tex} file in your repository;
    \item to instruct \texttt{latexindent.pl} to overwrite the files in your repository, then you
          can update \cref{lst:.pre-commit-config.yaml-cpan} so that \texttt{args: [-s, -w]}.
@@ -587,13 +649,17 @@ modifyLineBreaks:
 
   \cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
   Now running
+
   \begin{commandshell}
 pre-commit run --all-files  
 \end{commandshell}
+
   is equivalent to running
+
   \begin{commandshell}
 latexindent.pl -l -m -s -w myfile.tex
 \end{commandshell}
+
   for each \texttt{.tex} file in your repository.
 
   A few notes about \cref{lst:.latexindent.yaml-switches}:
@@ -623,9 +689,11 @@ latexindent.pl -l -m -s -w myfile.tex
   \end{minipage}
 
   If we run the following command (noting that \texttt{-t} is active)
+
   \begin{commandshell}
 latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
 \end{commandshell}
+
   then on inspection of \texttt{indent.log} we will find the snippet given in
   \cref{lst:indentlog}.
   \begin{cmhlistings}[style=tcblatex,morekeywords={TRACE}]{\texttt{indent.log}}{lst:indentlog}
@@ -684,11 +752,14 @@ latexindent.pl -y="dos2unixlinebreaks:1" myfile.tex
   There are a few (small) changes to the interface when comparing Version 2.2 to Version
   3.0. Explicitly, in previous versions you might have run, for example, \index{switches!-o
   demonstration}
+
   \begin{commandshell}
 latexindent.pl -o myfile.tex outputfile.tex
 \end{commandshell}
+
   whereas in Version 3.0 you would run any of the following, for example,
   \index{switches!-o demonstration}
+
   \begin{commandshell}
 latexindent.pl -o=outputfile.tex myfile.tex
 latexindent.pl -o outputfile.tex myfile.tex
@@ -697,6 +768,7 @@ latexindent.pl myfile.tex -o=outputfile.tex
 latexindent.pl myfile.tex -outputfile=outputfile.tex 
 latexindent.pl myfile.tex -outputfile outputfile.tex 
 \end{commandshell}
+
   noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 
   The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
