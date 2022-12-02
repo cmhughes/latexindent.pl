@@ -1,11 +1,11 @@
-name: Create and publish latexindent executables and documentation to releases
+name: build latexindent executables and documentation and upload to release page
 # PURPOSE:
 #
-#  1. *create* latexindent.exe using PAR::Packer on Strawberry Perl
-#  2. *publish* latexindent.exe to the most recent tag (release)
-#  3. *create* latexindent.pdf 
-#  4. *create* latexindent.zip
-#  5. *publish* latexindent.zip to the most recent tag (release)
+#  1. build latexindent.pdf 
+#  2. build latexindent.exe using PAR::Packer on Strawberry Perl
+#  3. build latexindent-linux using PAR::Packer on Ubuntu
+#  4. build latexindent-macos using PAR::Packer on macOS
+#  5. create and release latexindent.zip
 #
 # Note: this action only runs on *each release*, i.e. when tags are pushed
 #
@@ -16,6 +16,7 @@ on:
       - '*'
 
 jobs:
+  #-------------------------------------------------------------------------
   #
   # latexindent.pdf
   #
@@ -54,6 +55,7 @@ jobs:
         with:
           name: latexindent.pdf
           path: target/release
+  #-------------------------------------------------------------------------
   #
   # latexindent.exe
   #
@@ -125,6 +127,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "latexindent.pl release text"
+  #-------------------------------------------------------------------------
   #
   # Linux latexindent
   #
@@ -194,6 +197,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "latexindent.pl release text"
+  #-------------------------------------------------------------------------
   #
   # MacOS latexindent
   #
@@ -263,6 +267,7 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           body: "latexindent.pl release text"
+  #=========================================================================
   #
   # latexindent.zip
   #

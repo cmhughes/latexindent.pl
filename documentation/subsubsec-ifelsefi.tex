@@ -1,60 +1,53 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsubsection{ifelsefi code blocks}
+ \begin{example}
  Let's use the simple example shown in \cref{lst:ifelsefi1}; when \texttt{latexindent.pl}
  operates on this file, the output as in \cref{lst:ifelsefi1-default}; note that the body
  of each of the \lstinline!\if! statements have been indented, and that the
  \lstinline!\else! statement has been accounted for correctly.
 
- \begin{minipage}{.45\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/ifelsefi1.tex}{\texttt{ifelsefi1.tex}}{lst:ifelsefi1}
- \end{minipage}%
- \hfill
- \begin{minipage}{.54\textwidth}
   \cmhlistingsfromfile{demonstrations/ifelsefi1-default.tex}{\texttt{ifelsefi1.tex} default output}{lst:ifelsefi1-default}
- \end{minipage}
+ \end{cmhtcbraster}
 
  It is recommended to specify \texttt{noAdditionalIndent} and \texttt{indentRules} in the
  `scalar' form only for these type of code blocks, although the `field' form would work,
  assuming that \texttt{body} was specified. Examples are shown in
  \cref{lst:ifnum-noAdd,lst:ifnum-indent-rules}.
 
- \begin{minipage}{.45\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-noAdd.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-noAdd.yaml}}{lst:ifnum-noAdd}
- \end{minipage}
- \hfill
- \begin{minipage}{.45\textwidth}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifnum-indent-rules.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{ifnum-indent-rules.yaml}}{lst:ifnum-indent-rules}
- \end{minipage}
+ \end{cmhtcbraster}
 
  After running the following commands, \index{switches!-l demonstration}
+
  \begin{commandshell}
 latexindent.pl ifelsefi1.tex -local ifnum-noAdd.yaml  
 latexindent.pl ifelsefi1.tex -l ifnum-indent-rules.yaml  
 \end{commandshell}
+
  we receive the respective output given in
  \cref{lst:ifelsefi1-output-noAdd,lst:ifelsefi1-output-indent-rules}; note that in
  \cref{lst:ifelsefi1-output-noAdd}, the \texttt{ifnum} code block has \emph{not} received
  any additional indentation, while in \cref{lst:ifelsefi1-output-indent-rules}, the
  \texttt{ifnum} code block has received one tab and two spaces of indentation.
 
- \begin{minipage}{.45\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/ifelsefi1-noAdd.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifnum-noAdd}}{lst:ifelsefi1-output-noAdd}
- \end{minipage}
- \hfill
- \begin{minipage}{.5\textwidth}
   \cmhlistingsfromfile[showspaces=true,showtabs=true]{demonstrations/ifelsefi1-indent-rules.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifnum-indent-rules}}{lst:ifelsefi1-output-indent-rules}
- \end{minipage}
+ \end{cmhtcbraster}
+ \end{example}
 
+ \begin{example}
  We may specify \texttt{noAdditionalIndentGlobal} and \texttt{indentRulesGlobal} as in
  \cref{lst:ifelsefi-noAdd-glob,lst:ifelsefi-indent-rules-global}.
 
- \begin{minipage}{.49\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-noAdd-glob.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-noAdd-glob.yaml}}{lst:ifelsefi-noAdd-glob}
- \end{minipage}
- \hfill
- \begin{minipage}{.49\textwidth}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/ifelsefi-indent-rules-global.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{ifelsefi-indent-rules-global.yaml}}{lst:ifelsefi-indent-rules-global}
- \end{minipage}
+ \end{cmhtcbraster}
 
  Upon running the following commands \index{switches!-l demonstration}
  \begin{commandshell}
@@ -68,20 +61,20 @@ latexindent.pl ifelsefi1.tex -l ifelsefi-indent-rules-global.yaml
  \cref{lst:ifelsefi1-output-indent-rules-global} both code blocks have received a single
  space of indentation.
 
- \begin{minipage}{.45\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/ifelsefi1-noAdd-glob.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifelsefi-noAdd-glob}}{lst:ifelsefi1-output-noAdd-glob}
- \end{minipage}
- \hfill
- \begin{minipage}{.45\textwidth}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/ifelsefi1-indent-rules-global.tex}{\texttt{ifelsefi1.tex} using \cref{lst:ifelsefi-indent-rules-global}}{lst:ifelsefi1-output-indent-rules-global}
- \end{minipage}
+ \end{cmhtcbraster}
+ \end{example}
 
- We can further explore the treatment of \texttt{ifElseFi} code blocks
- \announce{2018-04-27}*{updates to ifElseFi code blocks} in \cref{lst:ifelsefi2}, and the
- associated default output given in \cref{lst:ifelsefi2-default}; note, in particular,
- that the bodies of each of the `or statements' have been indented.%
+ \begin{example}
+ We can further explore the treatment of \texttt{ifElseFi} code blocks in
+ \cref{lst:ifelsefi2}, and the associated default output given in
+ \cref{lst:ifelsefi2-default}; note, in particular,\announce{2018-04-27}*{updates to
+ ifElseFi code blocks} that the bodies of each of the `or statements' have been indented.%
 
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
   \cmhlistingsfromfile{demonstrations/ifelsefi2.tex}{\texttt{ifelsefi2.tex}}{lst:ifelsefi2}
   \cmhlistingsfromfile{demonstrations/ifelsefi2-default.tex}{\texttt{ifelsefi2.tex} default output}{lst:ifelsefi2-default}
  \end{cmhtcbraster}
+ \end{example}

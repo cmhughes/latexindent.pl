@@ -289,10 +289,12 @@
 
 % command shell
 \newtcblisting{commandshell}{colback=black,colupper=white,colframe=yellow!75!black,
- listing only,listing options={style=tcblatex,language=sh,
+ listing only,
+ listing options={style=tcblatex,language=sh,
    morekeywords={latexindent,pl},
    keywordstyle=\color{blue!35!white}\bfseries,
   },
+ before=\par,
  listing engine=listings,
  left=0cm,
  every listing line={\textcolor{red}{\small\ttfamily\fontseries{b}\selectfont cmh:$\sim$\$ }}}
@@ -561,28 +563,27 @@
 
 \newtcolorbox[auto counter]{example}{breakable,
  enhanced jigsaw,
- before skip=6pt,after skip=6pt,
+ before skip balanced,
+ after skip balanced,
  frame hidden,
- title={\llap{Example~\thetcbcounter\hspace{3mm}}},
- fonttitle=\bfseries,
+ %
+ % title stuff
+ %
+ title={example~\thetcbcounter},
+ fonttitle=\bfseries\sffamily,
+ detach title,
+ before upper={\llap{\tcbtitle\hspace{5mm}}},
  coltitle=black,
- attach title to upper,
- grow to left by=5mm,
- top=3mm,
+ colback=white,
+ grow to left by=6mm,
+ %
+ % circles and line by the side
+ %
  overlay unbroken={%
-   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-   \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-   \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
-  },
- overlay first={%
-   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-   \path [fill=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-   %\path [draw=cmhgray,fill=white] ([xshift=3mm]interior.south east) circle (.5mm);
+   \path [fill=black] ([xshift=1mm,yshift=3mm]interior.south east) node{\hbox{\rule{1ex}{1ex}}};
   },
  overlay last={%
-   \draw[thick,cmhgray] ([xshift=3mm]interior.north east)--([xshift=3mm]interior.south east);
-   %\path [fill=white,draw=cmhgray] ([xshift=3mm]interior.north east) circle (.5mm);
-   \path [fill=cmhgray] ([xshift=3mm]interior.south east) circle (1mm);
+   \path [fill=black] ([xshift=1mm,yshift=3mm]interior.south east) node{\hbox{\rule{1ex}{1ex}}};
   },
  parbox=false,
 }

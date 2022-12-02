@@ -13,17 +13,15 @@
 
 \yamltitle{roundParenthesesAllowed}{0|1}
 
+ \begin{example}
  The need for this field was mostly motivated by commands found in code used to generate
  images in \texttt{PSTricks} and \texttt{tikz}; for example, let's consider the code given
  in \cref{lst:pstricks1}.
 
- \begin{minipage}{.45\textwidth}
+ \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/pstricks1.tex}{\texttt{pstricks1.tex}}{lst:pstricks1}
- \end{minipage}
- \hfill
- \begin{minipage}{.45\textwidth}
   \cmhlistingsfromfile{demonstrations/pstricks1-default.tex}{\texttt{pstricks1} default output}{lst:pstricks1-default}
- \end{minipage}
+ \end{cmhtcbraster}
 
  Notice that the \lstinline!\defFunction! command has an optional argument, followed by a
  mandatory argument, followed by a round-parenthesis argument, $(u,v)$.
@@ -58,7 +56,9 @@ latexindent.pl pstricks1.tex -l noRoundParentheses.yaml
  arguments are found to be \texttt{UnNamedGroupingBracesBrackets} (see
  \vref{tab:code-blocks}) which, by default, assume indentation for their body, and hence
  the tabbed indentation in \cref{lst:pstricks1-nrp}.
+ \end{example}
 
+ \begin{example}
  Let's explore this using the YAML given in \cref{lst:defFunction} and run the command
  \index{switches!-l demonstration}
  \begin{commandshell}
@@ -75,19 +75,18 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
  \lstinline!defFunction! command i.e, the subsequent lines containing arguments after the
  command name, have received the single space of indentation specified by
  \cref{lst:defFunction}.
+ \end{example}
 
 \yamltitle{stringsAllowedBetweenArguments}*{fields}
+ \begin{example}
  \texttt{tikz} users may well specify code such as that given in
  \cref{lst:tikz-node1}; processing this code using
  \texttt{latexindent.pl} gives the default output in \cref{lst:tikz-node1-default}.
 
- \begin{minipage}{.45\textwidth}
-  \cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
- \end{minipage}
- \hfill
- \begin{minipage}{.45\textwidth}
-  \cmhlistingsfromfile[columns=fixed]{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
- \end{minipage}
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/tikz-node1.tex}{\texttt{tikz-node1.tex}}{lst:tikz-node1}
+  \cmhlistingsfromfile{demonstrations/tikz-node1-default.tex}{\texttt{tikz-node1} default output}{lst:tikz-node1-default}
+ \end{cmhtcbraster}
 
  With reference to \vref{lst:commandCodeBlocks}, we see that the strings
  \begin{quote}
@@ -108,7 +107,9 @@ latexindent.pl pstricks1.tex -l defFunction.yaml
   \item the string \lstinline!node! (specified in \texttt{stringsAllowedBetweenArguments})
   \item the optional argument \lstinline![below,align=left,scale=0.5]!
  \end{itemize}
+ \end{example}
 
+ \begin{example}
  We can explore this further, for example using \cref{lst:draw} and running the command
  \index{switches!-l demonstration}
  \begin{commandshell}
@@ -147,6 +148,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
   \item it finds another \texttt{namedGroupingBracesBrackets} but this time called \texttt{node}
         with argument \lstinline![below,align=left,scale=0.5]!
  \end{itemize}
+ \end{example}
 
  Referencing \vref{lst:commandCodeBlocks}, \announce{2018-04-27}*{amalgamate feature in
  commandCodeBlocks}, we see that the first field in the
@@ -176,6 +178,7 @@ latexindent.pl tikz-node1.tex -l no-strings.yaml
  field, and specified using the syntax given in
  \cref{lst:amalgamate-demo1,lst:amalgamate-demo2,lst:amalgamate-demo3}.
 
+ \begin{example}
  We may explore this feature further with the code in \cref{lst:for-each}, whose default
  output is given in \cref{lst:for-each-default}.
 
@@ -203,6 +206,7 @@ latexindent.pl for-each.tex -l foreach.yaml
  \cref{lst:for-each-mod1} the \texttt{foreach} command has been allowed to have
  \lstinline!\x/\y! and \texttt{in} between arguments because of the settings given in
  \cref{lst:foreach}.
+ \end{example}
 
 \yamltitle{commandNameSpecial}*{fields}
  There are some special command names \announce{2018-04-27}*{commandNameSpecial} that do
@@ -213,6 +217,7 @@ latexindent.pl for-each.tex -l foreach.yaml
  \texttt{latexindent.pl} would not be able to label it as such, because the \lstinline![!
  is, necessarily, not matched by a closing \lstinline!]!.%
 
+ \begin{example}
  For example, consider the sample file in \cref{lst:ifnextchar}, which has default output
  in \cref{lst:ifnextchar-default}.
 
@@ -238,6 +243,7 @@ latexindent.pl for-each.tex -l foreach.yaml
   \cmhlistingsfromfile{demonstrations/ifnextchar-off.tex}{\texttt{ifnextchar.tex} using \cref{lst:no-ifnextchar}}{lst:ifnextchar-off}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/no-ifnextchar.yaml}[yaml-TCB]{\texttt{no-ifnextchar.yaml}}{lst:no-ifnextchar}
  \end{cmhtcbraster}
+ \end{example}
 
  The \texttt{amalgamate} field can be used for \texttt{commandNameSpecial}, just as for
  \texttt{stringsAllowedBetweenArguments}. The same condition holds as stated previously,

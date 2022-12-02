@@ -61,8 +61,8 @@ perl latexindent-module-installer.pl
    \begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
-perlbrew install perl-5.28.1
-perlbrew switch perl-5.28.1
+perlbrew install perl-5.34.0
+perlbrew switch perl-5.34.0
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
@@ -574,8 +574,8 @@ docker run -v /path/to/myfile.tex:/myfile.tex ghcr.io/cmhughes/latexindent.pl -s
   \texttt{.latexindent.yaml}.
 
   \begin{example}
-   We use the local settings given in \cref{lst:.latexindent.yaml}.
-   \begin{cmhlistings}[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
+  We use the local settings given in \cref{lst:.latexindent.yaml}.
+  \begin{cmhlistings}[style=tcblatex]{\texttt{.latexindent.yaml}}{lst:.latexindent.yaml}
 onlyOneBackUp: 1
 
 modifyLineBreaks:
@@ -583,34 +583,36 @@ modifyLineBreaks:
    manipulateSentences: 1
 \end{cmhlistings}
 
-   and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
+  and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
 
-   \cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
-   Now running
-   \begin{commandshell}
+  \cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
+  Now running
+  \begin{commandshell}
 pre-commit run --all-files  
 \end{commandshell}
-   is equivalent to running
-   \begin{commandshell}
+  is equivalent to running
+  \begin{commandshell}
 latexindent.pl -l -m -s -w myfile.tex
 \end{commandshell}
-   for each \texttt{.tex} file in your repository.
+  for each \texttt{.tex} file in your repository.
 
-   A few notes about \cref{lst:.latexindent.yaml-switches}:
-   \begin{itemize}
-    \item the \texttt{-l} option was added to use the local \texttt{.latexindent.yaml} (where it
-          was specified to only create one back-up file, as \texttt{git} typically takes care of
-          this when you use \texttt{pre-commit});
-    \item \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line
-          output, and \texttt{-w} to format files in place.
-   \end{itemize}
+  A few notes about \cref{lst:.latexindent.yaml-switches}:
+  \begin{itemize}
+   \item the \texttt{-l} option was added to use the local \texttt{.latexindent.yaml} (where it
+         was specified to only create one back-up file, as \texttt{git} typically takes care of
+         this when you use \texttt{pre-commit});
+   \item \texttt{-m} to modify line breaks; in addition to \texttt{-s} to suppress command-line
+         output, and \texttt{-w} to format files in place.
+  \end{itemize}
   \end{example}
 
  \section{logFilePreferences}\label{app:logfile-demo}
   \Vref{lst:logFilePreferences} describes the options for customising the information given
-  to the log file, and we provide a few demonstrations here. Let's say that we start with
-  the code given in \cref{lst:simple}, and the settings specified in
-  \cref{lst:logfile-prefs1-yaml}.
+  to the log file, and we provide a few demonstrations here.
+
+  \begin{example}
+  Let's say that we start with the code given in \cref{lst:simple}, and the settings
+  specified in \cref{lst:logfile-prefs1-yaml}.
 
   \begin{minipage}{.35\linewidth}
    \cmhlistingsfromfile{demonstrations/simple.tex}{\texttt{simple.tex}}{lst:simple}
@@ -644,6 +646,7 @@ TRACE: Searching myenv for optional and mandatory arguments
      \end{cmhlistings}
   Notice that the information given about \texttt{myenv} is `framed' using \texttt{+++++}
   and \lstinline!-----! respectively.
+  \end{example}
 
  \section{Encoding indentconfig.yaml}\label{app:encoding}
   In relation to \vref{sec:indentconfig}, Windows users that encounter encoding issues with

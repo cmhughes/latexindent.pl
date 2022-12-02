@@ -24,6 +24,7 @@
  switch to \texttt{0} instructs \texttt{latexindent.pl} not to do so.
  \index{sentences!removing sentence line breaks}
 
+ \begin{example}
  For example, consider \texttt{multiple-sentences.tex} shown in
  \cref{lst:multiple-sentences}.
 
@@ -54,6 +55,7 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
  Notice, in particular, that the `internal' sentence line breaks in
  \cref{lst:multiple-sentences} have been removed in \cref{lst:multiple-sentences-mod1},
  but have not been removed in \cref{lst:multiple-sentences-mod2}.
+ \end{example}
 
 \yamltitle{multipleSpacesToSingle}{0|1}
  \announce{2022-03-25}*{multipleSpacesToSingle for oneSentencePerLine} By default, the
@@ -90,8 +92,10 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
  \end{cmhtcbraster}
 
 \subsubsection{sentencesFollow}
- Let's explore a few of the switches in \texttt{sentencesFollow}; let's start with
- \vref{lst:multiple-sentences}, and use the YAML settings given in
+ Let's explore a few of the switches in \texttt{sentencesFollow}.
+
+ \begin{example}
+ We start with \vref{lst:multiple-sentences}, and use the YAML settings given in
  \cref{lst:sentences-follow1-yaml}. Using the command \index{sentences!follow}
  \index{switches!-l demonstration} \index{switches!-m demonstration}
  \begin{commandshell}
@@ -107,7 +111,9 @@ latexindent.pl multiple-sentences -m -l=sentences-follow1.yaml
  Notice that, because \texttt{blankLine} is set to \texttt{0}, \texttt{latexindent.pl}
  will not seek sentences following a blank line, and so the fourth sentence has not been
  accounted for.
+ \end{example}
 
+ \begin{example}
  We can explore the \texttt{other} field in \cref{lst:sentencesFollow} with the
  \texttt{.tex} file detailed in \cref{lst:multiple-sentences1}.
 
@@ -138,12 +144,16 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
  \cref{lst:sentences-follow2-yaml}, the output given in
  \cref{lst:multiple-sentences1-mod2} demonstrates that the sentence \emph{has} been
  accounted for correctly.
+ \end{example}
 
 \subsubsection{sentencesBeginWith}
  By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
  case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
  lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other}
  field to define sentences to begin with other characters. \index{sentences!begin with}
+
+ \begin{example}
+ We use the file in \cref{lst:multiple-sentences2}.
 
  \cmhlistingsfromfile{demonstrations/multiple-sentences2.tex}{\texttt{multiple-sentences2.tex}}{lst:multiple-sentences2}
 
@@ -172,14 +182,17 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
  all of the sentences have been accounted for, because the \texttt{other} field in
  \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$!
  or any numeric digit, \texttt{0} to \texttt{9}.
+ \end{example}
 
 \subsubsection{sentencesEndWith}
+ \begin{example}
  Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
  which \texttt{latexindent.pl} will operate on the sentences in this file in
  \vref{lst:multiple-sentences-mod1}. We can populate the \texttt{other} field with any
  character that we wish; for example, using the YAML specified in
  \cref{lst:sentences-end1-yaml} and the command \index{sentences!end with}
  \index{switches!-l demonstration} \index{switches!-m demonstration}
+
  \begin{commandshell}
 latexindent.pl multiple-sentences -m -l=sentences-end1.yaml
 latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
@@ -204,11 +217,13 @@ latexindent.pl multiple-sentences -m -l=sentences-end2.yaml
  lower case letters. We have changed this by using the settings in
  \cref{lst:sentences-end2-yaml}, and the associated output in
  \cref{lst:multiple-sentences-mod5} reflects this.
+ \end{example}
 
  Referencing \vref{lst:sentencesEndWith}, you'll notice that there is a field called
  \texttt{basicFullStop}, which is set to \texttt{0}, and that the \texttt{betterFullStop}
  is set to \texttt{1} by default.
 
+ \begin{example}
  Let's consider the file shown in \cref{lst:url}.
 
  \cmhlistingsfromfile{demonstrations/url.tex}{\texttt{url.tex}}{lst:url}
@@ -230,6 +245,8 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
   \item they can not be immediately followed by a lower case or upper case letter;
   \item they can not be immediately followed by a hyphen, comma, or number.
  \end{itemize}
+ \end{example}
+
  If you find that the \texttt{betterFullStop} does not work for your purposes, then you
  can switch it off by setting it to \texttt{0}, and you can experiment with the
  \texttt{other} field. \announce{2019-07-13}{fine tuning the betterFullStop} You can also
@@ -237,8 +254,11 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
  detailed in \vref{lst:fineTuning}.%
 
  The \texttt{basicFullStop} routine should probably be avoided in most situations, as it
- does not accommodate the specifications above. For example, using the following command
- \index{switches!-l demonstration} \index{switches!-m demonstration}
+ does not accommodate the specifications above.
+
+ \begin{example}
+ For example, using the following command \index{switches!-l demonstration}
+ \index{switches!-m demonstration}
  \begin{commandshell}
 latexindent.pl url -m -l=alt-full-stop1.yaml
 \end{commandshell}
@@ -255,6 +275,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
  Notice that the full stop within the URL has not been accommodated correctly because of
  the non-default settings in \cref{lst:alt-full-stop1-yaml}.
+ \end{example}
 
 \subsubsection{Features of the oneSentencePerLine routine}
  The sentence manipulation routine takes place \emph{after} verbatim \index{verbatim!in
@@ -262,6 +283,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
  accounted for; this means that any characters within these types of code blocks will not
  be part of the sentence manipulation routine.
 
+ \begin{example}
  For example, if we begin with the \texttt{.tex} file in \cref{lst:multiple-sentences3},
  and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
  \begin{commandshell}
@@ -270,7 +292,9 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
  then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
  \cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
  \cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
+ \end{example}
 
+ \begin{example}
  Furthermore, if sentences run across environments then, by default, the line breaks
  internal to the sentence will be removed. For example, if we use the \texttt{.tex} file
  in \cref{lst:multiple-sentences4} and run the commands \index{switches!-l demonstration}
@@ -286,7 +310,9 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
   \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
  \end{widepage}
  \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
+ \end{example}
 
+ \begin{example}
  Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
  removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
  and the command \index{switches!-l demonstration} \index{switches!-m demonstration}
@@ -299,12 +325,14 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
   \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
  \end{cmhtcbraster}
+ \end{example}
 
 \subsubsection{Text wrapping and indenting sentences}
  The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
  indent} can be instructed to perform text wrapping and indentation upon sentences.
  \index{sentences!text wrapping} \index{sentences!indenting}%
 
+ \begin{example}
  Let's use the code in \cref{lst:multiple-sentences5}.
 
  \cmhlistingsfromfile{demonstrations/multiple-sentences5.tex}{\texttt{multiple-sentences5.tex}}{lst:multiple-sentences5}
@@ -324,11 +352,13 @@ latexindent.pl multiple-sentences5 -m -l=sentence-wrap1.yaml
   \cmhlistingsfromfile{demonstrations/multiple-sentences5-mod1.tex}{\texttt{multiple-sentences5.tex} using \cref{lst:sentence-wrap1-yaml}}{lst:multiple-sentences5-mod1}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap1.yaml}[MLB-TCB,width=0.5\textwidth]{\texttt{sentence-wrap1.yaml}}{lst:sentence-wrap1-yaml}
  \end{cmhtcbraster}
+ \end{example}
 
  If you specify \texttt{textWrapSentences} as 1, but do \emph{not} specify a value for
  \texttt{columns} then the text wrapping will \emph{not} operate on sentences, and you
  will see a warning in \texttt{indent.log}.
 
+ \begin{example}
  The indentation of sentences requires that sentences are stored as code blocks. This
  means that you may need to tweak \vref{lst:sentencesEndWith}. Let's explore this in
  relation to \cref{lst:multiple-sentences6}.
@@ -353,7 +383,9 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
  \emph{not} been indented appropriately. This is because the oneSentencePerLine has been
  instructed to store sentences (because \cref{lst:sentence-wrap1-yaml}); each sentence is
  then searched for code blocks.
+ \end{example}
 
+ \begin{example}
  We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
  not followed by \texttt{item} commands, and that the end of sentences contains
  \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
@@ -374,6 +406,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 
  Notice that the sentence has received indentation, and that the \texttt{itemize} code
  block has been found and indented correctly.
+ \end{example}
 
  Text \announce{2022-04-04}*{oneSentencePerLine text wrapping update} wrapping when using
  the \texttt{oneSentencePerLine} routine determines if it will remove line breaks while
