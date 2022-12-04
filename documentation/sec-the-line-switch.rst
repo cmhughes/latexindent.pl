@@ -264,8 +264,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	 	:name: lst:myfile1
 	 	:linenos:
 	
-	We can demonstrate interaction with the ``-m`` switch (see :numref:`sec:modifylinebreaks`); in particular, if we use :numref:`lst:mlb2`, :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` and
-	run
+	We can demonstrate interaction with the ``-m`` switch (see :numref:`sec:modifylinebreaks`); in particular, if we use :numref:`lst:mlb2`, :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` and run
 	
 	.. code-block:: latex
 	   :class: .commandshell

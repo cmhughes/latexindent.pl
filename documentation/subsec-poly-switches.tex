@@ -57,25 +57,25 @@ before words(*@$\BeginStartsOnOwnLine$@*) \begin{myenv}(*@$\BodyStartsOnOwnLine$
 \end{cmhlistings}
 
  \paragraph{Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine}
+  \begin{example}
   Let's explore \texttt{BeginStartsOnOwnLine} and \texttt{BodyStartsOnOwnLine} in
   \cref{lst:env-mlb1,lst:env-mlb2}, and in particular, let's allow each of them in turn to
   take a value of $1$. \index{modifying linebreaks! at the \emph{beginning} of a code
   block} \index{poly-switches!adding line breaks: set to 1}
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb1.yaml}[MLB-TCB]{\texttt{env-mlb1.yaml}}{lst:env-mlb1}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb2.yaml}[MLB-TCB]{\texttt{env-mlb2.yaml}}{lst:env-mlb2}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   After running the following commands, \index{switches!-l demonstration}
   \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb.tex -l env-mlb1.yaml
 latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 \end{commandshell}
+
   the output is as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2} respectively.
 
   \begin{widepage}
@@ -97,19 +97,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
          $\BodyStartsOnOwnLine$ in \cref{lst:env-mlb1-tex}; furthermore, note that the \emph{body}
          of \texttt{myenv} has received the appropriate (default) indentation.
   \end{itemize}
+  \end{example}
 
+  \begin{example}
   Let's now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so
   that they are $2$ and save them into \texttt{env-mlb3.yaml} and \texttt{env-mlb4.yaml}
   respectively (see \cref{lst:env-mlb3,lst:env-mlb4}). \index{poly-switches!adding comments
   and then line breaks: set to 2}
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb3.yaml}[MLB-TCB]{\texttt{env-mlb3.yaml}}{lst:env-mlb3}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   Upon running commands analogous to the above, we obtain
   \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
@@ -127,19 +126,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
   Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but
   this time a comment symbol has been added before adding the line break; in both cases,
   trailing horizontal space has been stripped before doing so.
+  \end{example}
 
-  Let's \announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each
-  of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so that they are $3$ and
-  save them into \texttt{env-mlb5.yaml} and \texttt{env-mlb6.yaml} respectively (see
-  \cref{lst:env-mlb5,lst:env-mlb6}). \index{poly-switches!adding blank lines: set to 3}%
+  \begin{example}
+  Let's now change each of the \texttt{1} values in \cref{lst:env-mlb1,lst:env-mlb2} so
+  that they are $3$ and save them into \texttt{env-mlb5.yaml} and \texttt{env-mlb6.yaml}
+  respectively (see \cref{lst:env-mlb5,lst:env-mlb6}). \index{poly-switches!adding blank
+  lines: set to 3}\announce{2017-08-21}{demonstration of blank line poly-switch (3)}%
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb5.yaml}[MLB-TCB]{\texttt{env-mlb5.yaml}}{lst:env-mlb5}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   Upon running commands analogous to the above, we obtain
   \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
@@ -156,20 +154,20 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 
   Note that line breaks have been added as in \cref{lst:env-mlb-mod1,lst:env-mlb-mod2}, but
   this time a \emph{blank line} has been added after adding the line break.
+  \end{example}
 
-  Let's now change \announce{2019-07-13}{demonstration of new blank line poly-switch} each
-  of the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so that they are $4$ and
-  save them into \texttt{env-beg4.yaml} and \texttt{env-body4.yaml} respectively (see
-  \cref{lst:env-beg4,lst:env-body4}). \index{poly-switches!adding blank lines (again"!):
-  set to 4}%
+  \begin{example}
+  Let's now change each of the \texttt{1} values in \cref{lst:env-mlb5,lst:env-mlb6} so
+  that they are $4$ and save them into \texttt{env-beg4.yaml} and \texttt{env-body4.yaml}
+  respectively (see \cref{lst:env-beg4,lst:env-body4}). \index{poly-switches!adding blank
+  lines (again"!): set to 4} \announce{2019-07-13}{demonstration of new blank line
+  poly-switch}
+  %
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-beg4.yaml}[MLB-TCB]{\texttt{env-beg4.yaml}}{lst:env-beg4}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-body4.yaml}[MLB-TCB]{\texttt{env-body4.yaml}}{lst:env-body4}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   We will demonstrate this poly-switch value using the code in \cref{lst:env-mlb1-text}.
 
@@ -177,6 +175,7 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
 
   Upon running the commands \index{switches!-l demonstration} \index{switches!-m
   demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb1.tex -l env-beg4.yaml
 latexindent.pl -m env-mlb.1tex -l env-body4.yaml
@@ -196,38 +195,37 @@ latexindent.pl -m env-mlb.1tex -l env-body4.yaml
    \item in \cref{lst:env-mlb1-body4} a blank line has been inserted before the beginning of the
          \emph{body}, even though it already began on its own line.
   \end{enumerate}
+  \end{example}
 
- \paragraph{Adding line breaks using EndStartsOnOwnLine and EndFinishesWithLineBreak}
+ \paragraph{Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak}
+  \begin{example}
   Let's explore \texttt{EndStartsOnOwnLine} and \texttt{EndFinishesWithLineBreak} in
   \cref{lst:env-mlb7,lst:env-mlb8}, and in particular, let's allow each of them in turn to
   take a value of $1$. \index{modifying linebreaks! at the \emph{end} of a code block}
   \index{poly-switches!adding line breaks: set to 1}
 
-  \begin{minipage}{.49\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb7.yaml}[MLB-TCB]{\texttt{env-mlb7.yaml}}{lst:env-mlb7}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.49\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb8.yaml}[MLB-TCB]{\texttt{env-mlb8.yaml}}{lst:env-mlb8}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   After running the following commands, \index{switches!-l demonstration}
   \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb.tex -l env-mlb7.yaml
 latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 \end{commandshell}
+
   the output is as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}.
 
-  \begin{widepage}
-   \begin{minipage}{.42\linewidth}
-    \cmhlistingsfromfile{demonstrations/env-mlb-mod7.tex}{\texttt{env-mlb.tex} using \cref{lst:env-mlb7}}{lst:env-mlb-mod7}
-   \end{minipage}
-   \hfill
-   \begin{minipage}{.57\linewidth}
-    \cmhlistingsfromfile{demonstrations/env-mlb-mod8.tex}{\texttt{env-mlb.tex} using \cref{lst:env-mlb8}}{lst:env-mlb-mod8}
-   \end{minipage}
-  \end{widepage}
+  \begin{cmhtcbraster}[raster columns=3,
+    raster left skip=-3.5cm,
+    raster right skip=-2cm,
+    raster column skip=.06\linewidth]
+   \cmhlistingsfromfile{demonstrations/env-mlb-mod7.tex}{\texttt{env-mlb.tex} using \cref{lst:env-mlb7}}{lst:env-mlb-mod7}
+   \cmhlistingsfromfile{demonstrations/env-mlb-mod8.tex}{\texttt{env-mlb.tex} using \cref{lst:env-mlb8}}{lst:env-mlb-mod8}
+  \end{cmhtcbraster}
 
   There are a couple of points to note:
   \begin{itemize}
@@ -238,19 +236,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
    \item in \cref{lst:env-mlb-mod8} a line break has been added at the point denoted by
          $\EndFinishesWithLineBreak$ in \vref{lst:env-mlb1-tex}.
   \end{itemize}
+  \end{example}
 
+  \begin{example}
   Let's now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so
   that they are $2$ and save them into \texttt{env-mlb9.yaml} and \texttt{env-mlb10.yaml}
   respectively (see \cref{lst:env-mlb9,lst:env-mlb10}). \index{poly-switches!adding
   comments and then line breaks: set to 2}
 
-  \begin{minipage}{.49\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb9.yaml}[MLB-TCB]{\texttt{env-mlb9.yaml}}{lst:env-mlb9}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.49\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   Upon running commands analogous to the above, we obtain
   \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
@@ -268,19 +265,18 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
   Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, but
   this time a comment symbol has been added before adding the line break; in both cases,
   trailing horizontal space has been stripped before doing so.
+  \end{example}
 
-  Let's \announce{2017-08-21}{demonstration of blank line poly-switch (3)} now change each
-  of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so that they are $3$ and
-  save them into \texttt{env-mlb11.yaml} and \texttt{env-mlb12.yaml} respectively (see
-  \cref{lst:env-mlb11,lst:env-mlb12}). \index{poly-switches!adding blank lines: set to 3}%
+  \begin{example}
+  Let's now change each of the \texttt{1} values in \cref{lst:env-mlb7,lst:env-mlb8} so
+  that they are $3$ and save them into \texttt{env-mlb11.yaml} and \texttt{env-mlb12.yaml}
+  respectively (see \cref{lst:env-mlb11,lst:env-mlb12}). \index{poly-switches!adding blank
+  lines: set to 3}\announce{2017-08-21}{demonstration of blank line poly-switch (3)}%
 
-  \begin{minipage}{.49\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb11.yaml}[MLB-TCB]{\texttt{env-mlb11.yaml}}{lst:env-mlb11}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.49\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   Upon running commands analogous to the above, we obtain
   \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
@@ -297,25 +293,25 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
 
   Note that line breaks have been added as in \cref{lst:env-mlb-mod7,lst:env-mlb-mod8}, and
   that a \emph{blank line} has been added after the line break.
+  \end{example}
 
-  Let's now change \announce{2019-07-13}{demonstration of new blank line poly-switch} each
-  of the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so that they are $4$ and
-  save them into \texttt{env-end4.yaml} and \texttt{env-end-f4.yaml} respectively (see
-  \cref{lst:env-end4,lst:env-end-f4}). \index{poly-switches!adding blank lines (again"!):
-  set to 4}%
+  \begin{example}
+  Let's now change each of the \texttt{1} values in \cref{lst:env-mlb11,lst:env-mlb12} so
+  that they are $4$ and save them into \texttt{env-end4.yaml} and \texttt{env-end-f4.yaml}
+  respectively (see \cref{lst:env-end4,lst:env-end-f4}).
+  \announce{2019-07-13}{demonstration of new blank line poly-switch}
+  \index{poly-switches!adding blank lines (again"!): set to 4}%
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-end4.yaml}[MLB-TCB]{\texttt{env-end4.yaml}}{lst:env-end4}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.5\textwidth}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-end-f4.yaml}[MLB-TCB]{\texttt{env-end-f4.yaml}}{lst:env-end-f4}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   We will demonstrate this poly-switch value using the code from \vref{lst:env-mlb1-text}.
 
   Upon running the commands \index{switches!-l demonstration} \index{switches!-m
   demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb1.tex -l env-end4.yaml
 latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
@@ -335,26 +331,28 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
    \item in \cref{lst:env-mlb1-end-f4} a blank line has been inserted after the \lstinline!\end!
          statement, even though it already began on its own line.
   \end{enumerate}
+  \end{example}
 
  \paragraph{poly-switches 1, 2, and 3 only add line breaks when necessary}
   If you ask \texttt{latexindent.pl} to add a line break (possibly with a comment) using a
-  poly-switch value of $1$ (or $2$ or $3$), it will only do so if necessary. For example,
-  if you process the file in \vref{lst:mlb2} using poly-switch values of 1, 2, or 3, it
-  will be left unchanged.
+  poly-switch value of $1$ (or $2$ or $3$), it will only do so if necessary.
 
-  \begin{minipage}{.45\linewidth}
+  \begin{example}
+  For example, if you process the file in \vref{lst:mlb2} using poly-switch values of 1, 2,
+  or 3, it will be left unchanged.
+
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/env-mlb2.tex}{\texttt{env-mlb2.tex}}{lst:mlb2}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\linewidth}
    \cmhlistingsfromfile{demonstrations/env-mlb3.tex}{\texttt{env-mlb3.tex}}{lst:mlb3}
-  \end{minipage}
+  \end{cmhtcbraster}
+  \end{example}
 
   Setting the poly-switches to a value of $4$ instructs \texttt{latexindent.pl} to add a
   line break even if the \emph{<part of thing>} is already on its own line; see
   \cref{lst:env-mlb1-beg4,lst:env-mlb1-body4} and
   \cref{lst:env-mlb1-end4,lst:env-mlb1-end-f4}.
 
+  \begin{example}
   In contrast, the output from processing the file in \cref{lst:mlb3} will vary depending
   on the poly-switches used; in \cref{lst:env-mlb3-mod2} you'll see that the comment symbol
   after the \lstinline!\begin{myenv}! has been moved to the next line, as
@@ -368,6 +366,7 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
    \cmhlistingsfromfile{demonstrations/env-mlb3-mod2.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb2}}{lst:env-mlb3-mod2}
    \cmhlistingsfromfile{demonstrations/env-mlb3-mod4.tex}{\texttt{env-mlb3.tex} using \vref{lst:env-mlb4}}{lst:env-mlb3-mod4}
   \end{cmhtcbraster}
+  \end{example}
 
   The details of the discussion in this section have concerned \emph{global} poly-switches
   in the \texttt{environments} field; each switch can also be specified on a
@@ -377,12 +376,14 @@ latexindent.pl -m env-mlb.1tex -l env-end-f4.yaml
 
  \paragraph{Removing line breaks (poly-switches set to $-1$)}
   Setting poly-switches to $-1$ tells \texttt{latexindent.pl} to remove line breaks of the
-  \emph{<part of the thing>}, if necessary. We will consider the example code given in
-  \cref{lst:mlb4}, noting in particular the positions of the line break highlighters,
-  $\BeginStartsOnOwnLine$, $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and
-  $\EndFinishesWithLineBreak$, together with the associated YAML files in
-  \crefrange{lst:env-mlb13}{lst:env-mlb16}. \index{poly-switches!removing line breaks: set
-  to -1}
+  \emph{<part of the thing>}, if necessary.
+
+  \begin{example}
+  We will consider the example code given in \cref{lst:mlb4}, noting in particular the
+  positions of the line break highlighters, $\BeginStartsOnOwnLine$,
+  $\BodyStartsOnOwnLine$, $\EndStartsOnOwnLine$ and $\EndFinishesWithLineBreak$, together
+  with the associated YAML files in \crefrange{lst:env-mlb13}{lst:env-mlb16}.
+  \index{poly-switches!removing line breaks: set to -1}
 
   \begin{minipage}{.45\linewidth}
    \begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{env-mlb4.tex}}{lst:mlb4}
@@ -406,6 +407,7 @@ after words
 
   After running the commands \index{switches!-l demonstration} \index{switches!-m
   demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml
 latexindent.pl -m env-mlb4.tex -l env-mlb14.yaml
@@ -415,21 +417,15 @@ latexindent.pl -m env-mlb4.tex -l env-mlb16.yaml
 
   we obtain the respective output in \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}.
 
-  \begin{minipage}{.45\linewidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/env-mlb4-mod13.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb13}}{lst:env-mlb4-mod13}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\linewidth}
    \cmhlistingsfromfile{demonstrations/env-mlb4-mod14.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb14}}{lst:env-mlb4-mod14}
-  \end{minipage}
+  \end{cmhtcbraster}
 
-  \begin{minipage}{.45\linewidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/env-mlb4-mod15.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb15}}{lst:env-mlb4-mod15}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{.45\linewidth}
    \cmhlistingsfromfile{demonstrations/env-mlb4-mod16.tex}{\texttt{env-mlb4.tex} using \cref{lst:env-mlb16}}{lst:env-mlb4-mod16}
-  \end{minipage}
+  \end{cmhtcbraster}
 
   Notice that in:
   \begin{itemize}
@@ -448,19 +444,24 @@ latexindent.pl -m env-mlb4.tex -l env-mlb16.yaml
   following command, for example \index{switches!-l demonstration} \index{switches!-m
   demonstration}
   \begin{widepage}
+
    \begin{commandshell}
 latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
 \end{commandshell}
+
   \end{widepage}
   which gives the output in \vref{lst:env-mlb1-tex}.
+  \end{example}
 
  \paragraph{About trailing horizontal space}
   Recall that on \cpageref{yaml:removeTrailingWhitespace} we discussed the YAML field
   \texttt{removeTrailingWhitespace}, and that it has two (binary) switches to determine if
   horizontal space should be removed \texttt{beforeProcessing} and
   \texttt{afterProcessing}. The \texttt{beforeProcessing} is particularly relevant when
-  considering the \texttt{-m} switch; let's consider the file shown in \cref{lst:mlb5},
-  which highlights trailing spaces.
+  considering the \texttt{-m} switch.
+
+  \begin{example}
+  We consider the file shown in \cref{lst:mlb5}, which highlights trailing spaces.
 
   \begin{cmhtcbraster}
    \begin{cmhlistings}[style=tcblatex,showspaces=true,escapeinside={(*@}{@*)}]{\texttt{env-mlb5.tex}}{lst:mlb5}
@@ -476,10 +477,12 @@ after words
   The output from the following commands \index{switches!-l demonstration}
   \index{switches!-m demonstration}
   \begin{widepage}
+
    \begin{commandshell}
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
 latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
 \end{commandshell}
+
   \end{widepage}
   is shown, respectively, in \cref{lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS}; note
   that the trailing horizontal white space has been preserved (by default) in
@@ -491,8 +494,10 @@ latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 
    \cmhlistingsfromfile[showspaces=true]{demonstrations/env-mlb5-modAll-remove-WS.tex}{\texttt{env-mlb5.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:removeTWS-before}}{lst:env-mlb5-modAll-remove-WS}
   \end{widepage}
+  \end{example}
 
  \paragraph{poly-switch line break removal and blank lines}
+  \begin{example}
   Now let's consider the file in \cref{lst:mlb6}, which contains blank lines.
   \index{poly-switches!blank lines}
 
@@ -517,10 +522,12 @@ after words
   Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
   demonstration}
   \begin{widepage}
+
    \begin{commandshell}
 latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
 latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,UnpreserveBlankLines.yaml
 \end{commandshell}
+
   \end{widepage}
   we receive the respective outputs in
   \cref{lst:env-mlb6-modAll,lst:env-mlb6-modAll-un-Preserve-Blank-Lines}. In
@@ -540,7 +547,9 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
    \cmhlistingsfromfile{demonstrations/env-mlb6-modAll.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16}}{lst:env-mlb6-modAll}
    \cmhlistingsfromfile{demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex}{\texttt{env-mlb6.tex} using \crefrange{lst:env-mlb4-mod13}{lst:env-mlb4-mod16} \emph{and} \cref{lst:UnpreserveBlankLines}}{lst:env-mlb6-modAll-un-Preserve-Blank-Lines}
   \end{cmhtcbraster}
+  \end{example}
 
+  \begin{example}
   We can explore this further using the blank-line poly-switch value of $3$; let's use the
   file given in \cref{lst:env-mlb7-tex}.
 
@@ -548,10 +557,12 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 
   Upon running the following commands \index{switches!-l demonstration} \index{switches!-m
   demonstration}
+
   \begin{commandshell}
 latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
 latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
 \end{commandshell}
+
   we receive the outputs given in \cref{lst:env-mlb7-preserve,lst:env-mlb7-no-preserve}.
 
   \cmhlistingsfromfile{demonstrations/env-mlb7-preserve.tex}{\texttt{env-mlb7-preserve.tex}}{lst:env-mlb7-preserve}
@@ -567,6 +578,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
    \item \cref{lst:env-mlb7-no-preserve}, by contrast, has had the additional line-break removed,
          because of the settings in \cref{lst:UnpreserveBlankLines}.
   \end{itemize}
+  \end{example}
 
 \subsubsection{Poly-switches for double back slash}\label{subsec:dbs}
  With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic})
@@ -597,23 +609,26 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
  Let's explore each of these in turn.
 
  \paragraph{Double back slash starts on own line}
+  \begin{example}
   We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in \cref{lst:dbs-demo});
   starting with the code in \cref{lst:dbs-demo}, together with the YAML files given in
   \cref{lst:DBS1} and \cref{lst:DBS2} and running the following commands \index{switches!-l
   demonstration} \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m tabular3.tex -l DBS1.yaml
 latexindent.pl -m tabular3.tex -l DBS2.yaml
 \end{commandshell}
+
   then we receive the respective output given in \cref{lst:tabular3-DBS1} and
   \cref{lst:tabular3-DBS2}.
 
-  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/tabular3-mod1.tex}{\texttt{tabular3.tex} using \cref{lst:DBS1}}{lst:tabular3-DBS1}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS1.yaml}[MLB-TCB]{\texttt{DBS1.yaml}}{lst:DBS1}
   \end{cmhtcbraster}
 
-  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/tabular3-mod2.tex}{\texttt{tabular3.tex} using \cref{lst:DBS2}}{lst:tabular3-DBS2}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS2.yaml}[MLB-TCB]{\texttt{DBS2.yaml}}{lst:DBS2}
   \end{cmhtcbraster}
@@ -631,26 +646,30 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
          the double back slashes from \cref{lst:dbs-demo} have been moved to their own line in
          \cref{lst:tabular3-DBS2}, having added comment symbols before moving them.
   \end{itemize}
+  \end{example}
 
  \paragraph{Double back slash finishes with line break}
+  \begin{example}
   Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in
   \cref{lst:dbs-demo}); starting with the code in \cref{lst:dbs-demo}, together with the
   YAML files given in \cref{lst:DBS3} and \cref{lst:DBS4} and running the following
   commands \index{poly-switches!for double back slash (delimiters)} \index{switches!-l
   demonstration} \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m tabular3.tex -l DBS3.yaml
 latexindent.pl -m tabular3.tex -l DBS4.yaml
 \end{commandshell}
+
   then we receive the respective output given in \cref{lst:tabular3-DBS3} and
   \cref{lst:tabular3-DBS4}.
 
-  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/tabular3-mod3.tex}{\texttt{tabular3.tex} using \cref{lst:DBS3}}{lst:tabular3-DBS3}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS3.yaml}[MLB-TCB]{\texttt{DBS3.yaml}}{lst:DBS3}
   \end{cmhtcbraster}
 
-  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/tabular3-mod4.tex}{\texttt{tabular3.tex} using \cref{lst:DBS4}}{lst:tabular3-DBS4}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS4.yaml}[MLB-TCB]{\texttt{DBS4.yaml}}{lst:DBS4}
   \end{cmhtcbraster}
@@ -670,8 +689,10 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
          them; the final double back slashes have \emph{not} added a line break as they are at the
          end of the body within the code block.
   \end{itemize}
+  \end{example}
 
  \paragraph{Double back slash poly-switches for specialBeginEnd}
+  \begin{example}
   Let's explore the double back slash poly-switches for code blocks within
   \texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with the code
   within \cref{lst:special4}. \index{specialBeginEnd!double backslash poly-switch
@@ -683,9 +704,11 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
 
   Upon using the YAML settings in \cref{lst:DBS5}, and running the command
   \index{switches!-l demonstration} \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m special4.tex -l DBS5.yaml
 \end{commandshell}
+
   then we receive the output given in \cref{lst:special4-DBS5}. \index{delimiters!with
   specialBeginEnd and the -m switch}
 
@@ -706,20 +729,26 @@ latexindent.pl -m special4.tex -l DBS5.yaml
    \item the \texttt{SpecialEndStartsOnOwnLine} poly-switch has controlled the addition of a
          comment symbol, followed by a line break, as it is set to a value of 2.
   \end{itemize}
+  \end{example}
 
  \paragraph{Double back slash poly-switches for optional and mandatory arguments}
   For clarity, we provide a demonstration of controlling the double back slash
-  poly-switches for optional and mandatory arguments. We begin with the code in
-  \cref{lst:mycommand2}. \index{poly-switches!for double back slash (delimiters)}
+  poly-switches for optional and mandatory arguments.
+
+  \begin{example}
+  We use with the code in \cref{lst:mycommand2}. \index{poly-switches!for double back slash
+  (delimiters)}
 
   \cmhlistingsfromfile{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
 
   Upon using the YAML settings in \cref{lst:DBS6,lst:DBS7}, and running the command
   \index{switches!-l demonstration} \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m mycommand2.tex -l DBS6.yaml
 latexindent.pl -m mycommand2.tex -l DBS7.yaml
 \end{commandshell}
+
   then we receive the output given in \cref{lst:mycommand2-DBS6,lst:mycommand2-DBS7}.
 
   \begin{cmhtcbraster}[
@@ -737,24 +766,29 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
    \cmhlistingsfromfile{demonstrations/mycommand2-mod7.tex}{\texttt{mycommand2.tex} using \cref{lst:DBS7}}{lst:mycommand2-DBS7}
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/DBS7.yaml}[MLB-TCB,width=0.6\textwidth]{\texttt{DBS7.yaml}}{lst:DBS7}
   \end{cmhtcbraster}
+  \end{example}
 
  \paragraph{Double back slash optional square brackets}
   The pattern matching for the double back slash will also, optionally, allow trailing
   square brackets that contain a measurement of vertical spacing, for example
   \lstinline!\\[3pt]!. \index{poly-switches!for double back slash (delimiters)}
 
+  \begin{example}
   For example, beginning with the code in \cref{lst:pmatrix3}
 
   \cmhlistingsfromfile{demonstrations/pmatrix3.tex}{\texttt{pmatrix3.tex}}{lst:pmatrix3}
 
   and running the following command, using \cref{lst:DBS3}, \index{switches!-l
   demonstration} \index{switches!-m demonstration}
+
   \begin{commandshell}
 latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 \end{commandshell}
+
   then we receive the output given in \cref{lst:pmatrix3-DBS3}.
 
   \cmhlistingsfromfile{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
+  \end{example}
 
   You can customise the pattern for the double back slash by exploring the \emph{fine
   tuning} field detailed in \vref{lst:fineTuning}.
@@ -850,6 +884,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
  \texttt{LCuBStartsOnOwnLine} for mandatory arguments, and \texttt{LSqBStartsOnOwnLine}
  for optional arguments. \index{poly-switches!conflicting partnering}
 
+ \begin{example}
  Let's begin with the code in \cref{lst:mycommand1} and the YAML settings in
  \cref{lst:mycom-mlb1}; with reference to \vref{tab:poly-switch-mapping}, the key
  \texttt{CommandNameFinishesWithLineBreak} is an alias for \texttt{BodyStartsOnOwnLine}.
@@ -858,9 +893,11 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
 
  Upon running the command \index{switches!-l demonstration} \index{switches!-m
  demonstration}
+
  \begin{commandshell}
 latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 \end{commandshell}
+
  we obtain \cref{lst:mycommand1-mlb1}; note that the \emph{second} mandatory argument
  beginning brace \lstinline!{! has had its leading line break removed, but that the
  \emph{first} brace has not.
@@ -872,7 +909,9 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
   \cmhlistingsfromfile{demonstrations/mycommand1-mlb1.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb1}}{lst:mycommand1-mlb1}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb1.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb1.yaml}}{lst:mycom-mlb1}
  \end{cmhtcbraster}
+ \end{example}
 
+ \begin{example}
  Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb2}; upon running
  the analogous command to that given above, we obtain \cref{lst:mycommand1-mlb2}; both
  beginning braces \lstinline!{! have had their leading line breaks removed.
@@ -884,7 +923,9 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
   \cmhlistingsfromfile{demonstrations/mycommand1-mlb2.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb2}}{lst:mycommand1-mlb2}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb2.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb2.yaml}}{lst:mycom-mlb2}
  \end{cmhtcbraster}
+ \end{example}
 
+ \begin{example}
  Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb3}; upon running
  the analogous command to that given above, we obtain \cref{lst:mycommand1-mlb3}.
 
@@ -895,15 +936,20 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
   \cmhlistingsfromfile{demonstrations/mycommand1-mlb3.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb3}}{lst:mycommand1-mlb3}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/mycom-mlb3.yaml}[MLB-TCB,width=.6\textwidth]{\texttt{mycom-mlb3.yaml}}{lst:mycom-mlb3}
  \end{cmhtcbraster}
+ \end{example}
 
 \subsubsection{Conflicting poly-switches: sequential code blocks}
- It is very easy to have conflicting poly-switches; if we use the example from
- \vref{lst:mycommand1}, and consider the YAML settings given in \cref{lst:mycom-mlb4}. The
- output from running \index{poly-switches!conflicting switches} \index{switches!-l
- demonstration} \index{switches!-m demonstration}
+ It is very easy to have conflicting poly-switches.
+
+ \begin{example}
+ We use the example from \vref{lst:mycommand1}, and consider the YAML settings given in
+ \cref{lst:mycom-mlb4}. The output from running \index{poly-switches!conflicting switches}
+ \index{switches!-l demonstration} \index{switches!-m demonstration}
+
  \begin{commandshell}
 latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
 \end{commandshell}
+
  is given in \cref{lst:mycom-mlb4}.
 
  \begin{cmhtcbraster}
@@ -923,13 +969,17 @@ latexindent.pl -m -l=mycom-mlb4.yaml mycommand1.tex
  clear that \texttt{LCuBStartsOnOwnLine} won this conflict, and the reason is that
  \emph{the second argument was processed after the first} -- in general, the most
  recently-processed code block and associated poly-switch takes priority.
+ \end{example}
 
+ \begin{example}
  We can explore this further by considering the YAML settings in \cref{lst:mycom-mlb5};
  upon running the command \index{switches!-l demonstration} \index{switches!-m
  demonstration}
+
  \begin{commandshell}
 latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 \end{commandshell}
+
  we obtain the output given in \cref{lst:mycommand1-mlb5}.
 
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
@@ -955,8 +1005,10 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
         \emph{not} begin on its own line, and so because \texttt{LCuBStartsOnOwnLine} is set to
         $2$, it adds a comment, followed by a line break.
  \end{itemize}
+ \end{example}
 
 \subsubsection{Conflicting poly-switches: nested code blocks}
+ \begin{example}
  Now let's consider an example when nested code blocks have conflicting poly-switches;
  we'll use the code in \cref{lst:nested-env}, noting that it contains nested environments.
  \index{poly-switches!conflicting switches}
@@ -965,9 +1017,11 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
 
  Let's use the YAML settings given in \cref{lst:nested-env-mlb1-yaml}, which upon running
  the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+
  \begin{commandshell}
 latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
 \end{commandshell}
+
  gives the output in \cref{lst:nested-env-mlb1}.
 
  \begin{cmhtcbraster}[raster column skip=.05\linewidth]
@@ -979,6 +1033,7 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
  received the appropriate (default) indentation; secondly, note that the poly-switch
  \texttt{EndStartsOnOwnLine} appears to have won the conflict, as \lstinline!\end{one}!
  has had its leading line break removed.
+ \end{example}
 
  To understand it, let's talk about the three basic phases \label{page:phases}of
  \texttt{latexindent.pl}:
@@ -1025,11 +1080,14 @@ latexindent.pl -m -l=nested-env-mlb1.yaml nested-env.tex
  of knowing how much indentation to add to the subsequent text (in this case,
  \lstinline!\end{one}!).
 
+ \begin{example}
  We can explore this further using the poly-switches in \cref{lst:nested-env-mlb2}; upon
  running the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+
  \begin{commandshell}
 latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
 \end{commandshell}
+
  we obtain the output given in \cref{lst:nested-env-mlb2-output}.
 
  \begin{cmhtcbraster}
@@ -1051,3 +1109,4 @@ latexindent.pl -m -l=nested-env-mlb2.yaml nested-env.tex
  stage}, the \texttt{two} environment finds \texttt{EndFinishesWithLineBreak} is $-1$, so
  it removes the trailing line break; remember, at this point, \texttt{latexindent.pl} has
  completely finished with the \texttt{one} environment.
+ \end{example}

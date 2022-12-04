@@ -19,16 +19,14 @@
   \texttt{keyEqualsValuesBracesBrackets: name} fields of the fine tuning section in
   \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning: keyEqualsValuesBracesBrackets}%
 
+  \begin{example}
   An example is shown in \cref{lst:pgfkeysbefore}, with the default output given in
   \cref{lst:pgfkeys1:default}.
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/pgfkeys1.tex}{\texttt{pgfkeys1.tex}}{lst:pgfkeysbefore}
-  \end{minipage}%
-  \hfill
-  \begin{minipage}{.5\textwidth}
    \cmhlistingsfromfile[showtabs=true]{demonstrations/pgfkeys1-default.tex}{\texttt{pgfkeys1.tex} default output}{lst:pgfkeys1:default}
-  \end{minipage}%
+  \end{cmhtcbraster}
 
   In \cref{lst:pgfkeys1:default}, note that the maximum indentation is three tabs, and
   these come from:
@@ -40,6 +38,8 @@
          the \emph{body} field for \texttt{noAdditionalIndent} and friends from
          \cpageref{sec:noadd-indent-rules}.
   \end{itemize}
+  \end{example}
+
  \paragraph{namedGroupingBracesBrackets} This type of code block is mostly motivated by
   tikz-based code; we define this code block as follows:
   \begin{itemize}
@@ -54,16 +54,14 @@
   \texttt{NamedGroupingBracesBrackets: name} fields of the fine tuning section in
   \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning: namedGroupingBracesBrackets}%
 
+  \begin{example}
   A simple example is given in \cref{lst:child1}, with default output in
   \cref{lst:child1:default}.
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/child1.tex}{\texttt{child1.tex}}{lst:child1}
-  \end{minipage}%
-  \hfill
-  \begin{minipage}{.5\textwidth}
    \cmhlistingsfromfile[showtabs=true]{demonstrations/child1-default.tex}{\texttt{child1.tex} default output}{lst:child1:default}
-  \end{minipage}%
+  \end{cmhtcbraster}
 
   In particular, \texttt{latexindent.pl} considers \texttt{child}, \texttt{parent} and
   \texttt{node} all to be \texttt{namedGroupingBracesBrackets}\footnote{ You may like to
@@ -77,6 +75,7 @@
          controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from
          \cpageref{sec:noadd-indent-rules}.
   \end{itemize}
+  \end{example}
 
  \paragraph{UnNamedGroupingBracesBrackets} occur in a variety of situations; specifically, we
   define this type of code block as satisfying the following criteria:
@@ -89,16 +88,14 @@
   See the \texttt{UnNamedGroupingBracesBrackets: follow} field of the fine tuning section
   in \vref{lst:fineTuning} \announce{2019-07-13}{fine tuning: namedGroupingBracesBrackets}%
 
+  \begin{example}
   An example is shown in \cref{lst:psforeach1} with default output give in
   \cref{lst:psforeach:default}.
 
-  \begin{minipage}{.45\textwidth}
+  \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/psforeach1.tex}{\texttt{psforeach1.tex}}{lst:psforeach1}
-  \end{minipage}%
-  \hfill
-  \begin{minipage}{.5\textwidth}
    \cmhlistingsfromfile[showtabs=true]{demonstrations/psforeach1-default.tex}{\texttt{psforeach1.tex} default output}{lst:psforeach:default}
-  \end{minipage}%
+  \end{cmhtcbraster}
 
   Referencing \cref{lst:psforeach:default}, there are \emph{three} sets of unnamed braces.
   Note also that the maximum value of indentation is three tabs, and these come from:
@@ -110,6 +107,8 @@
          part controlled by the \emph{body} field for \texttt{noAdditionalIndent} and friends from
          \cpageref{sec:noadd-indent-rules}.
   \end{itemize}
+  \end{example}
+
   Users wishing to customise the mandatory and/or optional arguments on a \emph{per-name}
   basis for the \texttt{UnNamedGroupingBracesBrackets} should use \texttt{always-un-named}.
 

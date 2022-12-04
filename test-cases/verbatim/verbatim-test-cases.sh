@@ -1,5 +1,5 @@
 #!/bin/bash
-loopmax=3
+loopmax=4
 verbatimTest=1
 . ../common.sh
 
@@ -41,9 +41,9 @@ do
     latexindent.pl -s  -m verbatim-commands2 -l=verb-begin$i.yaml -o=+-mod$i
     latexindent.pl -s  -m verbatim-commands3 -l=verb-begin$i.yaml -o=+-mod$i
 
-    latexindent.pl -s  -m verbatim-commands1 -l=verb-end$i.yaml -o=+-mod$i
-    latexindent.pl -s  -m verbatim-commands4 -l=verb-end$i.yaml -o=+-mod$i
-    latexindent.pl -s  -m verbatim-commands5 -l=verb-end$i.yaml -o=+-mod$i
+    latexindent.pl -s  -m verbatim-commands1 -l=verb-end$i.yaml -o=+-end-mod$i
+    latexindent.pl -s  -m verbatim-commands4 -l=verb-end$i.yaml -o=+-end-mod$i
+    latexindent.pl -s  -m verbatim-commands5 -l=verb-end$i.yaml -o=+-end-mod$i
    [[ $silentMode == 0 ]] && set +x 
 done
 

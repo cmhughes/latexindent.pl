@@ -22,7 +22,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.19, 2022-10-30
+    latexindent.pl, version 3.19.1, 2022-12-04
 
 ## author
 Chris Hughes (cmhughes)
@@ -100,7 +100,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Linux users</summary>
-Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux). 
+Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux) 
 </details>
 <details>
 <summary>Ubuntu Linux users without perl</summary>
@@ -113,7 +113,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Mac users</summary>
-Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac).
+Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac)
 </details>
 <details>
 <summary>Mac users without perl</summary>
@@ -156,7 +156,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.19
+        rev: V3.19.1
         hooks:
           - id: latexindent
 
@@ -219,7 +219,7 @@ and then I merge it into the `develop` branch using
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.34.1
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.36.0
 
 ## GitHub Actions
 The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the

@@ -45,11 +45,16 @@
 \yamltitle{condenseMultipleBlankLinesInto}*{positive integer}
  Assuming that this switch takes an integer value greater than \texttt{0},
  \texttt{latexindent.pl} will condense multiple blank lines into the number of blank lines
- illustrated by this switch. As an example, \cref{lst:mlb-bl} shows a sample file with
- blank lines; upon running \index{switches!-m demonstration}
+ illustrated by this switch.
+
+ \begin{example}
+ As an example, \cref{lst:mlb-bl} shows a sample file with blank lines; upon running
+ \index{switches!-m demonstration}
+
  \begin{commandshell}
 latexindent.pl myfile.tex -m -o=+-mod1 
 \end{commandshell}
+
  the output is shown in \cref{lst:mlb-bl-out}; note that the multiple blank lines have
  been condensed into one blank line, and note also that we have used the \texttt{-m}
  switch!
@@ -58,3 +63,4 @@ latexindent.pl myfile.tex -m -o=+-mod1
   \cmhlistingsfromfile{demonstrations/mlb1.tex}{\texttt{mlb1.tex}}{lst:mlb-bl}
   \cmhlistingsfromfile{demonstrations/mlb1-out.tex}{\texttt{mlb1-mod1.tex}}{lst:mlb-bl-out}
  \end{cmhtcbraster}
+ \end{example}

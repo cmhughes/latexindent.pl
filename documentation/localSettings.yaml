@@ -50,6 +50,7 @@ indentRules:
 
 noAdditionalIndent:
     widepage: 0
+    example: 1
 
 noAdditionalIndentGlobal:
     mandatoryArguments: 1
@@ -86,14 +87,17 @@ modifyLineBreaks:
            other: '\\cmhlistingsfromfile|\\begin\{|\\\[|\\end\{'    # regex
     verbatim:
         commandshell:
-           VerbatimBeginStartsOnOwnLine: 1
-           VerbatimEndFinishesWithLineBreak: 1
+           VerbatimBeginStartsOnOwnLine: 4
+           VerbatimEndFinishesWithLineBreak: 4
     mandatoryArguments:
       cmhlistingsfromfile*:
         RCuBFinishesWithLineBreak: 1
     commands:
        cmhlistingsfromfile*:
            CommandStartsOnOwnLine: 1
+    environments:
+       cmhtcbraster:
+           BeginStartsOnOwnLine: 3
 
 removeTrailingWhitespace:
     beforeProcessing: 1

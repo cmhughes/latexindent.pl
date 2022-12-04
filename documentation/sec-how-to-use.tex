@@ -68,19 +68,23 @@
 \flagbox{-v, --version}
  \index{switches!-v, --version definition and details}
  \announce{2017-06-25}{version}
+
  \begin{commandshell}
 latexindent.pl -v
 latexindent.pl --version
 \end{commandshell}
+
  This will output only the version number to the terminal.
 
 \flagbox{-vv, --vversion}
  \index{switches!-vv, --vversion definition and details}
  \announce{2022-01-08}{vversion switch}
+
  \begin{commandshell}
 latexindent.pl -vv
 latexindent.pl --vversion
 \end{commandshell}
+
  This will output \emph{verbose} version details to the terminal, including the location
  of \texttt{latexindent.pl} and \texttt{defaultSettings.yaml}.
 
@@ -94,6 +98,7 @@ latexindent.pl --help
 
  As above this will output a welcome message to the terminal, including the version number
  and available options.
+
  \begin{commandshell}
 latexindent.pl myfile.tex
 \end{commandshell}
@@ -104,14 +109,17 @@ latexindent.pl myfile.tex
 
  You can \announce{2022-03-25}{batches of files demonstration} instruct
  \texttt{latexindent.pl} to operate on multiple (batches) of files, for example
+
  \begin{commandshell}
 latexindent.pl myfile1.tex myfile2.tex
 \end{commandshell}
+
  Full details are given in \vref{sec:batches}.
 
 \flagbox{-w, --overwrite}
  \index{switches!-w, --overwrite definition and details}
  \index{backup files!overwrite switch, -w}
+
  \begin{commandshell}
 latexindent.pl -w myfile.tex
 latexindent.pl --overwrite myfile.tex
@@ -132,6 +140,7 @@ latexindent.pl myfile.tex --overwrite
  \index{switches!-wd, --overwriteIfDifferent definition and details}
  \index{backup files!overwriteIfDifferent switch, -wd}
  \announce{2022-03-25}{overwriteIfDifferent switch}
+
  \begin{commandshell}
 latexindent.pl -wd myfile.tex
 latexindent.pl --overwriteIfDifferent myfile.tex
@@ -148,6 +157,7 @@ latexindent.pl myfile.tex --overwriteIfDifferent
 
 \flagbox{-o=output.tex,--outputfile=output.tex}
  \index{switches!-o, --output definition and details}
+
  \begin{commandshell} 
 latexindent.pl -o=output.tex myfile.tex
 latexindent.pl myfile.tex -o=output.tex 
@@ -165,6 +175,7 @@ latexindent.pl --outputfile output.tex myfile.tex
  \texttt{-o} switch takes priority over it.
 
  Note that using \texttt{-o} as above is equivalent to using
+
  \begin{commandshell}
 latexindent.pl myfile.tex > output.tex
 \end{commandshell}
@@ -173,6 +184,7 @@ latexindent.pl myfile.tex > output.tex
  extension; in \announce{2017-06-25}{upgrade to -o switch} this case,
  \texttt{latexindent.pl} will use the extension from the original file. For example, the
  following two calls to \texttt{latexindent.pl} are equivalent:%
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=output
 latexindent.pl myfile.tex -o=output.tex
@@ -182,6 +194,7 @@ latexindent.pl myfile.tex -o=output.tex
  \announce{2017-06-25}{+ sign in o switch} concatenate the name of the input file and the
  text given to the \texttt{-o} switch. For example, the following two calls to
  \texttt{latexindent.pl} are equivalent:%
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=+new
 latexindent.pl myfile.tex -o=myfilenew.tex
@@ -191,29 +204,36 @@ latexindent.pl myfile.tex -o=myfilenew.tex
  \announce{2017-06-25}{++ in o switch} of your output file; this tells
  \texttt{latexindent.pl} to search successively for the name of your output file
  concatenated with $0, 1, \ldots$ while the name of the output file exists. For example,%
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=output++
 \end{commandshell}
+
  tells \texttt{latexindent.pl} to output to \texttt{output0.tex}, but if it exists then
  output to \texttt{output1.tex}, and so on.
 
  Calling \texttt{latexindent.pl} with simply
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=++
 \end{commandshell}
+
  tells it to output to \texttt{myfile0.tex}, but if it exists then output to
  \texttt{myfile1.tex} and so on.
 
  The \texttt{+} and \texttt{++} feature of the \texttt{-o} switch can be combined; for
  example, calling
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=+out++
 \end{commandshell}
+
  tells \texttt{latexindent.pl} to output to \texttt{myfileout0.tex}, but if it exists,
  then try \texttt{myfileout1.tex}, and so on.
 
  There is no need to specify a file extension when using the \texttt{++} feature, but if
  you wish to, then you should include it \emph{after} the \texttt{++} symbols, for example
+
  \begin{commandshell}
 latexindent.pl myfile.tex -o=+out++.tex
 \end{commandshell}
@@ -221,6 +241,7 @@ latexindent.pl myfile.tex -o=+out++.tex
  See \vref{app:differences} for details of how the interface has changed from Version 2.2
  to Version 3.0 for this flag. \flagbox{-s, --silent} \index{switches!-s, --silent
  definition and details}
+
  \begin{commandshell}
 latexindent.pl -s myfile.tex
 latexindent.pl myfile.tex -s
@@ -230,6 +251,7 @@ latexindent.pl myfile.tex -s
 
 \flagbox{-t, --trace}
  \index{switches!-t, --trace definition and details}
+
  \begin{commandshell}
 latexindent.pl -t myfile.tex
 latexindent.pl myfile.tex -t
@@ -244,6 +266,7 @@ latexindent.pl myfile.tex -t
 
 \flagbox{-tt, --ttrace}
  \index{switches!-tt, --ttrace definition and details}
+
  \begin{commandshell}
 latexindent.pl -tt myfile.tex
 latexindent.pl myfile.tex -tt
@@ -256,6 +279,7 @@ latexindent.pl myfile.tex -tt
 
 \flagbox{-l, --local[=myyaml.yaml,other.yaml,...]}
  \index{switches!-l, --local definition and details}
+
  \begin{commandshell}
 latexindent.pl -l myfile.tex
 latexindent.pl -l=myyaml.yaml myfile.tex
@@ -282,48 +306,61 @@ latexindent.pl myfile.tex -l=first.yaml,second.yaml,third.yaml
  the current working directory that is \emph{not} called \texttt{localSettings.yaml}.
  \announce{2017-08-21}*{-l switch absolute paths} In fact, you can specify both
  \emph{relative} and \emph{absolute paths} for your YAML files; for example%
+
  \begin{commandshell}
 latexindent.pl -l=../../myyaml.yaml myfile.tex
 latexindent.pl -l=/home/cmhughes/Desktop/myyaml.yaml myfile.tex
 latexindent.pl -l=C:\Users\cmhughes\Desktop\myyaml.yaml myfile.tex
 \end{commandshell}
+
  You will find a lot of other explicit demonstrations of how to use the \texttt{-l} switch
  throughout this documentation,
 
  You can call the \texttt{-l} switch with a `+' symbol either before or after
  \announce{2017-06-25}{+ sign with -l switch} another YAML file; for example:
+
  \begin{commandshell}
 latexindent.pl -l=+myyaml.yaml myfile.tex
 latexindent.pl -l "+ myyaml.yaml" myfile.tex
 latexindent.pl -l=myyaml.yaml+  myfile.tex
 \end{commandshell}
+
  which translate, respectively, to
+
  \begin{commandshell}
 latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
 latexindent.pl -l=localSettings.yaml,myyaml.yaml myfile.tex
 latexindent.pl -l=myyaml.yaml,localSettings.yaml myfile.tex
 \end{commandshell}
+
  Note that the following is \emph{not} allowed:
+
  \begin{commandshell}
 latexindent.pl -l+myyaml.yaml myfile.tex
 \end{commandshell}
+
  and
+
  \begin{commandshell}
 latexindent.pl -l + myyaml.yaml myfile.tex
 \end{commandshell}
+
  will \emph{only} load \texttt{localSettings.yaml}, and \texttt{myyaml.yaml} will be
  ignored. If you wish to use spaces between any of the YAML settings, then you must wrap
  the entire list of YAML files in quotes, as demonstrated above.
 
  You may also choose to omit the \texttt{yaml} extension, such as \announce{2017-06-25}{no
  extension for -l switch}%
+
  \begin{commandshell}
 latexindent.pl -l=localSettings,myyaml myfile.tex
 \end{commandshell}
+
 \flagbox{-y, --yaml=yaml settings}
  \index{switches!-y, --yaml definition and details}
  \index{indentation!default}
  \index{indentation!defaultIndent using -y switch}
+
  \begin{commandshell}
 latexindent.pl myfile.tex -y="defaultIndent: ' '"
 latexindent.pl myfile.tex -y="defaultIndent: ' ',maximumIndentation:' '"
@@ -331,6 +368,7 @@ latexindent.pl myfile.tex -y="indentRules: one: '\t\t\t\t'"
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:EndStartsOnOwnLine:3' -m
 latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLine:3' -m
 \end{commandshell}
+
  \label{page:yamlswitch}You%
  \announce{2017-08-21}{the -y switch} can specify YAML settings from the command line
  using the \texttt{-y} or \texttt{--yaml} switch; sample demonstrations are given above.
@@ -341,6 +379,7 @@ latexindent.pl myfile.tex -y='modifyLineBreaks:environments:one:EndStartsOnOwnLi
  Any settings specified via this switch will be loaded \emph{after} any specified using
  the \texttt{-l} switch. This is discussed further in \vref{sec:loadorder}. \flagbox{-d,
  --onlydefault} \index{switches!-d, --onlydefault definition and details}
+
  \begin{commandshell}
 latexindent.pl -d myfile.tex
 \end{commandshell}
@@ -357,6 +396,7 @@ latexindent.pl -d myfile.tex
 
 \flagbox{-c, --cruft=<directory>}
  \index{switches!-c, --cruft definition and details}
+
  \begin{commandshell}
 latexindent.pl -c=/path/to/directory/ myfile.tex
 \end{commandshell}
@@ -367,6 +407,7 @@ latexindent.pl -c=/path/to/directory/ myfile.tex
 
 \flagbox{-g, --logfile=<name of log file>}
  \index{switches!-g, --logfile definition and details}
+
  \begin{commandshell}
 latexindent.pl -g=other.log myfile.tex
 latexindent.pl -g other.log myfile.tex
@@ -381,22 +422,26 @@ latexindent.pl myfile.tex -g other.log
  \announce{2021-05-07}{log file creation updated} If \texttt{latexindent.pl} can not open
  the log file that you specify, then the script will operate, and no log file will be
  produced; this might be helpful to users who wish to specify the following, for example
+
  \begin{commandshell}
 latexindent.pl -g /dev/null myfile.tex
 \end{commandshell}
 
 \flagbox{-sl, --screenlog}
  \index{switches!-sl, --screenlog definition and details}
+
  \begin{commandshell}
 latexindent.pl -sl myfile.tex
 latexindent.pl -screenlog myfile.tex
 \end{commandshell}
+
  Using this \announce{2018-01-13}{screenlog switch created} option tells
  \texttt{latexindent.pl} to output the log file to the screen, as well as to your chosen
  log file.%
 
 \flagbox{-m, --modifylinebreaks}
  \index{switches!-m, --modifylinebreaks definition and details}
+
  \begin{commandshell}
 latexindent.pl -m myfile.tex
 latexindent.pl -modifylinebreaks myfile.tex
@@ -407,15 +452,19 @@ latexindent.pl -modifylinebreaks myfile.tex
 
  \texttt{latexindent.pl} can also be called on a file without the file extension, for
  example
+
  \begin{commandshell}
 latexindent.pl myfile
 \end{commandshell}
+
  and in which case, you can specify the order in which extensions are searched for; see
  \vref{lst:fileExtensionPreference} for full details. \flagbox{STDIN}
+
  \begin{commandshell}
 cat myfile.tex | latexindent.pl
 cat myfile.tex | latexindent.pl -
 \end{commandshell}
+
  \texttt{latexindent.pl} will%
  \announce{2018-01-13}{STDIN allowed} allow input from STDIN, which means that you can
  pipe output from other commands directly into the script. For example assuming that you
@@ -424,6 +473,7 @@ cat myfile.tex | latexindent.pl -
 
  If you wish to use this feature with your own local settings, via the \texttt{-l} switch,
  then you should finish your call to \texttt{latexindent.pl} with a \texttt{-} sign:
+
  \begin{commandshell}
 cat myfile.tex | latexindent.pl -l=mysettings.yaml -
 \end{commandshell}
@@ -431,6 +481,7 @@ cat myfile.tex | latexindent.pl -l=mysettings.yaml -
  Similarly, if you \announce{2018-01-13}*{no options/filename updated} simply type
  \texttt{latexindent.pl} at the command line, then it will expect (STDIN) input from the
  command line.%
+
  \begin{commandshell}
 latexindent.pl
 \end{commandshell}
@@ -443,10 +494,12 @@ latexindent.pl
  to signify that your input has finished. Thanks to \cite{xu-cheng} for an update to this
  feature. \flagbox{-r, --replacement} \index{switches!-r, --replacement definition and
  details}
+
  \begin{commandshell}
 latexindent.pl -r myfile.tex
 latexindent.pl -replacement myfile.tex
 \end{commandshell}
+
  You can \announce{2019-07-13}{replacement mode switch} call \texttt{latexindent.pl} with
  the \texttt{-r} switch to instruct it to perform replacements/substitutions on your file;
  full details and examples are given in \vref{sec:replacements}. \index{verbatim!rv,
@@ -454,10 +507,12 @@ latexindent.pl -replacement myfile.tex
 
 \flagbox{-rv, --replacementrespectverb}
  \index{switches!-rv, --replacementrespectverb definition and details}
+
  \begin{commandshell}
 latexindent.pl -rv myfile.tex
 latexindent.pl -replacementrespectverb myfile.tex
 \end{commandshell}
+
  You can \announce{2019-07-13}{replacement mode switch, respecting verbatim} instruct
  \texttt{latexindent.pl} to perform replacements/substitutions by using the \texttt{-rv}
  switch, but will \emph{respect verbatim code blocks}; full details and examples are given
@@ -465,10 +520,12 @@ latexindent.pl -replacementrespectverb myfile.tex
 
 \flagbox{-rr, --onlyreplacement}
  \index{switches!-rr, --onlyreplacement definition and details}
+
  \begin{commandshell}
 latexindent.pl -rr myfile.tex
 latexindent.pl -onlyreplacement myfile.tex
 \end{commandshell}
+
  You can \announce{2019-07-13}{replacement (only) mode switch} instruct
  \texttt{latexindent.pl} to skip all of its other indentation operations and \emph{only}
  perform replacements/substitutions by using the \texttt{-rr} switch; full details and
@@ -476,10 +533,12 @@ latexindent.pl -onlyreplacement myfile.tex
 
 \flagbox{-k, --check}
  \index{switches!-k, --check definition and details}
+
  \begin{commandshell}
 latexindent.pl -k myfile.tex
 latexindent.pl -check myfile.tex
 \end{commandshell}
+
  You can \announce{2021-09-16}{-k,-check switch} instruct \texttt{latexindent.pl} to check
  if the text after indentation matches that given in the original file.%
 
@@ -500,20 +559,24 @@ latexindent.pl -check myfile.tex
 
 \flagbox{-kv, --checkv}
  \index{switches!-kv, --checkv definition and details}
+
  \begin{commandshell}
 latexindent.pl -kv myfile.tex
 latexindent.pl -checkv myfile.tex
 \end{commandshell}
+
  \announce{2021-09-16}{-kv, -checkv: check verbose switch} The \texttt{check verbose}
  switch is exactly the same as the \texttt{-k} switch, except that it is \emph{verbose},
  and it will output the (simple) diff to the terminal, as well as to \texttt{indent.log}.
 
 \flagbox{-n, --lines=MIN-MAX}
  \index{switches!-n, --lines definition and details}
+
  \begin{commandshell}
 latexindent.pl -n 5-8 myfile.tex
 latexindent.pl -lines 5-8 myfile.tex
 \end{commandshell}
+
  \announce{2021-09-16}{-n, -lines switch} The \texttt{lines} switch instructs
  \texttt{latexindent.pl} to operate only on specific line ranges within
  \texttt{myfile.tex}.
@@ -522,9 +585,11 @@ latexindent.pl -lines 5-8 myfile.tex
 
 \flagbox{--GCString}
  \index{switches!--GCString}
+
  \begin{commandshell}
 latexindent.pl --GCString myfile.tex
 \end{commandshell}
+
  \announce{2022-03-25}{GCString switch} instructs \texttt{latexindent.pl} to load the
  \texttt{Unicode::GCString} module. This should only be necessary if you find that the
  alignment at ampersand routine (described in \cref{subsec:align-at-delimiters}) does not
@@ -538,9 +603,11 @@ latexindent.pl --GCString myfile.tex
 \subsection{Summary of exit codes}
  \index{exit code!summary}
  Assuming that you call \texttt{latexindent.pl} on \texttt{myfile.tex}
+
  \begin{commandshell}
 latexindent.pl myfile.tex
 \end{commandshell}
+
  then \texttt{latexindent.pl} can exit with the exit codes given in \cref{tab:exit-codes}.
 
  \begin{table}[!htb]
