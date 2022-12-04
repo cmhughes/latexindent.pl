@@ -275,6 +275,8 @@ if(!$readTheDocsMode){
         $body =~ s/\$\\langle\$\\itshape\{arguments\}\$\\rangle\$/<arguments>/sg;
         $body =~ s/\$\\langle\$\\itshape\{braces\/brackets\}\$\\rangle\$/<braces\/brackets>/sg;
         $body =~ s/\$\\langle\$(.*?)\$\\rangle\$/<$1>/sg;
+        $body =~ s/\\verb!\{!/\\verb!\\{!/sg;
+        $body =~ s/\\verb!a-zA-Z@\\\*0-9_\\\\!/\\verb!a-zA-Z@\\\*0-9_!/sg;
 
         # flagbox switch
         $body =~ s/\\flagbox\{(.*?)\}/\n.. describe:: $1\n\n/sg;

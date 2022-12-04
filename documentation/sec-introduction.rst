@@ -4,31 +4,23 @@ Introduction
 Thanks
 ------
 
-I first created ``latexindent.pl`` to help me format chapter files in a big project. After I blogged about it on the TeX stack exchange (“A Perl Script for Indenting Tex Files” n.d.) I received some
-positive feedback and follow-up feature requests. A big thank you to Harish Kumar (Kumar 2013) who helped to develop and test the initial versions of the script.
+I first created ``latexindent.pl`` to help me format chapter files in a big project. After I blogged about it on the TeX stack exchange (“A Perl Script for Indenting Tex Files” n.d.) I received some positive feedback and follow-up feature requests. A big thank you to Harish Kumar (Kumar 2013) who helped to develop and test the initial versions of the script.
 
-The ``YAML``-based interface of ``latexindent.pl`` was inspired by the wonderful ``arara`` tool; any similarities are deliberate, and I hope that it is perceived as the compliment that it is. Thank
-you to Paulo Cereda and the team for releasing this awesome tool; I initially worried that I was going to have to make a GUI for ``latexindent.pl``, but the release of ``arara`` has meant there is no
-need.
+The ``YAML``-based interface of ``latexindent.pl`` was inspired by the wonderful ``arara`` tool; any similarities are deliberate, and I hope that it is perceived as the compliment that it is. Thank you to Paulo Cereda and the team for releasing this awesome tool; I initially worried that I was going to have to make a GUI for ``latexindent.pl``, but the release of ``arara`` has meant there is no need.
 
-There have been several contributors to the project so far (and hopefully more in the future!); thank you very much to the people detailed in :numref:`sec:contributors` for their valued
-contributions, and thank you to those who report bugs and request features at (“Home of Latexindent.pl” n.d.).
+There have been several contributors to the project so far (and hopefully more in the future!); thank you very much to the people detailed in :numref:`sec:contributors` for their valued contributions, and thank you to those who report bugs and request features at (“Home of Latexindent.pl” n.d.).
 
 License
 -------
 
 ``latexindent.pl`` is free and open source, and it always will be; it is released under the GNU General Public License v3.0.
 
-Before you start using it on any important files, bear in mind that ``latexindent.pl`` has the option to overwrite your ``.tex`` files. It will always make at least one backup (you can choose how many
-it makes, see :ref:`page page:onlyonebackup <page:onlyonebackup>`) but you should still be careful when using it. The script has been tested on many files, but there are some known limitations (see
-:numref:`sec:knownlimitations`). You, the user, are responsible for ensuring that you maintain backups of your files before running ``latexindent.pl`` on them. I think it is important at this stage
-to restate an important part of the license here:
+Before you start using it on any important files, bear in mind that ``latexindent.pl`` has the option to overwrite your ``.tex`` files. It will always make at least one backup (you can choose how many it makes, see :ref:`page page:onlyonebackup <page:onlyonebackup>`) but you should still be careful when using it. The script has been tested on many files, but there are some known limitations (see :numref:`sec:knownlimitations`). You, the user, are responsible for ensuring that you maintain
+backups of your files before running ``latexindent.pl`` on them. I think it is important at this stage to restate an important part of the license here:
 
-   *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-   General Public License for more details.*
+   *This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.*
 
-There is certainly no malicious intent in releasing this script, and I do hope that it works as you expect it to; if it does not, please first of all make sure that you have the correct settings, and
-then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a complete minimum working example as I would like to improve the code as much as possible.
+There is certainly no malicious intent in releasing this script, and I do hope that it works as you expect it to; if it does not, please first of all make sure that you have the correct settings, and then feel free to let me know at (“Home of Latexindent.pl” n.d.) with a complete minimum working example as I would like to improve the code as much as possible.
 
 .. warning::	
 	
@@ -270,8 +262,7 @@ You might also like to see https://stackoverflow.com/questions/19590042/error-ca
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 569. This may seem a lot, but I deem it necessary in presenting the
-various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 569. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 
@@ -290,8 +281,7 @@ This type of listing is a ``.tex`` file.
  	:linenos:
  	:lineno-start: 44
 
-This type of listing is a ``.yaml`` file; when you see line numbers given (as here) it means that the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in
-:numref:`sec:defuseloc`.
+This type of listing is a ``.yaml`` file; when you see line numbers given (as here) it means that the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in :numref:`sec:defuseloc`.
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
@@ -318,8 +308,7 @@ A word about regular expressions
 
 .. index:: regular expressions;a word about
 
-As you read this documentation, you may encounter the term *regular expressions*. I’ve tried to write this documentation in such a way so as to allow you to engage with them or not, as you prefer.
-This documentation is not designed to be a guide to regular expressions, and if you’d like to read about them, I recommend (Friedl, n.d.).
+As you read this documentation, you may encounter the term *regular expressions*. I’ve tried to write this documentation in such a way so as to allow you to engage with them or not, as you prefer. This documentation is not designed to be a guide to regular expressions, and if you’d like to read about them, I recommend (Friedl, n.d.).
 
 .. container:: references
    :name: refs

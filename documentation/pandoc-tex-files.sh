@@ -10,7 +10,7 @@ mainFile=$1
 mainFile=${mainFile/%.tex/}
 
 echo "Processing ${mainFile}.tex"
-pandoc --filter pandoc-citeproc cmhlistings.tex ${mainFile}.tex -o ${mainFile}.rst --bibliography latex-indent.bib --bibliography contributors.bib --columns=200
+pandoc --filter pandoc-citeproc cmhlistings.tex ${mainFile}.tex -o ${mainFile}.rst --bibliography latex-indent.bib --bibliography contributors.bib --columns=500
 perl -pi -e 's|:((?:num)?ref):``(.*?)``|:$1:`$2`|g' ${mainFile}.rst 
 
 # re-align tables, if necessary
