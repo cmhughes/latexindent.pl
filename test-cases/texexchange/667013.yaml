@@ -1,0 +1,15 @@
+lookForAlignDelims:
+    caption: 1
+modifyLineBreaks:
+    mandatoryArguments:
+        caption:
+            DBSFinishesWithLineBreak: 1
+            MandArgBodyStartsOnOwnLine: 1
+            RCuBStartsOnOwnLine: 1
+    textWrapOptions:
+        columns: 80
+        multipleSpacesToSingle: 1
+        blocksFollow:
+            other: \\\\|\\\]|\\item(?:\h|\[)|\\caption(?:\h|\[)
+        blocksBeginWith:
+           0-9: 1
