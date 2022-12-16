@@ -580,16 +580,16 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
   \end{itemize}
   \end{example}
 
-\subsubsection{Poly-switches for double back slash}\label{subsec:dbs}
+\subsubsection{Poly-switches for double backslash}\label{subsec:dbs}
  With reference to \texttt{lookForAlignDelims} (see \vref{lst:aligndelims:basic})
- \announce{2019-07-13}{poly-switch for double back slash} you can specify poly-switches to
- dictate the line-break behaviour of double back slashes in environments
+ \announce{2019-07-13}{poly-switch for double backslash} you can specify poly-switches to
+ dictate the line-break behaviour of double backslashes in environments
  (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code
  blocks (\vref{lst:specialafter}). Note that for these poly-switches to take effect, the
  name of the code block must necessarily be specified within \texttt{lookForAlignDelims}
  (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
- \index{delimiters!poly-switches for double back slash} \index{modifying linebreaks!
- surrounding double back slash} \index{poly-switches!for double back slash (delimiters)}%
+ \index{delimiters!poly-switches for double backslash} \index{modifying linebreaks!
+ surrounding double backslash} \index{poly-switches!for double back slash (delimiters)}%
 
  Consider the code given in \cref{lst:dbs-demo}.
  \begin{cmhlistings}[style=tcblatex,escapeinside={(*@}{@*)}]{\texttt{tabular3.tex}}{lst:dbs-demo}
@@ -599,16 +599,16 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankL
 \end{cmhlistings}
  Referencing \cref{lst:dbs-demo}:
  \begin{itemize}
-  \item \texttt{DBS} stands for \emph{double back slash};
-  \item line breaks ahead of the double back slash are annotated by $\ElseStartsOnOwnLine$, and
+  \item \texttt{DBS} stands for \emph{double backslash};
+  \item line breaks ahead of the double backslash are annotated by $\ElseStartsOnOwnLine$, and
         are controlled by \texttt{DBSStartsOnOwnLine};
-  \item line breaks after the double back slash are annotated by $\ElseFinishesWithLineBreak$,
+  \item line breaks after the double backslash are annotated by $\ElseFinishesWithLineBreak$,
         and are controlled by \texttt{DBSFinishesWithLineBreak}.
  \end{itemize}
 
  Let's explore each of these in turn.
 
- \paragraph{Double back slash starts on own line}
+ \paragraph{Double backslash starts on own line}
   \begin{example}
   We explore \texttt{DBSStartsOnOwnLine} ($\ElseStartsOnOwnLine$ in \cref{lst:dbs-demo});
   starting with the code in \cref{lst:dbs-demo}, together with the YAML files given in
@@ -638,22 +638,22 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
    \item \cref{lst:DBS1} specifies \texttt{DBSStartsOnOwnLine} for
          \emph{every} environment (that is within \texttt{lookForAlignDelims},
          \vref{lst:aligndelims:advanced});
-         the double back slashes from \cref{lst:dbs-demo} have been moved to their own line in
+         the double backslashes from \cref{lst:dbs-demo} have been moved to their own line in
          \cref{lst:tabular3-DBS1};
    \item \cref{lst:DBS2} specifies \texttt{DBSStartsOnOwnLine} on a
          \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims},
          \vref{lst:aligndelims:advanced});
-         the double back slashes from \cref{lst:dbs-demo} have been moved to their own line in
+         the double backslashes from \cref{lst:dbs-demo} have been moved to their own line in
          \cref{lst:tabular3-DBS2}, having added comment symbols before moving them.
   \end{itemize}
   \end{example}
 
- \paragraph{Double back slash finishes with line break}
+ \paragraph{Double backslash finishes with line break}
   \begin{example}
   Let's now explore \texttt{DBSFinishesWithLineBreak} ($\ElseFinishesWithLineBreak$ in
   \cref{lst:dbs-demo}); starting with the code in \cref{lst:dbs-demo}, together with the
   YAML files given in \cref{lst:DBS3} and \cref{lst:DBS4} and running the following
-  commands \index{poly-switches!for double back slash (delimiters)} \index{switches!-l
+  commands \index{poly-switches!for double backslash (delimiters)} \index{switches!-l
   demonstration} \index{switches!-m demonstration}
 
   \begin{commandshell}
@@ -679,25 +679,25 @@ latexindent.pl -m tabular3.tex -l DBS4.yaml
    \item \cref{lst:DBS3} specifies \texttt{DBSFinishesWithLineBreak} for
          \emph{every} environment (that is within \texttt{lookForAlignDelims},
          \vref{lst:aligndelims:advanced});
-         the code following the double back slashes from \cref{lst:dbs-demo} has been moved to
+         the code following the double backslashes from \cref{lst:dbs-demo} has been moved to
          their own line in \cref{lst:tabular3-DBS3};
    \item \cref{lst:DBS4} specifies \texttt{DBSFinishesWithLineBreak} on a
          \emph{per-name} basis for \texttt{tabular} (that is within \texttt{lookForAlignDelims},
          \vref{lst:aligndelims:advanced});
-         the first double back slashes from \cref{lst:dbs-demo} have moved code following them to
+         the first double backslashes from \cref{lst:dbs-demo} have moved code following them to
          their own line in \cref{lst:tabular3-DBS4}, having added comment symbols before moving
-         them; the final double back slashes have \emph{not} added a line break as they are at the
+         them; the final double backslashes have \emph{not} added a line break as they are at the
          end of the body within the code block.
   \end{itemize}
   \end{example}
 
- \paragraph{Double back slash poly-switches for specialBeginEnd}
+ \paragraph{Double backslash poly-switches for specialBeginEnd}
   \begin{example}
-  Let's explore the double back slash poly-switches for code blocks within
+  Let's explore the double backslash poly-switches for code blocks within
   \texttt{specialBeginEnd} code blocks (\vref{lst:specialBeginEnd}); we begin with the code
   within \cref{lst:special4}. \index{specialBeginEnd!double backslash poly-switch
   demonstration} \index{poly-switches!double backslash} \index{poly-switches!for double
-  back slash (delimiters)} \index{specialBeginEnd!lookForAlignDelims} \index{delimiters}
+  backslash (delimiters)} \index{specialBeginEnd!lookForAlignDelims} \index{delimiters}
   \index{linebreaks!summary of poly-switches}
 
   \cmhlistingsfromfile{demonstrations/special4.tex}{\texttt{special4.tex}}{lst:special4}
@@ -723,20 +723,20 @@ latexindent.pl -m special4.tex -l DBS5.yaml
   There are a few things to note:
   \begin{itemize}
    \item in \cref{lst:DBS5} we have specified \texttt{cmhMath} within \texttt{lookForAlignDelims};
-         without this, the double back slash poly-switches would be ignored for this code block;
+         without this, the double backslash poly-switches would be ignored for this code block;
    \item the \texttt{DBSFinishesWithLineBreak} poly-switch has controlled the line breaks
-         following the double back slashes;
+         following the double backslashes;
    \item the \texttt{SpecialEndStartsOnOwnLine} poly-switch has controlled the addition of a
          comment symbol, followed by a line break, as it is set to a value of 2.
   \end{itemize}
   \end{example}
 
- \paragraph{Double back slash poly-switches for optional and mandatory arguments}
-  For clarity, we provide a demonstration of controlling the double back slash
+ \paragraph{Double backslash poly-switches for optional and mandatory arguments}
+  For clarity, we provide a demonstration of controlling the double backslash
   poly-switches for optional and mandatory arguments.
 
   \begin{example}
-  We use with the code in \cref{lst:mycommand2}. \index{poly-switches!for double back slash
+  We use with the code in \cref{lst:mycommand2}. \index{poly-switches!for double backslash
   (delimiters)}
 
   \cmhlistingsfromfile{demonstrations/mycommand2.tex}{\texttt{mycommand2.tex}}{lst:mycommand2}
@@ -768,10 +768,10 @@ latexindent.pl -m mycommand2.tex -l DBS7.yaml
   \end{cmhtcbraster}
   \end{example}
 
- \paragraph{Double back slash optional square brackets}
-  The pattern matching for the double back slash will also, optionally, allow trailing
+ \paragraph{Double backslash optional square brackets}
+  The pattern matching for the double backslash will also, optionally, allow trailing
   square brackets that contain a measurement of vertical spacing, for example
-  \lstinline!\\[3pt]!. \index{poly-switches!for double back slash (delimiters)}
+  \lstinline!\\[3pt]!. \index{poly-switches!for double backslash (delimiters)}
 
   \begin{example}
   For example, beginning with the code in \cref{lst:pmatrix3}
@@ -790,7 +790,7 @@ latexindent.pl -m pmatrix3.tex -l DBS3.yaml
   \cmhlistingsfromfile{demonstrations/pmatrix3-mod3.tex}{\texttt{pmatrix3.tex} using \cref{lst:DBS3}}{lst:pmatrix3-DBS3}
   \end{example}
 
-  You can customise the pattern for the double back slash by exploring the \emph{fine
+  You can customise the pattern for the double backslash by exploring the \emph{fine
   tuning} field detailed in \vref{lst:fineTuning}.
 
 \subsubsection{Poly-switches for other code blocks}
