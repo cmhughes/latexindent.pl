@@ -24,20 +24,7 @@
  file exactly where to put it assuming it doesn't exist already.} \Cref{lst:indentconfig}
  shows a sample \texttt{indentconfig.yaml} file.
 
- \begin{yaml}{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
-# Paths to user settings for latexindent.pl
-#
-# Note that the settings will be read in the order you
-# specify here- each successive settings file will overwrite
-# the variables that you specify
-
-paths:
-- /home/cmhughes/Documents/yamlfiles/mysettings.yaml
-- /home/cmhughes/folder/othersettings.yaml
-- /some/other/folder/anynameyouwant.yaml
-- C:\Users\chughes\Documents\mysettings.yaml
-- C:\Users\chughes\Desktop\test spaces\more spaces.yaml
-\end{yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/indent-config.yaml}[yaml-TCB]{\texttt{indentconfig.yaml} (sample)}{lst:indentconfig}
 
  Note that the \texttt{.yaml} files you specify in \texttt{indentconfig.yaml} will be
  loaded in the order in which you write them. Each file doesn't have to have every switch
@@ -54,15 +41,7 @@ paths:
  throughout the rest of this documentation. \index{indentation!defaultIndent using YAML
  file}
 
- \begin{yaml}{\texttt{mysettings.yaml} (example)}{lst:mysettings}
-# Default value of indentation
-defaultIndent: "\t\t\t\t"
-
-# environments that have tab delimiters, add more
-# as needed
-lookForAlignDelims:
-    tabbing: 1
-\end{yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tabbing.yaml}[yaml-TCB]{\texttt{mysettings.yaml} (example)}{lst:mysettings}
 
  You can make sure that your settings are loaded by checking \texttt{indent.log} for
  details -- if you have specified a path that \texttt{latexindent.pl} doesn't recognise
@@ -86,7 +65,7 @@ lookForAlignDelims:
  users. In this case, you might like to explore the \texttt{encoding} option for
  \texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.%
 
- \cmhlistingsfromfile{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
 
  Thank you to \cite{qiancy98} for this contribution; please see \vref{app:encoding} and
  details within \cite{encoding} for further information.

@@ -1,0 +1,7 @@
+# Default value of indentation
+defaultIndent: "\t\t\t\t"
+
+# environments that have tab delimiters, add more
+# as needed
+lookForAlignDelims:
+    tabbing: 1

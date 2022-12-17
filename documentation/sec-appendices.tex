@@ -407,14 +407,14 @@ latexindent.pl myfile*.tex --check
   \end{enumerate}
 
   \begin{widepage}
-   \cmhlistingsfromfile{demonstrations/settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/settings.json}[yaml-TCB]{\texttt{settings.json}}{lst:settings.json}
   \end{widepage}
 
   Alternatively, if you would prefer not to download the json file, you might be able to
   use an adapted version of \cref{lst:settings-alt.json}.
 
   \begin{widepage}
-   \cmhlistingsfromfile{demonstrations/settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/settings-alt.json}[yaml-TCB]{\texttt{settings-alt.json}}{lst:settings-alt.json}
   \end{widepage}
 
   Finally, if your TeX distribution is up to date, then
@@ -422,7 +422,7 @@ latexindent.pl myfile*.tex --check
   your installation, so an adapted version of \cref{lst:settings-alt1.json} may work.
 
   \begin{widepage}
-   \cmhlistingsfromfile{demonstrations/settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/settings-alt1.json}[yaml-TCB]{\texttt{settings-alt1.json}}{lst:settings-alt1.json}
   \end{widepage}
 
   If you have details of how to implement this schema in other editors, please feel
@@ -523,7 +523,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
   The default values that are employed by \texttt{pre-commit} are shown in \cref{lst:.pre-commit-yaml-default}.
   \index{pre-commit!default}
 
-  \cmhlistingsfromfile{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
+  \cmhlistingsfromfile[style=yaml-LST]{../.pre-commit-hooks.yaml}[yaml-TCB]{\texttt{.pre-commit-hooks.yaml} (default)}{lst:.pre-commit-yaml-default}
 
   In particular, the decision has deliberately been made (in collaboration with
   \cite{holzhausprecommit}) to have the default to employ the following switches:
@@ -544,7 +544,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
   \texttt{.pre-commit-config.yaml} given in \cref{lst:.pre-commit-config.yaml-cpan} in your
   git-repository. \index{cpan} \index{git} \index{pre-commit!cpan}
 
-  \cmhlistingsfromfile{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/pre-commit-config-cpan.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (cpan)}{lst:.pre-commit-config.yaml-cpan}
   Once created, you should then be able to run the following command:
 
   \begin{commandshell}
@@ -577,7 +577,7 @@ latexindent.pl -s myfile.tex
   \texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
   \index{conda} \index{git} \index{pre-commit!conda}
 
-  \cmhlistingsfromfile{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/pre-commit-config-conda.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (conda)}{lst:.pre-commit-config.yaml-conda}
   Once created, you should then be able to run the following command:
 
   \begin{commandshell}
@@ -607,7 +607,7 @@ conda run latexindent.pl -s myfile.tex
   \texttt{CPAN} for all dependencies, including \texttt{latexindent.pl} itself.
   \index{docker} \index{git} \index{pre-commit!docker}
 
-  \cmhlistingsfromfile{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/pre-commit-config-docker.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (docker)}{lst:.pre-commit-config.yaml-docker}
   Once created, you should then be able to run the following command:
 
   \begin{commandshell}
@@ -647,7 +647,7 @@ modifyLineBreaks:
 
   and \texttt{.pre-commit-config.yaml} as in \cref{lst:.latexindent.yaml-switches}:
 
-  \cmhlistingsfromfile{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/pre-commit-config-demo.yaml}[yaml-TCB]{\texttt{.pre-commit-config.yaml} (demo)}{lst:.latexindent.yaml-switches}
   Now running
 
   \begin{commandshell}
@@ -685,7 +685,7 @@ latexindent.pl -l -m -s -w myfile.tex
   \end{minipage}
   \hfill
   \begin{minipage}{.6\linewidth}
-   \cmhlistingsfromfile{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/logfile-prefs1.yaml}[yaml-TCB]{\texttt{logfile-prefs1.yaml}}{lst:logfile-prefs1-yaml}
   \end{minipage}
 
   If we run the following command (noting that \texttt{-t} is active)
@@ -730,7 +730,7 @@ Active code page: 936
   and can then use the settings given in \cref{lst:indentconfig-encoding1} within their
   \texttt{indentconfig.yaml}, where 936 is the result of the \texttt{chcp} command.
 
-  \cmhlistingsfromfile{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/encoding1.yaml}[yaml-TCB]{\texttt{encoding} demonstration for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding1}
 
  \section{dos2unix linebreak adjustment}
 
@@ -772,18 +772,18 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
   noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
 
   The fields given in \cref{lst:obsoleteYaml} are \emph{obsolete} from Version 3.0 onwards.
-  \cmhlistingsfromfile{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/obsolete.yaml}[yaml-obsolete]{Obsolete YAML fields from Version 3.0}{lst:obsoleteYaml}
 
   There is a slight difference when specifying indentation after headings; specifically, we
   now write \texttt{indentAfterThisHeading} instead of \texttt{indent}. See
   \cref{lst:indentAfterThisHeadingOld,lst:indentAfterThisHeadingNew}
 
   \begin{minipage}{.45\textwidth}
-   \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingOld.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/indentAfterThisHeadingOld.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 2.2}{lst:indentAfterThisHeadingOld}
   \end{minipage}%
   \hfill
   \begin{minipage}{.45\textwidth}
-   \cmhlistingsfromfile{demonstrations/indentAfterThisHeadingNew.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/indentAfterThisHeadingNew.yaml}[yaml-TCB]{\texttt{indentAfterThisHeading} in Version 3.0}{lst:indentAfterThisHeadingNew}
   \end{minipage}%
 
   To specify \texttt{noAdditionalIndent} for display-math environments in Version 2.2, you
@@ -793,13 +793,13 @@ latexindent.pl myfile.tex -outputfile outputfile.tex
   displaymath V3.0}
 
   \begin{minipage}{.45\textwidth}
-   \cmhlistingsfromfile{demonstrations/noAddtionalIndentOld.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noAddtionalIndentOld.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} in Version 2.2}{lst:noAdditionalIndentOld}
   \end{minipage}%
   \hfill
   \begin{minipage}{.45\textwidth}
-   \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noAddtionalIndentNew.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew1}
 
-   \cmhlistingsfromfile{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew2}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noAddtionalIndentNew1.yaml}[yaml-TCB]{\texttt{noAdditionalIndent} for \texttt{displayMath} in Version 3.0}{lst:indentAfterThisHeadingNew2}
   \end{minipage}%
 
   \mbox{}\hfill

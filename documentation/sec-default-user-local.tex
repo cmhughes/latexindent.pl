@@ -146,8 +146,8 @@ copy myfile.bak4 to myfile.bak3
  then the listings given in \cref{lst:nameAsRegex1,lst:nameAsRegex2} are equivalent.
 
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-  \cmhlistingsfromfile{demonstrations/nameAsRegex1.yaml}[yaml-TCB]{\texttt{nameAsRegex1.yaml}}{lst:nameAsRegex1}
-  \cmhlistingsfromfile{demonstrations/nameAsRegex2.yaml}[yaml-TCB]{\texttt{nameAsRegex2.yaml}}{lst:nameAsRegex2}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex1.yaml}[yaml-TCB]{\texttt{nameAsRegex1.yaml}}{lst:nameAsRegex1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex2.yaml}[yaml-TCB]{\texttt{nameAsRegex2.yaml}}{lst:nameAsRegex2}
  \end{cmhtcbraster}
 
  With reference to \cref{lst:nameAsRegex2}:
@@ -182,8 +182,8 @@ copy myfile.bak4 to myfile.bak3
  \cref{lst:nameAsRegex3,lst:nameAsRegex4} are equivalent.
 
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-  \cmhlistingsfromfile{demonstrations/nameAsRegex3.yaml}[yaml-TCB]{\texttt{nameAsRegex3.yaml}}{lst:nameAsRegex3}
-  \cmhlistingsfromfile{demonstrations/nameAsRegex4.yaml}[yaml-TCB]{\texttt{nameAsRegex4.yaml}}{lst:nameAsRegex4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex3.yaml}[yaml-TCB]{\texttt{nameAsRegex3.yaml}}{lst:nameAsRegex3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex4.yaml}[yaml-TCB]{\texttt{nameAsRegex4.yaml}}{lst:nameAsRegex4}
  \end{cmhtcbraster}
 
  With reference to \cref{lst:nameAsRegex4}:
@@ -227,9 +227,9 @@ copy myfile.bak4 to myfile.bak3
    raster left skip=-3.5cm,
    raster right skip=-2cm,
    raster column skip=.03\linewidth]
-  \cmhlistingsfromfile{demonstrations/noindent1.yaml}[yaml-TCB]{\texttt{noindent1.yaml}}{lst:noindent1}
-  \cmhlistingsfromfile{demonstrations/noindent2.yaml}[yaml-TCB]{\texttt{noindent2.yaml}}{lst:noindent2}
-  \cmhlistingsfromfile{demonstrations/noindent3.yaml}[yaml-TCB]{\texttt{noindent3.yaml}}{lst:noindent3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noindent1.yaml}[yaml-TCB]{\texttt{noindent1.yaml}}{lst:noindent1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noindent2.yaml}[yaml-TCB]{\texttt{noindent2.yaml}}{lst:noindent2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/noindent3.yaml}[yaml-TCB]{\texttt{noindent3.yaml}}{lst:noindent3}
  \end{cmhtcbraster}
 
  Upon running the commands
@@ -281,8 +281,8 @@ latexindent.pl -l noindent3.yaml noindent1
 
  \begin{widepage}
   \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-   \cmhlistingsfromfile{demonstrations/nameAsRegex5.yaml}[yaml-TCB]{\texttt{nameAsRegex5.yaml}}{lst:nameAsRegex5}
-   \cmhlistingsfromfile{demonstrations/nameAsRegex6.yaml}[yaml-TCB]{\texttt{nameAsRegex6.yaml}}{lst:nameAsRegex6}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex5.yaml}[yaml-TCB]{\texttt{nameAsRegex5.yaml}}{lst:nameAsRegex5}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/nameAsRegex6.yaml}[yaml-TCB]{\texttt{nameAsRegex6.yaml}}{lst:nameAsRegex6}
   \end{cmhtcbraster}
  \end{widepage}
 
@@ -587,10 +587,10 @@ latexindent.pl aligned1.tex -o=+-default
  not-yet discussed \texttt{noAdditionalIndent} field (see \vref{sec:noadd-indent-rules})
  which will assist in the demonstration in what follows.
  \begin{cmhtcbraster}[raster columns=2, ]
-  \cmhlistingsfromfile{demonstrations/sba1.yaml}[yaml-TCB]{\texttt{sba1.yaml}}{lst:sba1}
-  \cmhlistingsfromfile{demonstrations/sba2.yaml}[yaml-TCB]{\texttt{sba2.yaml}}{lst:sba2}
-  \cmhlistingsfromfile{demonstrations/sba3.yaml}[yaml-TCB]{\texttt{sba3.yaml}}{lst:sba3}
-  \cmhlistingsfromfile{demonstrations/sba4.yaml}[yaml-TCB]{\texttt{sba4.yaml}}{lst:sba4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba1.yaml}[yaml-TCB]{\texttt{sba1.yaml}}{lst:sba1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba2.yaml}[yaml-TCB]{\texttt{sba2.yaml}}{lst:sba2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba3.yaml}[yaml-TCB]{\texttt{sba3.yaml}}{lst:sba3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba4.yaml}[yaml-TCB]{\texttt{sba4.yaml}}{lst:sba4}
  \end{cmhtcbraster}
  Upon running the following commands
 
@@ -636,8 +636,8 @@ latexindent.pl aligned1.tex -l sba4.yaml
  equivalent.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/sba5.yaml}[yaml-TCB]{\texttt{sba5.yaml}}{lst:sba5}
-  \cmhlistingsfromfile{demonstrations/sba6.yaml}[yaml-TCB]{\texttt{sba6.yaml}}{lst:sba6}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba5.yaml}[yaml-TCB]{\texttt{sba5.yaml}}{lst:sba5}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba6.yaml}[yaml-TCB]{\texttt{sba6.yaml}}{lst:sba6}
  \end{cmhtcbraster}
 
  Upon running
@@ -659,7 +659,7 @@ latexindent.pl aligned1.tex -l sba6.yaml
    raster right skip=-2cm,]
   \cmhlistingsfromfile{demonstrations/aligned1-mod5.tex}{\texttt{aligned1-mod5.tex}}{lst:aligned1-mod5}
   \cmhlistingsfromfile{demonstrations/aligned1-mod7.tex}{\texttt{aligned1.tex} using \cref{lst:sba7}}{lst:aligned1-mod7}
-  \cmhlistingsfromfile{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sba7.yaml}[yaml-TCB]{\texttt{sba7.yaml}}{lst:sba7}
  \end{cmhtcbraster}
  \end{example}
 
@@ -765,7 +765,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure1.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular-DM-mod1.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure1}}{lst:tabular-DM-mod1}
-  \cmhlistingsfromfile{demonstrations/dontMeasure1.yaml}[yaml-TCB]{\texttt{dontMeasure1.yaml}}{lst:dontMeasure1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure1.yaml}[yaml-TCB]{\texttt{dontMeasure1.yaml}}{lst:dontMeasure1}
  \end{cmhtcbraster}
 
  We note that the \emph{largest} column entries have not contributed to the measuring
@@ -786,7 +786,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular-DM-mod2.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure2} or \cref{lst:dontMeasure3}}{lst:tabular-DM-mod2}
-  \cmhlistingsfromfile{demonstrations/dontMeasure2.yaml}[yaml-TCB]{\texttt{dontMeasure2.yaml}}{lst:dontMeasure2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure2.yaml}[yaml-TCB]{\texttt{dontMeasure2.yaml}}{lst:dontMeasure2}
  \end{cmhtcbraster}
 
  We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured, one
@@ -810,8 +810,8 @@ latexindent.pl tabular-DM.tex -l=dontMeasure4.yaml
    raster right skip=-2cm,
    raster column skip=.03\linewidth]
   \cmhlistingsfromfile{demonstrations/tabular-DM-mod3.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure3} or \cref{lst:dontMeasure3}}{lst:tabular-DM-mod3}
-  \cmhlistingsfromfile{demonstrations/dontMeasure3.yaml}[yaml-TCB]{\texttt{dontMeasure3.yaml}}{lst:dontMeasure3}
-  \cmhlistingsfromfile{demonstrations/dontMeasure4.yaml}[yaml-TCB]{\texttt{dontMeasure4.yaml}}{lst:dontMeasure4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure3.yaml}[yaml-TCB]{\texttt{dontMeasure3.yaml}}{lst:dontMeasure3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure4.yaml}[yaml-TCB]{\texttt{dontMeasure4.yaml}}{lst:dontMeasure4}
  \end{cmhtcbraster}
  We note that in:
  \begin{itemize}
@@ -839,7 +839,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure5.yaml
  we receive the output in \cref{lst:tabular-DM-mod5}.
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular-DM-mod5.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure5}}{lst:tabular-DM-mod5}
-  \cmhlistingsfromfile{demonstrations/dontMeasure5.yaml}[yaml-TCB]{\texttt{dontMeasure5.yaml}}{lst:dontMeasure5}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure5.yaml}[yaml-TCB]{\texttt{dontMeasure5.yaml}}{lst:dontMeasure5}
  \end{cmhtcbraster}
  \end{example}
 
@@ -857,7 +857,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular-DM-mod6.tex}{\texttt{tabular-DM.tex} using \cref{lst:dontMeasure6}}{lst:tabular-DM-mod6}
-  \cmhlistingsfromfile{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure6.yaml}[yaml-TCB]{\texttt{dontMeasure6.yaml}}{lst:dontMeasure6}
  \end{cmhtcbraster}
  \end{example}
 
@@ -900,7 +900,7 @@ latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabbing-mod1.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx1}}{lst:tabbing-mod1}
-  \cmhlistingsfromfile{demonstrations/delimiterRegEx1.yaml}[yaml-TCB]{\texttt{delimiterRegEx1.yaml}}{lst:delimiterRegEx1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/delimiterRegEx1.yaml}[yaml-TCB]{\texttt{delimiterRegEx1.yaml}}{lst:delimiterRegEx1}
  \end{cmhtcbraster}
  We note that:
  \begin{itemize}
@@ -925,7 +925,7 @@ latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabbing-mod2.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx2}}{lst:tabbing-mod2}
-  \cmhlistingsfromfile{demonstrations/delimiterRegEx2.yaml}[yaml-TCB]{\texttt{delimiterRegEx2.yaml}}{lst:delimiterRegEx2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/delimiterRegEx2.yaml}[yaml-TCB]{\texttt{delimiterRegEx2.yaml}}{lst:delimiterRegEx2}
  \end{cmhtcbraster}
  We note that only the \lstinline!\>! have been aligned.
  \end{example}
@@ -945,7 +945,7 @@ latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabbing-mod3.tex}{\texttt{tabbing.tex} using \cref{lst:delimiterRegEx3}}{lst:tabbing-mod3}
-  \cmhlistingsfromfile{demonstrations/delimiterRegEx3.yaml}[yaml-TCB]{\texttt{delimiterRegEx3.yaml}}{lst:delimiterRegEx3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/delimiterRegEx3.yaml}[yaml-TCB]{\texttt{delimiterRegEx3.yaml}}{lst:delimiterRegEx3}
  \end{cmhtcbraster}
  \end{example}
 
@@ -970,7 +970,7 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
    raster column skip=.03\linewidth]
   \cmhlistingsfromfile{demonstrations/tabbing1.tex}{\texttt{tabbing1.tex}}{lst:tabbing1}
   \cmhlistingsfromfile{demonstrations/tabbing1-mod4.tex}{\texttt{tabbing1-mod4.tex}}{lst:tabbing1-mod4}
-  \cmhlistingsfromfile{demonstrations/delimiterRegEx4.yaml}[yaml-TCB]{\texttt{delimiterRegEx4.yaml}}{lst:delimiterRegEx4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/delimiterRegEx4.yaml}[yaml-TCB]{\texttt{delimiterRegEx4.yaml}}{lst:delimiterRegEx4}
  \end{cmhtcbraster}
  \end{example}
 
@@ -989,7 +989,7 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabbing1-mod5.tex}{\texttt{tabbing1-mod5.tex}}{lst:tabbing1-mod5}
-  \cmhlistingsfromfile{demonstrations/delimiterRegEx5.yaml}[yaml-TCB]{\texttt{delimiterRegEx5.yaml}}{lst:delimiterRegEx5}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/delimiterRegEx5.yaml}[yaml-TCB]{\texttt{delimiterRegEx5.yaml}}{lst:delimiterRegEx5}
  \end{cmhtcbraster}
 
  Note that in \cref{lst:tabbing1-mod5} the second set of delimiters have been \emph{right
@@ -1027,7 +1027,7 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular-DM-1-mod1a.tex}{\texttt{tabular-DM-1-mod1a.tex}}{lst:tabular-DM-1-mod1a}
-  \cmhlistingsfromfile{demonstrations/dontMeasure1a.yaml}[yaml-TCB]{\texttt{dontMeasure1a.yaml}}{lst:dontMeasure1a}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure1a.yaml}[yaml-TCB]{\texttt{dontMeasure1a.yaml}}{lst:dontMeasure1a}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1154,12 +1154,12 @@ latexindent.pl special2.tex -l=middle1
  then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
   \cmhlistingsfromfile{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
  \end{cmhtcbraster}
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
   \cmhlistingsfromfile{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
  \end{cmhtcbraster}
 
@@ -1191,7 +1191,7 @@ latexindent.pl special3.tex -l=special-verb1
  \index{specialBeginEnd!specifying as verbatim}
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
   \cmhlistingsfromfile{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
  \end{cmhtcbraster}
  \end{example}
@@ -1218,7 +1218,7 @@ latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
  specialBeginEnd blocks} \index{regular expressions!numeric 0-9}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-  \cmhlistingsfromfile{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
   \cmhlistingsfromfile{demonstrations/special-align-mod1.tex}{\texttt{special-align.tex} using \cref{lst:edge-node1}}{lst:special-align-mod1}
  \end{cmhtcbraster}
 
@@ -1236,7 +1236,7 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
  \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-  \cmhlistingsfromfile{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
   \cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
  \end{cmhtcbraster}
  \end{example}

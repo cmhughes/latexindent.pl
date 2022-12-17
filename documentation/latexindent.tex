@@ -335,10 +335,17 @@
  #3,
 }
 
+% reference: https://tex.stackexchange.com/questions/145504/yaml-syntax-highlighting/654987#654987
 \lstdefinestyle{yaml-LST}{
  style=tcblatex,
  numbers=none,
- numberstyle=\color{red},
+ numberstyle=\color{red}\small,
+ basicstyle=\color{black}\ttfamily\small,
+ string=[s]{'}{'},
+ stringstyle=\color{black}\ttfamily\small,
+ comment=[l]{:},
+ commentstyle=\color{blue}\ttfamily\small,
+ morecomment=[l]{-},
 }
 
 \lstdefinestyle{demo}{
