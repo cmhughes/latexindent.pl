@@ -53,8 +53,7 @@
 
 \subsection{Introduction to replacements}
  Let's explore the action of the default settings, and then we'll demonstrate the feature
- with further examples. With reference to \cref{lst:replacements}, the default action will
- replace every instance of the text \texttt{latexindent.pl} with \texttt{pl.latexindent}.
+ with further examples. 
 
  \begin{example}
  Beginning with the code in \cref{lst:replace1} and running the command \index{switches!-r
@@ -71,8 +70,11 @@ latexindent.pl -r replace1.tex
   \cmhlistingsfromfile{demonstrations/replace1-r1.tex}{\texttt{replace1.tex} default}{lst:replace1-r1}
  \end{cmhtcbraster}
 
- If we don't wish to perform this replacement, then we can tweak the default settings of
- \vref{lst:replacements} by changing \texttt{lookForThis} to 0; we perform this action in
+ We note that in \cref{lst:replacements}, because \texttt{lookForThis} is set to 0, the specified replacement 
+ has \emph{not} been made, and there is no difference between \cref{lst:replace1,lst:replace1-r1}.
+
+ If we \emph{do} wish to perform this replacement, then we can tweak the default settings of
+ \vref{lst:replacements} by changing \texttt{lookForThis} to 1; we perform this action in
  \cref{lst:replace1-yaml}, and run the command \index{switches!-l demonstration}
  \index{switches!-r demonstration}
 
