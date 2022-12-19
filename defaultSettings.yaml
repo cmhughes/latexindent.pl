@@ -164,7 +164,7 @@ lookForAlignDelims:
       justification: left
       alignFinalDoubleBackSlash: 0
       dontMeasure: 0
-      delimiterRegEx: '(?<!\\)(&)'
+      delimiterRegEx: (?<!\\)(&)
       delimiterJustification: left
       lookForChildCodeBlocks: 1
    tabularx:
@@ -252,16 +252,16 @@ itemNames:
 # there's no restrictions
 specialBeginEnd:
     displayMath:
-        begin: '\\\['
-        end: '\\\]'
-        lookForThis: 1
+        begin: (?<!\\)\\\[          # \[  but *not* \\[
+        end: \\\]                   # \]
+        lookForThis: 1              
     inlineMath:
-        begin: '(?<!\$)(?<!\\)\$(?!\$)'
-        end: '(?<!\\)\$(?!\$)'
+        begin: (?<!\$)(?<!\\)\$(?!\$)
+        end: (?<!\\)\$(?!\$)
         lookForThis: 1
     displayMathTeX:
-        begin: '\$\$'
-        end: '\$\$'
+        begin: \$\$
+        end: \$\$
         lookForThis: 1
     specialBeforeCommand: 0
 
@@ -367,13 +367,13 @@ commandCodeBlocks:
     stringsAllowedBetweenArguments:
       -
         amalgamate: 1
-      - 'node'
-      - 'at'
-      - 'to'
-      - 'decoration'
-      - '\+\+'
-      - '\-\-'
-      - '\#\#\d'
+      - node
+      - at
+      - to
+      - decoration
+      - \+\+
+      - \-\-
+      - \#\#\d
     commandNameSpecial:
       -
         amalgamate: 1
@@ -531,7 +531,7 @@ modifyLineBreaks:
            blankLine: 1
            verbatim: 1
            filecontents: 1
-           other: '\\\]|\\item(?:\h|\[)'      # regex
+           other: \\\]|\\item(?:\h|\[)        # regex
         blocksBeginWith:
            A-Z: 1
            a-z: 1
@@ -541,7 +541,7 @@ modifyLineBreaks:
            commentOnOwnLine: 1
            verbatim: 1
            filecontents: 1
-           other: '\\begin\{|\\\[|\\end\{'    # regex
+           other: \\begin\{|\\\[|\\end\{      # regex
         huge: overflow                        # forbid mid-word line breaks
         separator: ""
     # poly-switches below here
@@ -610,8 +610,8 @@ replacements:
   -
     amalgamate: 1
   -
-    this: 'latexindent.pl'
-    that: 'pl.latexindent'
+    this: latexindent.pl
+    that: pl.latexindent
     lookForThis: 0
     when: before
 
@@ -619,28 +619,28 @@ replacements:
 # is central to latexindent.pl
 fineTuning:
     environments:
-      name: '[a-zA-Z@\*0-9_\\]+'
+      name: [a-zA-Z@\*0-9_\\]+
     ifElseFi:
-      name: '(?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?'
+      name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?
     commands:
-      name: '[+a-zA-Z@\*0-9_\:]+?'
+      name: [+a-zA-Z@\*0-9_\:]+?
     items:
-      canBeFollowedBy: '(?:\[[^]]*?\])|(?:<[^>]*?>)'
+      canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
     keyEqualsValuesBracesBrackets:
-      name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
-      follow: '(?:(?<!\\)\{)|,|(?:(?<!\\)\[)'
+      name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?
+      follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)
     namedGroupingBracesBrackets:
-      name: '[0-9\.a-zA-Z@\*><]+?'
-      follow: '\h|\R|\{|\[|\$|\)|\('
+      name: [0-9\.a-zA-Z@\*><]+?
+      follow: \h|\R|\{|\[|\$|\)|\(
     UnNamedGroupingBracesBrackets:
-      follow: '\{|\[|,|&|\)|\(|\$'
+      follow: \{|\[|,|&|\)|\(|\$
     arguments:
-      before: '(?:#\d\h*;?,?\/?)+|\<.*?\>'
-      between: '_|\^|\*'
+      before: (?:#\d\h*;?,?\/?)+|\<.*?\>
+      between: _|\^|\*
     trailingComments:
-      notPreceededBy: '(?<!\\)'
+      notPreceededBy: (?<!\\)
     modifyLineBreaks:
-      doubleBackSlash: '\\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?'
+      doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?
       comma: ','
       betterFullStop: |-
         (?x)                                # ignore spaces in the below
