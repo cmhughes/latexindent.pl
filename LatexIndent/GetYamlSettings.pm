@@ -119,8 +119,17 @@ sub yaml_read_settings {
     my $homeDir = File::HomeDir->my_home;
     $logger->info("*YAML settings read: indentconfig.yaml or .indentconfig.yaml") unless $switches{onlyDefault};
 
-    # get information about user settings- first check if indentconfig.yaml exists
-    my $indentconfig = "$homeDir/indentconfig.yaml";
+    # get information about user settings- first check if the environment variable LATEXINDENT_CONFIG exists
+    my $indentconfig = "$ENV{LATEXINDENT_CONFIG}";
+
+    # if LATEXINDENT_CONFIG doesn't exist, check for the XDG_CONFIG_HOME path
+    $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/indentconfig.yaml" if ( !-e $indentconfig );
+
+    # or, if XDG_CONFIG_HOME isn't set, check HOME/.config
+    $indentconfig = "$ENV{HOME}/.config/latexindent/indentconfig.yaml" if ( !-e $indentconfig );
+
+    # if all of these don't exist check home directly, with the non hidden file
+    $indentconfig = "$homeDir/indentconfig.yaml" if ( !-e $indentconfig );
 
     # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
     $indentconfig = "$homeDir/.indentconfig.yaml" if ( !-e $indentconfig );
