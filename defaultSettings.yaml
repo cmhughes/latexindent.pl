@@ -524,6 +524,7 @@ modifyLineBreaks:
         columns: 0
         multipleSpacesToSingle: 1            
         removeBlockLineBreaks: 1
+        when: before                          # before/after
         blocksFollow:
            headings: 1
            commentOnPreviousLine: 1

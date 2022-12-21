@@ -297,6 +297,24 @@ sub process_body_of_text {
     $logger->info('*Phase 4: final indentation check');
     $self->final_indentation_check;
 
+    # one sentence per line: sentences are objects, as of V3.5.1
+    if (    $is_m_switch_active
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'") if $is_tt_switch_active;
+        $self->one_sentence_per_line( textWrap => 1);
+    }
+
+    # option for text wrap
+    if (    $is_m_switch_active
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $self->text_wrap();
+    }
     return;
 }
 
@@ -304,8 +322,9 @@ sub find_objects {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line
-        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+    $self->one_sentence_per_line( textWrap => (${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before'))
+        if ($is_m_switch_active
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences});
 
     # text wrapping
     #
@@ -319,7 +338,8 @@ sub find_objects {
     if (    $is_m_switch_active
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 )
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
     {
         $self->text_wrap();
 

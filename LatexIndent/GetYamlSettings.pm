@@ -693,6 +693,23 @@ sub yaml_read_settings {
 
     }
 
+    # the following are incompatible:
+    #
+    #   modifyLineBreaks:
+    #       oneSentencePerLine:
+    #         manipulateSentences: 1
+    #         textWrapSentences: 1
+    #         sentenceIndent: " "       <!------
+    #       textWrapOptions:
+    #           columns: 100
+    #           when: after             <!------
+    #
+    if ($is_m_switch_active  and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} =~ m/\h+/ ){
+                $logger->warn("*one-sentence-per-line *ignoring* sentenceIndent, as text wrapping set to 'after'");
+        ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} = q();
+    }
+
     # some users may wish to see showAmalgamatedSettings
     # which details the overall state of the settings modified
     # from the default in various user files

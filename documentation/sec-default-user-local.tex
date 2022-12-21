@@ -13,10 +13,11 @@
  value is given in each case; whenever you see \emph{integer} in \emph{this} section,
  assume that it must be greater than or equal to \texttt{0} unless otherwise stated.
 
- For most of the settings in \texttt{defaultSettings.yaml} that are specified as integers,
- then we understand \texttt{0} to represent `off' and \texttt{1} to represent `on'. For
- fields that allow values other than \texttt{0} or \texttt{1}, it is hoped that the
- specific context and associated commentary should make it clear which values are allowed.
+ For most of the settings in \texttt{defaultSettings.yaml} that are specified as
+ integers, then we understand \texttt{0} to represent `off' and \texttt{1} to represent
+ `on'. For fields that allow values other than \texttt{0} or \texttt{1}, it is hoped that
+ the specific context and associated commentary should make it clear which values are
+ allowed.
 
 \yamltitle{fileExtensionPreference}*{fields}
  \texttt{latexindent.pl} can be called to
@@ -27,8 +28,9 @@ latexindent.pl myfile
 \end{commandshell}
 
  in which case the script will look for \texttt{myfile} with the extensions specified in
- \texttt{fileExtensionPreference} in their numeric order. If no match is found, the script
- will exit. As with all of the fields, you should change and/or add to this as necessary.
+ \texttt{fileExtensionPreference} in their numeric order. If no match is found, the
+ script will exit. As with all of the fields, you should change and/or add to this as
+ necessary.
 
  \cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference}
 
@@ -48,8 +50,8 @@ latexindent.pl myfile
  default extension is \texttt{.bak}, so, for example, \texttt{myfile.bak0} would be
  created when calling \texttt{latexindent.pl myfile.tex} for the first time.
 
- By default, every time you subsequently call \texttt{latexindent.pl} with the \texttt{-w}
- to act upon \texttt{myfile.tex}, it will create successive back up files:
+ By default, every time you subsequently call \texttt{latexindent.pl} with the
+ \texttt{-w} to act upon \texttt{myfile.tex}, it will create successive back up files:
  \texttt{myfile.bak1}, \texttt{myfile.bak2}, etc.
 
 \yamltitle{onlyOneBackUp}*{integer}
@@ -64,10 +66,10 @@ latexindent.pl myfile
  \index{backup files!number of backup files}
 
 \yamltitle{maxNumberOfBackUps}*{integer}
- Some users may only want a finite number of backup files, say at most $3$, in which case,
- they can change this switch. The smallest value of \texttt{maxNumberOfBackUps} is $0$
- which will \emph{not} prevent backup files being made; in this case, the behaviour will
- be dictated entirely by \texttt{onlyOneBackUp}. The default value of
+ Some users may only want a finite number of backup files, say at most $3$, in which
+ case, they can change this switch. The smallest value of \texttt{maxNumberOfBackUps} is
+ $0$ which will \emph{not} prevent backup files being made; in this case, the behaviour
+ will be dictated entirely by \texttt{onlyOneBackUp}. The default value of
  \texttt{maxNumberOfBackUps} is \texttt{0}.
 
 \yamltitle{cycleThroughBackUps}*{integer}
@@ -98,11 +100,11 @@ copy myfile.bak4 to myfile.bak3
 
  \cmhlistingsfromfile[style=logFilePreferences,]{../defaultSettings.yaml}[width=.9\linewidth,before=\centering,yaml-TCB]{\texttt{logFilePreferences}}{lst:logFilePreferences}
 
- When \announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file} either
- of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you will
- receive detailed information in \texttt{indent.log}. You can specify character strings to
- appear before and after the notification of a found code block using, respectively,
- \texttt{showDecorationStartCodeBlockTrace} and
+ When \announce{2018-01-13}{showDecorationStartCodeBlockTrace feature for log file}
+ either of the \texttt{trace} modes (see \cpageref{page:traceswitch}) are active, you
+ will receive detailed information in \texttt{indent.log}. You can specify character
+ strings to appear before and after the notification of a found code block using,
+ respectively, \texttt{showDecorationStartCodeBlockTrace} and
  \texttt{showDecorationFinishCodeBlockTrace}. A demonstration is given in
  \vref{app:logfile-demo}.%
 
@@ -117,14 +119,15 @@ copy myfile.bak4 to myfile.bak3
  options} for Perl's \texttt{Dumper} module can be specified in
  \cref{lst:logFilePreferences}; see \cite{dumper} and \cite{dumperdemo} for more
  information. These options will mostly be helpful for those calling
- \texttt{latexindent.pl} with the \texttt{-tt} option described in \cref{sec:commandline}.%
+ \texttt{latexindent.pl} with the \texttt{-tt} option described in
+ \cref{sec:commandline}.%
 
 \subsection{Verbatim code blocks}
 \yamltitle{verbatimEnvironments}*{fields}
 
- A field that contains a list of environments that you would like left completely alone --
- no indentation will be performed on environments that you have specified in this field,
- see \cref{lst:verbatimEnvironments}. \index{verbatim!environments}
+ A field that contains a list of environments that you would like left completely alone
+ -- no indentation will be performed on environments that you have specified in this
+ field, see \cref{lst:verbatimEnvironments}. \index{verbatim!environments}
  \index{verbatim!commands}
 
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
@@ -132,13 +135,13 @@ copy myfile.bak4 to myfile.bak3
   \cmhlistingsfromfile[style=verbatimCommands]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{verbatimCommands}}{lst:verbatimCommands}
  \end{cmhtcbraster}
 
- Note that if you put an environment in	\texttt{verbatimEnvironments} and in other fields
+ Note that if you put an environment in \texttt{verbatimEnvironments} and in other fields
  such as \texttt{lookForAlignDelims} or \texttt{noAdditionalIndent} then
  \texttt{latexindent.pl} will \emph{always} prioritize \texttt{verbatimEnvironments}.
 
  You can, optionally, specify \announce{2021-10-30}{verbatim name feature} the
- \texttt{verbatim} field using the \texttt{name} field which takes a regular expression as
- its argument; thank you to \cite{XuehaiPan} for contributing this feature.
+ \texttt{verbatim} field using the \texttt{name} field which takes a regular expression
+ as its argument; thank you to \cite{XuehaiPan} for contributing this feature.
 
  \begin{example}
  For demonstration, then assuming that your file contains the environments
@@ -152,12 +155,12 @@ copy myfile.bak4 to myfile.bak3
 
  With reference to \cref{lst:nameAsRegex2}:
  \begin{itemize}
-  \item the \texttt{name} field as specified here means \emph{any word followed by the word code,
-        optionally followed by *};
-  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
-        you like;
-  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
-        default, it is assumed to be 1 (on).
+  \item the \texttt{name} field as specified here means \emph{any word followed by the
+        word code, optionally followed by *};
+  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any
+        description you like;
+  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1
+        (on); by default, it is assumed to be 1 (on).
  \end{itemize}
  \end{example}
 
@@ -188,20 +191,20 @@ copy myfile.bak4 to myfile.bak3
 
  With reference to \cref{lst:nameAsRegex4}:
  \begin{itemize}
-  \item the \texttt{name} field as specified here means \emph{any word followed by the word
-        inline};
-  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
-        you like;
-  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
-        default, it is assumed to be 1 (on).
+  \item the \texttt{name} field as specified here means \emph{any word followed by the
+        word inline};
+  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any
+        description you like;
+  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1
+        (on); by default, it is assumed to be 1 (on).
  \end{itemize}
  \end{example}
 
 \yamltitle{noIndentBlock}*{fields}
- If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even if
- \index{verbatim!noIndentBlock} it is \emph{not} a verbatim-like environment) then you can
- wrap it in an environment from \texttt{noIndentBlock}; you can use any name you like for
- this, provided you populate it as demonstrate in \cref{lst:noIndentBlock}.
+ If you have a block of code that you don't want \texttt{latexindent.pl} to touch (even
+ if \index{verbatim!noIndentBlock} it is \emph{not} a verbatim-like environment) then you
+ can wrap it in an environment from \texttt{noIndentBlock}; you can use any name you like
+ for this, provided you populate it as demonstrate in \cref{lst:noIndentBlock}.
 
  \cmhlistingsfromfile[style=noIndentBlock]{../defaultSettings.yaml}[width=.4\linewidth,before=\centering,yaml-TCB]{\texttt{noIndentBlock}}{lst:noIndentBlock}
 
@@ -248,11 +251,11 @@ latexindent.pl -l noindent2.yaml noindent1
  The \texttt{begin}, \texttt{body} and \texttt{end} fields for \texttt{noIndentBlock} are
  all \emph{regular expressions}. If the \texttt{body} field is not specified, then it
  takes a default value of \lstinline!.*?! which is written explicitly in
- \cref{lst:noindent1}. In this context, we interpret \lstinline!.*?! in words as \emph{the
- fewest number of characters (possibly none) until the `end' field is reached}.
+ \cref{lst:noindent1}. In this context, we interpret \lstinline!.*?! in words as
+ \emph{the fewest number of characters (possibly none) until the `end' field is reached}.
 
- The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
- default, it is assumed to be 1 (on).
+ The \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on);
+ by default, it is assumed to be 1 (on).
 
  \begin{example}
  Using \cref{lst:noindent3} demonstrates setting \texttt{lookForThis} to 0 (off); running
@@ -288,12 +291,12 @@ latexindent.pl -l noindent3.yaml noindent1
 
  With reference to \cref{lst:nameAsRegex6}:
  \begin{itemize}
-  \item the \texttt{name} field as specified here means \emph{any word followed by the word
-        noindent, optionally followed by *};
-  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any description
-        you like;
-  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1 (on); by
-        default, it is assumed to be 1 (on).
+  \item the \texttt{name} field as specified here means \emph{any word followed by the
+        word noindent, optionally followed by *};
+  \item we have used \texttt{nameAsRegex} to identify this field, but you can use any
+        description you like;
+  \item the \texttt{lookForThis} field is optional, and can take the values 0 (off) or 1
+        (on); by default, it is assumed to be 1 (on).
  \end{itemize}
  \end{example}
 
@@ -302,19 +305,19 @@ latexindent.pl -l noindent3.yaml noindent1
 
  Before \texttt{latexindent.pl} determines the difference between preamble (if any) and
  the main document, it first searches for any of the environments specified in
- \texttt{fileContentsEnvironments}, see \cref{lst:fileContentsEnvironments}. The behaviour
- of \texttt{latexindent.pl} on these environments is determined by their location
- (preamble or not), and the value \texttt{indentPreamble}, discussed next.
+ \texttt{fileContentsEnvironments}, see \cref{lst:fileContentsEnvironments}. The
+ behaviour of \texttt{latexindent.pl} on these environments is determined by their
+ location (preamble or not), and the value \texttt{indentPreamble}, discussed next.
 
  \cmhlistingsfromfile[style=fileContentsEnvironments]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileContentsEnvironments}}{lst:fileContentsEnvironments}
 
 \yamltitle{indentPreamble}{0|1}
 
  The preamble of a document can sometimes contain some trickier code for
- \texttt{latexindent.pl} to operate upon. By default, \texttt{latexindent.pl} won't try to
- operate on the preamble (as \texttt{indentPreamble} is set to \texttt{0}, by default),
- but if you'd like \texttt{latexindent.pl} to try then change \texttt{indentPreamble} to
- \texttt{1}.
+ \texttt{latexindent.pl} to operate upon. By default, \texttt{latexindent.pl} won't try
+ to operate on the preamble (as \texttt{indentPreamble} is set to \texttt{0}, by
+ default), but if you'd like \texttt{latexindent.pl} to try then change
+ \texttt{indentPreamble} to \texttt{1}.
 
 \yamltitle{lookForPreamble}*{fields}
 
@@ -329,8 +332,8 @@ latexindent.pl -l noindent3.yaml noindent1
  Assuming that \texttt{latexindent.pl} is asked to operate upon the preamble of a
  document, when this switch is set to \texttt{0} then environment code blocks will be
  sought first, and then command code blocks. When this switch is set to \texttt{1},
- commands will be sought first. The example that first motivated this switch contained the
- code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
+ commands will be sought first. The example that first motivated this switch contained
+ the code given in \cref{lst:motivatepreambleCommandsBeforeEnvironments}.
 
  \begin{cmhlistings}{Motivating \texttt{preambleCommandsBeforeEnvironments}}{lst:motivatepreambleCommandsBeforeEnvironments}
 ...
@@ -344,8 +347,9 @@ postfoothook=\end{mdframed},
 \subsection{Indentation and horizontal space}
 \yamltitle{defaultIndent}*{horizontal space}
  This is the default indentation used in the absence of other details for the code block
- with which we are working. The default value is \lstinline!\t! which means a tab; we will
- explore customisation beyond \texttt{defaultIndent} in \vref{sec:noadd-indent-rules}.
+ with which we are working. The default value is \lstinline!\t! which means a tab; we
+ will explore customisation beyond \texttt{defaultIndent} in
+ \vref{sec:noadd-indent-rules}.
 
  If you're interested in experimenting with \texttt{latexindent.pl} then you can
  \emph{remove} all indentation by setting \texttt{defaultIndent: ""}.
@@ -353,8 +357,8 @@ postfoothook=\end{mdframed},
 \yamltitle{removeTrailingWhitespace}*{fields}\label{yaml:removeTrailingWhitespace}
 
  Trailing white space can be removed both \emph{before} and \emph{after} processing the
- document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields can take
- the values \texttt{0} or \texttt{1}. See
+ document, as detailed in \cref{lst:removeTrailingWhitespace}; each of the fields can
+ take the values \texttt{0} or \texttt{1}. See
  \vref{lst:removeTWS-before,lst:env-mlb5-modAll,lst:env-mlb5-modAll-remove-WS} for before
  and after results. Thanks to \cite{vosskuhle} for providing this feature.
 
@@ -375,8 +379,8 @@ postfoothook=\end{mdframed},
  \texttt{latexindent.pl} (see \cref{lst:aligndelims:basic}). In fact, the fields in
  \texttt{lookForAlignDelims} can actually take two different forms: the \emph{basic}
  version is shown in \cref{lst:aligndelims:basic} and the \emph{advanced} version in
- \cref{lst:aligndelims:advanced}; we will discuss each in turn. \index{delimiters!advanced
- settings of lookForAlignDelims}
+ \cref{lst:aligndelims:advanced}; we will discuss each in turn.
+ \index{delimiters!advanced settings of lookForAlignDelims}
 
  \begin{yaml}[numbers=none]{\texttt{lookForAlignDelims} (basic)}[width=.8\linewidth,before=\centering]{lst:aligndelims:basic}
 lookForAlignDelims:
@@ -389,9 +393,9 @@ lookForAlignDelims:
 	\end{yaml}
 
  Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
- each column by its alignment delimiters. It does have some limitations (discussed further
- in \cref{sec:knownlimitations}), but in many cases it will produce results such as those
- in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
+ each column by its alignment delimiters. It does have some limitations (discussed
+ further in \cref{sec:knownlimitations}), but in many cases it will produce results such
+ as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
@@ -430,36 +434,38 @@ lookForAlignDelims:
         \announce{2018-01-13}*{update to spacesBeforeDoubleBackSlash in ampersand alignment}
         specifies the number (integer $\geq$ 0) of spaces to be inserted before
         \lstinline!\\! (default: 1); %\footnote{Previously this only activated if \texttt{alignDoubleBackSlash} was set to \texttt{0}.}
-  \item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary switch (0
-        or 1) that details if \texttt{latexindent.pl} should group columns above and below a
-        \lstinline!\multicolumn! command (default: 0);
-  \item \announce{2017-06-19}{alignRowsWithoutMaxDelims} \texttt{alignRowsWithoutMaxDelims}:
-        binary switch (0 or 1) that details if rows that do not contain the maximum number of
-        delimeters should be formatted so as to have the ampersands aligned (default: 1);
+  \item \announce{2017-06-19}{multiColumnGrouping} \texttt{multiColumnGrouping}: binary
+        switch (0 or 1) that details if \texttt{latexindent.pl} should group columns
+        above and below a \lstinline!\multicolumn! command (default: 0);
+  \item \announce{2017-06-19}{alignRowsWithoutMaxDelims}
+        \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows
+        that do not contain the maximum number of delimeters should be formatted so as to
+        have the ampersands aligned (default: 1);
   \item \announce{2018-01-13}{spacesBeforeAmpersand in ampersand
-        alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number (integer $\geq$
-        0) of spaces to be placed \emph{before} ampersands (default: 1);
+        alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number
+        (integer $\geq$ 0) of spaces to be placed \emph{before} ampersands (default: 1);
   \item \announce{2018-01-13}{spacesAfterAmpersand in ampersand
-        alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer $\geq$
-        0) of spaces to be placed \emph{After} ampersands (default: 1);
+        alignment}\texttt{spacesAfterAmpersand}: optionally specifies the number (integer
+        $\geq$ 0) of spaces to be placed \emph{After} ampersands (default: 1);
   \item \announce{2018-01-13}{justification of cells in ampersand
-        alignment}\texttt{justification}: optionally specifies the justification of each cell as
-        either \emph{left} or \emph{right} (default: left);
-  \item \announce{2020-03-21}{align final double backslash}{alignFinalDoubleBackSlash} optionally
-        specifies if the \emph{final} double backslash should be used for alignment (default: 0);
+        alignment}\texttt{justification}: optionally specifies the justification of each
+        cell as either \emph{left} or \emph{right} (default: left);
+  \item \announce{2020-03-21}{align final double backslash}{alignFinalDoubleBackSlash}
+        optionally specifies if the \emph{final} double backslash should be used for
+        alignment (default: 0);
   \item \announce{2020-03-21}{don't measure feature}{dontMeasure} optionally specifies if
-        user-specified cells, rows or the largest entries should \emph{not} be measured (default:
-        0);
-  \item \announce{2020-03-21}{delimiter RegEx feature}{delimiterRegEx} optionally specifies the
-        pattern matching to be used for the alignment delimeter (default:
+        user-specified cells, rows or the largest entries should \emph{not} be measured
+        (default: 0);
+  \item \announce{2020-03-21}{delimiter RegEx feature}{delimiterRegEx} optionally
+        specifies the pattern matching to be used for the alignment delimeter (default:
         \lstinline* '(?<!\\)(&)'*);
   \item \announce{2020-03-21}{delimiter justification}{delimiterJustification} optionally
-        specifies the justification for the alignment delimeters (default: left); note that this
-        feature is only useful if you have delimiters of different lengths in the same column,
-        discussed in \cref{sec:delimiter-reg-ex};
-  \item \announce{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks} optionally
-        instructs \texttt{latexindent.pl} to search for child code blocks or not (default: 1),
-        discussed in \cref{sec:lookForChildCodeBlocks}.
+        specifies the justification for the alignment delimeters (default: left); note
+        that this feature is only useful if you have delimiters of different lengths in
+        the same column, discussed in \cref{sec:delimiter-reg-ex};
+  \item \announce{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks}
+        optionally instructs \texttt{latexindent.pl} to search for child code blocks or
+        not (default: 1), discussed in \cref{sec:lookForChildCodeBlocks}.
  \end{itemize}
 
  \begin{example}
@@ -529,33 +535,37 @@ latexindent.pl tabular2.tex -l tabular2.yaml,tabular8.yaml
 
  Notice in particular:
  \begin{itemize}
-  \item in both \cref{lst:tabular2-default,lst:tabular2-mod2} all rows have been aligned at the
-        ampersand, even those that do not contain the maximum number of ampersands (3 ampersands,
-        in this case);
+  \item in both \cref{lst:tabular2-default,lst:tabular2-mod2} all rows have been aligned
+        at the ampersand, even those that do not contain the maximum number of ampersands
+        (3 ampersands, in this case);
   \item in \cref{lst:tabular2-default} the columns have been aligned at the ampersand;
-  \item in \cref{lst:tabular2-mod2} the \lstinline!\multicolumn! command has grouped the $2$
-        columns beneath \emph{and} above it, because \texttt{multiColumnGrouping} is set to $1$
-        in \cref{lst:tabular2YAML};
-  \item in \cref{lst:tabular2-mod3} rows~3 and~6 have \emph{not} been aligned at the ampersand,
-        because \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in
-        \cref{lst:tabular3YAML}; however, the \lstinline!\\! \emph{have} still been aligned;
-  \item in \cref{lst:tabular2-mod4} the columns beneath and above the \lstinline!\multicolumn!
-        commands have been grouped (because \texttt{multiColumnGrouping} is set to $1$), and
-        there are at least $4$ spaces \emph{before} each aligned ampersand because
-        \texttt{spacesBeforeAmpersand} is set to $4$;
-  \item in \cref{lst:tabular2-mod5} the columns beneath and above the \lstinline!\multicolumn!
-        commands have been grouped (because \texttt{multiColumnGrouping} is set to $1$), and
-        there are at least $4$ spaces \emph{after} each aligned ampersand because
-        \texttt{spacesAfterAmpersand} is set to $4$;
-  \item in \cref{lst:tabular2-mod6} the \lstinline!\\! have \emph{not} been aligned, because
-        \texttt{alignDoubleBackSlash} is set to \texttt{0}, otherwise the output is the same as
+  \item in \cref{lst:tabular2-mod2} the \lstinline!\multicolumn! command has grouped the
+        $2$ columns beneath \emph{and} above it, because \texttt{multiColumnGrouping} is
+        set to $1$ in \cref{lst:tabular2YAML};
+  \item in \cref{lst:tabular2-mod3} rows~3 and~6 have \emph{not} been aligned at the
+        ampersand, because \texttt{alignRowsWithoutMaxDelims} has been to set to $0$ in
+        \cref{lst:tabular3YAML}; however, the \lstinline!\\! \emph{have} still been
+        aligned;
+  \item in \cref{lst:tabular2-mod4} the columns beneath and above the
+        \lstinline!\multicolumn! commands have been grouped (because
+        \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces
+        \emph{before} each aligned ampersand because \texttt{spacesBeforeAmpersand} is
+        set to $4$;
+  \item in \cref{lst:tabular2-mod5} the columns beneath and above the
+        \lstinline!\multicolumn! commands have been grouped (because
+        \texttt{multiColumnGrouping} is set to $1$), and there are at least $4$ spaces
+        \emph{after} each aligned ampersand because \texttt{spacesAfterAmpersand} is set
+        to $4$;
+  \item in \cref{lst:tabular2-mod6} the \lstinline!\\! have \emph{not} been aligned,
+        because \texttt{alignDoubleBackSlash} is set to \texttt{0}, otherwise the output
+        is the same as \cref{lst:tabular2-mod2};
+  \item in \cref{lst:tabular2-mod7} the \lstinline!\\! \emph{have} been aligned, and
+        because \texttt{spacesBeforeDoubleBackSlash} is set to \texttt{0}, there are no
+        spaces ahead of them; the output is otherwise the same as
         \cref{lst:tabular2-mod2};
-  \item in \cref{lst:tabular2-mod7} the \lstinline!\\! \emph{have} been aligned, and because
-        \texttt{spacesBeforeDoubleBackSlash} is set to \texttt{0}, there are no spaces ahead of
-        them; the output is otherwise the same as \cref{lst:tabular2-mod2};
-  \item in \cref{lst:tabular2-mod8} the cells have been \emph{right}-justified; note that cells
-        above and below the \lstinline!\multicol! statements have still been group correctly,
-        because of the settings in \cref{lst:tabular2YAML}.
+  \item in \cref{lst:tabular2-mod8} the cells have been \emph{right}-justified; note that
+        cells above and below the \lstinline!\multicol! statements have still been group
+        correctly, because of the settings in \cref{lst:tabular2YAML}.
  \end{itemize}
  \end{example}
 
@@ -620,8 +630,8 @@ latexindent.pl aligned1.tex -l sba4.yaml
         for us to set the \texttt{default} value that sets the number of spaces before ampersands
         which are \emph{not} in leading blank columns. The default value is \texttt{1}.
 
-        We note that \texttt{leadingBlankColumn} has not been specified in \cref{lst:sba3}, and
-        it will inherit the value from \texttt{default};
+        We note that \texttt{leadingBlankColumn} has not been specified in
+        \cref{lst:sba3}, and it will inherit the value from \texttt{default};
   \item \cref{lst:sba4} demonstrates spaces to be used before amperands for
         \emph{leading blank columns}.
         We note that \emph{default} has not been specified, and it will be set to \texttt{1} by
@@ -650,8 +660,8 @@ latexindent.pl aligned1.tex -l sba6.yaml
  space before the ampersand in the \emph{leading blank column} has been set to \texttt{0}
  by \cref{lst:sba6}.
 
- We can demonstrated this feature further using the settings in \cref{lst:sba7} which give
- the output in \cref{lst:aligned1-mod7}.
+ We can demonstrated this feature further using the settings in \cref{lst:sba7} which
+ give the output in \cref{lst:aligned1-mod7}.
 
  \begin{cmhtcbraster}[raster columns=3,
    raster left skip=-3.75cm,
@@ -698,8 +708,8 @@ latexindent.pl tabular4.tex -o=+-FDBS -y="lookForAlignDelims:tabular:alignFinalD
  \end{itemize}
  \end{example}
 
- As of Version 3.0, the alignment routine works on mandatory and optional arguments within
- commands, and also within `special' code blocks (see \texttt{specialBeginEnd} on
+ As of Version 3.0, the alignment routine works on mandatory and optional arguments
+ within commands, and also within `special' code blocks (see \texttt{specialBeginEnd} on
  \cpageref{yaml:specialBeginEnd}).
 
  \begin{example}
@@ -720,12 +730,13 @@ latexindent.pl matrix1.tex
  \end{cmhtcbraster}
  \end{example}
 
- If you have blocks of code that you wish to align at the \& character that are \emph{not}
- wrapped in, for example, \lstinline!\begin{tabular}! \ldots \lstinline!\end{tabular}!,
- then you can use the mark up illustrated in \cref{lst:alignmentmarkup}; the default
- output is shown in \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must
- be next to each other, but that there can be any number of spaces (possibly none) between
- the \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
+ If you have blocks of code that you wish to align at the \& character that are
+ \emph{not} wrapped in, for example, \lstinline!\begin{tabular}! \ldots
+ \lstinline!\end{tabular}!, then you can use the mark up illustrated in
+ \cref{lst:alignmentmarkup}; the default output is shown in
+ \cref{lst:alignmentmarkup-default}. Note that the \lstinline!%*! must be next to each
+ other, but that there can be any number of spaces (possibly none) between the
+ \lstinline!*! and \lstinline!\begin{tabular}!; note also that you may use any
  environment name that you have specified in \texttt{lookForAlignDelims}.
 
  \begin{cmhtcbraster}[raster left skip=-1.5cm,]
@@ -734,8 +745,9 @@ latexindent.pl matrix1.tex
  \end{cmhtcbraster}
 
  With reference to \vref{tab:code-blocks} and the, yet undiscussed, fields of
- \texttt{noAdditionalIndent} and \texttt{indentRules} (see \vref{sec:noadd-indent-rules}),
- these comment-marked blocks are considered \texttt{environments}.
+ \texttt{noAdditionalIndent} and \texttt{indentRules} (see
+ \vref{sec:noadd-indent-rules}), these comment-marked blocks are considered
+ \texttt{environments}.
 
 \subsubsection{lookForAlignDelims: the dontMeasure feature}\label{sec:dontMeasure}
  The \announce{2020-03-21}{don't measure feature} \texttt{lookForAlignDelims} field can,
@@ -788,8 +800,8 @@ latexindent.pl tabular-DM.tex -l=dontMeasure2.yaml
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dontMeasure2.yaml}[yaml-TCB]{\texttt{dontMeasure2.yaml}}{lst:dontMeasure2}
  \end{cmhtcbraster}
 
- We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured, one
- entry per line.
+ We note that in \cref{lst:dontMeasure2} we have specified entries not to be measured,
+ one entry per line.
  \end{example}
 
  \begin{example}
@@ -905,9 +917,9 @@ latexindent.pl tabbing.tex -l=delimiterRegEx1.yaml
  \begin{itemize}
   \item in \cref{lst:tabbing-mod1} the code has been aligned, as intended, at both the
         \lstinline!\=! and \lstinline!\>!;
-  \item in \cref{lst:delimiterRegEx1} we have heeded the warning and captured the expression
-        using grouping parenthesis, specified a backslash using \lstinline!\\! and said that it
-        must be followed by either \lstinline!=! or \lstinline!>!.
+  \item in \cref{lst:delimiterRegEx1} we have heeded the warning and captured the
+        expression using grouping parenthesis, specified a backslash using \lstinline!\\!
+        and said that it must be followed by either \lstinline!=! or \lstinline!>!.
  \end{itemize}
  \end{example}
 
@@ -933,8 +945,8 @@ latexindent.pl tabbing.tex -l=delimiterRegEx2.yaml
  Of course, the other lookForAlignDelims options can be used alongside the
  \texttt{delimiterRegEx}; regardless of the type of delimiter being used (ampersand or
  anything else), the fields from \vref{lst:aligndelims:advanced} remain the same; for
- example, using the settings in \cref{lst:delimiterRegEx3}, and running \index{switches!-l
- demonstration}
+ example, using the settings in \cref{lst:delimiterRegEx3}, and running
+ \index{switches!-l demonstration}
 
  \begin{commandshell}
 latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
@@ -951,10 +963,10 @@ latexindent.pl tabbing.tex -l=delimiterRegEx3.yaml
  \begin{example}
  It is possible that delimiters specified within \texttt{delimiterRegEx} can be of
  different lengths. Consider the file in \cref{lst:tabbing1}, and associated YAML in
- \cref{lst:delimiterRegEx4}. Note that the \cref{lst:delimiterRegEx4} specifies the option
- for the delimiter to be either \lstinline!#! or \lstinline!\>!, \emph{which are different
- lengths}. Upon running the command \index{switches!-l demonstration} \index{switches!-o
- demonstration}
+ \cref{lst:delimiterRegEx4}. Note that the \cref{lst:delimiterRegEx4} specifies the
+ option for the delimiter to be either \lstinline!#! or \lstinline!\>!, \emph{which are
+ different lengths}. Upon running the command \index{switches!-l demonstration}
+ \index{switches!-o demonstration}
 
  \begin{commandshell}
 latexindent.pl tabbing1.tex -l=delimiterRegEx4.yaml -o=+-mod4
@@ -997,9 +1009,9 @@ latexindent.pl tabbing1.tex -l=delimiterRegEx5.yaml -o=+-mod5
 
 \subsubsection{lookForAlignDelims: lookForChildCodeBlocks}\label{sec:lookForChildCodeBlocks}
  There \announce{2021-12-13}{lookForChildCodeBlocks demonstration} may be scenarios in
- which you would prefer to instruct \texttt{latexindent.pl} \emph{not} to search for child
- blocks; in which case setting \texttt{lookForChildCodeBlocks} to 0 may be a good way to
- proceed.
+ which you would prefer to instruct \texttt{latexindent.pl} \emph{not} to search for
+ child blocks; in which case setting \texttt{lookForChildCodeBlocks} to 0 may be a good
+ way to proceed.
 
  \begin{example}
  Using the settings from \vref{lst:dontMeasure1} on the file in \cref{lst:tabular-DM-1}
@@ -1032,10 +1044,10 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 
 \subsection{Indent after items, specials and headings}
 \yamltitle{indentAfterItems}*{fields}
- The environment names specified in \texttt{indentAfterItems} tell \texttt{latexindent.pl}
- to look for \lstinline!\item! commands; if these switches are set to \texttt{1} then
- indentation will be performed so as indent the code after each \texttt{item}. A
- demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
+ The environment names specified in \texttt{indentAfterItems} tell
+ \texttt{latexindent.pl} to look for \lstinline!\item! commands; if these switches are
+ set to \texttt{1} then indentation will be performed so as indent the code after each
+ \texttt{item}. A demonstration is given in \cref{lst:itemsbefore,lst:itemsafter}
 
  \begin{cmhtcbraster}[raster columns=3,
    raster left skip=-3.5cm,
@@ -1058,10 +1070,10 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 
 \yamltitle{specialBeginEnd}*{fields}\label{yaml:specialBeginEnd}
  The fields specified \index{specialBeginEnd!introduction}
- \announce{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their default
- state, focused on math mode begin and end statements, but there is no requirement for
- this to be the case; \cref{lst:specialBeginEnd} shows the default settings of
- \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}%
+ \announce{2017-08-21}*{specialBeginEnd} in \texttt{specialBeginEnd} are, in their
+ default state, focused on math mode begin and end statements, but there is no
+ requirement for this to be the case; \cref{lst:specialBeginEnd} shows the default
+ settings of \texttt{specialBeginEnd}. \index{specialBeginEnd!default settings}%
 
  \cmhlistingsfromfile[style=specialBeginEnd]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{specialBeginEnd}}{lst:specialBeginEnd}
 
@@ -1164,13 +1176,14 @@ latexindent.pl special2.tex -l=middle1
 
  We note that:
  \begin{itemize}
-  \item in \cref{lst:special2-mod1} the bodies of each of the \texttt{Elsif} statements have been
-        indented appropriately;
+  \item in \cref{lst:special2-mod1} the bodies of each of the \texttt{Elsif} statements
+        have been indented appropriately;
   \item the \texttt{Else} statement has \emph{not} been indented appropriately in
         \cref{lst:special2-mod1} -- read on!
-  \item we have specified multiple settings for the \texttt{middle} field using the syntax
-        demonstrated in \cref{lst:middle1-yaml} so that the body of the \texttt{Else} statement
-        has been indented appropriately in \cref{lst:special2-mod2}.
+  \item we have specified multiple settings for the \texttt{middle} field using the
+        syntax demonstrated in \cref{lst:middle1-yaml} so that the body of the
+        \texttt{Else} statement has been indented appropriately in
+        \cref{lst:special2-mod2}.
  \end{itemize}
  \end{example}
 
@@ -1195,7 +1208,8 @@ latexindent.pl special3.tex -l=special-verb1
  \end{cmhtcbraster}
  \end{example}
 
- We can combine the \texttt{specialBeginEnd} with the \texttt{lookForAlignDelims} feature.
+ We can combine the \texttt{specialBeginEnd} with the \texttt{lookForAlignDelims}
+ feature.
 
  \begin{example}
  We begin with the code in \cref{lst:special-align}.
@@ -1213,26 +1227,27 @@ latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
  to receive the output in \cref{lst:special-align-mod1}. \index{specialBeginEnd!combined
  with lookForAlignDelims} \index{specialBeginEnd!delimiterRegEx}
  \index{specialBeginEnd!alignment at delimiter} \index{specialBeginEnd!tikz example}
- \index{regular expressions!delimiter alignment for edge or node} \index{delimiters!within
- specialBeginEnd blocks} \index{regular expressions!numeric 0-9}
+ \index{regular expressions!delimiter alignment for edge or node}
+ \index{delimiters!within specialBeginEnd blocks} \index{regular expressions!numeric 0-9}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
   \cmhlistingsfromfile{demonstrations/special-align-mod1.tex}{\texttt{special-align.tex} using \cref{lst:edge-node1}}{lst:special-align-mod1}
  \end{cmhtcbraster}
 
- The output in \cref{lst:special-align-mod1} is not quite ideal. We can tweak the settings
- within \cref{lst:edge-node1} in order to improve the output; in particular, we employ the
- code in \cref{lst:edge-node2} and run the command \index{switches!-l demonstration}
- \index{switches!-o demonstration} \index{regular expressions!uppercase alph A-Z}
+ The output in \cref{lst:special-align-mod1} is not quite ideal. We can tweak the
+ settings within \cref{lst:edge-node1} in order to improve the output; in particular, we
+ employ the code in \cref{lst:edge-node2} and run the command \index{switches!-l
+ demonstration} \index{switches!-o demonstration} \index{regular expressions!uppercase
+ alph A-Z}
 
  \begin{commandshell}
 latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 \end{commandshell}
 
  to receive the output in \cref{lst:special-align-mod2}.
- \index{specialBeginEnd!delimiterRegEx tweaked} \index{regular expressions!at least one +}
- \index{regular expressions!horizontal space \textbackslash{h}}
+ \index{specialBeginEnd!delimiterRegEx tweaked} \index{regular expressions!at least one
+ +} \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
@@ -1255,10 +1270,10 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
 
  The default settings do \emph{not} place indentation after a heading, but you can easily
  switch them on by changing \texttt{indentAfterThisHeading} from 0 to 1. The
- \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading structure
- in your document. You might, for example, like to have both \texttt{section} and
- \texttt{subsection} set with \texttt{level: 3} because you do not want the indentation to
- go too deep.
+ \texttt{level} field tells \texttt{latexindent.pl} the hierarchy of the heading
+ structure in your document. You might, for example, like to have both \texttt{section}
+ and \texttt{subsection} set with \texttt{level: 3} because you do not want the
+ indentation to go too deep.
 
  You can add any of your own custom heading commands to this field, specifying the
  \texttt{level} as appropriate. You can also specify your own indentation in
@@ -1340,8 +1355,8 @@ latexindent.pl mult-nested.tex -l=max-indentation1
  \end{cmhtcbraster}
  \end{example}
 
- Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we notice
- that the (default) tabs of indentation have been replaced by a single space.
+ Comparing the output in \cref{lst:mult-nested-default,lst:mult-nested-max-ind1} we
+ notice that the (default) tabs of indentation have been replaced by a single space.
 
  In general, when using the \texttt{maximumIndentation} feature, any leading tabs will be
  replaced by equivalent spaces except, of course, those found in
@@ -1350,10 +1365,10 @@ latexindent.pl mult-nested.tex -l=max-indentation1
 
 \subsection{The code blocks known latexindent.pl}\label{subsubsec:code-blocks}
 
- As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each of
- these are shown in \cref{tab:code-blocks}. \index{regular expressions!uppercase alph A-Z}
- \index{regular expressions!lowercase alph a-z} \index{regular expressions!numeric 0-9}
- \index{regular expressions!horizontal space \textbackslash{h}}
+ As of Version 3.0, \texttt{latexindent.pl} processes documents using code blocks; each
+ of these are shown in \cref{tab:code-blocks}. \index{regular expressions!uppercase alph
+ A-Z} \index{regular expressions!lowercase alph a-z} \index{regular expressions!numeric
+ 0-9} \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{table}[!htp]
   \begin{widepage}

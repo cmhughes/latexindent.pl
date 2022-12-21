@@ -42,6 +42,8 @@ sub text_wrap {
     my $blocksFollowHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} };
 
     foreach my $blocksFollowEachPart ( sort keys %{$blocksFollowHash} ) {
+        last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
+
         my $yesNo = $blocksFollowHash->{$blocksFollowEachPart};
         if ($yesNo) {
             if ( $blocksFollowEachPart eq "par" ) {
@@ -118,7 +120,7 @@ sub text_wrap {
     # followed by 0 or more h-space and line breaks
     $blocksFollow = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/sx );
 
-    $logger->trace("textWrap blocks follow regexp:") if $is_tt_switch_active;
+    $logger->trace("textWrap blocks follow regexp:") if ($is_tt_switch_active and ${$self}{modifyLineBreaksYamlName} ne 'sentence');
     $logger->trace($blocksFollow) if $is_tt_switch_active;
 
     # textWrap Blocks BEGIN with
@@ -128,6 +130,8 @@ sub text_wrap {
     my $blocksBeginWithHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksBeginWith} };
 
     foreach my $blocksBeginWithEachPart ( sort keys %{$blocksBeginWithHash} ) {
+        last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
+
         my $yesNo = $blocksBeginWithHash->{$blocksBeginWithEachPart};
         if ($yesNo) {
             if ( $blocksBeginWithEachPart eq "A-Z" ) {
@@ -163,6 +167,8 @@ sub text_wrap {
     my $blocksEndBeforeHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksEndBefore} };
 
     foreach my $blocksEndBeforeEachPart ( sort keys %{$blocksEndBeforeHash} ) {
+        last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
+
         my $yesNo = $blocksEndBeforeHash->{$blocksEndBeforeEachPart};
         if ($yesNo) {
             if ( $blocksEndBeforeEachPart eq "other" ) {
@@ -194,11 +200,13 @@ sub text_wrap {
     # the OVERALL textWrap Blocks regexp
     # the OVERALL textWrap Blocks regexp
     # the OVERALL textWrap Blocks regexp
-    $logger->trace("Overall textWrap Blocks end with regexp:") if $is_tt_switch_active;
+    $logger->trace("Overall textWrap Blocks end with regexp:") if ($is_tt_switch_active and ${$self}{modifyLineBreaksYamlName} ne 'sentence');
     $logger->trace($blocksEndBefore) if $is_tt_switch_active;
 
     # store the text wrap blocks
     my @textWrapBlockStorage = split( /($blocksFollow)/, ${$self}{body} );
+    @textWrapBlockStorage = split( /(\s*$blocksFollow)/, ${$self}{body} )
+        if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
     # sentences need special treatment
     if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
@@ -209,8 +217,9 @@ sub text_wrap {
     my $columns = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns};
 
     # vital Text::Wrap options
-    $Text::Wrap::columns = $columns;
-    $Text::Wrap::huge    = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge};
+    $Text::Wrap::columns  = $columns;
+    $Text::Wrap::huge     = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge};
+    $Text::Wrap::unexpand = 0;
 
     # all other Text::Wrap options not usually needed/helpful, but available
     $Text::Wrap::separator = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{separator}
@@ -222,17 +231,69 @@ sub text_wrap {
     $Text::Wrap::tabstop = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{tabstop}
         if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{tabstop};
 
+    # only needed if when:after
+    my $subsequentSpace = q();
+
     # clear the body, which will be updated with newly wrapped body
     ${$self}{body} = q();
 
+    # text wrap block loop counter
+    my $textWrapBlockCount = -1;
+
     # loop back through the text wrap block storage
     foreach my $textWrapBlockStorageValue (@textWrapBlockStorage) {
+
+        # increment text wrap block loop counter
+        $textWrapBlockCount++;
+
         if ( $textWrapBlockStorageValue =~ m/^\s*$blocksBeginWith/s
             or ${$self}{modifyLineBreaksYamlName} eq 'sentence' )
         {
 
+            # text wrap AFTER indentation needs to turn, for example (with columns: 100),
+            #
+            # before:
+            #
+            #  \begin{abstract}
+            #      This is a very long sentence that should be wrapped at some point, which is the case but is is is is line width is not respected because of the indentation.
+            #  \end{abstract}
+            #
+            # after:
+            #
+            #  \begin{abstract}
+            #      This is a very long sentence that should be wrapped at some point, which is the case but is is
+            #      is is line width is not respected because of the indentation.
+            #  \end{abstract}
+            #  ----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|----|
+            #     5   10   15   20   25   30   35   40   45   50   55   60   65   70   75   80   85   90   95   100   105   110
+            #
+            # note: it respects the column width AND indentation
+            #
+            # see also: test-cases/text-wrap/issue-359*.tex
+            #
+            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
+
+                # reset columns
+                $Text::Wrap::columns = $columns;
+
+                # reset subsequent Space
+                $subsequentSpace = q();
+
+                # measure leading horizontal space
+                if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
+                    $subsequentSpace = (${$self}{follows} ? " " x length( ( split( /\R/, ${$self}{follows} ) )[-1] ):q());
+                }
+                else {
+                    $subsequentSpace
+                        = ($textWrapBlockCount == 0 ? q() : " " x length( ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1] ));
+                }
+                $Text::Wrap::columns = $columns - length($subsequentSpace);
+            }
+
             # LIMIT is one greater than the maximum number of times EXPR may be split
             my @textWrapBeforeEndWith = split( /($blocksEndBefore)/, $textWrapBlockStorageValue, 2 );
+            @textWrapBeforeEndWith = split( /(\s*$blocksEndBefore)/, $textWrapBlockStorageValue, 2 )
+                if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
             # sentences need special treatment
             if ( ${$self}{modifyLineBreaksYamlName} eq 'sentence' ) {
@@ -354,6 +415,34 @@ sub text_wrap {
             # perform the text wrap routine
             $textWrapBlockStorageValue = wrap( '', '', $textWrapBlockStorageValue )
                 if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} > 0;
+
+            # if text wrap has happened *AFTER* indentation,
+            # then we need to add the leading indentation
+            # onto the lines of the text wrap block
+            #
+            # before:
+            #
+            #  \begin{abstract}
+            #      This is a very long sentence that should be wrapped at some point, which is the case but is is
+            #  is is line width is not respected because of the indentation.
+            #  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            #  \end{abstract}
+            #
+            # after:
+            #
+            #  \begin{abstract}
+            #      This is a very long sentence that should be wrapped at some point, which is the case but is is
+            #      is is line width is not respected because of the indentation.
+            #  ^^^^
+            #  \end{abstract}
+            if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
+
+                # add leading indentation back in to the text-wrapped block
+                $textWrapBlockStorageValue =~ s/^/$subsequentSpace/mg;
+
+                # remove the very first leading space, which is already handled by blocks follow
+                $textWrapBlockStorageValue =~ s/^\h*//s unless ${$self}{modifyLineBreaksYamlName} eq 'sentence';
+            }
 
             # append trailing comments from WITHIN the block
             $textWrapBlockStorageValue =~ s/\R?$/$trailingComments\n/s if ( $trailingComments ne '' );

@@ -62,6 +62,7 @@ commandCodeBlocks:
 
 modifyLineBreaks:
     textWrapOptions:
+        when: after
         columns: 90
         blocksFollow:
            headings: 0

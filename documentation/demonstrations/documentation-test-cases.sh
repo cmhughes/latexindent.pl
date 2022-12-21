@@ -250,6 +250,12 @@ latexindent.pl -s textwrap-bfccb.tex -o=+-mod12.tex -l=textwrap12.yaml,addruler1
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod13.tex -l=textwrap13.yaml,addruler2 -m -r
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod14.tex -l=textwrap14.yaml,addruler1 -m -r
 
+# before/after
+latexindent.pl -s textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml,addruler1  -m -r
+latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml,addruler1  -m -r
+latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2,addruler1 -m -r
+latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3,addruler1 -m -r
+
 # text wrap trailing comments
 for i in {1..6};
 do

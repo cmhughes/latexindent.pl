@@ -137,3 +137,5 @@ latexindent.pl -s -m -l issue-392.yaml issue-392.tex -o=+-mod1
 
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
+
+exit 0
