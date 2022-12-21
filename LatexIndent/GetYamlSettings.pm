@@ -119,12 +119,7 @@ sub yaml_read_settings {
     my $homeDir = File::HomeDir->my_home;
     $logger->info("*YAML settings read: indentconfig.yaml or .indentconfig.yaml") unless $switches{onlyDefault};
 
-    my $indentconfig = undef;
-    if (defined "$ENV{LATEXINDENT_CONFIG}" && length "$ENV{LATEXINDENT_CONFIG}" > 0) {
-        $indentconfig = "$ENV{LATEXINDENT_CONFIG}";
-    } else {
-        $indentconfig = undef;
-    }
+    my $indentconfig = defined $ENV{LATEXINDENT_CONFIG} ? $ENV{LATEXINDENT_CONFIG} : undef;
     # see all possible values of $^O here: https://perldoc.perl.org/perlport#Unix and https://perldoc.perl.org/perlport#DOS-and-Derivatives
     if ($^O eq "linux") {
         if (!defined $indentconfig && defined "$ENV{XDG_CONFIG_HOME}" && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
