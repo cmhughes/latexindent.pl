@@ -140,14 +140,14 @@ sub yaml_read_settings {
     }
     if ( !defined $indentconfig ) {
         # if all of these don't exist check home directly, with the non hidden file
-        $indentconfig = "$homeDir/indentconfig.yaml" if ( !-e $indentconfig );
+        $indentconfig = (-f "$homeDir/indentconfig.yaml") ? "$homeDir/indentconfig.yaml" : undef;
         # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
-        $indentconfig = "$homeDir/.indentconfig.yaml" if ( !-e $indentconfig );
+        $indentconfig = (-f "$homeDir/.indentconfig.yaml") ? "$homeDir/.indentconfig.yaml" : undef;
     }
 
 
     # messages for indentconfig.yaml and/or .indentconfig.yaml
-    if ( -e $indentconfig and !$switches{onlyDefault} ) {
+    if ( defined $indentconfig && -f $indentconfig and !$switches{onlyDefault} ) {
 
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read("$indentconfig");
@@ -211,7 +211,7 @@ sub yaml_read_settings {
     else {
         if ( $switches{onlyDefault} ) {
             $logger->info("*-d switch active: only default settings requested");
-            $logger->info("not reading USER settings from $indentconfig") if ( -e $indentconfig );
+            $logger->info("not reading USER settings from $indentconfig") if ( defined $indentconfig &&  -e $indentconfig );
             $logger->info("Ignoring the -l switch: $switches{readLocalSettings} (you used the -d switch)")
                 if ( $switches{readLocalSettings} );
             $logger->info("Ignoring the -y switch: $switches{yaml} (you used the -d switch)") if ( $switches{yaml} );
