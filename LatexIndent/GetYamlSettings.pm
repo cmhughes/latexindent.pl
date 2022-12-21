@@ -119,20 +119,37 @@ sub yaml_read_settings {
     my $homeDir = File::HomeDir->my_home;
     $logger->info("*YAML settings read: indentconfig.yaml or .indentconfig.yaml") unless $switches{onlyDefault};
 
-    # get information about user settings- first check if the environment variable LATEXINDENT_CONFIG exists
-    my $indentconfig = "$ENV{LATEXINDENT_CONFIG}";
+    my $indentconfig = undef;
+    if (defined "$ENV{LATEXINDENT_CONFIG}" && length "$ENV{LATEXINDENT_CONFIG}" > 0) {
+        $indentconfig = "$ENV{LATEXINDENT_CONFIG}";
+    } else {
+        $indentconfig = undef;
+    }
+    # see all possible values of $^O here: https://perldoc.perl.org/perlport#Unix and https://perldoc.perl.org/perlport#DOS-and-Derivatives
+    if ($^O eq "linux") {
+        if (!defined $indentconfig && defined "$ENV{XDG_CONFIG_HOME}" && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
+            $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml";
+        } elsif (!defined $indentconfig && defined "$ENV{HOME}" && -f "$ENV{HOME}/.config/latexindent/latexindent.yaml") {
+            $indentconfig = "$ENV{HOME}/.config/latexindent/latexindent.yaml";
+        }
+    } elsif ($^O eq "darwin") {
+        if (!defined $indentconfig && -f "$homeDir/Library/Preferences/latexindent")  {
+            $indentconfig = "$homeDir/Library/Preferences/latexindent";
+        }
+    } elsif ($^O eq "MSWin32" || $^O == "cygwin") {
+        if (!defined $indentconfig && "$ENV{LOCALAPPDATA}" && -f "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml") {
+            $indentconfig = "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml";
+        } elsif (!defined $indentconfig && -f "$homeDir/AppData/Local/latexindent/latexindent.yaml") {
+            $indentconfig = "$homeDir/AppData/Local/latexindent/latexindent.yaml";
+        }
+    }
+    if ( !defined $indentconfig ) {
+        # if all of these don't exist check home directly, with the non hidden file
+        $indentconfig = "$homeDir/indentconfig.yaml" if ( !-e $indentconfig );
+        # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
+        $indentconfig = "$homeDir/.indentconfig.yaml" if ( !-e $indentconfig );
+    }
 
-    # if LATEXINDENT_CONFIG doesn't exist, check for the XDG_CONFIG_HOME path
-    $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/indentconfig.yaml" if ( !-e $indentconfig );
-
-    # or, if XDG_CONFIG_HOME isn't set, check HOME/.config
-    $indentconfig = "$ENV{HOME}/.config/latexindent/indentconfig.yaml" if ( !-e $indentconfig );
-
-    # if all of these don't exist check home directly, with the non hidden file
-    $indentconfig = "$homeDir/indentconfig.yaml" if ( !-e $indentconfig );
-
-    # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
-    $indentconfig = "$homeDir/.indentconfig.yaml" if ( !-e $indentconfig );
 
     # messages for indentconfig.yaml and/or .indentconfig.yaml
     if ( -e $indentconfig and !$switches{onlyDefault} ) {
