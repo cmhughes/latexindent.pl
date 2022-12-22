@@ -124,14 +124,14 @@ sub yaml_read_settings {
     if ($^O eq "linux") {
         if (!defined $indentconfig && defined "$ENV{XDG_CONFIG_HOME}" && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
             $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml";
-        } elsif (!defined $indentconfig && defined "$ENV{HOME}" && -f "$ENV{HOME}/.config/latexindent/latexindent.yaml") {
-            $indentconfig = "$ENV{HOME}/.config/latexindent/latexindent.yaml";
+        } elsif (!defined $indentconfig && -f "$homeDir/.config/latexindent/latexindent.yaml") {
+            $indentconfig = "$homeDir/.config/latexindent/latexindent.yaml";
         }
     } elsif ($^O eq "darwin") {
-        if (!defined $indentconfig && -f "$homeDir/Library/Preferences/latexindent")  {
-            $indentconfig = "$homeDir/Library/Preferences/latexindent";
+        if (!defined $indentconfig && -f "$homeDir/Library/Preferences/latexindent/latexindent.yaml")  {
+            $indentconfig = "$homeDir/Library/Preferences/latexindent/latexindent.yaml";
         }
-    } elsif ($^O eq "MSWin32" || $^O == "cygwin") {
+    } elsif ($^O eq "MSWin32" || $^O eq "cygwin") {
         if (!defined $indentconfig && "$ENV{LOCALAPPDATA}" && -f "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml") {
             $indentconfig = "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml";
         } elsif (!defined $indentconfig && -f "$homeDir/AppData/Local/latexindent/latexindent.yaml") {
