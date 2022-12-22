@@ -16,6 +16,8 @@ latexindent.pl -s quick-start.tex -o=+-mod4 -l quick-start4 -m
 latexindent.pl -s quick-start.tex -o=+-mod5 -l quick-start5 -m
 latexindent.pl -s quick-start.tex -o=+-mod6 -l quick-start6 -m
 latexindent.pl -s quick-start.tex -o=+-mod7 -l quick-start7 -m
+latexindent.pl -s quick-start.tex -o=+-mod8 -l quick-start8
+latexindent.pl -s quick-start.tex -o=+-mod9 -l quick-start9
 
 # demonstration
 latexindent.pl -s filecontents1.tex -o filecontents1-default.tex

@@ -15,8 +15,8 @@ verbatimEnvironments:
 
 specialBeginEnd:
     index:
-        begin: '\\index\{'
-        end: '\}'
+        begin: \\index\{
+        end: \}
         lookForThis: verb
 
 indentAfterHeadings:
@@ -83,9 +83,9 @@ modifyLineBreaks:
                 |
                 \\end\{[^}]+?\}
         blocksBeginWith:
-           other: '\\announce'
+           other: \\announce
         blocksEndBefore:
-           other: '\\cmhlistingsfromfile|\\begin\{|\\\[|\\end\{'    # regex
+           other: \\cmhlistingsfromfile|\\begin\{|\\\[|\\end\{    # regex
     verbatim:
         commandshell:
            VerbatimBeginStartsOnOwnLine: 4
@@ -111,18 +111,12 @@ replacements:
     substitution: s/\%+/\%/sg
     when: after
   -
-    substitution: s/([a-zA-Z0-9.}{])\h{2,}([a-zA-Z0-9.}{])/$1 $2/sg
-    when: before
-  -
     substitution: |-
       s/(\\cmhlistingsfromfile\*?(?:\{|\[).*?\}\h*\{lst:[^}]*?\}\h*\R)/
       my $body = $1;
       $body =~ s@\R@@sg;
       $body .= "\n";
       /segx
-    when: after
-  -
-    substitution: s/([a-zA-Z0-9.()}{])\h{2,}([a-zA-Z0-9.()}{]|(?:\\(?!\\)))/$1 $2/sg
     when: after
   -
     substitution: s/\h+(\\end\{commandshell\})/$1/sg

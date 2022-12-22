@@ -90,6 +90,7 @@ latexindent.pl -l quick-start1.yaml quick-start.tex
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start1.yaml}[yaml-TCB]{\texttt{quick-start1.yaml}}{lst:quick-start1yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/quick-start-mod1.tex}{\texttt{quick-start-mod1.tex}}{lst:quick-start-mod1}
  \end{cmhtcbraster}
+ See \cref{subsec:indentation:and:horizontal:space}.
  \end{example}
 
  \begin{example}
@@ -105,6 +106,7 @@ latexindent.pl -l quick-start2.yaml quick-start.tex
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start2.yaml}[yaml-TCB]{\texttt{quick-start2.yaml}}{lst:quick-start2yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/quick-start-mod2.tex}{\texttt{quick-start-mod2.tex}}{lst:quick-start-mod2}
  \end{cmhtcbraster}
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
  \begin{example}
@@ -120,6 +122,7 @@ latexindent.pl -l quick-start3.yaml quick-start.tex
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start3.yaml}[yaml-TCB]{\texttt{quick-start3.yaml}}{lst:quick-start3yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod3.tex}{\texttt{quick-start-mod3.tex}}{lst:quick-start-mod3}
  \end{cmhtcbraster}
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
  \begin{example}
@@ -185,6 +188,41 @@ latexindent.pl -m -l quick-start7.yaml quick-start.tex
   \cmhlistingsfromfile{demonstrations/quick-start-mod7.tex}{\texttt{quick-start-mod7.tex}}{lst:quick-start-mod7}
  \end{cmhtcbraster}
  Full details of \emph{poly-switches} are covered in \cref{sec:poly-switches}.
+ \end{example}
+
+ \begin{example}
+ Running
+
+ \begin{commandshell}
+latexindent.pl -l quick-start8.yaml quick-start.tex
+\end{commandshell}
+
+ gives \cref{lst:quick-start-mod8}; note that the \emph{preamble} has been indented.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/quick-start8.yaml}[yaml-TCB]{\texttt{quick-start8.yaml}}{lst:quick-start8yaml}
+  \cmhlistingsfromfile*{demonstrations/quick-start-mod8.tex}{\texttt{quick-start-mod8.tex}}{lst:quick-start-mod8}
+ \end{cmhtcbraster}
+
+ See \cref{subsec:filecontents:preamble}.
+
+ \end{example}
+
+ \begin{example}
+ Running
+
+ \begin{commandshell}
+latexindent.pl -l quick-start9.yaml quick-start.tex
+\end{commandshell}
+
+ gives \cref{lst:quick-start-mod9}.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/quick-start9.yaml}[yaml-TCB]{\texttt{quick-start9.yaml}}{lst:quick-start9yaml}
+  \cmhlistingsfromfile*{demonstrations/quick-start-mod9.tex}{\texttt{quick-start-mod9.tex}}{lst:quick-start-mod9}
+ \end{cmhtcbraster}
+
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
 \subsection{Required perl modules}

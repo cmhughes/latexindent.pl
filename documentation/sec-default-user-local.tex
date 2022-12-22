@@ -300,7 +300,7 @@ latexindent.pl -l noindent3.yaml noindent1
  \end{itemize}
  \end{example}
 
-\subsection{filecontents and preamble}
+\subsection{filecontents and preamble}\label{subsec:filecontents:preamble}
 \yamltitle{fileContentsEnvironments}*{field}
 
  Before \texttt{latexindent.pl} determines the difference between preamble (if any) and
@@ -344,7 +344,7 @@ postfoothook=\end{mdframed},
 
  \index{indentation!defaultIndent description}
 
-\subsection{Indentation and horizontal space}
+\subsection{Indentation and horizontal space}\label{subsec:indentation:and:horizontal:space}
 \yamltitle{defaultIndent}*{horizontal space}
  This is the default indentation used in the absence of other details for the code block
  with which we are working. The default value is \lstinline!\t! which means a tab; we
@@ -395,7 +395,12 @@ lookForAlignDelims:
  Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
  each column by its alignment delimiters. It does have some limitations (discussed
  further in \cref{sec:knownlimitations}), but in many cases it will produce results such
- as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}.
+ as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}; running
+ the command
+ \begin{commandshell}
+latexindent.pl tabular1.tex   
+ \end{commandshell}
+ gives the output given in \cref{lst:tabularafter:basic}.
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/tabular1.tex}{\texttt{tabular1.tex}}{lst:tabularbefore:basic}
@@ -1084,7 +1089,11 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
 
  \begin{example}
  A demonstration of the before-and-after results are shown in
- \cref{lst:specialbefore,lst:specialafter}.
+ \cref{lst:specialbefore,lst:specialafter}; explicitly, running the command
+ \begin{commandshell}
+latexindent.pl special1.tex -o=+-default
+ \end{commandshell}
+ gives the output given in \cref{lst:specialafter}.
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/special1.tex}{\texttt{special1.tex} before}{lst:specialbefore}
