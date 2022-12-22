@@ -117,12 +117,20 @@ sub yaml_read_settings {
 
     # we'll need the home directory a lot in what follows
     my $homeDir = File::HomeDir->my_home;
-    $logger->info("*YAML settings read: indentconfig.yaml or .indentconfig.yaml") unless $switches{onlyDefault};
+     $logger->info("*YAML reading seittings") unless $switches{onlyDefault};
 
-    my $indentconfig = defined $ENV{LATEXINDENT_CONFIG} ? $ENV{LATEXINDENT_CONFIG} : undef;
+    my $indentconfig = undef;
+    if ( defined $ENV{LATEXINDENT_CONFIG} ) {
+        if(-f $ENV{LATEXINDENT_CONFIG}) {
+            $indentconfig = $ENV{LATEXINDENT_CONFIG};
+        } else {
+             $logger->info('The $LATEXINDENT_CONFIG variable is assigned, but does not point to a file!') unless $switches{onlyDefault};
+            $logger->info('The value of $LATEXINDENT_CONFIG is: "' . $ENV{LATEXINDENT_CONFIG} . '"');
+        }
+    }
     # see all possible values of $^O here: https://perldoc.perl.org/perlport#Unix and https://perldoc.perl.org/perlport#DOS-and-Derivatives
     if ($^O eq "linux") {
-        if (!defined $indentconfig && defined "$ENV{XDG_CONFIG_HOME}" && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
+        if (!defined $indentconfig && defined $ENV{XDG_CONFIG_HOME} && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
             $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml";
         } elsif (!defined $indentconfig && -f "$homeDir/.config/latexindent/latexindent.yaml") {
             $indentconfig = "$homeDir/.config/latexindent/latexindent.yaml";
@@ -132,7 +140,7 @@ sub yaml_read_settings {
             $indentconfig = "$homeDir/Library/Preferences/latexindent/latexindent.yaml";
         }
     } elsif ($^O eq "MSWin32" || $^O eq "cygwin") {
-        if (!defined $indentconfig && "$ENV{LOCALAPPDATA}" && -f "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml") {
+        if (!defined $indentconfig && defined $ENV{LOCALAPPDATA} && -f "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml") {
             $indentconfig = "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml";
         } elsif (!defined $indentconfig && -f "$homeDir/AppData/Local/latexindent/latexindent.yaml") {
             $indentconfig = "$homeDir/AppData/Local/latexindent/latexindent.yaml";
@@ -147,7 +155,7 @@ sub yaml_read_settings {
 
 
     # messages for indentconfig.yaml and/or .indentconfig.yaml
-    if ( defined $indentconfig && -f $indentconfig and !$switches{onlyDefault} ) {
+    if ( defined $indentconfig && -f $indentconfig && !$switches{onlyDefault} ) {
 
         # read the absolute paths from indentconfig.yaml
         $userSettings = YAML::Tiny->read("$indentconfig");
@@ -219,9 +227,9 @@ sub yaml_read_settings {
             $switches{yaml}              = 0;
         }
         else {
-            # give the user instructions on where to put indentconfig.yaml or .indentconfig.yaml
+            # give the user instructions on where to put the config file
             $logger->info(
-                "Home directory is $homeDir (didn't find either indentconfig.yaml or .indentconfig.yaml)\nTo specify user settings you would put indentconfig.yaml here: $homeDir/indentconfig.yaml\nAlternatively, you can use the hidden file .indentconfig.yaml as: $homeDir/.indentconfig.yaml"
+                "Home directory is $homeDir (didn't find a config file, see all posible locations here: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)"
             );
         }
     }
