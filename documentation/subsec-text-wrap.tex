@@ -532,9 +532,12 @@ latexindent.pl -s textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml -m
 
  gives the output given in \cref{lst:textwrap8-mod1}.
 
- \begin{cmhtcbraster}
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
   \cmhlistingsfromfile*{demonstrations/textwrap8-mod1.tex}{\texttt{textwrap8-mod1.tex}}{lst:textwrap8-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tw-before1.yaml}[MLB-TCB]{\texttt{tw-before1.yaml}}{lst:tw-before1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tw-before1.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{tw-before1.yaml}}{lst:tw-before1}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:textwrap8-mod1}, that the wrapped text has \emph{exceeded}
@@ -553,9 +556,12 @@ latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml -m
 
  gives the output given in \cref{lst:textwrap8-mod2}.
 
- \begin{cmhtcbraster}
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
   \cmhlistingsfromfile*{demonstrations/textwrap8-mod2.tex}{\texttt{textwrap8-mod2.tex}}{lst:textwrap8-mod2}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tw-after1.yaml}[MLB-TCB]{\texttt{tw-after1.yaml}}{lst:tw-after1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/tw-after1.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{tw-after1.yaml}}{lst:tw-after1}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:textwrap8-mod2}, that the wrapped text has \emph{obeyed} the

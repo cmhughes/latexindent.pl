@@ -327,8 +327,6 @@ latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
 latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
 
 # replacement mode demonstrations
-# replacement mode demonstrations
-# replacement mode demonstrations
 latexindent.pl -s -r replace1 -o=+-r1
 latexindent.pl -s -r replace1 -l=replace1.yaml -o=+-mod1
 

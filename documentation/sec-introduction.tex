@@ -213,43 +213,45 @@ perl latexindent-module-installer.pl
 
  The different listings are presented using different styles:
 
- \begin{minipage}{.4\textwidth}
-  \cmhlistingsfromfile{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.tex} file.
- \end{minipage}%
+ \begin{widepage}
+  \begin{minipage}{.4\linewidth}
+   \cmhlistingsfromfile{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.tex} file.
+  \end{minipage}%
 
- \begin{minipage}{.4\textwidth}
-  \cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file; when you see line numbers given (as here)
-  it means that the snippet is taken directly from \texttt{defaultSettings.yaml}, discussed in
-  detail in \vref{sec:defuseloc}.
- \end{minipage}%
+  \begin{minipage}{.4\linewidth}
+   \cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file; when you see line numbers given (as here)
+   it means that the snippet is taken directly from \texttt{defaultSettings.yaml}, discussed in
+   detail in \vref{sec:defuseloc}.
+  \end{minipage}%
 
- \begin{minipage}{.55\textwidth}
-  \cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file, but it will only
-  be relevant when the \texttt{-m} switch is active; see \vref{sec:modifylinebreaks}
-  for more details.
- \end{minipage}%
+  \begin{minipage}{.6\linewidth}
+   \cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file, but it will only
+   be relevant when the \texttt{-m} switch is active; see \vref{sec:modifylinebreaks}
+   for more details.
+  \end{minipage}%
 
- \begin{minipage}{.55\textwidth}
-  \cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file, but it will only
-  be relevant when the \texttt{-r} switch is active; see \vref{sec:replacements}
-  for more details.
- \end{minipage}%
+  \begin{minipage}{.6\linewidth}
+   \cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.95\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file, but it will only
+   be relevant when the \texttt{-r} switch is active; see \vref{sec:replacements}
+   for more details.
+  \end{minipage}%
+ \end{widepage}
 
  % \begin{latexonly}
  You will occasionally see dates shown in the margin (for example, next to this

@@ -332,34 +332,34 @@ indentRules:
 
 # set noAdditionalIndent globally for codeblocks
 noAdditionalIndentGlobal:
-    environments: 0
-    commands: 1
-    optionalArguments: 0
-    mandatoryArguments: 0
-    ifElseFi: 0
-    items: 0
-    keyEqualsValuesBracesBrackets: 0
-    namedGroupingBracesBrackets: 0
-    UnNamedGroupingBracesBrackets: 0
-    specialBeginEnd: 0
-    afterHeading: 0
-    filecontents: 0
+    environments: 0                   # 0/1
+    commands: 1                       #  |
+    optionalArguments: 0              #  |
+    mandatoryArguments: 0             #  |
+    ifElseFi: 0                       #  |
+    items: 0                          #  |
+    keyEqualsValuesBracesBrackets: 0  #  |
+    namedGroupingBracesBrackets: 0    #  |
+    UnNamedGroupingBracesBrackets: 0  #  |
+    specialBeginEnd: 0                #  |
+    afterHeading: 0                   #  |
+    filecontents: 0                   #  |
 
 # set indentRules globally for codeblocks; these need
 # to be horizontal spaces, if they are to be used
 indentRulesGlobal:
-    environments: 0
-    commands: 0
-    optionalArguments: 0
-    mandatoryArguments: 0
-    ifElseFi: 0
-    items: 0
-    keyEqualsValuesBracesBrackets: 0
-    namedGroupingBracesBrackets: 0
-    UnNamedGroupingBracesBrackets: 0
-    specialBeginEnd: 0
-    afterHeading: 0
-    filecontents: 0
+    environments: 0                   # 0/1 
+    commands: 0                       #  |
+    optionalArguments: 0              #  |
+    mandatoryArguments: 0             #  |
+    ifElseFi: 0                       #  |
+    items: 0                          #  |
+    keyEqualsValuesBracesBrackets: 0  #  |
+    namedGroupingBracesBrackets: 0    #  |
+    UnNamedGroupingBracesBrackets: 0  #  |
+    specialBeginEnd: 0                #  |
+    afterHeading: 0                   #  |
+    filecontents: 0                   #  |
 
 # command code block details
 commandCodeBlocks:
@@ -493,118 +493,118 @@ dos2unixlinebreaks: 0
 #
 # you can specify settings on a per-name basis
 modifyLineBreaks:
-    preserveBlankLines: 1
-    condenseMultipleBlankLinesInto: 1
+    preserveBlankLines: 1                   # 0/1
+    condenseMultipleBlankLinesInto: 1       #  |
     oneSentencePerLine:
-        manipulateSentences: 0
-        removeSentenceLineBreaks: 1
-        multipleSpacesToSingle: 1
-        textWrapSentences: 0   # setting to 1 disables main textWrap routine
+        manipulateSentences: 0              # 0/1
+        removeSentenceLineBreaks: 1         #  |
+        multipleSpacesToSingle: 1           #  |
+        textWrapSentences: 0                # 1 disables main textWrap
         sentenceIndent: ""
         sentencesFollow:
-            par: 1
-            blankLine: 1
-            fullStop: 1
-            exclamationMark: 1
-            questionMark: 1
-            rightBrace: 1
-            commentOnPreviousLine: 1
-            other: 0
-        sentencesBeginWith:
-            A-Z: 1
-            a-z: 0
-            other: 0
+            par: 1                          # 0/1
+            blankLine: 1                    #  |
+            fullStop: 1                     #  |
+            exclamationMark: 1              #  |
+            questionMark: 1                 #  |
+            rightBrace: 1                   #  |
+            commentOnPreviousLine: 1        #  |
+            other: 0                        # regex
+        sentencesBeginWith:            
+            A-Z: 1                          # 0/1
+            a-z: 0                          #  |
+            other: 0                        # regex
         sentencesEndWith:
-            basicFullStop: 0
-            betterFullStop: 1
-            exclamationMark: 1
-            questionMark: 1
-            other: 0
+            basicFullStop: 0                # 0/1
+            betterFullStop: 1               #  |
+            exclamationMark: 1              #  |
+            questionMark: 1                 #  |
+            other: 0                        # regex
     textWrapOptions:
         columns: 0
-        multipleSpacesToSingle: 1            
+        multipleSpacesToSingle: 1              
         removeBlockLineBreaks: 1
-        when: before                          # before/after
+        when: before                        # before/after
         blocksFollow:
-           headings: 1
-           commentOnPreviousLine: 1
-           par: 1
-           blankLine: 1
-           verbatim: 1
-           filecontents: 1
-           other: \\\]|\\item(?:\h|\[)        # regex
+           headings: 1                      # 0/1
+           commentOnPreviousLine: 1         #  |
+           par: 1                           #  |
+           blankLine: 1                     #  |
+           verbatim: 1                      #  |
+           filecontents: 1                  #  |
+           other: \\\]|\\item(?:\h|\[)      # regex
         blocksBeginWith:
-           A-Z: 1
-           a-z: 1
-           0-9: 0
-           other: 0                           # regex
+           A-Z: 1                           # 0/1
+           a-z: 1                           #  |
+           0-9: 0                           #  |
+           other: 0                         # regex
         blocksEndBefore:
-           commentOnOwnLine: 1
-           verbatim: 1
-           filecontents: 1
-           other: \\begin\{|\\\[|\\end\{      # regex
-        huge: overflow                        # forbid mid-word line breaks
+           commentOnOwnLine: 1              # 0/1
+           verbatim: 1                      #  |
+           filecontents: 1                  #  |
+           other: \\begin\{|\\\[|\\end\{    # regex
+        huge: overflow                      # forbid mid-word line breaks
         separator: ""
-    # poly-switches below here
-    environments:
-        BeginStartsOnOwnLine: 0
-        BodyStartsOnOwnLine: 0
-        EndStartsOnOwnLine: 0
-        EndFinishesWithLineBreak: 0
-        equation*:
-            BeginStartsOnOwnLine: 0
-            BodyStartsOnOwnLine: 0
-            EndStartsOnOwnLine: 0
-            EndFinishesWithLineBreak: 0
+    # poly-switches below here              # -1: remove, 0: off, 1: add, 2: comment+add, 3: add blank line, 4: add blank line
+    environments:                           
+        BeginStartsOnOwnLine: 0             # -1,0,1,2,3,4
+        BodyStartsOnOwnLine: 0              #  |
+        EndStartsOnOwnLine: 0               #  |
+        EndFinishesWithLineBreak: 0         #  |
+        equation*:                          
+            BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4
+            BodyStartsOnOwnLine: 0          #  |
+            EndStartsOnOwnLine: 0           #  |
+            EndFinishesWithLineBreak: 0     #  |
     ifElseFi:
-        IfStartsOnOwnLine: 0
-        BodyStartsOnOwnLine: 0
-        OrStartsOnOwnLine: 0
-        OrFinishesWithLineBreak: 0
-        ElseStartsOnOwnLine: 0
-        ElseFinishesWithLineBreak: 0
-        FiStartsOnOwnLine: 0
-        FiFinishesWithLineBreak: 0
+        IfStartsOnOwnLine: 0                # -1,0,1,2,3,4
+        BodyStartsOnOwnLine: 0              #  |
+        OrStartsOnOwnLine: 0                #  |
+        OrFinishesWithLineBreak: 0          #  |
+        ElseStartsOnOwnLine: 0              #  |
+        ElseFinishesWithLineBreak: 0        #  |
+        FiStartsOnOwnLine: 0                #  |
+        FiFinishesWithLineBreak: 0          #  | 
         ifnum:
-            IfStartsOnOwnLine: 0
-            BodyStartsOnOwnLine: 0
-            OrStartsOnOwnLine: 0
-            OrFinishesWithLineBreak: 0
-            ElseStartsOnOwnLine: 0
-            ElseFinishesWithLineBreak: 0
-            FiStartsOnOwnLine: 0
-            FiFinishesWithLineBreak: 0
+            IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
+            BodyStartsOnOwnLine: 0          #  |
+            OrStartsOnOwnLine: 0            #  |
+            OrFinishesWithLineBreak: 0      #  |
+            ElseStartsOnOwnLine: 0          #  |
+            ElseFinishesWithLineBreak: 0    #  |
+            FiStartsOnOwnLine: 0            #  |
+            FiFinishesWithLineBreak: 0      #  | 
     commands:
-        CommandStartsOnOwnLine: 0
+        CommandStartsOnOwnLine: 0          
         CommandNameFinishesWithLineBreak: 0
     optionalArguments:
-        LSqBStartsOnOwnLine: 0
-        OptArgBodyStartsOnOwnLine: 0
-        RSqBStartsOnOwnLine: 0
-        RSqBFinishesWithLineBreak: 0
-    mandatoryArguments:
-        LCuBStartsOnOwnLine: 0
-        MandArgBodyStartsOnOwnLine: 0
-        RCuBStartsOnOwnLine: 0
-        RCuBFinishesWithLineBreak: 0
+        LSqBStartsOnOwnLine: 0              # -1,0,1,2,3,4
+        OptArgBodyStartsOnOwnLine: 0        #  |
+        RSqBStartsOnOwnLine: 0              #  |
+        RSqBFinishesWithLineBreak: 0        #  |
+    mandatoryArguments:                     
+        LCuBStartsOnOwnLine: 0              # -1,0,1,2,3,4
+        MandArgBodyStartsOnOwnLine: 0       #  |
+        RCuBStartsOnOwnLine: 0              #  | 
+        RCuBFinishesWithLineBreak: 0        #  | 
     keyEqualsValuesBracesBrackets:
-        KeyStartsOnOwnLine: 0
-        EqualsStartsOnOwnLine: 0
-        EqualsFinishesWithLineBreak: 0
-    items:
-        ItemStartsOnOwnLine: 0
-        ItemFinishesWithLineBreak: 0
+        KeyStartsOnOwnLine: 0               # -1,0,1,2,3,4
+        EqualsStartsOnOwnLine: 0            #  |
+        EqualsFinishesWithLineBreak: 0      #  | 
+    items:                                  
+        ItemStartsOnOwnLine: 0              # -1,0,1,2,3,4
+        ItemFinishesWithLineBreak: 0        #  |
     namedGroupingBracesBrackets:
-        NameStartsOnOwnLine: 0
-        NameFinishesWithLineBreak: 0
+        NameStartsOnOwnLine: 0              # -1,0,1,2,3,4
+        NameFinishesWithLineBreak: 0        #  |
     specialBeginEnd:
-        SpecialBeginStartsOnOwnLine: 0
-        SpecialBodyStartsOnOwnLine: 0
-        SpecialEndStartsOnOwnLine: 0
-        SpecialEndFinishesWithLineBreak: 0
+        SpecialBeginStartsOnOwnLine: 0      # -1,0,1,2,3,4
+        SpecialBodyStartsOnOwnLine: 0       #  |
+        SpecialEndStartsOnOwnLine: 0        #  |
+        SpecialEndFinishesWithLineBreak: 0  #  |
     verbatim:
-        VerbatimBeginStartsOnOwnLine: 0
-        VerbatimEndFinishesWithLineBreak: 0
+        VerbatimBeginStartsOnOwnLine: 0     # -1,0,1,2,3,4
+        VerbatimEndFinishesWithLineBreak: 0 #  |
 
 # replacements, only active when either -r or -rr switches are active
 replacements:

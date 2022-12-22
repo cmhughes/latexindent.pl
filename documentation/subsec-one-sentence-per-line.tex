@@ -84,14 +84,15 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
  expressions. \index{regular expressions!lowercase alph a-z} \index{regular
  expressions!uppercase alph A-Z}
 
- \begin{cmhtcbraster}[raster columns=3,
+ \begin{cmhtcbraster}[raster columns=2,
    raster left skip=-3.5cm,
    raster right skip=-2cm,
    raster column skip=.06\linewidth]
   \cmhlistingsfromfile[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
   \cmhlistingsfromfile[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-  \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
  \end{cmhtcbraster}
+
+ \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 
 \subsubsection{sentencesFollow}
  Let's explore a few of the switches in \texttt{sentencesFollow}.
@@ -414,13 +415,13 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
  \begin{example}
  We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
  not followed by \texttt{item} commands, and that the end of sentences contains
- \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
- ensure that you remove the line breaks from the \texttt{other} field). \index{regular
- expressions!lowercase alph a-z} \index{regular expressions!uppercase alph A-Z}
- \index{regular expressions!numeric 0-9} \index{regular expressions!horizontal space
- \textbackslash{h}}
+ \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml}. This setting is actually an
+ appended version of the \texttt{betterFullStop} from the \texttt{fineTuning}, detailed
+ in \vref{lst:fineTuning}. \index{regular expressions!lowercase alph a-z} \index{regular
+ expressions!uppercase alph A-Z} \index{regular expressions!numeric 0-9} \index{regular
+ expressions!horizontal space \textbackslash{h}}
 
- \cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemize.yaml}[enhanced jigsaw,breakable,MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
  Upon running \index{switches!-l demonstration} \index{switches!-m demonstration}
 
@@ -466,9 +467,12 @@ latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2.yaml -
 
  gives the output given in \cref{lst:multiple-sentences8-mod1}.
 
- \begin{cmhtcbraster}
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
   \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod1.tex}{\texttt{multiple-sentences8-mod1.tex}}{lst:multiple-sentences8-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap2.yaml}[MLB-TCB]{\texttt{sentence-wrap2.yaml}}{lst:sentence-wrap2}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap2.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap2.yaml}}{lst:sentence-wrap2}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:multiple-sentences8-mod1}, that the wrapped text has
@@ -488,9 +492,12 @@ latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3.yaml -
 
  gives the output given in \cref{lst:multiple-sentences8-mod2}.
 
- \begin{cmhtcbraster}
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
   \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod2.tex}{\texttt{multiple-sentences8-mod2.tex}}{lst:multiple-sentences8-mod2}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap3.yaml}[MLB-TCB]{\texttt{sentence-wrap3.yaml}}{lst:sentence-wrap3}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap3.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap3.yaml}}{lst:sentence-wrap3}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:multiple-sentences8-mod2}, that the wrapped text has
