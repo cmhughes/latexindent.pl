@@ -22,9 +22,9 @@ use strict;                         #     |
 use warnings;                       #     |
 use Encode;                         #     |
 use Getopt::Long;                   #     |
-use Data::Dumper;                   #  these modules are      
-use List::Util qw(max);             #  generally part         
-use PerlIO::encoding;               #  of a default perl distribution 
+use Data::Dumper;                   #  these modules are
+use List::Util qw(max);             #  generally part
+use PerlIO::encoding;               #  of a default perl distribution
 use open ':std', ':encoding(UTF-8)';#     |
 use Text::Wrap;                     #     |
 use Text::Tabs;                     #     |
@@ -103,7 +103,7 @@ sudo apt install texlive-latex-recommended
    may need the following additional command to work with \texttt{latexindent.pl}
 
    \begin{commandshell}
-sudo apt install texlive-extra-utils 
+sudo apt install texlive-extra-utils
 \end{commandshell}
 
   \paragraph{Ubuntu: users without perl}
@@ -175,7 +175,7 @@ cpanm File::HomeDir
   Alternatively,
 
   \begin{commandshell}
-brew install latexindent  
+brew install latexindent
 \end{commandshell}
 
   \texttt{latexindent-macos} is a standalone executable \announce*{2022-10-30}{macOS standalone executable} for macOS (and therefore does not require a Perl distribution)
@@ -292,7 +292,7 @@ echo %path%
   to operate on multiple files. For example, the following calls are all valid
 
   \begin{commandshell}
-latexindent.pl myfile1.tex          
+latexindent.pl myfile1.tex
 latexindent.pl myfile1.tex myfile2.tex
 latexindent.pl myfile*.tex
         \end{commandshell}
@@ -320,7 +320,7 @@ latexindent.pl -w myfile*.tex
   If \texttt{latexindent.pl} is called using the \texttt{-o} switch as in
 
   \begin{commandshell}
-latexindent.pl myfile*.tex -o=my-output-file.tex 
+latexindent.pl myfile*.tex -o=my-output-file.tex
         \end{commandshell}
 
   and there are multiple files to operate upon, then the \texttt{-o} switch is ignored
@@ -548,7 +548,7 @@ export PATH=$PATH:/home/cmhughes/.local/bin
   Once created, you should then be able to run the following command:
 
   \begin{commandshell}
-pre-commit run --all-files  
+pre-commit run --all-files
 \end{commandshell}
 
   A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
@@ -560,7 +560,7 @@ pre-commit run --all-files
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
 
          \begin{commandshell}
-latexindent.pl -s myfile.tex       
+latexindent.pl -s myfile.tex
 \end{commandshell}
 
          for each \texttt{.tex} file in your repository;
@@ -581,7 +581,7 @@ latexindent.pl -s myfile.tex
   Once created, you should then be able to run the following command:
 
   \begin{commandshell}
-pre-commit run --all-files  
+pre-commit run --all-files
 \end{commandshell}
 
   A few notes about \cref{lst:.pre-commit-config.yaml-cpan}:
@@ -593,7 +593,7 @@ pre-commit run --all-files
          \cref{lst:.pre-commit-config.yaml-cpan} are equivalent to calling
 
          \begin{commandshell}
-conda run latexindent.pl -s myfile.tex       
+conda run latexindent.pl -s myfile.tex
 \end{commandshell}
 
          for each \texttt{.tex} file in your repository;
@@ -651,7 +651,7 @@ modifyLineBreaks:
   Now running
 
   \begin{commandshell}
-pre-commit run --all-files  
+pre-commit run --all-files
 \end{commandshell}
 
   is equivalent to running
@@ -672,6 +672,34 @@ latexindent.pl -l -m -s -w myfile.tex
   \end{itemize}
   \end{example}
 
+ \section{indentconfig options}
+  This section describes the possible locations for the main configuration file.
+  The possible locations are evaluated one after the other, but evaluation stops
+  when a valid file is found in one of the paths. The following list shows the checked options and is sorted by their respective priority.
+  It uses capitalized and with a Dollar symbol prefixed names (e.g. \texttt{\$LATEXINDENT\_CONFIG}) to symbolize environment variables.
+  In addition to that the variable name \texttt{\$homeDir} is used to symbolize your home directory.
+  \begin{enumerate}
+      \item The value of the environment variable \texttt{\$LATEXINDENT\_CONFIG} is treated as highest priority source for the path to the configuration file.
+      \item The next options are dependent on your operating system:
+        \begin{itemize}
+          \item Linux:
+              \begin{enumerate}
+                  \item The file at \texttt{\$XDG\_CONFIG\_HOME/latexindent/indentconfig.yaml}
+                  \item The file at \texttt{\$homeDir/.config/latexindent/indentconfig.yaml}
+              \end{enumerate}
+          \item Windows:
+              \begin{enumerate}
+                  \item The file at \texttt{\$LOCALAPPDATA\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
+                  \item The file at \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
+              \end{enumerate}
+          \item Mac:
+              \begin{enumerate}
+                  \item The file at \texttt{\$homeDir/Library/Preferences/latexindent/latexindent.yaml}
+              \end{enumerate}
+        \end{itemize}
+    \item The file at \texttt{\$homeDir/.indentconfig.yaml}
+    \item The file at \texttt{\$homeDir/indentconfig.yaml}
+  \end{enumerate}
  \section{logFilePreferences}\label{app:logfile-demo}
   \Vref{lst:logFilePreferences} describes the options for customising the information given
   to the log file, and we provide a few demonstrations here.
@@ -691,7 +719,7 @@ latexindent.pl -l -m -s -w myfile.tex
   If we run the following command (noting that \texttt{-t} is active)
 
   \begin{commandshell}
-latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
+latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
 \end{commandshell}
 
   then on inspection of \texttt{indent.log} we will find the snippet given in
@@ -763,10 +791,10 @@ latexindent.pl -o myfile.tex outputfile.tex
   \begin{commandshell}
 latexindent.pl -o=outputfile.tex myfile.tex
 latexindent.pl -o outputfile.tex myfile.tex
-latexindent.pl myfile.tex -o outputfile.tex 
-latexindent.pl myfile.tex -o=outputfile.tex 
-latexindent.pl myfile.tex -outputfile=outputfile.tex 
-latexindent.pl myfile.tex -outputfile outputfile.tex 
+latexindent.pl myfile.tex -o outputfile.tex
+latexindent.pl myfile.tex -o=outputfile.tex
+latexindent.pl myfile.tex -outputfile=outputfile.tex
+latexindent.pl myfile.tex -outputfile outputfile.tex
 \end{commandshell}
 
   noting that the \emph{output} file is given \emph{next to} the \texttt{-o} switch.
