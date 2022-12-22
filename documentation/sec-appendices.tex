@@ -684,13 +684,13 @@ latexindent.pl -l -m -s -w myfile.tex
         \begin{itemize}
           \item Linux:
               \begin{enumerate}
-                  \item The file at \texttt{\$XDG\_CONFIG\_HOME/latexindent/indentconfig.yaml}
-                  \item The file at \texttt{\$homeDir/.config/latexindent/indentconfig.yaml}
+                  \item The file at \texttt{\$XDG\_CONFIG\_HOME/latexindent/latexindent.yaml}
+                  \item The file at \texttt{\$homeDir/.config/latexindent/latexindent.yaml}
               \end{enumerate}
           \item Windows:
               \begin{enumerate}
-                  \item The file at \texttt{\$LOCALAPPDATA\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
-                  \item The file at \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
+                  \item The file at \texttt{\$LOCALAPPDATA\textbackslash{}latexindent\textbackslash{}latexindent.yaml}
+                  \item The file at \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local\textbackslash{}latexindent\textbackslash{}latexindent.yaml}
               \end{enumerate}
           \item Mac:
               \begin{enumerate}
@@ -700,6 +700,31 @@ latexindent.pl -l -m -s -w myfile.tex
     \item The file at \texttt{\$homeDir/.indentconfig.yaml}
     \item The file at \texttt{\$homeDir/indentconfig.yaml}
   \end{enumerate}
+  \subsection{Why to change the configuration location}
+  This is mostly a question about what you prefer, some like to put all their configuration files in their home directory (see \texttt{\$homeDir} above),
+  whilst some like to sort their configuration. And if you don't care about it, you can just continue using the sane defaults.
+  \subsection{How to change the configuration location}
+  This depends on your preferred location, if, for example, you would like to set a custom location, you would have to change the \texttt{\$LATEXINDENT\_CONFIG} environment variable.
+   \subsubsection{Linux}
+    To change it on Linux run the following command in a terminal, after changing the path:
+    \begin{commandshell}
+echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
+    \end{commandshell}
+    Context: This command adds the line \texttt{export LATEXINDENT\_CONFIG=``/your/config/path``} to your .profile file (which is commonly stored in \texttt{\$HOME/.profile}).
+    All commands in this file a run after login, so the environment variable will be set after your next login.
+   \subsubsection{Windows}
+    To change it on Windows run following command in \texttt{powershell.exe}:
+    \begin{dosprompt}
+[Environment]::SetEnvironmentVariable("LATEXINDENT_CONFIG", "\your\config\path", "User")
+    \end{dosprompt}
+    This sets the environment variable for every user session.
+   \subsubsection{Mac}
+    In a terminal type:
+    \begin{commandshell}
+echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
+    \end{commandshell}
+    Context: This command adds the line \texttt{export LATEXINDENT\_CONFIG=``/path/to/your/custom/configuration/file``} to your .profile file (which is commonly stored in \texttt{\$HOME/.profile}).
+    All commands in this file a run after login, so the environment variable will be set after your next login.
  \section{logFilePreferences}\label{app:logfile-demo}
   \Vref{lst:logFilePreferences} describes the options for customising the information given
   to the log file, and we provide a few demonstrations here.
