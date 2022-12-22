@@ -702,7 +702,7 @@ latexindent.pl -l -m -s -w myfile.tex
   \end{enumerate}
   \subsection{Why to change the configuration location}
   This is mostly a question about what you prefer, some like to put all their configuration files in their home directory (see \texttt{\$homeDir} above),
-  whilst some like to sort their configuration. And if you don't care about it, you can just continue using the sane defaults.
+  whilst some like to sort their configuration. And if you don't care about it, you can just continue using the same defaults.
   \subsection{How to change the configuration location}
   This depends on your preferred location, if, for example, you would like to set a custom location, you would have to change the \texttt{\$LATEXINDENT\_CONFIG} environment variable.
    \subsubsection{Linux}
@@ -714,9 +714,11 @@ echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
     All commands in this file a run after login, so the environment variable will be set after your next login.
    \subsubsection{Windows}
     To change it on Windows run following command in \texttt{powershell.exe}:
+    \begin{widepage}
     \begin{dosprompt}
 [Environment]::SetEnvironmentVariable("LATEXINDENT_CONFIG", "\your\config\path", "User")
     \end{dosprompt}
+    \end{widepage}
     This sets the environment variable for every user session.
    \subsubsection{Mac}
     In a terminal type:
