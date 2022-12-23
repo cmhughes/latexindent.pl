@@ -12,6 +12,37 @@
 
  \cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
+\subsubsection{oneSentencePerLine: overview}
+ An overview of how the oneSentencePerLine routine feature works:
+ \begin{enumerate}
+  \item the default value of \texttt{manipulateSentences} is 0, which means that
+        oneSentencePerLine will \emph{not} happen by default;
+  \item it happens \emph{after} verbatim blocks have been found;
+  \item it happens \emph{before} the text wrapping routine (see
+        \cref{subsec:textwrapping});
+  \item it happens \emph{before} the main code blocks have been found;
+  \item sentences to be found:
+        \begin{enumerate}
+         \item \emph{follow} the fields specified in \texttt{sentencesFollow}
+         \item \emph{begin} with the fields specified in \texttt{sentencesBeginWith}
+         \item \emph{end} with the fields specified in \texttt{sentencesEndWith}
+        \end{enumerate}
+  \item by default, the oneSentencePerLine routine will remove line breaks within sentences
+      because \texttt{removeBlockLineBreaks} is set to 1; switch it to 0 if you wish to
+      change this;
+  \item sentences can be text wrapped according to \texttt{textWrapSentences}, and will
+        be done either \texttt{before} or \texttt{after} the main indentation routine
+        (see \cref{subsubsec:ospl:before:after});
+  \item about trailing comments within text wrap blocks:
+        \begin{enumerate}
+         \item multiple trailing comments will be connected at the end of the sentence;
+         \item the number of spaces between the end of the sentence and the (possibly
+               combined) trailing comments is determined by the spaces (if any) at the
+               end of the sentence.
+        \end{enumerate}
+ \end{enumerate}
+
+ We demonstrate this feature using a series of examples.
 \yamltitle{manipulateSentences}{0|1}
  This is a binary switch that details if \texttt{latexindent.pl} should perform the
  sentence manipulation routine; it is \emph{off} (set to \texttt{0}) by default, and you

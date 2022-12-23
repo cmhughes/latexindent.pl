@@ -395,11 +395,12 @@ lookForAlignDelims:
  Specifying code blocks in this field instructs \texttt{latexindent.pl} to try and align
  each column by its alignment delimiters. It does have some limitations (discussed
  further in \cref{sec:knownlimitations}), but in many cases it will produce results such
- as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}; running
- the command
+ as those in \cref{lst:tabularbefore:basic,lst:tabularafter:basic}; running the command
+
  \begin{commandshell}
 latexindent.pl tabular1.tex   
  \end{commandshell}
+
  gives the output given in \cref{lst:tabularafter:basic}.
 
  \begin{cmhtcbraster}
@@ -1090,9 +1091,11 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
  \begin{example}
  A demonstration of the before-and-after results are shown in
  \cref{lst:specialbefore,lst:specialafter}; explicitly, running the command
+
  \begin{commandshell}
 latexindent.pl special1.tex -o=+-default
  \end{commandshell}
+
  gives the output given in \cref{lst:specialafter}.
 
  \begin{cmhtcbraster}

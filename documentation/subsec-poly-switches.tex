@@ -111,8 +111,14 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb4.yaml}[MLB-TCB]{\texttt{env-mlb4.yaml}}{lst:env-mlb4}
   \end{cmhtcbraster}
 
-  Upon running commands analogous to the above, we obtain
-  \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
+  Upon running the commands
+
+  \begin{commandshell}
+latexindent.pl -m env-mlb.tex -l env-mlb3.yaml
+latexindent.pl -m env-mlb.tex -l env-mlb4.yaml
+\end{commandshell}
+
+  we obtain \cref{lst:env-mlb-mod3,lst:env-mlb-mod4}.
 
   \begin{widepage}
    \begin{minipage}{.56\linewidth}
@@ -140,8 +146,14 @@ latexindent.pl -m env-mlb.tex -l env-mlb2.yaml
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb6.yaml}[MLB-TCB]{\texttt{env-mlb6.yaml}}{lst:env-mlb6}
   \end{cmhtcbraster}
 
-  Upon running commands analogous to the above, we obtain
-  \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
+  Upon running the commands
+
+  \begin{commandshell}
+latexindent.pl -m env-mlb.tex -l env-mlb5.yaml
+latexindent.pl -m env-mlb.tex -l env-mlb6.yaml
+\end{commandshell}
+
+  we obtain \cref{lst:env-mlb-mod5,lst:env-mlb-mod6}.
 
   \begin{widepage}
    \begin{minipage}{.56\linewidth}
@@ -250,8 +262,14 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb10.yaml}[MLB-TCB]{\texttt{env-mlb10.yaml}}{lst:env-mlb10}
   \end{cmhtcbraster}
 
-  Upon running commands analogous to the above, we obtain
-  \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
+  Upon running the commands
+
+  \begin{commandshell}
+latexindent.pl -m env-mlb.tex -l env-mlb9.yaml
+latexindent.pl -m env-mlb.tex -l env-mlb10.yaml
+\end{commandshell}
+
+  we obtain \cref{lst:env-mlb-mod9,lst:env-mlb-mod10}.
 
   \begin{widepage}
    \begin{minipage}{.43\linewidth}
@@ -280,8 +298,14 @@ latexindent.pl -m env-mlb.tex -l env-mlb8.yaml
    \cmhlistingsfromfile[style=yaml-LST]{demonstrations/env-mlb12.yaml}[MLB-TCB]{\texttt{env-mlb12.yaml}}{lst:env-mlb12}
   \end{cmhtcbraster}
 
-  Upon running commands analogous to the above, we obtain
-  \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
+  Upon running the commands
+
+  \begin{commandshell}
+latexindent.pl -m env-mlb.tex -l env-mlb11.yaml
+latexindent.pl -m env-mlb.tex -l env-mlb12.yaml
+\end{commandshell}
+
+  we obtain \cref{lst:env-mlb-mod11,lst:env-mlb-mod12}.
 
   \begin{widepage}
    \begin{minipage}{.42\linewidth}
@@ -484,8 +508,8 @@ after words
   \begin{widepage}
 
    \begin{commandshell}
-latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
-latexindent.pl -m env-mlb5.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,removeTWS-before.yaml
+latexindent.pl -m env-mlb5.tex -l env-mlb13,env-mlb14,env-mlb15,env-mlb16
+latexindent.pl -m env-mlb5.tex -l env-mlb13,env-mlb14,env-mlb15,env-mlb16,removeTWS-before
 \end{commandshell}
 
   \end{widepage}
@@ -529,8 +553,8 @@ after words
   \begin{widepage}
 
    \begin{commandshell}
-latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
-latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml,UnpreserveBlankLines.yaml
+latexindent.pl -m env-mlb6.tex -l env-mlb13,env-mlb14,env-mlb15,env-mlb16
+latexindent.pl -m env-mlb6.tex -l env-mlb13,env-mlb14,env-mlb15,env-mlb16,UnpreserveBlankLines
 \end{commandshell}
 
   \end{widepage}
@@ -565,7 +589,7 @@ latexindent.pl -m env-mlb6.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,e
 
   \begin{commandshell}
 latexindent.pl -m env-mlb7.tex -l env-mlb12.yaml,env-mlb13.yaml
-latexindent.pl -m env-mlb7.tex -l env-mlb13.yaml,env-mlb14.yaml,UnpreserveBlankLines.yaml
+latexindent.pl -m env-mlb7.tex -l env-mlb13,env-mlb14,UnpreserveBlankLines
 \end{commandshell}
 
   we receive the outputs given in \cref{lst:env-mlb7-preserve,lst:env-mlb7-no-preserve}.
@@ -920,8 +944,14 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 
  \begin{example}
  Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb2}; upon running
- the analogous command to that given above, we obtain \cref{lst:mycommand1-mlb2}; both
- beginning braces \lstinline!{! have had their leading line breaks removed.
+ the command
+
+ \begin{commandshell}
+latexindent.pl -m -l=mycom-mlb2.yaml mycommand1.tex
+\end{commandshell}
+
+ we obtain \cref{lst:mycommand1-mlb2}; both beginning braces \lstinline!{! have had their
+ leading line breaks removed.
 
  \begin{cmhtcbraster}[
    raster force size=false,
@@ -934,7 +964,13 @@ latexindent.pl -m -l=mycom-mlb1.yaml mycommand1.tex
 
  \begin{example}
  Now let's change the YAML file so that it is as in \cref{lst:mycom-mlb3}; upon running
- the analogous command to that given above, we obtain \cref{lst:mycommand1-mlb3}.
+ the command
+
+ \begin{commandshell}
+latexindent.pl -m -l=mycom-mlb3.yaml mycommand1.tex
+\end{commandshell}
+
+ we obtain \cref{lst:mycommand1-mlb3}.
 
  \begin{cmhtcbraster}[
    raster force size=false,
@@ -995,9 +1031,16 @@ latexindent.pl -m -l=mycom-mlb5.yaml mycommand1.tex
  \end{cmhtcbraster}
 
  As previously, the most-recently-processed code block takes priority -- as before, the
- second (i.e, \emph{last}) argument. Exploring this further, we consider the YAML
- settings in \cref{lst:mycom-mlb6}, which give associated output in
- \cref{lst:mycommand1-mlb6}.
+ second (i.e, \emph{last}) argument.
+
+ Exploring this further, we consider the YAML settings in \cref{lst:mycom-mlb6}, and run
+ the command
+
+ \begin{commandshell}
+latexindent.pl -m -l=mycom-mlb6.yaml mycommand1.tex
+\end{commandshell}
+
+ which gives the output in \cref{lst:mycommand1-mlb6}.
 
  \begin{cmhtcbraster}[raster column skip=.05\linewidth]
   \cmhlistingsfromfile{demonstrations/mycommand1-mlb6.tex}{\texttt{mycommand1.tex} using \cref{lst:mycom-mlb6}}{lst:mycommand1-mlb6}

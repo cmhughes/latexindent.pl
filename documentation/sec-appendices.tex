@@ -684,64 +684,129 @@ latexindent.pl -l -m -s -w myfile.tex
   \end{itemize}
   \end{example}
 
- \section{indentconfig options}
-  This section describes the possible locations for the main configuration file.
-  The possible locations are evaluated one after the other, but evaluation stops
-  when a valid file is found in one of the paths. The following list shows the checked options and is sorted by their respective priority.
-  It uses capitalized and with a Dollar symbol prefixed names (e.g. \texttt{\$LATEXINDENT\_CONFIG}) to symbolize environment variables.
-  In addition to that the variable name \texttt{\$homeDir} is used to symbolize your home directory.
+ \section{indentconfig options}\label{app:indentconfig:options}
+  This section describes the possible locations for the main configuration file,
+  discussed in \cref{sec:indentconfig}. Thank you to \cite{nehctargl} for this
+  contribution. \announce{new}{indentconfig location options}
+
+  The possible locations of \texttt{indentconfig.yaml} are evaluated one after the other,
+  and evaluation stops when a valid file is found in one of the paths.
+
+  Before stating the list, we give summarise in \cref{tab:environment:summary}.
+  \begin{table}[!htb]
+   \centering
+   \caption{indentconfig environment variable summaries}
+   \label{tab:environment:summary}
+   \begin{tabular}{lllll}
+    \toprule
+    environment variable & type              & Linux    & macOS    & Windows  \\
+    \midrule
+    LATEXINDENT\_CONFIG  & full path to file & \faCheck & \faCheck & \faCheck \\
+    XDG\_CONFIG\_HOME    & directory path    & \faCheck & \faClose & \faClose \\
+    LOCALAPPDATA         & directory path    & \faClose & \faClose & \faCheck \\
+    \bottomrule
+   \end{tabular}
+  \end{table}
+
+  The following list shows the checked options and is sorted by their respective
+  priority. It uses capitalized and with a dollar symbol prefixed names (e.g.
+  \texttt{\$LATEXINDENT\_CONFIG}) to symbolize environment variables. In addition to that
+  the variable name \texttt{\$homeDir} is used to symbolize your home directory.
+
   \begin{enumerate}
-      \item The value of the environment variable \texttt{\$LATEXINDENT\_CONFIG} is treated as highest priority source for the path to the configuration file.
-      \item The next options are dependent on your operating system:
-        \begin{itemize}
+   \item The value of the environment variable \texttt{\$LATEXINDENT\_CONFIG} is treated
+         as highest priority source for the path to the configuration file.
+   \item The next options are dependent on your operating system:
+         \begin{itemize}
           \item Linux:
-              \begin{enumerate}
-                  \item The file at \texttt{\$XDG\_CONFIG\_HOME/latexindent/indentconfig.yaml}
-                  \item The file at \texttt{\$homeDir/.config/latexindent/indentconfig.yaml}
-              \end{enumerate}
+                \begin{enumerate}
+                 \item The file at
+                       \texttt{\$XDG\_CONFIG\_HOME/latexindent/indentconfig.yaml}
+                 \item The file at
+                       \texttt{\$homeDir/.config/latexindent/indentconfig.yaml}
+                \end{enumerate}
           \item Windows:
-              \begin{enumerate}
-                  \item The file at \texttt{\$LOCALAPPDATA\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
-                  \item The file at \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
-              \end{enumerate}
+                \begin{enumerate}
+                 \item The file at
+                       \texttt{\$LOCALAPPDATA\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
+                 \item The file at
+                       \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local\textbackslash{}latexindent\textbackslash{}indentconfig.yaml}
+                \end{enumerate}
           \item Mac:
-              \begin{enumerate}
-                  \item The file at \texttt{\$homeDir/Library/Preferences/latexindent/indentconfig.yaml}
-              \end{enumerate}
-        \end{itemize}
-    \item The file at \texttt{\$homeDir/.indentconfig.yaml}
-    \item The file at \texttt{\$homeDir/indentconfig.yaml}
+                \begin{enumerate}
+                 \item The file at
+                       \texttt{\$homeDir/Library/Preferences/latexindent/indentconfig.yaml}
+                \end{enumerate}
+         \end{itemize}
+   \item The file at \texttt{\$homeDir/.indentconfig.yaml}
+   \item The file at \texttt{\$homeDir/indentconfig.yaml}
   \end{enumerate}
-  \subsection{Why to change the configuration location}
+ \subsection{Why to change the configuration location}
   This is mostly a question about what you prefer, some like to put all their configuration files in their home directory (see \texttt{\$homeDir} above),
   whilst some like to sort their configuration. And if you don't care about it, you can just continue using the same defaults.
-  \subsection{How to change the configuration location}
+ \subsection{How to change the configuration location}
   This depends on your preferred location, if, for example, you would like to set a custom location, you would have to change the \texttt{\$LATEXINDENT\_CONFIG} environment variable.
-  Although the following example only covers \texttt{\$LATEXINDENT\_CONFIG},
-  the same process can be applied to \texttt{\$XDG\_CONFIG\_HOME} or \texttt{\$LOCALAPPDATA} because both are environment variables.
-You just have to change the path to your chosen configuration directory (e.g. \texttt{\$homeDir/.config} or \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local} on Linux or Windows respectively)
-   \subsubsection{Linux}
-    To change it on Linux run the following command in a terminal, after changing the path:
-    \begin{commandshell}
-echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
+
+  Although the following example only covers \texttt{\$LATEXINDENT\_CONFIG}, the same
+  process can be applied to \texttt{\$XDG\_CONFIG\_HOME} or \texttt{\$LOCALAPPDATA}
+  because both are environment variables. You just have to change the path to your chosen
+  configuration directory (e.g. \texttt{\$homeDir/.config} or
+  \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local} on Linux or Windows
+  respectively)
+ \subsubsection{Linux}
+  To change \texttt{\$LATEXINDENT\_CONFIG} on Linux you can run the following command in
+  a terminal after changing the path:
+  \begin{widepage}
+
+   \begin{commandshell}
+echo 'export LATEXINDENT_CONFIG="/home/cmh/latexindent-config.yaml"' >> ~/.profile
     \end{commandshell}
-    Context: This command adds the line \texttt{export LATEXINDENT\_CONFIG=``/your/config/path``} to your .profile file (which is commonly stored in \texttt{\$HOME/.profile}).
-    All commands in this file a run after login, so the environment variable will be set after your next login.
-   \subsubsection{Windows}
-    To change it on Windows run following command in \texttt{powershell.exe}:
-    \begin{widepage}
-    \begin{dosprompt}
-[Environment]::SetEnvironmentVariable("LATEXINDENT_CONFIG", "\your\config\path", "User")
+
+  \end{widepage}
+  Context: This command adds the given line to your \texttt{.profile} file (which is
+  commonly stored in \texttt{\$HOME/.profile}). All commands in this file a run after
+  login, so the environment variable will be set after your next login.
+
+  You can check the value of \texttt{\$LATEXINDENT\_CONFIG} by typing
+
+  \begin{commandshell}
+echo $LATEXINDENT_CONFIG 
+/home/cmh/latexindent-config.yaml
+    \end{commandshell}
+
+  Linux users interested in \texttt{\$XDG\_CONFIG\_HOME} can explore variations of the
+  following commands
+
+  \begin{commandshell}
+echo $XDG_CONFIG_HOME
+echo ${XDG_CONFIG_HOME:=$HOME/.config}
+echo $XDG_CONFIG_HOME
+mkdir /home/cmh/.config/latexindent
+touch /home/cmh/.config/latexindent/indentconfig.yaml
+    \end{commandshell}
+
+ \subsubsection{Windows}
+  To change \texttt{\$LATEXINDENT\_CONFIG} on Windows you can run the following command
+  in \texttt{powershell.exe} after changing the path:
+  \begin{widepage}
+   \begin{dosprompt}
+[Environment]::SetEnvironmentVariable
+    ("LATEXINDENT_CONFIG", "\your\config\path", "User")
     \end{dosprompt}
-    \end{widepage}
-    This sets the environment variable for every user session.
-   \subsubsection{Mac}
-    In a terminal type:
-    \begin{commandshell}
+  \end{widepage}
+  This sets the environment variable for every user session.
+ \subsubsection{Mac}
+  To change \texttt{\$LATEXINDENT\_CONFIG} on macOS you can run the following command in
+  a terminal after changing the path:
+
+  \begin{commandshell}
 echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
     \end{commandshell}
-    Context: This command adds the line \texttt{export LATEXINDENT\_CONFIG=``/path/to/your/custom/configuration/file``} to your .profile file (which is commonly stored in \texttt{\$HOME/.profile}).
-    All commands in this file a run after login, so the environment variable will be set after your next login.
+
+  Context: This command adds the line to your \texttt{.profile} file (which is commonly
+  stored in \texttt{\$HOME/.profile}). All commands in this file a run after login, so
+  the environment variable will be set after your next login.
+
  \section{logFilePreferences}\label{app:logfile-demo}
   \Vref{lst:logFilePreferences} describes the options for customising the information given
   to the log file, and we provide a few demonstrations here.
