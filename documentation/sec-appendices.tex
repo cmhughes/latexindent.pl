@@ -705,6 +705,9 @@ latexindent.pl -l -m -s -w myfile.tex
   whilst some like to sort their configuration. And if you don't care about it, you can just continue using the same defaults.
   \subsection{How to change the configuration location}
   This depends on your preferred location, if, for example, you would like to set a custom location, you would have to change the \texttt{\$LATEXINDENT\_CONFIG} environment variable.
+  Although the following example only covers \texttt{\$LATEXINDENT\_CONFIG},
+  the same process can be applied to \texttt{\$XDG\_CONFIG\_HOME} or \texttt{\$LOCALAPPDATA} because both are environment variables.
+You just have to change the path to your chosen configuration directory (e.g. \texttt{\$homeDir/.config} or \texttt{\$homeDir\textbackslash{}AppData\textbackslash{}Local} on Linux or Windows respectively)
    \subsubsection{Linux}
     To change it on Linux run the following command in a terminal, after changing the path:
     \begin{commandshell}
