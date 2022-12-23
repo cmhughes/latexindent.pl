@@ -130,27 +130,27 @@ sub yaml_read_settings {
     }
     # see all possible values of $^O here: https://perldoc.perl.org/perlport#Unix and https://perldoc.perl.org/perlport#DOS-and-Derivatives
     if ($^O eq "linux") {
-        if (!defined $indentconfig && defined $ENV{XDG_CONFIG_HOME} && -f "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml") {
-            $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml";
-            $logger->info('The $XDG_CONFIG_HOME variable and the config file in "' . "$ENV{XDG_CONFIG_HOME}/latexindent/latexindent.yaml" . '" were recognized') unless $switches{onlyDefault};
+        if (!defined $indentconfig && defined $ENV{XDG_CONFIG_HOME} && -f "$ENV{XDG_CONFIG_HOME}/latexindent/indentconfig.yaml") {
+            $indentconfig = "$ENV{XDG_CONFIG_HOME}/latexindent/indentconfig.yaml";
+            $logger->info('The $XDG_CONFIG_HOME variable and the config file in "' . "$ENV{XDG_CONFIG_HOME}/latexindent/indentconfig.yaml" . '" were recognized') unless $switches{onlyDefault};
             $logger->info('The value of $XDG_CONFIG_HOME is: "' . $ENV{XDG_CONFIG_HOME} . '"') unless $switches{onlyDefault};
-        } elsif (!defined $indentconfig && -f "$homeDir/.config/latexindent/latexindent.yaml") {
-            $indentconfig = "$homeDir/.config/latexindent/latexindent.yaml";
-            $logger->info('The config file in "' . "$homeDir/.config/latexindent/latexindent.yaml" . '" was recognized') unless $switches{onlyDefault};
+        } elsif (!defined $indentconfig && -f "$homeDir/.config/latexindent/indentconfig.yaml") {
+            $indentconfig = "$homeDir/.config/latexindent/indentconfig.yaml";
+            $logger->info('The config file in "' . "$homeDir/.config/latexindent/indentconfig.yaml" . '" was recognized') unless $switches{onlyDefault};
         }
     } elsif ($^O eq "darwin") {
-        if (!defined $indentconfig && -f "$homeDir/Library/Preferences/latexindent/latexindent.yaml")  {
-            $indentconfig = "$homeDir/Library/Preferences/latexindent/latexindent.yaml";
-            $logger->info('The config file in "' . "$homeDir/Library/Preferences/latexindent/latexindent.yaml" . '" was recognized') unless $switches{onlyDefault};
+        if (!defined $indentconfig && -f "$homeDir/Library/Preferences/latexindent/indentconfig.yaml")  {
+            $indentconfig = "$homeDir/Library/Preferences/latexindent/indentconfig.yaml";
+            $logger->info('The config file in "' . "$homeDir/Library/Preferences/latexindent/indentconfig.yaml" . '" was recognized') unless $switches{onlyDefault};
         }
     } elsif ($^O eq "MSWin32" || $^O eq "cygwin") {
-        if (!defined $indentconfig && defined $ENV{LOCALAPPDATA} && -f "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml") {
-            $indentconfig = "$ENV{LOCALAPPDATA}/latexindent/latexindent.yaml";
-            $logger->info('The $LOCALAPPDATA variable and the config file in "' . "$ENV{LOCALAPPDATA}" . '\latexindent\latexindent.yaml" were recognized') unless $switches{onlyDefault};
+        if (!defined $indentconfig && defined $ENV{LOCALAPPDATA} && -f "$ENV{LOCALAPPDATA}/latexindent/indentconfig.yaml") {
+            $indentconfig = "$ENV{LOCALAPPDATA}/latexindent/indentconfig.yaml";
+            $logger->info('The $LOCALAPPDATA variable and the config file in "' . "$ENV{LOCALAPPDATA}" . '\latexindent\indentconfig.yaml" were recognized') unless $switches{onlyDefault};
             $logger->info('The value of $LOCALAPPDATA is: "' . $ENV{LOCALAPPDATA} . '"') unless $switches{onlyDefault};
-        } elsif (!defined $indentconfig && -f "$homeDir/AppData/Local/latexindent/latexindent.yaml") {
-            $indentconfig = "$homeDir/AppData/Local/latexindent/latexindent.yaml";
-            $logger->info('The config file in "' . "$homeDir" . '\AppData\Local\latexindent\latexindent.yaml" was recognized') unless $switches{onlyDefault};
+        } elsif (!defined $indentconfig && -f "$homeDir/AppData/Local/latexindent/indentconfig.yaml") {
+            $indentconfig = "$homeDir/AppData/Local/latexindent/indentconfig.yaml";
+            $logger->info('The config file in "' . "$homeDir" . '\AppData\Local\latexindent\indentconfig.yaml" was recognized') unless $switches{onlyDefault};
         }
     }
     if ( !defined $indentconfig ) {
