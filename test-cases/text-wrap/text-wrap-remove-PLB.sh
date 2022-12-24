@@ -178,6 +178,8 @@ for i in {1..7};
   done
 
 # before/after
+latexindent.pl -s -r -m -l issue-359a.yaml issue-306.tex -y 'modifyLineBreaks:textWrapOptions:columns:80' -o=+-mod1
+
 latexindent.pl -s -r -m -l issue-359.yaml issue-359.tex -o=+-mod1
 latexindent.pl -s -r -m -l issue-359a.yaml issue-359.tex -o=+-mod2
 
