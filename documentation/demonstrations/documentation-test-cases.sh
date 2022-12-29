@@ -258,6 +258,13 @@ latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml,addruler1  -m -r
 latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2,addruler1 -m -r
 latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3,addruler1 -m -r
 
+# wrap comments
+latexindent.pl -s -r -m -l wrap-comments1.yaml,addruler1.yaml textwrap9.tex -o=+-mod1
+
+latexindent.pl -s -r -m -l wrap-comments1.yaml,addruler1.yaml textwrap10.tex -o=+-mod1
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml textwrap10.tex -o=+-mod2
+
+latexindent.pl -s multiple-sentences9.tex -o=+-mod1.tex -l=sentence-wrap4,addruler1 -m -r
 # text wrap trailing comments
 for i in {1..6};
 do

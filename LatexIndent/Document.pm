@@ -37,7 +37,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks
     qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
-use LatexIndent::Wrap qw/text_wrap/;
+use LatexIndent::Wrap qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -302,8 +302,9 @@ sub process_body_of_text {
         and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
     {
-        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'") if $is_tt_switch_active;
-        $self->one_sentence_per_line( textWrap => 1);
+        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'")
+            if $is_tt_switch_active;
+        $self->one_sentence_per_line( textWrap => 1 );
     }
 
     # option for text wrap
@@ -315,6 +316,12 @@ sub process_body_of_text {
     {
         $self->text_wrap();
     }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ($is_m_switch_active
+        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }
 
@@ -322,9 +329,10 @@ sub find_objects {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line( textWrap => (${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before'))
-        if ($is_m_switch_active
-        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences});
+    $self->one_sentence_per_line(
+        textWrap => ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' ) )
+        if ( $is_m_switch_active
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
 
     # text wrapping
     #
@@ -346,6 +354,12 @@ sub find_objects {
         # text wrapping can affect verbatim poly-switches, so we run it again
         $self->verbatim_modify_line_breaks( when => "afterTextWrap" );
     }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ($is_m_switch_active
+        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
 
     # search for environments
     $logger->trace('*looking for ENVIRONMENTS') if $is_t_switch_active;

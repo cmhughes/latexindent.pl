@@ -525,6 +525,9 @@ modifyLineBreaks:
         multipleSpacesToSingle: 1              
         removeBlockLineBreaks: 1
         when: before                        # before/after
+        comments: 
+           wrap: 0                          # 0/1
+           inheritLeadingSpace: 0           # 0/1
         blocksFollow:
            headings: 1                      # 0/1
            commentOnPreviousLine: 1         #  |

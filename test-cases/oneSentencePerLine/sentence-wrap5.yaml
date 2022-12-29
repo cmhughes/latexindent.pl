@@ -1,0 +1,9 @@
+defaultIndent: '   '
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1     
+        textWrapSentences: 0
+    textWrapOptions:
+        columns: 35
+        comments: 
+          wrap: 1  #<!-------

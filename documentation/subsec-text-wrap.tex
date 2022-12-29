@@ -29,8 +29,8 @@
          \item \emph{end} before the fields specified in \texttt{blocksEndBefore}
         \end{enumerate}
   \item setting \texttt{columns} to a value $>0$ will text wrap blocks by first removing
-      line breaks, and then wrapping according to the specified value of
-      \texttt{columns};
+        line breaks, and then wrapping according to the specified value of
+        \texttt{columns};
   \item setting \texttt{columns} to $-1$ will \emph{only} remove line breaks within the
         text wrap block;
   \item by default, the text wrapping routine will remove line breaks within text blocks
@@ -45,8 +45,11 @@
                block (see \cref{lst:tw-tc4});
          \item the number of spaces between the end of the text wrap block and the
                (possibly combined) trailing comments is determined by the spaces (if any)
-               at the end of the text wrap block (see \cref{lst:tw-tc5}).
+               at the end of the text wrap block (see \cref{lst:tw-tc5});
         \end{enumerate}
+  \item trailing comments can receive text wrapping \announce{new}{text wrap trailing
+        comments}; examples are shown in \cref{subsubsec:tw:comments} and
+        \cref{subsubsec:ospl:tw:comments}.
  \end{enumerate}
 
  We demonstrate this feature using a series of examples.
@@ -527,7 +530,7 @@ latexindent.pl -m tw-tc6.tex -l textwrap1A.yaml -o=+-mod1
  Using the settings given in \cref{lst:tw-before1} and running the command
 
  \begin{commandshell}
-latexindent.pl -s textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml -m
+latexindent.pl textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml -m
    \end{commandshell}
 
  gives the output given in \cref{lst:textwrap8-mod1}.
@@ -551,7 +554,7 @@ latexindent.pl -s textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml -m
  Using the settings given in \cref{lst:tw-after1} and running the command
 
  \begin{commandshell}
-latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml -m
+latexindent.pl textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml -m
    \end{commandshell}
 
  gives the output given in \cref{lst:textwrap8-mod2}.
@@ -566,6 +569,87 @@ latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml -m
 
  We note that, in \cref{lst:textwrap8-mod2}, that the wrapped text has \emph{obeyed} the
  specified value of \texttt{columns} (35) given in \cref{lst:tw-after1}.
+ \end{example}
+
+\subsubsection{Text wrap: wrapping comments}\label{subsubsec:tw:comments}
+ You can instruct \texttt{latexindent.pl} to apply text wrapping to comments
+ \announce{new}{text wrap trailing comments}; we demonstrate this with examples, see also
+ \cref{subsubsec:ospl:tw:comments}. \index{comments!text wrap} \index{text wrap!comments}
+
+ \begin{example}
+ We use the file in \cref{lst:textwrap9} which contains a trailing comment block.
+
+ \cmhlistingsfromfile*{demonstrations/textwrap9.tex}{\texttt{textwrap9.tex}}{lst:textwrap9}
+
+ Using the settings given in \cref{lst:wrap-comments1} and running the command
+
+ \begin{commandshell}
+latexindent.pl textwrap9.tex -o=+-mod1.tex -l=wrap-comments1.yaml -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:textwrap9-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/textwrap9-mod1.tex}{\texttt{textwrap9-mod1.tex}}{lst:textwrap9-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/wrap-comments1.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{wrap-comments1.yaml}}{lst:wrap-comments1}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:textwrap9-mod1}, that the comments have been \emph{combined
+ and wrapped} because of the annotated line specified in \cref{lst:wrap-comments1}.
+ \end{example}
+
+ \begin{example}
+ We use the file in \cref{lst:textwrap10} which contains a trailing comment block.
+
+ \cmhlistingsfromfile*{demonstrations/textwrap10.tex}{\texttt{textwrap10.tex}}{lst:textwrap10}
+
+ Using the settings given in \cref{lst:wrap-comments1:repeat} and running the command
+
+ \begin{commandshell}
+latexindent.pl textwrap10.tex -o=+-mod1.tex -l=wrap-comments1.yaml -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:textwrap10-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/textwrap10-mod1.tex}{\texttt{textwrap10-mod1.tex}}{lst:textwrap10-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/wrap-comments1.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{wrap-comments1.yaml}}{lst:wrap-comments1:repeat}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:textwrap10-mod1}, that the comments have been \emph{combined
+ and wrapped} because of the annotated line specified in
+ \cref{lst:wrap-comments1:repeat}, and that the space from the leading comment has not
+ been inherited; we will explore this further in the next example.
+ \end{example}
+
+ \begin{example}
+ We continue to use the file in \cref{lst:textwrap10}.
+
+ Using the settings given in \cref{lst:wrap-comments2} and running the command
+
+ \begin{commandshell}
+latexindent.pl textwrap10.tex -o=+-mod2.tex -l=wrap-comments2.yaml -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:textwrap10-mod2}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/textwrap10-mod2.tex}{\texttt{textwrap10-mod2.tex}}{lst:textwrap10-mod2}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/wrap-comments2.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{wrap-comments2.yaml}}{lst:wrap-comments2}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:textwrap10-mod2}, that the comments have been \emph{combined
+ and wrapped} and that the leading space has been inherited because of the annotated
+ lines specified in \cref{lst:wrap-comments2}.
  \end{example}
 
 \subsubsection{Text wrap: huge, tabstop and separator}

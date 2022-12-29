@@ -81,7 +81,7 @@ modifyLineBreaks:
                 |
                 \\cmhlistingsfromfile
                 |
-                \\end\{[^}]+?\}
+                \\end\{[^}]+?\}(?!\s*\\item)
         blocksBeginWith:
            other: \\announce
         blocksEndBefore:

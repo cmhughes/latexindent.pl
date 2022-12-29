@@ -32,14 +32,14 @@ our @EXPORT_OK = qw/one_sentence_per_line/;
 our $sentenceCounter;
 
 sub one_sentence_per_line {
-    my $self = shift;
+    my $self  = shift;
     my %input = @_;
 
     $logger->trace(
         "*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
         if $is_t_switch_active;
 
-    # 
+    #
     # sentences FOLLOW
     #
     my $sentencesFollow = q();
@@ -106,7 +106,7 @@ sub one_sentence_per_line {
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesFollow) if $is_tt_switch_active;
 
-    # 
+    #
     # sentences BEGIN with
     #
     my $sentencesBeginWith = q();
@@ -274,6 +274,20 @@ sub one_sentence_per_line {
                             };
                             $replacementText;
                             /xsge;
+
+    #
+    # remove spaces between trailing comments
+    #
+    #
+    # from:
+    #
+    #   % first comment %second comment
+    #                  ^
+    # into:
+    #
+    #   % first comment%second comment
+    #
+    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg;
 
     if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} !~ m/\h+/ ) {
 

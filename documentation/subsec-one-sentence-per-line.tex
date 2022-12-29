@@ -27,9 +27,9 @@
          \item \emph{begin} with the fields specified in \texttt{sentencesBeginWith}
          \item \emph{end} with the fields specified in \texttt{sentencesEndWith}
         \end{enumerate}
-  \item by default, the oneSentencePerLine routine will remove line breaks within sentences
-      because \texttt{removeBlockLineBreaks} is set to 1; switch it to 0 if you wish to
-      change this;
+  \item by default, the oneSentencePerLine routine will remove line breaks within
+        sentences because \texttt{removeBlockLineBreaks} is set to 1; switch it to 0 if
+        you wish to change this;
   \item sentences can be text wrapped according to \texttt{textWrapSentences}, and will
         be done either \texttt{before} or \texttt{after} the main indentation routine
         (see \cref{subsubsec:ospl:before:after});
@@ -125,7 +125,7 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
 
  \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
 
-\subsubsection{sentencesFollow}
+\subsubsection{oneSentencePerLine: sentencesFollow}
  Let's explore a few of the switches in \texttt{sentencesFollow}.
 
  \begin{example}
@@ -184,7 +184,7 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
  accounted for correctly.
  \end{example}
 
-\subsubsection{sentencesBeginWith}
+\subsubsection{oneSentencePerLine: sentencesBeginWith}
  By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
  case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
  lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the
@@ -226,7 +226,7 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
  \texttt{9}.
  \end{example}
 
-\subsubsection{sentencesEndWith}
+\subsubsection{oneSentencePerLine: sentencesEndWith}
  \begin{example}
  Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
  which \texttt{latexindent.pl} will operate on the sentences in this file in
@@ -381,7 +381,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
  \end{cmhtcbraster}
  \end{example}
 
-\subsubsection{Text wrapping and indenting sentences}
+\subsubsection{oneSentencePerLine: text wrapping and indenting sentences}
  The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
  indent} can be instructed to perform text wrapping and indentation upon sentences.
  \index{sentences!text wrapping} \index{sentences!indenting}%
@@ -472,7 +472,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
  the \texttt{oneSentencePerLine} routine determines if it will remove line breaks while
  text wrapping, from the value of \texttt{removeSentenceLineBreaks}.
 
-\subsubsection{Text wrapping and indenting sentences, when before/after}\label{subsubsec:ospl:before:after}
+\subsubsection{oneSentencePerLine: text wrapping and indenting sentences, when before/after}\label{subsubsec:ospl:before:after}
  The text wrapping routine operates, by default, \texttt{before} the \announce{new}{text
  wrap: before/after details} code blocks have been found, but this can be changed to
  \texttt{after}:
@@ -493,7 +493,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
  Using the settings given in \cref{lst:sentence-wrap2} and running the command
 
  \begin{commandshell}
-latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2.yaml -m
+latexindent.pl multiple-sentences8 -o=+-mod1.tex -l=sentence-wrap2 -m
    \end{commandshell}
 
  gives the output given in \cref{lst:multiple-sentences8-mod1}.
@@ -518,7 +518,7 @@ latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2.yaml -
  Using the settings given in \cref{lst:sentence-wrap3} and running the command
 
  \begin{commandshell}
-latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3.yaml -m
+latexindent.pl multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3 -m
    \end{commandshell}
 
  gives the output given in \cref{lst:multiple-sentences8-mod2}.
@@ -534,4 +534,35 @@ latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3.yaml -
  We note that, in \cref{lst:multiple-sentences8-mod2}, that the wrapped text has
  \emph{obeyed} the specified value of \texttt{columns} (35) given in
  \cref{lst:sentence-wrap3}.
+ \end{example}
+
+\subsubsection{oneSentencePerLine: text wrapping sentences and comments}\label{subsubsec:ospl:tw:comments}
+ We demonstrate the one sentence per line routine with respect to text wrapping
+ \emph{comments}. See also \cref{subsubsec:tw:comments}. \index{comments!text wrap}
+ \index{text wrap!comments} \index{sentences!comments} \index{sentences!text wrap}
+
+ \begin{example}
+ Let's begin with the file in \cref{lst:multiple-sentences9}.
+
+ \cmhlistingsfromfile*{demonstrations/multiple-sentences9.tex}{\texttt{multiple-sentences9.tex}}{lst:multiple-sentences9}
+
+ Using the settings given in \cref{lst:sentence-wrap4} and running the command
+
+ \begin{commandshell}
+latexindent.pl multiple-sentences9 -o=+-mod1.tex -l=sentence-wrap4 -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:multiple-sentences9-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/multiple-sentences9-mod1.tex}{\texttt{multiple-sentences9-mod1.tex}}{lst:multiple-sentences9-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap4.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap4.yaml}}{lst:sentence-wrap4}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:multiple-sentences9-mod1}, that the sentences have been
+ wrapped, and so too have the comments because of the annotated line in
+ \cref{lst:sentence-wrap4}.
  \end{example}

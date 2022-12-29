@@ -24,7 +24,7 @@ use LatexIndent::LogFile qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp/;
+    = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments/;
 our @trailingComments;
 our $commentCounter = 0;
 our $trailingCommentRegExp;
@@ -39,13 +39,17 @@ sub add_comment_symbol {
 
     # add a trailing comment token after, for example, a square brace [
     # or a curly brace { when, for example, BeginStartsOnOwnLine == 2
-    my $self = shift;
+    my $self  = shift;
+    my %input = @_;
+
+    my $commentValue = ( defined $input{value} ? $input{value} : q() );
 
     # increment the comment counter
     $commentCounter++;
 
     # store the comment -- without this, it won't get processed correctly at the end
-    push( @trailingComments, { id => $tokens{trailingComment} . $commentCounter . $tokens{endOfToken}, value => q() } );
+    push( @trailingComments,
+        { id => $tokens{trailingComment} . $commentCounter . $tokens{endOfToken}, value => $commentValue } );
 
     # log file info
     $logger->trace("*Updating trailing comment array") if $is_t_switch_active;
@@ -145,8 +149,6 @@ sub put_trailing_comments_back_in {
             $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line")
                 if $is_t_switch_active;
             ${$self}{body} =~ s/%$trailingcommentID(.*)$/$1%$trailingcommentValue/m;
-            #####if(${$self}{body} =~ m/%$trailingcommentID\h*[^%]+?$/mx){
-            #####    $logger->trace("Comment not at end of line $trailingcommentID, moving it to end of line") if $is_t_switch_active;
         }
         else {
             ${$self}{body} =~ s/%$trailingcommentID/%$trailingcommentValue/;

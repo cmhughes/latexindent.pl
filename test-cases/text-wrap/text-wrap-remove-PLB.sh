@@ -195,6 +195,9 @@ latexindent.pl -s -r -m -l issue-359a.yaml issue-359a.tex -y 'modifyLineBreaks:t
 latexindent.pl -s -r -m -l issue-359a.yaml issue-359b.tex -y 'modifyLineBreaks:textWrapOptions:columns:60' -o=+-mod3
 latexindent.pl -s -r -m -l issue-359a.yaml issue-359c.tex -y 'modifyLineBreaks:textWrapOptions:columns:60' -o=+-mod3
 
+latexindent.pl -s -r -m -l issue-359d.yaml issue-359a.tex -y 'modifyLineBreaks:textWrapOptions:columns:60' -o=+-mod5
+latexindent.pl -s -r -m -l issue-359e.yaml issue-359a.tex -y 'modifyLineBreaks:textWrapOptions:columns:60' -o=+-mod6
+
 # sentence text wrapping
 latexindent.pl -s -r -m -l issue-359b.yaml issue-359.tex -o=+-mod3
 latexindent.pl -s -r -m -l issue-359b.yaml issue-359a.tex -o=+-mod4
@@ -207,6 +210,34 @@ latexindent.pl -s -r -m -l issue-359c.yaml issue-359e.tex -o=+-mod2
 
 latexindent.pl -s -r -m -l issue-356.yaml,addruler3.yaml issue-356.tex -o=+-mod1
 latexindent.pl -s -r -m -l issue-356a.yaml,addruler3.yaml issue-356.tex -o=+-mod2
+
+# wrap comments
+latexindent.pl -s -r -m -l wrap-comments.yaml,addruler1.yaml issue-389a.tex -o=+-mod1
+latexindent.pl -s -r -m -l wrap-comments.yaml,addruler1.yaml issue-389b.tex -o=+-mod1
+
+latexindent.pl -s -r -m -l wrap-comments.yaml,addruler1.yaml issue-389c.tex -o=+-mod1
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml issue-389c.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments.yaml,addruler1.yaml issue-389d.tex -o=+-mod1
+
+latexindent.pl -s -r -m -l wrap-comments.yaml,addruler1.yaml issue-389e.tex -o=+-mod1
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml issue-389e.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments3.yaml,addruler1.yaml issue-389f.tex -o=+-mod1
+
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml issue-389g.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml issue-389h.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml issue-389i.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml,inherit-leading-space.yaml issue-389j.tex -o=+-mod2
+
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml,inherit-leading-space.yaml issue-389k.tex -o=+-mod2
+
+# sentences with trailing comments
+latexindent.pl -s -r -m -l wrap-comments4.yaml,addruler1.yaml issue-389l.tex -o=+-mod2
+latexindent.pl -s -r -m -l wrap-comments5.yaml,addruler1.yaml issue-389l.tex -o=+-mod3
 
 set +x
 [[ $gitStatus == 1 ]] && git status
