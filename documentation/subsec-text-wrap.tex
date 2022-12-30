@@ -110,8 +110,8 @@ latexindent.pl -m -l textwrap1B.yaml textwrap1-mod1.tex
 
  gives the output in \cref{lst:textwrap1-mod1B}.
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap1B.yaml}[MLB-TCB]{\texttt{textwrap1B.yaml}}{lst:textwrap1B-yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/textwrap1-mod1B.tex}{\texttt{textwrap1-mod1B.tex}}{lst:textwrap1-mod1B}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap1B.yaml}[MLB-TCB]{\texttt{textwrap1B.yaml}}{lst:textwrap1B-yaml}
  \end{cmhtcbraster}
  We note that in \cref{lst:textwrap1-mod1B} the multiple spaces have \emph{not} been
  condensed into single spaces.
@@ -159,8 +159,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-headings.yaml tw-headings1.tex
  gives the output in \cref{lst:tw-headings1-mod2}, in which text wrapping has been
  instructed \emph{not to happen} following headings.
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-headings.yaml}[MLB-TCB]{\texttt{bf-no-headings.yaml}}{lst:bf-no-headings-yaml}
   \cmhlistingsfromfile{demonstrations/tw-headings1-mod2.tex}{\texttt{tw-headings1-mod2.tex}}{lst:tw-headings1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-headings.yaml}[MLB-TCB]{\texttt{bf-no-headings.yaml}}{lst:bf-no-headings-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -197,8 +197,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-comments.yaml tw-comments1.tex
    raster left skip=-3.5cm,
    raster right skip=-2cm,
   ]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-comments.yaml}[MLB-TCB]{\texttt{bf-no-comments.yaml}}{lst:bf-no-comments-yaml}
   \cmhlistingsfromfile{demonstrations/tw-comments1-mod2.tex}{\texttt{tw-comments1-mod2.tex}}{lst:tw-comments1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-comments.yaml}[MLB-TCB]{\texttt{bf-no-comments.yaml}}{lst:bf-no-comments-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -243,8 +243,8 @@ latexindent.pl -m -l textwrap1.yaml,bf-no-disp-math.yaml tw-disp-math1.tex
  gives the output in \cref{lst:tw-disp-math1-mod2}, in which text wrapping has been
  instructed \emph{not to happen} following display math.
  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-disp-math.yaml}[MLB-TCB]{\texttt{bf-no-disp-math.yaml}}{lst:bf-no-disp-math-yaml}
   \cmhlistingsfromfile{demonstrations/tw-disp-math1-mod2.tex}{\texttt{tw-disp-math1-mod2.tex}}{lst:tw-disp-math1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bf-no-disp-math.yaml}[MLB-TCB]{\texttt{bf-no-disp-math.yaml}}{lst:bf-no-disp-math-yaml}
  \end{cmhtcbraster}
 
  Naturally, you should feel encouraged to customise this as you see fit.
@@ -281,12 +281,14 @@ latexindent.pl -m -l textwrap1.yaml,tw-bf-myenv.yaml tw-bf-myenv1.tex
 
  which gives the output in \cref{lst:tw-bf-myenv1-mod2}, in which text wrapping has been
  implemented across the file.
- \begin{cmhtcbraster}[raster column skip=.1\linewidth,
-   raster left skip=-3.5cm,
-   raster right skip=-2cm,
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+raster left skip=-1.5cm,
+   raster force size=false,
+   raster column 1/.style={add to width=-.1\textwidth},
+   raster column 2/.style={add to width=.1\textwidth},
   ]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tw-bf-myenv.yaml}[MLB-TCB]{\texttt{tw-bf-myenv.yaml}}{lst:tw-bf-myenv-yaml}
   \cmhlistingsfromfile{demonstrations/tw-bf-myenv1-mod2.tex}{\texttt{tw-bf-myenv1-mod2.tex}}{lst:tw-bf-myenv1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tw-bf-myenv.yaml}[MLB-TCB,width=0.6\linewidth]{\texttt{tw-bf-myenv.yaml}}{lst:tw-bf-myenv-yaml}
  \end{cmhtcbraster}
 
  \end{example}
@@ -320,8 +322,8 @@ latexindent.pl -m -l textwrap1.yaml,bb-0-9-yaml tw-0-9.tex
 
  gives the output in \cref{lst:tw-0-9-mod2}, in which text wrapping \emph{has} happened.
  \begin{cmhtcbraster}[raster column skip=.1\linewidth,]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bb-0-9.yaml}[MLB-TCB]{\texttt{bb-0-9.yaml.yaml}}{lst:bb-0-9-yaml}
   \cmhlistingsfromfile{demonstrations/tw-0-9-mod2.tex}{\texttt{tw-0-9-mod2.tex}}{lst:tw-0-9-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bb-0-9.yaml}[MLB-TCB]{\texttt{bb-0-9.yaml.yaml}}{lst:bb-0-9-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -351,8 +353,8 @@ latexindent.pl -m -l textwrap1.yaml,tw-bb-announce.yaml tw-bb-announce1.tex
  gives the output in \cref{lst:tw-bb-announce1-mod2}, in which text wrapping \emph{has}
  happened.
  \begin{cmhtcbraster}[raster column skip=.1\linewidth,]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tw-bb-announce.yaml}[MLB-TCB]{\texttt{tw-bb-announce.yaml}}{lst:tw-bb-announce-yaml}
   \cmhlistingsfromfile{demonstrations/tw-bb-announce1-mod2.tex}{\texttt{tw-bb-announce1-mod2.tex}}{lst:tw-bb-announce1-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/tw-bb-announce.yaml}[MLB-TCB]{\texttt{tw-bb-announce.yaml}}{lst:tw-bb-announce-yaml}
  \end{cmhtcbraster}
 
  \end{example}

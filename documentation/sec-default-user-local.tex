@@ -1177,13 +1177,13 @@ latexindent.pl special2.tex -l=middle1
  then we obtain the output given in \cref{lst:special2-mod1,lst:special2-mod2}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
   \cmhlistingsfromfile{demonstrations/special2-mod1.tex}{\texttt{special2.tex} using \cref{lst:middle-yaml}}{lst:special2-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle.yaml}[yaml-TCB]{\texttt{middle.yaml}}{lst:middle-yaml}
  \end{cmhtcbraster}
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
   \cmhlistingsfromfile{demonstrations/special2-mod2.tex}{\texttt{special2.tex} using \cref{lst:middle1-yaml}}{lst:special2-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/middle1.yaml}[yaml-TCB]{\texttt{middle1.yaml}}{lst:middle1-yaml}
  \end{cmhtcbraster}
 
  We note that:
@@ -1215,8 +1215,8 @@ latexindent.pl special3.tex -l=special-verb1
  \index{specialBeginEnd!specifying as verbatim}
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
   \cmhlistingsfromfile{demonstrations/special3-mod1.tex}{\texttt{special3.tex} and output using \cref{lst:special-verb1-yaml}}{lst:special3-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/special-verb1.yaml}[yaml-TCB]{\texttt{special-verb1.yaml}}{lst:special-verb1-yaml}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1243,8 +1243,8 @@ latexindent.pl special-align.tex -l edge-node1.yaml -o=+-mod1
  \index{delimiters!within specialBeginEnd blocks} \index{regular expressions!numeric 0-9}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
   \cmhlistingsfromfile{demonstrations/special-align-mod1.tex}{\texttt{special-align.tex} using \cref{lst:edge-node1}}{lst:special-align-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node1.yaml}[yaml-TCB]{\texttt{edge-node1.yaml}}{lst:edge-node1}
  \end{cmhtcbraster}
 
  The output in \cref{lst:special-align-mod1} is not quite ideal. We can tweak the
@@ -1262,8 +1262,8 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
  +} \index{regular expressions!horizontal space \textbackslash{h}}
 
  \begin{cmhtcbraster}[ raster left skip=-3.5cm,]
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
   \cmhlistingsfromfile{demonstrations/special-align-mod2.tex}{\texttt{special-align.tex} using \cref{lst:edge-node2}}{lst:special-align-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/edge-node2.yaml}[yaml-TCB]{\texttt{edge-node2.yaml}}{lst:edge-node2}
  \end{cmhtcbraster}
  \end{example}
 
@@ -1300,8 +1300,8 @@ latexindent.pl special-align.tex -l edge-node2.yaml -o=+-mod2
  \texttt{headings1.tex}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
   \cmhlistingsfromfile{demonstrations/headings1.tex}{\texttt{headings1.tex}}{lst:headings1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/headings1.yaml}[yaml-TCB]{\texttt{headings1.yaml}}{lst:headings1yaml}
  \end{cmhtcbraster}
 
  If you run the command \index{switches!-l demonstration}
@@ -1362,8 +1362,8 @@ latexindent.pl mult-nested.tex -l=max-indentation1
  You should receive the output shown in \cref{lst:mult-nested-max-ind1}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/mult-nested-max-ind1.tex}{\texttt{mult-nested.tex} using \cref{lst:max-indentation1yaml}}{lst:mult-nested-max-ind1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/max-indentation1.yaml}[yaml-TCB]{\texttt{max-indentation1.yaml}}{lst:max-indentation1yaml}
  \end{cmhtcbraster}
  \end{example}
 
