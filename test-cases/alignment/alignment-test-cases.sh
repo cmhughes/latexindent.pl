@@ -268,6 +268,19 @@ latexindent.pl unicode-quick-brown.tex -s --GCString -o=+-with-GCString
 latexindent.pl -s -r -l issue-382.yaml issue-382.tex -o=+-mod1
 latexindent.pl -s -r -l issue-382a.yaml issue-382.tex -o=+-mod1a
 
+# DBS poly-switches without lookForAlignDelims, issue-402
+latexindent.pl -s -m -l issue-402.yaml issue-402.tex -o=+-mod1
+latexindent.pl -s -m -l issue-402a.yaml issue-402.tex -o=+-mod2
+latexindent.pl -s -m -l issue-402b.yaml issue-402.tex -o=+-mod3
+
+latexindent.pl -s -m -l issue-402.yaml issue-402a.tex -o=+-mod1
+latexindent.pl -s -m -l issue-402a.yaml issue-402a.tex -o=+-mod2
+latexindent.pl -s -m -l issue-402b.yaml issue-402a.tex -o=+-mod3
+
+latexindent.pl -s -m -l issue-402c.yaml issue-402c.tex -o=+-mod1
+
+latexindent.pl -s -m -l issue-402d.yaml issue-402d.tex -o=+-mod1
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

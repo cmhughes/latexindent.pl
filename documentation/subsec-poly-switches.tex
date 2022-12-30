@@ -614,9 +614,9 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13,env-mlb14,UnpreserveBlankLines
  \announce{2019-07-13}{poly-switch for double backslash} you can specify poly-switches to
  dictate the line-break behaviour of double backslashes in environments
  (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code
- blocks (\vref{lst:specialafter}). Note that for these poly-switches to take effect, the
- name of the code block must necessarily be specified within \texttt{lookForAlignDelims}
- (\vref{lst:aligndelims:basic}); we will demonstrate this in what follows.
+ blocks (\vref{lst:specialafter}). \footnote{There is no longer any need for the code
+ block to be specified within \texttt{lookForAlignDelims} for DBS poly-switches to
+ activate. \announce{new}*{DBS poly-switches no need to specify lookForAlignDelims}}
  \index{delimiters!poly-switches for double backslash} \index{modifying linebreaks!
  surrounding double backslash} \index{poly-switches!for double back slash (delimiters)}%
 

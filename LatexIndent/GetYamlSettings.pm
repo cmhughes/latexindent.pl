@@ -954,7 +954,7 @@ sub yaml_modify_line_breaks_settings {
 
     # the following will *definitley* be in the array, so let's add them
     push( @toBeAssignedTo,
-        ( "BeginStartsOnOwnLine", "BodyStartsOnOwnLine", "EndStartsOnOwnLine", "EndFinishesWithLineBreak" ) );
+        ( "BeginStartsOnOwnLine", "BodyStartsOnOwnLine", "EndStartsOnOwnLine", "EndFinishesWithLineBreak", "DBSStartsOnOwnLine", "DBSFinishesWithLineBreak" ) );
 
     # we can efficiently loop through the following
     foreach (@toBeAssignedTo) {

@@ -530,7 +530,10 @@ sub tasks_common_to_each_object {
     $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
 
     # double back slash poly-switch check
-    $self->double_back_slash_else if ( $is_m_switch_active and ${$self}{lookForAlignDelims} );
+    $self->double_back_slash_else if ( $is_m_switch_active 
+            and ( ${$self}{lookForAlignDelims} 
+                or (defined ${$self}{DBSStartsOnOwnLine} and ${$self}{DBSStartsOnOwnLine} != 0) 
+                 or (defined ${$self}{DBSFinishesWithLineBreak} and ${$self}{DBSFinishesWithLineBreak} != 0)) );
 
     # some objects can format their body to align at the & character
     $self->align_at_ampersand if ( ${$self}{lookForAlignDelims} and !${$self}{measureHiddenChildren} );
