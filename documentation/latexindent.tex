@@ -335,10 +335,17 @@
  #3,
 }
 
+% reference: https://tex.stackexchange.com/questions/145504/yaml-syntax-highlighting/654987#654987
 \lstdefinestyle{yaml-LST}{
  style=tcblatex,
  numbers=none,
- numberstyle=\color{red},
+ numberstyle=\color{red}\small,
+ basicstyle=\color{black}\ttfamily\small,
+ string=[s]{'}{'},
+ stringstyle=\color{black}\ttfamily\small,
+ comment=[l]{:},
+ commentstyle=\color{blue}\ttfamily\small,
+ morecomment=[l]{-},
 }
 
 \lstdefinestyle{demo}{
@@ -474,7 +481,7 @@
 
 \lstdefinestyle{textWrapOptionsAll}{
  style=yaml-LST,
- firstnumber=523,linerange={523-546},
+ firstnumber=523,linerange={523-550},
  numbers=left,
 }
 
@@ -504,19 +511,19 @@
 
 \lstdefinestyle{modifylinebreaksEnv}{
  style=yaml-LST,
- firstnumber=548,linerange={548-557},
+ firstnumber=552,linerange={552-561},
  numbers=left,
 }
 
 \lstdefinestyle{replacements}{
  style=yaml-LST,
- firstnumber=609,linerange={609-617},
+ firstnumber=613,linerange={613-621},
  numbers=left,
 }
 
 \lstdefinestyle{fineTuning}{
  style=yaml-LST,
- firstnumber=620,linerange={620-672},
+ firstnumber=624,linerange={624-676},
  numbers=left,
 }
 

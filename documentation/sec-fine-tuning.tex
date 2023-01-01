@@ -7,9 +7,9 @@
  \cref{lst:fineTuning}.
 
  This field is for those that would like to peek under the bonnet/hood and make some fine
- tuning to \texttt{latexindent.pl}'s operating. \index{warning!fine tuning} \index{regular
- expressions!fine tuning} \index{regular expressions!environments} \index{regular
- expressions!ifElseFi} \index{regular expressions!commands} \index{regular
+ tuning to \texttt{latexindent.pl}'s operating. \index{warning!fine tuning}
+ \index{regular expressions!fine tuning} \index{regular expressions!environments}
+ \index{regular expressions!ifElseFi} \index{regular expressions!commands} \index{regular
  expressions!keyEqualsValuesBracesBrackets} \index{regular
  expressions!NamedGroupingBracesBrackets} \index{regular
  expressions!UnNamedGroupingBracesBrackets} \index{regular expressions!arguments}
@@ -19,22 +19,22 @@
  space \textbackslash{h}}
 
  \begin{warning}
-  Making changes to the fine tuning may have significant consequences for your indentation
-  scheme, proceed with caution!
+  Making changes to the fine tuning may have significant consequences for your
+  indentation scheme, proceed with caution!
  \end{warning}
 
  \begin{widepage}
   \cmhlistingsfromfile[style=fineTuning]{../defaultSettings.yaml}[width=.95\linewidth,before=\centering,enhanced jigsaw,breakable,yaml-TCB]{\texttt{fineTuning}}{lst:fineTuning}
  \end{widepage}
 
- The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This manual
- is not intended to be a tutorial on regular expressions; you might like to read, for
- example, \cite{masteringregexp} for a detailed covering of the topic.
+ The fields given in \cref{lst:fineTuning} are all \emph{regular expressions}. This
+ manual is not intended to be a tutorial on regular expressions; you might like to read,
+ for example, \cite{masteringregexp} for a detailed covering of the topic.
 
  We make the following comments with reference to \cref{lst:fineTuning}:
  \begin{enumerate}
-  \item the \texttt{environments:name} field details that the \emph{name} of an environment can
-        contain:
+  \item the \texttt{environments:name} field details that the \emph{name} of an
+        environment can contain:
         \begin{enumerate}
          \item \texttt{a-z} lower case letters
          \item \texttt{A-Z} upper case letters
@@ -51,9 +51,10 @@
          \item \lstinline^@?^ means that it \emph{can possibly} begin with
                \lstinline^@^
          \item followed by \texttt{if}
-         \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and \texttt{@}
-         \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the match as soon as
-               possible'
+         \item followed by 0 or more characters from \texttt{a-z}, \texttt{A-Z} and
+               \texttt{@}
+         \item the \texttt{?} the end means \emph{non-greedy}, which means `stop the
+               match as soon as possible'
         \end{enumerate}
   \item the \texttt{keyEqualsValuesBracesBrackets} contains some interesting syntax:
         \begin{enumerate}
@@ -77,7 +78,7 @@
          \item \texttt{betterFullStop} is in relation to the one sentence per line routine, detailed in
                \vref{sec:onesentenceperline}
          \item \texttt{doubleBackSlash} is in relation to the \texttt{DBSStartsOnOwnLine} and
-               \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double back slashes, see
+               \texttt{DBSFinishesWithLineBreak} polyswitches surrounding double backslashes, see
                \vref{subsec:dbs}
          \item \texttt{comma} is in relation to the \texttt{CommaStartsOnOwnLine} and
                \texttt{CommaFinishesWithLineBreak} polyswitches surrounding commas in optional and
@@ -91,8 +92,9 @@
 
  \index{warning!capture groups}
  \begin{warning}
-  For the \texttt{fineTuning} feature you should only ever use \emph{non}-capturing groups,
-  such as \lstinline!(?:...)! and \emph{not} capturing groups, which are \lstinline!(...)!
+  For the \texttt{fineTuning} feature you should only ever use \emph{non}-capturing
+  groups, such as \lstinline!(?:...)! and \emph{not} capturing groups, which are
+  \lstinline!(...)!
  \end{warning}
 
  \begin{example}
@@ -110,9 +112,9 @@ latexindent.pl finetuning1.tex
   \cmhlistingsfromfile{demonstrations/finetuning1-default.tex}{\texttt{finetuning1.tex} default}{lst:finetuning1-default}
  \end{cmhtcbraster}
 
- It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not worked
- as expected. We can \emph{fine tune} the indentation scheme by employing the settings
- given in \cref{lst:fine-tuning1} and running the command \index{switches!-l
+ It's clear from \cref{lst:finetuning1-default} that the indentation scheme has not
+ worked as expected. We can \emph{fine tune} the indentation scheme by employing the
+ settings given in \cref{lst:fine-tuning1} and running the command \index{switches!-l
  demonstration}
 
  \begin{commandshell}
@@ -145,9 +147,9 @@ latexindent.pl finetuning2.tex
   \cmhlistingsfromfile{demonstrations/finetuning2-default.tex}{\texttt{finetuning2.tex} default}{lst:finetuning2-default}
  \end{cmhtcbraster}
 
- It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not worked
- as expected. We can \emph{fine tune} the indentation scheme by employing the settings
- given in \cref{lst:fine-tuning2} and running the command \index{switches!-l
+ It's clear from \cref{lst:finetuning2-default} that the indentation scheme has not
+ worked as expected. We can \emph{fine tune} the indentation scheme by employing the
+ settings given in \cref{lst:fine-tuning2} and running the command \index{switches!-l
  demonstration}
 
  \begin{commandshell}
@@ -169,9 +171,9 @@ latexindent.pl finetuning2.tex -l=fine-tuning2.yaml
  \end{example}
 
  \begin{example}
- You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to use
- quotes appropriately. For example, starting with the code in \cref{lst:finetuning3} and
- running the following command
+ You can tweak the \texttt{fineTuning} using the \texttt{-y} switch, but to be sure to
+ use quotes appropriately. For example, starting with the code in \cref{lst:finetuning3}
+ and running the following command
 
  \begin{commandshell}
 latexindent.pl -m -y='modifyLineBreaks:oneSentencePerLine:manipulateSentences: 1, modifyLineBreaks:oneSentencePerLine:sentencesBeginWith:a-z: 1, fineTuning:modifyLineBreaks:betterFullStop: "(?:\.|;|:(?![a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?!(?:[a-z]|[A-Z]|\-|~|\,|[0-9]))"' issue-243.tex -o=+-mod1
@@ -228,8 +230,8 @@ latexindent.pl -m finetuning4.tex -o=+-mod2 -l=href2
 
  \begin{example}
  Another approach to this situation, which does not use \texttt{fineTuning}, is to use
- \texttt{noIndentBlock} which we discussed in \vref{lst:noIndentBlock}; using the settings
- in \cref{lst:href3} and running the command
+ \texttt{noIndentBlock} which we discussed in \vref{lst:noIndentBlock}; using the
+ settings in \cref{lst:href3} and running the command
 
  \begin{commandshell}
 latexindent.pl -m finetuning4.tex -o=+-mod3 -l=href3
@@ -283,15 +285,16 @@ latexindent.pl bib1.bib -l bibsettings1.yaml -o=+-mod2
  \end{widepage}
  Some notes about \cref{lst:bibsettings1}:
  \begin{itemize}
-  \item we have populated the \texttt{lookForAlignDelims} field with the \texttt{online} command,
-        and have used the \texttt{delimiterRegEx}, discussed in \vref{sec:delimiter-reg-ex};
-  \item we have tweaked the \texttt{keyEqualsValuesBracesBrackets} code block so that it will
-        \emph{not} be found following a comma; this means that, in contrast to the default
-        behaviour, the lines such as \lstinline!date={2013-05-23},! will \emph{not} be treated as
-        key-equals-value braces;
-  \item the adjustment to \texttt{keyEqualsValuesBracesBrackets} necessitates the associated
-        change to the \texttt{UnNamedGroupingBracesBrackets} field so that they will be searched
-        for following \texttt{=} symbols.
+  \item we have populated the \texttt{lookForAlignDelims} field with the \texttt{online}
+        command, and have used the \texttt{delimiterRegEx}, discussed in
+        \vref{sec:delimiter-reg-ex};
+  \item we have tweaked the \texttt{keyEqualsValuesBracesBrackets} code block so that it
+        will \emph{not} be found following a comma; this means that, in contrast to the
+        default behaviour, the lines such as \lstinline!date={2013-05-23},! will
+        \emph{not} be treated as key-equals-value braces;
+  \item the adjustment to \texttt{keyEqualsValuesBracesBrackets} necessitates the
+        associated change to the \texttt{UnNamedGroupingBracesBrackets} field so that
+        they will be searched for following \texttt{=} symbols.
  \end{itemize}
  \end{example}
 
@@ -315,7 +318,8 @@ latexindent.pl bib2.bib -l bibsettings1.yaml -o=+-mod1
  The output in \cref{lst:bib2-mod1} is not ideal, as the \texttt{=} symbol within the url
  field has been incorrectly used as an alignment delimiter.
 
- We address this by tweaking the \texttt{delimiterRegEx} field in \cref{lst:bibsettings2}.
+ We address this by tweaking the \texttt{delimiterRegEx} field in
+ \cref{lst:bibsettings2}.
 
  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/bibsettings2.yaml}[yaml-TCB]{\texttt{bibsettings2.yaml}}{lst:bibsettings2}
 

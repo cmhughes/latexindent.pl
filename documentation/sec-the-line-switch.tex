@@ -22,8 +22,8 @@ latexindent.pl -n 3-7 myfile.tex
   \item line range, as in \texttt{--lines 3-7}
   \item single line, as in \texttt{--lines 5}
   \item multiple line ranges separated by commas, as in \texttt{--lines 3-5,8-10}
-  \item negated line ranges, as in \texttt{--lines !3-5} which translates to \texttt{--lines
-        1-2,6-N}, where N is the number of lines in your file.
+  \item negated line ranges, as in \texttt{--lines !3-5} which translates to
+        \texttt{--lines 1-2,6-N}, where N is the number of lines in your file.
  \end{itemize}
 
  We demonstrate this feature, and the available variations in what follows. We will use
@@ -54,8 +54,8 @@ latexindent.pl --lines 7-3 myfile.tex -o=+-mod1
  \end{example}
 
  \begin{example}
- You can call the \texttt{lines} switch with only \emph{one number} and in which case only
- that line will be operated upon. For example
+ You can call the \texttt{lines} switch with only \emph{one number} and in which case
+ only that line will be operated upon. For example
 
  \begin{commandshell}
 latexindent.pl --lines 5 myfile.tex -o=+-mod2
@@ -76,9 +76,9 @@ latexindent.pl --lines 5-5 myfile.tex
  \end{example}
 
  \begin{example}
- If you specify a value outside of the line range of the file then \texttt{latexindent.pl}
- will ignore the \texttt{lines} argument, detail as such in the log file, and proceed to
- operate on the entire file.
+ If you specify a value outside of the line range of the file then
+ \texttt{latexindent.pl} will ignore the \texttt{lines} argument, detail as such in the
+ log file, and proceed to operate on the entire file.
 
  For example, in the following call
 
@@ -161,8 +161,8 @@ latexindent.pl --lines !5-7 myfile.tex -o=+-mod5
  which instructs \texttt{latexindent.pl} to operate upon all of the lines \emph{except}
  lines 5 to 7.
 
- In other words, \texttt{latexindent.pl} \emph{will} operate on lines 1 to 4, and 8 to 12,
- so the following two calls are equivalent:
+ In other words, \texttt{latexindent.pl} \emph{will} operate on lines 1 to 4, and 8 to
+ 12, so the following two calls are equivalent:
 
  \begin{commandshell}
 latexindent.pl --lines !5-7 myfile.tex 
@@ -196,8 +196,8 @@ latexindent.pl --lines 1-4,8,11-12 myfile.tex -o=+-mod6
 
  \begin{example}
  If you specify a line range with anything other than an integer, then
- \texttt{latexindent.pl} will ignore the \texttt{lines} argument, and \emph{operate on the
- entire file}.
+ \texttt{latexindent.pl} will ignore the \texttt{lines} argument, and \emph{operate on
+ the entire file}.
 
  Sample calls that result in the \texttt{lines} argument being ignored include the
  following:

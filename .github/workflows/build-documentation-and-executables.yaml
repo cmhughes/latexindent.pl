@@ -41,9 +41,9 @@ jobs:
             pdflatex latexindent
             makeindex -s latexindent.ist -t latexindent.ilg latexindent.idx -o latexindent.ind
             bibtex latexindent
-            pdflatex latexindent
-            pdflatex latexindent
-            pdflatex latexindent
+            pdflatex --interaction=batchmode latexindent
+            pdflatex --interaction=batchmode latexindent
+            pdflatex --interaction=batchmode latexindent
             cd ..
             mkdir -p target/release
             mv documentation/latexindent.pdf target/release

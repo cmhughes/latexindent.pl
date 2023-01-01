@@ -2,3 +2,4 @@ modifyLineBreaks:
     textWrapOptions:
         columns: 80
         multipleSpacesToSingle: 0
+        unexpand: 1

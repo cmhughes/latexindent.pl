@@ -32,15 +32,16 @@ our @EXPORT_OK = qw/one_sentence_per_line/;
 our $sentenceCounter;
 
 sub one_sentence_per_line {
-    my $self = shift;
+    my $self  = shift;
+    my %input = @_;
 
     $logger->trace(
         "*One sentence per line regular expression construction: (see oneSentencePerLine: manipulateSentences)")
         if $is_t_switch_active;
 
+    #
     # sentences FOLLOW
-    # sentences FOLLOW
-    # sentences FOLLOW
+    #
     my $sentencesFollow = q();
 
     while ( my ( $sentencesFollowEachPart, $yesNo )
@@ -105,9 +106,9 @@ sub one_sentence_per_line {
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesFollow) if $is_tt_switch_active;
 
+    #
     # sentences BEGIN with
-    # sentences BEGIN with
-    # sentences BEGIN with
+    #
     my $sentencesBeginWith = q();
 
     while ( my ( $sentencesBeginWithEachPart, $yesNo )
@@ -136,9 +137,9 @@ sub one_sentence_per_line {
     }
     $sentencesBeginWith = qr/$sentencesBeginWith/;
 
+    #
     # sentences END with
-    # sentences END with
-    # sentences END with
+    #
     ${ ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesEndWith} }{basicFullStop} = 0
         if ${ ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesEndWith} }{betterFullStop};
     my $sentencesEndWith = q();
@@ -181,9 +182,9 @@ sub one_sentence_per_line {
     }
     $sentencesEndWith = qr/$sentencesEndWith/;
 
+    #
     # the OVERALL sentence regexp
-    # the OVERALL sentence regexp
-    # the OVERALL sentence regexp
+    #
     $logger->trace("Overall sentences end with regexp:") if $is_tt_switch_active;
     $logger->trace($sentencesEndWith) if $is_tt_switch_active;
 
@@ -268,11 +269,25 @@ sub one_sentence_per_line {
                                 $replacementText = ${@{${$self}{children}}[-1]}{replacementText};
                             } else {
                                 $sentenceCounter++;
-                                push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end});
+                                push(@sentenceStorage,{id=>$tokens{sentence}.$sentenceCounter.$tokens{endOfToken},value=>$middle.$end,leadingHorizontalSpace=>$h_space,follows=>$beginning});
                                 $replacementText = $beginning.$h_space.$tokens{sentence}.$sentenceCounter.$tokens{endOfToken}.$trailingComments.$trailing.($lineBreaksAtEnd ? q() : "\n");
                             };
                             $replacementText;
                             /xsge;
+
+    #
+    # remove spaces between trailing comments
+    #
+    #
+    # from:
+    #
+    #   % first comment %second comment
+    #                  ^
+    # into:
+    #
+    #   % first comment%second comment
+    #
+    ${$self}{body} =~ s/($trailingCommentRegExp)\h($trailingCommentRegExp)/$1$2/sg;
 
     if ( ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} !~ m/\h+/ ) {
 
@@ -288,6 +303,8 @@ sub one_sentence_per_line {
                     body                     => $sentenceStorageValue,
                     name                     => "sentence",
                     modifyLineBreaksYamlName => "sentence",
+                    leadingHorizontalSpace   => ${$sentence}{leadingHorizontalSpace},
+                    follows                  => ${$sentence}{follows},
                 );
 
                 # text wrapping
@@ -302,7 +319,7 @@ sub one_sentence_per_line {
                     ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences} = 0;
                 }
                 else {
-                    $sentenceObj->text_wrap;
+                    $sentenceObj->text_wrap if $input{textWrap};
                 }
 
                 # indentation of sentences
@@ -316,7 +333,7 @@ sub one_sentence_per_line {
                     my $bodyFirstLine = $1;
                     my $remainingBody = $2;
                     my $indentation   = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent};
-                    $logger->trace("first line of sencent:  $bodyFirstLine") if $is_tt_switch_active;
+                    $logger->trace("first line of sentence:  $bodyFirstLine") if $is_tt_switch_active;
                     $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
                     # add the indentation to all the body except first line
@@ -326,6 +343,7 @@ sub one_sentence_per_line {
                     # put the body back together
                     ${$sentenceObj}{body} = $bodyFirstLine . "\n" . $remainingBody;
                 }
+
                 $sentenceStorageValue = ${$sentenceObj}{body};
             }
 

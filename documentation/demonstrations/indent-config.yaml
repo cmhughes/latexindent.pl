@@ -1,0 +1,12 @@
+# Paths to user settings for latexindent.pl
+#
+# Note that the settings will be read in the order you
+# specify here- each successive settings file will overwrite
+# the variables that you specify
+
+paths:
+- /home/cmhughes/Documents/yamlfiles/mysettings.yaml
+- /home/cmhughes/folder/othersettings.yaml
+- /some/other/folder/anynameyouwant.yaml
+- C:\Users\chughes\Documents\mysettings.yaml
+- C:\Users\chughes\Desktop\test spaces\more spaces.yaml

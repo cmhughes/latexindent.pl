@@ -1,4 +1,11 @@
 # changelog.md
+
+## V3.20, January 1, 2023
+* text wrap upgrade: new option: `when: before/after`, full details at [issue-359](https://github.com/cmhughes/latexindent.pl/issues/359)
+* text wrap upgrade: new option to wrap comments `comments: wrap: 0/1`, full details at [issue-389](https://github.com/cmhughes/latexindent.pl/issues/389)
+* new options for `indentconfig.yaml` and friends, full details at [issue-396](https://github.com/cmhughes/latexindent.pl/issues/396), thanks to @Nehctarg
+* DBS poly-switches behaviour upgraded so that no longer need to specify `lookForAlignDelims: 1`, full details at [issue-402](https://github.com/cmhughes/latexindent.pl/issues/402)
+
 ## V3.19.1, December 4, 2022
 poly-switch for verbatim code blocks updated to work for value 4, `VerbatimBeginStartsOnOwnLine`, `VerbatimEndFinishesWithLineBreak`, detailed at [2f402d6](https://github.com/cmhughes/latexindent.pl/commit/28a3756e501954527b49e44039552d455dbe67f1).
 

@@ -1,7 +1,39 @@
 modifyLineBreaks:
+    textWrapOptions:
+        columns: 45
     oneSentencePerLine:
         sentencesEndWith:
             betterFullStop: 0
-            other: '(?:(?:\R|\h)*\\item)|(?:\.\)(?!\h*[a-z]))|(?:(?<!(?:(?:e\.g)|(?:i\.e)|(?:etc))))\.(?:\h*\R*(?:\\end\{itemize\})?)(?!(?:[a-z]|[A-Z]|\-|\,|[0-9]))'
-    textWrapOptions:
-        columns: 45
+            other: |-
+                (?x)                    
+                (?:                             # new
+                 (?:\R|\h)*\\item               # new
+                )                               # new
+                |
+                (?:                     
+                  \.\)                  
+                  (?!\h*[a-z])          
+                )                       
+                |                       
+                (?:                     
+                  (?<!                  
+                    (?:                 
+                      (?:[eE]\.[gG])    
+                      |                 
+                      (?:[iI]\.[eE])    
+                      |                 
+                      (?:etc)           
+                    )                   
+                  )                     
+                )                       
+                \.                      
+                (?:\h*\R*(?:\\end\{itemize\})?) # new
+                (?!                     
+                  (?:                   
+                    [a-zA-Z0-9-~,]      
+                    |                   
+                    \),                 
+                    |                   
+                    \)\.                
+                  )                     
+                )                       

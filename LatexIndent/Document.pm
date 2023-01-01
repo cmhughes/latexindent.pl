@@ -37,7 +37,7 @@ use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condens
 use LatexIndent::ModifyLineBreaks
     qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
-use LatexIndent::Wrap qw/text_wrap/;
+use LatexIndent::Wrap qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -297,6 +297,31 @@ sub process_body_of_text {
     $logger->info('*Phase 4: final indentation check');
     $self->final_indentation_check;
 
+    # one sentence per line: sentences are objects, as of V3.5.1
+    if (    $is_m_switch_active
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $logger->trace("*one-sentence-per-line text wrapping routine, textWrapOptions:when set to 'after'")
+            if $is_tt_switch_active;
+        $self->one_sentence_per_line( textWrap => 1 );
+    }
+
+    # option for text wrap
+    if (    $is_m_switch_active
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
+        and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+    {
+        $self->text_wrap();
+    }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ($is_m_switch_active
+        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
 }
 
@@ -304,8 +329,10 @@ sub find_objects {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
-    $self->one_sentence_per_line
-        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
+    $self->one_sentence_per_line(
+        textWrap => ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' ) )
+        if ( $is_m_switch_active
+        and ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences} );
 
     # text wrapping
     #
@@ -319,13 +346,20 @@ sub find_objects {
     if (    $is_m_switch_active
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{manipulateSentences}
         and !${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{textWrapSentences}
-        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0 )
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} != 0
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' )
     {
         $self->text_wrap();
 
         # text wrapping can affect verbatim poly-switches, so we run it again
         $self->verbatim_modify_line_breaks( when => "afterTextWrap" );
     }
+
+    # option for comment text wrap
+    $self->text_wrap_comment_blocks()
+        if ($is_m_switch_active
+        and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
+        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
 
     # search for environments
     $logger->trace('*looking for ENVIRONMENTS') if $is_t_switch_active;
@@ -496,7 +530,13 @@ sub tasks_common_to_each_object {
     $self->check_for_hidden_children if ${$self}{body} =~ m/$tokens{beginOfToken}/;
 
     # double back slash poly-switch check
-    $self->double_back_slash_else if ( $is_m_switch_active and ${$self}{lookForAlignDelims} );
+    $self->double_back_slash_else
+        if (
+        $is_m_switch_active
+        and (  ${$self}{lookForAlignDelims}
+            or ( defined ${$self}{DBSStartsOnOwnLine} and ${$self}{DBSStartsOnOwnLine} != 0 )
+            or ( defined ${$self}{DBSFinishesWithLineBreak} and ${$self}{DBSFinishesWithLineBreak} != 0 ) )
+        );
 
     # some objects can format their body to align at the & character
     $self->align_at_ampersand if ( ${$self}{lookForAlignDelims} and !${$self}{measureHiddenChildren} );

@@ -1,0 +1,18 @@
+defaultIndent: '    '
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 100
+        when: after                          # before/after
+        blocksFollow:
+          other: \\begin\{(?:abstract|another)\}|\\item|\\end\{another\}
+
+replacements:
+  -
+    substitution: |-
+      s!\z!
+        my $rulerMax = int(100/10 +1.5 )*10;
+        my $ruler    = (("----|"x(int($rulerMax/5))))."\n";
+        for (my $i=1;$i<=$rulerMax/5;$i++){ $ruler .= "   ".$i*5 };
+        $ruler."\n";!sxe
+    when: after

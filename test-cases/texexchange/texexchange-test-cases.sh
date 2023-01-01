@@ -189,5 +189,6 @@ latexindent.pl -s pcc-pr.tex -o=+-max-indentation -l indentPreamble.yaml,../envi
 latexindent.pl -s 645096.tex -o=+-default
 latexindent.pl -s 645096.tex -l 645096.yaml -o=+-mod1
 
+latexindent.pl -m -s 667013.tex -l 667013 -o=+-mod1
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

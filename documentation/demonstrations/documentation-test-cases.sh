@@ -16,6 +16,8 @@ latexindent.pl -s quick-start.tex -o=+-mod4 -l quick-start4 -m
 latexindent.pl -s quick-start.tex -o=+-mod5 -l quick-start5 -m
 latexindent.pl -s quick-start.tex -o=+-mod6 -l quick-start6 -m
 latexindent.pl -s quick-start.tex -o=+-mod7 -l quick-start7 -m
+latexindent.pl -s quick-start.tex -o=+-mod8 -l quick-start8
+latexindent.pl -s quick-start.tex -o=+-mod9 -l quick-start9
 
 # demonstration
 latexindent.pl -s filecontents1.tex -o filecontents1-default.tex
@@ -250,6 +252,19 @@ latexindent.pl -s textwrap-bfccb.tex -o=+-mod12.tex -l=textwrap12.yaml,addruler1
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod13.tex -l=textwrap13.yaml,addruler2 -m -r
 latexindent.pl -s textwrap-bfccb.tex -o=+-mod14.tex -l=textwrap14.yaml,addruler1 -m -r
 
+# before/after
+latexindent.pl -s textwrap8.tex -o=+-mod1.tex -l=tw-before1.yaml,addruler1  -m -r
+latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml,addruler1  -m -r
+latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2,addruler1 -m -r
+latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3,addruler1 -m -r
+
+# wrap comments
+latexindent.pl -s -r -m -l wrap-comments1.yaml,addruler1.yaml textwrap9.tex -o=+-mod1
+
+latexindent.pl -s -r -m -l wrap-comments1.yaml,addruler1.yaml textwrap10.tex -o=+-mod1
+latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml textwrap10.tex -o=+-mod2
+
+latexindent.pl -s multiple-sentences9.tex -o=+-mod1.tex -l=sentence-wrap4,addruler1 -m -r
 # text wrap trailing comments
 for i in {1..6};
 do
@@ -320,8 +335,6 @@ latexindent.pl -s -m mycommand2.tex -l=DBS6.yaml -o=+-mod6
 latexindent.pl -s -m mycommand2.tex -l=DBS7.yaml -o=+-mod7
 latexindent.pl -s -m pmatrix3.tex -l=DBS3.yaml -o=+-mod3
 
-# replacement mode demonstrations
-# replacement mode demonstrations
 # replacement mode demonstrations
 latexindent.pl -s -r replace1 -o=+-r1
 latexindent.pl -s -r replace1 -l=replace1.yaml -o=+-mod1

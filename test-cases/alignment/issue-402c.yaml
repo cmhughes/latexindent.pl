@@ -1,0 +1,12 @@
+defaultIndent: '    '
+
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    textWrapSentences: 1
+  specialBeginEnd:
+    DBSFinishesWithLineBreak: 2
+    SpecialBeginStartsOnOwnLine: 1
+    SpecialBodyStartsOnOwnLine: 1
+    SpecialEndStartsOnOwnLine: 1
+    SpecialEndFinishesWithLineBreak: 1

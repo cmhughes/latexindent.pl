@@ -30,7 +30,7 @@ latexindent.pl -m textwrap7.tex -l=textwrap12.yaml -o=+-mod12
 
  \begin{cmhtcbraster}
   \cmhlistingsfromfile{demonstrations/textwrap7-mod12.tex}{\texttt{textwrap7-mod12.tex}}{lst:textwrap7-mod12}
-  \cmhlistingsfromfile{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap12.yaml}[MLB-TCB]{\texttt{textwrap12.yaml}}{lst:textwrap12-yaml}
  \end{cmhtcbraster}
 
  In \cref{lst:textwrap7-mod12} the paragraph line breaks have first been removed from
@@ -69,9 +69,9 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap12.yaml -o=+-mod12
   \item \texttt{latexindent.pl} first of all searches for code blocks (see
         \vref{tab:code-blocks});
   \item it replaces each code block with a unique identifying string;
-  \item with the settings of \cref{lst:textwrap12-yaml} in place, it performs the paragraph line
-        break removal, and then the text wrapping routine first of all on the \texttt{text}
-        command, and then on the surrounding text;
+  \item with the settings of \cref{lst:textwrap12-yaml} in place, it performs the
+        paragraph line break removal, and then the text wrapping routine first of all on
+        the \texttt{text} command, and then on the surrounding text;
   \item the surrounding text does not know that \texttt{text} is a command.
  \end{itemize}
 
@@ -88,12 +88,12 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap13.yaml -o=+-mod13
 
  we receive the output in \cref{lst:textwrap-bfccb-mod13}.
 
- \cmhlistingsfromfile{demonstrations/textwrap13.yaml}[MLB-TCB,width=\linewidth]{\texttt{textwrap13.yaml} (tweaked quick start)}{lst:textwrap13-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap13.yaml}[MLB-TCB,width=\linewidth]{\texttt{textwrap13.yaml} (tweaked quick start)}{lst:textwrap13-yaml}
 
  \cmhlistingsfromfile{demonstrations/textwrap-bfccb-mod13.tex}{\texttt{textwrap-bfccb-mod13.tex}}{lst:textwrap-bfccb-mod13}
 
- This output is different from \cref{lst:textwrap-bfccb-mod12}, but is still not ideal, as
- the \texttt{test} command has indented its mandatory argument. We can employ
+ This output is different from \cref{lst:textwrap-bfccb-mod12}, but is still not ideal,
+ as the \texttt{test} command has indented its mandatory argument. We can employ
  \texttt{noAdditionalIndent} from \vref{sec:noadd-indent-rules} in
  \cref{lst:textwrap14-yaml} and run the command
 
@@ -106,7 +106,7 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
  \begin{widepage}
   \begin{cmhtcbraster}
    \cmhlistingsfromfile{demonstrations/textwrap-bfccb-mod14.tex}{\texttt{textwrap-bfccb-mod14.tex}}{lst:textwrap-bfccb-mod14}
-   \cmhlistingsfromfile{demonstrations/textwrap14.yaml}[MLB-TCB]{\texttt{textwrap14.yaml}}{lst:textwrap14-yaml}
+   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap14.yaml}[MLB-TCB]{\texttt{textwrap14.yaml}}{lst:textwrap14-yaml}
   \end{cmhtcbraster}
  \end{widepage}
 
@@ -116,4 +116,4 @@ latexindent.pl -m textwrap-bfccb.tex -l=textwrap14.yaml -o=+-mod14
  output in \cref{lst:textwrap-bfccb-mod14}, then we would need to employ an exception,
  which we demonstrate in \cref{lst:textwrap15-yaml}.
 
- \cmhlistingsfromfile{demonstrations/textwrap15.yaml}[MLB-TCB]{\texttt{textwrap15.yaml}}{lst:textwrap15-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/textwrap15.yaml}[MLB-TCB]{\texttt{textwrap15.yaml}}{lst:textwrap15-yaml}

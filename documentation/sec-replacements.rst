@@ -37,9 +37,9 @@ The default value of the ``replacements`` field is shown in :numref:`lst:replace
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements
- 	:lines: 609-617
+ 	:lines: 613-621
  	:linenos:
- 	:lineno-start: 609
+ 	:lineno-start: 613
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As you’ll see in the demonstrations that follow, there is no need to specify this field.
 
@@ -48,7 +48,7 @@ You’ll notice that, by default, there is only *one* entry in the ``replacement
 Introduction to replacements
 ----------------------------
 
-Let’s explore the action of the default settings, and then we’ll demonstrate the feature with further examples. With reference to :numref:`lst:replacements`, the default action will replace every instance of the text ``latexindent.pl`` with ``pl.latexindent``.
+Let’s explore the action of the default settings, and then we’ll demonstrate the feature with further examples.
 
 .. proof:example::	
 	
@@ -73,7 +73,9 @@ Let’s explore the action of the default settings, and then we’ll demonstrate
 	 	:caption: ``replace1.tex`` default 
 	 	:name: lst:replace1-r1
 	
-	If we don’t wish to perform this replacement, then we can tweak the default settings of :numref:`lst:replacements` by changing ``lookForThis`` to 0; we perform this action in :numref:`lst:replace1-yaml`, and run the command
+	We note that in :numref:`lst:replacements`, because ``lookForThis`` is set to 0, the specified replacement has *not* been made, and there is no difference between :numref:`lst:replace1` and :numref:`lst:replace1-r1`.
+	
+	If we *do* wish to perform this replacement, then we can tweak the default settings of :numref:`lst:replacements` by changing ``lookForThis`` to 1; we perform this action in :numref:`lst:replace1-yaml`, and run the command
 	
 	.. index:: switches;-l demonstration
 	

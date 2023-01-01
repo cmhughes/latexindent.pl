@@ -81,17 +81,17 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod1`.
 	
-	.. literalinclude:: demonstrations/quick-start1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``quick-start1.yaml`` 
-	 	:name: lst:quick-start1yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod1.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod1.tex`` 
 	 	:name: lst:quick-start-mod1
 	
+	.. literalinclude:: demonstrations/quick-start1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start1.yaml`` 
+	 	:name: lst:quick-start1yaml
 	
+	See :numref:`subsec:indentation:and:horizontal:space`.
 	 
 
 .. proof:example::	
@@ -105,17 +105,17 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod2`.
 	
-	.. literalinclude:: demonstrations/quick-start2.yaml
-	 	:class: .baseyaml
-	 	:caption: ``quick-start2.yaml`` 
-	 	:name: lst:quick-start2yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod2.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod2.tex`` 
 	 	:name: lst:quick-start-mod2
 	
+	.. literalinclude:: demonstrations/quick-start2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start2.yaml`` 
+	 	:name: lst:quick-start2yaml
 	
+	See :numref:`sec:noadd-indent-rules`.
 	 
 
 .. proof:example::	
@@ -129,17 +129,17 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod3`.
 	
-	.. literalinclude:: demonstrations/quick-start3.yaml
-	 	:class: .baseyaml
-	 	:caption: ``quick-start3.yaml`` 
-	 	:name: lst:quick-start3yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod3.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod3.tex`` 
 	 	:name: lst:quick-start-mod3
 	
+	.. literalinclude:: demonstrations/quick-start3.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start3.yaml`` 
+	 	:name: lst:quick-start3yaml
 	
+	See :numref:`sec:noadd-indent-rules`.
 	 
 
 .. proof:example::	
@@ -153,15 +153,15 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod4`.
 	
-	.. literalinclude:: demonstrations/quick-start4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``quick-start4.yaml`` 
-	 	:name: lst:quick-start4yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod4.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod4.tex`` 
 	 	:name: lst:quick-start-mod4
+	
+	.. literalinclude:: demonstrations/quick-start4.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start4.yaml`` 
+	 	:name: lst:quick-start4yaml
 	
 	Full details of text wrapping in :numref:`subsec:textwrapping`.
 	 
@@ -177,15 +177,15 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod5`.
 	
-	.. literalinclude:: demonstrations/quick-start5.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``quick-start5.yaml`` 
-	 	:name: lst:quick-start5yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod5.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod5.tex`` 
 	 	:name: lst:quick-start-mod5
+	
+	.. literalinclude:: demonstrations/quick-start5.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start5.yaml`` 
+	 	:name: lst:quick-start5yaml
 	
 	Full details of text wrapping in :numref:`subsec:textwrapping`.
 	 
@@ -201,15 +201,15 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod6`.
 	
-	.. literalinclude:: demonstrations/quick-start6.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``quick-start6.yaml`` 
-	 	:name: lst:quick-start6yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod6.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod6.tex`` 
 	 	:name: lst:quick-start-mod6
+	
+	.. literalinclude:: demonstrations/quick-start6.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start6.yaml`` 
+	 	:name: lst:quick-start6yaml
 	
 	This is an example of a *poly-switch*; full details of *poly-switches* are covered in :numref:`sec:poly-switches`.
 	 
@@ -225,17 +225,67 @@ gives :numref:`lst:quick-start-default`.
 	
 	gives :numref:`lst:quick-start-mod7`.
 	
-	.. literalinclude:: demonstrations/quick-start7.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``quick-start7.yaml`` 
-	 	:name: lst:quick-start7yaml
-	
 	.. literalinclude:: demonstrations/quick-start-mod7.tex
 	 	:class: .tex
 	 	:caption: ``quick-start-mod7.tex`` 
 	 	:name: lst:quick-start-mod7
 	
+	.. literalinclude:: demonstrations/quick-start7.yaml
+	 	:class: .mlbyaml
+	 	:caption: ``quick-start7.yaml`` 
+	 	:name: lst:quick-start7yaml
+	
 	Full details of *poly-switches* are covered in :numref:`sec:poly-switches`.
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l quick-start8.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod8`; note that the *preamble* has been indented.
+	
+	.. literalinclude:: demonstrations/quick-start-mod8.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod8.tex`` 
+	 	:name: lst:quick-start-mod8
+	
+	.. literalinclude:: demonstrations/quick-start8.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start8.yaml`` 
+	 	:name: lst:quick-start8yaml
+	
+	See :numref:`subsec:filecontents:preamble`.
+	
+	
+	 
+
+.. proof:example::	
+	
+	Running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l quick-start9.yaml quick-start.tex
+	
+	gives :numref:`lst:quick-start-mod9`.
+	
+	.. literalinclude:: demonstrations/quick-start-mod9.tex
+	 	:class: .tex
+	 	:caption: ``quick-start-mod9.tex`` 
+	 	:name: lst:quick-start-mod9
+	
+	.. literalinclude:: demonstrations/quick-start9.yaml
+	 	:class: .baseyaml
+	 	:caption: ``quick-start9.yaml`` 
+	 	:name: lst:quick-start9yaml
+	
+	See :numref:`sec:noadd-indent-rules`.
 	 
 
 Required perl modules
@@ -262,7 +312,7 @@ You might also like to see https://stackoverflow.com/questions/19590042/error-ca
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 569. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 594. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 
@@ -297,9 +347,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 609-617
+ 	:lines: 613-621
  	:linenos:
- 	:lineno-start: 609
+ 	:lineno-start: 613
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 

@@ -184,9 +184,9 @@ cd ../alignment
 ./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
-# long line text wrapping
-cd ../textWrap-removeParaLineBreaks
-[[ $silentMode == 1 ]] && echo "./textWrap-removeParaLineBreaks/text-wrap-remove-PLB.sh"
+# text wrapping
+cd ../text-wrap
+[[ $silentMode == 1 ]] && echo "./text-wrap/text-wrap-remove-PLB.sh"
 ./text-wrap-remove-PLB.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
@@ -272,4 +272,4 @@ do
   [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 done
 
-exit 1
+exit 0

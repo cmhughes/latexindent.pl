@@ -309,6 +309,10 @@ You can, optionally, specify the ``noIndentBlock`` field using the ``name`` fiel
 	
 	 
 
+.. label follows
+
+.. _subsec:filecontents:preamble:
+
 filecontents and preamble
 -------------------------
 
@@ -354,6 +358,10 @@ Assuming that ``latexindent.pl`` is asked to operate upon the preamble of a docu
    ...
 
 .. index:: indentation;defaultIndent description
+
+.. label follows
+
+.. _subsec:indentation:and:horizontal:space:
 
 Indentation and horizontal space
 --------------------------------
@@ -412,7 +420,14 @@ This contains a list of code blocks that are operated upon in a special way by `
       matrix: 1
       ...
 
-Specifying code blocks in this field instructs ``latexindent.pl`` to try and align each column by its alignment delimiters. It does have some limitations (discussed further in :numref:`sec:knownlimitations`), but in many cases it will produce results such as those in :numref:`lst:tabularbefore:basic` and :numref:`lst:tabularafter:basic`.
+Specifying code blocks in this field instructs ``latexindent.pl`` to try and align each column by its alignment delimiters. It does have some limitations (discussed further in :numref:`sec:knownlimitations`), but in many cases it will produce results such as those in :numref:`lst:tabularbefore:basic` and :numref:`lst:tabularafter:basic`; running the command
+
+.. code-block:: latex
+   :class: .commandshell
+
+   latexindent.pl tabular1.tex   
+
+gives the output given in :numref:`lst:tabularafter:basic`.
 
 .. literalinclude:: demonstrations/tabular1.tex
  	:class: .tex
@@ -466,7 +481,7 @@ Note that you can use a mixture of the basic and advanced form: in :numref:`lst:
 
 -  ``justification``: optionally specifies the justification of each cell as either *left* or *right* (default: left);
 
--  alignFinalDoubleBackSlash optionally specifies if the *final* double back slash should be used for alignment (default: 0);
+-  alignFinalDoubleBackSlash optionally specifies if the *final* double backslash should be used for alignment (default: 0);
 
 -  dontMeasure optionally specifies if user-specified cells, rows or the largest entries should *not* be measured (default: 0);
 
@@ -769,7 +784,7 @@ There may be times when a line of a code block contains more than ``\\``, and in
 	
 	-  :numref:`lst:tabular4-default`, by default, the *first* set of double back slashes in the first row of the ``tabular`` environment have been used for alignment;
 	
-	-  :numref:`lst:tabular4-FDBS`, the *final* set of double back slashes in the first row have been used, because we specified ``alignFinalDoubleBackSlash`` as 1.
+	-  :numref:`lst:tabular4-FDBS`, the *final* set of double backslashes in the first row have been used, because we specified ``alignFinalDoubleBackSlash`` as 1.
 	
 	
 	 
@@ -800,7 +815,7 @@ As of Version 3.0, the alignment routine works on mandatory and optional argumen
 	
 	 
 
-If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` …\ ``\end{tabular}``, then you can use the mark up illustrated in :numref:`lst:alignmentmarkup`; the default output is shown in :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be next to each other, but that there can be any number of spaces (possibly none) between the ``*`` and ``\begin{tabular}``; note also that you may use any environment name
+If you have blocks of code that you wish to align at the & character that are *not* wrapped in, for example, ``\begin{tabular}`` … ``\end{tabular}``, then you can use the mark up illustrated in :numref:`lst:alignmentmarkup`; the default output is shown in :numref:`lst:alignmentmarkup-default`. Note that the ``%*`` must be next to each other, but that there can be any number of spaces (possibly none) between the ``*`` and ``\begin{tabular}``; note also that you may use any environment name
 that you have specified in ``lookForAlignDelims``.
 
 .. literalinclude:: demonstrations/align-block.tex
@@ -1299,7 +1314,14 @@ The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$.
 
 .. proof:example::	
 	
-	A demonstration of the before-and-after results are shown in :numref:`lst:specialbefore` and :numref:`lst:specialafter`.
+	A demonstration of the before-and-after results are shown in :numref:`lst:specialbefore` and :numref:`lst:specialafter`; explicitly, running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl special1.tex -o=+-default
+	
+	gives the output given in :numref:`lst:specialafter`.
 	
 	.. literalinclude:: demonstrations/special1.tex
 	 	:class: .tex
@@ -1399,25 +1421,25 @@ You can,optionally, specify the ``middle`` field for anything that you specify i
 	
 	then we obtain the output given in :numref:`lst:special2-mod1` and :numref:`lst:special2-mod2`.
 	
-	.. literalinclude:: demonstrations/middle.yaml
-	 	:class: .baseyaml
-	 	:caption: ``middle.yaml`` 
-	 	:name: lst:middle-yaml
-	
 	.. literalinclude:: demonstrations/special2-mod1.tex
 	 	:class: .tex
 	 	:caption: ``special2.tex`` using :numref:`lst:middle-yaml` 
 	 	:name: lst:special2-mod1
 	
-	.. literalinclude:: demonstrations/middle1.yaml
+	.. literalinclude:: demonstrations/middle.yaml
 	 	:class: .baseyaml
-	 	:caption: ``middle1.yaml`` 
-	 	:name: lst:middle1-yaml
+	 	:caption: ``middle.yaml`` 
+	 	:name: lst:middle-yaml
 	
 	.. literalinclude:: demonstrations/special2-mod2.tex
 	 	:class: .tex
 	 	:caption: ``special2.tex`` using :numref:`lst:middle1-yaml` 
 	 	:name: lst:special2-mod2
+	
+	.. literalinclude:: demonstrations/middle1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``middle1.yaml`` 
+	 	:name: lst:middle1-yaml
 	
 	We note that:
 	
@@ -1449,15 +1471,15 @@ You may specify fields in ``specialBeginEnd`` to be treated as verbatim code blo
 	
 	.. index:: specialBeginEnd;specifying as verbatim
 	
-	.. literalinclude:: demonstrations/special-verb1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``special-verb1.yaml`` 
-	 	:name: lst:special-verb1-yaml
-	
 	.. literalinclude:: demonstrations/special3-mod1.tex
 	 	:class: .tex
 	 	:caption: ``special3.tex`` and output using :numref:`lst:special-verb1-yaml` 
 	 	:name: lst:special3-mod1
+	
+	.. literalinclude:: demonstrations/special-verb1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``special-verb1.yaml`` 
+	 	:name: lst:special-verb1-yaml
 	
 	
 	 
@@ -1500,15 +1522,15 @@ We can combine the ``specialBeginEnd`` with the ``lookForAlignDelims`` feature.
 	
 	.. index:: regular expressions;numeric 0-9
 	
-	.. literalinclude:: demonstrations/edge-node1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``edge-node1.yaml`` 
-	 	:name: lst:edge-node1
-	
 	.. literalinclude:: demonstrations/special-align-mod1.tex
 	 	:class: .tex
 	 	:caption: ``special-align.tex`` using :numref:`lst:edge-node1` 
 	 	:name: lst:special-align-mod1
+	
+	.. literalinclude:: demonstrations/edge-node1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``edge-node1.yaml`` 
+	 	:name: lst:edge-node1
 	
 	The output in :numref:`lst:special-align-mod1` is not quite ideal. We can tweak the settings within :numref:`lst:edge-node1` in order to improve the output; in particular, we employ the code in :numref:`lst:edge-node2` and run the command
 	
@@ -1529,15 +1551,15 @@ We can combine the ``specialBeginEnd`` with the ``lookForAlignDelims`` feature.
 	
 	.. index:: regular expressions;at least one +
 	
-	.. literalinclude:: demonstrations/edge-node2.yaml
-	 	:class: .baseyaml
-	 	:caption: ``edge-node2.yaml`` 
-	 	:name: lst:edge-node2
-	
 	.. literalinclude:: demonstrations/special-align-mod2.tex
 	 	:class: .tex
 	 	:caption: ``special-align.tex`` using :numref:`lst:edge-node2` 
 	 	:name: lst:special-align-mod2
+	
+	.. literalinclude:: demonstrations/edge-node2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``edge-node2.yaml`` 
+	 	:name: lst:edge-node2
 	
 	
 	 
@@ -1564,15 +1586,15 @@ You can add any of your own custom heading commands to this field, specifying th
 	
 	For example, assuming that you have the code in :numref:`lst:headings1yaml` saved into ``headings1.yaml``, and that you have the text from :numref:`lst:headings1` saved into ``headings1.tex``.
 	
-	.. literalinclude:: demonstrations/headings1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``headings1.yaml`` 
-	 	:name: lst:headings1yaml
-	
 	.. literalinclude:: demonstrations/headings1.tex
 	 	:class: .tex
 	 	:caption: ``headings1.tex`` 
 	 	:name: lst:headings1
+	
+	.. literalinclude:: demonstrations/headings1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``headings1.yaml`` 
+	 	:name: lst:headings1yaml
 	
 	If you run the command
 	
@@ -1645,15 +1667,15 @@ You can control the maximum indentation given to your file by specifying the ``m
 	
 	You should receive the output shown in :numref:`lst:mult-nested-max-ind1`.
 	
-	.. literalinclude:: demonstrations/max-indentation1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``max-indentation1.yaml`` 
-	 	:name: lst:max-indentation1yaml
-	
 	.. literalinclude:: demonstrations/mult-nested-max-ind1.tex
 	 	:class: .tex
 	 	:caption: ``mult-nested.tex`` using :numref:`lst:max-indentation1yaml` 
 	 	:name: lst:mult-nested-max-ind1
+	
+	.. literalinclude:: demonstrations/max-indentation1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``max-indentation1.yaml`` 
+	 	:name: lst:max-indentation1yaml
 	
 	
 	 
@@ -1694,10 +1716,10 @@ As of Version 3.0, ``latexindent.pl`` processes documents using code blocks; eac
    namedGroupingBracesBrackets   ``0-9\.a-zA-Z@\*><``                                                               ``in``\ <arguments>
    UnNamedGroupingBracesBrackets *No name!*                                                                         ``\{`` or ``[`` or ``,`` or ``\&`` or ``)`` or ``(`` or ``$`` followed by <arguments>
    ifElseFi                      ``@a-zA-Z`` but must begin with either ``\if`` of ``\@if``                         ``\ifnum......\else...\fi``
-   items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames` ``\begin{enumerate}  \item ...\end{enumerate}``
-   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                ``\[  ...\]``
-   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                            ``\chapter{title}  ...\section{title}``
-   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                       ``\begin{filecontents}...\end{filecontents}``
+   items                         User specified, see :numref:`lst:indentafteritems` and :numref:`lst:itemNames`     ``\begin{enumerate}  \item ...\end{enumerate}``
+   specialBeginEnd               User specified, see :numref:`lst:specialBeginEnd`                                  ``\[  ...\]``
+   afterHeading                  User specified, see :numref:`lst:indentAfterHeadings`                              ``\chapter{title}  ...\section{title}``
+   filecontents                  User specified, see :numref:`lst:fileContentsEnvironments`                         ``\begin{filecontents}...\end{filecontents}``
    ============================= ================================================================================== =====================================================================================
 
 We will refer to these code blocks in what follows. Note that the fine tuning of the definition of the code blocks detailed in :numref:`tab:code-blocks` is discussed in :numref:`sec:finetuning`.

@@ -10,3 +10,5 @@ latexindent.pl -w -rv -m -g bib-files.log -l bibsettings.yaml -s *.bib
 set +x
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
+
+exit 0

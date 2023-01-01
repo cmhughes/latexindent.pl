@@ -1,8 +1,8 @@
 % arara: pdflatex: { files: [latexindent]}
 \subsection{oneSentencePerLine: modifying line breaks for sentences}\label{sec:onesentenceperline}
 
- You can instruct \texttt{latexindent.pl} to format \announce{2018-01-13}{one sentence per
- line} your file so that it puts one sentence per line. Thank you to \cite{mlep} for
+ You can instruct \texttt{latexindent.pl} to format \announce{2018-01-13}{one sentence
+ per line} your file so that it puts one sentence per line. Thank you to \cite{mlep} for
  helping to shape and test this feature. The behaviour of this part of the script is
  controlled by the switches detailed in \cref{lst:oneSentencePerLine}, all of which we
  discuss next. \index{modifying linebreaks! by using one sentence per line}
@@ -12,6 +12,37 @@
 
  \cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
+\subsubsection{oneSentencePerLine: overview}
+ An overview of how the oneSentencePerLine routine feature works:
+ \begin{enumerate}
+  \item the default value of \texttt{manipulateSentences} is 0, which means that
+        oneSentencePerLine will \emph{not} happen by default;
+  \item it happens \emph{after} verbatim blocks have been found;
+  \item it happens \emph{before} the text wrapping routine (see
+        \cref{subsec:textwrapping});
+  \item it happens \emph{before} the main code blocks have been found;
+  \item sentences to be found:
+        \begin{enumerate}
+         \item \emph{follow} the fields specified in \texttt{sentencesFollow}
+         \item \emph{begin} with the fields specified in \texttt{sentencesBeginWith}
+         \item \emph{end} with the fields specified in \texttt{sentencesEndWith}
+        \end{enumerate}
+  \item by default, the oneSentencePerLine routine will remove line breaks within
+        sentences because \texttt{removeBlockLineBreaks} is set to 1; switch it to 0 if
+        you wish to change this;
+  \item sentences can be text wrapped according to \texttt{textWrapSentences}, and will
+        be done either \texttt{before} or \texttt{after} the main indentation routine
+        (see \cref{subsubsec:ospl:before:after});
+  \item about trailing comments within text wrap blocks:
+        \begin{enumerate}
+         \item multiple trailing comments will be connected at the end of the sentence;
+         \item the number of spaces between the end of the sentence and the (possibly
+               combined) trailing comments is determined by the spaces (if any) at the
+               end of the sentence.
+        \end{enumerate}
+ \end{enumerate}
+
+ We demonstrate this feature using a series of examples.
 \yamltitle{manipulateSentences}{0|1}
  This is a binary switch that details if \texttt{latexindent.pl} should perform the
  sentence manipulation routine; it is \emph{off} (set to \texttt{0}) by default, and you
@@ -84,16 +115,17 @@ latexindent.pl multiple-sentences -m -l=keep-sen-line-breaks.yaml
  expressions. \index{regular expressions!lowercase alph a-z} \index{regular
  expressions!uppercase alph A-Z}
 
- \begin{cmhtcbraster}[raster columns=3,
+ \begin{cmhtcbraster}[raster columns=2,
    raster left skip=-3.5cm,
    raster right skip=-2cm,
    raster column skip=.06\linewidth]
   \cmhlistingsfromfile[style=sentencesFollow]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesFollow}}{lst:sentencesFollow}
   \cmhlistingsfromfile[style=sentencesBeginWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesBeginWith}}{lst:sentencesBeginWith}
-  \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
  \end{cmhtcbraster}
 
-\subsubsection{sentencesFollow}
+ \cmhlistingsfromfile[style=sentencesEndWith]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesEndWith}}{lst:sentencesEndWith}
+
+\subsubsection{oneSentencePerLine: sentencesFollow}
  Let's explore a few of the switches in \texttt{sentencesFollow}.
 
  \begin{example}
@@ -152,11 +184,12 @@ latexindent.pl multiple-sentences1 -m -l=manipulate-sentences.yaml,sentences-fol
  accounted for correctly.
  \end{example}
 
-\subsubsection{sentencesBeginWith}
+\subsubsection{oneSentencePerLine: sentencesBeginWith}
  By default, \texttt{latexindent.pl} will only assume that sentences begin with the upper
  case letters \texttt{A-Z}; you can instruct the script to define sentences to begin with
- lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the \texttt{other}
- field to define sentences to begin with other characters. \index{sentences!begin with}
+ lower case letters (see \cref{lst:sentencesBeginWith}), and we can use the
+ \texttt{other} field to define sentences to begin with other characters.
+ \index{sentences!begin with}
 
  \begin{example}
  We use the file in \cref{lst:multiple-sentences2}.
@@ -185,14 +218,15 @@ latexindent.pl multiple-sentences2 -m -l=manipulate-sentences.yaml,sentences-beg
   \cmhlistingsfromfile{demonstrations/multiple-sentences2-mod2.tex}{\texttt{multiple-sentences2.tex} using \cref{lst:sentences-begin1-yaml}}{lst:multiple-sentences2-mod2}
   \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentences-begin1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{sentences-begin1.yaml}}{lst:sentences-begin1-yaml}
  \end{cmhtcbraster}
- Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been accounted
- for but that the subsequent sentences have not. In \cref{lst:multiple-sentences2-mod2},
- all of the sentences have been accounted for, because the \texttt{other} field in
- \cref{lst:sentences-begin1-yaml} has defined sentences to begin with either \lstinline!$!
- or any numeric digit, \texttt{0} to \texttt{9}.
+ Notice that in \cref{lst:multiple-sentences2-mod1}, the first sentence has been
+ accounted for but that the subsequent sentences have not. In
+ \cref{lst:multiple-sentences2-mod2}, all of the sentences have been accounted for,
+ because the \texttt{other} field in \cref{lst:sentences-begin1-yaml} has defined
+ sentences to begin with either \lstinline!$! or any numeric digit, \texttt{0} to
+ \texttt{9}.
  \end{example}
 
-\subsubsection{sentencesEndWith}
+\subsubsection{oneSentencePerLine: sentencesEndWith}
  \begin{example}
  Let's return to \vref{lst:multiple-sentences}; we have already seen the default way in
  which \texttt{latexindent.pl} will operate on the sentences in this file in
@@ -248,9 +282,9 @@ latexindent.pl url -m -l=manipulate-sentences.yaml
 
  \cmhlistingsfromfile{demonstrations/url-mod1.tex}{\texttt{url.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:url-mod1}
 
- Notice that the full stop within the url has been interpreted correctly. This is because,
- within the \texttt{betterFullStop}, full stops at the end of sentences have the following
- properties:
+ Notice that the full stop within the url has been interpreted correctly. This is
+ because, within the \texttt{betterFullStop}, full stops at the end of sentences have the
+ following properties:
  \begin{itemize}
   \item they are ignored within \texttt{e.g.} and \texttt{i.e.};
   \item they can not be immediately followed by a lower case or upper case letter;
@@ -331,8 +365,9 @@ latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
 
  \begin{example}
  Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
- removal of internal sentence line breaks by using the YAML in \cref{lst:item-rules2-yaml}
- and the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+ removal of internal sentence line breaks by using the YAML in
+ \cref{lst:item-rules2-yaml} and the command \index{switches!-l demonstration}
+ \index{switches!-m demonstration}
 
  \begin{commandshell}
 latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
@@ -346,7 +381,7 @@ latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
  \end{cmhtcbraster}
  \end{example}
 
-\subsubsection{Text wrapping and indenting sentences}
+\subsubsection{oneSentencePerLine: text wrapping and indenting sentences}
  The \texttt{oneSentencePerLine} \announce{2018-08-13}{oneSentencePerline text wrap and
  indent} can be instructed to perform text wrapping and indentation upon sentences.
  \index{sentences!text wrapping} \index{sentences!indenting}%
@@ -411,13 +446,13 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml -y="modifyLineBreak
  \begin{example}
  We can tweak the settings in \vref{lst:sentencesEndWith} to ensure that full stops are
  not followed by \texttt{item} commands, and that the end of sentences contains
- \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml} (if you intend to use this,
- ensure that you remove the line breaks from the \texttt{other} field). \index{regular
- expressions!lowercase alph a-z} \index{regular expressions!uppercase alph A-Z}
- \index{regular expressions!numeric 0-9} \index{regular expressions!horizontal space
- \textbackslash{h}}
+ \lstinline!\end{itemize}! as in \cref{lst:itemize-yaml}. This setting is actually an
+ appended version of the \texttt{betterFullStop} from the \texttt{fineTuning}, detailed
+ in \vref{lst:fineTuning}. \index{regular expressions!lowercase alph a-z} \index{regular
+ expressions!uppercase alph A-Z} \index{regular expressions!numeric 0-9} \index{regular
+ expressions!horizontal space \textbackslash{h}}
 
- \cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemized.yaml}[MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/itemize.yaml}[enhanced jigsaw,breakable,MLB-TCB]{\texttt{itemize.yaml}}{lst:itemize-yaml}
 
  Upon running \index{switches!-l demonstration} \index{switches!-m demonstration}
 
@@ -436,3 +471,98 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
  Text \announce{2022-04-04}*{oneSentencePerLine text wrapping update} wrapping when using
  the \texttt{oneSentencePerLine} routine determines if it will remove line breaks while
  text wrapping, from the value of \texttt{removeSentenceLineBreaks}.
+
+\subsubsection{oneSentencePerLine: text wrapping and indenting sentences, when before/after}\label{subsubsec:ospl:before:after}
+ The text wrapping routine operates, by default, \texttt{before} the
+ \announce*{2023-01-01}{text wrap: before/after details} code blocks have been found, but
+ this can be changed to \texttt{after}:
+ \begin{itemize}
+  \item \texttt{before} means it is likely that the columns of wrapped text may \emph{exceed} the
+        value specified in \texttt{columns};
+  \item \texttt{after} means it columns of wrapped text should \emph{not} exceed the value
+        specified in \texttt{columns}.
+ \end{itemize}
+ We demonstrate this in the following examples. See also
+ \cref{subsubsec:tw:before:after}.
+
+ \begin{example}
+ Let's begin with the file in \cref{lst:multiple-sentences8}.
+
+ \cmhlistingsfromfile*{demonstrations/multiple-sentences8.tex}{\texttt{multiple-sentences8.tex}}{lst:multiple-sentences8}
+
+ Using the settings given in \cref{lst:sentence-wrap2} and running the command
+
+ \begin{commandshell}
+latexindent.pl multiple-sentences8 -o=+-mod1.tex -l=sentence-wrap2 -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:multiple-sentences8-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod1.tex}{\texttt{multiple-sentences8-mod1.tex}}{lst:multiple-sentences8-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap2.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap2.yaml}}{lst:sentence-wrap2}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:multiple-sentences8-mod1}, that the wrapped text has
+ \emph{exceeded} the specified value of \texttt{columns} (35) given in
+ \cref{lst:sentence-wrap2}. We can affect this by changing \texttt{when}; we explore this
+ next.
+ \end{example}
+
+ \begin{example}
+ We continue working with \cref{lst:multiple-sentences8}.
+
+ Using the settings given in \cref{lst:sentence-wrap3} and running the command
+
+ \begin{commandshell}
+latexindent.pl multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3 -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:multiple-sentences8-mod2}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod2.tex}{\texttt{multiple-sentences8-mod2.tex}}{lst:multiple-sentences8-mod2}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap3.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap3.yaml}}{lst:sentence-wrap3}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:multiple-sentences8-mod2}, that the wrapped text has
+ \emph{obeyed} the specified value of \texttt{columns} (35) given in
+ \cref{lst:sentence-wrap3}.
+ \end{example}
+
+\subsubsection{oneSentencePerLine: text wrapping sentences and comments}\label{subsubsec:ospl:tw:comments}
+ We demonstrate the one sentence per line routine with respect to text wrapping
+ \emph{comments}. See also \cref{subsubsec:tw:comments}. \index{comments!text wrap}
+ \index{text wrap!comments} \index{sentences!comments} \index{sentences!text wrap}
+
+ \begin{example}
+ Let's begin with the file in \cref{lst:multiple-sentences9}.
+
+ \cmhlistingsfromfile*{demonstrations/multiple-sentences9.tex}{\texttt{multiple-sentences9.tex}}{lst:multiple-sentences9}
+
+ Using the settings given in \cref{lst:sentence-wrap4} and running the command
+
+ \begin{commandshell}
+latexindent.pl multiple-sentences9 -o=+-mod1.tex -l=sentence-wrap4 -m
+   \end{commandshell}
+
+ gives the output given in \cref{lst:multiple-sentences9-mod1}.
+
+ \begin{cmhtcbraster}[raster columns=2,
+   raster left skip=-1.5cm,
+   raster right skip=-0cm,
+   raster column skip=.06\linewidth]
+  \cmhlistingsfromfile*{demonstrations/multiple-sentences9-mod1.tex}{\texttt{multiple-sentences9-mod1.tex}}{lst:multiple-sentences9-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap4.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap4.yaml}}{lst:sentence-wrap4}
+ \end{cmhtcbraster}
+
+ We note that, in \cref{lst:multiple-sentences9-mod1}, that the sentences have been
+ wrapped, and so too have the comments because of the annotated line in
+ \cref{lst:sentence-wrap4}.
+ \end{example}

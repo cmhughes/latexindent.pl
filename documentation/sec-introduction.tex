@@ -14,9 +14,9 @@
  need.
 
  There have been several contributors to the project so far (and hopefully more in the
- future!); thank you very much to the people detailed in \vref{sec:contributors} for their
- valued contributions, and thank you to those who report bugs and request features at
- \cite{latexindent-home}.
+ future!); thank you very much to the people detailed in \vref{sec:contributors} for
+ their valued contributions, and thank you to those who report bugs and request features
+ at \cite{latexindent-home}.
 
 \subsection{License}
  \texttt{latexindent.pl} is free and open source, and it always will be; it
@@ -28,8 +28,8 @@
  \cpageref{page:onlyonebackup}) but you should still be careful when using it. The script
  has been tested on many files, but there are some known limitations (see
  \cref{sec:knownlimitations}). You, the user, are responsible for ensuring that you
- maintain backups of your files before running \texttt{latexindent.pl} on them. I think it
- is important at this stage to restate an important part of the license here:
+ maintain backups of your files before running \texttt{latexindent.pl} on them. I think
+ it is important at this stage to restate an important part of the license here:
  \begin{quote}\itshape
   This program is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,8 +38,9 @@
  \end{quote}
  There is certainly no malicious intent in releasing this script, and I do hope that it
  works as you expect it to; if it does not, please first of all make sure that you have
- the correct settings, and then feel free to let me know at \cite{latexindent-home} with a
- complete minimum working example as I would like to improve the code as much as possible.
+ the correct settings, and then feel free to let me know at \cite{latexindent-home} with
+ a complete minimum working example as I would like to improve the code as much as
+ possible.
 
  \begin{warning}
   Before you try the script on anything important (like your thesis), test it out on the
@@ -60,9 +61,9 @@ latexindent.pl myfile.tex
 
  from the command line.
 
- We give an introduction to \texttt{latexindent.pl} using \cref{lst:quick-start}; there is
- no explanation in this section, which is deliberate for a quick start. The rest of the
- manual is more verbose.
+ We give an introduction to \texttt{latexindent.pl} using \cref{lst:quick-start}; there
+ is no explanation in this section, which is deliberate for a quick start. The rest of
+ the manual is more verbose.
 
  \cmhlistingsfromfile{demonstrations/quick-start.tex}{\texttt{quick-start.tex}}{lst:quick-start}
 
@@ -86,9 +87,10 @@ latexindent.pl -l quick-start1.yaml quick-start.tex
  gives \cref{lst:quick-start-mod1}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start1.yaml}[yaml-TCB]{\texttt{quick-start1.yaml}}{lst:quick-start1yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/quick-start-mod1.tex}{\texttt{quick-start-mod1.tex}}{lst:quick-start-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start1.yaml}[yaml-TCB]{\texttt{quick-start1.yaml}}{lst:quick-start1yaml}
  \end{cmhtcbraster}
+ See \cref{subsec:indentation:and:horizontal:space}.
  \end{example}
 
  \begin{example}
@@ -101,9 +103,10 @@ latexindent.pl -l quick-start2.yaml quick-start.tex
  gives \cref{lst:quick-start-mod2}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start2.yaml}[yaml-TCB]{\texttt{quick-start2.yaml}}{lst:quick-start2yaml}
   \cmhlistingsfromfile[showspaces=true]{demonstrations/quick-start-mod2.tex}{\texttt{quick-start-mod2.tex}}{lst:quick-start-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start2.yaml}[yaml-TCB]{\texttt{quick-start2.yaml}}{lst:quick-start2yaml}
  \end{cmhtcbraster}
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
  \begin{example}
@@ -116,9 +119,10 @@ latexindent.pl -l quick-start3.yaml quick-start.tex
  gives \cref{lst:quick-start-mod3}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start3.yaml}[yaml-TCB]{\texttt{quick-start3.yaml}}{lst:quick-start3yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod3.tex}{\texttt{quick-start-mod3.tex}}{lst:quick-start-mod3}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start3.yaml}[yaml-TCB]{\texttt{quick-start3.yaml}}{lst:quick-start3yaml}
  \end{cmhtcbraster}
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
  \begin{example}
@@ -131,8 +135,8 @@ latexindent.pl -m -l quick-start4.yaml quick-start.tex
  gives \cref{lst:quick-start-mod4}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start4.yaml}[MLB-TCB]{\texttt{quick-start4.yaml}}{lst:quick-start4yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod4.tex}{\texttt{quick-start-mod4.tex}}{lst:quick-start-mod4}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start4.yaml}[MLB-TCB]{\texttt{quick-start4.yaml}}{lst:quick-start4yaml}
  \end{cmhtcbraster}
  Full details of text wrapping in \cref{subsec:textwrapping}.
  \end{example}
@@ -147,8 +151,8 @@ latexindent.pl -m -l quick-start5.yaml quick-start.tex
  gives \cref{lst:quick-start-mod5}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start5.yaml}[MLB-TCB]{\texttt{quick-start5.yaml}}{lst:quick-start5yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod5.tex}{\texttt{quick-start-mod5.tex}}{lst:quick-start-mod5}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start5.yaml}[MLB-TCB]{\texttt{quick-start5.yaml}}{lst:quick-start5yaml}
  \end{cmhtcbraster}
  Full details of text wrapping in \cref{subsec:textwrapping}.
  \end{example}
@@ -163,8 +167,8 @@ latexindent.pl -m -l quick-start6.yaml quick-start.tex
  gives \cref{lst:quick-start-mod6}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start6.yaml}[MLB-TCB]{\texttt{quick-start6.yaml}}{lst:quick-start6yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod6.tex}{\texttt{quick-start-mod6.tex}}{lst:quick-start-mod6}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start6.yaml}[MLB-TCB]{\texttt{quick-start6.yaml}}{lst:quick-start6yaml}
  \end{cmhtcbraster}
  This is an example of a \emph{poly-switch}; full details of \emph{poly-switches} are
  covered in \cref{sec:poly-switches}.
@@ -180,10 +184,45 @@ latexindent.pl -m -l quick-start7.yaml quick-start.tex
  gives \cref{lst:quick-start-mod7}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/quick-start7.yaml}[MLB-TCB]{\texttt{quick-start7.yaml}}{lst:quick-start7yaml}
   \cmhlistingsfromfile{demonstrations/quick-start-mod7.tex}{\texttt{quick-start-mod7.tex}}{lst:quick-start-mod7}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/quick-start7.yaml}[MLB-TCB]{\texttt{quick-start7.yaml}}{lst:quick-start7yaml}
  \end{cmhtcbraster}
  Full details of \emph{poly-switches} are covered in \cref{sec:poly-switches}.
+ \end{example}
+
+ \begin{example}
+ Running
+
+ \begin{commandshell}
+latexindent.pl -l quick-start8.yaml quick-start.tex
+\end{commandshell}
+
+ gives \cref{lst:quick-start-mod8}; note that the \emph{preamble} has been indented.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile*{demonstrations/quick-start-mod8.tex}{\texttt{quick-start-mod8.tex}}{lst:quick-start-mod8}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/quick-start8.yaml}[yaml-TCB]{\texttt{quick-start8.yaml}}{lst:quick-start8yaml}
+ \end{cmhtcbraster}
+
+ See \cref{subsec:filecontents:preamble}.
+
+ \end{example}
+
+ \begin{example}
+ Running
+
+ \begin{commandshell}
+latexindent.pl -l quick-start9.yaml quick-start.tex
+\end{commandshell}
+
+ gives \cref{lst:quick-start-mod9}.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile*{demonstrations/quick-start-mod9.tex}{\texttt{quick-start-mod9.tex}}{lst:quick-start-mod9}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/quick-start9.yaml}[yaml-TCB]{\texttt{quick-start9.yaml}}{lst:quick-start9yaml}
+ \end{cmhtcbraster}
+
+ See \cref{sec:noadd-indent-rules}.
  \end{example}
 
 \subsection{Required perl modules}
@@ -212,43 +251,45 @@ perl latexindent-module-installer.pl
 
  The different listings are presented using different styles:
 
- \begin{minipage}{.4\textwidth}
-  \cmhlistingsfromfile{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.tex} file.
- \end{minipage}%
+ \begin{widepage}
+  \begin{minipage}{.4\linewidth}
+   \cmhlistingsfromfile{demonstrations/demo-tex.tex}{\texttt{demo-tex.tex}}{lst:demo-tex}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.tex} file.
+  \end{minipage}%
 
- \begin{minipage}{.4\textwidth}
-  \cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file; when you see line numbers given (as here)
-  it means that the snippet is taken directly from \texttt{defaultSettings.yaml}, discussed in
-  detail in \vref{sec:defuseloc}.
- \end{minipage}%
+  \begin{minipage}{.4\linewidth}
+   \cmhlistingsfromfile[style=fileExtensionPreference]{../defaultSettings.yaml}[width=.8\linewidth,before=\centering,yaml-TCB]{\texttt{fileExtensionPreference}}{lst:fileExtensionPreference-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file; when you see line numbers given (as here)
+   it means that the snippet is taken directly from \texttt{defaultSettings.yaml}, discussed in
+   detail in \vref{sec:defuseloc}.
+  \end{minipage}%
 
- \begin{minipage}{.55\textwidth}
-  \cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file, but it will only
-  be relevant when the \texttt{-m} switch is active; see \vref{sec:modifylinebreaks}
-  for more details.
- \end{minipage}%
+  \begin{minipage}{.6\linewidth}
+   \cmhlistingsfromfile[style=modifylinebreaks]{../defaultSettings.yaml}[MLB-TCB,width=.95\linewidth,before=\centering]{\texttt{modifyLineBreaks}}{lst:modifylinebreaks-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file, but it will only
+   be relevant when the \texttt{-m} switch is active; see \vref{sec:modifylinebreaks}
+   for more details.
+  \end{minipage}%
 
- \begin{minipage}{.55\textwidth}
-  \cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.85\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
- \end{minipage}%
- \hfill
- \begin{minipage}{.4\textwidth}
-  This type of listing is a \texttt{.yaml} file, but it will only
-  be relevant when the \texttt{-r} switch is active; see \vref{sec:replacements}
-  for more details.
- \end{minipage}%
+  \begin{minipage}{.6\linewidth}
+   \cmhlistingsfromfile[style=replacements]{../defaultSettings.yaml}[replace-TCB,width=.95\linewidth,before=\centering]{\texttt{replacements}}{lst:replacements-demo}
+  \end{minipage}%
+  \hfill
+  \begin{minipage}{.4\linewidth}
+   This type of listing is a \texttt{.yaml} file, but it will only
+   be relevant when the \texttt{-r} switch is active; see \vref{sec:replacements}
+   for more details.
+  \end{minipage}%
+ \end{widepage}
 
  % \begin{latexonly}
  You will occasionally see dates shown in the margin (for example, next to this

@@ -1,0 +1,14 @@
+defaultIndent: "\t"
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    textWrapSentences: 1
+    sentencesFollow:
+        other: \\item
+  textWrapOptions:
+    columns: 40
+    when: after
+    comments: 
+      wrap: 1
+    blocksFollow:
+      other: \\begin\{(?:abstract)\}

@@ -132,5 +132,13 @@ latexindent.pl -s -m -l issue-376b.yaml issue-376.tex -o=+-mod3
 # issue 377
 latexindent.pl -s -m -l issue-377a.yaml issue-377.tex -o=+-mod1
 
+# issue 392
+latexindent.pl -s -m -l issue-392.yaml issue-392.tex -o=+-mod1
+
+latexindent.pl multiple-sentences9.tex -o=+-mod1.tex -l=sentence-wrap4 -m -s -o=+-mod1
+latexindent.pl multiple-sentences9.tex -o=+-mod1.tex -l=sentence-wrap5 -m -s -o=+-mod2
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
+
+exit 0

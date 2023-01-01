@@ -1,0 +1,5 @@
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 35
+    comments: 
+      wrap: 1  #<!-------

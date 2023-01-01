@@ -1,0 +1,43 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesBeginWith:
+          other: (?<!(?:e|Ph|G|)\.)  #  |  
+    mandatoryArguments:              #  |
+      section:                       #  |
+        RCuBFinishesWithLineBreak: 1 # <!----- new bits
+      subsection:                    #  |
+        RCuBFinishesWithLineBreak: 1 #  |
+
+fineTuning:
+  modifyLineBreaks:
+    betterFullStop: |-
+      (?x)                                # ignore spaces in the below
+      (?:                                 #
+        \.\)                              # .) 
+        (?!\h*[a-z])                      # not *followed by* a-z
+      )                                   #
+      |                                   # OR
+      (?:                                 #
+        (?<!                              # not *preceeded by*
+          (?:                             #
+            (?:[eE]\.[gG])                # e.g OR E.g OR e.G OR E.G
+            |                             #
+            (?:[iI]\.[eE])                # i.e OR I.e OR i.E OR I.E
+            |                             #
+            (?:etc)                       # etc
+            |                             #
+            (?:Ph\.D)                     # <!--------- new bit
+          )                               #
+        )                                 #
+      )                                   # 
+      \.                                  # .
+      (?!                                 # not *followed by*
+        (?:                               #
+          [a-zA-Z0-9-~,]                  #
+          |                               #
+          \),                             # ),
+          |                               #
+          \)\.                            # ).
+        )                                 #
+      )                                   #
