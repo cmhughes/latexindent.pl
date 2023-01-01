@@ -108,7 +108,7 @@ sudo apt install texlive-extra-utils
 
   \paragraph{Ubuntu: users without perl}
 
-   \texttt{latexindent-linux} is a standalone executable \announce*{2022-10-30}{Linux Ubuntu standalone executable} for Ubuntu Linux (and therefore does not require a Perl distribution)
+   \texttt{latexindent-linux} is a standalone executable \announce{2022-10-30}{Linux Ubuntu standalone executable} for Ubuntu Linux (and therefore does not require a Perl distribution)
    and caches copies of the Perl modules onto your system. It is available from \cite{latexindent-home}.
    \index{latexindent-linux} \index{linux} \index{TeXLive}
 
@@ -178,7 +178,7 @@ cpanm File::HomeDir
 brew install latexindent
 \end{commandshell}
 
-  \texttt{latexindent-macos} is a standalone executable \announce*{2022-10-30}{macOS standalone executable} for macOS (and therefore does not require a Perl distribution)
+  \texttt{latexindent-macos} is a standalone executable \announce{2022-10-30}{macOS standalone executable} for macOS (and therefore does not require a Perl distribution)
   and caches copies of the Perl modules onto your system. It is available from \cite{latexindent-home}.
   \index{latexindent-macos} \index{macOS} \index{TeXLive}
 
@@ -687,7 +687,7 @@ latexindent.pl -l -m -s -w myfile.tex
  \section{indentconfig options}\label{app:indentconfig:options}
   This section describes the possible locations for the main configuration file,
   discussed in \cref{sec:indentconfig}. Thank you to \cite{nehctargl} for this
-  contribution. \announce{new}{indentconfig location options}
+  contribution. \announce*{2023-01-01}{indentconfig location options}
 
   The possible locations of \texttt{indentconfig.yaml} are evaluated one after the other,
   and evaluation stops when a valid file is found in one of the paths.

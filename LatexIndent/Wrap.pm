@@ -288,12 +288,12 @@ sub text_wrap {
                     my $thingToMeasure = ( split( /\R/, ${$self}{follows} ) )[-1];
 
                     $subsequentSpace
-                        = ( ${$self}{follows} ? " " x length( $thingToMeasure ): q());
+                        = ( ${$self}{follows} ? " " x length($thingToMeasure) : q() );
 
                     # possible tab adjustments
-                    $thingToMeasure = q() if (not defined $thingToMeasure);
-                    $numberOfTABS = () = $thingToMeasure =~ m/\t/g;
-                    for (my $i=1; $i<=$numberOfTABS;$i++){
+                    $thingToMeasure = q() if ( not defined $thingToMeasure );
+                    $numberOfTABS   = () = $thingToMeasure =~ m/\t/g;
+                    for ( my $i = 1; $i <= $numberOfTABS; $i++ ) {
                         $subsequentSpace =~ s/ /    /;
                     }
                 }
@@ -325,14 +325,15 @@ sub text_wrap {
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
 
-                        $subsequentSpace
-                            = ( $textWrapBlockCount == 0
+                        $subsequentSpace = (
+                            $textWrapBlockCount == 0
                             ? q()
-                            : " " x length($thingToMeasure) );
+                            : " " x length($thingToMeasure)
+                        );
 
                         # possible tab adjustments
                         $numberOfTABS = () = $thingToMeasure =~ m/\t/g;
-                        for (my $i=1; $i<=$numberOfTABS;$i++){
+                        for ( my $i = 1; $i <= $numberOfTABS; $i++ ) {
                             $subsequentSpace =~ s/ /    /;
                         }
                     }
@@ -340,7 +341,7 @@ sub text_wrap {
                 $Text::Wrap::columns = $columns - length($subsequentSpace);
 
                 # possible tab adjustments
-                for (my $i=1; $i<=$numberOfTABS;$i++){
+                for ( my $i = 1; $i <= $numberOfTABS; $i++ ) {
                     $subsequentSpace =~ s/    /\t/;
                 }
             }

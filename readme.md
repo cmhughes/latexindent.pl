@@ -22,7 +22,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.19.1, 2022-12-04
+    latexindent.pl, version 3.20, 2023-01-01
 
 ## author
 Chris Hughes (cmhughes)
@@ -156,7 +156,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.19.1
+        rev: V3.20
         hooks:
           - id: latexindent
 
@@ -250,6 +250,8 @@ You might like to checkout the following related projects on github.
 [LaTeX-Workshop](https://github.com/James-Yu/LaTeX-Workshop): [![GitHub stars](https://img.shields.io/github/stars/James-Yu/LaTeX-Workshop.svg?style=flat-square)](https://github.com/James-Yu/LaTeX-Workshop/stargazers)
 
 [Neelfrost/dotfiles](https://github.com/Neelfrost/dotfiles): [![GitHub stars](https://img.shields.io/github/stars/Neelfrost/dotfiles.svg?style=flat-square)](https://github.com/Neelfrost/dotfiles/stargazers)
+
+[latex-formatter](https://github.com/nfode/latex-formatter): [![GitHub stars](https://img.shields.io/github/stars/nfode/latex-formatter.svg?style=flat-square)](https://github.com/nfode/latex-formatter)
 
 ## thank you
 Thank you to the [contributors](https://github.com/cmhughes/latexindent.pl/graphs/contributors) to the project!

@@ -134,6 +134,11 @@ References
       mlep. 2017. “One Sentence Per Line.” August 16, 2017. https://github.com/cmhughes/latexindent.pl/issues/81.
 
    .. container::
+      :name: ref-nehctargl
+
+      Nehctargl. 2022. “Added Support for the Xdg Specification.” December 23, 2022. https://github.com/cmhughes/latexindent.pl/pull/397.
+
+   .. container::
       :name: ref-newptcai
 
       newptcai. 2021. “Update Appendices.tex.” February 16, 2021. https://github.com/cmhughes/latexindent.pl/pull/221.

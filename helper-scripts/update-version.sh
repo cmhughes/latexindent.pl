@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.19'
-newVersion='3.19.1'
-oldDate='2022-10-30'
-newDate='2022-12-04'
+oldVersion='3.19.1'
+newVersion='3.20'
+oldDate='2022-12-04'
+newDate='2023-01-01'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -81,6 +81,8 @@ cd documentation
 
 set -x
 
+[[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
+
 # change \announce{new}{message} into \announce*{message}
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 
@@ -89,6 +91,9 @@ pdflatex --interaction=batchmode latexindent
 # update .rst
 perl documentation-default-settings-update.pl
 perl documentation-default-settings-update.pl -r
+
+# documentation-default-settings-update.pl changes the .tex files
+git checkout s*.tex
 
 [[ $minorVersion == 0 ]] && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
 

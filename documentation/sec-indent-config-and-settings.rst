@@ -7,6 +7,8 @@ indentconfig.yaml, local settings and the -y switch
 
 The behaviour of ``latexindent.pl`` is controlled from the settings specified in any of the YAML files that you tell it to load. By default, ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there are a few ways that you can tell it to load your own settings files.
 
+We focus our discussion on ``indentconfig.yaml``, but there are other options which are detailed in :numref:`app:indentconfig:options`.
+
 indentconfig.yaml and .indentconfig.yaml
 ----------------------------------------
 
@@ -15,22 +17,10 @@ In what follows, we will use ``indentconfig.yaml``, but it is understood that th
 
 For Mac and Linux users, their home directory is `` /username`` while Windows (Vista onwards) is ``C:\Users\username``\  [1]_ :numref:`lst:indentconfig` shows a sample ``indentconfig.yaml`` file.
 
-.. code-block:: latex
-   :caption: ``indentconfig.yaml`` (sample) 
-   :name: lst:indentconfig
-
-   # Paths to user settings for latexindent.pl
-   #
-   # Note that the settings will be read in the order you
-   # specify here- each successive settings file will overwrite
-   # the variables that you specify
-
-   paths:
-   - /home/cmhughes/Documents/yamlfiles/mysettings.yaml
-   - /home/cmhughes/folder/othersettings.yaml
-   - /some/other/folder/anynameyouwant.yaml
-   - C:\Users\chughes\Documents\mysettings.yaml
-   - C:\Users\chughes\Desktop\test spaces\more spaces.yaml
+.. literalinclude:: demonstrations/indent-config.yaml
+ 	:class: .baseyaml
+ 	:caption: ``indentconfig.yaml`` (sample) 
+ 	:name: lst:indentconfig
 
 Note that the ``.yaml`` files you specify in ``indentconfig.yaml`` will be loaded in the order in which you write them. Each file doesn’t have to have every switch from ``defaultSettings.yaml``; in fact, I recommend that you only keep the switches that you want to *change* in these settings files.
 
@@ -39,17 +29,10 @@ delimiters; you might also like to refer to the many YAML files detailed through
 
 .. index:: indentation;defaultIndent using YAML file
 
-.. code-block:: latex
-   :caption: ``mysettings.yaml`` (example) 
-   :name: lst:mysettings
-
-   # Default value of indentation
-   defaultIndent: "\t\t\t\t"
-
-   # environments that have tab delimiters, add more
-   # as needed
-   lookForAlignDelims:
-       tabbing: 1
+.. literalinclude:: demonstrations/tabbing.yaml
+ 	:class: .baseyaml
+ 	:caption: ``mysettings.yaml`` (example) 
+ 	:name: lst:mysettings
 
 You can make sure that your settings are loaded by checking ``indent.log`` for details – if you have specified a path that ``latexindent.pl`` doesn’t recognise then you’ll get a warning, otherwise you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_
 

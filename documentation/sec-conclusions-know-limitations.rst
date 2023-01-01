@@ -10,9 +10,6 @@ There are a number of known limitations of the script, and almost certainly quit
 multicolumn alignment
    when working with code blocks in which multicolumn commands overlap, the algorithm can fail; see :numref:`lst:tabular2-mod2`.
 
-text wrap
-   routine operates *before* indentation occurs; this means that it is likely that your final, indented, text wrapped text may exceed the value of ``columns`` that you specify; see :numref:`subsec:textwrapping`.
-
 efficiency
    particularly when the ``-m`` switch is active, as this adds many checks and processes. The current implementation relies upon finding and storing *every* code block (see the discussion on :ref:`page page:phases <page:phases>`); I hope that, in a future version, only *nested* code blocks will need to be stored in the ‘packing’ phase, and that this will improve the efficiency of the script.
 

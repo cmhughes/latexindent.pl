@@ -29,9 +29,9 @@ then you will be able to run ``latexindent.pl``, otherwise you may need to insta
    use warnings;                       #     |
    use Encode;                         #     |
    use Getopt::Long;                   #     |
-   use Data::Dumper;                   #  these modules are      
-   use List::Util qw(max);             #  generally part         
-   use PerlIO::encoding;               #  of a default perl distribution 
+   use Data::Dumper;                   #  these modules are
+   use List::Util qw(max);             #  generally part
+   use PerlIO::encoding;               #  of a default perl distribution
    use open ':std', ':encoding(UTF-8)';#     |
    use Text::Wrap;                     #     |
    use Text::Tabs;                     #     |
@@ -134,7 +134,7 @@ may need the following additional command to work with ``latexindent.pl``
 .. code-block:: latex
    :class: .commandshell
 
-   sudo apt install texlive-extra-utils 
+   sudo apt install texlive-extra-utils
 
 Ubuntu: users without perl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -217,7 +217,7 @@ Alternatively,
 .. code-block:: latex
    :class: .commandshell
 
-   brew install latexindent  
+   brew install latexindent
 
 ``latexindent-macos`` is a standalone executable for macOS (and therefore does not require a Perl distribution) and caches copies of the Perl modules onto your system. It is available from (“Home of Latexindent.pl” n.d.).
 
@@ -363,7 +363,7 @@ You can instruct ``latexindent.pl`` to operate on multiple files. For example, t
 .. code-block:: latex
    :class: .commandshell
 
-   latexindent.pl myfile1.tex          
+   latexindent.pl myfile1.tex
    latexindent.pl myfile1.tex myfile2.tex
    latexindent.pl myfile*.tex
 
@@ -396,7 +396,7 @@ If ``latexindent.pl`` is called using the ``-o`` switch as in
 .. code-block:: latex
    :class: .commandshell
 
-   latexindent.pl myfile*.tex -o=my-output-file.tex 
+   latexindent.pl myfile*.tex -o=my-output-file.tex
 
 and there are multiple files to operate upon, then the ``-o`` switch is ignored because there is only *one* output file specified.
 
@@ -665,7 +665,7 @@ Once created, you should then be able to run the following command:
 .. code-block:: latex
    :class: .commandshell
 
-   pre-commit run --all-files  
+   pre-commit run --all-files
 
 A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
 
@@ -678,7 +678,7 @@ A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
    .. code-block:: latex
       :class: .commandshell
 
-      latexindent.pl -s myfile.tex       
+      latexindent.pl -s myfile.tex
 
    for each ``.tex`` file in your repository;
 
@@ -711,7 +711,7 @@ Once created, you should then be able to run the following command:
 .. code-block:: latex
    :class: .commandshell
 
-   pre-commit run --all-files  
+   pre-commit run --all-files
 
 A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
 
@@ -724,7 +724,7 @@ A few notes about :numref:`lst:.pre-commit-config.yaml-cpan`:
    .. code-block:: latex
       :class: .commandshell
 
-      conda run latexindent.pl -s myfile.tex       
+      conda run latexindent.pl -s myfile.tex
 
    for each ``.tex`` file in your repository;
 
@@ -805,7 +805,7 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	   pre-commit run --all-files  
+	   pre-commit run --all-files
 	
 	is equivalent to running
 	
@@ -824,6 +824,137 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 	
 	
 	 
+
+.. label follows
+
+.. _app:indentconfig:options:
+
+indentconfig options
+--------------------
+
+This section describes the possible locations for the main configuration file, discussed in :numref:`sec:indentconfig`. Thank you to (Nehctargl 2022) for this contribution. The possible locations of ``indentconfig.yaml`` are evaluated one after the other, and evaluation stops when a valid file is found in one of the paths.
+
+Before stating the list, we give summarise in :numref:`tab:environment:summary`.
+
+.. label follows
+
+.. _tab:environment:summary:
+
+.. table:: indentconfig environment variable summaries
+
+   ==================== ================= ===== ===== =======
+   environment variable type              Linux macOS Windows
+   ==================== ================= ===== ===== =======
+   LATEXINDENT_CONFIG   full path to file yes   yes   yes
+   XDG_CONFIG_HOME      directory path    yes   no    no
+   LOCALAPPDATA         directory path    no    no    yes
+   ==================== ================= ===== ===== =======
+
+The following list shows the checked options and is sorted by their respective priority. It uses capitalized and with a dollar symbol prefixed names (e.g. ``$LATEXINDENT_CONFIG``) to symbolize environment variables. In addition to that the variable name ``$homeDir`` is used to symbolize your home directory.
+
+#. The value of the environment variable ``$LATEXINDENT_CONFIG`` is treated as highest priority source for the path to the configuration file.
+
+#. The next options are dependent on your operating system:
+
+   -  Linux:
+
+      #. The file at ``$XDG_CONFIG_HOME/latexindent/indentconfig.yaml``
+
+      #. The file at ``$homeDir/.config/latexindent/indentconfig.yaml``
+
+   -  Windows:
+
+      #. The file at ``$LOCALAPPDATA\latexindent\indentconfig.yaml``
+
+      #. The file at ``$homeDir\AppData\Local\latexindent\indentconfig.yaml``
+
+   -  Mac:
+
+      #. The file at ``$homeDir/Library/Preferences/latexindent/indentconfig.yaml``
+
+#. The file at ``$homeDir/.indentconfig.yaml``
+
+#. The file at ``$homeDir/indentconfig.yaml``
+
+Why to change the configuration location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is mostly a question about what you prefer, some like to put all their configuration files in their home directory (see ``$homeDir`` above), whilst some like to sort their configuration. And if you don’t care about it, you can just continue using the same defaults.
+
+How to change the configuration location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This depends on your preferred location, if, for example, you would like to set a custom location, you would have to change the ``$LATEXINDENT_CONFIG`` environment variable.
+
+Although the following example only covers ``$LATEXINDENT_CONFIG``, the same process can be applied to ``$XDG_CONFIG_HOME`` or ``$LOCALAPPDATA`` because both are environment variables. You just have to change the path to your chosen configuration directory (e.g. ``$homeDir/.config`` or ``$homeDir\AppData\Local`` on Linux or Windows respectively)
+
+.. label follows
+
+.. _linux-1:
+
+Linux
+~~~~~
+
+To change ``$LATEXINDENT_CONFIG`` on Linux you can run the following command in a terminal after changing the path:
+
+.. code-block:: latex
+   :class: .commandshell
+
+   echo 'export LATEXINDENT_CONFIG="/home/cmh/latexindent-config.yaml"' >> ~/.profile
+
+Context: This command adds the given line to your ``.profile`` file (which is commonly stored in ``$HOME/.profile``). All commands in this file a run after login, so the environment variable will be set after your next login.
+
+You can check the value of ``$LATEXINDENT_CONFIG`` by typing
+
+.. code-block:: latex
+   :class: .commandshell
+
+   echo $LATEXINDENT_CONFIG 
+   /home/cmh/latexindent-config.yaml
+
+Linux users interested in ``$XDG_CONFIG_HOME`` can explore variations of the following commands
+
+.. code-block:: latex
+   :class: .commandshell
+
+   echo $XDG_CONFIG_HOME
+   echo ${XDG_CONFIG_HOME:=$HOME/.config}
+   echo $XDG_CONFIG_HOME
+   mkdir /home/cmh/.config/latexindent
+   touch /home/cmh/.config/latexindent/indentconfig.yaml
+
+.. label follows
+
+.. _windows-1:
+
+Windows
+~~~~~~~
+
+To change ``$LATEXINDENT_CONFIG`` on Windows you can run the following command in ``powershell.exe`` after changing the path:
+
+.. code-block:: latex
+   :class: .commandshell
+
+   [Environment]::SetEnvironmentVariable
+       ("LATEXINDENT_CONFIG", "\your\config\path", "User")
+
+This sets the environment variable for every user session.
+
+.. label follows
+
+.. _mac-1:
+
+Mac
+~~~
+
+To change ``$LATEXINDENT_CONFIG`` on macOS you can run the following command in a terminal after changing the path:
+
+.. code-block:: latex
+   :class: .commandshell
+
+   echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
+
+Context: This command adds the line to your ``.profile`` file (which is commonly stored in ``$HOME/.profile``). All commands in this file a run after login, so the environment variable will be set after your next login.
 
 .. label follows
 
@@ -853,7 +984,7 @@ logFilePreferences
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex 
+	   latexindent.pl -t -l=logfile-prefs1.yaml simple.tex
 	
 	then on inspection of ``indent.log`` we will find the snippet given in :numref:`lst:indentlog`.
 	
@@ -948,17 +1079,17 @@ whereas in Version 3.0 you would run any of the following, for example,
 
    latexindent.pl -o=outputfile.tex myfile.tex
    latexindent.pl -o outputfile.tex myfile.tex
-   latexindent.pl myfile.tex -o outputfile.tex 
-   latexindent.pl myfile.tex -o=outputfile.tex 
-   latexindent.pl myfile.tex -outputfile=outputfile.tex 
-   latexindent.pl myfile.tex -outputfile outputfile.tex 
+   latexindent.pl myfile.tex -o outputfile.tex
+   latexindent.pl myfile.tex -o=outputfile.tex
+   latexindent.pl myfile.tex -outputfile=outputfile.tex
+   latexindent.pl myfile.tex -outputfile outputfile.tex
 
 noting that the *output* file is given *next to* the ``-o`` switch.
 
 The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 onwards.
 
 .. literalinclude:: demonstrations/obsolete.yaml
- 	:class: .obsolete
+ 	:class: .baseyaml
  	:caption: Obsolete YAML fields from Version 3.0 
  	:name: lst:obsoleteYaml
 
@@ -1057,6 +1188,11 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
       :name: ref-cmhughesio
 
       “Latexindent.pl Ghcr (Github Container Repository) Location.” n.d. Accessed June 12, 2022. https://github.com/cmhughes?tab=packages.
+
+   .. container::
+      :name: ref-nehctargl
+
+      Nehctargl. 2022. “Added Support for the Xdg Specification.” December 23, 2022. https://github.com/cmhughes/latexindent.pl/pull/397.
 
    .. container::
       :name: ref-perlbrew
