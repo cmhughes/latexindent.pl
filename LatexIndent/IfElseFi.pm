@@ -30,8 +30,8 @@ our $ifElseFiCounter;
 our $ifElseFiRegExp;
 our $ifElseFiBasicRegExp = qr/\\if/;
 
-# store the regular expresssion for matching and replacing the \if...\else...\fi statements
-# note: we search for \else separately in an attempt to keep this regexp a little more managable
+# store the regular expression for matching and replacing the \if...\else...\fi statements
+# note: we search for \else separately in an attempt to keep this regexp a little more manageable
 
 sub construct_ifelsefi_regexp {
     my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;

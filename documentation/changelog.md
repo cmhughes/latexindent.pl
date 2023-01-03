@@ -10,7 +10,7 @@
 poly-switch for verbatim code blocks updated to work for value 4, `VerbatimBeginStartsOnOwnLine`, `VerbatimEndFinishesWithLineBreak`, detailed at [2f402d6](https://github.com/cmhughes/latexindent.pl/commit/28a3756e501954527b49e44039552d455dbe67f1).
 
 ## V3.19, October 30, 2022
-Standalone executables/binaries avaialble for Ubuntu Linux and MacOS (to accompany `latexindent.exe`), all available from the [releases](https://github.com/cmhughes/latexindent.pl/releases) page:
+Standalone executables/binaries available for Ubuntu Linux and MacOS (to accompany `latexindent.exe`), all available from the [releases](https://github.com/cmhughes/latexindent.pl/releases) page:
 
 - `latexindent.exe`
 - `latexindent-linux`
@@ -100,7 +100,7 @@ and [issue 228](https://github.com/cmhughes/latexindent.pl/issues/228).
 more automated actions will follow.
 
 ## V3.10.1, July 23, 2021
-changes to defauls:
+changes to defaults:
 - textWrap: Huge now set to *overflow* by default
 
 enhancements:

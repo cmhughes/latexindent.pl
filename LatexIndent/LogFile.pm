@@ -131,7 +131,7 @@ ENDQUOTE
     # if cruft directory does not exist
     if ( !( -d ${$self}{cruftDirectory} ) ) {
         $logger->fatal("*Could not find directory ${$self}{cruftDirectory}");
-        $logger->fatal("Exiting, no indendation done.");
+        $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();
         exit(6);
     }

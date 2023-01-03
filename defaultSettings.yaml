@@ -654,7 +654,7 @@ fineTuning:
         )                                   #
         |                                   # OR
         (?:                                 #
-          (?<!                              # not *preceeded by*
+          (?<!                              # not *preceded by*
             (?:                             #
               (?:[eE]\.[gG])                # e.g OR E.g OR e.G OR E.G
               |                             #

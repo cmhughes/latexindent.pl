@@ -45,7 +45,7 @@ You can make sure that your settings are loaded by checking ``indent.log`` for d
 	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you so in ``indent.log``.
 	 
 
-If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of the default commandline encoding not being UTF-8; normally this will only occcur for Windows users. In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as demonstrated in :numref:`lst:indentconfig-encoding`.
+If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of the default commandline encoding not being UTF-8; normally this will only occur for Windows users. In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as demonstrated in :numref:`lst:indentconfig-encoding`.
 
 .. literalinclude:: demonstrations/encoding.yaml
  	:class: .baseyaml

@@ -65,7 +65,7 @@ sub construct_grouping_braces_brackets_regexp {
         $NamedGroupingFollowRegExp = qr/${${$mainSettings{fineTuning}}{NamedGroupingBracesBrackets}}{follow}/;
     }
 
-    # store the regular expresssion for matching and replacing
+    # store the regular expression for matching and replacing
     $grouping_braces_regexp = qr/
                   (
                      $NamedGroupingFollowRegExp
@@ -95,7 +95,7 @@ sub create_unique_id {
 sub get_replacement_text {
     my $self = shift;
 
- # the replacement text for a key = {value} needes to accomodate the leading [ OR { OR % OR , OR any combination thereof
+ # the replacement text for a key = {value} needes to accommodate the leading [ OR { OR % OR , OR any combination thereof
     $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
     ${$self}{replacementText} = ${$self}{beginningbit} . ${$self}{id};
     delete ${$self}{beginningbit};

@@ -25,6 +25,6 @@ SET CURRENTDIR=%~dp0
 
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /f /v Path /t REG_EXPAND_SZ /d "%Path%%CURRENTDIR%
 
-echo Install successfull!
+echo Install successful!
 
 PAUSE         
