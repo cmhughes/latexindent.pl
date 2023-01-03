@@ -58,7 +58,7 @@ GetOptions(
 # conditionally load the GCString module
 eval "use Unicode::GCString" if $switches{GCString};
 
-# check local settings doesn't interfer with reading the file;
+# check local settings doesn't interfere with reading the file;
 # this can happen if the script is called as follows:
 #
 #       latexindent.pl -l myfile.tex

@@ -278,7 +278,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	-  :numref:`lst:finetuning4-mod1` the trailing comments are assumed to be everything following the first comment symbol, which has meant that everything following it has been moved to the end of the line; this is undesirable, clearly!
 	
-	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that % cannot be immediately preceeded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the % symbols have been treated as trailing comments, and the output is desirable.
+	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that % cannot be immediately preceded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the % symbols have been treated as trailing comments, and the output is desirable.
 	
 	
 	 
@@ -415,7 +415,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:caption: ``bib2-mod2.bib`` 
 	 	:name: lst:bib2-mod2
 	
-	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceeded* by either ``v`` or ``spfreload``.
+	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceded* by either ``v`` or ``spfreload``.
 	 
 
 .. container:: references

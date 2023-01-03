@@ -33,7 +33,7 @@ our $environmentCounter;
 our $environmentBasicRegExp = qr/\\begin\{/;
 our $environmentRegExp;
 
-# store the regular expresssion for matching and replacing the \begin{}...\end{} statements
+# store the regular expression for matching and replacing the \begin{}...\end{} statements
 sub construct_environments_regexp {
 
     # read from fine tuning

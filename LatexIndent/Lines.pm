@@ -36,7 +36,7 @@ sub lines_body_selected_lines {
 
     $logger->info("*-n,--lines switch is active, operating on lines $switches{lines}");
     $logger->info( "number of lines in file: " . ( $#lines + 1 ) );
-    $logger->info("*interpretting $switches{lines}");
+    $logger->info("*interpreting $switches{lines}");
 
     my @lineRanges = split( /,/, $switches{lines} );
     my @indentLineRange;
@@ -187,7 +187,7 @@ sub lines_sort_and_combine_line_range {
     #
     #     --lines 8-10,4-5,1-2
     #
-    # needs to be interpretted as
+    # needs to be interpreted as
     #
     #     --lines 1-2,4-5,8-10,
     #
@@ -212,7 +212,7 @@ sub lines_sort_and_combine_line_range {
             #
             #     --lines 3-5,4-10
             #
-            # needs to be interpretted as
+            # needs to be interpreted as
             #
             #     --lines 3-10
             #
@@ -230,7 +230,7 @@ sub lines_sort_and_combine_line_range {
             #
             #     --lines 3-7,4-6
             #
-            # needs to be interpretted as
+            # needs to be interpreted as
             #
             #     --lines 3-7
             #

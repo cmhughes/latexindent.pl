@@ -382,7 +382,7 @@ The ``other`` field of the ``blocksFollow`` can either be ``0`` (turned off) or 
 	Naturally, you should feel encouraged to customise this as you see fit.
 	 
 
-The ``blocksFollow`` field *deliberately* does not default to allowing text wrapping to occur after ``begin environment`` statements. You are encouraged to customize the ``other`` field to accomodate the environments that you would like to text wrap individually, as in the next example.
+The ``blocksFollow`` field *deliberately* does not default to allowing text wrapping to occur after ``begin environment`` statements. You are encouraged to customize the ``other`` field to accommodate the environments that you would like to text wrap individually, as in the next example.
 
 .. proof:example::	
 	
@@ -458,7 +458,7 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	
 	   latexindent.pl -m -l textwrap1.yaml tw-0-9.tex
 	
-	then we receive the output given in :numref:`lst:tw-0-9-mod1` in which text wrapping has *not* occured.
+	then we receive the output given in :numref:`lst:tw-0-9-mod1` in which text wrapping has *not* occurred.
 	
 	.. literalinclude:: demonstrations/tw-0-9-mod1.tex
 	 	:class: .tex
@@ -503,7 +503,7 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	
 	   latexindent.pl -m -l textwrap1.yaml tw-bb-announce1.tex
 	
-	then we receive the output given in :numref:`lst:tw-bb-announce1-mod1` in which text wrapping has *not* occured.
+	then we receive the output given in :numref:`lst:tw-bb-announce1-mod1` in which text wrapping has *not* occurred.
 	
 	.. literalinclude:: demonstrations/tw-bb-announce1-mod1.tex
 	 	:class: .tex

@@ -473,7 +473,7 @@ Note that you can use a mixture of the basic and advanced form: in :numref:`lst:
 
 -  ``multiColumnGrouping``: binary switch (0 or 1) that details if ``latexindent.pl`` should group columns above and below a ``\multicolumn`` command (default: 0);
 
--  ``alignRowsWithoutMaxDelims``: binary switch (0 or 1) that details if rows that do not contain the maximum number of delimeters should be formatted so as to have the ampersands aligned (default: 1);
+-  ``alignRowsWithoutMaxDelims``: binary switch (0 or 1) that details if rows that do not contain the maximum number of delimiters should be formatted so as to have the ampersands aligned (default: 1);
 
 -  ``spacesBeforeAmpersand``: optionally specifies the number (integer :math:`\geq` 0) of spaces to be placed *before* ampersands (default: 1);
 
@@ -485,9 +485,9 @@ Note that you can use a mixture of the basic and advanced form: in :numref:`lst:
 
 -  dontMeasure optionally specifies if user-specified cells, rows or the largest entries should *not* be measured (default: 0);
 
--  delimiterRegEx optionally specifies the pattern matching to be used for the alignment delimeter (default: ``(?<!\\)(&)``\ \*);
+-  delimiterRegEx optionally specifies the pattern matching to be used for the alignment delimiter (default: ``(?<!\\)(&)``\ \*);
 
--  delimiterJustification optionally specifies the justification for the alignment delimeters (default: left); note that this feature is only useful if you have delimiters of different lengths in the same column, discussed in :numref:`sec:delimiter-reg-ex`;
+-  delimiterJustification optionally specifies the justification for the alignment delimiters (default: left); note that this feature is only useful if you have delimiters of different lengths in the same column, discussed in :numref:`sec:delimiter-reg-ex`;
 
 -  lookForChildCodeBlocks optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`.
 
@@ -1010,7 +1010,7 @@ The ``lookForAlignDelims`` field can, optionally, receive the ``dontMeasure`` op
 lookForAlignDelims: the delimiterRegEx and delimiterJustification feature
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The delimiter alignment will, by default, align code blocks at the ampersand character. The behaviour is controlled by the ``delimiterRegEx`` field within ``lookForAlignDelims``; the default value is ``(?<!\\)(&)``\ \*, which can be read as: *an ampersand, as long as it is not immediately preceeded by a backslash*.
+The delimiter alignment will, by default, align code blocks at the ampersand character. The behaviour is controlled by the ``delimiterRegEx`` field within ``lookForAlignDelims``; the default value is ``(?<!\\)(&)``\ \*, which can be read as: *an ampersand, as long as it is not immediately preceded by a backslash*.
 
 .. index:: warning;capturing parenthesis for lookForAlignDelims
 

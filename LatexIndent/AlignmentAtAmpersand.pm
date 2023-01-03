@@ -1692,7 +1692,7 @@ sub get_column_width {
         return $count;
     }
 
-    # if GCString actice, then use Unicode::GCString
+    # if GCString active, then use Unicode::GCString
     return Unicode::GCString->new($stringToBeMeasured)->columns();
 }
 1;

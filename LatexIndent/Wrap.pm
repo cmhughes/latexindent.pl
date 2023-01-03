@@ -356,7 +356,7 @@ sub text_wrap {
                 @textWrapBeforeEndWith = ();
             }
 
-            # if we have an occurence of blocksEndBefore, then grab the stuff before it
+            # if we have an occurrence of blocksEndBefore, then grab the stuff before it
             if ( scalar @textWrapBeforeEndWith > 1 ) {
                 $textWrapBlockStorageValue = $textWrapBeforeEndWith[0];
             }

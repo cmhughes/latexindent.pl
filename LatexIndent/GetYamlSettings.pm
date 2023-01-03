@@ -247,7 +247,7 @@ sub yaml_read_settings {
         else {
             # give the user instructions on where to put the config file
             $logger->info(
-                "Home directory is $homeDir (didn't find a config file, see all posible locations here: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)"
+                "Home directory is $homeDir (didn't find a config file, see all possible locations here: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)"
             );
         }
     }
@@ -371,7 +371,7 @@ sub yaml_read_settings {
             # if we can read userSettings
             if ($userSettings) {
 
-                # update the MASTER setttings to include updates from the userSettings
+                # update the MASTER settings to include updates from the userSettings
                 while ( my ( $firstLevelKey, $firstLevelValue ) = each %{ $userSettings->[0] } ) {
 
                     # the update approach is slightly different for hashes vs scalars/arrays

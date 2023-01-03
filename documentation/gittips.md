@@ -13,7 +13,7 @@ git log --all --graph
 git shortlog -sn        # shows all contributors
 ```
 
-commiting
+committing
 =
 ```
 git add . 				# everything, including subdirectories

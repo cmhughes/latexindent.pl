@@ -445,7 +445,7 @@ latexindent.pl tabular1.tex
         above and below a \lstinline!\multicolumn! command (default: 0);
   \item \announce{2017-06-19}{alignRowsWithoutMaxDelims}
         \texttt{alignRowsWithoutMaxDelims}: binary switch (0 or 1) that details if rows
-        that do not contain the maximum number of delimeters should be formatted so as to
+        that do not contain the maximum number of delimiters should be formatted so as to
         have the ampersands aligned (default: 1);
   \item \announce{2018-01-13}{spacesBeforeAmpersand in ampersand
         alignment}\texttt{spacesBeforeAmpersand}: optionally specifies the number
@@ -463,10 +463,10 @@ latexindent.pl tabular1.tex
         user-specified cells, rows or the largest entries should \emph{not} be measured
         (default: 0);
   \item \announce{2020-03-21}{delimiter RegEx feature}{delimiterRegEx} optionally
-        specifies the pattern matching to be used for the alignment delimeter (default:
+        specifies the pattern matching to be used for the alignment delimiter (default:
         \lstinline* '(?<!\\)(&)'*);
   \item \announce{2020-03-21}{delimiter justification}{delimiterJustification} optionally
-        specifies the justification for the alignment delimeters (default: left); note
+        specifies the justification for the alignment delimiters (default: left); note
         that this feature is only useful if you have delimiters of different lengths in
         the same column, discussed in \cref{sec:delimiter-reg-ex};
   \item \announce{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks}
@@ -884,7 +884,7 @@ latexindent.pl tabular-DM.tex -l=dontMeasure6.yaml
  align code blocks at the ampersand character. The behaviour is controlled by the
  \texttt{delimiterRegEx} field within \texttt{lookForAlignDelims}; the default value is
  \lstinline*'(?<!\\)(&)'*, which can be read as: \emph{an ampersand, as long as it is not
- immediately preceeded by a backslash}. \index{warning!capturing parenthesis for
+ immediately preceded by a backslash}. \index{warning!capturing parenthesis for
  lookForAlignDelims} \index{capturing parenthesis (regex)} \index{regular
  expressions!capturing parenthesis} \index{delimiters!delimiterRegEx}
  \index{delimiters!delimiter justification (left or right)}%

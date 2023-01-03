@@ -70,7 +70,7 @@ sub remove_trailing_comments {
 
     # perform the substitution
     ${$self}{body} =~ s/
-                            $notPreceededBy  # not preceeded by a \
+                            $notPreceededBy  # not preceded by a \
                             %        # % 
                             (
                                 \h*? # followed by possible horizontal space
@@ -137,7 +137,7 @@ sub put_trailing_comments_back_in {
         my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
         if (${$self}{body} =~ m/%$trailingcommentID
                               (
-                                  (?!                  # not immediately preceeded by 
+                                  (?!                  # not immediately preceded by 
                                       $notPreceededBy  # \
                                       %                # %
                                   ).*?

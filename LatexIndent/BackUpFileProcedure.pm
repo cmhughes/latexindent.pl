@@ -119,7 +119,7 @@ sub create_back_up_file {
                             if ( $backUpFilePossible == 0 ) {
                                 $logger->fatal(
                                     "*Could not write to backup file $backupFile. Please check permissions. Exiting.");
-                                $logger->fatal("Exiting, no indendation done.");
+                                $logger->fatal("Exiting, no indentation done.");
                                 $self->output_logfile();
                                 exit(5);
                             }
@@ -150,7 +150,7 @@ sub create_back_up_file {
     copy( $fileName, $backupFile ) or ( $backUpFilePossible = 0 );
     if ( $backUpFilePossible == 0 ) {
         $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
-        $logger->fatal("Exiting, no indendation done.");
+        $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();
         exit(5);
     }
