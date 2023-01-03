@@ -108,6 +108,9 @@ perltidy -b *.pm
 cd ../
 perltidy -b latexindent.pl
 
+# codespell
+codespell -w -S test-cases,*.bak,.git,./documentation/build/*,*.bbl,*.log,*.pdf -L reacher,alph,crossreferences,ist,termo,te
+
 set +x
 
 # change
@@ -163,6 +166,7 @@ Next steps:
     - git checkout main
     - git merge --no-ff develop
     - git tag "V<number>"
+    - git push
     - git push --tags
     - <update release notes on github>
     - <download latexindent.zip>

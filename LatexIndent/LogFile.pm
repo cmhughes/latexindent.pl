@@ -238,7 +238,7 @@ ENDQUOTE
     if ( ( scalar @fileNames > 1 ) and $switches{outputToFile} and ( $switches{outputToFile} !~ m/^h*\+/ ) ) {
         $logger->warn("*-o switch specified as single file, but multiple files given as input");
         $logger->warn("ignoring your specification -o $switches{outputToFile}");
-        $logger->warn("perhaps you migh specify it using, for example, -o=++ or -o=+myoutput");
+        $logger->warn("perhaps you might specify it using, for example, -o=++ or -o=+myoutput");
         $switches{outputToFile} = 0;
     }
 
