@@ -689,8 +689,8 @@ latexindent.pl -l -m -s -w myfile.tex
   discussed in \cref{sec:indentconfig}. Thank you to \cite{nehctargl} for this
   contribution. \announce*{2023-01-01}{indentconfig location options}
 
-  The possible locations of \texttt{indentconfig.yaml} are evaluated one after the other,
-  and evaluation stops when a valid file is found in one of the paths.
+  The possible locations of \texttt{indentconfig.yaml} are read one after the other, and
+  reading stops when a valid file is found in one of the paths.
 
   Before stating the list, we give summarise in \cref{tab:environment:summary}.
   \begin{table}[!htb]
@@ -738,8 +738,8 @@ latexindent.pl -l -m -s -w myfile.tex
                        \texttt{\$homeDir/Library/Preferences/latexindent/indentconfig.yaml}
                 \end{enumerate}
          \end{itemize}
-   \item The file at \texttt{\$homeDir/.indentconfig.yaml}
    \item The file at \texttt{\$homeDir/indentconfig.yaml}
+   \item The file at \texttt{\$homeDir/.indentconfig.yaml}
   \end{enumerate}
  \subsection{Why to change the configuration location}
   This is mostly a question about what you prefer, some like to put all their configuration files in their home directory (see \texttt{\$homeDir} above),
