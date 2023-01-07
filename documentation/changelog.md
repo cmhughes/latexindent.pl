@@ -1,4 +1,5 @@
 # changelog.md
+minor bugfix to recent `indentconfig.yaml` upgrade [issue-396](https://github.com/cmhughes/latexindent.pl/issues/396)
 
 ## V3.20, January 1, 2023
 * text wrap upgrade: new option: `when: before/after`, full details at [issue-359](https://github.com/cmhughes/latexindent.pl/issues/359)

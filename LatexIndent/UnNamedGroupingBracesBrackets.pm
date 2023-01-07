@@ -81,7 +81,7 @@ sub create_unique_id {
 sub get_replacement_text {
     my $self = shift;
 
- # the replacement text for a key = {value} needes to accommodate the leading [ OR { OR % OR , OR any combination thereof
+# the replacement text for a key = {value} needes to accommodate the leading [ OR { OR % OR , OR any combination thereof
     $logger->trace("Custom replacement text routine for ${$self}{name}") if $is_t_switch_active;
 
 # the un-named object is a little special, as it doesn't have a name; as such, if there are blank lines before

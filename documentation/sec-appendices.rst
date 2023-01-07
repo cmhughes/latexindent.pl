@@ -832,7 +832,7 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 indentconfig options
 --------------------
 
-This section describes the possible locations for the main configuration file, discussed in :numref:`sec:indentconfig`. Thank you to (Nehctargl 2022) for this contribution. The possible locations of ``indentconfig.yaml`` are evaluated one after the other, and evaluation stops when a valid file is found in one of the paths.
+This section describes the possible locations for the main configuration file, discussed in :numref:`sec:indentconfig`. Thank you to (Nehctargl 2022) for this contribution. The possible locations of ``indentconfig.yaml`` are read one after the other, and reading stops when a valid file is found in one of the paths.
 
 Before stating the list, we give summarise in :numref:`tab:environment:summary`.
 
@@ -872,9 +872,9 @@ The following list shows the checked options and is sorted by their respective p
 
       #. The file at ``$homeDir/Library/Preferences/latexindent/indentconfig.yaml``
 
-#. The file at ``$homeDir/.indentconfig.yaml``
-
 #. The file at ``$homeDir/indentconfig.yaml``
+
+#. The file at ``$homeDir/.indentconfig.yaml``
 
 Why to change the configuration location
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

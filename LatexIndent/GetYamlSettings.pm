@@ -180,7 +180,7 @@ sub yaml_read_settings {
 
             # if indentconfig.yaml doesn't exist, check for the hidden file, .indentconfig.yaml
             if ( !defined $indentconfig ) {
-               $indentconfig = ( -f "$homeDir/.indentconfig.yaml" ) ? "$homeDir/.indentconfig.yaml" : undef;
+                $indentconfig = ( -f "$homeDir/.indentconfig.yaml" ) ? "$homeDir/.indentconfig.yaml" : undef;
             }
             $logger->info( 'The config file in "' . "$indentconfig" . '" will be read' ) if defined $indentconfig;
         }
@@ -248,11 +248,11 @@ sub yaml_read_settings {
         }
         else {
             # give the user instructions on where to put the config file
-            $logger->info(
-                "Home directory is $homeDir"
-            );
+            $logger->info("Home directory is $homeDir");
             $logger->info("latexindent.pl didn't find indentconfig.yaml or .indentconfig.yaml");
-            $logger->info("see all possible locations: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)");
+            $logger->info(
+                "see all possible locations: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)"
+            );
         }
     }
 
