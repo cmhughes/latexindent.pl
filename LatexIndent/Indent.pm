@@ -137,7 +137,7 @@ sub indent_body {
         and ${$self}{removeParagraphLineBreaks}
         and !${ $mainSettings{modifyLineBreaks}{removeParagraphLineBreaks} }{beforeTextWrap} );
 
-    # body indendation
+    # body indentation
     if ( ${$self}{linebreaksAtEnd}{begin} == 1 ) {
         if ( ${$self}{body} =~ m/^\h*$/s ) {
             $logger->trace("Body of ${$self}{name} is empty, not applying indentation") if $is_t_switch_active;

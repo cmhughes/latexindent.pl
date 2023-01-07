@@ -72,7 +72,7 @@ sub file_extension_check {
                 if ( defined ${$self}{multipleFiles} ) {
                     $logger->warn(
                         "*I couldn't find a match for $fileName in fileExtensionPreference (see defaultSettings.yaml)");
-                    $logger->warn("moving on, no indendation done for ${$self}{fileName}.");
+                    $logger->warn("moving on, no indentation done for ${$self}{fileName}.");
                     return 3;
                 }
                 else {
@@ -82,7 +82,7 @@ sub file_extension_check {
                         $logger->fatal("I searched for $fileName$_");
                     }
                     $logger->fatal("but couldn't find any of them.\nConsider updating fileExtensionPreference.");
-                    $logger->fatal("*Exiting, no indendation done.");
+                    $logger->fatal("*Exiting, no indentation done.");
                     $self->output_logfile();
                     exit(3);
                 }
@@ -93,12 +93,12 @@ sub file_extension_check {
             unless ( -e $fileName ) {
                 if ( defined ${$self}{multipleFiles} ) {
                     $logger->warn("*I couldn't find $fileName, are you sure it exists?");
-                    $logger->warn("moving on, no indendation done for ${$self}{fileName}.");
+                    $logger->warn("moving on, no indentation done for ${$self}{fileName}.");
                     return 3;
                 }
                 else {
                     $logger->fatal("*I couldn't find $fileName, are you sure it exists?");
-                    $logger->fatal("Exiting, no indendation done.");
+                    $logger->fatal("Exiting, no indentation done.");
                     $self->output_logfile();
                     exit(3);
                 }
@@ -171,12 +171,12 @@ sub file_extension_check {
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");
-                $logger->warn("moving on, no indendation done for $fileName");
+                $logger->warn("moving on, no indentation done for $fileName");
                 return 4;
             }
             else {
                 $logger->fatal("*$fileName exists, but could not open it");
-                $logger->fatal("Exiting, no indendation done.");
+                $logger->fatal("Exiting, no indentation done.");
                 $self->output_logfile();
                 exit(4);
             }

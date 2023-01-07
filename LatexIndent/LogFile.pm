@@ -131,7 +131,7 @@ ENDQUOTE
     # if cruft directory does not exist
     if ( !( -d ${$self}{cruftDirectory} ) ) {
         $logger->fatal("*Could not find directory ${$self}{cruftDirectory}");
-        $logger->fatal("Exiting, no indendation done.");
+        $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();
         exit(6);
     }
@@ -238,7 +238,7 @@ ENDQUOTE
     if ( ( scalar @fileNames > 1 ) and $switches{outputToFile} and ( $switches{outputToFile} !~ m/^h*\+/ ) ) {
         $logger->warn("*-o switch specified as single file, but multiple files given as input");
         $logger->warn("ignoring your specification -o $switches{outputToFile}");
-        $logger->warn("perhaps you migh specify it using, for example, -o=++ or -o=+myoutput");
+        $logger->warn("perhaps you might specify it using, for example, -o=++ or -o=+myoutput");
         $switches{outputToFile} = 0;
     }
 

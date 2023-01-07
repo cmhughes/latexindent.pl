@@ -26,6 +26,6 @@ SET CURRENTDIR=%~dp0
 setlocal enabledelayedexpansion
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /f /v Path /t REG_SZ /d "!Path:;%CURRENTDIR%=!"
 
-echo Uninstall successfull!
+echo Uninstall successful!
 
 PAUSE  

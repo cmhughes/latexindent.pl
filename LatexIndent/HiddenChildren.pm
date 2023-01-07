@@ -48,7 +48,7 @@ our %allChildren;
 #   \end{one}
 #
 #   From the visual perspective, we might say that <one> and <two> are *nested* children;
-#   from the persepective of latexindent.pl, however, they actually have *the same level*.
+#   from the perspective of latexindent.pl, however, they actually have *the same level*.
 #
 #   Graphically, you might represent it as follows
 #

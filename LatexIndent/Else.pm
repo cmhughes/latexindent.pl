@@ -35,7 +35,7 @@ sub check_for_else_statement {
     # we call the else routine from different places; see IfElseFi.pm and Special.pm
     my %input = @_;
 
-    # store the regular expresssion for matching and replacing the \else statements
+    # store the regular expression for matching and replacing the \else statements
     my $elseRegExp = qr/
                       (
                         $input{elseNameRegExp}

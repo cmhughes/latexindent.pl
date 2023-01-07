@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# a helper script to make the subsitutions for line numbers 
+# a helper script to make the substitutions for line numbers 
 # from defaultSettings.yaml in documentation/latexindent.tex
 use strict;
 use warnings;
@@ -96,7 +96,7 @@ if(!$readTheDocsMode){
     system('latexindent.pl -w -l=+mainfile.yaml -s -m ../documentation/latexindent.tex');
 } else {
 
-    # read informatino from latexindent.aux
+    # read information from latexindent.aux
     open(MAINFILE, "latexindent.aux") or die "Could not open input file, latexindent.aux";
     push(@lines,$_) while(<MAINFILE>);
     close(MAINFILE);
@@ -332,7 +332,7 @@ if(!$readTheDocsMode){
 
         $body =~ s/\.\. index::/\n\n.. index::/sg;
 
-        # line numbers for defaulSettings
+        # line numbers for defaultSettings
         for (@namesAndOffsets){
             my $firstLine = ${$_}{firstLine}; 
             my $lastLine = $firstLine + ${$_}{numberOfLines}; 

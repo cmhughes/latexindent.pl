@@ -33,7 +33,7 @@ our $commandRegExpTrailingComment;
 our $optAndMandAndRoundBracketsRegExp;
 our $optAndMandAndRoundBracketsRegExpLineBreaks;
 
-# store the regular expresssion for matching and replacing
+# store the regular expression for matching and replacing
 sub construct_command_regexp {
     my $self = shift;
 
@@ -205,7 +205,7 @@ sub tasks_particular_to_each_object {
         and ${$self}{replacementText} !~ m/\R$/ )
     {
         $logger->trace(
-            "${$self}{name}: trailling horizontal space found in arguments -- removing it from arguments, adding to replacement text"
+            "${$self}{name}: trailing horizontal space found in arguments -- removing it from arguments, adding to replacement text"
         ) if $is_t_switch_active;
         ${ ${ ${$self}{children} }[0] }{body} =~ s/(\h*)$//s;
         ${$self}{replacementText} .= "$1";

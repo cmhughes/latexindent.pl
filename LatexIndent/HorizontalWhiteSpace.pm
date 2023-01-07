@@ -48,7 +48,7 @@ sub remove_trailing_whitespace {
         $logger->trace("removeTrailingWhitespace: afterProcessing is now $removeTWS")  if $is_t_switch_active;
     }
 
-    # this method can be called before the indendation, and after, depending upon the input
+    # this method can be called before the indentation, and after, depending upon the input
     if ( $input{when} eq "before" ) {
         return unless ( ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} );
         $logger->trace(
