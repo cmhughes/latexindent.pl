@@ -15,9 +15,9 @@ As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``lat
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 495-497
+ 	:lines: 498-500
  	:linenos:
- 	:lineno-start: 495
+ 	:lineno-start: 498
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -77,9 +77,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 523-550
+ 	:lines: 526-553
  	:linenos:
- 	:lineno-start: 523
+ 	:lineno-start: 526
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -1041,9 +1041,9 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 498-522
+ 	:lines: 501-525
  	:linenos:
- 	:lineno-start: 498
+ 	:lineno-start: 501
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1160,25 +1160,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 504-512
+ 	:lines: 507-515
  	:linenos:
- 	:lineno-start: 504
+ 	:lineno-start: 507
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 513-516
+ 	:lines: 516-519
  	:linenos:
- 	:lineno-start: 513
+ 	:lineno-start: 516
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 517-522
+ 	:lines: 520-525
  	:linenos:
- 	:lineno-start: 517
+ 	:lineno-start: 520
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1822,9 +1822,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 552-561
+ 	:lines: 555-564
  	:linenos:
- 	:lineno-start: 552
+ 	:lineno-start: 555
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
