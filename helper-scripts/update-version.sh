@@ -40,6 +40,7 @@ Typical running order pre-release:
     - git checkout main
     - git merge --no-ff develop
     - git tag "V<number>"
+    - git push
     - git push --tags
     - <update release notes on github>
     - <download latexindent.zip>
