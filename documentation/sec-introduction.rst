@@ -327,9 +327,9 @@ This type of listing is a ``.tex`` file.
  	:class: .baseyaml
  	:caption: ``fileExtensionPreference`` 
  	:name: lst:fileExtensionPreference-demo
- 	:lines: 44-48
+ 	:lines: 47-51
  	:linenos:
- 	:lineno-start: 44
+ 	:lineno-start: 47
 
 This type of listing is a ``.yaml`` file; when you see line numbers given (as here) it means that the snippet is taken directly from ``defaultSettings.yaml``, discussed in detail in :numref:`sec:defuseloc`.
 
@@ -337,9 +337,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks-demo
- 	:lines: 495-497
+ 	:lines: 498-500
  	:linenos:
- 	:lineno-start: 495
+ 	:lineno-start: 498
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -347,9 +347,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
  	:class: .replaceyaml
  	:caption: ``replacements`` 
  	:name: lst:replacements-demo
- 	:lines: 613-621
+ 	:lines: 616-624
  	:linenos:
- 	:lineno-start: 613
+ 	:lineno-start: 616
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 
