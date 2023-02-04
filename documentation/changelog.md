@@ -1,4 +1,9 @@
 # changelog.md
+
+## V3.20.2, February 4, 2023
+minor bugfix for text wrap, when: after, detailed at [issue-412](https://github.com/cmhughes/latexindent.pl/issues/412)
+
+## V3.20.1, January 7, 2023
 minor bugfix to recent `indentconfig.yaml` upgrade [issue-396](https://github.com/cmhughes/latexindent.pl/issues/396)
 
 ## V3.20, January 1, 2023

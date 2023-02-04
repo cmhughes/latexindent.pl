@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.20'
-newVersion='3.20.1'
-oldDate='2023-01-01'
-newDate='2023-01-07'
+oldVersion='3.20.1'
+newVersion='3.20.2'
+oldDate='2023-01-07'
+newDate='2023-02-04'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -40,6 +40,7 @@ Typical running order pre-release:
     - git checkout main
     - git merge --no-ff develop
     - git tag "V<number>"
+    - git push
     - git push --tags
     - <update release notes on github>
     - <download latexindent.zip>
@@ -86,11 +87,17 @@ set -x
 # change \announce{new}{message} into \announce*{message}
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 
-pdflatex --interaction=batchmode latexindent
+pdflatexneeded=1
 
-# update .rst
-perl documentation-default-settings-update.pl
-perl documentation-default-settings-update.pl -r
+[[ -z $(git diff --name-only main|grep -i documentation/s) ]] && pdflatexneeded=0
+
+if [ $pdflatexneeded == 1 ]; then
+   pdflatex --interaction=batchmode latexindent
+   
+   # update .rst
+   perl documentation-default-settings-update.pl
+   perl documentation-default-settings-update.pl -r
+fi
 
 # documentation-default-settings-update.pl changes the .tex files
 git checkout s*.tex

@@ -324,6 +324,7 @@ sub text_wrap {
                     }
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
+                        $thingToMeasure =~ s/$tokens{blanklines}//;
 
                         $subsequentSpace = (
                             $textWrapBlockCount == 0

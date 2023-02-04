@@ -239,6 +239,8 @@ latexindent.pl -s -r -m -l wrap-comments2.yaml,addruler1.yaml,inherit-leading-sp
 latexindent.pl -s -r -m -l wrap-comments4.yaml,addruler1.yaml issue-389l.tex -o=+-mod2
 latexindent.pl -s -r -m -l wrap-comments5.yaml,addruler1.yaml issue-389l.tex -o=+-mod3
 
+latexindent.pl -s -m -l issue-412.yaml issue-412.tex -o=+-mod1
+
 set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

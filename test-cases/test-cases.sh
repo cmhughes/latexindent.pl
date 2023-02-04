@@ -77,194 +77,70 @@ done
 
 checkgitdiff
 
-# environment objects
-cd environments
-[[ $silentMode == 1 ]] && echo "./environments/environments-test-cases.sh"
-./environments-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
+dirExec=( 
+  "environments;environments-test-cases.sh"
+  "ifelsefi;ifelsefi-test-cases.sh"
+  "opt-args;opt-args-test-cases.sh"
+  "mand-args;mand-args-test-cases.sh"
+  "opt-and-mand-args;opt-mand-args-test-cases.sh"
+  "items;items-test-cases.sh"
+  "commands;commands-test-cases.sh"
+  "keyEqualsValueBraces;key-equals-values-test-cases.sh"
+  "tokenChecks;token-checks.sh"
+  "cruftdirectory;cruft-directory-test-cases.sh"
+  "STDIN;stdin-test-cases.sh"
+  "namedGroupingBracesBrackets;named-grouping-test-cases.sh"
+  "unnamed-braces;un-named-grouping-braces.sh"
+  "specials;specials-test-cases.sh"
+  "headings;headings-test-cases.sh"
+  "filecontents;filecontents-test-cases.sh"
+  "alignment;alignment-test-cases.sh"
+  "text-wrap;text-wrap-remove-PLB.sh"
+  "texexchange;texexchange-test-cases.sh"
+  "horizontalWhiteSpace;whitespace-test-cases.sh"
+  "oneSentencePerLine;one-sentence-per-line.sh"
+  "verbatim;verbatim-test-cases.sh"
+  "fine-tuning;fine-tuning-test-cases.sh"
+  "replacements;replacement-test-cases.sh"
+  "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
+  "check-switch-tests;check-switch-test-cases.sh"
+  "line-switch-test-cases;line-switch-test-cases.sh"
+  "batch-tests;batch-tests.sh"
+  "demonstrations;documentation-test-cases.sh"
+  "documentation;latex-indent.sh"
+  ) 
 
-# ifelsefi objects
-cd ../ifelsefi
-[[ $silentMode == 1 ]] && echo "./ifelsefi/ifelsefi-test-cases.sh"
-./ifelsefi-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
+# loop through the files
+for file in "${dirExec[@]}"
+do
+  dirExec=(${file//;/ })
 
-# optional arguments in environments
-cd ../opt-args
-[[ $silentMode == 1 ]] && echo "./opt-args/opt-args-test-cases.sh"
-./opt-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
+  # grab the directory
+  directory=${dirExec[0]}
 
-# mandatory arguments in environments
-cd ../mand-args
-[[ $silentMode == 1 ]] && echo "./mand-args/mand-args-test-cases.sh"
-./mand-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
+  # grab the executable
+  executable=${dirExec[1]}
 
-# mixture of optional and mandatory arguments
-cd ../opt-and-mand-args/
-[[ $silentMode == 1 ]] && echo "./opt-and-mand-args/opt-and-mand-args-test-cases.sh"
-./opt-mand-args-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# items
-cd ../items/
-[[ $silentMode == 1 ]] && echo "./items/items-test-cases.sh"
-./items-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# commands
-cd ../commands/
-[[ $silentMode == 1 ]] && echo "./commands/commands-test-cases.sh"
-./commands-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# key equals value braces
-cd ../keyEqualsValueBraces/
-[[ $silentMode == 1 ]] && echo "./keyEqualsValueBraces/key-equals-values-test-cases.sh"
-./key-equals-values-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
+  [[ $directory == 'demonstrations' ]] && cd ../documentation/
+  cd $directory
+  [[ $silentMode == 1 ]] && echo "./$directory/$executable"
+  ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
+  checkgitdiff
+  cd ..
+  [[ $directory == 'demonstrations' ]] && cd ..
+done
 
 # file extension
-cd ../fileextensions/
+cd test-cases/fileextensions/
 [[ $fileExtensionMode == 1 ]] && [[ $silentMode == 1 ]] && echo "./fileextensions/file-extension-test-cases.sh"
 [[ $fileExtensionMode == 1 ]] && ./file-extension-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
 
-# token checks
-cd ../tokenChecks/
-[[ $silentMode == 1 ]] && echo "./tokenChecks/token-checks.sh"
-./token-checks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# cruft directory
-cd ../cruftdirectory/
-[[ $silentMode == 1 ]] && echo "./cruftdirectory/cruft-directory-test-cases.sh"
-./cruft-directory-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# STDIN
-cd ../STDIN/
-[[ $silentMode == 1 ]] && echo "./STDIN/stdin-test-cases.sh"
-./stdin-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# named grouping braces
-cd ../namedGroupingBracesBrackets
-[[ $silentMode == 1 ]] && echo "./namedGroupingBracesBrackets/named-grouping-test-cases.sh"
-./named-grouping-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# unnamed grouping braces
-cd ../unnamed-braces && echo "./unnamed-braces/un-named-grouping-braces.sh"
-./un-named-grouping-braces.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# specials
-cd ../specials
-[[ $silentMode == 1 ]] && echo "./specials/specials-test-cases.sh"
-./specials-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# headings
-cd ../headings
-[[ $silentMode == 1 ]] && echo "./headings/headings-test-cases.sh"
-./headings-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# filecontents
-cd ../filecontents
-[[ $silentMode == 1 ]] && echo "./filecontents/filecontents-test-cases.sh"
-./filecontents-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# alignment
-cd ../alignment
-[[ $silentMode == 1 ]] && echo "./alignment/alignment-test-cases.sh"
-./alignment-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# text wrapping
-cd ../text-wrap
-[[ $silentMode == 1 ]] && echo "./text-wrap/text-wrap-remove-PLB.sh"
-./text-wrap-remove-PLB.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# texexchange
-cd ../texexchange
-[[ $silentMode == 1 ]] && echo "./texexchange/texexchange-test-cases.sh"
-./texexchange-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# whitespace
-cd ../horizontalWhiteSpace
-[[ $silentMode == 1 ]] && echo "./horizontalWhiteSpace/whitespace-test-cases.sh"
-./whitespace-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# one sentence per line
-cd ../oneSentencePerLine
-[[ $silentMode == 1 ]] && echo "./oneSentencePerLine/one-sentence-per-line.sh"
-./one-sentence-per-line.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
 # benchmark mode, if appropriate
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
-
-# verbatim test cases
-cd ../verbatim
-[[ $silentMode == 1 ]] && echo "./verbatim-test-cases.sh"
-./verbatim-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# fine-tuning test cases
-cd ../fine-tuning
-[[ $silentMode == 1 ]] && echo "./fine-tuning-test-cases.sh"
-./fine-tuning-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# replacement test cases
-cd ../replacements
-[[ $silentMode == 1 ]] && echo "./replacement-test-cases.sh"
-./replacement-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# poly-switch-blank-line test cases (poly-switches = 4)
-cd ../poly-switch-blank-line
-[[ $silentMode == 1 ]] && echo "./poly-switch-blank-line-test-cases.sh"
-./poly-switch-blank-line-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# check switch test cases
-cd ../check-switch-tests
-[[ $silentMode == 1 ]] && echo "./check-switch-test-cases.sh"
-./check-switch-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# line switch test cases
-cd ../line-switch-test-cases
-[[ $silentMode == 1 ]] && echo "./line-switch-test-cases.sh"
-./line-switch-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# batch test cases
-cd ../batch-tests
-[[ $silentMode == 1 ]] && echo "./batch-tests.sh"
-./batch-tests.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag
-checkgitdiff
-
-# documentation demonstrations
-cd ../../documentation/demonstrations
-[[ $silentMode == 1 ]] && echo "./documentation-test-cases.sh"
-./documentation-test-cases.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
-checkgitdiff
-
-# documentation
-cd ../
-[[ $silentMode == 1 ]] && echo "./latex-indent.sh"
-./latex-indent.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
 # play sounds
 for i in {1..5}

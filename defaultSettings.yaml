@@ -1,6 +1,9 @@
-# defaultSettings.yaml for latexindent.pl, version 3.20.1, 2023-01-07
-#                      a script that aims to
-#                      beautify .tex, .sty, .cls files
+#
+# latexindent.pl, version 3.20.2, 2023-02-04
+#
+# defaultSettings.yaml, the default settings for latexindent.pl
+# 
+# a script that aims to beautify .tex, .sty, .cls files
 #
 # (or latexindent.exe if you're on Windows)
 #
@@ -348,18 +351,18 @@ noAdditionalIndentGlobal:
 # set indentRules globally for codeblocks; these need
 # to be horizontal spaces, if they are to be used
 indentRulesGlobal:
-    environments: 0                   # 0/1 
-    commands: 0                       # 0/1
-    optionalArguments: 0              # 0/1
-    mandatoryArguments: 0             # 0/1
-    ifElseFi: 0                       # 0/1
-    items: 0                          # 0/1
-    keyEqualsValuesBracesBrackets: 0  # 0/1
-    namedGroupingBracesBrackets: 0    # 0/1
-    UnNamedGroupingBracesBrackets: 0  # 0/1
-    specialBeginEnd: 0                # 0/1
-    afterHeading: 0                   # 0/1
-    filecontents: 0                   # 0/1
+    environments: 0                   # 0/h-space
+    commands: 0                       # 0/h-space
+    optionalArguments: 0              # 0/h-space
+    mandatoryArguments: 0             # 0/h-space
+    ifElseFi: 0                       # 0/h-space
+    items: 0                          # 0/h-space
+    keyEqualsValuesBracesBrackets: 0  # 0/h-space
+    namedGroupingBracesBrackets: 0    # 0/h-space
+    UnNamedGroupingBracesBrackets: 0  # 0/h-space
+    specialBeginEnd: 0                # 0/h-space
+    afterHeading: 0                   # 0/h-space
+    filecontents: 0                   # 0/h-space
 
 # command code block details
 commandCodeBlocks:
