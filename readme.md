@@ -100,6 +100,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Linux users</summary>
+
 Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux) 
 </details>
 <details>
@@ -113,6 +114,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Mac users</summary>
+
 Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac)
 </details>
 <details>
