@@ -28,5 +28,10 @@ latexindent.pl -s cmh.tex lines*.tex -g fatal-file-not-exist.log
 latexindent.pl -s cmh1.tex lines*.tex -g fatal-file-no-read.log
 
 latexindent.pl -l documentation.yaml -rv -w -m -s -g not-working.log doc*.tex
+
+# local settings found with default name (friend #1)
+latexindent.pl -s -l local-settings-friend-1/mwe.tex
+(cd local-settings-friend-1 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > localSettings.yaml))
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
