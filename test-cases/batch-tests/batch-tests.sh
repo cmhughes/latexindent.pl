@@ -45,5 +45,9 @@ latexindent.pl -s -l local-settings-friend-3/mwe.tex
 latexindent.pl -s -l local-settings-friend-4/mwe.tex
 (cd local-settings-friend-4 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > .latexindent.yaml))  
 
+# local settings not found (no friend; local settings file localSetting.yaml)
+latexindent.pl -s -l local-settings-nofriend/mwe.tex
+(cd local-settings-nofriend && (cat indent.log | grep "WARN" > warnings.txt))
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
