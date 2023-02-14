@@ -328,7 +328,7 @@ sub yaml_read_settings {
         # if the -l switch is called on its own, or else with +
         # and latexindent.pl is called from a different directory, then
         # we need to account for this
-        if ( $_ eq "localSettings.yaml" ) {
+        if ( $_ =~ /^[.]?(localSettings|latexindent)\.yaml$/) {
 
             # check for existence in the directory of the file.
             if ( ( -e $workingFileLocation . "/" . $_ ) ) {
