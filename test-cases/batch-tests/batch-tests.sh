@@ -33,15 +33,15 @@ latexindent.pl -l documentation.yaml -rv -w -m -s -g not-working.log doc*.tex
 latexindent.pl -s -l local-settings-friend-1/mwe.tex
 (cd local-settings-friend-1 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > localSettings.yaml))
 
-# local settings found with default name (friend #2)
+# local settings found (friend #2)
 latexindent.pl -s -l local-settings-friend-2/mwe.tex
 (cd local-settings-friend-2 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > latexindent.yaml))
 
-# local settings found with default name (friend #3)
+# local settings found (friend #3)
 latexindent.pl -s -l local-settings-friend-3/mwe.tex
 (cd local-settings-friend-3 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > .localSettings.yaml))
 
-# local settings found with default name (friend #4)
+# local settings found (friend #4)
 latexindent.pl -s -l local-settings-friend-4/mwe.tex
 (cd local-settings-friend-4 && (cat indent.log | grep "defaultIndent" | sed 's/^ *//g' > .latexindent.yaml))  
 
