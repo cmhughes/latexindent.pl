@@ -1,5 +1,8 @@
 # changelog.md
 
+## V3.20.3, February 18, 2023
+minor bugfix for `-l` switch detailed at [issue-421](https://github.com/cmhughes/latexindent.pl/issues/421) thanks to @hsloot
+
 ## V3.20.2, February 4, 2023
 minor bugfix for text wrap, when: after, detailed at [issue-412](https://github.com/cmhughes/latexindent.pl/issues/412)
 

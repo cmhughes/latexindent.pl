@@ -22,7 +22,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.20.2, 2023-02-04
+    latexindent.pl, version 3.20.3, 2023-02-19
 
 ## author
 Chris Hughes (cmhughes)
@@ -100,6 +100,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Linux users</summary>
+
 Please see the [Linux section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#linux) 
 </details>
 <details>
@@ -113,6 +114,7 @@ and also from [https://ctan.org/tex-archive/support/latexindent](https://ctan.or
 </details>
 <details>
 <summary>Mac users</summary>
+
 Please see the [Mac section of the appendix](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#mac)
 </details>
 <details>
@@ -156,7 +158,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.20.2
+        rev: V3.20.3
         hooks:
           - id: latexindent
 
