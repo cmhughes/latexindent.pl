@@ -219,6 +219,8 @@ and then I merge it into the `develop` branch using
     git checkout develop
     git merge feature/name-of-feature --no-ff
 
+I align with many of the approaches and details at [Dramatically increase your productivity with Atomic Git Commits](https://suchdevblog.com/lessons/AtomicGitCommits.html).
+
 ## perl version
 
 I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.36.0
