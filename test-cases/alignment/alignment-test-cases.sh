@@ -281,6 +281,30 @@ latexindent.pl -s -m -l issue-402c.yaml issue-402c.tex -o=+-mod1
 
 latexindent.pl -s -m -l issue-402d.yaml issue-402d.tex -o=+-mod1
 
+# dontMeasure and -m switch interaction bug, issue 426
+latexindent.pl -s -m issue-426.tex                   -o=+-mod0
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml -o=+-mod1
+latexindent.pl -s -m issue-426a.tex                   -o=+-mod0
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml -o=+-mod1
+
+# DBS poly-switch tests, issue 426
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash2 -o=+-mod2
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash3 -o=+-mod3
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash2 -o=+-mod2
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash3 -o=+-mod3
+
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash-finish-1 -o=+-mod-1
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash-finish1 -o=+-mod-fin1
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash-finish2 -o=+-mod-fin2
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash-finish3 -o=+-mod-fin3
+latexindent.pl -s -m issue-426.tex -l issue-426.yaml,double-back-slash-finish4 -o=+-mod-fin4
+
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish-1 -o=+-mod-1
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish1 -o=+-mod-fin1
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish2 -o=+-mod-fin2
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish3 -o=+-mod-fin3
+latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish4 -o=+-mod-fin4
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
