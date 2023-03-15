@@ -1,4 +1,6 @@
 # changelog.md
+## V3.20.4, March 15, 2023
+minor bugfix for `alignAtAmpersand` routine detailed at [issue-426](https://github.com/cmhughes/latexindent.pl/issues/426)
 
 ## V3.20.3, February 18, 2023
 minor bugfix for `-l` switch detailed at [issue-421](https://github.com/cmhughes/latexindent.pl/issues/421) thanks to @hsloot

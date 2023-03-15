@@ -26,7 +26,7 @@ use Text::Tabs;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK
-    = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check/;
+    = qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check push_family_tree_to_indent get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check replace_id_with_begin_body_end/;
 our %familyTree;
 
 sub indent {
@@ -311,158 +311,9 @@ sub indent_children_recursively {
         # we work through the array *in order*
         foreach my $child ( @{ ${$self}{children} } ) {
             $logger->trace("Searching ${$self}{name} for ${$child}{id}...") if $is_t_switch_active;
-            if ( ${$self}{body} =~ m/${$child}{idRegExp}/s ) {
 
-                # we only care if id is first non-white space character
-                # and if followed by line break
-                # if m switch is active
-                my $IDFirstNonWhiteSpaceCharacter    = 0;
-                my $IDFollowedImmediatelyByLineBreak = 0;
-
-                # update the above two, if necessary
-                if ($is_m_switch_active) {
-                    $IDFirstNonWhiteSpaceCharacter = (
-                               ${$self}{body} =~ m/^${$child}{idRegExp}/m
-                            or ${$self}{body} =~ m/^\h\h*${$child}{idRegExp}/m
-                    ) ? 1 : 0;
-                    $IDFollowedImmediatelyByLineBreak = ( ${$self}{body} =~ m/${$child}{idRegExp}\h*\R+/m ) ? 1 : 0;
-                    ${$child}{IDFollowedImmediatelyByLineBreak} = $IDFollowedImmediatelyByLineBreak;
-                }
-
-                # log file info
-                $logger->trace("${$child}{id} found!")                              if ($is_t_switch_active);
-                $logger->trace("*Indenting  ${$child}{name} (id: ${$child}{id})")   if $is_t_switch_active;
-                $logger->trace("looking up indentation scheme for ${$child}{name}") if ($is_t_switch_active);
-
-                # line break checks *after* <end statement>
-                if (    defined ${$child}{EndFinishesWithLineBreak}
-                    and ${$child}{EndFinishesWithLineBreak} == -1
-                    and $IDFollowedImmediatelyByLineBreak )
-                {
-                    # remove line break *after* <end statement>, if appropriate
-                    my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak} || "EndFinishesWithLineBreak";
-                    $logger->trace("Removing linebreak after ${$child}{end} (see $EndStringLogFile)")
-                        if $is_t_switch_active;
-                    ${$self}{body} =~ s/${$child}{idRegExp}(\h*)?(\R|\h)*/${$child}{id}$1/s;
-                    ${$child}{linebreaksAtEnd}{end} = 0;
-                }
-
-                # perform indentation
-                $child->indent;
-
-                # surrounding indentation is now up to date
-                my $surroundingIndentation
-                    = ( ${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo} )
-                    ? (
-                    ref( ${$child}{surroundingIndentation} ) eq 'SCALAR'
-                    ? ${ ${$child}{surroundingIndentation} }
-                    : ${$child}{surroundingIndentation}
-                    )
-                    : q();
-
-                # line break checks before <begin statement>
-                if ( defined ${$child}{BeginStartsOnOwnLine} and ${$child}{BeginStartsOnOwnLine} != 0 ) {
-                    my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
-
-                    #
-                    # Blank line poly-switch notes (==4)
-                    #
-                    # when BeginStartsOnOwnLine=4 we adopt the following approach:
-                    #   temporarily change BeginStartsOnOwnLine to -1, make adjustments
-                    #   temporarily change BeginStartsOnOwnLine to 3, make adjustments
-                    #
-                    # we use an array, @polySwitchValues to facilitate this
-                    my @polySwitchValues
-                        = ( ${$child}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$child}{BeginStartsOnOwnLine} );
-
-                    foreach (@polySwitchValues) {
-
-                        # if BeginStartsOnOwnLine is 4, then we hack
-                        #       $IDFirstNonWhiteSpaceCharacter
-                        # to be 0 on the second time through (poly-switch set to 3)
-                        $IDFirstNonWhiteSpaceCharacter = 0 if ( ${$child}{BeginStartsOnOwnLine} == 4 and $_ == 3 );
-
-                        # if the child ID is not the first character and BeginStartsOnOwnLine>=1
-                        # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
-                        if ( $_ >= 1 and !$IDFirstNonWhiteSpaceCharacter ) {
-
-                            # by default, assume that no trailing comment token is needed
-                            my $trailingCharacterToken = q();
-                            if ( $_ == 2 ) {
-                                $logger->trace(
-                                    "Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)"
-                                ) if $is_t_switch_active;
-                                ${$self}{body} =~ s/\h*${$child}{idRegExp}/${$child}{id}/s;
-                                $logger->trace(
-                                    "Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)"
-                                ) if $is_t_switch_active;
-                                $trailingCharacterToken = "%" . $self->add_comment_symbol;
-                            }
-                            elsif ( $_ == 3 ) {
-                                $logger->trace(
-                                    "Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)"
-                                ) if $is_t_switch_active;
-                                $trailingCharacterToken = "\n"
-                                    . (
-                                    ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
-                                    ? $tokens{blanklines}
-                                    : q()
-                                    );
-                            }
-                            else {
-                                $logger->trace(
-                                    "Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)")
-                                    if $is_t_switch_active;
-                            }
-
-                            # the trailing comment/linebreak magic
-                            ${$child}{begin} = "$trailingCharacterToken\n" . ${$child}{begin};
-                            $child->add_surrounding_indentation_to_begin_statement;
-
-                            # remove surrounding indentation ahead of %
-                            ${$child}{begin} =~ s/^(\h*)%/%/ if ( $_ == 2 );
-                        }
-                        elsif ( $_ == -1 and $IDFirstNonWhiteSpaceCharacter ) {
-
-                            # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
-                            # important to check we don't move the begin statement next to a blank-line-token
-                            my $blankLineToken = $tokens{blanklines};
-                            if ( ${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{idRegExp}/s ) {
-                                $logger->trace(
-                                    "Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)"
-                                ) if $is_t_switch_active;
-                                ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{idRegExp}/$1${$child}{id}/s;
-                            }
-                            else {
-                                $logger->trace(
-                                    "Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)"
-                                ) if $is_t_switch_active;
-                            }
-                        }
-                    }
-                }
-
-                $logger->trace( Dumper( \%{$child} ) ) if ($is_tt_switch_active);
-
-                # replace ids with body
-                ${$self}{body} =~ s/${$child}{idRegExp}/${$child}{begin}${$child}{body}${$child}{end}/;
-
-                # log file info
-                $logger->trace("Body (${$self}{name}) now looks like:") if $is_tt_switch_active;
-                $logger->trace( ${$self}{body} ) if ($is_tt_switch_active);
-
-# remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
-                splice( @{ ${$self}{children} }, $index, 1 );
-
-                # output to the log file
-                $logger->trace("deleted child key ${$child}{name} (parent is: ${$self}{name})") if $is_t_switch_active;
-
-                # restart the loop, as the size of the array has changed
-                last;
-            }
-            else {
-                $logger->trace("${$child}{id} not found") if ($is_t_switch_active);
-            }
+            my $restartLoop = $self->replace_id_with_begin_body_end( $child, $index );
+            last if $restartLoop;
 
             # increment the loop counter
             $index++;
@@ -475,6 +326,166 @@ sub indent_children_recursively {
     $logger->trace("Post-processed body (${$self}{name}):")  if ($is_tt_switch_active);
     $logger->trace( ${$self}{body} )                         if ($is_tt_switch_active);
 
+}
+
+sub replace_id_with_begin_body_end {
+
+    my $self = shift;
+    my ( $child, $index ) = (@_);
+
+    if ( ${$self}{body} =~ m/${$child}{idRegExp}/s ) {
+
+        # we only care if id is first non-white space character
+        # and if followed by line break
+        # if m switch is active
+        my $IDFirstNonWhiteSpaceCharacter    = 0;
+        my $IDFollowedImmediatelyByLineBreak = 0;
+
+        # update the above two, if necessary
+        if ($is_m_switch_active) {
+            $IDFirstNonWhiteSpaceCharacter = (
+                       ${$self}{body} =~ m/^${$child}{idRegExp}/m
+                    or ${$self}{body} =~ m/^\h\h*${$child}{idRegExp}/m
+            ) ? 1 : 0;
+            $IDFollowedImmediatelyByLineBreak = ( ${$self}{body} =~ m/${$child}{idRegExp}\h*\R+/m ) ? 1 : 0;
+            ${$child}{IDFollowedImmediatelyByLineBreak} = $IDFollowedImmediatelyByLineBreak;
+        }
+
+        # log file info
+        $logger->trace("${$child}{id} found!")                              if ($is_t_switch_active);
+        $logger->trace("*Indenting  ${$child}{name} (id: ${$child}{id})")   if $is_t_switch_active;
+        $logger->trace("looking up indentation scheme for ${$child}{name}") if ($is_t_switch_active);
+
+        # line break checks *after* <end statement>
+        if (    defined ${$child}{EndFinishesWithLineBreak}
+            and ${$child}{EndFinishesWithLineBreak} == -1
+            and $IDFollowedImmediatelyByLineBreak )
+        {
+            # remove line break *after* <end statement>, if appropriate
+            my $EndStringLogFile = ${$child}{aliases}{EndFinishesWithLineBreak} || "EndFinishesWithLineBreak";
+            $logger->trace("Removing linebreak after ${$child}{end} (see $EndStringLogFile)")
+                if $is_t_switch_active;
+            ${$self}{body} =~ s/${$child}{idRegExp}(\h*)?(\R|\h)*/${$child}{id}$1/s;
+            ${$child}{linebreaksAtEnd}{end} = 0;
+        }
+
+        # perform indentation
+        $child->indent;
+
+        # surrounding indentation is now up to date
+        my $surroundingIndentation
+            = ( ${$child}{surroundingIndentation} and ${$child}{hiddenChildYesNo} )
+            ? (
+            ref( ${$child}{surroundingIndentation} ) eq 'SCALAR'
+            ? ${ ${$child}{surroundingIndentation} }
+            : ${$child}{surroundingIndentation}
+            )
+            : q();
+
+        # line break checks before <begin statement>
+        if ( defined ${$child}{BeginStartsOnOwnLine} and ${$child}{BeginStartsOnOwnLine} != 0 ) {
+            my $BeginStringLogFile = ${$child}{aliases}{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
+
+            #
+            # Blank line poly-switch notes (==4)
+            #
+            # when BeginStartsOnOwnLine=4 we adopt the following approach:
+            #   temporarily change BeginStartsOnOwnLine to -1, make adjustments
+            #   temporarily change BeginStartsOnOwnLine to 3, make adjustments
+            #
+            # we use an array, @polySwitchValues to facilitate this
+            my @polySwitchValues
+                = ( ${$child}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$child}{BeginStartsOnOwnLine} );
+
+            foreach (@polySwitchValues) {
+
+                # if BeginStartsOnOwnLine is 4, then we hack
+                #       $IDFirstNonWhiteSpaceCharacter
+                # to be 0 on the second time through (poly-switch set to 3)
+                $IDFirstNonWhiteSpaceCharacter = 0 if ( ${$child}{BeginStartsOnOwnLine} == 4 and $_ == 3 );
+
+                # if the child ID is not the first character and BeginStartsOnOwnLine>=1
+                # then we will need to add a line break (==1), a comment (==2) or another blank line (==3)
+                if ( $_ >= 1 and !$IDFirstNonWhiteSpaceCharacter ) {
+
+                    # by default, assume that no trailing comment token is needed
+                    my $trailingCharacterToken = q();
+                    if ( $_ == 2 ) {
+                        $logger->trace(
+                            "Removing space immediately before ${$child}{id}, in preparation for adding % ($BeginStringLogFile == 2)"
+                        ) if $is_t_switch_active;
+                        ${$self}{body} =~ s/\h*${$child}{idRegExp}/${$child}{id}/s;
+                        $logger->trace(
+                            "Adding a % at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 2)"
+                        ) if $is_t_switch_active;
+                        $trailingCharacterToken = "%" . $self->add_comment_symbol;
+                    }
+                    elsif ( $_ == 3 ) {
+                        $logger->trace(
+                            "Adding a blank line at the end of the line that ${$child}{begin} is on, then a linebreak ($BeginStringLogFile == 3)"
+                        ) if $is_t_switch_active;
+                        $trailingCharacterToken = "\n"
+                            . (
+                            ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines}
+                            ? $tokens{blanklines}
+                            : q()
+                            );
+                    }
+                    else {
+                        $logger->trace(
+                            "Adding a linebreak at the beginning of ${$child}{begin} (see $BeginStringLogFile)")
+                            if $is_t_switch_active;
+                    }
+
+                    # the trailing comment/linebreak magic
+                    ${$child}{begin} = "$trailingCharacterToken\n" . ${$child}{begin};
+                    $child->add_surrounding_indentation_to_begin_statement;
+
+                    # remove surrounding indentation ahead of %
+                    ${$child}{begin} =~ s/^(\h*)%/%/ if ( $_ == 2 );
+                }
+                elsif ( $_ == -1 and $IDFirstNonWhiteSpaceCharacter ) {
+
+                    # finally, if BeginStartsOnOwnLine == -1 then we might need to *remove* a blank line(s)
+                    # important to check we don't move the begin statement next to a blank-line-token
+                    my $blankLineToken = $tokens{blanklines};
+                    if ( ${$self}{body} !~ m/$blankLineToken\R*\h*${$child}{idRegExp}/s ) {
+                        $logger->trace(
+                            "Removing linebreak before ${$child}{begin} (see $BeginStringLogFile in ${$child}{modifyLineBreaksYamlName} YAML)"
+                        ) if $is_t_switch_active;
+                        ${$self}{body} =~ s/(\h*)(?:\R*|\h*)+${$child}{idRegExp}/$1${$child}{id}/s;
+                    }
+                    else {
+                        $logger->trace(
+                            "Not removing linebreak ahead of ${$child}{begin}, as blank-line-token present (see preserveBlankLines)"
+                        ) if $is_t_switch_active;
+                    }
+                }
+            }
+        }
+
+        $logger->trace( Dumper( \%{$child} ) ) if ($is_tt_switch_active);
+
+        # replace ids with body
+        ${$self}{body} =~ s/${$child}{idRegExp}/${$child}{begin}${$child}{body}${$child}{end}/;
+
+        # log file info
+        $logger->trace("Body (${$self}{name}) now looks like:") if $is_tt_switch_active;
+        $logger->trace( ${$self}{body} ) if ($is_tt_switch_active);
+
+# remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
+        splice( @{ ${$self}{children} }, $index, 1 );
+
+        # output to the log file
+        $logger->trace("deleted child key ${$child}{name} (parent is: ${$self}{name})") if $is_t_switch_active;
+
+        # restart the loop, as the size of the array has changed
+        return 1;
+    }
+    else {
+        $logger->trace("${$child}{id} not found") if ($is_t_switch_active);
+        return 0;
+    }
 }
 
 sub add_surrounding_indentation_to_begin_statement {

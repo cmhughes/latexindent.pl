@@ -79,6 +79,7 @@ sub check_for_else_statement {
                                             # to detail for double back slash poly-switches 
                                             # (see test-cases alignment command-align.tex, for example)
                                             parent=>(${$self}{parent}?${$self}{parent}:"none"),
+                                            storage=>(defined $input{storage} ? $input{storage} : 1),
                                           );
 
                           # log file output
@@ -107,6 +108,9 @@ sub remove_line_breaks_begin {
 
 sub tasks_particular_to_each_object {
     my $self = shift;
+
+    # some Else blocks shouldn't be stored (especially "\\" blocks), see test-cases/alignment/issue-426.tex
+    return if ${$self}{storage} == 0;
 
     # search for headings (important to do this before looking for commands!)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;

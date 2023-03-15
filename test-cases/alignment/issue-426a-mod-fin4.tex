@@ -1,0 +1,32 @@
+\documentclass[10pt]{article}
+
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+
+\begin{document}
+
+\title{Hello}
+\author{Hello}
+
+\maketitle
+
+\section{Table}
+
+Hello world!
+Hello world!
+
+\begin{table}[t]
+	\begin{tblr}{colspec={Q[c]Q[c]Q[c]Q[c]}}
+		\toprule
+		aaaaaa & bbbbb & ccc & dd \\
+
+		\cmidrule[r]{1-1} \cmidrule{2-4}
+		11 & 2  & 33 & 4          \\
+
+		5  & 66 & 7  & 8          \\
+
+		\bottomrule
+	\end{tblr}
+\end{table}
+
+\end{document}

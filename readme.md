@@ -22,7 +22,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.20.3, 2023-02-19
+    latexindent.pl, version 3.20.4, 2023-03-15
 
 ## author
 Chris Hughes (cmhughes)
@@ -158,7 +158,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.20.3
+        rev: V3.20.4
         hooks:
           - id: latexindent
 
@@ -218,6 +218,8 @@ and then I merge it into the `develop` branch using
 
     git checkout develop
     git merge feature/name-of-feature --no-ff
+
+I align with many of the approaches and details at [Dramatically increase your productivity with Atomic Git Commits](https://suchdevblog.com/lessons/AtomicGitCommits.html).
 
 ## perl version
 

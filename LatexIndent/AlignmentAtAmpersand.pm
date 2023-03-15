@@ -155,9 +155,9 @@ sub align_at_ampersand {
 
     $logger->trace("*dontMeasure routine, row mode") if ( ${$self}{dontMeasure} and $is_t_switch_active );
 
+    #
     # initial loop for column storage and measuring
-    # initial loop for column storage and measuring
-    # initial loop for column storage and measuring
+    #
     foreach ( split( "\n", ${$self}{body} ) ) {
         $rowCounter++;
 
@@ -387,9 +387,9 @@ sub align_at_ampersand {
     # main formatting loop
     $self->main_formatting;
 
+    #
     # final \\ loop
-    # final \\ loop
-    # final \\ loop
+    #
     foreach (@formattedBody) {
 
         # reset the padding
@@ -511,9 +511,9 @@ sub main_formatting {
 
     ${$self}{maximumRowWidth} = 0;
 
+    #
     # objective (1): padding
-    # objective (1): padding
-    # objective (1): padding
+    #
 
     $logger->trace("*formatted rows for: ${$self}{name}") if ($is_t_switch_active);
 
@@ -536,18 +536,18 @@ sub main_formatting {
             # the placement of the padding is dependent on the value of justification
             if ( ${$self}{justification} eq "left" ) {
 
+                #
                 # LEFT:
-                # LEFT:
-                # LEFT:
+                #
                 #   <cell entry> <individual padding> <group padding> ...
                 $tmpRow .= ${$cell}{entry};
                 $tmpRow .= " " x ${$cell}{individualPadding};
                 $tmpRow .= " " x ${$cell}{groupPadding};
             }
             else {
+                #
                 # RIGHT:
-                # RIGHT:
-                # RIGHT:
+                #
                 #   <group padding> <individual padding> <cell entry> ...
                 $tmpRow .= " " x ${$cell}{groupPadding};
                 $tmpRow .= " " x ${$cell}{individualPadding};
@@ -583,9 +583,9 @@ sub main_formatting {
         # store this formatted row
         ${ $formattedBody[$rowCount] }{row} = $tmpRow;
 
+        #
         # objective (2): calculate row width and update maximumRowWidth
-        # objective (2): calculate row width and update maximumRowWidth
-        # objective (2): calculate row width and update maximumRowWidth
+        #
         my $rowWidth = &get_column_width($tmpRow);
 
         # possibly update rowWidth if there are hidden children; see test-cases/alignment/hidden-child1.tex and friends
@@ -784,9 +784,9 @@ sub individual_padding {
     # we count the maximum number of columns
     my $maximumNumberOfColumns = 0;
 
+    #
     # maximum column width loop
-    # maximum column width loop
-    # maximum column width loop
+    #
 
     $logger->trace("*dontMeasure routine, cell mode") if ( ${$self}{dontMeasure} and $is_t_switch_active );
 
@@ -871,9 +871,9 @@ sub individual_padding {
         $maximumNumberOfColumns = $j if ( $j > $maximumNumberOfColumns );
     }
 
+    #
     # individual padding and gap filling loop
-    # individual padding and gap filling loop
-    # individual padding and gap filling loop
+    #
 
     # row loop
     foreach my $row (@cellStorage) {
@@ -1100,9 +1100,9 @@ sub multicolumn_padding {
             # and groupPadding accordingly
             my $justificationOffset = ( ${$self}{justification} eq "left" ? $j + $multiColumnSpan - 1 : $j );
 
+            #
             # phase (1)
-            # phase (1)
-            # phase (1)
+            #
 
             # *inner* row loop
             my $innerRowCount = -1;
@@ -1173,9 +1173,9 @@ sub multicolumn_padding {
 
             }
 
+            #
             # phase (2)
-            # phase (2)
-            # phase (2)
+            #
 
             # now that the maxGroupingWidth has been established, loop back
             # through and update groupingWidth for the appropriate cells
@@ -1208,9 +1208,9 @@ sub multicolumn_padding {
 
                 my $groupingWidth = ${ $cellStorage[$innerRowCount][$justificationOffset] }{groupingWidth};
 
+                #
                 # phase (3)
-                # phase (3)
-                # phase (3)
+                #
 
                 # there are two possible cases:
                 #
@@ -1457,7 +1457,20 @@ sub double_back_slash_else {
 
         # logfile information
         logName => "double-back-slash-block (for align at ampersand, see lookForAlignDelims)",
+
+        # we don't want to store these "\\" blocks as demonstrated in test-cases/alignment/issue-426.tex
+        storage => 0,
     );
+
+    # can return if no "\\" blocks were found
+    return unless defined ${$self}{children};
+
+    # now loop back through and put the "\\" blocks back in, accounting for all poly-switches
+    while ( ${ ${$self}{children}[-1] }{storage} == 0 ) {
+        my $child = ${$self}{children}[-1];
+        $self->replace_id_with_begin_body_end( $child, -1 );
+        last if scalar( @{ ${$self}{children} } ) == 0;
+    }
 }
 
 # possible hidden children, see test-cases/alignment/issue-162.tex and friends
