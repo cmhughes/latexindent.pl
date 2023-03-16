@@ -146,7 +146,7 @@ sub remove_line_breaks_begin {
     # there is no white space
     my $self              = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
-    $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)");
+    $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)") if $is_t_switch_active;
     ${$self}{begin} =~ s/\R*$//sx;
     ${$self}{begin} .= " "
         unless ( ${$self}{begin} =~ m/\h$/s or ${$self}{body} =~ m/^\h/s or ${$self}{body} =~ m/^\R/s );
