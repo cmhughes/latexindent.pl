@@ -23,6 +23,7 @@ use LatexIndent::LogFile qw/$logger/;
 use File::Basename;    # to get the filename and directory path
 use File::Copy;        # to copy the original file to backup (if overwrite option set)
 use Exporter qw/import/;
+use Encode qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
 # copy main file to a back up in the case of the overwrite switch being active
@@ -48,7 +49,7 @@ sub create_back_up_file {
     my $backupFile = basename( ${$self}{fileName}, @fileExtensions );
 
     # add the user's backup directory to the backup path
-    $backupFile = "${$self}{cruftDirectory}/$backupFile";
+    $backupFile = decode("utf-8", "${$self}{cruftDirectory}/$backupFile");
 
     # local variables, determined from the YAML settings
     my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};
