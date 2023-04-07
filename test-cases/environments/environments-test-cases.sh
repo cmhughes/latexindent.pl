@@ -112,6 +112,10 @@ latexindent.pl -s -y='modifyLineBreaks:environments: myenv:EndStartsOnOwnLine:3;
 latexindent.pl -s issue-256.tex -o +-mod1
 latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256.tex -o +-mod2
 
+# diacritics
+latexindent.pl -s äö.tex -l äö.yaml -g diacritics.log
+latexindent.pl -s äö.tex -l äö.yaml -g diacritics1.log -o=+-mod1
+
 [[ $silentMode == 0 ]] && set -x 
 
 [[ $noisyMode == 1 ]] && makenoise

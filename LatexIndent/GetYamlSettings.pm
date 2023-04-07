@@ -341,6 +341,9 @@ sub yaml_read_settings {
             }
         }
 
+        # diacritics in YAML names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
+        $_ = decode("utf-8", $_);
+
         # check for existence and non-emptiness
         if ( ( -e $_ ) and !( -z $_ ) ) {
             $logger->info("Adding $_ to YAML read paths");
