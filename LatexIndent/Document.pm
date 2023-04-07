@@ -20,6 +20,7 @@ use warnings;
 use Data::Dumper;
 use File::Basename;    # to get the filename and directory path
 use open ':std', ':encoding(UTF-8)';
+use Encode qw/decode/;
 
 # gain access to subroutines in the following modules
 use LatexIndent::Switches
@@ -97,7 +98,7 @@ sub latexindent {
 
     # one-time operations
     $self->store_switches;
-    ${$self}{fileName} = $fileNames[0];
+    ${$self}{fileName} = decode( "utf-8", $fileNames[0] );
     $self->process_switches( \@fileNames );
     $self->yaml_read_settings;
 
@@ -228,13 +229,26 @@ sub output_indented_text {
 
     # if -overwrite is active then output to original fileName
     if ( ${$self}{overwrite} ) {
+
+        # diacritics in file names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
+        ${$self}{fileName} = decode( "utf-8", ${$self}{fileName} );
+
         $logger->info("Overwriting file ${$self}{fileName}");
         open( OUTPUTFILE, ">", ${$self}{fileName} );
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
     }
     elsif ( $switches{outputToFile} ) {
+
+        # diacritics in file names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
+        #
+        # note, related:
+        #
+        #   git config --add core.quotePath false
+        ${$self}{outputToFile} = decode( "utf-8", ${$self}{outputToFile} );
+
         $logger->info("Outputting to file ${$self}{outputToFile}");
+
         open( OUTPUTFILE, ">", ${$self}{outputToFile} );
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);

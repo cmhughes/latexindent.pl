@@ -22,6 +22,7 @@ use File::Basename;    # to get the filename and directory path
 use Exporter qw/import/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
+use Encode qw/decode/;
 our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 
@@ -127,6 +128,9 @@ ENDQUOTE
 
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
+
+    # diacritics in cruft directory (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
+    ${$self}{cruftDirectory} = decode( "utf-8", ${$self}{cruftDirectory} );
 
     # if cruft directory does not exist
     if ( !( -d ${$self}{cruftDirectory} ) ) {

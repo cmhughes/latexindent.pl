@@ -1,4 +1,7 @@
 # changelog.md
+## V3.20.5, April 7, 2023
+better support for diacritics in filenames, [pull 439](https://github.com/cmhughes/latexindent.pl/pull/439), thanks to @valtterikantanen 
+
 ## V3.20.4, March 15, 2023
 minor bugfix for `alignAtAmpersand` routine detailed at [issue-426](https://github.com/cmhughes/latexindent.pl/issues/426)
 
