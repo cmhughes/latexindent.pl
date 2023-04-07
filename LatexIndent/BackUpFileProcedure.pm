@@ -36,7 +36,7 @@ sub create_back_up_file {
     # if we want to over write the current file create a backup first
     $logger->info("*Backup procedure (-w flag active):");
 
-    my $fileName = decode("utf-8",${$self}{fileName});
+    my $fileName = decode( "utf-8", ${$self}{fileName} );
 
     # grab the file extension preferences
     my %fileExtensionPreference = %{ $mainSettings{fileExtensionPreference} };
@@ -49,7 +49,7 @@ sub create_back_up_file {
     my $backupFile = basename( ${$self}{fileName}, @fileExtensions );
 
     # add the user's backup directory to the backup path
-    $backupFile = decode("utf-8", "${$self}{cruftDirectory}/$backupFile");
+    $backupFile = decode( "utf-8", "${$self}{cruftDirectory}/$backupFile" );
 
     # local variables, determined from the YAML settings
     my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};
@@ -104,9 +104,9 @@ sub create_back_up_file {
                     for ( my $i = 1; $i <= $maxNumberOfBackUps; $i++ ) {
 
                         # remove number from backUpFile
-                        my $oldBackupFile = decode("utf-8",$backupFile);
+                        my $oldBackupFile = decode( "utf-8", $backupFile );
                         $oldBackupFile =~ s/$backupExtension.*/$backupExtension/;
-                        my $newBackupFile = decode("utf-8",$oldBackupFile);
+                        my $newBackupFile = decode( "utf-8", $oldBackupFile );
 
                         # add numbers back on
                         $oldBackupFile .= $i;

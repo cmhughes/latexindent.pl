@@ -130,7 +130,8 @@ ENDQUOTE
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
 
     # diacritics in cruft directory (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
-    ${$self}{cruftDirectory} = decode("utf-8", ${$self}{cruftDirectory});
+    ${$self}{cruftDirectory} = decode( "utf-8", ${$self}{cruftDirectory} );
+
     # if cruft directory does not exist
     if ( !( -d ${$self}{cruftDirectory} ) ) {
         $logger->fatal("*Could not find directory ${$self}{cruftDirectory}");

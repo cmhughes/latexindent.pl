@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.20.3'
-newVersion='3.20.4'
-oldDate='2023-02-19'
-newDate='2023-03-15'
+oldVersion='3.20.4'
+newVersion='3.20.5'
+oldDate='2023-03-15'
+newDate='2023-04-07'
 updateVersion=0
 
 while getopts "hmuv" OPTION
