@@ -129,12 +129,9 @@ ENDQUOTE
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
 
-    # diacritics in cruft directory (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
-    ${$self}{cruftDirectory} = decode( "utf-8", ${$self}{cruftDirectory} );
-
     # if cruft directory does not exist
     if ( !( -d ${$self}{cruftDirectory} ) ) {
-        $logger->fatal("*Could not find directory ${$self}{cruftDirectory}");
+        $logger->fatal("*Could not find directory ".decode( "utf-8", ${$self}{cruftDirectory} ));
         $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();
         exit(6);
@@ -142,6 +139,8 @@ ENDQUOTE
 
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
         . ( $switches{logFileName} || "indent.log" );
+
+    $logfileName = decode( "utf-8", $logfileName );
 
     # details of the script to log file
     $logger->info("*$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
@@ -247,7 +246,7 @@ ENDQUOTE
     }
 
     $logger->info("*Directory for backup files and $logfileName:");
-    $logger->info("${$self}{cruftDirectory}");
+    $logger->info($switches{cruftDirectory}?decode( "utf-8",${$self}{cruftDirectory}):${$self}{cruftDirectory});
 
     # output location of modules
     if ( $FindBin::Script eq 'latexindent.pl' or ( $FindBin::Script eq 'latexindent.exe' and $switches{trace} ) ) {

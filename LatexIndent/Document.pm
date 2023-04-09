@@ -240,15 +240,7 @@ sub output_indented_text {
     }
     elsif ( $switches{outputToFile} ) {
 
-        # diacritics in file names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
-        #
-        # note, related:
-        #
-        #   git config --add core.quotePath false
-        ${$self}{outputToFile} = decode( "utf-8", ${$self}{outputToFile} );
-
         $logger->info("Outputting to file ${$self}{outputToFile}");
-
         open( OUTPUTFILE, ">", ${$self}{outputToFile} );
         print OUTPUTFILE ${$self}{body};
         close(OUTPUTFILE);
