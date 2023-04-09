@@ -1,5 +1,4 @@
 # latexindent.pl
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
@@ -85,8 +84,7 @@ in the same directory.
 
 You'll need a few readily-available perl modules. Full details are given within the Appendix
 of the [documentation](https://latexindentpl.readthedocs.io/en/latest/);
-you might also like to see [.travis.yml](.travis.yml) for Linux/MacOS users,
-and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
+you might also like to see [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
 </details>
 <details>
 <summary>Windows users without perl</summary>
@@ -235,11 +233,9 @@ directory of this repository, and you can track the actions on the [actions page
 ![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
 
 ## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
-Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
-of test cases on every commit.
+I use [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl`. 
+I use `git` to track changes in the many test cases listed in the `test-cases` directory. 
 
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
 
