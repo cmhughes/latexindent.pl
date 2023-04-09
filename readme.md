@@ -1,7 +1,7 @@
 # latexindent.pl
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -264,6 +264,8 @@ I find that the following quotes resonate with me with regards to my approach to
 - *A common, brute-force approach to parsing documents where newlines are not significant is to read ... the entire file as one string ... and then extract tokens one by one*, Christiansen & Torkington, Perl Cookbook, Section 6.16
 - *Once you understand the power that regular expressions provide, the small amount of work spent learning them will feel trivial indeed* Friedl, Mastering Regular Expressions, end of Chapter 1.
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
+- *Perl’s primary strength is in text processing. Be it a regex-based approach or otherwise, Perl is excellent for logfile analysis, text manipulation, in-place editing of files, and scouring structured text files for specific field values*,
+  Girish Venkatachalam [Why Perl is still relevant in 2022](https://stackoverflow.blog/2022/07/06/why-perl-is-still-relevant-in-2022/)
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
 
 ## changelog
