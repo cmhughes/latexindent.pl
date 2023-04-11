@@ -10,10 +10,10 @@
 #   update-version.sh 
 
 minorVersion=0
-oldVersion='3.20.4'
-newVersion='3.20.5'
-oldDate='2023-03-15'
-newDate='2023-04-07'
+oldVersion='3.20.5'
+newVersion='3.20.6'
+oldDate='2023-04-07'
+newDate='2023-04-11'
 updateVersion=0
 
 while getopts "hmuv" OPTION
@@ -172,4 +172,5 @@ echo ""
 echo "IMPORTANT: make sure the following CTAN announcement is as you'd like"
 echo ""
 egrep -i --color=auto 'announcement: ' documentation/changelog.md
+echo ""
 exit 0

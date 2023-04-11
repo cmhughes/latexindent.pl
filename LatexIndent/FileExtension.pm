@@ -120,7 +120,7 @@ sub file_extension_check {
         # note, related:
         #
         #   git config --add core.quotePath false
-        ${$self}{outputToFile} = decode( "utf-8", $switches{outputToFile});
+        ${$self}{outputToFile} = decode( "utf-8", $switches{outputToFile} );
 
         if ( $fileName eq "-" and $switches{outputToFile} =~ m/^\+/ ) {
             $logger->info("STDIN input mode active, -o switch is removing all + symbols");
@@ -130,7 +130,7 @@ sub file_extension_check {
         # the -o file name might begin with a + symbol
         if ( $switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
             $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
-            ${$self}{outputToFile} = decode( "utf-8", ${$self}{baseName} . $1);
+            ${$self}{outputToFile} = decode( "utf-8", ${$self}{baseName} . $1 );
             $logger->info("output file is now: ${$self}{outputToFile}");
         }
 
@@ -143,7 +143,8 @@ sub file_extension_check {
 
         # if there is no extension, then add the extension from the file to be operated upon
         if ( !$ext ) {
-            $logger->info("-o switch called with file name without extension: ".decode( "utf-8", $switches{outputToFile}));
+            $logger->info(
+                "-o switch called with file name without extension: " . decode( "utf-8", $switches{outputToFile} ) );
             ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
             $logger->info(
                 "Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
