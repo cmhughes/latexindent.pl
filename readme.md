@@ -1,8 +1,7 @@
 # latexindent.pl
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent.pl)
 [![Documentation Status](https://readthedocs.org/projects/latexindentpl/badge/?version=latest)](http://latexindentpl.readthedocs.io/en/latest/)
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 <img src="documentation/logo.png" alt="latexindent logo" width="25%;"/>
 
@@ -22,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.20.5, 2023-04-07
+    latexindent.pl, version 3.20.6, 2023-04-11
 
 ## author
 Chris Hughes (cmhughes)
@@ -85,8 +84,7 @@ in the same directory.
 
 You'll need a few readily-available perl modules. Full details are given within the Appendix
 of the [documentation](https://latexindentpl.readthedocs.io/en/latest/);
-you might also like to see [.travis.yml](.travis.yml) for Linux/MacOS users,
-and [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
+you might also like to see [.appveyor.yml](.appveyor.yml) for Strawberry perl users.
 </details>
 <details>
 <summary>Windows users without perl</summary>
@@ -158,7 +156,7 @@ framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
       - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.20.5
+        rev: V3.20.6
         hooks:
           - id: latexindent
 
@@ -235,11 +233,9 @@ directory of this repository, and you can track the actions on the [actions page
 ![Publish docker image](https://github.com/cmhughes/latexindent.pl/actions/workflows/release-docker-ghcr.yml/badge.svg)
 
 ## build status
-I use both `travis-ci` (Linux) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl` for a small selection of test cases for every commit (I use `git` to track changes in the many test cases listed in the `test-cases` directory); you can see which versions of `perl` are tested by `travis-ci` within `.travis.yml`.
-Additionally, [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) performs checks on a selection
-of test cases on every commit.
+I use [GitHub actions](https://github.com/cmhughes/latexindent.pl/tree/main/.github/workflows) and `AppVeyor` (Windows) as continuous integration services to test `latexindent.pl`. 
+I use `git` to track changes in the many test cases listed in the `test-cases` directory. 
 
-[![Build Status](https://travis-ci.org/cmhughes/latexindent.pl.svg?branch=main)](https://travis-ci.org/cmhughes/latexindent.pl)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/cmhughes/latexindent.pl?branch=main&svg=true)](https://ci.appveyor.com/project/cmhughes/latexindent-pl)
 
 
@@ -268,6 +264,8 @@ I find that the following quotes resonate with me with regards to my approach to
 - *A common, brute-force approach to parsing documents where newlines are not significant is to read ... the entire file as one string ... and then extract tokens one by one*, Christiansen & Torkington, Perl Cookbook, Section 6.16
 - *Once you understand the power that regular expressions provide, the small amount of work spent learning them will feel trivial indeed* Friedl, Mastering Regular Expressions, end of Chapter 1.
 - *a problem speaks to them, and they have to solve it...and it becomes a hobby. But they keep coming back to it every now and then. They keep tinkering. It will never be finished...that's the point of a hobby*, Westwood to Reacher in 'Make Me', Lee Child
+- *Perl’s primary strength is in text processing. Be it a regex-based approach or otherwise, Perl is excellent for logfile analysis, text manipulation, in-place editing of files, and scouring structured text files for specific field values*,
+  Girish Venkatachalam [Why Perl is still relevant in 2022](https://stackoverflow.blog/2022/07/06/why-perl-is-still-relevant-in-2022/)
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
 
 ## changelog

@@ -6,6 +6,7 @@ name: build latexindent executables and documentation and upload to release page
 #  3. build latexindent-linux using PAR::Packer on Ubuntu
 #  4. build latexindent-macos using PAR::Packer on macOS
 #  5. create and release latexindent.zip
+#  6. upload latexindent.zip to ctan
 #
 # Note: this action only runs on *each release*, i.e. when tags are pushed
 #
@@ -334,9 +335,26 @@ jobs:
           mv latexindent/bin/linux/latexindent-linux latexindent/bin/linux/latexindent
           mv latexindent/bin/macos/latexindent-macos latexindent/bin/macos/latexindent
           zip -r latexindent.zip latexindent/
+          mkdir -p target/release
+          cp latexindent.zip target/release
       - name: graphical representation of latexindent directory
         run: |
           find latexindent -print | sed -e 's;[^/]*/;|-- ;g;s;-- |; |;g'
+      - name: get changelog.md information
+        id: changelog
+        run: |
+          csplit documentation/changelog.md '/^\#\#/' '{*}' -f cmh # split changelog at '##'
+          sed -i.bak s/\#\#.*\// cmh01                             # 
+          r=$(cat cmh01)                                           # <--- Read changelog.md 
+          r="${r//'%'/'%25'}"                                      # Multiline escape sequences for %
+          r="${r//$'\n'/'%0A'}"                                    # Multiline escape sequences for '\n'
+          r="${r//$'\r'/'%0D'}"                                    # Multiline escape sequences for '\r'
+          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT                 # <--- Set environment var
+      - name: upload latexindent.zip as artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: latexindent.zip
+          path: target/release
       #
       # https://github.com/marketplace/actions/upload-files-to-a-github-release
       #
@@ -347,4 +365,51 @@ jobs:
           file: latexindent.zip
           tag: ${{ github.ref }}
           overwrite: true
-          body: "latexindent.pl release txt"
+          body: ${{ steps.changelog.outputs.RELEASE_BODY }}
+  #=========================================================================
+  #
+  # ctan latexindent.zip upload
+  #
+  ctan-upload:
+    name: 'upload latexindent.zip to ctan'
+    runs-on: ubuntu-latest
+    needs: [zip-files]
+    steps:
+      - name: get latexindent version number
+        id: labeller
+        run: |
+          echo "version=$(echo ${{ github.ref }}|cut -d'/' -f 3)" >> $GITHUB_OUTPUT
+          echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+      - name: Loading the "base actions/checkout" so as to access the repository latexindent.pl
+        uses: actions/checkout@v3
+      - name: get latexindent announcement text from changelog.md
+        id: announcement
+        run: |
+          egrep -i --color=auto '<!-- announcement:' documentation/changelog.md > tmp.log
+          sed -i.bak s/\<\!\-\-\ announcement:\ // tmp.log
+          sed -i.bak s/-\-\>// tmp.log
+          echo "announcementtext=$(cat tmp.log)" >> $GITHUB_OUTPUT
+      - name: download latexindent.zip
+        uses: actions/download-artifact@master
+        with:
+          name: latexindent.zip
+          path: for-ctan
+      #
+      # https://github.com/paolobrasolin/ctan-submit-action
+      #
+      - name: CTAN submit (validate only)
+        uses: paolobrasolin/ctan-submit-action@v1
+        with:
+          # IMPORTANT, options are:
+          #     action: validate 
+          #     action: upload
+          action: upload
+          file_path: for-ctan/latexindent.zip
+          fields: |
+            update: "true"
+            pkg: latexindent
+            version: "${{ steps.labeller.outputs.version }} ${{ steps.labeller.outputs.date }}"
+            author: Chris Hughes
+            email: christopher.michael.hughes@gmail.com 
+            uploader: Chris Hughes
+            announcement: "${{ steps.announcement.outputs.announcementtext}}, full details at https://github.com/cmhughes/latexindent.pl/releases/tag/${{ steps.labeller.outputs.version }}"

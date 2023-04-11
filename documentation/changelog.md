@@ -1,4 +1,8 @@
+<!-- announcement: Further minor updates to the diacritics in filenames-->
 # changelog.md
+## V3.20.6, April 11, 2023
+Further minor updates to the diacritics in filenames, [pull 439](https://github.com/cmhughes/latexindent.pl/pull/439).
+
 ## V3.20.5, April 7, 2023
 better support for diacritics in filenames, [pull 439](https://github.com/cmhughes/latexindent.pl/pull/439), thanks to @valtterikantanen 
 
