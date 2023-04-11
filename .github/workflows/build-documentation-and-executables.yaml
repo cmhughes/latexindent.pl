@@ -397,7 +397,7 @@ jobs:
       #
       # https://github.com/paolobrasolin/ctan-submit-action
       #
-      - name: CTAN submit (validate only)
+      - name: CTAN submit UPLOAD
         uses: paolobrasolin/ctan-submit-action@v1
         with:
           # IMPORTANT, options are:
