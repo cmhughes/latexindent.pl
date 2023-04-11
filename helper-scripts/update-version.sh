@@ -35,6 +35,8 @@ Typical running order pre-release:
     update-version.sh
     - <update documentation/changelog.md>
     - <check everything has changed as you'd like using git diff>
+    - git add .
+    - <compile documentation> AND run test-cases.sh -s -n
     - <commit changes and push to develop>
     - git push
     - git checkout main
@@ -42,7 +44,7 @@ Typical running order pre-release:
     - git tag "V<number>"
     - git push
     - git push --tags
-    - <update release notes on github>
+    - <check release notes on github>
     - <download latexindent.zip>
     - <upload latexindent.zip to ctan>
 ____PLEH
@@ -163,21 +165,11 @@ egrep -i --color=auto 'cmhlistingsfromfile\*' documentation/s*.tex
 cat documentation/latexindent.new
 gedit documentation/changelog.md
 
-cat <<-____TXEN
-
-Next steps:
-    - <update documentation/changelog.md>
-    - <check everything has changed as you'd like using git diff>
-    - <commit changes and push to develop>
-    - git push
-    - git checkout main
-    - git merge --no-ff develop
-    - git tag "V<number>"
-    - git push
-    - git push --tags
-    - <update release notes on github>
-    - <download latexindent.zip>
-    - <upload latexindent.zip to ctan>
-____TXEN
-    
+#
+# really important to check that the ctan announcement is as you like
+#
+echo ""
+echo "IMPORTANT: make sure the following CTAN announcement is as you'd like"
+echo ""
+egrep -i --color=auto 'announcement: ' documentation/changelog.md
 exit 0
