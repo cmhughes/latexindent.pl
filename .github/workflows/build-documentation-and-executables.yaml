@@ -5,8 +5,8 @@ name: build latexindent executables and documentation and upload to release page
 #  2. build latexindent.exe using PAR::Packer on Strawberry Perl
 #  3. build latexindent-linux using PAR::Packer on Ubuntu
 #  4. build latexindent-macos using PAR::Packer on macOS
-#  5. create and release latexindent.zip
-#  6. upload latexindent.zip to ctan
+#  5. create release 
+#  6. upload latexindent.zip to ctan   
 #
 # Note: this action only runs on *each release*, i.e. when tags are pushed
 #
@@ -19,7 +19,7 @@ on:
 jobs:
   #-------------------------------------------------------------------------
   #
-  # latexindent.pdf
+  # 1. latexindent.pdf
   #
   build-latexindent-doc-pdf:
     name: 'documentation latexindent.pdf creation'
@@ -58,7 +58,7 @@ jobs:
           path: target/release
   #-------------------------------------------------------------------------
   #
-  # latexindent.exe
+  # 2. latexindent.exe
   #
   build-windows-exe:
     name: 'create Windows executable latexindent.exe using Strawberry Perl 5.32 on Windows'
@@ -117,20 +117,9 @@ jobs:
         with:
           name: latexindent.exe
           path: target/release
-      #
-      # https://github.com/marketplace/actions/upload-files-to-a-github-release
-      #
-      - name: upload latexindent.exe to release page
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/latexindent.exe
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "latexindent.pl release text"
   #-------------------------------------------------------------------------
   #
-  # Linux latexindent
+  # 3. Linux latexindent
   #
   build-linux-executable:
     name: 'create Linux executable latexindent'
@@ -187,20 +176,9 @@ jobs:
         with:
           name: latexindent-linux
           path: target/release
-      #
-      # https://github.com/marketplace/actions/upload-files-to-a-github-release
-      #
-      - name: upload latexindent-linux to release page
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/latexindent-linux
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "latexindent.pl release text"
   #-------------------------------------------------------------------------
   #
-  # MacOS latexindent
+  # 4. MacOS latexindent
   #
   build-macos-executable:
     name: 'create MacOS executable latexindent'
@@ -257,23 +235,12 @@ jobs:
         with:
           name: latexindent-macos
           path: target/release
-      #
-      # https://github.com/marketplace/actions/upload-files-to-a-github-release
-      #
-      - name: upload latexindent-macos to release page
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/latexindent-macos
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: "latexindent.pl release text"
   #=========================================================================
   #
   # latexindent.zip
   #
   zip-files:
-    name: 'create latexindent.zip and uploading to release'
+    name: 'create latexindent.zip'
     needs: [build-latexindent-doc-pdf, build-windows-exe, build-linux-executable, build-macos-executable]
     runs-on: ubuntu-latest
     steps:
@@ -340,35 +307,60 @@ jobs:
       - name: graphical representation of latexindent directory
         run: |
           find latexindent -print | sed -e 's;[^/]*/;|-- ;g;s;-- |; |;g'
-      - name: get changelog.md information
-        id: changelog
-        run: |
-          csplit documentation/changelog.md '/^\#\#/' '{*}' -f cmh # split changelog at '##'
-          sed -i.bak s/\#\#.*\// cmh01                             # 
-          r=$(cat cmh01)                                           # <--- Read changelog.md 
-          r="${r//'%'/'%25'}"                                      # Multiline escape sequences for %
-          r="${r//$'\n'/'%0A'}"                                    # Multiline escape sequences for '\n'
-          r="${r//$'\r'/'%0D'}"                                    # Multiline escape sequences for '\r'
-          echo "RELEASE_BODY=$r" >> $GITHUB_OUTPUT                 # <--- Set environment var
       - name: upload latexindent.zip as artifact
         uses: actions/upload-artifact@master
         with:
           name: latexindent.zip
           path: target/release
-      #
-      # https://github.com/marketplace/actions/upload-files-to-a-github-release
-      #
-      - name: upload latexindent.zip to release
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: latexindent.zip
-          tag: ${{ github.ref }}
-          overwrite: true
-          body: ${{ steps.changelog.outputs.RELEASE_BODY }}
   #=========================================================================
   #
-  # ctan latexindent.zip upload
+  # 5. create release
+  #
+  create-release:
+    name: 'latexindent create release'
+    runs-on: ubuntu-latest
+    needs: [zip-files]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: download Windows executable latexindent.exe
+        uses: actions/download-artifact@master
+        with:
+          name: latexindent.exe
+          path: for-release
+      - name: download Linux executable latexindent 
+        uses: actions/download-artifact@master
+        with:
+          name: latexindent-linux
+          path: for-release
+      - name: download MacOS executable latexindent 
+        uses: actions/download-artifact@master
+        with:
+          name: latexindent-macos
+          path: for-release
+      - name: download documentation file latexindent.zip
+        uses: actions/download-artifact@master
+        with:
+          name: latexindent.zip
+          path: for-release
+      - name: get changelog.md information
+        run: |
+          csplit documentation/changelog.md '/^\#\#/' '{*}' -f cmh # split changelog at '##'
+          sed -i.bak s/\#\#.*\// cmh01                             # 
+          mv cmh01 latexindent-release.md
+          cat latexindent-release.md
+      - name: latexindent.pl release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: latexindent-release.md
+          files: |
+            for-release/latexindent.zip
+            for-release/latexindent.exe
+            for-release/latexindent-linux
+            for-release/latexindent-macos
+  #=========================================================================
+  #
+  # 6. ctan latexindent.zip upload
   #
   ctan-upload:
     name: 'upload latexindent.zip to ctan'
