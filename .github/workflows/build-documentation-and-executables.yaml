@@ -277,6 +277,9 @@ jobs:
           echo '\end{document}' >> latexindent.tex
           cd ..
           cp documentation/latexindent.tex latexindent/documentation/
+      # 
+      # download artifacts
+      #
       - name: download Windows executable latexindent.exe
         uses: actions/download-artifact@master
         with:
@@ -297,6 +300,9 @@ jobs:
         with:
           name: latexindent.pdf
           path: latexindent/documentation/
+      #
+      # zip file creation and upload
+      #
       - name: create latexindent.zip
         run: |
           mv latexindent/bin/linux/latexindent-linux latexindent/bin/linux/latexindent
@@ -323,6 +329,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      # 
+      # download artifacts
+      #
       - name: download Windows executable latexindent.exe
         uses: actions/download-artifact@master
         with:
@@ -343,6 +352,9 @@ jobs:
         with:
           name: latexindent.zip
           path: for-release
+      # 
+      # body of release is read from documentation/changelog.md
+      #
       - name: get changelog.md information
         run: |
           csplit documentation/changelog.md '/^\#\#/' '{*}' -f cmh # split changelog at '##'
