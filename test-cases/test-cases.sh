@@ -79,6 +79,7 @@ checkgitdiff
 
 dirExec=( 
   "environments;environments-test-cases.sh"
+  "diacritics;diacritics-test-cases.sh"
   "ifelsefi;ifelsefi-test-cases.sh"
   "opt-args;opt-args-test-cases.sh"
   "mand-args;mand-args-test-cases.sh"
