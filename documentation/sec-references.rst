@@ -174,6 +174,11 @@ References
       Regueiro, Alexander. 2021. “Update Help Screen.” March 18, 2021. https://github.com/cmhughes/latexindent.pl/pull/261.
 
    .. container::
+      :name: ref-hsloot
+
+      Sloot, Henrik. 2023. “Fix: Find Local Settings When Working File Dir Is Not Working Dir.” February 15, 2023. https://github.com/cmhughes/latexindent.pl/pull/422.
+
+   .. container::
       :name: ref-condainstallhelp
 
       “Solving Environment: Failed with Initial Frozen Solve. Retrying with Flexible Solve.” n.d. Accessed January 21, 2022. https://github.com/conda/conda/issues/9367#issuecomment-558863143.
@@ -192,6 +197,11 @@ References
       :name: ref-textwrap
 
       “Text::Wrap Perl Module.” n.d. Accessed May 1, 2017. http://perldoc.perl.org/Text/Wrap.html.
+
+   .. container::
+      :name: ref-valtterikantanen
+
+      valtterikantanen. 2023. “Fix: Decode the Name of the Backup File.” April 7, 2023. https://github.com/cmhughes/latexindent.pl/pull/439.
 
    .. container::
       :name: ref-cmh:videodemo

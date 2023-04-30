@@ -361,8 +361,6 @@ latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg2-yaml.yaml -o=+-mod12
 latexindent.pl -s -r amalg1.tex -l=amalg1-yaml.yaml,amalg3-yaml,amalg3-yaml.yaml -o=+-mod123
 
 # fine tuning
-# fine tuning
-# fine tuning
 latexindent.pl -s finetuning1.tex -o=+-default
 latexindent.pl -s finetuning1.tex -o=+-mod1 -l=fine-tuning1
 latexindent.pl -s finetuning2.tex -o=+-default
@@ -405,6 +403,13 @@ latexindent.pl -s tabbing.tex -o=+-mod2 -l=delimiterRegEx2.yaml
 latexindent.pl -s tabbing.tex -o=+-mod3 -l=delimiterRegEx3.yaml
 latexindent.pl -s tabbing1.tex -o=+-mod4 -l=delimiterRegEx4.yaml
 latexindent.pl -s tabbing1.tex -o=+-mod5 -l=delimiterRegEx5.yaml
+
+# alignContentAfterDoubleBackSlash/spacesAfterDoubleBackSlash
+latexindent.pl -s tabular5.tex -o=+-default
+latexindent.pl -s tabular5.tex -l alignContentAfterDBS1 -o=+-mod1
+latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
+latexindent.pl -s -m -l alignContentAfterDBS1.yaml,DBS1.yaml tabular6.tex -o=+-mod1
+latexindent.pl -s -m -l alignContentAfterDBS2.yaml,DBS1.yaml tabular6.tex -o=+-mod2
 
 # noindent block
 latexindent.pl -s noindentblock1.tex -l noindent1.yaml -o=+-mod1

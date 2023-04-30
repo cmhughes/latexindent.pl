@@ -132,7 +132,9 @@ sub create_unique_id {
 }
 
 sub align_at_ampersand {
-    my $self = shift;
+    my $self  = shift;
+    my %input = @_;
+
     return if ( ${$self}{bodyLineBreaks} == 0 );
 
     # some blocks may contain verbatim to be measured
@@ -286,9 +288,24 @@ sub align_at_ampersand {
                     colSpan         => ".",
                     delimiter       => "",
                     delimiterLength => 0,
-                    measureThis     => ( $numberOfAmpersands > 0 ? ${$self}{measureRow} : 0 )
+                    measureThis     => ( $numberOfAmpersands > 0 ? ${$self}{measureRow} : 0 ),
+                    DBSpadding => 0,
                 }
             );
+
+            #
+            # if content is to be aligned after \\
+            # (using alignContentAfterDoubleBackSlash) then we need to
+            # adjust the width of the first cell
+            #
+            if ( defined $input{beforeDBSlengths} and $columnCounter == 0 ) {
+                my $currentRowDBSlength = ${ $input{beforeDBSlengths} }[ $rowCounter + 1 ];
+                ${ $cellStorage[$rowCounter][$columnCounter] }{width}
+                    += $currentRowDBSlength+($input{maxDBSlength}-$currentRowDBSlength);
+
+                ${ $cellStorage[$rowCounter][$columnCounter] }{DBSpadding} = ($input{maxDBSlength}-$currentRowDBSlength);
+
+            }
 
             # possible hidden children, see https://github.com/cmhughes/latexindent.pl/issues/85
             if ( ( ${$self}{measureHiddenChildren} or ${$self}{measureVerbatim} )
@@ -329,6 +346,7 @@ sub align_at_ampersand {
                             colSpan           => ".",
                             delimiter         => "",
                             delimiterLength   => 0,
+                            DBSpadding => 0,
                             measureThis       => 0
                         }
                     );
@@ -380,12 +398,23 @@ sub align_at_ampersand {
             for (
             "entry",       "type",               "colSpan",           "width",
             "measureThis", "maximumColumnWidth", "individualPadding", "groupPadding",
-            "delimiter",   "delimiterLength"
+            "delimiter",   "delimiterLength", "DBSpadding"
             );
     }
 
     # main formatting loop
     $self->main_formatting;
+
+    if ( defined $input{measure_after_DBS} ) {
+
+        # delete the original body
+        ${$self}{body} = q();
+
+        # update the body
+        ${$self}{body} .= ${$_}{row} . "\n" for @formattedBody;
+
+        return;
+    }
 
     #
     # final \\ loop
@@ -445,6 +474,45 @@ sub align_at_ampersand {
             $padding = " " x ( ${$self}{leadingBlankColumn} );
             ${$_}{row} =~ s/^\h*/$padding/s;
         }
+    }
+
+    #
+    # put original body and 'after DBS body' together
+    #
+    if ( ${$self}{alignContentAfterDoubleBackSlash} ) {
+
+        # check that spacesAfterDoubleBackSlash>=0
+        ${$self}{spacesAfterDoubleBackSlash} = max( ${$self}{spacesAfterDoubleBackSlash}, 0 );
+
+        my @beforeDBSlengths      = q();
+        my @originalFormattedBody = @formattedBody;
+        my $afterDBSbody          = q();
+        my $maxDBSlength = 0;
+        foreach (@originalFormattedBody) {
+            ${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s;
+            ${$_}{beforeDBS} = ( $1 ? $1 : q() );
+            ${$_}{DBS}       = ( $2 ? $2 : q() );
+            ${$_}{DBS} .= " " x ( ${$self}{spacesAfterDoubleBackSlash} ) if ( ${$_}{DBS} ne '' );
+            $afterDBSbody .= ${$_}{row} . "\n";
+            push( @beforeDBSlengths, &get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} ) );
+            $maxDBSlength = max ($maxDBSlength,&get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} )  );
+        }
+
+        ${$self}{body} = $afterDBSbody;
+        $self->align_at_ampersand( measure_after_DBS => 1, beforeDBSlengths => \@beforeDBSlengths, maxDBSlength=>$maxDBSlength  );
+
+        # create new afterDBSbody
+        my @afterDBSbody = split( "\n", ${$self}{body} );
+
+        # combine ORIGINAL body and ENDPIECE body
+        my $index = -1;
+        foreach (@originalFormattedBody) {
+            $index++;
+            ${$_}{row} = ${$_}{beforeDBS} . ${$_}{DBS};
+            ${$_}{row} .= $afterDBSbody[$index];
+        }
+
+        @formattedBody = @originalFormattedBody;
     }
 
     # delete the original body
@@ -532,6 +600,12 @@ sub main_formatting {
                 $tmpRow .= ${$cell}{entry};
                 next;
             }
+
+            # alignment *after* double back slash, see
+            #
+            #   test-cases/alignment/issue-393.tex
+            #
+            $tmpRow .= " "x${$cell}{DBSpadding};
 
             # the placement of the padding is dependent on the value of justification
             if ( ${$self}{justification} eq "left" ) {
@@ -899,6 +973,7 @@ sub individual_padding {
                         colSpan           => ".",
                         delimiter         => "",
                         delimiterLength   => 0,
+                    DBSpadding => 0,
                     }
                 );
             }

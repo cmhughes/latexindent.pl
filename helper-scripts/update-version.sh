@@ -6,9 +6,17 @@
 #
 # sample usage
 #
+# help
+#
 #   update-version.sh -h
-#   update-version.sh -m
-#   update-version.sh 
+#
+# update
+#
+#   update-version.sh -u
+#
+# update, but only minor version
+#
+#   update-version.sh -u -m
 
 minorVersion=0
 oldVersion='3.20.5'
@@ -97,7 +105,9 @@ helper_section_print "documentation update"
 # back to project route directory
 cd ../
 
+#
 # into documentation
+#
 cd documentation
 
 [[ $minorVersion == 0 ]] && set -x && find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\*\{|announce\{|sg"
@@ -128,9 +138,11 @@ git checkout s*.tex
 # change \announce{new}{message} into \announce*{message}
 find -name "s*.tex" -print0|xargs -0 perl -p0i -e "s|announce\{new|announce\*\{$newDate|sgi"
 
+#
+# perltidy
+#
 helper_section_print "perl tidy"
 
-# perltidy
 cd ../LatexIndent
 set -x
 perltidy -b *.pm
@@ -140,8 +152,11 @@ set +x
 cd ../
 perltidy -b latexindent.pl
 
-helper_section_print "codespell"
+#
 # codespell
+#
+helper_section_print "codespell"
+
 set -x
 codespell -w -S test-cases,*.bak,.git,./documentation/build/*,*.bbl,*.log,*.pdf -L reacher,alph,crossreferences,ist,termo,te
 
@@ -149,6 +164,7 @@ set +x
 
 helper_section_print "update version number across files"
 
+#
 # change
 #
 #   oldDate to newDate
@@ -178,7 +194,9 @@ do
   sed -i.bak "s/$oldVersion/$newVersion/" $file
 done
 
+#
 # check for new announcements in the documentation
+#
 helper_section_print "announcements in documentation"
 egrep -i --color=auto 'announce{new' documentation/*.tex
 

@@ -1,0 +1,4 @@
+lookForAlignDelims:
+   cases:
+      alignContentAfterDoubleBackSlash: 1
+      delimiterRegEx: (?<!\\)(&|\\\\)

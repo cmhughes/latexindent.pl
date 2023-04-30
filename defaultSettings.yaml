@@ -170,6 +170,8 @@ lookForAlignDelims:
       delimiterRegEx: (?<!\\)(&)
       delimiterJustification: left
       lookForChildCodeBlocks: 1
+      alignContentAfterDoubleBackSlash: 0
+      spacesAfterDoubleBackSlash: 1
    tabularx:
       delims: 1
    longtable: 1
