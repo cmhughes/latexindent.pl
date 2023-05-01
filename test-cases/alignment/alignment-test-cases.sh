@@ -305,6 +305,31 @@ latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish2 
 latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish3 -o=+-mod-fin3
 latexindent.pl -s -m issue-426a.tex -l issue-426.yaml,double-back-slash-finish4 -o=+-mod-fin4
 
+# issue 393: alignment *AFTER* \\
+latexindent.pl -s -m -l double-back-slash1,double-back-slash-finish-1 issue-393.tex -o=+-mod1
+latexindent.pl -s -m -l double-back-slash1,double-back-slash-finish-1,alignContentAfterDBS issue-393.tex -o=+-mod2
+latexindent.pl -s -m -l double-back-slash1,double-back-slash-finish-1,alignContentAfterDBS,cases3 issue-393.tex -o=+-mod3
+latexindent.pl -s -m -l double-back-slash1,double-back-slash-finish-1,alignContentAfterDBS4 issue-393.tex -o=+-mod4
+
+latexindent.pl -s -m -l double-back-slash1,double-back-slash-finish-1,alignContentAfterDBS,cases3 issue-393a.tex -o=+-mod3
+
+latexindent.pl -s issue-393b.tex -o=+-mod1
+latexindent.pl -s -l alignContentAfterDBS2 issue-393b.tex -o=+-mod2
+latexindent.pl -s -l alignContentAfterDBS3 issue-393b.tex -o=+-mod3
+latexindent.pl -s -l alignContentAfterDBS4 issue-393b.tex -o=+-mod4
+
+latexindent.pl -s issue-393c.tex -o=+-mod1
+latexindent.pl -s -l alignContentAfterDBS3 issue-393c.tex -o=+-mod3
+latexindent.pl -s -l alignContentAfterDBS4 issue-393c.tex -o=+-mod4
+latexindent.pl -s -l alignContentAfterDBS5 issue-393c.tex -o=+-mod5
+latexindent.pl -s -l alignContentAfterDBS6 issue-393c.tex -o=+-mod6
+latexindent.pl -s -l alignContentAfterDBS7 issue-393c.tex -o=+-mod7
+
+latexindent.pl -s -l alignContentAfterDBS.yaml issue-393d.tex -o=+-mod1
+
+latexindent.pl -s -l alignContentAfterDBS1.yaml tabular5.tex -o=+-mod1
+latexindent.pl -s -l alignContentAfterDBS8.yaml tabular5.tex -o=+-mod8
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

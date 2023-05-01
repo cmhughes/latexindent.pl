@@ -15,9 +15,9 @@ As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``lat
  	:class: .mlbyaml
  	:caption: ``modifyLineBreaks`` 
  	:name: lst:modifylinebreaks
- 	:lines: 498-500
+ 	:lines: 500-502
  	:linenos:
- 	:lineno-start: 498
+ 	:lineno-start: 500
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -77,9 +77,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
  	:class: .mlbyaml
  	:caption: ``textWrapOptions`` 
  	:name: lst:textWrapOptionsAll
- 	:lines: 526-553
+ 	:lines: 528-555
  	:linenos:
- 	:lineno-start: 526
+ 	:lineno-start: 528
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -1041,9 +1041,9 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
  	:class: .mlbyaml
  	:caption: ``oneSentencePerLine`` 
  	:name: lst:oneSentencePerLine
- 	:lines: 501-525
+ 	:lines: 503-527
  	:linenos:
- 	:lineno-start: 501
+ 	:lineno-start: 503
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1160,25 +1160,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
  	:class: .mlbyaml
  	:caption: ``sentencesFollow`` 
  	:name: lst:sentencesFollow
- 	:lines: 507-515
+ 	:lines: 509-517
  	:linenos:
- 	:lineno-start: 507
+ 	:lineno-start: 509
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesBeginWith`` 
  	:name: lst:sentencesBeginWith
- 	:lines: 516-519
+ 	:lines: 518-521
  	:linenos:
- 	:lineno-start: 516
+ 	:lineno-start: 518
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .mlbyaml
  	:caption: ``sentencesEndWith`` 
  	:name: lst:sentencesEndWith
- 	:lines: 520-525
+ 	:lines: 522-527
  	:linenos:
- 	:lineno-start: 520
+ 	:lineno-start: 522
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1822,9 +1822,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
  	:class: .mlbyaml
  	:caption: ``environments`` 
  	:name: lst:environments-mlb
- 	:lines: 555-564
+ 	:lines: 557-566
  	:linenos:
- 	:lineno-start: 555
+ 	:lineno-start: 557
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
@@ -2585,6 +2585,44 @@ Double backslash starts on own line
 	-  :numref:`lst:DBS1` specifies ``DBSStartsOnOwnLine`` for *every* environment (that is within ``lookForAlignDelims``, :numref:`lst:aligndelims:advanced`); the double backslashes from :numref:`lst:dbs-demo` have been moved to their own line in :numref:`lst:tabular3-DBS1`;
 	
 	-  :numref:`lst:DBS2` specifies ``DBSStartsOnOwnLine`` on a *per-name* basis for ``tabular`` (that is within ``lookForAlignDelims``, :numref:`lst:aligndelims:advanced`); the double backslashes from :numref:`lst:dbs-demo` have been moved to their own line in :numref:`lst:tabular3-DBS2`, having added comment symbols before moving them.
+	
+	
+	 
+
+.. proof:example::	
+	
+	We can combine DBS poly-switches with, for example, the ``alignContentAfterDoubleBackSlash`` in :numref:`sec:alignContentAfterDoubleBackSlash`.
+	
+	For example, starting with the file :numref:`lst:tabular6`, and using the settings in :numref:`lst:alignContentAfterDBS1` and :numref:`lst:alignContentAfterDBS2` and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -s -m -l alignContentAfterDBS1.yaml,DBS1.yaml tabular6.tex -o=+-mod1
+	   latexindent.pl -s -m -l alignContentAfterDBS2.yaml,DBS1.yaml tabular6.tex -o=+-mod2
+	
+	gives the respective outputs shown in :numref:`lst:tabular6-mod1` and :numref:`lst:tabular6-mod2`.
+	
+	.. literalinclude:: demonstrations/tabular6.tex
+	 	:class: .tex
+	 	:caption: ``tabular6.tex`` 
+	 	:name: lst:tabular6
+	
+	.. literalinclude:: demonstrations/tabular6-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tabular6-mod1.tex`` 
+	 	:name: lst:tabular6-mod1
+	
+	.. literalinclude:: demonstrations/tabular6-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tabular6-mod2.tex`` 
+	 	:name: lst:tabular6-mod2
+	
+	We note that:
+	
+	-  in :numref:`lst:tabular6-mod1` the content *after* the double back slash has been aligned;
+	
+	-  in :numref:`lst:tabular6-mod2` we see that 3 spaces have been added after the double back slash.
 	
 	
 	 

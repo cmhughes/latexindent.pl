@@ -616,7 +616,7 @@ latexindent.pl -m env-mlb7.tex -l env-mlb13,env-mlb14,UnpreserveBlankLines
  (\vref{lst:tabularafter:basic}), commands (\vref{lst:matrixafter}), or special code
  blocks (\vref{lst:specialafter}). \footnote{There is no longer any need for the code
  block to be specified within \texttt{lookForAlignDelims} for DBS poly-switches to
- activate. \announce*{2023-01-01}*{DBS poly-switches no need to specify
+ activate. \announce{2023-01-01}*{DBS poly-switches no need to specify
  lookForAlignDelims}} \index{delimiters!poly-switches for double backslash}
  \index{modifying linebreaks! surrounding double backslash} \index{poly-switches!for
  double back slash (delimiters)}%
@@ -676,6 +676,39 @@ latexindent.pl -m tabular3.tex -l DBS2.yaml
          \vref{lst:aligndelims:advanced});
          the double backslashes from \cref{lst:dbs-demo} have been moved to their own line in
          \cref{lst:tabular3-DBS2}, having added comment symbols before moving them.
+  \end{itemize}
+  \end{example}
+
+  \begin{example}
+  We can combine DBS poly-switches with, for example, the
+  \texttt{alignContentAfterDoubleBackSlash} in
+  \vref{sec:alignContentAfterDoubleBackSlash}.
+
+  For example, starting with the file \cref{lst:tabular6}, and using the settings in
+  \vref{lst:alignContentAfterDBS1,lst:alignContentAfterDBS2} and running
+  \begin{widepage}
+
+   \begin{commandshell}
+latexindent.pl -s -m -l alignContentAfterDBS1.yaml,DBS1.yaml tabular6.tex -o=+-mod1
+latexindent.pl -s -m -l alignContentAfterDBS2.yaml,DBS1.yaml tabular6.tex -o=+-mod2
+\end{commandshell}
+
+  \end{widepage}
+  gives the respective outputs shown in \cref{lst:tabular6-mod1,lst:tabular6-mod2}.
+  \begin{cmhtcbraster}[raster columns=3,
+    raster left skip=-3.5cm,
+    raster right skip=-2cm,
+    raster column skip=.03\linewidth]
+   \cmhlistingsfromfile*{demonstrations/tabular6.tex}{\texttt{tabular6.tex}}{lst:tabular6}
+   \cmhlistingsfromfile*{demonstrations/tabular6-mod1.tex}{\texttt{tabular6-mod1.tex}}{lst:tabular6-mod1}
+   \cmhlistingsfromfile*{demonstrations/tabular6-mod2.tex}{\texttt{tabular6-mod2.tex}}{lst:tabular6-mod2}
+  \end{cmhtcbraster}
+  We note that:
+  \begin{itemize}
+   \item in \cref{lst:tabular6-mod1} the content \emph{after} the double back slash has
+         been aligned;
+   \item in \cref{lst:tabular6-mod2} we see that 3 spaces have been added after the
+         double back slash.
   \end{itemize}
   \end{example}
 

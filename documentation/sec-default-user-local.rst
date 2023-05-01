@@ -459,7 +459,7 @@ If, for example, you wish to remove the alignment of the ``\\`` within a delimit
  	:class: .baseyaml
  	:caption: ``lookForAlignDelims`` (advanced) 
  	:name: lst:aligndelims:advanced
- 	:lines: 158-174
+ 	:lines: 158-176
  	:linenos:
  	:lineno-start: 158
 
@@ -489,7 +489,11 @@ Note that you can use a mixture of the basic and advanced form: in :numref:`lst:
 
 -  delimiterJustification optionally specifies the justification for the alignment delimiters (default: left); note that this feature is only useful if you have delimiters of different lengths in the same column, discussed in :numref:`sec:delimiter-reg-ex`;
 
--  lookForChildCodeBlocks optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`.
+-  lookForChildCodeBlocks optionally instructs ``latexindent.pl`` to search for child code blocks or not (default: 1), discussed in :numref:`sec:lookForChildCodeBlocks`;
+
+-  alignContentAfterDoubleBackSlash optionally instructs ``latexindent.pl`` to align content *after* double back slash (default: 0), discussed in :numref:`sec:alignContentAfterDoubleBackSlash`;
+
+-  spacesAfterDoubleBackSlash optionally specifies the number (integer :math:`\geq` 0) of spaces to be placed *after* the double back slash *when alignContentAfterDoubleBackSlash is active*; demonstrated in :numref:`sec:alignContentAfterDoubleBackSlash`.
 
 .. proof:example::	
 	
@@ -1244,6 +1248,75 @@ There may be scenarios in which you would prefer to instruct ``latexindent.pl`` 
 	
 	 
 
+.. label follows
+
+.. _sec:alignContentAfterDoubleBackSlash:
+
+lookForAlignDelims: alignContentAfterDoubleBackSlash
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can instruct ``latexindent`` to align content after the double back slash. See also :numref:`subsec:dbs`.
+
+.. proof:example::	
+	
+	We consider the file in :numref:`lst:tabular5`, and the default output given in :numref:`lst:tabular5-default`.
+	
+	.. literalinclude:: demonstrations/tabular5.tex
+	 	:class: .tex
+	 	:caption: ``tabular5.tex`` 
+	 	:name: lst:tabular5
+	
+	.. literalinclude:: demonstrations/tabular5-default.tex
+	 	:class: .tex
+	 	:caption: ``tabular5-default.tex`` 
+	 	:name: lst:tabular5-default
+	
+	Using the settings given in :numref:`lst:alignContentAfterDBS1` and running
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -s tabular5.tex -l alignContentAfterDBS1 -o=+-mod1
+	
+	gives the output in :numref:`lst:tabular5-mod1`.
+	
+	.. literalinclude:: demonstrations/tabular5-mod1.tex
+	 	:class: .tex
+	 	:caption: ``tabular5-mod1.tex`` 
+	 	:name: lst:tabular5-mod1
+	
+	.. literalinclude:: demonstrations/alignContentAfterDBS1.yaml
+	 	:class: .baseyaml
+	 	:caption: ``alignContentAfterDBS1.yaml`` 
+	 	:name: lst:alignContentAfterDBS1
+	
+	
+	 
+
+.. proof:example::	
+	
+	When using the ``alignContentAfterDoubleBackSlash`` feature, then you can also specify how many spaces to insert after the double backslash; the default is 1. Starting from :numref:`lst:tabular5` and using the the settings given in :numref:`lst:alignContentAfterDBS2`
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -s tabular5.tex -l alignContentAfterDBS2 -o=+-mod2
+	
+	gives the output in :numref:`lst:tabular5-mod2`.
+	
+	.. literalinclude:: demonstrations/tabular5-mod2.tex
+	 	:class: .tex
+	 	:caption: ``tabular5-mod2.tex`` 
+	 	:name: lst:tabular5-mod2
+	
+	.. literalinclude:: demonstrations/alignContentAfterDBS2.yaml
+	 	:class: .baseyaml
+	 	:caption: ``alignContentAfterDBS2.yaml`` 
+	 	:name: lst:alignContentAfterDBS2
+	
+	
+	 
+
 Indent after items, specials and headings
 -----------------------------------------
 
@@ -1255,9 +1328,9 @@ The environment names specified in ``indentAfterItems`` tell ``latexindent.pl`` 
  	:class: .baseyaml
  	:caption: ``indentAfterItems`` 
  	:name: lst:indentafteritems
- 	:lines: 237-244
+ 	:lines: 239-246
  	:linenos:
- 	:lineno-start: 237
+ 	:lineno-start: 239
 
 .. literalinclude:: demonstrations/items1.tex
  	:class: .tex
@@ -1284,9 +1357,9 @@ The environment names specified in ``indentAfterItems`` tell ``latexindent.pl`` 
  	:class: .baseyaml
  	:caption: ``itemNames`` 
  	:name: lst:itemNames
- 	:lines: 250-252
+ 	:lines: 252-254
  	:linenos:
- 	:lineno-start: 250
+ 	:lineno-start: 252
 
 .. describe:: specialBeginEnd:fields
 
@@ -1306,9 +1379,9 @@ in ``specialBeginEnd`` are, in their default state, focused on math mode begin a
  	:class: .baseyaml
  	:caption: ``specialBeginEnd`` 
  	:name: lst:specialBeginEnd
- 	:lines: 256-269
+ 	:lines: 258-271
  	:linenos:
- 	:lineno-start: 256
+ 	:lineno-start: 258
 
 The field ``displayMath`` represents ``\[...\]``, ``inlineMath`` represents ``$...$`` and ``displayMathTex`` represents ``$$...$$``. You can, of course, rename these in your own YAML files (see :numref:`sec:localsettings`); indeed, you might like to set up your own special begin and end statements.
 
@@ -1574,9 +1647,9 @@ This field enables the user to specify indentation rules that take effect after 
  	:class: .baseyaml
  	:caption: ``indentAfterHeadings`` 
  	:name: lst:indentAfterHeadings
- 	:lines: 279-288
+ 	:lines: 281-290
  	:linenos:
- 	:lineno-start: 279
+ 	:lineno-start: 281
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too deep.
 
@@ -2012,9 +2085,9 @@ Assuming that your environment name is not found within neither ``noAdditionalIn
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal:environments
- 	:lines: 337-338
+ 	:lines: 339-340
  	:linenos:
- 	:lineno-start: 337
+ 	:lineno-start: 339
 
 .. proof:example::	
 	
@@ -2091,9 +2164,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal:environments
- 	:lines: 353-354
+ 	:lines: 355-356
  	:linenos:
- 	:lineno-start: 353
+ 	:lineno-start: 355
 
 .. proof:example::	
 	
@@ -2854,17 +2927,17 @@ Having considered all of the different types of code blocks, the functions of th
  	:class: .baseyaml
  	:caption: ``noAdditionalIndentGlobal`` 
  	:name: lst:noAdditionalIndentGlobal
- 	:lines: 337-349
+ 	:lines: 339-351
  	:linenos:
- 	:lineno-start: 337
+ 	:lineno-start: 339
 
 .. literalinclude:: ../defaultSettings.yaml
  	:class: .baseyaml
  	:caption: ``indentRulesGlobal`` 
  	:name: lst:indentRulesGlobal
- 	:lines: 353-365
+ 	:lines: 355-367
  	:linenos:
- 	:lineno-start: 353
+ 	:lineno-start: 355
 
 .. label follows
 
@@ -2883,9 +2956,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in :numref:`lst
  	:class: .baseyaml
  	:caption: ``commandCodeBlocks`` 
  	:name: lst:commandCodeBlocks
- 	:lines: 368-383
+ 	:lines: 370-385
  	:linenos:
- 	:lineno-start: 368
+ 	:lineno-start: 370
 
 .. describe:: roundParenthesesAllowed:0|1
 

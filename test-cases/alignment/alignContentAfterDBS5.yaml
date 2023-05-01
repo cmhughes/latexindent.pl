@@ -1,0 +1,5 @@
+lookForAlignDelims:
+   cases:
+      alignContentAfterDoubleBackSlash: 1
+      spacesBeforeDoubleBackSlash: 2
+      spacesAfterDoubleBackSlash: 0

@@ -39,20 +39,22 @@ our %previouslyFoundSettings;
 
 # default values for align at ampersand routine
 our @alignAtAmpersandInformation = (
-    { name => "lookForAlignDelims",          yamlname => "delims", default => 1 },
-    { name => "alignDoubleBackSlash",        default  => 1 },
-    { name => "spacesBeforeDoubleBackSlash", default  => 1 },
-    { name => "multiColumnGrouping",         default  => 0 },
-    { name => "alignRowsWithoutMaxDelims",   default  => 1 },
-    { name => "spacesBeforeAmpersand",       default  => 1 },
-    { name => "spacesAfterAmpersand",        default  => 1 },
-    { name => "justification",               default  => "left" },
-    { name => "alignFinalDoubleBackSlash",   default  => 0 },
-    { name => "dontMeasure",                 default  => 0 },
-    { name => "delimiterRegEx",              default  => "(?<!\\\\)(&)" },
-    { name => "delimiterJustification",      default  => "left" },
-    { name => "leadingBlankColumn",          default  => -1 },
-    { name => "lookForChildCodeBlocks",      default  => 1 },
+    { name => "lookForAlignDelims",               yamlname => "delims", default => 1 },
+    { name => "alignDoubleBackSlash",             default  => 1 },
+    { name => "spacesBeforeDoubleBackSlash",      default  => 1 },
+    { name => "multiColumnGrouping",              default  => 0 },
+    { name => "alignRowsWithoutMaxDelims",        default  => 1 },
+    { name => "spacesBeforeAmpersand",            default  => 1 },
+    { name => "spacesAfterAmpersand",             default  => 1 },
+    { name => "justification",                    default  => "left" },
+    { name => "alignFinalDoubleBackSlash",        default  => 0 },
+    { name => "dontMeasure",                      default  => 0 },
+    { name => "delimiterRegEx",                   default  => "(?<!\\\\)(&)" },
+    { name => "delimiterJustification",           default  => "left" },
+    { name => "leadingBlankColumn",               default  => -1 },
+    { name => "lookForChildCodeBlocks",           default  => 1 },
+    { name => "alignContentAfterDoubleBackSlash", default  => 0 },
+    { name => "spacesAfterDoubleBackSlash",       default  => 1 },
 );
 
 sub yaml_read_settings {

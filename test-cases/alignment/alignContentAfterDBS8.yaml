@@ -1,0 +1,4 @@
+lookForAlignDelims:
+   tabular:
+      alignContentAfterDoubleBackSlash: 1
+      justification: right

@@ -474,7 +474,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
 
 \subsubsection{oneSentencePerLine: text wrapping and indenting sentences, when before/after}\label{subsubsec:ospl:before:after}
  The text wrapping routine operates, by default, \texttt{before} the
- \announce*{2023-01-01}{text wrap: before/after details} code blocks have been found, but
+ \announce{2023-01-01}{text wrap: before/after details} code blocks have been found, but
  this can be changed to \texttt{after}:
  \begin{itemize}
   \item \texttt{before} means it is likely that the columns of wrapped text may \emph{exceed} the
@@ -488,7 +488,7 @@ latexindent.pl multiple-sentences6 -m -l=sentence-wrap1.yaml,itemize.yaml
  \begin{example}
  Let's begin with the file in \cref{lst:multiple-sentences8}.
 
- \cmhlistingsfromfile*{demonstrations/multiple-sentences8.tex}{\texttt{multiple-sentences8.tex}}{lst:multiple-sentences8}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences8.tex}{\texttt{multiple-sentences8.tex}}{lst:multiple-sentences8}
 
  Using the settings given in \cref{lst:sentence-wrap2} and running the command
 
@@ -502,8 +502,8 @@ latexindent.pl multiple-sentences8 -o=+-mod1.tex -l=sentence-wrap2 -m
    raster left skip=-1.5cm,
    raster right skip=-0cm,
    raster column skip=.06\linewidth]
-  \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod1.tex}{\texttt{multiple-sentences8-mod1.tex}}{lst:multiple-sentences8-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap2.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap2.yaml}}{lst:sentence-wrap2}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences8-mod1.tex}{\texttt{multiple-sentences8-mod1.tex}}{lst:multiple-sentences8-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap2.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap2.yaml}}{lst:sentence-wrap2}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:multiple-sentences8-mod1}, that the wrapped text has
@@ -527,8 +527,8 @@ latexindent.pl multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3 -m
    raster left skip=-1.5cm,
    raster right skip=-0cm,
    raster column skip=.06\linewidth]
-  \cmhlistingsfromfile*{demonstrations/multiple-sentences8-mod2.tex}{\texttt{multiple-sentences8-mod2.tex}}{lst:multiple-sentences8-mod2}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap3.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap3.yaml}}{lst:sentence-wrap3}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences8-mod2.tex}{\texttt{multiple-sentences8-mod2.tex}}{lst:multiple-sentences8-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap3.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap3.yaml}}{lst:sentence-wrap3}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:multiple-sentences8-mod2}, that the wrapped text has
@@ -544,7 +544,7 @@ latexindent.pl multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3 -m
  \begin{example}
  Let's begin with the file in \cref{lst:multiple-sentences9}.
 
- \cmhlistingsfromfile*{demonstrations/multiple-sentences9.tex}{\texttt{multiple-sentences9.tex}}{lst:multiple-sentences9}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences9.tex}{\texttt{multiple-sentences9.tex}}{lst:multiple-sentences9}
 
  Using the settings given in \cref{lst:sentence-wrap4} and running the command
 
@@ -558,8 +558,8 @@ latexindent.pl multiple-sentences9 -o=+-mod1.tex -l=sentence-wrap4 -m
    raster left skip=-1.5cm,
    raster right skip=-0cm,
    raster column skip=.06\linewidth]
-  \cmhlistingsfromfile*{demonstrations/multiple-sentences9-mod1.tex}{\texttt{multiple-sentences9-mod1.tex}}{lst:multiple-sentences9-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/sentence-wrap4.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap4.yaml}}{lst:sentence-wrap4}
+  \cmhlistingsfromfile{demonstrations/multiple-sentences9-mod1.tex}{\texttt{multiple-sentences9-mod1.tex}}{lst:multiple-sentences9-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/sentence-wrap4.yaml}[MLB-TCB,width=0.4\linewidth]{\texttt{sentence-wrap4.yaml}}{lst:sentence-wrap4}
  \end{cmhtcbraster}
 
  We note that, in \cref{lst:multiple-sentences9-mod1}, that the sentences have been

@@ -1,0 +1,4 @@
+lookForAlignDelims:
+   cases:
+      alignDoubleBackSlash: 0
+      alignContentAfterDoubleBackSlash: 1

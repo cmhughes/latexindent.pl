@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 3.20.6, 2023-04-11
+# latexindent.pl, version 3.21, 2023-05-01
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 # 
@@ -170,6 +170,8 @@ lookForAlignDelims:
       delimiterRegEx: (?<!\\)(&)
       delimiterJustification: left
       lookForChildCodeBlocks: 1
+      alignContentAfterDoubleBackSlash: 0
+      spacesAfterDoubleBackSlash: 1
    tabularx:
       delims: 1
    longtable: 1
