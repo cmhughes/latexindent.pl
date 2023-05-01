@@ -17,14 +17,28 @@
 # update, but only minor version
 #
 #   update-version.sh -u -m
+#
+# get version details
+#
+#   update-version.sh -v
 
 minorVersion=0
-oldVersion='3.20.5'
-newVersion='3.20.6'
-oldDate='2023-04-07'
-newDate='2023-04-11'
+oldVersion='3.20.6'
+newVersion='3.21'
+oldDate='2023-04-11'
+newDate='2023-05-01'
 updateVersion=0
 
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+RED='\033[0;31m'          # red
+YELLOW='\033[1;33m'       # yellow
+BGreen='\033[1;32m'       # green
+CYAN='\033[0;36m'         # cyan
+COLOR_OFF='\033[0m'       # text reset
+
+#
+# process options
+#
 while getopts "hmuv" OPTION
 do
  case $OPTION in 
@@ -42,10 +56,10 @@ ${0##*/} [OPTIONS]
 Typical running order pre-release:
 
     update-version.sh
-    - <update documentation/changelog.md>
+    - <update documentation/changelog.md manually>
     - <check everything has changed as you'd like using git diff>
     - git add .
-    - <compile documentation> AND run test-cases.sh -s -n
+    - <compile documentation> AND <run test-cases.sh -s -n>
     - <commit changes and push to develop>
     - git push
     - git checkout main
@@ -68,9 +82,10 @@ ____PLEH
    updateVersion=1
    ;;
   v)    
+   echo ""
    echo "version details:"
-   echo "old version details: $oldVersion, $oldDate"
-   echo "NEW version details: $newVersion, $newDate"
+   echo -e "${RED}old${COLOR_OFF} version details: $oldVersion, $oldDate"
+   echo -e "${BGreen}NEW${COLOR_OFF} version details: $newVersion, $newDate"
    exit 0
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
@@ -79,13 +94,6 @@ ____PLEH
  # end case
  esac 
 done
-
-# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
-RED='\033[0;31m'          # red
-YELLOW='\033[1;33m'       # yellow
-BGreen='\033[1;32m'       # green
-CYAN='\033[0;36m'         # cyan
-COLOR_OFF='\033[0m'       # text reset
 
 function helper_section_print() {
     set +x
@@ -106,7 +114,7 @@ helper_section_print "documentation update"
 cd ../
 
 #
-# into documentation
+# documentation update
 #
 cd documentation
 

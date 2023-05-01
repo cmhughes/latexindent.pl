@@ -1,5 +1,11 @@
-<!-- announcement: Further minor updates to the diacritics in filenames-->
+<!-- announcement: New feature for the align at ampersand routine: alignContentAfterDoubleBackSlash and spacesAfterDoubleBackSlash-->
+
 # changelog.md
+
+## V3.21, May 1, 2023
+new feature for the align at ampersand routine: alignContentAfterDoubleBackSlash and spacesAfterDoubleBackSlash, 
+discussion at [issue-393](https://github.com/cmhughes/latexindent.pl/issues/393).
+
 ## V3.20.6, April 11, 2023
 Further minor updates to the diacritics in filenames, [pull 439](https://github.com/cmhughes/latexindent.pl/pull/439).
 

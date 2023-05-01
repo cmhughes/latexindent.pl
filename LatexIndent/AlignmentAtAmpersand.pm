@@ -289,7 +289,7 @@ sub align_at_ampersand {
                     delimiter       => "",
                     delimiterLength => 0,
                     measureThis     => ( $numberOfAmpersands > 0 ? ${$self}{measureRow} : 0 ),
-                    DBSpadding => 0,
+                    DBSpadding      => 0,
                 }
             );
 
@@ -301,9 +301,10 @@ sub align_at_ampersand {
             if ( defined $input{beforeDBSlengths} and $columnCounter == 0 ) {
                 my $currentRowDBSlength = ${ $input{beforeDBSlengths} }[ $rowCounter + 1 ];
                 ${ $cellStorage[$rowCounter][$columnCounter] }{width}
-                    += $currentRowDBSlength+($input{maxDBSlength}-$currentRowDBSlength);
+                    += $currentRowDBSlength + ( $input{maxDBSlength} - $currentRowDBSlength );
 
-                ${ $cellStorage[$rowCounter][$columnCounter] }{DBSpadding} = ($input{maxDBSlength}-$currentRowDBSlength);
+                ${ $cellStorage[$rowCounter][$columnCounter] }{DBSpadding}
+                    = ( $input{maxDBSlength} - $currentRowDBSlength );
 
             }
 
@@ -346,7 +347,7 @@ sub align_at_ampersand {
                             colSpan           => ".",
                             delimiter         => "",
                             delimiterLength   => 0,
-                            DBSpadding => 0,
+                            DBSpadding        => 0,
                             measureThis       => 0
                         }
                     );
@@ -398,7 +399,7 @@ sub align_at_ampersand {
             for (
             "entry",       "type",               "colSpan",           "width",
             "measureThis", "maximumColumnWidth", "individualPadding", "groupPadding",
-            "delimiter",   "delimiterLength", "DBSpadding"
+            "delimiter",   "delimiterLength",    "DBSpadding"
             );
     }
 
@@ -487,7 +488,7 @@ sub align_at_ampersand {
         my @beforeDBSlengths      = q();
         my @originalFormattedBody = @formattedBody;
         my $afterDBSbody          = q();
-        my $maxDBSlength = 0;
+        my $maxDBSlength          = 0;
         foreach (@originalFormattedBody) {
             ${$_}{row} =~ s/(.*?)(${${$mainSettings{fineTuning}}{modifyLineBreaks}}{doubleBackSlash})\h*//s;
             ${$_}{beforeDBS} = ( $1 ? $1 : q() );
@@ -495,11 +496,15 @@ sub align_at_ampersand {
             ${$_}{DBS} .= " " x ( ${$self}{spacesAfterDoubleBackSlash} ) if ( ${$_}{DBS} ne '' );
             $afterDBSbody .= ${$_}{row} . "\n";
             push( @beforeDBSlengths, &get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} ) );
-            $maxDBSlength = max ($maxDBSlength,&get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} )  );
+            $maxDBSlength = max( $maxDBSlength, &get_column_width( ${$_}{beforeDBS} . ${$_}{DBS} ) );
         }
 
         ${$self}{body} = $afterDBSbody;
-        $self->align_at_ampersand( measure_after_DBS => 1, beforeDBSlengths => \@beforeDBSlengths, maxDBSlength=>$maxDBSlength  );
+        $self->align_at_ampersand(
+            measure_after_DBS => 1,
+            beforeDBSlengths  => \@beforeDBSlengths,
+            maxDBSlength      => $maxDBSlength
+        );
 
         # create new afterDBSbody
         my @afterDBSbody = split( "\n", ${$self}{body} );
@@ -605,7 +610,7 @@ sub main_formatting {
             #
             #   test-cases/alignment/issue-393.tex
             #
-            $tmpRow .= " "x${$cell}{DBSpadding};
+            $tmpRow .= " " x ${$cell}{DBSpadding};
 
             # the placement of the padding is dependent on the value of justification
             if ( ${$self}{justification} eq "left" ) {
@@ -973,7 +978,7 @@ sub individual_padding {
                         colSpan           => ".",
                         delimiter         => "",
                         delimiterLength   => 0,
-                    DBSpadding => 0,
+                        DBSpadding        => 0,
                     }
                 );
             }

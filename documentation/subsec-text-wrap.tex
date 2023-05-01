@@ -16,7 +16,7 @@
   \item it happens \emph{after} verbatim blocks have been found;
   \item it happens \emph{after} the oneSentencePerLine routine (see
         \cref{sec:onesentenceperline});
-  \item it can happen \emph{before} or \emph{after} \announce*{2023-01-01}{text wrap:
+  \item it can happen \emph{before} or \emph{after} \announce{2023-01-01}{text wrap:
         before/after} all of the other code blocks are found and does \emph{not} operate
         on a per-code-block basis; when using \texttt{before} this means that, including
         indentation, you may receive a column width wider than that which you specify in
@@ -47,7 +47,7 @@
                (possibly combined) trailing comments is determined by the spaces (if any)
                at the end of the text wrap block (see \cref{lst:tw-tc5});
         \end{enumerate}
-  \item trailing comments can receive text wrapping \announce*{2023-01-01}{text wrap
+  \item trailing comments can receive text wrapping \announce{2023-01-01}{text wrap
         trailing comments}; examples are shown in \cref{subsubsec:tw:comments} and
         \cref{subsubsec:ospl:tw:comments}.
  \end{enumerate}
@@ -513,7 +513,7 @@ latexindent.pl -m tw-tc6.tex -l textwrap1A.yaml -o=+-mod1
 
 \subsubsection{Text wrap: when before/after}\label{subsubsec:tw:before:after}
  The text wrapping routine operates, by default, \texttt{before} the
- \announce*{2023-01-01}{text wrap: before/after details} code blocks have been found, but
+ \announce{2023-01-01}{text wrap: before/after details} code blocks have been found, but
  this can be changed to \texttt{after}:
  \begin{itemize}
   \item \texttt{before} means it is likely that the columns of wrapped text may \emph{exceed} the
@@ -575,7 +575,7 @@ latexindent.pl textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml -m
 
 \subsubsection{Text wrap: wrapping comments}\label{subsubsec:tw:comments}
  You can instruct \texttt{latexindent.pl} to apply text wrapping to comments
- \announce*{2023-01-01}{text wrap trailing comments}; we demonstrate this with examples,
+ \announce{2023-01-01}{text wrap trailing comments}; we demonstrate this with examples,
  see also \cref{subsubsec:ospl:tw:comments}. \index{comments!text wrap} \index{text
  wrap!comments}
 
