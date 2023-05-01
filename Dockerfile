@@ -1,4 +1,4 @@
-FROM perl:5.36.0-slim-threaded-buster
+FROM perl:5.36.1-slim-threaded-buster
 #
 # Docker necessary file
 #
