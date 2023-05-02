@@ -1,20 +1,4 @@
 FROM perl:5.36.1-slim-threaded-buster
-#
-# Docker necessary file
-#
-# Build:
-#   docker build . \
-#     -t <maintainer>/latexindent:<version tag> \
-#     --build-arg LATEXINDENT_VERSION=<version tag>
-#
-# Run:
-#   docker run --rm -it <maintainer>/latexindent:<version tag> -h
-#
-# Publish:
-#   docker push <maintainer>/latexindent:<version tag>
-#
-# Note: see also .github/workflows/release-docker-ghcr.yml
-#
 RUN apt-get update \
     && apt-get install \
     build-essential \
