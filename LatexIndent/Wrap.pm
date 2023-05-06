@@ -207,7 +207,7 @@ sub text_wrap {
 
     # store the text wrap blocks
     my @textWrapBlockStorage = split( /($blocksFollow)/, ${$self}{body} );
-    @textWrapBlockStorage = split( /(\s*$blocksFollow)/, ${$self}{body} )
+    @textWrapBlockStorage = split( /(\s*$blocksFollow+)/, ${$self}{body} )
         if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
     # sentences need special treatment
