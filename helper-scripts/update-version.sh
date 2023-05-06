@@ -53,6 +53,8 @@ ${0##*/} [OPTIONS]
 
     -u  update version
 
+    -v  version details
+
 Typical running order pre-release:
 
     update-version.sh
@@ -86,6 +88,40 @@ ____PLEH
    echo "version details:"
    echo -e "${RED}old${COLOR_OFF} version details: $oldVersion, $oldDate"
    echo -e "${BGreen}NEW${COLOR_OFF} version details: $newVersion, $newDate"
+
+   #
+   # ctan announcement
+   #
+   egrep -i --color=auto '<!-- announcement:' ../documentation/changelog.md > tmp.log
+   sed -i.bak s/\<\!\-\-\ announcement:\ // tmp.log
+   sed -i.bak s/-\-\>// tmp.log
+    
+   echo ""
+   echo "#"
+   echo "# ctan (see ../documentation/changelog.md)"
+   echo "#"
+   echo -e "The following will be used as ${BGreen}*announcement* ${COLOR_OFF}text for ${BGreen}ctan:${YELLOW}"
+   echo ""
+   cat tmp.log
+   echo -e ${COLOR_OFF}
+
+   #
+   # release text
+   #
+   trash-put cmh*
+   csplit ../documentation/changelog.md '/^\#\#/' '{*}' -q -f cmh # split changelog at '##'
+   for file in cmh*
+   do
+       mv "$file" "$file.log"
+   done
+   sed -i.bak s/\#\#.*\// cmh01.log
+
+   echo "#"
+   echo "# release text (see ../documentation/changelog.md)"
+   echo "#"
+   echo -e "The following will be used as ${BGreen}*release* ${COLOR_OFF}text for ${BGreen}github:${YELLOW}"
+   cat cmh01.log
+   echo -e ${COLOR_OFF}
    exit 0
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
@@ -243,15 +279,15 @@ while true; do
 
    echo -e "The following will be used as ${BGreen}*release* ${COLOR_OFF}text for ${BGreen}github:${YELLOW}"
    cat cmh01.log
-    echo -e ${COLOR_OFF}
-    read -p "Are you happy to continue? [y/n/e] (click 'e' to edit changelog.md)" yn
-    case $yn in
-        [Yy]* ) echo -e "${BGreen} ... continuing${COLOR_OFF}" && break;;
-        [Nn]* ) echo -e "${RED} exiting${COLOR_OFF}" && exit;;
-        [Ee]* ) gedit documentation/changelog.md;;
-        * ) echo "Please answer yes, no or edit.";;
-    esac
-    trash-put cmh*
+   echo -e ${COLOR_OFF}
+   read -p "Are you happy to continue? [y/n/e] (click 'e' to edit changelog.md)" yn
+   case $yn in
+       [Yy]* ) echo -e "${BGreen} ... changelog.md updated ${COLOR_OFF}" && break;;
+       [Nn]* ) echo -e "${RED} exiting${COLOR_OFF}" && exit;;
+       [Ee]* ) gedit documentation/changelog.md;;
+       * ) echo "Please answer yes, no or edit.";;
+   esac
+   trash-put cmh*
 done
 
 # 
@@ -271,11 +307,14 @@ while true; do
     echo -e ${COLOR_OFF}
     read -p "Are you happy to continue? [y/n/e] (click 'e' to edit changelog.md)" yn
     case $yn in
-        [Yy]* ) echo -e "${BGreen} ... continuing${COLOR_OFF}" && break;;
+        [Yy]* ) echo -e "${BGreen} ... changelog.md updated ${COLOR_OFF}" && break;;
         [Nn]* ) echo -e "${RED} exiting${COLOR_OFF}" && exit;;
         [Ee]* ) gedit documentation/changelog.md;;
         * ) echo "Please answer yes, no or edit.";;
     esac
 done
 
+echo ""
+echo -e "${BGreen}SUCCESS: ${COLOR_OFF}update version number ${BGreen}COMPLETE ${COLOR_OFF}"
+echo ""
 exit 0
