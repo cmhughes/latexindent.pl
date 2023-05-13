@@ -242,11 +242,19 @@ latexindent.pl -s -r -m -l wrap-comments5.yaml,addruler1.yaml issue-389l.tex -o=
 latexindent.pl -s -m -l issue-412.yaml issue-412.tex -o=+-mod1
 
 # issue 444: text wrap after
-latexindent.pl -s -m -r -l issue-444.yaml issue-444.tex -o=+-mod1
+latexindent.pl -s -m -r -l issue-444.yaml  issue-444.tex -o=+-mod1
 latexindent.pl -s -m -r -l issue-444a.yaml issue-444.tex -o=+-mod2
 latexindent.pl -s -m -r -l issue-444b.yaml issue-444.tex -o=+-mod3
 
-latexindent.pl -s -m -r -l issue-444.yaml issue-444a.tex -o=+-mod1
+latexindent.pl -s -m -r -l issue-444.yaml  issue-444a.tex -o=+-mod1
+
+latexindent.pl -s -m -r -l issue-444.yaml  issue-444b.tex  -o=+-mod1
+latexindent.pl -s -m -r -l issue-444c.yaml  issue-444b.tex -o=+-mod2
+latexindent.pl -s -m -r -l issue-444d.yaml  issue-444b.tex -o=+-mod3
+latexindent.pl -s -m -r -l issue-444e.yaml  issue-444b.tex -o=+-mod4
+latexindent.pl -s -m -r -l issue-444f.yaml  issue-444b.tex -o=+-mod5
+
+latexindent.pl -s -m -r -l issue-444g.yaml  issue-444c.tex -o=+-mod1
 
 set +x
 [[ $gitStatus == 1 ]] && git status
