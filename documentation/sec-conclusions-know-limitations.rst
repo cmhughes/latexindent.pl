@@ -10,6 +10,9 @@ There are a number of known limitations of the script, and almost certainly quit
 multicolumn alignment
    when working with code blocks in which multicolumn commands overlap, the algorithm can fail; see :numref:`lst:tabular2-mod2`.
 
+textWrap after
+   when operating with ``indentRules`` (see :numref:`sec:noadd-indent-rules`) may not always cooperate with one another; if you have a specific example that does not work, please report it to (“Home of Latexindent.pl” n.d.).
+
 efficiency
    particularly when the ``-m`` switch is active, as this adds many checks and processes. The current implementation relies upon finding and storing *every* code block (see the discussion on :ref:`page page:phases <page:phases>`); I hope that, in a future version, only *nested* code blocks will need to be stored in the ‘packing’ phase, and that this will improve the efficiency of the script.
 

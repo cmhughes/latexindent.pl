@@ -1,6 +1,10 @@
-<!-- announcement: New feature for the align at ampersand routine: alignContentAfterDoubleBackSlash and spacesAfterDoubleBackSlash-->
+<!-- announcement: Bugfix for remoteTrailingWhiteSpace, and enhancement to text wrap and indentRules-->
 
 # changelog.md
+
+## V3.21.1, May 20, 2023
+* bugfix for `removeTrailingWhiteSpace`, [issue-417](https://github.com/cmhughes/latexindent.pl/issues/417)
+* enhancement to text wrap when `indentRules` active, [issue-444](https://github.com/cmhughes/latexindent.pl/issues/444)
 
 ## V3.21, May 1, 2023
 new feature for the align at ampersand routine: alignContentAfterDoubleBackSlash and spacesAfterDoubleBackSlash, 

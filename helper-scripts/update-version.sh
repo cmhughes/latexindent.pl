@@ -23,10 +23,10 @@
 #   update-version.sh -v
 
 minorVersion=0
-oldVersion='3.20.6'
-newVersion='3.21'
-oldDate='2023-04-11'
-newDate='2023-05-01'
+oldVersion='3.21'
+newVersion='3.21.1'
+oldDate='2023-05-01'
+newDate='2023-05-20'
 updateVersion=0
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -163,9 +163,14 @@ pdflatexneeded=1
 
 [[ -z $(git diff --name-only main|grep -i documentation/s) ]] && pdflatexneeded=0
 
-[[ $pdflatexneed -eq 0 ]] && echo -e "${YELLOW}documentation *not* updated, no need to run pdflatex${COLOR_OFF}"
+[[ $pdflatexneeded -eq 0 ]] && echo -e "${YELLOW}documentation *not* updated, no need to run pdflatex${COLOR_OFF}"
 
-if [ $pdflatexneeded == 1 ]; then
+if [ $pdflatexneeded -eq 1 ]; then
+   echo ""
+   echo -e "${YELLOW}pdflatex needed because of the following files:"
+   git diff --name-only main|grep -i documentation/s
+   echo -e "${COLOR_OFF}"
+
    set -x
    pdflatex --interaction=batchmode latexindent
    
