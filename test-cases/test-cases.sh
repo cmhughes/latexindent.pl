@@ -14,7 +14,8 @@
 function checkgitdiff
 {
     git diff --quiet
-    result=$? && [[ result -gt 0  ]] &&   echo "git diff has differences, something has changed" && exit
+    result=$? && [[ result -gt 0  ]] && [[ $dontStopMode -eq 0 ]] &&  echo "git diff has differences, something has changed" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
+
 }
 
 silentMode=0
@@ -25,8 +26,9 @@ noisyModeFlag=''
 gitStatusFlag=''
 benchmarkMode=0
 fileExtensionMode=0
+dontStopMode=0
 # check flags, and change defaults appropriately
-while getopts "abcfgo:ns" OPTION
+while getopts "abcdfgo:ns" OPTION
 do
  case $OPTION in 
   s)    
@@ -42,6 +44,10 @@ do
   b)
     # bench mark mode
     benchmarkMode=1
+    ;;
+  d)
+    # don't stop
+    dontStopMode=1
     ;;
   f)
     # file extension test mode
@@ -124,9 +130,13 @@ do
 
   [[ $directory == 'demonstrations' ]] && cd ../documentation/
   cd $directory
+
   [[ $silentMode == 1 ]] && echo "./$directory/$executable"
+
   ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
+
   checkgitdiff
+
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..
 done

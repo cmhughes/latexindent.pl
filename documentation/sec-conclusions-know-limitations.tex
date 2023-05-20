@@ -5,6 +5,10 @@
  \begin{description}
   \item[multicolumn alignment] when working with code blocks in which multicolumn
         commands overlap, the algorithm can fail; see \vref{lst:tabular2-mod2}.
+  \item[textWrap after] when operating with \texttt{indentRules} (see
+        \vref{sec:noadd-indent-rules}) may not always cooperate with one another; if you
+        have a specific example that does not work, please report it to
+        \cite{latexindent-home}.
   \item[efficiency] particularly when the \texttt{-m} switch is active, as this adds many
         checks and processes. The current implementation relies upon finding and storing
         \emph{every} code block (see the discussion on \cpageref{page:phases}); I hope

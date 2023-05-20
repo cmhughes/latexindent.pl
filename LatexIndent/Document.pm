@@ -187,12 +187,12 @@ sub operate_on_file {
         $self->remove_leading_space;
         $self->process_body_of_text;
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
-        $self->remove_trailing_whitespace( when => "after" );
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
+        $self->remove_trailing_whitespace( when => "after" );
         $self->make_replacements( when => "after" ) if $is_rv_switch_active;
         $self->put_verbatim_back_in( match => "everything-except-commands" );
         $self->put_trailing_comments_back_in;

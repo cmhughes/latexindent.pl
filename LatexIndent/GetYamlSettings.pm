@@ -26,7 +26,7 @@ use Cwd;
 use Exporter qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK
-    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings/;
+    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -818,6 +818,14 @@ sub yaml_get_indentation_settings_for_this_object {
             columns                   => ${$self}{columns},
         );
 
+        # text wrap 'after' information
+        if (    $is_m_switch_active
+            and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after'
+            and defined ${$self}{indentRule} )
+        {
+            ${ ${previouslyFoundSettings}{textWrapAfter} }{$name} = $indentation;
+        }
+
         # don't forget alignment settings!
         foreach (@alignAtAmpersandInformation) {
             ${ ${previouslyFoundSettings}{$storageName} }{ ${$_}{name} } = ${$self}{ ${$_}{name} }
@@ -1091,11 +1099,27 @@ sub yaml_get_indentation_information {
             if ( defined $indentationInformation ) {
                 if ( $indentationAbout eq "noAdditionalIndent" and $indentationInformation == 1 ) {
                     $logger->trace("Found! Using '' (see $indentationAbout)") if $is_t_switch_active;
+
+                    # text wrapping 'after' requires knowledge of indent rules
+                    #
+                    if ( $is_m_switch_active
+                        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+                    {
+                        ${$self}{indentRule} = $indentationInformation;
+                    }
                     return q();
                 }
                 elsif ( $indentationAbout eq "indentRules" and $indentationInformation =~ m/^\h*$/ ) {
                     $logger->trace("Found! Using '$indentationInformation' (see $indentationAbout)")
                         if $is_t_switch_active;
+
+                    # text wrapping 'after' requires knowledge of indent rules
+                    #
+                    if ( $is_m_switch_active
+                        and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+                    {
+                        ${$self}{indentRule} = $indentationInformation;
+                    }
                     return $indentationInformation;
                 }
             }
@@ -1115,12 +1139,28 @@ sub yaml_get_indentation_information {
         {
             $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)")
                 if $is_t_switch_active;
+
+            # text wrapping 'after' requires knowledge of indent rules
+            #
+            if ( $is_m_switch_active
+                and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+            {
+                ${$self}{indentRule} = $indentationInformation;
+            }
             return q();
         }
         elsif ( $globalInformation eq "indentRulesGlobal" ) {
             if ( ${ $mainSettings{$globalInformation} }{$YamlName} =~ m/^\h*$/ ) {
                 $logger->trace("$globalInformation specified for $YamlName (see $globalInformation)")
                     if $is_t_switch_active;
+
+                # text wrapping 'after' requires knowledge of indent rules
+                #
+                if ( $is_m_switch_active
+                    and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' )
+                {
+                    ${$self}{indentRule} = $indentationInformation;
+                }
                 return ${ $mainSettings{$globalInformation} }{$YamlName};
             }
             elsif ( ${ $mainSettings{$globalInformation} }{$YamlName} ne '0' ) {

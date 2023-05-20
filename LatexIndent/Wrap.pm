@@ -21,7 +21,7 @@ use Text::Wrap;
 use LatexIndent::Tokens qw/%tokens/;
 use LatexIndent::AlignmentAtAmpersand qw/get_column_width/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp @trailingComments/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::GetYamlSettings qw/%mainSettings %previouslyFoundSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile qw/$logger/;
 use LatexIndent::Verbatim qw/%verbatimStorage/;
@@ -207,7 +207,7 @@ sub text_wrap {
 
     # store the text wrap blocks
     my @textWrapBlockStorage = split( /($blocksFollow)/, ${$self}{body} );
-    @textWrapBlockStorage = split( /(\s*$blocksFollow)/, ${$self}{body} )
+    @textWrapBlockStorage = split( /(\s*$blocksFollow+)/, ${$self}{body} )
         if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after';
 
     # sentences need special treatment
@@ -273,6 +273,7 @@ sub text_wrap {
 #
 # see also: test-cases/text-wrap/issue-359*.tex
 #
+            my $firstLineColumns = 0;
             if ( ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' ) {
 
                 # reset columns
@@ -288,7 +289,7 @@ sub text_wrap {
                     my $thingToMeasure = ( split( /\R/, ${$self}{follows} ) )[-1];
 
                     $subsequentSpace
-                        = ( ${$self}{follows} ? " " x length($thingToMeasure) : q() );
+                        = ( ${$self}{follows} ? " " x &get_column_width($thingToMeasure) : q() );
 
                     # possible tab adjustments
                     $thingToMeasure = q() if ( not defined $thingToMeasure );
@@ -329,7 +330,7 @@ sub text_wrap {
                         $subsequentSpace = (
                             $textWrapBlockCount == 0
                             ? q()
-                            : " " x length($thingToMeasure)
+                            : " " x &get_column_width($thingToMeasure)
                         );
 
                         # possible tab adjustments
@@ -337,8 +338,45 @@ sub text_wrap {
                         for ( my $i = 1; $i <= $numberOfTABS; $i++ ) {
                             $subsequentSpace =~ s/ /    /;
                         }
+
+                        # check for custom indentRules see
+                        #
+                        #   test-cases/text-wrap/issue-444.tex and friends
+                        #
+                        # https://github.com/cmhughes/latexindent.pl/issues/444
+                        #
+                        # WARNING: this routine isn't perfect, it's *VERY DIFFICULT*
+                        #          to figure out what a code block is without actually
+                        #          finding the code block
+                        #
+                        #          **known issue** with textWrap: after and indentRules
+                        #
+                        #          the below will likely need to be built upon
+                        #
+                        my $name = $thingToMeasure;
+                        $name =~ s/\\begin//sg;
+                        $name =~ s/[^a-zA-Z\@0-9]//sg;
+
+                        # check that $name is within indentRules
+                        if (    $textWrapBlockCount > 0
+                            and $name !~ m/^\h*$/
+                            and defined $previouslyFoundSettings{textWrapAfter}
+                            and defined ${ $previouslyFoundSettings{textWrapAfter} }{$name}
+                            and ${ $previouslyFoundSettings{textWrapAfter} }{$name} =~ m/^\h*$/ )
+                        {
+
+                            $firstLineColumns = $columns - length($subsequentSpace);
+
+                            $thingToMeasure =~ s/^\h*//;
+                            for ( my $i = 0; $i < &get_column_width($thingToMeasure); $i++ ) {
+                                $subsequentSpace =~ s/ //;
+                            }
+                            $subsequentSpace .= ${ $previouslyFoundSettings{textWrapAfter} }{$name};
+                        }
+
                     }
                 }
+
                 $Text::Wrap::columns = $columns - length($subsequentSpace);
 
                 # possible tab adjustments
@@ -470,8 +508,37 @@ sub text_wrap {
             }
 
             # perform the text wrap routine
-            $textWrapBlockStorageValue = wrap( '', '', $textWrapBlockStorageValue )
-                if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} > 0;
+            if ( $firstLineColumns > 0 ) {
+
+                # when 'after' is active, and indentation rules specified, they need attention
+                #
+                #       noAdditionalIndent *per-name* basis
+                #       indentRules *per-name* basis
+                #       noAdditionalIndentGlobal
+                #       indentRulesGlobal
+                #
+                # see
+                #
+                #   test-cases/text-wrap/issue-444.tex
+                #
+                my $secondLineOnwardsColumns = $Text::Wrap::columns;
+
+                # wrap the *first* line
+                $Text::Wrap::columns       = $firstLineColumns;
+                $textWrapBlockStorageValue = wrap( '', '', $textWrapBlockStorageValue );
+                my @tmpBlock  = split( /\R/, $textWrapBlockStorageValue );
+                my $firstLine = shift(@tmpBlock);
+
+                # wrap the *subsequent* lines
+                my $secondLineOnwards = join( " ", @tmpBlock );
+                $Text::Wrap::columns       = $secondLineOnwardsColumns;
+                $secondLineOnwards         = wrap( '', '', $secondLineOnwards );
+                $textWrapBlockStorageValue = $firstLine . "\n" . $secondLineOnwards;
+            }
+            else {
+                $textWrapBlockStorageValue = wrap( '', '', $textWrapBlockStorageValue )
+                    if ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns} > 0;
+            }
 
             # if text wrap has happened *AFTER* indentation,
             # then we need to add the leading indentation

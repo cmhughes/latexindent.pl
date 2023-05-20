@@ -1,0 +1,17 @@
+defaultIndent: ' '
+indentRules:
+  item: "  "
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 80
+    when: "after"
+
+replacements:
+  -
+    substitution: |-
+      s!\z!
+        my $rulerMax = int(80/10 +1.5 )*10;
+        my $ruler    = (("----|"x(int($rulerMax/5))))."\n";
+        for (my $i=1;$i<=$rulerMax/5;$i++){ $ruler .= "   ".$i*5 };
+        $ruler;!sxe
+    when: after

@@ -1,0 +1,9 @@
+onlyOneBackUp: 1
+defaultIndent: '    '
+removeTrailingWhitespace: 1
+
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    removeSentenceLineBreaks: 1
+    multipleSpacesToSingle: 1
