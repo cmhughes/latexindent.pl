@@ -407,7 +407,7 @@ jobs:
           # IMPORTANT, options are:
           #     action: validate 
           #     action: upload
-          action: validate
+          action: upload
           file_path: for-ctan/latexindent.zip
           fields: |
             update: "true"

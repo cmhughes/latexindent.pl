@@ -56,7 +56,7 @@ then you receive:
 	\end{two}
 \end{one}
 ```
-tl;dr, a [quick-start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
+tl;dr, a [quick start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
 section is available for those short of time.
 
 There are *many* more features available, detailed in full within the [documentation](http://latexindentpl.readthedocs.io/).
@@ -170,6 +170,17 @@ A nice way to test the script is to navigate to the test-cases
 directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case version is not available):
 
     ./test-cases.sh
+
+## GitHub codespaces
+This repository contains a [vscode devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) 
+configuration that allows developing and testing with
+[GitHub codespaces](https://github.com/features/codespaces) or vscode
+devcontainers.
+
+Using GitHub codespaces allows developing in a remote virtual container running
+vscode with a preconfigured `perl` installation. You can explore this 
+by clicking on the `Code` dropdown at the top of this repository, and click 
+on 'Codespaces'; see the [codespaces details and screenshots](https://github.com/cmhughes/latexindent.pl/issues/442) for more information.
 
 ## *important*
 
