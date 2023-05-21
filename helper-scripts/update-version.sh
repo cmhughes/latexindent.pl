@@ -66,6 +66,7 @@ Typical running order pre-release:
     - git push
     - git checkout main
     - git merge --no-ff develop
+    - git pull
     - git tag "V<number>"
     - git push
     - git push --tags
