@@ -1,4 +1,9 @@
 FROM perl:5.36.1-slim-threaded-buster
+#
+# GitHub codespaces necessary file
+#
+# See https://github.com/cmhughes/latexindent.pl/issues/442 for original discussion
+#
 RUN apt-get update \
     && apt-get install \
     build-essential \
