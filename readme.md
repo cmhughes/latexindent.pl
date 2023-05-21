@@ -171,6 +171,23 @@ directory, and then run the command (on Linux/Mac -- sorry, a Windows test-case 
 
     ./test-cases.sh
 
+Note this requires `latexindent.pl` is executable in the path; consider running
+
+    # cd in top directory
+    chmod +x latexindent.pl
+    cp latexindent.pl /usr/local/bin
+    cp -r LatexIndent /usr/local/bin
+    cp defaultSettings.yaml /usr/local/bin
+
+Further note that this repository contains a
+[vscode devcontainer](https://code.visualstudio.com/docs/devcontainers/containers) 
+configuration that allows developing and testing with
+[Github codespaces](https://github.com/features/codespaces) or vscode
+devcontainers.
+Using Github codespaces allows developing in a remote virtual container running
+vscode with a preconfigured perl installation. 
+
+
 ## *important*
 
 This script may not work for your style of formatting; I highly
