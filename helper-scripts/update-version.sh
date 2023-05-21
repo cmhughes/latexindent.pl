@@ -68,6 +68,8 @@ Typical running order pre-release:
     - git merge --no-ff develop
     - git pull
     - git tag "V<number>"
+    - cmhtag=$(git describe --abbrev=0 --tags)
+    - git log --decorate -1|grep -i $cmhtag && echo "success, tag is contained in last commit, good to go"
     - git push
     - git push --tags
     - <check release notes on github>

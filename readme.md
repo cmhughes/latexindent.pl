@@ -56,7 +56,7 @@ then you receive:
 	\end{two}
 \end{one}
 ```
-tl;dr, a [quick-start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
+tl;dr, a [quick start](https://latexindentpl.readthedocs.io/en/latest/sec-introduction.html#quick-start) 
 section is available for those short of time.
 
 There are *many* more features available, detailed in full within the [documentation](http://latexindentpl.readthedocs.io/).
