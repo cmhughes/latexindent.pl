@@ -142,6 +142,9 @@ latexindent.pl multiple-sentences9.tex -o=+-mod1.tex -l=sentence-wrap5 -m -s -o=
 latexindent.pl -s -m -l issue-417.yaml issue-417.tex -o=+-mod1
 latexindent.pl -s -m -l issue-417a.yaml issue-417.tex -o=+-mod2
 
+# pull 447
+latexindent.pl -s issue-447 -m -o=+-mod1 -l=manipulateSentences.yaml
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
 
