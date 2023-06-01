@@ -472,11 +472,11 @@ latexindent.pl tabular1.tex
   \item \announce{2021-12-13}{lookForChildCodeBlocks feature}{lookForChildCodeBlocks}
         optionally instructs \texttt{latexindent.pl} to search for child code blocks or
         not (default: 1), discussed in \cref{sec:lookForChildCodeBlocks};
-  \item \announce*{2023-05-01}{alignContentAfterDoubleBackSlash feature}
+  \item \announce{2023-05-01}{alignContentAfterDoubleBackSlash feature}
         alignContentAfterDoubleBackSlash optionally instructs \texttt{latexindent.pl} to
         align content \emph{after} double back slash (default: 0), discussed in
         \cref{sec:alignContentAfterDoubleBackSlash};
-  \item \announce*{2023-05-01}{spacesAfterDoubleBackSlash feature}
+  \item \announce{2023-05-01}{spacesAfterDoubleBackSlash feature}
         spacesAfterDoubleBackSlash optionally specifies the number (integer $\geq$ 0) of
         spaces to be placed \emph{after} the double back slash \emph{when
         alignContentAfterDoubleBackSlash is active}; demonstrated in
@@ -1058,9 +1058,8 @@ latexindent.pl tabular-DM-1.tex -l=dontMeasure1a.yaml -o=+-mod1a
  \end{example}
 
 \subsubsection{lookForAlignDelims: alignContentAfterDoubleBackSlash}\label{sec:alignContentAfterDoubleBackSlash}
- You can instruct \texttt{latexindent} to align \announce*{2023-05-01}{align content
- after double back slash} content after the double back slash. See also
- \vref{subsec:dbs}.
+ You can instruct \texttt{latexindent} to align \announce{2023-05-01}{align content after
+ double back slash} content after the double back slash. See also \vref{subsec:dbs}.
 
  \begin{example}
  We consider the file in \cref{lst:tabular5}, and the default output given in
@@ -1090,7 +1089,7 @@ latexindent.pl -s tabular5.tex -l alignContentAfterDBS1 -o=+-mod1
  \begin{example}
  When using the \texttt{alignContentAfterDoubleBackSlash} feature, then you can also
  specify how many spaces to insert after the double backslash; the default is 1.
- \announce*{2023-05-01}{specify number of spaces after double back slash when aligning
+ \announce{2023-05-01}{specify number of spaces after double back slash when aligning
  content after double back slash}
 
  Starting from \cref{lst:tabular5} and using the the settings given in

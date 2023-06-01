@@ -67,7 +67,7 @@ sub remove_trailing_comments {
     $logger->trace("*Storing trailing comments") if $is_t_switch_active;
 
     my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
-    my $afterComment = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
+    my $afterComment   = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
 
     # perform the substitution
     ${$self}{body} =~ s/
