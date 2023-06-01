@@ -1,3 +1,5 @@
+onlyOneBackUp: 1
+
 lookForAlignDelims:
    article: 
       delimiterRegEx: '(=)'
