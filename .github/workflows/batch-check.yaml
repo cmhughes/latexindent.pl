@@ -50,7 +50,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml
-        uses: tj-actions/changed-files@v35
+        uses: tj-actions/changed-files@v36
         id: changed-files
         with:
           files: |
