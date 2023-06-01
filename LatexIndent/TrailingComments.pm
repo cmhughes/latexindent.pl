@@ -67,16 +67,16 @@ sub remove_trailing_comments {
     $logger->trace("*Storing trailing comments") if $is_t_switch_active;
 
     my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+    my $afterComment = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
 
     # perform the substitution
     ${$self}{body} =~ s/
-                            $notPreceededBy  # not preceded by a \
-                            %        # % 
+                            $notPreceededBy   # not preceded by a \
+                            %                 # % 
                             (
-                                \h*? # followed by possible horizontal space
-                                .*?  # and anything else
+                                $afterComment # anything else
                             )
-                            $        # up to the end of a line
+                            $                 # up to the end of a line
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;

@@ -1,0 +1,12 @@
+defaultIndent: "\t"
+indentRules:
+  chapter: "\t"
+  section: "\t"
+
+indentAfterHeadings:
+  chapter:
+    indentAfterThisHeading: 1
+    level: 2
+  section:
+    indentAfterThisHeading: 1
+    level: 3

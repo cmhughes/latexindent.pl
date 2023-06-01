@@ -337,3 +337,31 @@ latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2
  been adjusted so that \texttt{=} symbols are used as the delimiter, but only when they
  are \emph{not preceded} by either \texttt{v} or \texttt{spfreload}.
  \end{example}
+
+ \begin{example}
+ We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
+ trailing comments. \announce{new}{fine tuning trailing comments demonstration}
+
+ We begin with the file in \cref{lst:finetuning5}
+
+ \cmhlistingsfromfile*{demonstrations/finetuning5.tex}{\texttt{finetuning5.tex}}{lst:finetuning5}
+
+ Using the settings in \cref{lst:fine-tuning3} and running the command
+
+ \begin{commandshell}
+latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
+\end{commandshell}
+
+ gives the output in \cref{lst:finetuning5-mod1}.
+
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth]
+  \cmhlistingsfromfile*{demonstrations/finetuning5-mod1.tex}{\texttt{finetuning5-mod1.tex}}{lst:finetuning5-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning3.yaml}[yaml-TCB]{\texttt{finetuning3.yaml}}{lst:fine-tuning3}
+ \end{cmhtcbraster}
+
+ The settings in \cref{lst:fine-tuning3} detail that trailing comments can \emph{not} be
+ followed by a single space, and then the text `end'. This means that the
+ \texttt{specialBeginEnd} routine will be able to find the pattern \lstinline!% end! as
+ the \texttt{end} part. The trailing comments \texttt{123} and \texttt{456} are still
+ treated as trailing comments.
+ \end{example}

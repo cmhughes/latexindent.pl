@@ -648,6 +648,7 @@ fineTuning:
       between: _|\^|\*
     trailingComments:
       notPreceededBy: (?<!\\)
+      afterComment: .*?
     modifyLineBreaks:
       doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?
       comma: ','
