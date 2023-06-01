@@ -1,6 +1,10 @@
-<!-- announcement: Bugfix for remoteTrailingWhiteSpace, and enhancement to text wrap and indentRules-->
+<!-- announcement: Update to fineTuning for trailing comments, and minor enhancement to betterFullStop for oneSentencePerline-->
 
 # changelog.md
+
+## V3.22, June 1, 2023
+* update to `fineTuning` for trailing comments, [issue-448](https://github.com/cmhughes/latexindent.pl/issues/448)
+* update to `betterFullStop` for `oneSentencePerLine`, [pull-447](https://github.com/cmhughes/latexindent.pl/pull/447), thanks to @qiaojunfeng 
 
 ## V3.21.1, May 20, 2023
 * bugfix for `removeTrailingWhiteSpace`, [issue-417](https://github.com/cmhughes/latexindent.pl/issues/417)

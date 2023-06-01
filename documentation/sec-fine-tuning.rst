@@ -46,7 +46,7 @@ This field is for those that would like to peek under the bonnet/hood and make s
  	:class: .baseyaml
  	:caption: ``fineTuning`` 
  	:name: lst:fineTuning
- 	:lines: 629-681
+ 	:lines: 629-684
  	:linenos:
  	:lineno-start: 629
 
@@ -416,6 +416,37 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	 	:name: lst:bib2-mod2
 	
 	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceded* by either ``v`` or ``spfreload``.
+	 
+
+.. proof:example::	
+	
+	We can use the ``fineTuning`` settings to tweak how ``latexindent.pl`` finds trailing comments. We begin with the file in :numref:`lst:finetuning5`
+	
+	.. literalinclude:: demonstrations/finetuning5.tex
+	 	:class: .tex
+	 	:caption: ``finetuning5.tex`` 
+	 	:name: lst:finetuning5
+	
+	Using the settings in :numref:`lst:fine-tuning3` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
+	
+	gives the output in :numref:`lst:finetuning5-mod1`.
+	
+	.. literalinclude:: demonstrations/finetuning5-mod1.tex
+	 	:class: .tex
+	 	:caption: ``finetuning5-mod1.tex`` 
+	 	:name: lst:finetuning5-mod1
+	
+	.. literalinclude:: demonstrations/fine-tuning3.yaml
+	 	:class: .baseyaml
+	 	:caption: ``finetuning3.yaml`` 
+	 	:name: lst:fine-tuning3
+	
+	The settings in :numref:`lst:fine-tuning3` detail that trailing comments can *not* be followed by a single space, and then the text ‘end’. This means that the ``specialBeginEnd`` routine will be able to find the pattern ``% end`` as the ``end`` part. The trailing comments ``123`` and ``456`` are still treated as trailing comments.
 	 
 
 .. container:: references

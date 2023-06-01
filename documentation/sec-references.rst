@@ -169,6 +169,11 @@ References
       qiancy98. 2021. “Locale Encoding of File System.” May 6, 2021. https://github.com/cmhughes/latexindent.pl/pull/273.
 
    .. container::
+      :name: ref-qiaojunfeng
+
+      Qiao, Junfeng. 2023. “Add W.r.t to betterFullStop.” May 25, 2023. https://github.com/cmhughes/latexindent.pl/pull/447.
+
+   .. container::
       :name: ref-alexreg
 
       Regueiro, Alexander. 2021. “Update Help Screen.” March 18, 2021. https://github.com/cmhughes/latexindent.pl/pull/261.
@@ -176,7 +181,12 @@ References
    .. container::
       :name: ref-hsloot
 
-      Sloot, Henrik. 2023. “Fix: Find Local Settings When Working File Dir Is Not Working Dir.” February 15, 2023. https://github.com/cmhughes/latexindent.pl/pull/422.
+      Sloot, Henrik. 2023a. “Fix: Find Local Settings When Working File Dir Is Not Working Dir.” February 15, 2023. https://github.com/cmhughes/latexindent.pl/pull/422.
+
+   .. container::
+      :name: ref-hslootgithubspaces
+
+      ———. 2023b. “Feat: Add Devcontainer Configuration.” May 20, 2023. https://github.com/cmhughes/latexindent.pl/pull/443.
 
    .. container::
       :name: ref-condainstallhelp
