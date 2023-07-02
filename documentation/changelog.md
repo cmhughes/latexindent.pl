@@ -1,6 +1,9 @@
-<!-- announcement: Update to fineTuning for trailing comments, and minor enhancement to betterFullStop for oneSentencePerline-->
+<!-- announcement: minor bugfix for text wrap routine-->
 
 # changelog.md
+
+## V3.22.1, July 2, 2023
+minor bugfix for `text wrap (after)` routine detailed at [issue-450](https://github.com/cmhughes/latexindent.pl/issues/450)
 
 ## V3.22, June 1, 2023
 * update to `fineTuning` for trailing comments, [issue-448](https://github.com/cmhughes/latexindent.pl/issues/448)
