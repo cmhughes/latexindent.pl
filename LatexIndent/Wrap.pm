@@ -63,7 +63,7 @@ sub text_wrap {
                         /sx;
             }
             elsif ( $blocksFollowEachPart eq "commentOnPreviousLine" ) {
-                $blocksFollowEachPart = qr/^$trailingCommentRegExp/m;
+                $blocksFollowEachPart = qr/(?:^\h*$trailingCommentRegExp\R?)+/m;
             }
             elsif ( $blocksFollowEachPart eq "verbatim" ) {
                 $blocksFollowEachPart = qr/$tokens{verbatim}\d+$tokens{endOfToken}/;
@@ -103,7 +103,7 @@ sub text_wrap {
             elsif ( $blocksFollowEachPart eq "other" ) {
                 $blocksFollowEachPart = qr/$yesNo/x;
             }
-            $blocksFollow .= ( $blocksFollow eq '' ? q() : "|" ) . qr/$blocksFollowEachPart/sx;
+            $blocksFollow .= ( $blocksFollow eq '' ? q() : "|" ) . qr/$blocksFollowEachPart/s;
         }
     }
 
@@ -118,7 +118,13 @@ sub text_wrap {
     }
 
     # followed by 0 or more h-space and line breaks
-    $blocksFollow = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/sx );
+    if ( ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} }{commentOnPreviousLine} ) {
+        $blocksFollow
+            = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*(?:$trailingCommentRegExp\R\h*)?/s );
+    }
+    else {
+        $blocksFollow = ( $blocksFollow eq '' ? q() : qr/(?:$blocksFollow)(?:\h|\R)*/s );
+    }
 
     $logger->trace("textWrap blocks follow regexp:")
         if ( $is_tt_switch_active and ${$self}{modifyLineBreaksYamlName} ne 'sentence' );
@@ -181,7 +187,7 @@ sub text_wrap {
                 $logger->trace(
                     "textWrap Blocks ENDS with commentOnOwnLine (see textWrap:blocksEndBefore:commentOnOwnLine)")
                     if $is_t_switch_active;
-                $blocksEndBeforeEachPart = qr/^$trailingCommentRegExp/m;
+                $blocksEndBeforeEachPart = qr/^\h*$trailingCommentRegExp/m;
             }
             elsif ( $blocksEndBeforeEachPart eq "verbatim" ) {
                 $logger->trace("textWrap Blocks ENDS with verbatim (see textWrap:blocksEndBefore:verbatim)")
@@ -326,6 +332,8 @@ sub text_wrap {
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
                         $thingToMeasure =~ s/$tokens{blanklines}//;
+                        $thingToMeasure =~ s/$tokens{verbatim}//;
+                        $thingToMeasure =~ s/$trailingCommentRegExp//;
 
                         $subsequentSpace = (
                             $textWrapBlockCount == 0

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# A little script to help me run through test cases
+# latexindent.pl test-cases script to ensure that, as much as possible, 
+# the script behaves as intended.
+#
 # Sample usage
 #   ./test-cases.sh 
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
@@ -11,10 +13,17 @@
 #   ./test-cases.sh -a              # do *all* test cases (toggles bench mark and file extension switches)
 #   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
 
+# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+RED='\033[0;31m'          # red
+YELLOW='\033[1;33m'       # yellow
+BGreen='\033[1;32m'       # green
+CYAN='\033[0;36m'         # cyan
+COLOR_OFF='\033[0m'       # text reset
+
 function checkgitdiff
 {
     git diff --quiet
-    result=$? && [[ result -gt 0  ]] && [[ $dontStopMode -eq 0 ]] &&  echo "git diff has differences, something has changed" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
+    result=$? && [[ result -gt 0  ]] && [[ $dontStopMode -eq 0 ]] &&  echo -e "${RED}git diff has differences, something has changed${COLOR_OFF}" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
 
 }
 
@@ -27,6 +36,7 @@ gitStatusFlag=''
 benchmarkMode=0
 fileExtensionMode=0
 dontStopMode=0
+
 # check flags, and change defaults appropriately
 while getopts "abcdfgo:ns" OPTION
 do
@@ -131,11 +141,13 @@ do
   [[ $directory == 'demonstrations' ]] && cd ../documentation/
   cd $directory
 
-  [[ $silentMode == 1 ]] && echo "./$directory/$executable"
+  [[ $silentMode == 1 ]] && echo -ne "./$directory/${YELLOW}$executable${COLOR_OFF}\r"
 
   ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
   checkgitdiff
+
+  echo -e "./$directory/${BGreen}$executable SUCCESS${COLOR_OFF}\r"
 
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..
