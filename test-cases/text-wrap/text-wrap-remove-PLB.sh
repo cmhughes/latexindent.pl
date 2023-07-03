@@ -263,6 +263,8 @@ latexindent.pl -s -m -r -l issue-450.yaml  issue-450b.tex -o=+-mod1
 latexindent.pl -s -m -r -l issue-450a.yaml  issue-450c.tex -o=+-mod1
 
 latexindent.pl -s -m -r -l issue-450a.yaml  issue-450d.tex -o=+-mod1 -y 'modifyLineBreaks:textWrapOptions:columns:89'
+
+latexindent.pl -s -m -r -l issue-450.yaml  issue-450e.tex -o=+-mod1
 set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

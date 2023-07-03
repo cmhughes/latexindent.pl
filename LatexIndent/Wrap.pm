@@ -332,7 +332,7 @@ sub text_wrap {
                     else {
                         my $thingToMeasure = ( split( /\R/, $textWrapBlockStorage[ $textWrapBlockCount - 1 ] ) )[-1];
                         $thingToMeasure =~ s/$tokens{blanklines}//;
-                        $thingToMeasure =~ s/$tokens{verbatim}//;
+                        $thingToMeasure =~ s/$tokens{verbatim}\d+$tokens{endOfToken}//;
                         $thingToMeasure =~ s/$trailingCommentRegExp//;
 
                         $subsequentSpace = (
