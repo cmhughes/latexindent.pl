@@ -41,6 +41,8 @@ sub text_wrap {
     my $blocksFollow     = q();
     my $blocksFollowHash = \%{ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{blocksFollow} };
 
+    my $headingsRegEx = q();
+
     foreach my $blocksFollowEachPart ( sort keys %{$blocksFollowHash} ) {
         last if ${$self}{modifyLineBreaksYamlName} eq 'sentence';
 
@@ -89,6 +91,9 @@ sub text_wrap {
                     #     {}         #          mandatory argument
                     #
                     $headingName = qr/\\$headingName\h*(?:\[[^]]*?\])?\h*\{[^}]*?\}\h*(?:\\label\{[^}]*?\})?/m;
+
+                    # stored for possible use with 'after'
+                    $headingsRegEx = $headingName . ( $headingsRegEx eq '' ? q() : "|$headingsRegEx" );
 
                     # put starred headings at the front of the regexp
                     if ( $headingName =~ m/\*/ ) {
@@ -334,6 +339,7 @@ sub text_wrap {
                         $thingToMeasure =~ s/$tokens{blanklines}//;
                         $thingToMeasure =~ s/$tokens{verbatim}\d+$tokens{endOfToken}//;
                         $thingToMeasure =~ s/$trailingCommentRegExp//;
+                        $thingToMeasure =~ s/$headingsRegEx//; 
 
                         $subsequentSpace = (
                             $textWrapBlockCount == 0
