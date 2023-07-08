@@ -19,6 +19,7 @@ use strict;
 use warnings;
 use FindBin;
 use File::Basename;    # to get the filename and directory path
+use File::Path qw(make_path);
 use Exporter qw/import/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version qw/$versionNumber $versionDate/;
@@ -129,12 +130,9 @@ ENDQUOTE
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
 
-    # if cruft directory does not exist
+    # if cruft directory does not exist, create it
     if ( !( -d ${$self}{cruftDirectory} ) ) {
-        $logger->fatal( "*Could not find directory " . decode( "utf-8", ${$self}{cruftDirectory} ) );
-        $logger->fatal("Exiting, no indentation done.");
-        $self->output_logfile();
-        exit(6);
+        make_path( ${$self}{cruftDirectory} );
     }
 
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
