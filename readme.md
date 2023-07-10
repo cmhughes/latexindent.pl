@@ -155,10 +155,12 @@ You can use `latexindent` with the [pre-commit
 framework](https://pre-commit.com) by adding this to your
 `.pre-commit-config.yaml`:
 
-      - repo: https://github.com/cmhughes/latexindent.pl.git
-        rev: V3.22.1
-        hooks:
-          - id: latexindent
+```yaml
+  - repo: https://github.com/cmhughes/latexindent.pl.git
+    rev: V3.22.1
+    hooks:
+      - id: latexindent
+```
 
 Full details at [pre-commit users](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit), 
 including a [worked example](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#pre-commit-example-using-l-m-switches)
