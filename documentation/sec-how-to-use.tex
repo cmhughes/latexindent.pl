@@ -406,6 +406,8 @@ latexindent.pl -c=/path/to/directory/ myfile.tex
  than the current working directory, then you can send these `cruft' files to another
  directory. Note the use of a trailing forward slash. % this switch was made as a result of http://tex.stackexchange.com/questions/142652/output-latexindent-auxiliary-files-to-a-different-directory
 
+ If the cruft directory does not exist, it will be created by \texttt{latexindent.pl}.
+
 \flagbox{-g, --logfile=<name of log file>}
  \index{switches!-g, --logfile definition and details}
 
@@ -628,7 +630,7 @@ latexindent.pl myfile.tex
    3         & \faClose    & failure, myfile.tex not found                                                                 \\
    4         & \faClose    & failure, myfile.tex exists but cannot be read                                                 \\
    5         & \faClose    & failure, \texttt{-w} active, and back-up file cannot be written                               \\
-   6         & \faClose    & failure, \texttt{-c} active, and cruft directory does not exist                               \\
+   6         & \faClose    & failure, \texttt{-c} active, and cruft directory could not be created                         \\
    \bottomrule
   \end{tabular}
  \end{table}
