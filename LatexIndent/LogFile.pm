@@ -132,7 +132,13 @@ ENDQUOTE
 
     # if cruft directory does not exist, create it
     if ( !( -d ${$self}{cruftDirectory} ) ) {
-        make_path( ${$self}{cruftDirectory} );
+        eval { make_path( ${$self}{cruftDirectory} ) };
+        if ( $@ ) {
+            $logger->fatal( "*Could not create cruft directory " . decode( "utf-8", ${$self}{cruftDirectory} ) );
+            $logger->fatal("Exiting, no indentation done.");
+            $self->output_logfile();
+            exit(6);
+        }
     }
 
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
