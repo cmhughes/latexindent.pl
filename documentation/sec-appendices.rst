@@ -38,6 +38,7 @@ then you will be able to run ``latexindent.pl``, otherwise you may need to insta
    use FindBin;                        #     |
    use File::Copy;                     #     |
    use File::Basename;                 #     |
+   use File::Path;                     #     |
    use File::HomeDir;                  # <--- typically requires install via cpanm
    use YAML::Tiny;                     # <--- typically requires install via cpanm
 

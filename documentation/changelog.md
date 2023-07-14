@@ -1,6 +1,11 @@
-<!-- announcement: minor bugfix for text wrap routine-->
+<!-- announcement: cruft directory switch update, bugfix for poly-switch with lookForAlignDelims,  bugfix for text wrap routine-->
 
 # changelog.md
+
+## V3.22.2, July 14, 2023
+* update to `cruft directory` switch, which now attempts to create the cruft directory if it does not exist, see [issue-452](https://github.com/cmhughes/latexindent.pl/issues/452), thanks to @jessestricker
+* bug fix for poly-switch behaviour in `alignAtAmpersand`, see [issue-456](https://github.com/cmhughes/latexindent.pl/issues/456)
+* bug fix for `text wrap (after)` further attention [issue-450](https://github.com/cmhughes/latexindent.pl/issues/450)
 
 ## V3.22.1, July 2, 2023
 minor bugfix for `text wrap (after)` routine detailed at [issue-450](https://github.com/cmhughes/latexindent.pl/issues/450)

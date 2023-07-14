@@ -142,8 +142,8 @@ sub create_unique_id {
     return;
 }
 
-sub modify_line_breaks_end{
+sub modify_line_breaks_end {
     return;
-} 
+}
 
 1;
