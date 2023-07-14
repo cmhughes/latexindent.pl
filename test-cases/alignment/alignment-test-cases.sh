@@ -330,6 +330,11 @@ latexindent.pl -s -l alignContentAfterDBS.yaml issue-393d.tex -o=+-mod1
 latexindent.pl -s -l alignContentAfterDBS1.yaml tabular5.tex -o=+-mod1
 latexindent.pl -s -l alignContentAfterDBS8.yaml tabular5.tex -o=+-mod8
 
+latexindent.pl -s -y="modifyLineBreaks:environments:EndStartsOnOwnLine:2"  -m issue-456.tex -o=+-mod2
+latexindent.pl -s -y="modifyLineBreaks:environments:EndStartsOnOwnLine:3"  -m issue-456.tex -o=+-mod3
+latexindent.pl -s -y="modifyLineBreaks:environments:EndStartsOnOwnLine:4"  -m issue-456.tex -o=+-mod4
+latexindent.pl -s -y="modifyLineBreaks:environments:EndStartsOnOwnLine:-1" -m issue-456.tex -o=+-mod-1
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
