@@ -199,6 +199,11 @@ References
       “Strawberry Perl.” n.d. Accessed January 23, 2017. http://strawberryperl.com/.
 
    .. container::
+      :name: ref-jessestricker
+
+      Stricker, Jesse. 2023. “Create Cruft Directory If It Does Not Exist.” July 12, 2023. https://github.com/cmhughes/latexindent.pl/pull/453.
+
+   .. container::
       :name: ref-texttabs
 
       “Text::Tabs Perl Module.” n.d. Accessed July 6, 2017. http://search.cpan.org/~muir/Text-Tabs+Wrap-2013.0523/lib.old/Text/Tabs.pm.

@@ -408,6 +408,8 @@ been called with the ``-l`` switch; ``latexindent.pl`` will also ignore any sett
 
 If you wish to have backup files and ``indent.log`` written to a directory other than the current working directory, then you can send these ‘cruft’ files to another directory. Note the use of a trailing forward slash.
 
+If the cruft directory does not exist, ``latexindent.pl`` will attempt to create it.
+
 .. describe:: -g, –logfile=<name of log file>
 
 .. index:: switches;-g, –logfile definition and details
@@ -630,7 +632,7 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
    3         no          failure, myfile.tex not found
    4         no          failure, myfile.tex exists but cannot be read
    5         no          failure, ``-w`` active, and back-up file cannot be written
-   6         no          failure, ``-c`` active, and cruft directory does not exist
+   6         no          failure, ``-c`` active, and cruft directory could not be created
    ========= =========== ==============================================================================
 
 .. container:: references
