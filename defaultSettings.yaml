@@ -559,11 +559,11 @@ modifyLineBreaks:
         BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
         EndStartsOnOwnLine: 0               # -1,0,1,2,3,4
         EndFinishesWithLineBreak: 0         # -1,0,1,2,3,4
-        equation*:                          
-            BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4
-            BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            EndStartsOnOwnLine: 0           # -1,0,1,2,3,4
-            EndFinishesWithLineBreak: 0     # -1,0,1,2,3,4
+        ## equation*:                          
+        ##     BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4   
+        ##     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     EndStartsOnOwnLine: 0           # -1,0,1,2,3,4
+        ##     EndFinishesWithLineBreak: 0     # -1,0,1,2,3,4
     ifElseFi:
         IfStartsOnOwnLine: 0                # -1,0,1,2,3,4
         BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
@@ -573,15 +573,15 @@ modifyLineBreaks:
         ElseFinishesWithLineBreak: 0        # -1,0,1,2,3,4
         FiStartsOnOwnLine: 0                # -1,0,1,2,3,4
         FiFinishesWithLineBreak: 0          # -1,0,1,2,3,4 
-        ifnum:
-            IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            OrStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            OrFinishesWithLineBreak: 0      # -1,0,1,2,3,4
-            ElseStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            ElseFinishesWithLineBreak: 0    # -1,0,1,2,3,4
-            FiStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4 
+        ## ifnum:
+        ##     IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     OrStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     OrFinishesWithLineBreak: 0      # -1,0,1,2,3,4
+        ##     ElseStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     ElseFinishesWithLineBreak: 0    # -1,0,1,2,3,4
+        ##     FiStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4 
     commands:
         CommandStartsOnOwnLine: 0          
         CommandNameFinishesWithLineBreak: 0
