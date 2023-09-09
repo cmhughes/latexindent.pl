@@ -635,7 +635,7 @@ then ``latexindent.pl`` can exit with the exit codes given in :numref:`tab:exit-
    6         no          failure, ``-c`` active, and cruft directory could not be created
    ========= =========== ==============================================================================
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

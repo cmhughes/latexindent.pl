@@ -20,7 +20,7 @@ You can run ``latexindent`` on any file; if you don’t specify an extension, th
 
 I hope that this script is useful to some; if you find an example where the script does not behave as you think it should, the best way to contact me is to report an issue on (“Home of Latexindent.pl” n.d.); otherwise, feel free to find me on the http://tex.stackexchange.com/users/6621/cmhughes.
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

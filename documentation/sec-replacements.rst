@@ -34,12 +34,12 @@ We will demonstrate each of the ``-r``, ``-rv`` and ``-rr`` switches, but a summ
 The default value of the ``replacements`` field is shown in :numref:`lst:replacements`; as with all of the other fields, you are encouraged to customise and change this as you see fit. The options in this field will *only* be considered if the ``-r``, ``-rv`` or ``-rr`` switches are active; when discussing YAML settings related to the replacement-mode switches, we will use the style given in :numref:`lst:replacements`.
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .replaceyaml
- 	:caption: ``replacements`` 
- 	:name: lst:replacements
- 	:lines: 618-626
- 	:linenos:
- 	:lineno-start: 618
+	:class: .replaceyaml
+	:caption: ``replacements`` 
+	:name: lst:replacements
+	:lines: 620-628
+	:linenos:
+	:lineno-start: 620
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As you’ll see in the demonstrations that follow, there is no need to specify this field.
 
@@ -64,14 +64,14 @@ Let’s explore the action of the default settings, and then we’ll demonstrate
 	gives the output given in :numref:`lst:replace1-r1`.
 	
 	.. literalinclude:: demonstrations/replace1.tex
-	 	:class: .tex
-	 	:caption: ``replace1.tex`` 
-	 	:name: lst:replace1
+		:class: .tex
+		:caption: ``replace1.tex`` 
+		:name: lst:replace1
 	
 	.. literalinclude:: demonstrations/replace1-r1.tex
-	 	:class: .tex
-	 	:caption: ``replace1.tex`` default 
-	 	:name: lst:replace1-r1
+		:class: .tex
+		:caption: ``replace1.tex`` default 
+		:name: lst:replace1-r1
 	
 	We note that in :numref:`lst:replacements`, because ``lookForThis`` is set to 0, the specified replacement has *not* been made, and there is no difference between :numref:`lst:replace1` and :numref:`lst:replace1-r1`.
 	
@@ -89,17 +89,17 @@ Let’s explore the action of the default settings, and then we’ll demonstrate
 	which gives the output in :numref:`lst:replace1-mod1`.
 	
 	.. literalinclude:: demonstrations/replace1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``replace1.tex`` using :numref:`lst:replace1-yaml` 
-	 	:name: lst:replace1-mod1
+		:class: .tex
+		:caption: ``replace1.tex`` using :numref:`lst:replace1-yaml` 
+		:name: lst:replace1-mod1
 	
 	.. literalinclude:: demonstrations/replace1.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``replace1.yaml`` 
-	 	:name: lst:replace1-yaml
+		:class: .replaceyaml
+		:caption: ``replace1.yaml`` 
+		:name: lst:replace1-yaml
 	
 	Note that in :numref:`lst:replace1-yaml` we have specified ``amalgamate`` as 0 so that the default replacements are overwritten.
-	 
+
 
 We haven’t yet discussed the ``when`` field; don’t worry, we’ll get to it as part of the discussion in what follows.
 
@@ -126,9 +126,9 @@ Examples of replacements
 	We begin with code given in :numref:`lst:colsep`
 	
 	.. literalinclude:: demonstrations/colsep.tex
-	 	:class: .tex
-	 	:caption: ``colsep.tex`` 
-	 	:name: lst:colsep
+		:class: .tex
+		:caption: ``colsep.tex`` 
+		:name: lst:colsep
 	
 	Let’s assume that our goal is to remove both of the ``arraycolsep`` statements; we can achieve this in a few different ways.
 	
@@ -146,14 +146,14 @@ Examples of replacements
 	then we achieve the output in :numref:`lst:colsep-mod0`.
 	
 	.. literalinclude:: demonstrations/colsep-mod0.tex
-	 	:class: .tex
-	 	:caption: ``colsep.tex`` using :numref:`lst:colsep` 
-	 	:name: lst:colsep-mod0
+		:class: .tex
+		:caption: ``colsep.tex`` using :numref:`lst:colsep` 
+		:name: lst:colsep-mod0
 	
 	.. literalinclude:: demonstrations/colsep.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``colsep.yaml`` 
-	 	:name: lst:colsep-yaml
+		:class: .replaceyaml
+		:caption: ``colsep.yaml`` 
+		:name: lst:colsep-yaml
 	
 	Note that in :numref:`lst:colsep-yaml`, we have specified *two* separate fields, each with their own ‘*this*’ field; furthermore, for both of the separate fields, we have not specified ‘``that``’, so the ``that`` field is assumed to be blank by ``latexindent.pl``;
 	
@@ -175,14 +175,14 @@ Examples of replacements
 	.. index:: regular expressions;at least one +
 	
 	.. literalinclude:: demonstrations/colsep-mod1.tex
-	 	:class: .tex
-	 	:caption: ``colsep.tex`` using :numref:`lst:colsep1` 
-	 	:name: lst:colsep-mod1
+		:class: .tex
+		:caption: ``colsep.tex`` using :numref:`lst:colsep1` 
+		:name: lst:colsep-mod1
 	
 	.. literalinclude:: demonstrations/colsep1.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``colsep1.yaml`` 
-	 	:name: lst:colsep1
+		:class: .replaceyaml
+		:caption: ``colsep1.yaml`` 
+		:name: lst:colsep1
 	
 	The code given in :numref:`lst:colsep1` is an example of a *regular expression*, which we may abbreviate to *regex* in what follows. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic. With reference to :numref:`lst:colsep1`, we do note the following:
 	
@@ -197,7 +197,7 @@ Examples of replacements
 	-  the ``g`` *modifier* (in the ``sg`` at the end of the line) instructs ``latexindent.pl`` to make the substitution *globally* throughout your file; you might try removing the ``g`` modifier from :numref:`lst:colsep1` and observing the difference in output.
 	
 	You might like to see https://perldoc.perl.org/perlre.html#Modifiers for details of modifiers; in general, I recommend starting with the ``sg`` modifiers for this feature.
-	 
+
 
 .. proof:example::	
 	
@@ -217,14 +217,14 @@ Examples of replacements
 	then we achieve the output in :numref:`lst:colsep-mod2`.
 	
 	.. literalinclude:: demonstrations/colsep-mod2.tex
-	 	:class: .tex
-	 	:caption: ``colsep.tex`` using :numref:`lst:multi-line` 
-	 	:name: lst:colsep-mod2
+		:class: .tex
+		:caption: ``colsep.tex`` using :numref:`lst:multi-line` 
+		:name: lst:colsep-mod2
 	
 	.. literalinclude:: demonstrations/multi-line.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``multi-line.yaml`` 
-	 	:name: lst:multi-line
+		:class: .replaceyaml
+		:caption: ``multi-line.yaml`` 
+		:name: lst:multi-line
 	
 	With reference to :numref:`lst:multi-line`, we have specified a *multi-line* version of ``this`` by employing the *literal* YAML style ``|-``. See, for example, https://stackoverflow.com/questions/3790454/in-yaml-how-do-i-break-a-string-over-multiple-lines for further options, all of which can be used in your YAML file.
 	
@@ -244,14 +244,14 @@ Examples of replacements
 	then we achieve the output in :numref:`lst:colsep-mod3`.
 	
 	.. literalinclude:: demonstrations/colsep-mod3.tex
-	 	:class: .tex
-	 	:caption: ``colsep.tex`` using :numref:`lst:multi-line1` 
-	 	:name: lst:colsep-mod3
+		:class: .tex
+		:caption: ``colsep.tex`` using :numref:`lst:multi-line1` 
+		:name: lst:colsep-mod3
 	
 	.. literalinclude:: demonstrations/multi-line1.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``multi-line1.yaml`` 
-	 	:name: lst:multi-line1
+		:class: .replaceyaml
+		:caption: ``multi-line1.yaml`` 
+		:name: lst:multi-line1
 	
 	We note that, because we have specified ``when: after``, that ``latexindent.pl`` has not found the string specified in :numref:`lst:multi-line1` within the file in :numref:`lst:colsep`. As it has looked for the string within :numref:`lst:multi-line1` *after* the indentation has been performed. After indentation, the string as written in :numref:`lst:multi-line1` is no longer part of the file, and has therefore not been replaced.
 	
@@ -267,7 +267,7 @@ Examples of replacements
 	   latexindent.pl -rr colsep.tex -l=multi-line1.yaml
 	
 	then the ``when`` field is ignored, no indentation is done, and the output is as in :numref:`lst:colsep-mod2`.
-	 
+
 
 .. proof:example::	
 	
@@ -276,9 +276,9 @@ Examples of replacements
 	Assuming that we start with the code in :numref:`lst:displaymath`, let’s assume that our goal is to replace each occurrence of ``$$...$$`` with ``\begin{equation*}...\end{equation*}``. This example is partly motivated by `tex stackexchange question 242150 <https://tex.stackexchange.com/questions/242150/good-looking-latex-code>`__.
 	
 	.. literalinclude:: demonstrations/displaymath.tex
-	 	:class: .tex
-	 	:caption: ``displaymath.tex`` 
-	 	:name: lst:displaymath
+		:class: .tex
+		:caption: ``displaymath.tex`` 
+		:name: lst:displaymath
 	
 	We use the settings in :numref:`lst:displaymath1` and run the command
 	
@@ -296,14 +296,14 @@ Examples of replacements
 	.. index:: regular expressions;substitution field, equation
 	
 	.. literalinclude:: demonstrations/displaymath-mod1.tex
-	 	:class: .tex
-	 	:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` 
-	 	:name: lst:displaymath-mod1
+		:class: .tex
+		:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` 
+		:name: lst:displaymath-mod1
 	
 	.. literalinclude:: demonstrations/displaymath1.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``displaymath1.yaml`` 
-	 	:name: lst:displaymath1
+		:class: .replaceyaml
+		:caption: ``displaymath1.yaml`` 
+		:name: lst:displaymath1
 	
 	A few notes about :numref:`lst:displaymath1`:
 	
@@ -331,26 +331,25 @@ Examples of replacements
 	then we receive the output in :numref:`lst:displaymath-mod2`.
 	
 	.. literalinclude:: demonstrations/displaymath-mod2.tex
-	 	:class: .tex
-	 	:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` and :numref:`lst:equation` 
-	 	:name: lst:displaymath-mod2
+		:class: .tex
+		:caption: ``displaymath.tex`` using :numref:`lst:displaymath1` and :numref:`lst:equation` 
+		:name: lst:displaymath-mod2
 	
 	.. literalinclude:: demonstrations/equation.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``equation.yaml`` 
-	 	:name: lst:equation
+		:class: .mlbyaml
+		:caption: ``equation.yaml`` 
+		:name: lst:equation
 	
-	
-	 
+
 
 .. proof:example::	
 	
 	This example is motivated by `tex stackexchange question 490086 <https://tex.stackexchange.com/questions/490086/bring-several-lines-together-to-fill-blank-spaces-in-texmaker>`__. We begin with the code in :numref:`lst:phrase`.
 	
 	.. literalinclude:: demonstrations/phrase.tex
-	 	:class: .tex
-	 	:caption: ``phrase.tex`` 
-	 	:name: lst:phrase
+		:class: .tex
+		:caption: ``phrase.tex`` 
+		:name: lst:phrase
 	
 	Our goal is to make the spacing uniform between the phrases. To achieve this, we employ the settings in :numref:`lst:hspace`, and run the command
 	
@@ -368,26 +367,26 @@ Examples of replacements
 	.. index:: regular expressions;at least one +
 	
 	.. literalinclude:: demonstrations/phrase-mod1.tex
-	 	:class: .tex
-	 	:caption: ``phrase.tex`` using :numref:`lst:hspace` 
-	 	:name: lst:phrase-mod1
+		:class: .tex
+		:caption: ``phrase.tex`` using :numref:`lst:hspace` 
+		:name: lst:phrase-mod1
 	
 	.. literalinclude:: demonstrations/hspace.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``hspace.yaml`` 
-	 	:name: lst:hspace
+		:class: .replaceyaml
+		:caption: ``hspace.yaml`` 
+		:name: lst:hspace
 	
 	The ``\h+`` setting in :numref:`lst:hspace` say to replace *at least one horizontal space* with a single space.
-	 
+
 
 .. proof:example::	
 	
 	We begin with the code in :numref:`lst:references`.
 	
 	.. literalinclude:: demonstrations/references.tex
-	 	:class: .tex
-	 	:caption: ``references.tex`` 
-	 	:name: lst:references
+		:class: .tex
+		:caption: ``references.tex`` 
+		:name: lst:references
 	
 	Our goal is to change each reference so that both the text and the reference are contained within one hyperlink. We achieve this by employing :numref:`lst:reference` and running the command
 	
@@ -403,31 +402,31 @@ Examples of replacements
 	which gives the output in :numref:`lst:references-mod1`.
 	
 	.. literalinclude:: demonstrations/references-mod1.tex
-	 	:class: .tex
-	 	:caption: ``references.tex`` using :numref:`lst:reference` 
-	 	:name: lst:references-mod1
+		:class: .tex
+		:caption: ``references.tex`` using :numref:`lst:reference` 
+		:name: lst:references-mod1
 	
 	.. literalinclude:: demonstrations/reference.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``reference.yaml`` 
-	 	:name: lst:reference
+		:class: .replaceyaml
+		:caption: ``reference.yaml`` 
+		:name: lst:reference
 	
 	Referencing :numref:`lst:reference`, the ``|`` means *or*, we have used *capture groups*, together with an example of an *optional* pattern, ``(?:eq)?``.
-	 
+
 
 .. proof:example::	
 	
 	Let’s explore the three replacement mode switches (see :numref:`tab:replacementswitches`) in the context of an example that contains a verbatim code block, :numref:`lst:verb1`; we will use the settings in :numref:`lst:verbatim1-yaml`.
 	
 	.. literalinclude:: demonstrations/verb1.tex
-	 	:class: .tex
-	 	:caption: ``verb1.tex`` 
-	 	:name: lst:verb1
+		:class: .tex
+		:caption: ``verb1.tex`` 
+		:name: lst:verb1
 	
 	.. literalinclude:: demonstrations/verbatim1.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``verbatim1.yaml`` 
-	 	:name: lst:verbatim1-yaml
+		:class: .replaceyaml
+		:caption: ``verbatim1.yaml`` 
+		:name: lst:verbatim1-yaml
 	
 	Upon running the following commands,
 	
@@ -453,22 +452,21 @@ Examples of replacements
 	we receive the respective output in :numref:`lst:verb1-mod1` – :numref:`lst:verb1-rr-mod1`
 	
 	.. literalinclude:: demonstrations/verb1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``verb1-mod1.tex`` 
-	 	:name: lst:verb1-mod1
+		:class: .tex
+		:caption: ``verb1-mod1.tex`` 
+		:name: lst:verb1-mod1
 	
 	.. literalinclude:: demonstrations/verb1-rv-mod1.tex
-	 	:class: .tex
-	 	:caption: ``verb1-rv-mod1.tex`` 
-	 	:name: lst:verb1-rv-mod1
+		:class: .tex
+		:caption: ``verb1-rv-mod1.tex`` 
+		:name: lst:verb1-rv-mod1
 	
 	.. literalinclude:: demonstrations/verb1-rr-mod1.tex
-	 	:class: .tex
-	 	:caption: ``verb1-rr-mod1.tex`` 
-	 	:name: lst:verb1-rr-mod1
+		:class: .tex
+		:caption: ``verb1-rr-mod1.tex`` 
+		:name: lst:verb1-rr-mod1
 	
-	
-	 
+
 
 We note that:
 
@@ -485,26 +483,26 @@ See the summary within :numref:`tab:replacementswitches`.
 	Let’s explore the ``amalgamate`` field from :numref:`lst:replacements` in the context of the file specified in :numref:`lst:amalg1`.
 	
 	.. literalinclude:: demonstrations/amalg1.tex
-	 	:class: .tex
-	 	:caption: ``amalg1.tex`` 
-	 	:name: lst:amalg1
+		:class: .tex
+		:caption: ``amalg1.tex`` 
+		:name: lst:amalg1
 	
 	Let’s consider the YAML files given in :numref:`lst:amalg1-yaml` – :numref:`lst:amalg3-yaml`.
 	
 	.. literalinclude:: demonstrations/amalg1-yaml.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``amalg1-yaml.yaml`` 
-	 	:name: lst:amalg1-yaml
+		:class: .replaceyaml
+		:caption: ``amalg1-yaml.yaml`` 
+		:name: lst:amalg1-yaml
 	
 	.. literalinclude:: demonstrations/amalg2-yaml.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``amalg2-yaml.yaml`` 
-	 	:name: lst:amalg2-yaml
+		:class: .replaceyaml
+		:caption: ``amalg2-yaml.yaml`` 
+		:name: lst:amalg2-yaml
 	
 	.. literalinclude:: demonstrations/amalg3-yaml.yaml
-	 	:class: .replaceyaml
-	 	:caption: ``amalg3-yaml.yaml`` 
-	 	:name: lst:amalg3-yaml
+		:class: .replaceyaml
+		:caption: ``amalg3-yaml.yaml`` 
+		:name: lst:amalg3-yaml
 	
 	Upon running the following commands,
 	
@@ -522,19 +520,19 @@ See the summary within :numref:`tab:replacementswitches`.
 	we receive the respective output in :numref:`lst:amalg1-mod1` – :numref:`lst:amalg1-mod123`.
 	
 	.. literalinclude:: demonstrations/amalg1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` 
-	 	:name: lst:amalg1-mod1
+		:class: .tex
+		:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` 
+		:name: lst:amalg1-mod1
 	
 	.. literalinclude:: demonstrations/amalg1-mod12.tex
-	 	:class: .tex
-	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` 
-	 	:name: lst:amalg1-mod12
+		:class: .tex
+		:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` 
+		:name: lst:amalg1-mod12
 	
 	.. literalinclude:: demonstrations/amalg1-mod123.tex
-	 	:class: .tex
-	 	:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` and :numref:`lst:amalg3-yaml` 
-	 	:name: lst:amalg1-mod123
+		:class: .tex
+		:caption: ``amalg1.tex`` using :numref:`lst:amalg1-yaml` and :numref:`lst:amalg2-yaml` and :numref:`lst:amalg3-yaml` 
+		:name: lst:amalg1-mod123
 	
 	We note that:
 	
@@ -544,10 +542,9 @@ See the summary within :numref:`tab:replacementswitches`.
 	
 	#. in :numref:`lst:amalg1-mod123` *only* the replacements from :numref:`lst:amalg3-yaml` have been used, because the value of ``amalgamate`` has been set to 0.
 	
-	
-	 
 
-.. container:: references
+
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

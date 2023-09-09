@@ -10,7 +10,7 @@
  \index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
  A-Z}%
 
- \cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+ \cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \subsubsection{oneSentencePerLine: overview}
  An overview of how the oneSentencePerLine routine feature works:
@@ -326,14 +326,14 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
 
 \subsubsection{oneSentencePerLine: sentencesDoNOTcontain}
  You can specify patterns that sentences do \emph{not} contain using the field
- \announce{new}{oneSentencePerLine: sentencesDoNOTcontain} in
+ \announce*{2023-09-09}{oneSentencePerLine: sentencesDoNOTcontain} in
  \cref{lst:sentencesDoNOTcontain}.
 
  \cmhlistingsfromfile*[style=sentencesDoNOTcontain]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesDoNOTcontain}}{lst:sentencesDoNOTcontain}
 
  If sentences run across environments then, by default, they will \emph{not} be
- considered a sentence by \texttt{latexindent.pl}. \announce{new}*{updated example of
- oneSentencePerLine}
+ considered a sentence by \texttt{latexindent.pl}. \announce*{2023-09-09}*{updated
+ example of oneSentencePerLine}
  \begin{example}
  For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4}
 

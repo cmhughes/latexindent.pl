@@ -32,7 +32,7 @@ our @EXPORT_OK = qw/find_items construct_list_of_items $listOfItems/;
 our $itemCounter;
 our $listOfItems = q();
 our $itemRegExp;
-our $itemCanBeFollowedBy; 
+our $itemCanBeFollowedBy;
 
 sub construct_list_of_items {
     my $self = shift;

@@ -40,15 +40,15 @@ This field is for those that would like to peek under the bonnet/hood and make s
 .. warning::	
 	
 	Making changes to the fine tuning may have significant consequences for your indentation scheme, proceed with caution!
-	 
+
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .baseyaml
- 	:caption: ``fineTuning`` 
- 	:name: lst:fineTuning
- 	:lines: 629-684
- 	:linenos:
- 	:lineno-start: 629
+	:class: .baseyaml
+	:caption: ``fineTuning`` 
+	:name: lst:fineTuning
+	:lines: 631-686
+	:linenos:
+	:lineno-start: 631
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic.
 
@@ -115,7 +115,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 .. warning::	
 	
 	For the ``fineTuning`` feature you should only ever use *non*-capturing groups, such as ``(?:...)`` and *not* capturing groups, which are ``(...)``
-	 
+
 
 .. proof:example::	
 	
@@ -129,14 +129,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	is given in :numref:`lst:finetuning1-default`.
 	
 	.. literalinclude:: demonstrations/finetuning1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning1.tex`` 
-	 	:name: lst:finetuning1
+		:class: .tex
+		:caption: ``finetuning1.tex`` 
+		:name: lst:finetuning1
 	
 	.. literalinclude:: demonstrations/finetuning1-default.tex
-	 	:class: .tex
-	 	:caption: ``finetuning1.tex`` default 
-	 	:name: lst:finetuning1-default
+		:class: .tex
+		:caption: ``finetuning1.tex`` default 
+		:name: lst:finetuning1-default
 	
 	It’s clear from :numref:`lst:finetuning1-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in :numref:`lst:fine-tuning1` and running the command
 	
@@ -152,17 +152,16 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	.. index:: regular expressions;at least one +
 	
 	.. literalinclude:: demonstrations/finetuning1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
-	 	:name: lst:finetuning1-mod1
+		:class: .tex
+		:caption: ``finetuning1.tex`` using :numref:`lst:fine-tuning1` 
+		:name: lst:finetuning1-mod1
 	
 	.. literalinclude:: demonstrations/fine-tuning1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``finetuning1.yaml`` 
-	 	:name: lst:fine-tuning1
+		:class: .baseyaml
+		:caption: ``finetuning1.yaml`` 
+		:name: lst:fine-tuning1
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -176,14 +175,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	is given in :numref:`lst:finetuning2-default`.
 	
 	.. literalinclude:: demonstrations/finetuning2.tex
-	 	:class: .tex
-	 	:caption: ``finetuning2.tex`` 
-	 	:name: lst:finetuning2
+		:class: .tex
+		:caption: ``finetuning2.tex`` 
+		:name: lst:finetuning2
 	
 	.. literalinclude:: demonstrations/finetuning2-default.tex
-	 	:class: .tex
-	 	:caption: ``finetuning2.tex`` default 
-	 	:name: lst:finetuning2-default
+		:class: .tex
+		:caption: ``finetuning2.tex`` default 
+		:name: lst:finetuning2-default
 	
 	It’s clear from :numref:`lst:finetuning2-default` that the indentation scheme has not worked as expected. We can *fine tune* the indentation scheme by employing the settings given in :numref:`lst:fine-tuning2` and running the command
 	
@@ -197,17 +196,17 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	and the associated (desired) output is given in :numref:`lst:finetuning2-mod1`.
 	
 	.. literalinclude:: demonstrations/finetuning2-mod1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
-	 	:name: lst:finetuning2-mod1
+		:class: .tex
+		:caption: ``finetuning2.tex`` using :numref:`lst:fine-tuning2` 
+		:name: lst:finetuning2-mod1
 	
 	.. literalinclude:: demonstrations/fine-tuning2.yaml
-	 	:class: .baseyaml
-	 	:caption: ``finetuning2.yaml`` 
-	 	:name: lst:fine-tuning2
+		:class: .baseyaml
+		:caption: ``finetuning2.yaml`` 
+		:name: lst:fine-tuning2
 	
 	In particular, note that the settings in :numref:`lst:fine-tuning2` specify that ``NamedGroupingBracesBrackets`` and ``UnNamedGroupingBracesBrackets`` can follow ``"`` and that we allow ``---`` between arguments.
-	 
+
 
 .. proof:example::	
 	
@@ -221,38 +220,37 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	gives the output shown in :numref:`lst:finetuning3-mod1`.
 	
 	.. literalinclude:: demonstrations/finetuning3.tex
-	 	:class: .tex
-	 	:caption: ``finetuning3.tex`` 
-	 	:name: lst:finetuning3
+		:class: .tex
+		:caption: ``finetuning3.tex`` 
+		:name: lst:finetuning3
 	
 	.. literalinclude:: demonstrations/finetuning3-mod1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning3.tex`` using -y switch 
-	 	:name: lst:finetuning3-mod1
+		:class: .tex
+		:caption: ``finetuning3.tex`` using -y switch 
+		:name: lst:finetuning3-mod1
 	
-	
-	 
+
 
 .. proof:example::	
 	
 	We can tweak the ``fineTuning`` for how trailing comments are classified. For motivation, let’s consider the code given in :numref:`lst:finetuning4`
 	
 	.. literalinclude:: demonstrations/finetuning4.tex
-	 	:class: .tex
-	 	:caption: ``finetuning4.tex`` 
-	 	:name: lst:finetuning4
+		:class: .tex
+		:caption: ``finetuning4.tex`` 
+		:name: lst:finetuning4
 	
 	We will compare the settings given in :numref:`lst:href1` and :numref:`lst:href2`.
 	
 	.. literalinclude:: demonstrations/href1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``href1.yaml`` 
-	 	:name: lst:href1
+		:class: .mlbyaml
+		:caption: ``href1.yaml`` 
+		:name: lst:href1
 	
 	.. literalinclude:: demonstrations/href2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``href2.yaml`` 
-	 	:name: lst:href2
+		:class: .mlbyaml
+		:caption: ``href2.yaml`` 
+		:name: lst:href2
 	
 	Upon running the following commands
 	
@@ -265,14 +263,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	we receive the respective output in :numref:`lst:finetuning4-mod1` and :numref:`lst:finetuning4-mod2`.
 	
 	.. literalinclude:: demonstrations/finetuning4-mod1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning4.tex`` using :numref:`lst:href1` 
-	 	:name: lst:finetuning4-mod1
+		:class: .tex
+		:caption: ``finetuning4.tex`` using :numref:`lst:href1` 
+		:name: lst:finetuning4-mod1
 	
 	.. literalinclude:: demonstrations/finetuning4-mod2.tex
-	 	:class: .tex
-	 	:caption: ``finetuning4.tex`` using :numref:`lst:href2` 
-	 	:name: lst:finetuning4-mod2
+		:class: .tex
+		:caption: ``finetuning4.tex`` using :numref:`lst:href2` 
+		:name: lst:finetuning4-mod2
 	
 	We note that in:
 	
@@ -280,8 +278,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	-  :numref:`lst:finetuning4-mod2` has fine-tuned the trailing comment matching, and says that % cannot be immediately preceded by the words ‘Handbook’, ‘for’ or ‘Spoken’, which means that none of the % symbols have been treated as trailing comments, and the output is desirable.
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -295,16 +292,15 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	then we receive the same output given in :numref:`lst:finetuning4-mod2`.
 	
 	.. literalinclude:: demonstrations/href3.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``href3.yaml`` 
-	 	:name: lst:href3
+		:class: .mlbyaml
+		:caption: ``href3.yaml`` 
+		:name: lst:href3
 	
 	With reference to the ``body`` field in :numref:`lst:href3`, we note that the ``body`` field can be interpreted as: the fewest number of zero or more characters that are not right braces. This is an example of character class.
 	
 	.. index:: regular expressions;character class demonstration
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -330,14 +326,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	gives the output in :numref:`lst:bib1-mod1`.
 	
 	.. literalinclude:: demonstrations/bib1.bib
-	 	:class: .tex
-	 	:caption: ``bib1.bib`` 
-	 	:name: lst:bib1
+		:class: .tex
+		:caption: ``bib1.bib`` 
+		:name: lst:bib1
 	
 	.. literalinclude:: demonstrations/bib1-mod1.bib
-	 	:class: .tex
-	 	:caption: ``bib1-mod1.bib`` 
-	 	:name: lst:bib1-mod1
+		:class: .tex
+		:caption: ``bib1-mod1.bib`` 
+		:name: lst:bib1-mod1
 	
 	Let’s assume that we would like to format the output so as to align the ``=`` symbols. Using the settings in :numref:`lst:bibsettings1` and running the command
 	
@@ -349,14 +345,14 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	gives the output in :numref:`lst:bib1-mod2`.
 	
 	.. literalinclude:: demonstrations/bib1-mod2.bib
-	 	:class: .tex
-	 	:caption: ``bib1.bib`` using :numref:`lst:bibsettings1` 
-	 	:name: lst:bib1-mod2
+		:class: .tex
+		:caption: ``bib1.bib`` using :numref:`lst:bibsettings1` 
+		:name: lst:bib1-mod2
 	
 	.. literalinclude:: demonstrations/bibsettings1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``bibsettings1.yaml`` 
-	 	:name: lst:bibsettings1
+		:class: .baseyaml
+		:caption: ``bibsettings1.yaml`` 
+		:name: lst:bibsettings1
 	
 	Some notes about :numref:`lst:bibsettings1`:
 	
@@ -366,8 +362,7 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	
 	-  the adjustment to ``keyEqualsValuesBracesBrackets`` necessitates the associated change to the ``UnNamedGroupingBracesBrackets`` field so that they will be searched for following ``=`` symbols.
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -383,23 +378,23 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	gives the output in :numref:`lst:bib2-mod1`.
 	
 	.. literalinclude:: demonstrations/bib2.bib
-	 	:class: .tex
-	 	:caption: ``bib2.bib`` 
-	 	:name: lst:bib2
+		:class: .tex
+		:caption: ``bib2.bib`` 
+		:name: lst:bib2
 	
 	.. literalinclude:: demonstrations/bib2-mod1.bib
-	 	:class: .tex
-	 	:caption: ``bib2-mod1.bib`` 
-	 	:name: lst:bib2-mod1
+		:class: .tex
+		:caption: ``bib2-mod1.bib`` 
+		:name: lst:bib2-mod1
 	
 	The output in :numref:`lst:bib2-mod1` is not ideal, as the ``=`` symbol within the url field has been incorrectly used as an alignment delimiter.
 	
 	We address this by tweaking the ``delimiterRegEx`` field in :numref:`lst:bibsettings2`.
 	
 	.. literalinclude:: demonstrations/bibsettings2.yaml
-	 	:class: .baseyaml
-	 	:caption: ``bibsettings2.yaml`` 
-	 	:name: lst:bibsettings2
+		:class: .baseyaml
+		:caption: ``bibsettings2.yaml`` 
+		:name: lst:bibsettings2
 	
 	Upon running the command
 	
@@ -411,21 +406,21 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	we receive the *desired* output in :numref:`lst:bib2-mod2`.
 	
 	.. literalinclude:: demonstrations/bib2-mod2.bib
-	 	:class: .tex
-	 	:caption: ``bib2-mod2.bib`` 
-	 	:name: lst:bib2-mod2
+		:class: .tex
+		:caption: ``bib2-mod2.bib`` 
+		:name: lst:bib2-mod2
 	
 	With reference to :numref:`lst:bibsettings2` we note that the ``delimiterRegEx`` has been adjusted so that ``=`` symbols are used as the delimiter, but only when they are *not preceded* by either ``v`` or ``spfreload``.
-	 
+
 
 .. proof:example::	
 	
 	We can use the ``fineTuning`` settings to tweak how ``latexindent.pl`` finds trailing comments. We begin with the file in :numref:`lst:finetuning5`
 	
 	.. literalinclude:: demonstrations/finetuning5.tex
-	 	:class: .tex
-	 	:caption: ``finetuning5.tex`` 
-	 	:name: lst:finetuning5
+		:class: .tex
+		:caption: ``finetuning5.tex`` 
+		:name: lst:finetuning5
 	
 	Using the settings in :numref:`lst:fine-tuning3` and running the command
 	
@@ -437,19 +432,19 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 	gives the output in :numref:`lst:finetuning5-mod1`.
 	
 	.. literalinclude:: demonstrations/finetuning5-mod1.tex
-	 	:class: .tex
-	 	:caption: ``finetuning5-mod1.tex`` 
-	 	:name: lst:finetuning5-mod1
+		:class: .tex
+		:caption: ``finetuning5-mod1.tex`` 
+		:name: lst:finetuning5-mod1
 	
 	.. literalinclude:: demonstrations/fine-tuning3.yaml
-	 	:class: .baseyaml
-	 	:caption: ``finetuning3.yaml`` 
-	 	:name: lst:fine-tuning3
+		:class: .baseyaml
+		:caption: ``finetuning3.yaml`` 
+		:name: lst:fine-tuning3
 	
 	The settings in :numref:`lst:fine-tuning3` detail that trailing comments can *not* be followed by a single space, and then the text ‘end’. This means that the ``specialBeginEnd`` routine will be able to find the pattern ``% end`` as the ``end`` part. The trailing comments ``123`` and ``456`` are still treated as trailing comments.
-	 
 
-.. container:: references
+
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

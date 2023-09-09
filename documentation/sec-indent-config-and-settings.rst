@@ -3,7 +3,7 @@
 .. _sec:indentconfig:
 
 indentconfig.yaml, local settings and the -y switch 
-====================================================
+===================================================
 
 The behaviour of ``latexindent.pl`` is controlled from the settings specified in any of the YAML files that you tell it to load. By default, ``latexindent.pl`` will only load ``defaultSettings.yaml``, but there are a few ways that you can tell it to load your own settings files.
 
@@ -18,9 +18,9 @@ In what follows, we will use ``indentconfig.yaml``, but it is understood that th
 For Mac and Linux users, their home directory is `` /username`` while Windows (Vista onwards) is ``C:\Users\username``\  [1]_ :numref:`lst:indentconfig` shows a sample ``indentconfig.yaml`` file.
 
 .. literalinclude:: demonstrations/indent-config.yaml
- 	:class: .baseyaml
- 	:caption: ``indentconfig.yaml`` (sample) 
- 	:name: lst:indentconfig
+	:class: .baseyaml
+	:caption: ``indentconfig.yaml`` (sample) 
+	:name: lst:indentconfig
 
 Note that the ``.yaml`` files you specify in ``indentconfig.yaml`` will be loaded in the order in which you write them. Each file doesn’t have to have every switch from ``defaultSettings.yaml``; in fact, I recommend that you only keep the switches that you want to *change* in these settings files.
 
@@ -30,9 +30,9 @@ delimiters; you might also like to refer to the many YAML files detailed through
 .. index:: indentation;defaultIndent using YAML file
 
 .. literalinclude:: demonstrations/tabbing.yaml
- 	:class: .baseyaml
- 	:caption: ``mysettings.yaml`` (example) 
- 	:name: lst:mysettings
+	:class: .baseyaml
+	:caption: ``mysettings.yaml`` (example) 
+	:name: lst:mysettings
 
 You can make sure that your settings are loaded by checking ``indent.log`` for details – if you have specified a path that ``latexindent.pl`` doesn’t recognise then you’ll get a warning, otherwise you’ll get confirmation that ``latexindent.pl`` has read your settings file. [2]_
 
@@ -43,14 +43,14 @@ You can make sure that your settings are loaded by checking ``indent.log`` for d
 	When editing ``.yaml`` files it is *extremely* important to remember how sensitive they are to spaces. I highly recommend copying and pasting from ``defaultSettings.yaml`` when you create your first ``whatevernameyoulike.yaml`` file.
 	
 	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you so in ``indent.log``.
-	 
+
 
 If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of the default commandline encoding not being UTF-8; normally this will only occur for Windows users. In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as demonstrated in :numref:`lst:indentconfig-encoding`.
 
 .. literalinclude:: demonstrations/encoding.yaml
- 	:class: .baseyaml
- 	:caption: The ``encoding`` option for ``indentconfig.yaml`` 
- 	:name: lst:indentconfig-encoding
+	:class: .baseyaml
+	:caption: The ``encoding`` option for ``indentconfig.yaml`` 
+	:name: lst:indentconfig-encoding
 
 Thank you to (qiancy98 2021) for this contribution; please see :numref:`app:encoding` and details within (“Perldoc Encode::Supported” n.d.) for further information.
 
@@ -186,9 +186,9 @@ A visual representation of this is given in :numref:`fig:loadorder`.
 .. figure:: figure-schematic.png
    
 
-   Schematic of the load order described in :numref:`sec:loadorder`; solid lines represent mandatory files, dotted lines represent optional files. ``indentconfig.yaml`` can contain as many files as you like. The files will be loaded in order; if you specify settings for the same field in more than one file, the most recent takes priority. 
+   Schematic of the load order described in :numref:`sec:loadorder`; solid lines represent mandatory files, dotted lines represent optional files. ``indentconfig.yaml`` can contain as many files as you like. The files will be loaded in order; if you specify settings for the same field in more than one file, the most recent takes priority.
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::
