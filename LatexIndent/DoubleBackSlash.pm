@@ -18,8 +18,8 @@ package LatexIndent::DoubleBackSlash;
 use strict;
 use warnings;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::Tokens qw/%tokens/;
-use Exporter qw/import/;
+use LatexIndent::Tokens   qw/%tokens/;
+use Exporter              qw/import/;
 our @EXPORT_OK = qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # some code can contain, e.g

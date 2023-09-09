@@ -17,12 +17,12 @@ package LatexIndent::KeyEqualsValuesBraces;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
+use LatexIndent::Tokens           qw/%tokens/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use Exporter qw/import/;
+use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use Exporter                      qw/import/;
 our @ISA = "LatexIndent::Command";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK
     = qw/construct_key_equals_values_regexp $key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;

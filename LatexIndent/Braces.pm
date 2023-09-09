@@ -25,10 +25,10 @@ use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $groupin
 use LatexIndent::UnNamedGroupingBracesBrackets
     qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::LogFile  qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
 our $commandCounter;
 our $braceBracketRegExpBasic = qr/\{|\[/;

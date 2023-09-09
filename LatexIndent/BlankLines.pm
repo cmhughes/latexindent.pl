@@ -17,11 +17,11 @@ package LatexIndent::BlankLines;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use Exporter qw/import/;
+use LatexIndent::Switches        qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile         qw/$logger/;
+use Exporter                     qw/import/;
 our @EXPORT_OK = qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 
 sub protect_blank_lines {

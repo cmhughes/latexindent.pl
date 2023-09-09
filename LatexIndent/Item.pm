@@ -17,14 +17,14 @@ package LatexIndent::Item;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
-use LatexIndent::Heading qw/$allHeadingsRegexp/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use LatexIndent::Heading          qw/$allHeadingsRegexp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";                               # class inheritance, Programming Perl, pg 321

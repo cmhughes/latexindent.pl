@@ -17,12 +17,12 @@ package LatexIndent::Special;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
@@ -114,11 +114,11 @@ sub construct_special_begin {
 
     # info to the log file
     $logger->trace("*The special beginnings regexp is: (see specialBeginEnd)") if $is_tt_switch_active;
-    $logger->trace($specialBegins) if $is_tt_switch_active;
+    $logger->trace($specialBegins)                                             if $is_tt_switch_active;
 
     # overall special regexp
     $logger->trace("*The overall special regexp is: (see specialBeginEnd)") if $is_tt_switch_active;
-    $logger->trace($specialAllMatchesRegExp) if $is_tt_switch_active;
+    $logger->trace($specialAllMatchesRegExp)                                if $is_tt_switch_active;
 
     # basic special begin regexp
     $specialBeginBasicRegExp                  = qr/$specialBegins/;
@@ -134,7 +134,7 @@ sub find_special {
 
     # otherwise loop through the special begin/end
     $logger->trace("*Searching ${$self}{name} for special begin/end (see specialBeginEnd)") if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{specialBeginEnd} } ) ) if $is_tt_switch_active;
+    $logger->trace( Dumper( \%{ $mainSettings{specialBeginEnd} } ) )                        if $is_tt_switch_active;
 
     # keep looping as long as there is a special match of some kind
     while ( ${$self}{body} =~ m/$specialAllMatchesRegExp/sx ) {

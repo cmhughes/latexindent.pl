@@ -25,20 +25,20 @@ use Encode qw/decode/;
 # gain access to subroutines in the following modules
 use LatexIndent::Switches
     qw/store_switches %switches $is_m_switch_active $is_t_switch_active $is_tt_switch_active $is_r_switch_active $is_rr_switch_active $is_rv_switch_active $is_check_switch_active/;
-use LatexIndent::LogFile qw/process_switches $logger/;
-use LatexIndent::Logger qw/@logFileLines/;
-use LatexIndent::Check qw/simple_diff/;
-use LatexIndent::Lines qw/lines_body_selected_lines lines_verbatim_create_line_block/;
+use LatexIndent::LogFile     qw/process_switches $logger/;
+use LatexIndent::Logger      qw/@logFileLines/;
+use LatexIndent::Check       qw/simple_diff/;
+use LatexIndent::Lines       qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings
     qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings /;
-use LatexIndent::FileExtension qw/file_extension_check/;
+use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
-use LatexIndent::BlankLines qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
+use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
     qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks/;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
-use LatexIndent::Wrap qw/text_wrap text_wrap_comment_blocks/;
+use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
     qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
@@ -55,21 +55,21 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 use LatexIndent::Verbatim
     qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
-use LatexIndent::IfElseFi qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
-use LatexIndent::Else qw/check_for_else_statement/;
-use LatexIndent::Arguments qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp comma_else/;
-use LatexIndent::OptionalArgument qw/find_optional_arguments/;
-use LatexIndent::MandatoryArgument qw/find_mandatory_arguments get_mand_arg_reg_exp/;
-use LatexIndent::RoundBrackets qw/find_round_brackets/;
-use LatexIndent::Item qw/find_items construct_list_of_items/;
-use LatexIndent::Braces qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
-use LatexIndent::Command qw/construct_command_regexp/;
-use LatexIndent::KeyEqualsValuesBraces qw/construct_key_equals_values_regexp/;
-use LatexIndent::NamedGroupingBracesBrackets qw/construct_grouping_braces_brackets_regexp/;
+use LatexIndent::IfElseFi    qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
+use LatexIndent::Else        qw/check_for_else_statement/;
+use LatexIndent::Arguments   qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp comma_else/;
+use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
+use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
+use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
+use LatexIndent::Item                          qw/find_items construct_list_of_items/;
+use LatexIndent::Braces                        qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
+use LatexIndent::Command                       qw/construct_command_regexp/;
+use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
+use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special
     qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
-use LatexIndent::Heading qw/find_heading construct_headings_levels $allHeadingsRegexp/;
+use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHeadingsRegexp/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 
@@ -369,15 +369,15 @@ sub find_objects {
 
     # search for environments
     $logger->trace('*looking for ENVIRONMENTS') if $is_t_switch_active;
-    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
+    $self->find_environments                    if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
     # search for ifElseFi blocks
     $logger->trace('*looking for IFELSEFI') if $is_t_switch_active;
-    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
+    $self->find_ifelsefi                    if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
     $logger->trace('*looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
-    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
+    $self->find_heading                                                   if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # the ordering of finding commands and special code blocks can change
     $self->find_commands_or_key_equals_values_braces_and_special
@@ -412,16 +412,16 @@ sub find_commands_or_key_equals_values_braces_and_special {
 
         # search for commands with arguments
         $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
+        $self->find_commands_or_key_equals_values_braces         if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
     }
     else {
         # search for commands with arguments
         $logger->trace('looking for COMMANDS and key = {value}') if $is_t_switch_active;
-        $self->find_commands_or_key_equals_values_braces if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
+        $self->find_commands_or_key_equals_values_braces         if ${$self}{body} =~ m/$braceBracketRegExpBasic/s;
 
         # search for special begin/end
         $logger->trace('looking for SPECIAL begin/end') if $is_t_switch_active;
-        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
+        $self->find_special                             if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
     }
     return;
 }
@@ -540,7 +540,7 @@ sub tasks_common_to_each_object {
         if (
         $is_m_switch_active
         and (  ${$self}{lookForAlignDelims}
-            or ( defined ${$self}{DBSStartsOnOwnLine} and ${$self}{DBSStartsOnOwnLine} != 0 )
+            or ( defined ${$self}{DBSStartsOnOwnLine}       and ${$self}{DBSStartsOnOwnLine} != 0 )
             or ( defined ${$self}{DBSFinishesWithLineBreak} and ${$self}{DBSFinishesWithLineBreak} != 0 ) )
         );
 
@@ -596,7 +596,7 @@ sub wrap_up_tasks {
     # check if the last object was the last thing in the body, and if it has adjusted linebreaks
     $self->adjust_line_breaks_end_parent if $is_m_switch_active;
 
-    $logger->trace( Dumper( \%{$child} ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%{$child} ) )            if ($is_tt_switch_active);
     $logger->trace("replaced with ID: ${$child}{id}") if $is_t_switch_active;
 
 }

@@ -17,9 +17,9 @@ package LatexIndent::Tokens;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use Exporter qw/import/;
+use Exporter              qw/import/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::LogFile  qw/$logger/;
 our @EXPORT_OK = qw/token_check %tokens/;
 
 # each of the tokens begins the same way -- this is exploited during the hidden Children routine

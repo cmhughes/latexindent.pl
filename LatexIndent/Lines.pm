@@ -17,11 +17,11 @@ package LatexIndent::Lines;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use Exporter qw/import/;
-use LatexIndent::LogFile qw/$logger/;
+use Exporter              qw/import/;
+use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Verbatim qw/%verbatimStorage/;
-our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 
 sub lines_body_selected_lines {

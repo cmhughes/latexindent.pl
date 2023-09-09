@@ -17,9 +17,9 @@ package LatexIndent::HiddenChildren;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
+use LatexIndent::Tokens          qw/%tokens/;
+use LatexIndent::LogFile         qw/$logger/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -75,14 +75,14 @@ sub find_surrounding_indentation_for_children {
 
     # output to logfile
     $logger->trace("*FamilyTree before update:") if $is_tt_switch_active;
-    $logger->trace( Dumper( \%familyTree ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%familyTree ) )     if ($is_tt_switch_active);
 
     # update the family tree with ancestors
     $self->update_family_tree;
 
     # output information to the logfile
     $logger->trace("*FamilyTree after update:") if $is_tt_switch_active;
-    $logger->trace( Dumper( \%familyTree ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%familyTree ) )    if ($is_tt_switch_active);
 
     while ( my ( $idToSearch, $ancestorToSearch ) = each %familyTree ) {
         $logger->trace("*Hidden child ID: ,$idToSearch, here are its ancestors:") if $is_t_switch_active;
@@ -204,7 +204,7 @@ sub check_for_hidden_children {
 
     # log file
     $logger->trace("*Hidden children check for ${$self}{name}") if $is_t_switch_active;
-    $logger->trace( join( "|", @matched ) ) if $is_t_switch_active;
+    $logger->trace( join( "|", @matched ) )                     if $is_t_switch_active;
 
     my $naturalAncestors = ${$self}{naturalAncestors};
 

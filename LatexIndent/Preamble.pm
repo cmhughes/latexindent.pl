@@ -17,13 +17,13 @@ package LatexIndent::Preamble;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_m_switch_active/;
+use LatexIndent::Tokens          qw/%tokens/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_m_switch_active/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::Environment qw/$environmentBasicRegExp/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Special qw/$specialBeginBasicRegExp/;
+use LatexIndent::LogFile         qw/$logger/;
+use LatexIndent::Environment     qw/$environmentBasicRegExp/;
+use LatexIndent::IfElseFi        qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special         qw/$specialBeginBasicRegExp/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our $preambleCounter;
 

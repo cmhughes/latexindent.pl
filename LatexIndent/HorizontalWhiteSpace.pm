@@ -18,9 +18,9 @@ package LatexIndent::HorizontalWhiteSpace;
 use strict;
 use warnings;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use Exporter qw/import/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::LogFile         qw/$logger/;
+use Exporter                     qw/import/;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
 
 sub remove_trailing_whitespace {
