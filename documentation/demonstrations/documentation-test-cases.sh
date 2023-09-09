@@ -258,6 +258,9 @@ latexindent.pl -s textwrap8.tex -o=+-mod2.tex -l=tw-after1.yaml,addruler1  -m -r
 latexindent.pl -s multiple-sentences8.tex -o=+-mod1.tex -l=sentence-wrap2,addruler1 -m -r
 latexindent.pl -s multiple-sentences8.tex -o=+-mod2.tex -l=sentence-wrap3,addruler1 -m -r
 
+latexindent.pl -s sentence-dnc1.tex -o=+-mod1 -m -l dnc1.yaml
+latexindent.pl -s sentence-dnc2.tex -o=+-mod2 -m -l dnc2.yaml
+
 # wrap comments
 latexindent.pl -s -r -m -l wrap-comments1.yaml,addruler1.yaml textwrap9.tex -o=+-mod1
 

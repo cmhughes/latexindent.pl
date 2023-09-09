@@ -210,11 +210,8 @@ sub one_sentence_per_line {
         $notWithinSentence .= "|" . qr/(?:\R?\\par)/s;
     }
 
-    # initiate the sentence counter
-    my @sentenceStorage;
-
-    # make the sentence manipulation
-    ${$self}{body} =~ s/((?:$sentencesFollow))
+    my $sentenceRegEx = qr/
+                        ((?:$sentencesFollow))
                             (\h*)
                             (?!$notWithinSentence) 
                             ((?:$sentencesBeginWith).*?)
@@ -222,7 +219,38 @@ sub one_sentence_per_line {
                             (\h*)?                        # possibly followed by horizontal space
                             (\R)?                         # possibly followed by a line break 
                             ($trailingCommentRegExp)?     # possibly followed by trailing comments
-                       /
+                        /sx;
+
+
+    if (ref ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain} eq 'HASH'
+        and defined ${${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain}}{other}  ){
+        my $sentencesDoNOTcontain = qr/${${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain}}{other}/;  
+
+        $sentenceRegEx = qr/
+                        ((?:$sentencesFollow))
+                            (\h*)
+                            (?!$notWithinSentence) 
+                            (
+                               (?:$sentencesBeginWith)
+                               (?:
+                                  (?!
+                                    $sentencesDoNOTcontain 
+                                  ).
+                               )
+                               *?
+                            )
+                            ($sentencesEndWith)
+                            (\h*)?                        # possibly followed by horizontal space
+                            (\R)?                         # possibly followed by a line break 
+                            ($trailingCommentRegExp)?     # possibly followed by trailing comments
+                        /sx;
+    }
+
+    # initiate the sentence counter
+    my @sentenceStorage;
+
+    # make the sentence manipulation
+    ${$self}{body} =~ s/$sentenceRegEx/
                             my $beginning = $1;
                             my $h_space   = ($2?$2:q());
                             my $middle    = $3;

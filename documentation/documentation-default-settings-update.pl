@@ -38,6 +38,7 @@ my @namesAndOffsets = (
                         {name=>"sentencesFollow",numberOfLines=>8},
                         {name=>"sentencesBeginWith",numberOfLines=>3},
                         {name=>"sentencesEndWith",numberOfLines=>5},
+                        {name=>"sentencesDoNOTcontain",numberOfLines=>2},
                         {name=>"modifylinebreaksEnv",numberOfLines=>9,special=>"environments",within=>"modifyLineBreaks"},
                         {name=>"fineTuning",numberOfLines=>55},
                         {name=>"replacements",numberOfLines=>8},
