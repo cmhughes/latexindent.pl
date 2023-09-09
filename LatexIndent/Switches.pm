@@ -34,7 +34,7 @@ sub store_switches {
     my $self = shift;
 
     # copy document switches into hash local to this module
-    %switches = %{ ${$self}{switches} };
+    %switches            = %{ ${$self}{switches} };
     $switches{version}   = defined $switches{vversion}         ? 1                           : $switches{version};
     $is_m_switch_active  = defined $switches{modifyLineBreaks} ? $switches{modifyLineBreaks} : 0;
     $is_t_switch_active  = defined $switches{trace}            ? $switches{trace}            : 0;

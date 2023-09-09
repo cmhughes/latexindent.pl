@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 3.22.2, 2023-07-14
+# latexindent.pl, version 3.23, 2023-09-09
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 # 
@@ -525,6 +525,8 @@ modifyLineBreaks:
             exclamationMark: 1              # 0/1
             questionMark: 1                 # 0/1
             other: 0                        # regex
+        sentencesDoNOTcontain:
+            other: \\begin                  # regex
     textWrapOptions:
         columns: 0
         multipleSpacesToSingle: 1              
@@ -559,11 +561,11 @@ modifyLineBreaks:
         BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
         EndStartsOnOwnLine: 0               # -1,0,1,2,3,4
         EndFinishesWithLineBreak: 0         # -1,0,1,2,3,4
-        equation*:                          
-            BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4
-            BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            EndStartsOnOwnLine: 0           # -1,0,1,2,3,4
-            EndFinishesWithLineBreak: 0     # -1,0,1,2,3,4
+        ## equation*:                          
+        ##     BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4   
+        ##     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     EndStartsOnOwnLine: 0           # -1,0,1,2,3,4
+        ##     EndFinishesWithLineBreak: 0     # -1,0,1,2,3,4
     ifElseFi:
         IfStartsOnOwnLine: 0                # -1,0,1,2,3,4
         BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
@@ -573,15 +575,15 @@ modifyLineBreaks:
         ElseFinishesWithLineBreak: 0        # -1,0,1,2,3,4
         FiStartsOnOwnLine: 0                # -1,0,1,2,3,4
         FiFinishesWithLineBreak: 0          # -1,0,1,2,3,4 
-        ifnum:
-            IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            OrStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            OrFinishesWithLineBreak: 0      # -1,0,1,2,3,4
-            ElseStartsOnOwnLine: 0          # -1,0,1,2,3,4
-            ElseFinishesWithLineBreak: 0    # -1,0,1,2,3,4
-            FiStartsOnOwnLine: 0            # -1,0,1,2,3,4
-            FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4 
+        ## ifnum:
+        ##     IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     OrStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     OrFinishesWithLineBreak: 0      # -1,0,1,2,3,4
+        ##     ElseStartsOnOwnLine: 0          # -1,0,1,2,3,4
+        ##     ElseFinishesWithLineBreak: 0    # -1,0,1,2,3,4
+        ##     FiStartsOnOwnLine: 0            # -1,0,1,2,3,4
+        ##     FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4 
     commands:
         CommandStartsOnOwnLine: 0          
         CommandNameFinishesWithLineBreak: 0

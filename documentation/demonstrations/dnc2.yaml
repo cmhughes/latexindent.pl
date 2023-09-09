@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesDoNOTcontain:
+            other: |-
+              (?xi)    #<!----
+              \\begin
+              |
+              \\cmh

@@ -480,23 +480,23 @@ To use ``latexindent-yaml-schema.json`` with ``VSCode``, you can use the followi
 #. set up your ``settings.json`` file using the directory you saved the file by adapting :numref:`lst:settings.json`; on my Ubuntu laptop this file lives at ``/home/cmhughes/.config/Code/User/settings.json``.
 
 .. literalinclude:: demonstrations/settings.json
- 	:class: .baseyaml
- 	:caption: ``settings.json`` 
- 	:name: lst:settings.json
+	:class: .baseyaml
+	:caption: ``settings.json`` 
+	:name: lst:settings.json
 
 Alternatively, if you would prefer not to download the json file, you might be able to use an adapted version of :numref:`lst:settings-alt.json`.
 
 .. literalinclude:: demonstrations/settings-alt.json
- 	:class: .baseyaml
- 	:caption: ``settings-alt.json`` 
- 	:name: lst:settings-alt.json
+	:class: .baseyaml
+	:caption: ``settings-alt.json`` 
+	:name: lst:settings-alt.json
 
 Finally, if your TeX distribution is up to date, then ``latexindent-yaml-schema.json`` *should* be in the documentation folder of your installation, so an adapted version of :numref:`lst:settings-alt1.json` may work.
 
 .. literalinclude:: demonstrations/settings-alt1.json
- 	:class: .baseyaml
- 	:caption: ``settings-alt1.json`` 
- 	:name: lst:settings-alt1.json
+	:class: .baseyaml
+	:caption: ``settings-alt1.json`` 
+	:name: lst:settings-alt1.json
 
 If you have details of how to implement this schema in other editors, please feel encouraged to contribute to this documentation.
 
@@ -626,9 +626,9 @@ The default values that are employed by ``pre-commit`` are shown in :numref:`lst
 .. index:: pre-commit;default
 
 .. literalinclude:: ../.pre-commit-hooks.yaml
- 	:class: .baseyaml
- 	:caption: ``.pre-commit-hooks.yaml`` (default) 
- 	:name: lst:.pre-commit-yaml-default
+	:class: .baseyaml
+	:caption: ``.pre-commit-hooks.yaml`` (default) 
+	:name: lst:.pre-commit-yaml-default
 
 In particular, the decision has deliberately been made (in collaboration with (Holthuis 2022)) to have the default to employ the following switches: ``overwriteIfDifferent``, ``silent``, ``local``; this is detailed in the lines that specify ``args`` in :numref:`lst:.pre-commit-yaml-default`.
 
@@ -639,7 +639,7 @@ In particular, the decision has deliberately been made (in collaboration with (H
 .. warning::	
 	
 	Users of ``pre-commit`` will, by default, have the ``overwriteIfDifferent`` switch employed. It is assumed that such users have version control in place, and are intending to overwrite their files.
-	 
+
 
 .. label follows
 
@@ -657,9 +657,9 @@ To use ``latexindent.pl`` with ``pre-commit``, create the file ``.pre-commit-con
 .. index:: pre-commit;cpan
 
 .. literalinclude:: demonstrations/pre-commit-config-cpan.yaml
- 	:class: .baseyaml
- 	:caption: ``.pre-commit-config.yaml`` (cpan) 
- 	:name: lst:.pre-commit-config.yaml-cpan
+	:class: .baseyaml
+	:caption: ``.pre-commit-config.yaml`` (cpan) 
+	:name: lst:.pre-commit-config.yaml-cpan
 
 Once created, you should then be able to run the following command:
 
@@ -703,9 +703,9 @@ You can also rely on ``conda`` (detailed in :numref:`sec:app:conda`) instead of 
 .. index:: pre-commit;conda
 
 .. literalinclude:: demonstrations/pre-commit-config-conda.yaml
- 	:class: .baseyaml
- 	:caption: ``.pre-commit-config.yaml`` (conda) 
- 	:name: lst:.pre-commit-config.yaml-conda
+	:class: .baseyaml
+	:caption: ``.pre-commit-config.yaml`` (conda) 
+	:name: lst:.pre-commit-config.yaml-conda
 
 Once created, you should then be able to run the following command:
 
@@ -747,9 +747,9 @@ You can also rely on ``docker`` (detailed in :numref:`sec:app:docker`) instead o
 .. index:: pre-commit;docker
 
 .. literalinclude:: demonstrations/pre-commit-config-docker.yaml
- 	:class: .baseyaml
- 	:caption: ``.pre-commit-config.yaml`` (docker) 
- 	:name: lst:.pre-commit-config.yaml-docker
+	:class: .baseyaml
+	:caption: ``.pre-commit-config.yaml`` (docker) 
+	:name: lst:.pre-commit-config.yaml-docker
 
 Once created, you should then be able to run the following command:
 
@@ -797,9 +797,9 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 	and ``.pre-commit-config.yaml`` as in :numref:`lst:.latexindent.yaml-switches`:
 	
 	.. literalinclude:: demonstrations/pre-commit-config-demo.yaml
-	 	:class: .baseyaml
-	 	:caption: ``.pre-commit-config.yaml`` (demo) 
-	 	:name: lst:.latexindent.yaml-switches
+		:class: .baseyaml
+		:caption: ``.pre-commit-config.yaml`` (demo) 
+		:name: lst:.latexindent.yaml-switches
 	
 	Now running
 	
@@ -823,8 +823,7 @@ Let’s consider a small example, with local ``latexindent.pl`` settings in ``.l
 	
 	-  ``-m`` to modify line breaks; in addition to ``-s`` to suppress command-line output, and ``-w`` to format files in place.
 	
-	
-	 
+
 
 .. label follows
 
@@ -971,14 +970,14 @@ logFilePreferences
 	Let’s say that we start with the code given in :numref:`lst:simple`, and the settings specified in :numref:`lst:logfile-prefs1-yaml`.
 	
 	.. literalinclude:: demonstrations/simple.tex
-	 	:class: .tex
-	 	:caption: ``simple.tex`` 
-	 	:name: lst:simple
+		:class: .tex
+		:caption: ``simple.tex`` 
+		:name: lst:simple
 	
 	.. literalinclude:: demonstrations/logfile-prefs1.yaml
-	 	:class: .baseyaml
-	 	:caption: ``logfile-prefs1.yaml`` 
-	 	:name: lst:logfile-prefs1-yaml
+		:class: .baseyaml
+		:caption: ``logfile-prefs1.yaml`` 
+		:name: lst:logfile-prefs1-yaml
 	
 	If we run the following command (noting that ``-t`` is active)
 	
@@ -1000,8 +999,8 @@ logFilePreferences
 	          indentRulesGlobal specified (0) for environments, ...
 	          Using defaultIndent for myenv
 	          Putting linebreak after replacementText for myenv
-	          looking for COMMANDS and key ={value}
-	   TRACE: Searching for commands with optional and/or mandatory arguments AND key ={value}
+	          looking for COMMANDS and key = {value}
+	   TRACE: Searching for commands with optional and/or mandatory arguments AND key = {value}
 	          looking for SPECIAL begin/end
 	   TRACE: Searching myenv for special begin/end (see specialBeginEnd)
 	   TRACE: Searching myenv for optional and mandatory arguments
@@ -1009,7 +1008,7 @@ logFilePreferences
 	          -----
 	
 	Notice that the information given about ``myenv`` is ‘framed’ using ``+++++`` and ``-----`` respectively.
-	 
+
 
 .. label follows
 
@@ -1035,9 +1034,9 @@ They may receive the following result
 and can then use the settings given in :numref:`lst:indentconfig-encoding1` within their ``indentconfig.yaml``, where 936 is the result of the ``chcp`` command.
 
 .. literalinclude:: demonstrations/encoding1.yaml
- 	:class: .baseyaml
- 	:caption: ``encoding`` demonstration for ``indentconfig.yaml`` 
- 	:name: lst:indentconfig-encoding1
+	:class: .baseyaml
+	:caption: ``encoding`` demonstration for ``indentconfig.yaml`` 
+	:name: lst:indentconfig-encoding1
 
 dos2unix linebreak adjustment
 -----------------------------
@@ -1090,44 +1089,44 @@ noting that the *output* file is given *next to* the ``-o`` switch.
 The fields given in :numref:`lst:obsoleteYaml` are *obsolete* from Version 3.0 onwards.
 
 .. literalinclude:: demonstrations/obsolete.yaml
- 	:class: .baseyaml
- 	:caption: Obsolete YAML fields from Version 3.0 
- 	:name: lst:obsoleteYaml
+	:class: .baseyaml
+	:caption: Obsolete YAML fields from Version 3.0 
+	:name: lst:obsoleteYaml
 
 There is a slight difference when specifying indentation after headings; specifically, we now write ``indentAfterThisHeading`` instead of ``indent``. See :numref:`lst:indentAfterThisHeadingOld` and :numref:`lst:indentAfterThisHeadingNew`
 
 .. literalinclude:: demonstrations/indentAfterThisHeadingOld.yaml
- 	:class: .baseyaml
- 	:caption: ``indentAfterThisHeading`` in Version 2.2 
- 	:name: lst:indentAfterThisHeadingOld
+	:class: .baseyaml
+	:caption: ``indentAfterThisHeading`` in Version 2.2 
+	:name: lst:indentAfterThisHeadingOld
 
 .. literalinclude:: demonstrations/indentAfterThisHeadingNew.yaml
- 	:class: .baseyaml
- 	:caption: ``indentAfterThisHeading`` in Version 3.0 
- 	:name: lst:indentAfterThisHeadingNew
+	:class: .baseyaml
+	:caption: ``indentAfterThisHeading`` in Version 3.0 
+	:name: lst:indentAfterThisHeadingNew
 
 To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, you would write YAML as in :numref:`lst:noAdditionalIndentOld`; as of Version 3.0, you would write YAML as in :numref:`lst:indentAfterThisHeadingNew1` or, if you’re using ``-m`` switch, :numref:`lst:indentAfterThisHeadingNew2`.
 
 .. index:: specialBeginEnd;update to displaymath V3.0
 
 .. literalinclude:: demonstrations/noAddtionalIndentOld.yaml
- 	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` in Version 2.2 
- 	:name: lst:noAdditionalIndentOld
+	:class: .baseyaml
+	:caption: ``noAdditionalIndent`` in Version 2.2 
+	:name: lst:noAdditionalIndentOld
 
 .. literalinclude:: demonstrations/noAddtionalIndentNew.yaml
- 	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
- 	:name: lst:indentAfterThisHeadingNew1
+	:class: .baseyaml
+	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+	:name: lst:indentAfterThisHeadingNew1
 
 .. literalinclude:: demonstrations/noAddtionalIndentNew1.yaml
- 	:class: .baseyaml
- 	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
- 	:name: lst:indentAfterThisHeadingNew2
+	:class: .baseyaml
+	:caption: ``noAdditionalIndent`` for ``displayMath`` in Version 3.0 
+	:name: lst:indentAfterThisHeadingNew2
 
 --------------
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::
@@ -1213,7 +1212,7 @@ To specify ``noAdditionalIndent`` for display-math environments in Version 2.2, 
    .. container::
       :name: ref-vscode-yaml-extentions
 
-      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. `https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName%20=%20redhat.vscode-yaml.
 
    .. container::
       :name: ref-bersbersbers

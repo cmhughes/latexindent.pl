@@ -1,6 +1,10 @@
-<!-- announcement: cruft directory switch update, bugfix for poly-switch with lookForAlignDelims,  bugfix for text wrap routine-->
+<!-- announcement: new feature for oneSentencePerLine: sentencesDoNOTcontain; bugfix for items-->
 
 # changelog.md
+
+## V3.23, September 9, 2023
+* new feature for oneSentencePerLine: sentencesDoNOTcontain, see [issue-419](https://github.com/cmhughes/latexindent.pl/issues/419)
+* bug fix for items, see [issue-467](https://github.com/cmhughes/latexindent.pl/issues/467)
 
 ## V3.22.2, July 14, 2023
 * update to `cruft directory` switch, which now attempts to create the cruft directory if it does not exist, see [issue-452](https://github.com/cmhughes/latexindent.pl/issues/452), thanks to @jessestricker

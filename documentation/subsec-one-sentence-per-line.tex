@@ -10,7 +10,7 @@
  \index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
  A-Z}%
 
- \cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+ \cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \subsubsection{oneSentencePerLine: overview}
  An overview of how the oneSentencePerLine routine feature works:
@@ -324,6 +324,100 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
  the non-default settings in \cref{lst:alt-full-stop1-yaml}.
  \end{example}
 
+\subsubsection{oneSentencePerLine: sentencesDoNOTcontain}
+ You can specify patterns that sentences do \emph{not} contain using the field
+ \announce*{2023-09-09}{oneSentencePerLine: sentencesDoNOTcontain} in
+ \cref{lst:sentencesDoNOTcontain}.
+
+ \cmhlistingsfromfile*[style=sentencesDoNOTcontain]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesDoNOTcontain}}{lst:sentencesDoNOTcontain}
+
+ If sentences run across environments then, by default, they will \emph{not} be
+ considered a sentence by \texttt{latexindent.pl}. \announce*{2023-09-09}*{updated
+ example of oneSentencePerLine}
+ \begin{example}
+ For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4}
+
+ \cmhlistingsfromfile*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+
+ and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
+
+ \begin{commandshell}
+latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
+\end{commandshell}
+
+ then the output is unchanged, because the default value of
+ \texttt{sentencesDoNOTcontain} says, \emph{sentences do NOT contain}
+
+ This means that, by default, \texttt{latexindent.pl} does \emph{not} consider the file
+ in \cref{lst:multiple-sentences4} to have a sentence. \lstinline!\\begin!
+ \end{example}
+
+ \begin{example}
+ We can customise the \texttt{sentencesDoNOTcontain} field with anything that we do
+ \emph{not} want sentences to contain.
+
+ We begin with the file in \cref{lst:sentence-dnc1}.
+
+ \cmhlistingsfromfile*{demonstrations/sentence-dnc1.tex}{\texttt{sentence-dnc1.tex}}{lst:sentence-dnc1}
+
+ Upon running the following commands
+
+ \begin{commandshell}
+latexindent.pl sentence-dnc1.tex -m -l=dnc1.yaml
+\end{commandshell}
+
+ then we obtain the output given in \cref{lst:sentence-dnc1-mod1}.
+
+ \begin{cmhtcbraster}[ raster left skip=-2.5cm,
+   raster right skip=-1cm,
+   raster force size=false,
+   raster column 1/.style={add to width=3cm},
+  ]
+  \cmhlistingsfromfile*{demonstrations/sentence-dnc1-mod1.tex}{\texttt{sentence-dnc1-mod1.tex}}{lst:sentence-dnc1-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc1.yaml}}{lst:dnc1-yaml}
+ \end{cmhtcbraster}
+
+ The settings in \cref{lst:dnc1-yaml} say that sentences do \emph{not} contain
+ \lstinline!\begin! and that they do not contain \lstinline!\cmh!
+ \end{example}
+
+ \begin{example}
+ We can implement case insensitivity for the \texttt{sentencesDoNOTcontain} field.
+
+ We begin with the file in \cref{lst:sentence-dnc2}.
+
+ \cmhlistingsfromfile*{demonstrations/sentence-dnc2.tex}{\texttt{sentence-dnc2.tex}}{lst:sentence-dnc2}
+
+ Upon running the following commands
+
+ \begin{commandshell}
+latexindent.pl sentence-dnc2.tex -m -l=dnc2.yaml
+\end{commandshell}
+
+ then we obtain the output given in \cref{lst:sentence-dnc2-mod2}.
+
+ \begin{cmhtcbraster}[ raster left skip=-2.5cm,
+   raster right skip=-1cm,
+   raster force size=false,
+   raster column 1/.style={add to width=3cm},
+  ]
+  \cmhlistingsfromfile*{demonstrations/sentence-dnc2-mod2.tex}{\texttt{sentence-dnc2-mod2.tex}}{lst:sentence-dnc2-mod2}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc2.yaml}}{lst:dnc2-yaml}
+ \end{cmhtcbraster}
+
+ The settings in \cref{lst:dnc2-yaml} say that sentences do \emph{not} contain
+ \lstinline!\begin! and that they do not contain \emph{case insensitive} versions of
+ \lstinline!\cmh!
+ \end{example}
+ \begin{example}
+ We can turn off \texttt{sentenceDoNOTcontain} by setting it to \texttt{0} as in
+ \cref{lst:dnc-off-yaml}.
+
+ \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc-off.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc-off.yaml}}{lst:dnc-off-yaml}
+
+ The settings in \cref{lst:dnc-off-yaml} mean that sentences can contain any character.
+ \end{example}
+
 \subsubsection{Features of the oneSentencePerLine routine}
  The sentence manipulation routine takes place \emph{after} verbatim \index{verbatim!in
  relation to oneSentencePerLine} environments, preamble and trailing comments have been
@@ -341,44 +435,6 @@ latexindent.pl multiple-sentences3 -m -l=manipulate-sentences.yaml
  then we obtain the output in \cref{lst:multiple-sentences3-mod1}.
  \cmhlistingsfromfile{demonstrations/multiple-sentences3.tex}{\texttt{multiple-sentences3.tex}}{lst:multiple-sentences3}
  \cmhlistingsfromfile{demonstrations/multiple-sentences3-mod1.tex}{\texttt{multiple-sentences3.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences3-mod1}
- \end{example}
-
- \begin{example}
- Furthermore, if sentences run across environments then, by default, the line breaks
- internal to the sentence will be removed. For example, if we use the \texttt{.tex} file
- in \cref{lst:multiple-sentences4} and run the commands \index{switches!-l demonstration}
- \index{switches!-m demonstration}
-
- \begin{commandshell}
-latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
-latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
-\end{commandshell}
-
- then we obtain the output in
- \cref{lst:multiple-sentences4-mod1,lst:multiple-sentences4-mod2}.
- \cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
- \begin{widepage}
-  \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod1.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:manipulate-sentences-yaml}}{lst:multiple-sentences4-mod1}
- \end{widepage}
- \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod2.tex}{\texttt{multiple-sentences4.tex} using \vref{lst:keep-sen-line-breaks-yaml}}{lst:multiple-sentences4-mod2}
- \end{example}
-
- \begin{example}
- Once you've read \cref{sec:poly-switches}, you will know that you can accommodate the
- removal of internal sentence line breaks by using the YAML in
- \cref{lst:item-rules2-yaml} and the command \index{switches!-l demonstration}
- \index{switches!-m demonstration}
-
- \begin{commandshell}
-latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
-\end{commandshell}
-
- the output of which is shown in \cref{lst:multiple-sentences4-mod3}.
-
- \begin{cmhtcbraster}
-  \cmhlistingsfromfile{demonstrations/multiple-sentences4-mod3.tex}{\texttt{multiple-sentences4.tex} using \cref{lst:item-rules2-yaml}}{lst:multiple-sentences4-mod3}
-  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/item-rules2.yaml}[MLB-TCB]{\texttt{item-rules2.yaml}}{lst:item-rules2-yaml}
- \end{cmhtcbraster}
  \end{example}
 
 \subsubsection{oneSentencePerLine: text wrapping and indenting sentences}

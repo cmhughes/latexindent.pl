@@ -5,7 +5,7 @@
 References
 ==========
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::
@@ -231,7 +231,7 @@ References
    .. container::
       :name: ref-vscode-yaml-extentions
 
-      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. `https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml <https://marketplace.visualstudio.com/items?itemName = redhat.vscode-yaml>`__.
+      “VSCode Yaml Extension.” n.d. Accessed January 1, 2022. https://marketplace.visualstudio.com/items?itemName%20=%20redhat.vscode-yaml.
 
    .. container::
       :name: ref-bersbersbers

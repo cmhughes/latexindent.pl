@@ -340,11 +340,11 @@ latexindent.pl bib2.bib -l bibsettings1.yaml,bibsettings2.yaml -o=+-mod2
 
  \begin{example}
  We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
- trailing comments. \announce*{2023-06-01}{fine tuning trailing comments demonstration}
+ trailing comments. \announce{2023-06-01}{fine tuning trailing comments demonstration}
 
  We begin with the file in \cref{lst:finetuning5}
 
- \cmhlistingsfromfile*{demonstrations/finetuning5.tex}{\texttt{finetuning5.tex}}{lst:finetuning5}
+ \cmhlistingsfromfile{demonstrations/finetuning5.tex}{\texttt{finetuning5.tex}}{lst:finetuning5}
 
  Using the settings in \cref{lst:fine-tuning3} and running the command
 
@@ -355,8 +355,8 @@ latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
  gives the output in \cref{lst:finetuning5-mod1}.
 
  \begin{cmhtcbraster}[raster column skip=.01\linewidth]
-  \cmhlistingsfromfile*{demonstrations/finetuning5-mod1.tex}{\texttt{finetuning5-mod1.tex}}{lst:finetuning5-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning3.yaml}[yaml-TCB]{\texttt{finetuning3.yaml}}{lst:fine-tuning3}
+  \cmhlistingsfromfile{demonstrations/finetuning5-mod1.tex}{\texttt{finetuning5-mod1.tex}}{lst:finetuning5-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/fine-tuning3.yaml}[yaml-TCB]{\texttt{finetuning3.yaml}}{lst:fine-tuning3}
  \end{cmhtcbraster}
 
  The settings in \cref{lst:fine-tuning3} detail that trailing comments can \emph{not} be

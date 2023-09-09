@@ -32,10 +32,10 @@ The options for the ``lines`` switch are:
 We demonstrate this feature, and the available variations in what follows. We will use the file in :numref:`lst:myfile`.
 
 .. literalinclude:: demonstrations/myfile.tex
- 	:class: .tex
- 	:caption: ``myfile.tex`` 
- 	:name: lst:myfile
- 	:linenos:
+	:class: .tex
+	:caption: ``myfile.tex`` 
+	:name: lst:myfile
+	:linenos:
 
 .. proof:example::	
 	
@@ -49,10 +49,10 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	which instructs ``latexindent.pl`` to only operate on lines 3 to 7; the output is given in :numref:`lst:myfile-mod1`.
 	
 	.. literalinclude:: demonstrations/myfile-mod1.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod1.tex`` 
-	 	:name: lst:myfile-mod1
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod1.tex`` 
+		:name: lst:myfile-mod1
+		:linenos:
 	
 	The following two calls to ``latexindent.pl`` are equivalent
 	
@@ -63,7 +63,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines 7-3 myfile.tex -o=+-mod1
 	
 	as ``latexindent.pl`` performs a check to put the lowest number first.
-	 
+
 
 .. proof:example::	
 	
@@ -77,10 +77,10 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	instructs ``latexindent.pl`` to only operate on line 5; the output is given in :numref:`lst:myfile-mod2`.
 	
 	.. literalinclude:: demonstrations/myfile-mod2.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod2.tex`` 
-	 	:name: lst:myfile-mod2
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod2.tex`` 
+		:name: lst:myfile-mod2
+		:linenos:
 	
 	The following two calls are equivalent:
 	
@@ -90,8 +90,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines 5 myfile.tex
 	   latexindent.pl --lines 5-5 myfile.tex
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -114,7 +113,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines -1-3 myfile.tex
 	
 	``latexindent.pl`` will ignore the ``lines`` argument, and *operate on the entire file* because we assume that negatively numbered lines in a file do not exist.
-	 
+
 
 .. proof:example::	
 	
@@ -128,10 +127,10 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	which instructs ``latexindent.pl`` to operate upon lines 3 to 5 and lines 8 to 10; the output is given in :numref:`lst:myfile-mod3`.
 	
 	.. literalinclude:: demonstrations/myfile-mod3.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod3.tex`` 
-	 	:name: lst:myfile-mod3
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod3.tex`` 
+		:name: lst:myfile-mod3
+		:linenos:
 	
 	The following calls to ``latexindent.pl`` are all equivalent
 	
@@ -144,7 +143,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines 10-8,5-3 myfile.tex
 	
 	as ``latexindent.pl`` performs a check to put the lowest line ranges first, and within each line range, it puts the lowest number first.
-	 
+
 
 .. proof:example::	
 	
@@ -158,10 +157,10 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	has four line ranges: lines 1 to 2, lines 4 to 5, lines 9 to 10 and line 12. The output is given in :numref:`lst:myfile-mod4`.
 	
 	.. literalinclude:: demonstrations/myfile-mod4.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod4.tex`` 
-	 	:name: lst:myfile-mod4
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod4.tex`` 
+		:name: lst:myfile-mod4
+		:linenos:
 	
 	As previously, the ordering does not matter, and the following calls to ``latexindent.pl`` are all equivalent
 	
@@ -174,7 +173,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines 12,4-5,1-2,9-10 myfile.tex
 	
 	as ``latexindent.pl`` performs a check to put the lowest line ranges first, and within each line range, it puts the lowest number first.
-	 
+
 
 .. proof:example::	
 	
@@ -200,13 +199,12 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	The output is given in :numref:`lst:myfile-mod5`.
 	
 	.. literalinclude:: demonstrations/myfile-mod5.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod5.tex`` 
-	 	:name: lst:myfile-mod5
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod5.tex`` 
+		:name: lst:myfile-mod5
+		:linenos:
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -229,13 +227,12 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	The output is given in :numref:`lst:myfile-mod6`.
 	
 	.. literalinclude:: demonstrations/myfile-mod6.tex
-	 	:class: .tex
-	 	:caption: ``myfile-mod6.tex`` 
-	 	:name: lst:myfile-mod6
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile-mod6.tex`` 
+		:name: lst:myfile-mod6
+		:linenos:
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -249,8 +246,7 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	   latexindent.pl --lines 1-x myfile.tex 
 	   latexindent.pl --lines !y-3 myfile.tex 
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -259,10 +255,10 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	For example, let’s use with the file in :numref:`lst:myfile1`.
 	
 	.. literalinclude:: demonstrations/myfile1.tex
-	 	:class: .tex
-	 	:caption: ``myfile1.tex`` 
-	 	:name: lst:myfile1
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile1.tex`` 
+		:name: lst:myfile1
+		:linenos:
 	
 	We can demonstrate interaction with the ``-m`` switch (see :numref:`sec:modifylinebreaks`); in particular, if we use :numref:`lst:mlb2`, :numref:`lst:env-mlb7` and :numref:`lst:env-mlb8` and run
 	
@@ -274,11 +270,9 @@ We demonstrate this feature, and the available variations in what follows. We wi
 	then we receive the output in :numref:`lst:myfile1-mod1`.
 	
 	.. literalinclude:: demonstrations/myfile1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``myfile1-mod1.tex`` 
-	 	:name: lst:myfile1-mod1
-	 	:linenos:
+		:class: .tex
+		:caption: ``myfile1-mod1.tex`` 
+		:name: lst:myfile1-mod1
+		:linenos:
 	
-	
-	 
 

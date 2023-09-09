@@ -17,10 +17,10 @@ package LatexIndent::TrailingComments;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::Tokens          qw/%tokens/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::LogFile         qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @EXPORT_OK
@@ -52,7 +52,7 @@ sub add_comment_symbol {
         { id => $tokens{trailingComment} . $commentCounter . $tokens{endOfToken}, value => $commentValue } );
 
     # log file info
-    $logger->trace("*Updating trailing comment array") if $is_t_switch_active;
+    $logger->trace("*Updating trailing comment array")       if $is_t_switch_active;
     $logger->trace( Dumper( \@trailingComments ), 'ttrace' ) if ($is_tt_switch_active);
 
     # the returned value

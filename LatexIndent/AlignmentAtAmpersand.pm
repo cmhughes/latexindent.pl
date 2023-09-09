@@ -18,15 +18,15 @@ package LatexIndent::AlignmentAtAmpersand;
 use strict;
 use warnings;
 use Data::Dumper;
-use Exporter qw/import/;
-use List::Util qw/max min sum/;
+use Exporter                      qw/import/;
+use List::Util                    qw/max min sum/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active %switches/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::HiddenChildren qw/%familyTree/;
-use LatexIndent::Verbatim qw/%verbatimStorage/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active %switches/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::Tokens           qw/%tokens/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::HiddenChildren   qw/%familyTree/;
+use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK
     = qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width get_column_width/;
@@ -719,7 +719,7 @@ sub dont_measure {
             ${ $cellStorage[ $input{row} ][ $input{column} ] }{width} )
             if ($is_t_switch_active);
         $logger->trace( "entry: ", ${ $cellStorage[ $input{row} ][ $input{column} ] }{entry} ) if ($is_t_switch_active);
-        $logger->trace("--------------------------") if ($is_t_switch_active);
+        $logger->trace("--------------------------")                                           if ($is_t_switch_active);
         ${ $cellStorage[ $input{row} ][ $input{column} ] }{measureThis} = 0;
         ${ $cellStorage[ $input{row} ][ $input{column} ] }{type}        = "X";
     }

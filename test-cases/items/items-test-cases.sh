@@ -88,5 +88,7 @@ latexindent.pl -s issue-249.tex -o=+-mod0
 # can be followed by, beamer stuff
 latexindent.pl -s issue-307.tex -o=+-mod0
 
+# issue 467, comments following item
+latexindent.pl -s issue-467.tex -o +-mod1
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

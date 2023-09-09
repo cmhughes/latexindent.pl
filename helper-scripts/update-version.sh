@@ -23,10 +23,10 @@
 #   update-version.sh -v
 
 minorVersion=0
-oldVersion='3.22.1'
-newVersion='3.22.2'
-oldDate='2023-07-02'
-newDate='2023-07-14'
+oldVersion='3.22.2'
+newVersion='3.23'
+oldDate='2023-07-14'
+newDate='2023-09-09'
 updateVersion=0
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux

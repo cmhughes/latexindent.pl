@@ -17,17 +17,17 @@ package LatexIndent::Environment;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::Braces qw/$braceBracketRegExpBasic/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Heading qw/$allHeadingsRegexp/;
-use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
-use Exporter qw/import/;
-our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::Braces           qw/$braceBracketRegExpBasic/;
+use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Heading          qw/$allHeadingsRegexp/;
+use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use Exporter                      qw/import/;
+our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 our $environmentCounter;
 our $environmentBasicRegExp = qr/\\begin\{/;

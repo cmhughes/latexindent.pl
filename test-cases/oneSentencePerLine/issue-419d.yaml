@@ -1,0 +1,17 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesDoNOTcontain: 
+            other: |-
+              (?x)
+              (?:
+                \\begin
+                |
+                \\TG
+              )
+        sentencesFollow:
+            questionMark: 0                 # 0/1
+            other: |-
+              (?x)
+              \h+[a-zA-Z]+?
+              \?

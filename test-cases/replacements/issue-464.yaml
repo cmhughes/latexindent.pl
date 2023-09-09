@@ -1,0 +1,9 @@
+modifyLineBreaks:
+    environments:
+        BodyStartsOnOwnLine: 2  # add % after \begin{env} to preserve page reference
+
+replacements:
+  -
+    when: after
+    substitution: |-
+      s/%{2,}/%/sg

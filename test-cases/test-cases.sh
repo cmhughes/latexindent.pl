@@ -5,13 +5,14 @@
 #
 # Sample usage
 #   ./test-cases.sh 
-#   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
-#   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
-#   ./test-cases.sh -c              # show the counter within loops
-#   ./test-cases.sh -b              # do the benchmark test cases
-#   ./test-cases.sh -f              # do the file extension test cases
 #   ./test-cases.sh -a              # do *all* test cases (toggles bench mark and file extension switches)
+#   ./test-cases.sh -b              # do the benchmark test cases
+#   ./test-cases.sh -c              # show the counter within loops
+#   ./test-cases.sh -d              # don't stop mode
+#   ./test-cases.sh -f              # do the file extension test cases
+#   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
 #   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
+#   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 RED='\033[0;31m'          # red

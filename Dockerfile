@@ -17,7 +17,7 @@ FROM perl:5.38.0-slim-threaded-buster
 #
 
 ARG LATEXINDENT_VERSION
-ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.22.2}
+ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.23}
 
 RUN apt-get update \
     && apt-get install \
@@ -30,7 +30,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone --depth 1 https://github.com/cmhughes/latexindent.pl
+RUN git clone --depth 7 https://github.com/cmhughes/latexindent.pl
 
 WORKDIR /latexindent.pl/helper-scripts
 

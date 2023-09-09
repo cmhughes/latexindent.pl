@@ -17,11 +17,11 @@ package LatexIndent::Indent;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
-use LatexIndent::Switches qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
-use LatexIndent::HiddenChildren qw/%familyTree/;
+use LatexIndent::Tokens          qw/%tokens/;
+use LatexIndent::Switches        qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::HiddenChildren  qw/%familyTree/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::LogFile         qw/$logger/;
 use Text::Tabs;
 use Data::Dumper;
 use Exporter qw/import/;
@@ -94,8 +94,8 @@ sub get_surrounding_indentation {
                 $logger->trace(
                     "ancestor ID: $newAncestorId, adding indentation of $newAncestorId to surroundingIndentation of ${$self}{id}"
                 ) if ($is_t_switch_active);
-                $surroundingIndentation .=
-                    ref( ${$_}{ancestorIndentation} ) eq 'SCALAR'
+                $surroundingIndentation
+                    .= ref( ${$_}{ancestorIndentation} ) eq 'SCALAR'
                     ? ( ${ ${$_}{ancestorIndentation} } ? ${ ${$_}{ancestorIndentation} } : q() )
                     : ( ${$_}{ancestorIndentation}      ? ${$_}{ancestorIndentation}      : q() );
             }
@@ -158,7 +158,7 @@ sub indent_body {
         {
             my $bodyFirstLine = $1;
             my $remainingBody = $2;
-            $logger->trace("first line of body: $bodyFirstLine") if $is_tt_switch_active;
+            $logger->trace("first line of body: $bodyFirstLine")                     if $is_tt_switch_active;
             $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
             # add the indentation to all the body except first line
@@ -292,7 +292,7 @@ sub indent_children_recursively {
     }
 
     $logger->trace('Pre-processed body:') if $is_tt_switch_active;
-    $logger->trace( ${$self}{body} ) if ($is_tt_switch_active);
+    $logger->trace( ${$self}{body} )      if ($is_tt_switch_active);
 
     # send the children through this indentation routine recursively
     if ( defined ${$self}{children} ) {
@@ -471,7 +471,7 @@ sub replace_id_with_begin_body_end {
 
         # log file info
         $logger->trace("Body (${$self}{name}) now looks like:") if $is_tt_switch_active;
-        $logger->trace( ${$self}{body} ) if ($is_tt_switch_active);
+        $logger->trace( ${$self}{body} )                        if ($is_tt_switch_active);
 
 # remove element from array: http://stackoverflow.com/questions/174292/what-is-the-best-way-to-delete-a-value-from-an-array-in-perl
         splice( @{ ${$self}{children} }, $index, 1 );

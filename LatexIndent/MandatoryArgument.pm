@@ -17,13 +17,13 @@ package LatexIndent::MandatoryArgument;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Special qw/$specialBeginBasicRegExp/;
-use Exporter qw/import/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active /;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Special          qw/$specialBeginBasicRegExp/;
+use Exporter                      qw/import/;
 our @ISA       = "LatexIndent::Document";                             # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 our $mandatoryArgumentCounter;
@@ -38,7 +38,7 @@ sub find_mandatory_arguments {
 
         # log file output
         $logger->trace("*Mandatory argument found, body in ${$self}{name}") if $is_t_switch_active;
-        $logger->trace("(last argument)") if ( $9 eq '' and $is_t_switch_active );
+        $logger->trace("(last argument)")                                   if ( $9 eq '' and $is_t_switch_active );
 
         ${$self}{body} =~ s/
                             $mandArgRegExp(\h*)($trailingCommentRegExp)*(.*)

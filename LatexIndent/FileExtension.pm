@@ -20,11 +20,11 @@ use warnings;
 use PerlIO::encoding;
 use open ':std', ':encoding(UTF-8)';
 use File::Basename;    # to get the filename and directory path
-use Exporter qw/import/;
-use Encode qw/decode/;
+use Exporter                     qw/import/;
+use Encode                       qw/decode/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/%switches $is_check_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Switches        qw/%switches $is_check_switch_active/;
+use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
 sub file_extension_check {

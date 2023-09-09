@@ -17,8 +17,8 @@ package LatexIndent::Check;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use Exporter qw/import/;
-use LatexIndent::LogFile qw/$logger/;
+use Exporter              qw/import/;
+use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Switches qw/$is_m_switch_active $is_check_verbose_switch_active/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/simple_diff/;
@@ -113,8 +113,8 @@ sub simple_diff {
                 }
             );
 
-            $tmpOldBody = '-' . ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
-            $tmpNewBody = '+' . ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
+            $tmpOldBody               = '-' . ${ $diff[$i] }{old} if defined ${ $diff[$i] }{old};
+            $tmpNewBody               = '+' . ${ $diff[$i] }{new} if defined ${ $diff[$i] }{new};
             $diffChunkFirstLineNumber = $currentLineNumber;
         }
         else {

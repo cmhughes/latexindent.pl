@@ -17,16 +17,16 @@ package LatexIndent::Sentence;
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
 use warnings;
-use LatexIndent::Tokens qw/%tokens/;
+use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
-use LatexIndent::Environment qw/$environmentBasicRegExp/;
-use LatexIndent::IfElseFi qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Heading qw/$allHeadingsRegexp/;
-use LatexIndent::Special qw/$specialBeginAndBracesBracketsBasicRegExp/;
-use Exporter qw/import/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
+use LatexIndent::Environment      qw/$environmentBasicRegExp/;
+use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
+use LatexIndent::Heading          qw/$allHeadingsRegexp/;
+use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
+use Exporter                      qw/import/;
 our @ISA       = "LatexIndent::Document";     # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/one_sentence_per_line/;
 our $sentenceCounter;
@@ -104,7 +104,7 @@ sub one_sentence_per_line {
     }
 
     $logger->trace("Sentences follow regexp:") if $is_tt_switch_active;
-    $logger->trace($sentencesFollow) if $is_tt_switch_active;
+    $logger->trace($sentencesFollow)           if $is_tt_switch_active;
 
     #
     # sentences BEGIN with
@@ -186,7 +186,7 @@ sub one_sentence_per_line {
     # the OVERALL sentence regexp
     #
     $logger->trace("Overall sentences end with regexp:") if $is_tt_switch_active;
-    $logger->trace($sentencesEndWith) if $is_tt_switch_active;
+    $logger->trace($sentencesEndWith)                    if $is_tt_switch_active;
 
     $logger->trace("Finding sentences...") if $is_t_switch_active;
 
@@ -210,11 +210,8 @@ sub one_sentence_per_line {
         $notWithinSentence .= "|" . qr/(?:\R?\\par)/s;
     }
 
-    # initiate the sentence counter
-    my @sentenceStorage;
-
-    # make the sentence manipulation
-    ${$self}{body} =~ s/((?:$sentencesFollow))
+    my $sentenceRegEx = qr/
+                        ((?:$sentencesFollow))
                             (\h*)
                             (?!$notWithinSentence) 
                             ((?:$sentencesBeginWith).*?)
@@ -222,7 +219,39 @@ sub one_sentence_per_line {
                             (\h*)?                        # possibly followed by horizontal space
                             (\R)?                         # possibly followed by a line break 
                             ($trailingCommentRegExp)?     # possibly followed by trailing comments
-                       /
+                        /sx;
+
+    if ( ref ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain} eq 'HASH'
+        and defined ${ ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain} }{other} )
+    {
+        my $sentencesDoNOTcontain
+            = qr/${${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesDoNOTcontain}}{other}/;
+
+        $sentenceRegEx = qr/
+                        ((?:$sentencesFollow))
+                            (\h*)
+                            (?!$notWithinSentence) 
+                            (
+                               (?:$sentencesBeginWith)
+                               (?:
+                                  (?!
+                                    $sentencesDoNOTcontain 
+                                  ).
+                               )
+                               *?
+                            )
+                            ($sentencesEndWith)
+                            (\h*)?                        # possibly followed by horizontal space
+                            (\R)?                         # possibly followed by a line break 
+                            ($trailingCommentRegExp)?     # possibly followed by trailing comments
+                        /sx;
+    }
+
+    # initiate the sentence counter
+    my @sentenceStorage;
+
+    # make the sentence manipulation
+    ${$self}{body} =~ s/$sentenceRegEx/
                             my $beginning = $1;
                             my $h_space   = ($2?$2:q());
                             my $middle    = $3;
@@ -333,7 +362,7 @@ sub one_sentence_per_line {
                     my $bodyFirstLine = $1;
                     my $remainingBody = $2;
                     my $indentation   = ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent};
-                    $logger->trace("first line of sentence:  $bodyFirstLine") if $is_tt_switch_active;
+                    $logger->trace("first line of sentence:  $bodyFirstLine")                if $is_tt_switch_active;
                     $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
                     # add the indentation to all the body except first line
@@ -379,15 +408,15 @@ sub tasks_particular_to_each_object {
 
     # search for environments
     $logger->trace('looking for ENVIRONMENTS') if $is_t_switch_active;
-    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/s;
+    $self->find_environments                   if ${$self}{body} =~ m/$environmentBasicRegExp/s;
 
     # search for ifElseFi blocks
     $logger->trace('looking for IFELSEFI') if $is_t_switch_active;
-    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
+    $self->find_ifelsefi                   if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
 
     # search for headings (part, chapter, section, setc)
     $logger->trace('looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
-    $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
+    $self->find_heading                                                  if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
     # the ordering of finding commands and special code blocks can change
     $self->find_commands_or_key_equals_values_braces_and_special
@@ -410,7 +439,7 @@ sub indent_body {
         my $bodyFirstLine = $1;
         my $remainingBody = $2;
         my $indentation   = ${$self}{indentation};
-        $logger->trace("first line of sentence  $bodyFirstLine") if $is_tt_switch_active;
+        $logger->trace("first line of sentence  $bodyFirstLine")                 if $is_tt_switch_active;
         $logger->trace("remaining body (before indentation):\n'$remainingBody'") if ($is_tt_switch_active);
 
         # add the indentation to all the body except first line

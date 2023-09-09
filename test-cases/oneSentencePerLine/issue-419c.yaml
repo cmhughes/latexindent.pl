@@ -1,0 +1,11 @@
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1
+        sentencesDoNOTcontain: 
+            other: |-
+              (?x)
+              (?:
+                \\begin
+                |
+                \\TG
+              )

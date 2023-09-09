@@ -8,36 +8,36 @@ As you look at :numref:`lst:filecontentsbefore` – :numref:`lst:pstricksafter`,
 In each of the samples given in :numref:`lst:filecontentsbefore` – :numref:`lst:pstricksafter` the ‘before’ case is a ‘worst case scenario’ with no effort to make indentation. The ‘after’ result would be the same, regardless of the leading white space at the beginning of each line which is stripped by ``latexindent.pl`` (unless a ``verbatim``-like environment or ``noIndentBlock`` is specified – more on this in :numref:`sec:defuseloc`).
 
 .. literalinclude:: demonstrations/filecontents1.tex
- 	:class: .tex
- 	:caption: ``filecontents1.tex`` 
- 	:name: lst:filecontentsbefore
+	:class: .tex
+	:caption: ``filecontents1.tex`` 
+	:name: lst:filecontentsbefore
 
 .. literalinclude:: demonstrations/filecontents1-default.tex
- 	:class: .tex
- 	:caption: ``filecontents1.tex`` default output 
- 	:name: lst:filecontentsafter
+	:class: .tex
+	:caption: ``filecontents1.tex`` default output 
+	:name: lst:filecontentsafter
 
 .. literalinclude:: demonstrations/tikzset.tex
- 	:class: .tex
- 	:caption: ``tikzset.tex`` 
- 	:name: lst:tikzsetbefore
+	:class: .tex
+	:caption: ``tikzset.tex`` 
+	:name: lst:tikzsetbefore
 
 .. literalinclude:: demonstrations/tikzset-default.tex
- 	:class: .tex
- 	:caption: ``tikzset.tex`` default output 
- 	:name: lst:tikzsetafter
+	:class: .tex
+	:caption: ``tikzset.tex`` default output 
+	:name: lst:tikzsetafter
 
 .. literalinclude:: demonstrations/pstricks.tex
- 	:class: .tex
- 	:caption: ``pstricks.tex`` 
- 	:name: lst:pstricksbefore
+	:class: .tex
+	:caption: ``pstricks.tex`` 
+	:name: lst:pstricksbefore
 
 .. literalinclude:: demonstrations/pstricks-default.tex
- 	:class: .tex
- 	:caption: ``pstricks.tex`` default output 
- 	:name: lst:pstricksafter
+	:class: .tex
+	:caption: ``pstricks.tex`` default output 
+	:name: lst:pstricksafter
 
-.. container:: references
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

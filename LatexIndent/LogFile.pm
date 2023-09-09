@@ -19,11 +19,11 @@ use strict;
 use warnings;
 use FindBin;
 use File::Basename;    # to get the filename and directory path
-use File::Path qw(make_path);
-use Exporter qw/import/;
+use File::Path            qw(make_path);
+use Exporter              qw/import/;
 use LatexIndent::Switches qw/%switches/;
-use LatexIndent::Version qw/$versionNumber $versionDate/;
-use Encode qw/decode/;
+use LatexIndent::Version  qw/$versionNumber $versionDate/;
+use Encode                qw/decode/;
 our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 

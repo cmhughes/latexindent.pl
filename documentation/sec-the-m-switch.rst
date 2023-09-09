@@ -12,12 +12,12 @@ All features described in this section will only be relevant if the ``-m`` switc
 As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``latexindent.pl`` to modify line breaks, according to the specifications in the ``modifyLineBreaks`` field. *The settings in this field will only be considered if the ``-m`` switch has been used*. A snippet of the default settings of this field is shown in :numref:`lst:modifylinebreaks`.
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``modifyLineBreaks`` 
- 	:name: lst:modifylinebreaks
- 	:lines: 500-502
- 	:linenos:
- 	:lineno-start: 500
+	:class: .mlbyaml
+	:caption: ``modifyLineBreaks`` 
+	:name: lst:modifylinebreaks
+	:lines: 500-502
+	:linenos:
+	:lineno-start: 500
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -26,7 +26,7 @@ Having read the previous paragraph, it should sound reasonable that, if you call
 .. warning::	
 	
 	If you call ``latexindent.pl`` with the ``-m`` switch, then you are giving it permission to modify line breaks. By default, the only thing that will happen is that multiple blank lines will be condensed into one blank line; many other settings are possible, discussed next.
-	 
+
 
 .. describe:: preserveBlankLines:0|1
 
@@ -50,17 +50,16 @@ Assuming that this switch takes an integer value greater than ``0``, ``latexinde
 	the output is shown in :numref:`lst:mlb-bl-out`; note that the multiple blank lines have been condensed into one blank line, and note also that we have used the ``-m`` switch!
 	
 	.. literalinclude:: demonstrations/mlb1.tex
-	 	:class: .tex
-	 	:caption: ``mlb1.tex`` 
-	 	:name: lst:mlb-bl
+		:class: .tex
+		:caption: ``mlb1.tex`` 
+		:name: lst:mlb-bl
 	
 	.. literalinclude:: demonstrations/mlb1-out.tex
-	 	:class: .tex
-	 	:caption: ``mlb1-mod1.tex`` 
-	 	:name: lst:mlb-bl-out
+		:class: .tex
+		:caption: ``mlb1-mod1.tex`` 
+		:name: lst:mlb-bl-out
 	
-	
-	 
+
 
 .. label follows
 
@@ -74,12 +73,12 @@ Text Wrapping
 The complete settings for this feature are given in :numref:`lst:textWrapOptionsAll`.
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``textWrapOptions`` 
- 	:name: lst:textWrapOptionsAll
- 	:lines: 528-555
- 	:linenos:
- 	:lineno-start: 528
+	:class: .mlbyaml
+	:caption: ``textWrapOptions`` 
+	:name: lst:textWrapOptionsAll
+	:lines: 530-557
+	:linenos:
+	:lineno-start: 530
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -134,9 +133,9 @@ Text wrap: simple examples
 	.. index:: text wrap;quick start
 	
 	.. literalinclude:: demonstrations/textwrap1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap1.tex`` 
-	 	:name: lst:textwrap1
+		:class: .tex
+		:caption: ``textwrap1.tex`` 
+		:name: lst:textwrap1
 	
 	We will change the value of ``columns`` in :numref:`lst:textwrap1-yaml` and then run the command
 	
@@ -148,17 +147,16 @@ Text wrap: simple examples
 	then we receive the output given in :numref:`lst:textwrap1-mod1`.
 	
 	.. literalinclude:: demonstrations/textwrap1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap1-mod1.tex`` 
-	 	:name: lst:textwrap1-mod1
+		:class: .tex
+		:caption: ``textwrap1-mod1.tex`` 
+		:name: lst:textwrap1-mod1
 	
 	.. literalinclude:: demonstrations/textwrap1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``textwrap1.yaml`` 
-	 	:name: lst:textwrap1-yaml
+		:class: .mlbyaml
+		:caption: ``textwrap1.yaml`` 
+		:name: lst:textwrap1-yaml
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -169,9 +167,9 @@ Text wrap: simple examples
 	Starting from the file in :numref:`lst:textwrap1-mod1` and using the settings in :numref:`lst:textwrap1A-yaml`
 	
 	.. literalinclude:: demonstrations/textwrap1A.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``textwrap1A.yaml`` 
-	 	:name: lst:textwrap1A-yaml
+		:class: .mlbyaml
+		:caption: ``textwrap1A.yaml`` 
+		:name: lst:textwrap1A-yaml
 	
 	and running
 	
@@ -183,12 +181,11 @@ Text wrap: simple examples
 	gives the output in :numref:`lst:textwrap1-mod1A`.
 	
 	.. literalinclude:: demonstrations/textwrap1-mod1A.tex
-	 	:class: .tex
-	 	:caption: ``textwrap1-mod1A.tex`` 
-	 	:name: lst:textwrap1-mod1A
+		:class: .tex
+		:caption: ``textwrap1-mod1A.tex`` 
+		:name: lst:textwrap1-mod1A
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -204,17 +201,17 @@ Text wrap: simple examples
 	gives the output in :numref:`lst:textwrap1-mod1B`.
 	
 	.. literalinclude:: demonstrations/textwrap1-mod1B.tex
-	 	:class: .tex
-	 	:caption: ``textwrap1-mod1B.tex`` 
-	 	:name: lst:textwrap1-mod1B
+		:class: .tex
+		:caption: ``textwrap1-mod1B.tex`` 
+		:name: lst:textwrap1-mod1B
 	
 	.. literalinclude:: demonstrations/textwrap1B.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``textwrap1B.yaml`` 
-	 	:name: lst:textwrap1B-yaml
+		:class: .mlbyaml
+		:caption: ``textwrap1B.yaml`` 
+		:name: lst:textwrap1B-yaml
 	
 	We note that in :numref:`lst:textwrap1-mod1B` the multiple spaces have *not* been condensed into single spaces.
-	 
+
 
 Text wrap: ``blocksFollow`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -230,9 +227,9 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	.. index:: text wrap;blocksFollow!headings
 	
 	.. literalinclude:: demonstrations/tw-headings1.tex
-	 	:class: .tex
-	 	:caption: ``tw-headings1.tex`` 
-	 	:name: lst:tw-headings1
+		:class: .tex
+		:caption: ``tw-headings1.tex`` 
+		:name: lst:tw-headings1
 	
 	We note that :numref:`lst:tw-headings1` contains the heading commands ``section`` and ``subsection``. Upon running the command
 	
@@ -244,9 +241,9 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	then we receive the output given in :numref:`lst:tw-headings1-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-headings1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-headings1-mod1.tex`` 
-	 	:name: lst:tw-headings1-mod1
+		:class: .tex
+		:caption: ``tw-headings1-mod1.tex`` 
+		:name: lst:tw-headings1-mod1
 	
 	We reference :numref:`lst:textWrapOptionsAll` and also :numref:`lst:indentAfterHeadings`:
 	
@@ -266,17 +263,16 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	gives the output in :numref:`lst:tw-headings1-mod2`, in which text wrapping has been instructed *not to happen* following headings.
 	
 	.. literalinclude:: demonstrations/tw-headings1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-headings1-mod2.tex`` 
-	 	:name: lst:tw-headings1-mod2
+		:class: .tex
+		:caption: ``tw-headings1-mod2.tex`` 
+		:name: lst:tw-headings1-mod2
 	
 	.. literalinclude:: demonstrations/bf-no-headings.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``bf-no-headings.yaml`` 
-	 	:name: lst:bf-no-headings-yaml
+		:class: .mlbyaml
+		:caption: ``bf-no-headings.yaml`` 
+		:name: lst:bf-no-headings-yaml
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -285,9 +281,9 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	.. index:: text wrap;blocksFollow!comments
 	
 	.. literalinclude:: demonstrations/tw-comments1.tex
-	 	:class: .tex
-	 	:caption: ``tw-comments1.tex`` 
-	 	:name: lst:tw-comments1
+		:class: .tex
+		:caption: ``tw-comments1.tex`` 
+		:name: lst:tw-comments1
 	
 	We note that :numref:`lst:tw-comments1` contains trailing comments. Upon running the command
 	
@@ -299,9 +295,9 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	then we receive the output given in :numref:`lst:tw-comments1-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-comments1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-comments1-mod1.tex`` 
-	 	:name: lst:tw-comments1-mod1
+		:class: .tex
+		:caption: ``tw-comments1-mod1.tex`` 
+		:name: lst:tw-comments1-mod1
 	
 	With reference to :numref:`lst:textWrapOptionsAll` the ``commentOnPreviousLine`` field is set to ``1``, which instructs ``latexindent.pl`` to find text wrap blocks after a comment on its own line.
 	
@@ -315,17 +311,16 @@ We examine the ``blocksFollow`` field of :numref:`lst:textWrapOptionsAll`.
 	gives the output in :numref:`lst:tw-comments1-mod2`, in which text wrapping has been instructed *not to happen* following comments on their own line.
 	
 	.. literalinclude:: demonstrations/tw-comments1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-comments1-mod2.tex`` 
-	 	:name: lst:tw-comments1-mod2
+		:class: .tex
+		:caption: ``tw-comments1-mod2.tex`` 
+		:name: lst:tw-comments1-mod2
 	
 	.. literalinclude:: demonstrations/bf-no-comments.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``bf-no-comments.yaml`` 
-	 	:name: lst:bf-no-comments-yaml
+		:class: .mlbyaml
+		:caption: ``bf-no-comments.yaml`` 
+		:name: lst:bf-no-comments-yaml
 	
-	
-	 
+
 
 Referencing :numref:`lst:textWrapOptionsAll` the ``blocksFollow`` fields ``par``, ``blankline``, ``verbatim`` and ``filecontents`` fields operate in analogous ways to those demonstrated in the above.
 
@@ -340,9 +335,9 @@ The ``other`` field of the ``blocksFollow`` can either be ``0`` (turned off) or 
 	.. index:: regular expressions;text wrap!blocksFollow
 	
 	.. literalinclude:: demonstrations/tw-disp-math1.tex
-	 	:class: .tex
-	 	:caption: ``tw-disp-math1.tex`` 
-	 	:name: lst:tw-disp-math1
+		:class: .tex
+		:caption: ``tw-disp-math1.tex`` 
+		:name: lst:tw-disp-math1
 	
 	We note that :numref:`lst:tw-disp-math1` contains display math. Upon running the command
 	
@@ -354,9 +349,9 @@ The ``other`` field of the ``blocksFollow`` can either be ``0`` (turned off) or 
 	then we receive the output given in :numref:`lst:tw-disp-math1-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-disp-math1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-disp-math1-mod1.tex`` 
-	 	:name: lst:tw-disp-math1-mod1
+		:class: .tex
+		:caption: ``tw-disp-math1-mod1.tex`` 
+		:name: lst:tw-disp-math1-mod1
 	
 	With reference to :numref:`lst:textWrapOptionsAll` the ``other`` field is set to ``\\\]``, which instructs ``latexindent.pl`` to find text wrap blocks after the end of display math.
 	
@@ -370,17 +365,17 @@ The ``other`` field of the ``blocksFollow`` can either be ``0`` (turned off) or 
 	gives the output in :numref:`lst:tw-disp-math1-mod2`, in which text wrapping has been instructed *not to happen* following display math.
 	
 	.. literalinclude:: demonstrations/tw-disp-math1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-disp-math1-mod2.tex`` 
-	 	:name: lst:tw-disp-math1-mod2
+		:class: .tex
+		:caption: ``tw-disp-math1-mod2.tex`` 
+		:name: lst:tw-disp-math1-mod2
 	
 	.. literalinclude:: demonstrations/bf-no-disp-math.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``bf-no-disp-math.yaml`` 
-	 	:name: lst:bf-no-disp-math-yaml
+		:class: .mlbyaml
+		:caption: ``bf-no-disp-math.yaml`` 
+		:name: lst:bf-no-disp-math-yaml
 	
 	Naturally, you should feel encouraged to customise this as you see fit.
-	 
+
 
 The ``blocksFollow`` field *deliberately* does not default to allowing text wrapping to occur after ``begin environment`` statements. You are encouraged to customize the ``other`` field to accommodate the environments that you would like to text wrap individually, as in the next example.
 
@@ -393,9 +388,9 @@ The ``blocksFollow`` field *deliberately* does not default to allowing text wrap
 	.. index:: regular expressions;text wrap!blocksFollow
 	
 	.. literalinclude:: demonstrations/tw-bf-myenv1.tex
-	 	:class: .tex
-	 	:caption: ``tw-bf-myenv1.tex`` 
-	 	:name: lst:tw-bf-myenv1
+		:class: .tex
+		:caption: ``tw-bf-myenv1.tex`` 
+		:name: lst:tw-bf-myenv1
 	
 	We note that :numref:`lst:tw-bf-myenv1` contains ``myenv`` environment. Upon running the command
 	
@@ -407,9 +402,9 @@ The ``blocksFollow`` field *deliberately* does not default to allowing text wrap
 	then we receive the output given in :numref:`lst:tw-bf-myenv1-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-bf-myenv1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-bf-myenv1-mod1.tex`` 
-	 	:name: lst:tw-bf-myenv1-mod1
+		:class: .tex
+		:caption: ``tw-bf-myenv1-mod1.tex`` 
+		:name: lst:tw-bf-myenv1-mod1
 	
 	We note that we have *not* received much text wrapping. We can turn do better by employing :numref:`lst:tw-bf-myenv-yaml` and then run
 	
@@ -421,17 +416,16 @@ The ``blocksFollow`` field *deliberately* does not default to allowing text wrap
 	which gives the output in :numref:`lst:tw-bf-myenv1-mod2`, in which text wrapping has been implemented across the file.
 	
 	.. literalinclude:: demonstrations/tw-bf-myenv1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-bf-myenv1-mod2.tex`` 
-	 	:name: lst:tw-bf-myenv1-mod2
+		:class: .tex
+		:caption: ``tw-bf-myenv1-mod2.tex`` 
+		:name: lst:tw-bf-myenv1-mod2
 	
 	.. literalinclude:: demonstrations/tw-bf-myenv.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tw-bf-myenv.yaml`` 
-	 	:name: lst:tw-bf-myenv-yaml
+		:class: .mlbyaml
+		:caption: ``tw-bf-myenv.yaml`` 
+		:name: lst:tw-bf-myenv-yaml
 	
-	
-	 
+
 
 Text wrap: ``blocksBeginWith`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -447,9 +441,9 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	If we start with the file given in :numref:`lst:tw-0-9`
 	
 	.. literalinclude:: demonstrations/tw-0-9.tex
-	 	:class: .tex
-	 	:caption: ``tw-0-9.tex`` 
-	 	:name: lst:tw-0-9
+		:class: .tex
+		:caption: ``tw-0-9.tex`` 
+		:name: lst:tw-0-9
 	
 	and run the command
 	
@@ -461,9 +455,9 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	then we receive the output given in :numref:`lst:tw-0-9-mod1` in which text wrapping has *not* occurred.
 	
 	.. literalinclude:: demonstrations/tw-0-9-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-0-9-mod1.tex`` 
-	 	:name: lst:tw-0-9-mod1
+		:class: .tex
+		:caption: ``tw-0-9-mod1.tex`` 
+		:name: lst:tw-0-9-mod1
 	
 	We can allow paragraphs to begin with ``0-9`` characters by using the settings in :numref:`lst:bb-0-9-yaml` and running
 	
@@ -475,26 +469,25 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	gives the output in :numref:`lst:tw-0-9-mod2`, in which text wrapping *has* happened.
 	
 	.. literalinclude:: demonstrations/tw-0-9-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-0-9-mod2.tex`` 
-	 	:name: lst:tw-0-9-mod2
+		:class: .tex
+		:caption: ``tw-0-9-mod2.tex`` 
+		:name: lst:tw-0-9-mod2
 	
 	.. literalinclude:: demonstrations/bb-0-9.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``bb-0-9.yaml.yaml`` 
-	 	:name: lst:bb-0-9-yaml
+		:class: .mlbyaml
+		:caption: ``bb-0-9.yaml.yaml`` 
+		:name: lst:bb-0-9-yaml
 	
-	
-	 
+
 
 .. proof:example::	
 	
 	Let’s now use the file given in :numref:`lst:tw-bb-announce1`
 	
 	.. literalinclude:: demonstrations/tw-bb-announce1.tex
-	 	:class: .tex
-	 	:caption: ``tw-bb-announce1.tex`` 
-	 	:name: lst:tw-bb-announce1
+		:class: .tex
+		:caption: ``tw-bb-announce1.tex`` 
+		:name: lst:tw-bb-announce1
 	
 	and run the command
 	
@@ -506,9 +499,9 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	then we receive the output given in :numref:`lst:tw-bb-announce1-mod1` in which text wrapping has *not* occurred.
 	
 	.. literalinclude:: demonstrations/tw-bb-announce1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-bb-announce1-mod1.tex`` 
-	 	:name: lst:tw-bb-announce1-mod1
+		:class: .tex
+		:caption: ``tw-bb-announce1-mod1.tex`` 
+		:name: lst:tw-bb-announce1-mod1
 	
 	We can allow ``\announce`` to be at the beginning of paragraphs by using the settings in :numref:`lst:tw-bb-announce-yaml` and running
 	
@@ -520,17 +513,16 @@ We examine the ``blocksBeginWith`` field of :numref:`lst:textWrapOptionsAll` wit
 	gives the output in :numref:`lst:tw-bb-announce1-mod2`, in which text wrapping *has* happened.
 	
 	.. literalinclude:: demonstrations/tw-bb-announce1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-bb-announce1-mod2.tex`` 
-	 	:name: lst:tw-bb-announce1-mod2
+		:class: .tex
+		:caption: ``tw-bb-announce1-mod2.tex`` 
+		:name: lst:tw-bb-announce1-mod2
 	
 	.. literalinclude:: demonstrations/tw-bb-announce.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tw-bb-announce.yaml`` 
-	 	:name: lst:tw-bb-announce-yaml
+		:class: .mlbyaml
+		:caption: ``tw-bb-announce.yaml`` 
+		:name: lst:tw-bb-announce-yaml
 	
-	
-	 
+
 
 Text wrap: ``blocksEndBefore`` examples
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -548,9 +540,9 @@ We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` wit
 	.. index:: regular expressions;text wrap!blocksFollow
 	
 	.. literalinclude:: demonstrations/tw-be-equation.tex
-	 	:class: .tex
-	 	:caption: ``tw-be-equation.tex`` 
-	 	:name: lst:tw-be-equation
+		:class: .tex
+		:caption: ``tw-be-equation.tex`` 
+		:name: lst:tw-be-equation
 	
 	We note that :numref:`lst:tw-be-equation` contains an environment. Upon running the command
 	
@@ -562,9 +554,9 @@ We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` wit
 	then we receive the output given in :numref:`lst:tw-be-equation-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-be-equation-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-be-equation-mod1.tex`` 
-	 	:name: lst:tw-be-equation-mod1
+		:class: .tex
+		:caption: ``tw-be-equation-mod1.tex`` 
+		:name: lst:tw-be-equation-mod1
 	
 	With reference to :numref:`lst:textWrapOptionsAll` the ``other`` field is set to ``\\begin\{|\\\[|\\end\{``, which instructs ``latexindent.pl`` to *stop* text wrap blocks before ``begin`` statements, display math, and ``end`` statements.
 	
@@ -578,17 +570,17 @@ We examine the ``blocksEndBefore`` field of :numref:`lst:textWrapOptionsAll` wit
 	gives the output in :numref:`lst:tw-be-equation-mod2`, in which text wrapping has been instructed *not* to stop at these statements.
 	
 	.. literalinclude:: demonstrations/tw-be-equation.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tw-be-equation.yaml`` 
-	 	:name: lst:tw-be-equation-yaml
+		:class: .mlbyaml
+		:caption: ``tw-be-equation.yaml`` 
+		:name: lst:tw-be-equation-yaml
 	
 	.. literalinclude:: demonstrations/tw-be-equation-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tw-be-equation-mod2.tex`` 
-	 	:name: lst:tw-be-equation-mod2
+		:class: .tex
+		:caption: ``tw-be-equation-mod2.tex`` 
+		:name: lst:tw-be-equation-mod2
 	
 	Naturally, you should feel encouraged to customise this as you see fit.
-	 
+
 
 Text wrap: trailing comments and spaces
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -609,17 +601,16 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output given in :numref:`lst:tw-tc1-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc1.tex`` 
-	 	:name: lst:tw-tc1
+		:class: .tex
+		:caption: ``tw-tc1.tex`` 
+		:name: lst:tw-tc1
 	
 	.. literalinclude:: demonstrations/tw-tc1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc1-mod1.tex`` 
-	 	:name: lst:tw-tc1-mod1
+		:class: .tex
+		:caption: ``tw-tc1-mod1.tex`` 
+		:name: lst:tw-tc1-mod1
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -635,17 +626,17 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output in :numref:`lst:tw-tc2-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc2.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc2.tex`` 
-	 	:name: lst:tw-tc2
+		:class: .tex
+		:caption: ``tw-tc2.tex`` 
+		:name: lst:tw-tc2
 	
 	.. literalinclude:: demonstrations/tw-tc2-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc2-mod1.tex`` 
-	 	:name: lst:tw-tc2-mod1
+		:class: .tex
+		:caption: ``tw-tc2-mod1.tex`` 
+		:name: lst:tw-tc2-mod1
 	
 	We note that, because there is *not* a space before the trailing comment, that the lines have been joined *without* a space.
-	 
+
 
 .. proof:example::	
 	
@@ -661,17 +652,16 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output in :numref:`lst:tw-tc3-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc3.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc3.tex`` 
-	 	:name: lst:tw-tc3
+		:class: .tex
+		:caption: ``tw-tc3.tex`` 
+		:name: lst:tw-tc3
 	
 	.. literalinclude:: demonstrations/tw-tc3-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc3-mod1.tex`` 
-	 	:name: lst:tw-tc3-mod1
+		:class: .tex
+		:caption: ``tw-tc3-mod1.tex`` 
+		:name: lst:tw-tc3-mod1
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -687,17 +677,16 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output in :numref:`lst:tw-tc4-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc4.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc4.tex`` 
-	 	:name: lst:tw-tc4
+		:class: .tex
+		:caption: ``tw-tc4.tex`` 
+		:name: lst:tw-tc4
 	
 	.. literalinclude:: demonstrations/tw-tc4-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc4-mod1.tex`` 
-	 	:name: lst:tw-tc4-mod1
+		:class: .tex
+		:caption: ``tw-tc4-mod1.tex`` 
+		:name: lst:tw-tc4-mod1
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -713,17 +702,17 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output in :numref:`lst:tw-tc5-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc5.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc5.tex`` 
-	 	:name: lst:tw-tc5
+		:class: .tex
+		:caption: ``tw-tc5.tex`` 
+		:name: lst:tw-tc5
 	
 	.. literalinclude:: demonstrations/tw-tc5-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc5-mod1.tex`` 
-	 	:name: lst:tw-tc5-mod1
+		:class: .tex
+		:caption: ``tw-tc5-mod1.tex`` 
+		:name: lst:tw-tc5-mod1
 	
 	The space at the end of the text block has been preserved.
-	 
+
 
 .. proof:example::	
 	
@@ -739,17 +728,17 @@ We explore the behaviour of the text wrap routine in relation to trailing commen
 	gives the output in :numref:`lst:tw-tc6-mod1`.
 	
 	.. literalinclude:: demonstrations/tw-tc6.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc6.tex`` 
-	 	:name: lst:tw-tc6
+		:class: .tex
+		:caption: ``tw-tc6.tex`` 
+		:name: lst:tw-tc6
 	
 	.. literalinclude:: demonstrations/tw-tc6-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tw-tc6-mod1.tex`` 
-	 	:name: lst:tw-tc6-mod1
+		:class: .tex
+		:caption: ``tw-tc6-mod1.tex`` 
+		:name: lst:tw-tc6-mod1
 	
 	The space at the end of the text block has been preserved.
-	 
+
 
 .. label follows
 
@@ -771,9 +760,9 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:ospl:
 	Let’s begin with the file in :numref:`lst:textwrap8`.
 	
 	.. literalinclude:: demonstrations/textwrap8.tex
-	 	:class: .tex
-	 	:caption: ``textwrap8.tex`` 
-	 	:name: lst:textwrap8
+		:class: .tex
+		:caption: ``textwrap8.tex`` 
+		:name: lst:textwrap8
 	
 	Using the settings given in :numref:`lst:tw-before1` and running the command
 	
@@ -785,17 +774,17 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:ospl:
 	gives the output given in :numref:`lst:textwrap8-mod1`.
 	
 	.. literalinclude:: demonstrations/textwrap8-mod1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap8-mod1.tex`` 
-	 	:name: lst:textwrap8-mod1
+		:class: .tex
+		:caption: ``textwrap8-mod1.tex`` 
+		:name: lst:textwrap8-mod1
 	
 	.. literalinclude:: demonstrations/tw-before1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tw-before1.yaml`` 
-	 	:name: lst:tw-before1
+		:class: .mlbyaml
+		:caption: ``tw-before1.yaml`` 
+		:name: lst:tw-before1
 	
 	We note that, in :numref:`lst:textwrap8-mod1`, that the wrapped text has *exceeded* the specified value of ``columns`` (35) given in :numref:`lst:tw-before1`. We can affect this by changing ``when``; we explore this next.
-	 
+
 
 .. proof:example::	
 	
@@ -811,17 +800,17 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:ospl:
 	gives the output given in :numref:`lst:textwrap8-mod2`.
 	
 	.. literalinclude:: demonstrations/textwrap8-mod2.tex
-	 	:class: .tex
-	 	:caption: ``textwrap8-mod2.tex`` 
-	 	:name: lst:textwrap8-mod2
+		:class: .tex
+		:caption: ``textwrap8-mod2.tex`` 
+		:name: lst:textwrap8-mod2
 	
 	.. literalinclude:: demonstrations/tw-after1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tw-after1.yaml`` 
-	 	:name: lst:tw-after1
+		:class: .mlbyaml
+		:caption: ``tw-after1.yaml`` 
+		:name: lst:tw-after1
 	
 	We note that, in :numref:`lst:textwrap8-mod2`, that the wrapped text has *obeyed* the specified value of ``columns`` (35) given in :numref:`lst:tw-after1`.
-	 
+
 
 .. label follows
 
@@ -841,9 +830,9 @@ You can instruct ``latexindent.pl`` to apply text wrapping to comments ; we demo
 	We use the file in :numref:`lst:textwrap9` which contains a trailing comment block.
 	
 	.. literalinclude:: demonstrations/textwrap9.tex
-	 	:class: .tex
-	 	:caption: ``textwrap9.tex`` 
-	 	:name: lst:textwrap9
+		:class: .tex
+		:caption: ``textwrap9.tex`` 
+		:name: lst:textwrap9
 	
 	Using the settings given in :numref:`lst:wrap-comments1` and running the command
 	
@@ -855,26 +844,26 @@ You can instruct ``latexindent.pl`` to apply text wrapping to comments ; we demo
 	gives the output given in :numref:`lst:textwrap9-mod1`.
 	
 	.. literalinclude:: demonstrations/textwrap9-mod1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap9-mod1.tex`` 
-	 	:name: lst:textwrap9-mod1
+		:class: .tex
+		:caption: ``textwrap9-mod1.tex`` 
+		:name: lst:textwrap9-mod1
 	
 	.. literalinclude:: demonstrations/wrap-comments1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``wrap-comments1.yaml`` 
-	 	:name: lst:wrap-comments1
+		:class: .mlbyaml
+		:caption: ``wrap-comments1.yaml`` 
+		:name: lst:wrap-comments1
 	
 	We note that, in :numref:`lst:textwrap9-mod1`, that the comments have been *combined and wrapped* because of the annotated line specified in :numref:`lst:wrap-comments1`.
-	 
+
 
 .. proof:example::	
 	
 	We use the file in :numref:`lst:textwrap10` which contains a trailing comment block.
 	
 	.. literalinclude:: demonstrations/textwrap10.tex
-	 	:class: .tex
-	 	:caption: ``textwrap10.tex`` 
-	 	:name: lst:textwrap10
+		:class: .tex
+		:caption: ``textwrap10.tex`` 
+		:name: lst:textwrap10
 	
 	Using the settings given in :numref:`lst:wrap-comments1:repeat` and running the command
 	
@@ -886,17 +875,17 @@ You can instruct ``latexindent.pl`` to apply text wrapping to comments ; we demo
 	gives the output given in :numref:`lst:textwrap10-mod1`.
 	
 	.. literalinclude:: demonstrations/textwrap10-mod1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap10-mod1.tex`` 
-	 	:name: lst:textwrap10-mod1
+		:class: .tex
+		:caption: ``textwrap10-mod1.tex`` 
+		:name: lst:textwrap10-mod1
 	
 	.. literalinclude:: demonstrations/wrap-comments1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``wrap-comments1.yaml`` 
-	 	:name: lst:wrap-comments1:repeat
+		:class: .mlbyaml
+		:caption: ``wrap-comments1.yaml`` 
+		:name: lst:wrap-comments1:repeat
 	
 	We note that, in :numref:`lst:textwrap10-mod1`, that the comments have been *combined and wrapped* because of the annotated line specified in :numref:`lst:wrap-comments1:repeat`, and that the space from the leading comment has not been inherited; we will explore this further in the next example.
-	 
+
 
 .. proof:example::	
 	
@@ -912,17 +901,17 @@ You can instruct ``latexindent.pl`` to apply text wrapping to comments ; we demo
 	gives the output given in :numref:`lst:textwrap10-mod2`.
 	
 	.. literalinclude:: demonstrations/textwrap10-mod2.tex
-	 	:class: .tex
-	 	:caption: ``textwrap10-mod2.tex`` 
-	 	:name: lst:textwrap10-mod2
+		:class: .tex
+		:caption: ``textwrap10-mod2.tex`` 
+		:name: lst:textwrap10-mod2
 	
 	.. literalinclude:: demonstrations/wrap-comments2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``wrap-comments2.yaml`` 
-	 	:name: lst:wrap-comments2
+		:class: .mlbyaml
+		:caption: ``wrap-comments2.yaml`` 
+		:name: lst:wrap-comments2
 	
 	We note that, in :numref:`lst:textwrap10-mod2`, that the comments have been *combined and wrapped* and that the leading space has been inherited because of the annotated lines specified in :numref:`lst:wrap-comments2`.
-	 
+
 
 Text wrap: huge, tabstop and separator
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -936,7 +925,7 @@ The default value of ``huge`` is ``overflow``, which means that words will *not*
 	Changing the value of ``huge`` to anything other than ``overflow`` will slow down ``latexindent.pl`` significantly when the ``-m`` switch is active.
 	
 	Furthermore, changing ``huge`` means that you may have some words *or commands*\ (!) split across lines in your .tex file, which may affect your output. I do not recommend changing this field.
-	 
+
 
 .. proof:example::	
 	
@@ -957,27 +946,26 @@ The default value of ``huge`` is ``overflow``, which means that words will *not*
 	gives the respective output in :numref:`lst:textwrap4-mod2A` and :numref:`lst:textwrap4-mod2B`.
 	
 	.. literalinclude:: demonstrations/textwrap4-mod2A.tex
-	 	:class: .tex
-	 	:caption: ``textwrap4-mod2A.tex`` 
-	 	:name: lst:textwrap4-mod2A
+		:class: .tex
+		:caption: ``textwrap4-mod2A.tex`` 
+		:name: lst:textwrap4-mod2A
 	
 	.. literalinclude:: demonstrations/textwrap2A.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``textwrap2A.yaml`` 
-	 	:name: lst:textwrap2A-yaml
+		:class: .mlbyaml
+		:caption: ``textwrap2A.yaml`` 
+		:name: lst:textwrap2A-yaml
 	
 	.. literalinclude:: demonstrations/textwrap4-mod2B.tex
-	 	:class: .tex
-	 	:caption: ``textwrap4-mod2B.tex`` 
-	 	:name: lst:textwrap4-mod2B
+		:class: .tex
+		:caption: ``textwrap4-mod2B.tex`` 
+		:name: lst:textwrap4-mod2B
 	
 	.. literalinclude:: demonstrations/textwrap2B.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``textwrap2B.yaml`` 
-	 	:name: lst:textwrap2B-yaml
+		:class: .mlbyaml
+		:caption: ``textwrap2B.yaml`` 
+		:name: lst:textwrap2B-yaml
 	
-	
-	 
+
 
 You can also specify the ``tabstop`` field as an integer value, which is passed to the text wrap module; see (“Text::Wrap Perl Module” n.d.) for details.
 
@@ -999,22 +987,21 @@ You can also specify the ``tabstop`` field as an integer value, which is passed 
 	gives the code given in :numref:`lst:textwrap-ts-mod1`.
 	
 	.. literalinclude:: demonstrations/textwrap-ts.tex
-	 	:class: .tex
-	 	:caption: ``textwrap-ts.tex`` 
-	 	:name: lst:textwrap-ts
+		:class: .tex
+		:caption: ``textwrap-ts.tex`` 
+		:name: lst:textwrap-ts
 	
 	.. literalinclude:: demonstrations/tabstop.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``tabstop.yaml`` 
-	 	:name: lst:tabstop
+		:class: .mlbyaml
+		:caption: ``tabstop.yaml`` 
+		:name: lst:tabstop
 	
 	.. literalinclude:: demonstrations/textwrap-ts-mod1.tex
-	 	:class: .tex
-	 	:caption: ``textwrap-ts-mod1.tex`` 
-	 	:name: lst:textwrap-ts-mod1
+		:class: .tex
+		:caption: ``textwrap-ts-mod1.tex`` 
+		:name: lst:textwrap-ts-mod1
 	
-	
-	 
+
 
 You can specify ``separator``, ``break`` and ``unexpand`` options in your settings in analogous ways to those demonstrated in :numref:`lst:textwrap2B-yaml` and :numref:`lst:tabstop`, and they will be passed to the ``Text::Wrap`` module. I have not found a useful reason to do this; see (“Text::Wrap Perl Module” n.d.) for more details.
 
@@ -1038,12 +1025,12 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
 .. index:: regular expressions;uppercase alph A-Z
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``oneSentencePerLine`` 
- 	:name: lst:oneSentencePerLine
- 	:lines: 503-527
- 	:linenos:
- 	:lineno-start: 503
+	:class: .mlbyaml
+	:caption: ``oneSentencePerLine`` 
+	:name: lst:oneSentencePerLine
+	:lines: 503-529
+	:linenos:
+	:lineno-start: 503
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1091,9 +1078,9 @@ When operating upon sentences ``latexindent.pl`` will, by default, remove intern
 	For example, consider ``multiple-sentences.tex`` shown in :numref:`lst:multiple-sentences`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` 
-	 	:name: lst:multiple-sentences
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` 
+		:name: lst:multiple-sentences
 	
 	If we use the YAML files in :numref:`lst:manipulate-sentences-yaml` and :numref:`lst:keep-sen-line-breaks-yaml`, and run the commands
 	
@@ -1110,27 +1097,27 @@ When operating upon sentences ``latexindent.pl`` will, by default, remove intern
 	then we obtain the respective output given in :numref:`lst:multiple-sentences-mod1` and :numref:`lst:multiple-sentences-mod2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:multiple-sentences-mod1
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` using :numref:`lst:manipulate-sentences-yaml` 
+		:name: lst:multiple-sentences-mod1
 	
 	.. literalinclude:: demonstrations/manipulate-sentences.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``manipulate-sentences.yaml`` 
-	 	:name: lst:manipulate-sentences-yaml
+		:class: .mlbyaml
+		:caption: ``manipulate-sentences.yaml`` 
+		:name: lst:manipulate-sentences-yaml
 	
 	.. literalinclude:: demonstrations/multiple-sentences-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` using :numref:`lst:keep-sen-line-breaks-yaml` 
-	 	:name: lst:multiple-sentences-mod2
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` using :numref:`lst:keep-sen-line-breaks-yaml` 
+		:name: lst:multiple-sentences-mod2
 	
 	.. literalinclude:: demonstrations/keep-sen-line-breaks.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``keep-sen-line-breaks.yaml`` 
-	 	:name: lst:keep-sen-line-breaks-yaml
+		:class: .mlbyaml
+		:caption: ``keep-sen-line-breaks.yaml`` 
+		:name: lst:keep-sen-line-breaks-yaml
 	
 	Notice, in particular, that the ‘internal’ sentence line breaks in :numref:`lst:multiple-sentences` have been removed in :numref:`lst:multiple-sentences-mod1`, but have not been removed in :numref:`lst:multiple-sentences-mod2`.
-	 
+
 
 .. describe:: multipleSpacesToSingle:0|1
 
@@ -1157,28 +1144,28 @@ In each case, you can specify the ``other`` field to include any pattern that yo
 .. index:: regular expressions;uppercase alph A-Z
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``sentencesFollow`` 
- 	:name: lst:sentencesFollow
- 	:lines: 509-517
- 	:linenos:
- 	:lineno-start: 509
+	:class: .mlbyaml
+	:caption: ``sentencesFollow`` 
+	:name: lst:sentencesFollow
+	:lines: 509-517
+	:linenos:
+	:lineno-start: 509
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``sentencesBeginWith`` 
- 	:name: lst:sentencesBeginWith
- 	:lines: 518-521
- 	:linenos:
- 	:lineno-start: 518
+	:class: .mlbyaml
+	:caption: ``sentencesBeginWith`` 
+	:name: lst:sentencesBeginWith
+	:lines: 518-521
+	:linenos:
+	:lineno-start: 518
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``sentencesEndWith`` 
- 	:name: lst:sentencesEndWith
- 	:lines: 522-527
- 	:linenos:
- 	:lineno-start: 522
+	:class: .mlbyaml
+	:caption: ``sentencesEndWith`` 
+	:name: lst:sentencesEndWith
+	:lines: 522-527
+	:linenos:
+	:lineno-start: 522
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1203,26 +1190,26 @@ Let’s explore a few of the switches in ``sentencesFollow``.
 	we obtain the output given in :numref:`lst:multiple-sentences-mod3`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences-mod3.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-follow1-yaml` 
-	 	:name: lst:multiple-sentences-mod3
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-follow1-yaml` 
+		:name: lst:multiple-sentences-mod3
 	
 	.. literalinclude:: demonstrations/sentences-follow1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentences-follow1.yaml`` 
-	 	:name: lst:sentences-follow1-yaml
+		:class: .mlbyaml
+		:caption: ``sentences-follow1.yaml`` 
+		:name: lst:sentences-follow1-yaml
 	
 	Notice that, because ``blankLine`` is set to ``0``, ``latexindent.pl`` will not seek sentences following a blank line, and so the fourth sentence has not been accounted for.
-	 
+
 
 .. proof:example::	
 	
 	We can explore the ``other`` field in :numref:`lst:sentencesFollow` with the ``.tex`` file detailed in :numref:`lst:multiple-sentences1`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences1.tex`` 
-	 	:name: lst:multiple-sentences1
+		:class: .tex
+		:caption: ``multiple-sentences1.tex`` 
+		:name: lst:multiple-sentences1
 	
 	Upon running the following commands
 	
@@ -1239,22 +1226,22 @@ Let’s explore a few of the switches in ``sentencesFollow``.
 	then we obtain the respective output given in :numref:`lst:multiple-sentences1-mod1` and :numref:`lst:multiple-sentences1-mod2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences1-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences1.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:multiple-sentences1-mod1
+		:class: .tex
+		:caption: ``multiple-sentences1.tex`` using :numref:`lst:manipulate-sentences-yaml` 
+		:name: lst:multiple-sentences1-mod1
 	
 	.. literalinclude:: demonstrations/multiple-sentences1-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences1.tex`` using :numref:`lst:sentences-follow2-yaml` 
-	 	:name: lst:multiple-sentences1-mod2
+		:class: .tex
+		:caption: ``multiple-sentences1.tex`` using :numref:`lst:sentences-follow2-yaml` 
+		:name: lst:multiple-sentences1-mod2
 	
 	.. literalinclude:: demonstrations/sentences-follow2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentences-follow2.yaml`` 
-	 	:name: lst:sentences-follow2-yaml
+		:class: .mlbyaml
+		:caption: ``sentences-follow2.yaml`` 
+		:name: lst:sentences-follow2-yaml
 	
 	Notice that in :numref:`lst:multiple-sentences1-mod1` the first sentence after the ``)`` has not been accounted for, but that following the inclusion of :numref:`lst:sentences-follow2-yaml`, the output given in :numref:`lst:multiple-sentences1-mod2` demonstrates that the sentence *has* been accounted for correctly.
-	 
+
 
 oneSentencePerLine: sentencesBeginWith
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1268,9 +1255,9 @@ By default, ``latexindent.pl`` will only assume that sentences begin with the up
 	We use the file in :numref:`lst:multiple-sentences2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences2.tex`` 
-	 	:name: lst:multiple-sentences2
+		:class: .tex
+		:caption: ``multiple-sentences2.tex`` 
+		:name: lst:multiple-sentences2
 	
 	Upon running the following commands
 	
@@ -1287,24 +1274,24 @@ By default, ``latexindent.pl`` will only assume that sentences begin with the up
 	then we obtain the respective output given in :numref:`lst:multiple-sentences2-mod1` and :numref:`lst:multiple-sentences2-mod2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences2-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences2.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:multiple-sentences2-mod1
+		:class: .tex
+		:caption: ``multiple-sentences2.tex`` using :numref:`lst:manipulate-sentences-yaml` 
+		:name: lst:multiple-sentences2-mod1
 	
 	.. index:: regular expressions;numeric 0-9
 	
 	.. literalinclude:: demonstrations/multiple-sentences2-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences2.tex`` using :numref:`lst:sentences-begin1-yaml` 
-	 	:name: lst:multiple-sentences2-mod2
+		:class: .tex
+		:caption: ``multiple-sentences2.tex`` using :numref:`lst:sentences-begin1-yaml` 
+		:name: lst:multiple-sentences2-mod2
 	
 	.. literalinclude:: demonstrations/sentences-begin1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentences-begin1.yaml`` 
-	 	:name: lst:sentences-begin1-yaml
+		:class: .mlbyaml
+		:caption: ``sentences-begin1.yaml`` 
+		:name: lst:sentences-begin1-yaml
 	
 	Notice that in :numref:`lst:multiple-sentences2-mod1`, the first sentence has been accounted for but that the subsequent sentences have not. In :numref:`lst:multiple-sentences2-mod2`, all of the sentences have been accounted for, because the ``other`` field in :numref:`lst:sentences-begin1-yaml` has defined sentences to begin with either ``$`` or any numeric digit, ``0`` to ``9``.
-	 
+
 
 oneSentencePerLine: sentencesEndWith
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1330,28 +1317,28 @@ oneSentencePerLine: sentencesEndWith
 	.. index:: regular expressions;lowercase alph a-z
 	
 	.. literalinclude:: demonstrations/multiple-sentences-mod4.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-end1-yaml` 
-	 	:name: lst:multiple-sentences-mod4
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-end1-yaml` 
+		:name: lst:multiple-sentences-mod4
 	
 	.. literalinclude:: demonstrations/sentences-end1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentences-end1.yaml`` 
-	 	:name: lst:sentences-end1-yaml
+		:class: .mlbyaml
+		:caption: ``sentences-end1.yaml`` 
+		:name: lst:sentences-end1-yaml
 	
 	.. literalinclude:: demonstrations/multiple-sentences-mod5.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-end2-yaml` 
-	 	:name: lst:multiple-sentences-mod5
+		:class: .tex
+		:caption: ``multiple-sentences.tex`` using :numref:`lst:sentences-end2-yaml` 
+		:name: lst:multiple-sentences-mod5
 	
 	.. literalinclude:: demonstrations/sentences-end2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentences-end2.yaml`` 
-	 	:name: lst:sentences-end2-yaml
+		:class: .mlbyaml
+		:caption: ``sentences-end2.yaml`` 
+		:name: lst:sentences-end2-yaml
 	
 	There is a subtle difference between the output in :numref:`lst:multiple-sentences-mod4` and :numref:`lst:multiple-sentences-mod5`; in particular, in :numref:`lst:multiple-sentences-mod4` the word ``sentence`` has not been defined as a sentence, because we have not instructed ``latexindent.pl`` to begin sentences with lower case letters. We have changed this by using the settings in :numref:`lst:sentences-end2-yaml`, and the associated output in :numref:`lst:multiple-sentences-mod5`
 	reflects this.
-	 
+
 
 Referencing :numref:`lst:sentencesEndWith`, you’ll notice that there is a field called ``basicFullStop``, which is set to ``0``, and that the ``betterFullStop`` is set to ``1`` by default.
 
@@ -1360,9 +1347,9 @@ Referencing :numref:`lst:sentencesEndWith`, you’ll notice that there is a fiel
 	Let’s consider the file shown in :numref:`lst:url`.
 	
 	.. literalinclude:: demonstrations/url.tex
-	 	:class: .tex
-	 	:caption: ``url.tex`` 
-	 	:name: lst:url
+		:class: .tex
+		:caption: ``url.tex`` 
+		:name: lst:url
 	
 	Upon running the following commands
 	
@@ -1378,9 +1365,9 @@ Referencing :numref:`lst:sentencesEndWith`, you’ll notice that there is a fiel
 	we obtain the output given in :numref:`lst:url-mod1`.
 	
 	.. literalinclude:: demonstrations/url-mod1.tex
-	 	:class: .tex
-	 	:caption: ``url.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:url-mod1
+		:class: .tex
+		:caption: ``url.tex`` using :numref:`lst:manipulate-sentences-yaml` 
+		:name: lst:url-mod1
 	
 	Notice that the full stop within the url has been interpreted correctly. This is because, within the ``betterFullStop``, full stops at the end of sentences have the following properties:
 	
@@ -1390,8 +1377,7 @@ Referencing :numref:`lst:sentencesEndWith`, you’ll notice that there is a fiel
 	
 	-  they can not be immediately followed by a hyphen, comma, or number.
 	
-	
-	 
+
 
 If you find that the ``betterFullStop`` does not work for your purposes, then you can switch it off by setting it to ``0``, and you can experiment with the ``other`` field. You can also seek to customise the ``betterFullStop`` routine by using the *fine tuning*, detailed in :numref:`lst:fineTuning`.
 
@@ -1413,17 +1399,133 @@ The ``basicFullStop`` routine should probably be avoided in most situations, as 
 	and the YAML in :numref:`lst:alt-full-stop1-yaml` gives the output in :numref:`lst:url-mod2`.
 	
 	.. literalinclude:: demonstrations/url-mod2.tex
-	 	:class: .tex
-	 	:caption: ``url.tex`` using :numref:`lst:alt-full-stop1-yaml` 
-	 	:name: lst:url-mod2
+		:class: .tex
+		:caption: ``url.tex`` using :numref:`lst:alt-full-stop1-yaml` 
+		:name: lst:url-mod2
 	
 	.. literalinclude:: demonstrations/alt-full-stop1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``alt-full-stop1.yaml`` 
-	 	:name: lst:alt-full-stop1-yaml
+		:class: .mlbyaml
+		:caption: ``alt-full-stop1.yaml`` 
+		:name: lst:alt-full-stop1-yaml
 	
 	Notice that the full stop within the URL has not been accommodated correctly because of the non-default settings in :numref:`lst:alt-full-stop1-yaml`.
-	 
+
+
+oneSentencePerLine: sentencesDoNOTcontain
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can specify patterns that sentences do *not* contain using the field in :numref:`lst:sentencesDoNOTcontain`.
+
+.. literalinclude:: ../defaultSettings.yaml
+	:class: .mlbyaml
+	:caption: ``sentencesDoNOTcontain`` 
+	:name: lst:sentencesDoNOTcontain
+	:lines: 528-530
+	:linenos:
+	:lineno-start: 528
+
+If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``. .. proof:example::	
+	
+	For example, if we use the ``.tex`` file in :numref:`lst:multiple-sentences4`
+	
+	.. literalinclude:: demonstrations/multiple-sentences4.tex
+		:class: .tex
+		:caption: ``multiple-sentences4.tex`` 
+		:name: lst:multiple-sentences4
+	
+	and run the command
+	
+	.. index:: switches;-l demonstration
+	
+	.. index:: switches;-m demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
+	
+	then the output is unchanged, because the default value of ``sentencesDoNOTcontain`` says, *sentences do NOT contain*
+	
+	This means that, by default, ``latexindent.pl`` does *not* consider the file in :numref:`lst:multiple-sentences4` to have a sentence. ``\\begin``
+
+
+.. proof:example::	
+	
+	We can customise the ``sentencesDoNOTcontain`` field with anything that we do *not* want sentences to contain.
+	
+	We begin with the file in :numref:`lst:sentence-dnc1`.
+	
+	.. literalinclude:: demonstrations/sentence-dnc1.tex
+		:class: .tex
+		:caption: ``sentence-dnc1.tex`` 
+		:name: lst:sentence-dnc1
+	
+	Upon running the following commands
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl sentence-dnc1.tex -m -l=dnc1.yaml
+	
+	then we obtain the output given in :numref:`lst:sentence-dnc1-mod1`.
+	
+	.. literalinclude:: demonstrations/sentence-dnc1-mod1.tex
+		:class: .tex
+		:caption: ``sentence-dnc1-mod1.tex`` 
+		:name: lst:sentence-dnc1-mod1
+	
+	.. literalinclude:: demonstrations/dnc1.yaml
+		:class: .mlbyaml
+		:caption: ``dnc1.yaml`` 
+		:name: lst:dnc1-yaml
+	
+	The settings in :numref:`lst:dnc1-yaml` say that sentences do *not* contain ``\begin`` and that they do not contain ``\cmh``
+
+
+.. proof:example::	
+	
+	We can implement case insensitivity for the ``sentencesDoNOTcontain`` field.
+	
+	We begin with the file in :numref:`lst:sentence-dnc2`.
+	
+	.. literalinclude:: demonstrations/sentence-dnc2.tex
+		:class: .tex
+		:caption: ``sentence-dnc2.tex`` 
+		:name: lst:sentence-dnc2
+	
+	Upon running the following commands
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl sentence-dnc2.tex -m -l=dnc2.yaml
+	
+	then we obtain the output given in :numref:`lst:sentence-dnc2-mod2`.
+	
+	.. literalinclude:: demonstrations/sentence-dnc2-mod2.tex
+		:class: .tex
+		:caption: ``sentence-dnc2-mod2.tex`` 
+		:name: lst:sentence-dnc2-mod2
+	
+	.. literalinclude:: demonstrations/dnc2.yaml
+		:class: .mlbyaml
+		:caption: ``dnc2.yaml`` 
+		:name: lst:dnc2-yaml
+	
+	The settings in :numref:`lst:dnc2-yaml` say that sentences do *not* contain ``\begin`` and that they do not contain *case insensitive* versions of ``\cmh``
+
+
+.. proof:example::	
+	
+	We can turn off ``sentenceDoNOTcontain`` by setting it to ``0`` as in :numref:`lst:dnc-off-yaml`.
+	
+	.. literalinclude:: demonstrations/dnc-off.yaml
+		:class: .mlbyaml
+		:caption: ``dnc-off.yaml`` 
+		:name: lst:dnc-off-yaml
+	
+	The settings in :numref:`lst:dnc-off-yaml` mean that sentences can contain any character.
+
 
 Features of the oneSentencePerLine routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1450,79 +1552,16 @@ environments, preamble and trailing comments have been accounted for; this means
 	then we obtain the output in :numref:`lst:multiple-sentences3-mod1`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences3.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences3.tex`` 
-	 	:name: lst:multiple-sentences3
+		:class: .tex
+		:caption: ``multiple-sentences3.tex`` 
+		:name: lst:multiple-sentences3
 	
 	.. literalinclude:: demonstrations/multiple-sentences3-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences3.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:multiple-sentences3-mod1
+		:class: .tex
+		:caption: ``multiple-sentences3.tex`` using :numref:`lst:manipulate-sentences-yaml` 
+		:name: lst:multiple-sentences3-mod1
 	
-	
-	 
 
-.. proof:example::	
-	
-	Furthermore, if sentences run across environments then, by default, the line breaks internal to the sentence will be removed. For example, if we use the ``.tex`` file in :numref:`lst:multiple-sentences4` and run the commands
-	
-	.. index:: switches;-l demonstration
-	
-	.. index:: switches;-m demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
-	   latexindent.pl multiple-sentences4 -m -l=keep-sen-line-breaks.yaml
-	
-	then we obtain the output in :numref:`lst:multiple-sentences4-mod1` and :numref:`lst:multiple-sentences4-mod2`.
-	
-	.. literalinclude:: demonstrations/multiple-sentences4.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences4.tex`` 
-	 	:name: lst:multiple-sentences4
-	
-	.. literalinclude:: demonstrations/multiple-sentences4-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences4.tex`` using :numref:`lst:manipulate-sentences-yaml` 
-	 	:name: lst:multiple-sentences4-mod1
-	
-	.. literalinclude:: demonstrations/multiple-sentences4-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences4.tex`` using :numref:`lst:keep-sen-line-breaks-yaml` 
-	 	:name: lst:multiple-sentences4-mod2
-	
-	
-	 
-
-.. proof:example::	
-	
-	Once you’ve read :numref:`sec:poly-switches`, you will know that you can accommodate the removal of internal sentence line breaks by using the YAML in :numref:`lst:item-rules2-yaml` and the command
-	
-	.. index:: switches;-l demonstration
-	
-	.. index:: switches;-m demonstration
-	
-	.. code-block:: latex
-	   :class: .commandshell
-	
-	   latexindent.pl multiple-sentences4 -m -l=item-rules2.yaml
-	
-	the output of which is shown in :numref:`lst:multiple-sentences4-mod3`.
-	
-	.. literalinclude:: demonstrations/multiple-sentences4-mod3.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences4.tex`` using :numref:`lst:item-rules2-yaml` 
-	 	:name: lst:multiple-sentences4-mod3
-	
-	.. literalinclude:: demonstrations/item-rules2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``item-rules2.yaml`` 
-	 	:name: lst:item-rules2-yaml
-	
-	
-	 
 
 oneSentencePerLine: text wrapping and indenting sentences
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1538,9 +1577,9 @@ The ``oneSentencePerLine`` can be instructed to perform text wrapping and indent
 	Let’s use the code in :numref:`lst:multiple-sentences5`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences5.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences5.tex`` 
-	 	:name: lst:multiple-sentences5
+		:class: .tex
+		:caption: ``multiple-sentences5.tex`` 
+		:name: lst:multiple-sentences5
 	
 	Referencing :numref:`lst:sentence-wrap1-yaml`, and running the following command
 	
@@ -1556,17 +1595,16 @@ The ``oneSentencePerLine`` can be instructed to perform text wrapping and indent
 	we receive the output given in :numref:`lst:multiple-sentences5-mod1`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences5-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences5.tex`` using :numref:`lst:sentence-wrap1-yaml` 
-	 	:name: lst:multiple-sentences5-mod1
+		:class: .tex
+		:caption: ``multiple-sentences5.tex`` using :numref:`lst:sentence-wrap1-yaml` 
+		:name: lst:multiple-sentences5-mod1
 	
 	.. literalinclude:: demonstrations/sentence-wrap1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentence-wrap1.yaml`` 
-	 	:name: lst:sentence-wrap1-yaml
+		:class: .mlbyaml
+		:caption: ``sentence-wrap1.yaml`` 
+		:name: lst:sentence-wrap1-yaml
 	
-	
-	 
+
 
 If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``columns`` then the text wrapping will *not* operate on sentences, and you will see a warning in ``indent.log``.
 
@@ -1575,9 +1613,9 @@ If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``co
 	The indentation of sentences requires that sentences are stored as code blocks. This means that you may need to tweak :numref:`lst:sentencesEndWith`. Let’s explore this in relation to :numref:`lst:multiple-sentences6`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences6.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences6.tex`` 
-	 	:name: lst:multiple-sentences6
+		:class: .tex
+		:caption: ``multiple-sentences6.tex`` 
+		:name: lst:multiple-sentences6
 	
 	By default, ``latexindent.pl`` will find the full-stop within the first ``item``, which means that, upon running the following commands
 	
@@ -1596,17 +1634,17 @@ If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``co
 	we receive the respective output in :numref:`lst:multiple-sentences6-mod1` and :numref:`lst:multiple-sentences6-mod2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences6-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences6-mod1.tex`` using :numref:`lst:sentence-wrap1-yaml` 
-	 	:name: lst:multiple-sentences6-mod1
+		:class: .tex
+		:caption: ``multiple-sentences6-mod1.tex`` using :numref:`lst:sentence-wrap1-yaml` 
+		:name: lst:multiple-sentences6-mod1
 	
 	.. literalinclude:: demonstrations/multiple-sentences6-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences6-mod2.tex`` using :numref:`lst:sentence-wrap1-yaml` and no sentence indentation 
-	 	:name: lst:multiple-sentences6-mod2
+		:class: .tex
+		:caption: ``multiple-sentences6-mod2.tex`` using :numref:`lst:sentence-wrap1-yaml` and no sentence indentation 
+		:name: lst:multiple-sentences6-mod2
 	
 	We note that :numref:`lst:multiple-sentences6-mod1` the ``itemize`` code block has *not* been indented appropriately. This is because the oneSentencePerLine has been instructed to store sentences (because :numref:`lst:sentence-wrap1-yaml`); each sentence is then searched for code blocks.
-	 
+
 
 .. proof:example::	
 	
@@ -1619,9 +1657,9 @@ If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``co
 	.. index:: regular expressions;numeric 0-9
 	
 	.. literalinclude:: demonstrations/itemize.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``itemize.yaml`` 
-	 	:name: lst:itemize-yaml
+		:class: .mlbyaml
+		:caption: ``itemize.yaml`` 
+		:name: lst:itemize-yaml
 	
 	Upon running
 	
@@ -1637,12 +1675,12 @@ If you specify ``textWrapSentences`` as 1, but do *not* specify a value for ``co
 	we receive the output in :numref:`lst:multiple-sentences6-mod3`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences6-mod3.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences6-mod3.tex`` using :numref:`lst:sentence-wrap1-yaml` and :numref:`lst:itemize-yaml` 
-	 	:name: lst:multiple-sentences6-mod3
+		:class: .tex
+		:caption: ``multiple-sentences6-mod3.tex`` using :numref:`lst:sentence-wrap1-yaml` and :numref:`lst:itemize-yaml` 
+		:name: lst:multiple-sentences6-mod3
 	
 	Notice that the sentence has received indentation, and that the ``itemize`` code block has been found and indented correctly.
-	 
+
 
 Text wrapping when using the ``oneSentencePerLine`` routine determines if it will remove line breaks while text wrapping, from the value of ``removeSentenceLineBreaks``.
 
@@ -1666,9 +1704,9 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:tw:be
 	Let’s begin with the file in :numref:`lst:multiple-sentences8`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences8.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences8.tex`` 
-	 	:name: lst:multiple-sentences8
+		:class: .tex
+		:caption: ``multiple-sentences8.tex`` 
+		:name: lst:multiple-sentences8
 	
 	Using the settings given in :numref:`lst:sentence-wrap2` and running the command
 	
@@ -1680,17 +1718,17 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:tw:be
 	gives the output given in :numref:`lst:multiple-sentences8-mod1`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences8-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences8-mod1.tex`` 
-	 	:name: lst:multiple-sentences8-mod1
+		:class: .tex
+		:caption: ``multiple-sentences8-mod1.tex`` 
+		:name: lst:multiple-sentences8-mod1
 	
 	.. literalinclude:: demonstrations/sentence-wrap2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentence-wrap2.yaml`` 
-	 	:name: lst:sentence-wrap2
+		:class: .mlbyaml
+		:caption: ``sentence-wrap2.yaml`` 
+		:name: lst:sentence-wrap2
 	
 	We note that, in :numref:`lst:multiple-sentences8-mod1`, that the wrapped text has *exceeded* the specified value of ``columns`` (35) given in :numref:`lst:sentence-wrap2`. We can affect this by changing ``when``; we explore this next.
-	 
+
 
 .. proof:example::	
 	
@@ -1706,17 +1744,17 @@ We demonstrate this in the following examples. See also :numref:`subsubsec:tw:be
 	gives the output given in :numref:`lst:multiple-sentences8-mod2`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences8-mod2.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences8-mod2.tex`` 
-	 	:name: lst:multiple-sentences8-mod2
+		:class: .tex
+		:caption: ``multiple-sentences8-mod2.tex`` 
+		:name: lst:multiple-sentences8-mod2
 	
 	.. literalinclude:: demonstrations/sentence-wrap3.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentence-wrap3.yaml`` 
-	 	:name: lst:sentence-wrap3
+		:class: .mlbyaml
+		:caption: ``sentence-wrap3.yaml`` 
+		:name: lst:sentence-wrap3
 	
 	We note that, in :numref:`lst:multiple-sentences8-mod2`, that the wrapped text has *obeyed* the specified value of ``columns`` (35) given in :numref:`lst:sentence-wrap3`.
-	 
+
 
 .. label follows
 
@@ -1740,9 +1778,9 @@ We demonstrate the one sentence per line routine with respect to text wrapping *
 	Let’s begin with the file in :numref:`lst:multiple-sentences9`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences9.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences9.tex`` 
-	 	:name: lst:multiple-sentences9
+		:class: .tex
+		:caption: ``multiple-sentences9.tex`` 
+		:name: lst:multiple-sentences9
 	
 	Using the settings given in :numref:`lst:sentence-wrap4` and running the command
 	
@@ -1754,17 +1792,17 @@ We demonstrate the one sentence per line routine with respect to text wrapping *
 	gives the output given in :numref:`lst:multiple-sentences9-mod1`.
 	
 	.. literalinclude:: demonstrations/multiple-sentences9-mod1.tex
-	 	:class: .tex
-	 	:caption: ``multiple-sentences9-mod1.tex`` 
-	 	:name: lst:multiple-sentences9-mod1
+		:class: .tex
+		:caption: ``multiple-sentences9-mod1.tex`` 
+		:name: lst:multiple-sentences9-mod1
 	
 	.. literalinclude:: demonstrations/sentence-wrap4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``sentence-wrap4.yaml`` 
-	 	:name: lst:sentence-wrap4
+		:class: .mlbyaml
+		:caption: ``sentence-wrap4.yaml`` 
+		:name: lst:sentence-wrap4
 	
 	We note that, in :numref:`lst:multiple-sentences9-mod1`, that the sentences have been wrapped, and so too have the comments because of the annotated line in :numref:`lst:sentence-wrap4`.
-	 
+
 
 .. label follows
 
@@ -1819,12 +1857,12 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
 .. index:: poly-switches;environment per-code block example
 
 .. literalinclude:: ../defaultSettings.yaml
- 	:class: .mlbyaml
- 	:caption: ``environments`` 
- 	:name: lst:environments-mlb
- 	:lines: 557-566
- 	:linenos:
- 	:lineno-start: 557
+	:class: .mlbyaml
+	:caption: ``environments`` 
+	:name: lst:environments-mlb
+	:lines: 559-568
+	:linenos:
+	:lineno-start: 559
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
@@ -1846,14 +1884,14 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	.. index:: poly-switches;adding line breaks: set to 1
 	
 	.. literalinclude:: demonstrations/env-mlb1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb1.yaml`` 
-	 	:name: lst:env-mlb1
+		:class: .mlbyaml
+		:caption: ``env-mlb1.yaml`` 
+		:name: lst:env-mlb1
 	
 	.. literalinclude:: demonstrations/env-mlb2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb2.yaml`` 
-	 	:name: lst:env-mlb2
+		:class: .mlbyaml
+		:caption: ``env-mlb2.yaml`` 
+		:name: lst:env-mlb2
 	
 	After running the following commands,
 	
@@ -1870,14 +1908,14 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	the output is as in :numref:`lst:env-mlb-mod1` and :numref:`lst:env-mlb-mod2` respectively.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod1.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb1` 
-	 	:name: lst:env-mlb-mod1
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb1` 
+		:name: lst:env-mlb-mod1
 	
 	.. literalinclude:: demonstrations/env-mlb-mod2.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb2` 
-	 	:name: lst:env-mlb-mod2
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb2` 
+		:name: lst:env-mlb-mod2
 	
 	There are a couple of points to note:
 	
@@ -1885,8 +1923,7 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	
 	-  in :numref:`lst:env-mlb-mod2` a line break has been added at the point denoted by ♥ in :numref:`lst:env-mlb1-tex`; furthermore, note that the *body* of ``myenv`` has received the appropriate (default) indentation.
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -1895,14 +1932,14 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	.. index:: poly-switches;adding comments and then line breaks: set to 2
 	
 	.. literalinclude:: demonstrations/env-mlb3.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb3.yaml`` 
-	 	:name: lst:env-mlb3
+		:class: .mlbyaml
+		:caption: ``env-mlb3.yaml`` 
+		:name: lst:env-mlb3
 	
 	.. literalinclude:: demonstrations/env-mlb4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb4.yaml`` 
-	 	:name: lst:env-mlb4
+		:class: .mlbyaml
+		:caption: ``env-mlb4.yaml`` 
+		:name: lst:env-mlb4
 	
 	Upon running the commands
 	
@@ -1915,17 +1952,17 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	we obtain :numref:`lst:env-mlb-mod3` and :numref:`lst:env-mlb-mod4`.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod3.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb3` 
-	 	:name: lst:env-mlb-mod3
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb3` 
+		:name: lst:env-mlb-mod3
 	
 	.. literalinclude:: demonstrations/env-mlb-mod4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb4` 
-	 	:name: lst:env-mlb-mod4
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb4` 
+		:name: lst:env-mlb-mod4
 	
 	Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numref:`lst:env-mlb-mod2`, but this time a comment symbol has been added before adding the line break; in both cases, trailing horizontal space has been stripped before doing so.
-	 
+
 
 .. proof:example::	
 	
@@ -1934,14 +1971,14 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	.. index:: poly-switches;adding blank lines: set to 3
 	
 	.. literalinclude:: demonstrations/env-mlb5.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb5.yaml`` 
-	 	:name: lst:env-mlb5
+		:class: .mlbyaml
+		:caption: ``env-mlb5.yaml`` 
+		:name: lst:env-mlb5
 	
 	.. literalinclude:: demonstrations/env-mlb6.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb6.yaml`` 
-	 	:name: lst:env-mlb6
+		:class: .mlbyaml
+		:caption: ``env-mlb6.yaml`` 
+		:name: lst:env-mlb6
 	
 	Upon running the commands
 	
@@ -1954,17 +1991,17 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	we obtain :numref:`lst:env-mlb-mod5` and :numref:`lst:env-mlb-mod6`.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod5.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb5` 
-	 	:name: lst:env-mlb-mod5
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb5` 
+		:name: lst:env-mlb-mod5
 	
 	.. literalinclude:: demonstrations/env-mlb-mod6.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb6` 
-	 	:name: lst:env-mlb-mod6
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb6` 
+		:name: lst:env-mlb-mod6
 	
 	Note that line breaks have been added as in :numref:`lst:env-mlb-mod1` and :numref:`lst:env-mlb-mod2`, but this time a *blank line* has been added after adding the line break.
-	 
+
 
 .. proof:example::	
 	
@@ -1973,21 +2010,21 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	.. index:: poly-switches;adding blank lines (again"!): set to 4
 	
 	.. literalinclude:: demonstrations/env-beg4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-beg4.yaml`` 
-	 	:name: lst:env-beg4
+		:class: .mlbyaml
+		:caption: ``env-beg4.yaml`` 
+		:name: lst:env-beg4
 	
 	.. literalinclude:: demonstrations/env-body4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-body4.yaml`` 
-	 	:name: lst:env-body4
+		:class: .mlbyaml
+		:caption: ``env-body4.yaml`` 
+		:name: lst:env-body4
 	
 	We will demonstrate this poly-switch value using the code in :numref:`lst:env-mlb1-text`.
 	
 	.. literalinclude:: demonstrations/env-mlb1.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb1.tex`` 
-	 	:name: lst:env-mlb1-text
+		:class: .tex
+		:caption: ``env-mlb1.tex`` 
+		:name: lst:env-mlb1-text
 	
 	Upon running the commands
 	
@@ -2004,14 +2041,14 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	then we receive the respective outputs in :numref:`lst:env-mlb1-beg4` and :numref:`lst:env-mlb1-body4`.
 	
 	.. literalinclude:: demonstrations/env-mlb1-beg4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-beg4` 
-	 	:name: lst:env-mlb1-beg4
+		:class: .tex
+		:caption: ``env-mlb1.tex`` using :numref:`lst:env-beg4` 
+		:name: lst:env-mlb1-beg4
 	
 	.. literalinclude:: demonstrations/env-mlb1-body4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-body4` 
-	 	:name: lst:env-mlb1-body4
+		:class: .tex
+		:caption: ``env-mlb1.tex`` using :numref:`lst:env-body4` 
+		:name: lst:env-mlb1-body4
 	
 	We note in particular that, by design, for this value of the poly-switches:
 	
@@ -2019,8 +2056,7 @@ Adding line breaks: BeginStartsOnOwnLine and BodyStartsOnOwnLine
 	
 	#. in :numref:`lst:env-mlb1-body4` a blank line has been inserted before the beginning of the *body*, even though it already began on its own line.
 	
-	
-	 
+
 
 Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2032,14 +2068,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	.. index:: poly-switches;adding line breaks: set to 1
 	
 	.. literalinclude:: demonstrations/env-mlb7.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb7.yaml`` 
-	 	:name: lst:env-mlb7
+		:class: .mlbyaml
+		:caption: ``env-mlb7.yaml`` 
+		:name: lst:env-mlb7
 	
 	.. literalinclude:: demonstrations/env-mlb8.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb8.yaml`` 
-	 	:name: lst:env-mlb8
+		:class: .mlbyaml
+		:caption: ``env-mlb8.yaml`` 
+		:name: lst:env-mlb8
 	
 	After running the following commands,
 	
@@ -2056,14 +2092,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	the output is as in :numref:`lst:env-mlb-mod7` and :numref:`lst:env-mlb-mod8`.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod7.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb7` 
-	 	:name: lst:env-mlb-mod7
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb7` 
+		:name: lst:env-mlb-mod7
 	
 	.. literalinclude:: demonstrations/env-mlb-mod8.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb8` 
-	 	:name: lst:env-mlb-mod8
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb8` 
+		:name: lst:env-mlb-mod8
 	
 	There are a couple of points to note:
 	
@@ -2071,8 +2107,7 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	
 	-  in :numref:`lst:env-mlb-mod8` a line break has been added at the point denoted by ♣ in :numref:`lst:env-mlb1-tex`.
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -2081,14 +2116,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	.. index:: poly-switches;adding comments and then line breaks: set to 2
 	
 	.. literalinclude:: demonstrations/env-mlb9.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb9.yaml`` 
-	 	:name: lst:env-mlb9
+		:class: .mlbyaml
+		:caption: ``env-mlb9.yaml`` 
+		:name: lst:env-mlb9
 	
 	.. literalinclude:: demonstrations/env-mlb10.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb10.yaml`` 
-	 	:name: lst:env-mlb10
+		:class: .mlbyaml
+		:caption: ``env-mlb10.yaml`` 
+		:name: lst:env-mlb10
 	
 	Upon running the commands
 	
@@ -2101,17 +2136,17 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	we obtain :numref:`lst:env-mlb-mod9` and :numref:`lst:env-mlb-mod10`.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod9.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb9` 
-	 	:name: lst:env-mlb-mod9
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb9` 
+		:name: lst:env-mlb-mod9
 	
 	.. literalinclude:: demonstrations/env-mlb-mod10.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb10` 
-	 	:name: lst:env-mlb-mod10
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb10` 
+		:name: lst:env-mlb-mod10
 	
 	Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numref:`lst:env-mlb-mod8`, but this time a comment symbol has been added before adding the line break; in both cases, trailing horizontal space has been stripped before doing so.
-	 
+
 
 .. proof:example::	
 	
@@ -2120,14 +2155,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	.. index:: poly-switches;adding blank lines: set to 3
 	
 	.. literalinclude:: demonstrations/env-mlb11.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb11.yaml`` 
-	 	:name: lst:env-mlb11
+		:class: .mlbyaml
+		:caption: ``env-mlb11.yaml`` 
+		:name: lst:env-mlb11
 	
 	.. literalinclude:: demonstrations/env-mlb12.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb12.yaml`` 
-	 	:name: lst:env-mlb12
+		:class: .mlbyaml
+		:caption: ``env-mlb12.yaml`` 
+		:name: lst:env-mlb12
 	
 	Upon running the commands
 	
@@ -2140,17 +2175,17 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	we obtain :numref:`lst:env-mlb-mod11` and :numref:`lst:env-mlb-mod12`.
 	
 	.. literalinclude:: demonstrations/env-mlb-mod11.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb11` 
-	 	:name: lst:env-mlb-mod11
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb11` 
+		:name: lst:env-mlb-mod11
 	
 	.. literalinclude:: demonstrations/env-mlb-mod12.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb12` 
-	 	:name: lst:env-mlb-mod12
+		:class: .tex
+		:caption: ``env-mlb.tex`` using :numref:`lst:env-mlb12` 
+		:name: lst:env-mlb-mod12
 	
 	Note that line breaks have been added as in :numref:`lst:env-mlb-mod7` and :numref:`lst:env-mlb-mod8`, and that a *blank line* has been added after the line break.
-	 
+
 
 .. proof:example::	
 	
@@ -2159,14 +2194,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	.. index:: poly-switches;adding blank lines (again"!): set to 4
 	
 	.. literalinclude:: demonstrations/env-end4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-end4.yaml`` 
-	 	:name: lst:env-end4
+		:class: .mlbyaml
+		:caption: ``env-end4.yaml`` 
+		:name: lst:env-end4
 	
 	.. literalinclude:: demonstrations/env-end-f4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-end-f4.yaml`` 
-	 	:name: lst:env-end-f4
+		:class: .mlbyaml
+		:caption: ``env-end-f4.yaml`` 
+		:name: lst:env-end-f4
 	
 	We will demonstrate this poly-switch value using the code from :numref:`lst:env-mlb1-text`.
 	
@@ -2185,14 +2220,14 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	then we receive the respective outputs in :numref:`lst:env-mlb1-end4` and :numref:`lst:env-mlb1-end-f4`.
 	
 	.. literalinclude:: demonstrations/env-mlb1-end4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end4` 
-	 	:name: lst:env-mlb1-end4
+		:class: .tex
+		:caption: ``env-mlb1.tex`` using :numref:`lst:env-end4` 
+		:name: lst:env-mlb1-end4
 	
 	.. literalinclude:: demonstrations/env-mlb1-end-f4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb1.tex`` using :numref:`lst:env-end-f4` 
-	 	:name: lst:env-mlb1-end-f4
+		:class: .tex
+		:caption: ``env-mlb1.tex`` using :numref:`lst:env-end-f4` 
+		:name: lst:env-mlb1-end-f4
 	
 	We note in particular that, by design, for this value of the poly-switches:
 	
@@ -2200,8 +2235,7 @@ Adding line breaks: EndStartsOnOwnLine and EndFinishesWithLineBreak
 	
 	#. in :numref:`lst:env-mlb1-end-f4` a blank line has been inserted after the ``\end`` statement, even though it already began on its own line.
 	
-	
-	 
+
 
 poly-switches 1, 2, and 3 only add line breaks when necessary
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2213,17 +2247,16 @@ If you ask ``latexindent.pl`` to add a line break (possibly with a comment) usin
 	For example, if you process the file in :numref:`lst:mlb2` using poly-switch values of 1, 2, or 3, it will be left unchanged.
 	
 	.. literalinclude:: demonstrations/env-mlb2.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb2.tex`` 
-	 	:name: lst:mlb2
+		:class: .tex
+		:caption: ``env-mlb2.tex`` 
+		:name: lst:mlb2
 	
 	.. literalinclude:: demonstrations/env-mlb3.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb3.tex`` 
-	 	:name: lst:mlb3
+		:class: .tex
+		:caption: ``env-mlb3.tex`` 
+		:name: lst:mlb3
 	
-	
-	 
+
 
 Setting the poly-switches to a value of :math:`4` instructs ``latexindent.pl`` to add a line break even if the *<part of thing>* is already on its own line; see :numref:`lst:env-mlb1-beg4` and :numref:`lst:env-mlb1-body4` and :numref:`lst:env-mlb1-end4` and :numref:`lst:env-mlb1-end-f4`.
 
@@ -2233,17 +2266,16 @@ Setting the poly-switches to a value of :math:`4` instructs ``latexindent.pl`` t
 	line. You’re encouraged to experiment with :numref:`lst:mlb3` and by setting the other poly-switches considered so far to ``2`` in turn.
 	
 	.. literalinclude:: demonstrations/env-mlb3-mod2.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb3.tex`` using :numref:`lst:env-mlb2` 
-	 	:name: lst:env-mlb3-mod2
+		:class: .tex
+		:caption: ``env-mlb3.tex`` using :numref:`lst:env-mlb2` 
+		:name: lst:env-mlb3-mod2
 	
 	.. literalinclude:: demonstrations/env-mlb3-mod4.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb3.tex`` using :numref:`lst:env-mlb4` 
-	 	:name: lst:env-mlb3-mod4
+		:class: .tex
+		:caption: ``env-mlb3.tex`` using :numref:`lst:env-mlb4` 
+		:name: lst:env-mlb3-mod4
 	
-	
-	 
+
 
 The details of the discussion in this section have concerned *global* poly-switches in the ``environments`` field; each switch can also be specified on a *per-name* basis, which would take priority over the global values; with reference to :numref:`lst:environments-mlb`, an example is shown for the ``equation*`` environment.
 
@@ -2271,24 +2303,24 @@ Setting poly-switches to :math:`-1` tells ``latexindent.pl`` to remove line brea
 	After
 	
 	.. literalinclude:: demonstrations/env-mlb13.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb13.yaml`` 
-	 	:name: lst:env-mlb13
+		:class: .mlbyaml
+		:caption: ``env-mlb13.yaml`` 
+		:name: lst:env-mlb13
 	
 	.. literalinclude:: demonstrations/env-mlb14.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb14.yaml`` 
-	 	:name: lst:env-mlb14
+		:class: .mlbyaml
+		:caption: ``env-mlb14.yaml`` 
+		:name: lst:env-mlb14
 	
 	.. literalinclude:: demonstrations/env-mlb15.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb15.yaml`` 
-	 	:name: lst:env-mlb15
+		:class: .mlbyaml
+		:caption: ``env-mlb15.yaml`` 
+		:name: lst:env-mlb15
 	
 	.. literalinclude:: demonstrations/env-mlb16.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``env-mlb16.yaml`` 
-	 	:name: lst:env-mlb16
+		:class: .mlbyaml
+		:caption: ``env-mlb16.yaml`` 
+		:name: lst:env-mlb16
 	
 	running the commands
 	
@@ -2307,24 +2339,24 @@ Setting poly-switches to :math:`-1` tells ``latexindent.pl`` to remove line brea
 	we obtain the respective output in :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16`.
 	
 	.. literalinclude:: demonstrations/env-mlb4-mod13.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb13` 
-	 	:name: lst:env-mlb4-mod13
+		:class: .tex
+		:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb13` 
+		:name: lst:env-mlb4-mod13
 	
 	.. literalinclude:: demonstrations/env-mlb4-mod14.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb14` 
-	 	:name: lst:env-mlb4-mod14
+		:class: .tex
+		:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb14` 
+		:name: lst:env-mlb4-mod14
 	
 	.. literalinclude:: demonstrations/env-mlb4-mod15.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb15` 
-	 	:name: lst:env-mlb4-mod15
+		:class: .tex
+		:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb15` 
+		:name: lst:env-mlb4-mod15
 	
 	.. literalinclude:: demonstrations/env-mlb4-mod16.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb16` 
-	 	:name: lst:env-mlb4-mod16
+		:class: .tex
+		:caption: ``env-mlb4.tex`` using :numref:`lst:env-mlb16` 
+		:name: lst:env-mlb4-mod16
 	
 	Notice that in:
 	
@@ -2348,7 +2380,7 @@ Setting poly-switches to :math:`-1` tells ``latexindent.pl`` to remove line brea
 	   latexindent.pl -m env-mlb4.tex -l env-mlb13.yaml,env-mlb14.yaml,env-mlb15.yaml,env-mlb16.yaml
 	
 	which gives the output in :numref:`lst:env-mlb1-tex`.
-	 
+
 
 About trailing horizontal space
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2372,9 +2404,9 @@ Recall that on :ref:`page yaml:removeTrailingWhitespace <yaml:removeTrailingWhit
 	The
 	
 	.. literalinclude:: demonstrations/removeTWS-before.yaml
-	 	:class: .baseyaml
-	 	:caption: ``removeTWS-before.yaml`` 
-	 	:name: lst:removeTWS-before
+		:class: .baseyaml
+		:caption: ``removeTWS-before.yaml`` 
+		:name: lst:removeTWS-before
 	
 	output from the following commands
 	
@@ -2391,17 +2423,16 @@ Recall that on :ref:`page yaml:removeTrailingWhitespace <yaml:removeTrailingWhit
 	is shown, respectively, in :numref:`lst:env-mlb5-modAll` and :numref:`lst:env-mlb5-modAll-remove-WS`; note that the trailing horizontal white space has been preserved (by default) in :numref:`lst:env-mlb5-modAll`, while in :numref:`lst:env-mlb5-modAll-remove-WS`, it has been removed using the switch specified in :numref:`lst:removeTWS-before`.
 	
 	.. literalinclude:: demonstrations/env-mlb5-modAll.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb5.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` 
-	 	:name: lst:env-mlb5-modAll
+		:class: .tex
+		:caption: ``env-mlb5.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` 
+		:name: lst:env-mlb5-modAll
 	
 	.. literalinclude:: demonstrations/env-mlb5-modAll-remove-WS.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb5.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` *and* :numref:`lst:removeTWS-before` 
-	 	:name: lst:env-mlb5-modAll-remove-WS
+		:class: .tex
+		:caption: ``env-mlb5.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` *and* :numref:`lst:removeTWS-before` 
+		:name: lst:env-mlb5-modAll-remove-WS
 	
-	
-	 
+
 
 poly-switch line break removal and blank lines
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2432,9 +2463,9 @@ poly-switch line break removal and blank lines
 	Upon
 	
 	.. literalinclude:: demonstrations/UnpreserveBlankLines.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``UnpreserveBlankLines.yaml`` 
-	 	:name: lst:UnpreserveBlankLines
+		:class: .mlbyaml
+		:caption: ``UnpreserveBlankLines.yaml`` 
+		:name: lst:UnpreserveBlankLines
 	
 	running the following commands
 	
@@ -2452,26 +2483,25 @@ poly-switch line break removal and blank lines
 	remove blank lines because, in :numref:`lst:UnpreserveBlankLines`, we have set ``preserveBlankLines`` to ``0``.
 	
 	.. literalinclude:: demonstrations/env-mlb6-modAll.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb6.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` 
-	 	:name: lst:env-mlb6-modAll
+		:class: .tex
+		:caption: ``env-mlb6.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` 
+		:name: lst:env-mlb6-modAll
 	
 	.. literalinclude:: demonstrations/env-mlb6-modAll-un-Preserve-Blank-Lines.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb6.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` *and* :numref:`lst:UnpreserveBlankLines` 
-	 	:name: lst:env-mlb6-modAll-un-Preserve-Blank-Lines
+		:class: .tex
+		:caption: ``env-mlb6.tex`` using :numref:`lst:env-mlb4-mod13` – :numref:`lst:env-mlb4-mod16` *and* :numref:`lst:UnpreserveBlankLines` 
+		:name: lst:env-mlb6-modAll-un-Preserve-Blank-Lines
 	
-	
-	 
+
 
 .. proof:example::	
 	
 	We can explore this further using the blank-line poly-switch value of :math:`3`; let’s use the file given in :numref:`lst:env-mlb7-tex`.
 	
 	.. literalinclude:: demonstrations/env-mlb7.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb7.tex`` 
-	 	:name: lst:env-mlb7-tex
+		:class: .tex
+		:caption: ``env-mlb7.tex`` 
+		:name: lst:env-mlb7-tex
 	
 	Upon running the following commands
 	
@@ -2488,14 +2518,14 @@ poly-switch line break removal and blank lines
 	we receive the outputs given in :numref:`lst:env-mlb7-preserve` and :numref:`lst:env-mlb7-no-preserve`.
 	
 	.. literalinclude:: demonstrations/env-mlb7-preserve.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb7-preserve.tex`` 
-	 	:name: lst:env-mlb7-preserve
+		:class: .tex
+		:caption: ``env-mlb7-preserve.tex`` 
+		:name: lst:env-mlb7-preserve
 	
 	.. literalinclude:: demonstrations/env-mlb7-no-preserve.tex
-	 	:class: .tex
-	 	:caption: ``env-mlb7-no-preserve.tex`` 
-	 	:name: lst:env-mlb7-no-preserve
+		:class: .tex
+		:caption: ``env-mlb7-no-preserve.tex`` 
+		:name: lst:env-mlb7-no-preserve
 	
 	Notice that in:
 	
@@ -2503,8 +2533,7 @@ poly-switch line break removal and blank lines
 	
 	-  :numref:`lst:env-mlb7-no-preserve`, by contrast, has had the additional line-break removed, because of the settings in :numref:`lst:UnpreserveBlankLines`.
 	
-	
-	 
+
 
 .. label follows
 
@@ -2561,24 +2590,24 @@ Double backslash starts on own line
 	then we receive the respective output given in :numref:`lst:tabular3-DBS1` and :numref:`lst:tabular3-DBS2`.
 	
 	.. literalinclude:: demonstrations/tabular3-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tabular3.tex`` using :numref:`lst:DBS1` 
-	 	:name: lst:tabular3-DBS1
+		:class: .tex
+		:caption: ``tabular3.tex`` using :numref:`lst:DBS1` 
+		:name: lst:tabular3-DBS1
 	
 	.. literalinclude:: demonstrations/DBS1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS1.yaml`` 
-	 	:name: lst:DBS1
+		:class: .mlbyaml
+		:caption: ``DBS1.yaml`` 
+		:name: lst:DBS1
 	
 	.. literalinclude:: demonstrations/tabular3-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tabular3.tex`` using :numref:`lst:DBS2` 
-	 	:name: lst:tabular3-DBS2
+		:class: .tex
+		:caption: ``tabular3.tex`` using :numref:`lst:DBS2` 
+		:name: lst:tabular3-DBS2
 	
 	.. literalinclude:: demonstrations/DBS2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS2.yaml`` 
-	 	:name: lst:DBS2
+		:class: .mlbyaml
+		:caption: ``DBS2.yaml`` 
+		:name: lst:DBS2
 	
 	We note that
 	
@@ -2586,8 +2615,7 @@ Double backslash starts on own line
 	
 	-  :numref:`lst:DBS2` specifies ``DBSStartsOnOwnLine`` on a *per-name* basis for ``tabular`` (that is within ``lookForAlignDelims``, :numref:`lst:aligndelims:advanced`); the double backslashes from :numref:`lst:dbs-demo` have been moved to their own line in :numref:`lst:tabular3-DBS2`, having added comment symbols before moving them.
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -2604,19 +2632,19 @@ Double backslash starts on own line
 	gives the respective outputs shown in :numref:`lst:tabular6-mod1` and :numref:`lst:tabular6-mod2`.
 	
 	.. literalinclude:: demonstrations/tabular6.tex
-	 	:class: .tex
-	 	:caption: ``tabular6.tex`` 
-	 	:name: lst:tabular6
+		:class: .tex
+		:caption: ``tabular6.tex`` 
+		:name: lst:tabular6
 	
 	.. literalinclude:: demonstrations/tabular6-mod1.tex
-	 	:class: .tex
-	 	:caption: ``tabular6-mod1.tex`` 
-	 	:name: lst:tabular6-mod1
+		:class: .tex
+		:caption: ``tabular6-mod1.tex`` 
+		:name: lst:tabular6-mod1
 	
 	.. literalinclude:: demonstrations/tabular6-mod2.tex
-	 	:class: .tex
-	 	:caption: ``tabular6-mod2.tex`` 
-	 	:name: lst:tabular6-mod2
+		:class: .tex
+		:caption: ``tabular6-mod2.tex`` 
+		:name: lst:tabular6-mod2
 	
 	We note that:
 	
@@ -2624,8 +2652,7 @@ Double backslash starts on own line
 	
 	-  in :numref:`lst:tabular6-mod2` we see that 3 spaces have been added after the double back slash.
 	
-	
-	 
+
 
 Double backslash finishes with line break
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2649,24 +2676,24 @@ Double backslash finishes with line break
 	then we receive the respective output given in :numref:`lst:tabular3-DBS3` and :numref:`lst:tabular3-DBS4`.
 	
 	.. literalinclude:: demonstrations/tabular3-mod3.tex
-	 	:class: .tex
-	 	:caption: ``tabular3.tex`` using :numref:`lst:DBS3` 
-	 	:name: lst:tabular3-DBS3
+		:class: .tex
+		:caption: ``tabular3.tex`` using :numref:`lst:DBS3` 
+		:name: lst:tabular3-DBS3
 	
 	.. literalinclude:: demonstrations/DBS3.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS3.yaml`` 
-	 	:name: lst:DBS3
+		:class: .mlbyaml
+		:caption: ``DBS3.yaml`` 
+		:name: lst:DBS3
 	
 	.. literalinclude:: demonstrations/tabular3-mod4.tex
-	 	:class: .tex
-	 	:caption: ``tabular3.tex`` using :numref:`lst:DBS4` 
-	 	:name: lst:tabular3-DBS4
+		:class: .tex
+		:caption: ``tabular3.tex`` using :numref:`lst:DBS4` 
+		:name: lst:tabular3-DBS4
 	
 	.. literalinclude:: demonstrations/DBS4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS4.yaml`` 
-	 	:name: lst:DBS4
+		:class: .mlbyaml
+		:caption: ``DBS4.yaml`` 
+		:name: lst:DBS4
 	
 	We note that
 	
@@ -2674,8 +2701,7 @@ Double backslash finishes with line break
 	
 	-  :numref:`lst:DBS4` specifies ``DBSFinishesWithLineBreak`` on a *per-name* basis for ``tabular`` (that is within ``lookForAlignDelims``, :numref:`lst:aligndelims:advanced`); the first double backslashes from :numref:`lst:dbs-demo` have moved code following them to their own line in :numref:`lst:tabular3-DBS4`, having added comment symbols before moving them; the final double backslashes have *not* added a line break as they are at the end of the body within the code block.
 	
-	
-	 
+
 
 Double backslash poly-switches for specialBeginEnd
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2697,9 +2723,9 @@ Double backslash poly-switches for specialBeginEnd
 	.. index:: linebreaks;summary of poly-switches
 	
 	.. literalinclude:: demonstrations/special4.tex
-	 	:class: .tex
-	 	:caption: ``special4.tex`` 
-	 	:name: lst:special4
+		:class: .tex
+		:caption: ``special4.tex`` 
+		:name: lst:special4
 	
 	Upon using the YAML settings in :numref:`lst:DBS5`, and running the command
 	
@@ -2717,14 +2743,14 @@ Double backslash poly-switches for specialBeginEnd
 	.. index:: delimiters;with specialBeginEnd and the -m switch
 	
 	.. literalinclude:: demonstrations/special4-mod5.tex
-	 	:class: .tex
-	 	:caption: ``special4.tex`` using :numref:`lst:DBS5` 
-	 	:name: lst:special4-DBS5
+		:class: .tex
+		:caption: ``special4.tex`` using :numref:`lst:DBS5` 
+		:name: lst:special4-DBS5
 	
 	.. literalinclude:: demonstrations/DBS5.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS5.yaml`` 
-	 	:name: lst:DBS5
+		:class: .mlbyaml
+		:caption: ``DBS5.yaml`` 
+		:name: lst:DBS5
 	
 	There are a few things to note:
 	
@@ -2734,8 +2760,7 @@ Double backslash poly-switches for specialBeginEnd
 	
 	-  the ``SpecialEndStartsOnOwnLine`` poly-switch has controlled the addition of a comment symbol, followed by a line break, as it is set to a value of 2.
 	
-	
-	 
+
 
 Double backslash poly-switches for optional and mandatory arguments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2749,9 +2774,9 @@ For clarity, we provide a demonstration of controlling the double backslash poly
 	.. index:: poly-switches;for double backslash (delimiters)
 	
 	.. literalinclude:: demonstrations/mycommand2.tex
-	 	:class: .tex
-	 	:caption: ``mycommand2.tex`` 
-	 	:name: lst:mycommand2
+		:class: .tex
+		:caption: ``mycommand2.tex`` 
+		:name: lst:mycommand2
 	
 	Upon using the YAML settings in :numref:`lst:DBS6` and :numref:`lst:DBS7`, and running the command
 	
@@ -2768,27 +2793,26 @@ For clarity, we provide a demonstration of controlling the double backslash poly
 	then we receive the output given in :numref:`lst:mycommand2-DBS6` and :numref:`lst:mycommand2-DBS7`.
 	
 	.. literalinclude:: demonstrations/mycommand2-mod6.tex
-	 	:class: .tex
-	 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS6` 
-	 	:name: lst:mycommand2-DBS6
+		:class: .tex
+		:caption: ``mycommand2.tex`` using :numref:`lst:DBS6` 
+		:name: lst:mycommand2-DBS6
 	
 	.. literalinclude:: demonstrations/DBS6.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS6.yaml`` 
-	 	:name: lst:DBS6
+		:class: .mlbyaml
+		:caption: ``DBS6.yaml`` 
+		:name: lst:DBS6
 	
 	.. literalinclude:: demonstrations/mycommand2-mod7.tex
-	 	:class: .tex
-	 	:caption: ``mycommand2.tex`` using :numref:`lst:DBS7` 
-	 	:name: lst:mycommand2-DBS7
+		:class: .tex
+		:caption: ``mycommand2.tex`` using :numref:`lst:DBS7` 
+		:name: lst:mycommand2-DBS7
 	
 	.. literalinclude:: demonstrations/DBS7.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``DBS7.yaml`` 
-	 	:name: lst:DBS7
+		:class: .mlbyaml
+		:caption: ``DBS7.yaml`` 
+		:name: lst:DBS7
 	
-	
-	 
+
 
 Double backslash optional square brackets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2802,9 +2826,9 @@ The pattern matching for the double backslash will also, optionally, allow trail
 	For example, beginning with the code in :numref:`lst:pmatrix3`
 	
 	.. literalinclude:: demonstrations/pmatrix3.tex
-	 	:class: .tex
-	 	:caption: ``pmatrix3.tex`` 
-	 	:name: lst:pmatrix3
+		:class: .tex
+		:caption: ``pmatrix3.tex`` 
+		:name: lst:pmatrix3
 	
 	and running the following command, using :numref:`lst:DBS3`,
 	
@@ -2820,12 +2844,11 @@ The pattern matching for the double backslash will also, optionally, allow trail
 	then we receive the output given in :numref:`lst:pmatrix3-DBS3`.
 	
 	.. literalinclude:: demonstrations/pmatrix3-mod3.tex
-	 	:class: .tex
-	 	:caption: ``pmatrix3.tex`` using :numref:`lst:DBS3` 
-	 	:name: lst:pmatrix3-DBS3
+		:class: .tex
+		:caption: ``pmatrix3.tex`` using :numref:`lst:DBS3` 
+		:name: lst:pmatrix3-DBS3
 	
-	
-	 
+
 
 You can customise the pattern for the double backslash by exploring the *fine tuning* field detailed in :numref:`lst:fineTuning`.
 
@@ -2851,13 +2874,13 @@ Note also that, by design, line breaks involving, ``filecontents`` and ‘commen
 .. table:: Poly-switch mappings for all code-block types
 
    ============================= ====================================== = ==================================
-   Code block                    Sample                                  
+   Code block                    Sample                                   
    ============================= ====================================== = ==================================
    environment                   ``before words``\ ♠                    ♠ BeginStartsOnOwnLine
    \                             ``\begin{myenv}``\ ♥                   ♥ BodyStartsOnOwnLine
    \                             ``body of myenv``\ ◆                   ◆ EndStartsOnOwnLine
    \                             ``\end{myenv}``\ ♣                     ♣ EndFinishesWithLineBreak
-   \                             ``after words``                         
+   \                             ``after words``                          
    ifelsefi                      ``before words``\ ♠                    ♠ IfStartsOnOwnLine
    \                             ``\if...``\ ♥                          ♥ BodyStartsOnOwnLine
    \                             ``body of if/or statement``\ ▲         ▲ OrStartsOnOwnLine
@@ -2866,43 +2889,43 @@ Note also that, by design, line breaks involving, ``filecontents`` and ‘commen
    \                             ``\else``\ □                           □ ElseFinishesWithLineBreak
    \                             ``body of else statement``\ ◆          ◆ FiStartsOnOwnLine
    \                             ``\fi``\ ♣                             ♣ FiFinishesWithLineBreak
-   \                             ``after words``                         
+   \                             ``after words``                          
    optionalArguments             ``...``\ ♠                             ♠ LSqBStartsOnOwnLine [2]_
    \                             ``[``\ ♥                               ♥ OptArgBodyStartsOnOwnLine
    \                             ``value before comma``\ ★,             ★ CommaStartsOnOwnLine
    \                             □                                      □ CommaFinishesWithLineBreak
    \                             ``end of body of opt arg``\ ◆          ◆ RSqBStartsOnOwnLine
    \                             ``]``\ ♣                               ♣ RSqBFinishesWithLineBreak
-   \                             ``...``                                 
+   \                             ``...``                                  
    mandatoryArguments            ``...``\ ♠                             ♠ LCuBStartsOnOwnLine [3]_
    \                             ``\{``\ ♥                              ♥ MandArgBodyStartsOnOwnLine
    \                             ``value before comma``\ ★,             ★ CommaStartsOnOwnLine
    \                             □                                      □ CommaFinishesWithLineBreak
    \                             ``end of body of mand arg``\ ◆         ◆ RCuBStartsOnOwnLine
    \                             ``}``\ ♣                               ♣ RCuBFinishesWithLineBreak
-   \                             ``...``                                 
+   \                             ``...``                                  
    commands                      ``before words``\ ♠                    ♠ CommandStartsOnOwnLine
    \                             ``\mycommand``\ ♥                      ♥ CommandNameFinishesWithLineBreak
-   \                             <arguments>                             
+   \                             <arguments>                              
    namedGroupingBracesBrackets   before words♠                          ♠ NameStartsOnOwnLine
    \                             myname♥                                ♥ NameFinishesWithLineBreak
-   \                             <braces/brackets>                       
+   \                             <braces/brackets>                        
    keyEqualsValuesBracesBrackets before words♠                          ♠ KeyStartsOnOwnLine
    \                             key●=♥                                 ● EqualsStartsOnOwnLine
    \                             <braces/brackets>                      ♥ EqualsFinishesWithLineBreak
    items                         before words♠                          ♠ ItemStartsOnOwnLine
    \                             ``\item``\ ♥                           ♥ ItemFinishesWithLineBreak
-   \                             ``...``                                 
+   \                             ``...``                                  
    specialBeginEnd               before words♠                          ♠ SpecialBeginStartsOnOwnLine
    \                             ``\[``\ ♥                              ♥ SpecialBodyStartsOnOwnLine
    \                             ``body of special/middle``\ ★          ★ SpecialMiddleStartsOnOwnLine
    \                             ``\middle``\ □                         □ SpecialMiddleFinishesWithLineBreak
    \                             body of special/middle ◆               ◆ SpecialEndStartsOnOwnLine
    \                             ``\]``\ ♣                              ♣ SpecialEndFinishesWithLineBreak
-   \                             after words                             
+   \                             after words                              
    verbatim                      before words♠\ ``\begin{verbatim}``    ♠ VerbatimBeginStartsOnOwnLine
    \                             body of verbatim ``\end{verbatim}``\ ♣ ♣ VerbatimEndFinishesWithLineBreak
-   \                             after words                             
+   \                             after words                              
    ============================= ====================================== = ==================================
 
 Partnering BodyStartsOnOwnLine with argument-based poly-switches
@@ -2917,9 +2940,9 @@ Some poly-switches need to be partnered together; in particular, when line break
 	Let’s begin with the code in :numref:`lst:mycommand1` and the YAML settings in :numref:`lst:mycom-mlb1`; with reference to :numref:`tab:poly-switch-mapping`, the key ``CommandNameFinishesWithLineBreak`` is an alias for ``BodyStartsOnOwnLine``.
 	
 	.. literalinclude:: demonstrations/mycommand1.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` 
-	 	:name: lst:mycommand1
+		:class: .tex
+		:caption: ``mycommand1.tex`` 
+		:name: lst:mycommand1
 	
 	Upon running the command
 	
@@ -2935,17 +2958,16 @@ Some poly-switches need to be partnered together; in particular, when line break
 	we obtain :numref:`lst:mycommand1-mlb1`; note that the *second* mandatory argument beginning brace ``\{`` has had its leading line break removed, but that the *first* brace has not.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb1.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb1` 
-	 	:name: lst:mycommand1-mlb1
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb1` 
+		:name: lst:mycommand1-mlb1
 	
 	.. literalinclude:: demonstrations/mycom-mlb1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb1.yaml`` 
-	 	:name: lst:mycom-mlb1
+		:class: .mlbyaml
+		:caption: ``mycom-mlb1.yaml`` 
+		:name: lst:mycom-mlb1
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -2959,17 +2981,16 @@ Some poly-switches need to be partnered together; in particular, when line break
 	we obtain :numref:`lst:mycommand1-mlb2`; both beginning braces ``\{`` have had their leading line breaks removed.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb2.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb2` 
-	 	:name: lst:mycommand1-mlb2
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb2` 
+		:name: lst:mycommand1-mlb2
 	
 	.. literalinclude:: demonstrations/mycom-mlb2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb2.yaml`` 
-	 	:name: lst:mycom-mlb2
+		:class: .mlbyaml
+		:caption: ``mycom-mlb2.yaml`` 
+		:name: lst:mycom-mlb2
 	
-	
-	 
+
 
 .. proof:example::	
 	
@@ -2983,17 +3004,16 @@ Some poly-switches need to be partnered together; in particular, when line break
 	we obtain :numref:`lst:mycommand1-mlb3`.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb3.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb3` 
-	 	:name: lst:mycommand1-mlb3
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb3` 
+		:name: lst:mycommand1-mlb3
 	
 	.. literalinclude:: demonstrations/mycom-mlb3.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb3.yaml`` 
-	 	:name: lst:mycom-mlb3
+		:class: .mlbyaml
+		:caption: ``mycom-mlb3.yaml`` 
+		:name: lst:mycom-mlb3
 	
-	
-	 
+
 
 Conflicting poly-switches: sequential code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3018,14 +3038,14 @@ It is very easy to have conflicting poly-switches.
 	is given in :numref:`lst:mycom-mlb4`.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb4.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb4` 
-	 	:name: lst:mycommand1-mlb4
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb4` 
+		:name: lst:mycommand1-mlb4
 	
 	.. literalinclude:: demonstrations/mycom-mlb4.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb4.yaml`` 
-	 	:name: lst:mycom-mlb4
+		:class: .mlbyaml
+		:caption: ``mycom-mlb4.yaml`` 
+		:name: lst:mycom-mlb4
 	
 	Studying :numref:`lst:mycom-mlb4`, we see that the two poly-switches are at opposition with one another:
 	
@@ -3034,7 +3054,7 @@ It is very easy to have conflicting poly-switches.
 	-  on the other hand, ``RCuBFinishesWithLineBreak`` *should* finish with a line break.
 	
 	So, which should win the conflict? As demonstrated in :numref:`lst:mycommand1-mlb4`, it is clear that ``LCuBStartsOnOwnLine`` won this conflict, and the reason is that *the second argument was processed after the first* – in general, the most recently-processed code block and associated poly-switch takes priority.
-	 
+
 
 .. proof:example::	
 	
@@ -3052,14 +3072,14 @@ It is very easy to have conflicting poly-switches.
 	we obtain the output given in :numref:`lst:mycommand1-mlb5`.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb5.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb5` 
-	 	:name: lst:mycommand1-mlb5
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb5` 
+		:name: lst:mycommand1-mlb5
 	
 	.. literalinclude:: demonstrations/mycom-mlb5.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb5.yaml`` 
-	 	:name: lst:mycom-mlb5
+		:class: .mlbyaml
+		:caption: ``mycom-mlb5.yaml`` 
+		:name: lst:mycom-mlb5
 	
 	As previously, the most-recently-processed code block takes priority – as before, the second (i.e, *last*) argument.
 	
@@ -3073,14 +3093,14 @@ It is very easy to have conflicting poly-switches.
 	which gives the output in :numref:`lst:mycommand1-mlb6`.
 	
 	.. literalinclude:: demonstrations/mycommand1-mlb6.tex
-	 	:class: .tex
-	 	:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb6` 
-	 	:name: lst:mycommand1-mlb6
+		:class: .tex
+		:caption: ``mycommand1.tex`` using :numref:`lst:mycom-mlb6` 
+		:name: lst:mycommand1-mlb6
 	
 	.. literalinclude:: demonstrations/mycom-mlb6.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``mycom-mlb6.yaml`` 
-	 	:name: lst:mycom-mlb6
+		:class: .mlbyaml
+		:caption: ``mycom-mlb6.yaml`` 
+		:name: lst:mycom-mlb6
 	
 	Note that a ``%`` *has* been added to the trailing first ``}``; this is because:
 	
@@ -3088,8 +3108,7 @@ It is very easy to have conflicting poly-switches.
 	
 	-  while processing the *second* argument, ``latexindent.pl`` finds that it does *not* begin on its own line, and so because ``LCuBStartsOnOwnLine`` is set to :math:`2`, it adds a comment, followed by a line break.
 	
-	
-	 
+
 
 Conflicting poly-switches: nested code blocks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -3101,9 +3120,9 @@ Conflicting poly-switches: nested code blocks
 	.. index:: poly-switches;conflicting switches
 	
 	.. literalinclude:: demonstrations/nested-env.tex
-	 	:class: .tex
-	 	:caption: ``nested-env.tex`` 
-	 	:name: lst:nested-env
+		:class: .tex
+		:caption: ``nested-env.tex`` 
+		:name: lst:nested-env
 	
 	Let’s use the YAML settings given in :numref:`lst:nested-env-mlb1-yaml`, which upon running the command
 	
@@ -3119,17 +3138,17 @@ Conflicting poly-switches: nested code blocks
 	gives the output in :numref:`lst:nested-env-mlb1`.
 	
 	.. literalinclude:: demonstrations/nested-env-mlb1.tex
-	 	:class: .tex
-	 	:caption: ``nested-env.tex`` using :numref:`lst:nested-env-mlb1-yaml` 
-	 	:name: lst:nested-env-mlb1
+		:class: .tex
+		:caption: ``nested-env.tex`` using :numref:`lst:nested-env-mlb1-yaml` 
+		:name: lst:nested-env-mlb1
 	
 	.. literalinclude:: demonstrations/nested-env-mlb1.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``nested-env-mlb1.yaml`` 
-	 	:name: lst:nested-env-mlb1-yaml
+		:class: .mlbyaml
+		:caption: ``nested-env-mlb1.yaml`` 
+		:name: lst:nested-env-mlb1-yaml
 	
 	In :numref:`lst:nested-env-mlb1`, let’s first of all note that both environments have received the appropriate (default) indentation; secondly, note that the poly-switch ``EndStartsOnOwnLine`` appears to have won the conflict, as ``\end{one}`` has had its leading line break removed.
-	 
+
 
 To understand it, let’s talk about the three basic phases
 
@@ -3179,14 +3198,14 @@ The indentation is done in Phase 2; in Phase 3 *there is no option to add a line
 	we obtain the output given in :numref:`lst:nested-env-mlb2-output`.
 	
 	.. literalinclude:: demonstrations/nested-env-mlb2.tex
-	 	:class: .tex
-	 	:caption: ``nested-env.tex`` using :numref:`lst:nested-env-mlb2` 
-	 	:name: lst:nested-env-mlb2-output
+		:class: .tex
+		:caption: ``nested-env.tex`` using :numref:`lst:nested-env-mlb2` 
+		:name: lst:nested-env-mlb2-output
 	
 	.. literalinclude:: demonstrations/nested-env-mlb2.yaml
-	 	:class: .mlbyaml
-	 	:caption: ``nested-env-mlb2.yaml`` 
-	 	:name: lst:nested-env-mlb2
+		:class: .mlbyaml
+		:caption: ``nested-env-mlb2.yaml`` 
+		:name: lst:nested-env-mlb2
 	
 	During Phase 1:
 	
@@ -3195,9 +3214,9 @@ The indentation is done in Phase 2; in Phase 3 *there is no option to add a line
 	-  next, the ``one`` environment is found; the line break ahead of ``\end{one}`` is already present, and no action is needed.
 	
 	The indentation is done in Phase 2, and then in Phase 3, the ``one`` environment is found and processed first, followed by the ``two`` environment. *At this stage*, the ``two`` environment finds ``EndFinishesWithLineBreak`` is :math:`-1`, so it removes the trailing line break; remember, at this point, ``latexindent.pl`` has completely finished with the ``one`` environment.
-	 
 
-.. container:: references
+
+.. container:: references hanging-indent
    :name: refs
 
    .. container::

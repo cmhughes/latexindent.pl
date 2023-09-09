@@ -9,24 +9,24 @@
  \index{poly-switches!off by default: set to 0}
  \begin{description}
   \item[$-1$] \emph{remove mode}: line breaks before or after the
-   \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is
-   set to \texttt{0});
+        \emph{<part of thing>} can be removed (assuming that \texttt{preserveBlankLines} is
+        set to \texttt{0});
   \item[0] \emph{off mode}: line breaks will not be modified for the
-   \emph{<part of thing>} under consideration;
+        \emph{<part of thing>} under consideration;
   \item[1] \emph{add mode}: a line break will be added before or after the
-   \emph{<part of thing>} under consideration, assuming that
-   there is not already a line break before or after the \emph{<part of thing>};
+        \emph{<part of thing>} under consideration, assuming that
+        there is not already a line break before or after the \emph{<part of thing>};
   \item[2] \emph{comment then add mode}: a comment symbol will be added, followed by a line break
-   before or after the \emph{<part of thing>} under consideration, assuming that there is
-   not already a comment and line break before or after the \emph{<part of thing>};
+        before or after the \emph{<part of thing>} under consideration, assuming that there is
+        not already a comment and line break before or after the \emph{<part of thing>};
   \item[3] \emph{add then blank line mode}%
-   \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after
-   the \emph{<part of thing>} under consideration, assuming that there is not already a line
-   break before or after the \emph{<part of thing>}, followed by a blank line;
+        \announce{2017-08-21}{blank line poly-switch}: a line break will be added before or after
+        the \emph{<part of thing>} under consideration, assuming that there is not already a line
+        break before or after the \emph{<part of thing>}, followed by a blank line;
   \item[4] \emph{add blank line mode}%
-   \announce{2019-07-13}{blank line poly-switch}; a blank line will
-   be added before or after the \emph{<part of thing>} under consideration, even if the
-   \emph{<part of thing>} is already on its own line.
+        \announce{2019-07-13}{blank line poly-switch}; a blank line will
+        be added before or after the \emph{<part of thing>} under consideration, even if the
+        \emph{<part of thing>} is already on its own line.
  \end{description}
  In the above, \emph{<part of thing>} refers to either the \emph{begin statement},
  \emph{body} or \emph{end statement} of the code blocks detailed in

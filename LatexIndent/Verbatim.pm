@@ -18,11 +18,11 @@ package LatexIndent::Verbatim;
 use strict;
 use warnings;
 use Data::Dumper;
-use Exporter qw/import/;
-use LatexIndent::Tokens qw/%tokens/;
+use Exporter                     qw/import/;
+use LatexIndent::Tokens          qw/%tokens/;
 use LatexIndent::GetYamlSettings qw/%mainSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK
     = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
@@ -34,7 +34,7 @@ sub find_noindent_block {
 
     # noindent block
     $logger->trace('*Searching for NOINDENTBLOCK (see noIndentBlock)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{noIndentBlock} } ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%{ $mainSettings{noIndentBlock} } ) )     if ($is_tt_switch_active);
     while ( my ( $noIndentBlock, $yesno ) = each %{ $mainSettings{noIndentBlock} } ) {
 
         # integrity check on the field for noIndentBlock
@@ -182,7 +182,7 @@ sub find_verbatim_environments {
 
     # verbatim environments
     $logger->trace('*Searching for VERBATIM environments (see verbatimEnvironments)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{verbatimEnvironments} } ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%{ $mainSettings{verbatimEnvironments} } ) )             if ($is_tt_switch_active);
     while ( my ( $verbEnv, $yesno ) = each %{ $mainSettings{verbatimEnvironments} } ) {
         my $verbEnvSpec;
 
@@ -281,7 +281,7 @@ sub find_verbatim_commands {
     # verbatim commands need to be put back in *after* trailing comments have been put
     # back in
     $logger->trace('*Searching for VERBATIM commands (see verbatimCommands)') if $is_t_switch_active;
-    $logger->trace( Dumper( \%{ $mainSettings{verbatimCommands} } ) ) if ($is_tt_switch_active);
+    $logger->trace( Dumper( \%{ $mainSettings{verbatimCommands} } ) )         if ($is_tt_switch_active);
     while ( my ( $verbCommand, $yesno ) = each %{ $mainSettings{verbatimCommands} } ) {
         my $verbCommandSpec;
 
@@ -486,7 +486,7 @@ sub put_verbatim_back_in {
     # count the number of non-command verbatim objects
     while ( my ( $key, $child ) = each %verbatimStorage ) {
         ${$child}{type} = "environment" if !( defined ${$child}{type} );
-        $verbatimCount++ if ( $toMatch =~ m/${$child}{type}/ );
+        $verbatimCount++                if ( $toMatch =~ m/${$child}{type}/ );
     }
 
     return unless ( $verbatimCount > 0 );
@@ -535,7 +535,7 @@ sub put_verbatim_back_in {
                     ${$self}{body} =~ s/$verbatimID/${$child}{begin}${$child}{body}${$child}{end}/s;
 
                     # log file info
-                    $logger->trace('Body now looks like:') if $is_tt_switch_active;
+                    $logger->trace('Body now looks like:')     if $is_tt_switch_active;
                     $logger->trace( ${$self}{body}, 'ttrace' ) if ($is_tt_switch_active);
 
                     # delete the child so it won't be operated upon again
@@ -565,7 +565,7 @@ sub put_verbatim_back_in {
 
             # logfile info
             $logger->trace('*Post-processed body:') if $is_tt_switch_active;
-            $logger->trace( ${$self}{body} ) if ($is_tt_switch_active);
+            $logger->trace( ${$self}{body} )        if ($is_tt_switch_active);
         }
     }
     return;

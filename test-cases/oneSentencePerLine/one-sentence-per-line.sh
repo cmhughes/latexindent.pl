@@ -35,11 +35,11 @@ latexindent.pl -s other-punctuation.tex -m -o=+mod2 -l=manipulateSentences.yaml,
 latexindent.pl -s other-punctuation.tex -m -o=+mod3 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;|\:|\"'
 
 # sentences across blank lines, note the difference between the following two
-latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod0 -l=manipulateSentences.yaml 
+latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod0 -l=manipulateSentences.yaml,issue-419b.yaml 
 latexindent.pl -s sentences-across-blank-lines.tex -m -o=+mod1 -l=manipulateSentences.yaml -y="modifyLineBreaks:preserveBlankLines:0"
 
 # sentences across code blocks
-latexindent.pl -s sentences-across-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml 
+latexindent.pl -s sentences-across-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml,issue-419b.yaml 
 
 # tex book snippet
 latexindent.pl -s texbook-snippet.tex -m -o=+mod1 -l=manipulateSentences.yaml
@@ -50,14 +50,14 @@ latexindent.pl -s texbook-snippet.tex -m -o=+mod3 -l=manipulateSentences.yaml -y
 latexindent.pl -s verbatim-test.tex -m -o=+mod0 -l=manipulateSentences.yaml 
 
 # more code blocks
-latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml,itemize.yaml
+latexindent.pl -s more-code-blocks.tex -m -o=+mod0 -l=manipulateSentences.yaml,itemize.yaml,issue-419b.yaml
 latexindent.pl -s more-code-blocks.tex -m -o=+mod1 -l=manipulateSentences.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 latexindent.pl -s more-code-blocks.tex -m -o=+mod2 -l=manipulateSentences.yaml,sentences-start-with-lower-case.yaml,item.yaml -y='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\:'
 
 # webwork guide
-latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml
-latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop,keepMultipleSpaces.yaml
-latexindent.pl -s webwork-guide -m -o=+mod2 -l=manipulateSentences.yaml,alt-full-stop,itemize,keepMultipleSpaces.yaml
+latexindent.pl -s webwork-guide -m -o=+mod0 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml,issue-419b
+latexindent.pl -s webwork-guide -m -o=+mod1 -l=manipulateSentences.yaml,alt-full-stop,keepMultipleSpaces.yaml,issue-419b
+latexindent.pl -s webwork-guide -m -o=+mod2 -l=manipulateSentences.yaml,alt-full-stop,itemize,keepMultipleSpaces.yaml,issue-419b
 
 # trailing comments
 latexindent.pl -s trailing-comments -m -o=+mod0 -l=manipulateSentences.yaml
@@ -70,7 +70,7 @@ latexindent.pl -s other-begins -m -o=+mod1 -l=manipulateSentences.yaml,other-beg
 # from the feature request (https://github.com/cmhughes/latexindent.pl/issues/81)
 latexindent.pl -s -m mlep -o=+-mod0 -l=manipulateSentences.yaml 
 latexindent.pl -s -m mlep -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml -y="specialBeginEnd:inlineMath:lookForThis:0" 
-latexindent.pl -s -m mlep2 -o=+-mod0 -l=manipulateSentences.yaml,itemize.yaml
+latexindent.pl -s -m mlep2 -o=+-mod0 -l=manipulateSentences.yaml,itemize.yaml,issue-419b.yaml
 latexindent.pl -s -m mlep2 -o=+-mod1 -l=manipulateSentences.yaml,itemize.yaml,mlep2.yaml 
 latexindent.pl -s -m mlep2 -o=+-mod2 -l=manipulateSentences.yaml,itemize.yaml -y="modifyLineBreaks:oneSentencePerLine:removeSentenceLineBreaks:0"
 
@@ -79,8 +79,8 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do
     [[ $showCounter == 1 ]] && echo $i of $loopmax
     [[ $silentMode == 0 ]] && set -x 
-    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml
-    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod2 -l=manipulateSentences.yaml,item,pcc-program-review,keepMultipleSpaces.yaml
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod1 -l=manipulateSentences.yaml,basic-full-stop.yaml,keepMultipleSpaces.yaml,issue-419b
+    latexindent.pl -s pcc-program-review$i.tex -m -o=+-mod2 -l=manipulateSentences.yaml,item,pcc-program-review,keepMultipleSpaces.yaml,issue-419b
     [[ $silentMode == 0 ]] && set +x 
 done
 
@@ -94,7 +94,7 @@ latexindent.pl -s dbmrq3.tex -m -l=dbmrq1.yaml -o=+-mod1
 latexindent.pl -s dbmrq3.tex -m -l=dbmrq5.yaml -o=+-mod5
 
 # sentences as objects was required from https://github.com/cmhughes/latexindent.pl/issues/131
-latexindent.pl -s kiryph.tex -m -l=kiryph1.yaml -o=+-mod1
+latexindent.pl -s kiryph.tex -m -l=kiryph1.yaml,issue-419b -o=+-mod1
 latexindent.pl -s kiryph1.tex -m -l=kiryph2.yaml -o=+-mod2
 [[ $silentMode == 0 ]] && set -x 
 
@@ -124,8 +124,8 @@ latexindent.pl -s -m -l issue-355.yaml issue-355.tex -o=+-mod1
 latexindent.pl -s -m -l issue-355a.yaml issue-355.tex -o=+-mod2
 
 # issue 376
-latexindent.pl -s -m -l issue-376-orig.yaml issue-376.tex -o=+-mod0 -r
-latexindent.pl -s -m -l issue-376.yaml issue-376.tex -o=+-mod1
+latexindent.pl -s -m -l issue-376-orig.yaml,issue-419b issue-376.tex -o=+-mod0 -r
+latexindent.pl -s -m -l issue-376.yaml,issue-419b issue-376.tex -o=+-mod1
 latexindent.pl -s -m -l issue-376a.yaml issue-376.tex -o=+-mod2
 latexindent.pl -s -m -l issue-376b.yaml issue-376.tex -o=+-mod3
 
@@ -144,6 +144,23 @@ latexindent.pl -s -m -l issue-417a.yaml issue-417.tex -o=+-mod2
 
 # pull 447
 latexindent.pl -s issue-447 -m -o=+-mod1 -l=manipulateSentences.yaml
+
+# issue 419, sentencesDoNOTcontain
+latexindent.pl -s issue-419a -m -o=+-mod1 -l=issue-419a.yaml
+latexindent.pl -s issue-419a -m -o=+-mod2 -l=manipulateSentences.yaml
+latexindent.pl -s issue-419a -m -o=+-mod3 -l=issue-419b.yaml
+latexindent.pl -s issue-419a -m -o=+-mod4 -l=issue-419c.yaml
+latexindent.pl -s issue-419a -m -o=+-mod5 -l=issue-419d.yaml
+latexindent.pl -s issue-419a -m -o=+-mod6 -l=issue-419e.yaml
+
+latexindent.pl -s issue-419b -m -o=+-mod1 -l=manipulateSentences.yaml
+latexindent.pl -s issue-419b -m -o=+-mod2 -l=manipulateSentences.yaml,issue-419c.yaml
+
+latexindent.pl -s issue-419c -m -o=+-mod6 -l=issue-419e.yaml
+latexindent.pl -s issue-419c -m -o=+-mod7 -l=issue-419f.yaml
+
+latexindent.pl -s issue-463 -m -o=+-mod1 -l=manipulateSentences.yaml
+latexindent.pl -s issue-463 -m -o=+-mod2 -l=issue-419b.yaml
 
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
