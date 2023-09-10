@@ -30,11 +30,13 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+WORKDIR /
+
 RUN git clone --depth 7 https://github.com/cmhughes/latexindent.pl
 
 WORKDIR /latexindent.pl/helper-scripts
 
-RUN git checkout "${LATEXINDENT_VERSION}" && echo "Y" | perl latexindent-module-installer.pl
+RUN git fetch --tags && git checkout "${LATEXINDENT_VERSION}" && echo "Y" | perl latexindent-module-installer.pl
 
 WORKDIR /latexindent.pl/build
 
