@@ -32,11 +32,11 @@ RUN apt-get update \
 
 WORKDIR /
 
-RUN git clone --depth 7 https://github.com/cmhughes/latexindent.pl
+RUN git clone --depth 1 https://github.com/cmhughes/latexindent.pl --branch "${LATEXINDENT_VERSION}"
 
 WORKDIR /latexindent.pl/helper-scripts
 
-RUN git fetch --tags && git checkout "${LATEXINDENT_VERSION}" && echo "Y" | perl latexindent-module-installer.pl
+RUN echo "Y" | perl latexindent-module-installer.pl
 
 WORKDIR /latexindent.pl/build
 
