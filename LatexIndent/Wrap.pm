@@ -49,7 +49,7 @@ sub text_wrap {
         my $yesNo = $blocksFollowHash->{$blocksFollowEachPart};
         if ($yesNo) {
             if ( $blocksFollowEachPart eq "par" ) {
-                $blocksFollowEachPart = qr/\R?\\par/s;
+                $blocksFollowEachPart = qr/\R?\\par(?![a-zA-Z])/s;
             }
             elsif ( $blocksFollowEachPart eq "blankLine" ) {
                 $blocksFollowEachPart = qr/
