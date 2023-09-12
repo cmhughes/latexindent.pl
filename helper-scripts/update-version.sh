@@ -72,7 +72,11 @@ Typical running order pre-release:
     - git log --decorate -1|grep -i $cmhtag && echo "success, tag is contained in last commit, good to go"
     - git push
     - git push --tags
+    - <await completion of github actions!>
     - <check release notes on github>
+
+(no longer necessary)
+
     - <download latexindent.zip>
     - <upload latexindent.zip to ctan>
 ____PLEH
