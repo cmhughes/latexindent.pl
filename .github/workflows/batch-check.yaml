@@ -46,7 +46,7 @@ jobs:
       anychanged: ${{ steps.changed-files.outputs.any_changed }}
     steps:
       - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml
@@ -87,7 +87,7 @@ jobs:
       #
       # https://github.com/actions/checkout
       - name: Loading the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       # install Perl
       #
       # https://github.com/marketplace/actions/setup-perl-environment
