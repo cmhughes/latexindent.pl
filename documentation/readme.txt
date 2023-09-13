@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    latexindent.pl, version 3.23, 2023-09-09
+    latexindent.pl, version 3.23.1, 2023-09-13
 
     PERL script to indent code within environments, and align delimited 
     environments in .tex files.
