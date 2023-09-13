@@ -239,6 +239,7 @@ if(!$readTheDocsMode){
         $body =~ s/\\begin\{warning}(.*?)\\end\{warning\}/\\warning\{$1\}\n/sg;
 
         # example
+        $body =~ s/\\begin\{example}/\n\n\\begin\{example\}/sg;
         $body =~ s/\\begin\{example}(.*?)\\end\{example\}/\\example\{$1\}\n/sg;
 
         # cross references

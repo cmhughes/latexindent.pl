@@ -1,6 +1,9 @@
-<!-- announcement: new feature for oneSentencePerLine: sentencesDoNOTcontain; bugfix for items-->
+<!-- announcement: minor bugfix for text wrap-->
 
 # changelog.md
+
+## V3.23.1, September 13, 2023
+minor bugfix for text wrap routine, see [issue-471](https://github.com/cmhughes/latexindent.pl/issues/471)
 
 ## V3.23, September 9, 2023
 * new feature for oneSentencePerLine: sentencesDoNOTcontain, see [issue-419](https://github.com/cmhughes/latexindent.pl/issues/419)

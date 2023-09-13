@@ -1424,7 +1424,9 @@ You can specify patterns that sentences do *not* contain using the field in :num
 	:linenos:
 	:lineno-start: 528
 
-If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``. .. proof:example::	
+If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``.
+
+.. proof:example::	
 	
 	For example, if we use the ``.tex`` file in :numref:`lst:multiple-sentences4`
 	

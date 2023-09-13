@@ -21,13 +21,35 @@
 # get version details
 #
 #   update-version.sh -v
+#
+#-----------------------------------------
+# archived notes:
+#
+#    (no longer necessary)
+#        - git push
+#        - git checkout main
+#        - git merge --no-ff develop
+#        - git pull
+#        - git tag "V<number>"
+#        - cmhtag=$(git describe --abbrev=0 --tags)
+#        - git log --decorate -1|grep -i $cmhtag && echo "success, tag is contained in last commit, good to go"
+#        - git push
+#        - git push --tags
+#        - <await completion of github actions!>
+#        - <check release notes on github>
+#    
+#    (no longer necessary)
+#    
+#        - <download latexindent.zip>
+#        - <upload latexindent.zip to ctan>
 
 minorVersion=0
-oldVersion='3.22.2'
-newVersion='3.23'
-oldDate='2023-07-14'
-newDate='2023-09-09'
+oldVersion='3.23'
+newVersion='3.23.1'
+oldDate='2023-09-09'
+newDate='2023-09-13'
 updateVersion=0
+gitMode=0
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 RED='\033[0;31m'          # red
@@ -39,7 +61,7 @@ COLOR_OFF='\033[0m'       # text reset
 #
 # process options
 #
-while getopts "hmuv" OPTION
+while getopts "ghmuv" OPTION
 do
  case $OPTION in 
   h)
@@ -47,6 +69,8 @@ do
 
 ${0##*/} [OPTIONS]
     
+    -g  git mode, runs the checkout, merge, pull, tag, push commands, checking for confirmation before each 
+
     -h  help, outputs this message
 
     -m  minor version, not removing most recently updated stars from documentation
@@ -57,27 +81,25 @@ ${0##*/} [OPTIONS]
 
 Typical running order pre-release:
 
-    update-version.sh
+  phase 1:
+
+    update-version.sh -u
     - <update documentation/changelog.md manually>
     - <check everything has changed as you'd like using git diff>
     - git add .
     - <compile documentation> AND <run test-cases.sh -s -n>
     - <commit changes and push to develop>
-    - git push
-    - git checkout main
-    - git merge --no-ff develop
-    - git pull
-    - git tag "V<number>"
-    - cmhtag=$(git describe --abbrev=0 --tags)
-    - git log --decorate -1|grep -i $cmhtag && echo "success, tag is contained in last commit, good to go"
-    - git push
-    - git push --tags
-    - <check release notes on github>
-    - <download latexindent.zip>
-    - <upload latexindent.zip to ctan>
+
+  phase 2:
+
+    update-version.sh -g
+
 ____PLEH
     exit 0
     ;;
+  g)
+   gitMode=1
+   ;;
   m)    
    echo "minor version, not removing most recently updated stars from documentation..."
    minorVersion=1
@@ -140,6 +162,39 @@ function helper_section_print() {
     echo -e "     ${CYAN}$1${COLOR_OFF}"
     echo "--------------------------------------"
 }
+
+#
+# update-version.sh -g
+#
+if [ $gitMode -eq 1 ]; then
+    git diff --quiet
+    result=$? && [[ result -gt 0  ]] &&  echo -e "${RED}-g switch failure: git diff has differences, something has changed${COLOR_OFF}" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
+
+    git diff --cached --quiet
+    ###result=$? && [[ result -gt 0  ]] &&  echo -e "${RED}-g switch failure: git diff --cached has differences you'll need to commit them${COLOR_OFF}" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
+
+    allmode=0
+    for mycommand in 'git pull' 'git push' 'git checkout main' 'git merge --no-ff develop' 'git pull' "git tag V${newVersion}" 'git push' 'git push --tags'
+    do
+        while true; do
+           [[ allmode -eq 1 ]] && helper_section_print "$mycommand" && $mycommand && break
+           echo -e "${YELLOW}Would you like to run the following command:"
+           echo ""
+           echo -e "    $mycommand"
+           echo ""
+           echo -e ${COLOR_OFF}
+           read -p "choose [y/n/q/a] (yes/no/quit/all)" yn
+           case $yn in
+               [Yy]* ) helper_section_print "$mycommand" && $mycommand && break;;
+               [Aa]* ) allmode=1 && helper_section_print "$mycommand" && $mycommand && break;;
+               [Nn]* ) echo -e "${RED} not performing $mycommand ${COLOR_OFF}" && break;;
+               [Qq]* ) echo -e "${RED} exiting, no further work${COLOR_OFF}" && exit;;
+               * ) echo "Please answer yes, no or exit.";;
+           esac
+        done
+    done
+    exit
+fi
 
 set +x
 helper_section_print "version details"
