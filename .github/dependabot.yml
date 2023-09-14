@@ -4,15 +4,24 @@
 #   1. keep *github actions* files up to date
 #   2. keep *docker* related files up to date
 #
+# reference
+#   https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
-    schedule:
-      interval: "monthly"
     target-branch: "develop"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "06:00"
+      timezone: "Europe/London"
   - package-ecosystem: "docker"
     directory: "/"
-    schedule:
-      interval: "monthly"
     target-branch: "develop"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "06:00"
+      timezone: "Europe/London"
