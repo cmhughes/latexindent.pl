@@ -44,10 +44,10 @@
 #        - <upload latexindent.zip to ctan>
 
 minorVersion=0
-oldVersion='3.23'
-newVersion='3.23.1'
-oldDate='2023-09-09'
-newDate='2023-09-13'
+oldVersion='3.23.1'
+newVersion='3.23.2'
+oldDate='2023-09-13'
+newDate='2023-09-23'
 updateVersion=0
 gitMode=0
 
@@ -313,7 +313,7 @@ cat documentation/latexindent.new
 # 
 # note:
 #
-#   sed -i.bak "s/cmhlistingsfromfile\*/cmhlistingsfromfile/" $file
+#   sed -i.bak "s/cmhlistingsfromfile\*/cmhlistingsfromfile/" s*.tex
 helper_section_print "new listings in documentation"
 egrep -i --color=auto 'cmhlistingsfromfile\*' documentation/s*.tex
 

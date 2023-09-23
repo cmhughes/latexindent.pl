@@ -572,10 +572,20 @@ To pull the image and show ``latexindent``\ ’s help on Ubuntu:
      sudo groupadd docker
      sudo gpasswd -a "$USER" docker
      sudo systemctl restart docker
+     newgrp docker
    fi
 
    # download image and execute
    docker pull ghcr.io/cmhughes/latexindent.pl
+   docker run ghcr.io/cmhughes/latexindent.pl -h
+
+Once I have run the above, on subsequent logins I run
+
+.. code-block:: latex
+   :caption: ``docker-install.sh`` 
+   :name: lst:docker-install
+
+   newgrp docker
    docker run ghcr.io/cmhughes/latexindent.pl -h
 
 How to format on Docker

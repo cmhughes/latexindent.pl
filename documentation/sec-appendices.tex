@@ -484,10 +484,17 @@ if ! command -v docker &> /dev/null; then
   sudo groupadd docker
   sudo gpasswd -a "$USER" docker
   sudo systemctl restart docker
+  newgrp docker
 fi
 
 # download image and execute
 docker pull ghcr.io/cmhughes/latexindent.pl
+docker run ghcr.io/cmhughes/latexindent.pl -h
+\end{cmhlistings}
+
+  Once I have run the above, on subsequent logins I run
+  \begin{cmhlistings}[style=tcblatex,language=Bash]{\texttt{docker-install.sh}}{lst:docker-install}
+newgrp docker
 docker run ghcr.io/cmhughes/latexindent.pl -h
 \end{cmhlistings}
 

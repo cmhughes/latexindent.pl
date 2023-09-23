@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 3.23.1, 2023-09-13
+# latexindent.pl, version 3.23.2, 2023-09-23
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 # 
@@ -258,15 +258,16 @@ itemNames:
 specialBeginEnd:
     displayMath:
         begin: (?<!\\)\\\[            # \[ but *not* \\[
-        end: \\\]                     # \]
+        end:   \\\]                   # \]
         lookForThis: 1                 
     inlineMath:
         begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$
-        end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$
+        body:  [^$]*?                 # anything *except* $
+        end:   (?<!\\)\$(?!\$)        # $ but *not* \$ or $$
         lookForThis: 1
     displayMathTeX:
         begin: \$\$                   # $$
-        end: \$\$                     # $$
+        end:   \$\$                   # $$
         lookForThis: 1
     specialBeforeCommand: 0
 

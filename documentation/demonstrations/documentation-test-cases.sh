@@ -307,6 +307,9 @@ latexindent.pl -s specialLR.tex -l specialsLeftRight.yaml,specialBeforeCommand.y
 latexindent.pl -s special-align.tex -l edge-node1.yaml -o=+-mod1
 latexindent.pl -s special-align.tex -l edge-node2.yaml -o=+-mod2
 
+# specialBeginEnd body demonstration
+latexindent.pl -s special-body.tex -l special-body1.yaml -o=+-mod1
+
 # one sentence per line
 latexindent.pl -s multiple-sentences -m -l=manipulate-sentences.yaml -o=+-mod1
 latexindent.pl -s multiple-sentences -m -l=keep-sen-line-breaks.yaml -o=+-mod2

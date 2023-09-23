@@ -1361,7 +1361,7 @@ in ``specialBeginEnd`` are, in their default state, focused on math mode begin a
 	:class: .baseyaml
 	:caption: ``specialBeginEnd`` 
 	:name: lst:specialBeginEnd
-	:lines: 258-271
+	:lines: 258-272
 	:linenos:
 	:lineno-start: 258
 
@@ -1616,6 +1616,52 @@ We can combine the ``specialBeginEnd`` with the ``lookForAlignDelims`` feature.
 
 The ``lookForThis`` field can be considered optional; by default, it is assumed to be 1, which is demonstrated in :numref:`lst:edge-node2`.
 
+Referencing :numref:`lst:specialBeginEnd` we see that each of the ``specialBeginEnd`` fields can *optionally* accept the ``body`` field. If the ``body`` field is omitted, then ``latexindent.pl`` uses a value that means
+
+   anything except one of the begin statements from ``specialBeginEnd``.
+
+In general, it is usually *not* necessary to specify the ``body`` field, but let’s detail an example just for reference.
+
+.. proof:example::	
+	
+	We begin with the example in :numref:`lst:special-body`
+	
+	.. literalinclude:: demonstrations/special-body.tex
+		:class: .tex
+		:caption: ``special-body.tex`` 
+		:name: lst:special-body
+	
+	Using the settings in :numref:`lst:special-body1` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl special-body.tex -l=special-body1.yaml
+	
+	gives the output in :numref:`lst:special-body-mod1`.
+	
+	.. literalinclude:: demonstrations/special-body-mod1.tex
+		:class: .tex
+		:caption: ``special-body.tex`` using :numref:`lst:special-body1` 
+		:name: lst:special-body-mod1
+	
+	.. literalinclude:: demonstrations/special-body1.yaml
+		:class: .baseyaml
+		:caption: ``special-body1.yaml`` 
+		:name: lst:special-body1
+	
+	We note that the output in :numref:`lst:special-body-mod1` is as we would expect, even *without* the ``body`` field specified.
+	
+	Another option (purely for reference) that leaves the output in :numref:`lst:special-body-mod1` unchanged is shown in :numref:`lst:special-body2`.
+	
+	.. literalinclude:: demonstrations/special-body2.yaml
+		:class: .baseyaml
+		:caption: ``special-body2.yaml`` 
+		:name: lst:special-body2
+	
+	The ``body`` field in :numref:`lst:special-body2` means *anything except ( or )*.
+
+
 .. describe:: indentAfterHeadings:fields
 
 This field enables the user to specify indentation rules that take effect after heading commands such as ``\part``, ``\chapter``, ``\section``, ``\subsection*``, or indeed any user-specified command written in this field. [2]_
@@ -1624,9 +1670,9 @@ This field enables the user to specify indentation rules that take effect after 
 	:class: .baseyaml
 	:caption: ``indentAfterHeadings`` 
 	:name: lst:indentAfterHeadings
-	:lines: 281-290
+	:lines: 282-291
 	:linenos:
-	:lineno-start: 281
+	:lineno-start: 282
 
 The default settings do *not* place indentation after a heading, but you can easily switch them on by changing ``indentAfterThisHeading`` from 0 to 1. The ``level`` field tells ``latexindent.pl`` the hierarchy of the heading structure in your document. You might, for example, like to have both ``section`` and ``subsection`` set with ``level: 3`` because you do not want the indentation to go too deep.
 
@@ -2053,9 +2099,9 @@ Assuming that your environment name is not found within neither ``noAdditionalIn
 	:class: .baseyaml
 	:caption: ``noAdditionalIndentGlobal`` 
 	:name: lst:noAdditionalIndentGlobal:environments
-	:lines: 339-340
+	:lines: 340-341
 	:linenos:
-	:lineno-start: 339
+	:lineno-start: 340
 
 .. proof:example::	
 	
@@ -2130,9 +2176,9 @@ The final check that ``latexindent.pl`` will make is to look for ``indentRulesGl
 	:class: .baseyaml
 	:caption: ``indentRulesGlobal`` 
 	:name: lst:indentRulesGlobal:environments
-	:lines: 355-356
+	:lines: 356-357
 	:linenos:
-	:lineno-start: 355
+	:lineno-start: 356
 
 .. proof:example::	
 	
@@ -2875,17 +2921,17 @@ Having considered all of the different types of code blocks, the functions of th
 	:class: .baseyaml
 	:caption: ``noAdditionalIndentGlobal`` 
 	:name: lst:noAdditionalIndentGlobal
-	:lines: 339-351
+	:lines: 340-352
 	:linenos:
-	:lineno-start: 339
+	:lineno-start: 340
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .baseyaml
 	:caption: ``indentRulesGlobal`` 
 	:name: lst:indentRulesGlobal
-	:lines: 355-367
+	:lines: 356-368
 	:linenos:
-	:lineno-start: 355
+	:lineno-start: 356
 
 .. label follows
 
@@ -2904,9 +2950,9 @@ The ``commandCodeBlocks`` field contains a few switches detailed in :numref:`lst
 	:class: .baseyaml
 	:caption: ``commandCodeBlocks`` 
 	:name: lst:commandCodeBlocks
-	:lines: 370-385
+	:lines: 371-386
 	:linenos:
-	:lineno-start: 370
+	:lineno-start: 371
 
 .. describe:: roundParenthesesAllowed:0|1
 

@@ -21,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.23.1, 2023-09-13
+    latexindent.pl, version 3.23.2, 2023-09-23
 
 ## author
 Chris Hughes (cmhughes)
@@ -157,7 +157,7 @@ framework](https://pre-commit.com) by adding this to your
 
 ```yaml
   - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V3.23.1
+    rev: V3.23.2
     hooks:
       - id: latexindent
 ```

@@ -88,5 +88,8 @@ latexindent.pl -s special4.tex -o=+-mod3 -l=special-verb1.yaml,special-verb2.yam
 latexindent.pl -s issue-448 -l issue-448a -o=+-mod1
 latexindent.pl -s issue-448 -l issue-448b -o=+-mod2
 
+latexindent.pl -s -l issue-477.yaml issue-477.tex -g one.log -o=+-mod1
+latexindent.pl -s -l issue-477.yaml issue-477.tex -g two.log -o=+-mod2
+
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status
