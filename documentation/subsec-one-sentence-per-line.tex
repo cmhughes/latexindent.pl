@@ -10,7 +10,7 @@
  \index{regular expressions!lowercase alph a-z} \index{regular expressions!uppercase alph
  A-Z}%
 
- \cmhlistingsfromfile*[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
+ \cmhlistingsfromfile[style=oneSentencePerLine]{../defaultSettings.yaml}[MLB-TCB,width=.85\linewidth,before=\centering]{\texttt{oneSentencePerLine}}{lst:oneSentencePerLine}
 
 \subsubsection{oneSentencePerLine: overview}
  An overview of how the oneSentencePerLine routine feature works:
@@ -329,7 +329,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
  \announce*{2023-09-09}{oneSentencePerLine: sentencesDoNOTcontain} in
  \cref{lst:sentencesDoNOTcontain}.
 
- \cmhlistingsfromfile*[style=sentencesDoNOTcontain]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesDoNOTcontain}}{lst:sentencesDoNOTcontain}
+ \cmhlistingsfromfile[style=sentencesDoNOTcontain]{../defaultSettings.yaml}[MLB-TCB,width=.9\linewidth,before=\centering]{\texttt{sentencesDoNOTcontain}}{lst:sentencesDoNOTcontain}
 
  If sentences run across environments then, by default, they will \emph{not} be
  considered a sentence by \texttt{latexindent.pl}. \announce*{2023-09-09}*{updated
@@ -337,7 +337,7 @@ latexindent.pl url -m -l=alt-full-stop1.yaml
  \begin{example}
  For example, if we use the \texttt{.tex} file in \cref{lst:multiple-sentences4}
 
- \cmhlistingsfromfile*{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
+ \cmhlistingsfromfile{demonstrations/multiple-sentences4.tex}{\texttt{multiple-sentences4.tex}}{lst:multiple-sentences4}
 
  and run the command \index{switches!-l demonstration} \index{switches!-m demonstration}
 
@@ -358,7 +358,7 @@ latexindent.pl multiple-sentences4 -m -l=manipulate-sentences.yaml
 
  We begin with the file in \cref{lst:sentence-dnc1}.
 
- \cmhlistingsfromfile*{demonstrations/sentence-dnc1.tex}{\texttt{sentence-dnc1.tex}}{lst:sentence-dnc1}
+ \cmhlistingsfromfile{demonstrations/sentence-dnc1.tex}{\texttt{sentence-dnc1.tex}}{lst:sentence-dnc1}
 
  Upon running the following commands
 
@@ -373,8 +373,8 @@ latexindent.pl sentence-dnc1.tex -m -l=dnc1.yaml
    raster force size=false,
    raster column 1/.style={add to width=3cm},
   ]
-  \cmhlistingsfromfile*{demonstrations/sentence-dnc1-mod1.tex}{\texttt{sentence-dnc1-mod1.tex}}{lst:sentence-dnc1-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc1.yaml}}{lst:dnc1-yaml}
+  \cmhlistingsfromfile{demonstrations/sentence-dnc1-mod1.tex}{\texttt{sentence-dnc1-mod1.tex}}{lst:sentence-dnc1-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dnc1.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc1.yaml}}{lst:dnc1-yaml}
  \end{cmhtcbraster}
 
  The settings in \cref{lst:dnc1-yaml} say that sentences do \emph{not} contain
@@ -386,7 +386,7 @@ latexindent.pl sentence-dnc1.tex -m -l=dnc1.yaml
 
  We begin with the file in \cref{lst:sentence-dnc2}.
 
- \cmhlistingsfromfile*{demonstrations/sentence-dnc2.tex}{\texttt{sentence-dnc2.tex}}{lst:sentence-dnc2}
+ \cmhlistingsfromfile{demonstrations/sentence-dnc2.tex}{\texttt{sentence-dnc2.tex}}{lst:sentence-dnc2}
 
  Upon running the following commands
 
@@ -401,8 +401,8 @@ latexindent.pl sentence-dnc2.tex -m -l=dnc2.yaml
    raster force size=false,
    raster column 1/.style={add to width=3cm},
   ]
-  \cmhlistingsfromfile*{demonstrations/sentence-dnc2-mod2.tex}{\texttt{sentence-dnc2-mod2.tex}}{lst:sentence-dnc2-mod2}
-  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc2.yaml}}{lst:dnc2-yaml}
+  \cmhlistingsfromfile{demonstrations/sentence-dnc2-mod2.tex}{\texttt{sentence-dnc2-mod2.tex}}{lst:sentence-dnc2-mod2}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dnc2.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc2.yaml}}{lst:dnc2-yaml}
  \end{cmhtcbraster}
 
  The settings in \cref{lst:dnc2-yaml} say that sentences do \emph{not} contain
@@ -413,7 +413,7 @@ latexindent.pl sentence-dnc2.tex -m -l=dnc2.yaml
  We can turn off \texttt{sentenceDoNOTcontain} by setting it to \texttt{0} as in
  \cref{lst:dnc-off-yaml}.
 
- \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/dnc-off.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc-off.yaml}}{lst:dnc-off-yaml}
+ \cmhlistingsfromfile[style=yaml-LST]{demonstrations/dnc-off.yaml}[MLB-TCB,width=.45\textwidth]{\texttt{dnc-off.yaml}}{lst:dnc-off-yaml}
 
  The settings in \cref{lst:dnc-off-yaml} mean that sentences can contain any character.
  \end{example}

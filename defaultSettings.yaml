@@ -258,15 +258,16 @@ itemNames:
 specialBeginEnd:
     displayMath:
         begin: (?<!\\)\\\[            # \[ but *not* \\[
-        end: \\\]                     # \]
+        end:   \\\]                   # \]
         lookForThis: 1                 
     inlineMath:
         begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$
-        end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$
+        body:  [^$]*?                 # anything *except* $
+        end:   (?<!\\)\$(?!\$)        # $ but *not* \$ or $$
         lookForThis: 1
     displayMathTeX:
         begin: \$\$                   # $$
-        end: \$\$                     # $$
+        end:   \$\$                   # $$
         lookForThis: 1
     specialBeforeCommand: 0
 

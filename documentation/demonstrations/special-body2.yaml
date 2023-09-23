@@ -1,0 +1,7 @@
+defaultIndent: "  "
+specialBeginEnd:
+  specialBeforeCommand: 1
+  parentheses:
+    begin: \(
+    body: [^()]*?
+    end: \)

@@ -313,7 +313,7 @@ cat documentation/latexindent.new
 # 
 # note:
 #
-#   sed -i.bak "s/cmhlistingsfromfile\*/cmhlistingsfromfile/" $file
+#   sed -i.bak "s/cmhlistingsfromfile\*/cmhlistingsfromfile/" s*.tex
 helper_section_print "new listings in documentation"
 egrep -i --color=auto 'cmhlistingsfromfile\*' documentation/s*.tex
 

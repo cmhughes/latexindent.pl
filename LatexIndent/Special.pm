@@ -71,14 +71,23 @@ sub construct_special_begin {
             next;
         }
 
+        # body of specialBeginEnd
+        my $specialBodyRegEx = q();
+        if ( defined ${$BeginEnd}{body} ) {
+            $specialBodyRegEx = qr/${$BeginEnd}{body}/;
+        }
+        else {
+            $specialBodyRegEx = qr/(?:                        # cluster-only (), don't capture 
+                                        (?!             
+                                            (?:$specialBegins) # cluster-only (), don't capture
+                                        ).                     # any character, but not anything in $specialBegins
+                                  )*?/sx;
+        }
+
         # the overall regexp
         $specialAllMatchesRegExp .= ( $specialAllMatchesRegExp eq "" ? q() : "|" ) . qr/
                                   ${$BeginEnd}{begin}
-                                  (?:                        # cluster-only (), don't capture 
-                                      (?!             
-                                          (?:$specialBegins) # cluster-only (), don't capture
-                                      ).                     # any character, but not anything in $specialBegins
-                                  )*?                 
+                                  $specialBodyRegEx 
                                   ${$BeginEnd}{end}
                            /sx;
 
@@ -90,11 +99,7 @@ sub construct_special_begin {
                                     (\R*)?
                                 )
                                 (
-                                    (?:                        # cluster-only (), don't capture 
-                                        (?!             
-                                            (?:$specialBegins) # cluster-only (), don't capture
-                                        ).                     # any character, but not anything in $specialBegins
-                                    )*?                 
+                                   $specialBodyRegEx 
                                    (\R*)?
                                 )                       
                                 (
@@ -251,6 +256,8 @@ sub tasks_particular_to_each_object {
         );
 
     }
+
+    $self->find_special;
 
     return unless ( ${ $mainSettings{specialBeginEnd} }{specialBeforeCommand} );
 
