@@ -1616,6 +1616,52 @@ We can combine the ``specialBeginEnd`` with the ``lookForAlignDelims`` feature.
 
 The ``lookForThis`` field can be considered optional; by default, it is assumed to be 1, which is demonstrated in :numref:`lst:edge-node2`.
 
+Referencing :numref:`lst:specialBeginEnd` we see that each of the ``specialBeginEnd`` fields can *optionally* accept the ``body`` field. If the ``body`` field is omitted, then ``latexindent.pl`` uses a value that means
+
+   anything except one of the begin statements from ``specialBeginEnd``.
+
+In general, it is usually *not* necessary to specify the ``body`` field, but let’s detail an example just for reference.
+
+.. proof:example::	
+	
+	We begin with the example in :numref:`lst:special-body`
+	
+	.. literalinclude:: demonstrations/special-body.tex
+		:class: .tex
+		:caption: ``special-body.tex`` 
+		:name: lst:special-body
+	
+	Using the settings in :numref:`lst:special-body1` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl special-body.tex -l=special-body1.yaml
+	
+	gives the output in :numref:`lst:special-body-mod1`.
+	
+	.. literalinclude:: demonstrations/special-body-mod1.tex
+		:class: .tex
+		:caption: ``special-body.tex`` using :numref:`lst:special-body1` 
+		:name: lst:special-body-mod1
+	
+	.. literalinclude:: demonstrations/special-body1.yaml
+		:class: .baseyaml
+		:caption: ``special-body1.yaml`` 
+		:name: lst:special-body1
+	
+	We note that the output in :numref:`lst:special-body-mod1` is as we would expect, even *without* the ``body`` field specified.
+	
+	Another option (purely for reference) that leaves the output in :numref:`lst:special-body-mod1` unchanged is shown in :numref:`lst:special-body2`.
+	
+	.. literalinclude:: demonstrations/special-body2.yaml
+		:class: .baseyaml
+		:caption: ``special-body2.yaml`` 
+		:name: lst:special-body2
+	
+	The ``body`` field in :numref:`lst:special-body2` means *anything except ( or )*.
+
+
 .. describe:: indentAfterHeadings:fields
 
 This field enables the user to specify indentation rules that take effect after heading commands such as ``\part``, ``\chapter``, ``\section``, ``\subsection*``, or indeed any user-specified command written in this field. [2]_

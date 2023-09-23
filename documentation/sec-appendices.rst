@@ -579,7 +579,7 @@ To pull the image and show ``latexindent``\ ’s help on Ubuntu:
    docker pull ghcr.io/cmhughes/latexindent.pl
    docker run ghcr.io/cmhughes/latexindent.pl -h
 
-Once I have run the above, on subsquent logins I run
+Once I have run the above, on subsequent logins I run
 
 .. code-block:: latex
    :caption: ``docker-install.sh`` 

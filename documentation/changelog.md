@@ -1,6 +1,8 @@
-<!-- announcement: minor bugfix for text wrap-->
+<!-- announcement: minor bugfix for specialBeginEnd-->
 
 # changelog.md
+## V3.23.2, September 23, 2023
+bugfix for `specialBeginEnd', see [issue-477](https://github.com/cmhughes/latexindent.pl/issues/477)
 
 ## V3.23.1, September 13, 2023
 minor bugfix for text wrap routine, see [issue-471](https://github.com/cmhughes/latexindent.pl/issues/471)
