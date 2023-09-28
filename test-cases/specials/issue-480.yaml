@@ -1,0 +1,8 @@
+defaultIndent: "  "
+
+specialBeginEnd:
+  specialBeforeCommand: 1
+  brackets:
+    begin: (?<![a-zA-Z\\])\[
+    end: (?<!\\)\] 
+    lookForThis: 1
