@@ -147,7 +147,7 @@ Examples of replacements
 	
 	.. literalinclude:: demonstrations/colsep-mod0.tex
 		:class: .tex
-		:caption: ``colsep.tex`` using :numref:`lst:colsep` 
+		:caption: ``colsep.tex`` using :numref:`lst:colsep-yaml` 
 		:name: lst:colsep-mod0
 	
 	.. literalinclude:: demonstrations/colsep.yaml
