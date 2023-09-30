@@ -68,11 +68,11 @@ sub create_back_up_file {
     # determine the backup file name by adjoining backupExtension
     my $backupFile = $backupFileNoExt . $backupExtension;
 
-    # if onlyOneBackUp is not set, add a number to the backup file name
+    # if onlyOneBackUp is *not* set, add a number to the backup file name
     if ( !$onlyOneBackUp ) {
         my $backupCounter = 0;
 
-        # start with 0; if the file already exists, increment the number until either
+        # if the file already exists, increment the number until either
         # the file does not exist, or you reach the maximal number of backups
         while ( -e ( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
             $logger->info("$backupFile$backupCounter already exists, incrementing by 1 (see maxNumberOfBackUps)");
