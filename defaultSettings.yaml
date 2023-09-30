@@ -185,12 +185,14 @@ lookForAlignDelims:
    alignat: 1
    alignat*: 1
    aligned: 1
+   alignedat: 1
    bmatrix: 1
    Bmatrix: 1
    cases: 1
    flalign: 1
    flalign*: 1
    pmatrix: 1
+   split: 1
    vmatrix: 1
    Vmatrix: 1
    # mathtools
