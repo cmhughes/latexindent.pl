@@ -1,1329 +1,1530 @@
 {
-    "$schema": "http://json-schema.org/schema",
-    "$id": "latexindent-yaml-schema.json",
-    "title": "latexindent.pl YAML schema",
-    "description": "latexindent.pl YAML schema helper, V3.23.2 2023-09-23",
-    "type": "object",
-    "properties": {
-      "fileExtensionPreference": {
-        "description": "calling latexindent.pl to operate on myfile (without extension) is fine, and in which case the file extensions from this field will be used in order",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "integer, specifying the order in which latexindent.pl will search for myfile ending with this extension",
-            "type": "integer"
-          }
+  "$schema": "http://json-schema.org/schema",
+  "$id": "latexindent-yaml-schema.json",
+  "title": "latexindent.pl YAML schema",
+  "description": "latexindent.pl YAML schema helper, V3.23.2 2023-09-23",
+  "type": "object",
+  "properties": {
+    "fileExtensionPreference": {
+      "description": "calling latexindent.pl to operate on myfile (without extension) is fine, and in which case the file extensions from this field will be used in order",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "integer specifying the order in which latexindent.pl will search for myfile ending with this extension",
+          "type": "integer"
         }
-      },
-      "backupExtension": {
-        "description": "when the -w, --overwrite switch is active, a back-up file is created with this extension",
-        "type": "string"
-      },
-      "onlyOneBackUp": {
-        "description": "when the -w, --overwrite switch is active, the default is to create a back-up file for each call to latexindent.pl. Changing onlyOneBackUp to 1 means that only one back-up file is created",
-        "type": "integer",
-        "enum": [0,1]
-      },
-      "maxNumberOfBackUps": {
-        "description": "when the -w, --overwrite switch is active, the default is to create a back-up file for each call to latexindent.pl. This field sets the maximum number of back-up files",
-        "type": "integer",
-        "minimum": 0
-      },
-      "cycleThroughBackUps": {
-        "description": "when the -w, --overwrite switch is active, back-up files can be overwritten in order; see also maxNumberOfBackUps",
-        "type": "integer",
-        "enum": [0,1] 
-      },
-      "logFilePreferences": {
-        "description": "latexindent.pl will write logging information to indent.log; the appearance of some of the information can be customised",
-        "type": "object",
-        "properties": {
-          "showEveryYamlRead": {
-            "description": "0/1, binary switch to show every YAML file's settings in indent.log",
-            "type": "integer",
-            "enum": [0,1]     
-          },
-          "showAmalgamatedSettings": {
-            "description": "0/1, binary switch to show the overall/amalgamated settings in indent.log",
-            "type": "integer",
-            "enum": [0,1]     
-          },
-          "showDecorationStartCodeBlockTrace": {
-            "description": "0/1, binary switch to show decorations at *start* of code block in indent.log when -t, -tt switches active",
-            "type": "integer",
-            "enum": [0,1]     
-          },
-          "showDecorationFinishCodeBlockTrace": {
-            "description": "0/1, binary switch to show decorations at *finish* of code block in indent.log when -t, -tt switches active",
-            "type": "integer",
-            "enum": [0,1]     
-          },
-          "endLogFileWith": {
-            "description": "string decoration to finish indent.log",
-            "type": "string"   
-          },
-          "showGitHubInfoFooter": {
-            "description": "0/1, binary switch to show GitHub information in footer of indent.log",
-            "type": "integer",
-            "enum": [0,1] 
-          },
-          "Dumper": {
-            "description": "options to be passed to the Dumper module; most helpful when -t, -tt active.",
-            "type": "object",
-            "properties": {
-              "Terse":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Indent":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Useqq":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Deparse":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Quotekeys":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Sortkeys":{
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "Pair":{
-                "type": "string"    
-              }
+      }
+    },
+    "backupExtension": {
+      "description": "when the -w, --overwrite switch is active, a back-up file is created with this extension",
+      "type": "string"
+    },
+    "onlyOneBackUp": {
+      "description": "when the -w, --overwrite switch is active, the default is to create a back-up file for each call to latexindent.pl. Changing onlyOneBackUp to 1 means that only one back-up file is created",
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "maxNumberOfBackUps": {
+      "description": "when the -w, --overwrite switch is active, the default is to create a back-up file for each call to latexindent.pl. This field sets the maximum number of back-up files",
+      "type": "integer",
+      "minimum": 0
+    },
+    "cycleThroughBackUps": {
+      "description": "when the -w, --overwrite switch is active, back-up files can be overwritten in order; see also maxNumberOfBackUps",
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "logFilePreferences": {
+      "description": "latexindent.pl will write logging information to indent.log; the appearance of some of the information can be customised",
+      "type": "object",
+      "properties": {
+        "showEveryYamlRead": {
+          "description": "0/1, binary switch to show every YAML file's settings in indent.log",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "showAmalgamatedSettings": {
+          "description": "0/1, binary switch to show the overall/amalgamated settings in indent.log",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "showDecorationStartCodeBlockTrace": {
+          "description": "0/1, binary switch to show decorations at *start* of code block in indent.log when -t, -tt switches active",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "showDecorationFinishCodeBlockTrace": {
+          "description": "0/1, binary switch to show decorations at *finish* of code block in indent.log when -t, -tt switches active",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "endLogFileWith": {
+          "description": "string decoration to finish indent.log",
+          "type": "string"
+        },
+        "showGitHubInfoFooter": {
+          "description": "0/1, binary switch to show GitHub information in footer of indent.log",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "Dumper": {
+          "description": "options to be passed to the Dumper module; most helpful when -t, -tt active.",
+          "type": "object",
+          "properties": {
+            "Terse": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Indent": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Useqq": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Deparse": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Quotekeys": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Sortkeys": {
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "Pair": {
+              "type": "string"
             }
           }
         }
-      },
-      "verbatimEnvironments": {
-        "description": "specify the names of verbatim environments in this field",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for this *environment*",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "verbatimEnvironments": {
+      "description": "specify the names of verbatim environments in this field",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for this *environment*",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "verbatimCommands": {
-        "description": "specify the names of verbatim *commands* in this field",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for this *command*",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "verbatimCommands": {
+      "description": "specify the names of verbatim *commands* in this field",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for this *command*",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "noIndentBlock": {
-        "description": "specify the names of *noIndentBlock* in this field",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for this *noIndentBlock*",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "noIndentBlock": {
+      "description": "specify the names of *noIndentBlock* in this field",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for this *noIndentBlock*",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "fileContentsEnvironments": {
-        "description": "specify the names of *filecontents* in this field",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for this *filecontents* environment",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "fileContentsEnvironments": {
+      "description": "specify the names of *filecontents* in this field",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for this *filecontents* environment",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "indentPreamble": {
-        "description": "0/1, binary switch to instruct latexindent.pl to operate on preamble or not",
-        "type": "integer",
-        "enum": [0,1]
-      },
-      "lookForPreamble": {
-        "description": "list of extensions detailing which files latexindent.pl should look for preamble",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch for preamble search for this file type",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "indentPreamble": {
+      "description": "0/1, binary switch to instruct latexindent.pl to operate on preamble or not",
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "lookForPreamble": {
+      "description": "list of extensions detailing which files latexindent.pl should look for preamble",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch for preamble search for this file type",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "preambleCommandsBeforeEnvironments": {
-        "description": "0/1, binary switch to instruct latexindent.pl to search for commands before environments in preamble",
-        "type": "integer",
-        "enum": [0,1]
-      },
-      "defaultIndent": {
-        "description": "default indentation, needs to be specified as horizontal space",
-        "type": "string"
-      },
-      "removeTrailingWhitespace": {
-        "description": "remove horizontal space at the *end* of lines",
-        "type": "object",
-        "properties": {
-          "beforeProcessing": {
-            "description": "0/1, binary switch to remove horizontal space *before* indenting",
-            "type": "integer",
-            "enum": [0,1]     
-          },
-          "afterProcessing": {
-            "description": "0/1, binary switch to remove horizontal space *after* indenting",
-            "type": "integer",
-            "enum": [0,1] 
-          }
+      }
+    },
+    "preambleCommandsBeforeEnvironments": {
+      "description": "0/1, binary switch to instruct latexindent.pl to search for commands before environments in preamble",
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "defaultIndent": {
+      "description": "default indentation, needs to be specified as horizontal space",
+      "type": "string"
+    },
+    "removeTrailingWhitespace": {
+      "description": "remove horizontal space at the *end* of lines",
+      "type": "object",
+      "properties": {
+        "beforeProcessing": {
+          "description": "0/1, binary switch to remove horizontal space *before* indenting",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "afterProcessing": {
+          "description": "0/1, binary switch to remove horizontal space *after* indenting",
+          "type": "integer",
+          "enum": [0, 1]
         }
-      },
-      "lookForAlignDelims": {
-        "description": "list of names of code blocks detailing that latexindent.pl should align at delimiters",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1 binary switch to detail if this code block has delimiters. Option to specify this field in 'advanced' form",
-            "type": ["integer","object"],
-            "properties": {
-              "delims": {
-                "description": "0/1, binary switch to look for delimiters",
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "alignDoubleBackSlash": {
-                "description": "0/1, binary switch to align the \\\\",
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "spacesBeforeDoubleBackSlash": {
-                "description": "integer detailing number of spaces *before* \\\\",
-                "type": "integer",
-                "minimum": 0     
-              },
-              "multiColumnGrouping": {
-                "description": "0/1, binary switch to group alignment under \\multicolumn command",
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "alignRowsWithoutMaxDelims": {
-                "description": "0/1, binary switch to align rows without the maximum number of delimiters",
-                "type": "integer",
-                "enum": [0,1]     
-              },
-              "spacesBeforeAmpersand": {
-                "description": "integer detailing number of spaces *before* delimiter",
-                "type": "integer",
-                "minimum": 0
-              },
-              "spacesAfterAmpersand": {
-                "description": "integer detailing number of spaces *after* delimiter",
-                "type": "integer",
-                "minimum": 0
-              },
-              "justification": {
-                "description": "justification of cell",
-                "type": "string",
-                "enum": ["left", "right"]
-              },
-              "alignFinalDoubleBackSlash": {
-                "description": "0/1, binary switch to align final \\\\",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "dontMeasure": {
-                "description": "entries not to be measured in the alignment routine",
-                "type": ["integer","string","array"],
-                "items": {
-                  "type": ["string","object"],
-                  "description": "entry not to be measured",
-                  "properties": {
-                    "this": {
-                      "type": "string",
-                      "description": "string containing the cell *not* to be measured"
-                    },
-                    "applyTo": {
-                      "type": "string",
-                      "enum": ["cell", "row"],
-                      "description": "detail cell or row"
-                    },
-                    "regex": {
-                      "type": "string",
-                      "description": "regular expression to match cell or row"
-                    }
+      }
+    },
+    "lookForAlignDelims": {
+      "description": "list of names of code blocks detailing that latexindent.pl should align at delimiters",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to detail if this code block has delimiters. Option to specify this field in 'advanced' form",
+          "type": ["integer", "object"],
+          "properties": {
+            "delims": {
+              "description": "0/1, binary switch to look for delimiters",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "alignDoubleBackSlash": {
+              "description": "0/1, binary switch to align the \\\\",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "spacesBeforeDoubleBackSlash": {
+              "description": "integer detailing number of spaces *before* \\\\",
+              "type": "integer",
+              "minimum": 0
+            },
+            "multiColumnGrouping": {
+              "description": "0/1, binary switch to group alignment under \\multicolumn command",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "alignRowsWithoutMaxDelims": {
+              "description": "0/1, binary switch to align rows without the maximum number of delimiters",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "spacesBeforeAmpersand": {
+              "description": "integer detailing number of spaces *before* delimiter",
+              "type": "integer",
+              "minimum": 0
+            },
+            "spacesAfterAmpersand": {
+              "description": "integer detailing number of spaces *after* delimiter",
+              "type": "integer",
+              "minimum": 0
+            },
+            "justification": {
+              "description": "justification of cell",
+              "type": "string",
+              "enum": ["left", "right"]
+            },
+            "alignFinalDoubleBackSlash": {
+              "description": "0/1, binary switch to align final \\\\",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "dontMeasure": {
+              "description": "entries not to be measured in the alignment routine; can also be set to 'largest'",
+              "type": ["integer", "string", "array"],
+              "items": {
+                "description": "entry not to be measured",
+                "type": ["string", "object"],
+                "properties": {
+                  "this": {
+                    "type": "string",
+                    "description": "string containing the cell *not* to be measured"
+                  },
+                  "applyTo": {
+                    "type": "string",
+                    "enum": ["cell", "row"],
+                    "description": "detail cell or row"
+                  },
+                  "regex": {
+                    "type": "string",
+                    "description": "regular expression to match cell or row"
                   }
-               }
-              },
-              "delimiterRegEx": {
-                "description": "delimiter regex. NOTE: the capturing ()",
-                "type": "string"   
-              },
-              "delimiterJustification": {
-                "description": "delimiter justification",
-                "type": "string",
-                "enum": ["left", "right"]
-              },
-              "lookForChildCodeBlocks": {
-                "description": "0/1. binary switch to look for child code blocks",
-                "type": "integer",
-                "enum": [0,1]
+                }
               }
+            },
+            "delimiterRegEx": {
+              "description": "delimiter regex. NOTE: the capturing ()",
+              "type": "string"
+            },
+            "delimiterJustification": {
+              "description": "delimiter justification",
+              "type": "string",
+              "enum": ["left", "right"]
+            },
+            "lookForChildCodeBlocks": {
+              "description": "0/1, binary switch to look for child code blocks",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "alignContentAfterDoubleBackSlash": {
+              "description": "0/1, binary switch to align content after \\\\",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "spacesAfterDoubleBackSlash": {
+              "description": "integer detailing number of spaces to be placed *after* \\\\ when alignContentAfterDoubleBackSlash is active",
+              "type": "integer",
+              "minimum": 0
             }
           }
         }
-      },
-      "indentAfterItems": {
-        "description": "specify the names of environments that contain items",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for items in this environment",
-            "type": "integer",
-            "enum": [0,1]
-          }
+      }
+    },
+    "indentAfterItems": {
+      "description": "specify the names of environments that contain items",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for items in this environment",
+          "type": "integer",
+          "enum": [0, 1]
+        }
+      }
+    },
+    "itemNames": {
+      "description": "names of items",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean don't look for/look for items",
+          "type": "integer",
+          "enum": [0, 1]
+        }
+      }
+    },
+    "specialBeginEnd": {
+      "description": "special code blocks have begin, end, and optionally 'middle' specified as regular expressions",
+      "type": "object",
+      "properties": {
+        "specialBeforeCommand": {
+          "description": "0/1, binary switch to look for commands before special code blocks",
+          "type": "integer",
+          "enum": [0, 1]
         }
       },
-      "itemNames": {
-        "description": "names of items",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean don't look for/look for items",
-            "type": "integer",
-            "enum": [0,1]
+      "patternProperties": {
+        ".*": {
+          "description": "name of special code block",
+          "type": "object",
+          "properties": {
+            "begin": {
+              "type": "string",
+              "description": "regular expression containing the *beginning* part"
+            },
+            "middle": {
+              "type": "string",
+              "description": "optional: regular expression containing the *middle* part"
+            },
+            "end": {
+              "type": "string",
+              "description": "regular expression containing the *ending* part"
+            },
+            "body": {
+              "type": "string",
+              "description": "optional: regular expression containing the body of the block"
+            },
+            "lookForThis": {
+              "type": "integer",
+              "description": "optional: 0/1, binary switch detailing look for this or not. Default is 1 if not specified",
+              "enum": [0, 1]
+            }
           }
         }
-      },
-      "specialBeginEnd": {
-        "description": "special code blocks have begin, end, and optionally 'middle' specified as regular expressions",
-        "type": "object",
-        "properties": {
-          "specialBeforeCommand": {
-            "description": "0/1, binary switch to look for commands before special code blocks",
-            "type": "integer",
-            "enum": [0,1]
+      }
+    },
+    "indentAfterHeadings": {
+      "description": "indentation after headings",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "name of heading",
+          "type": "object",
+          "properties": {
+            "indentAfterThisHeading": {
+              "type": "integer",
+              "description": "0/1, binary switch to look for heading or not",
+              "enum": [0, 1]
+            },
+            "level": {
+              "type": "integer",
+              "description": "level of the heading (minimum is 1)",
+              "minimum": 1
+            }
+          }
+        }
+      }
+    },
+    "maximumIndentation": {
+      "description": "maximum value of indentation; specify as horizontal space",
+      "type": ["string", "integer"]
+    },
+    "noAdditionalIndent": {
+      "description": "names of code blocks to not have additional indentation",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "0/1, binary switch to mean code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        }
+      }
+    },
+    "indentRules": {
+      "description": "per-code block indentation rule",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "description": "indentation/horizontal space per-code block",
+          "type": "string"
+        }
+      }
+    },
+    "noAdditionalIndentGlobal": {
+      "description": "*types* of code blocks to not have additional indentation",
+      "type": "object",
+      "properties": {
+        "environments": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "commands": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "optionalArguments": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "mandatoryArguments": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "ifElseFi": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "items": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "keyEqualsValuesBracesBrackets": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "namedGroupingBracesBrackets": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "UnNamedGroupingBracesBrackets": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "specialBeginEnd": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "afterHeading": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "filecontents": {
+          "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
+          "type": "integer",
+          "enum": [0, 1]
+        }
+      }
+    },
+    "indentRulesGlobal": {
+      "description": "*types* of code blocks indentation rules",
+      "type": "object",
+      "properties": {
+        "environments": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "commands": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "optionalArguments": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "mandatoryArguments": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "ifElseFi": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "items": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "keyEqualsValuesBracesBrackets": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "namedGroupingBracesBrackets": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "UnNamedGroupingBracesBrackets": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "specialBeginEnd": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "afterHeading": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        },
+        "filecontents": {
+          "description": "indentation rules per *type* of code block",
+          "type": ["integer", "string"]
+        }
+      }
+    },
+    "commandCodeBlocks": {
+      "description": "command code blocks need some particular attention",
+      "type": "object",
+      "properties": {
+        "roundParenthesesAllowed": {
+          "description": "0/1, binary switch to not allow/allow round parenthesis () between arguments",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "stringsAllowedBetweenArguments": {
+          "description": "strings allowed between arguments",
+          "type": ["integer", "array"],
+          "items": {
+            "description": "entry to be allowed between arguments",
+            "type": ["string", "object"],
+            "properties": {
+              "amalgamate": {
+                "description": "optional: 0/1, binary switch to add to/overwrite previously loaded items. Default is 1 if not specified",
+                "type": "integer",
+                "enum": [0, 1]
+              }
+            }
           }
         },
-        "patternProperties": {
-          ".*": {
-            "description": "name of special code block",
-            "type": "object",
+        "commandNameSpecial": {
+          "description": "there are some particular commands that need individual attention",
+          "type": ["integer", "array"],
+          "items": {
+            "description": "entry for particular attention",
+            "type": ["string", "object"],
             "properties": {
-              "begin":{
-                "type": "string",
-                "description": "regular expression containing the *beginning* part"
-              },
-              "middle":{
-                "type": "string",
-                "description": "optional: regular expression containing the *middle* part"
-              },
-              "end":{
-                "type": "string",
-                "description": "regular expression containing the *ending* part"
-              },
-              "lookForThis":{
+              "amalgamate": {
+                "description": "optional: 0/1, binary switch to add to/overwrite previously loaded items. Default is 1 if not specified",
                 "type": "integer",
-                "description": "optional 0/1, binary switch detailing look for this or not. Default is 1 if not specified",
-                "enum": [0,1]     
+                "enum": [0, 1]
               }
             }
           }
         }
-      },
-      "indentAfterHeadings": {
-        "description": "indentation after headings",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "name of heading",
-            "type": "object",
-            "properties": {
-              "indentAfterThisHeading":{
-                "type": "integer",
-                "description": "0/1, binary switch to look for heading or not",
-                "enum": [0,1]
-              },
-              "level":{
-                "type": "integer",
-                "description": "level of the heading (minimum is 1)",
-                "minimum": 1
+      }
+    },
+    "dos2unixlinebreaks": {
+      "description": "0/1, binary switch to convert dos line breaks to unix line breaks",
+      "type": "integer",
+      "enum": [0, 1]
+    },
+    "modifyLineBreaks": {
+      "description": "when -m switch active, latexindent.pl has ability to modify line breaks",
+      "type": "object",
+      "properties": {
+        "preserveBlankLines": {
+          "description": "0/1, binary switch to preserve blank lines or not",
+          "type": "integer",
+          "enum": [0, 1]
+        },
+        "condenseMultipleBlankLinesInto": {
+          "description": "condense multiple blank lines into this many blank lines",
+          "type": "integer",
+          "minimum": 0
+        },
+        "oneSentencePerLine": {
+          "properties": {
+            "manipulateSentences": {
+              "description": "0/1, binary switch to perform one sentence per line routine or not",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "removeSentenceLineBreaks": {
+              "description": "0/1, binary switch to remove line breaks from within sentences or not",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "multipleSpacesToSingle": {
+              "description": "0/1, binary switch to convert multiple spaces into single spaces or not",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "textWrapSentences": {
+              "description": "0/1, binary switch to text wrap sentences or not",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "sentenceIndent": {
+              "description": "horizontal space representing indentation within sentences",
+              "type": "string"
+            },
+            "sentencesFollow": {
+              "description": "things that sentences can follow",
+              "properties": {
+                "par": {
+                  "description": "0/1, binary switch to determine if sentences can follow \\par or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "blankLine": {
+                  "description": "0/1, binary switch to determine if sentences can follow blank lines or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "fullStop": {
+                  "description": "0/1, binary switch to determine if sentences can follow blank lines or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "exclamationMark": {
+                  "description": "0/1, binary switch to determine if sentences can follow ! or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "questionMark": {
+                  "description": "0/1, binary switch to determine if sentences can follow ? or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "rightBrace": {
+                  "description": "0/1, binary switch to determine if sentences can follow } or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "commentOnPreviousLine": {
+                  "description": "0/1, binary switch to determine if sentences can follow % on previous line or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what else sentences can follow",
+                  "type": ["integer", "string"]
+                }
+              }
+            },
+            "sentencesBeginWith": {
+              "description": "things that sentences can begin with",
+              "properties": {
+                "A-Z": {
+                  "description": "0/1, binary switch to determine if sentences can begin upper case letters or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "a-z": {
+                  "description": "0/1, binary switch to determine if sentences can begin lower case letters or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what else sentences can begin with",
+                  "type": ["integer", "string"]
+                }
+              }
+            },
+            "sentencesEndWith": {
+              "description": "things that sentences can end with",
+              "properties": {
+                "basicFullStop": {
+                  "description": "0/1, binary switch to determine if sentences can end with basic full stop (period) or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "betterFullStop": {
+                  "description": "0/1, binary switch to determine if sentences can end with better full stop (period) or not (RECOMMENDED)",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "exclamationMark": {
+                  "description": "0/1, binary switch to determine if sentences can end with ! or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "questionMark": {
+                  "description": "0/1, binary switch to determine if sentences can end with ? or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what else sentences can end with",
+                  "type": ["integer", "string"]
+                }
+              }
+            },
+            "sentencesDoNOTcontain": {
+              "description": "things that sentences cannot contain",
+              "properties": {
+                "other": {
+                  "description": "regular expression detailing what sentences cannot contain. Can be turned off by setting 0",
+                  "type": ["integer", "string"]
+                }
+              }
+            }
+          }
+        },
+        "textWrapOptions": {
+          "description": "options for the text wrap routine",
+          "type": "object",
+          "properties": {
+            "columns": {
+              "description": "integer > 0 sets the number of columns for the text wrap routine, or if -1 then text wrap blocks simply have line breaks removed",
+              "type": "integer",
+              "minimum": -1
+            },
+            "multipleSpacesToSingle": {
+              "description": "0/1, binary switch to determine whether text wrap should convert multiple spaces to single space",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "removeBlockLineBreaks": {
+              "description": "0/1, binary switch to determine whether text wrap should convert multiple spaces to single space",
+              "type": "integer",
+              "enum": [0, 1]
+            },
+            "when": {
+              "description": "optional: string specifying whether text wrapping should be made before/after code blocks have been found. Default is 'before' if not specified",
+              "type": "string",
+              "enum": ["before", "after"]
+            },
+            "comments": {
+              "description": "instructions for wrapping comments",
+              "type": "object",
+              "properties": {
+                "wrap": {
+                  "description": "0/1, binary switch to determine whether comments should be combined and wrapped",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "inheritLeadingSpace": {
+                  "description": "0/1, binary switch to determine whether comments should inherit leading spaces",
+                  "type": "integer",
+                  "enum": [0, 1]
+                }
+              }
+            },
+            "blocksFollow": {
+              "description": "field containing switches that text wrap blocks *follow*",
+              "type": "object",
+              "properties": {
+                "headings": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after the fields listed in indentAfterHeading (regardless of the value of indentAfterThisHeading or level) or not. The heading command can, optionally, be followed by a label command",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "commentOnPreviousLine": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after a comment on its own line or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "par": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after \\par or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "blankLine": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after a blank line or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "verbatim": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after a verbatim block or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "filecontents": {
+                  "description": "0/1, binary switch to instruct latexindent to find text wrap blocks after a filecontents environment or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what text wrap blocks should follow. Can be turned off by setting 0. The default value corresponds to the end of display math or an item command",
+                  "type": "string"
+                }
+              }
+            },
+            "blocksBeginWith": {
+              "description": "field containing switches that text wrap blocks *begin with*",
+              "type": "object",
+              "properties": {
+                "A-Z": {
+                  "description": "0/1, binary switch to determine whether text wrap block can begin with an uppercase letter or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "a-z": {
+                  "description": "0/1, binary switch to determine whether text wrap block can begin with a lowercase letter or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "0-9": {
+                  "description": "0/1, binary switch to determine whether text wrap block can begin with a digit or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what text wrap blocks can begin with. Can be turned off by setting 0. Default is 0 if not specified",
+                  "type": ["integer", "string"]
+                }
+              }
+            },
+            "blocksEndBefore": {
+              "description": "field containing switches that text wrap blocks *end before*",
+              "type": "object",
+              "properties": {
+                "commentOnOwnLine": {
+                  "description": "0/1, binary switch to determine whether text wrap block should end before a comment on its own line or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "verbatim": {
+                  "description": "0/1, binary switch to determine whether text wrap block should end before a verbatim environment or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "filecontents": {
+                  "description": "0/1, binary switch to determine whether text wrap block should end before a filecontents environment or not",
+                  "type": "integer",
+                  "enum": [0, 1]
+                },
+                "other": {
+                  "description": "regular expression detailing what text wrap blocks should end before. Can be turned off by setting 0. The default value corresponds to begin statements, display math, and end statements",
+                  "type": "string"
+                }
+              }
+            },
+            "huge": {
+              "description": "WARNING: I don't recommend changing this from overflow; passed to Perl's Text::Wrap module",
+              "type": "string",
+              "enum": ["overflow", "wrap", "die"]
+            },
+            "tabstop": {
+              "description": "passed to Perl's Text::Wrap module",
+              "type": "integer"
+            },
+            "separator": {
+              "description": "passed to Perl's Text::Wrap module",
+              "type": "string"
+            },
+            "separator2": {
+              "description": "passed to Perl's Text::Wrap module",
+              "type": "string"
+            },
+            "break": {
+              "description": "passed to Perl's Text::Wrap module",
+              "type": "string"
+            },
+            "unexpand": {
+              "description": "passed to Perl's Text::Wrap module",
+              "type": "integer",
+              "enum": [0, 1]
+            }
+          }
+        },
+        "environments": {
+          "description": "poly-switches for environments (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "BeginStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of environments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "BodyStartsOnOwnLine": {
+              "description": "poly-switch for line break before body of environments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "EndStartsOnOwnLine": {
+              "description": "poly-switch for line break before end of environments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "EndFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of environments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for environments (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "BeginStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of environments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "BodyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before body of environments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "EndStartsOnOwnLine": {
+                  "description": "poly-switch for line break before end of environments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "EndFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of environments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "specialBeginEnd": {
+          "description": "poly-switches for specialBeginEnd (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "SpecialBeginStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of specialBeginEnd (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "SpecialBodyStartsOnOwnLine": {
+              "description": "poly-switch for line break before body of specialBeginEnd (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "SpecialEndStartsOnOwnLine": {
+              "description": "poly-switch for line break before end of specialBeginEnd (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "SpecialEndFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of specialBeginEnd (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for specialBeginEnd (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "SpecialBeginStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of specialBeginEnd (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "SpecialBodyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before body of specialBeginEnd (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "SpecialEndStartsOnOwnLine": {
+                  "description": "poly-switch for line break before end of specialBeginEnd (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "SpecialEndFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of specialBeginEnd (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "keyEqualsValuesBracesBrackets": {
+          "description": "poly-switches for key equals value (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "KeyStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of key equals value (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "EqualsStartsOnOwnLine": {
+              "description": "poly-switch for line break before = of key equals value (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "EqualsFinishesWithLineBreak": {
+              "description": "poly-switch for line break after = of key equals value (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for key equals value (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "KeyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of key equals value (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "EqualsStartsOnOwnLine": {
+                  "description": "poly-switch for line break before = of key equals value (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "EqualsFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after = of key equals value (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "ifElseFi": {
+          "description": "poly-switches for ifElseFi (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "IfStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "BodyStartsOnOwnLine": {
+              "description": "poly-switch for line break before body of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "OrStartsOnOwnLine": {
+              "description": "poly-switch for line break before or statement of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "OrFinishesWithLineBreak": {
+              "description": "poly-switch for line break after or statement of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "ElseStartsOnOwnLine": {
+              "description": "poly-switch for line break before else statement of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "ElseFinishesWithLineBreak": {
+              "description": "poly-switch for line break after else statement of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "FiStartsOnOwnLine": {
+              "description": "poly-switch for line break before end of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "FiFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of ifElseFi (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for ifElseFi (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "IfStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "BodyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before body of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "OrStartsOnOwnLine": {
+                  "description": "poly-switch for line break before or statement of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "OrFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after or statement of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "ElseStartsOnOwnLine": {
+                  "description": "poly-switch for line break before else statement of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "ElseFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after else statement of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "FiStartsOnOwnLine": {
+                  "description": "poly-switch for line break before end of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "FiFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of ifElseFi (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "commands": {
+          "description": "poly-switches for commands (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "CommandStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of commands (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "CommandNameFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of commands (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for commands (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "CommandStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of commands (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "CommandNameFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of commands (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "verbatim": {
+          "description": "poly-switches for verbatim (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "VerbatimBeginStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of verbatim (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "VerbatimEndFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of verbatim (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for verbatim (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "VerbatimBeginStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of verbatim (GLOBAL)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "VerbatimEndFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of verbatim (GLOBAL)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "namedGroupingBracesBrackets": {
+          "description": "poly-switches for namedGroupingBracesBrackets (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "NameStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of namedGroupingBracesBrackets (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "NameFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of namedGroupingBracesBrackets (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for commands (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "NameStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of namedGroupingBracesBrackets (GLOBAL)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "NameFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of namedGroupingBracesBrackets (GLOBAL)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "items": {
+          "description": "poly-switches for items (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "ItemStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of items (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "ItemFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of items (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for items (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "ItemStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of items (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "ItemFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of items (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "optionalArguments": {
+          "description": "poly-switches for optional arguments (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "LSqBStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of optional arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "OptArgBodyStartsOnOwnLine": {
+              "description": "poly-switch for line break before body of optional arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "RSqBStartsOnOwnLine": {
+              "description": "poly-switch for line break before end of optional arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "RSqBFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of optional arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for optional arguments (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "LSqBStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of optional arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "OptArgBodyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before body of optional arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "RSqBStartsOnOwnLine": {
+                  "description": "poly-switch for line break before end of optional arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "RSqBFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of optional arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
+              }
+            }
+          }
+        },
+        "mandatoryArguments": {
+          "description": "poly-switches for mandatory arguments (GLOBAL)",
+          "type": "object",
+          "properties": {
+            "LCuBStartsOnOwnLine": {
+              "description": "poly-switch for line break before beginning of mandatory arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "MandArgBodyStartsOnOwnLine": {
+              "description": "poly-switch for line break before body of mandatory arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "RCuBStartsOnOwnLine": {
+              "description": "poly-switch for line break before end of mandatory arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            },
+            "RCuBFinishesWithLineBreak": {
+              "description": "poly-switch for line break after end of mandatory arguments (GLOBAL)",
+              "type": "integer",
+              "enum": [-1, 0, 1, 2, 3, 4]
+            }
+          },
+          "patternProperties": {
+            ".*": {
+              "description": "poly-switches for mandatory arguments (PER-NAME)",
+              "type": "object",
+              "properties": {
+                "LCuBStartsOnOwnLine": {
+                  "description": "poly-switch for line break before beginning of mandatory arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "MandArgBodyStartsOnOwnLine": {
+                  "description": "poly-switch for line break before body of mandatory arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "RCuBStartsOnOwnLine": {
+                  "description": "poly-switch for line break before end of mandatory arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                },
+                "RCuBFinishesWithLineBreak": {
+                  "description": "poly-switch for line break after end of mandatory arguments (PER-NAME)",
+                  "type": "integer",
+                  "enum": [-1, 0, 1, 2, 3, 4]
+                }
               }
             }
           }
         }
-      },
-      "maximumIndentation": {
-        "description": "maximum value of indentation; specify as horizontal space",
-        "type": ["string","integer"]
-      },
-      "noAdditionalIndent": {
-        "description": "names of code blocks to not have additional indentation",
+      }
+    },
+    "replacements": {
+      "description": "replacements to be made; requires -r, -rr or -rv switch",
+      "type": "array",
+      "items": {
+        "description": "entry for replacement",
         "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "0/1, binary switch to mean code block does not have/has additional indentation",
+        "properties": {
+          "amalgamate": {
+            "description": "optional: 0/1, binary switch to add to/overwrite previously loaded items. Default is 1 if not specified",
             "type": "integer",
-            "enum": [0,1]
-          }
-        }
-      },
-      "indentRules": {
-        "description": "per-code block indentation rule",
-        "type": "object",
-        "patternProperties": {
-          ".*": {
-            "description": "indentation/horizontal space per-code block",
+            "enum": [0, 1]
+          },
+          "this": {
+            "description": "string to be replaced",
+            "type": "string"
+          },
+          "that": {
+            "description": "string to replace with",
+            "type": "string"
+          },
+          "lookForThis": {
+            "description": "optional: 0/1, binary switch detailing look for this or not. Default is 1 if not specified",
+            "type": "integer",
+            "enum": [0, 1]
+          },
+          "when": {
+            "description": "optional: string specifying whether replacement should be made before/after indentation. Default is 'before' if not specified",
+            "type": "string",
+            "enum": ["before", "after"]
+          },
+          "substitution": {
+            "description": "regular expression of the form 's/regex/replacement/modifiers; works only if 'this' is blank",
             "type": "string"
           }
         }
-      },
-      "noAdditionalIndentGlobal": {
-        "description": "*types* of code blocks to not have additional indentation",
-        "type": "object",
-        "properties": {
-          "environments": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "commands": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "optionalArguments": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "mandatoryArguments": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "ifElseFi": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "items": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "keyEqualsValuesBracesBrackets": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "namedGroupingBracesBrackets": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "UnNamedGroupingBracesBrackets": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "specialBeginEnd": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "afterHeading": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "filecontents": {
-            "description": "0/1, binary switch to mean *type* of code block does not have/has additional indentation",
-            "type": "integer",
-            "enum": [0,1]
-          }
-        }
-      },
-      "indentRulesGlobal": {
-        "description": "*types* of code blocks indentation rules",
-        "type": "object",
-        "properties": {
-          "environments": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "commands": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "optionalArguments": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "mandatoryArguments": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "ifElseFi": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "items": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "keyEqualsValuesBracesBrackets": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "namedGroupingBracesBrackets": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "UnNamedGroupingBracesBrackets": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "specialBeginEnd": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "afterHeading": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          },
-          "filecontents": {
-            "description": "indentation rules per *type* of code block",
-            "type": ["integer","string"]
-          }
-        }
-      },
-      "commandCodeBlocks": {
-        "description": "command code blocks need some particular attention",
-        "type": "object",
-        "properties": {
-          "roundParenthesesAllowed": {
-            "description": "0/1, binary switch to not allow/allow round parenthesis () between arguments",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "stringsAllowedBetweenArguments": {
-            "description": "strings allowed between arguments",
-            "type": ["integer","array"],
-            "items": {
-              "type": ["string" ,"object"],
-              "description": "entry to be allowed between arguments"
-            }
-          },
-          "commandNameSpecial": {
-            "description": "there are some particular commands that need individual attention",
-            "type": ["integer","array"],
-            "items": {
-              "type": ["string" ,"object"],
-              "description": "entry for particular attention"
+      }
+    },
+    "fineTuning": {
+      "description": "fine tuning, proceed with caution!",
+      "type": "object",
+      "properties": {
+        "environments": {
+          "description": "fine tuning, for environments",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "regular expression for environment name",
+              "type": "string"
             }
           }
-        }
-      },
-      "dos2unixlinebreaks": {
-        "description": "0/1, binary switch to convert dos line breaks to unix line breaks",
-        "type": "integer",
-        "enum": [0,1]
-      },
-      "modifyLineBreaks": {
-        "description": "when -m switch active, latexindent.pl has ability to modify line breaks",
-        "type": "object",
-        "properties": {
-          "preserveBlankLines": {
-            "description": "0/1, binary switch to preserve blank lines or not",
-            "type": "integer",
-            "enum": [0,1]
-          },
-          "condenseMultipleBlankLinesInto": {
-            "description": "condense multiple blank lines into this many blank lines",
-            "type": "integer",
-            "minimum": 0
-          },
-          "oneSentencePerLine": {
-            "properties": {
-              "manipulateSentences": {
-                "description": "0/1, binary switch to perform one sentence per line routine or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "removeSentenceLineBreaks": {
-                "description": "0/1, binary switch to remove line breaks from within sentences or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "textWrapSentences": {
-                "description": "0/1, binary switch to text wrap sentences or not",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "sentenceIndent": {
-                "description": "horizontal space representing indentation within sentences",
-                "type": "string"
-              },
-              "sentencesFollow":{
-                "description": "things that sentences can follow",
-                "properties": {
-                  "par": {
-                    "description": "0/1, binary switch to determine if sentences can follow \\par or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "blankLine": {
-                    "description": "0/1, binary switch to determine if sentences can follow blank lines or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "fullStop": {
-                    "description": "0/1, binary switch to determine if sentences can follow blank lines or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "exclamationMark": {
-                    "description": "0/1, binary switch to determine if sentences can follow ! or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "questionMark": {
-                    "description": "0/1, binary switch to determine if sentences can follow ? or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "rightBrace": {
-                    "description": "0/1, binary switch to determine if sentences can follow } or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "commentOnPreviousLine": {
-                    "description": "0/1, binary switch to determine if sentences can follow % on previous line or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "other": {
-                    "description": "regular expression detailing what else sentences can follow",
-                    "type": ["integer","string"]
-                  }
-                }
-              },
-              "sentencesBeginWith":{
-                "description": "things that sentences can begin with",
-                "properties": {
-                  "A-Z": {
-                    "description": "0/1, binary switch to determine if sentences can begin upper case letters or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "a-z": {
-                    "description": "0/1, binary switch to determine if sentences can begin lower case letters or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "other": {
-                    "description": "regular expression detailing what else sentences can begin with",
-                    "type": ["integer","string"]
-                  }
-                }
-              },
-              "sentencesEndWith":{
-                "description": "things that sentences can end with",
-                "properties": {
-                  "basicFullStop": {
-                    "description": "0/1, binary switch to determine if sentences can end with basic full stop (period) or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "betterFullStop": {
-                    "description": "0/1, binary switch to determine if sentences can end with better full stop (period) or not (RECOMMENDED)",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "exclamationMark": {
-                    "description": "0/1, binary switch to determine if sentences can end with ! or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "questionMark": {
-                    "description": "0/1, binary switch to determine if sentences can end with ? or not",
-                    "type": "integer",
-                    "enum": [0,1]
-                  },
-                  "other": {
-                    "description": "regular expression detailing what else sentences can end with",
-                    "type": ["integer","string"]
-                  }
-                }
-              }
-            }
-          },
-          "textWrapOptions":{
-            "description": "options for the text wrap routine",
-            "type":"object",
-            "properties": {
-              "columns": {
-                "description": "integer > 0 sets the number of columns for the text wrap routine, or if -1 then text wrap blocks simply have line breaks removed",
-                "type": "integer",
-                "minimum": -1
-              },
-              "huge": {
-                "description": "WARNING: I don't recommend changing this from overflow",
-                "type": "string"
-              },
-              "separator": {
-                "description": "can be any string, but I haven't found a good use case to change this from ''",
-                "type": "string"
-              },
-              "multipleSpacesToSingle": {
-                "description": "0/1, binary switch to determine if text wrap should convert multiple spaces to single space",
-                "type": "integer",
-                "enum": [0,1]
-              },
-              "blocksFollow": {
-                "description": "field containing switches that text wrap blocks *follow*",
-                "type": ["object"]
-              },
-              "blocksBeginWith": {
-                "description": "field containing switches that text wrap blocks *begin with*",
-                "type": ["object"]
-              },
-              "blocksEndBefore": {
-                "description": "field containing switches that text wrap blocks *end before*",
-                "type": ["object"]
-              }
-            }
-          },
-          "environments": {
-                "description": "poly-switches for environments (GLOBAL)",
-                "type":"object",
-                "properties": {
-                  "BeginStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of environments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "BodyStartsOnOwnLine":{
-                    "description": "poly-switch for line break before body of environments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "EndStartsOnOwnLine":{
-                    "description": "poly-switch for line break before end of environments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "EndFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of environments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                },
-                "patternProperties": {
-                  ".*": {
-                    "description": "poly-switches for environments (PER-NAME)",
-                    "type": "object",
-                    "properties": {
-                      "BeginStartsOnOwnLine":{
-                      "description": "poly-switch for line break before beginning of environments (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "BodyStartsOnOwnLine":{
-                      "description": "poly-switch for line break before body of environments (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "EndStartsOnOwnLine":{
-                      "description": "poly-switch for line break before end of environments (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "EndFinishesWithLineBreak":{
-                      "description": "poly-switch for line break after end of environments (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    }
-                  }
-                 }
-               }
-          },
-          "specialBeginEnd": {
-                "description": "poly-switches for specialBeginEnd (GLOBAL)",
-                "type":"object",
-                "properties": {
-                  "SpecialBeginStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of specialBeginEnd (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "SpecialBodyStartsOnOwnLine":{
-                    "description": "poly-switch for line break before body of specialBeginEnd (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "SpecialEndStartsOnOwnLine":{
-                    "description": "poly-switch for line break before end of specialBeginEnd (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "SpecialEndFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of specialBeginEnd (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                },
-                "patternProperties": {
-                  ".*": {
-                    "description": "poly-switches for specialBeginEnd (PER-NAME)",
-                    "type": "object",
-                    "properties": {
-                      "SpecialBeginStartsOnOwnLine":{
-                      "description": "poly-switch for line break before beginning of specialBeginEnd (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "SpecialBodyStartsOnOwnLine":{
-                      "description": "poly-switch for line break before body of specialBeginEnd (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "SpecialEndStartsOnOwnLine":{
-                      "description": "poly-switch for line break before end of specialBeginEnd (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    },
-                    "SpecialEndFinishesWithLineBreak":{
-                      "description": "poly-switch for line break after end of specialBeginEnd (PER-NAME)",
-                      "type": "integer",
-                      "enum": [-1,0,1,2,3,4]
-                    }
-                  }
-                }
-              }
-          },
-          "keyEqualsValuesBracesBrackets": {
-            "description": "poly-switches for key equals value (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "KeyStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of key equals value (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "EqualsStartsOnOwnLine":{
-                "description": "poly-switch for line break before = of key equals value (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "EqualsFinishesWithLineBreak":{
-                "description": "poly-switch for line break after = of key equals value (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for key equals value (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "KeyStartsOnOwnLine":{
-                  "description": "poly-switch for line break before beginning of key equals value (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "EqualsStartsOnOwnLine":{
-                  "description": "poly-switch for line break before = of key equals value (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "EqualsFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after = of key equals value (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                }
-               }
-              }
-            }
-          },
-          "ifElseFi": {
-            "description": "poly-switches for ifElseFi (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "IfStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "BodyStartsOnOwnLine":{
-                "description": "poly-switch for line break before body of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "OrStartsOnOwnLine":{
-                "description": "poly-switch for line break before or statement of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "OrFinishesWithLineBreak":{
-                "description": "poly-switch for line break after or statement of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "ElseStartsOnOwnLine":{
-                "description": "poly-switch for line break before else statement of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "ElseFinishesWithLineBreak":{
-                "description": "poly-switch for line break after else statement of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "FiStartsOnOwnLine":{
-                "description": "poly-switch for line break before end of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "FiFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of ifElseFi (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for ifElseFi (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "IfStartsOnOwnLine":{
-                  "description": "poly-switch for line break before beginning of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "BodyStartsOnOwnLine":{
-                  "description": "poly-switch for line break before body of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "OrStartsOnOwnLine":{
-                  "description": "poly-switch for line break before or statement of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "OrFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after or statement of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "ElseStartsOnOwnLine":{
-                  "description": "poly-switch for line break before else statement of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "ElseFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after else statement of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "FiStartsOnOwnLine":{
-                  "description": "poly-switch for line break before end of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "FiFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after end of ifElseFi (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                }
-               }
-              }
-            }
-          },
-          "commands": {
-            "description": "poly-switches for commands (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "CommandStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of commands (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "CommandNameFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of commands (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for commands (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "CommandStartsOnOwnLine":{
-                  "description": "poly-switch for line break before beginning of commands (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "CommandNameFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after end of commands (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                }
-               }
-              }
-            }
-          },
-          "verbatim": {
-            "description": "poly-switches for verbatim (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "VerbatimBeginStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of verbatim (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "VerbatimEndFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of verbatim (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for verbatim (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "VerbatimBeginStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of verbatim (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "VerbatimEndFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of verbatim (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                }
-              }
-            }
-          },
-          "namedGroupingBracesBrackets": {
-            "description": "poly-switches for namedGroupingBracesBrackets (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "NameStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of namedGroupingBracesBrackets (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "NameFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of namedGroupingBracesBrackets (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for commands (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "NameStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of namedGroupingBracesBrackets (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "NameFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of namedGroupingBracesBrackets (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                }
-              }
-            }
-          },
-          "items": {
-            "description": "poly-switches for items (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "ItemStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of items (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "ItemFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of items (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for items (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "ItemStartsOnOwnLine":{
-                  "description": "poly-switch for line break before beginning of items (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "ItemFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after end of items (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                }
-               }
-              }
-            }
-          },
-          "optionalArguments": {
-            "description": "poly-switches for optional arguments (GLOBAL)",
-            "type":"object",
-            "properties": {
-              "LSqBStartsOnOwnLine":{
-                "description": "poly-switch for line break before beginning of optional arguments (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "OptArgBodyStartsOnOwnLine":{
-                "description": "poly-switch for line break before body of optional arguments (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "RSqBStartsOnOwnLine":{
-                "description": "poly-switch for line break before end of optional arguments (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              },
-              "RSqBFinishesWithLineBreak":{
-                "description": "poly-switch for line break after end of optional arguments (GLOBAL)",
-                "type": "integer",
-                "enum": [-1,0,1,2,3,4]
-              }
-            },
-            "patternProperties": {
-              ".*": {
-                "description": "poly-switches for optional arguments (PER-NAME)",
-                "type": "object",
-                "properties": {
-                  "LSqBStartsOnOwnLine":{
-                  "description": "poly-switch for line break before beginning of optional arguments (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "OptArgBodyStartsOnOwnLine":{
-                  "description": "poly-switch for line break before body of optional arguments (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "RSqBStartsOnOwnLine":{
-                  "description": "poly-switch for line break before end of optional arguments (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                },
-                "RSqBFinishesWithLineBreak":{
-                  "description": "poly-switch for line break after end of optional arguments (PER-NAME)",
-                  "type": "integer",
-                  "enum": [-1,0,1,2,3,4]
-                }
-               }
-              }
-            }
-          },
-          "mandatoryArguments": {
-                "description": "poly-switches for mandatory arguments (GLOBAL)",
-                "type":"object",
-                "properties": {
-                  "LCuBStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of mandatory arguments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "MandArgBodyStartsOnOwnLine":{
-                    "description": "poly-switch for line break before body of mandatory arguments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "RCuBStartsOnOwnLine":{
-                    "description": "poly-switch for line break before end of mandatory arguments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "RCuBFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of mandatory arguments (GLOBAL)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                },
-                "patternProperties": {
-                  ".*": {
-                    "description": "poly-switches for mandatory arguments (PER-NAME)",
-                    "type": "object",
-                  "properties": {
-                    "LCuBStartsOnOwnLine":{
-                    "description": "poly-switch for line break before beginning of mandatory arguments (PER-NAME)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "MandArgBodyStartsOnOwnLine":{
-                    "description": "poly-switch for line break before body of mandatory arguments (PER-NAME)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "RCuBStartsOnOwnLine":{
-                    "description": "poly-switch for line break before end of mandatory arguments (PER-NAME)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  },
-                  "RCuBFinishesWithLineBreak":{
-                    "description": "poly-switch for line break after end of mandatory arguments (PER-NAME)",
-                    "type": "integer",
-                    "enum": [-1,0,1,2,3,4]
-                  }
-                }
-              }
+        },
+        "ifElseFi": {
+          "description": "fine tuning, for ifElseFi",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "regular expression for ifElseFi name",
+              "type": "string"
             }
           }
-        }
-      },
-      "replacements":{
-        "description": "replacements to be made; requires -r, -rr or -rv switch",
-        "type": "array"
-      },
-      "fineTuning":{
-        "description": "fine tuning, proceed with caution!",
-        "type":"object",
-        "properties": {
-          "environments":{
-            "description": "fine tuning, for environments",
-            "type":"object",
-            "properties": {
-              "name":{
-                "description": "regular expression for environment name",
-                "type": "string"
-              }
+        },
+        "commands": {
+          "description": "fine tuning, for commands",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "regular expression for commands name",
+              "type": "string"
             }
-          },
-          "ifElseFi":{
-            "description": "fine tuning, for ifElseFi",
-            "type":"object",
-            "properties": {
-              "name":{
-                "description": "regular expression for ifElseFi name",
-                "type": "string"
-              }
+          }
+        },
+        "items": {
+          "description": "fine tuning, for items",
+          "type": "object",
+          "properties": {
+            "canBeFollowedBy": {
+              "description": "regular expression for what can follow items",
+              "type": "string"
             }
-          },
-          "commands":{
-            "description": "fine tuning, for commands",
-            "type":"object",
-            "properties": {
-              "name":{
-                "description": "regular expression for commands name",
-                "type": "string"
-              }
+          }
+        },
+        "keyEqualsValuesBracesBrackets": {
+          "description": "fine tuning, for keyEqualsValuesBracesBrackets",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "regular expression for key = value name",
+              "type": "string"
+            },
+            "follow": {
+              "description": "regular expression for what key = values follow",
+              "type": "string"
             }
-          },
-          "items":{
-            "description": "fine tuning, for items",
-            "type":"object",
-            "properties": {
-              "canBeFollowedBy":{
-                "description": "regular expression for what can follow items",
-                "type": "string"
-              }
+          }
+        },
+        "namedGroupingBracesBrackets": {
+          "description": "fine tuning, for namedGroupingBracesBrackets",
+          "type": "object",
+          "properties": {
+            "name": {
+              "description": "regular expression for named grouping braces name",
+              "type": "string"
+            },
+            "follow": {
+              "description": "regular expression for what named grouping braces follow",
+              "type": "string"
             }
-          },
-          "keyEqualsValuesBracesBrackets":{
-            "description": "fine tuning, for keyEqualsValuesBracesBrackets",
-            "type":"object",
-            "properties": {
-              "name":{
-                "description": "regular expression for key = value name",
-                "type": "string"
-              },
-              "follow":{
-                "description": "regular expression for what key = values follow",
-                "type": "string"
-              }
+          }
+        },
+        "UnNamedGroupingBracesBrackets": {
+          "description": "fine tuning, for UnNamedGroupingBracesBrackets",
+          "type": "object",
+          "properties": {
+            "follow": {
+              "description": "regular expression for what UN named grouping braces follow",
+              "type": "string"
             }
-          },
-          "namedGroupingBracesBrackets":{
-            "description": "fine tuning, for namedGroupingBracesBrackets",
-            "type":"object",
-            "properties": {
-              "name":{
-                "description": "regular expression for named grouping braces name",
-                "type": "string"
-              },
-              "follow":{
-                "description": "regular expression for what named grouping braces follow",
-                "type": "string"
-              }
+          }
+        },
+        "arguments": {
+          "description": "fine tuning, for arguments",
+          "type": "object",
+          "properties": {
+            "before": {
+              "description": "regular expression for what can come BEFORE arguments",
+              "type": "string"
+            },
+            "between": {
+              "description": "regular expression for what can come BETWEEN arguments",
+              "type": "string"
             }
-          },
-          "UnNamedGroupingBracesBrackets":{
-            "description": "fine tuning, for UnNamedGroupingBracesBrackets",
-            "type":"object",
-            "properties": {
-              "follow":{
-                "description": "regular expression for what UN named grouping braces follow",
-                "type": "string"
-              }
+          }
+        },
+        "trailingComments": {
+          "description": "fine tuning, for trailing comments",
+          "type": "object",
+          "properties": {
+            "notPreceededBy": {
+              "description": "regular expression for what can NOT come before %, for example \\%",
+              "type": "string"
+            },
+            "afterComment": {
+              "description": "regular expression for what can come after %",
+              "type": "string"
             }
-          },
-          "arguments":{
-            "description": "fine tuning, for arguments",
-            "type":"object",
-            "properties": {
-              "before":{
-                "description": "regular expression for what can come BEFORE arguments",
-                "type": "string"
-              },
-              "between":{
-                "description": "regular expression for what can come BETWEEN arguments",
-                "type": "string"
-              }
-            }
-          },
-          "trailingComments":{
-            "description": "fine tuning, for trailing comments",
-            "type":"object",
-            "properties": {
-              "notPreceededBy":{
-                "description": "regular expression for what can NOT come before %, for example \\%",
-                "type": "string"
-              }
-            }
-          },
-          "modifyLineBreaks":{
-            "description": "fine tuning for some of the -m switch based features",
-            "type":"object",
-            "properties": {
-              "betterFullStop":{
-                "description": "regular expression for the 'better full stop' in the one-sentence-per-line routine",
-                "type": "string"
-              },
-              "doubleBackSlash":{
-                "description": "regular expression for the double back slash used in the DBS poly-switches",
-                "type": "string"
-              },
-              "comma":{
-                "description": "regular expression for the comma used in the comma-based poly-switches",
-                "type": "string"
-              }
+          }
+        },
+        "modifyLineBreaks": {
+          "description": "fine tuning for some of the -m switch based features",
+          "type": "object",
+          "properties": {
+            "betterFullStop": {
+              "description": "regular expression for the 'better full stop' in the one-sentence-per-line routine",
+              "type": "string"
+            },
+            "doubleBackSlash": {
+              "description": "regular expression for the double back slash used in the DBS poly-switches",
+              "type": "string"
+            },
+            "comma": {
+              "description": "regular expression for the comma used in the comma-based poly-switches",
+              "type": "string"
             }
           }
         }
       }
     }
   }
+}
