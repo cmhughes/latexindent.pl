@@ -92,7 +92,7 @@ logFilePreferences:
   showAmalgamatedSettings: 0
   showDecorationStartCodeBlockTrace: 0
   showDecorationFinishCodeBlockTrace: 0
-  endLogFileWith: "--------------"
+  endLogFileWith: '--------------'
   showGitHubInfoFooter: 1
   Dumper:
     Terse: 1
@@ -263,7 +263,7 @@ specialBeginEnd:
     lookForThis: 1
   inlineMath:
     begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$
-    body: "[^$]*?"                # anything *except* $
+    body: [^$]*?                  # anything *except* $
     end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$
     lookForThis: 1
   displayMathTeX:
@@ -628,18 +628,18 @@ replacements:
 # is central to latexindent.pl
 fineTuning:
   environments:
-    name: '[a-zA-Z@\*0-9_\\]+'
+    name: [a-zA-Z@\*0-9_\\]+
   ifElseFi:
     name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?
   commands:
-    name: '[+a-zA-Z@\*0-9_\:]+?'
+    name: [+a-zA-Z@\*0-9_\:]+?
   items:
     canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
   keyEqualsValuesBracesBrackets:
-    name: '[a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?'
+    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?
     follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)
   namedGroupingBracesBrackets:
-    name: '[0-9\.a-zA-Z@\*><]+?'
+    name: [0-9\.a-zA-Z@\*><]+?
     follow: \h|\R|\{|\[|\$|\)|\(
   UnNamedGroupingBracesBrackets:
     follow: \{|\[|,|&|\)|\(|\$
@@ -651,7 +651,7 @@ fineTuning:
     afterComment: .*?
   modifyLineBreaks:
     doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?
-    comma: ","
+    comma: ','
     betterFullStop: |-
       (?x)                                # ignore spaces in the below
       (?:                                 #
