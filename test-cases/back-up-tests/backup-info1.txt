@@ -1,0 +1,3 @@
+       ./myfile.txt0 already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)
+       ./myfile.txt1 already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)
+       maxNumberOfBackUps reached (2, see maxNumberOfBackUps)
