@@ -14,6 +14,10 @@ cp two.log backup-info2.txt
 perl -p0i -e 's/.*?(Backup\sprocedure)/$1/s' backup-info2.txt
 perl -p0i -e 's/INFO:.*//s' backup-info2.txt
 
+latexindent.pl -s -wd -l backup2.yaml -g three.log myfile
+cp three.log backup-info3.txt
+perl -p0i -e 's/.*?(INFO:\s*\-wd)/$1/s' backup-info3.txt
+
 set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
