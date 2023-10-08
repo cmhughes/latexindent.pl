@@ -28,7 +28,7 @@ jobs:
       - name: load the "base actions/checkout" so as to access latexindent.pl
         uses: actions/checkout@v4
       - name: installing texlive full
-        uses: xu-cheng/texlive-action/full@v1
+        uses: xu-cheng/texlive-action/full@v2
         with:
           run: |
             github_sha_short=$(echo $GITHUB_SHA | cut -c1-7)
