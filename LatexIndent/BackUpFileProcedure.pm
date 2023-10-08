@@ -100,7 +100,7 @@ sub create_back_up_file {
                 $logger->info("cycleThroughBackUps detected (see cycleThroughBackUps)");
                 my $oldBackupFile;
                 my $newBackupFile;
-                for ( my $i = 1; $i <= $maxNumberOfBackUps; $i++ ) {
+                for ( my $i = 1; $i < $maxNumberOfBackUps; $i++ ) {
                     $oldBackupFile = $backupFileNoExt . $backupExtension . $i;
                     $newBackupFile = $backupFileNoExt . $backupExtension . ( $i - 1 );
 

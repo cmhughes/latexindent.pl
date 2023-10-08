@@ -1,0 +1,7 @@
+INFO:  -wd switch active
+       Original body matches indented body, NOT overwriting, no backup files created
+INFO:  Output routine:
+       Not outputting to file; see -w and -o switches for more options.
+       --------------
+INFO:  Please direct all communication/issues to:
+        https://github.com/cmhughes/latexindent.pl
