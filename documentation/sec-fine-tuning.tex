@@ -365,3 +365,36 @@ latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
  the \texttt{end} part. The trailing comments \texttt{123} and \texttt{456} are still
  treated as trailing comments.
  \end{example}
+
+ \begin{example}
+     We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
+     environments. 
+
+     We begin with the file in \cref{lst:finetuning6}.\announce{new}{fineTuning environments}
+
+ \cmhlistingsfromfile*{demonstrations/finetuning6.tex}{\texttt{finetuning6.tex}}{lst:finetuning6}
+
+ Using the settings in \cref{lst:fine-tuning4} and running the command
+
+ \begin{commandshell}
+latexindent.pl finetuning6.tex -m -l=fine-tuning4.yaml
+\end{commandshell}
+
+ gives the output in \cref{lst:finetuning6-mod1}.
+
+ \begin{cmhtcbraster}[raster column skip=.01\linewidth,
+   raster left skip=-3.5cm,
+   raster force size=false,
+   raster column 1/.style={add to width=-.1\textwidth},
+   raster column 2/.style={add to width=-.3\textwidth},
+  ]
+  \cmhlistingsfromfile*{demonstrations/finetuning6-mod1.tex}{\texttt{finetuning6-mod1.tex}}{lst:finetuning6-mod1}
+  \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning4.yaml}[MLB-TCB]{\texttt{fine-tuning4.yaml}}{lst:fine-tuning4}
+ \end{cmhtcbraster}
+
+ By using the settings in \cref{lst:fine-tuning4} it means that the default poly-switch location of \texttt{BodyStartsOnOwnLine} 
+ for environments (denoted $\BodyStartsOnOwnLine$ in \cref{tab:poly-switch-mapping}) has been overwritten so that it is \emph{after} the \texttt{label} command.
+
+ Referencing \cref{lst:fine-tuning4}, unless both \texttt{begin} and \texttt{end} are specified, then the default value of \texttt{name} will 
+ be used.
+ \end{example}

@@ -113,6 +113,8 @@ latexindent.pl -s issue-256.tex -o +-mod1
 latexindent.pl -s -y="dos2unixlinebreaks:1" issue-256.tex -o +-mod2
 
 latexindent.pl -s -l issue-488.yaml -r -m issue-488.tex -o=+-mod1
+latexindent.pl -s -l issue-488a.yaml -m issue-488a.tex -o=+-mod1
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
