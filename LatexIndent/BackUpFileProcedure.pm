@@ -26,14 +26,14 @@ use Exporter qw/import/;
 use Encode   qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
-# copy main file to a back up in the case of the overwrite switch being active
+# copy main file to a backup in the case of the overwrite switch being active
 
 sub create_back_up_file {
     my $self = shift;
 
     return unless ( ${$self}{overwrite} );
 
-    # if we want to over write the current file create a backup first
+    # if we want to overwrite the current file create a backup first
     $logger->info("*Backup procedure (-w flag active):");
 
     my $fileName = decode( "utf-8", ${$self}{fileName} );
@@ -46,10 +46,10 @@ sub create_back_up_file {
         = sort { $fileExtensionPreference{$a} <=> $fileExtensionPreference{$b} } keys(%fileExtensionPreference);
 
     # backup file name is the base name
-    my $backupFile = basename( ${$self}{fileName}, @fileExtensions );
+    my $backupFileNoExt = basename( ${$self}{fileName}, @fileExtensions );
 
     # add the user's backup directory to the backup path
-    $backupFile = decode( "utf-8", "${$self}{cruftDirectory}/$backupFile" );
+    $backupFileNoExt = decode( "utf-8", "${$self}{cruftDirectory}/$backupFileNoExt" );
 
     # local variables, determined from the YAML settings
     my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};
@@ -57,99 +57,72 @@ sub create_back_up_file {
     my $cycleThroughBackUps = $mainSettings{cycleThroughBackUps};
     my $backupExtension     = $mainSettings{backupExtension};
 
-    # if both ($onlyOneBackUp and $maxNumberOfBackUps) then we have
-    # a conflict- er on the side of caution and turn off onlyOneBackUp
-    if ( $onlyOneBackUp and $maxNumberOfBackUps > 1 ) {
-        $logger->warn("*onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps: $maxNumberOfBackUps");
-        $logger->warn("setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps back ups");
+    # if both onlyOneBackUp and maxNumberOfBackUps are set, then we have a conflict
+    # err on the side of caution and turn off onlyOneBackUp
+    if ( $onlyOneBackUp and $maxNumberOfBackUps >= 1 ) {
+        $logger->warn("*onlyOneBackUp=$onlyOneBackUp and maxNumberOfBackUps=$maxNumberOfBackUps");
+        $logger->warn("setting onlyOneBackUp=0 which will allow you to reach $maxNumberOfBackUps backups");
         $onlyOneBackUp = 0;
     }
 
-    # if the user has specified that $maxNumberOfBackUps = 1 then
-    # they only want one backup
-    if ( $maxNumberOfBackUps == 1 ) {
-        $onlyOneBackUp = 1;
-        $logger->info("you set maxNumberOfBackUps=1, so I'm setting onlyOneBackUp: 1 ");
-    }
-    elsif ( $maxNumberOfBackUps <= 0 and !$onlyOneBackUp ) {
-        $onlyOneBackUp      = 0;
-        $maxNumberOfBackUps = -1;
-    }
+    # determine the backup file name by adjoining backupExtension
+    my $backupFile = $backupFileNoExt . $backupExtension;
 
-    # if onlyOneBackUp is set, then the backup file will
-    # be overwritten each time
-    if ($onlyOneBackUp) {
-        $backupFile .= $backupExtension;
-        $logger->info("copying $fileName to $backupFile");
-        $logger->info("$backupFile was overwritten (see onlyOneBackUp)") if ( -e $backupFile );
-    }
-    else {
-        # start with a backup file .bak0 (or whatever $backupExtension is present)
+    # if onlyOneBackUp is *not* set, add a number to the backup file name
+    if ( !$onlyOneBackUp ) {
         my $backupCounter = 0;
-        $backupFile .= $backupExtension . $backupCounter;
 
-        # if it exists, then keep going: .bak0, .bak1, ...
-        while ( -e $backupFile or $maxNumberOfBackUps > 1 ) {
-            if ( $backupCounter == $maxNumberOfBackUps ) {
-                $logger->info("maxNumberOfBackUps reached ($maxNumberOfBackUps, see maxNumberOfBackUps)");
+        # if the file already exists, increment the number until either
+        # the file does not exist, or you reach the maximal number of backups
+        while ( -e ( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
+            $logger->info("$backupFile$backupCounter already exists, incrementing by 1 (see maxNumberOfBackUps)");
+            $backupCounter++;
+        }
+        $backupFile .= $backupCounter;
+    }
 
-                # some users may wish to cycle through back up files, e.g:
-                #    copy myfile.bak1 to myfile.bak0
-                #    copy myfile.bak2 to myfile.bak1
-                #    copy myfile.bak3 to myfile.bak2
-                #
-                #    current back up is stored in myfile.bak4
-                if ($cycleThroughBackUps) {
-                    $logger->info("cycleThroughBackUps detected (see cycleThroughBackUps) ");
-                    for ( my $i = 1; $i <= $maxNumberOfBackUps; $i++ ) {
+    # if the backup file already exists, output some information in the log file
+    # and proceed to cycleThroughBackUps if the latter is set
+    if ( -e $backupFile ) {
+        if ($onlyOneBackUp) {
+            $logger->info("$backupFile will be overwritten (see onlyOneBackUp)");
+        }
+        else {
+            $logger->info("$backupFile will be overwritten (maxNumberOfBackUps reached, see maxNumberOfBackUps)");
 
-                        # remove number from backUpFile
-                        my $oldBackupFile = decode( "utf-8", $backupFile );
-                        $oldBackupFile =~ s/$backupExtension.*/$backupExtension/;
-                        my $newBackupFile = decode( "utf-8", $oldBackupFile );
+            # some users may wish to cycle through backup files, e.g.:
+            #    copy myfile.bak1 to myfile.bak0
+            #    copy myfile.bak2 to myfile.bak1
+            #    copy myfile.bak3 to myfile.bak2
+            #
+            #    current backup is stored in myfile.bak4
+            if ($cycleThroughBackUps) {
+                $logger->info("cycleThroughBackUps detected (see cycleThroughBackUps)");
+                my $oldBackupFile;
+                my $newBackupFile;
+                for ( my $i = 1; $i < $maxNumberOfBackUps; $i++ ) {
+                    $oldBackupFile = $backupFileNoExt . $backupExtension . $i;
+                    $newBackupFile = $backupFileNoExt . $backupExtension . ( $i - 1 );
 
-                        # add numbers back on
-                        $oldBackupFile .= $i;
-                        $newBackupFile .= $i - 1;
-
-                        # check that the oldBackupFile exists
-                        if ( -e $oldBackupFile ) {
-                            $logger->info(" copying $oldBackupFile to $newBackupFile ");
-                            my $backUpFilePossible = 1;
-                            copy( $oldBackupFile, $newBackupFile ) or ( $backUpFilePossible = 0 );
-                            if ( $backUpFilePossible == 0 ) {
-                                $logger->fatal(
-                                    "*Could not write to backup file $backupFile. Please check permissions. Exiting.");
-                                $logger->fatal("Exiting, no indentation done.");
-                                $self->output_logfile();
-                                exit(5);
-                            }
+                    # check that the oldBackupFile exists
+                    if ( -e $oldBackupFile ) {
+                        $logger->info("Copying $oldBackupFile to $newBackupFile...");
+                        if ( !( copy( $oldBackupFile, $newBackupFile ) ) ) {
+                            $logger->fatal("*Could not write to backup file $newBackupFile. Please check permissions.");
+                            $logger->fatal("Exiting, no indentation done.");
+                            $self->output_logfile();
+                            exit(5);
                         }
                     }
                 }
-
-                # rest maxNumberOfBackUps
-                $maxNumberOfBackUps = 1;
-                last;    # break out of the loop
             }
-            elsif ( !( -e $backupFile ) ) {
-                $maxNumberOfBackUps = 1;
-                last;    # break out of the loop
-            }
-            $logger->info(
-                "$backupFile already exists, incrementing by 1... (see maxNumberOfBackUps and onlyOneBackUp)");
-            $backupCounter++;
-            $backupFile =~ s/$backupExtension.*/$backupExtension$backupCounter/;
         }
-        $logger->info("copying $fileName to $backupFile");
     }
 
     # output these lines to the log file
-    $logger->info("Backup file: $backupFile");
+    $logger->info("Backing up $fileName to $backupFile...");
     $logger->info("$fileName will be overwritten after indentation");
-    my $backUpFilePossible = 1;
-    copy( $fileName, $backupFile ) or ( $backUpFilePossible = 0 );
-    if ( $backUpFilePossible == 0 ) {
+    if ( !( copy( $fileName, $backupFile ) ) ) {
         $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
         $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();
@@ -162,7 +135,7 @@ sub check_if_different {
 
     if ( ${$self}{originalBody} eq ${$self}{body} ) {
         $logger->info("*-wd switch active");
-        $logger->info("Original body matches indented body, NOT overwriting, no back up files created");
+        $logger->info("Original body matches indented body, NOT overwriting, no backup files created");
         return;
     }
 
@@ -173,4 +146,5 @@ sub check_if_different {
     ${$self}{overwrite} = 1;
     $self->create_back_up_file;
 }
+
 1;

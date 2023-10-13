@@ -38,7 +38,32 @@ sub construct_environments_regexp {
 
     # read from fine tuning
     my $environmentNameRegExp = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
-    $environmentRegExp = qr/
+
+    if (    defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $environmentRegExp = qr/
+                (
+                     ${${$mainSettings{fineTuning}}{environments}}{begin} 
+                           (\R*)?                   # possible line breaks (into $3)
+                )                                   # begin statement captured into $1
+                (
+                    (?:                             # cluster-only (), don't capture 
+                        (?!                         # don't include \begin in the body
+                            (?:\\begin\{)           # cluster-only (), don't capture
+                        ).                          # any character, but not \\begin
+                    )*?                             # non-greedy
+                            (\R*)?                  # possible line breaks (into $5)
+                )                                   # environment body captured into $4
+                (
+                    ${${$mainSettings{fineTuning}}{environments}}{end} 
+                )                                   # captured into $6
+                (\h*)?                              # possibly followed by horizontal space
+                (\R)?                               # possibly followed by a line break 
+                /sx;
+    }
+    else {
+        $environmentRegExp = qr/
                 (
                     \\begin\{
                             (
@@ -62,6 +87,7 @@ sub construct_environments_regexp {
                 (\h*)?                              # possibly followed by horizontal space
                 (\R)?                               # possibly followed by a line break 
                 /sx;
+    }
 }
 
 sub find_environments {

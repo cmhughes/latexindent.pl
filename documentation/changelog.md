@@ -1,6 +1,11 @@
-<!-- announcement: minor bugfix for specialBeginEnd-->
+<!-- announcement: update to fineTuning, tweak to backup file routine-->
 
 # changelog.md
+
+## V3.23.3, October 13, 2023
+* update to `fineTuning`, see [issue-488](https://github.com/cmhughes/latexindent.pl/issues/488)
+* update to backup file routine, see [pull 484](https://github.com/cmhughes/latexindent.pl/pull/484), thanks to @arkandias
+
 ## V3.23.2, September 23, 2023
 bugfix for `specialBeginEnd', see [issue-477](https://github.com/cmhughes/latexindent.pl/issues/477)
 
