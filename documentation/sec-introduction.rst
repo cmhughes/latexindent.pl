@@ -310,7 +310,7 @@ You might also like to see https://stackoverflow.com/questions/19590042/error-ca
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 615. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 618. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 
@@ -335,9 +335,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks-demo
-	:lines: 501-503
+	:lines: 500-502
 	:linenos:
-	:lineno-start: 501
+	:lineno-start: 500
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -345,9 +345,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
 	:class: .replaceyaml
 	:caption: ``replacements`` 
 	:name: lst:replacements-demo
-	:lines: 621-629
+	:lines: 620-625
 	:linenos:
-	:lineno-start: 621
+	:lineno-start: 620
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 

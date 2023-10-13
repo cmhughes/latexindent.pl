@@ -1,0 +1,7 @@
+Backup procedure (-w flag active):
+       ./myfile.txtn0 already exists, incrementing by 1 (see maxNumberOfBackUps)
+       ./myfile.txtn1 will be overwritten (maxNumberOfBackUps reached, see maxNumberOfBackUps)
+       cycleThroughBackUps detected (see cycleThroughBackUps)
+       Copying ./myfile.txtn1 to ./myfile.txtn0...
+       Backing up myfile.tex to ./myfile.txtn1...
+       myfile.tex will be overwritten after indentation

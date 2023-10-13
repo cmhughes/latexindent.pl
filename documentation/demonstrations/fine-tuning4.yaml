@@ -1,0 +1,9 @@
+modifyLineBreaks:
+   environments:
+       BodyStartsOnOwnLine: 1
+       EndStartsOnOwnLine: 1
+
+fineTuning:
+  environments:
+    begin: \\begin\{([a-zA-Z@\*0-9_\\]+)\}\s*\\label\{[^}]+?\}
+    end: \\end\{\2\}
