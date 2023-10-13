@@ -367,10 +367,11 @@ latexindent.pl finetuning5.tex -l=fine-tuning3.yaml
  \end{example}
 
  \begin{example}
-     We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
-     environments. 
+ We can use the \texttt{fineTuning} settings to tweak how \texttt{latexindent.pl} finds
+ environments.
 
-     We begin with the file in \cref{lst:finetuning6}.\announce{new}{fineTuning environments}
+ We begin with the file in \cref{lst:finetuning6}.\announce*{2023-10-13}{fineTuning
+ environments}
 
  \cmhlistingsfromfile*{demonstrations/finetuning6.tex}{\texttt{finetuning6.tex}}{lst:finetuning6}
 
@@ -392,9 +393,11 @@ latexindent.pl finetuning6.tex -m -l=fine-tuning4.yaml
   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/fine-tuning4.yaml}[MLB-TCB]{\texttt{fine-tuning4.yaml}}{lst:fine-tuning4}
  \end{cmhtcbraster}
 
- By using the settings in \cref{lst:fine-tuning4} it means that the default poly-switch location of \texttt{BodyStartsOnOwnLine} 
- for environments (denoted $\BodyStartsOnOwnLine$ in \cref{tab:poly-switch-mapping}) has been overwritten so that it is \emph{after} the \texttt{label} command.
+ By using the settings in \cref{lst:fine-tuning4} it means that the default poly-switch
+ location of \texttt{BodyStartsOnOwnLine} for environments (denoted
+ $\BodyStartsOnOwnLine$ in \cref{tab:poly-switch-mapping}) has been overwritten so that
+ it is \emph{after} the \texttt{label} command.
 
- Referencing \cref{lst:fine-tuning4}, unless both \texttt{begin} and \texttt{end} are specified, then the default value of \texttt{name} will 
- be used.
+ Referencing \cref{lst:fine-tuning4}, unless both \texttt{begin} and \texttt{end} are
+ specified, then the default value of \texttt{name} will be used.
  \end{example}

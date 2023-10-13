@@ -46,9 +46,9 @@ This field is for those that would like to peek under the bonnet/hood and make s
 	:class: .baseyaml
 	:caption: ``fineTuning`` 
 	:name: lst:fineTuning
-	:lines: 632-687
+	:lines: 629-684
 	:linenos:
-	:lineno-start: 632
+	:lineno-start: 629
 
 The fields given in :numref:`lst:fineTuning` are all *regular expressions*. This manual is not intended to be a tutorial on regular expressions; you might like to read, for example, (Friedl, n.d.) for a detailed covering of the topic.
 
@@ -442,6 +442,41 @@ It is not obvious from :numref:`lst:fineTuning`, but each of the ``follow``, ``b
 		:name: lst:fine-tuning3
 	
 	The settings in :numref:`lst:fine-tuning3` detail that trailing comments can *not* be followed by a single space, and then the text ‘end’. This means that the ``specialBeginEnd`` routine will be able to find the pattern ``% end`` as the ``end`` part. The trailing comments ``123`` and ``456`` are still treated as trailing comments.
+
+
+.. proof:example::	
+	
+	We can use the ``fineTuning`` settings to tweak how ``latexindent.pl`` finds environments.
+	
+	We begin with the file in :numref:`lst:finetuning6`.
+	
+	.. literalinclude:: demonstrations/finetuning6.tex
+		:class: .tex
+		:caption: ``finetuning6.tex`` 
+		:name: lst:finetuning6
+	
+	Using the settings in :numref:`lst:fine-tuning4` and running the command
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl finetuning6.tex -m -l=fine-tuning4.yaml
+	
+	gives the output in :numref:`lst:finetuning6-mod1`.
+	
+	.. literalinclude:: demonstrations/finetuning6-mod1.tex
+		:class: .tex
+		:caption: ``finetuning6-mod1.tex`` 
+		:name: lst:finetuning6-mod1
+	
+	.. literalinclude:: demonstrations/fine-tuning4.yaml
+		:class: .mlbyaml
+		:caption: ``fine-tuning4.yaml`` 
+		:name: lst:fine-tuning4
+	
+	By using the settings in :numref:`lst:fine-tuning4` it means that the default poly-switch location of ``BodyStartsOnOwnLine`` for environments (denoted ♥ in :numref:`tab:poly-switch-mapping`) has been overwritten so that it is *after* the ``label`` command.
+	
+	Referencing :numref:`lst:fine-tuning4`, unless both ``begin`` and ``end`` are specified, then the default value of ``name`` will be used.
 
 
 .. container:: references hanging-indent
