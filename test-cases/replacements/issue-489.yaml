@@ -1,0 +1,13 @@
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 60
+
+replacements:
+  - 
+    when: before
+    substitution: |-
+      s/%\h*chktex\h*35//sg
+  - 
+    when: after
+    substitution: |-
+      s/(\$Q_\{min\}\$.*$)/$1 % chktex 35/mg
