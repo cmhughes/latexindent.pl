@@ -1,0 +1,7 @@
+defaultIndent: "    "
+indentRules:
+    item: ""
+
+modifyLineBreaks:
+    items:
+        ItemStartsOnOwnLine: 4
