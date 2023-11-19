@@ -202,7 +202,7 @@ jobs:
         run: |
           cpanm -f PAR::Packer
           cpanm YAML::Tiny
-          cpanm File::HomeDir
+          cpanm -f File::HomeDir
           cpanm Unicode::GCString
       - name: preparations for PAR packer
         run: |
