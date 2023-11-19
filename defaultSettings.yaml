@@ -137,6 +137,7 @@ lookForPreamble:
   .sty: 0
   .cls: 0
   .bib: 0
+  STDIN: 1
 
 # some preambles can contain \begin and \end statements
 # that are not in their 'standard environment block', for example,
