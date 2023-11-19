@@ -1,6 +1,8 @@
-<!-- announcement: update to fineTuning, tweak to backup file routine-->
+<!-- announcement: bugfix for STDIN when m switch active with preamble-->
 
 # changelog.md
+## V3.23.4, November 19, 2023
+bugfix for STDIN input with preamble and m switch, see [issue-493](https://github.com/cmhughes/latexindent.pl/issues/493)
 
 ## V3.23.3, October 13, 2023
 * update to `fineTuning`, see [issue-488](https://github.com/cmhughes/latexindent.pl/issues/488)

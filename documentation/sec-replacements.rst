@@ -37,9 +37,9 @@ The default value of the ``replacements`` field is shown in :numref:`lst:replace
 	:class: .replaceyaml
 	:caption: ``replacements`` 
 	:name: lst:replacements
-	:lines: 620-625
+	:lines: 621-626
 	:linenos:
-	:lineno-start: 620
+	:lineno-start: 621
 
 The first entry within the ``replacements`` field is ``amalgamate``, and is *optional*; by default it is set to 1, so that replacements will be amalgamated from each settings file that you specify. As you’ll see in the demonstrations that follow, there is no need to specify this field.
 

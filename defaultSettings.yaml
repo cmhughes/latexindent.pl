@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 3.23.3, 2023-10-13
+# latexindent.pl, version 3.23.4, 2023-11-19
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 #
@@ -137,6 +137,7 @@ lookForPreamble:
   .sty: 0
   .cls: 0
   .bib: 0
+  STDIN: 1
 
 # some preambles can contain \begin and \end statements
 # that are not in their 'standard environment block', for example,

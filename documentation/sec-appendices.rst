@@ -583,7 +583,7 @@ Once I have run the above, on subsequent logins I run
 
 .. code-block:: latex
    :caption: ``docker-install.sh`` 
-   :name: lst:docker-install
+   :name: lst:docker-install-subsequent
 
    newgrp docker
    docker run ghcr.io/cmhughes/latexindent.pl -h

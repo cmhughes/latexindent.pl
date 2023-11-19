@@ -20,7 +20,7 @@ my @namesAndOffsets = (
                         {name=>"noIndentBlock",numberOfLines=>2},
                         {name=>"removeTrailingWhitespace",numberOfLines=>2},
                         {name=>"fileContentsEnvironments",numberOfLines=>2},
-                        {name=>"lookForPreamble",numberOfLines=>4},
+                        {name=>"lookForPreamble",numberOfLines=>5},
                         {name=>"lookForAlignDelims",numberOfLines=>18},
                         {name=>"indentAfterItems",numberOfLines=>7},
                         {name=>"itemNames",numberOfLines=>2},

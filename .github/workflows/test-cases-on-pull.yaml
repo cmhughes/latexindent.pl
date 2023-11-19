@@ -38,9 +38,8 @@ jobs:
           fetch-depth: 0
       - name: Get changed files, latexindent.pl
         id: changed-files
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v40
         with:
-          use_fork_point: "true"
           files: |
             latexindent.pl
             defaultSettings.yaml
@@ -92,7 +91,7 @@ jobs:
           sed -i.bak "s/checkgitdiff//" test-cases.sh
           ./test-cases.sh -s
       - name: Check for changed files in test-cases
-        uses: tj-actions/changed-files@v39
+        uses: tj-actions/changed-files@v40
         id: changed-files
         with:
           files: |

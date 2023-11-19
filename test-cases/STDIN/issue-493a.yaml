@@ -1,0 +1,6 @@
+modifyLineBreaks:
+  optionalArguments:
+    RSqBFinishesWithLineBreak: 1
+
+lookForPreamble:
+  STDIN: 0

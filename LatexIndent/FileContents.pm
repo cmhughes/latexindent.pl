@@ -136,7 +136,10 @@ sub find_file_contents_environments_and_preamble {
     my $needToStorePreamble = 0;
 
     # try and find the preamble
-    if ( ${$self}{body} =~ m/$preambleRegExp/sx and ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} } ) {
+    my $lookForPreamble = ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} };
+    $lookForPreamble = 1 if ( ${$self}{fileName} eq "-" and ${ $mainSettings{lookForPreamble} }{STDIN} );
+
+    if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble ) {
 
         $logger->trace(
             "\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists")

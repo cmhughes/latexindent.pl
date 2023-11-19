@@ -90,5 +90,9 @@ latexindent.pl -s issue-307.tex -o=+-mod0
 
 # issue 467, comments following item
 latexindent.pl -s issue-467.tex -o +-mod1
+
+# issue 492
+latexindent.pl -s -m -l issue-492.yaml issue-492.tex -o +-mod1
+latexindent.pl -s -m -l issue-492a.yaml issue-492.tex -o +-mod2
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

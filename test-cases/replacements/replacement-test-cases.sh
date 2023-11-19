@@ -74,5 +74,7 @@ latexindent.pl -r test14.tex -l=replace26 -s -o=+-mod26
 # double comment condense
 latexindent.pl -s -r -l issue-464.yaml -m issue-464.tex -o=+-mod1
 
+latexindent.pl -s -l -m -r issue-489.tex -o=+-mod1
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
