@@ -137,7 +137,7 @@ sub find_file_contents_environments_and_preamble {
 
     # try and find the preamble
     my $lookForPreamble = ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} };
-    $lookForPreamble = 1 if (${$self}{fileName} eq "-" and ${ $mainSettings{lookForPreamble} }{ STDIN });
+    $lookForPreamble = 1 if ( ${$self}{fileName} eq "-" and ${ $mainSettings{lookForPreamble} }{STDIN} );
 
     if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble ) {
 
