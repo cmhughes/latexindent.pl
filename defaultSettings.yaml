@@ -315,7 +315,7 @@ specialBeginEnd:
       - \\ELSE
       - \\ELSIF\{[^}]+?\}
     end: \\ENDIF
-  specialBeforeCommand: 1  # search for these fields before searching for commands
+  specialBeforeCommand: 0  # Should search for these fields before searching for commands?
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

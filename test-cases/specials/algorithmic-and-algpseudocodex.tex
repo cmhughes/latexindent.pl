@@ -1,58 +1,57 @@
-% https://github.com/cmhughes/latexindent.pl/issues/427
 \begin{algorithm}[ht]
-    \caption{some caption.}
-    \begin{algorithmic}[1]
-        \Require{aaa}
-        \Ensure{bbb}
-        % for-loop
-        \For{$n = 1, \dots, 10$}
-            \State body
-        \EndFor
-        % nesting for-loop, algorithmic style (ALL-CAPS command)
-        \FOR{for 1}
-            \FOR{for 2}
-                \FOR{for 3}
-                    \STATE{some statement.}
-                \ENDFOR
-            \ENDFOR
-        \ENDFOR
-        % while-loop in if-statement
-        \If{$quality\ge 9$}
-            \State $a\gets perfect$
-        \ElsIf{$quality\ge 7$}
-            \State $a\gets good$
-        \ElsIf{$quality\ge 5$}
-            \State $a\gets medium$
-        \ElsIf{$quality\ge 3$}
-            \State $a\gets bad$
-        \Else
-            \While{$i\le n$}
-                \State $sum\gets sum+i$
-                \State $i\gets i+1$
-            \EndWhile
-        \EndIf
-        % nesting blocks
-        \ForAll{$n \in \{1, \dots, 10\}$}
-            \State body
-            \Loop
-                \State body
-            \EndLoop
-            \State $sum\gets 0$
-            \State $i\gets 1$
-            \Repeat
-                \State $sum\gets sum+i$
-                \State $i\gets i+1$
-            \Until{$i>n$}
-        \EndFor
-        % fuction block
-        \Function{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
-            \State $r\gets a\bmod b$
-            \While{$r\not=0$}\Comment{We have the answer if r is 0}
-                \State $a\gets b$
-                \State $b\gets r$
-                \State $r\gets a\bmod b$
-            \EndWhile
-            \State \textbf{return} $b$\Comment{The gcd is b}
-        \EndFunction
-    \end{algorithmic}
+\caption{some caption.}
+\begin{algorithmic}[1]
+\Require{aaa}
+\Ensure{bbb}
+% for-loop
+\For{$n = 1, \dots, 10$}
+\State body
+\EndFor
+% nesting for-loop, algorithmic style (ALL-CAPS command)
+\FOR{for 1}
+\FOR{for 2}
+\FOR{for 3}
+\STATE{some statement.}
+\ENDFOR
+\ENDFOR
+\ENDFOR
+% while-loop in if-statement
+\If{$quality\ge 9$}
+\State $a\gets perfect$
+\ElsIf{$quality\ge 7$}
+\State $a\gets good$
+\ElsIf{$quality\ge 5$}
+\State $a\gets medium$
+\ElsIf{$quality\ge 3$}
+\State $a\gets bad$
+\Else
+\While{$i\le n$}
+\State $sum\gets sum+i$
+\State $i\gets i+1$
+\EndWhile
+\EndIf
+% nesting blocks
+\ForAll{$n \in \{1, \dots, 10\}$}
+\State body
+\Loop
+\State body
+\EndLoop
+\State $sum\gets 0$
+\State $i\gets 1$
+\Repeat
+\State $sum\gets sum+i$
+\State $i\gets i+1$
+\Until{$i>n$}
+\EndFor
+% fuction block
+\Function{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+\State $r\gets a\bmod b$
+\While{$r\not=0$}\Comment{We have the answer if r is 0}
+\State $a\gets b$
+\State $b\gets r$
+\State $r\gets a\bmod b$
+\EndWhile
+\State \textbf{return} $b$\Comment{The gcd is b}
+\EndFunction
+\end{algorithmic}
 \end{algorithm}

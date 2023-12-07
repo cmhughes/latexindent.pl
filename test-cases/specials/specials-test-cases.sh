@@ -70,6 +70,9 @@ latexindent.pl -s algpseudocode-mk2.tex -o=+-mod-array -l=koppor2
 latexindent.pl -s algpseudocode.tex -o=+-mod3 -l=koppor3
 latexindent.pl -s algpseudocode.tex -o=+-mod4 -l=koppor4
 
+# new algorithms (see: https://github.com/cmhughes/latexindent.pl/issues/427)
+latexindent.pl -s algorithmic-and-algpseudocodex.tex -o algorithmic-and-algpseudocodex-default.tex
+
 # specialMiddle polyswitch
 [[ $loopmin -gt 10 ]] && loopmin=1
 [[ $loopmax -gt 10 ]] && loopmax=10
