@@ -1218,7 +1218,7 @@ latexindent.pl specialLR.tex -l=specialsLeftRight.yaml,specialBeforeCommand.yaml
  \end{itemize}
  \end{example}
 
- You can,optionally, specify \announce{2018-04-27}{update to specialBeginEnd} the
+ You can, optionally, specify \announce{2018-04-27}{update to specialBeginEnd} the
  \texttt{middle} field for anything that you specify in \texttt{specialBeginEnd}.
 
  \begin{example}
@@ -1258,6 +1258,29 @@ latexindent.pl special2.tex -l=middle1
         \texttt{Else} statement has been indented appropriately in
         \cref{lst:special2-mod2}.
  \end{itemize}
+ \end{example}
+
+ You may need these fields in your own YAML files (see \vref{sec:localsettings}), if you use popular algorithm packages such as algorithms, algorithm2e or algpseudocode, etc.
+
+ \begin{example}
+ For example, let’s consider the \texttt{.tex} file in \cref{lst:specialAlgo}.
+ \index{specialBeginEnd!middle} \index{specialBeginEnd!Algorithms example}
+
+ \cmhlistingsfromfile{demonstrations/specialAlgo.tex}{\texttt{specialAlgo.tex}}{lst:specialAlgo}
+
+ Upon saving the YAML settings in \cref{lst:algo-yaml} and running the command
+ \index{switches!-l demonstration}
+
+ \begin{commandshell}
+latexindent.pl specialAlgo.tex -l=algo
+ \end{commandshell}
+
+ then we obtain the output given in \cref{lst:specialAlgo-mod1}.
+
+ \begin{cmhtcbraster}
+  \cmhlistingsfromfile{demonstrations/specialAlgo-mod1.tex}{\texttt{specialAlgo.tex} using \cref{lst:algo-yaml}}{lst:specialAlgo-mod1}
+  \cmhlistingsfromfile[style=yaml-LST]{demonstrations/algo.yaml}[yaml-TCB]{\texttt{algo.yaml}}{lst:algo-yaml}
+ \end{cmhtcbraster}
  \end{example}
 
  You may \announce{2018-08-13}{specialBeginEnd verbatim} specify fields in
