@@ -1447,7 +1447,7 @@ There are examples in which it is advantageous to search for ``specialBeginEnd``
 	
 
 
-You can,optionally, specify the ``middle`` field for anything that you specify in ``specialBeginEnd``.
+You can, optionally, specify the ``middle`` field for anything that you specify in ``specialBeginEnd``.
 
 .. proof:example::	
 	
@@ -1501,6 +1501,44 @@ You can,optionally, specify the ``middle`` field for anything that you specify i
 	-  the ``Else`` statement has *not* been indented appropriately in :numref:`lst:special2-mod1` – read on!
 	
 	-  we have specified multiple settings for the ``middle`` field using the syntax demonstrated in :numref:`lst:middle1-yaml` so that the body of the ``Else`` statement has been indented appropriately in :numref:`lst:special2-mod2`.
+	
+
+
+You may need these fields in your own YAML files (see :numref:`sec:noadd-indent-rules`), if you use popular algorithm packages such as algorithms, algorithm2e or algpseudocode, etc.
+
+.. proof:example::	
+	
+	For example, let’s consider the ``.tex`` file in :numref:`lst:specialAlgo`.
+	
+	.. index:: specialBeginEnd;middle
+	
+	.. index:: specialBeginEnd;Algorithms example
+	
+	.. literalinclude:: demonstrations/specialAlgo.tex
+		:class: .tex
+		:caption: ``specialAlgo.tex`` 
+		:name: lst:specialAlgo
+	
+	Upon saving the YAML settings in :numref:`lst:algo-yaml` and running the command
+	
+	.. index:: switches;-l demonstration
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl specialAlgo.tex -l=algo
+	
+	then we obtain the output given in :numref:`lst:specialAlgo-mod1`.
+	
+	.. literalinclude:: demonstrations/specialAlgo-mod1.tex
+		:class: .tex
+		:caption: ``specialAlgo.tex`` using :numref:`lst:algo-yaml` 
+		:name: lst:specialAlgo-mod1
+	
+	.. literalinclude:: demonstrations/algo.yaml
+		:class: .baseyaml
+		:caption: ``algo.yaml`` 
+		:name: lst:algo-yaml
 	
 
 
