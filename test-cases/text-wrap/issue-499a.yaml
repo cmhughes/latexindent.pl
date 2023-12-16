@@ -1,0 +1,14 @@
+modifyLineBreaks:
+  textWrapOptions:
+      columns: 60
+      when: after
+      blocksFollow:
+        headings: 0                       # 0/1
+        other: \\\]|\\item(?:\h|\s*\[)|\\paragraph\{
+indentRules:
+  item: " "
+  paragraph: ""
+indentAfterItems:
+  document: 1
+itemNames:
+  paragraph: 1
