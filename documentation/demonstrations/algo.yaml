@@ -2,51 +2,40 @@ specialBeginEnd:
   ForStatement:
     begin: \\For\{[^}]+?\}
     end: \\EndFor
-    lookForThis: 1
   FORStatement:
     begin: \\FOR\{[^}]+?\}
     end: \\ENDFOR
-    lookForThis: 1
   WhileStatement:
     begin: \\While\{[^}]+?\}
     end: \\EndWhile
-    lookForThis: 1
   WHILEStatement:
     begin: \\WHILE\{[^}]+?\}
     end: \\ENDWHILE
-    lookForThis: 1
   ForAllStatement:
     begin: \\ForAll\{[^}]+?\}
     end: \\EndFor
-    lookForThis: 1
   LoopStatement:
     begin: \\Loop
     end: \\EndLoop
-    lookForThis: 1
   RepeatStatement:
     begin: \\Repeat
     end: \\Until\{[^}]+?\}
-    lookForThis: 1
   ProcedureStatement:
     begin: \\Procedure\{[^}]+?\}\{[^}]+?\}
     end: \\EndProcedure
-    lookForThis: 1
   FunctionStatement:
     begin: \\Function\{[^}]+?\}\{[^}]+?\}
     end: \\EndFunction
-    lookForThis: 1
   IfStatement:
     begin: \\If\{[^}]+?\}
     middle:
       - \\Else
       - \\ElsIf\{[^}]+?\}
     end: \\EndIf
-    lookForThis: 1
   IFStatement:
     begin: \\IF\{[^}]+?\}
     middle:
       - \\ELSE
       - \\ELSIF\{[^}]+?\}
     end: \\ENDIF
-    lookForThis: 1
   specialBeforeCommand: 1
