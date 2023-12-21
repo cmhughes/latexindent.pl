@@ -1,0 +1,4 @@
+replacements:
+  -
+   this: \cite
+   that: ref \cite
