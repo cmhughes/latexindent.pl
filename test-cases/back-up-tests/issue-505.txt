@@ -1,0 +1,14 @@
+INFO:  Backup procedure (-w flag active):
+       ./新建.bak will be overwritten (see onlyOneBackUp)
+       Backing up 新建.tex to ./新建.bak...
+       新建.tex will be overwritten after indentation
+INFO:  Phase 1: searching for objects
+       No objects found.
+INFO:  Phase 2: finding surrounding indentation
+INFO:  Phase 3: indenting objects
+INFO:  Phase 4: final indentation check
+INFO:  Output routine:
+       Overwriting file 新建.tex
+       --------------
+INFO:  Please direct all communication/issues to:
+        https://github.com/cmhughes/latexindent.pl
