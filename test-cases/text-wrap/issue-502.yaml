@@ -1,0 +1,11 @@
+defaultIndent: "    "
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 60
+    when: "after"
+    blocksFollow:
+      other: |
+        (?x)
+        \\begin\{myenv\}
+        |
+        \\end\{myenv\}
