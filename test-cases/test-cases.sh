@@ -126,7 +126,7 @@ dirExec=(
   "line-switch-test-cases;line-switch-test-cases.sh"
   "batch-tests;batch-tests.sh"
   "demonstrations;documentation-test-cases.sh"
-  "documentation;latex-indent.sh"
+  "documentation;doc-indent.sh"
   ) 
 
 
