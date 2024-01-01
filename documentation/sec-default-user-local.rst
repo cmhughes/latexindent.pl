@@ -1504,7 +1504,7 @@ You can, optionally, specify the ``middle`` field for anything that you specify 
 	
 
 
-You may need these fields in your own YAML files (see :numref:`sec:noadd-indent-rules`), if you use popular algorithm packages such as algorithms, algorithm2e or algpseudocode, etc.
+You may need these fields in your own YAML files (see :numref:`sec:localsettings`), if you use popular algorithm packages such as algorithms, algorithm2e or algpseudocode, etc.
 
 .. proof:example::	
 	
@@ -1526,7 +1526,7 @@ You may need these fields in your own YAML files (see :numref:`sec:noadd-indent-
 	.. code-block:: latex
 	   :class: .commandshell
 	
-	   latexindent.pl specialAlgo.tex -l=algo
+	   latexindent.pl -l=algo.yaml specialAlgo.tex
 	
 	then we obtain the output given in :numref:`lst:specialAlgo-mod1`.
 	

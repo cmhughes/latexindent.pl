@@ -204,7 +204,8 @@ if(!$readTheDocsMode){
                         $rst_class = "obsolete";
                     }
                     $listingsbody =~ s|\}\h*\[.*?\]|\}|s;
-                    $listingsbody =~ s|\[style=yaml-LST\]\*?||sg;
+                    $listingsbody =~ s|\[style=yaml-LST[^]]*?\]\*?||sg;
+                    $listingsbody =~ s|basicstyle=\\tiny||sg;
                     $listingsbody =~ s"\[(columns=fixed)?,?(show(spaces|tabs)=true)?,?(show(spaces|tabs)=true)?\]""sg;
                     $listingsbody .= "\{".$rst_class."\}";
                     my $listingname = ($listingsbody =~ m|^\h*\[|s ? "cmhlistingsfromfilefour": "cmhlistingsfromfile");

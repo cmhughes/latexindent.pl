@@ -66,12 +66,12 @@ sub make_replacements {
                 if ( ${$_}{this} and ${$_}{substitution} );
             if ( ${$_}{this} ) {
 
-                # 
+                #
                 # *string* replacement
                 #
-                my $this        = quotemeta(${$_}{this});
-                my $that        = ( defined ${$_}{that} ) ? qq{${$_}{that}} : q();
-                ${$self}{body} = join($that,split($this,${$self}{body}));
+                my $this = quotemeta( ${$_}{this} );
+                my $that = ( defined ${$_}{that} ) ? qq{${$_}{that}} : q();
+                ${$self}{body} = join( $that, split( $this, ${$self}{body} ) );
             }
             else {
                 #
