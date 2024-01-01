@@ -1,0 +1,35 @@
+\For{$n = 1, \dots, 10$}
+	\State body
+\EndFor
+\FOR{for 1}
+	\FOR{for 2}
+		\FOR{for 3}
+			\STATE{some statement.}
+		\ENDFOR
+	\ENDFOR
+\ENDFOR
+\If{$quality\ge 9$}
+	\State $a\gets perfect$
+\ElsIf{$quality\ge 7$}
+	\State $a\gets good$
+\Else
+	\While{$i\le n$}
+		\State $i\gets i+1$
+	\EndWhile
+\EndIf
+\ForAll{$n \in \{1, \dots, 10\}$}
+	\State body
+	\Loop
+		\State body
+	\EndLoop
+	\State $i\gets 1$
+	\Repeat
+		\State $i\gets i+1$
+	\Until{$i>n$}
+\EndFor
+\Function{Euclid}{$a,b$}\Comment{The g.c.d. of a and b}
+	\While{$r\not=0$}\Comment{We have the answer if r is 0}
+		\State $r\gets a\bmod b$
+	\EndWhile
+	\State \textbf{return} $b$\Comment{The gcd is b}
+\EndFunction

@@ -271,6 +271,15 @@ latexindent.pl -s -m -r -l issue-450.yaml  issue-450f.tex -o=+-mod1
 latexindent.pl -s -m -l issue-471.yaml  issue-471.tex -o=+-mod1
 
 latexindent.pl -s -m -l issue-487.yaml issue-487.tex -o=+-mod1
+
+latexindent.pl -s -m -l issue-495.yaml issue-495.tex -o=+-mod1
+
+latexindent.pl -s -m -l issue-499.yaml,addruler2.yaml -r issue-499.tex -o=+-mod1
+latexindent.pl -s -m -l issue-499a.yaml,addruler2.yaml -r issue-499.tex -o=+-mod2
+
+latexindent.pl -s -m -r -l issue-502.yaml,addruler2.yaml issue-502.tex -o=+-mod1
+latexindent.pl -s -m -r -l issue-502a.yaml,addruler2.yaml issue-502a.tex -o=+-mod1
+
 set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

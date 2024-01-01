@@ -1,0 +1,11 @@
+modifyLineBreaks:
+  textWrapOptions:
+      columns: 60
+      when: after
+      blocksBeginWith:
+        other: \\paragraph\{[^}]+?\}
+      blocksFollow:
+        headings: 0                       # 0/1
+        other: \\\]|\\item(?:\h|\s*\[)
+indentRules:
+  item: " "

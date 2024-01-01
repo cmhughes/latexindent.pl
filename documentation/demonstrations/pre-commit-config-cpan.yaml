@@ -1,5 +1,5 @@
 - repo: https://github.com/cmhughes/latexindent.pl
-  rev: V3.23.4
+  rev: V3.23.5
   hooks:
   - id: latexindent
     args: [-s]

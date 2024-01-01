@@ -1,0 +1,5 @@
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 50
+        blocksBeginWith:
+           other: [ÃÁÔÉ] 

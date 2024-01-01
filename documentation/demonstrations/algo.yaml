@@ -1,0 +1,41 @@
+specialBeginEnd:
+  ForStatement:
+    begin: \\For\{[^}]+?\}
+    end: \\EndFor
+  FORStatement:
+    begin: \\FOR\{[^}]+?\}
+    end: \\ENDFOR
+  WhileStatement:
+    begin: \\While\{[^}]+?\}
+    end: \\EndWhile
+  WHILEStatement:
+    begin: \\WHILE\{[^}]+?\}
+    end: \\ENDWHILE
+  ForAllStatement:
+    begin: \\ForAll\{[^}]+?\}
+    end: \\EndFor
+  LoopStatement:
+    begin: \\Loop
+    end: \\EndLoop
+  RepeatStatement:
+    begin: \\Repeat
+    end: \\Until\{[^}]+?\}
+  ProcedureStatement:
+    begin: \\Procedure\{[^}]+?\}\{[^}]+?\}
+    end: \\EndProcedure
+  FunctionStatement:
+    begin: \\Function\{[^}]+?\}\{[^}]+?\}
+    end: \\EndFunction
+  IfStatement:
+    begin: \\If\{[^}]+?\}
+    middle:
+      - \\Else
+      - \\ElsIf\{[^}]+?\}
+    end: \\EndIf
+  IFStatement:
+    begin: \\IF\{[^}]+?\}
+    middle:
+      - \\ELSE
+      - \\ELSIF\{[^}]+?\}
+    end: \\ENDIF
+  specialBeforeCommand: 1

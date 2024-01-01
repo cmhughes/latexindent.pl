@@ -39,7 +39,7 @@ fileExtensionMode=0
 dontStopMode=0
 
 # check flags, and change defaults appropriately
-while getopts "abcdfgo:ns" OPTION
+while getopts "abcdfgno:s" OPTION
 do
  case $OPTION in 
   s)    
@@ -56,6 +56,10 @@ do
     # bench mark mode
     benchmarkMode=1
     ;;
+  c)    
+   echo "Show counter mode active!"
+   showCounterFlag='-c'
+   ;;
   d)
     # don't stop
     dontStopMode=1
@@ -69,18 +73,14 @@ do
     gitStatusFlag="-g"
     gitStatus=1
   ;;
-  c)    
-   echo "Show counter mode active!"
-   showCounterFlag='-c'
-   ;;
-  o)
-    # only do this one in the loop
-    loopminFlag="-o $OPTARG"
-   ;;
   n)
     # only do this one in the loop
     noisyModeFlag="-n"
     noisyMode=1
+   ;;
+  o)
+    # only do this one in the loop
+    loopminFlag="-o $OPTARG"
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
@@ -126,12 +126,17 @@ dirExec=(
   "line-switch-test-cases;line-switch-test-cases.sh"
   "batch-tests;batch-tests.sh"
   "demonstrations;documentation-test-cases.sh"
-  "documentation;latex-indent.sh"
+  "documentation;doc-indent.sh"
   ) 
 
+
+dirExecCount=0
+dirExecCountTotal=${#dirExec[@]}
 # loop through the files
 for file in "${dirExec[@]}"
 do
+  ((dirExecCount++))
+
   dirExec=(${file//;/ })
 
   # grab the directory
@@ -143,13 +148,13 @@ do
   [[ $directory == 'demonstrations' ]] && cd ../documentation/
   cd $directory
 
-  [[ $silentMode == 1 ]] && echo -ne "./$directory/${YELLOW}$executable${COLOR_OFF}\r"
+  [[ $silentMode == 1 ]] && echo -ne "./$directory/${YELLOW}$executable ($dirExecCount of $dirExecCountTotal)${COLOR_OFF}\r"
 
   ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
   checkgitdiff
 
-  echo -e "./$directory/${BGreen}$executable SUCCESS${COLOR_OFF}\r"
+  echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal)${COLOR_OFF}\r"
 
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..

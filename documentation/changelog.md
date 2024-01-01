@@ -1,6 +1,11 @@
-<!-- announcement: bugfix for STDIN when m switch active with preamble-->
+<!-- announcement: bugfix for text wrap, enhancement for replacement feature-->
 
 # changelog.md
+
+## V3.23.5, January 1, 2024
+* bugfix for text wrap, see [issue-502](https://github.com/cmhughes/latexindent.pl/issues/502)
+* enhancement for replacement feature, see [issue-503](https://github.com/cmhughes/latexindent.pl/issues/503)
+
 ## V3.23.4, November 19, 2023
 bugfix for STDIN input with preamble and m switch, see [issue-493](https://github.com/cmhughes/latexindent.pl/issues/493)
 

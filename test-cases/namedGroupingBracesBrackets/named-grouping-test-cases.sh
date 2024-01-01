@@ -23,18 +23,27 @@ latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-
     latexindent.pl -m -s contributors-remove-line-breaks.bib -o contributors-remove-line-breaks-vo-mod$i.bib -l=mand-args-Vo-mod$i.yaml,../commands/unprotect-blank-lines.yaml 
     [[ $silentMode == 0 ]] && set +x 
  done
+
 # special characters
 latexindent.pl -s special-characters.tex -m -l=mand-args-mod1.yaml,../filecontents/indentPreambleYes.yaml -o=special-characters-mod1.tex 
 latexindent.pl -s special-characters-minimal.tex -o special-characters-minimal-default.tex
 latexindent.pl -s special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-default.tex -g=one.log
+
 # m switch active
 latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch.tex -l=noCondenseBlankLines.yaml -g=two.log
 latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o special-characters-minimal-blank-lines-m-switch-condense.tex
+
 # legacy test case
 latexindent.pl -s tikz3.tex -o tikz3-default.tex
 latexindent.pl -s tikz4.tex -o tikz4-default.tex -l ../texexchange/indentPreamble.yaml
 latexindent.pl -s tikz4.tex -o tikz4-no-add-global.tex -l ../texexchange/indentPreamble.yaml,noAddGlobNamed.yaml
+
 # issue 241: https://github.com/cmhughes/latexindent.pl/issues/241
 latexindent.pl -s -l issue241.yaml issue241.tex -o +-mod1
+
+latexindent.pl -s issue-501.tex -o +-mod1
+
+latexindent.pl -s -l issue-501.yaml issue-501.tex -o +-mod2
+latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineBreaks:textWrapOptions:blocksBeginWith:other:(?:\\\\),noAdditionalIndentGlobal:namedGroupingBracesBrackets:1" issue-501a.tex -o=+-mod2
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

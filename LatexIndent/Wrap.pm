@@ -340,6 +340,7 @@ sub text_wrap {
                         $thingToMeasure =~ s/$tokens{verbatim}\d+$tokens{endOfToken}//;
                         $thingToMeasure =~ s/$trailingCommentRegExp//;
                         $thingToMeasure =~ s/$headingsRegEx//;
+                        $thingToMeasure =~ s/\\end\{[^}]+?\}//;
 
                         $subsequentSpace = (
                             $textWrapBlockCount == 0

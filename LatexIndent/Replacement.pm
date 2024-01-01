@@ -66,21 +66,17 @@ sub make_replacements {
                 if ( ${$_}{this} and ${$_}{substitution} );
             if ( ${$_}{this} ) {
 
+                #
                 # *string* replacement
-                # *string* replacement
-                # *string* replacement
-                my $this        = qq{${$_}{this}};
-                my $that        = ( defined ${$_}{that} ) ? qq{${$_}{that}} : q();
-                my $index_match = index( ${$self}{body}, $this );
-                while ( $index_match != -1 ) {
-                    substr( ${$self}{body}, $index_match, length($this), $that );
-                    $index_match = index( ${$self}{body}, $this );
-                }
+                #
+                my $this = quotemeta( ${$_}{this} );
+                my $that = ( defined ${$_}{that} ) ? qq{${$_}{that}} : q();
+                ${$self}{body} = join( $that, split( $this, ${$self}{body} ) );
             }
             else {
+                #
                 # *regex* replacement
-                # *regex* replacement
-                # *regex* replacement
+                #
 
 # https://stackoverflow.com/questions/12423337/how-to-pass-a-replacing-regex-as-a-command-line-argument-to-a-perl-script
                 my $body = ${$self}{body};
