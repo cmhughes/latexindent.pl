@@ -71,7 +71,7 @@ sub make_replacements {
                 #
                 my $this = quotemeta( ${$_}{this} );
                 my $that = ( defined ${$_}{that} ) ? qq{${$_}{that}} : q();
-                ${$self}{body} = join( $that, split( $this, ${$self}{body} ) );
+                ${$self}{body} = join( $that, split( /$this/, ${$self}{body}, -1 ) );
             }
             else {
                 #
