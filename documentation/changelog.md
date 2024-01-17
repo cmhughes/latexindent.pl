@@ -1,6 +1,8 @@
-<!-- announcement: bugfix for text wrap, enhancement for replacement feature-->
+<!-- announcement: further enhancement for replacement feature-->
 
 # changelog.md
+## V3.23.6, January 17, 2024
+further enhancement for replacement feature, see [issue-503](https://github.com/cmhughes/latexindent.pl/issues/503)
 
 ## V3.23.5, January 1, 2024
 * bugfix for text wrap, see [issue-502](https://github.com/cmhughes/latexindent.pl/issues/502)

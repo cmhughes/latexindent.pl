@@ -118,3 +118,58 @@ jobs:
         run: |
           $files = Get-ChildItem test-cases\check-switch-tests\*tex
           foreach ($file in $files) {perl latexindent.pl --check -s $file}
+  cjk-windows-exe-test:
+    needs: check-pm-files-changed
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
+    name: 'create Windows executable latexindent.exe using Strawberry Perl 5.32 on Windows'
+    runs-on: 'windows-latest'
+    steps:
+      #
+      # checkout github.com/cmhughes/latexindent.pl
+      # https://github.com/actions/checkout
+      #
+      - name: load the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v4
+      #
+      # https://github.com/marketplace/actions/setup-perl-environment
+      #
+      - name: install Strawberry Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.32'
+          distribution: strawberry
+      - name: install Perl modules using cpan
+        run: |
+          wmic os get osarchitecture
+          cpanm -f PAR::Packer
+          cpanm YAML::Tiny
+          cpanm File::HomeDir
+          cpanm Unicode::GCString
+      - name: preparations for PAR packer
+        run: |
+          sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
+          SET PAR_VERBATIM=1
+      #
+      # https://metacpan.org/pod/pp
+      # https://github.com/plk/biber/blob/dev/dist/MSWIN64/build.bat
+      #
+      - name: create latexindent.exe using PAR Packer
+        run: >-
+          pp 
+          --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
+          --cachedeps=scancache
+          --output latexindent.exe
+          latexindent.pl
+      - name: latexindent.exe help
+        run: |
+          ./latexindent.exe --help
+      - name: latexindent.exe replacement test, issue 503
+        # https://github.com/cmhughes/latexindent.pl/issues/503
+        run: |
+          ./latexindent.exe -l test-cases/replacements/issue-503b.yaml -r test-cases/replacements/issue-503a.tex 
+          cat test-cases/replacements/indent.log
+      ### - name: latexindent.exe cjk test, issue 505
+      ###   # https://github.com/cmhughes/latexindent.pl/issues/505
+      ###   run: |
+      ###     ./latexindent.exe -w test-cases/back-up-tests/新建.tex -y 'onlyOneBackUp:1'
+      ###     cat test-cases/back-up-tests/indent.log

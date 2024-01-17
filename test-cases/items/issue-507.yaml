@@ -1,0 +1,7 @@
+indentAfterItems:
+    itemize: 0
+    enumerate: 0
+    description: 0
+    list: 0
+specialBeginEnd:
+    specialBeforeCommand: 1

@@ -1,0 +1,4 @@
+replacements:
+  -
+    this: 'X'
+    that: 'Y'
