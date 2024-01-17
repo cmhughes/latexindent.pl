@@ -1,0 +1,12 @@
+modifyLineBreaks:
+  commands:
+    label:
+      CommandStartsOnOwnLine: 1
+  textWrapOptions:
+    columns: 60
+    blocksBeginWith:
+      other: |-
+        (?x)
+        \\acp
+        |
+        \\citeauth
