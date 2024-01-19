@@ -27,6 +27,9 @@ use Getopt::Long;    # to get the switches/options/flags
 use lib $FindBin::RealBin;
 use LatexIndent::Document;
 
+use utf8;
+use Encode   qw/ encode decode find_encoding /;
+
 # get the options
 my %switches = ( readLocalSettings => 0 );
 
@@ -54,7 +57,23 @@ GetOptions(
     "checkv|kv"                 => \$switches{checkverbose},
     "lines|n=s"                 => \$switches{lines},
     "GCString"                  => \$switches{GCString},
+    "encoding|e=s"              => \$switches{encoding},
 );
+
+my $encodingObject;
+if ( $switches{encoding} and ref( find_encoding( $switches{encoding} ) ) ) {
+    $encodingObject = find_encoding( $switches{encoding} );
+}
+else {
+    $encodingObject = "utf-8";
+}
+
+foreach my $key (keys %switches) { 
+    if ( $switches{$key} ) {
+    $switches{$key} = decode($encodingObject, $switches{$key} );
+    }
+}
+@ARGV = map { decode($encodingObject, $_) } @ARGV;
 
 # conditionally load the GCString module
 eval "use Unicode::GCString" if $switches{GCString};

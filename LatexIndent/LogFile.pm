@@ -27,6 +27,20 @@ use Encode                qw/decode/;
 our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 
+use utf8;
+binmode(STDOUT, ":encoding(utf8)");
+
+use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+
+my $cp;
+my $console;
+if ($^O eq 'MSWin32') {
+    require Win32::Console;
+    $console = Win32::Console->new();
+    $cp = $console->OutputCP();
+    system("chcp 65001");
+}
+
 sub process_switches {
 
     # -v switch is just to show the version number
@@ -116,6 +130,9 @@ usage: latexindent.pl [options] [file]
       --GCString
           loads the Unicode::GCString module for the align-at-ampersand routine
           Note: this requires the Unicode::GCString module to be installed on your system
+      -e, --encoding=<value>
+          specify encoding, sample usage
+                latexindent.pl --encoding gb2312 myfile.tex
 ENDQUOTE
             ;
         exit(0);
@@ -136,7 +153,7 @@ ENDQUOTE
     if ( !( -d ${$self}{cruftDirectory} ) ) {
         eval { make_path( ${$self}{cruftDirectory} ) };
         if ($@) {
-            $logger->fatal( "*Could not create cruft directory " . decode( "utf-8", ${$self}{cruftDirectory} ) );
+            $logger->fatal( "*Could not create cruft directory " . ${$self}{cruftDirectory} );
             $logger->fatal("Exiting, no indentation done.");
             $self->output_logfile();
             exit(6);
@@ -147,7 +164,7 @@ ENDQUOTE
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
         . ( $switches{logFileName} || "indent.log" );
 
-    $logfileName = decode( "utf-8", $logfileName );
+    $logfileName = $logfileName;
 
     # details of the script to log file
     $logger->info("*$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
@@ -253,7 +270,7 @@ ENDQUOTE
     }
 
     $logger->info("*Directory for backup files and $logfileName:");
-    $logger->info( $switches{cruftDirectory} ? decode( "utf-8", ${$self}{cruftDirectory} ) : ${$self}{cruftDirectory} );
+    $logger->info( $switches{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
     $logger->info("cruft directory creation: ${$self}{cruftDirectory}") if $cruftDirectoryCreation;
 
     # output location of modules

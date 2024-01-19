@@ -26,6 +26,9 @@ use Exporter qw/import/;
 use Encode   qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
+use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use utf8;
+
 # copy main file to a backup in the case of the overwrite switch being active
 
 sub create_back_up_file {
@@ -36,7 +39,7 @@ sub create_back_up_file {
     # if we want to overwrite the current file create a backup first
     $logger->info("*Backup procedure (-w flag active):");
 
-    my $fileName = decode( "utf-8", ${$self}{fileName} );
+    my $fileName = ${$self}{fileName};
 
     # grab the file extension preferences
     my %fileExtensionPreference = %{ $mainSettings{fileExtensionPreference} };
@@ -49,7 +52,7 @@ sub create_back_up_file {
     my $backupFileNoExt = basename( ${$self}{fileName}, @fileExtensions );
 
     # add the user's backup directory to the backup path
-    $backupFileNoExt = decode( "utf-8", "${$self}{cruftDirectory}/$backupFileNoExt" );
+    $backupFileNoExt = "${$self}{cruftDirectory}/$backupFileNoExt";
 
     # local variables, determined from the YAML settings
     my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};
@@ -74,7 +77,7 @@ sub create_back_up_file {
 
         # if the file already exists, increment the number until either
         # the file does not exist, or you reach the maximal number of backups
-        while ( -e ( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
+        while ( Exist_new( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
             $logger->info("$backupFile$backupCounter already exists, incrementing by 1 (see maxNumberOfBackUps)");
             $backupCounter++;
         }
@@ -83,7 +86,7 @@ sub create_back_up_file {
 
     # if the backup file already exists, output some information in the log file
     # and proceed to cycleThroughBackUps if the latter is set
-    if ( -e $backupFile ) {
+    if ( Exist_new( $backupFile ) ) {
         if ($onlyOneBackUp) {
             $logger->info("$backupFile will be overwritten (see onlyOneBackUp)");
         }
@@ -105,9 +108,9 @@ sub create_back_up_file {
                     $newBackupFile = $backupFileNoExt . $backupExtension . ( $i - 1 );
 
                     # check that the oldBackupFile exists
-                    if ( -e $oldBackupFile ) {
+                    if ( Exist_new( $oldBackupFile ) ) {
                         $logger->info("Copying $oldBackupFile to $newBackupFile...");
-                        if ( !( copy( $oldBackupFile, $newBackupFile ) ) ) {
+                        if ( !( Copy_new( $oldBackupFile, $newBackupFile ) ) ) {
                             $logger->fatal("*Could not write to backup file $newBackupFile. Please check permissions.");
                             $logger->fatal("Exiting, no indentation done.");
                             $self->output_logfile();
@@ -122,7 +125,7 @@ sub create_back_up_file {
     # output these lines to the log file
     $logger->info("Backing up $fileName to $backupFile...");
     $logger->info("$fileName will be overwritten after indentation");
-    if ( !( copy( $fileName, $backupFile ) ) ) {
+    if ( !( Copy_new( $fileName, $backupFile ) ) ) {
         $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
         $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();

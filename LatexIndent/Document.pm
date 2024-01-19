@@ -19,7 +19,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Basename;    # to get the filename and directory path
-use open ':std', ':encoding(UTF-8)';
+#use open ':std', ':encoding(UTF-8)';
 use Encode qw/decode/;
 
 # gain access to subroutines in the following modules
@@ -73,6 +73,9 @@ use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHead
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 
+use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use utf8;
+
 sub new {
 
     # Create new objects, with optional key/value pairs
@@ -98,7 +101,7 @@ sub latexindent {
 
     # one-time operations
     $self->store_switches;
-    ${$self}{fileName} = decode( "utf-8", $fileNames[0] );
+    ${$self}{fileName} = $fileNames[0];
     $self->process_switches( \@fileNames );
     $self->yaml_read_settings;
 
@@ -231,19 +234,18 @@ sub output_indented_text {
     if ( ${$self}{overwrite} ) {
 
         # diacritics in file names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
-        ${$self}{fileName} = decode( "utf-8", ${$self}{fileName} );
+        ${$self}{fileName} = ${$self}{fileName};
 
         $logger->info("Overwriting file ${$self}{fileName}");
-        open( OUTPUTFILE, ">", ${$self}{fileName} );
-        print OUTPUTFILE ${$self}{body};
-        close(OUTPUTFILE);
+        my $OUTPUTFILE = Open_new( '>:encoding(UTF-8 )', ${$self}{fileName});
+        print $OUTPUTFILE ${$self}{body};
+        close($OUTPUTFILE);
     }
     elsif ( $switches{outputToFile} ) {
-
         $logger->info("Outputting to file ${$self}{outputToFile}");
-        open( OUTPUTFILE, ">", ${$self}{outputToFile} );
-        print OUTPUTFILE ${$self}{body};
-        close(OUTPUTFILE);
+        my $OUTPUTFILE = Open_new( '>:encoding(UTF-8 )', ${$self}{outputToFile});
+        print $OUTPUTFILE ${$self}{body};
+        close($OUTPUTFILE);
     }
     else {
         $logger->info("Not outputting to file; see -w and -o switches for more options.");
@@ -269,9 +271,8 @@ sub output_logfile {
 
     # open log file
     my $logfileName = $switches{logFileName} || "indent.log";
-    my $logfile;
     my $logfilePossible = 1;
-    open( $logfile, ">", "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
+    my $logfile = Open_new( '>:encoding(UTF-8 )', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
 
     if ($logfilePossible) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {
