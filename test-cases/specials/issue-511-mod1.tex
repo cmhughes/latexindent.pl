@@ -1,0 +1,20 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ibrackets}
+
+\begin{document}
+
+$f(x)= \dfrac{1}{(1-x)^2}$ on $]-\infty, 1[$.
+$f$ is convex because
+\[ f''(x) = \frac{6}{(1-x)^4} \geq 0. \]
+And the tangent in 0 is such that
+\[ y=f'(0)(x-0) + f(0) \text{ with } f'(0)=2 \text{ and } f(0)=1, \]
+So we can say that, for all $x \in ]-\infty, 1[$,
+$f(x) \geq 2x+1$.
+
+\end{document}
