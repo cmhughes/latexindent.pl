@@ -74,6 +74,7 @@ jobs:
         run: |
           cpanm YAML::Tiny
           cpanm File::HomeDir
+          cpanm Unicode::GCString
       # checkout github.com/cmhughes/latexindent.pl
       #
       # https://github.com/actions/checkout
