@@ -237,13 +237,13 @@ sub output_indented_text {
         ${$self}{fileName} = ${$self}{fileName};
 
         $logger->info("Overwriting file ${$self}{fileName}");
-        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8 )', ${$self}{fileName});
+        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{fileName} );
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
     elsif ( $switches{outputToFile} ) {
         $logger->info("Outputting to file ${$self}{outputToFile}");
-        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8 )', ${$self}{outputToFile});
+        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8)', ${$self}{outputToFile} );
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
@@ -272,7 +272,7 @@ sub output_logfile {
     # open log file
     my $logfileName = $switches{logFileName} || "indent.log";
     my $logfilePossible = 1;
-    my $logfile = open_with_encode( '>:encoding(UTF-8 )', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
+    my $logfile = open_with_encode( '>:encoding(UTF-8)', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
 
     if ($logfilePossible) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {

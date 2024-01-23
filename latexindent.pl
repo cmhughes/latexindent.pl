@@ -29,24 +29,19 @@ use LatexIndent::Document;
 
 use utf8;
 use Encode   qw/ encode decode find_encoding /;
-use Win32;
 
 use LatexIndent::LogFile         qw/$logger $consoleOutCP/;
+use LatexIndent::CommandLineArgs qw/commandlineargs_with_encode @new_args/;
+
+commandlineargs_with_encode();
 
 $logger = LatexIndent::Logger->new();
 
-my $encodingObject;
-if ($^O eq 'MSWin32') {
-    my $encoding_sys = 'cp' . Win32::GetACP(); #https://stackoverflow.com/a/63868721
-    print "\n\nINFO:  System Ansi codepage:  $encoding_sys\n\n";
-    $logger->info("* \nSystem Ansi codepage: $encoding_sys\n");
-    $encodingObject = find_encoding( $encoding_sys );
-}
-else {
-    $encodingObject = "utf-8";
-}
-@ARGV = map { decode($encodingObject, $_) } @ARGV;
-
+print "\n\nINFO:  Command Line:\n       @new_args\n";
+print "       Command Line Arguments:\n       " . join(", ", @ARGV) . "\n\n";
+$logger->info("*Command Line:");
+$logger->info("@new_args");
+$logger->info("Command Line Arguments:\n" . join(", ", @ARGV) );
 
 # get the options
 my %switches = ( readLocalSettings => 0 );

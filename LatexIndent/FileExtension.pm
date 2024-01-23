@@ -178,7 +178,7 @@ sub file_extension_check {
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        my $MAINFILE = open_with_encode( '<:encoding(UTF-8 )', $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");
