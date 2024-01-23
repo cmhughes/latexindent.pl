@@ -29,6 +29,24 @@ use LatexIndent::Document;
 
 use utf8;
 use Encode   qw/ encode decode find_encoding /;
+use Win32;
+
+use LatexIndent::LogFile         qw/$logger $consoleOutCP/;
+
+$logger = LatexIndent::Logger->new();
+
+my $encodingObject;
+if ($^O eq 'MSWin32') {
+    my $encoding_sys = 'cp' . Win32::GetACP(); #https://stackoverflow.com/a/63868721
+    print "\n\nINFO:  System Ansi codepage:  $encoding_sys\n\n";
+    $logger->info("* \nSystem Ansi codepage: $encoding_sys\n");
+    $encodingObject = find_encoding( $encoding_sys );
+}
+else {
+    $encodingObject = "utf-8";
+}
+@ARGV = map { decode($encodingObject, $_) } @ARGV;
+
 
 # get the options
 my %switches = ( readLocalSettings => 0 );
@@ -57,23 +75,7 @@ GetOptions(
     "checkv|kv"                 => \$switches{checkverbose},
     "lines|n=s"                 => \$switches{lines},
     "GCString"                  => \$switches{GCString},
-    "encoding|e=s"              => \$switches{encoding},
 );
-
-my $encodingObject;
-if ( $switches{encoding} and ref( find_encoding( $switches{encoding} ) ) ) {
-    $encodingObject = find_encoding( $switches{encoding} );
-}
-else {
-    $encodingObject = "utf-8";
-}
-
-foreach my $key (keys %switches) { 
-    if ( $switches{$key} ) {
-    $switches{$key} = decode($encodingObject, $switches{$key} );
-    }
-}
-@ARGV = map { decode($encodingObject, $_) } @ARGV;
 
 # conditionally load the GCString module
 eval "use Unicode::GCString" if $switches{GCString};
@@ -105,4 +107,10 @@ my $document = bless(
     "LatexIndent::Document"
 );
 $document->latexindent( \@ARGV );
+
+if ($^O eq 'MSWin32') {
+    use Win32;
+    Win32::SetConsoleOutputCP($consoleOutCP);
+    print "\n\nINFO:  Restore the console output code page: cp$consoleOutCP\n";
+}
 exit(0);

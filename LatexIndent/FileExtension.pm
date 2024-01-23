@@ -27,7 +27,7 @@ use LatexIndent::Switches        qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
-use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 sub file_extension_check {
@@ -62,7 +62,7 @@ sub file_extension_check {
 
             # loop through the known file extensions (see @fileExtensions)
             foreach (@fileExtensions) {
-                if ( Exist_new( $fileName . $_ ) ) {
+                if ( exist_with_encode( $fileName . $_ ) ) {
                     $logger->info("$fileName$_ found!");
                     $fileName .= $_;
                     $logger->info("Updated fileName to $fileName");
@@ -94,7 +94,7 @@ sub file_extension_check {
         }
         else {
             # if the file has a recognised extension, check that the file exists
-            unless ( Exist_new( $fileName ) ) {
+            unless ( exist_with_encode( $fileName ) ) {
                 if ( defined ${$self}{multipleFiles} ) {
                     $logger->warn("*I couldn't find $fileName, are you sure it exists?");
                     $logger->warn("moving on, no indentation done for ${$self}{fileName}.");
@@ -164,7 +164,7 @@ sub file_extension_check {
             my $outputFileCounter = 0;
             my $fileName          = $name . $outputFileCounter . "." . $strippedFileExtension;
             $logger->info("will search for existence and increment counter, starting with $fileName");
-            while ( Exist_new( $fileName ) ) {
+            while ( exist_with_encode( $fileName ) ) {
                 $logger->info("$fileName exists, incrementing counter");
                 $outputFileCounter++;
                 $fileName = $name . $outputFileCounter . "." . $strippedFileExtension;
@@ -178,7 +178,7 @@ sub file_extension_check {
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        my $MAINFILE = Open_new( '<:encoding(UTF-8 )', $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE = open_with_encode( '<:encoding(UTF-8 )', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");

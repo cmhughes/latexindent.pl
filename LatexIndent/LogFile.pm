@@ -24,21 +24,21 @@ use Exporter              qw/import/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version  qw/$versionNumber $versionDate/;
 use Encode                qw/decode/;
-our @EXPORT_OK = qw/process_switches $logger/;
+our @EXPORT_OK = qw/process_switches $logger $consoleOutCP/;
 our $logger;
 
 use utf8;
 binmode(STDOUT, ":encoding(utf8)");
 
-use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 
-my $cp;
-my $console;
+our $consoleOutCP;
 if ($^O eq 'MSWin32') {
-    require Win32::Console;
-    $console = Win32::Console->new();
-    $cp = $console->OutputCP();
-    system("chcp 65001");
+    use Win32;
+    $consoleOutCP = Win32::GetConsoleOutputCP();
+    print "\n\nINFO:  Current console output code page: cp$consoleOutCP\n";
+    Win32::SetConsoleOutputCP(65001);
+    print "\n\nINFO:  Active code page: cp65001\n";
 }
 
 sub process_switches {
@@ -130,9 +130,6 @@ usage: latexindent.pl [options] [file]
       --GCString
           loads the Unicode::GCString module for the align-at-ampersand routine
           Note: this requires the Unicode::GCString module to be installed on your system
-      -e, --encoding=<value>
-          specify encoding, sample usage
-                latexindent.pl --encoding gb2312 myfile.tex
 ENDQUOTE
             ;
         exit(0);

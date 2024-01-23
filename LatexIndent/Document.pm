@@ -73,7 +73,7 @@ use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHead
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 
-use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 sub new {
@@ -237,13 +237,13 @@ sub output_indented_text {
         ${$self}{fileName} = ${$self}{fileName};
 
         $logger->info("Overwriting file ${$self}{fileName}");
-        my $OUTPUTFILE = Open_new( '>:encoding(UTF-8 )', ${$self}{fileName});
+        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8 )', ${$self}{fileName});
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
     elsif ( $switches{outputToFile} ) {
         $logger->info("Outputting to file ${$self}{outputToFile}");
-        my $OUTPUTFILE = Open_new( '>:encoding(UTF-8 )', ${$self}{outputToFile});
+        my $OUTPUTFILE = open_with_encode( '>:encoding(UTF-8 )', ${$self}{outputToFile});
         print $OUTPUTFILE ${$self}{body};
         close($OUTPUTFILE);
     }
@@ -272,7 +272,7 @@ sub output_logfile {
     # open log file
     my $logfileName = $switches{logFileName} || "indent.log";
     my $logfilePossible = 1;
-    my $logfile = Open_new( '>:encoding(UTF-8 )', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
+    my $logfile = open_with_encode( '>:encoding(UTF-8 )', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
 
     if ($logfilePossible) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {

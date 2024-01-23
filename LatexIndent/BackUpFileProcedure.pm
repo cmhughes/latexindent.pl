@@ -26,7 +26,7 @@ use Exporter qw/import/;
 use Encode   qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
-use LatexIndent::FileOperation qw/Copy_new Exist_new Open_new  Zero_new ReadYaml_new/;
+use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 # copy main file to a backup in the case of the overwrite switch being active
@@ -77,7 +77,7 @@ sub create_back_up_file {
 
         # if the file already exists, increment the number until either
         # the file does not exist, or you reach the maximal number of backups
-        while ( Exist_new( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
+        while ( exist_with_encode( $backupFile . $backupCounter ) and $backupCounter != ( $maxNumberOfBackUps - 1 ) ) {
             $logger->info("$backupFile$backupCounter already exists, incrementing by 1 (see maxNumberOfBackUps)");
             $backupCounter++;
         }
@@ -86,7 +86,7 @@ sub create_back_up_file {
 
     # if the backup file already exists, output some information in the log file
     # and proceed to cycleThroughBackUps if the latter is set
-    if ( Exist_new( $backupFile ) ) {
+    if ( exist_with_encode( $backupFile ) ) {
         if ($onlyOneBackUp) {
             $logger->info("$backupFile will be overwritten (see onlyOneBackUp)");
         }
@@ -108,9 +108,9 @@ sub create_back_up_file {
                     $newBackupFile = $backupFileNoExt . $backupExtension . ( $i - 1 );
 
                     # check that the oldBackupFile exists
-                    if ( Exist_new( $oldBackupFile ) ) {
+                    if ( exist_with_encode( $oldBackupFile ) ) {
                         $logger->info("Copying $oldBackupFile to $newBackupFile...");
-                        if ( !( Copy_new( $oldBackupFile, $newBackupFile ) ) ) {
+                        if ( !( copy_with_encode( $oldBackupFile, $newBackupFile ) ) ) {
                             $logger->fatal("*Could not write to backup file $newBackupFile. Please check permissions.");
                             $logger->fatal("Exiting, no indentation done.");
                             $self->output_logfile();
@@ -125,7 +125,7 @@ sub create_back_up_file {
     # output these lines to the log file
     $logger->info("Backing up $fileName to $backupFile...");
     $logger->info("$fileName will be overwritten after indentation");
-    if ( !( Copy_new( $fileName, $backupFile ) ) ) {
+    if ( !( copy_with_encode( $fileName, $backupFile ) ) ) {
         $logger->fatal("*Could not write to backup file $backupFile. Please check permissions.");
         $logger->fatal("Exiting, no indentation done.");
         $self->output_logfile();

@@ -51,7 +51,6 @@ sub store_switches {
     $is_check_verbose_switch_active = defined $switches{checkverbose} ? $switches{checkverbose} : 0;
     $is_check_switch_active
         = $is_check_verbose_switch_active ? $is_check_verbose_switch_active : $is_check_switch_active;
-    ${$self}{encoding} = ( $switches{encoding} ? $switches{encoding} : 0 );
     delete ${$self}{switches};
 }
 1;
