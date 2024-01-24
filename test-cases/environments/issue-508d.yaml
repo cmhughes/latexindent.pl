@@ -1,0 +1,14 @@
+specialBeginEnd:
+  specialBeforeCommand: 1
+  myenv:
+    begin: \\begin\{[^}]+?\}\h*\[[^]]+?\]
+    end: \\end\{[^}]+?\}
+
+modifyLineBreaks:
+  specialBeginEnd:
+    myenv:
+      SpecialBodyStartsOnOwnLine: 1
+
+fineTuning:
+  environments:
+    name: [1]+

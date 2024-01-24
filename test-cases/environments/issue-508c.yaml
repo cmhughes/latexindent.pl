@@ -1,0 +1,4 @@
+replacements:
+  - 
+   substitution: |-
+     s/(\\begin\{[^}]+?\}\h*\[[^]]+?\])\h*(\\[a-zA-Z])/$1\n$2/sg

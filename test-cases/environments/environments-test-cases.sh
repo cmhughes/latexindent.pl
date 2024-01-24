@@ -118,6 +118,8 @@ latexindent.pl -s -l issue-488a.yaml -m issue-488a.tex -o=+-mod1
 latexindent.pl -s -l issue-508.yaml  -m issue-508.tex -o=+-mod1
 latexindent.pl -s -l issue-508a.yaml -m issue-508.tex -o=+-mod2
 latexindent.pl -s -l issue-508b.yaml -m issue-508.tex -o=+-mod3
+latexindent.pl -s -l issue-508c.yaml -r issue-508.tex -o=+-mod4
+latexindent.pl -s -l issue-508d.yaml -m issue-508.tex -o=+-mod5
 
 [[ $silentMode == 0 ]] && set -x 
 [[ $noisyMode == 1 ]] && makenoise
