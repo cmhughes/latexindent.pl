@@ -34,11 +34,12 @@ use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_e
 
 our $consoleOutCP;
 if ($^O eq 'MSWin32') {
-    use Win32;
+    require Win32;
+    import Win32;
     $consoleOutCP = Win32::GetConsoleOutputCP();
-    print "\n\nINFO:  Current console output code page: cp$consoleOutCP\n";
+    print "INFO:  Current console output code page: $consoleOutCP \n";
     Win32::SetConsoleOutputCP(65001);
-    print "\n\nINFO:  Active code page: cp65001\n";
+    print "INFO:  Change the Current console output code page to 65001\n";
 }
 
 sub process_switches {

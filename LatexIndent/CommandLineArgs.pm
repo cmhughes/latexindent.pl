@@ -13,12 +13,13 @@ sub commandlineargs_with_encode{
     use warnings;
     use feature qw( say state );
     use utf8;
-    
-    use open ':std', ':encoding('.do { require Win32; "cp".Win32::GetConsoleOutputCP() }.')';
-
     use Config      qw( %Config );
     use Encode      qw( decode encode );
-    use Win32::API qw( ReadMemory );
+    
+    if ($^O eq 'MSWin32') {
+    require Win32::API;
+    import Win32::API qw( ReadMemory );
+    #use open ':std', ':encoding('.do { require Win32; "cp".Win32::GetConsoleOutputCP() }.')'; 
 
     use constant PTR_SIZE => $Config{ptrsize};
 
@@ -96,11 +97,12 @@ sub commandlineargs_with_encode{
         return \@args;
     }
 
-    if ($^O eq 'MSWin32') {
+
         my $cmd_line = GetCommandLine();
         #perl D:\rr\latexindent\latexindent\latexindent.pl 新建.tex -g issue-505.log -sl -l=localSettings.yaml -r -o=++
         our @new_args = $cmd_line;
         $cmd_line =~ s/(^(.*?)\.pl )//g;
+        $cmd_line =~ s/(^(.*?)\.exe )//g;
         my $args = CommandLineToArgv($cmd_line) or die("CommandLineToArgv: $^E\n");
         @ARGV = @{$args};
     }

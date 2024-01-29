@@ -86,6 +86,8 @@ jobs:
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
+          cpanm --force Win32::Unicode::File
+          cpanm --force Win32::API
       - name: preparations for PAR packer
         run: |
           sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl

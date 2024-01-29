@@ -11,11 +11,12 @@ our @EXPORT_OK = qw/copy_with_encode exist_with_encode open_with_encode zero_wit
 
 sub copy_with_encode {
     use File::Copy;
-    use Win32::Unicode::File;
     my ($source, $destination) = @_;
 
     if ($^O eq 'MSWin32') {
-        Win32::Unicode::File::copyW( $source, $destination );
+        require Win32::Unicode::File;
+        import Win32::Unicode::File;
+        copyW( $source, $destination );
     }
     else {
         copy( $source, $destination );
@@ -25,11 +26,12 @@ sub copy_with_encode {
 
 sub exist_with_encode {
     use File::Copy;
-    use Win32::Unicode::File;
     my ($filename) = @_;
 
     if ($^O eq 'MSWin32') {
-        return Win32::Unicode::File::statW( $filename );
+        require Win32::Unicode::File;
+        import Win32::Unicode::File;
+        return statW( $filename );
     }
     else {
         return -e $filename;
@@ -39,11 +41,12 @@ sub exist_with_encode {
 
 sub zero_with_encode {
     use File::Copy;
-    use Win32::Unicode::File;
     my ($filename) = @_;
 
     if ($^O eq 'MSWin32') {
-        my $size = Win32::Unicode::File::file_size( $filename );
+        require Win32::Unicode::File;
+        import Win32::Unicode::File;
+        my $size = file_size( $filename );
             if ($size) {
                 return 0;
             } else {
@@ -62,9 +65,10 @@ sub open_with_encode {
     my $fh;
 
     if ($^O eq 'MSWin32') {
-        use Win32::Unicode::File;
+        require Win32::Unicode::File;
+        import Win32::Unicode::File;
         my $fh = Win32::Unicode::File->new;
-        Win32::Unicode::File::open $fh, $mode, $filename or die "Can't open file: $!";
+        open $fh, $mode, $filename or die "Can't open file: $!";
         return $fh;
     }
     else {
