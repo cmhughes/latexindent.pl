@@ -1,0 +1,26 @@
+% \section{Implementation}
+% 
+% \subsection{Executind default options}
+% We have some default options that need executing:
+% \begin{macrocode}
+\FamilyExecuteOptions{HsH}{%
+%<*!standalone>
+  fontsize=11pt,
+%<article>  parskip=never+,
+%<report>  parskip=half+,
+  headheight=2.15\baselineskip,
+%</!standalone>
+%<*article|report>
+  toc=listof,
+  toc=bibliography,
+%</article|report>
+  fontfamily=sans-serif,
+  linespacing=single,
+  faculty=none,
+%<*standalone>
+  margin=0.25cm,
+  multi=tikzpicture,
+  multi=circuitikz,
+%</standalone>
+}
+% \end{macrocode}
