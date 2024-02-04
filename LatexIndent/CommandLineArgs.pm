@@ -2,6 +2,10 @@ package LatexIndent::CommandLineArgs;
 
 use strict;
 use warnings;
+use feature qw( say state );
+use utf8;
+use Config      qw( %Config );
+use Encode      qw( decode encode );
 
 use Exporter qw/import/;
 our @EXPORT_OK = qw/commandlineargs_with_encode @new_args/;
@@ -9,13 +13,7 @@ our @EXPORT_OK = qw/commandlineargs_with_encode @new_args/;
 #https://stackoverflow.com/a/63868721
 #https://stackoverflow.com/a/44489228
 sub commandlineargs_with_encode{
-    use strict;
-    use warnings;
-    use feature qw( say state );
-    use utf8;
-    use Config      qw( %Config );
-    use Encode      qw( decode encode );
-    
+
     if ($^O eq 'MSWin32') {
     require Win32::API;
     import Win32::API qw( ReadMemory );
@@ -99,10 +97,9 @@ sub commandlineargs_with_encode{
 
 
         my $cmd_line = GetCommandLine();
-        #perl D:\rr\latexindent\latexindent\latexindent.pl 新建.tex -g issue-505.log -sl -l=localSettings.yaml -r -o=++
         our @new_args = $cmd_line;
-        $cmd_line =~ s/(^(.*?)\.pl )//g;
-        $cmd_line =~ s/(^(.*?)\.exe )//g;
+        $cmd_line =~ s/(^(.*?)\.pl\"? )//g;
+        $cmd_line =~ s/(^(.*?)\.exe\"? )//g;
         my $args = CommandLineToArgv($cmd_line) or die("CommandLineToArgv: $^E\n");
         @ARGV = @{$args};
     }

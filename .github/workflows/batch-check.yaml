@@ -146,12 +146,22 @@ jobs:
       - name: install Perl modules using cpan
         run: |
           wmic os get osarchitecture
-          cpanm -f PAR::Packer
+          cpanm -f PAR::Packer@1.061
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
           cpanm --force Win32::Unicode::File
           cpanm --force Win32::API
+      - name: rebuild and install PAR-Packer-ci
+      #https://github.com/rschupp/PAR-Packer/issues/84
+      #Issue #84: pass UTF-16 command line down to my_perl (using _wspawnvp)
+        run: |
+          cd PAR-Packer-ci
+          unzip PAR-Packer-ci.zip
+          cd PAR-Packer-ci
+          perl Makefile.PL
+          gmake
+          gmake install
       - name: preparations for PAR packer
         run: |
           sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
@@ -162,8 +172,9 @@ jobs:
       #
       - name: create latexindent.exe using PAR Packer
         run: >-
-          pp 
-          -M Win32::Unicode 
+          pp
+          -T
+          -M Win32::Unicode
           --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
           --cachedeps=scancache
           --output latexindent.exe
@@ -176,38 +187,25 @@ jobs:
         run: |
           ./latexindent.exe -l test-cases/replacements/issue-503b.yaml -r test-cases/replacements/issue-503a.tex 
           cat test-cases/replacements/indent.log
-      - name: latexindent.exe cjk test, issue 505
+      - name: latexindent.pl cjk test, issue 505
         # https://github.com/cmhughes/latexindent.pl/issues/505
         run: |
           perl ./latexindent.pl -w test-cases/back-up-tests/新建äö.tex -y 'onlyOneBackUp:1' 
           cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=+-mod1 -y 'onlyOneBackUp:1'
+          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=++ -y 'onlyOneBackUp:1'
           cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=+新建 -y 'onlyOneBackUp:1'
+          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=+-新建 -l="test-cases/back-up-tests/新建äö.yaml" -r -y 'onlyOneBackUp:1'
           cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -g="新建äö.log"
-          cat test-cases/back-up-tests/新建äö.log
-      - name: latexindent.exe cjk test, issue 505 --2
+          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -g="新建äö.log" -c="D:/新建"
+          cat D:/新建/新建äö.log
+      - name: latexindent.exe cjk test, issue 505
         # https://github.com/cmhughes/latexindent.pl/issues/505
-        #The character encoding of the command line that the Perl program packaged by PAR:: Packer can run needs to be within the range supported by ACP.
-        #ANSI code page 1252: ANSI Latin 1;  Western European see https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
-        
         run: |
-          ./latexindent.exe -w test-cases/back-up-tests/äöao.tex -y 'onlyOneBackUp:1' 
+          ./latexindent.exe -w test-cases/back-up-tests/新建äö.tex -y 'onlyOneBackUp:1' 
           cat test-cases/back-up-tests/indent.log
-          ./latexindent.exe test-cases/back-up-tests/äöao.tex -o=+-mod1 -y 'onlyOneBackUp:1'
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -o=++ -y 'onlyOneBackUp:1'
           cat test-cases/back-up-tests/indent.log
-          ./latexindent.exe test-cases/back-up-tests/äöao.tex -g="äöao.log"
-          cat test-cases/back-up-tests/äöao.log
-      - name: latexindent.exe cjk test, issue 505 --3
-        # https://github.com/cmhughes/latexindent.pl/issues/505
-        #The character encoding of the command line that the Perl program packaged by PAR:: Packer can run needs to be within the range supported by ACP.
-        #ANSI code page 1252: ANSI Latin 1;  Western European
-        #ANSI code page 936: ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312) see https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
-        run: |
-          ./latexindent.exe -w test-cases/back-up-tests/新建.tex -y 'onlyOneBackUp:1' 
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -o=+-新建 -l="test-cases/back-up-tests/新建äö.yaml" -r -y 'onlyOneBackUp:1'
           cat test-cases/back-up-tests/indent.log
-          ./latexindent.exe test-cases/back-up-tests/新建.tex -o=+-mod1 -y 'onlyOneBackUp:1'
-          cat test-cases/back-up-tests/indent.log
-          ./latexindent.exe test-cases/back-up-tests/新建.tex -g="新建.log"
-          cat test-cases/back-up-tests/新建.log
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -g="新建äö.log" -c="D:/新建"
+          cat D:/新建/新建äö.log

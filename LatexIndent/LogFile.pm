@@ -30,7 +30,7 @@ our $logger;
 use utf8;
 binmode(STDOUT, ":encoding(utf8)");
 
-use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
 
 our $consoleOutCP;
 if ($^O eq 'MSWin32') {
@@ -148,8 +148,8 @@ ENDQUOTE
     my $cruftDirectoryCreation = 0;
 
     # if cruft directory does not exist, create it
-    if ( !( -d ${$self}{cruftDirectory} ) ) {
-        eval { make_path( ${$self}{cruftDirectory} ) };
+    if ( !( isdir_with_encode( ${$self}{cruftDirectory} ) ) ) {
+        eval { mkdir_with_encode( ${$self}{cruftDirectory} ) };
         if ($@) {
             $logger->fatal( "*Could not create cruft directory " . ${$self}{cruftDirectory} );
             $logger->fatal("Exiting, no indentation done.");
