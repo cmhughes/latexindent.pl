@@ -1,0 +1,9 @@
+verbatimEnvironments:
+  verbatim: 1
+  lstlisting: 1
+  minted: 1
+  codebox: 1
+
+modifyLineBreaks:
+  textWrapOptions:
+    columns: 40

@@ -168,6 +168,11 @@ jobs:
         run: |
           ./latexindent.exe -l test-cases/replacements/issue-503b.yaml -r test-cases/replacements/issue-503a.tex 
           cat test-cases/replacements/indent.log
+      - name: latexindent.exe one-sentence-per-line test, issue 514
+        # https://github.com/cmhughes/latexindent.pl/issues/514
+        run: |
+          ./latexindent.exe -m -l test-cases/oneSentencePerLine/issue-514.yaml test-cases/oneSentencePerLine/issue-514.tex
+          cat test-cases/oneSentencePerLine/indent.log
       ### - name: latexindent.exe cjk test, issue 505
       ###   # https://github.com/cmhughes/latexindent.pl/issues/505
       ###   run: |

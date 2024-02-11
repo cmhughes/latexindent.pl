@@ -1,0 +1,5 @@
+
+modifyLineBreaks:
+    oneSentencePerLine:
+        manipulateSentences: 1 # perform the sentence manipulation routine
+        removeSentenceLineBreaks: 0 # keep existing sentence line breaks

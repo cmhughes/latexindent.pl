@@ -204,6 +204,8 @@ ENDQUOTE
     $logger->info("-c|--cruft: cruft directory")                                    if ( $switches{cruftDirectory} );
     $logger->info("-r|--replacement: replacement mode")                             if ( $switches{replacement} );
     $logger->info("-rr|--onlyreplacement: *only* replacement mode, no indentation") if ( $switches{onlyreplacement} );
+    $logger->info("-rv|--replacementrespectverb replacement mode, respecting verbatim")
+        if ( $switches{replacementRespectVerb} );
     $logger->info("-k|--check mode: will exit with 0 if document body unchanged, 1 if changed") if ( $switches{check} );
     $logger->info("-kv|--check mode verbose: as in check mode, but outputs diff to screen")
         if ( $switches{checkverbose} );
