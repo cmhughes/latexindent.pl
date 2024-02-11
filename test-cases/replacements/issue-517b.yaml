@@ -1,0 +1,14 @@
+specialBeginEnd:
+  preamble:
+    begin: \\documentclass
+    end: \\begin\{document\}
+    lookForThis: verbatim
+
+replacements:
+  -
+    substitution: |-
+      s/
+        (?<!\\) \\l?Vert           
+                   \s* (?P<content> .+? ) \s* 
+                   (?<!\\) \\r?Vert           
+       /\\norm{$+{content}}/sgx   

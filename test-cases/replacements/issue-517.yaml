@@ -1,0 +1,10 @@
+indentPreamble: 0
+
+replacements:
+  -
+    substitution: |-
+      s/
+        (?<!\\) \\l?Vert
+        \s* (?P<content> .+? ) \s*
+        (?<!\\) \\r?Vert
+      /\\norm{$+{content}}/sgx
