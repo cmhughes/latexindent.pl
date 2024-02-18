@@ -16,7 +16,7 @@ sub copy_with_encode {
     if ($^O eq 'MSWin32') {
         require Win32::Unicode::File;
         Win32::Unicode::File->import(qw(copyW));
-        copyW( $source, $destination );
+        copyW( $source, $destination, 1 );
     }
     else {
         copy( $source, $destination );

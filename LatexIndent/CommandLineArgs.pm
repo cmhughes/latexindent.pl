@@ -19,34 +19,34 @@ sub commandlineargs_with_encode{
     import Win32::API qw( ReadMemory );
     #use open ':std', ':encoding('.do { require Win32; "cp".Win32::GetConsoleOutputCP() }.')'; 
 
-    use constant PTR_SIZE => $Config{ptrsize};
+    use constant ptr_size => $Config{ptrsize};
 
-    use constant PTR_PACK_FORMAT =>
-          PTR_SIZE == 8 ? 'Q'
-        : PTR_SIZE == 4 ? 'L'
+    use constant ptr_pack_format =>
+          ptr_size == 8 ? 'Q'
+        : ptr_size == 4 ? 'L'
         : die("Unrecognized ptrsize\n");
 
-    use constant PTR_WIN32API_TYPE =>
-          PTR_SIZE == 8 ? 'Q'
-        : PTR_SIZE == 4 ? 'N'
+    use constant ptr_win32api_type =>
+          ptr_size == 8 ? 'Q'
+        : ptr_size == 4 ? 'N'
         : die("Unrecognized ptrsize\n");
 
 
-    sub lstrlenW {
+    sub lstrlenw {
         my ($ptr) = @_;
 
-        state $lstrlenW = Win32::API->new('kernel32', 'lstrlenW', PTR_WIN32API_TYPE, 'i')
+        state $lstrlenw = Win32::API->new('kernel32', 'lstrlenW', ptr_win32api_type, 'i')
             or die($^E);
 
-        return $lstrlenW->Call($ptr);
+        return $lstrlenw->Call($ptr);
     }
 
 
-    sub decode_LPCWSTR {
+    sub decode_lpcwstr {
         my ($ptr) = @_;
         return undef if !$ptr;
 
-        my $num_chars = lstrlenW($ptr)
+        my $num_chars = lstrlenw($ptr)
             or return '';
 
         return decode('UTF-16le', ReadMemory($ptr, $num_chars * 2));
@@ -54,53 +54,52 @@ sub commandlineargs_with_encode{
 
 
     # Returns true on success. Returns false and sets $^E on error.
-    sub LocalFree {
+    sub localfree {
         my ($ptr) = @_;
 
-        state $LocalFree = Win32::API->new('kernel32', 'LocalFree', PTR_WIN32API_TYPE, PTR_WIN32API_TYPE)
+        state $localfree = Win32::API->new('kernel32', 'LocalFree', ptr_win32api_type, ptr_win32api_type)
             or die($^E);
 
-        return $LocalFree->Call($ptr) == 0;
+        return $localfree->Call($ptr) == 0;
     }
 
 
-    sub GetCommandLine {
-        state $GetCommandLine = Win32::API->new('kernel32', 'GetCommandLineW', '', PTR_WIN32API_TYPE)
+    sub getcommandline {
+        state $getcommandline = Win32::API->new('kernel32', 'GetCommandLineW', '', ptr_win32api_type)
             or die($^E);
 
-        return decode_LPCWSTR($GetCommandLine->Call());
+        return decode_lpcwstr($getcommandline->Call());
     }
 
 
     # Returns a reference to an array on success. Returns undef and sets $^E on error.
-    sub CommandLineToArgv {
+    sub commandlinetoargv {
         my ($cmd_line) = @_;
 
-        state $CommandLineToArgv = Win32::API->new('shell32', 'CommandLineToArgvW', 'PP', PTR_WIN32API_TYPE)
+        state $commandlinetoargv = Win32::API->new('shell32', 'CommandLineToArgvW', 'PP', ptr_win32api_type)
             or die($^E);
 
         my $cmd_line_encoded = encode('UTF-16le', $cmd_line."\0");
         my $num_args_buf = pack('i', 0);  # Allocate space for an "int".
 
-        my $arg_ptrs_ptr = $CommandLineToArgv->Call($cmd_line_encoded, $num_args_buf)
+        my $arg_ptrs_ptr = $commandlinetoargv->Call($cmd_line_encoded, $num_args_buf)
             or return undef;
 
         my $num_args = unpack('i', $num_args_buf);
         my @args =
-            map { decode_LPCWSTR($_) }
-                unpack PTR_PACK_FORMAT.'*',
-                    ReadMemory($arg_ptrs_ptr, PTR_SIZE * $num_args);
+            map { decode_lpcwstr($_) }
+                unpack ptr_pack_format.'*',
+                    ReadMemory($arg_ptrs_ptr, ptr_size * $num_args);
 
-        LocalFree($arg_ptrs_ptr);
+        localfree($arg_ptrs_ptr);
         return \@args;
     }
 
-
-        my $cmd_line = GetCommandLine();
+        my $cmd_line = getcommandline();
         our @new_args = $cmd_line;
         $cmd_line =~ s/(^(.*?)\.pl\"? )//g;
         $cmd_line =~ s/(^(.*?)\.exe\"? )//g;
-        my $args = CommandLineToArgv($cmd_line) or die("CommandLineToArgv: $^E\n");
+        my $args = commandlinetoargv($cmd_line) or die("CommandLineToArgv: $^E\n");
         @ARGV = @{$args};
     }
     else {
@@ -108,7 +107,6 @@ sub commandlineargs_with_encode{
         @ARGV = map { decode($encodingObject, $_) } @ARGV;
         our @new_args = @ARGV;
     }
-
 }
 
 1;

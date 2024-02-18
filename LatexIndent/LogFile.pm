@@ -24,23 +24,13 @@ use Exporter              qw/import/;
 use LatexIndent::Switches qw/%switches/;
 use LatexIndent::Version  qw/$versionNumber $versionDate/;
 use Encode                qw/decode/;
-our @EXPORT_OK = qw/process_switches $logger $consoleOutCP/;
+our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 
 use utf8;
 binmode(STDOUT, ":encoding(utf8)");
 
 use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
-
-our $consoleOutCP;
-if ($^O eq 'MSWin32') {
-    require Win32;
-    import Win32;
-    $consoleOutCP = Win32::GetConsoleOutputCP();
-    print "INFO:  Current console output code page: $consoleOutCP \n";
-    Win32::SetConsoleOutputCP(65001);
-    print "INFO:  Change the Current console output code page to 65001\n";
-}
 
 sub process_switches {
 
