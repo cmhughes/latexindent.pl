@@ -1,0 +1,56 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+
+\usepackage[left=30mm, top=20mm, right=15mm, bottom=20mm]{geometry}
+\usepackage{titlesec}
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\linespread{1.5}
+\usepackage{enumitem}
+\setlist{nolistsep}
+
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{graphicx} 
+\usepackage{tabularx, longtable} 
+\usepackage{listings} 
+\usepackage{hyperref}
+\usepackage{csquotes}
+\usepackage[backend=biber, style=gost-numeric]{biblatex} 
+
+\addbibresource{references.bib} 
+
+\titleformat{\section}[block]{\bfseries\normalsize}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\bfseries\normalsize}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}[block]{\bfseries\normalsize}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+\title{Название}
+\author{Имя Фамилия}
+\date{2023}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Введение}
+\subsection{Актуальность}
+Текст Введения очень долгий и длинный который повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется повторяется 
+
+\section{Основная часть}
+\subsection{Раздел 1}
+Текст\dots
+
+\subsection{Раздел 2}
+Текст\dots
+
+\section{Заключение}
+Текст заключения\dots
+
+\printbibliography{}
+
+\end{document}
