@@ -1,0 +1,12 @@
+defaultIndent: " "
+indentAfterItems:
+  outline: 1
+
+indentRules:      # <!---- NEW 
+  1: "   "        # <!---- NEW 
+  2: "   "        # <!---- NEW 
+
+itemNames:
+  1: 1
+  2: 1
+  3: 1
