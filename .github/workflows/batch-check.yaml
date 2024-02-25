@@ -146,19 +146,20 @@ jobs:
       - name: install Perl modules using cpan
         run: |
           wmic os get osarchitecture
-          cpanm -f PAR::Packer@1.061
+          cpanm -f PAR::Packer
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
           cpanm --force Win32::Unicode::File
           cpanm --force Win32::API
-      - name: rebuild and install PAR-Packer-ci
+      - name: rebuild and install PAR-Packer-master
+      #If the version number of PAR::Packer does not exceed 1.061, it is necessary to rebuild and install PAR-Packer-master
       #https://github.com/rschupp/PAR-Packer/issues/84
       #Issue #84: pass UTF-16 command line down to my_perl (using _wspawnvp)
         run: |
-          cd PAR-Packer-ci
-          unzip PAR-Packer-ci.zip
-          cd PAR-Packer-ci
+          Invoke-WebRequest -Uri https://github.com/rschupp/PAR-Packer/archive/refs/heads/master.zip -OutFile PAR-Packer-master.zip
+          unzip PAR-Packer-master.zip
+          cd PAR-Packer-master
           perl Makefile.PL
           gmake
           gmake install

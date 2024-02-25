@@ -26,7 +26,7 @@ use Exporter qw/import/;
 use Encode   qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
-use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 # copy main file to a backup in the case of the overwrite switch being active

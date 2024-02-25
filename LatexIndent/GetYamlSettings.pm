@@ -34,7 +34,7 @@ our $defaultSettings;
 # master yaml settings is a hash, global to this module
 our %mainSettings;
 
-use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 # previously found settings is a hash, global to this module

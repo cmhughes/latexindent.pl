@@ -31,7 +31,7 @@ use utf8;
 use Encode   qw/ encode decode find_encoding /;
 
 use LatexIndent::LogFile         qw/$logger/;
-use LatexIndent::CommandLineArgs qw/commandlineargs_with_encode @new_args/;
+use LatexIndent::CmdLineArgsFileOperation qw/commandlineargs_with_encode @new_args/;
 
 commandlineargs_with_encode();
 my $commandlineargs= join(", ", @ARGV);

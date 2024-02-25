@@ -30,7 +30,7 @@ our $logger;
 use utf8;
 binmode(STDOUT, ":encoding(utf8)");
 
-use LatexIndent::FileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
 
 sub process_switches {
 
