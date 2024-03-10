@@ -193,17 +193,6 @@ jobs:
         run: |
           ./latexindent.exe -m -l test-cases/oneSentencePerLine/issue-514.yaml test-cases/oneSentencePerLine/issue-514.tex
           cat test-cases/oneSentencePerLine/indent.log
-      - name: latexindent.pl cjk test, issue 505
-        # https://github.com/cmhughes/latexindent.pl/issues/505
-        run: |
-          perl ./latexindent.pl -w test-cases/back-up-tests/新建äö.tex -y 'onlyOneBackUp:1' 
-          cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=++ -y 'onlyOneBackUp:1'
-          cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -o=+-新建 -l="test-cases/back-up-tests/新建äö.yaml" -r -y 'onlyOneBackUp:1'
-          cat test-cases/back-up-tests/indent.log
-          perl ./latexindent.pl test-cases/back-up-tests/新建äö.tex -g="新建äö.log" -c="D:/新建"
-          cat D:/新建/新建äö.log
       - name: latexindent.exe cjk test, issue 505
         # https://github.com/cmhughes/latexindent.pl/issues/505
         run: |

@@ -19,6 +19,7 @@ use strict;
 use warnings;
 use Data::Dumper;
 use File::Basename;    # to get the filename and directory path
+
 #use open ':std', ':encoding(UTF-8)';
 use Encode qw/decode/;
 
@@ -73,7 +74,8 @@ use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHead
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 use LatexIndent::Preamble;
 
-use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::UTF8CmdLineArgsFileOperation
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 sub new {
@@ -270,9 +272,10 @@ sub output_logfile {
         if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
 
     # open log file
-    my $logfileName = $switches{logFileName} || "indent.log";
+    my $logfileName     = $switches{logFileName} || "indent.log";
     my $logfilePossible = 1;
-    my $logfile = open_with_encode( '>:encoding(UTF-8)', "${$self}{cruftDirectory}/$logfileName" ) or $logfilePossible = 0;
+    my $logfile         = open_with_encode( '>:encoding(UTF-8)', "${$self}{cruftDirectory}/$logfileName" )
+        or $logfilePossible = 0;
 
     if ($logfilePossible) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {

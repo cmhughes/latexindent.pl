@@ -18,6 +18,7 @@ package LatexIndent::FileExtension;
 use strict;
 use warnings;
 use PerlIO::encoding;
+
 #use open ':std', ':encoding(UTF-8)';
 use File::Basename;    # to get the filename and directory path
 use Exporter                     qw/import/;
@@ -27,7 +28,8 @@ use LatexIndent::Switches        qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
 
-use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::UTF8CmdLineArgsFileOperation
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 sub file_extension_check {
@@ -94,7 +96,7 @@ sub file_extension_check {
         }
         else {
             # if the file has a recognised extension, check that the file exists
-            unless ( exist_with_encode( $fileName ) ) {
+            unless ( exist_with_encode($fileName) ) {
                 if ( defined ${$self}{multipleFiles} ) {
                     $logger->warn("*I couldn't find $fileName, are you sure it exists?");
                     $logger->warn("moving on, no indentation done for ${$self}{fileName}.");
@@ -146,8 +148,7 @@ sub file_extension_check {
 
         # if there is no extension, then add the extension from the file to be operated upon
         if ( !$ext ) {
-            $logger->info(
-                "-o switch called with file name without extension: " . $switches{outputToFile} );
+            $logger->info( "-o switch called with file name without extension: " . $switches{outputToFile} );
             ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
 
             $logger->info(
@@ -164,7 +165,7 @@ sub file_extension_check {
             my $outputFileCounter = 0;
             my $fileName          = $name . $outputFileCounter . "." . $strippedFileExtension;
             $logger->info("will search for existence and increment counter, starting with $fileName");
-            while ( exist_with_encode( $fileName ) ) {
+            while ( exist_with_encode($fileName) ) {
                 $logger->info("$fileName exists, incrementing counter");
                 $outputFileCounter++;
                 $fileName = $name . $outputFileCounter . "." . $strippedFileExtension;
@@ -178,7 +179,7 @@ sub file_extension_check {
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        my $MAINFILE = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE         = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");

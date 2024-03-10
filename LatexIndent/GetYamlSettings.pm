@@ -34,7 +34,8 @@ our $defaultSettings;
 # master yaml settings is a hash, global to this module
 our %mainSettings;
 
-use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::UTF8CmdLineArgsFileOperation
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 # previously found settings is a hash, global to this module
@@ -351,11 +352,11 @@ sub yaml_read_settings {
         $_ = $_;
 
         # check for existence and non-emptiness
-        if ( exist_with_encode( $_ )  and !( zero_with_encode( $_ ) ) ) {
+        if ( exist_with_encode($_) and !( zero_with_encode($_) ) ) {
             $logger->info("Adding $_ to YAML read paths");
             push( @absPaths, "$_" );
         }
-        elsif ( !( exist_with_encode( $_ ) ) ) {
+        elsif ( !( exist_with_encode($_) ) ) {
             if ((       $_ =~ m/localSettings|latexindent/s
                     and !( -e 'localSettings.yaml' )
                     and !( -e '.localSettings.yaml' )
@@ -377,9 +378,9 @@ sub yaml_read_settings {
     foreach my $settings (@absPaths) {
 
         # check that the settings file exists and that it isn't empty
-        if ( exist_with_encode( $settings ) and !( zero_with_encode( $settings ) ) ) {
+        if ( exist_with_encode($settings) and !( zero_with_encode($settings) ) ) {
             $logger->info("Reading USER settings from $settings");
-            $userSettings = read_yaml_with_encode( "$settings" );
+            $userSettings = read_yaml_with_encode("$settings");
 
             # if we can read userSettings
             if ($userSettings) {
@@ -517,7 +518,7 @@ sub yaml_read_settings {
         else {
             # otherwise keep going, but put a warning in the log file
             $logger->warn("*$homeDir/indentconfig.yaml");
-            if ( zero_with_encode( $settings ) ) {
+            if ( zero_with_encode($settings) ) {
                 $logger->info("specifies $settings but this file is EMPTY -- not reading from it");
             }
             else {

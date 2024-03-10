@@ -26,7 +26,8 @@ use Exporter qw/import/;
 use Encode   qw/decode/;
 our @EXPORT_OK = qw/create_back_up_file check_if_different/;
 
-use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use LatexIndent::UTF8CmdLineArgsFileOperation
+    qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
 use utf8;
 
 # copy main file to a backup in the case of the overwrite switch being active
@@ -86,7 +87,7 @@ sub create_back_up_file {
 
     # if the backup file already exists, output some information in the log file
     # and proceed to cycleThroughBackUps if the latter is set
-    if ( exist_with_encode( $backupFile ) ) {
+    if ( exist_with_encode($backupFile) ) {
         if ($onlyOneBackUp) {
             $logger->info("$backupFile will be overwritten (see onlyOneBackUp)");
         }
@@ -108,7 +109,7 @@ sub create_back_up_file {
                     $newBackupFile = $backupFileNoExt . $backupExtension . ( $i - 1 );
 
                     # check that the oldBackupFile exists
-                    if ( exist_with_encode( $oldBackupFile ) ) {
+                    if ( exist_with_encode($oldBackupFile) ) {
                         $logger->info("Copying $oldBackupFile to $newBackupFile...");
                         if ( !( copy_with_encode( $oldBackupFile, $newBackupFile ) ) ) {
                             $logger->fatal("*Could not write to backup file $newBackupFile. Please check permissions.");
