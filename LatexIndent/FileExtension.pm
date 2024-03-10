@@ -18,7 +18,7 @@ package LatexIndent::FileExtension;
 use strict;
 use warnings;
 use PerlIO::encoding;
-use open ':std', ':encoding(UTF-8)';
+#use open ':std', ':encoding(UTF-8)';
 use File::Basename;    # to get the filename and directory path
 use Exporter                     qw/import/;
 use Encode                       qw/decode/;
@@ -26,6 +26,9 @@ use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/%switches $is_check_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK = qw/file_extension_check/;
+
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use utf8;
 
 sub file_extension_check {
     my $self = shift;
@@ -59,7 +62,7 @@ sub file_extension_check {
 
             # loop through the known file extensions (see @fileExtensions)
             foreach (@fileExtensions) {
-                if ( -e $fileName . $_ ) {
+                if ( exist_with_encode( $fileName . $_ ) ) {
                     $logger->info("$fileName$_ found!");
                     $fileName .= $_;
                     $logger->info("Updated fileName to $fileName");
@@ -91,7 +94,7 @@ sub file_extension_check {
         }
         else {
             # if the file has a recognised extension, check that the file exists
-            unless ( -e $fileName ) {
+            unless ( exist_with_encode( $fileName ) ) {
                 if ( defined ${$self}{multipleFiles} ) {
                     $logger->warn("*I couldn't find $fileName, are you sure it exists?");
                     $logger->warn("moving on, no indentation done for ${$self}{fileName}.");
@@ -120,7 +123,7 @@ sub file_extension_check {
         # note, related:
         #
         #   git config --add core.quotePath false
-        ${$self}{outputToFile} = decode( "utf-8", $switches{outputToFile} );
+        ${$self}{outputToFile} = $switches{outputToFile};
 
         if ( $fileName eq "-" and $switches{outputToFile} =~ m/^\+/ ) {
             $logger->info("STDIN input mode active, -o switch is removing all + symbols");
@@ -130,7 +133,7 @@ sub file_extension_check {
         # the -o file name might begin with a + symbol
         if ( $switches{outputToFile} =~ m/^\+(.*)/ and $1 ne "+" ) {
             $logger->info("-o switch called with + symbol at the beginning: ${$self}{outputToFile}");
-            ${$self}{outputToFile} = decode( "utf-8", ${$self}{baseName} . $1 );
+            ${$self}{outputToFile} = ${$self}{baseName} . $1;
             $logger->info("output file is now: ${$self}{outputToFile}");
         }
 
@@ -144,8 +147,9 @@ sub file_extension_check {
         # if there is no extension, then add the extension from the file to be operated upon
         if ( !$ext ) {
             $logger->info(
-                "-o switch called with file name without extension: " . decode( "utf-8", $switches{outputToFile} ) );
+                "-o switch called with file name without extension: " . $switches{outputToFile} );
             ${$self}{outputToFile} = $name . ( $name =~ m/\.\z/ ? q() : "." ) . $strippedFileExtension;
+
             $logger->info(
                 "Updated to ${$self}{outputToFile} as the file extension of the input file is $strippedFileExtension");
         }
@@ -160,7 +164,7 @@ sub file_extension_check {
             my $outputFileCounter = 0;
             my $fileName          = $name . $outputFileCounter . "." . $strippedFileExtension;
             $logger->info("will search for existence and increment counter, starting with $fileName");
-            while ( -e $fileName ) {
+            while ( exist_with_encode( $fileName ) ) {
                 $logger->info("$fileName exists, incrementing counter");
                 $outputFileCounter++;
                 $fileName = $name . $outputFileCounter . "." . $strippedFileExtension;
@@ -174,7 +178,7 @@ sub file_extension_check {
     my @lines;
     if ( $fileName ne "-" ) {
         my $openFilePossible = 1;
-        open( MAINFILE, $fileName ) or ( $openFilePossible = 0 );
+        my $MAINFILE = open_with_encode( '<:encoding(UTF-8)', $fileName ) or ( $openFilePossible = 0 );
         if ( $openFilePossible == 0 ) {
             if ( defined ${$self}{multipleFiles} ) {
                 $logger->warn("*$fileName exists, but could not open it");
@@ -188,8 +192,8 @@ sub file_extension_check {
                 exit(4);
             }
         }
-        push( @lines, $_ ) while (<MAINFILE>);
-        close(MAINFILE);
+        push( @lines, $_ ) while (<$MAINFILE>);
+        close($MAINFILE);
     }
     else {
         push( @lines, $_ ) while (<>);

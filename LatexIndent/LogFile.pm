@@ -27,6 +27,11 @@ use Encode                qw/decode/;
 our @EXPORT_OK = qw/process_switches $logger/;
 our $logger;
 
+use utf8;
+binmode(STDOUT, ":encoding(utf8)");
+
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
+
 sub process_switches {
 
     # -v switch is just to show the version number
@@ -133,10 +138,10 @@ ENDQUOTE
     my $cruftDirectoryCreation = 0;
 
     # if cruft directory does not exist, create it
-    if ( !( -d ${$self}{cruftDirectory} ) ) {
-        eval { make_path( ${$self}{cruftDirectory} ) };
+    if ( !( isdir_with_encode( ${$self}{cruftDirectory} ) ) ) {
+        eval { mkdir_with_encode( ${$self}{cruftDirectory} ) };
         if ($@) {
-            $logger->fatal( "*Could not create cruft directory " . decode( "utf-8", ${$self}{cruftDirectory} ) );
+            $logger->fatal( "*Could not create cruft directory " . ${$self}{cruftDirectory} );
             $logger->fatal("Exiting, no indentation done.");
             $self->output_logfile();
             exit(6);
@@ -147,7 +152,7 @@ ENDQUOTE
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
         . ( $switches{logFileName} || "indent.log" );
 
-    $logfileName = decode( "utf-8", $logfileName );
+    $logfileName = $logfileName;
 
     # details of the script to log file
     $logger->info("*$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
@@ -255,7 +260,7 @@ ENDQUOTE
     }
 
     $logger->info("*Directory for backup files and $logfileName:");
-    $logger->info( $switches{cruftDirectory} ? decode( "utf-8", ${$self}{cruftDirectory} ) : ${$self}{cruftDirectory} );
+    $logger->info( $switches{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
     $logger->info("cruft directory creation: ${$self}{cruftDirectory}") if $cruftDirectoryCreation;
 
     # output location of modules

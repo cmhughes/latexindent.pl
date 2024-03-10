@@ -27,6 +27,15 @@ use Getopt::Long;    # to get the switches/options/flags
 use lib $FindBin::RealBin;
 use LatexIndent::Document;
 
+use utf8;
+use Encode   qw/ encode decode find_encoding /;
+
+use LatexIndent::LogFile         qw/$logger/;
+use LatexIndent::CmdLineArgsFileOperation qw/commandlineargs_with_encode @new_args/;
+
+commandlineargs_with_encode();
+my $commandlineargs= join(", ", @ARGV);
+
 # get the options
 my %switches = ( readLocalSettings => 0 );
 
@@ -55,6 +64,32 @@ GetOptions(
     "lines|n=s"                 => \$switches{lines},
     "GCString"                  => \$switches{GCString},
 );
+
+$logger = LatexIndent::Logger->new();
+our $consoleoutcp;
+if ($^O eq 'MSWin32') {
+    require Win32;
+    import Win32;
+
+    my $encoding_sys = Win32::GetACP(); #https://stackoverflow.com/a/63868721HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\CodePage
+    $consoleoutcp = Win32::GetConsoleOutputCP();
+    Win32::SetConsoleOutputCP(65001);
+
+    $logger->info("*ANSI Code Page: $encoding_sys");
+    if ($switches{screenlog}) {
+        print "INFO:  ANSI Code Page:  $encoding_sys\n"; #The values of ACP in the registry 
+        print "INFO:  Current console output code page: $consoleoutcp \n";
+        print "INFO:  Change the current console output code page to 65001\n";
+    }
+}
+
+if ($switches{screenlog}) {
+    $logger->info("*Command line:");
+    $logger->info("@new_args");
+    $logger->info("Command line arguments:\n" . $commandlineargs );
+    print "INFO:  Command line:\n       @new_args\n";
+    print "       Command line arguments:\n       " . $commandlineargs . "\n\n";
+}
 
 # conditionally load the GCString module
 eval "use Unicode::GCString" if $switches{GCString};
@@ -86,4 +121,11 @@ my $document = bless(
     "LatexIndent::Document"
 );
 $document->latexindent( \@ARGV );
+
+if ($^O eq 'MSWin32') {
+    Win32::SetConsoleOutputCP($consoleoutcp);
+    if ($switches{screenlog}) {
+        print "\n\nINFO:  Restore the console output code page: $consoleoutcp\n";
+    }
+}
 exit(0);

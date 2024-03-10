@@ -34,6 +34,9 @@ our $defaultSettings;
 # master yaml settings is a hash, global to this module
 our %mainSettings;
 
+use LatexIndent::CmdLineArgsFileOperation qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;
+use utf8;
+
 # previously found settings is a hash, global to this module
 our %previouslyFoundSettings;
 
@@ -344,14 +347,15 @@ sub yaml_read_settings {
         }
 
         # diacritics in YAML names (highlighted in https://github.com/cmhughes/latexindent.pl/pull/439)
-        $_ = decode( "utf-8", $_ );
+        #$_ = decode( "utf-8", $_ );
+        $_ = $_;
 
         # check for existence and non-emptiness
-        if ( ( -e $_ ) and !( -z $_ ) ) {
+        if ( exist_with_encode( $_ )  and !( zero_with_encode( $_ ) ) ) {
             $logger->info("Adding $_ to YAML read paths");
             push( @absPaths, "$_" );
         }
-        elsif ( !( -e $_ ) ) {
+        elsif ( !( exist_with_encode( $_ ) ) ) {
             if ((       $_ =~ m/localSettings|latexindent/s
                     and !( -e 'localSettings.yaml' )
                     and !( -e '.localSettings.yaml' )
@@ -373,9 +377,9 @@ sub yaml_read_settings {
     foreach my $settings (@absPaths) {
 
         # check that the settings file exists and that it isn't empty
-        if ( -e $settings and !( -z $settings ) ) {
+        if ( exist_with_encode( $settings ) and !( zero_with_encode( $settings ) ) ) {
             $logger->info("Reading USER settings from $settings");
-            $userSettings = YAML::Tiny->read("$settings");
+            $userSettings = read_yaml_with_encode( "$settings" );
 
             # if we can read userSettings
             if ($userSettings) {
@@ -513,7 +517,7 @@ sub yaml_read_settings {
         else {
             # otherwise keep going, but put a warning in the log file
             $logger->warn("*$homeDir/indentconfig.yaml");
-            if ( -z $settings ) {
+            if ( zero_with_encode( $settings ) ) {
                 $logger->info("specifies $settings but this file is EMPTY -- not reading from it");
             }
             else {
