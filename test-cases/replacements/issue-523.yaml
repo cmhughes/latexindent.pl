@@ -1,0 +1,4 @@
+replacements:
+  - 
+   substitution: |-
+     s/(\\par)(\h+)(\H)/$1\n$3/sg
