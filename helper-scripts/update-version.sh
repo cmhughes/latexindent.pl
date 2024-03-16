@@ -44,10 +44,10 @@
 #        - <upload latexindent.zip to ctan>
 
 minorVersion=0
-oldVersion='3.23.5'
-newVersion='3.23.6'
-oldDate='2024-01-01'
-newDate='2024-01-17'
+oldVersion='3.23.6'
+newVersion='3.23.7'
+oldDate='2024-01-17'
+newDate='2024-03-16'
 updateVersion=0
 gitMode=0
 
