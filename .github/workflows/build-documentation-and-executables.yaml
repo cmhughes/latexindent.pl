@@ -86,6 +86,19 @@ jobs:
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
+          cpanm --force Win32::Unicode::File
+          cpanm --force Win32::API
+      - name: rebuild and install PAR-Packer-master
+      #If the version number of PAR::Packer does not exceed 1.061, it is necessary to rebuild and install PAR-Packer-master
+      #https://github.com/rschupp/PAR-Packer/issues/84
+      #Issue #84: pass UTF-16 command line down to my_perl (using _wspawnvp)
+        run: |
+          Invoke-WebRequest -Uri https://github.com/rschupp/PAR-Packer/archive/refs/heads/master.zip -OutFile PAR-Packer-master.zip
+          unzip PAR-Packer-master.zip
+          cd PAR-Packer-master
+          perl Makefile.PL
+          gmake
+          gmake install
       - name: preparations for PAR packer
         run: |
           sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
@@ -96,7 +109,9 @@ jobs:
       #
       - name: create latexindent.exe using PAR Packer
         run: >-
-          pp 
+          pp
+          -T
+          -M Win32::Unicode
           --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
           --cachedeps=scancache
           --output latexindent.exe
@@ -363,7 +378,7 @@ jobs:
           mv cmh01 latexindent-release.md
           cat latexindent-release.md
       - name: latexindent.pl release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           body_path: latexindent-release.md
           files: |

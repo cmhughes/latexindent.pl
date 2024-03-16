@@ -162,6 +162,8 @@ latexindent.pl -s issue-419c -m -o=+-mod7 -l=issue-419f.yaml
 latexindent.pl -s issue-463 -m -o=+-mod1 -l=manipulateSentences.yaml
 latexindent.pl -s issue-463 -m -o=+-mod2 -l=issue-419b.yaml
 
+latexindent.pl -s issue-514 -m -o=+-mod1 -l=issue-514.yaml
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
 

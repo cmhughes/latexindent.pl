@@ -1,0 +1,15 @@
+defaultIndent: "  "
+
+noAdditionalIndent:
+  document: 0
+
+indentAfterHeadings:
+  section:
+    indentAfterThisHeading: 1
+    level: 3
+  subsection:
+    indentAfterThisHeading: 1
+    level: 4
+  subsection*:
+    indentAfterThisHeading: 0
+    level: 4

@@ -38,7 +38,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files, latexindent.pl
         id: changed-files
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v42
         with:
           files: |
             latexindent.pl
@@ -74,6 +74,7 @@ jobs:
         run: |
           cpanm YAML::Tiny
           cpanm File::HomeDir
+          cpanm Unicode::GCString
       # checkout github.com/cmhughes/latexindent.pl
       #
       # https://github.com/actions/checkout
@@ -91,7 +92,7 @@ jobs:
           sed -i.bak "s/checkgitdiff//" test-cases.sh
           ./test-cases.sh -s
       - name: Check for changed files in test-cases
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v42
         id: changed-files
         with:
           files: |

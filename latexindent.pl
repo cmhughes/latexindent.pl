@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-#   latexindent.pl, version 3.23.6, 2024-01-17
+#   latexindent.pl, version 3.23.7, 2024-03-16
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -26,6 +26,16 @@ use Getopt::Long;    # to get the switches/options/flags
 # use lib to make sure that @INC contains the latexindent directory
 use lib $FindBin::RealBin;
 use LatexIndent::Document;
+
+use utf8;
+use Encode qw/ encode decode find_encoding /;
+
+use LatexIndent::LogFile qw/$logger/;
+use LatexIndent::UTF8CmdLineArgsFileOperation
+  qw/commandlineargs_with_encode @new_args/;
+
+commandlineargs_with_encode();
+my $commandlineargs = join( ", ", @ARGV );
 
 # get the options
 my %switches = ( readLocalSettings => 0 );
@@ -55,6 +65,34 @@ GetOptions(
     "lines|n=s"                 => \$switches{lines},
     "GCString"                  => \$switches{GCString},
 );
+
+$logger = LatexIndent::Logger->new();
+our $consoleoutcp;
+if ( $FindBin::Script eq 'latexindent.exe' ) {
+    require Win32;
+    import Win32;
+
+    my $encoding_sys = Win32::GetACP()
+      ; #https://stackoverflow.com/a/63868721HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\CodePage
+    $consoleoutcp = Win32::GetConsoleOutputCP();
+    Win32::SetConsoleOutputCP(65001);
+
+    $logger->info("*ANSI Code Page: $encoding_sys");
+    if ( $switches{screenlog} ) {
+        print "INFO:  ANSI Code Page:  $encoding_sys\n"
+          ;    #The values of ACP in the registry
+        print "INFO:  Current console output code page: $consoleoutcp \n";
+        print "INFO:  Change the current console output code page to 65001\n";
+    }
+}
+
+if ( $switches{screenlog} ) {
+    $logger->info("*Command line:");
+    $logger->info("@new_args");
+    $logger->info( "Command line arguments:\n" . $commandlineargs );
+    print "INFO:  Command line:\n       @new_args\n";
+    print "       Command line arguments:\n       " . $commandlineargs . "\n\n";
+}
 
 # conditionally load the GCString module
 eval "use Unicode::GCString" if $switches{GCString};
@@ -86,4 +124,12 @@ my $document = bless(
     "LatexIndent::Document"
 );
 $document->latexindent( \@ARGV );
+
+if ( $FindBin::Script eq 'latexindent.exe' ) {
+    Win32::SetConsoleOutputCP($consoleoutcp);
+    if ( $switches{screenlog} ) {
+        print
+          "\n\nINFO:  Restore the console output code page: $consoleoutcp\n";
+    }
+}
 exit(0);

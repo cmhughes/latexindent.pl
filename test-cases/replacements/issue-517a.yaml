@@ -1,0 +1,12 @@
+replacements:
+  -
+    substitution: |-
+      s/
+        (.*?)(\\begin\{document.*)/
+        my $preamble = $1;                    # store preamble
+        my $body = $2;                        # store body
+        $body =~ s|(?<!\\) \\l?Vert           # 
+                   \s* (?P<content> .+? ) \s* # make substitutions
+                   (?<!\\) \\r?Vert           # on BODY
+                  |\\norm{$+{content}}|sgx;   # 
+        $preamble.$body;/esgx                 # reassemble

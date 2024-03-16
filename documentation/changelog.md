@@ -1,6 +1,9 @@
-<!-- announcement: further enhancement for replacement feature-->
+<!-- announcement: enhancement for UTF-named files in latexindent.exe-->
 
 # changelog.md
+## V3.23.7, March 16, 2024
+better support for UTF-named files in `latexindent.exe`, see [issue-505](https://github.com/cmhughes/latexindent.pl/issues/505) thanks to @ fengzyf
+
 ## V3.23.6, January 17, 2024
 further enhancement for replacement feature, see [issue-503](https://github.com/cmhughes/latexindent.pl/issues/503)
 

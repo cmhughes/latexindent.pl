@@ -81,5 +81,16 @@ latexindent.pl -s -l issue-503a.yaml -r issue-503.tex -o=+-mod2
 
 latexindent.pl -s -l issue-503b.yaml -r issue-503a.tex -o=+-mod1
 
+latexindent.pl -s -r -m -l issue-513.yaml issue-513.dtx -o=+-mod1
+latexindent.pl -s -r -m -l issue-513.yaml issue-513a.dtx -o=+-mod1
+latexindent.pl -s -m -r -l issue-513.yaml issue-513b.dtx -o=+-mod1
+
+latexindent.pl -s -l issue-517.yaml -r issue-517.tex -o=+-mod1
+latexindent.pl -s -l issue-517a.yaml -r issue-517.tex -o=+-mod2
+latexindent.pl -s -l issue-517b.yaml -rv issue-517.tex -o=+-mod3
+
+latexindent.pl -s -l issue-523.yaml -r issue-523.tex -o=+-mod1
+latexindent.pl -s -l issue-523a.yaml -m issue-523.tex -o=+-mod2
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

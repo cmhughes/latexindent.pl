@@ -29,8 +29,8 @@ name: Batch check of latexindent.pl
 
 on:
   push:
-    branches:
-      - develop
+    branches-ignore:
+      - main
 
 jobs:
   check-pm-files-changed:
@@ -50,7 +50,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v42
         id: changed-files
         with:
           files: |
@@ -102,7 +102,12 @@ jobs:
         with:
           perl-version: ${{ matrix.perl }}
           distribution: strawberry
-      - name: installing perl modules for latexindent.pl
+      - if: ${{ matrix.platform == 'windows-latest' }}
+        name: installing perl modules for latexindent.pl on windows-latest
+        run: |
+          cpanm --force Win32::Unicode::File
+          cpanm --force Win32::API
+      - name: installing perl modules for latexindent.pl 
         run: |
           cpanm YAML::Tiny
           cpanm -f File::HomeDir
@@ -145,6 +150,19 @@ jobs:
           cpanm YAML::Tiny
           cpanm File::HomeDir
           cpanm Unicode::GCString
+          cpanm --force Win32::Unicode::File
+          cpanm --force Win32::API
+      - name: rebuild and install PAR-Packer-master
+      #If the version number of PAR::Packer does not exceed 1.061, it is necessary to rebuild and install PAR-Packer-master
+      #https://github.com/rschupp/PAR-Packer/issues/84
+      #Issue #84: pass UTF-16 command line down to my_perl (using _wspawnvp)
+        run: |
+          Invoke-WebRequest -Uri https://github.com/rschupp/PAR-Packer/archive/refs/heads/master.zip -OutFile PAR-Packer-master.zip
+          unzip PAR-Packer-master.zip
+          cd PAR-Packer-master
+          perl Makefile.PL
+          gmake
+          gmake install
       - name: preparations for PAR packer
         run: |
           sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
@@ -155,7 +173,9 @@ jobs:
       #
       - name: create latexindent.exe using PAR Packer
         run: >-
-          pp 
+          pp
+          -T
+          -M Win32::Unicode
           --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
           --cachedeps=scancache
           --output latexindent.exe
@@ -168,8 +188,19 @@ jobs:
         run: |
           ./latexindent.exe -l test-cases/replacements/issue-503b.yaml -r test-cases/replacements/issue-503a.tex 
           cat test-cases/replacements/indent.log
-      ### - name: latexindent.exe cjk test, issue 505
-      ###   # https://github.com/cmhughes/latexindent.pl/issues/505
-      ###   run: |
-      ###     ./latexindent.exe -w test-cases/back-up-tests/新建.tex -y 'onlyOneBackUp:1'
-      ###     cat test-cases/back-up-tests/indent.log
+      - name: latexindent.exe one-sentence-per-line test, issue 514
+        # https://github.com/cmhughes/latexindent.pl/issues/514
+        run: |
+          ./latexindent.exe -m -l test-cases/oneSentencePerLine/issue-514.yaml test-cases/oneSentencePerLine/issue-514.tex
+          cat test-cases/oneSentencePerLine/indent.log
+      - name: latexindent.exe cjk test, issue 505
+        # https://github.com/cmhughes/latexindent.pl/issues/505
+        run: |
+          ./latexindent.exe -w test-cases/back-up-tests/新建äö.tex -y 'onlyOneBackUp:1' 
+          cat test-cases/back-up-tests/indent.log
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -o=++ -y 'onlyOneBackUp:1'
+          cat test-cases/back-up-tests/indent.log
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -o=+-新建 -l="test-cases/back-up-tests/新建äö.yaml" -r -y 'onlyOneBackUp:1'
+          cat test-cases/back-up-tests/indent.log
+          ./latexindent.exe test-cases/back-up-tests/新建äö.tex -g="新建äö.log" -c="D:/新建"
+          cat D:/新建/新建äö.log

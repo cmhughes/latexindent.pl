@@ -1,0 +1,8 @@
+defaultIndent: "   "
+
+modifyLineBreaks:
+    optionalArguments:
+        CommaFinishesWithLineBreak: 1
+    mandatoryArguments:
+        CommaFinishesWithLineBreak: 1
+        MandArgBodyStartsOnOwnLine: 1

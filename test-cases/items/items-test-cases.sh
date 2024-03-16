@@ -98,5 +98,7 @@ latexindent.pl -s -m -l issue-492a.yaml issue-492.tex -o +-mod2
 latexindent.pl -s -l issue-507.yaml issue-507.tex -o=+-mod1
 latexindent.pl -s -l issue-507a.yaml issue-507.tex -o=+-mod2
 
+latexindent.pl -s -l issue-518.yaml issue-518.tex -o=+-mod1
+
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

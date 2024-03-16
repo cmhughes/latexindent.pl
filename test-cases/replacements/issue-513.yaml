@@ -1,0 +1,123 @@
+defaultIndent: "  "
+
+specialBeginEnd:
+  iffalse:
+    begin: \\iffalse\R
+    end: \\fi
+  #
+  # store 
+  #     ^^A ....
+  # as verbatim
+  #
+  dtxComments:
+    begin: \^\^A
+    body: [^\n]*?
+    end: ''
+    lookForThis: verbatim
+  #
+  # store 
+  #     <.*?>
+  # as verbatim
+  #
+  dtxXML:
+    begin: \<
+    body: [^>]*?
+    end: \>
+    lookForThis: verbatim
+
+noAdditionalIndent:
+  iffalse: 1
+  macrocode: 1
+
+# 
+# polyswitch work
+#
+modifyLineBreaks:
+  mandatoryArguments:
+    foo:
+      MandArgBodyStartsOnOwnLine: 1       # -1,0,1,2,3,4
+      RCuBStartsOnOwnLine: 1              # -1,0,1,2,3,4
+    bar:
+      MandArgBodyStartsOnOwnLine: 1       # -1,0,1,2,3,4
+      RCuBStartsOnOwnLine: 1              # -1,0,1,2,3,4
+
+replacements:
+  #
+  # BEFORE indentation
+  #
+  # change
+  #
+  #   % \iffalse
+  #
+  # into
+  #
+  #   \iffalse%TOBEREMOVED
+  - 
+    substitution: |-
+      s/^%(.*?)$/$1%TOBEREMOVED/mg
+    when: before
+  #
+  # AFTER indentation
+  #
+  # change
+  #
+  #   \iffalse%TOBEREMOVED
+  #
+  # back into
+  #
+  #   % \iffalse
+  - 
+    substitution: |-
+      s/^(.*?)%TOBEREMOVED$/% $1/mg
+    when: after
+  #
+  # change
+  #
+  #   %     <>
+  #
+  # into
+  #
+  #   %<>
+  - 
+    substitution: |-
+      s/^%\h*\</%</mg
+    when: after
+  #
+  # change, for example
+  #
+  #  %<*class>
+  #  	\NeedsTeXFormat{LaTeX2e}
+  #  	\ProvidesClass{HsH-standalone}[2024-01-29 my cool class]
+  #  % \end{macrocode}
+  #
+  # into
+  #
+  #  %<*class>
+  #  \NeedsTeXFormat{LaTeX2e}
+  #  \ProvidesClass{HsH-standalone}[2024-01-29 my cool class]
+  #  % \end{macrocode}
+  - 
+    substitution: |-
+      s@^                         # line begins with
+        (%                        # %
+          (?!                     # not followed by
+            (?:                   # 
+              (?:<[*a-zA-Z])      #   <[*a-zA-Z]
+              |                   # OR
+              (?:<\/[a-zA-Z]+\|)  #   </[a-zA-Z]|
+            )                     # 
+          )[^\n]*?\R              # anything except a new line
+        )                         # 
+        (                         # 
+          (?:[^%].*?$)+?\R        # %
+        )                         # 
+        (%)@
+      my $begin =  $1;
+      my $middle = $2;
+      my $end    = $3;
+      # remove leading space from first line of $middle
+      $middle =~ s|^(\h*)||s;
+      my $leadingSpace = ($1?$1:q());
+      $middle =~ s|^$leadingSpace||mg;
+      $begin.$middle.$end;@sgmxe
+    when: after

@@ -1,0 +1,6 @@
+fineTuning:
+  commands:
+    name: (?!infty)[+a-zA-Z@\*0-9_\:]+?
+
+specialBeginEnd:
+  specialBeforeCommand: 1

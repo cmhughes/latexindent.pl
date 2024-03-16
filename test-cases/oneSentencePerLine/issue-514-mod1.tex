@@ -1,0 +1,30 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% Package for citations
+\usepackage{natbib}
+
+\begin{document}
+
+\title{Sample Document for LaTeX Testing}
+\author{Your Name}
+\date{\today}
+
+\maketitle
+
+\section{Introduction}
+This is a sample LaTeX document for testing purposes.
+It includes basic text formatting and citation examples.
+The use of LaTeX enables the creation of professionally formatted documents, such as academic papers, theses, and reports.
+According to \citet{Einstein}, energy and mass are equivalent, as described by the equation \(E=mc^2\).
+This groundbreaking theory revolutionized our understanding of physics.
+Another significant work in physics is by \citet{Newton}, who formulated the laws of motion and universal gravitation.
+
+\bibliographystyle{plainnat}
+\bibliography{main}
+
+\end{document}

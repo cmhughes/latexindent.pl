@@ -1,0 +1,9 @@
+specialBeginEnd:
+  par:
+    begin: (?<!\\)\\p
+    end: ar
+
+modifyLineBreaks:
+  specialBeginEnd:
+    par: 
+      SpecialEndFinishesWithLineBreak: 1

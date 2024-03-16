@@ -1,0 +1,55 @@
+% \iffalse
+%<*driver> ^^A ---------- documentation driver -----------------------------------------
+\ProvidesFile{class.dtx}
+\documentclass{ltxdoc}
+\begin{document}
+\DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+% ^^A ---------- document body -----------------------------------------
+% \title{A \LaTeX\ class}
+% \maketitle
+% 
+% \section{Introduction}
+% This is just an example.
+% 
+% \section{Class commands}
+% You can use the following options:
+% 
+% \begin{description}
+%   \item[foo] first command with long paragraph
+%   \item[bar] second command
+% \end{description}
+% 
+% \section{Implementation}
+% \begin{macrocode}
+%<*class>
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesClass{HsH-standalone}[2024-01-29 my cool class]
+% \end{macrocode}
+% 
+% \subsection{Implement the commands}
+% 
+% \begin{macro}{\foo}
+%   this is an example macro.
+%   \begin{macrocode}
+\def\foo{
+  foo
+}
+%   \end{macrocode}
+% \end{macro}
+% 
+% \begin{macro}{\bar}
+%   this is an example macro.
+%   \begin{macrocode}
+\def\bar{
+  bar
+}
+%   \end{macrocode}
+% \end{macro}
+% 
+% \begin{macrocode}
+%<*class>
+% \end{macrocode}
+\endinput
