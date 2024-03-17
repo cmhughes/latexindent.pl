@@ -1,0 +1,54 @@
+replacements:
+  - 
+    substitution: |-
+      s@(
+         (?:
+          \\\(                     # \(
+          .*?
+          \\\)                     # \)
+         )
+         |
+         (?:
+           (?<!\$)(?<!\\)\$(?!\$)  # $
+           [^\$]*?
+           (?<!\\)\$(?!\$)         # $
+          )
+         |
+         (?:
+          \\\[                     # \[
+          .*?
+          \\\]                     # \]
+         )
+         |
+         (?:
+          \\begin\{                # \begin{equation|align|fleqn, etc}
+            (
+            equation|align|fleqn   # populate as necessary
+            )
+            \}
+          .*?
+          \\end\{\2\}              # \end{equation|align|fleqn, etc}
+         )
+        )
+        @
+      # store the middle
+      my $middle = $1;
+      # store the beginning
+      $middle =~s/^(\\\(|\$|\\\[|\\begin\{[^}]+?\})//s;
+      my $begin =  $1;
+      # store the end
+      $middle =~s/(\\\)|\$|\\\]|\\end\{[^}]+?\})$//s;
+      my $end    = $1;
+      #
+      # perform the operations
+      #
+      # comma space unification
+      $middle =~ s|([a-zA-Z0-9])\h*,\h*([a-zA-Z0-9])|$1, $2|sg;
+      # <(> <space> <variable> into <(><variable>
+      $middle =~ s|\(\h*([a-zA-Z0-9])|($1|sg;
+      # <variable> <space> <)> into <variable><)>
+      $middle =~ s|([a-zA-Z0-9])\h*\)|$1)|sg;
+      # <variable-1>=<variable-2> into <variable-1> = <variable-2>
+      $middle =~ s/([a-zA-Z0-9])\h*(=|\*|\+|\-)\h*([a-zA-Z0-9])/$1 $2 $3/sg;
+      $middle =~ s/([a-zA-Z0-9])\h*(\\times)\h*([a-zA-Z0-9])/$1 $2 $3/sg;
+      $begin.$middle.$end;@sgxe
