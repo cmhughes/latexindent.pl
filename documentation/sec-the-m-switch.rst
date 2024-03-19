@@ -15,9 +15,9 @@ As of Version 3.0, ``latexindent.pl`` has the ``-m`` switch, which permits ``lat
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks
-	:lines: 501-503
+	:lines: 502-504
 	:linenos:
-	:lineno-start: 501
+	:lineno-start: 502
 
 Having read the previous paragraph, it should sound reasonable that, if you call ``latexindent.pl`` using the ``-m`` switch, then you give it permission to modify line breaks in your file, but let’s be clear:
 
@@ -76,9 +76,9 @@ The complete settings for this feature are given in :numref:`lst:textWrapOptions
 	:class: .mlbyaml
 	:caption: ``textWrapOptions`` 
 	:name: lst:textWrapOptionsAll
-	:lines: 531-558
+	:lines: 532-559
 	:linenos:
-	:lineno-start: 531
+	:lineno-start: 532
 
 Text wrap: overview
 ~~~~~~~~~~~~~~~~~~~
@@ -1028,9 +1028,9 @@ You can instruct ``latexindent.pl`` to format your file so that it puts one sent
 	:class: .mlbyaml
 	:caption: ``oneSentencePerLine`` 
 	:name: lst:oneSentencePerLine
-	:lines: 504-530
+	:lines: 505-531
 	:linenos:
-	:lineno-start: 504
+	:lineno-start: 505
 
 oneSentencePerLine: overview
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1147,25 +1147,25 @@ In each case, you can specify the ``other`` field to include any pattern that yo
 	:class: .mlbyaml
 	:caption: ``sentencesFollow`` 
 	:name: lst:sentencesFollow
-	:lines: 510-518
+	:lines: 511-519
 	:linenos:
-	:lineno-start: 510
+	:lineno-start: 511
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesBeginWith`` 
 	:name: lst:sentencesBeginWith
-	:lines: 519-522
+	:lines: 520-523
 	:linenos:
-	:lineno-start: 519
+	:lineno-start: 520
 
 .. literalinclude:: ../defaultSettings.yaml
 	:class: .mlbyaml
 	:caption: ``sentencesEndWith`` 
 	:name: lst:sentencesEndWith
-	:lines: 523-528
+	:lines: 524-529
 	:linenos:
-	:lineno-start: 523
+	:lineno-start: 524
 
 oneSentencePerLine: sentencesFollow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1420,9 +1420,9 @@ You can specify patterns that sentences do *not* contain using the field in :num
 	:class: .mlbyaml
 	:caption: ``sentencesDoNOTcontain`` 
 	:name: lst:sentencesDoNOTcontain
-	:lines: 529-530
+	:lines: 530-531
 	:linenos:
-	:lineno-start: 529
+	:lineno-start: 530
 
 If sentences run across environments then, by default, they will *not* be considered a sentence by ``latexindent.pl``.
 
@@ -1862,9 +1862,9 @@ We start by viewing a snippet of ``defaultSettings.yaml`` in :numref:`lst:enviro
 	:class: .mlbyaml
 	:caption: ``environments`` 
 	:name: lst:environments-mlb
-	:lines: 560-569
+	:lines: 561-570
 	:linenos:
-	:lineno-start: 560
+	:lineno-start: 561
 
 Let’s begin with the simple example given in :numref:`lst:env-mlb1-tex`; note that we have annotated key parts of the file using ♠, ♥, ◆ and ♣, these will be related to fields specified in :numref:`lst:environments-mlb`.
 
