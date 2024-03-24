@@ -20,7 +20,7 @@ use warnings;
 use Data::Dumper;
 use File::Basename;    # to get the filename and directory path
 
-#use open ':std', ':encoding(UTF-8)';
+use open ':std', ':encoding(UTF-8)';
 use Encode qw/decode/;
 
 # gain access to subroutines in the following modules
