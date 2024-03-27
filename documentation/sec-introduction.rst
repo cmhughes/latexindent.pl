@@ -335,9 +335,9 @@ This type of listing is a ``.yaml`` file; when you see line numbers given (as he
 	:class: .mlbyaml
 	:caption: ``modifyLineBreaks`` 
 	:name: lst:modifylinebreaks-demo
-	:lines: 502-504
+	:lines: 501-503
 	:linenos:
-	:lineno-start: 502
+	:lineno-start: 501
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-m`` switch is active; see :numref:`sec:modifylinebreaks` for more details.
 
@@ -345,9 +345,9 @@ This type of listing is a ``.yaml`` file, but it will only be relevant when the 
 	:class: .replaceyaml
 	:caption: ``replacements`` 
 	:name: lst:replacements-demo
-	:lines: 622-627
+	:lines: 621-626
 	:linenos:
-	:lineno-start: 622
+	:lineno-start: 621
 
 This type of listing is a ``.yaml`` file, but it will only be relevant when the ``-r`` switch is active; see :numref:`sec:replacements` for more details.
 
