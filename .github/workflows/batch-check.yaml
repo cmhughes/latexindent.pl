@@ -124,8 +124,8 @@ jobs:
           $files = Get-ChildItem test-cases\check-switch-tests\*tex
           foreach ($file in $files) {perl latexindent.pl --check -s $file}
   cjk-windows-exe-test:
-    #needs: check-pm-files-changed
-    #if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
+    needs: check-pm-files-changed
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     name: 'create Windows executable latexindent.exe using Strawberry Perl 5.32 on Windows'
     runs-on: 'windows-latest'
     steps:
