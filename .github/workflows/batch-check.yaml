@@ -152,34 +152,18 @@ jobs:
           cpanm Unicode::GCString
           cpanm --force Win32::Unicode::File
           cpanm --force Win32::API
-      - name: rebuild and install PAR-Packer-master
-      #If the version number of PAR::Packer does not exceed 1.061, it is necessary to rebuild and install PAR-Packer-master
-      #https://github.com/rschupp/PAR-Packer/issues/84
-      #Issue #84: pass UTF-16 command line down to my_perl (using _wspawnvp)
-        run: |
-          Invoke-WebRequest -Uri https://github.com/rschupp/PAR-Packer/archive/refs/heads/master.zip -OutFile PAR-Packer-master.zip
-          unzip PAR-Packer-master.zip
-          cd PAR-Packer-master
-          perl Makefile.PL
-          gmake
-          gmake install
       - name: preparations for PAR packer
         run: |
           sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
-          SET PAR_VERBATIM=1
       #
       # https://metacpan.org/pod/pp
       # https://github.com/plk/biber/blob/dev/dist/MSWIN64/build.bat
       #
       - name: create latexindent.exe using PAR Packer
-        run: >-
-          pp
-          -T
-          -M Win32::Unicode
-          --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
-          --cachedeps=scancache
-          --output latexindent.exe
-          latexindent.pl
+        shell: cmd
+        run: |
+          set PAR_VERBATIM=1
+          pp -T -M Win32::Unicode --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml" --cachedeps=scancache --output latexindent.exe latexindent.pl
       - name: latexindent.exe help
         run: |
           ./latexindent.exe --help
@@ -204,3 +188,116 @@ jobs:
           cat test-cases/back-up-tests/indent.log
           ./latexindent.exe test-cases/back-up-tests/新建äö.tex -g="新建äö.log" -c="D:/新建"
           cat D:/新建/新建äö.log
+      - name: latexindent.exe -GCString test, issue 531
+        # https://github.com/cmhughes/latexindent.pl/issues/531
+        run: |
+          ./latexindent.exe test-cases/GCString-test/GCString.tex -y="defaultIndent: '    '" -GCString -g="indent.log" -o=++
+          cat test-cases/GCString-test/indent.log
+
+  linux-executable-GCString-test:
+    name: 'create Linux executable latexindent'
+    runs-on: 'ubuntu-latest'
+    steps:
+      #
+      # checkout github.com/cmhughes/latexindent.pl
+      # https://github.com/actions/checkout
+      #
+      - name: load the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v4
+      #
+      # https://github.com/marketplace/actions/setup-perl-environment
+      #
+      - name: install Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.32'
+      - name: install Perl modules using cpan
+        run: |
+          cpanm -f PAR::Packer
+          cpanm YAML::Tiny
+          cpanm File::HomeDir
+          cpanm Unicode::GCString
+      - name: preparations for PAR packer
+        run: |
+          sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
+          PAR_VERBATIM=1
+      #
+      # https://metacpan.org/pod/pp
+      # https://github.com/plk/biber/blob/dev/dist/linux-musl_x86_64/build.sh
+      #
+      - name: create Linux executable latexindent using PAR Packer
+        run: >-
+          pp 
+          --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
+          --cachedeps=scancache
+          --output latexindent-linux
+          latexindent.pl
+      - name: latexindent-linux -GCString test, issue 531
+        # https://github.com/cmhughes/latexindent.pl/issues/531
+        run: |
+          ./latexindent-linux test-cases/GCString-test/GCString.tex -y="defaultIndent: '    '" -GCString -g="indent1.log" -o=++
+          cat test-cases/GCString-test/indent1.log
+        continue-on-error: true
+      - name: create Linux executable latexindent using PAR Packer 
+        run: |
+          export PAR_VERBATIM=1
+          pp --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml" --cachedeps=scancache --output latexindent-linux2 latexindent.pl
+      - name: latexindent-linux2 -GCString test, issue 531
+        # https://github.com/cmhughes/latexindent.pl/issues/531
+        run: |
+          ./latexindent-linux2 test-cases/GCString-test/GCString.tex -y="defaultIndent: '    '" -GCString -g="indent2.log" -o=++
+          cat test-cases/GCString-test/indent2.log
+          
+  macos-executable-GCString-test:
+    name: 'create MacOS executable latexindent'
+    runs-on: 'macos-latest'
+    steps:
+      #
+      # checkout github.com/cmhughes/latexindent.pl
+      # https://github.com/actions/checkout
+      #
+      - name: load the "base actions/checkout" so as to access latexindent.pl
+        uses: actions/checkout@v4
+      #
+      # https://github.com/marketplace/actions/setup-perl-environment
+      #
+      - name: install Perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: '5.32'
+      - name: install Perl modules using cpan
+        run: |
+          cpanm -f PAR::Packer
+          cpanm YAML::Tiny
+          cpanm -f File::HomeDir
+          cpanm Unicode::GCString
+      - name: preparations for PAR packer
+        run: |
+          sed -i'.bak' -r 's,eval\s\"use\sUnicode::GCString\"\sif\s\$switches\{GCString\},use Unicode::GCString,' latexindent.pl
+          PAR_VERBATIM=1
+      #
+      # https://metacpan.org/pod/pp
+      # https://github.com/plk/biber/blob/dev/dist/linux-musl_x86_64/build.sh
+      #
+      - name: create MacOS executable latexindent using PAR Packer
+        run: >-
+          pp 
+          --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml"
+          --cachedeps=scancache
+          --output latexindent-macos
+          latexindent.pl
+      - name: latexindent-macos -GCString test, issue 531
+        # https://github.com/cmhughes/latexindent.pl/issues/531
+        run: |
+          ./latexindent-macos test-cases/GCString-test/GCString.tex -y="defaultIndent: '    '" -GCString -g="indent1.log" -o=++
+          cat test-cases/GCString-test/indent1.log
+        continue-on-error: true
+      - name: create MacOS executable latexindent using PAR Packer 
+        run: |
+          export PAR_VERBATIM=1
+          pp --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml" --cachedeps=scancache --output latexindent-macos2 latexindent.pl
+      - name: latexindent-macos2 -GCString test, issue 531
+        # https://github.com/cmhughes/latexindent.pl/issues/531
+        run: |
+          ./latexindent-macos2 test-cases/GCString-test/GCString.tex -y="defaultIndent: '    '" -GCString -g="indent2.log" -o=++
+          cat test-cases/GCString-test/indent2.log
