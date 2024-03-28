@@ -1,8 +1,12 @@
-<!-- announcement: enhancement for UTF-named files in latexindent.exe-->
+<!-- announcement: STDIN and GCString bugfixes-->
 
 # changelog.md
+
+## V3.23.8, March 28, 2024
+STDIN and GCString update, see [issue 528](https://github.com/cmhughes/latexindent.pl/issues/528) and [issue 531](https://github.com/cmhughes/latexindent.pl/issues/531); thanks to @Mikachu2333 and @saxyx 
+
 ## V3.23.7, March 16, 2024
-better support for UTF-named files in `latexindent.exe`, see [issue-505](https://github.com/cmhughes/latexindent.pl/issues/505) thanks to @ fengzyf
+better support for UTF-named files in `latexindent.exe`, see [issue-505](https://github.com/cmhughes/latexindent.pl/issues/505) thanks to @fengzyf
 
 ## V3.23.6, January 17, 2024
 further enhancement for replacement feature, see [issue-503](https://github.com/cmhughes/latexindent.pl/issues/503)
