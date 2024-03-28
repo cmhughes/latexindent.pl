@@ -208,7 +208,8 @@ jobs:
       #
       - name: create MacOS executable latexindent using PAR Packer
         run: |
-          export PAR_VERBATIM=1 pp --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml" --cachedeps=scancache --output latexindent-macos latexindent.pl
+          export PAR_VERBATIM=1 
+          pp --addfile="defaultSettings.yaml;lib/LatexIndent/defaultSettings.yaml" --cachedeps=scancache --output latexindent-macos latexindent.pl
       - name: move MacOS latexindent to release directory
         run: |
           mkdir -p target/release
