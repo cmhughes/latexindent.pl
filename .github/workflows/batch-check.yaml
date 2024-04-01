@@ -195,6 +195,8 @@ jobs:
           cat test-cases/GCString-test/indent.log
 
   linux-executable-GCString-test:
+    needs: check-pm-files-changed
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     name: 'create Linux executable latexindent'
     runs-on: 'ubuntu-latest'
     steps:
@@ -249,6 +251,8 @@ jobs:
           cat test-cases/GCString-test/indent2.log
           
   macos-executable-GCString-test:
+    needs: check-pm-files-changed
+    if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
     name: 'create MacOS executable latexindent'
     runs-on: 'macos-latest'
     steps:
