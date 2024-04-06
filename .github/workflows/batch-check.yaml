@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml
+      - name: Check for changed pm files, latexindent.pl, defaultSettings.yaml, batch-check.yaml
         uses: tj-actions/changed-files@v44
         id: changed-files
         with:
@@ -57,6 +57,7 @@ jobs:
              latexindent.pl
              defaultSettings.yaml
              LatexIndent/*.pm
+             .github/workflows/batch-check.yaml
       - if: ${{ steps.changed-files.outputs.any_changed == 'true' }}
         name: List all relevant changed files
         run: |
@@ -67,7 +68,7 @@ jobs:
         name: No perl based files have changed
         run: |
             echo ""
-            echo "none of latexindent.pl, defaultSettings.yaml, LatexIndent/*.pm have changed since last commit"
+            echo "none of latexindent.pl, defaultSettings.yaml, LatexIndent/*.pm, batch-check.yaml have changed since last commit"
             echo "no need to run the rest of batch-check.yaml :)"
             echo ""
   latexindent-batch-check:
@@ -80,7 +81,7 @@ jobs:
     strategy:
       matrix:
         platform: [ubuntu-latest, macos-latest, windows-latest]
-        perl: [ '5.32', '5.30', '5.28' ]
+        perl: [ '5.38', '5.36', '5.34' ]
     runs-on: ${{ matrix.platform }}
     steps:
       # checkout github.com/cmhughes/latexindent.pl
@@ -101,7 +102,6 @@ jobs:
         uses: shogo82148/actions-setup-perl@v1
         with:
           perl-version: ${{ matrix.perl }}
-          distribution: strawberry
       - if: ${{ matrix.platform == 'windows-latest' }}
         name: installing perl modules for latexindent.pl on windows-latest
         run: |
@@ -126,7 +126,7 @@ jobs:
   cjk-windows-exe-test:
     needs: check-pm-files-changed
     if: ${{fromJSON(needs.check-pm-files-changed.outputs.anychanged)}}
-    name: 'create Windows executable latexindent.exe using Strawberry Perl 5.32 on Windows'
+    name: 'create Windows executable latexindent.exe using Perl (latest) on Windows'
     runs-on: 'windows-latest'
     steps:
       #
@@ -138,11 +138,10 @@ jobs:
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
-      - name: install Strawberry Perl
+      - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
-          distribution: strawberry
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           wmic os get osarchitecture
@@ -212,7 +211,7 @@ jobs:
       - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           cpanm -f PAR::Packer
@@ -268,7 +267,7 @@ jobs:
       - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           cpanm -f PAR::Packer

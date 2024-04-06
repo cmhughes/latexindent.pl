@@ -69,7 +69,7 @@ jobs:
       - name: installing Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: 5.34
+          perl-version: 'latest'
       - name: installing perl modules for latexindent.pl
         run: |
           cpanm YAML::Tiny
