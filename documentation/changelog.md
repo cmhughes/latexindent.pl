@@ -1,6 +1,8 @@
-<!-- announcement: STDIN and GCString bugfixes-->
+<!-- announcement: latexindent.exe oneSentencePerLine bug fix-->
 
 # changelog.md
+## V3.23.9, April 6, 2024
+`latexindent.exe` oneSentencePerLine bug fix, see [issue 514](https://github.com/cmhughes/latexindent.pl/issues/514)
 
 ## V3.23.8, March 28, 2024
 STDIN and GCString update, see [issue 528](https://github.com/cmhughes/latexindent.pl/issues/528) and [issue 531](https://github.com/cmhughes/latexindent.pl/issues/531); thanks to @Mikachu2333 and @saxyx 
