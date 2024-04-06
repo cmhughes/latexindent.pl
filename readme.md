@@ -21,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.23.8, 2024-03-28
+    latexindent.pl, version 3.23.9, 2024-04-06
 
 ## author
 Chris Hughes (cmhughes)
@@ -157,7 +157,7 @@ framework](https://pre-commit.com) by adding this to your
 
 ```yaml
   - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V3.23.8
+    rev: V3.23.9
     hooks:
       - id: latexindent
 ```
@@ -234,7 +234,7 @@ I align with many of the approaches and details at [Dramatically increase your p
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.38.0
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.38.2
 
 ## GitHub Actions
 The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the

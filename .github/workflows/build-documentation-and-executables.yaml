@@ -2,7 +2,7 @@ name: build latexindent executables and documentation and upload to release page
 # PURPOSE:
 #
 #  1. build latexindent.pdf 
-#  2. build latexindent.exe using PAR::Packer on Strawberry Perl
+#  2. build latexindent.exe using PAR::Packer on Windows Perl
 #  3. build latexindent-linux using PAR::Packer on Ubuntu
 #  4. build latexindent-macos using PAR::Packer on macOS
 #  5. create release 
@@ -62,7 +62,7 @@ jobs:
   # 2. latexindent.exe
   #
   build-windows-exe:
-    name: 'create Windows executable latexindent.exe using Strawberry Perl 5.32 on Windows'
+    name: 'create Windows executable latexindent.exe using Windows Perl (latest) on Windows'
     runs-on: 'windows-latest'
     steps:
       #
@@ -74,11 +74,10 @@ jobs:
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
-      - name: install Strawberry Perl
+      - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
-          distribution: strawberry
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           wmic os get osarchitecture
@@ -137,7 +136,7 @@ jobs:
       - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           cpanm -f PAR::Packer
@@ -192,7 +191,7 @@ jobs:
       - name: install Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.32'
+          perl-version: 'latest'
       - name: install Perl modules using cpan
         run: |
           cpanm -f PAR::Packer

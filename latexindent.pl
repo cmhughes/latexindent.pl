@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-#   latexindent.pl, version 3.23.8, 2024-03-28
+#   latexindent.pl, version 3.23.9, 2024-04-06
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
