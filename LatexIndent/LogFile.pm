@@ -135,6 +135,11 @@ ENDQUOTE
 
     # cruft directory
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
+    ${$self}{cruftDirectory} =~ s/\\/\//g;
+    ${$self}{cruftDirectory} =~ s/\/{2,}/\//g;
+    if ($^O eq 'MSWin32') {
+        ${$self}{cruftDirectory} =~ s/\//\\/g;
+    }
 
     my $cruftDirectoryCreation = 0;
 
@@ -149,11 +154,13 @@ ENDQUOTE
         }
         $cruftDirectoryCreation = 1;
     }
-
     my $logfileName = ( $switches{cruftDirectory} ? ${$self}{cruftDirectory} . "/" : '' )
         . ( $switches{logFileName} || "indent.log" );
-
-    $logfileName = $logfileName;
+    $logfileName =~ s/\\/\//g;
+    $logfileName =~ s/\/{2,}/\//g;
+    if ($^O eq 'MSWin32') {
+        $logfileName =~ s/\//\\/g;
+    }
 
     # details of the script to log file
     $logger->info("*$FindBin::Script version $versionNumber, $versionDate, a script to indent .tex files");
@@ -260,7 +267,7 @@ ENDQUOTE
         $switches{outputToFile} = 0;
     }
 
-    $logger->info("*Directory for backup files and $logfileName:");
+    $logger->info("*Directory for backup files and log file $logfileName:");
     $logger->info( $switches{cruftDirectory} ? ${$self}{cruftDirectory} : ${$self}{cruftDirectory} );
     $logger->info("cruft directory creation: ${$self}{cruftDirectory}") if $cruftDirectoryCreation;
 

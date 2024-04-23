@@ -66,12 +66,18 @@ sub open_with_encode {
         require Win32::Unicode::File;
         Win32::Unicode::File->import;
         $fh = Win32::Unicode::File->new;
-        open $fh, $mode, $filename or die "Can't open file: $!";
-        return $fh;
+        if ( open $fh, $mode, $filename ) {
+            return $fh;
+        } else {
+            return undef;
+        }
     }
     else {
-        open( $fh, $mode, $filename ) or die "Can't open file: $!";
-        return $fh;
+        if ( open( $fh, $mode, $filename ) ) {
+            return $fh;
+        } else {
+            return undef;
+        }
     }
 }
 
@@ -79,7 +85,7 @@ sub read_yaml_with_encode {
     use YAML::Tiny;
     my $filename = shift;
 
-    my $fh          = open_with_encode( '<:encoding(UTF-8)', $filename ) or die $!;
+    my $fh          = open_with_encode( '<:encoding(UTF-8)', $filename ) or return undef;
     my $yaml_string = join( "", <$fh> );
     return YAML::Tiny->read_string($yaml_string);
 }
@@ -105,14 +111,13 @@ sub mkdir_with_encode {
         require Win32::Unicode::Dir;
         Win32::Unicode::Dir->import(qw(mkdirW));
 
-        mkdirW($path) or die "Cannot create directory $path: $!";
+        mkdirW($path);
     }
     else {
         require File::Path;
         File::Path->import(qw(make_path));
 
-        my $created = make_path($path);
-        die "Cannot create directory $path" unless $created;
+        make_path($path);
     }
 }
 

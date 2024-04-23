@@ -273,11 +273,18 @@ sub output_logfile {
 
     # open log file
     my $logfileName     = $switches{logFileName} || "indent.log";
-    my $logfilePossible = 1;
-    my $logfile         = open_with_encode( '>:encoding(UTF-8)', "${$self}{cruftDirectory}/$logfileName" )
-        or $logfilePossible = 0;
 
-    if ($logfilePossible) {
+    my $logfilePath;
+    $logfilePath = "${$self}{cruftDirectory}/$logfileName";
+    $logfilePath =~ s/\\/\//g;
+    $logfilePath =~ s/\/{2,}/\//g;
+    if ($^O eq 'MSWin32') {
+        $logfilePath =~ s/\//\\/g;
+    }
+
+    my $logfile = open_with_encode( '>:encoding(UTF-8)', $logfilePath );
+
+    if ( $logfile ) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {
             print $logfile $line, "\n";
         }
@@ -285,7 +292,12 @@ sub output_logfile {
         # close log file
         close($logfile);
     }
-
+    else {
+        if ( $switches{screenlog} ) {
+            print "WARN:  Could not open the logfile $logfilePath \n";
+            print "       No logfile will be produced.\n";
+        }
+    }
 }
 
 sub process_body_of_text {
