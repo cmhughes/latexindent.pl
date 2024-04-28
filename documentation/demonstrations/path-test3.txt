@@ -1,0 +1,29 @@
+YAML settings, reading from the following files:
+       Reading USER settings from path3.yaml
+       Reading path information from path3.yaml
+       ---
+       defaultIndent: ''
+       paths:
+         - path4.yaml
+
+       ---
+       defaultIndent: ''
+       paths:
+         - path4.yaml
+
+       Reading USER settings from path4.yaml
+       Reading path information from path4.yaml
+       ---
+       defaultIndent: '   '
+       paths:
+         - path5.yaml
+
+       ---
+       defaultIndent: '   '
+       paths:
+         - path5.yaml
+
+       Reading USER settings from path5.yaml
+       ---
+       defaultIndent: ' '
+

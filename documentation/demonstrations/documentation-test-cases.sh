@@ -442,5 +442,15 @@ latexindent.pl --lines !5-7 -s myfile.tex -o=+-mod5
 latexindent.pl --lines !5-7,!9-10 myfile.tex -s -o=+-mod6
 latexindent.pl --lines 6 myfile1.tex -m -s -l env-mlb2,env-mlb7,env-mlb8 -o=+-mod1 
 
+# paths demo
+latexindent.pl -l path1.yaml -s paths-demo.tex -o=+-mod1
+cp indent.log path-test1.txt
+perl -p0i -e 's/.*?(YAML\ssettings, reading)/$1/s' path-test1.txt
+perl -p0i -e 's/INFO:.*//s' path-test1.txt
+
+latexindent.pl -l path3.yaml -s paths-demo.tex -o=+-mod3
+cp indent.log path-test3.txt
+perl -p0i -e 's/.*?(YAML\ssettings, reading)/$1/s' path-test3.txt
+perl -p0i -e 's/INFO:.*//s' path-test3.txt
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status

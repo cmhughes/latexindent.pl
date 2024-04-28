@@ -137,7 +137,7 @@ ENDQUOTE
     ${$self}{cruftDirectory} = $switches{cruftDirectory} || ( dirname ${$self}{fileName} );
     ${$self}{cruftDirectory} =~ s/\\/\//g;
     ${$self}{cruftDirectory} =~ s/\/{2,}/\//g;
-    if ($^O eq 'MSWin32') {
+    if ( $^O eq 'MSWin32' ) {
         ${$self}{cruftDirectory} =~ s/\//\\/g;
     }
 
@@ -158,7 +158,7 @@ ENDQUOTE
         . ( $switches{logFileName} || "indent.log" );
     $logfileName =~ s/\\/\//g;
     $logfileName =~ s/\/{2,}/\//g;
-    if ($^O eq 'MSWin32') {
+    if ( $^O eq 'MSWin32' ) {
         $logfileName =~ s/\//\\/g;
     }
 

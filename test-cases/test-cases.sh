@@ -96,6 +96,7 @@ checkgitdiff
 
 dirExec=( 
   "back-up-tests;back-up-tests.sh"
+  "path-tests;path-tests.sh"
   "environments;environments-test-cases.sh"
   "diacritics;diacritics-test-cases.sh"
   "ifelsefi;ifelsefi-test-cases.sh"

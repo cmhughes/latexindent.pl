@@ -68,14 +68,16 @@ sub open_with_encode {
         $fh = Win32::Unicode::File->new;
         if ( open $fh, $mode, $filename ) {
             return $fh;
-        } else {
+        }
+        else {
             return undef;
         }
     }
     else {
         if ( open( $fh, $mode, $filename ) ) {
             return $fh;
-        } else {
+        }
+        else {
             return undef;
         }
     }

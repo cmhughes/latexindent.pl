@@ -56,7 +56,7 @@ sub create_back_up_file {
     $backupFileNoExt = "${$self}{cruftDirectory}/$backupFileNoExt";
     $backupFileNoExt =~ s/\\/\//g;
     $backupFileNoExt =~ s/\/{2,}/\//g;
-    if ($^O eq 'MSWin32') {
+    if ( $^O eq 'MSWin32' ) {
         $backupFileNoExt =~ s/\//\\/g;
     }
 

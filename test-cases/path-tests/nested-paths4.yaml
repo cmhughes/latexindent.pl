@@ -1,0 +1,3 @@
+encoding: 'zzz'
+paths:
+- ./a-nested-path1.yaml

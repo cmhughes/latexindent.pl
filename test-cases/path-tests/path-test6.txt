@@ -1,0 +1,37 @@
+YAML settings, reading from the following files:
+       Reading USER settings from nested-paths6.yaml
+       Reading path information from nested-paths6.yaml
+       ---
+       paths:
+         - ./a-nested-path3.yaml
+
+       ---
+       paths:
+         - ./a-nested-path3.yaml
+
+       Reading USER settings from ./a-nested-path3.yaml
+       Reading path information from ./a-nested-path3.yaml
+       ---
+       defaultIndent: ' '
+       paths:
+         - ./a-nested-nested-path2.yaml
+
+       ---
+       defaultIndent: ' '
+       paths:
+         - ./a-nested-nested-path2.yaml
+
+       Reading USER settings from ./a-nested-nested-path2.yaml
+       Reading path information from ./a-nested-nested-path2.yaml
+       ---
+       defaultIndent: '           '
+       paths:
+         - ./a-nested-nested-nested-path1.yaml
+
+       ---
+       defaultIndent: '           '
+       paths:
+         - ./a-nested-nested-nested-path1.yaml
+
+WARN:  /home/cmhughes/indentconfig.yaml
+       specifies ./a-nested-nested-nested-path1.yaml but this file does not exist - unable to read settings from this file

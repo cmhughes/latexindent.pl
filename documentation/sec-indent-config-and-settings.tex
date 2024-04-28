@@ -9,7 +9,7 @@
  are detailed in \cref{app:indentconfig:options}. \announce{2023-01-01}{indentconfig
  location options}
 
-\subsection{indentconfig.yaml and .indentconfig.yaml}
+\subsection{indentconfig.yaml and .indentconfig.yaml}\label{subsec:indentconfig}
  \texttt{latexindent.pl} will always check your home directory for
  \texttt{indentconfig.yaml}
  and \texttt{.indentconfig.yaml} (unless it is called with the \texttt{-d} switch), which
@@ -63,6 +63,11 @@
   If \texttt{latexindent.pl} can not read your \texttt{.yaml} file it will tell you so in
   \texttt{indent.log}.
  \end{warning}
+
+ As of \announce{new}{paths within local YAML settings} you can specify the
+ \texttt{paths} field from \cref{lst:indentconfig} within any of your
+ \texttt{latexindent.yaml} and friends settings files. This can lead to creative nesting
+ of configuration files; a demonstration is given in \vref{sec:appendix:paths}.
 
  If you find that \announce{2021-06-19}{encoding option for indentconfig.yaml}
  \texttt{latexindent.pl} does not read your YAML file, then it might be as a result of
@@ -171,6 +176,9 @@ latexindent.pl -l=mysettings.yaml -y="verbatimEnvironments:cmhenvironment:0;myen
  \begin{commandshell}
 latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
 \end{commandshell}
+
+ Note that the \texttt{paths} settings (see \vref{sec:appendix:paths}) can \emph{not} be
+ specified using the \texttt{-y} switch.
 
 \subsection{Settings load order}\label{sec:loadorder}
  \texttt{latexindent.pl} loads the settings files in the following order:

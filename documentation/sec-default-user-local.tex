@@ -1267,7 +1267,7 @@ latexindent.pl special2.tex -l=middle1
  For example, let’s consider the \texttt{.tex} file in \cref{lst:specialAlgo}.
  \index{specialBeginEnd!middle} \index{specialBeginEnd!Algorithms example}
 
- \cmhlistingsfromfile*[basicstyle=\tiny]{demonstrations/specialAlgo.tex}[enhanced jigsaw,breakable]{\texttt{specialAlgo.tex}}{lst:specialAlgo}
+ \cmhlistingsfromfile[basicstyle=\tiny]{demonstrations/specialAlgo.tex}[enhanced jigsaw,breakable]{\texttt{specialAlgo.tex}}{lst:specialAlgo}
 
  Upon saving the YAML settings in \cref{lst:algo-yaml} and running the command
  \index{switches!-l demonstration}
@@ -1279,8 +1279,8 @@ latexindent.pl -l=algo.yaml specialAlgo.tex
  then we obtain the output given in \cref{lst:specialAlgo-mod1}.
 
  \begin{cmhtcbraster}
-  \cmhlistingsfromfile*[basicstyle=\tiny]{demonstrations/specialAlgo-mod1.tex}{\texttt{specialAlgo.tex} using \cref{lst:algo-yaml}}{lst:specialAlgo-mod1}
-  \cmhlistingsfromfile*[style=yaml-LST,basicstyle=\tiny,commentstyle=\color{blue}\ttfamily\tiny]{demonstrations/algo.yaml}[yaml-TCB]{\texttt{algo.yaml}}{lst:algo-yaml}
+  \cmhlistingsfromfile[basicstyle=\tiny]{demonstrations/specialAlgo-mod1.tex}{\texttt{specialAlgo.tex} using \cref{lst:algo-yaml}}{lst:specialAlgo-mod1}
+  \cmhlistingsfromfile[style=yaml-LST,basicstyle=\tiny,commentstyle=\color{blue}\ttfamily\tiny]{demonstrations/algo.yaml}[yaml-TCB]{\texttt{algo.yaml}}{lst:algo-yaml}
  \end{cmhtcbraster}
  \end{example}
 

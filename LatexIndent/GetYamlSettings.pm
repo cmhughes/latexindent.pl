@@ -382,6 +382,46 @@ sub yaml_read_settings {
             $logger->info("Reading USER settings from $settings");
             $userSettings = read_yaml_with_encode("$settings");
 
+            # update the absolute paths
+            if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{paths} ) {
+                $logger->info("Reading path information from $settings");
+
+                # output the contents of indentconfig to the log file
+                $logger->info( Dump \%{ $userSettings->[0] } );
+
+                # change the encoding of the paths according to the field `encoding`
+                if ( $userSettings and ( ref( $userSettings->[0] ) eq 'HASH' ) and $userSettings->[0]->{encoding} ) {
+                    use Encode;
+                    my $encoding       = $userSettings->[0]->{encoding};
+                    my $encodingObject = find_encoding($encoding);
+
+                    # Check if the encoding is valid.
+                    if ( ref($encodingObject) ) {
+                        $logger->info("*Encoding of the paths is $encoding");
+                        foreach ( @{ $userSettings->[0]->{paths} } ) {
+                            my $temp = $encodingObject->encode("$_");
+                            $logger->info("Transform file encoding: $_ -> $temp");
+                            push( @absPaths, $temp );
+                        }
+                    }
+                    else {
+                        $logger->warn("*encoding \"$encoding\" not found");
+                        $logger->warn("Ignore this setting and will take the default encoding.");
+                        @absPaths = @{ $userSettings->[0]->{paths} };
+                        foreach ( @{ $userSettings->[0]->{paths} } ) {
+                            push( @absPaths, $_ );
+                        }
+                    }
+                }
+                else    # No such setting, and will take the default
+                {
+                    # $logger->info("*Encoding of the paths takes the default.");
+                    foreach ( @{ $userSettings->[0]->{paths} } ) {
+                        push( @absPaths, $_ );
+                    }
+                }
+            }
+
             # if we can read userSettings
             if ($userSettings) {
 
@@ -477,7 +517,9 @@ sub yaml_read_settings {
                         }
 
                         # if amalgamate is set to 1, then append
-                        if ( ${ $mainSettings{$firstLevelKey}[0] }{amalgamate} ) {
+                        if ( ref($mainSettings{$firstLevelKey}[0]) eq "HASH"
+                             and 
+                             ${ $mainSettings{$firstLevelKey}[0] }{amalgamate} ) {
 
                             # loop through the other settings
                             foreach ( @{$firstLevelValue} ) {

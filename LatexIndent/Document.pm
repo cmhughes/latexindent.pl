@@ -272,19 +272,19 @@ sub output_logfile {
         if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
 
     # open log file
-    my $logfileName     = $switches{logFileName} || "indent.log";
+    my $logfileName = $switches{logFileName} || "indent.log";
 
     my $logfilePath;
     $logfilePath = "${$self}{cruftDirectory}/$logfileName";
     $logfilePath =~ s/\\/\//g;
     $logfilePath =~ s/\/{2,}/\//g;
-    if ($^O eq 'MSWin32') {
+    if ( $^O eq 'MSWin32' ) {
         $logfilePath =~ s/\//\\/g;
     }
 
     my $logfile = open_with_encode( '>:encoding(UTF-8)', $logfilePath );
 
-    if ( $logfile ) {
+    if ($logfile) {
         foreach my $line ( @{LatexIndent::Logger::logFileLines} ) {
             print $logfile $line, "\n";
         }
