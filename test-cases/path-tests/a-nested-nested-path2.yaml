@@ -1,0 +1,3 @@
+defaultIndent: "           "
+paths:
+- ./a-nested-nested-nested-path1.yaml

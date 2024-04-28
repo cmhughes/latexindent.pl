@@ -815,6 +815,74 @@ echo 'export LATEXINDENT_CONFIG="/your/config/path"' >> ~/.profile
   stored in \texttt{\$HOME/.profile}). All commands in this file a run after login, so
   the environment variable will be set after your next login.
 
+ \section{paths demonstration}\label{sec:appendix:paths}
+
+  As detailed in \vref{subsec:indentconfig} \announce*{2024-04-28}{nested paths
+  demonstration}, the \texttt{paths} field can be specified in any of your \texttt{YAML}
+  files.
+
+  We will use the file in \cref{lst:paths-demo} for demonstration in what follows.
+
+  \cmhlistingsfromfile*{demonstrations/paths-demo.tex}{\texttt{paths-demo.tex}}{lst:paths-demo}
+
+  \begin{example}
+  Consider the settings given in \cref{lst:path1-yaml} and \cref{lst:path2-yaml}.
+
+  \begin{cmhtcbraster}[raster column skip=.1\linewidth]
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/path1.yaml}[yaml-TCB]{\texttt{path1.yaml}}{lst:path1-yaml}
+   \cmhlistingsfromfile*[style=yaml-LST,showspaces=true]{demonstrations/path2.yaml}[yaml-TCB]{\texttt{path2.yaml}}{lst:path2-yaml}
+  \end{cmhtcbraster}
+
+  Upon calling
+
+  \begin{commandshell}
+latexindent.pl -l=path1.yaml paths-demo.tex
+\end{commandshell}
+
+  then we will receive the output given in \cref{lst:paths-demo-mod1}.
+
+  \cmhlistingsfromfile*[showspaces=true]{demonstrations/paths-demo-mod1.tex}{\texttt{paths-demo-mod1.tex}}{lst:paths-demo-mod1}
+
+  We note that the settings from \cref{lst:path2-yaml} have been called from
+  \cref{lst:path1-yaml}.
+
+  On inspection of \texttt{indent.log} from the above call, we see the details of this
+  part of the process given in \cref{lst:path-test1:txt}.
+
+  \cmhlistingsfromfile*{demonstrations/path-test1.txt}{\texttt{path-test1.txt}}{lst:path-test1:txt}
+  \end{example}
+
+  \begin{example}
+  Consider the settings given in \cref{lst:path3-yaml} to \cref{lst:path5-yaml}.
+
+  \begin{cmhtcbraster}[raster columns=3,
+    raster left skip=-3.5cm,
+    raster right skip=-2cm,
+    raster column skip=.03\linewidth]
+   \cmhlistingsfromfile*[style=yaml-LST]{demonstrations/path3.yaml}[yaml-TCB]{\texttt{path3.yaml}}{lst:path3-yaml}
+   \cmhlistingsfromfile*[style=yaml-LST,showspaces=true]{demonstrations/path4.yaml}[yaml-TCB]{\texttt{path4.yaml}}{lst:path4-yaml}
+   \cmhlistingsfromfile*[style=yaml-LST,showspaces=true]{demonstrations/path5.yaml}[yaml-TCB]{\texttt{path5.yaml}}{lst:path5-yaml}
+  \end{cmhtcbraster}
+
+  Upon calling
+
+  \begin{commandshell}
+latexindent.pl -l=path3.yaml paths-demo.tex
+\end{commandshell}
+
+  then we will receive the output given in \cref{lst:paths-demo-mod3}.
+
+  \cmhlistingsfromfile*[showspaces=true]{demonstrations/paths-demo-mod3.tex}{\texttt{paths-demo-mod3.tex}}{lst:paths-demo-mod3}
+
+  We see that \texttt{path3.yaml} calls \texttt{path4.yaml} which in turn calls
+  \texttt{path5.yaml}.
+
+  On inspection of \texttt{indent.log} from the above call, we see the details of this
+  part of the process given in \cref{lst:path-test3:txt}.
+
+  \cmhlistingsfromfile*{demonstrations/path-test3.txt}{\texttt{path-test3.txt}}{lst:path-test3:txt}
+  \end{example}
+
  \section{logFilePreferences}\label{app:logfile-demo}
   \Vref{lst:logFilePreferences} describes the options for customising the information given
   to the log file, and we provide a few demonstrations here.

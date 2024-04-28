@@ -1,0 +1,27 @@
+YAML settings, reading from the following files:
+       Reading USER settings from nested-paths5.yaml
+       Reading path information from nested-paths5.yaml
+       ---
+       paths:
+         - ./a-nested-path2.yaml
+
+       ---
+       paths:
+         - ./a-nested-path2.yaml
+
+       Reading USER settings from ./a-nested-path2.yaml
+       Reading path information from ./a-nested-path2.yaml
+       ---
+       defaultIndent: ' '
+       paths:
+         - ./a-nested-nested-path1.yaml
+
+       ---
+       defaultIndent: ' '
+       paths:
+         - ./a-nested-nested-path1.yaml
+
+       Reading USER settings from ./a-nested-nested-path1.yaml
+       ---
+       defaultIndent: '           '
+

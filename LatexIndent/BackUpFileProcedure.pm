@@ -54,6 +54,11 @@ sub create_back_up_file {
 
     # add the user's backup directory to the backup path
     $backupFileNoExt = "${$self}{cruftDirectory}/$backupFileNoExt";
+    $backupFileNoExt =~ s/\\/\//g;
+    $backupFileNoExt =~ s/\/{2,}/\//g;
+    if ( $^O eq 'MSWin32' ) {
+        $backupFileNoExt =~ s/\//\\/g;
+    }
 
     # local variables, determined from the YAML settings
     my $onlyOneBackUp       = $mainSettings{onlyOneBackUp};

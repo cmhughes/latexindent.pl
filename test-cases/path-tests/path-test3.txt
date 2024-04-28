@@ -1,0 +1,17 @@
+YAML settings, reading from the following files:
+       Reading USER settings from nested-paths3.yaml
+       Reading path information from nested-paths3.yaml
+       ---
+       encoding: zzz
+       paths:
+         - /absolute/path/to/config.yaml
+
+WARN:  encoding "zzz" not found
+       Ignore this setting and will take the default encoding.
+       ---
+       encoding: zzz
+       paths:
+         - /absolute/path/to/config.yaml
+
+WARN:  /home/cmhughes/indentconfig.yaml
+       specifies /absolute/path/to/config.yaml but this file does not exist - unable to read settings from this file

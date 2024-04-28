@@ -337,6 +337,8 @@ latexindent.pl -s -y="modifyLineBreaks:environments:EndStartsOnOwnLine:-1" -m is
 
 latexindent.pl -s issue-526.tex -o=+-mod1
 
+latexindent.pl -s issue-535.tex -o=+-mod1
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

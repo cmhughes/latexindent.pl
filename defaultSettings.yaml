@@ -1,5 +1,5 @@
 #
-# latexindent.pl, version 3.23.9, 2024-04-06
+# latexindent.pl, version 3.24, 2024-04-28
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 #
@@ -228,6 +228,7 @@ lookForAlignDelims:
   tblr: 1
   longtblr: 1
   talltblr: 1
+  spreadtab: 1
 
 # if you want the script to look for \item commands
 # and format it, as follows (for example),
