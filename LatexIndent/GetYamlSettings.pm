@@ -517,9 +517,9 @@ sub yaml_read_settings {
                         }
 
                         # if amalgamate is set to 1, then append
-                        if ( ref($mainSettings{$firstLevelKey}[0]) eq "HASH"
-                             and 
-                             ${ $mainSettings{$firstLevelKey}[0] }{amalgamate} ) {
+                        if ( ref( $mainSettings{$firstLevelKey}[0] ) eq "HASH"
+                            and ${ $mainSettings{$firstLevelKey}[0] }{amalgamate} )
+                        {
 
                             # loop through the other settings
                             foreach ( @{$firstLevelValue} ) {

@@ -968,6 +968,105 @@ Context: This command adds the line to your ``.profile`` file (which is commonly
 
 .. label follows
 
+.. _sec:appendix:paths:
+
+paths demonstration
+-------------------
+
+As detailed in :numref:`subsec:indentconfig` , the ``paths`` field can be specified in any of your ``YAML`` files.
+
+We will use the file in :numref:`lst:paths-demo` for demonstration in what follows.
+
+.. literalinclude:: demonstrations/paths-demo.tex
+	:class: .tex
+	:caption: ``paths-demo.tex`` 
+	:name: lst:paths-demo
+
+.. proof:example::	
+	
+	Consider the settings given in :numref:`lst:path1-yaml` and :numref:`lst:path2-yaml`.
+	
+	.. literalinclude:: demonstrations/path1.yaml
+		:class: .baseyaml
+		:caption: ``path1.yaml`` 
+		:name: lst:path1-yaml
+	
+	.. literalinclude:: demonstrations/path2.yaml
+		:class: .baseyaml
+		:caption: ``path2.yaml`` 
+		:name: lst:path2-yaml
+	
+	Upon calling
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l=path1.yaml paths-demo.tex
+	
+	then we will receive the output given in :numref:`lst:paths-demo-mod1`.
+	
+	.. literalinclude:: demonstrations/paths-demo-mod1.tex
+		:class: .tex
+		:caption: ``paths-demo-mod1.tex`` 
+		:name: lst:paths-demo-mod1
+	
+	We note that the settings from :numref:`lst:path2-yaml` have been called from :numref:`lst:path1-yaml`.
+	
+	On inspection of ``indent.log`` from the above call, we see the details of this part of the process given in :numref:`lst:path-test1:txt`.
+	
+	.. literalinclude:: demonstrations/path-test1.txt
+		:class: .tex
+		:caption: ``path-test1.txt`` 
+		:name: lst:path-test1:txt
+	
+
+
+.. proof:example::	
+	
+	Consider the settings given in :numref:`lst:path3-yaml` to :numref:`lst:path5-yaml`.
+	
+	.. literalinclude:: demonstrations/path3.yaml
+		:class: .baseyaml
+		:caption: ``path3.yaml`` 
+		:name: lst:path3-yaml
+	
+	.. literalinclude:: demonstrations/path4.yaml
+		:class: .baseyaml
+		:caption: ``path4.yaml`` 
+		:name: lst:path4-yaml
+	
+	.. literalinclude:: demonstrations/path5.yaml
+		:class: .baseyaml
+		:caption: ``path5.yaml`` 
+		:name: lst:path5-yaml
+	
+	Upon calling
+	
+	.. code-block:: latex
+	   :class: .commandshell
+	
+	   latexindent.pl -l=path3.yaml paths-demo.tex
+	
+	then we will receive the output given in :numref:`lst:paths-demo-mod3`.
+	
+	.. literalinclude:: demonstrations/paths-demo-mod3.tex
+		:class: .tex
+		:caption: ``paths-demo-mod3.tex`` 
+		:name: lst:paths-demo-mod3
+	
+	We see that ``path3.yaml`` calls ``path4.yaml`` which in turn calls ``path5.yaml``.
+	
+	On inspection of ``indent.log`` from the above call, we see the details of this part of the process given in :numref:`lst:path-test3:txt`.
+	
+	.. literalinclude:: demonstrations/path-test3.txt
+		:class: .tex
+		:caption: ``path-test3.txt`` 
+		:name: lst:path-test3:txt
+	
+
+
+.. label follows
+
 .. _app:logfile-demo:
 
 logFilePreferences

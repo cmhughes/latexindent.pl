@@ -1,6 +1,11 @@
-<!-- announcement: latexindent.exe oneSentencePerLine bug fix-->
+<!-- announcement: paths feature update, log file bug fix-->
 
 # changelog.md
+## V3.24, April 28, 2024
+* `paths` feature update, see [issue 516](https://github.com/cmhughes/latexindent.pl/issues/516)
+* `lookForAlignDelims` updated to include `spreadtab`, see [issue 535](https://github.com/cmhughes/latexindent.pl/issues/535)
+* log file bugfix, see [issue 537](https://github.com/cmhughes/latexindent.pl/issues/537), thanks to @fengzyf
+
 ## V3.23.9, April 6, 2024
 `latexindent.exe` oneSentencePerLine bug fix, see [issue 514](https://github.com/cmhughes/latexindent.pl/issues/514)
 

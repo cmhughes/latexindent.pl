@@ -9,6 +9,10 @@ The behaviour of ``latexindent.pl`` is controlled from the settings specified in
 
 We focus our discussion on ``indentconfig.yaml``, but there are other options which are detailed in :numref:`app:indentconfig:options`.
 
+.. label follows
+
+.. _subsec:indentconfig:
+
 indentconfig.yaml and .indentconfig.yaml
 ----------------------------------------
 
@@ -44,6 +48,8 @@ You can make sure that your settings are loaded by checking ``indent.log`` for d
 	
 	If ``latexindent.pl`` can not read your ``.yaml`` file it will tell you so in ``indent.log``.
 
+
+As of you can specify the ``paths`` field from :numref:`lst:indentconfig` within any of your ``latexindent.yaml`` and friends settings files. This can lead to creative nesting of configuration files; a demonstration is given in :numref:`sec:appendix:paths`.
 
 If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of the default commandline encoding not being UTF-8; normally this will only occur for Windows users. In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as demonstrated in :numref:`lst:indentconfig-encoding`.
 
@@ -157,6 +163,8 @@ it is important not to use quotes surrounding the regex; for example, with refer
    :class: .commandshell
 
    latexindent.pl -m --yaml='modifyLineBreaks:oneSentencePerLine:sentencesEndWith:other:\;'
+
+Note that the ``paths`` settings (see :numref:`sec:appendix:paths`) can *not* be specified using the ``-y`` switch.
 
 .. label follows
 
