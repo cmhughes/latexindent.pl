@@ -1,0 +1,10 @@
+replacements:
+  - 
+    substitution: |-
+      s/^\h*(?<!\\)%.*\R//mg
+  - 
+    substitution: |-
+      s/(?<!\\)%.*$//mg
+  - 
+    substitution: |-
+      s/\\begin\{comment\}.*?\\end\{comment\}//sg
