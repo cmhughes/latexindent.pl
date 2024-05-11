@@ -1,0 +1,15 @@
+\documentclass{ctexrep}%Chinese report
+\usepackage{tabularray}%tabular
+
+\begin{document}
+\begin{tblr}{
+		cells={c,m},
+		hlines,
+		vlines,
+	}
+	AAAAAAA & BBBBBBB \\
+	c       & {f      \\g} \\ %multirows
+	d       & h       \\
+	e       & {i      \\j}    %multirows
+\end{tblr}
+\end{document}
