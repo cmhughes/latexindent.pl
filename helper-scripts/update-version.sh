@@ -44,10 +44,10 @@
 #        - <upload latexindent.zip to ctan>
 
 minorVersion=0
-oldVersion='3.23.9'
-newVersion='3.24'
-oldDate='2024-04-06'
-newDate='2024-04-28'
+oldVersion='3.24'
+newVersion='3.24.1'
+oldDate='2024-04-28'
+newDate='2024-05-12'
 updateVersion=0
 gitMode=0
 
@@ -174,7 +174,7 @@ if [ $gitMode -eq 1 ]; then
     ###result=$? && [[ result -gt 0  ]] &&  echo -e "${RED}-g switch failure: git diff --cached has differences you'll need to commit them${COLOR_OFF}" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
 
     allmode=0
-    for mycommand in 'git pull' 'git push' 'git checkout main' 'git merge --no-ff develop' 'git pull' "git tag V${newVersion}" 'git push' 'git push --tags'
+    for mycommand in 'git pull' 'git push' 'git checkout main' 'git merge --no-ff develop' 'git pull' "git tag V${newVersion}" 'git push' 'git push --tags' 'git checkout develop' 'git merge main'
     do
         while true; do
            [[ allmode -eq 1 ]] && helper_section_print "$mycommand" && $mycommand && break

@@ -1,0 +1,25 @@
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1
+    removeSentenceLineBreaks: 1
+    textWrapSentences: 1
+    sentencesFollow:
+      par: 1
+      blankLine: 1
+      fullStop: 1
+      exclamationMark: 1
+      questionMark: 1
+      rightBrace: 1
+      commentOnPreviousLine: 1
+      other: ;
+    sentencesBeginWith:
+      A-Z: 1
+      a-z: 1
+    sentencesDoNOTcontain:
+      other: \}                    # regex
+    sentencesEndWith:
+      basicFullStop: 0
+      betterFullStop: 1
+      exclamationMark: 1
+      questionMark: 1
+      other: ;

@@ -49,7 +49,7 @@ sub one_sentence_per_line {
     {
         if ($yesNo) {
             if ( $sentencesFollowEachPart eq "par" ) {
-                $sentencesFollowEachPart = qr/\R?\\par/s;
+                $sentencesFollowEachPart = qr/\R?\\par(?![a-zA-Z])/s;
             }
             elsif ( $sentencesFollowEachPart eq "blankLine" ) {
                 $sentencesFollowEachPart = qr/
@@ -207,7 +207,7 @@ sub one_sentence_per_line {
 
     # similarly for \par
     if ( ${ ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentencesFollow} }{par} ) {
-        $notWithinSentence .= "|" . qr/(?:\R?\\par)/s;
+        $notWithinSentence .= "|" . qr/(?:\R?\\par(?![a-zA-Z]))/s;
     }
 
     my $sentenceRegEx = qr/
