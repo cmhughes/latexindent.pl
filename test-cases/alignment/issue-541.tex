@@ -1,0 +1,19 @@
+\documentclass{ctexrep}%Chinese report
+\usepackage{tabularray}%tabular
+
+\begin{document}
+\begin{tblr}[long,
+    label= {market_fuyanshan}
+    ]{
+    cells = {c,m},
+    hline{1-2,5}= {-}{1pt},
+            hline{3-4} = {-}{},
+            vlines,
+            row{1} = {cmd=\bfseries},
+    }
+    XXX & YYY & ZZZ \\
+    AAA & DDD & GGG \\
+    BBB & EEE & HHH \\
+    CCC & FFF & III
+\end{tblr}
+\end{document}
