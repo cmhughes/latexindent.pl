@@ -1,6 +1,9 @@
-<!-- announcement: paths feature update, log file bug fix-->
+<!-- announcement: oneSentencePerLine par issue bug fix-->
 
 # changelog.md
+## V3.24.1, May 12, 2024
+oneSentencePerLine par issue bug fix, see [issue 527](https://github.com/cmhughes/latexindent.pl/issues/527)
+
 ## V3.24, April 28, 2024
 * `paths` feature update, see [issue 516](https://github.com/cmhughes/latexindent.pl/issues/516)
 * `lookForAlignDelims` updated to include `spreadtab`, see [issue 535](https://github.com/cmhughes/latexindent.pl/issues/535)
