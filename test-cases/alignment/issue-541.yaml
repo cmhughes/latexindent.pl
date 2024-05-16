@@ -1,3 +1,7 @@
+modifyLineBreaks:
+  optionalArguments:
+    tblr:
+      OptArgBodyStartsOnOwnLine: 1        # -1,0,1,2,3,4
 fineTuning:
   keyEqualsValuesBracesBrackets:
     name: |-
