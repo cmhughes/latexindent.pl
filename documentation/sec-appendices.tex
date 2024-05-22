@@ -114,20 +114,15 @@ sudo apt install texlive-extra-utils
    \index{latexindent-linux} \index{linux} \index{TeXLive}
 
   \paragraph{Arch-based distributions}
-   First install the dependencies
-
+   \texttt{latexindent} is included in Arch-packaged TeX Live, and can be installed by:
    \begin{commandshell}
-sudo pacman -S perl cpanminus
+sudo pacman -S texlive-binextra perl-yaml-tiny perl-file-homedir
 \end{commandshell}
 
-   In addition, install \texttt{perl-file-homedir} from AUR, using your AUR helper of
-   choice,
-
+   To enable optional \texttt{--GCString} switch, install \texttt{perl-unicode-linebreak}:
    \begin{commandshell}
-sudo paru -S perl-file-homedir
+sudo pacman -S perl-unicode-linebreak
 \end{commandshell}
-
-   then run the latexindent-module-installer.pl file located at helper-scripts/
 
   \paragraph{Alpine}
    If you are using Alpine, some \texttt{Perl} modules are not build-compatible with
