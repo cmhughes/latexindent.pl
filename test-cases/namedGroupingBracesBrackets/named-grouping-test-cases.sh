@@ -45,5 +45,7 @@ latexindent.pl -s issue-501.tex -o +-mod1
 
 latexindent.pl -s -l issue-501.yaml issue-501.tex -o +-mod2
 latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineBreaks:textWrapOptions:blocksBeginWith:other:(?:\\\\),noAdditionalIndentGlobal:namedGroupingBracesBrackets:1" issue-501a.tex -o=+-mod2
+
+latexindent.pl -s -l issue-544.yaml issue-544.tex -o=+-mod1
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise
