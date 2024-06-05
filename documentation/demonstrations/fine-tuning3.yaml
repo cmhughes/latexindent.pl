@@ -1,6 +1,6 @@
 fineTuning:
     trailingComments:
-      notPreceededBy: (?<!\\)
+      notPrecededBy: (?<!\\)
       afterComment: (?!(?:\hend)).*?
 
 specialBeginEnd:

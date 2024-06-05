@@ -649,7 +649,7 @@ fineTuning:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>
     between: _|\^|\*
   trailingComments:
-    notPreceededBy: (?<!\\)
+    notPrecededBy: (?<!\\)
     afterComment: .*?
   modifyLineBreaks:
     doubleBackSlash: \\\\(?:\h*\[\h*\d+\h*[a-zA-Z]+\h*\])?

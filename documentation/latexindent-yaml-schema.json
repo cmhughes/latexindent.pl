@@ -1496,9 +1496,14 @@
           "description": "fine tuning, for trailing comments",
           "type": "object",
           "properties": {
-            "notPreceededBy": {
+            "notPrecededBy": {
               "description": "regular expression for what can NOT come before %, for example \\%",
               "type": "string"
+            },
+            "notPreceededBy": {
+              "description": "please use notPrecededBy instead",
+              "type": "string",
+              "deprecated": true
             },
             "afterComment": {
               "description": "regular expression for what can come after %",
