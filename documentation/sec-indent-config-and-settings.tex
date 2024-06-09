@@ -69,16 +69,6 @@
  \texttt{latexindent.yaml} and friends settings files. This can lead to creative nesting
  of configuration files; a demonstration is given in \vref{sec:appendix:paths}.
 
- If you find that \announce{2021-06-19}{encoding option for indentconfig.yaml}
- \texttt{latexindent.pl} does not read your YAML file, then it might be as a result of
- the default commandline encoding not being UTF-8; normally this will only occur for
- Windows users. In this case, you might like to explore the \texttt{encoding} option for
- \texttt{indentconfig.yaml} as demonstrated in \cref{lst:indentconfig-encoding}.%
-
- \cmhlistingsfromfile[style=yaml-LST]{demonstrations/encoding.yaml}[yaml-TCB]{The \texttt{encoding} option for \texttt{indentconfig.yaml}}{lst:indentconfig-encoding}
-
- Thank you to \cite{qiancy98} for this contribution; please see \vref{app:encoding} and
- details within \cite{encoding} for further information.
 
 \subsection{localSettings.yaml and friends}\label{sec:localsettings}
  The \texttt{-l} switch tells \texttt{latexindent.pl} to look for
