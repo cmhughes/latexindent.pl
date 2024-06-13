@@ -18,7 +18,7 @@ package LatexIndent::Logger;
 
 use strict;
 use warnings;
-use Exporter;
+use Exporter qw/import/;
 use LatexIndent::Switches qw/%switches/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our @EXPORT_OK = qw/@logFileLines/;
