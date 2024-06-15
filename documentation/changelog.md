@@ -1,6 +1,9 @@
-<!-- announcement: oneSentencePerLine par issue bug fix-->
+<!-- announcement: encoding bug fix-->
 
 # changelog.md
+## V3.24.2, June 15, 2024
+encoding bug fix, see [issue 547](https://github.com/cmhughes/latexindent.pl/issues/547), thanks to @fengzyf
+
 ## V3.24.1, May 12, 2024
 oneSentencePerLine par issue bug fix, see [issue 527](https://github.com/cmhughes/latexindent.pl/issues/527)
 

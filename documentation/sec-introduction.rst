@@ -39,6 +39,8 @@ There is certainly no malicious intent in releasing this script, and I do hope t
 Quick start
 -----------
 
+When ``latexindent.pl`` reads and writes files, the files are read and written in UTF-8 format by default. That is to say, the encoding format for tex and yaml files needs to be in UTF-8 format.
+
 If you’d like to get started with ``latexindent.pl`` then simply type
 
 .. code-block:: latex
@@ -310,7 +312,7 @@ You might also like to see https://stackoverflow.com/questions/19590042/error-ca
 About this documentation
 ------------------------
 
-As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 631. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
+As you read through this documentation, you will see many listings; in this version of the documentation, there are a total of 629. This may seem a lot, but I deem it necessary in presenting the various different options of ``latexindent.pl`` and the associated output that they are capable of producing.
 
 The different listings are presented using different styles:
 

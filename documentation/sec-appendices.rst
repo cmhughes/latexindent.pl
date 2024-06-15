@@ -90,8 +90,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
 
    sudo apt-get install perlbrew
    perlbrew init
-   perlbrew install perl-5.34.0
-   perlbrew switch perl-5.34.0
+   perlbrew install perl-5.39.1
+   perlbrew switch perl-5.39.1
    sudo apt-get install curl
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
@@ -151,21 +151,19 @@ Ubuntu: users without perl
 Arch-based distributions
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-First install the dependencies
+``latexindent`` is included in Arch-packaged TeX Live, and can be installed by:
 
 .. code-block:: latex
    :class: .commandshell
 
-   sudo pacman -S perl cpanminus
+   sudo pacman -S texlive-binextra perl-yaml-tiny perl-file-homedir
 
-In addition, install ``perl-file-homedir`` from AUR, using your AUR helper of choice,
+To enable optional ``–GCString`` switch, install ``perl-unicode-linebreak``:
 
 .. code-block:: latex
    :class: .commandshell
 
-   sudo paru -S perl-file-homedir
-
-then run the latexindent-module-installer.pl file located at helper-scripts/
+   sudo pacman -S perl-unicode-linebreak
 
 Alpine
 ^^^^^^
@@ -1123,29 +1121,30 @@ logFilePreferences
 
 .. _app:encoding:
 
-Encoding indentconfig.yaml
---------------------------
+Encoding
+--------
 
-In relation to :numref:`sec:indentconfig`, Windows users that encounter encoding issues with ``indentconfig.yaml``, may wish to run the following command in either ``cmd.exe`` or ``powershell.exe``:
+When using latexindent in different ways on different systems, the range of characters supported by its switches/flags/options (see :numref:`sec:commandline`) may vary.
 
-.. code-block:: latex
-   :class: .commandshell
+For the Windows executable file ``latexindent.exe``, its options support UTF-8 characters.
 
-   chcp
-
-They may receive the following result
+For the Windows Perl script ``latexindent.pl``, its option switch supports the characters supported by the encoding corresponding to the system code page. You can check the system code page by running the following command in either ``cmd.exe`` or ``powershell.exe``:
 
 .. code-block:: latex
    :class: .commandshell
 
-   Active code page: 936
+     chcp
 
-and can then use the settings given in :numref:`lst:indentconfig-encoding1` within their ``indentconfig.yaml``, where 936 is the result of the ``chcp`` command.
+which may receive the following result
 
-.. literalinclude:: demonstrations/encoding1.yaml
-	:class: .baseyaml
-	:caption: ``encoding`` demonstration for ``indentconfig.yaml`` 
-	:name: lst:indentconfig-encoding1
+.. code-block:: latex
+   :class: .commandshell
+
+     Active code page: 936
+
+and then the characters supported by the code page can be found in https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers. For example, the characters supported by the encoding corresponding to code page 936 are: ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312).
+
+For Ubuntu Linux and macOS users, whether using the Perl script or the executable file, the options support UTF-8 characters.
 
 dos2unix linebreak adjustment
 -----------------------------

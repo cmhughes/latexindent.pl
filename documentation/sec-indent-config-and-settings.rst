@@ -51,15 +51,6 @@ You can make sure that your settings are loaded by checking ``indent.log`` for d
 
 As of you can specify the ``paths`` field from :numref:`lst:indentconfig` within any of your ``latexindent.yaml`` and friends settings files. This can lead to creative nesting of configuration files; a demonstration is given in :numref:`sec:appendix:paths`.
 
-If you find that ``latexindent.pl`` does not read your YAML file, then it might be as a result of the default commandline encoding not being UTF-8; normally this will only occur for Windows users. In this case, you might like to explore the ``encoding`` option for ``indentconfig.yaml`` as demonstrated in :numref:`lst:indentconfig-encoding`.
-
-.. literalinclude:: demonstrations/encoding.yaml
-	:class: .baseyaml
-	:caption: The ``encoding`` option for ``indentconfig.yaml`` 
-	:name: lst:indentconfig-encoding
-
-Thank you to (qiancy98 2021) for this contribution; please see :numref:`app:encoding` and details within (“Perldoc Encode::Supported” n.d.) for further information.
-
 .. label follows
 
 .. _sec:localsettings:
@@ -203,16 +194,6 @@ A visual representation of this is given in :numref:`fig:loadorder`.
       :name: ref-jacobo-diaz-hidden-config
 
       Diaz, Jacobo. 2014. “Hiddenconfig.” July 21, 2014. https://github.com/cmhughes/latexindent.pl/pull/18.
-
-   .. container::
-      :name: ref-encoding
-
-      “Perldoc Encode::Supported.” n.d. Accessed May 6, 2021. https://perldoc.perl.org/Encode::Supported.
-
-   .. container::
-      :name: ref-qiancy98
-
-      qiancy98. 2021. “Locale Encoding of File System.” May 6, 2021. https://github.com/cmhughes/latexindent.pl/pull/273.
 
 .. [1]
    If you’re not sure where to put ``indentconfig.yaml``, don’t worry ``latexindent.pl`` will tell you in the log file exactly where to put it assuming it doesn’t exist already.

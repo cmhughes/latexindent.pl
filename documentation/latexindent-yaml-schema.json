@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/schema",
   "$id": "latexindent-yaml-schema.json",
   "title": "latexindent.pl YAML schema",
-  "description": "latexindent.pl YAML schema helper, V3.24.1 2024-05-12",
+  "description": "latexindent.pl YAML schema helper, V3.24.2 2024-06-15",
   "type": "object",
   "properties": {
     "fileExtensionPreference": {
@@ -1496,9 +1496,14 @@
           "description": "fine tuning, for trailing comments",
           "type": "object",
           "properties": {
-            "notPreceededBy": {
+            "notPrecededBy": {
               "description": "regular expression for what can NOT come before %, for example \\%",
               "type": "string"
+            },
+            "notPreceededBy": {
+              "description": "please use notPrecededBy instead",
+              "type": "string",
+              "deprecated": true
             },
             "afterComment": {
               "description": "regular expression for what can come after %",

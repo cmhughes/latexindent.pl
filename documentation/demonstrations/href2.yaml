@@ -1,6 +1,6 @@
 fineTuning:
     trailingComments:
-      notPreceededBy: '(?:(?<!Handbook)(?<!for)(?<!Spoken))'
+      notPrecededBy: '(?:(?<!Handbook)(?<!for)(?<!Spoken))'
 
 modifyLineBreaks:
     textWrapOptions:

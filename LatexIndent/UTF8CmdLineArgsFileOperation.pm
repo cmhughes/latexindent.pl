@@ -5,22 +5,39 @@ use warnings;
 use feature qw( say state );
 use utf8;
 use Config qw( %Config );
-use Encode qw( decode encode );
+use Encode qw(find_encoding decode encode );
 
 use Exporter qw/import/;
 our @EXPORT_OK
     = qw/commandlineargs_with_encode @new_args copy_with_encode exist_with_encode open_with_encode zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
 
+our $encodingObject;  
+
+if ($^O eq 'MSWin32') {
+    my $encoding_sys = 'cp' . Win32::GetACP();
+    $encodingObject = find_encoding( $encoding_sys );
+    
+    # Check if the encoding is valid.
+    unless ( ref($encodingObject) ) {
+        $encodingObject = find_encoding( 'utf-8' );
+    }
+}
+else {
+    $encodingObject = find_encoding( 'utf-8' );
+}
+
 sub copy_with_encode {
     use File::Copy;
     my ( $source, $destination ) = @_;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::File;
         Win32::Unicode::File->import(qw(copyW));
         copyW( $source, $destination, 1 );
     }
     else {
+        $source = $encodingObject->encode($source);
+        $destination = $encodingObject->encode($destination);
         copy( $source, $destination );
     }
 }
@@ -28,12 +45,13 @@ sub copy_with_encode {
 sub exist_with_encode {
     my ($filename) = @_;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::File;
         Win32::Unicode::File->import(qw(statW));
         return statW($filename);
     }
     else {
+        $filename = $encodingObject->encode($filename);
         return -e $filename;
     }
 }
@@ -41,7 +59,7 @@ sub exist_with_encode {
 sub zero_with_encode {
     my ($filename) = @_;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::File;
         Win32::Unicode::File->import(qw(file_size));
         my $size = file_size($filename);
@@ -53,6 +71,7 @@ sub zero_with_encode {
         }
     }
     else {
+        $filename = $encodingObject->encode($filename);
         return -z $filename;
     }
 }
@@ -62,7 +81,7 @@ sub open_with_encode {
     my $filename = shift;
     my $fh;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::File;
         Win32::Unicode::File->import;
         $fh = Win32::Unicode::File->new;
@@ -74,6 +93,7 @@ sub open_with_encode {
         }
     }
     else {
+        $filename = $encodingObject->encode($filename);
         if ( open( $fh, $mode, $filename ) ) {
             return $fh;
         }
@@ -95,13 +115,14 @@ sub read_yaml_with_encode {
 sub isdir_with_encode {
     my $path = shift;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::File;
         Win32::Unicode::File->import(qw(file_type));
 
         return file_type( 'd', $path );
     }
     else {
+        $path = $encodingObject->encode($path);
         return -d $path;
     }
 }
@@ -109,7 +130,7 @@ sub isdir_with_encode {
 sub mkdir_with_encode {
     my $path = shift;
 
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::Unicode::Dir;
         Win32::Unicode::Dir->import(qw(mkdirW));
 
@@ -118,7 +139,7 @@ sub mkdir_with_encode {
     else {
         require File::Path;
         File::Path->import(qw(make_path));
-
+        $path = $encodingObject->encode($path);
         make_path($path);
     }
 }
@@ -126,7 +147,7 @@ sub mkdir_with_encode {
 #https://stackoverflow.com/a/63868721
 #https://stackoverflow.com/a/44489228
 sub commandlineargs_with_encode {
-    if ( $FindBin::Script eq 'latexindent.exe' ) {
+    if ( $FindBin::Script =~ /\.exe$/ ) {
         require Win32::API;
         import Win32::API qw( ReadMemory );
 
@@ -207,7 +228,6 @@ sub commandlineargs_with_encode {
         @ARGV = @{$args};
     }
     else {
-        my $encodingObject = "utf-8";
         @ARGV = map { decode( $encodingObject, $_ ) } @ARGV;
         our @new_args = @ARGV;
     }

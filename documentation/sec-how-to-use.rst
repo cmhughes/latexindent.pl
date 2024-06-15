@@ -90,6 +90,8 @@ From the command line
 ``latexindent.pl`` has a number of different switches/flags/options, which can be combined in any way that you like, either in short or long form as detailed below. ``latexindent.pl`` produces a ``.log`` file, ``indent.log``, every time it is run; the name of the log file can be customised, but we will refer to the log file as ``indent.log`` throughout this document. There is a base of information that is written to ``indent.log``, but other additional information will be written depending on
 which of the following options are used.
 
+When using ``latexindent.pl`` in different ways on different systems, the range of characters supported by its switches/flags/options may vary. We discuss these in Section :numref:`app:encoding`.
+
 .. describe:: -v, –version
 
 .. index:: switches;-v, –version definition and details

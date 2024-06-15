@@ -27,12 +27,20 @@ our @EXPORT_OK
     = qw/remove_trailing_comments put_trailing_comments_back_in $trailingCommentRegExp add_comment_symbol construct_trailing_comment_regexp @trailingComments/;
 our @trailingComments;
 our $commentCounter = 0;
+our $notPrecededByRegExp;
 our $trailingCommentRegExp;
 
 sub construct_trailing_comment_regexp {
-    my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
+    $notPrecededByRegExp = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPrecededBy}/;
+    my $notPreceededBy = ${${mainSettings{fineTuning}}{trailingComments}}{notPreceededBy};
 
-    $trailingCommentRegExp = qr/$notPreceededBy%$tokens{trailingComment}\d+$tokens{endOfToken}/;
+    if ( $notPreceededBy ) {
+        $logger->warn(
+            "*fineTuning:trailingComments:notPreceededBy is ok for now, but in future versions, fineTuning:trailingComments:notPrecededBy will be used" );
+        $notPrecededByRegExp = qr/$notPreceededBy/;
+    }
+
+    $trailingCommentRegExp = qr/$notPrecededByRegExp%$tokens{trailingComment}\d+$tokens{endOfToken}/;
 }
 
 sub add_comment_symbol {
@@ -66,17 +74,16 @@ sub remove_trailing_comments {
 
     $logger->trace("*Storing trailing comments") if $is_t_switch_active;
 
-    my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
-    my $afterComment   = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
+    my $afterComment = qr/${${$mainSettings{fineTuning}}{trailingComments}}{afterComment}/;
 
     # perform the substitution
     ${$self}{body} =~ s/
-                            $notPreceededBy   # not preceded by a \
-                            %                 # % 
+                            $notPrecededByRegExp  # not preceded by a \
+                            %                     # % 
                             (
-                                $afterComment # anything else
+                                $afterComment     # anything else
                             )
-                            $                 # up to the end of a line
+                            $                     # up to the end of a line
                         /   
                             # increment comment counter and store comment
                             $commentCounter++;
@@ -134,14 +141,13 @@ sub put_trailing_comments_back_in {
             # replace the line-broken trailing comment ID with a non-broken trailing comment ID
             ${$self}{body} =~ s/%\R?$trailingcommentIDwithLineBreaksRegExp/%$trailingcommentID/s;
         }
-        my $notPreceededBy = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPreceededBy}/;
         if (${$self}{body} =~ m/%$trailingcommentID
                               (
-                                  (?!                  # not immediately preceded by 
-                                      $notPreceededBy  # \
-                                      %                # %
+                                  (?!                       # not immediately preceded by 
+                                      $notPrecededByRegExp  # \
+                                      %                     # %
                                   ).*?
-                              )                        # captured into $1
+                              )                             # captured into $1
                               (\h*)?$                
                           /mx and $1 ne ''
             )

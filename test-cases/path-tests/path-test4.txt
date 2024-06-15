@@ -6,8 +6,6 @@ YAML settings, reading from the following files:
        paths:
          - ./a-nested-path1.yaml
 
-WARN:  encoding "zzz" not found
-       Ignore this setting and will take the default encoding.
        ---
        encoding: zzz
        paths:

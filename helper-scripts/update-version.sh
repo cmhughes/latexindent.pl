@@ -10,6 +10,10 @@
 #
 #   update-version.sh -h
 #
+# git mode, runs the checkout, merge, pull, tag, push commands, checking for confirmation before each 
+#
+#   update-version.sh -g
+#
 # update
 #
 #   update-version.sh -u
@@ -44,10 +48,10 @@
 #        - <upload latexindent.zip to ctan>
 
 minorVersion=0
-oldVersion='3.24'
-newVersion='3.24.1'
-oldDate='2024-04-28'
-newDate='2024-05-12'
+oldVersion='3.24.1'
+newVersion='3.24.2'
+oldDate='2024-05-12'
+newDate='2024-06-15'
 updateVersion=0
 gitMode=0
 
