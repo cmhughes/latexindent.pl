@@ -67,8 +67,8 @@ perl latexindent-module-installer.pl
    \begin{commandshell}
 sudo apt-get install perlbrew
 perlbrew init
-perlbrew install perl-5.34.0
-perlbrew switch perl-5.34.0
+perlbrew install perl-5.39.1
+perlbrew switch perl-5.39.1
 sudo apt-get install curl
 curl -L http://cpanmin.us | perl - App::cpanminus
 cpanm YAML::Tiny
@@ -115,11 +115,14 @@ sudo apt install texlive-extra-utils
 
   \paragraph{Arch-based distributions}
    \texttt{latexindent} is included in Arch-packaged TeX Live, and can be installed by:
+
    \begin{commandshell}
 sudo pacman -S texlive-binextra perl-yaml-tiny perl-file-homedir
 \end{commandshell}
 
-   To enable optional \texttt{--GCString} switch, install \texttt{perl-unicode-linebreak}:
+   To enable optional \texttt{--GCString} switch, install
+   \texttt{perl-unicode-linebreak}:
+
    \begin{commandshell}
 sudo pacman -S perl-unicode-linebreak
 \end{commandshell}
@@ -923,12 +926,17 @@ TRACE: Searching myenv for optional and mandatory arguments
   \end{example}
 
  \section{Encoding}\label{app:encoding}
- 
- When using latexindent in different ways on different systems, the range of characters supported by its switches/flags/options (see \vref{sec:commandline} )  may vary.
 
- For the Windows executable file \texttt{latexindent.exe}, its options support UTF-8 characters.
+  When using latexindent in different ways on different systems, the range of characters
+  supported by its switches/flags/options (see \vref{sec:commandline}) may vary.
 
- For the Windows Perl script \texttt{latexindent.pl}, its option switch supports the characters supported by the encoding corresponding to the system code page. You can check the system code page by running the following command in either \texttt{cmd.exe} or \texttt{powershell.exe}:
+  For the Windows executable file \texttt{latexindent.exe}, its options support UTF-8
+  characters.
+
+  For the Windows Perl script \texttt{latexindent.pl}, its option switch supports the
+  characters supported by the encoding corresponding to the system code page. You can
+  check the system code page by running the following command in either \texttt{cmd.exe}
+  or \texttt{powershell.exe}:
   \begin{dosprompt}
   chcp
   \end{dosprompt}
@@ -936,12 +944,14 @@ TRACE: Searching myenv for optional and mandatory arguments
   \begin{dosprompt}
   Active code page: 936
   \end{dosprompt}
- and then the characters supported by the code page can be found in \href{Microsoft's code page identifier table}{https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers}.
- For example, the characters supported by the encoding corresponding to code page 936 are: ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312).
+  and then the characters supported by the code page can be found in \href{Microsoft's
+  code page identifier
+  table}{https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers}. For
+  example, the characters supported by the encoding corresponding to code page 936 are:
+  ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312).
 
- For Ubuntu Linux and macOS users, whether using the Perl script or the executable file, the options support UTF-8 characters.
-
-
+  For Ubuntu Linux and macOS users, whether using the Perl script or the executable file,
+  the options support UTF-8 characters.
 
  \section{dos2unix linebreak adjustment}
 

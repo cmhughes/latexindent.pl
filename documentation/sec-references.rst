@@ -64,6 +64,11 @@ References
       eggplants. 2022. “Add Dockerfile and Its Updater/Releaser.” June 12, 2022. https://github.com/cmhughes/latexindent.pl/pull/370.
 
    .. container::
+      :name: ref-fengzyf
+
+      fengzyf. 2024. “Encoding Work.” June 15, 2024. https://github.com/cmhughes/latexindent.pl/pull/548.
+
+   .. container::
       :name: ref-masteringregexp
 
       Friedl, Jeffrey E. F. n.d. *Mastering Regular Expressions*.
