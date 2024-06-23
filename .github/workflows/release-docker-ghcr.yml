@@ -36,7 +36,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: get latexindent tag
         run: echo "TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
-      - uses: docker/build-push-action@v5
+      - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
