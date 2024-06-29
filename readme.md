@@ -280,6 +280,8 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Perl’s primary strength is in text processing. Be it a regex-based approach or otherwise, Perl is excellent for logfile analysis, text manipulation, in-place editing of files, and scouring structured text files for specific field values*,
   Girish Venkatachalam [Why Perl is still relevant in 2022](https://stackoverflow.blog/2022/07/06/why-perl-is-still-relevant-in-2022/)
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
+- *Gwneuwch y pethau bychain, do the little things*, Dewi Sant
+- *We are our mistakes. Sometimes they are the best part of us*. Harlen Coben, Think Twice
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.
