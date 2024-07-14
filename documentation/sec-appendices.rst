@@ -90,8 +90,8 @@ Linux users may be interested in exploring Perlbrew (“Perlbrew” n.d.); an ex
 
    sudo apt-get install perlbrew
    perlbrew init
-   perlbrew install perl-5.39.1
-   perlbrew switch perl-5.39.1
+   perlbrew install perl-5.40.0
+   perlbrew switch perl-5.40.0
    sudo apt-get install curl
    curl -L http://cpanmin.us | perl - App::cpanminus
    cpanm YAML::Tiny
@@ -1142,7 +1142,9 @@ which may receive the following result
 
      Active code page: 936
 
-and then the characters supported by the code page can be found in https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers. For example, the characters supported by the encoding corresponding to code page 936 are: ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312).
+and then the characters supported by the code page can be found in `https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers <Microsoft's
+  code page identifier
+  table>`__. For example, the characters supported by the encoding corresponding to code page 936 are: ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312).
 
 For Ubuntu Linux and macOS users, whether using the Perl script or the executable file, the options support UTF-8 characters.
 

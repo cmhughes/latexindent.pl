@@ -131,6 +131,7 @@
 % bibliographies
 \addbibresource{latex-indent}
 \addbibresource{contributors}
+\BiblatexSplitbibDefernumbersWarningOff
 
 % http://tex.stackexchange.com/questions/122135/how-to-add-a-png-icon-on-the-right-side-of-a-tcolorbox-title
 \newtcolorbox{warning}{parbox=false,
@@ -585,14 +586,14 @@
  title={example~\thetcbcounter},
  fonttitle=\bfseries\sffamily,
  detach title,
- before upper={\llap{\tcbtitle\hspace{5mm}}},
  coltitle=black,
  colback=white,
  grow to left by=6mm,
  %
  % circles and line by the side
  %
- overlay unbroken={%
+ overlay unbroken and first={%
+   \node at ([xshift=-8mm,yshift=-4.5mm]interior.north west) {\bfseries example \thetcbcounter};
    \path [fill=black] ([xshift=1mm,yshift=3mm]interior.south east) node{\hbox{\rule{1ex}{1ex}}};
   },
  overlay last={%

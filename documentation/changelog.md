@@ -1,6 +1,9 @@
-<!-- announcement: encoding bug fix-->
+<!-- announcement: -y switch bug fix for lookForAlignDelims-->
 
 # changelog.md
+## V3.24.3, July 14, 2024
+`-y` switch bug fix for `lookForAlignDelims`, see [issue 551](https://github.com/cmhughes/latexindent.pl/issues/551)
+
 ## V3.24.2, June 15, 2024
 encoding bug fix, see [issue 547](https://github.com/cmhughes/latexindent.pl/issues/547), thanks to @fengzyf
 

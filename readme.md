@@ -21,7 +21,7 @@ and [pre-commit](https://latexindentpl.readthedocs.io/en/latest/sec-appendices.h
 
 ## version
 
-    latexindent.pl, version 3.24.2, 2024-06-15
+    latexindent.pl, version 3.24.3, 2024-07-14
 
 ## author
 Chris Hughes (cmhughes)
@@ -157,7 +157,7 @@ framework](https://pre-commit.com) by adding this to your
 
 ```yaml
   - repo: https://github.com/cmhughes/latexindent.pl.git
-    rev: V3.24.2
+    rev: V3.24.3
     hooks:
       - id: latexindent
 ```
@@ -234,7 +234,7 @@ I align with many of the approaches and details at [Dramatically increase your p
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.39.1
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.40.0
 
 ## GitHub Actions
 The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the
@@ -280,6 +280,8 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Perl’s primary strength is in text processing. Be it a regex-based approach or otherwise, Perl is excellent for logfile analysis, text manipulation, in-place editing of files, and scouring structured text files for specific field values*,
   Girish Venkatachalam [Why Perl is still relevant in 2022](https://stackoverflow.blog/2022/07/06/why-perl-is-still-relevant-in-2022/)
 - *Do the best you can until you know better. Then when you know better, do better.* Maya Angelou
+- *Gwneuwch y pethau bychain, do the little things*, Dewi Sant
+- *We are our mistakes. Sometimes they are the best part of us*. Harlen Coben, Think Twice
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.
