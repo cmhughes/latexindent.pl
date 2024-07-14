@@ -749,6 +749,9 @@ sub yaml_read_settings {
                 my $parent     = $keysValues[0];
                 my $child      = $keysValues[1];
                 my $grandchild = $keysValues[2];
+
+                delete $mainSettings{$parent}{$child} if (defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
+
                 $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
                 $mainSettings{$parent}{$child}{$grandchild} = $value;
             }
