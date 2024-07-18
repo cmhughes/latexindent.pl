@@ -178,7 +178,7 @@ if [ $gitMode -eq 1 ]; then
     ###result=$? && [[ result -gt 0  ]] &&  echo -e "${RED}-g switch failure: git diff --cached has differences you'll need to commit them${COLOR_OFF}" && paplay /usr/share/sounds/freedesktop/stereo/bell.oga && exit
 
     allmode=0
-    for mycommand in 'git pull' 'git push' 'git checkout main' 'git merge --no-ff develop' 'git pull' "git tag V${newVersion}" 'git push' 'git push --tags' 'git checkout develop' 'git merge main'
+    for mycommand in 'git pull' 'git push' 'git checkout main' 'git merge --no-ff develop' 'git pull' "git tag V${newVersion}" 'git push' 'git push --tags' 'git checkout develop' 'git merge main' 'git push'
     do
         while true; do
            [[ allmode -eq 1 ]] && helper_section_print "$mycommand" && $mycommand && break
