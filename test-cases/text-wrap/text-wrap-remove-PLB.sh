@@ -281,6 +281,11 @@ latexindent.pl -s -m -r -l issue-502.yaml,addruler2.yaml issue-502.tex -o=+-mod1
 latexindent.pl -s -m -r -l issue-502a.yaml,addruler2.yaml issue-502a.tex -o=+-mod1
 
 latexindent.pl -s -l issue-506.yaml -m issue-506.tex -o=+-mod1
+
+latexindent.pl -l issue-552.yaml -m issue-552.tex -s
+cp indent.log issue-552.txt
+perl -p0i -e 's/.*?(WARN)/$1/s' issue-552.txt
+perl -p0i -e 's/INFO:.*//s' issue-552.txt
 set +x
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

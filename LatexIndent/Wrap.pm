@@ -659,6 +659,13 @@ sub text_wrap_comment_blocks {
     # call the text wrapping routine
     my $columns = ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{columns};
 
+    # fail gracefully if columns == 0
+    if ($columns==0){
+        $logger->warn("* textWrapOptions: columns is set to 0, can't text wrap with this");
+        ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap} = 0;
+        return;
+    } 
+
     #
     # text wrap comment blocks
     #
