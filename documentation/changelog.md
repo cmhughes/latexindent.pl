@@ -1,6 +1,9 @@
-<!-- announcement: -y switch bug fix for lookForAlignDelims-->
+<!-- announcement: graceful fail for columns=0 text wrapping-->
 
 # changelog.md
+## V3.24.4, July 18, 2024
+graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)
+
 ## V3.24.3, July 14, 2024
 `-y` switch bug fix for `lookForAlignDelims`, see [issue 551](https://github.com/cmhughes/latexindent.pl/issues/551)
 
