@@ -1,0 +1,2 @@
+WARN:   textWrapOptions: columns is set to 0, can't text wrap with this
+       No objects found.

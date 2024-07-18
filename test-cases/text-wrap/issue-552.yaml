@@ -1,0 +1,4 @@
+modifyLineBreaks:
+  textWrapOptions:
+    comments:
+      wrap: 1
