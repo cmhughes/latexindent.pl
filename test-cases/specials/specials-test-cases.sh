@@ -96,5 +96,7 @@ latexindent.pl -s -l issue-480.yaml issue-480.tex -o=+-mod1
 latexindent.pl -s -l issue-511.yaml issue-511.tex -o=+-mod1
 latexindent.pl -s -l issue-511a.yaml issue-511.tex -o=+-mod2
 
+latexindent.pl -s -l issue-554.yaml issue-554.tex -o=+-mod1
+
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status
