@@ -1,0 +1,24 @@
+# This listing configures the behaviour of the formatter on line breaks and rearranging lines
+# Refer to documentation for how to add to these settings to fit your needs
+# https://latexindentpl.readthedocs.io/en/latest/sec-the-m-switch.html#text-wrapping
+modifyLineBreaks:
+  textWrapOptions:
+      # Up to 99 characters per line. Change this to fit your preference
+      columns: 99
+      # Text wrapping happens after indentation, meaning indentation is included in the column limit
+      when: after
+      comments:
+        # Apply wrapping to comments too, splitting/combining across lines if needed
+        wrap: 1
+
+noIndentBlock:
+  copyrightSlug:
+    # TODO - Implement this. Should go from the start of the file to the first command
+    begin: '%\hOxCSProject'
+    end: '\v\v\v'
+    lookForThis: 1
+  headerComments:
+    # A line that starts with %%% should not be rearranged
+    begin: '%%%'
+    end: '\v'
+    lookForThis: 1
