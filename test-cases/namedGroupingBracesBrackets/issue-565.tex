@@ -1,0 +1,24 @@
+\tikzset{
+/Flow diagram/.style={
+% Node placement
+auto,
+node distance=14mm and 14mm,
+on grid,
+% Edge style
+thick,
+->,
+>=Stealthy[round],
+% Node border styles
+rectangle/.style={shape=rectangle, draw, rounded corners, minimum size=8mm},
+state/.style={shape=circle, draw, inner sep=0pt, minimum size=6.8mm},
+no_border/.style={shape=rectangle, inner sep=1pt},
+% Node fill styles
+unobserved/.style={},
+intervention/.style={dcolorb, very thick, fill=dcolorb!30},
+observation/.style={dcoloro, very thick, fill=dcoloro!30},
+%
+annotation_brace/.style={-,decoration={brace,amplitude=7pt},decorate,thick,color=ann_col},
+%
+roundline/.style={rounded corners=4mm}
+},
+}
