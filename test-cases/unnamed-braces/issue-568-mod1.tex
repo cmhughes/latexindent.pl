@@ -1,0 +1,62 @@
+\NewDocumentCommand{\exframetitle}{o o}{%
+  \iftoggle{inexercise}{%
+    \frametitle{%
+      \exercisename**%
+      \IfNoValueTF{#1}{}{\ #1}%
+      {%
+        \mdseries\quad%
+        \IfNoValueTF{#2}{%
+          \iftoggle{insolutionframe}{%
+            Solution%
+          }{%
+            \theexercisename%
+          }%
+        }{%
+          #2%
+        }%
+      }%
+      {%
+        \mdseries\quad%
+        \iftoggle{insolutionframe}{%
+          \iftoggle{intutquestion}{%
+            \usebeamercolor{tutquestion sample solution}\color{bg}%
+          }{%
+            \usebeamercolor{sample solution}\color{bg}%
+          }%
+        }{%
+          \usebeamercolor{palette primary}
+          \color{fg}%
+        }%
+        %
+        {[}\hspace{0.1ex}\raisebox{0.1ex}{\normalsize\exercisepoints}\hspace{0.1ex}{]}%
+      }%
+    }%
+  }{%
+    \iftoggle{intutquestion}{%
+      \frametitle{%
+        \tutquestionname**%
+        \IfNoValueTF{#1}{}{\ #1}%
+        {%
+          \mdseries\quad%
+          \IfNoValueTF{#2}{%
+            \iftoggle{insolutionframe}{%
+              Solution%
+            }{%
+              \thetutquestionname%
+            }%
+          }{%
+            #2%
+          }%
+        }%
+        \IfNoValueF{\thetutquestiontime}{%
+          \mdseries\quad%
+          \usebeamercolor{palette secondary}
+          \color{fg}%
+          {[}\hspace{0.1ex}\raisebox{0.1ex}{\normalsize\tutquestiontime}\hspace{0.1ex}{]}%
+        }%
+      }%
+    }{%
+      \frametitle{#2}
+    }%
+  }%
+}%
