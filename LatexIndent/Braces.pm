@@ -24,171 +24,178 @@ use LatexIndent::KeyEqualsValuesBraces
 use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
 use LatexIndent::UnNamedGroupingBracesBrackets
     qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
+use LatexIndent::GetYamlSettings qw/%previouslyFoundSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
+our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets/;
 our $commandCounter;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
-sub find_commands_or_key_equals_values_braces {
+our $latexCommand;
+our $argumentBodyRegEx = qr{
+        (?>              # 
+          \\             #  \   backslash
+            (?>          # 
+              \{         #  \\\{  means \{
+              |          # 
+              \}         #  \\\}  means \}
+              |          # 
+              \[         #  \\\[  means \[
+              |          # 
+              \]         #  \\\]  means \]
+            )            # 
+            |            #  OR
+            [^{}\[\]]    #   anything except {, }, [, ]
+        )+               # 
+}x;
+our $allArgumentRegEx = qr{
+     (?:
+       (
+        \s*
+        (?<!\\)
+        \{
+        \h*
+        (\R?)
+       )
+       (
+        (?:
+          (?: $argumentBodyRegEx ) # argument body 
+          |
+          (??{ $latexCommand })    # command regex, RECURSIVE
+        )*
+       )
+       (
+        (?<!\\)
+        \}
+       )
+     )
+     |
+     (?:
+       (
+        (?<!\\)
+        \[
+        \h*
+        (\R?)
+       )
+       (
+        (?:
+          (?: $argumentBodyRegEx ) # argument body 
+          |
+          (??{ $latexCommand })    # command regex, RECURSIVE
+        )*
+       )
+       (
+        (?<!\\)
+        \]
+       )
+     )
+}x;
 
-    my $self = shift;
+$latexCommand = qr{
+   \\
+   ([a-zA-Z]+?)
+   (
+    (?:
+     $allArgumentRegEx 
+    )+
+   )
+   }x;
 
-    $logger->trace("*Searching for commands with optional and/or mandatory arguments AND key = {value}")
-        if $is_t_switch_active;
+sub find_things_with_braces_brackets {
 
-    # match either a \\command or key={value}
-    while (${$self}{body} =~ m/$commandRegExpTrailingComment/
-        or ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/
-        or ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/
-        or ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/ )
-    {
-        if ( ${$self}{body} =~ m/$commandRegExpTrailingComment/ ) {
+    my $body = shift;
+    my $currentIndentation = shift;
 
-            # global substitution
-            ${$self}{body} =~ s/
-                            $commandRegExpTrailingComment
-                          /
-                            # create a new command object
-                            my $command = LatexIndent::Command->new(begin=>$1.$2.($3?$3:q()).($4?$4:q()),
-                                                                    name=>$2,
-                                                                    body=>$5.($8?$8:($10?$10:q())),    # $8 is linebreak, $10 is trailing comment
-                                                                    end=>q(),
-                                                                    linebreaksAtEnd=>{
-                                                                      begin=>$4?1:0,
-                                                                      end=>$8?1:0,            # $8 is linebreak before comment check, $10 is after
-                                                                    },
-                                                                    modifyLineBreaksYamlName=>"commands",
-                                                                    endImmediatelyFollowedByComment=>$8?0:($10?1:0),
-                                                                    aliases=>{
-                                                                      # begin statements
-                                                                      BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
-                                                                      # body statements
-                                                                      BodyStartsOnOwnLine=>"CommandNameFinishesWithLineBreak",
-                                                                    },
-                                                                    optAndMandArgsRegExp=>$optAndMandAndRoundBracketsRegExpLineBreaks,
-                                                                  );
-                                                                  
-                            # log file output
-                            $logger->trace("*command found: $2") if $is_t_switch_active ;
+    $body =~ s/$latexCommand/
+       my $commandName = $1;
+       my $argBody = $2;
+       if (!$previouslyFoundSettings{$commandName."commands"}){
+          my $commandObj = LatexIndent::Braces->new(name=>$commandName,
+                                              modifyLineBreaksYamlName=>"commands",
+                                              arguments=>1,
+                                                );
+          $commandObj->yaml_get_indentation_settings_for_this_object;
+       }
+       $argBody = &indent_all_args($commandName."commands", $argBody,$currentIndentation);
+       "\\".$commandName.$argBody;/sgex;
 
-                            # the settings and storage of most objects has a lot in common
-                            $self->get_settings_and_store_new_object($command);
-                            ${@{${$self}{children}}[-1]}{replacementText}.($8?($10?$10:q()):q());
-                         /xseg;
+    return $body;
+}
 
-        }
-        elsif ( ${$self}{body} =~ m/$key_equals_values_bracesRegExpTrailingComment/ ) {
+sub indent_all_args {
 
-            # global substitution
-            ${$self}{body} =~ s/
-                              $key_equals_values_bracesRegExpTrailingComment
-                           /
-                           # create a new key_equals_values_braces object
-                           my $key_equals_values_braces = LatexIndent::KeyEqualsValuesBraces->new(
-                                                                   begin=>($2?$2:q()).$3.$4.($5?$5:q()),
-                                                                   name=>$3,
-                                                                   body=>$6.($9?$9:($10?$10:q()).($11?$11:q())),     # $9 is linebreak before comment check, $11 is trailing comment
-                                                                   end=>q(),
-                                                                   linebreaksAtEnd=>{
-                                                                     begin=>$5?1:0,
-                                                                     end=>$9?1:0,                # $9 is linebreak before comment check
-                                                                   },
-                                                                   modifyLineBreaksYamlName=>"keyEqualsValuesBracesBrackets",
-                                                                   beginningbit=>$1,
-                                                                   endImmediatelyFollowedByComment=>$9?0:($11?1:0),
-                                                                   aliases=>{
-                                                                     # begin statements
-                                                                     BeginStartsOnOwnLine=>"KeyStartsOnOwnLine",
-                                                                     # body statements
-                                                                     BodyStartsOnOwnLine=>"EqualsFinishesWithLineBreak",
-                                                                   },
-                                                                   additionalAssignments=>["EqualsStartsOnOwnLine"],
-                                                                 );
-                                                                 
-                           # log file output
-                           $logger->trace("*key_equals_values_braces found: $3") if $is_t_switch_active ;
-                    
-                           # the settings and storage of most objects has a lot in common
-                           $self->get_settings_and_store_new_object($key_equals_values_braces);
-                           ${@{${$self}{children}}[-1]}{replacementText}.($9?($11?$11:q()):q());
-                           /xseg;
+    my $commandStorageName = shift;
+    my $body = shift;
+    my $indentation = shift;
 
-        }
-        elsif ( ${$self}{body} =~ m/$grouping_braces_regexpTrailingComment/ ) {
+    my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
+    my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
 
-            # global substitution
-            ${$self}{body} =~ s/
-                            $grouping_braces_regexpTrailingComment
-                            /
-                            # create a new key_equals_values_braces object
-                            my $grouping_braces = LatexIndent::NamedGroupingBracesBrackets->new(
-                                                                    begin=>$2.($3?$3:q()).($4?$4:q()),
-                                                                    name=>$2,
-                                                                    body=>$5.($8?$8:($9?$9:q())),    
-                                                                    end=>q(),
-                                                                    linebreaksAtEnd=>{
-                                                                      begin=>$4?1:0,
-                                                                      end=>$8?1:0,
-                                                                    },
-                                                                    modifyLineBreaksYamlName=>"namedGroupingBracesBrackets",
-                                                                    beginningbit=>$1,
-                                                                    endImmediatelyFollowedByComment=>$8?0:($9?1:0),
-                                                                    aliases=>{
-                                                                      # begin statements
-                                                                      BeginStartsOnOwnLine=>"NameStartsOnOwnLine",
-                                                                      # body statements
-                                                                      BodyStartsOnOwnLine=>"NameFinishesWithLineBreak",
-                                                                    },
-                                                                  );
-                            # log file output
-                            $logger->trace("*named grouping braces found: $2") if $is_t_switch_active ;
+    my $all_args;
+    $all_args = qr{
+       \G
+       (?:
+         (                                                          #
+          \s*
+          (?<!\\)
+          \{                                                        #
+          \h*                                                       # $1
+          (?:$trailingCommentRegExp)*                               # 
+          (\R?)                                                     # $2
+         )                                                          #
+         (                                                          # $3
+          (?:                                                       #
+            (?: $argumentBodyRegEx ) # argument body 
+            |                                                       #
+            (??{ $latexCommand }) # Group with matching braces {}   #
+          )*                                                        #
+         )                                                          #
+         (                                                          # $4
+          (?<!\\)
+          \}                                                        #
+         )                                                          #
+       )                                                            #
+       |                                                            #
+       (?:                                                          #
+         (                                                          # $5
+          (?<!\\)
+          \[                                                        #
+          \h*                                                       #
+           (?:$trailingCommentRegExp)*                              # 
+          (\R?)                                                     # $6
+         )                                                          #
+         (                                                          # $7
+          (?:                                                       #
+            (?: $argumentBodyRegEx ) # argument body 
+            |                                                       #
+            (??{ $latexCommand }) # Group with matching braces {}   #
+          )*                                                        #
+         )                                                          #
+         (                                                          # $8
+          (?<!\\)
+          \]                                                        #
+         )                                                          #
+       )
+       }x;
 
-                            # the settings and storage of most objects has a lot in common
-                            $self->get_settings_and_store_new_object($grouping_braces);
-                            ${@{${$self}{children}}[-1]}{replacementText}.($8?($9?$9:q()):q());
-                           /xseg;
-
-        }
-        elsif ( ${$self}{body} =~ m/$un_named_grouping_braces_RegExp_trailing_comment/ ) {
-
-            # global substitution
-            ${$self}{body} =~ s/
-                            $un_named_grouping_braces_RegExp_trailing_comment
-                          /
-                            # create a new Un-named-grouping-braces-brackets object
-                            my $un_named_grouping_braces = LatexIndent::UnNamedGroupingBracesBrackets->new(
-                                                                    begin=>q(),
-                                                                    name=>"always-un-named",
-                                                                    body=>$3.($6?$6:($8?$8:q())),    
-                                                                    end=>q(),
-                                                                    linebreaksAtEnd=>{
-                                                                      begin=>$2?1:0,
-                                                                      end=>$6?1:0,
-                                                                    },
-                                                                    modifyLineBreaksYamlName=>"UnNamedGroupingBracesBrackets",
-                                                                    beginningbit=>$1.($2?$2:q()),
-                                                                    endImmediatelyFollowedByComment=>$6?0:($8?1:0),
-                                                                    # begin statements
-                                                                    BeginStartsOnOwnLine=>0,
-                                                                    # body statements
-                                                                    BodyStartsOnOwnLine=>0,
-                                                                  );
-
-                            # log file output
-                            $logger->trace("*UNnamed grouping braces found: (no name, by definition!)") if $is_t_switch_active ;
-
-                            # the settings and storage of most objects has a lot in common
-                            $self->get_settings_and_store_new_object($un_named_grouping_braces);
-                            ${@{${$self}{children}}[-1]}{replacementText}.($6?($8?$8:q()):q());
-                         /xseg;
-
-        }
-    }
-    return;
+    $body =~ s/$all_args/
+       my $begin = ($1?$1:$5);
+       my $currentIndentation = q();
+       if ($2) {
+          $currentIndentation = $mandatoryArgumentsIndentation;
+       } elsif ($6){
+          $currentIndentation = $optionalArgumentsIndentation;
+       }
+       $currentIndentation = $currentIndentation.$indentation;
+       my $argBody = ($3?$3:$7);
+       my $end = ($4?$4:$8);
+       $argBody = &find_things_with_braces_brackets($argBody,$indentation);
+       $argBody =~ s@^@$currentIndentation@mg;
+       $begin.$argBody.$end;/sgex;
+    return $body;
 }
 
 1;

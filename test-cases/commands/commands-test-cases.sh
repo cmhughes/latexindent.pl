@@ -16,12 +16,34 @@ loopmax=32
 . ../common.sh
 
 [[ $silentMode == 0 ]] && set -x 
-latexindent.pl -s -w commands-simple.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-nested.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-nested-opt-nested.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-nested-harder.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-four-nested.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-four-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
+latexindent.pl -s -w commands-simple.tex 
+latexindent.pl -s -w commands-simple1.tex 
+latexindent.pl -s -w commands-nested.tex 
+latexindent.pl -s -w commands-nested-opt-nested.tex 
+latexindent.pl -s -w commands-nested-harder.tex 
+latexindent.pl -s -w commands-nested-harder1.tex 
+latexindent.pl -s -w commands-four-nested.tex 
+
+latexindent.pl -s commands-simple.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-simple1.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-nested.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-nested-opt-nested.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-nested-harder.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-nested-harder1.tex -o=+-mod1 -y="defaultIndent:'  '" 
+latexindent.pl -s commands-four-nested.tex -o=+-mod1 -y="defaultIndent:'  '" 
+
+# big test file, should be less than 4 seconds
+#
+#       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
+#
+{ time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
+
+latexindent.pl -s -w commands-four-nested-mk1.tex
+exit
+# !!!!!!
+# !!!!!!
+# !!!!!!
+latexindent.pl -s -w commands-four-nested-mk1.tex
 latexindent.pl -s -w commands-five-nested.tex -l=command-name-not-finishes-with-line-break.yaml
 latexindent.pl -s -w commands-five-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
 latexindent.pl -s -w commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml

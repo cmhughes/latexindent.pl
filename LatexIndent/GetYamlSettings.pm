@@ -820,7 +820,16 @@ sub yaml_get_indentation_settings_for_this_object {
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
-        my $indentation = $self->yaml_get_indentation_information;
+        my $indentation = $self->yaml_get_indentation_information(thing=>"body");
+        my $optionalArgumentsIndentation  = q();
+        my $mandatoryArgumentsIndentation = q();
+
+        if (${$self}{arguments}){
+            ${$self}{modifyLineBreaksYamlName}= "optionalArguments";
+            $optionalArgumentsIndentation = $self->yaml_get_indentation_information(thing=>"optionalArguments");
+            ${$self}{modifyLineBreaksYamlName}= "mandatoryArguments";
+            $mandatoryArgumentsIndentation= $self->yaml_get_indentation_information(thing=>"mandatoryArguments");
+        }
 
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
@@ -838,6 +847,8 @@ sub yaml_get_indentation_settings_for_this_object {
             removeParagraphLineBreaks => ${$self}{removeParagraphLineBreaks},
             textWrapOptions           => ${$self}{textWrapOptions},
             columns                   => ${$self}{columns},
+            mandatoryArgumentsIndentation => $mandatoryArgumentsIndentation,
+            optionalArgumentsIndentation  => $optionalArgumentsIndentation,
         );
 
         # text wrap 'after' information
@@ -1051,6 +1062,7 @@ sub yaml_poly_switch_get_every_or_custom_value {
 
 sub yaml_get_indentation_information {
     my $self = shift;
+    my %input = @_;
 
     #**************************************
     # SEARCHING ORDER:
@@ -1093,11 +1105,10 @@ sub yaml_get_indentation_information {
     # specifying as a scalar with no field will
     # mean that *every* field will receive the same treatment
 
-# if the YamlName is, for example, optionalArguments, mandatoryArguments, heading, then we'll be looking for information about the *parent*
-    my $name = ( defined ${$self}{nameForIndentationSettings} ) ? ${$self}{nameForIndentationSettings} : ${$self}{name};
+    my $name = ${$self}{name};
 
-# if the YamlName is not optionalArguments, mandatoryArguments, heading (possibly others) then assume we're looking for 'body'
-    my $YamlName = $self->yaml_get_object_attribute_for_indentation_settings;
+    # body, optionalArguments, or mandatoryArguments
+    my $YamlName = $input{thing};
 
     my $indentationInformation;
     foreach my $indentationAbout ( "noAdditionalIndent", "indentRules" ) {

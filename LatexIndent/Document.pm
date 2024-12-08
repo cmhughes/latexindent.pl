@@ -63,7 +63,7 @@ use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
 use LatexIndent::Item                          qw/find_items construct_list_of_items/;
-use LatexIndent::Braces                        qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic/;
+use LatexIndent::Braces                        qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets/;
 use LatexIndent::Command                       qw/construct_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
@@ -177,7 +177,6 @@ sub operate_on_file {
         $self->construct_regular_expressions;
         $self->find_noindent_block;
         $self->find_verbatim_commands;
-        $self->find_aligned_block;
         $self->remove_trailing_comments;
         $self->find_verbatim_environments;
         $self->find_verbatim_special;
@@ -188,9 +187,8 @@ sub operate_on_file {
         $self->protect_blank_lines                                     if $is_m_switch_active;
         $self->remove_trailing_whitespace( when => "before" );
         $self->find_file_contents_environments_and_preamble;
-        $self->dodge_double_backslash;
         $self->remove_leading_space;
-        $self->process_body_of_text;
+        ${$self}{body} = &find_things_with_braces_brackets(${$self}{body},"");
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
