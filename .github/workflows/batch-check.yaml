@@ -29,8 +29,8 @@ name: Batch check of latexindent.pl
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - develop
 
 jobs:
   check-pm-files-changed:
