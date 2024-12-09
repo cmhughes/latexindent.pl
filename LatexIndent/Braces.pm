@@ -30,28 +30,25 @@ use LatexIndent::LogFile  qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets/;
+our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
 our $commandCounter;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $latexCommand;
+our $allArgumentRegEx;
+
 our $argumentBodyRegEx = qr{
         (?>              # 
-          \\             #  \   backslash
-            (?>          # 
-              \{         #  \\\{  means \{
-              |          # 
-              \}         #  \\\}  means \}
-              |          # 
-              \[         #  \\\[  means \[
-              |          # 
-              \]         #  \\\]  means \]
-            )            # 
-            |            #  OR
-            [^{}\[\]]    #   anything except {, }, [, ]
-        )+               # 
+          (?:
+            \\[{}\[\]] # \{, \}, \[, \] OK
+          )
+          |            #  
+          [^{}\[\]]    # anything except {, }, [, ]
+        )+             # 
 }x;
-our $allArgumentRegEx = qr{
+
+sub construct_commands_with_args_regex {
+    $allArgumentRegEx = qr{
      (?:
        (
         \s*
@@ -92,17 +89,18 @@ our $allArgumentRegEx = qr{
         \]
        )
      )
-}x;
+     }x;
 
-$latexCommand = qr{
-   \\
-   ([a-zA-Z]+?)
-   (
-    (?:
-     $allArgumentRegEx 
-    )+
-   )
-   }x;
+     $latexCommand = qr{
+        \\
+        ([a-zA-Z]+?)
+        (
+         (?:
+          $allArgumentRegEx 
+         )+
+        )
+        }x;
+}
 
 sub find_things_with_braces_brackets {
 
@@ -134,67 +132,38 @@ sub indent_all_args {
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
 
-    my $all_args;
-    $all_args = qr{
-       \G
-       (?:
-         (                                                          #
-          \s*
-          (?<!\\)
-          \{                                                        #
-          \h*                                                       # $1
-          (?:$trailingCommentRegExp)*                               # 
-          (\R?)                                                     # $2
-         )                                                          #
-         (                                                          # $3
-          (?:                                                       #
-            (?: $argumentBodyRegEx ) # argument body 
-            |                                                       #
-            (??{ $latexCommand }) # Group with matching braces {}   #
-          )*                                                        #
-         )                                                          #
-         (                                                          # $4
-          (?<!\\)
-          \}                                                        #
-         )                                                          #
-       )                                                            #
-       |                                                            #
-       (?:                                                          #
-         (                                                          # $5
-          (?<!\\)
-          \[                                                        #
-          \h*                                                       #
-           (?:$trailingCommentRegExp)*                              # 
-          (\R?)                                                     # $6
-         )                                                          #
-         (                                                          # $7
-          (?:                                                       #
-            (?: $argumentBodyRegEx ) # argument body 
-            |                                                       #
-            (??{ $latexCommand }) # Group with matching braces {}   #
-          )*                                                        #
-         )                                                          #
-         (                                                          # $8
-          (?<!\\)
-          \]                                                        #
-         )                                                          #
-       )
-       }x;
-
-    $body =~ s/$all_args/
+    $body =~ s|\G$allArgumentRegEx|
+       # begin
        my $begin = ($1?$1:$5);
+
+       # mandatory or optional
        my $currentIndentation = q();
-       if ($2) {
+       if ($1) {
           $currentIndentation = $mandatoryArgumentsIndentation;
-       } elsif ($6){
+       } elsif ($5){
           $currentIndentation = $optionalArgumentsIndentation;
        }
        $currentIndentation = $currentIndentation.$indentation;
+
+       # does arg body start on own line?
+       my $argBodyStartsOwnLine = 0;
+       $argBodyStartsOwnLine = 1 if ($2 or $6);
+
+       # body 
        my $argBody = ($3?$3:$7);
+       
+       # end
        my $end = ($4?$4:$8);
+
+       # find nested things
        $argBody = &find_things_with_braces_brackets($argBody,$indentation);
+
+       # add indentation
        $argBody =~ s@^@$currentIndentation@mg;
-       $begin.$argBody.$end;/sgex;
+
+       # if arg body does NOT start on its own line, remove the first indentation added by previous step
+       $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine);
+       $begin.$argBody.$end;|sgex;
     return $body;
 }
 

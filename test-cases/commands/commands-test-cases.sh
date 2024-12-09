@@ -39,12 +39,16 @@ latexindent.pl -s commands-four-nested.tex -o=+-mod1 -y="defaultIndent:'  '"
 { time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
+
+latexindent.pl -s -w commands-five-nested.tex 
+latexindent.pl -s commands-five-nested.tex -o=+-mod1 -y="defaultIndent:'  '" 
+
+latexindent.pl -s -w commands-five-nested-mk1.tex 
+latexindent.pl -s commands-five-nested-mk1.tex -o=+-mod1 -y="defaultIndent:'  '" 
 exit
 # !!!!!!
 # !!!!!!
 # !!!!!!
-latexindent.pl -s -w commands-four-nested-mk1.tex
-latexindent.pl -s -w commands-five-nested.tex -l=command-name-not-finishes-with-line-break.yaml
 latexindent.pl -s -w commands-five-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
 latexindent.pl -s -w commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml
 latexindent.pl -s -w commands-six-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
