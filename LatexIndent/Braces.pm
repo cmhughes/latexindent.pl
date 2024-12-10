@@ -18,27 +18,20 @@ package LatexIndent::Braces;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::Command qw/$commandRegExp $commandRegExpTrailingComment $optAndMandAndRoundBracketsRegExpLineBreaks/;
-use LatexIndent::KeyEqualsValuesBraces
-    qw/$key_equals_values_bracesRegExp $key_equals_values_bracesRegExpTrailingComment/;
-use LatexIndent::NamedGroupingBracesBrackets qw/$grouping_braces_regexp $grouping_braces_regexpTrailingComment/;
-use LatexIndent::UnNamedGroupingBracesBrackets
-    qw/$un_named_grouping_braces_RegExp $un_named_grouping_braces_RegExp_trailing_comment/;
 use LatexIndent::GetYamlSettings qw/%previouslyFoundSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
-our $commandCounter;
+our @EXPORT_OK = qw/$braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $latexCommand;
 our $allArgumentRegEx;
 
 our $argumentBodyRegEx = qr{
-        (?>              # 
+        (?>            # 
           (?:
             \\[{}\[\]] # \{, \}, \[, \] OK
           )
@@ -51,7 +44,7 @@ sub construct_commands_with_args_regex {
     $allArgumentRegEx = qr{
      (?:
        (
-        \s*
+        (?:\s|$trailingCommentRegExp)*
         (?<!\\)
         \{
         \h*
@@ -72,6 +65,7 @@ sub construct_commands_with_args_regex {
      |
      (?:
        (
+        (?:\s|$trailingCommentRegExp)*
         (?<!\\)
         \[
         \h*
@@ -118,6 +112,17 @@ sub find_things_with_braces_brackets {
           $commandObj->yaml_get_indentation_settings_for_this_object;
        }
        $argBody = &indent_all_args($commandName."commands", $argBody,$currentIndentation);
+       
+       # command BODY indentation, possibly
+       if (${$previouslyFoundSettings{$commandName."commands"}}{indentation} ne ''){
+          my $commandIndentation = ${$previouslyFoundSettings{$commandName."commands"}}{indentation};
+
+          # add indentation
+          $argBody =~ s"^"$commandIndentation"mg;
+          $argBody =~ s"^$commandIndentation""s;
+       }
+
+       # put it all together
        "\\".$commandName.$argBody;/sgex;
 
     return $body;

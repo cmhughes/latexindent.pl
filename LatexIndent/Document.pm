@@ -63,7 +63,7 @@ use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
 use LatexIndent::Item                          qw/find_items construct_list_of_items/;
-use LatexIndent::Braces                        qw/find_commands_or_key_equals_values_braces $braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
+use LatexIndent::Braces                        qw/$braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
 use LatexIndent::Command                       qw/construct_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
@@ -195,6 +195,7 @@ sub operate_on_file {
         $self->unprotect_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
         $self->un_dodge_double_backslash;
+        $self->final_indentation_check;
         $self->remove_trailing_whitespace( when => "after" );
         $self->make_replacements( when => "after" ) if $is_rv_switch_active;
         $self->put_verbatim_back_in( match => "everything-except-commands" );

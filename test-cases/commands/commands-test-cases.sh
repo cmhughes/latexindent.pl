@@ -45,27 +45,29 @@ latexindent.pl -s commands-five-nested.tex -o=+-mod1 -y="defaultIndent:'  '"
 
 latexindent.pl -s -w commands-five-nested-mk1.tex 
 latexindent.pl -s commands-five-nested-mk1.tex -o=+-mod1 -y="defaultIndent:'  '" 
+
+latexindent.pl -s -w commands-six-nested.tex 
+latexindent.pl -s -w commands-six-nested-mk1.tex 
+latexindent.pl -s -w trailingComments.tex
+latexindent.pl -s -w bracketTest.tex
+
+# noAdditionalIndent
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
+latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=noAdditionalIndentGlobal.yaml
+latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-not-global.tex
+latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=noAdditionalIndentGlobal.yaml
+
+# indentRules
+latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
+
 exit
 # !!!!!!
 # !!!!!!
 # !!!!!!
-latexindent.pl -s -w commands-five-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w commands-six-nested-mk1.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w trailingComments.tex -l=command-name-not-finishes-with-line-break.yaml
-latexindent.pl -s -w bracketTest.tex -l=command-name-not-finishes-with-line-break.yaml
-# noAdditionalIndent
-latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
-latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
-latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
-latexindent.pl -s commands-six-nested.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
-latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndentGlobal.yaml
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-not-global.tex
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,noAdditionalIndentGlobal.yaml
-# indentRules
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
-# multiple environments and commands with optional/mandatory arguments
-latexindent.pl -w figureValign.tex -s
+
 # modifyLineBreaks experiments
 [[ $loopmin -gt 32 ]] && loopmin=32
 [[ $loopmax -gt 32 ]] && loopmax=32
@@ -171,6 +173,9 @@ latexindent.pl -s issue-239.tex -o=+-default.tex
 # issue 379
 latexindent.pl -s issue-379.tex -o=+-default.tex
 latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
+
+# multiple environments and commands with optional/mandatory arguments
+latexindent.pl -w figureValign.tex -s
 
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status
