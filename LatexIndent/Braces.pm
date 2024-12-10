@@ -44,7 +44,7 @@ our $argumentBodyRegEx = qr{
           )
           |            #  
           [^{}\[\]]    # anything except {, }, [, ]
-        )+             # 
+        )              # 
 }x;
 
 sub construct_commands_with_args_regex {
@@ -137,17 +137,10 @@ sub indent_all_args {
        my $begin = ($1?$1:$5);
 
        # mandatory or optional
-       my $currentIndentation = q();
-       if ($1) {
-          $currentIndentation = $mandatoryArgumentsIndentation;
-       } elsif ($5){
-          $currentIndentation = $optionalArgumentsIndentation;
-       }
-       $currentIndentation = $currentIndentation.$indentation;
+       my $currentIndentation = ($1 ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
 
        # does arg body start on own line?
-       my $argBodyStartsOwnLine = 0;
-       $argBodyStartsOwnLine = 1 if ($2 or $6);
+       my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
 
        # body 
        my $argBody = ($3?$3:$7);
@@ -163,6 +156,8 @@ sub indent_all_args {
 
        # if arg body does NOT start on its own line, remove the first indentation added by previous step
        $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine);
+
+       # put it all together
        $begin.$argBody.$end;|sgex;
     return $body;
 }
