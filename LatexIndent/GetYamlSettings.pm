@@ -821,35 +821,90 @@ sub yaml_get_indentation_settings_for_this_object {
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
         my $indentation = $self->yaml_get_indentation_information(thing=>"body");
-        my $optionalArgumentsIndentation  = q();
-        my $mandatoryArgumentsIndentation = q();
-
-        if (${$self}{arguments}){
-            ${$self}{modifyLineBreaksYamlName}= "optionalArguments";
-            $optionalArgumentsIndentation = $self->yaml_get_indentation_information(thing=>"optionalArguments");
-            ${$self}{modifyLineBreaksYamlName}= "mandatoryArguments";
-            $mandatoryArgumentsIndentation= $self->yaml_get_indentation_information(thing=>"mandatoryArguments");
-        }
 
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
 
         # check for line break settings
-        $self->yaml_modify_line_breaks_settings if $is_m_switch_active;
+        if ($is_m_switch_active){
+            $self->yaml_modify_line_breaks_settings;
+            %{ ${previouslyFoundSettings}{$storageName} } = (
+                indentation               => $indentation,
+                BeginStartsOnOwnLine      => ${$self}{BeginStartsOnOwnLine},
+                BodyStartsOnOwnLine       => ${$self}{BodyStartsOnOwnLine},
+                EndStartsOnOwnLine        => ${$self}{EndStartsOnOwnLine},
+                EndFinishesWithLineBreak  => ${$self}{EndFinishesWithLineBreak},
+                removeParagraphLineBreaks => ${$self}{removeParagraphLineBreaks},
+                textWrapOptions           => ${$self}{textWrapOptions},
+                columns                   => ${$self}{columns},
+           );
+        } else {
+          %{ ${previouslyFoundSettings}{$storageName} } = (
+              indentation               => $indentation,
+          );
+        }
 
-        # store the settings
-        %{ ${previouslyFoundSettings}{$storageName} } = (
-            indentation               => $indentation,
-            BeginStartsOnOwnLine      => ${$self}{BeginStartsOnOwnLine},
-            BodyStartsOnOwnLine       => ${$self}{BodyStartsOnOwnLine},
-            EndStartsOnOwnLine        => ${$self}{EndStartsOnOwnLine},
-            EndFinishesWithLineBreak  => ${$self}{EndFinishesWithLineBreak},
-            removeParagraphLineBreaks => ${$self}{removeParagraphLineBreaks},
-            textWrapOptions           => ${$self}{textWrapOptions},
-            columns                   => ${$self}{columns},
-            mandatoryArgumentsIndentation => $mandatoryArgumentsIndentation,
-            optionalArgumentsIndentation  => $optionalArgumentsIndentation,
-        );
+        # store argument information, if arguments present
+        if (${$self}{arguments}){
+
+            # mandatory arguments
+            ${$self}{modifyLineBreaksYamlName}= "mandatoryArguments";
+            ${ ${previouslyFoundSettings}{$storageName} }{ mandatoryArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"mandatoryArguments");
+
+            #
+            # mandatory arguments
+            #
+            if ($is_m_switch_active){
+               ${$self}{aliases} = {
+                 # begin statements
+                 BeginStartsOnOwnLine=>"LCuBStartsOnOwnLine",
+                 # body statements
+                 BodyStartsOnOwnLine=>"MandArgBodyStartsOnOwnLine",
+                 # end statements
+                 EndStartsOnOwnLine=>"RCuBStartsOnOwnLine",
+                 # after end statements
+                 EndFinishesWithLineBreak=>"RCuBFinishesWithLineBreak",
+               };
+
+               # get poly switch values
+               $self->yaml_modify_line_breaks_settings;
+
+               # store poly switch values
+               ${ ${previouslyFoundSettings}{$storageName} }{ LCuBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ MandArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ RCuBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ RCuBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
+            }
+
+            # optional arguments
+            ${$self}{modifyLineBreaksYamlName}= "optionalArguments";
+            ${ ${previouslyFoundSettings}{$storageName} }{ optionalArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"optionalArguments");
+
+            #
+            # optional arguments
+            #
+            if ($is_m_switch_active){
+               ${$self}{aliases} = {
+                 # begin statements
+                 BeginStartsOnOwnLine=>"LSqBStartsOnOwnLine",
+                 # body statements
+                 BodyStartsOnOwnLine=>"OptArgBodyStartsOnOwnLine",
+                 # end statements
+                 EndStartsOnOwnLine=>"RSqBStartsOnOwnLine",
+                 # after end statements
+                 EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
+               };
+
+               # get poly switch values
+               $self->yaml_modify_line_breaks_settings;
+
+               # store poly switch values
+               ${ ${previouslyFoundSettings}{$storageName} }{ LSqBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ OptArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ RSqBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
+               ${ ${previouslyFoundSettings}{$storageName} }{ RSqBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
+            }
+        }
 
         # text wrap 'after' information
         if (    $is_m_switch_active
@@ -1036,8 +1091,8 @@ sub yaml_poly_switch_get_every_or_custom_value {
     # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
     my $YamlName = ${$self}{modifyLineBreaksYamlName};
 
-# if the YamlName is either optionalArguments or mandatoryArguments, then we'll be looking for information about the *parent*
-    my $name = ( $YamlName =~ m/Arguments/ ) ? ${$self}{parent} : ${$self}{name};
+    # name of the object
+    my $name = ${$self}{name};
 
     # these variables just ease the notation what follows
     my $everyValue  = ${ ${ $mainSettings{modifyLineBreaks} }{$YamlName} }{$toBeAssignedToAlias};

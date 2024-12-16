@@ -26,8 +26,51 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks/;
+    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks/;
 our $paragraphRegExp = q();
+
+sub modify_line_breaks_begin {
+    my $self = shift;
+    #
+    # Blank line poly-switch notes (==4)
+    #
+    # when BodyStartsOnOwnLine=4 we adopt the following approach:
+    #   temporarily change BodyStartsOnOwnLine to -1, make adjustments
+    #   temporarily change BodyStartsOnOwnLine to 3, make adjustments
+    # switch BodyStartsOnOwnLine back to 4
+    
+    # add a line break BEFORE \begin{statement} if appropriate
+    my @polySwitchValues = ( ${$self}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BeginStartsOnOwnLine} );
+    foreach (@polySwitchValues) {
+        if ( $_ >= 1 and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s) {
+
+            # if the <begin> statement doesn't finish with a line break,
+            # then we have different actions based upon the value of BodyStartsOnOwnLine:
+            #     BodyStartsOnOwnLine == 1 just add a new line
+            #     BodyStartsOnOwnLine == 2 add a comment, and then new line
+            #     BodyStartsOnOwnLine == 3 add a blank line, and then new line
+            if ( $_ == 1 ) {
+
+                # modify the begin statement
+                ${$self}{begin} = "\n".${$self}{begin};
+            }
+            elsif ( $_ == 2 ) {
+
+                # by default, assume that no trailing comment token is needed
+                my $trailingCommentToken = "%" . $self->add_comment_symbol;
+                ${$self}{begin} = "$trailingCommentToken\n".${$self}{begin};
+            }
+            elsif ( $_ == 3 ) {
+                ${$self}{begin} =~ s/^\h*//s;
+                ${$self}{begin} = ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n".${$self}{begin};
+            }
+        }
+        elsif ( $_ == -1 ) {
+            # remove line break *before* begin, if appropriate
+            ${$self}{begin} =~ s/^(\s*\R)+//s;
+        }
+    }
+}
 
 sub modify_line_breaks_body {
     my $self = shift;
@@ -132,8 +175,11 @@ sub modify_line_breaks_end {
     foreach (@polySwitchValues) {
 
         # possibly modify line break *before* \end{statement}
-        if ( defined ${$self}{EndStartsOnOwnLine} ) {
             my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine} || "EndStartsOnOwnLine";
+
+            # linebreaks at the end of body
+            ${$self}{linebreaksAtEnd}{body} = (${$self}{body} =~ m/\R\h*$/s ? 1 : 0);
+
             if ( $_ >= 1 and !${$self}{linebreaksAtEnd}{body} ) {
 
                 # if the <body> statement doesn't finish with a line break,
@@ -190,7 +236,6 @@ sub modify_line_breaks_end {
                     ) if $is_t_switch_active;
                 }
             }
-        }
     }
 
 }
@@ -231,7 +276,7 @@ sub modify_line_breaks_end_after {
                 ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
-                ${$self}{replacementText} .= "\n";
+                ${$self}{end} .= "\n";
             }
             elsif ( $_ == 2 ) {
                 if ( ${$self}{endImmediatelyFollowedByComment} ) {
@@ -247,7 +292,7 @@ sub modify_line_breaks_end_after {
                         if $is_t_switch_active;
                     my $trailingCommentToken = "%" . $self->add_comment_symbol;
                     ${$self}{end} =~ s/\h*$//s;
-                    ${$self}{replacementText} .= "$trailingCommentToken\n";
+                    ${$self}{end} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{end} = 1;
                 }
             }
@@ -257,9 +302,11 @@ sub modify_line_breaks_end_after {
                 ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
-                ${$self}{replacementText}
+                ${$self}{end}
                     .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
             }
+        } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
+                ${$self}{end} .= ${$self}{horizontalTrailingSpace}."\n";
         }
     }
 

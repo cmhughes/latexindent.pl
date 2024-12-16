@@ -37,6 +37,7 @@ latexindent.pl -s commands-four-nested.tex -o=+-mod1 -y="defaultIndent:'  '"
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
 #
 { time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
+{ time latexindent.pl -s commands-simple-big.tex -mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
@@ -63,6 +64,7 @@ latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-glo
 # indentRules
 latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
 
+latexindent.pl just-one-command.tex -m  -s -o=+-mod1 -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod1
 exit
 # !!!!!!
 # !!!!!!

@@ -18,9 +18,10 @@ package LatexIndent::Braces;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings qw/%previouslyFoundSettings/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active/;
+use LatexIndent::GetYamlSettings  qw/%previouslyFoundSettings/;
+use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
+use LatexIndent::Tokens           qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
@@ -41,10 +42,15 @@ our $argumentBodyRegEx = qr{
 }x;
 
 sub construct_commands_with_args_regex {
+
+    my $mSwitchOnlyTrailingLineBreak = qr{};
+    $mSwitchOnlyTrailingLineBreak = qr{(\h*)?(\R)?} if $is_m_switch_active;
+
     $allArgumentRegEx = qr{
      (?:
+     (?:
        (
-        (?:\s|$trailingCommentRegExp)*
+        (?:\s|$trailingCommentRegExp|$tokens{blanklines})*
         (?<!\\)
         \{
         \h*
@@ -65,7 +71,7 @@ sub construct_commands_with_args_regex {
      |
      (?:
        (
-        (?:\s|$trailingCommentRegExp)*
+        (?:\s|$trailingCommentRegExp|$tokens{blanklines})*
         (?<!\\)
         \[
         \h*
@@ -83,6 +89,8 @@ sub construct_commands_with_args_regex {
         \]
        )
      )
+     )
+     $mSwitchOnlyTrailingLineBreak 
      }x;
 
      $latexCommand = qr{
@@ -155,6 +163,54 @@ sub indent_all_args {
 
        # find nested things
        $argBody = &find_things_with_braces_brackets($argBody,$indentation);
+
+       #
+       # m switch linebreak adjustment
+       #
+       if ($is_m_switch_active){
+
+          #
+          # mandatory or optional argument?
+          #
+          my $mandatoryArgument = 0;
+          $mandatoryArgument = ($1?1:0);
+    
+          if ($mandatoryArgument){
+              my $mandatoryArg = LatexIndent::MandatoryArgument->new(
+                                                    begin=>$begin,
+                                                    body=>$argBody, 
+                                                    end=>$end,
+                                                    # begin statements
+                                                    BeginStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{LCuBStartsOnOwnLine},
+                                                    # body statements
+                                                    BodyStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{MandArgBodyStartsOnOwnLine},
+                                                    # end statements
+                                                    EndStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{RCuBStartsOnOwnLine},
+                                                    # after end statements
+                                                    EndFinishesWithLineBreak=>${$previouslyFoundSettings{$commandStorageName}}{RCuBFinishesWithLineBreak},
+                                                    linebreaksAtEnd=>{
+                                                      begin=>$argBodyStartsOwnLine,
+                                                      end=>($10?1:0),
+                                                    },
+                                                    horizontalTrailingSpace=>$9?$9:q(),
+                                                     );
+
+            $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
+
+            $mandatoryArg->modify_line_breaks_body if ${$mandatoryArg}{BodyStartsOnOwnLine} != 0;  
+
+            $mandatoryArg->modify_line_breaks_end if ${$mandatoryArg}{EndStartsOnOwnLine} != 0;
+
+            $mandatoryArg->modify_line_breaks_end_after if ${$mandatoryArg}{EndFinishesWithLineBreak} != 0;
+
+            # get updated begin, body, end
+            $begin = ${$mandatoryArg}{begin};
+            $argBody = ${$mandatoryArg}{body};
+            $end = ${$mandatoryArg}{end};
+
+            $argBodyStartsOwnLine = ${$mandatoryArg}{linebreaksAtEnd}{begin};
+          }
+       }
 
        # add indentation
        $argBody =~ s@^@$currentIndentation@mg;
