@@ -47,6 +47,7 @@ sub add_comment_symbol {
 
     # add a trailing comment token after, for example, a square brace [
     # or a curly brace { when, for example, BeginStartsOnOwnLine == 2
+    my $self  = shift;
     my %input = @_;
 
     my $commentValue = ( defined $input{value} ? $input{value} : q() );

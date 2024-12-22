@@ -59,6 +59,12 @@ our %tokens = (
     paragraph       => $beginningToken . "PARA",
     sentence        => $beginningToken . "SENTENCE",
     endOfToken      => "-END",
+
+    # m-switch specific tokens
+    mBeforeBeginLineBreak  => "mBeforeBeginLineBreak",
+    mAfterEndRemove  => "mAfterEndRemove",
+    mAfterEndLineBreak  => "mAfterEndLineBreak",
+    mSwitchComment  => "mSwitchComment",
 );
 
 sub token_check {

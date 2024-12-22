@@ -26,7 +26,7 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks/;
+    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_condense_multiple_added_comments /;
 our $paragraphRegExp = q();
 
 sub modify_line_breaks_begin {
@@ -55,10 +55,7 @@ sub modify_line_breaks_begin {
                 ${$self}{begin} = "\n".${$self}{begin};
             }
             elsif ( $_ == 2 ) {
-
-                # by default, assume that no trailing comment token is needed
-                my $trailingCommentToken = "%" . $self->add_comment_symbol;
-                ${$self}{begin} = "$trailingCommentToken\n".${$self}{begin};
+                ${$self}{begin} = "$tokens{mSwitchComment}\n".${$self}{begin};
             }
             elsif ( $_ == 3 ) {
                 ${$self}{begin} =~ s/^\h*//s;
@@ -67,7 +64,7 @@ sub modify_line_breaks_begin {
         }
         elsif ( $_ == -1 ) {
             # remove line break *before* begin, if appropriate
-            ${$self}{begin} =~ s/^(\s*\R)+//s;
+            ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreak}/s;
         }
     }
 }
@@ -276,11 +273,14 @@ sub modify_line_breaks_end_after {
                 ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
-                ${$self}{end} .= "\n";
+                ${$self}{end} .= $tokens{mAfterEndLineBreak}.${$self}{trailingComment};
             }
             elsif ( $_ == 2 ) {
-                if ( ${$self}{endImmediatelyFollowedByComment} ) {
+                if ( ${$self}{trailingComment} ) {
 
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment};
+                    ${$self}{end} .= "\n" if ${$self}{linebreaksAtEnd}{end};
+                    
                     # no need to add a % if one already exists
                     $logger->trace(
                         "Even though $EndStringLogFile == 2, ${$self}{end} is immediately followed by a %, so not adding another; not adding line break."
@@ -290,9 +290,8 @@ sub modify_line_breaks_end_after {
                     # otherwise, create a trailing comment, and tack it on
                     $logger->trace("Adding a % immediately after ${$self}{end} ($EndStringLogFile==2)")
                         if $is_t_switch_active;
-                    my $trailingCommentToken = "%" . $self->add_comment_symbol;
                     ${$self}{end} =~ s/\h*$//s;
-                    ${$self}{end} .= "$trailingCommentToken\n";
+                    ${$self}{end} .= "$tokens{mSwitchComment}$tokens{mAfterEndLineBreak}";
                     ${$self}{linebreaksAtEnd}{end} = 1;
                 }
             }
@@ -306,7 +305,9 @@ sub modify_line_breaks_end_after {
                     .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
             }
         } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
-                ${$self}{end} .= ${$self}{horizontalTrailingSpace}."\n";
+                ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}."\n";
+        } elsif ( $_ == -1 ){
+                ${$self}{end} .= (${$self}{linebreaksAtEnd}{end} ? ${$self}{horizontalTrailingSpace} : $tokens{mAfterEndRemove}).${$self}{trailingComment};
         }
     }
 
@@ -442,4 +443,18 @@ sub verbatim_modify_line_breaks {
     }
 }
 
+sub modify_line_breaks_condense_multiple_added_comments {
+    # for example, see commands-one-line-mod17.tex
+    my $self = shift;
+    my $trailingCommentToken;
+    
+    # condense multiple SEQUENTIALLLY added comments into one
+    ${$self}{body} =~ s/$tokens{mSwitchComment}\s*$tokens{mSwitchComment}\R/
+                $trailingCommentToken = "%" . $self->add_comment_symbol;
+                "$trailingCommentToken\n";/sgeg;
+
+    ${$self}{body} =~ s/$tokens{mSwitchComment}/
+                $trailingCommentToken = "%" . $self->add_comment_symbol;
+                $trailingCommentToken;/sgex;
+}
 1;

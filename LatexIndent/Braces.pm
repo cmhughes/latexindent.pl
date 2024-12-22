@@ -43,8 +43,8 @@ our $argumentBodyRegEx = qr{
 
 sub construct_commands_with_args_regex {
 
-    my $mSwitchOnlyTrailingLineBreak = qr{};
-    $mSwitchOnlyTrailingLineBreak = qr{(\h*)?(\R)?} if $is_m_switch_active;
+    my $mSwitchOnlyTrailing = qr{};
+    $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
 
     $allArgumentRegEx = qr{
      (?:
@@ -90,7 +90,7 @@ sub construct_commands_with_args_regex {
        )
      )
      )
-     $mSwitchOnlyTrailingLineBreak 
+     $mSwitchOnlyTrailing 
      }x;
 
      $latexCommand = qr{
@@ -188,11 +188,12 @@ sub indent_all_args {
                                                     EndStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{RCuBStartsOnOwnLine},
                                                     # after end statements
                                                     EndFinishesWithLineBreak=>${$previouslyFoundSettings{$commandStorageName}}{RCuBFinishesWithLineBreak},
+                                                    horizontalTrailingSpace=>$9?$9:q(),
+                                                    trailingComment=>($10?$10:q()),
                                                     linebreaksAtEnd=>{
                                                       begin=>$argBodyStartsOwnLine,
-                                                      end=>($10?1:0),
+                                                      end=>($10?0:($11?1:0)),
                                                     },
-                                                    horizontalTrailingSpace=>$9?$9:q(),
                                                      );
 
             $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
@@ -220,6 +221,23 @@ sub indent_all_args {
 
        # put it all together
        $begin.$argBody.$end;|sgex;
+
+       # m switch conflicting linebreak addition/removal handled by tokens
+       if ($is_m_switch_active){
+          $body =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
+          $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
+          $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
+
+          # space after } OR  ]
+          $body =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\[)@$1$2@sg;
+
+          # trailing comments
+          $body =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
+
+          # anything else
+          $body =~s@(\}|\])$tokens{mAfterEndRemove}@$1 @sg;
+       }
+
     return $body;
 }
 

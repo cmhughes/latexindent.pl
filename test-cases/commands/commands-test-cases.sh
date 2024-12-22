@@ -65,10 +65,6 @@ latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-glo
 latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
 
 latexindent.pl just-one-command.tex -m  -s -o=+-mod1 -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod1
-exit
-# !!!!!!
-# !!!!!!
-# !!!!!!
 
 # modifyLineBreaks experiments
 [[ $loopmin -gt 32 ]] && loopmin=32
@@ -79,8 +75,13 @@ do
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
    # add line breaks
-   latexindent.pl just-one-command.tex -m  -s -o=just-one-command-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
-   latexindent.pl commands-one-line.tex -m  -s -o=commands-one-line-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
+   latexindent.pl just-one-command.tex -m -s -o=just-one-command-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
+   latexindent.pl commands-one-line.tex -m -s -o=commands-one-line-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml 
+done
+[[ $silentMode == 0 ]] && set -x 
+
+exit
+
    latexindent.pl commands-one-line.tex -m  -s -o=commands-one-line-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml 
    latexindent.pl commands-one-line-nested-simple.tex -m  -s -o=commands-one-line-nested-simple-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml
    latexindent.pl commands-one-line-nested.tex -m  -s -o=commands-one-line-nested-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml
@@ -101,8 +102,7 @@ do
    latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
    latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
    [[ $silentMode == 0 ]] && set +x 
-done
-[[ $silentMode == 0 ]] && set -x 
+
 # testing the linebreak immediately before, e.g, \mycommand
 latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod1.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod1.yaml
 latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod2.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod2.yaml
