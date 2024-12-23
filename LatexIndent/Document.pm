@@ -37,7 +37,7 @@ use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
-    qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks modify_line_breaks_condense_multiple_added_comments /;
+    qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
@@ -190,7 +190,7 @@ sub operate_on_file {
         $self->remove_leading_space;
         ${$self}{body} = &find_things_with_braces_brackets(${$self}{body},"");
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
-        $self->modify_line_breaks_condense_multiple_added_comments if $is_m_switch_active; 
+        $self->modify_line_breaks_post_indentation_linebreaks_comments if $is_m_switch_active; 
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines

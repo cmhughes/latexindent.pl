@@ -161,7 +161,16 @@ sub indent_all_args {
        # end
        my $end = ($4?$4:$8);
 
+       # mandatory or optional argument?
+       my $mandatoryArgument = ($1?1:0);
+
+       my $horizontalTrailingSpace=$9?$9:q();
+       my $trailingComment=($10?$10:q());
+       my $linebreaksAtEnd=($10?0:($11?1:0));
+
+       # ***
        # find nested things
+       # ***
        $argBody = &find_things_with_braces_brackets($argBody,$indentation);
 
        #
@@ -169,32 +178,51 @@ sub indent_all_args {
        #
        if ($is_m_switch_active){
 
-          #
-          # mandatory or optional argument?
-          #
-          my $mandatoryArgument = 0;
-          $mandatoryArgument = ($1?1:0);
-    
-          if ($mandatoryArgument){
-              my $mandatoryArg = LatexIndent::MandatoryArgument->new(
-                                                    begin=>$begin,
-                                                    body=>$argBody, 
-                                                    end=>$end,
-                                                    # begin statements
-                                                    BeginStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{LCuBStartsOnOwnLine},
-                                                    # body statements
-                                                    BodyStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{MandArgBodyStartsOnOwnLine},
-                                                    # end statements
-                                                    EndStartsOnOwnLine=>${$previouslyFoundSettings{$commandStorageName}}{RCuBStartsOnOwnLine},
-                                                    # after end statements
-                                                    EndFinishesWithLineBreak=>${$previouslyFoundSettings{$commandStorageName}}{RCuBFinishesWithLineBreak},
-                                                    horizontalTrailingSpace=>$9?$9:q(),
-                                                    trailingComment=>($10?$10:q()),
-                                                    linebreaksAtEnd=>{
-                                                      begin=>$argBodyStartsOwnLine,
-                                                      end=>($10?0:($11?1:0)),
-                                                    },
-                                                     );
+          # begin statements
+          my $BeginStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{LCuBStartsOnOwnLine};
+
+          # body statements
+          my $BodyStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{MandArgBodyStartsOnOwnLine};
+
+          # end statements
+          my $EndStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{RCuBStartsOnOwnLine};
+
+          # after end statements
+          my $EndFinishesWithLineBreak=${$previouslyFoundSettings{$commandStorageName}}{RCuBFinishesWithLineBreak};
+
+          if (!$mandatoryArgument){
+             # begin statements
+             $BeginStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{LSqBStartsOnOwnLine};
+
+             # body statements
+             $BodyStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{OptArgBodyStartsOnOwnLine};
+
+             # end statements
+             $EndStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{RSqBStartsOnOwnLine};
+
+             # after end statements
+             $EndFinishesWithLineBreak=${$previouslyFoundSettings{$commandStorageName}}{RSqBFinishesWithLineBreak};
+          }
+
+          my $mandatoryArg = LatexIndent::MandatoryArgument->new(
+                                                begin=>$begin,
+                                                body=>$argBody, 
+                                                end=>$end,
+                                                # begin statements
+                                                BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,
+                                                # body statements
+                                                BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,
+                                                # end statements
+                                                EndStartsOnOwnLine=>$EndStartsOnOwnLine,
+                                                # after end statements
+                                                EndFinishesWithLineBreak=>$EndFinishesWithLineBreak,
+                                                horizontalTrailingSpace=>$horizontalTrailingSpace,
+                                                trailingComment=>$trailingComment,
+                                                linebreaksAtEnd=>{
+                                                  begin=>$argBodyStartsOwnLine,
+                                                  end=>$linebreaksAtEnd,
+                                                },
+                            );
 
             $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
 
@@ -210,7 +238,6 @@ sub indent_all_args {
             $end = ${$mandatoryArg}{end};
 
             $argBodyStartsOwnLine = ${$mandatoryArg}{linebreaksAtEnd}{begin};
-          }
        }
 
        # add indentation
@@ -227,15 +254,6 @@ sub indent_all_args {
           $body =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
           $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
-
-          # space after } OR  ]
-          $body =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\[)@$1$2@sg;
-
-          # trailing comments
-          $body =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
-
-          # anything else
-          $body =~s@(\}|\])$tokens{mAfterEndRemove}@$1 @sg;
        }
 
     return $body;

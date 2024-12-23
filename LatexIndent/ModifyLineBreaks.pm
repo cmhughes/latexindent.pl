@@ -26,7 +26,7 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_condense_multiple_added_comments /;
+    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
 our $paragraphRegExp = q();
 
 sub modify_line_breaks_begin {
@@ -443,16 +443,39 @@ sub verbatim_modify_line_breaks {
     }
 }
 
-sub modify_line_breaks_condense_multiple_added_comments {
+sub modify_line_breaks_post_indentation_linebreaks_comments {
     # for example, see commands-one-line-mod17.tex
     my $self = shift;
     my $trailingCommentToken;
+    
+    # 
+    # line break removal
+    #
+    
+    # space after } OR  ]
+    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\[)@$1$2@sg;
+
+    # trailing comments
+    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
+
+    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\}|\[|\])@$1$2@sg;
+
+    # anything else
+    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}@$1 @sg;
+
+    #
+    # trailing comment work
+    #
     
     # condense multiple SEQUENTIALLLY added comments into one
     ${$self}{body} =~ s/$tokens{mSwitchComment}\s*$tokens{mSwitchComment}\R/
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 "$trailingCommentToken\n";/sgeg;
 
+    # trailing comment at end of file
+    ${$self}{body} =~ s/$tokens{mSwitchComment}\Z//s;
+
+    # finally, make the remaining mSwitchComments into actual comments
     ${$self}{body} =~ s/$tokens{mSwitchComment}/
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 $trailingCommentToken;/sgex;
