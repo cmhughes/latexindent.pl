@@ -164,6 +164,7 @@ sub indent_all_args {
        # mandatory or optional argument?
        my $mandatoryArgument = ($1?1:0);
 
+       # storage before finding nested things
        my $horizontalTrailingSpace=$9?$9:q();
        my $trailingComment=($10?$10:q());
        my $linebreaksAtEnd=($10?0:($11?1:0));

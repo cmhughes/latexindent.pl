@@ -74,24 +74,26 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
-
+   
    # add line breaks
    latexindent.pl just-one-command  -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i 
    latexindent.pl commands-one-line -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i 
    latexindent.pl commands-one-line -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal 
    latexindent.pl commands-one-line-nested-simple -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
    latexindent.pl commands-one-line-nested -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl commands-one-line-nested -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal
+   
+   # remove line breaks
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
 done
 [[ $silentMode == 0 ]] && set -x 
 
 exit
 
-   latexindent.pl commands-one-line-nested.tex -m  -s -o=commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml
-   # remove line breaks
-   latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml
-   latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-unprotect-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noChangeCommandBody
    latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-unprotect-no-condense-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,noCondenseMultipleLines.yaml,noChangeCommandBody.yaml
    latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,noChangeCommandBody.yaml 
+
    # note the ChangeCommandBody.yaml in the following, which changes the behaviour of linebreaks at the end of a command
    latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
    # multiple commands

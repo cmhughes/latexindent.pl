@@ -307,7 +307,11 @@ sub modify_line_breaks_end_after {
         } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
                 ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}."\n";
         } elsif ( $_ == -1 ){
-                ${$self}{end} .= (${$self}{linebreaksAtEnd}{end} ? ${$self}{horizontalTrailingSpace} : $tokens{mAfterEndRemove}).${$self}{trailingComment};
+                if (${$self}{trailingComment}){
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment};
+                } else {
+                    ${$self}{end} .= (${$self}{linebreaksAtEnd}{end} ? ${$self}{horizontalTrailingSpace} : $tokens{mAfterEndRemove}).${$self}{trailingComment};
+            }
         }
     }
 
@@ -457,7 +461,9 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
 
     # trailing comments
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
+    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\h*$trailingCommentRegExp)@$1$2@sg;
 
+    # } OR ]   followed by    { OR } OR [ OR ]
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\}|\[|\])@$1$2@sg;
 
     # anything else
@@ -467,12 +473,15 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     # trailing comment work
     #
     
+    # comments should NOT be added if a blank line was in play
+    ${$self}{body} =~ s/$tokens{mSwitchComment}(\s*$tokens{blanklines})/$1/sg;
+
     # condense multiple SEQUENTIALLLY added comments into one
     ${$self}{body} =~ s/$tokens{mSwitchComment}\s*$tokens{mSwitchComment}\R/
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 "$trailingCommentToken\n";/sgeg;
 
-    # trailing comment at end of file
+    # trailing comment added at end of file
     ${$self}{body} =~ s/$tokens{mSwitchComment}\Z//s;
 
     # finally, make the remaining mSwitchComments into actual comments
