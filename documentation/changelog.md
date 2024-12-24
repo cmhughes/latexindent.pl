@@ -1,6 +1,16 @@
 <!-- announcement: graceful fail for columns=0 text wrapping-->
 
 # changelog.md
+
+## V4.0, MAJOR release
+
+* poly-switch for commands:
+
+```
+  commands:
+    CommandNameFinishesWithLineBreak: 0 #<!--- NO LONGER DOES ANYTHING
+```
+
 ## V3.24.4, July 18, 2024
 graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)
 

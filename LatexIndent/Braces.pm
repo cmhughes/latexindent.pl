@@ -54,7 +54,7 @@ sub construct_commands_with_args_regex {
         (?<!\\)
         \{
         \h*
-        (\R?)
+        (\R*)
        )
        (
         (?:
@@ -75,7 +75,7 @@ sub construct_commands_with_args_regex {
         (?<!\\)
         \[
         \h*
-        (\R?)
+        (\R*)
        )
        (
         (?:

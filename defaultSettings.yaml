@@ -389,116 +389,7 @@ commandCodeBlocks:
 # change dos line breaks into unix
 dos2unixlinebreaks: 0
 
-# modifyLineBreaks will only be searched if the -m
-# switch is active
-#
-# poly-switch examples:
-#
-#    BeginStartsOnOwnLine:
-#       modify line breaks before a begin statement
-#
-#       when set to -1, e.g
-#               some text some text
-#               \begin{myenvironment}
-#           will be changed to
-#               some text some text \begin{myenvironment}
-#       when set to 0, the switch is ignored
-#       when set to 1, e.g
-#               some text some text \begin{myenvironment}
-#           will be changed to
-#               some text some text
-#               \begin{myenvironment}
-#       when set to 2, e.g
-#               some text some text \begin{myenvironment}
-#           will be changed to
-#               some text some text%
-#               \begin{myenvironment}
-#       when set to 3, e.g
-#               some text some text \begin{myenvironment}
-#           will be changed to
-#               some text some text
-#
-#               \begin{myenvironment}
-#
-#    BodyStartsOnOwnLine:
-#       modify line breaks before the beginning of the body
-#
-#       when set to -1, e.g
-#               \begin{myenv}
-#                   body text body text
-#           will be changed to
-#               \begin{myenv}body text body text
-#       when set to 0, the switch is ignored
-#       when set to 1, e.g
-#               \begin{myenv}body text body text
-#           will be changed to
-#               \begin{myenv}
-#                   body text body text
-#       when set to 2, e.g
-#               \begin{myenv}body text body text
-#           will be changed to
-#               \begin{myenv}%
-#                   body text body text
-#       when set to 3, e.g
-#               \begin{myenv}body text body text
-#           will be changed to
-#               \begin{myenv}
-#
-#                   body text body text
-#
-#    EndStartsOnOwnLine:
-#       modify line breaks before the end statement
-#
-#       when set to -1, e.g
-#               some text some text
-#               \end{myenvironment}
-#           will be changed to
-#               some text some text \end{myenvironment}
-#       when set to 0, the switch is ignored
-#       when set to 1, e.g
-#               some text some text \end{myenvironment}
-#           will be changed to
-#               some text some text
-#               \end{myenvironment}
-#       when set to 2, e.g
-#               some text some text \end{myenvironment}
-#           will be changed to
-#               some text some text%
-#               \end{myenvironment}
-#       when set to 3, e.g
-#               some text some text \end{myenvironment}
-#           will be changed to
-#               some text some text
-#
-#               \end{myenvironment}
-#
-#    EndFinishesWithLineBreak:
-#       modify line breaks after the end statement
-#
-#       when set to -1, e.g
-#               \end{myenvironment}
-#               some text some text
-#           will be changed to
-#                   \end{myenvironment}some text some text
-#       when set to 0, the switch is ignored
-#       when set to 1, e.g
-#               \end{myenvironment}some text some text
-#           will be changed to
-#                   \end{myenvironment}
-#                   some text some text
-#       when set to 2, e.g
-#               \end{myenvironment}some text some text
-#           will be changed to
-#                   \end{myenvironment}%
-#                   some text some text
-#       when set to 3, e.g
-#               \end{myenvironment}some text some text
-#           will be changed to
-#                   \end{myenvironment}
-#
-#                   some text some text
-#
-# you can specify settings on a per-name basis
+# modifyLineBreaks will only be searched if the -m switch is active
 modifyLineBreaks:
   preserveBlankLines: 1                 # 0/1
   condenseMultipleBlankLinesInto: 1     # 0/1
@@ -588,7 +479,6 @@ modifyLineBreaks:
     #     FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4
   commands:
     CommandStartsOnOwnLine: 0
-    CommandNameFinishesWithLineBreak: 0
   optionalArguments:
     LSqBStartsOnOwnLine: 0              # -1,0,1,2,3,4
     OptArgBodyStartsOnOwnLine: 0        # -1,0,1,2,3,4
@@ -618,7 +508,7 @@ modifyLineBreaks:
     VerbatimBeginStartsOnOwnLine: 0     # -1,0,1,2,3,4
     VerbatimEndFinishesWithLineBreak: 0 # -1,0,1,2,3,4
 
-# replacements, only active when either -r or -rr switches are active
+# replacements, only active when either -r, -rr, -rv switches are active
 replacements:
   - amalgamate: 1
   - this: latexindent.pl
