@@ -180,29 +180,29 @@ sub indent_all_args {
        if ($is_m_switch_active){
 
           # begin statements
-          my $BeginStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{LCuBStartsOnOwnLine};
+          my $BeginStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{LCuBStartsOnOwnLine};
 
           # body statements
-          my $BodyStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{MandArgBodyStartsOnOwnLine};
+          my $BodyStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{MandArgBodyStartsOnOwnLine};
 
           # end statements
-          my $EndStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{RCuBStartsOnOwnLine};
+          my $EndStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{RCuBStartsOnOwnLine};
 
           # after end statements
-          my $EndFinishesWithLineBreak=${$previouslyFoundSettings{$commandStorageName}}{RCuBFinishesWithLineBreak};
+          my $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{RCuBFinishesWithLineBreak};
 
           if (!$mandatoryArgument){
              # begin statements
-             $BeginStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{LSqBStartsOnOwnLine};
+             $BeginStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{LSqBStartsOnOwnLine};
 
              # body statements
-             $BodyStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{OptArgBodyStartsOnOwnLine};
+             $BodyStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{OptArgBodyStartsOnOwnLine};
 
              # end statements
-             $EndStartsOnOwnLine=${$previouslyFoundSettings{$commandStorageName}}{RSqBStartsOnOwnLine};
+             $EndStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{RSqBStartsOnOwnLine};
 
              # after end statements
-             $EndFinishesWithLineBreak=${$previouslyFoundSettings{$commandStorageName}}{RSqBFinishesWithLineBreak};
+             $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{RSqBFinishesWithLineBreak};
           }
 
           my $mandatoryArg = LatexIndent::MandatoryArgument->new(
@@ -224,6 +224,8 @@ sub indent_all_args {
                                                   end=>$linebreaksAtEnd,
                                                 },
                             );
+
+            $logger->trace("*-m switch poly-switch line break adjustment") if $is_t_switch_active;
 
             $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
 

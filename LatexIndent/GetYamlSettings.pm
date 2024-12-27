@@ -834,9 +834,6 @@ sub yaml_get_indentation_settings_for_this_object {
                 BodyStartsOnOwnLine       => ${$self}{BodyStartsOnOwnLine},
                 EndStartsOnOwnLine        => ${$self}{EndStartsOnOwnLine},
                 EndFinishesWithLineBreak  => ${$self}{EndFinishesWithLineBreak},
-                removeParagraphLineBreaks => ${$self}{removeParagraphLineBreaks},
-                textWrapOptions           => ${$self}{textWrapOptions},
-                columns                   => ${$self}{columns},
            );
         } else {
           %{ ${previouslyFoundSettings}{$storageName} } = (
@@ -871,10 +868,10 @@ sub yaml_get_indentation_settings_for_this_object {
                $self->yaml_modify_line_breaks_settings;
 
                # store poly switch values
-               ${ ${previouslyFoundSettings}{$storageName} }{ LCuBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ MandArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ RCuBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ RCuBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
+               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ LCuBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ MandArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ RCuBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ RCuBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
             }
 
             #
@@ -901,10 +898,10 @@ sub yaml_get_indentation_settings_for_this_object {
                $self->yaml_modify_line_breaks_settings;
 
                # store poly switch values
-               ${ ${previouslyFoundSettings}{$storageName} }{ LSqBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ OptArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ RSqBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
-               ${ ${previouslyFoundSettings}{$storageName} }{ RSqBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
+               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ LSqBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ OptArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ RSqBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
+               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ RSqBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
             }
         }
 
@@ -929,7 +926,7 @@ sub yaml_get_indentation_settings_for_this_object {
         }
 
         # log file information
-        $logger->trace("Settings for $name (stored for future use):")         if $is_t_switch_active;
+        $logger->trace("*$name settings (stored for future use):")         if $is_t_switch_active;
         $logger->trace( Dumper \%{ ${previouslyFoundSettings}{$storageName} } ) if $is_t_switch_active;
 
     }
@@ -1051,10 +1048,7 @@ sub yaml_modify_line_breaks_settings {
     my $self = shift;
 
     # details to the log file
-    $logger->trace("*-m modifylinebreaks switch active") if $is_t_switch_active;
-    $logger->trace(
-        "looking for polyswitch, textWrapOptions, removeParagraphLineBreaks, oneSentencePerLine settings for ${$self}{name} "
-    ) if $is_t_switch_active;
+    $logger->trace("*-m modifylinebreaks poly-switch lookup for ${$self}{name}") if $is_t_switch_active;
 
     # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
     my @toBeAssignedTo = ${$self}{additionalAssignments} ? @{ ${$self}{additionalAssignments} } : ();
@@ -1108,11 +1102,11 @@ sub yaml_poly_switch_get_every_or_custom_value {
     }
     else {
         # check for the *every* value
-        if ( defined $everyValue and $everyValue != 0 ) {
+        if ( defined $everyValue ) {
             $logger->trace("$name: $toBeAssignedToAlias=$everyValue, (*global* value) adjusting $toBeAssignedTo")
                 if ($is_t_switch_active);
             ${$self}{$toBeAssignedTo} = $everyValue;
-        }
+        } 
     }
     return;
 }
