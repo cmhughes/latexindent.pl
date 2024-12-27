@@ -816,7 +816,7 @@ sub yaml_get_indentation_settings_for_this_object {
     }
     else {
         my $name = ${$self}{name};
-        $logger->trace("Storing settings for $storageName") if ($is_t_switch_active);
+        $logger->trace("*found: $name")         if $is_t_switch_active;
 
         # check for noAdditionalIndent and indentRules
         # otherwise use defaultIndent
@@ -847,13 +847,14 @@ sub yaml_get_indentation_settings_for_this_object {
         # store argument information, if arguments present
         if (${$self}{arguments}){
 
+            #
             # mandatory arguments
+            #
             ${$self}{modifyLineBreaksYamlName}= "mandatoryArguments";
+            $logger->trace("mandatory arguments info:") if ($is_t_switch_active);
             ${ ${previouslyFoundSettings}{$storageName} }{ mandatoryArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"mandatoryArguments");
 
-            #
-            # mandatory arguments
-            #
+            # mandatory arguments, poly-switches
             if ($is_m_switch_active){
                ${$self}{aliases} = {
                  # begin statements
@@ -876,13 +877,14 @@ sub yaml_get_indentation_settings_for_this_object {
                ${ ${previouslyFoundSettings}{$storageName} }{ RCuBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
             }
 
+            #
             # optional arguments
+            #
             ${$self}{modifyLineBreaksYamlName}= "optionalArguments";
+            $logger->trace("optional arguments info:") if ($is_t_switch_active);
             ${ ${previouslyFoundSettings}{$storageName} }{ optionalArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"optionalArguments");
 
-            #
-            # optional arguments
-            #
+            # optional arguments, poly-switches
             if ($is_m_switch_active){
                ${$self}{aliases} = {
                  # begin statements
@@ -927,8 +929,8 @@ sub yaml_get_indentation_settings_for_this_object {
         }
 
         # log file information
-        $logger->trace("Settings for $name (stored for future use):")         if $is_tt_switch_active;
-        $logger->trace( Dump \%{ ${previouslyFoundSettings}{$storageName} } ) if $is_tt_switch_active;
+        $logger->trace("Settings for $name (stored for future use):")         if $is_t_switch_active;
+        $logger->trace( Dumper \%{ ${previouslyFoundSettings}{$storageName} } ) if $is_t_switch_active;
 
     }
 
