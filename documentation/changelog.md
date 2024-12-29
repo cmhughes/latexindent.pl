@@ -8,7 +8,7 @@
 
 ```
   commands:
-    CommandNameFinishesWithLineBreak: 0 #<!--- NO LONGER DOES ANYTHING, control goes to argument poly-switch instead
+    CommandNameFinishesWithLineBreak: 0 #<!--- this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead
 ```
 
 ## V3.24.4, July 18, 2024

@@ -116,7 +116,11 @@ sub find_things_with_braces_brackets {
           my $commandObj = LatexIndent::Braces->new(name=>$commandName,
                                               modifyLineBreaksYamlName=>"commands",
                                               arguments=>1,
-                                                );
+                                              aliases=>{
+                                                # begin statements
+                                                BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
+                                              },
+                                              );
           $commandObj->yaml_get_indentation_settings_for_this_object;
        }
        $argBody = &indent_all_args($commandName."commands", $argBody,$currentIndentation);
@@ -191,6 +195,8 @@ sub indent_all_args {
           # after end statements
           my $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{RCuBFinishesWithLineBreak};
 
+          my $argType = "mandatory";
+
           if (!$mandatoryArgument){
              # begin statements
              $BeginStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{LSqBStartsOnOwnLine};
@@ -203,6 +209,8 @@ sub indent_all_args {
 
              # after end statements
              $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{RSqBFinishesWithLineBreak};
+
+             $argType = "optional";
           }
 
           my $mandatoryArg = LatexIndent::MandatoryArgument->new(
@@ -225,7 +233,7 @@ sub indent_all_args {
                                                 },
                             );
 
-            $logger->trace("*-m switch poly-switch line break adjustment") if $is_t_switch_active;
+            $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
 
             $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
 

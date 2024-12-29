@@ -448,17 +448,17 @@ modifyLineBreaks:
       other: \\begin\{|\\\[|\\end\{     # regex
     huge: overflow                      # forbid mid-word line breaks
     separator: ""
-  # poly-switches below here              # -1: remove, 0: off, 1: add, 2: comment+add, 3: add blank line, 4: add blank line
+  # poly-switches below here            # -1: remove, 0: off, 1: add, 2: comment+add, 3: add blank line, 4: add blank line
   environments:
     BeginStartsOnOwnLine: 0             # -1,0,1,2,3,4
     BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
     EndStartsOnOwnLine: 0               # -1,0,1,2,3,4
     EndFinishesWithLineBreak: 0         # -1,0,1,2,3,4
     # equation*:
-    #     BeginStartsOnOwnLine: 0         # -1,0,1,2,3,4
-    #     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-    #     EndStartsOnOwnLine: 0           # -1,0,1,2,3,4
-    #     EndFinishesWithLineBreak: 0     # -1,0,1,2,3,4
+    #     BeginStartsOnOwnLine: 0       # -1,0,1,2,3,4
+    #     BodyStartsOnOwnLine: 0        # -1,0,1,2,3,4
+    #     EndStartsOnOwnLine: 0         # -1,0,1,2,3,4
+    #     EndFinishesWithLineBreak: 0   # -1,0,1,2,3,4
   ifElseFi:
     IfStartsOnOwnLine: 0                # -1,0,1,2,3,4
     BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
@@ -469,14 +469,14 @@ modifyLineBreaks:
     FiStartsOnOwnLine: 0                # -1,0,1,2,3,4
     FiFinishesWithLineBreak: 0          # -1,0,1,2,3,4
     # ifnum:
-    #     IfStartsOnOwnLine: 0            # -1,0,1,2,3,4
-    #     BodyStartsOnOwnLine: 0          # -1,0,1,2,3,4
-    #     OrStartsOnOwnLine: 0            # -1,0,1,2,3,4
-    #     OrFinishesWithLineBreak: 0      # -1,0,1,2,3,4
-    #     ElseStartsOnOwnLine: 0          # -1,0,1,2,3,4
-    #     ElseFinishesWithLineBreak: 0    # -1,0,1,2,3,4
-    #     FiStartsOnOwnLine: 0            # -1,0,1,2,3,4
-    #     FiFinishesWithLineBreak: 0      # -1,0,1,2,3,4
+    #     IfStartsOnOwnLine: 0          # -1,0,1,2,3,4
+    #     BodyStartsOnOwnLine: 0        # -1,0,1,2,3,4
+    #     OrStartsOnOwnLine: 0          # -1,0,1,2,3,4
+    #     OrFinishesWithLineBreak: 0    # -1,0,1,2,3,4
+    #     ElseStartsOnOwnLine: 0        # -1,0,1,2,3,4
+    #     ElseFinishesWithLineBreak: 0  # -1,0,1,2,3,4
+    #     FiStartsOnOwnLine: 0          # -1,0,1,2,3,4
+    #     FiFinishesWithLineBreak: 0    # -1,0,1,2,3,4
   commands:
     CommandStartsOnOwnLine: 0
   optionalArguments:

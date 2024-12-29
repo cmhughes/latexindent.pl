@@ -41,8 +41,9 @@ sub modify_line_breaks_begin {
     
     # add a line break BEFORE \begin{statement} if appropriate
     my @polySwitchValues = ( ${$self}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BeginStartsOnOwnLine} );
+    my $BeginStringLogFile = ${$self}{aliases}{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
     foreach (@polySwitchValues) {
-        if ( $_ >= 1 and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s) {
+        if ( $_ >= 1 and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s and ${$self}{begin} !~ m/^\h*\R/s) {
 
             # if the <begin> statement doesn't finish with a line break,
             # then we have different actions based upon the value of BodyStartsOnOwnLine:
@@ -50,6 +51,8 @@ sub modify_line_breaks_begin {
             #     BodyStartsOnOwnLine == 2 add a comment, and then new line
             #     BodyStartsOnOwnLine == 3 add a blank line, and then new line
             if ( $_ == 1 ) {
+
+                $logger->trace("Adding a linebreak *before* begin statement ($BeginStringLogFile==1)") if $is_t_switch_active;
 
                 # modify the begin statement
                 ${$self}{begin} = "\n".${$self}{begin};

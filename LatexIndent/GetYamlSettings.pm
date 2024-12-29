@@ -825,21 +825,22 @@ sub yaml_get_indentation_settings_for_this_object {
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
 
+        # minimal previouslyFoundSettings, possibly added to depending on switches
+        %{ ${previouslyFoundSettings}{$storageName} } = (
+            indentation               => $indentation,
+        );
+
+        # t switch gives more information to the log file
+        ${ ${previouslyFoundSettings}{$storageName} }{AMETA} = {name=>${$self}{name}, type=> ${$self}{modifyLineBreaksYamlName}} if $is_t_switch_active;
+
         # check for line break settings
         if ($is_m_switch_active){
             $self->yaml_modify_line_breaks_settings;
-            %{ ${previouslyFoundSettings}{$storageName} } = (
-                indentation               => $indentation,
-                BeginStartsOnOwnLine      => ${$self}{BeginStartsOnOwnLine},
-                BodyStartsOnOwnLine       => ${$self}{BodyStartsOnOwnLine},
-                EndStartsOnOwnLine        => ${$self}{EndStartsOnOwnLine},
-                EndFinishesWithLineBreak  => ${$self}{EndFinishesWithLineBreak},
-           );
-        } else {
-          %{ ${previouslyFoundSettings}{$storageName} } = (
-              indentation               => $indentation,
-          );
-        }
+            ${ ${previouslyFoundSettings}{$storageName} }{BeginStartsOnOwnLine} = ${$self}{BeginStartsOnOwnLine} if defined ${$self}{BeginStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{BodyStartsOnOwnLine} = ${$self}{BodyStartsOnOwnLine} if defined ${$self}{BodyStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{EndStartsOnOwnLine} = ${$self}{EndStartsOnOwnLine} if defined ${$self}{EndStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{EndFinishesWithLineBreak} = ${$self}{EndFinishesWithLineBreak} if defined ${$self}{EndFinishesWithLineBreak};
+        } 
 
         # store argument information, if arguments present
         if (${$self}{arguments}){
