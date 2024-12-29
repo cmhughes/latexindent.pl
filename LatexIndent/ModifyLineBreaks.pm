@@ -102,7 +102,7 @@ sub modify_line_breaks_body {
                     if $is_t_switch_active;
                 ${$self}{begin} .= "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
-                $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)")
+                $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
                     if $is_t_switch_active;
                 ${$self}{body} =~ s/^\h*//;
             }
@@ -120,7 +120,7 @@ sub modify_line_breaks_body {
                     ${$self}{begin} =~ s/\h*$//;
                     ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
-                    $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)")
+                    $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
                         if $is_t_switch_active;
                     ${$self}{body} =~ s/^\h*//;
                 }
@@ -139,7 +139,7 @@ sub modify_line_breaks_body {
                 ${$self}{begin}
                     .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
-                $logger->trace("Removing leading space from body of ${$self}{name} (see $BodyStringLogFile)")
+                $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
                     if $is_t_switch_active;
                 ${$self}{body} =~ s/^\h*//;
             }

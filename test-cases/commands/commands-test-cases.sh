@@ -76,31 +76,32 @@ do
    [[ $silentMode == 0 ]] && set -x 
    
    # add line breaks
-   latexindent.pl just-one-command  -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i 
-   latexindent.pl commands-one-line -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i 
-   latexindent.pl commands-one-line -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal 
-   latexindent.pl commands-one-line-nested-simple -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
-   latexindent.pl commands-one-line-nested -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
-   latexindent.pl commands-one-line-nested -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal
+   latexindent.pl just-one-command  -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i 
+   latexindent.pl commands-one-line -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i 
+   latexindent.pl commands-one-line -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal 
+   latexindent.pl commands-one-line-nested-simple -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl commands-one-line-nested -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl commands-one-line-nested -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal
    
    # remove line breaks
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noChangeCommandBody
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-no-condense-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noCondenseMultipleLines,noChangeCommandBody
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-noAdditionalGlobal-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,noChangeCommandBody 
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noChangeCommandBody
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-no-condense-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noCondenseMultipleLines,noChangeCommandBody
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-noAdditionalGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,noChangeCommandBody 
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-noAdditionalGlobal-changeCommandBody-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,ChangeCommandBody 
+
+   # multiple commands
+   latexindent.pl commands-nested-multiple -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl commands-nested-multiple -m -s -o=+-textbf-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf
+   latexindent.pl commands-nested-multiple -m -s -o=+-textbf-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf,noAdditionalIndentGlobal
+   latexindent.pl commands-nested-multiple -m -s -o=+-textbf-mand-args-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf-mand-args,noAdditionalIndentGlobal
+
 done
 [[ $silentMode == 0 ]] && set -x 
 
 exit
 
 
-   # note the ChangeCommandBody.yaml in the following, which changes the behaviour of linebreaks at the end of a command
-   latexindent.pl commands-remove-line-breaks.tex -s -m -o=commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,noAdditionalIndentGlobal.yaml,unprotect-blank-lines.yaml,ChangeCommandBody.yaml 
-   # multiple commands
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-textbf-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf.yaml
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-textbf-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf.yaml,noAdditionalIndentGlobal.yaml
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-textbf-mand-args-noAdditionalIndentGlobal-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod$i.yaml,textbf-mand-args.yaml,noAdditionalIndentGlobal.yaml
    # multiple commands and environments
    latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
    latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 

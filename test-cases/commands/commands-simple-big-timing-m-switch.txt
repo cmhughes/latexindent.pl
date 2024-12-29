@@ -1,5 +1,5 @@
 Unknown option: mod1
 
-real	0m1.177s
-user	0m1.142s
-sys	0m0.022s
+real	0m1.141s
+user	0m1.122s
+sys	0m0.019s
