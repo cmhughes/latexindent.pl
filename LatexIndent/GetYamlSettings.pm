@@ -257,7 +257,7 @@ sub yaml_read_settings {
             $logger->info("Home directory is $homeDir");
             $logger->info("latexindent.pl didn't find indentconfig.yaml or .indentconfig.yaml");
             $logger->info(
-                "see all possible locations: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options)"
+                "see all possible locations: https://latexindentpl.readthedocs.io/en/latest/sec-appendices.html#indentconfig-options"
             );
         }
     }

@@ -67,6 +67,7 @@ sub modify_line_breaks_begin {
         }
         elsif ( $_ == -1 ) {
             # remove line break *before* begin, if appropriate
+            $logger->trace("Removing linebreak *before* begin") if $is_t_switch_active;
             ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreak}/s;
         }
     }
