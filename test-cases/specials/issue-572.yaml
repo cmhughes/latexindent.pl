@@ -1,0 +1,22 @@
+defaultIndent: "  "
+
+specialBeginEnd:
+  specialBeforeCommand: 1
+
+  brackets:
+    # Match `[...]` but not display math `\[...\]`, and not optional arguments
+    # to a command (e.g., `\todo[inline]`), and not optional arguments to an
+    # environment (e.g., \begin{theorem}[Title]).
+    begin: (?<![a-zA-Z\\\}])\[
+    end: \]
+    lookForThis: 1
+
+modifyLineBreaks:
+  environments:
+    BodyStartsOnOwnLine: 1
+
+replacements:
+  - 
+    when: after
+    substitution: |-
+      s/(\\begin\{theorem\})\s*(\[)/$1$2/sg
