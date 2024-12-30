@@ -100,12 +100,10 @@ sub modify_line_breaks_body {
 
                 # modify the begin statement
                 $logger->trace(
-                    "Adding a linebreak at the end of begin statement ${$self}{begin} (see $BodyStringLogFile)")
+                    "Adding a linebreak *after* begin statement (see $BodyStringLogFile==1)")
                     if $is_t_switch_active;
                 ${$self}{begin} .= "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
-                $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
-                    if $is_t_switch_active;
                 ${$self}{body} =~ s/^\h*//;
             }
             elsif ( $_ == 2 ) {
@@ -116,33 +114,29 @@ sub modify_line_breaks_body {
 
                     # modify the begin statement
                     $logger->trace(
-                        "Adding a % at the end of begin ${$self}{begin} followed by a linebreak ($BodyStringLogFile == 2)"
+                        "Adding a % at the end of begin followed by a linebreak ($BodyStringLogFile == 2)"
                     ) if $is_t_switch_active;
                     $trailingCommentToken = "%" . $self->add_comment_symbol;
                     ${$self}{begin} =~ s/\h*$//;
                     ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
-                    $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
-                        if $is_t_switch_active;
                     ${$self}{body} =~ s/^\h*//;
                 }
                 else {
                     $logger->trace(
-                        "Even though $BodyStringLogFile == 2, ${$self}{begin} already finishes with a %, so not adding another."
+                        "Even though $BodyStringLogFile == 2, begin statement already finishes with a %, so not adding another."
                     ) if $is_t_switch_active;
                 }
             }
             elsif ( $_ == 3 ) {
                 my $trailingCharacterToken = q();
                 $logger->trace(
-                    "Adding a blank line at the end of begin ${$self}{begin} followed by a linebreak ($BodyStringLogFile == 3)"
+                    "Adding a blank line *after* begin followed by a linebreak ($BodyStringLogFile == 3)"
                 ) if $is_t_switch_active;
                 ${$self}{begin} =~ s/\h*$//;
                 ${$self}{begin}
                     .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
-                $logger->trace("Removing leading space from body (see $BodyStringLogFile)")
-                    if $is_t_switch_active;
                 ${$self}{body} =~ s/^\h*//;
             }
         }
@@ -157,7 +151,7 @@ sub modify_line_breaks_body {
 sub remove_line_breaks_begin {
     my $self              = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
-    $logger->trace("Removing linebreak at the end of begin (see $BodyStringLogFile)") if $is_t_switch_active;
+    $logger->trace("Removing linebreak *after* begin (see $BodyStringLogFile)") if $is_t_switch_active;
     ${$self}{begin} =~ s/\R*$//sx;
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
@@ -190,7 +184,7 @@ sub modify_line_breaks_end {
                 #     EndStartsOnOwnLine == 1 just add a new line
                 #     EndStartsOnOwnLine == 2 add a comment, and then new line
                 #     EndStartsOnOwnLine == 3 add a blank line, and then new line
-                $logger->trace("Adding a linebreak at the end of body (see $EndStringLogFile)") if $is_t_switch_active;
+                $logger->trace("Adding a linebreak at the end of body (see $EndStringLogFile==1)") if $is_t_switch_active;
 
                 # by default, assume that no trailing character token is needed
                 my $trailingCharacterToken = q();

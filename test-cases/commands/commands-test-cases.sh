@@ -119,7 +119,7 @@ latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-mo
 latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-unprotect-mod3 -l=../opt-args/opt-args-remove-all,command-begin-mod3,unprotect-blank-lines
 
 # special characters test case
-latexindent.pl commands-four-special-characters -o=+-default -s
+latexindent.pl -s commands-four-special-characters -o=+-default
 
 # multiple brace test
 latexindent.pl -s -w multipleBraces.tex
