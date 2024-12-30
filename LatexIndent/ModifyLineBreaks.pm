@@ -189,7 +189,7 @@ sub modify_line_breaks_end {
                 # by default, assume that no trailing character token is needed
                 my $trailingCharacterToken = q();
                 if ( $_ == 2 ) {
-                    $logger->trace("Adding a % immediately after body of ${$self}{name} \t\t ($EndStringLogFile==2)")
+                    $logger->trace("Adding a % immediately before end statement \t\t ($EndStringLogFile==2)")
                         if $is_t_switch_active;
                     $trailingCharacterToken = "%" . $self->add_comment_symbol;
                     ${$self}{body} =~ s/\h*$//s;
