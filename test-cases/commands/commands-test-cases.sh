@@ -121,11 +121,11 @@ latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-un
 # special characters test case
 latexindent.pl commands-four-special-characters -o=+-default -s
 
+# multiple brace test
+latexindent.pl -s -w multipleBraces.tex
 exit
 
 
-# multiple brace test
-latexindent.pl -s -w multipleBraces.tex
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml -o multipleBraces-mod1.tex
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml,xapptocmd-none.yaml -o multipleBraces-xapptocmd-none-mod1.tex
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml,xapptocmd-none.yaml,pagestyle.yaml -o multipleBraces-xapptocmd-none-pagestyle-comments-mod1.tex

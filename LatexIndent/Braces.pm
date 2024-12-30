@@ -108,6 +108,10 @@ sub construct_commands_with_args_regex {
 sub find_things_with_braces_brackets {
 
     my $body = shift;
+
+    # empty body check
+    return q() if not defined $body;
+
     my $currentIndentation = shift;
 
     $body =~ s/$latexCommand/
@@ -123,6 +127,8 @@ sub find_things_with_braces_brackets {
                                              BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
                                            },
        );
+
+       $logger->trace("*found: $commandName (command)")         if $is_t_switch_active;
 
        # store settings for future use
        if (!$previouslyFoundSettings{$commandName."commands"}){

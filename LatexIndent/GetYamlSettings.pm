@@ -816,10 +816,8 @@ sub yaml_get_indentation_settings_for_this_object {
     }
     else {
         my $name = ${$self}{name};
-        $logger->trace("*found: $name")         if $is_t_switch_active;
 
-        # check for noAdditionalIndent and indentRules
-        # otherwise use defaultIndent
+        # check for noAdditionalIndent OR indentRules OR defaultIndent
         my $indentation = $self->yaml_get_indentation_information(thing=>"body");
 
         # check for alignment at ampersand settings
