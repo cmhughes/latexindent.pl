@@ -274,7 +274,7 @@ sub indent_all_args {
        }
 
        # add indentation
-       $argBody =~ s@^@$currentIndentation@mg;
+       $argBody =~ s@^@$currentIndentation@mg unless $argBody=~m@^\s*$@s;
 
        # if arg body does NOT start on its own line, remove the first indentation added by previous step
        $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine);
@@ -285,7 +285,9 @@ sub indent_all_args {
        # m switch conflicting linebreak addition/removal handled by tokens
        if ($is_m_switch_active){
           $body =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
+          $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
           $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
+          $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
        }
 
