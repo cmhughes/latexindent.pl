@@ -40,7 +40,7 @@ latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
 #
 { time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
-{ time latexindent.pl -s commands-simple-big.tex -mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
+{ time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
@@ -114,15 +114,16 @@ done
 
 # testing the linebreak immediately before, e.g, \mycommand
 latexindent.pl commands-nested-multiple -m -s -o=+-command-mod1 -l=../opt-args/opt-args-remove-all,command-begin-mod1
+latexindent.pl commands-nested-multiple -m -s -o=+-command-mod2 -l=../opt-args/opt-args-remove-all,command-begin-mod2
+latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-mod3 -l=../opt-args/opt-args-remove-all,command-begin-mod3
+latexindent.pl commands-nested-multiple-remove-line-breaks -m -s -o=+-command-unprotect-mod3 -l=../opt-args/opt-args-remove-all,command-begin-mod3,unprotect-blank-lines
+
+# special characters test case
+latexindent.pl commands-four-special-characters -o=+-default -s
 
 exit
 
-latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod2.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod2.yaml
-latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml
-latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml,unprotect-blank-lines.yaml
 
-# special characters test case
-latexindent.pl commands-four-special-characters.tex -o=+-default.tex -s -l=fine-tuning-args1
 # multiple brace test
 latexindent.pl -s -w multipleBraces.tex
 latexindent.pl -s -m multipleBraces.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod1.yaml -o multipleBraces-mod1.tex
@@ -191,6 +192,9 @@ latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
 
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s
+
+# named grouping bracket test case
+latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1
 
 # <!---- RETURN TO figureValign
 # <!---- RETURN TO figureValign

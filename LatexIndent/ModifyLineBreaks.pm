@@ -59,6 +59,7 @@ sub modify_line_breaks_begin {
                 ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
             }
             elsif ( $_ == 2 ) {
+                ${$self}{begin} =~ s/^(\h*)//s;
                 ${$self}{begin} = "$tokens{mSwitchComment}\n".${$self}{begin};
             }
             elsif ( $_ == 3 ) {

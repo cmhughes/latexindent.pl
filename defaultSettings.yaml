@@ -537,7 +537,7 @@ fineTuning:
     follow: \{|\[|,|&|\)|\(|\$
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>
-    between: _|\^|\*
+    between: [_^*]
   trailingComments:
     notPrecededBy: (?<!\\)
     afterComment: .*?

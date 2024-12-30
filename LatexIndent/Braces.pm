@@ -18,7 +18,7 @@ package LatexIndent::Braces;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%previouslyFoundSettings/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
@@ -43,6 +43,7 @@ our $argumentBodyRegEx = qr{
 
 sub construct_commands_with_args_regex {
 
+    my $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
 
@@ -50,7 +51,7 @@ sub construct_commands_with_args_regex {
      (?:
      (?:
        (
-        (?:\s|$trailingCommentRegExp|$tokens{blanklines})*
+        (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
         (?<!\\)
         \{
         \h*
@@ -71,7 +72,7 @@ sub construct_commands_with_args_regex {
      |
      (?:
        (
-        (?:\s|$trailingCommentRegExp|$tokens{blanklines})*
+        (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
         (?<!\\)
         \[
         \h*
@@ -95,7 +96,7 @@ sub construct_commands_with_args_regex {
 
      $latexCommand = qr{
         (\s*\\)
-        ([a-zA-Z]+?)
+        (${${$mainSettings{fineTuning}}{commands}}{name})
         (
          (?:
           $allArgumentRegEx 
@@ -133,6 +134,8 @@ sub find_things_with_braces_brackets {
             ${$commandObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine};
             $commandObj->modify_line_breaks_begin;  
             $begin = ${$commandObj}{begin};
+            $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
+            $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
        }
 
        # argument indentation
