@@ -55,7 +55,8 @@ sub modify_line_breaks_begin {
                 $logger->trace("Adding a linebreak *before* begin statement ($BeginStringLogFile==1)") if $is_t_switch_active;
 
                 # modify the begin statement
-                ${$self}{begin} = "\n".${$self}{begin};
+                ${$self}{begin} =~ s/^(\h*)//s;
+                ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
             }
             elsif ( $_ == 2 ) {
                 ${$self}{begin} = "$tokens{mSwitchComment}\n".${$self}{begin};
@@ -251,6 +252,11 @@ sub modify_line_breaks_end_after {
     #   temporarily change EndFinishesWithLineBreak to 3, make adjustments
     # switch EndFinishesWithLineBreak back to 4
     #
+
+    if (${$self}{EndFinishesWithLineBreak} == 0 ) {
+        ${$self}{end} .= ${$self}{horizontalTrailingSpace};
+        return;
+    }
     my @polySwitchValues
         = ( ${$self}{EndFinishesWithLineBreak} == 4 ) ? ( -1, 3 ) : ( ${$self}{EndFinishesWithLineBreak} );
     foreach (@polySwitchValues) {

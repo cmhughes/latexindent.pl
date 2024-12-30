@@ -94,7 +94,7 @@ sub construct_commands_with_args_regex {
      }x;
 
      $latexCommand = qr{
-        \\
+        (\s*\\)
         ([a-zA-Z]+?)
         (
          (?:
@@ -110,19 +110,32 @@ sub find_things_with_braces_brackets {
     my $currentIndentation = shift;
 
     $body =~ s/$latexCommand/
-       my $commandName = $1;
-       my $argBody = $2;
+       my $begin = $1;
+       my $commandName = $2;
+       my $argBody = $3;
+       my $commandObj = LatexIndent::Braces->new(name=>$commandName,
+                                           begin=>$1,
+                                           modifyLineBreaksYamlName=>"commands",
+                                           arguments=>1,
+                                           aliases=>{
+                                             # begin statements
+                                             BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
+                                           },
+       );
+
+       # store settings for future use
        if (!$previouslyFoundSettings{$commandName."commands"}){
-          my $commandObj = LatexIndent::Braces->new(name=>$commandName,
-                                              modifyLineBreaksYamlName=>"commands",
-                                              arguments=>1,
-                                              aliases=>{
-                                                # begin statements
-                                                BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
-                                              },
-                                              );
           $commandObj->yaml_get_indentation_settings_for_this_object;
        }
+
+       # m-switch: command name starts on own line
+       if ($is_m_switch_active and ${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine} !=0){
+            ${$commandObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine};
+            $commandObj->modify_line_breaks_begin;  
+            $begin = ${$commandObj}{begin};
+       }
+
+       # argument indentation
        $argBody = &indent_all_args($commandName."commands", $argBody,$currentIndentation);
        
        # command BODY indentation, possibly
@@ -135,7 +148,7 @@ sub find_things_with_braces_brackets {
        }
 
        # put it all together
-       "\\".$commandName.$argBody;/sgex;
+       $begin.$commandName.$argBody;/sgex;
 
     return $body;
 }
@@ -241,7 +254,7 @@ sub indent_all_args {
 
             $mandatoryArg->modify_line_breaks_end if ${$mandatoryArg}{EndStartsOnOwnLine} != 0;
 
-            $mandatoryArg->modify_line_breaks_end_after if ${$mandatoryArg}{EndFinishesWithLineBreak} != 0;
+            $mandatoryArg->modify_line_breaks_end_after;
 
             # get updated begin, body, end
             $begin = ${$mandatoryArg}{begin};

@@ -32,6 +32,9 @@ latexindent.pl -s commands-nested-harder.tex -o=+-mod1 -y="defaultIndent:'  '"
 latexindent.pl -s commands-nested-harder1.tex -o=+-mod1 -y="defaultIndent:'  '" 
 latexindent.pl -s commands-four-nested.tex -o=+-mod1 -y="defaultIndent:'  '" 
 
+latexindent.pl -s command-at-end-of-file.tex -o=+-mod1
+latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
+
 # big test file, should be less than 4 seconds
 #
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
@@ -96,22 +99,28 @@ do
    latexindent.pl commands-nested-multiple -m -s -o=+-textbf-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf,noAdditionalIndentGlobal
    latexindent.pl commands-nested-multiple -m -s -o=+-textbf-mand-args-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf-mand-args,noAdditionalIndentGlobal
 
+   # multiple commands and environments
+
+   # <!---- RETURN TO THESE
+   # <!---- RETURN TO THESE
+   # <!---- RETURN TO THESE
+   ##### latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
+   ##### latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
+
+   [[ $silentMode == 0 ]] && set +x 
+
 done
 [[ $silentMode == 0 ]] && set -x 
 
+# testing the linebreak immediately before, e.g, \mycommand
+latexindent.pl commands-nested-multiple -m -s -o=+-command-mod1 -l=../opt-args/opt-args-remove-all,command-begin-mod1
+
 exit
 
-
-   # multiple commands and environments
-   latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
-   latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
-   [[ $silentMode == 0 ]] && set +x 
-
-# testing the linebreak immediately before, e.g, \mycommand
-latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod1.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod1.yaml
 latexindent.pl commands-nested-multiple.tex -m  -s -o=commands-nested-multiple-command-mod2.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod2.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml
 latexindent.pl commands-nested-multiple-remove-line-breaks.tex -m -s -o=commands-nested-multiple-remove-line-breaks-command-unprotect-mod3.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,command-begin-mod3.yaml,unprotect-blank-lines.yaml
+
 # special characters test case
 latexindent.pl commands-four-special-characters.tex -o=+-default.tex -s -l=fine-tuning-args1
 # multiple brace test
@@ -182,6 +191,10 @@ latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
 
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s
+
+# <!---- RETURN TO figureValign
+# <!---- RETURN TO figureValign
+# <!---- RETURN TO figureValign
 
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status
