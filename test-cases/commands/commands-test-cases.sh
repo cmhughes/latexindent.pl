@@ -39,8 +39,8 @@ latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
 #
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
 #
-{ time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
-{ time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
+{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
+{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
@@ -129,14 +129,15 @@ latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 
 
 # multiple trailing comment
 latexindent.pl just-one-command-multiple-trailing-comments -m -s -o=+-mod17 -l=../opt-args/opt-args-remove-all,mand-args-mod17 
+
+# test that commands with trailing comments do not remove line breaks
+latexindent.pl -m commands-remove-line-breaks-tc -s -o=+-mod5 -l=../opt-args/opt-args-remove-all,mand-args-mod5
 exit
 
 
 
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
-# test that commands with trailing comments do not remove line breaks
-latexindent.pl -m commands-remove-line-breaks-tc.tex -s -o=commands-remove-line-breaks-tc-mod5.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod5.yaml
 # command with numeric arguments
 latexindent.pl -s command-with-numeric-args -o=command-with-numeric-args-default.tex
 # small test case for intricate ancestors

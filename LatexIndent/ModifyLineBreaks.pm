@@ -229,7 +229,7 @@ sub modify_line_breaks_before_end {
                 }
                 else {
                     $logger->trace(
-                        "Blank line token found at end of body (${$self}{name}), see preserveBlankLines, not removing line break before ${$self}{end}"
+                        "Blank line token found at end of body (see preserveBlankLines) not removing line break before end statement"
                     ) if $is_t_switch_active;
                 }
             }
@@ -312,7 +312,7 @@ sub modify_line_breaks_after_end {
                 ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}."\n";
         } elsif ( $_ == -1 ){
                 if (${$self}{trailingComment}){
-                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
                 } else {
                     ${$self}{end} .= (${$self}{linebreaksAtEnd}{end} ? ${$self}{horizontalTrailingSpace} : $tokens{mAfterEndRemove}).${$self}{trailingComment};
             }
