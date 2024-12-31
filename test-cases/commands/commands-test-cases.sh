@@ -39,8 +39,8 @@ latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
 #
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
 #
-{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
-{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
+{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
+{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
@@ -130,16 +130,21 @@ latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 
 # multiple trailing comment
 latexindent.pl just-one-command-multiple-trailing-comments -m -s -o=+-mod17 -l=../opt-args/opt-args-remove-all,mand-args-mod17 
 
-# test that commands with trailing comments do not remove line breaks
+# trailing comments do not remove line breaks
 latexindent.pl -m commands-remove-line-breaks-tc -s -o=+-mod5 -l=../opt-args/opt-args-remove-all,mand-args-mod5
+
+# command with numeric arguments
+latexindent.pl -s command-with-numeric-args -o=+-default
+
+# issue 239: https://github.com/cmhughes/latexindent.pl/issues/239
+latexindent.pl -s issue-239.tex -o=+-default.tex
+
 exit
 
 
 
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
-# command with numeric arguments
-latexindent.pl -s command-with-numeric-args -o=command-with-numeric-args-default.tex
 # small test case for intricate ancestors
 latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
 latexindent.pl -s -w testcls.cls
@@ -185,9 +190,6 @@ latexindent.pl -s ifnextchar.tex -o=+-mod1.tex -l=com-name-special1.yaml
 latexindent.pl -s ifnextchar.tex -o=+-mod2.tex -l=com-name-special2.yaml
 # issue 123: https://github.com/cmhughes/latexindent.pl/issues/123
 latexindent.pl -s issue-123.tex -o=+-default.tex
-
-# issue 239: https://github.com/cmhughes/latexindent.pl/issues/239
-latexindent.pl -s issue-239.tex -o=+-default.tex
 
 # issue 379
 latexindent.pl -s issue-379.tex -o=+-default.tex
