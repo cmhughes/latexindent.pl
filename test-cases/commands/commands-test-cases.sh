@@ -144,9 +144,13 @@ latexindent.pl -s -w command-nest-env
 
 latexindent.pl -s numbers-between-args -o=+-mod0 -l numbers-allowed
 latexindent.pl -s numbers-between-args -o=+-mod1 -m -l numbers-allowed,mand-args-mod1,../opt-args/opt-args-mod1
+
+# round brackets ( )
+latexindent.pl -s brackets1 -o=+-default
+latexindent.pl -s foreach -o=+-mod1 -l foreach
+
 exit
 
-latexindent.pl -s foreach -o=+-mod1 -l foreach
 
 # small test case for intricate ancestors
 latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
@@ -160,9 +164,9 @@ latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.t
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
-# round brackets ( )
-latexindent.pl -s brackets1.tex -o brackets1-default.tex
+
 latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/indentPreamble.yaml
+
 # github issue
 latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
 latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml

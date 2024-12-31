@@ -49,47 +49,47 @@ sub construct_commands_with_args_regex {
 
     $allArgumentRegEx = qr{
      (?:
-     (?:
-       (
-        (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
-        (?<!\\)
-        \{
-        \h*
-        (\R*)
+       (?:
+         (
+          (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
+          (?<!\\)
+          \{
+          \h*
+          (\R*)
+         )
+         (
+          (?:
+            (?: $argumentBodyRegEx ) # argument body 
+            |
+            (??{ $latexCommand })    # command regex, RECURSIVE
+          )*
+         )
+         (
+          (?<!\\)
+          \}
+         )
        )
-       (
-        (?:
-          (?: $argumentBodyRegEx ) # argument body 
-          |
-          (??{ $latexCommand })    # command regex, RECURSIVE
-        )*
+       |
+       (?:
+         (
+          (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
+          (?<!\\)
+          \[
+          \h*
+          (\R*)
+         )
+         (
+          (?:
+            (?: $argumentBodyRegEx ) # argument body 
+            |
+            (??{ $latexCommand })    # command regex, RECURSIVE
+          )*
+         )
+         (
+          (?<!\\)
+          \]
+         )
        )
-       (
-        (?<!\\)
-        \}
-       )
-     )
-     |
-     (?:
-       (
-        (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
-        (?<!\\)
-        \[
-        \h*
-        (\R*)
-       )
-       (
-        (?:
-          (?: $argumentBodyRegEx ) # argument body 
-          |
-          (??{ $latexCommand })    # command regex, RECURSIVE
-        )*
-       )
-       (
-        (?<!\\)
-        \]
-       )
-     )
      )
      $mSwitchOnlyTrailing 
      }x;

@@ -1,11 +1,11 @@
 #
 # latexindent.pl, version 3.24.4, 2024-07-18
+# a script that aims to beautify .tex, .sty, .cls files
 #
 # defaultSettings.yaml, the default settings for latexindent.pl
 #
-# a script that aims to beautify .tex, .sty, .cls files
-#
-# (or latexindent.exe if you're on Windows)
+# documentation: https://latexindentpl.readthedocs.io/en/latest/
+# all communication: https://github.com/cmhughes/latexindent.pl
 #
 #---------------------------------------------------------------------------------------
 # This program is free software: you can redistribute it and/or modify
@@ -21,20 +21,6 @@
 # See http://www.gnu.org/licenses/.
 #
 # Chris Hughes, 2017
-#
-# For all communication, please visit: https://github.com/cmhughes/latexindent.pl
-#
-#---------------------------------------------------------------------------------------
-# You should feel encouraged to change anything you like in these settings, but
-# it would probably be better to have your own user settings
-# files somewhere else - remember that this file may be overwritten
-# when you update your tex distribution. Please see the manual linked from:
-#
-#       https://github.com/cmhughes/latexindent.pl
-#
-# for details of how to create and configure your own settings files.
-#
-# Please read the manual (linked from above) first to understand what each switch does.
 #
 #---------------------------------------------------------------------------------------
 
@@ -317,16 +303,7 @@ maximumIndentation: -1
 # the *current* level of indentation they just won't
 # get any *additional* indentation
 noAdditionalIndent:
-  myexample: 1
-  mydefinition: 1
-  problem: 1
-  exercises: 1
-  mysolution: 1
-  foreach: 0
-  widepage: 1
-  comment: 1
   document: 1
-  frame: 0
 
 # if you have indent rules for particular code blocks
 # then you can populate them in indentRules; for example, you might just want
@@ -371,20 +348,20 @@ indentRulesGlobal:
   filecontents: 0                   # 0/h-space
 
 # command code block details
-commandCodeBlocks:
-  roundParenthesesAllowed: 1
-  stringsAllowedBetweenArguments:
-    - amalgamate: 1
-    - node
-    - at
-    - to
-    - decoration
-    - \+\+
-    - \-\-
-    - \#\#\d
-  commandNameSpecial:
-    - amalgamate: 1
-    - '@ifnextchar\['
+commandCodeBlocks:                # <!---  to be DITCHED
+  roundParenthesesAllowed: 1      # <!---  to be DITCHED
+  stringsAllowedBetweenArguments: # <!---  to be DITCHED
+    - amalgamate: 1               # <!---  to be DITCHED
+    - node                        # <!---  to be DITCHED
+    - at                          # <!---  to be DITCHED
+    - to                          # <!---  to be DITCHED
+    - decoration                  # <!---  to be DITCHED
+    - \+\+                        # <!---  to be DITCHED
+    - \-\-                        # <!---  to be DITCHED
+    - \#\#\d                      # <!---  to be DITCHED
+  commandNameSpecial:             # <!---  to be DITCHED
+    - amalgamate: 1               # <!---  to be DITCHED
+    - '@ifnextchar\['             # <!---  to be DITCHED
 
 # change dos line breaks into unix
 dos2unixlinebreaks: 0
@@ -393,6 +370,9 @@ dos2unixlinebreaks: 0
 modifyLineBreaks:
   preserveBlankLines: 1                 # 0/1
   condenseMultipleBlankLinesInto: 1     # 0/1
+  #
+  # one sentence per line options
+  #
   oneSentencePerLine:
     manipulateSentences: 0              # 0/1
     removeSentenceLineBreaks: 1         # 0/1
@@ -420,6 +400,9 @@ modifyLineBreaks:
       other: 0                          # regex
     sentencesDoNOTcontain:
       other: \\begin                    # regex
+  #
+  # text wrap options
+  #
   textWrapOptions:
     columns: 0
     multipleSpacesToSingle: 1
@@ -448,7 +431,15 @@ modifyLineBreaks:
       other: \\begin\{|\\\[|\\end\{     # regex
     huge: overflow                      # forbid mid-word line breaks
     separator: ""
-  # poly-switches below here            # -1: remove, 0: off, 1: add, 2: comment+add, 3: add blank line, 4: add blank line
+  #
+  # poly-switches below here            
+  #  -1: remove
+  #   0: off
+  #   1: add
+  #   2: comment+add
+  #   3: add blank line
+  #   4: add blank line
+  #
   environments:
     BeginStartsOnOwnLine: 0             # -1,0,1,2,3,4
     BodyStartsOnOwnLine: 0              # -1,0,1,2,3,4
@@ -532,12 +523,21 @@ fineTuning:
     follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- PROBABLY DITCH
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+?
-    follow: \H|\R|\{|\[|\$|\)|\(              #<!------------- PROBABLY DITCH
+    follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- PROBABLY DITCH
   UnNamedGroupingBracesBrackets:
     follow: \{|\[|,|&|\)|\(|\$                #<!------------- PROBABLY DITCH
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- PROBABLY DITCH
-    between: [_^*#0-9]
+    between: |-
+      (?x)
+      (?:
+        [_^*#0-9(),+-]
+        |
+        (?:node|at|to|decoration)
+      )
+    #
+    # adjust for beamer...?                       #<!-------- NEW FEATURE?
+    #
   trailingComments:
     notPrecededBy: (?<!\\)
     afterComment: .*?

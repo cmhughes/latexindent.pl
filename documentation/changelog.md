@@ -11,6 +11,32 @@
     CommandNameFinishesWithLineBreak: 0 #<!--- this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead
 ```
 
+```
+noAdditionalIndent:
+  document: 1
+  myexample: 1     # <!--- removed
+  mydefinition:1   # <!--- removed
+  problem: 1       # <!--- removed
+  exercises: 1     # <!--- removed
+  mysolution: 1    # <!--- removed
+  foreach: 0       # <!--- removed
+  widepage: 1      # <!--- removed
+  comment: 1       # <!--- removed
+  frame: 0         # <!--- removed
+```
+
+old:
+```
+commandCodeBlocks:                # <!---  to be DITCHED
+  roundParenthesesAllowed: 1      # <!---  to be DITCHED
+```
+new:
+```
+fineTuning:
+  arguments:
+    between: [_^*#0-9(),]         # 0/1   <!---- NEW 
+```
+
 ## V3.24.4, July 18, 2024
 graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)
 
