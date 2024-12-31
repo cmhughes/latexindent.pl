@@ -139,12 +139,15 @@ latexindent.pl -s command-with-numeric-args -o=+-default
 # issue 239: https://github.com/cmhughes/latexindent.pl/issues/239
 latexindent.pl -s issue-239.tex -o=+-default.tex
 
+# (empty) environment nested in a command
+latexindent.pl -s -w command-nest-env
+
+latexindent.pl -s numbers-between-args -o=+-mod0 -l numbers-allowed
+latexindent.pl -s numbers-between-args -o=+-mod1 -m -l numbers-allowed,mand-args-mod1,../opt-args/opt-args-mod1
 exit
 
+latexindent.pl -s foreach -o=+-mod1 -l foreach
 
-
-# (empty) environment nested in a command
-latexindent.pl -s -w command-nest-env.tex
 # small test case for intricate ancestors
 latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
 latexindent.pl -s -w testcls.cls
@@ -166,8 +169,6 @@ latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at1.tex -l no-at-between-args1.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at2.tex -l no-at-between-args2.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at3.tex -l no-at-between-args3.yaml
-latexindent.pl -s numbers-between-args.tex -o=+-mod1 -l numbers-allowed.yaml
-latexindent.pl -s foreach.tex -o=+-mod1 -l foreach.yaml
 # poly-switch = 3 (add line break experiements)
 [[ $loopmin -lt 33 ]] && loopmin=33 && loopmax=33 
 [[ $loopmax -gt 48 ]] && loopmax=48 

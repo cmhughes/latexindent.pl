@@ -26,7 +26,7 @@ use Cwd;
 use Exporter             qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK
-    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings/;
+    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetween/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -60,6 +60,8 @@ our @alignAtAmpersandInformation = (
     { name => "alignContentAfterDoubleBackSlash", default  => 0 },
     { name => "spacesAfterDoubleBackSlash",       default  => 1 },
 );
+
+our $argumentsBetween;
 
 sub yaml_read_settings {
     my $self = shift;
@@ -798,6 +800,7 @@ sub yaml_read_settings {
         $logger->info( Dumper( \%mainSettings ) );
     }
 
+    $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
     return;
 }
 
