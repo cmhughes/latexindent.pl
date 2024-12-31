@@ -589,9 +589,9 @@ sub verbatim_common_tasks {
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks end statements
-    $self->modify_line_breaks_end
+    $self->modify_line_breaks_before_end
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->modify_line_breaks_end_after
+    $self->modify_line_breaks_after_end
         if ($is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );

@@ -138,7 +138,7 @@ sub find_things_with_braces_brackets {
        # m-switch: command name starts on own line
        if ($is_m_switch_active and ${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine} !=0){
             ${$commandObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine};
-            $commandObj->modify_line_breaks_begin;  
+            $commandObj->modify_line_breaks_before_begin;  
             $begin = ${$commandObj}{begin};
             $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
             $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
@@ -257,13 +257,13 @@ sub indent_all_args {
 
             $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
 
-            $mandatoryArg->modify_line_breaks_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
+            $mandatoryArg->modify_line_breaks_before_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
 
-            $mandatoryArg->modify_line_breaks_body if ${$mandatoryArg}{BodyStartsOnOwnLine} != 0;  
+            $mandatoryArg->modify_line_breaks_before_body if ${$mandatoryArg}{BodyStartsOnOwnLine} != 0;  
 
-            $mandatoryArg->modify_line_breaks_end if ${$mandatoryArg}{EndStartsOnOwnLine} != 0;
+            $mandatoryArg->modify_line_breaks_before_end if ${$mandatoryArg}{EndStartsOnOwnLine} != 0;
 
-            $mandatoryArg->modify_line_breaks_end_after;
+            $mandatoryArg->modify_line_breaks_after_end;
 
             # get updated begin, body, end
             $begin = ${$mandatoryArg}{begin};

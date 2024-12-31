@@ -56,16 +56,16 @@ latexindent.pl -s -w trailingComments.tex
 latexindent.pl -s -w bracketTest.tex
 
 # noAdditionalIndent
-latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml -o=commands-six-nested-NAD1.tex
-latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD2.tex
-latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent3.yaml -o=commands-six-nested-NAD3.tex
-latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=commands-six-nested-NAD4.tex
-latexindent.pl -s commands-six-nested.tex -o=commands-six-nested-global.tex -l=noAdditionalIndentGlobal.yaml
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-not-global.tex
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-global.tex -l=noAdditionalIndentGlobal.yaml
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml -o=+-NAD1.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent2.yaml -o=+-NAD2.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent3.yaml -o=+-NAD3.tex
+latexindent.pl -s commands-six-nested.tex -l=../opt-args/opt-args-remove-all.yaml,noAdditionalIndent1.yaml,noAdditionalIndent2.yaml -o=+-NAD4.tex
+latexindent.pl -s commands-six-nested.tex -o=+-global.tex -l=noAdditionalIndentGlobal.yaml
+latexindent.pl -s commands-simple-more-text.tex -o=+-not-global.tex
+latexindent.pl -s commands-simple-more-text.tex -o=+-global.tex -l=noAdditionalIndentGlobal.yaml
 
 # indentRules
-latexindent.pl -s commands-simple-more-text.tex -o=commands-simple-more-text-indent-rules-global.tex -l=../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
+latexindent.pl -s commands-simple-more-text.tex -o=+-indent-rules-global.tex -l=../opt-args/opt-args-remove-all.yaml,indentRulesGlobal.yaml
 
 latexindent.pl just-one-command.tex -m  -s -o=+-mod1 -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod1
 
@@ -125,15 +125,16 @@ latexindent.pl -s commands-four-special-characters -o=+-default
 latexindent.pl -s -w multipleBraces.tex
 latexindent.pl -s -m multipleBraces -o=+-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1 
 latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none
+latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,pagestyle
+
+# multiple trailing comment
+latexindent.pl just-one-command-multiple-trailing-comments -m -s -o=+-mod17 -l=../opt-args/opt-args-remove-all,mand-args-mod17 
 exit
 
 
-latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 -l=../opt-args/opt-args-remove-all,mand-args-mod1,xapptocmd-none,pagestyle
 
 # (empty) environment nested in a command
 latexindent.pl -s -w command-nest-env.tex
-# multiple trailing comment
-latexindent.pl just-one-command-multiple-trailing-comments.tex -m  -s -o=just-one-command-multiple-trailing-comments-mod17.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod17.yaml 
 # test that commands with trailing comments do not remove line breaks
 latexindent.pl -m commands-remove-line-breaks-tc.tex -s -o=commands-remove-line-breaks-tc-mod5.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,mand-args-mod5.yaml
 # command with numeric arguments

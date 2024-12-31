@@ -26,10 +26,10 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
+    = qw/modify_line_breaks_before_begin modify_line_breaks_before_body modify_line_breaks_before_end modify_line_breaks_after_end adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
 our $paragraphRegExp = q();
 
-sub modify_line_breaks_begin {
+sub modify_line_breaks_before_begin {
     my $self = shift;
     #
     # Blank line poly-switch notes (==4)
@@ -75,7 +75,7 @@ sub modify_line_breaks_begin {
     }
 }
 
-sub modify_line_breaks_body {
+sub modify_line_breaks_before_body {
     my $self = shift;
     #
     # Blank line poly-switch notes (==4)
@@ -156,7 +156,7 @@ sub remove_line_breaks_begin {
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 
-sub modify_line_breaks_end {
+sub modify_line_breaks_before_end {
     my $self = shift;
 
     #
@@ -237,7 +237,7 @@ sub modify_line_breaks_end {
 
 }
 
-sub modify_line_breaks_end_after {
+sub modify_line_breaks_after_end {
     my $self = shift;
     #
     # Blank line poly-switch notes (==4)
@@ -283,8 +283,7 @@ sub modify_line_breaks_end_after {
             elsif ( $_ == 2 ) {
                 if ( ${$self}{trailingComment} ) {
 
-                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment};
-                    ${$self}{end} .= "\n" if ${$self}{linebreaksAtEnd}{end};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
                     
                     # no need to add a % if one already exists
                     $logger->trace(

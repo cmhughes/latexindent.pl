@@ -37,7 +37,7 @@ use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
-    qw/modify_line_breaks_begin modify_line_breaks_body modify_line_breaks_end modify_line_breaks_end_after remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
+    qw/modify_line_breaks_before_begin modify_line_breaks_before_body modify_line_breaks_before_end modify_line_breaks_after_end remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
@@ -538,13 +538,13 @@ sub tasks_common_to_each_object {
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_body
+    $self->modify_line_breaks_before_body
         if ( $is_m_switch_active and defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine} != 0 );
 
     # modify line breaks end statements
-    $self->modify_line_breaks_end
+    $self->modify_line_breaks_before_end
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->modify_line_breaks_end_after
+    $self->modify_line_breaks_after_end
         if ($is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );
