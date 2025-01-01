@@ -214,16 +214,15 @@ sub construct_regular_expressions {
     my $self = shift;
     $self->construct_trailing_comment_regexp;
     $self->construct_commands_with_args_regex;
-    $self->construct_environments_regexp;
-    $self->construct_ifelsefi_regexp;
-    $self->construct_list_of_items;
-    $self->construct_special_begin;
-    $self->construct_headings_levels;
-    $self->construct_arguments_regexp;
-    $self->construct_command_regexp;
-    $self->construct_key_equals_values_regexp;
-    $self->construct_grouping_braces_brackets_regexp;
-    $self->construct_unnamed_grouping_braces_brackets_regexp;
+    # $self->construct_environments_regexp;                      # to be ditched
+    # $self->construct_ifelsefi_regexp;                          # to be ditched
+    # $self->construct_list_of_items;                            # to be ditched
+    # $self->construct_special_begin;                            # to be ditched
+    # $self->construct_headings_levels;                          # to be ditched
+    # $self->construct_arguments_regexp;                         # to be ditched
+    # $self->construct_key_equals_values_regexp;                 # to be ditched
+    # $self->construct_grouping_braces_brackets_regexp;          # to be ditched
+    # $self->construct_unnamed_grouping_braces_brackets_regexp;  # to be ditched
 }
 
 sub output_indented_text {

@@ -1,5 +1,9 @@
-commandCodeBlocks:
-    commandNameSpecial:
-      -
-        amalgamate: 1
-      - cmh
+fineTuning:
+  commands:
+    name: |-
+      (?x)
+      (?:
+        [+a-zA-Z@\*0-9_\:]+?
+      )
+      |
+      @ifnextchar\[

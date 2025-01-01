@@ -4,38 +4,100 @@
 
 ## V4.0, MAJOR release
 
-* poly-switch for commands:
+<table>
+<tr><th>old</th><th>new</th><th>notes</th></tr>
+<tr>
+  <td>
 
-```
-  commands:
-    CommandNameFinishesWithLineBreak: 0 #<!--- this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead
-```
+  </td>
+  <td>
 
-```
-noAdditionalIndent:
-  document: 1
-  myexample: 1     # <!--- removed
-  mydefinition:1   # <!--- removed
-  problem: 1       # <!--- removed
-  exercises: 1     # <!--- removed
-  mysolution: 1    # <!--- removed
-  foreach: 0       # <!--- removed
-  widepage: 1      # <!--- removed
-  comment: 1       # <!--- removed
-  frame: 0         # <!--- removed
-```
-
-old:
-```
-commandCodeBlocks:                # <!---  to be DITCHED
-  roundParenthesesAllowed: 1      # <!---  to be DITCHED
-```
-new:
-```
+  </td>
+  <td>
+  </td>
+</tr>
+<tr>
+<td>
+<pre>
+commandCodeBlocks:              
+  roundParenthesesAllowed: 1   
+</pre>
+</td>
+<td>
+<pre>
 fineTuning:
   arguments:
-    between: [_^*#0-9(),]         # 0/1   <!---- NEW 
-```
+    between: [_^*#0-9(),]
+</pre>
+</td>
+<td>
+behaviour should be unchanged, controlled by fineTuning
+</td>
+</tr>
+<tr>
+  <td>
+<pre>
+commandCodeBlocks:   
+  commandNameSpecial:
+    - amalgamate: 1  
+    - '@ifnextchar\['
+</pre>
+  </td>
+  <td>
+<pre>
+fineTuning:
+  commands:
+    name: |-
+      (?x)
+      (?:
+        [+a-zA-Z@\*0-9_\:]+?
+      )
+      |
+      @ifnextchar\[
+</pre>
+  </td>
+  <td>
+behaviour should be unchanged, controlled by fineTuning
+  </td>
+</tr>
+<tr>
+<td>
+<pre>
+modifyLineBreaks:
+  commands:
+    CommandNameFinishesWithLineBreak: 0
+</pre>
+</td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<tr>
+<td>
+<pre>
+noAdditionalIndent:
+  document: 1
+  myexample: 1     #  removed
+  mydefinition:1   #  removed
+  problem: 1       #  removed
+  exercises: 1     #  removed
+  mysolution: 1    #  removed
+  foreach: 0       #  removed
+  widepage: 1      #  removed
+  comment: 1       #  removed
+  frame: 0         #  removed
+</pre>
+</td>
+<td>
+<pre>
+noAdditionalIndent:
+  document: 1
+</pre>
+</td>
+<td>feel free to add these back in to your own settings</td>
+</tr>
+</table>
+
+
 
 ## V3.24.4, July 18, 2024
 graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)

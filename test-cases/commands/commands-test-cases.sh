@@ -172,6 +172,15 @@ do
    set +x
 done
 
+[[ $silentMode == 0 ]] && set -x 
+
+# issue 123: https://github.com/cmhughes/latexindent.pl/issues/123
+latexindent.pl -s issue-123.tex -o=+-default.tex
+
+# ifnextchar issue
+latexindent.pl -s ifnextchar -o=+-default
+latexindent.pl -s ifnextchar -o=+-mod1 -l=com-name-special1.yaml
+
 exit
 
 
@@ -198,13 +207,6 @@ latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at1.tex -l no-at-between-args1.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at2.tex -l no-at-between-args2.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at3.tex -l no-at-between-args3.yaml
-
-# ifnextchar issue
-latexindent.pl -s ifnextchar.tex -o=+-default.tex -l=com-name-special.yaml
-latexindent.pl -s ifnextchar.tex -o=+-mod1.tex -l=com-name-special1.yaml
-latexindent.pl -s ifnextchar.tex -o=+-mod2.tex -l=com-name-special2.yaml
-# issue 123: https://github.com/cmhughes/latexindent.pl/issues/123
-latexindent.pl -s issue-123.tex -o=+-default.tex
 
 # issue 379
 latexindent.pl -s issue-379.tex -o=+-default.tex
