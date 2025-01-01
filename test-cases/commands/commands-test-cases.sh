@@ -69,6 +69,8 @@ latexindent.pl -s commands-simple-more-text.tex -o=+-indent-rules-global.tex -l=
 
 latexindent.pl just-one-command.tex -m  -s -o=+-mod1 -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,mand-args-mod1
 
+set +x
+
 # modifyLineBreaks experiments
 [[ $loopmin -gt 32 ]] && loopmin=32
 [[ $loopmax -gt 32 ]] && loopmax=32
@@ -107,8 +109,7 @@ do
    ##### latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
    ##### latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
 
-   [[ $silentMode == 0 ]] && set +x 
-
+   set +x
 done
 [[ $silentMode == 0 ]] && set -x 
 
@@ -149,8 +150,32 @@ latexindent.pl -s numbers-between-args -o=+-mod1 -m -l numbers-allowed,mand-args
 latexindent.pl -s brackets1 -o=+-default
 latexindent.pl -s foreach -o=+-mod1 -l foreach
 
+# poly-switch = 3 (add line break experiements)
+set +x
+[[ $userSpecifiedLoopMin == 0 ]] && loopmin=33 
+[[ $userSpecifiedLoopMin == 0 ]] && loopmax=48 
+
+[[ $userSpecifiedLoopMin == 1 ]] && [[ $loopmin -lt 33 ]] && loopmin=33 && loopmax=33 
+[[ $userSpecifiedLoopMin == 1 ]] && [[ $loopmax -gt 48 ]] && loopmin=48 && loopmax=48 
+[[ $silentMode == 0 ]] && set +x 
+for (( i=$loopmin ; i <= $loopmax ; i++ )) 
+do 
+   [[ $showCounter == 1 ]] && echo $i of $loopmax
+   [[ $silentMode == 0 ]] && set -x 
+   # multiple commands
+   latexindent.pl commands-nested-multiple -m  -s -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i
+   latexindent.pl commands-nested-multiple -m  -s -o=+-un-protect-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
+
+   # remove line breaks/exisiting blank lines
+   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
+
+   set +x
+done
+
 exit
 
+
+[[ $silentMode == 0 ]] && set -x 
 
 # small test case for intricate ancestors
 latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
@@ -173,22 +198,7 @@ latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at1.tex -l no-at-between-args1.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at2.tex -l no-at-between-args2.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at3.tex -l no-at-between-args3.yaml
-# poly-switch = 3 (add line break experiements)
-[[ $loopmin -lt 33 ]] && loopmin=33 && loopmax=33 
-[[ $loopmax -gt 48 ]] && loopmax=48 
-[[ $silentMode == 0 ]] && set +x 
-for (( i=$loopmin ; i <= $loopmax ; i++ )) 
-do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x 
-   # multiple commands
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=+-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml
-   latexindent.pl commands-nested-multiple.tex -m  -s -o=+-un-protect-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml
-   # remove line breaks/exisiting blank lines
-   latexindent.pl commands-remove-line-breaks.tex -s -m -o=+-mod$i.tex -l=../opt-args/opt-args-mod$i.yaml,mand-args-mod$i.yaml,unprotect-blank-lines.yaml,command-name-not-finishes-with-line-break.yaml
-   [[ $silentMode == 0 ]] && set +x 
-done
-[[ $silentMode == 0 ]] && set -x 
+
 # ifnextchar issue
 latexindent.pl -s ifnextchar.tex -o=+-default.tex -l=com-name-special.yaml
 latexindent.pl -s ifnextchar.tex -o=+-mod1.tex -l=com-name-special1.yaml

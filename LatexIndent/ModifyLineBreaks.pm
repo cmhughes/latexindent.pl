@@ -306,7 +306,7 @@ sub modify_line_breaks_after_end {
 
                 # modified end statement
                 ${$self}{end}
-                    .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
+                    .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : $tokens{mAfterEndLineBreak}).$tokens{mAfterEndLineBreak}.${$self}{trailingComment};
             }
         } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
                 ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}."\n";

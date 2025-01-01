@@ -284,7 +284,7 @@ sub indent_all_args {
 
        # m switch conflicting linebreak addition/removal handled by tokens
        if ($is_m_switch_active){
-          $body =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
+          $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
           $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;

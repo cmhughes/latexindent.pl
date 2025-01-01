@@ -22,6 +22,7 @@
 silentMode=0
 gitStatus=0
 loopmin=1
+userSpecifiedLoopMin=0
 [[ $verbatimTest == 1 ]] && loopmin=-1
 noisyMode=0
 
@@ -49,6 +50,7 @@ do
     # only do this one in the loop
     loopmin=$OPTARG
     loopmax=$OPTARG
+    userSpecifiedLoopMin=1
    ;;
   s)    
    silentMode=1
