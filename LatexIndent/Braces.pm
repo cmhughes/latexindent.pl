@@ -182,7 +182,7 @@ sub indent_all_args {
        my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
 
        # body 
-       my $argBody = ($3?$3:$7);
+       my $argBody = (defined $3?$3:$7);
        
        # end
        my $end = ($4?$4:$8);
