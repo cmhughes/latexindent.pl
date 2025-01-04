@@ -118,15 +118,19 @@ sub find_things_with_braces_brackets {
        my $begin = $1;
        my $commandName = $2;
        my $argBody = $3;
-       my $commandObj = LatexIndent::Braces->new(name=>$commandName,
-                                           begin=>$1,
-                                           modifyLineBreaksYamlName=>"commands",
-                                           arguments=>1,
-                                           aliases=>{
-                                             # begin statements
-                                             BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
-                                           },
-       );
+       my $commandObj;
+
+       if (!$previouslyFoundSettings{$commandName."commands"} or $is_m_switch_active){
+          $commandObj = LatexIndent::Braces->new(name=>$commandName,
+                                              begin=>$begin,
+                                              modifyLineBreaksYamlName=>"commands",
+                                              arguments=>1,
+                                              aliases=>{
+                                                # begin statements
+                                                BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
+                                              },
+          );
+       }
 
        $logger->trace("*found: $commandName (command)")         if $is_t_switch_active;
 
@@ -198,7 +202,8 @@ sub indent_all_args {
        # ***
        # find nested things
        # ***
-       $argBody = &find_things_with_braces_brackets($argBody,$indentation);
+       $argBody = &find_things_with_braces_brackets($argBody,$indentation) if $argBody=~m/[{[]/s;
+
 
        #
        # m switch linebreak adjustment
