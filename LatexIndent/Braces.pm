@@ -204,7 +204,6 @@ sub indent_all_args {
        # ***
        $argBody = &find_things_with_braces_brackets($argBody,$indentation) if $argBody=~m/[{[]/s;
 
-
        #
        # m switch linebreak adjustment
        #
@@ -279,7 +278,7 @@ sub indent_all_args {
        }
 
        # add indentation
-       $argBody =~ s@^@$currentIndentation@mg unless $argBody=~m@^\s*$@s;
+       $argBody =~ s@^@$currentIndentation@mg if ( ($argBodyStartsOwnLine or $argBody=~m@[\n]@s) and $argBody ne '');
 
        # if arg body does NOT start on its own line, remove the first indentation added by previous step
        $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine);
