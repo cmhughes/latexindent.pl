@@ -324,7 +324,7 @@
         }
       },
       "patternProperties": {
-        ".*": {
+        "^(?!specialBeforeCommand$).*": {
           "description": "name of special code block",
           "type": "object",
           "properties": {
@@ -333,8 +333,12 @@
               "description": "regular expression containing the *beginning* part"
             },
             "middle": {
-              "type": "string",
-              "description": "optional: regular expression containing the *middle* part"
+              "type": ["string", "array"],
+              "description": "optional: one or more regular expressions for the *middle* part",
+              "items": {
+                "description": "regular expression for the *middle* part",
+                "type": "string"
+              }
             },
             "end": {
               "type": "string",
@@ -893,7 +897,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(BeginStartsOnOwnLine|BodyStartsOnOwnLine|EndStartsOnOwnLine|EndFinishesWithLineBreak)$).*": {
               "description": "poly-switches for environments (PER-NAME)",
               "type": "object",
               "properties": {
@@ -947,7 +951,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(SpecialBeginStartsOnOwnLine|SpecialBodyStartsOnOwnLine|SpecialEndStartsOnOwnLine|SpecialEndFinishesWithLineBreak)$).*": {
               "description": "poly-switches for specialBeginEnd (PER-NAME)",
               "type": "object",
               "properties": {
@@ -996,7 +1000,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(KeyStartsOnOwnLine|EqualsStartsOnOwnLine|EqualsFinishesWithLineBreak)$).*": {
               "description": "poly-switches for key equals value (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1065,7 +1069,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(IfStartsOnOwnLine|BodyStartsOnOwnLine|OrStartsOnOwnLine|OrFinishesWithLineBreak|ElseStartsOnOwnLine|ElseFinishesWithLineBreak|FiStartsOnOwnLine|FiFinishesWithLineBreak)$).*": {
               "description": "poly-switches for ifElseFi (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1129,7 +1133,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(CommandStartsOnOwnLine|CommandNameFinishesWithLineBreak)$).*": {
               "description": "poly-switches for commands (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1163,7 +1167,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(VerbatimBeginStartsOnOwnLine|VerbatimEndFinishesWithLineBreak)$).*": {
               "description": "poly-switches for verbatim (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1197,7 +1201,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(NameStartsOnOwnLine|NameFinishesWithLineBreak)$).*": {
               "description": "poly-switches for commands (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1231,7 +1235,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(ItemStartsOnOwnLine|ItemFinishesWithLineBreak)$).*": {
               "description": "poly-switches for items (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1275,7 +1279,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(LSqBStartsOnOwnLine|OptArgBodyStartsOnOwnLine|RSqBStartsOnOwnLine|RSqBFinishesWithLineBreak)$).*": {
               "description": "poly-switches for optional arguments (PER-NAME)",
               "type": "object",
               "properties": {
@@ -1329,7 +1333,7 @@
             }
           },
           "patternProperties": {
-            ".*": {
+            "^(?!(LCuBStartsOnOwnLine|MandArgBodyStartsOnOwnLine|RCuBStartsOnOwnLine|RCuBFinishesWithLineBreak)$).*": {
               "description": "poly-switches for mandatory arguments (PER-NAME)",
               "type": "object",
               "properties": {
