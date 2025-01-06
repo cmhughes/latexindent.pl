@@ -333,8 +333,12 @@
               "description": "regular expression containing the *beginning* part"
             },
             "middle": {
-              "type": "string",
-              "description": "optional: regular expression containing the *middle* part"
+              "type": ["string", "array"],
+              "description": "optional: one or more regular expressions for the *middle* part",
+              "items": {
+                "description": "regular expression for the *middle* part",
+                "type": "string"
+              }
             },
             "end": {
               "type": "string",
