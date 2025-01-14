@@ -18,7 +18,7 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter                      qw/import/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetween/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetweenCommands/;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -55,7 +55,14 @@ sub modify_line_breaks_before_begin {
                 $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile==1)") if $is_t_switch_active;
 
                 # modify the begin statement
-                ${$self}{begin} =~ s/^(\h*(?:$argumentsBetween)*)//s;
+                
+                #
+                # commands
+                #
+                ${$self}{begin} =~ s/^\s*//sg if ${$self}{type} eq "something-with-braces";
+
+                # arguments
+                ${$self}{begin} =~ s/^(\h*(?:$argumentsBetweenCommands)*)//s if (${$self}{type} eq 'argument' and ${$self}{modifyLineBreaksName} eq 'commands');
                 ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
             }
             elsif ( $_ == 2 ) {

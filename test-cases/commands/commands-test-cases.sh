@@ -10,8 +10,9 @@
 #   silent mode, loopmin is 13, loopmax is 13
 #       commands-test-cases.sh -s -o 13
 # 
-# i=22 && vim -p commands-one-line.tex commands-one-line-mod$i.tex && vim -p commands-one-line.tex commands-one-line-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-one-line-nested-simple.tex commands-one-line-nested-simple-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-mod$i.tex && vim -p commands-one-line-nested.tex commands-one-line-nested-noAdditionalIndentGlobal-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-unprotect-no-condense-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-changeCommandBody-mod$i.tex && vim -p commands-remove-line-breaks.tex commands-remove-line-breaks-noAdditionalGlobal-mod$i.tex
-# for i in {1..32}; do latexindent.pl -m -l=opt-args-mod$i.yaml,figValign-yaml.yaml figureValign.tex -o=figureValign-opt-mod$i.tex -s && vim -p figureValign.tex figureValign-opt-mod$i.tex;done
+# perl -d:NYTProf  ../../latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '"
+# nytprofhtml --open
+
 loopmax=32
 . ../common.sh
 
@@ -181,8 +182,13 @@ latexindent.pl -s issue-123.tex -o=+-default.tex
 latexindent.pl -s ifnextchar -o=+-default
 latexindent.pl -s ifnextchar -o=+-mod1 -l=com-name-special1.yaml
 
+# issue 379
+latexindent.pl -s issue-379.tex -o=+-default.tex
+
 exit
 
+latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
+egrep 'found:' indent.log > issue-379-mod1.txt
 
 [[ $silentMode == 0 ]] && set -x 
 
@@ -207,10 +213,6 @@ latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at1.tex -l no-at-between-args1.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at2.tex -l no-at-between-args2.yaml
 latexindent.pl -s github-issue-35.tex -o=+-no-at3.tex -l no-at-between-args3.yaml
-
-# issue 379
-latexindent.pl -s issue-379.tex -o=+-default.tex
-latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
 
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s

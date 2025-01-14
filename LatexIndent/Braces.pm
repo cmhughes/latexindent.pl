@@ -29,6 +29,7 @@ our @EXPORT_OK = qw/$braceBracketRegExpBasic find_things_with_braces_brackets co
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $latexCommand;
+our $namedGroupingBracesBrackets;
 our $allArgumentRegEx;
 
 our $argumentBodyRegEx = qr{
@@ -43,7 +44,7 @@ our $argumentBodyRegEx = qr{
 
 sub construct_commands_with_args_regex {
 
-    my $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
+    my $argumentsBetween = qr/${${$mainSettings{fineTuning}}{commands}}{between}/;
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
 
@@ -59,9 +60,11 @@ sub construct_commands_with_args_regex {
          )
          (
           (?:
-            (?: $argumentBodyRegEx ) # argument body 
+            (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $latexCommand })    # command regex, RECURSIVE
+            (??{ $latexCommand })
+            |
+            (??{ $namedGroupingBracesBrackets })
           )*
          )
          (
@@ -80,9 +83,11 @@ sub construct_commands_with_args_regex {
          )
          (
           (?:
-            (?: $argumentBodyRegEx ) # argument body 
+            (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $latexCommand })    # command regex, RECURSIVE
+            (??{ $latexCommand })
+            |
+            (??{ $namedGroupingBracesBrackets })
           )*
          )
          (
@@ -94,12 +99,81 @@ sub construct_commands_with_args_regex {
      $mSwitchOnlyTrailing 
      }x;
 
+     #
+     # command
+     #
      $latexCommand = qr{
-        (\s*\\)
-        (${${$mainSettings{fineTuning}}{commands}}{name})
+        (\s*\\)                                           # $1  begin
+        (${${$mainSettings{fineTuning}}{commands}}{name}) # $2  name
+        (                                                 # $3  arguments
+         (?:                                              #
+          $allArgumentRegEx                               #
+         )+                                               #
+        )                                                 #
+        }x;
+
+     #
+     # named braces/brackets
+     #
+     my $argumentsBetweenNamedBraces = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{between}/;
+
+     my $allArgumentRegExNamedBraces = qr{
+      (?:
+        (?:
+          (
+           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetweenNamedBraces)*
+           (?<!\\)
+           \{
+           \h*
+           (\R*)
+          )
+          (
+           (?:
+             (?: $argumentBodyRegEx )             # argument body 
+             |
+             (??{ $latexCommand })
+             |
+             (??{ $namedGroupingBracesBrackets })
+           )*
+          )
+          (
+           (?<!\\)
+           \}
+          )
+        )
+        |
+        (?:
+          (
+           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetweenNamedBraces)*
+           (?<!\\)
+           \[
+           \h*
+           (\R*)
+          )
+          (
+           (?:
+             (?: $argumentBodyRegEx )             # argument body 
+             |
+             (??{ $latexCommand })
+             |
+             (??{$namedGroupingBracesBrackets})
+           )*
+          )
+          (
+           (?<!\\)
+           \]
+          )
+        )
+      )
+      $mSwitchOnlyTrailing 
+      }x;
+
+     $namedGroupingBracesBrackets = qr{
+        (\s*)
+        (${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name})
         (
          (?:
-          $allArgumentRegEx 
+          $allArgumentRegExNamedBraces 
          )+
         )
         }x;
@@ -114,17 +188,41 @@ sub find_things_with_braces_brackets {
 
     my $currentIndentation = shift;
 
-    $body =~ s/$latexCommand/
-       my $begin = $1;
-       my $commandName = $2;
-       my $argBody = $3;
-       my $commandObj;
+    $body =~ s/($latexCommand)|($namedGroupingBracesBrackets)/
+       
+       my $begin;
+       my $commandName;
+       my $argBody;
+       my $modifyLineBreaksName;
+       my $BeginStartsOnOwnLineAlias;
+       my $commandObj; 
+       
+       #
+       # command
+       #
+       if ($2) {
+          $begin = $2;
+          $commandName = $3;
+          $argBody = $4;
+          $modifyLineBreaksName="commands";
+          $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";
+       } else {
+       #
+       # named braces or brackets
+       #
+          $begin = $14;
+          $commandName = $15;
+          $argBody = $16;
+          $modifyLineBreaksName="namedGroupingBracesBrackets";
+          $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";
+       }
 
-       if (!$previouslyFoundSettings{$commandName."commands"} or $is_m_switch_active){
+       if (!$previouslyFoundSettings{$commandName.$modifyLineBreaksName} or $is_m_switch_active){
           $commandObj = LatexIndent::Braces->new(name=>$commandName,
                                               begin=>$begin,
-                                              modifyLineBreaksYamlName=>"commands",
+                                              modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                               arguments=>1,
+                                              type=>"something-with-braces",
                                               aliases=>{
                                                 # begin statements
                                                 BeginStartsOnOwnLine=>"CommandStartsOnOwnLine",
@@ -132,16 +230,16 @@ sub find_things_with_braces_brackets {
           );
        }
 
-       $logger->trace("*found: $commandName (command)")         if $is_t_switch_active;
+       $logger->trace("*found: $commandName ($modifyLineBreaksName)")         if $is_t_switch_active;
 
        # store settings for future use
-       if (!$previouslyFoundSettings{$commandName."commands"}){
+       if (!$previouslyFoundSettings{$commandName.$modifyLineBreaksName}){
           $commandObj->yaml_get_indentation_settings_for_this_object;
        }
 
        # m-switch: command name starts on own line
-       if ($is_m_switch_active and ${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine} !=0){
-            ${$commandObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$commandName."commands"}}{BeginStartsOnOwnLine};
+       if ($is_m_switch_active and ${$previouslyFoundSettings{$commandName.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
+            ${$commandObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$commandName.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
             $commandObj->modify_line_breaks_before_begin;  
             $begin = ${$commandObj}{begin};
             $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
@@ -149,11 +247,11 @@ sub find_things_with_braces_brackets {
        }
 
        # argument indentation
-       $argBody = &indent_all_args($commandName."commands", $argBody,$currentIndentation);
+       $argBody = &indent_all_args($commandName, $modifyLineBreaksName, $argBody,$currentIndentation);
        
        # command BODY indentation, possibly
-       if (${$previouslyFoundSettings{$commandName."commands"}}{indentation} ne ''){
-          my $commandIndentation = ${$previouslyFoundSettings{$commandName."commands"}}{indentation};
+       if (${$previouslyFoundSettings{$commandName.$modifyLineBreaksName}}{indentation} ne ''){
+          my $commandIndentation = ${$previouslyFoundSettings{$commandName.$modifyLineBreaksName}}{indentation};
 
           # add indentation
           $argBody =~ s"^"$commandIndentation"mg;
@@ -168,9 +266,12 @@ sub find_things_with_braces_brackets {
 
 sub indent_all_args {
 
-    my $commandStorageName = shift;
+    my $commandName = shift;
+    my $modifyLineBreaksName = shift;
     my $body = shift;
     my $indentation = shift;
+
+    my $commandStorageName = $commandName.$modifyLineBreaksName;
 
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
@@ -243,6 +344,8 @@ sub indent_all_args {
                                                 begin=>$begin,
                                                 body=>$argBody, 
                                                 end=>$end,
+                                                modifyLineBreaksName=>$modifyLineBreaksName,
+                                                type=>"argument",
                                                 # begin statements
                                                 BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,
                                                 # body statements

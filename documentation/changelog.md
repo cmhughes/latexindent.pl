@@ -72,6 +72,17 @@ modifyLineBreaks:
 <td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
 </tr>
 <tr>
+  <td>
+<pre>
+modifyLineBreaks:
+  namedGroupingBracesBrackets:
+    NameFinishesWithLineBreak: 0
+</pre>
+  </td>
+<td><i>none</i></td>
+<td>this poly-switch NO LONGER DOES ANYTHING, control goes to argument poly-switch instead</td>
+</tr>
+<tr>
 <td>
 <pre>
 noAdditionalIndent:

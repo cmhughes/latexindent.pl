@@ -1,5 +1,5 @@
 fineTuning:
-  arguments:
+  commands:
     between: |-
       (?x)
       (?:
