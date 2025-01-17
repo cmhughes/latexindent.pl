@@ -25,12 +25,13 @@ use LatexIndent::Tokens           qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/$braceBracketRegExpBasic find_things_with_braces_brackets construct_commands_with_args_regex/;
+our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_things_with_braces_brackets _construct_commands_with_args_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $latexCommand;
 our $namedGroupingBracesBrackets;
-our $allArgumentRegEx;
+our $allArgumentRegExCommand;
+our $allArgumentRegExNamedBB;
 
 our $argumentBodyRegEx = qr{
         (?>            # 
@@ -42,13 +43,47 @@ our $argumentBodyRegEx = qr{
         )              # 
 }x;
 
-sub construct_commands_with_args_regex {
+sub _construct_commands_with_args_regex {
 
-    my $argumentsBetween = qr/${${$mainSettings{fineTuning}}{commands}}{between}/;
+
+    $allArgumentRegExCommand = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{commands}}{between}/ );
+     #
+     # command
+     #
+     $latexCommand = qr{
+        (\s*\\)                                           # $1  begin
+        (${${$mainSettings{fineTuning}}{commands}}{name}) # $2  name
+        (                                                 # $3  arguments
+         (?:                                              #
+          $allArgumentRegExCommand                        #
+         )+                                               #
+        )                                                 #
+        }x;
+
+     #
+     # named braces/brackets
+     #
+     $allArgumentRegExNamedBB = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{between}/ );
+
+     $namedGroupingBracesBrackets = qr{
+        (\s*)
+        (${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name})
+        (
+         (?:
+          $allArgumentRegExNamedBB
+         )+
+        )
+        }x;
+}
+
+sub _construct_args_with_between{
+
+    my $argumentsBetween = shift;
+
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
 
-    $allArgumentRegEx = qr{
+    my $allArgumentRegEx = qr{
      (?:
        (?:
          (
@@ -99,87 +134,10 @@ sub construct_commands_with_args_regex {
      $mSwitchOnlyTrailing 
      }x;
 
-     #
-     # command
-     #
-     $latexCommand = qr{
-        (\s*\\)                                           # $1  begin
-        (${${$mainSettings{fineTuning}}{commands}}{name}) # $2  name
-        (                                                 # $3  arguments
-         (?:                                              #
-          $allArgumentRegEx                               #
-         )+                                               #
-        )                                                 #
-        }x;
-
-     #
-     # named braces/brackets
-     #
-     my $argumentsBetweenNamedBraces = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{between}/;
-
-     my $allArgumentRegExNamedBraces = qr{
-      (?:
-        (?:
-          (
-           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetweenNamedBraces)*
-           (?<!\\)
-           \{
-           \h*
-           (\R*)
-          )
-          (
-           (?:
-             (?: $argumentBodyRegEx )             # argument body 
-             |
-             (??{ $latexCommand })
-             |
-             (??{ $namedGroupingBracesBrackets })
-           )*
-          )
-          (
-           (?<!\\)
-           \}
-          )
-        )
-        |
-        (?:
-          (
-           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetweenNamedBraces)*
-           (?<!\\)
-           \[
-           \h*
-           (\R*)
-          )
-          (
-           (?:
-             (?: $argumentBodyRegEx )             # argument body 
-             |
-             (??{ $latexCommand })
-             |
-             (??{$namedGroupingBracesBrackets})
-           )*
-          )
-          (
-           (?<!\\)
-           \]
-          )
-        )
-      )
-      $mSwitchOnlyTrailing 
-      }x;
-
-     $namedGroupingBracesBrackets = qr{
-        (\s*)
-        (${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name})
-        (
-         (?:
-          $allArgumentRegExNamedBraces 
-         )+
-        )
-        }x;
+     return $allArgumentRegEx; 
 }
 
-sub find_things_with_braces_brackets {
+sub _find_things_with_braces_brackets {
 
     my $body = shift;
 
@@ -247,7 +205,7 @@ sub find_things_with_braces_brackets {
        }
 
        # argument indentation
-       $argBody = &indent_all_args($commandName, $modifyLineBreaksName, $argBody,$currentIndentation);
+       $argBody = _indent_all_args($commandName, $modifyLineBreaksName, $argBody,$currentIndentation);
        
        # command BODY indentation, possibly
        if (${$previouslyFoundSettings{$commandName.$modifyLineBreaksName}}{indentation} ne ''){
@@ -264,17 +222,16 @@ sub find_things_with_braces_brackets {
     return $body;
 }
 
-sub indent_all_args {
+sub _indent_all_args {
 
-    my $commandName = shift;
-    my $modifyLineBreaksName = shift;
-    my $body = shift;
-    my $indentation = shift;
+    my ($commandName, $modifyLineBreaksName, $body , $indentation ) = @_;
 
     my $commandStorageName = $commandName.$modifyLineBreaksName;
 
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
+
+    my $allArgumentRegEx = ( $modifyLineBreaksName eq "commands" ? $allArgumentRegExCommand  : $allArgumentRegExNamedBB );
 
     $body =~ s|\G$allArgumentRegEx|
        # begin
@@ -303,7 +260,7 @@ sub indent_all_args {
        # ***
        # find nested things
        # ***
-       $argBody = &find_things_with_braces_brackets($argBody,$indentation) if $argBody=~m/[{[]/s;
+       $argBody = _find_things_with_braces_brackets($argBody,$indentation) if $argBody=~m/[{[]/s;
 
        #
        # m switch linebreak adjustment

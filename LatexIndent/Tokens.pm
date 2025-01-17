@@ -45,9 +45,9 @@ our %tokens = (
     filecontents                  => $beginningToken . "FILECONTENTS",
 
     # internal-facing naming convention
-    trailingComment => "latexindenttrailingcomment",
+    trailingComment => "tc",
     ifelsefiSpecial => $ifelsefiSpecial,
-    blanklines      => $beginningToken . "blank-line",
+    blanklines      => $beginningToken . "bl",
     arguments       => $beginningToken . "ARGUMENTS",
     roundBracket    => $beginningToken . "ROUND-BRACKET",
     verbatim        => $beginningToken . "VERBATIM",
