@@ -185,10 +185,10 @@ latexindent.pl -s ifnextchar -o=+-mod1 -l=com-name-special1.yaml
 # issue 379
 latexindent.pl -s issue-379.tex -o=+-default.tex
 
-exit
-
 latexindent.pl -s issue-379.tex -l issue-379.yaml -o=+-mod1.tex
 egrep 'found:' indent.log > issue-379-mod1.txt
+
+exit
 
 [[ $silentMode == 0 ]] && set -x 
 
