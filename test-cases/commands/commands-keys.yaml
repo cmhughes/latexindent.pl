@@ -1,0 +1,7 @@
+fineTuning:
+  commands:
+    between: |-          
+      (?x)               
+      (?:                
+        (?:at|decorate)           
+      )                  

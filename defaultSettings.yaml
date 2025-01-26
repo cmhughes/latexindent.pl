@@ -525,7 +525,8 @@ fineTuning:
   items:
     canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
   keyEqualsValuesBracesBrackets:
-    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*?
+    name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*
+    between: [_*^]                            #<!--- NEW!!!
     follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- PROBABLY DITCH
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+

@@ -1,0 +1,9 @@
+\newtcolorbox{stars}{%
+frame style={draw,fill}, % hide the default frame
+overlay={
+\draw[inner sep=0,minimum size=rnd*15pt+2pt]
+decorate[decoration={stars,segment length=2cm}] {
+decorate[decoration={zigzag,segment length=2cm,amplitude=0.3cm}]};
+\node[anchor=north west,outer sep=2pt,opacity=0.25] at  {\resizebox{3cm}{!}};
+},
+}
