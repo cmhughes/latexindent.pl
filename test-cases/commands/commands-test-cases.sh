@@ -190,6 +190,8 @@ egrep 'found:' indent.log > issue-379-mod1.txt
 
 latexindent.pl -s commands-keys -l commands-keys -o=+-mod1
 
+# from the documentation
+latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
 exit
 
 [[ $silentMode == 0 ]] && set -x 
@@ -200,8 +202,6 @@ latexindent.pl -s -w testcls.cls
 latexindent.pl -s -w ifelsefiONE.tex
 # legacy test case, lots of commands, comments, line breaks
 latexindent.pl -s  bigTest.tex -o  bigTest-default.tex
-# from the documentation
-latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
 # sub and super scripts
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml

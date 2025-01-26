@@ -31,9 +31,12 @@ our $braceBracketRegExpBasic = qr/\{|\[/;
 our $latexCommand;
 our $namedGroupingBracesBrackets;
 our $keyEqualsValueBracesBrackets;
+our $unNamedBracesBrackets;
+
 our $allArgumentRegExCommand;
 our $allArgumentRegExNamedBB;
 our $allArgumentRegExNamedKeV;
+our $allArgumentRegExUnNamedBB;
 
 our $argumentBodyRegEx = qr{
         (?>            # 
@@ -91,6 +94,18 @@ sub _construct_commands_with_args_regex {
          )+                                                                           #
         )                                                                             #
         }x;
+
+     #
+     # un named braces/brackets
+     #
+     $allArgumentRegExUnNamedBB = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{UnNamedGroupingBracesBrackets}}{between}/ );
+     $unNamedBracesBrackets = qr{
+        (                                                                             # $1  arguments
+         (?:                                                                          #
+          $allArgumentRegExUnNamedBB                                                  #
+         )+                                                                           #
+        )                                                                             #
+        }x;
 }
 
 sub _construct_args_with_between{
@@ -119,6 +134,8 @@ sub _construct_args_with_between{
             (??{ $namedGroupingBracesBrackets })
             |
             (??{ $keyEqualsValueBracesBrackets })
+            |
+            (??{ $unNamedBracesBrackets })
           )*
          )
          (
@@ -144,6 +161,8 @@ sub _construct_args_with_between{
             (??{ $namedGroupingBracesBrackets })
             |
             (??{ $keyEqualsValueBracesBrackets })
+            |
+            (??{ $unNamedBracesBrackets })
           )*
          )
          (
@@ -167,7 +186,7 @@ sub _find_things_with_braces_brackets {
 
     my $currentIndentation = shift;
 
-    $body =~ s/($latexCommand)|($namedGroupingBracesBrackets)|($keyEqualsValueBracesBrackets)/
+    $body =~ s/($latexCommand)|($namedGroupingBracesBrackets)|($keyEqualsValueBracesBrackets|$unNamedBracesBrackets )/
        
        my $begin;
        my $bracesBracketsName;
@@ -195,7 +214,7 @@ sub _find_things_with_braces_brackets {
           $argBody = $16;                                           # <arg body>  
           $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
           $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
-       } else {                                                     # -------------------------------- 
+       } elsif($27) {                                               # -------------------------------- 
        #                                                            # 
        # key = braces or brackets                                   # 
        #                                                            # 
@@ -206,6 +225,15 @@ sub _find_things_with_braces_brackets {
           $keyEqualsValue = $1;                                     # 
           $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
           $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
+       } else {                                                     # -------------------------------- 
+       #                                                            # 
+       # unnamed braces and brackets                                # 
+       #                                                            # 
+          $begin = q();                                             # <possible leading space> 
+          $bracesBracketsName = q();                                # 
+          $argBody = $37;                                           # <arg body>  
+          $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
+          $BeginStartsOnOwnLineAlias = undef;                       # 
        }
 
        if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName} or $is_m_switch_active){
@@ -267,8 +295,17 @@ sub _indent_all_args {
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
 
-    my $allArgumentRegEx = ( $modifyLineBreaksName eq "commands" ? $allArgumentRegExCommand  
-                            : ($modifyLineBreaksName eq "namedGroupingBracesBrackets" ? $allArgumentRegExNamedBB : $allArgumentRegExNamedKeV ));
+    my $allArgumentRegEx = q();
+    
+    if ( $modifyLineBreaksName eq "commands" ){
+        $allArgumentRegEx = $allArgumentRegExCommand;  
+    } elsif ($modifyLineBreaksName eq "namedGroupingBracesBrackets" ){
+        $allArgumentRegEx = $allArgumentRegExNamedBB;
+    } elsif ($modifyLineBreaksName eq "keyEqualsValuesBracesBrackets" ){
+        $allArgumentRegEx = $allArgumentRegExNamedKeV;
+    } else {
+        $allArgumentRegEx = $allArgumentRegExUnNamedBB;
+    }
 
     $body =~ s|\G$allArgumentRegEx|
        # begin

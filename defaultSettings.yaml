@@ -533,6 +533,7 @@ fineTuning:
     between: [_*^]                            #<!--- NEW!!!
     follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- PROBABLY DITCH
   UnNamedGroupingBracesBrackets:
+    between: [_*^]                            #<!--- NEW!!!
     follow: \{|\[|,|&|\)|\(|\$                #<!------------- PROBABLY DITCH
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- PROBABLY DITCH
