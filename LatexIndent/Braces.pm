@@ -51,20 +51,22 @@ sub _construct_commands_with_args_regex {
 
      $anythingWithBracesBrackets = qr{
         (\s*)                        # $1 leading space
-        (                            # $2 name
-          (\\                        # $3 command
-            ($commandName)           # $4 command name
+        (?>                          #    prevent backtracking
+          (                          # $2 name
+            (\\                      # $3 command
+              ($commandName)         # $4 command name
+            )                        #
+            |                        #
+            ($namedBracesBrackets)   # $5 named braces name
+            |                        #
+            ($keyEqVal)              # $6 key=value name
+            |                        #
+            $unNamed                 #    unnamed braces or brackets
           )                          #
-          |                          #
-          ($namedBracesBrackets)     # $5 named braces name
-          |                          #
-          ($keyEqVal)                # $6 key=value name
-          |                          #
-          $unNamed                   #    unnamed braces or brackets
-        )                            #
+        )
         (                            # $7 arguments
          (?:                         #
-          $allArgumentRegEx
+          $allArgumentRegEx          #
          )+                          #
         )
      }x;
@@ -310,19 +312,15 @@ sub _indent_all_args {
           }
 
           my $mandatoryArg = LatexIndent::MandatoryArgument->new(
-                                                begin=>$begin,
-                                                body=>$argBody, 
-                                                end=>$end,
+                                                begin=>$begin,                                       # begin statement
+                                                body=>$argBody,                                      # body  statement
+                                                end=>$end,                                           # end   statement
                                                 modifyLineBreaksName=>$modifyLineBreaksName,
                                                 type=>"argument",
-                                                # begin statements
-                                                BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,
-                                                # body statements
-                                                BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,
-                                                # end statements
-                                                EndStartsOnOwnLine=>$EndStartsOnOwnLine,
-                                                # after end statements
-                                                EndFinishesWithLineBreak=>$EndFinishesWithLineBreak,
+                                                BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,         # begin     poly-switch
+                                                BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,           # body      poly-switch
+                                                EndStartsOnOwnLine=>$EndStartsOnOwnLine,             # end       poly-switch
+                                                EndFinishesWithLineBreak=>$EndFinishesWithLineBreak, # after end poly-switch
                                                 horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                 trailingComment=>$trailingComment,
                                                 linebreaksAtEnd=>{

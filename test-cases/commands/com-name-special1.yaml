@@ -2,8 +2,8 @@ fineTuning:
   commands:
     name: |-
       (?x)
-      (?:
-        [+a-zA-Z@\*0-9_\:]+?
-      )
-      |
       @ifnextchar\[
+      |
+      (?:
+        [+a-zA-Z@\*0-9_\:]+
+      )
