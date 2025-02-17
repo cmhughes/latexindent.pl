@@ -1,5 +1,5 @@
 fineTuning:
-  commands:
+  arguments:
     between: |-          
       (?x)               
       (?:                
@@ -8,6 +8,8 @@ fineTuning:
         (?:in|at)           
         |
         \([^)]*?\)
+        |
+        [_^*#0-9(),+-]
       )                  
 noAdditionalIndent:
     foreach: 

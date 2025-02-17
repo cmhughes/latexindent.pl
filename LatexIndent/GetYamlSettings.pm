@@ -800,7 +800,7 @@ sub yaml_read_settings {
         $logger->info( Dumper( \%mainSettings ) );
     }
 
-    $argumentsBetweenCommands = qr/${${$mainSettings{fineTuning}}{commands}}{between}/;
+    $argumentsBetweenCommands = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
     return;
 }
 
