@@ -28,7 +28,7 @@ our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Pe
 our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_things_with_braces_brackets _construct_commands_with_args_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
-our $anythingWithBracesBrackets;
+our $anythingWithArguments;
 our $allArgumentRegEx; 
 
 our $argumentBodyRegEx = qr{
@@ -49,7 +49,7 @@ sub _construct_commands_with_args_regex {
      my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
      my $unNamed = qr//;
 
-     $anythingWithBracesBrackets = qr{
+     $anythingWithArguments = qr{
         (\s*)                        # $1 leading space
         (?>                          #    prevent backtracking
           (                          # $2 name
@@ -93,7 +93,7 @@ sub _construct_args_with_between{
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $anythingWithBracesBrackets })
+            (??{ $anythingWithArguments })
           )*
          )
          (
@@ -114,7 +114,7 @@ sub _construct_args_with_between{
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $anythingWithBracesBrackets })
+            (??{ $anythingWithArguments })
           )*
          )
          (
@@ -138,7 +138,7 @@ sub _find_things_with_braces_brackets {
 
     my $currentIndentation = shift;
 
-    $body =~ s/$anythingWithBracesBrackets/
+    $body =~ s/$anythingWithArguments/
        
        my $begin;
        my $bracesBracketsName;
