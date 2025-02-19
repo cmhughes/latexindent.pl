@@ -41,7 +41,7 @@ latexindent.pl -s -m command-at-end-of-file.tex -o=+-mod2
 #       time latexindent.pl -s commands-simple-big.tex -o=+-mod1 -y="defaultIndent: '  '"
 #
 { time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing.txt
-{ time latexindent.pl -s commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
+{ time latexindent.pl -s -m commands-simple-big.tex -o=+-out1 -l arg-minimal-between -y="defaultIndent: '  '" ; } 2> commands-simple-big-timing-m-switch.txt
 
 latexindent.pl -s -w commands-four-nested-mk1.tex
 
