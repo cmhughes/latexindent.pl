@@ -31,15 +31,9 @@ our $braceBracketRegExpBasic = qr/\{|\[/;
 our $anythingWithArguments;
 our $allArgumentRegEx; 
 
-our $argumentBodyRegEx = qr{
-        (?>            # 
-          (?:
-            \\[{}\[\]] # \{, \}, \[, \] OK
-          )
-          |            #  
-          [^{}\[\]]    # anything except {, }, [, ]
-        )              # 
-}x;
+our $argumentBodyRegEx;
+
+our $environmentRegEx;
 
 sub _construct_commands_with_args_regex {
 
@@ -49,27 +43,64 @@ sub _construct_commands_with_args_regex {
      my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
      my $unNamed = qr//;
 
+     #
+     # environment regex
+     #
+     my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
+     $environmentRegEx = qr{
+        (?<envbegin>                                  # 
+           \\begin\{(?<envname>$environmentName)\}    # \begin{<envname>}
+        )                                             # 
+        (?<envargs>                                   # *possible* arguments
+         $allArgumentRegEx*                           # 
+        )                                             # 
+        (?<envbody>                                   # body
+          (?:                                         # 
+              (?!                                     # 
+                  (?:\\begin\{)                       # 
+              ).                                      # 
+              |                                       # 
+              (??{ $environmentRegEx })               # 
+          )*                                          # 
+        )                                             # 
+        (?<envend>                                    # \end{<envname>}
+           \\end\{\g{envname}\}                       # 
+        )                                             # 
+     }xs;
+
+     #
+     # (commands, named, key=value, unnamed) <ARGUMENTS> regex
+     #
      $anythingWithArguments = qr{
-        (\s*)                        # $1 leading space
-        (?>                          #    prevent backtracking
-          (                          # $2 name
-            (\\                      # $3 command
-              ($commandName)         # $4 command name
-            )                        #
-            |                        #
-            ($namedBracesBrackets)   # $5 named braces name
-            |                        #
-            ($keyEqVal)              # $6 key=value name
-            |                        #
-            $unNamed                 #    unnamed braces or brackets
-          )                          #
-        )
-        (                            # $7 arguments
-         (?:                         #
-          $allArgumentRegEx          #
-         )+                          #
+        (\s*)                                                 # $1 leading space
+        (?:
+           (                                                  # $2 <thing><arguments>
+              (?>                                             #    prevent backtracking
+                (                                             # $3 name
+                  (\\                                         # $4 command
+                    ((?!(?:begin|end))$commandName)           # $5 command name
+                  )                                           #
+                  |                                           #
+                  ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $6 named braces name
+                  |                                           #
+                  ($keyEqVal)                                 # $7 key=value name
+                  |                                           #
+                  (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
+                )                                             #
+              )
+              (                                               # $8 arguments
+               (?:                                            #
+                $allArgumentRegEx                             #
+               )+                                             #
+              )
+           )
+           |
+           (?<environment>
+               $environmentRegEx 
+           )
         )
      }x;
+
 }
 
 sub _construct_args_with_between{
@@ -78,6 +109,20 @@ sub _construct_args_with_between{
 
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
+    my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
+
+
+    $argumentBodyRegEx = qr{
+            (?>            # 
+              \\(?:begin|end)\{$environmentName\}
+              |
+              (?:
+                \\[{}\[\]] # \{, \}, \[, \] OK
+              )
+              |            #  
+              [^{}\[\]]    # anything except {, }, [, ]
+            )              # 
+    }x;
 
     my $allArgumentRegEx = qr{
      (?:
@@ -140,100 +185,157 @@ sub _find_things_with_braces_brackets {
 
     $body =~ s/$anythingWithArguments/
        
-       my $begin;
-       my $bracesBracketsName;
-       my $argBody;
-       my $modifyLineBreaksName;
-       my $BeginStartsOnOwnLineAlias;
-       my $bracesBracketsObj; 
-       my $keyEqualsValue = q();
-       
        # begin is always in $1
-       $begin = $1;
+       my $begin = $1;
 
-       # argument body is always in $7
-       $argBody = $7;
-
-       #
-       # command
-       #
-       if ($3) {                                                    # 
-          $begin = $1.q(\\);                                        # \\
-          $bracesBracketsName = $4;                                 # <command name>
-          $modifyLineBreaksName="commands";                         # 
-          $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";    # --------------------------------
-       } elsif ($5) {                                               # <name of named braces brackets>
-       #                                                            # 
-       # named braces or brackets                                   # 
-       #                                                            # 
-          $bracesBracketsName = $5 ;                                # <name of named braces brackets>
-          $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
-          $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
-       } elsif($6)  {                                               # -------------------------------- 
-       #                                                            # 
-       # key = braces or brackets                                   # 
-       #                                                            # 
-          $bracesBracketsName = $6;                                 # <name of key = value braces brackets>
-          $bracesBracketsName =~ s|(\s*=$)||s;                      # 
-          $keyEqualsValue = $1;
-          $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
-          $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
-       } else {                                                     # -------------------------------- 
-       #                                                            # 
-       # unnamed braces and brackets                                # 
-       #                                                            # 
-          $begin = q();                                             # <possible leading space> 
-          $bracesBracketsName = q();                                # 
-          $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
-          $BeginStartsOnOwnLineAlias = undef;                       # 
-       }
-
-       if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName} or $is_m_switch_active){
-          $bracesBracketsObj = LatexIndent::Braces->new(name=>$bracesBracketsName,
-                                              begin=>$begin,
-                                              modifyLineBreaksYamlName=>$modifyLineBreaksName,
-                                              arguments=>1,
-                                              type=>"something-with-braces",
-                                              aliases=>{
-                                                # begin statements
-                                                BeginStartsOnOwnLine=>$BeginStartsOnOwnLineAlias,
-                                              },
-          );
-       }
-
-       $logger->trace("*found: $bracesBracketsName ($modifyLineBreaksName)")         if $is_t_switch_active;
-
-       # store settings for future use
-       if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}){
-          $bracesBracketsObj->yaml_get_indentation_settings_for_this_object;
-       }
-
-       # m-switch: command name starts on own line
-       if ($is_m_switch_active and ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
-            ${$bracesBracketsObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
-            $bracesBracketsObj->modify_line_breaks_before_begin;  
-            $begin = ${$bracesBracketsObj}{begin};
-            $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
-            $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
-       }
-
-       # argument indentation
-       $argBody = _indent_all_args($bracesBracketsName, $modifyLineBreaksName, $argBody,$currentIndentation);
+       my $modifyLineBreaksName;
+       my $indentedThing = q();
        
-       # command BODY indentation, possibly
-       if (${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation} ne ''){
-          my $commandIndentation = ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation};
+       #
+       # environment
+       #
+       if ($+{environment}){
+             $begin = $1.$+{envbegin};
+             my $envbody = $+{envbody};
+             my $end = $+{envend};
+             my $name = $+{envname};
+             $modifyLineBreaksName = "environments";
 
-          # add indentation
-          $argBody =~ s"^"$commandIndentation"mg;
-          $argBody =~ s"^$commandIndentation""s;
+             my $environmentObj; 
+
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+                $environmentObj = LatexIndent::Environment->new(name=>$name,
+                                                    begin=>$begin,
+                                                    modifyLineBreaksYamlName=>$modifyLineBreaksName,
+                                                    arguments=> ($+{envargs}?1:0),
+                                                    type=>"environment",
+                );
+             }
+
+             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             
+             # store settings for future use
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                $environmentObj->yaml_get_indentation_settings_for_this_object;
+             }
+             
+             # argument indentation
+             my $argBody = q();
+             if ($+{envargs}){
+                $argBody = _indent_all_args($name, $modifyLineBreaksName, $+{envargs} ,$currentIndentation);
+             }
+          
+             # ***
+             # find nested things
+             # ***
+             $envbody = _find_things_with_braces_brackets($envbody,$currentIndentation) if $envbody =~m|[{[]|s;
+
+             my $environmentIndentation = q();
+
+             # environment BODY indentation, possibly
+             if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
+                $environmentIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+
+                # prepend argument body
+                $envbody = $argBody.$envbody;
+
+                # add indentation
+                $envbody =~ s"^"$environmentIndentation"mg;
+                $envbody =~ s"^$environmentIndentation""s;
+             }
+
+             $indentedThing = $begin.$envbody.$end;
+       } else {
+          # argument body is always in $8
+          my $argBody = $8;
+          my $bracesBracketsName;
+          my $BeginStartsOnOwnLineAlias;
+          my $bracesBracketsObj; 
+          my $keyEqualsValue = q();
+
+          #
+          # command
+          #
+          if ($4) {                                                    # 
+             $begin = $1.q(\\);                                        # \\
+             $bracesBracketsName = $5;                                 # <command name>
+             $modifyLineBreaksName="commands";                         # 
+             $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";    # --------------------------------
+          } elsif ($6) {                                               # <name of named braces brackets>
+          #                                                            # 
+          # named braces or brackets                                   # 
+          #                                                            # 
+             $bracesBracketsName = $6 ;                                # <name of named braces brackets>
+             $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
+             $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
+          } elsif($7)  {                                               # -------------------------------- 
+          #                                                            # 
+          # key = braces or brackets                                   # 
+          #                                                            # 
+             $bracesBracketsName = $7;                                 # <name of key = value braces brackets>
+             $bracesBracketsName =~ s|(\s*=$)||s;                      # 
+             $keyEqualsValue = $1;
+             $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
+             $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
+          } else {                                                     # -------------------------------- 
+          #                                                            # 
+          # unnamed braces and brackets                                # 
+          #                                                            # 
+             $begin = q();                                             # <possible leading space> 
+             $bracesBracketsName = q();                                # 
+             $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
+             $BeginStartsOnOwnLineAlias = undef;                       # 
+          }
+
+          if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName} or $is_m_switch_active){
+             $bracesBracketsObj = LatexIndent::Braces->new(name=>$bracesBracketsName,
+                                                 begin=>$begin,
+                                                 modifyLineBreaksYamlName=>$modifyLineBreaksName,
+                                                 arguments=>1,
+                                                 type=>"something-with-braces",
+                                                 aliases=>{
+                                                   # begin statements
+                                                   BeginStartsOnOwnLine=>$BeginStartsOnOwnLineAlias,
+                                                 },
+             );
+          }
+
+          $logger->trace("*found: $bracesBracketsName ($modifyLineBreaksName)")         if $is_t_switch_active;
+
+          # store settings for future use
+          if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}){
+             $bracesBracketsObj->yaml_get_indentation_settings_for_this_object;
+          }
+
+          # m-switch: command name starts on own line
+          if ($is_m_switch_active and ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
+               ${$bracesBracketsObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
+               $bracesBracketsObj->modify_line_breaks_before_begin;  
+               $begin = ${$bracesBracketsObj}{begin};
+               $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
+               $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
+          }
+
+          # argument indentation
+          $argBody = _indent_all_args($bracesBracketsName, $modifyLineBreaksName, $argBody,$currentIndentation);
+          
+          # command BODY indentation, possibly
+          if (${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation} ne ''){
+             my $commandIndentation = ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation};
+
+             # add indentation
+             $argBody =~ s"^"$commandIndentation"mg;
+             $argBody =~ s"^$commandIndentation""s;
+          }
+
+          # key = value is particular
+          $bracesBracketsName = $bracesBracketsName.$keyEqualsValue if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
+          
+          # put it all together
+          $indentedThing = $begin.$bracesBracketsName.$argBody;
        }
-
-       # key = value is particular
-       $bracesBracketsName = $bracesBracketsName.$keyEqualsValue if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
        
-       # put it all together
-       $begin.$bracesBracketsName.$argBody;/sgex;
+       $indentedThing;/sgex;
 
     return $body;
 }

@@ -1,0 +1,4 @@
+TRACE: found: titlepage (environments)
+TRACE: found: mycommand (commands)
+TRACE: found: center (environments)
+TRACE: found: nested (environments)

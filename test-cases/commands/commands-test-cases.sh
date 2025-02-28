@@ -192,12 +192,14 @@ latexindent.pl -s commands-keys -l commands-keys -o=+-mod1
 
 # from the documentation
 latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
+
+# small test case for intricate ancestors
+latexindent.pl -s -t testcls-small.cls -o=+-default.cls
+egrep 'found:' indent.log > testcls.txt
 exit
 
 [[ $silentMode == 0 ]] && set -x 
 
-# small test case for intricate ancestors
-latexindent.pl -s testcls-small.cls -o=testcls-small-default.cls
 latexindent.pl -s -w testcls.cls
 latexindent.pl -s -w ifelsefiONE.tex
 # legacy test case, lots of commands, comments, line breaks
