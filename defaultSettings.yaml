@@ -512,28 +512,18 @@ fineTuning:
   environments:
     name: [a-zA-Z@\*0-9_\\]+
   ifElseFi:
-    name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*?
+    name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
   commands:
     name: [+a-zA-Z@\*0-9_\:]+
-    between: |-                               #<!--- NEW!!!
-      (?x)                                    #
-      (?:                                     # Make 'between' different for each of
-        [_^*#0-9(),+-]                        #    commands
-        |                                     #    namedGroupintBracesBrackets
-        (?:node|at|to|decoration)             #    UnnamedGroupintBracesBrackets
-      )                                       #    keyEqualsValuesBracesBrackets
   items:
     canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
   keyEqualsValuesBracesBrackets:
     name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*
-    between: [_*^]                            #<!--- NEW!!!
     follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- PROBABLY DITCH
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+
-    between: [_*^]                            #<!--- NEW!!!
     follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- PROBABLY DITCH
   UnNamedGroupingBracesBrackets:
-    between: [_*^]                            #<!--- NEW!!!
     follow: \{|\[|,|&|\)|\(|\$                #<!------------- PROBABLY DITCH
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- PROBABLY DITCH

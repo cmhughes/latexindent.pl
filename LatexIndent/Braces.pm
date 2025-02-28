@@ -35,6 +35,8 @@ our $argumentBodyRegEx;
 
 our $environmentRegEx;
 
+our $ifElseFiRegExp; 
+
 sub _construct_commands_with_args_regex {
 
      $allArgumentRegEx = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{arguments}}{between}/ );
@@ -67,6 +69,30 @@ sub _construct_commands_with_args_regex {
            \\end\{\g{envname}\}                       # 
         )                                             # 
      }xs;
+     
+     #
+     # ifElseFi regex
+     #
+     my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
+     $ifElseFiRegExp = qr{
+                (?<ifelsefiBEGIN>
+                    \\(?<ifelsefiNAME>
+                      $ifElseFiNameRegExp
+                    )         # begin statement, e.g \ifnum, \ifodd
+                )                         
+                (?<ifelsefiBODY>                    
+                  (?:                               
+                      (?!                           
+                          (?:\\if)                  
+                      ).                            
+                      |                             
+                      (??{ $ifElseFiRegExp })     
+                  )*                                
+                )
+                (?<ifelsefiEND>                    
+                    \\fi(?![a-zA-Z])                    # \fi statement 
+                )
+     }xs;
 
      #
      # (commands, named, key=value, unnamed) <ARGUMENTS> regex
@@ -81,9 +107,9 @@ sub _construct_commands_with_args_regex {
                     ((?!(?:begin|end))$commandName)           # $5 command name
                   )                                           #
                   |                                           #
-                  ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $6 named braces name
+                  ($keyEqVal)                                 # $6 key=value name
                   |                                           #
-                  ($keyEqVal)                                 # $7 key=value name
+                  ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
                   |                                           #
                   (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
                 )                                             #
@@ -97,6 +123,10 @@ sub _construct_commands_with_args_regex {
            |
            (?<environment>
                $environmentRegEx 
+           )
+           |
+           (?<ifelsefi>
+               $ifElseFiRegExp 
            )
         )
      }x;
@@ -228,7 +258,7 @@ sub _find_things_with_braces_brackets {
              # ***
              # find nested things
              # ***
-             $envbody = _find_things_with_braces_brackets($envbody,$currentIndentation) if $envbody =~m|[{[]|s;
+             $envbody = _find_things_with_braces_brackets($envbody,$currentIndentation) if $envbody =~m^[{[]|\\if^s;
 
              my $environmentIndentation = q();
 
@@ -245,6 +275,48 @@ sub _find_things_with_braces_brackets {
              }
 
              $indentedThing = $begin.$envbody.$end;
+       } elsif ($+{ifelsefi}){
+             $begin = $1.$+{ifelsefiBEGIN};
+             my $ifElseFibody = $+{ifelsefiBODY};
+             my $end = $+{ifelsefiEND};
+             my $name = $+{ifelsefiNAME};
+             $modifyLineBreaksName = "ifElseFi";
+
+             my $ifElseFiObj; 
+
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+                $ifElseFiObj = LatexIndent::IfElseFi->new(name=>$name,
+                                                    begin=>$begin,
+                                                    modifyLineBreaksYamlName=>$modifyLineBreaksName,
+                                                    arguments=> 0,
+                                                    type=>"ifelsefi",
+                );
+             }
+
+             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             
+             # store settings for future use
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                $ifElseFiObj->yaml_get_indentation_settings_for_this_object;
+             }
+             
+             # ***
+             # find nested things
+             # ***
+             $ifElseFibody = _find_things_with_braces_brackets($ifElseFibody ,$currentIndentation) if $ifElseFibody =~m^[{[]|\\if^s;
+
+             my $ifElseFiIndentation = q();
+
+             # ifElseFi BODY indentation, possibly
+             if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
+                $ifElseFiIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+
+                # add indentation
+                $ifElseFibody =~ s"^"$ifElseFiIndentation"mg;
+                $ifElseFibody =~ s"^$ifElseFiIndentation""s;
+             }
+
+             $indentedThing = $begin.$ifElseFibody.$end;
        } else {
           # argument body is always in $8
           my $argBody = $8;
@@ -261,18 +333,18 @@ sub _find_things_with_braces_brackets {
              $bracesBracketsName = $5;                                 # <command name>
              $modifyLineBreaksName="commands";                         # 
              $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";    # --------------------------------
-          } elsif ($6) {                                               # <name of named braces brackets>
+          } elsif ($7) {                                               # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
-             $bracesBracketsName = $6 ;                                # <name of named braces brackets>
+             $bracesBracketsName = $7 ;                                # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
              $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
-          } elsif($7)  {                                               # -------------------------------- 
+          } elsif($6)  {                                               # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
           #                                                            # 
-             $bracesBracketsName = $7;                                 # <name of key = value braces brackets>
+             $bracesBracketsName = $6;                                 # <name of key = value braces brackets>
              $bracesBracketsName =~ s|(\s*=$)||s;                      # 
              $keyEqualsValue = $1;
              $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
