@@ -76,17 +76,17 @@ sub _construct_commands_with_args_regex {
      my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
      $ifElseFiRegExp = qr{
                 (?<ifelsefiBEGIN>
-                    \\(?<ifelsefiNAME>
+                    (?<!\\newif)\\(?<ifelsefiNAME>
                       $ifElseFiNameRegExp
                     )         # begin statement, e.g \ifnum, \ifodd
                 )                         
                 (?<ifelsefiBODY>                    
-                  (?:                               
-                      (?!                           
-                          (?:\\if)                  
-                      ).                            
-                      |                             
+                  (?>                               
                       (??{ $ifElseFiRegExp })     
+                      |
+                      (?!                           
+                          (?:\\fi)                  
+                      ).                            
                   )*                                
                 )
                 (?<ifelsefiEND>                    
@@ -314,6 +314,9 @@ sub _find_things_with_braces_brackets {
                 # add indentation
                 $ifElseFibody =~ s"^"$ifElseFiIndentation"mg;
                 $ifElseFibody =~ s"^$ifElseFiIndentation""s;
+
+                # \else statement gets special treatment; not that checking for \\fi ensures we're at the inner most block
+                $ifElseFibody =~ s"$ifElseFiIndentation(\\else)"$1"s if $ifElseFibody !~ m|\\fi|s ;
              }
 
              $indentedThing = $begin.$ifElseFibody.$end;

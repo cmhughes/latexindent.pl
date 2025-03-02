@@ -200,11 +200,12 @@ egrep 'found:' indent.log > testcls.txt
 # small test case for ifElseFi
 latexindent.pl -s -w -t ifelsefiONE.tex
 egrep 'found:' indent.log > ifelsefiONE.txt
+
+latexindent.pl -s -w testcls.cls
 exit
 
 [[ $silentMode == 0 ]] && set -x 
 
-latexindent.pl -s -w testcls.cls
 # legacy test case, lots of commands, comments, line breaks
 latexindent.pl -s  bigTest.tex -o  bigTest-default.tex
 # sub and super scripts
