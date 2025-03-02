@@ -57,12 +57,12 @@ sub _construct_commands_with_args_regex {
          $allArgumentRegEx*                           # 
         )                                             # 
         (?<envbody>                                   # body
-          (?:                                         # 
-              (?!                                     # 
-                  (?:\\begin\{)                       # 
-              ).                                      # 
-              |                                       # 
+          (?>                                         # 
               (??{ $environmentRegEx })               # 
+              |                                       # 
+              (?!                                     # 
+                  (?:\\end\{)                         # 
+              ).                                      # 
           )*                                          # 
         )                                             # 
         (?<envend>                                    # \end{<envname>}

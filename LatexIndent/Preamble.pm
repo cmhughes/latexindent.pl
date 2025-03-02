@@ -44,36 +44,4 @@ sub get_replacement_text {
     delete ${$self}{afterbit};
 }
 
-sub indent {
-
-    # preamble doesn't receive any additional indentation
-    return;
-}
-
-sub tasks_particular_to_each_object {
-    my $self = shift;
-
-    # search for environments
-    $self->find_environments if ${$self}{body} =~ m/$environmentBasicRegExp/;
-
-    # search for ifElseFi blocks
-    $self->find_ifelsefi if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
-
-    if ( ${ $mainSettings{specialBeginEnd} }{specialBeforeCommand} ) {
-
-        # search for special begin/end
-        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-
-        # search for commands with arguments
-        $self->find_commands_or_key_equals_values_braces if ( !$mainSettings{preambleCommandsBeforeEnvironments} );
-    }
-    else {
-        # search for commands with arguments
-        $self->find_commands_or_key_equals_values_braces if ( !$mainSettings{preambleCommandsBeforeEnvironments} );
-
-        # search for special begin/end
-        $self->find_special if ${$self}{body} =~ m/$specialBeginBasicRegExp/s;
-    }
-}
-
 1;
