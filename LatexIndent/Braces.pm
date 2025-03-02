@@ -25,7 +25,7 @@ use LatexIndent::Tokens           qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_things_with_braces_brackets _construct_commands_with_args_regex/;
+our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_commands_with_args_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $allCodeBlocks;
@@ -204,7 +204,7 @@ sub _construct_args_with_between{
      return $allArgumentRegEx; 
 }
 
-sub _find_things_with_braces_brackets {
+sub _find_all_code_blocks {
 
     my $body = shift;
 
@@ -258,7 +258,7 @@ sub _find_things_with_braces_brackets {
              # ***
              # find nested things
              # ***
-             $envbody = _find_things_with_braces_brackets($envbody,$currentIndentation) if $envbody =~m^[{[]|\\if^s;
+             $envbody = _find_all_code_blocks($envbody,$currentIndentation) if $envbody =~m^[{[]^s;
 
              my $environmentIndentation = q();
 
@@ -303,7 +303,7 @@ sub _find_things_with_braces_brackets {
              # ***
              # find nested things
              # ***
-             $ifElseFibody = _find_things_with_braces_brackets($ifElseFibody ,$currentIndentation) if $ifElseFibody =~m^[{[]|\\if^s;
+             $ifElseFibody = _find_all_code_blocks($ifElseFibody ,$currentIndentation) if $ifElseFibody =~m^[{[]^s;
 
              my $ifElseFiIndentation = q();
 
@@ -451,7 +451,7 @@ sub _indent_all_args {
        # ***
        # find nested things
        # ***
-       $argBody = _find_things_with_braces_brackets($argBody,$indentation) if $argBody=~m/[{[]/s;
+       $argBody = _find_all_code_blocks($argBody,$indentation) if $argBody=~m/[{[]/s;
 
        #
        # m switch linebreak adjustment

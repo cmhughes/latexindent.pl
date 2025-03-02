@@ -63,7 +63,7 @@ use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
 use LatexIndent::Item                          qw/find_items construct_list_of_items/;
-use LatexIndent::Braces                        qw/$braceBracketRegExpBasic _find_things_with_braces_brackets _construct_commands_with_args_regex/;
+use LatexIndent::Braces                        qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_commands_with_args_regex/;
 use LatexIndent::Command                       qw/construct_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
@@ -188,7 +188,7 @@ sub operate_on_file {
         $self->remove_trailing_whitespace( when => "before" );
         $self->find_file_contents_environments_and_preamble;
         $self->remove_leading_space;
-        ${$self}{body} = _find_things_with_braces_brackets(${$self}{body},"");
+        ${$self}{body} = _find_all_code_blocks(${$self}{body},"");
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
         $self->modify_line_breaks_post_indentation_linebreaks_comments if $is_m_switch_active; 
         $self->condense_blank_lines
