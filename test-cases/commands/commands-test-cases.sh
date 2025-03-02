@@ -208,6 +208,16 @@ latexindent.pl -s unnamed-small -o=+-mod1
 # legacy test case, lots of commands, comments, line breaks
 latexindent.pl -s  bigTest.tex -o=+-default.tex
 
+# github issue
+latexindent.pl -t -s github-issue-35 -o=+-default
+egrep 'found:' indent.log > github-issue-35-default.txt
+latexindent.pl -t -s github-issue-35 -o=+-no-at -l no-at-between-args.yaml
+egrep 'found:' indent.log > github-issue-35-no-at.txt
+latexindent.pl -s github-issue-35 -o=+-no-at1 -l no-at-between-args1.yaml
+latexindent.pl -s github-issue-35 -o=+-no-at2 -l no-at-between-args2.yaml
+latexindent.pl -t -s github-issue-35 -o=+-no-at3 -l no-at-between-args3.yaml
+egrep 'found:' indent.log > github-issue-35-no-at3.txt
+
 exit
 
 [[ $silentMode == 0 ]] && set -x 
@@ -218,13 +228,6 @@ latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
 
 latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/indentPreamble.yaml
-
-# github issue
-latexindent.pl -s github-issue-35.tex -o github-issue-35-default.tex
-latexindent.pl -s github-issue-35.tex -o=+-no-at.tex -l no-at-between-args.yaml
-latexindent.pl -s github-issue-35.tex -o=+-no-at1.tex -l no-at-between-args1.yaml
-latexindent.pl -s github-issue-35.tex -o=+-no-at2.tex -l no-at-between-args2.yaml
-latexindent.pl -s github-issue-35.tex -o=+-no-at3.tex -l no-at-between-args3.yaml
 
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s

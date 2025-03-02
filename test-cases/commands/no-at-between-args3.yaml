@@ -1,5 +1,9 @@
-commandCodeBlocks:
-    roundParenthesesAllowed: 1
-    stringsAllowedBetweenArguments: 0
 logFilePreferences:
     showAmalgamatedSettings: 1
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # Make 'between' different for each of
+        [_^*#0-9(),+-]                        #    commands
+      )                                       #    keyEqualsValuesBracesBrackets

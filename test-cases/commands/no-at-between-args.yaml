@@ -1,9 +1,11 @@
-commandCodeBlocks:
-    roundParenthesesAllowed: 1
-    stringsAllowedBetweenArguments:
-      - 
-        amalgamate: 1
-      - 'at'
-      - 'cmh'
-logFilePreferences:
-    showAmalgamatedSettings: 1
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # Make 'between' different for each of
+        [_^*#0-9(),+-]                        #    commands
+        |                                     #    namedGroupintBracesBrackets
+        (?:node|at|to|decoration)             #    UnnamedGroupintBracesBrackets
+        |
+        \([^)]*?\)
+      )                                       #    keyEqualsValuesBracesBrackets
