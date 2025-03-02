@@ -202,12 +202,16 @@ latexindent.pl -s -w -t ifelsefiONE.tex
 egrep 'found:' indent.log > ifelsefiONE.txt
 
 latexindent.pl -s -w testcls.cls
+
+latexindent.pl -s unnamed-small -o=+-mod1
+
+# legacy test case, lots of commands, comments, line breaks
+latexindent.pl -s  bigTest.tex -o=+-default.tex
+
 exit
 
 [[ $silentMode == 0 ]] && set -x 
 
-# legacy test case, lots of commands, comments, line breaks
-latexindent.pl -s  bigTest.tex -o  bigTest-default.tex
 # sub and super scripts
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml

@@ -326,7 +326,7 @@ noAdditionalIndentGlobal:
   items: 0                          # 0/1
   keyEqualsValuesBracesBrackets: 0  # 0/1
   namedGroupingBracesBrackets: 0    # 0/1
-  UnNamedGroupingBracesBrackets: 0  # 0/1
+  UnNamedGroupingBracesBrackets: 1  # 0/1                <!---------- updated V4.0
   specialBeginEnd: 0                # 0/1
   afterHeading: 0                   # 0/1
   filecontents: 0                   # 0/1

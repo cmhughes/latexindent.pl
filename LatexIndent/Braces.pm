@@ -28,7 +28,7 @@ our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Pe
 our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_things_with_braces_brackets _construct_commands_with_args_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
-our $anythingWithArguments;
+our $allCodeBlocks;
 our $allArgumentRegEx; 
 
 our $argumentBodyRegEx;
@@ -97,7 +97,7 @@ sub _construct_commands_with_args_regex {
      #
      # (commands, named, key=value, unnamed) <ARGUMENTS> regex
      #
-     $anythingWithArguments = qr{
+     $allCodeBlocks = qr{
         (\s*)                                                 # $1 leading space
         (?:
            (                                                  # $2 <thing><arguments>
@@ -168,7 +168,7 @@ sub _construct_args_with_between{
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $anythingWithArguments })
+            (??{ $allCodeBlocks })
           )*
          )
          (
@@ -189,7 +189,7 @@ sub _construct_args_with_between{
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
-            (??{ $anythingWithArguments })
+            (??{ $allCodeBlocks })
           )*
          )
          (
@@ -213,7 +213,7 @@ sub _find_things_with_braces_brackets {
 
     my $currentIndentation = shift;
 
-    $body =~ s/$anythingWithArguments/
+    $body =~ s/$allCodeBlocks/
        
        # begin is always in $1
        my $begin = $1;
