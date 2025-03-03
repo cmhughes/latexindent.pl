@@ -221,6 +221,7 @@ egrep 'found:' indent.log > github-issue-35-no-at3.txt
 # multiple environments and commands with optional/mandatory arguments
 latexindent.pl -w figureValign.tex -s
 
+latexindent.pl -s pstricks1 -o=+-default -l=../texexchange/indentPreamble
 exit
 
 [[ $silentMode == 0 ]] && set -x 
@@ -229,8 +230,6 @@ exit
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
-
-latexindent.pl -s pstricks1.tex -o pstricks1-default.tex -l=../texexchange/indentPreamble.yaml
 
 # named grouping bracket test case
 latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1

@@ -127,9 +127,10 @@ sub find_file_contents_environments_and_preamble {
     # determine if body of document contains \begin{document} -- if it does, then assume
     # that the body has a preamble
     my $preambleRegExp = qr/
-                        (.*?)
-                        (\R*\h*)?            # linebreaks at end of body into $2
-                        \\begin\{document\}
+                        (
+                         .*?
+                         \\begin\{document\}
+                        )
                 /sx;
     my $preamble = q();
 
@@ -139,63 +140,41 @@ sub find_file_contents_environments_and_preamble {
     my $lookForPreamble = ${ $mainSettings{lookForPreamble} }{ ${$self}{fileExtension} };
     $lookForPreamble = 1 if ( ${$self}{fileName} eq "-" and ${ $mainSettings{lookForPreamble} }{STDIN} );
 
-    if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble ) {
+    if ( ${$self}{body} =~ m/$preambleRegExp/sx and $lookForPreamble and !$mainSettings{indentPreamble} ) {
 
         $logger->trace(
             "\\begin{document} found in body (after searching for filecontents)-- assuming that a preamble exists")
             if $is_t_switch_active;
 
-        # create a preamble object
-        $preamble = LatexIndent::Preamble->new(
+        # create a new Verbatim object
+        my $verbatimBlock = LatexIndent::Verbatim->new(
             begin           => q(),
             body            => $1,
             end             => q(),
             name            => "preamble",
+                    type                     => "special",
             linebreaksAtEnd => {
                 begin => 0,
-                body  => $2 ? 1 : 0,
+                body  => 0,
                 end   => 0,
             },
-            afterbit                 => ( $2 ? $2 : q() ) . "\\begin{document}",
+            afterbit                 => q(),
             modifyLineBreaksYamlName => "preamble",
         );
 
-        # give unique id
-        $preamble->create_unique_id;
+        $verbatimBlock->unprotect_blank_lines if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
 
-        # text wrapping can make the ID split across lines
-        ${$preamble}{idRegExp} = ${$preamble}{id};
+        # there are common tasks for each of the verbatim objects
+        $verbatimBlock->verbatim_common_tasks;
 
-        if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{huge} ne "overflow" ) {
-            my $IDwithLineBreaks = join( "\\R?\\h*", split( //, ${$preamble}{id} ) );
-            ${$preamble}{idRegExp} = qr/$IDwithLineBreaks/s;
-        }
+        # verbatim children go in special hash
+        $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
-        # get the replacement_text
-        $preamble->get_replacement_text;
+        # remove the special block, and replace with unique ID
+        ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}/sx;
 
         # log file output
-        $logger->trace("preamble found: preamble") if $is_t_switch_active;
-
-        # remove the environment block, and replace with unique ID
-        ${$self}{body} =~ s/$preambleRegExp/${$preamble}{replacementText}/sx;
-
-        $logger->trace("replaced with ID: ${$preamble}{replacementText}") if $is_tt_switch_active;
-
-        # indentPreamble set to 1
-        if ( $mainSettings{indentPreamble} ) {
-            $logger->trace("storing ${$preamble}{id} for indentation (see indentPreamble)") if $is_tt_switch_active;
-            $needToStorePreamble = 1;
-        }
-        else {
-            # indentPreamble set to 0
-            $logger->trace(
-                "NOT storing ${$preamble}{id} for indentation -- will store as VERBATIM object (because indentPreamble:0)"
-            ) if $is_t_switch_active;
-            $preamble->unprotect_blank_lines
-                if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
-            $verbatimStorage{ ${$preamble}{id} } = $preamble;
-        }
+        $logger->trace("*found: preamble, storing as verbatim (indentPreamble: 0)") if $is_t_switch_active;
     }
     else {
         ${$self}{preamblePresent} = 0;

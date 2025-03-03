@@ -72,7 +72,6 @@ use LatexIndent::Special
     qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
 use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHeadingsRegexp/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
-use LatexIndent::Preamble;
 
 use LatexIndent::UTF8CmdLineArgsFileOperation
     qw/copy_with_encode exist_with_encode open_with_encode  zero_with_encode read_yaml_with_encode/;

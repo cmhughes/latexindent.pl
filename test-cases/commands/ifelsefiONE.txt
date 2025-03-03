@@ -1,5 +1,4 @@
-       preamble found: preamble
-TRACE: found: document (environments)
+TRACE: found: preamble, storing as verbatim (indentPreamble: 0)
 TRACE: found: in (namedGroupingBracesBrackets)
 TRACE: found: tikzpicture (environments)
 TRACE: found: filldraw (commands)
