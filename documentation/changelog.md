@@ -17,6 +17,19 @@
   </td>
 </tr>
 <tr>
+  <td>
+  partnering poly-switch behaviour
+  </td>
+  <td>
+  sequential in order of appearance
+  </td>
+  <td>
+  natural behaviour: poly-switches are 
+  obeyed in the natural order in which 
+  the code block is encountered
+  </td>
+</tr>
+<tr>
 <td>
 <pre>
 commandCodeBlocks:              

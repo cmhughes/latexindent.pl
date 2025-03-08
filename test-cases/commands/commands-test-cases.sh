@@ -103,12 +103,8 @@ do
    latexindent.pl commands-nested-multiple -m -s -o=+-textbf-mand-args-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf-mand-args,noAdditionalIndentGlobal
 
    # multiple commands and environments
-
-   # <!---- RETURN TO THESE
-   # <!---- RETURN TO THESE
-   # <!---- RETURN TO THESE
    latexindent.pl figureValign -m -s -o=figureValign-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,mand-args-mod$i,figValign-yaml,../filecontents/indentPreambleYes,SAS
-   ##### latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
+   latexindent.pl figureValign -m -s -o=+-opt-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,figValign-yaml,makebox,../filecontents/indentPreambleYes,SAS 
 
    set +x
 done
@@ -224,7 +220,9 @@ latexindent.pl -w figureValign.tex -s
 latexindent.pl -s pstricks1 -o=+-default -l=../texexchange/indentPreamble
 exit
 
-[[ $silentMode == 0 ]] && set -x 
+# <!---- RETURN TO SPECIALS
+# <!---- RETURN TO SPECIALS
+# <!---- RETURN TO SPECIALS
 
 # sub and super scripts
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
@@ -234,9 +232,6 @@ latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex 
 # named grouping bracket test case
 latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1
 
-# <!---- RETURN TO figureValign
-# <!---- RETURN TO figureValign
-# <!---- RETURN TO figureValign
-
+[[ $silentMode == 0 ]] && set -x 
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status

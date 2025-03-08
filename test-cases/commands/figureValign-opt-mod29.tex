@@ -4,7 +4,9 @@
 \usepackage{lipsum}
 \usepackage{graphicx}
 \usepackage{environ}
-\usepackage[showframe=true]{geometry}
+\usepackage%
+[showframe=true]%
+{geometry}
 
 \newsavebox{\vabox}
 
@@ -34,7 +36,7 @@
 \begin{document}
 
 \sbox{\vabox}{%
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[]%
 		[b]%
@@ -45,7 +47,7 @@
 		{example-image-a}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[]%
 		[t]%
@@ -56,7 +58,7 @@
 		{example-image-b}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[]%
 		[t]%
@@ -67,7 +69,7 @@
 		{example-image-c}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[]%
 		[c]%
@@ -78,7 +80,7 @@
 		{example-image}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[]%
 		[t]%
@@ -92,7 +94,7 @@
 }%
 
 \noindent
-\begin{minipage}
+\begin{minipage}%
 	[b]%
 	[\ht\vabox]%
 	[b]%
@@ -104,7 +106,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b]%
 	[\ht\vabox]%
 	[t]%
@@ -116,7 +118,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b]%
 	[\ht\vabox]%
 	[t]%
@@ -128,7 +130,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b]%
 	[\ht\vabox]%
 	[c]%
@@ -140,7 +142,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[b]%
 	[\ht\vabox]%
 	[t]%
@@ -155,7 +157,7 @@
 
 \begin{verticallyaligned}
 	\noindent
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[\vamaxheight]%
 		[b]%
@@ -167,7 +169,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[\vamaxheight]%
 		[t]%
@@ -179,7 +181,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[\vamaxheight]%
 		[t]%
@@ -191,7 +193,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[\vamaxheight]%
 		[c]%
@@ -203,7 +205,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[b]%
 		[\vamaxheight]%
 		[t]%
@@ -222,7 +224,7 @@
 \begin{figure}
 	\begin{verticallyaligned}
 		\noindent
-		\begin{minipage}
+		\begin{minipage}%
 			[b]%
 			[\vamaxheight]%
 			[c]%
@@ -235,7 +237,7 @@
 		\end{minipage}
 		%
 		\hfill
-		\begin{minipage}
+		\begin{minipage}%
 			[b]%
 			[\vamaxheight]%
 			[t]%

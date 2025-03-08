@@ -4,7 +4,9 @@
 \usepackage{lipsum}
 \usepackage{graphicx}
 \usepackage{environ}
-\usepackage[showframe=true]{geometry}
+\usepackage%
+[%
+	showframe=true]{geometry}
 
 \newsavebox{\vabox}
 
@@ -34,7 +36,7 @@
 \begin{document}
 
 \sbox{\vabox}{%
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -47,7 +49,7 @@
 			width=\textwidth]{example-image-a}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -60,7 +62,7 @@
 			width=\textwidth]{example-image-b}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -73,7 +75,7 @@
 			width=\textwidth]{example-image-c}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -86,7 +88,7 @@
 			width=\textwidth]{example-image}
 	\end{minipage}
 	%
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -102,7 +104,7 @@
 }%
 
 \noindent
-\begin{minipage}
+\begin{minipage}%
 	[%
 		b]%
 	[%
@@ -116,7 +118,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[%
 		b]%
 	[%
@@ -130,7 +132,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[%
 		b]%
 	[%
@@ -144,7 +146,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[%
 		b]%
 	[%
@@ -158,7 +160,7 @@
 \end{minipage}
 %
 \hfill
-\begin{minipage}
+\begin{minipage}%
 	[%
 		b]%
 	[%
@@ -175,7 +177,7 @@
 
 \begin{verticallyaligned}
 	\noindent
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -189,7 +191,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -203,7 +205,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -217,7 +219,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -231,7 +233,7 @@
 	\end{minipage}
 	%
 	\hfill
-	\begin{minipage}
+	\begin{minipage}%
 		[%
 			b]%
 		[%
@@ -253,7 +255,7 @@
 \begin{figure}
 	\begin{verticallyaligned}
 		\noindent
-		\begin{minipage}
+		\begin{minipage}%
 			[%
 				b]%
 			[%
@@ -268,7 +270,7 @@
 		\end{minipage}
 		%
 		\hfill
-		\begin{minipage}
+		\begin{minipage}%
 			[%
 				b]%
 			[%
