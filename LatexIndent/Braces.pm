@@ -161,42 +161,42 @@ sub _construct_args_with_between{
     my $allArgumentRegEx = qr{
      (?:
        (?:
-         (
+         (?<MANDARGBEGIN>
           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
           (?<!\\)
           \{
           \h*
           (\R*)
          )
-         (
+         (?<MANDARGBODY>
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
             (??{ $allCodeBlocks })
           )*
          )
-         (
+         (?<MANDARGEND>
           (?<!\\)
           \}
          )
        )
        |
        (?:
-         (
+         (?<OPTARGBEGIN>
           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
           (?<!\\)
           \[
           \h*
           (\R*)
          )
-         (
+         (?<OPTARGBODY>
           (?:
             (?: $argumentBodyRegEx )             # argument body 
             |
             (??{ $allCodeBlocks })
           )*
          )
-         (
+         (?<OPTARGEND>
           (?<!\\)
           \]
          )
@@ -468,22 +468,22 @@ sub _indent_all_args {
 
     $body =~ s|\G$allArgumentRegEx|
        # begin
-       my $begin = ($1?$1:$5);
+       my $begin = ($+{MANDARGBEGIN} ? $+{MANDARGBEGIN}:$+{OPTARGBEGIN});
 
        # mandatory or optional
-       my $currentIndentation = ($1 ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
+       my $currentIndentation = ($+{MANDARGBEGIN} ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
 
        # does arg body start on own line?
        my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
 
        # body 
-       my $argBody = (defined $3?$3:$7);
+       my $argBody = (defined $+{MANDARGBODY}?$+{MANDARGBODY}:$+{OPTARGBODY});
        
        # end
-       my $end = ($4?$4:$8);
+       my $end = ($+{MANDARGEND}?$+{MANDARGEND}:$+{OPTARGEND});
 
        # mandatory or optional argument?
-       my $mandatoryArgument = ($1?1:0);
+       my $mandatoryArgument = ($+{MANDARGEND}?1:0);
 
        # storage before finding nested things
        my $horizontalTrailingSpace=$9?$9:q();
@@ -530,7 +530,7 @@ sub _indent_all_args {
              $argType = "optional";
           }
 
-          my $mandatoryArg = LatexIndent::MandatoryArgument->new(
+          my $argument = LatexIndent::MandatoryArgument->new(
                                                 begin=>$begin,                                       # begin statement
                                                 body=>$argBody,                                      # body  statement
                                                 end=>$end,                                           # end   statement
@@ -550,20 +550,20 @@ sub _indent_all_args {
 
             $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
 
-            $mandatoryArg->modify_line_breaks_before_begin if ${$mandatoryArg}{BeginStartsOnOwnLine} != 0;  
+            $argument->modify_line_breaks_before_begin if ${$argument}{BeginStartsOnOwnLine} != 0;  
 
-            $mandatoryArg->modify_line_breaks_before_body if ${$mandatoryArg}{BodyStartsOnOwnLine} != 0;  
+            $argument->modify_line_breaks_before_body if ${$argument}{BodyStartsOnOwnLine} != 0;  
 
-            $mandatoryArg->modify_line_breaks_before_end if ${$mandatoryArg}{EndStartsOnOwnLine} != 0;
+            $argument->modify_line_breaks_before_end if ${$argument}{EndStartsOnOwnLine} != 0;
 
-            $mandatoryArg->modify_line_breaks_after_end;
+            $argument->modify_line_breaks_after_end;
 
             # get updated begin, body, end
-            $begin = ${$mandatoryArg}{begin};
-            $argBody = ${$mandatoryArg}{body};
-            $end = ${$mandatoryArg}{end};
+            $begin = ${$argument}{begin};
+            $argBody = ${$argument}{body};
+            $end = ${$argument}{end};
 
-            $argBodyStartsOwnLine = ${$mandatoryArg}{linebreaksAtEnd}{begin};
+            $argBodyStartsOwnLine = ${$argument}{linebreaksAtEnd}{begin};
        }
 
        # add indentation
