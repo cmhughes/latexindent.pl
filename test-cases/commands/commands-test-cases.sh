@@ -218,6 +218,9 @@ egrep 'found:' indent.log > github-issue-35-no-at3.txt
 latexindent.pl -w figureValign.tex -s
 
 latexindent.pl -s pstricks1 -o=+-default -l=../texexchange/indentPreamble
+
+latexindent.pl -s -t sub-super-scripts -o=+-default
+egrep 'found:' indent.log > sub-super-scripts.txt
 exit
 
 # <!---- RETURN TO SPECIALS
@@ -225,7 +228,6 @@ exit
 # <!---- RETURN TO SPECIALS
 
 # sub and super scripts
-latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-default.tex
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
 latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
 

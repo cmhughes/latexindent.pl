@@ -63,7 +63,7 @@ use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
 use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
 use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
 use LatexIndent::Item                          qw/find_items construct_list_of_items/;
-use LatexIndent::Braces                        qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_commands_with_args_regex/;
+use LatexIndent::Blocks                        qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
 use LatexIndent::Command                       qw/construct_command_regexp/;
 use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
@@ -212,7 +212,7 @@ sub operate_on_file {
 sub construct_regular_expressions {
     my $self = shift;
     $self->construct_trailing_comment_regexp;
-    $self->_construct_commands_with_args_regex;
+    $self->_construct_code_blocks_regex;
     # $self->construct_environments_regexp;                      # to be ditched
     # $self->construct_ifelsefi_regexp;                          # to be ditched
     # $self->construct_list_of_items;                            # to be ditched

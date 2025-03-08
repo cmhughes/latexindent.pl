@@ -245,20 +245,18 @@ itemNames:
 # specialBeginEnd is, by default, mathmode focus, although
 # there's no restrictions
 specialBeginEnd:
-  displayMath:
-    begin: (?<!\\)\\\[            # \[ but *not* \\[
-    end: \\\]                     # \]
-    lookForThis: 1
-  inlineMath:
-    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$
-    body: [^$]*?                  # anything *except* $
-    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$
-    lookForThis: 1
-  displayMathTeX:
-    begin: \$\$                   # $$
-    end: \$\$                     # $$
-    lookForThis: 1
-  specialBeforeCommand: 0
+  - name: displayMath                                      # NEW specified as ORDERED array
+    begin: (?<!\\)\\\[            # \[ but *not* \\[       # NEW specified as ORDERED array
+    end: \\\]                     # \]                     # NEW specified as ORDERED array
+  - name: inlineMath                                       # NEW specified as ORDERED array
+    begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$   # NEW specified as ORDERED array
+    body: [^$]*?                  # anything *except* $    # NEW specified as ORDERED array
+    end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$   # NEW specified as ORDERED array
+  - name: displayMathTeX                                   # NEW specified as ORDERED array
+    begin: \$\$                   # $$                     # NEW specified as ORDERED array
+    end: \$\$                     # $$                     # NEW specified as ORDERED array
+    lookForThis: 1                                         # NEW specified as ORDERED array
+  ##specialBeforeCommand: 0                                  # <!---- PROBABLY DITCH
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

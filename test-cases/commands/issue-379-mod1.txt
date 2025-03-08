@@ -1,5 +1,7 @@
 TRACE: found: foreach (commands)
+TRACE: found: inlineMath (special)
 TRACE: found: H (namedGroupingBracesBrackets)
+TRACE: found: inlineMath (special)
 TRACE: found: H (namedGroupingBracesBrackets)
 TRACE: found: node (commands)
 TRACE: found: node (commands)

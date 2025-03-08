@@ -1,0 +1,4 @@
+TRACE: found: parbox (commands)
+TRACE: found: inlineMath (special)
+TRACE: found: int_ (commands)
+TRACE: found: displayMath (special)

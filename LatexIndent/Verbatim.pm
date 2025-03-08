@@ -403,24 +403,24 @@ sub find_verbatim_special {
     my $self = shift;
 
     # loop through specialBeginEnd
-    while ( my ( $specialName, $BeginEnd ) = each %{ $mainSettings{specialBeginEnd} } ) {
+    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+
+        my $specialName = ${$_}{name};
 
         # only classify special Verbatim if lookForThis is 'verbatim'
-        if (    ( ref($BeginEnd) eq "HASH" )
-            and ${$BeginEnd}{lookForThis} =~ m/v/s
-            and ${$BeginEnd}{lookForThis} eq 'verbatim' )
+        if ( ${$_}{lookForThis}  =~ m/v/s and ${$_}{lookForThis} eq 'verbatim' )
         {
             $logger->trace('*Searching for VERBATIM special (see specialBeginEnd)') if $is_t_switch_active;
 
             my $verbatimRegExp = qr/
                             (
-                                ${$BeginEnd}{begin}
+                                ${$_}{begin}
                             )
                             (
                                 .*?
                             )                    
                             (
-                                ${$BeginEnd}{end}
+                                ${$_}{end}
                             )                    
                             (\h*)?                    # possibly followed by horizontal space
                             (\R)?                     # possibly followed by a line break 

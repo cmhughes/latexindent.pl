@@ -801,6 +801,13 @@ sub yaml_read_settings {
     }
 
     $argumentsBetweenCommands = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
+
+    # special: set default look for this as 1 if not specified
+    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        # default look for this
+        ${$_}{lookForThis} = 1 if not defined ${$_}{lookForThis};
+    }
+
     return;
 }
 

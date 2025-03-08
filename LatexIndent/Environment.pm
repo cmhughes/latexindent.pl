@@ -22,7 +22,7 @@ use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::GetYamlSettings  qw/%mainSettings/;
 use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::Braces           qw/$braceBracketRegExpBasic/;
+use LatexIndent::Blocks           qw/$braceBracketRegExpBasic/;
 use LatexIndent::IfElseFi         qw/$ifElseFiBasicRegExp/;
 use LatexIndent::Heading          qw/$allHeadingsRegexp/;
 use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;

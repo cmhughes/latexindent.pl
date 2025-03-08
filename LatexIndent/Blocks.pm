@@ -1,4 +1,4 @@
-package LatexIndent::Braces;
+package LatexIndent::Blocks;
 
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -25,19 +25,18 @@ use LatexIndent::Tokens           qw/%tokens/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_commands_with_args_regex/;
+our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $allCodeBlocks;
 our $allArgumentRegEx; 
-
 our $argumentBodyRegEx;
-
 our $environmentRegEx;
-
 our $ifElseFiRegExp; 
+our $specialRegExp = q();
+our %specialLookUpName;
 
-sub _construct_commands_with_args_regex {
+sub _construct_code_blocks_regex {
 
      $allArgumentRegEx = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{arguments}}{between}/ );
      my $commandName = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
@@ -97,6 +96,39 @@ sub _construct_commands_with_args_regex {
                     \\fi(?![a-zA-Z])                    # \fi statement 
                 )
      }xs;
+     
+     #
+     # specials regex
+     #
+     my $specialBeginRegEx = q();
+     my $specialEndRegEx = q(); 
+     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        next if !${$_}{lookForThis}; 
+
+        $specialBeginRegEx .= ( $specialBeginRegEx eq "" ? q() : "|" ) . ${$_}{begin};
+        $specialEndRegEx .= ( $specialEndRegEx eq "" ? q() : "|" ) . ${$_}{end};
+     }
+
+     $specialBeginRegEx = qr{$specialBeginRegEx}x;
+     $specialEndRegEx = qr{$specialEndRegEx}x;
+
+     $specialRegExp = qr{
+                (?<SPECIALBEGIN>
+                    $specialBeginRegEx
+                )                         
+                (?<SPECIALBODY>                    
+                  (?>                               
+                      (??{ $specialRegExp })     
+                      |
+                      (?!                           
+                          (?:$specialEndRegEx)                  
+                      ).                            
+                  )*                                
+                )
+                (?<SPECIALEND>                    
+                    $specialEndRegEx
+                )
+     }xs;
 
      #
      # (commands, named, key=value, unnamed) <ARGUMENTS> regex
@@ -131,6 +163,10 @@ sub _construct_commands_with_args_regex {
            |
            (?<IFELSEFI>
                $ifElseFiRegExp 
+           )
+           |
+           (?<SPECIAL>
+               $specialRegExp 
            )
         )
      }x;
@@ -362,6 +398,59 @@ sub _find_all_code_blocks {
              }
 
              $indentedThing = $begin.$ifElseFibody.$end;
+       } elsif ($+{SPECIAL}){
+             my $lookupBegin = $+{SPECIALBEGIN};
+             $begin = $1.$+{SPECIALBEGIN};
+             my $specialbody = $+{SPECIALBODY};
+             my $end = $+{SPECIALEND};
+
+             # get the name of special
+             if (not defined $specialLookUpName{$lookupBegin}){
+                foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+                   next if !${$_}{lookForThis}; 
+                   if($lookupBegin =~m^${$_}{begin}^s){
+                     $specialLookUpName{$lookupBegin} = ${$_}{name};
+                   }
+                }
+             }
+             my $name = $specialLookUpName{$lookupBegin};
+             $modifyLineBreaksName = "special";
+
+             my $specialObj; 
+
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+                $specialObj = LatexIndent::Special->new(name=>$name,
+                                                    begin=>$begin,
+                                                    modifyLineBreaksYamlName=>$modifyLineBreaksName,
+                                                    arguments=> 0,
+                                                    type=>"special",
+                );
+             }
+
+             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             
+             # store settings for future use
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                $specialObj->yaml_get_indentation_settings_for_this_object;
+             }
+             
+             # ***
+             # find nested things
+             # ***
+             $specialbody = _find_all_code_blocks($specialbody ,$currentIndentation) if $specialbody =~m^[{[]^s;
+
+             my $specialIndentation = q();
+
+             # special BODY indentation, possibly
+             if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
+                $specialIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+
+                # add indentation
+                $specialbody =~ s"^"$specialIndentation"mg;
+                $specialbody =~ s"^$specialIndentation""s;
+             }
+
+             $indentedThing = $begin.$specialbody.$end;
        } else {
           # argument body is always in $8
           my $argBody = $8;
@@ -405,7 +494,7 @@ sub _find_all_code_blocks {
           }
 
           if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName} or $is_m_switch_active){
-             $bracesBracketsObj = LatexIndent::Braces->new(name=>$bracesBracketsName,
+             $bracesBracketsObj = LatexIndent::Blocks->new(name=>$bracesBracketsName,
                                                  begin=>$begin,
                                                  modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                  arguments=>1,

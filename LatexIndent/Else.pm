@@ -21,7 +21,7 @@ use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile          qw/$logger/;
-use LatexIndent::Braces           qw/$braceBracketRegExpBasic/;
+use LatexIndent::Blocks           qw/$braceBracketRegExpBasic/;
 use LatexIndent::Special          qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading          qw/$allHeadingsRegexp/;
 use Exporter                      qw/import/;
