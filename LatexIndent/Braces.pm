@@ -50,15 +50,15 @@ sub _construct_commands_with_args_regex {
      #
      my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
      $environmentRegEx = qr{
-        (?<envbegin>                                  # 
-           \\begin\{(?<envname>$environmentName)\}    # \begin{<envname>}
+        (?<ENVBEGIN>                                  # 
+           \\begin\{(?<ENVNAME>$environmentName)\}    # \begin{<ENVNAME>}
         )                                             # 
-        (?<envargs>                                   # *possible* arguments
+        (?<ENVARGS>                                   # *possible* arguments
          $allArgumentRegEx*                           # 
         )                                             # 
-        (?<envbody>                                   # body
+        (?<ENVBODY>                                   # body
           \h*
-          (?<envLineBreaksAtEndBegin>
+          (?<ENVLINEBREAKSATENDBEGIN>
            \R*
           )
           (?>                                         # 
@@ -69,8 +69,8 @@ sub _construct_commands_with_args_regex {
               ).                                      # 
           )*                                          # 
         )                                             # 
-        (?<envend>                                    # \end{<envname>}
-           \\end\{\g{envname}\}                       # 
+        (?<ENVEND>                                    # \end{<ENVNAME>}
+           \\end\{\g{ENVNAME}\}                       # 
         )                                             # 
      }xs;
      
@@ -79,12 +79,12 @@ sub _construct_commands_with_args_regex {
      #
      my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
      $ifElseFiRegExp = qr{
-                (?<ifelsefiBEGIN>
-                    (?<!\\newif)\\(?<ifelsefiNAME>
+                (?<IFELSEFIBEGIN>
+                    (?<!\\newif)\\(?<IFELSEFINAME>
                       $ifElseFiNameRegExp
                     )         # begin statement, e.g \ifnum, \ifodd
                 )                         
-                (?<ifelsefiBODY>                    
+                (?<IFELSEFIBODY>                    
                   (?>                               
                       (??{ $ifElseFiRegExp })     
                       |
@@ -93,7 +93,7 @@ sub _construct_commands_with_args_regex {
                       ).                            
                   )*                                
                 )
-                (?<ifelsefiEND>                    
+                (?<IFELSEFIEND>                    
                     \\fi(?![a-zA-Z])                    # \fi statement 
                 )
      }xs;
@@ -125,11 +125,11 @@ sub _construct_commands_with_args_regex {
               )
            )
            |
-           (?<environment>
+           (?<ENVIRONMENT>
                $environmentRegEx 
            )
            |
-           (?<ifelsefi>
+           (?<IFELSEFI>
                $ifElseFiRegExp 
            )
         )
@@ -228,13 +228,13 @@ sub _find_all_code_blocks {
        #
        # environment
        #
-       if ($+{environment}){
-             $begin = $1.$+{envbegin};
-             my $envbody = $+{envbody};
-             my $end = $+{envend};
-             my $name = $+{envname};
+       if ($+{ENVIRONMENT}){
+             $begin = $1.$+{ENVBEGIN};
+             my $envbody = $+{ENVBODY};
+             my $end = $+{ENVEND};
+             my $name = $+{ENVNAME};
              $modifyLineBreaksName = "environments";
-             my $linebreaksAtEndBegin=($+{envLineBreaksAtEndBegin}?1:0);
+             my $linebreaksAtEndBegin=($+{ENVLINEBREAKSATENDBEGIN}?1:0);
 
              my $environmentObj; 
 
@@ -244,7 +244,7 @@ sub _find_all_code_blocks {
                                                     body=>$envbody, 
                                                     end=>$end,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
-                                                    arguments=> ($+{envargs}?1:0),
+                                                    arguments=> ($+{ENVARGS}?1:0),
                                                     type=>"environment",
                                                     linebreaksAtEnd=>{
                                                       begin=>$linebreaksAtEndBegin,
@@ -261,8 +261,8 @@ sub _find_all_code_blocks {
              
              # argument indentation
              my $argBody = q();
-             if ($+{envargs}){
-                $argBody = _indent_all_args($name, $modifyLineBreaksName, $+{envargs} ,$currentIndentation);
+             if ($+{ENVARGS}){
+                $argBody = _indent_all_args($name, $modifyLineBreaksName, $+{ENVARGS} ,$currentIndentation);
              }
           
              # ***
@@ -317,11 +317,11 @@ sub _find_all_code_blocks {
              }
 
              $indentedThing = $begin.$envbody.$end;
-       } elsif ($+{ifelsefi}){
-             $begin = $1.$+{ifelsefiBEGIN};
-             my $ifElseFibody = $+{ifelsefiBODY};
-             my $end = $+{ifelsefiEND};
-             my $name = $+{ifelsefiNAME};
+       } elsif ($+{IFELSEFI}){
+             $begin = $1.$+{IFELSEFIBEGIN};
+             my $ifElseFibody = $+{IFELSEFIBODY};
+             my $end = $+{IFELSEFIEND};
+             my $name = $+{IFELSEFINAME};
              $modifyLineBreaksName = "ifElseFi";
 
              my $ifElseFiObj; 
