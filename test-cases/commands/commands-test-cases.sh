@@ -107,7 +107,7 @@ do
    # <!---- RETURN TO THESE
    # <!---- RETURN TO THESE
    # <!---- RETURN TO THESE
-   ##### latexindent.pl figureValign.tex -m -s -o=figureValign-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,mand-args-mod$i.yaml,figValign-yaml.yaml,../filecontents/indentPreambleYes.yaml
+   latexindent.pl figureValign -m -s -o=figureValign-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,mand-args-mod$i,figValign-yaml,../filecontents/indentPreambleYes,SAS
    ##### latexindent.pl figureValign.tex -m -s -o=figureValign-opt-mod$i.tex -l=command-name-not-finishes-with-line-break.yaml,../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,figValign-yaml.yaml,makebox.yaml,../filecontents/indentPreambleYes.yaml 
 
    set +x

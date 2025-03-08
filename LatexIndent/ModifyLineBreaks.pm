@@ -62,8 +62,12 @@ sub modify_line_breaks_before_begin {
                 ${$self}{begin} =~ s/^\s*//sg if ${$self}{type} eq "something-with-braces";
 
                 # arguments
-                ${$self}{begin} =~ s/^(\h*(?:$argumentsBetweenCommands)*)//s if (${$self}{type} eq 'argument' and ${$self}{modifyLineBreaksName} eq 'commands');
-                ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
+                 if (${$self}{type} eq 'argument' and ${$self}{modifyLineBreaksName} eq 'commands'){
+                    ${$self}{begin} =~ s/^(\h*(?:$argumentsBetweenCommands)*)//s;
+                    ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
+                } else {
+                    ${$self}{begin} = "\n".${$self}{begin};
+                }
             }
             elsif ( $_ == 2 ) {
                 ${$self}{begin} =~ s/^(\h*)//s;
@@ -321,7 +325,7 @@ sub modify_line_breaks_after_end {
                 if (${$self}{trailingComment}){
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
                 } else {
-                    ${$self}{end} .= (${$self}{linebreaksAtEnd}{end} ? ${$self}{horizontalTrailingSpace} : $tokens{mAfterEndRemove}).${$self}{trailingComment};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.(${$self}{linebreaksAtEnd}{end} ? $tokens{mAfterEndRemove} : q()).${$self}{trailingComment};
             }
         }
     }
@@ -478,7 +482,7 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\}|\[|\])@$1$2@sg;
 
     # anything else
-    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}@$1 @sg;
+    ${$self}{body} =~s@(\}|\])(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
 
     #
     # trailing comment work

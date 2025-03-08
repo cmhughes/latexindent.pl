@@ -100,7 +100,7 @@ sub unprotect_blank_lines {
     while ( ${$self}{body} =~ m/$blankLineToken/s ) {
 
         # when the blank line token occupies the whole line
-        ${$self}{body} =~ s/^\h*$blankLineToken$//mg;
+        ${$self}{body} =~ s/^\h*$blankLineToken\h*$//mg;
 
         # when there's stuff *after* the blank line token
         ${$self}{body} =~ s/(^\h*)$blankLineToken/"\n".$1/meg;

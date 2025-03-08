@@ -57,6 +57,10 @@ sub _construct_commands_with_args_regex {
          $allArgumentRegEx*                           # 
         )                                             # 
         (?<envbody>                                   # body
+          \h*
+          (?<envLineBreaksAtEndBegin>
+           \R*
+          )
           (?>                                         # 
               (??{ $environmentRegEx })               # 
               |                                       # 
@@ -230,15 +234,21 @@ sub _find_all_code_blocks {
              my $end = $+{envend};
              my $name = $+{envname};
              $modifyLineBreaksName = "environments";
+             my $linebreaksAtEndBegin=($+{envLineBreaksAtEndBegin}?1:0);
 
              my $environmentObj; 
 
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
                 $environmentObj = LatexIndent::Environment->new(name=>$name,
                                                     begin=>$begin,
+                                                    body=>$envbody, 
+                                                    end=>$end,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> ($+{envargs}?1:0),
                                                     type=>"environment",
+                                                    linebreaksAtEnd=>{
+                                                      begin=>$linebreaksAtEndBegin,
+                                                    },
                 );
              }
 
@@ -260,18 +270,50 @@ sub _find_all_code_blocks {
              # ***
              $envbody = _find_all_code_blocks($envbody,$currentIndentation) if $envbody =~m^[{[]^s;
 
-             my $environmentIndentation = q();
+             my $environmentIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+
+             #
+             # m switch linebreak adjustment
+             #
+             if ($is_m_switch_active){
+                   # <arguments> appended to begin{<env>}
+                   ${$environmentObj}{begin} = ${$environmentObj}{begin}.$argBody;
+
+                   # get the *updated* environment body from above nested code blocks routine
+                   ${$environmentObj}{body} = $envbody;
+
+                   # poly-switch work
+                   ${$environmentObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
+                   ${$environmentObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+
+                   $environmentObj->modify_line_breaks_before_body if ${$environmentObj}{BodyStartsOnOwnLine} != 0;  
+
+                   $environmentObj->modify_line_breaks_before_end if ${$environmentObj}{EndStartsOnOwnLine} != 0;
+
+                   # get updated begin, body, end
+                   $begin = ${$environmentObj}{begin};
+                   $envbody = ${$environmentObj}{body};
+                   $end = ${$environmentObj}{end};
+
+                   # delete arg body for future as we don't want to duplicate them later on
+                   $argBody = q();
+
+                   $linebreaksAtEndBegin = ${${$environmentObj}{linebreaksAtEnd}}{begin};
+                   
+                   # add indentation to BEGIN statement
+                   $begin =~ s"^"$environmentIndentation"mg;
+                   $begin =~ s"^$environmentIndentation(\h*\\begin\{)"$1"m;
+             }
 
              # environment BODY indentation, possibly
-             if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
-                $environmentIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+             if ($environmentIndentation ne ''){
 
                 # prepend argument body
                 $envbody = $argBody.$envbody;
 
                 # add indentation
                 $envbody =~ s"^"$environmentIndentation"mg;
-                $envbody =~ s"^$environmentIndentation""s;
+                $envbody =~ s"^$environmentIndentation""s if (!$linebreaksAtEndBegin or $argBody);
              }
 
              $indentedThing = $begin.$envbody.$end;
