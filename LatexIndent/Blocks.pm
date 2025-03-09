@@ -255,29 +255,29 @@ sub _find_all_code_blocks {
 
     $body =~ s/$allCodeBlocks/
        
-       # begin is always in $1
+       my $name;
        my $begin = $1;
-
+       my $body;
+       my $end;
        my $modifyLineBreaksName;
-       my $indentedThing = q();
+       my $codeBlockObj;
+       my $addedIndentation;
        
        #
        # environment
        #
        if ($+{ENVIRONMENT}){
              $begin = $1.$+{ENVBEGIN};
-             my $envbody = $+{ENVBODY};
-             my $end = $+{ENVEND};
-             my $name = $+{ENVNAME};
+             $body = $+{ENVBODY};
+             $end = $+{ENVEND};
+             $name = $+{ENVNAME};
              $modifyLineBreaksName = "environments";
              my $linebreaksAtEndBegin=($+{ENVLINEBREAKSATENDBEGIN}?1:0);
 
-             my $environmentObj; 
-
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
-                $environmentObj = LatexIndent::Environment->new(name=>$name,
+                $codeBlockObj = LatexIndent::Environment->new(name=>$name,
                                                     begin=>$begin,
-                                                    body=>$envbody, 
+                                                    body=>$body, 
                                                     end=>$end,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> ($+{ENVARGS}?1:0),
@@ -292,7 +292,7 @@ sub _find_all_code_blocks {
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
-                $environmentObj->yaml_get_indentation_settings_for_this_object;
+                $codeBlockObj->yaml_get_indentation_settings_for_this_object;
              }
              
              # argument indentation
@@ -304,66 +304,62 @@ sub _find_all_code_blocks {
              # ***
              # find nested things
              # ***
-             $envbody = _find_all_code_blocks($envbody,$currentIndentation) if $envbody =~m^[{[]^s;
+             $body = _find_all_code_blocks($body,$currentIndentation) if $body =~m^[{[]^s;
 
-             my $environmentIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+             $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
              #
              # m switch linebreak adjustment
              #
              if ($is_m_switch_active){
                    # <arguments> appended to begin{<env>}
-                   ${$environmentObj}{begin} = ${$environmentObj}{begin}.$argBody;
+                   ${$codeBlockObj}{begin} = ${$codeBlockObj}{begin}.$argBody;
 
                    # get the *updated* environment body from above nested code blocks routine
-                   ${$environmentObj}{body} = $envbody;
+                   ${$codeBlockObj}{body} = $body;
 
                    # poly-switch work
-                   ${$environmentObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
-                   ${$environmentObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+                   ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
+                   ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
 
-                   $environmentObj->modify_line_breaks_before_body if ${$environmentObj}{BodyStartsOnOwnLine} != 0;  
+                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
-                   $environmentObj->modify_line_breaks_before_end if ${$environmentObj}{EndStartsOnOwnLine} != 0;
+                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
 
                    # get updated begin, body, end
-                   $begin = ${$environmentObj}{begin};
-                   $envbody = ${$environmentObj}{body};
-                   $end = ${$environmentObj}{end};
+                   $begin = ${$codeBlockObj}{begin};
+                   $body = ${$codeBlockObj}{body};
+                   $end = ${$codeBlockObj}{end};
 
                    # delete arg body for future as we don't want to duplicate them later on
                    $argBody = q();
 
-                   $linebreaksAtEndBegin = ${${$environmentObj}{linebreaksAtEnd}}{begin};
+                   $linebreaksAtEndBegin = ${${$codeBlockObj}{linebreaksAtEnd}}{begin};
                    
                    # add indentation to BEGIN statement
-                   $begin =~ s"^"$environmentIndentation"mg;
-                   $begin =~ s"^$environmentIndentation(\h*\\begin\{)"$1"m;
+                   $begin =~ s"^"$addedIndentation"mg;
+                   $begin =~ s"^$addedIndentation(\h*\\begin\{)"$1"m;
              }
 
              # environment BODY indentation, possibly
-             if ($environmentIndentation ne ''){
+             if ($addedIndentation ne ''){
 
                 # prepend argument body
-                $envbody = $argBody.$envbody;
+                $body = $argBody.$body;
 
                 # add indentation
-                $envbody =~ s"^"$environmentIndentation"mg;
-                $envbody =~ s"^$environmentIndentation""s if (!$linebreaksAtEndBegin or $argBody);
+                $body =~ s"^"$addedIndentation"mg;
+                $body =~ s"^$addedIndentation""s if (!$linebreaksAtEndBegin or $argBody);
              }
-
-             $indentedThing = $begin.$envbody.$end;
        } elsif ($+{IFELSEFI}){
              $begin = $1.$+{IFELSEFIBEGIN};
-             my $ifElseFibody = $+{IFELSEFIBODY};
-             my $end = $+{IFELSEFIEND};
-             my $name = $+{IFELSEFINAME};
+             $body = $+{IFELSEFIBODY};
+             $end = $+{IFELSEFIEND};
+             $name = $+{IFELSEFINAME};
              $modifyLineBreaksName = "ifElseFi";
 
-             my $ifElseFiObj; 
-
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
-                $ifElseFiObj = LatexIndent::IfElseFi->new(name=>$name,
+                $codeBlockObj = LatexIndent::IfElseFi->new(name=>$name,
                                                     begin=>$begin,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> 0,
@@ -375,34 +371,30 @@ sub _find_all_code_blocks {
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
-                $ifElseFiObj->yaml_get_indentation_settings_for_this_object;
+                $codeBlockObj->yaml_get_indentation_settings_for_this_object;
              }
              
              # ***
              # find nested things
              # ***
-             $ifElseFibody = _find_all_code_blocks($ifElseFibody ,$currentIndentation) if $ifElseFibody =~m^[{[]^s;
-
-             my $ifElseFiIndentation = q();
+             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~m^[{[]^s;
 
              # ifElseFi BODY indentation, possibly
              if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
-                $ifElseFiIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+                $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
                 # add indentation
-                $ifElseFibody =~ s"^"$ifElseFiIndentation"mg;
-                $ifElseFibody =~ s"^$ifElseFiIndentation""s;
+                $body =~ s"^"$addedIndentation"mg;
+                $body =~ s"^$addedIndentation""s;
 
                 # \else statement gets special treatment; not that checking for \\fi ensures we're at the inner most block
-                $ifElseFibody =~ s"$ifElseFiIndentation(\\else)"$1"s if $ifElseFibody !~ m|\\fi|s ;
+                $body =~ s"$addedIndentation(\\else)"$1"s if $body !~ m|\\fi|s ;
              }
-
-             $indentedThing = $begin.$ifElseFibody.$end;
        } elsif ($+{SPECIAL}){
              my $lookupBegin = $+{SPECIALBEGIN};
              $begin = $1.$+{SPECIALBEGIN};
-             my $specialbody = $+{SPECIALBODY};
-             my $end = $+{SPECIALEND};
+             $body = $+{SPECIALBODY};
+             $end = $+{SPECIALEND};
 
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
@@ -416,10 +408,8 @@ sub _find_all_code_blocks {
              my $name = $specialLookUpName{$lookupBegin};
              $modifyLineBreaksName = "special";
 
-             my $specialObj; 
-
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
-                $specialObj = LatexIndent::Special->new(name=>$name,
+                $codeBlockObj = LatexIndent::Special->new(name=>$name,
                                                     begin=>$begin,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> 0,
@@ -431,32 +421,26 @@ sub _find_all_code_blocks {
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
-                $specialObj->yaml_get_indentation_settings_for_this_object;
+                $codeBlockObj->yaml_get_indentation_settings_for_this_object;
              }
              
              # ***
              # find nested things
              # ***
-             $specialbody = _find_all_code_blocks($specialbody ,$currentIndentation) if $specialbody =~m^[{[]^s;
-
-             my $specialIndentation = q();
+             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~m^[{[]^s;
 
              # special BODY indentation, possibly
              if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
-                $specialIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+                $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
                 # add indentation
-                $specialbody =~ s"^"$specialIndentation"mg;
-                $specialbody =~ s"^$specialIndentation""s;
+                $body =~ s"^"$addedIndentation"mg;
+                $body =~ s"^$addedIndentation""s;
              }
-
-             $indentedThing = $begin.$specialbody.$end;
        } else {
           # argument body is always in $8
           my $argBody = $8;
-          my $bracesBracketsName;
           my $BeginStartsOnOwnLineAlias;
-          my $bracesBracketsObj; 
           my $keyEqualsValue = q();
 
           #
@@ -464,22 +448,22 @@ sub _find_all_code_blocks {
           #
           if ($4) {                                                    # 
              $begin = $1.q(\\);                                        # \\
-             $bracesBracketsName = $5;                                 # <command name>
+             $name = $5;                                               # <command name>
              $modifyLineBreaksName="commands";                         # 
              $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";    # --------------------------------
           } elsif ($7) {                                               # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
-             $bracesBracketsName = $7 ;                                # <name of named braces brackets>
+             $name = $7 ;                                              # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
              $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
           } elsif($6)  {                                               # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
           #                                                            # 
-             $bracesBracketsName = $6;                                 # <name of key = value braces brackets>
-             $bracesBracketsName =~ s|(\s*=$)||s;                      # 
+             $name = $6;                                               # <name of key = value braces brackets>
+             $name =~ s|(\s*=$)||s;                                    # 
              $keyEqualsValue = $1;
              $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
              $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
@@ -488,13 +472,13 @@ sub _find_all_code_blocks {
           # unnamed braces and brackets                                # 
           #                                                            # 
              $begin = q();                                             # <possible leading space> 
-             $bracesBracketsName = q();                                # 
+             $name = q();                                              # 
              $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
              $BeginStartsOnOwnLineAlias = undef;                       # 
           }
 
-          if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName} or $is_m_switch_active){
-             $bracesBracketsObj = LatexIndent::Blocks->new(name=>$bracesBracketsName,
+          if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+             $codeBlockObj = LatexIndent::Blocks->new(name=>$name,
                                                  begin=>$begin,
                                                  modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                  arguments=>1,
@@ -506,64 +490,65 @@ sub _find_all_code_blocks {
              );
           }
 
-          $logger->trace("*found: $bracesBracketsName ($modifyLineBreaksName)")         if $is_t_switch_active;
+          $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
 
           # store settings for future use
-          if (!$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}){
-             $bracesBracketsObj->yaml_get_indentation_settings_for_this_object;
+          if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+             $codeBlockObj->yaml_get_indentation_settings_for_this_object;
           }
 
           # m-switch: command name starts on own line
-          if ($is_m_switch_active and ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
-               ${$bracesBracketsObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
-               $bracesBracketsObj->modify_line_breaks_before_begin;  
-               $begin = ${$bracesBracketsObj}{begin};
+          if ($is_m_switch_active and ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
+               ${$codeBlockObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
+               $codeBlockObj->modify_line_breaks_before_begin;  
+               $begin = ${$codeBlockObj}{begin};
                $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
                $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
           }
 
           # argument indentation
-          $argBody = _indent_all_args($bracesBracketsName, $modifyLineBreaksName, $argBody,$currentIndentation);
+          $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody,$currentIndentation);
           
           # command BODY indentation, possibly
-          if (${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation} ne ''){
-             my $commandIndentation = ${$previouslyFoundSettings{$bracesBracketsName.$modifyLineBreaksName}}{indentation};
+          if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
+             $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
              # add indentation
-             $argBody =~ s"^"$commandIndentation"mg;
-             $argBody =~ s"^$commandIndentation""s;
+             $argBody =~ s"^"$addedIndentation"mg;
+             $argBody =~ s"^$addedIndentation""s;
           }
 
           # key = value is particular
-          $bracesBracketsName = $bracesBracketsName.$keyEqualsValue if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
+          $name = $name.$keyEqualsValue if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
           
           # put it all together
-          $indentedThing = $begin.$bracesBracketsName.$argBody;
+          $body = $name;
+          $end = $argBody;
        }
-       
-       $indentedThing;/sgex;
+
+       # ---------------------
+       # output indented block
+       # ---------------------
+       $begin.$body.$end;/sgex;
 
     return $body;
 }
 
 sub _indent_all_args {
 
-    my ($bracesBracketsName, $modifyLineBreaksName, $body , $indentation ) = @_;
+    my ($name, $modifyLineBreaksName, $body , $indentation ) = @_;
 
-    my $commandStorageName = $bracesBracketsName.$modifyLineBreaksName;
+    my $commandStorageName = $name.$modifyLineBreaksName;
 
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
 
     $body =~ s|\G$allArgumentRegEx|
+       # mandatory or optional argument?
+       my $mandatoryArgument = ($+{MANDARGBEGIN}?1:0);
+
        # begin
-       my $begin = ($+{MANDARGBEGIN} ? $+{MANDARGBEGIN}:$+{OPTARGBEGIN});
-
-       # mandatory or optional
-       my $currentIndentation = ($+{MANDARGBEGIN} ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
-
-       # does arg body start on own line?
-       my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
+       my $begin = ($mandatoryArgument ? $+{MANDARGBEGIN}:$+{OPTARGBEGIN});
 
        # body 
        my $argBody = (defined $+{MANDARGBODY}?$+{MANDARGBODY}:$+{OPTARGBODY});
@@ -571,8 +556,11 @@ sub _indent_all_args {
        # end
        my $end = ($+{MANDARGEND}?$+{MANDARGEND}:$+{OPTARGEND});
 
-       # mandatory or optional argument?
-       my $mandatoryArgument = ($+{MANDARGEND}?1:0);
+       # indentation
+       my $currentIndentation = ($mandatoryArgument ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
+
+       # does arg body start on own line?
+       my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
 
        # storage before finding nested things
        my $horizontalTrailingSpace=$9?$9:q();
