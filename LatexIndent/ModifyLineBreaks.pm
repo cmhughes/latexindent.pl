@@ -260,7 +260,7 @@ sub modify_line_breaks_after_end {
     #
 
     if (${$self}{EndFinishesWithLineBreak} == 0 ) {
-        ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.(${$self}{linebreaksAtEnd}{end}?$tokens{mAfterEndLineBreak}:q());
+        ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.(${$self}{linebreaksAtEnd}{end}?"\n":q());
         return;
     }
     my @polySwitchValues

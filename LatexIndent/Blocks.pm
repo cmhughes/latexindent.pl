@@ -326,12 +326,17 @@ sub _find_all_code_blocks {
                    # <arguments> appended to begin{<env>}
                    ${$codeBlockObj}{begin} = ${$codeBlockObj}{begin}.$argBody;
 
+                   # update linebreaksAtEnd of begin statement
+                   ${${$codeBlockObj}{linebreaksAtEnd} }{begin} = 1 if $argBody =~ m^\R$^s;
+
                    # get the *updated* environment body from above nested code blocks routine
                    ${$codeBlockObj}{body} = $body;
 
                    # poly-switch work
                    ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
                    ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+
+                   $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
 
                    $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
@@ -355,7 +360,7 @@ sub _find_all_code_blocks {
              # environment BODY indentation, possibly
              if ($addedIndentation ne ''){
 
-                # prepend argument body
+                # prepend argument body (when m switch not active)
                 $body = $argBody.$body;
 
                 # add indentation
@@ -412,7 +417,7 @@ sub _find_all_code_blocks {
              # storage before finding nested things
              my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
              my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
-             my $linebreaksAtEnd=($+{TRAILINGCOMMENT}?0:($+{TRAILINGLINEBREAK}?1:0));
+             my $linebreaksAtEnd=($+{TRAILINGLINEBREAK}?1:0);
 
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
@@ -472,6 +477,8 @@ sub _find_all_code_blocks {
                    ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
                    ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
                    ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+
+                   $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
 
                    $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
 

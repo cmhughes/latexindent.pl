@@ -1,9 +1,5 @@
 #!/bin/bash
-# set verbose mode, 
-# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
 #
-# hugely useful, for example:
-#       vim opt-args-test-cases.sh && ./opt-args-test-cases.sh && vim -p environments-second-opt-args.tex environments-second-opt-args-mod2.tex
 loopmax=16
 . ../common.sh
 
@@ -11,77 +7,79 @@ loopmax=16
 [[ $silentMode == 0 ]] && set -x 
 
 # optional arguments in environments
-latexindent.pl environments-first-opt-args.tex -m  -s -o=environments-first-opt-args-mod0.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml
-latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -s -o=environments-first-opt-args-remove-linebreaks1-mod0.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml
-latexindent.pl environments-simple-opt-args.tex -m  -s -o=environments-simple-opt-args-out.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml
+latexindent.pl environments-first-opt-args -m -s -o=+-mod0 -l=opt-args-remove-all,../environments/env-all-on
+latexindent.pl environments-first-opt-args-remove-linebreaks1 -m  -s -o=environments-first-opt-args-remove-linebreaks1-mod0 -l=opt-args-remove-all,../environments/env-all-on
+latexindent.pl environments-simple-opt-args -m  -s -o=environments-simple-opt-args-out -l=opt-args-remove-all,../environments/env-all-on
 
-# loop through -opt-args-mod<i>.yaml, from i=1...16
+set +x
+# loop through -opt-args-mod<i>, from i=1...16
 [[ $silentMode == 0 ]] && set +x
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x
    # one optional arg
-   latexindent.pl environments-first-opt-args.tex -m  -s -o=environments-first-opt-args-mod$i.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml 
-   latexindent.pl environments-first-opt-args.tex -m  -s -o=environments-first-opt-args-mod-supp$i.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,opt-args-supp.yaml 
-   latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -s -o=environments-first-opt-args-remove-linebreaks1-mod$i.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml 
-   latexindent.pl environments-first-opt-args-remove-linebreaks1.tex -m  -s -o=environments-first-opt-args-remove-linebreaks1-mod-supp$i.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,opt-args-supp.yaml
-   latexindent.pl environments-first-opt-args-remove-linebreaks2.tex -m  -s -o=environments-first-opt-args-remove-linebreaks2-mod-supp$i.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,unprotect-blank-lines.yaml
+   latexindent.pl environments-first-opt-args -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
+   latexindent.pl environments-first-opt-args -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp 
+   latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
+   latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp
+   latexindent.pl environments-first-opt-args-remove-linebreaks2 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines
    # two optional args
-   latexindent.pl environments-second-opt-args.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml -s -o=environments-second-opt-args-mod$i.tex 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml -s -o=environments-second-opt-args-remove-linebreaks1-mod$i.tex 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,unprotect-blank-lines.yaml -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect$i.tex 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,unprotect-blank-lines.yaml,condense-blank-lines.yaml,../ifelsefi/removeTWS-before.yaml  -s -o=environments-second-opt-args-remove-linebreaks1-mod-unprotect-condense$i.tex 
+   latexindent.pl environments-second-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
+   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
+   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines -s -o=+-mod-unprotect$i 
+   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines,condense-blank-lines,../ifelsefi/removeTWS-before -s -o=+-mod-unprotect-condense$i 
    # three, ah ah ah
-   latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml -s -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod$i.tex
-   latexindent.pl environments-third-opt-args.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod$i.yaml,addPercentAfterBegin.yaml -s -o=environments-third-opt-args-mod$i.tex -g=other.log
-    [[ $silentMode == 0 ]] && set +x
+   latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i
+   latexindent.pl environments-third-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,addPercentAfterBegin -s -o=+-mod$i -g=other.log
+   set +x
 done
+exit
 
 # multi switches set to 2
-latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod1.yaml,addPercentAfterBegin.yaml -s -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,opt-args-mod1.yaml,addPercentBeforeBegin.yaml -m -s -o=environments-third-opt-args-percent-before-begin.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAfterEnd.yaml -m -s -o=environments-third-opt-args-percent-after-end.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAfterBody.yaml -m -s -o=environments-third-opt-args-percent-after-body.tex
-latexindent.pl -s -m -w environments-first-opt-args-mod-supp1.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAfterBody.yaml -o=environments-first-opt-args-mod-supp1-mod1.tex 
-latexindent.pl -s environments-first-opt-args-more-comments.tex -m -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAfterBegin.yaml  -o=environments-first-opt-args-more-comments-addPercentAfterBegin.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercentAll.yaml -m -s -o=environments-third-opt-args-percent-after-all.tex
+latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod1,addPercentAfterBegin -s -o=environments-third-opt-args-remove-linebreaks1-trailing-comments-mod1-addPercentAfterBegin
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod1,addPercentBeforeBegin -m -s -o=environments-third-opt-args-percent-before-begin
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercentAfterEnd -m -s -o=environments-third-opt-args-percent-after-end
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercentAfterBody -m -s -o=environments-third-opt-args-percent-after-body
+latexindent.pl -s -m -w environments-first-opt-args-mod-supp1 -l=opt-args-remove-all,../environments/env-all-on,addPercentAfterBody -o=environments-first-opt-args-mod-supp1-mod1 
+latexindent.pl -s environments-first-opt-args-more-comments -m -l=opt-args-remove-all,../environments/env-all-on,addPercentAfterBegin  -o=environments-first-opt-args-more-comments-addPercentAfterBegin
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercentAll -m -s -o=environments-third-opt-args-percent-after-all
 
 # noAdditionalIndent experiments   
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentScalar.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-mod1.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod1.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-mod2.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod2.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-mod3.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod3.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-mod4.yaml -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod4.tex
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent -m -s -o=environments-third-opt-args-noAddtionalIndentScalar
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-mod1 -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod1
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-mod2 -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod2
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-mod3 -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod3
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-mod4 -m -s -o=environments-third-opt-args-noAddtionalIndentHash-mod4
 
 # indent rules
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-indent-rules1.yaml -m -s -o=environments-third-opt-args-indent-rules1.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-indent-rules2.yaml -m -s -o=environments-third-opt-args-indent-rules2.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-indent-rules3.yaml -m -s -o=environments-third-opt-args-indent-rules3.tex
-latexindent.pl environments-third-opt-args.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,addPercent-noAdditionalIndent-opt-args-indent-rules4.yaml -m -s -o=environments-third-opt-args-indent-rules4.tex
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-indent-rules1 -m -s -o=environments-third-opt-args-indent-rules1
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-indent-rules2 -m -s -o=environments-third-opt-args-indent-rules2
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-indent-rules3 -m -s -o=environments-third-opt-args-indent-rules3
+latexindent.pl environments-third-opt-args -l=opt-args-remove-all,../environments/env-all-on,addPercent-noAdditionalIndent-opt-args-indent-rules4 -m -s -o=environments-third-opt-args-indent-rules4
 
 # multiple lines in optional arguments
-latexindent.pl environments-third-opt-args-multiple-lines.tex -w -s
+latexindent.pl environments-third-opt-args-multiple-lines -w -s
 
 # noAdditionalIndent
-latexindent.pl environments-third-opt-args-mod1.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml -s -o=environments-third-opt-args-mod1-global.tex -tt
+latexindent.pl environments-third-opt-args-mod1 -l=opt-args-remove-all,../environments/env-all-on,noAdditionalIndentGlobal -s -o=environments-third-opt-args-mod1-global -tt
 
 # indentRules
-latexindent.pl environments-third-opt-args-mod1.tex -l=opt-args-remove-all.yaml,../environments/env-all-on.yaml,indentRulesGlobal.yaml -s -o=environments-third-opt-args-mod1-indent-rules-global.tex -tt
+latexindent.pl environments-third-opt-args-mod1 -l=opt-args-remove-all,../environments/env-all-on,indentRulesGlobal -s -o=environments-third-opt-args-mod1-indent-rules-global -tt
 
 # forrest syntax bug, see https://github.com/cmhughes/latexindent.pl/issues/107
 latexindent.pl -s forrest -o=+-mod1 -y="defaultIndent:' '"
 
 # issue 445
-latexindent.pl -s -l issue-445.yaml  -m issue-445.tex -o=+-mod1
-latexindent.pl -s -l issue-445a.yaml -m issue-445.tex -o=+-mod2
-latexindent.pl -s -l issue-445b.yaml -m issue-445.tex -o=+-mod3
-latexindent.pl -s -l issue-445c.yaml -m issue-445.tex -o=+-mod4
+latexindent.pl -s -l issue-445  -m issue-445 -o=+-mod1
+latexindent.pl -s -l issue-445a -m issue-445 -o=+-mod2
+latexindent.pl -s -l issue-445b -m issue-445 -o=+-mod3
+latexindent.pl -s -l issue-445c -m issue-445 -o=+-mod4
 
-latexindent.pl -s -l issue-445.yaml  -m issue-445a.tex -o=+-mod1
-latexindent.pl -s -l issue-445a.yaml -m issue-445a.tex -o=+-mod2
-latexindent.pl -s -l issue-445b.yaml -m issue-445a.tex -o=+-mod3
-latexindent.pl -s -l issue-445c.yaml -m issue-445a.tex -o=+-mod4
+latexindent.pl -s -l issue-445  -m issue-445a -o=+-mod1
+latexindent.pl -s -l issue-445a -m issue-445a -o=+-mod2
+latexindent.pl -s -l issue-445b -m issue-445a -o=+-mod3
+latexindent.pl -s -l issue-445c -m issue-445a -o=+-mod4
 
 [[ $silentMode == 0 ]] && set -x
 [[ $gitStatus == 1 ]] && git status
