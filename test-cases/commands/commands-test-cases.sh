@@ -221,15 +221,11 @@ latexindent.pl -s pstricks1 -o=+-default -l=../texexchange/indentPreamble
 
 latexindent.pl -s -t sub-super-scripts -o=+-default
 egrep 'found:' indent.log > sub-super-scripts.txt
-exit
-
-# <!---- RETURN TO SPECIALS
-# <!---- RETURN TO SPECIALS
-# <!---- RETURN TO SPECIALS
 
 # sub and super scripts
-latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod5.tex -m -l=../specials/special-mod5.yaml
-latexindent.pl -s sub-super-scripts.tex -outputfile=sub-super-scripts-mod55.tex -m -l=../mand-args/mand-args-mod5.yaml,../specials/special-mod5.yaml
+latexindent.pl -s sub-super-scripts -o=+-mod5 -m -l=../specials/special-mod5
+latexindent.pl -s sub-super-scripts -o=+-mod6 -m -l=../specials/special-mod5,mand-args-mod1
+latexindent.pl -s sub-super-scripts -o=+-mod55 -m -l=../mand-args/mand-args-mod5,../specials/special-mod5
 
 # named grouping bracket test case
 latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1

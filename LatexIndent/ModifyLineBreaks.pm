@@ -472,17 +472,14 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     #
     
     # space after } OR  ]
-    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\[)@$1$2@sg;
+    ${$self}{body} =~s@(.)$tokens{mAfterEndRemove}(.)@$1$2@sg;
 
     # trailing comments
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\h*$trailingCommentRegExp)@$1$2@sg;
 
-    # } OR ]   followed by    { OR } OR [ OR ]
-    ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}(\{|\}|\[|\])@$1$2@sg;
-
     # anything else
-    ${$self}{body} =~s@(\}|\])(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
+    ${$self}{body} =~s@(.)(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
 
     #
     # trailing comment work

@@ -43,6 +43,7 @@ sub _construct_code_blocks_regex {
      my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
      my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
      my $unNamed = qr//;
+     my $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R)?} : q{});
 
      #
      # environment regex
@@ -115,6 +116,10 @@ sub _construct_code_blocks_regex {
      $specialRegExp = qr{
                 (?<SPECIALBEGIN>
                     $specialBeginRegEx
+                    \h*
+                    (?<SPECIALLINEBREAKSATENDBEGIN>
+                     \R*
+                    )
                 )                         
                 (?<SPECIALBODY>                    
                   (?>                               
@@ -128,6 +133,7 @@ sub _construct_code_blocks_regex {
                 (?<SPECIALEND>                    
                     $specialEndRegEx
                 )
+                $mSwitchOnlyTrailing 
      }xs;
 
      #
@@ -180,7 +186,6 @@ sub _construct_args_with_between{
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
     my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
-
 
     $argumentBodyRegEx = qr{
             (?>            # 
@@ -395,6 +400,13 @@ sub _find_all_code_blocks {
              $begin = $1.$+{SPECIALBEGIN};
              $body = $+{SPECIALBODY};
              $end = $+{SPECIALEND};
+             $modifyLineBreaksName = "specialBeginEnd";
+             my $linebreaksAtEndBegin=($+{SPECIALLINEBREAKSATENDBEGIN}?1:0);
+             
+             # storage before finding nested things
+             my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+             my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+             my $linebreaksAtEnd=($+{TRAILINGCOMMENT}?0:($+{TRAILINGLINEBREAK}?1:0));
 
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
@@ -402,18 +414,32 @@ sub _find_all_code_blocks {
                    next if !${$_}{lookForThis}; 
                    if($lookupBegin =~m^${$_}{begin}^s){
                      $specialLookUpName{$lookupBegin} = ${$_}{name};
+                     last;
                    }
                 }
              }
-             my $name = $specialLookUpName{$lookupBegin};
-             $modifyLineBreaksName = "special";
+             $name = $specialLookUpName{$lookupBegin};
 
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
                 $codeBlockObj = LatexIndent::Special->new(name=>$name,
                                                     begin=>$begin,
+                                                    body=>$body,
+                                                    end=>$end,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> 0,
                                                     type=>"special",
+                                                    aliases=>{
+                                                       BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
+                                                       BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
+                                                       EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
+                                                       EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
+                                                    },
+                                                    horizontalTrailingSpace=>$horizontalTrailingSpace,
+                                                    trailingComment=>$trailingComment,
+                                                    linebreaksAtEnd=>{
+                                                          begin=>$linebreaksAtEndBegin,
+                                                          end=>$linebreaksAtEnd,
+                                                    },
                 );
              }
 
@@ -429,13 +455,41 @@ sub _find_all_code_blocks {
              # ***
              $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~m^[{[]^s;
 
+             #
+             # m switch linebreak adjustment
+             #
+             if ($is_m_switch_active){
+                   # get the *updated* environment body from above nested code blocks routine
+                   ${$codeBlockObj}{body} = $body;
+
+                   # poly-switch work
+                   ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
+                   ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
+                   ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+
+                   $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+
+                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+
+                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
+
+                   $codeBlockObj->modify_line_breaks_after_end;
+
+                   # get updated begin, body, end
+                   $begin = ${$codeBlockObj}{begin};
+                   $body = ${$codeBlockObj}{body};
+                   $end = ${$codeBlockObj}{end};
+
+                   $linebreaksAtEndBegin = ${$codeBlockObj}{linebreaksAtEnd}{begin};
+             }
+
              # special BODY indentation, possibly
              if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
                 $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
                 # add indentation
                 $body =~ s"^"$addedIndentation"mg;
-                $body =~ s"^$addedIndentation""s;
+                $body =~ s"^$addedIndentation""s if !$linebreaksAtEndBegin;
              }
        } else {
           # argument body is always in $8
@@ -530,6 +584,15 @@ sub _find_all_code_blocks {
        # output indented block
        # ---------------------
        $begin.$body.$end;/sgex;
+
+    # m switch conflicting linebreak addition or removal handled by tokens
+    if ($is_m_switch_active){
+       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
+       $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
+    }
 
     return $body;
 }
@@ -652,7 +715,7 @@ sub _indent_all_args {
        # put it all together
        $begin.$argBody.$end;|sgex;
 
-       # m switch conflicting linebreak addition/removal handled by tokens
+       # m switch conflicting linebreak addition or removal handled by tokens
        if ($is_m_switch_active){
           $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
@@ -660,7 +723,6 @@ sub _indent_all_args {
           $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
           $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
        }
-
     return $body;
 }
 
