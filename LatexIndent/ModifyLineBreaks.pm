@@ -26,7 +26,7 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/modify_line_breaks_before_begin modify_line_breaks_before_body modify_line_breaks_before_end modify_line_breaks_after_end adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
+    = qw/modify_line_breaks_before_begin modify_line_breaks_before_body modify_line_breaks_before_end modify_line_breaks_after_end adjust_line_breaks_end_parent remove_line_breaks_begin verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments _modify_line_breaks_line_break_token_adjust/;
 our $paragraphRegExp = q();
 
 sub modify_line_breaks_before_begin {
@@ -462,6 +462,17 @@ sub verbatim_modify_line_breaks {
     }
 }
 
+sub _modify_line_breaks_line_break_token_adjust{
+    my $body = shift;
+
+       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
+       $body =~ s@(?!\A)(\h*)\R\h*$tokens{mBeforeBeginLineBreak}@$1@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
+
+       return $body;
+}
 sub modify_line_breaks_post_indentation_linebreaks_comments {
     # for example, see commands-one-line-mod17.tex
     my $self = shift;
@@ -480,6 +491,8 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
 
     # anything else
     ${$self}{body} =~s@(.)(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
+
+    ${$self}{body} =~s@$tokens{mBeforeBeginLineBreak}@@sg;
 
     #
     # trailing comment work

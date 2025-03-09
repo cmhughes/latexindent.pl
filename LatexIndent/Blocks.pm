@@ -22,6 +22,7 @@ use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
+use LatexIndent::ModifyLineBreaks qw/_modify_line_breaks_line_break_token_adjust/;
 use Data::Dumper;
 use Exporter qw/import/;
 our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
@@ -34,7 +35,10 @@ our $argumentBodyRegEx;
 our $environmentRegEx;
 our $ifElseFiRegExp; 
 our $specialRegExp = q();
+our $specialBeginRegEx = q();
+our $specialEndRegEx = q(); 
 our %specialLookUpName;
+our $codeBlockLookFor = q();
 
 sub _construct_code_blocks_regex {
 
@@ -101,8 +105,8 @@ sub _construct_code_blocks_regex {
      #
      # specials regex
      #
-     my $specialBeginRegEx = q();
-     my $specialEndRegEx = q(); 
+     $specialBeginRegEx = q();
+     $specialEndRegEx = q(); 
      foreach ( @{ $mainSettings{specialBeginEnd} } ) {
         next if !${$_}{lookForThis}; 
 
@@ -135,6 +139,8 @@ sub _construct_code_blocks_regex {
                 )
                 $mSwitchOnlyTrailing 
      }xs;
+
+     $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|\\if/s;
 
      #
      # (commands, named, key=value, unnamed) <ARGUMENTS> regex
@@ -309,7 +315,7 @@ sub _find_all_code_blocks {
              # ***
              # find nested things
              # ***
-             $body = _find_all_code_blocks($body,$currentIndentation) if $body =~m^[{[]^s;
+             $body = _find_all_code_blocks($body,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
 
              $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
@@ -382,7 +388,7 @@ sub _find_all_code_blocks {
              # ***
              # find nested things
              # ***
-             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~m^[{[]^s;
+             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
 
              # ifElseFi BODY indentation, possibly
              if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
@@ -453,7 +459,7 @@ sub _find_all_code_blocks {
              # ***
              # find nested things
              # ***
-             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~m^[{[]^s;
+             $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
 
              #
              # m switch linebreak adjustment
@@ -586,13 +592,7 @@ sub _find_all_code_blocks {
        $begin.$body.$end;/sgex;
 
     # m switch conflicting linebreak addition or removal handled by tokens
-    if ($is_m_switch_active){
-       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
-       $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
-    }
+       $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
 
     return $body;
 }
@@ -633,7 +633,7 @@ sub _indent_all_args {
        # ***
        # find nested things
        # ***
-       $argBody = _find_all_code_blocks($argBody,$indentation) if $argBody=~m/[{[]/s;
+       $argBody = _find_all_code_blocks($argBody,$indentation) if $argBody=~ m^$codeBlockLookFor^s;
 
        #
        # m switch linebreak adjustment
@@ -716,13 +716,7 @@ sub _indent_all_args {
        $begin.$argBody.$end;|sgex;
 
        # m switch conflicting linebreak addition or removal handled by tokens
-       if ($is_m_switch_active){
-          $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
-          $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
-          $body =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
-          $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
-          $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
-       }
+       $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
     return $body;
 }
 
