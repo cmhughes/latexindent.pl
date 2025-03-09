@@ -81,7 +81,7 @@ sub modify_line_breaks_before_begin {
         elsif ( $_ == -1 ) {
             # remove line break *before* begin, if appropriate
             $logger->trace("Removing linebreak *before* begin") if $is_t_switch_active;
-            ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreak}/s;
+            ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreakREMOVE}/s;
         }
     }
 }
@@ -465,9 +465,9 @@ sub verbatim_modify_line_breaks {
 sub _modify_line_breaks_line_break_token_adjust{
     my $body = shift;
 
-       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreak}@@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreak}@\n$1@sg;
-       $body =~ s@(?!\A)(\h*)\R\h*$tokens{mBeforeBeginLineBreak}@$1@sg;
+       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreakREMOVE}@\n$1@sg;
+       $body =~ s@(?!\A)(\h*)\R\h*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
 
@@ -492,7 +492,7 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     # anything else
     ${$self}{body} =~s@(.)(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
 
-    ${$self}{body} =~s@$tokens{mBeforeBeginLineBreak}@@sg;
+    ${$self}{body} =~s@$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
 
     #
     # trailing comment work

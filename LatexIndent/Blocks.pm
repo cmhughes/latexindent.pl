@@ -562,8 +562,8 @@ sub _find_all_code_blocks {
                ${$codeBlockObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
                $codeBlockObj->modify_line_breaks_before_begin;  
                $begin = ${$codeBlockObj}{begin};
-               $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreak}@@sg;
-               $begin =~ s@$tokens{mBeforeBeginLineBreak}@@sg;
+               $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
+               $begin =~ s@$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
           }
 
           # argument indentation

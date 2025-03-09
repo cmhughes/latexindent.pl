@@ -61,7 +61,7 @@ our %tokens = (
     endOfToken      => "-END",
 
     # m-switch specific tokens
-    mBeforeBeginLineBreak  => "mBeforeBeginLineBreak",
+    mBeforeBeginLineBreakREMOVE  => "mBeforeBeginLineBreak",
     mAfterEndRemove  => "mAfterEndRemove",
     mAfterEndLineBreak  => "mAfterEndLineBreak",
     mSwitchComment  => "mSwitchComment",
