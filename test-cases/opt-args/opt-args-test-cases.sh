@@ -8,31 +8,31 @@ loopmax=16
 
 # optional arguments in environments
 latexindent.pl environments-first-opt-args -m -s -o=+-mod0 -l=opt-args-remove-all,../environments/env-all-on
-latexindent.pl environments-first-opt-args-remove-linebreaks1 -m  -s -o=environments-first-opt-args-remove-linebreaks1-mod0 -l=opt-args-remove-all,../environments/env-all-on
-latexindent.pl environments-simple-opt-args -m  -s -o=environments-simple-opt-args-out -l=opt-args-remove-all,../environments/env-all-on
+latexindent.pl environments-first-opt-args-remove-linebreaks1 -m  -s -o=+-mod0 -l=opt-args-remove-all,../environments/env-all-on
+latexindent.pl environments-simple-opt-args -m -s -o=+-out -l=opt-args-remove-all,../environments/env-all-on
 
 set +x
 # loop through -opt-args-mod<i>, from i=1...16
 [[ $silentMode == 0 ]] && set +x
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-   [[ $silentMode == 0 ]] && set -x
-   # one optional arg
-   latexindent.pl environments-first-opt-args -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
-   latexindent.pl environments-first-opt-args -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp 
-   latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
-   latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp
-   latexindent.pl environments-first-opt-args-remove-linebreaks2 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines
-   # two optional args
-   latexindent.pl environments-second-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines -s -o=+-mod-unprotect$i 
-   latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines,condense-blank-lines,../ifelsefi/removeTWS-before -s -o=+-mod-unprotect-condense$i 
-   # three, ah ah ah
-   latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i
-   latexindent.pl environments-third-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,addPercentAfterBegin -s -o=+-mod$i -g=other.log
-   set +x
+ [[ $showCounter == 1 ]] && echo $i of $loopmax
+ [[ $silentMode == 0 ]] && set -x
+ # one optional arg
+ latexindent.pl environments-first-opt-args -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
+ latexindent.pl environments-first-opt-args -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp 
+ latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i 
+ latexindent.pl environments-first-opt-args-remove-linebreaks1 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,opt-args-supp
+ latexindent.pl environments-first-opt-args-remove-linebreaks2 -m -s -o=+-mod-supp$i -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines
+ # two optional args
+ latexindent.pl environments-second-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
+ latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i 
+ latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines -s -o=+-mod-unprotect$i 
+ latexindent.pl environments-second-opt-args-remove-linebreaks1 -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,unprotect-blank-lines,condense-blank-lines,../ifelsefi/removeTWS-before -s -o=+-mod-unprotect-condense$i 
+ # three, ah ah ah
+ latexindent.pl environments-third-opt-args-remove-linebreaks1-trailing-comments -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i -s -o=+-mod$i
+ latexindent.pl environments-third-opt-args -m -l=opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,addPercentAfterBegin -s -o=+-mod$i -g=other.log
+ set +x
 done
 exit
 

@@ -289,7 +289,7 @@ sub modify_line_breaks_after_end {
                 ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
-                ${$self}{end} .= $tokens{mAfterEndLineBreak}.${$self}{trailingComment};
+                ${$self}{end} .= ${$self}{horizontalTrailingSpace}.$tokens{mAfterEndLineBreak}.${$self}{trailingComment};
             }
             elsif ( $_ == 2 ) {
                 if ( ${$self}{trailingComment} ) {

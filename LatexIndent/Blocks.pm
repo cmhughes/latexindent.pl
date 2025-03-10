@@ -332,6 +332,12 @@ sub _find_all_code_blocks {
                    # get the *updated* environment body from above nested code blocks routine
                    ${$codeBlockObj}{body} = $body;
 
+                   # final argument can request a line break removal
+                   if ($argBody =~ m^$tokens{mAfterEndRemove}$^s){
+                      ${${$codeBlockObj}{linebreaksAtEnd} }{begin} = 0;
+                      ${$codeBlockObj}{body} =~ s@^\s*@@s;
+                   }
+
                    # poly-switch work
                    ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
                    ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
@@ -598,7 +604,7 @@ sub _find_all_code_blocks {
        # ---------------------
        $begin.$body.$end;/sgex;
 
-    # m switch conflicting linebreak addition or removal handled by tokens
+       # m switch conflicting linebreak addition or removal handled by tokens
        $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
 
     return $body;
