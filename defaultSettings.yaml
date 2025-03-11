@@ -528,7 +528,7 @@ modifyLineBreaks:
       questionMark: 1                   # 0/1
       other: 0                          # regex
     sentencesDoNOTcontain:
-      other: \\begin                    # regex
+      other: \\begin|\\end              # regex
   textWrapOptions:
     columns: 0
     multipleSpacesToSingle: 1
