@@ -1,2 +1,2 @@
-TRACE: found: parbox (commands)
-TRACE: found: node (commands)
+TRACE: found: parbox, 	 type: commands
+TRACE: found: node, 	 type: commands

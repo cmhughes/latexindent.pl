@@ -806,6 +806,8 @@ sub yaml_read_settings {
     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
         # default look for this
         ${$_}{lookForThis} = 1 if not defined ${$_}{lookForThis};
+        ${$_}{lookForThis} = 0 if not defined ${$_}{begin};
+        ${$_}{lookForThis} = 0 if not defined ${$_}{end};
     }
 
     return;

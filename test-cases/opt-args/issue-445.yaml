@@ -1,3 +1,5 @@
 modifyLineBreaks:
     environments:
         BodyStartsOnOwnLine: 2
+        cases:
+          BodyStartsOnOwnLine: 0

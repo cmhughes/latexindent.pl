@@ -245,6 +245,7 @@ itemNames:
 # specialBeginEnd is, by default, mathmode focus, although
 # there's no restrictions
 specialBeginEnd:
+  - amalgamate: 1
   - name: displayMath                                      # NEW specified as ORDERED array
     begin: (?<!\\)\\\[            # \[ but *not* \\[       # NEW specified as ORDERED array
     end: \\\]                     # \]                     # NEW specified as ORDERED array

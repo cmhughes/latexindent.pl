@@ -69,7 +69,6 @@ latexindent.pl environments-third-opt-args-mod1 -l=opt-args-remove-all,../enviro
 # forrest syntax bug, see https://github.com/cmhughes/latexindent.pl/issues/107
 latexindent.pl -s forrest -o=+-mod1 -y="defaultIndent:' '"
 
-exit 
 # issue 445
 latexindent.pl -s -l issue-445  -m issue-445 -o=+-mod1
 latexindent.pl -s -l issue-445a -m issue-445 -o=+-mod2
@@ -77,6 +76,7 @@ latexindent.pl -s -l issue-445b -m issue-445 -o=+-mod3
 latexindent.pl -s -l issue-445c -m issue-445 -o=+-mod4
 
 latexindent.pl -s -l issue-445  -m issue-445a -o=+-mod1
+exit 
 latexindent.pl -s -l issue-445a -m issue-445a -o=+-mod2
 latexindent.pl -s -l issue-445b -m issue-445a -o=+-mod3
 latexindent.pl -s -l issue-445c -m issue-445a -o=+-mod4

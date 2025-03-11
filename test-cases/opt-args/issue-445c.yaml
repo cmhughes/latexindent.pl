@@ -7,7 +7,6 @@ fineTuning:
       name: (?!cases)[a-zA-Z@\*0-9_\\]+
 
 specialBeginEnd:
-    cases:
-        begin: \\begin\{cases\}
-        end: \\end\{cases\}
-    specialBeforeCommand: 1
+  - name: cases
+    begin: \\begin\{cases\}
+    end: \\end\{cases\}

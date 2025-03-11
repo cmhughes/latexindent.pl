@@ -1,20 +1,20 @@
 TRACE: found: preamble, storing as verbatim (indentPreamble: 0)
-TRACE: found: in (namedGroupingBracesBrackets)
-TRACE: found: tikzpicture (environments)
-TRACE: found: filldraw (commands)
-TRACE: found: filldraw (commands)
-TRACE: found: filldraw (commands)
-TRACE: found: filldraw (commands)
-TRACE: found: pgfmathparse (commands)
-TRACE: found: ifnum (ifElseFi)
-TRACE: found: draw (commands)
-TRACE: found: decoration (keyEqualsValuesBracesBrackets)
-TRACE: found: pgfmathparse (commands)
-TRACE: found: ifnum (ifElseFi)
-TRACE: found: ifnum (ifElseFi)
-TRACE: found: draw (commands)
-TRACE: found: decoration (keyEqualsValuesBracesBrackets)
-TRACE: found: pgfmathparse (commands)
-TRACE: found: ifnum (ifElseFi)
-TRACE: found: draw (commands)
-TRACE: found: decoration (keyEqualsValuesBracesBrackets)
+TRACE: found: in, 	 type: namedGroupingBracesBrackets
+TRACE: found: tikzpicture, 	 type: environments
+TRACE: found: filldraw, 	 type: commands
+TRACE: found: filldraw, 	 type: commands
+TRACE: found: filldraw, 	 type: commands
+TRACE: found: filldraw, 	 type: commands
+TRACE: found: pgfmathparse, 	 type: commands
+TRACE: found: ifnum, 	 type: ifElseFi
+TRACE: found: draw, 	 type: commands
+TRACE: found: decoration, 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: pgfmathparse, 	 type: commands
+TRACE: found: ifnum, 	 type: ifElseFi
+TRACE: found: ifnum, 	 type: ifElseFi
+TRACE: found: draw, 	 type: commands
+TRACE: found: decoration, 	 type: keyEqualsValuesBracesBrackets
+TRACE: found: pgfmathparse, 	 type: commands
+TRACE: found: ifnum, 	 type: ifElseFi
+TRACE: found: draw, 	 type: commands
+TRACE: found: decoration, 	 type: keyEqualsValuesBracesBrackets

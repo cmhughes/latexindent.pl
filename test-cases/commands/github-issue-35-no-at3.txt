@@ -1,4 +1,4 @@
-TRACE: found: parbox (commands)
-TRACE: found: node (commands)
-TRACE: found: at (namedGroupingBracesBrackets)
-TRACE: found: west (namedGroupingBracesBrackets)
+TRACE: found: parbox, 	 type: commands
+TRACE: found: node, 	 type: commands
+TRACE: found: at, 	 type: namedGroupingBracesBrackets
+TRACE: found: west, 	 type: namedGroupingBracesBrackets

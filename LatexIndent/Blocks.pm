@@ -299,7 +299,7 @@ sub _find_all_code_blocks {
                 );
              }
 
-             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             $logger->trace("*found: $name, \t type: $modifyLineBreaksName")         if $is_t_switch_active;
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
@@ -389,7 +389,7 @@ sub _find_all_code_blocks {
                 );
              }
 
-             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             $logger->trace("*found: $name, \t type: $modifyLineBreaksName")         if $is_t_switch_active;
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
@@ -460,7 +460,7 @@ sub _find_all_code_blocks {
                 );
              }
 
-             $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+             $logger->trace("*found: $name, \t type: $modifyLineBreaksName")         if $is_t_switch_active;
              
              # store settings for future use
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
@@ -544,7 +544,7 @@ sub _find_all_code_blocks {
           #                                                            # 
           # unnamed braces and brackets                                # 
           #                                                            # 
-             $begin = q();                                             # <possible leading space> 
+             $begin = $1;                                              # <possible leading space> 
              $name = q();                                              # 
              $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
              $BeginStartsOnOwnLineAlias = undef;                       # 
@@ -563,10 +563,11 @@ sub _find_all_code_blocks {
              );
           }
 
-          $logger->trace("*found: $name ($modifyLineBreaksName)")         if $is_t_switch_active;
+          $logger->trace("*found: $name, \t type: $modifyLineBreaksName")         if $is_t_switch_active;
 
           # store settings for future use
           if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+             ${$codeBlockObj}{BeginStartsOnOwnLine} = 0;
              $codeBlockObj->yaml_get_indentation_settings_for_this_object;
           }
 

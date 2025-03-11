@@ -1,10 +1,10 @@
-TRACE: found: foreach (commands)
-TRACE: found: inlineMath (specialBeginEnd)
-TRACE: found: H (namedGroupingBracesBrackets)
-TRACE: found: inlineMath (specialBeginEnd)
-TRACE: found: H (namedGroupingBracesBrackets)
-TRACE: found: node (commands)
-TRACE: found: node (commands)
-TRACE: found: node (commands)
-TRACE: found: node (commands)
-TRACE: found: node (commands)
+TRACE: found: foreach, 	 type: commands
+TRACE: found: inlineMath, 	 type: specialBeginEnd
+TRACE: found: H, 	 type: namedGroupingBracesBrackets
+TRACE: found: inlineMath, 	 type: specialBeginEnd
+TRACE: found: H, 	 type: namedGroupingBracesBrackets
+TRACE: found: node, 	 type: commands
+TRACE: found: node, 	 type: commands
+TRACE: found: node, 	 type: commands
+TRACE: found: node, 	 type: commands
+TRACE: found: node, 	 type: commands
