@@ -133,7 +133,7 @@ sub indent_body {
 
     # possibly remove paragraph line breaks
     $self->remove_paragraph_line_breaks
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and ${$self}{removeParagraphLineBreaks}
         and !${ $mainSettings{modifyLineBreaks}{removeParagraphLineBreaks} }{beforeTextWrap} );
 

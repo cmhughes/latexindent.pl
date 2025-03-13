@@ -56,9 +56,9 @@ our @alignAtAmpersandInformation = (
     { name => "delimiterRegEx",                   default  => "(?<!\\\\)(&)" },
     { name => "delimiterJustification",           default  => "left" },
     { name => "leadingBlankColumn",               default  => -1 },
-    { name => "lookForChildCodeBlocks",           default  => 1 },
-    { name => "alignContentAfterDoubleBackSlash", default  => 0 },
-    { name => "spacesAfterDoubleBackSlash",       default  => 1 },
+    { name => "lookForChildCodeBlocks",           default  =>  1 },
+    { name => "alignContentAfterDoubleBackSlash", default  =>  0 },
+    { name => "spacesAfterDoubleBackSlash",       default  =>  1 },
 );
 
 sub yaml_read_settings {
@@ -750,7 +750,8 @@ sub yaml_read_settings {
                 my $child      = $keysValues[1];
                 my $grandchild = $keysValues[2];
 
-                delete $mainSettings{$parent}{$child} if (defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
+                delete $mainSettings{$parent}{$child}
+                    if ( defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
 
                 $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
                 $mainSettings{$parent}{$child}{$grandchild} = $value;

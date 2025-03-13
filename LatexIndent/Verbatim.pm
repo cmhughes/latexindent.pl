@@ -592,7 +592,7 @@ sub verbatim_common_tasks {
     $self->modify_line_breaks_end
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
     $self->modify_line_breaks_end_after
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );
 }
