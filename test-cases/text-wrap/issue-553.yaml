@@ -1,0 +1,23 @@
+defaultIndent: '    '
+
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        blocksFollow:
+          other: |-
+            \\\]
+            |
+            \\item(?:\h|\[)       # regex
+            |
+            \\end\{equation\*\}
+        #when: after
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: 1      # -1,0,1,2,3,4
+        SpecialBodyStartsOnOwnLine: 1       # -1,0,1,2,3,4
+        SpecialEndStartsOnOwnLine: 1        # -1,0,1,2,3,4
+        SpecialEndFinishesWithLineBreak: 1  # -1,0,1,2,3,4
+    environments:
+        BeginStartsOnOwnLine: 1             # -1,0,1,2,3,4
+        BodyStartsOnOwnLine: 1              # -1,0,1,2,3,4
+        EndStartsOnOwnLine: 1               # -1,0,1,2,3,4
+        EndFinishesWithLineBreak: 1         # -1,0,1,2,3,4

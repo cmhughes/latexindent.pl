@@ -1,0 +1,7 @@
+defaultIndent: '  '
+
+specialBeginEnd:
+  senniraf:
+    begin: \{\h*(?:\[|\])\}
+    end: ''
+  specialBeforeCommand: 1

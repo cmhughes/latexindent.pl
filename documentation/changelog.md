@@ -1,6 +1,12 @@
-<!-- announcement: graceful fail for columns=0 text wrapping-->
+<!-- announcement: aarch 64 binary, and small update to oneSentencePerLine -->
 
 # changelog.md
+
+## V3.24.5, March 13, 2025
+* aarch64 linux binary to releases, see [issue 560](https://github.com/cmhughes/latexindent.pl/issues/560), thanks to @life00
+* `oneSentencePerLine` update, see [issue 579](https://github.com/cmhughes/latexindent.pl/issues/579), thanks to @desk7
+* update to `JSON` schema, see [pull 573](https://github.com/cmhughes/latexindent.pl/pull/573), thanks to @arodomanov 
+
 ## V3.24.4, July 18, 2024
 graceful fail for `columns=0` when text wrapping block comments, see [issue 552](https://github.com/cmhughes/latexindent.pl/issues/552)
 

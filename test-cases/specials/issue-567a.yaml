@@ -1,0 +1,14 @@
+modifyLineBreaks:
+  oneSentencePerLine:
+    manipulateSentences: 1              # 0/1
+    removeSentenceLineBreaks: 0         # 0/1
+  specialBeginEnd:
+    inlineMath:
+      SpecialBeginStartsOnOwnLine: 1      # -1,0,1,2,3,4
+      SpecialEndFinishesWithLineBreak: 1  # -1,0,1,2,3,4
+
+replacements:
+  - 
+    when: after
+    substitution: |-
+      s/\$\h*\R\h*\./\$\./sg

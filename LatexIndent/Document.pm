@@ -341,7 +341,7 @@ sub process_body_of_text {
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
@@ -379,7 +379,7 @@ sub find_objects {
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
 
@@ -544,7 +544,7 @@ sub tasks_common_to_each_object {
     $self->modify_line_breaks_end
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
     $self->modify_line_breaks_end_after
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );
 

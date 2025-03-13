@@ -1,0 +1,29 @@
+defaultIndent: '    '
+modifyLineBreaks:
+    textWrapOptions:
+        columns: 80
+        when: after
+        blocksFollow:
+          other: \\end\{equation\}|\\\]|\\item(?:\h|\[)       # regex
+    specialBeginEnd:
+        SpecialBeginStartsOnOwnLine: 1      # -1,0,1,2,3,4
+        SpecialBodyStartsOnOwnLine: 1       # -1,0,1,2,3,4
+        SpecialEndStartsOnOwnLine: 1        # -1,0,1,2,3,4
+        SpecialEndFinishesWithLineBreak: 1  # -1,0,1,2,3,4
+    environments:
+        BeginStartsOnOwnLine: 1             # -1,0,1,2,3,4
+        BodyStartsOnOwnLine: 1              # -1,0,1,2,3,4
+        EndStartsOnOwnLine: 1               # -1,0,1,2,3,4
+        EndFinishesWithLineBreak: 1         # -1,0,1,2,3,4
+    commands:
+      label:
+        CommandStartsOnOwnLine: -1
+    mandatoryArguments:
+      label:
+        RCuBFinishesWithLineBreak: 1        # -1,0,1,2,3,4
+
+replacements:
+  - 
+    substitution: |-
+      s/(\\begin\{[^}]+?\})\s*(\\label)/$1$2/sg
+    when: after

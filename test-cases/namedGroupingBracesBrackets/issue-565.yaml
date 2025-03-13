@@ -1,0 +1,11 @@
+onlyOneBackUp: 1
+maxNumberOfBackUps: 1
+logFilePreferences:
+  showEveryYamlRead: 0
+
+indentPreamble: 1
+defaultIndent: "  "
+
+fineTuning:
+  namedGroupingBracesBrackets:
+    name: [0-9\.a-zA-Z@\*><=]+?
