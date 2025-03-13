@@ -1,4 +1,4 @@
-TRACE: found: parbox, 	 type: commands
-TRACE: found: inlineMath, 	 type: specialBeginEnd
-TRACE: found: int_, 	 type: commands
-TRACE: found: displayMath, 	 type: specialBeginEnd
+TRACE: found: parbox 	 type: commands
+TRACE: found: inlineMath 	 type: specialBeginEnd
+TRACE: found: int_ 	 type: commands
+TRACE: found: displayMath 	 type: specialBeginEnd

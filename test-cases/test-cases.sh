@@ -97,7 +97,7 @@ checkgitdiff
 dirExec=( 
   "commands;commands-test-cases.sh"
   "opt-args;opt-args-test-cases.sh"
-  # "mand-args;mand-args-test-cases.sh"
+  "mand-args;mand-args-test-cases.sh"
   # "opt-and-mand-args;opt-mand-args-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"

@@ -1,4 +1,4 @@
-TRACE: found: titlepage, 	 type: environments
-TRACE: found: mycommand, 	 type: commands
-TRACE: found: center, 	 type: environments
-TRACE: found: nested, 	 type: environments
+TRACE: found: titlepage 	 type: environments
+TRACE: found: mycommand 	 type: commands
+TRACE: found: center 	 type: environments
+TRACE: found: nested 	 type: environments
