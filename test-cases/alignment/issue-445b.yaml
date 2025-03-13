@@ -1,0 +1,8 @@
+modifyLineBreaks:
+    environments:
+        BodyStartsOnOwnLine: 2
+        cases:
+          BodyStartsOnOwnLine: 0
+    optionalArguments:
+        cases:
+           LSqBStartsOnOwnLine: 1

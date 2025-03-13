@@ -344,6 +344,10 @@ latexindent.pl -s issue-543.tex -o=+-mod1
 latexindent.pl -s -m issue-541.tex -l issue-541.yaml -o=+-mod1
 
 latexindent.pl -y="lookForAlignDelims:tblr:alignFinalDoubleBackSlash:1" -s issue-551.tex -o=+-mod1
+
+latexindent.pl -s -l issue-445a -m issue-445a -o=+-mod2
+latexindent.pl -s -l issue-445b -m issue-445a -o=+-mod3
+latexindent.pl -s -l issue-445c -m issue-445a -o=+-mod4
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

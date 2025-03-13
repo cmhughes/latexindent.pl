@@ -1,0 +1,12 @@
+modifyLineBreaks:
+    environments:
+        BodyStartsOnOwnLine: 2
+
+fineTuning:
+    environments:
+      name: (?!cases)[a-zA-Z@\*0-9_\\]+
+
+specialBeginEnd:
+  - name: cases
+    begin: \\begin\{cases\}
+    end: \\end\{cases\}
