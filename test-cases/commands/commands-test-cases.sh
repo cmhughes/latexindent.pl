@@ -90,11 +90,11 @@ do
    latexindent.pl commands-one-line-nested -m -s -o=+-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal
    
    # remove line breaks
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noChangeCommandBody
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-unprotect-no-condense-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noCondenseMultipleLines,noChangeCommandBody
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-noAdditionalGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,noChangeCommandBody 
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-noAdditionalGlobal-changeCommandBody-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,ChangeCommandBody 
+   latexindent.pl com-rm-lb -s -m -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
+   latexindent.pl com-rm-lb -s -m -o=+-unprotect-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noChangeCommandBody
+   latexindent.pl com-rm-lb -s -m -o=+-unprotect-no-condense-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,unprotect-blank-lines,noCondenseMultipleLines,noChangeCommandBody
+   latexindent.pl com-rm-lb -s -m -o=+-noAdditionalGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,noChangeCommandBody 
+   latexindent.pl com-rm-lb -s -m -o=+-noAdditionalGlobal-changeCommandBody-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,noAdditionalIndentGlobal,unprotect-blank-lines,ChangeCommandBody 
 
    # multiple commands
    latexindent.pl commands-nested-multiple -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i
@@ -129,7 +129,7 @@ latexindent.pl -s -m multipleBraces -o=+-xapptocmd-none-pagestyle-comments-mod1 
 latexindent.pl just-one-command-multiple-trailing-comments -m -s -o=+-mod17 -l=../opt-args/opt-args-remove-all,mand-args-mod17 
 
 # trailing comments do not remove line breaks
-latexindent.pl -m commands-remove-line-breaks-tc -s -o=+-mod5 -l=../opt-args/opt-args-remove-all,mand-args-mod5
+latexindent.pl -m com-rm-lb-tc -s -o=+-mod5 -l=../opt-args/opt-args-remove-all,mand-args-mod5
 
 # command with numeric arguments
 latexindent.pl -s command-with-numeric-args -o=+-default
@@ -164,7 +164,7 @@ do
    latexindent.pl commands-nested-multiple -m  -s -o=+-un-protect-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
 
    # remove line breaks/exisiting blank lines
-   latexindent.pl commands-remove-line-breaks -s -m -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
+   latexindent.pl com-rm-lb -s -m -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
 
    set +x
 done

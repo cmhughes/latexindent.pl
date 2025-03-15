@@ -15,6 +15,14 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
+#
+# bulk git rename of file
+#
+#   for file in $(git ls-files | grep com-rm-lb | sed -e 's/\(com-rm-lb[^/]*\).*/\1/' | uniq); do git mv $file $(echo $file | sed -e 's/com-rm-lb/com-rm-lb/'); done
+#
+# reference
+#   https://stackoverflow.com/questions/9984722/git-rename-many-files-and-folders
+#
 RED='\033[0;31m'          # red
 YELLOW='\033[1;33m'       # yellow
 BGreen='\033[1;32m'       # green
