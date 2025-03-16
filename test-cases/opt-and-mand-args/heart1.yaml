@@ -1,0 +1,5 @@
+replacements:
+  - 
+    when: before
+    substitution: |-
+      s/,$/, /smg

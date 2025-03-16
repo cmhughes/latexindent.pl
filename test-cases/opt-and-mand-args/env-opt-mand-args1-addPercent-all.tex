@@ -1,7 +1,7 @@
 here is a nested test
 \begin{one}%
 	[%
-	 optional argument%
+		optional argument%
 	]
 	to be nested to be nested
 	to be nested to be nested
@@ -9,7 +9,7 @@ here is a nested test
 	\begin{two}\[ x^2\]
 		nested text nested tex nested tex%
 			[%
-			 not an argument%
+				not an argument%
 			]
 		nested text nested tex nested tex
 		nested text nested tex nested tex
@@ -18,7 +18,7 @@ here is a nested test
 \end{one}
 \begin{three}%
 	{%
-	 mandatory argument%
+		mandatory argument%
 	}
 	three text
 	three text
@@ -26,10 +26,10 @@ here is a nested test
 \end{three}
 \begin{four}%
 	{%
-	 mandatory argument%
+		mandatory argument%
 	}%
 	{%
-	 second mandatory%
+		second mandatory%
 	}
 	four text
 	four text
@@ -37,13 +37,13 @@ here is a nested test
 \end{four}
 \begin{five}%
 	[%
-	 optional%
+		optional%
 	]%
 	{%
-	 mandatory argument%
+		mandatory argument%
 	}%
 	{%
-	 second mandatory%
+		second mandatory%
 	}%
 	\{ something else\}
 	five text
@@ -52,16 +52,18 @@ here is a nested test
 \end{five}
 \begin{six}%
 	{%
-	 mandatory argument%
+		mandatory argument%
 	}
+	%
 	[%
-	 optional%
+		optional%
 	]
+	%
 	{%
-	 second mandatory%
+		second mandatory%
 	}%
 	[%
-	 second optional%
+		second optional%
 	]%
 	\{ something else\}
 	six text

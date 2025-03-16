@@ -12,9 +12,9 @@
 
 \begin{tikzpicture}
 	\begin{axis}[
-			view={0}{10},axis equal,axis lines=none,colormap name =pink, ]
+			view={0}{10}, axis equal, axis lines=none, colormap name =pink, ]
 		\addplot3[
-			surf,shader=faceted,samples=50,domain=0:2*pi,y domain=0:2*pi,z buffer=sort,opacity=0.15]
+			surf, shader=faceted, samples=50, domain=0:2*pi,y domain=0:2*pi, z buffer=sort, opacity=0.15]
 		(
 		{(sin(deg(x)))^3*cos(deg(y))},
 		{(sin(deg(x)))^3*sin(deg(y))},

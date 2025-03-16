@@ -18,7 +18,7 @@ package LatexIndent::Blocks;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings $commaPolySwitchExists/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
@@ -32,6 +32,7 @@ our $braceBracketRegExpBasic = qr/\{|\[/;
 our $allCodeBlocks;
 our $allArgumentRegEx; 
 our $argumentBodyRegEx;
+our $argumentsBetween; 
 our $environmentRegEx;
 our $ifElseFiRegExp; 
 our $specialRegExp = q();
@@ -39,15 +40,19 @@ our $specialBeginRegEx = q();
 our $specialEndRegEx = q(); 
 our %specialLookUpName;
 our $codeBlockLookFor = q();
+our $mSwitchOnlyTrailing = q();
+our $mlbCommaSimpleArgBodyRegEx = qr();
+our $mlbCommaSimpleAllArgumentRegEx = qr{};
+our $mlbArgBodyWithCommasRegEx = q(); 
 
 sub _construct_code_blocks_regex {
 
-     $allArgumentRegEx = _construct_args_with_between( qr/${${$mainSettings{fineTuning}}{arguments}}{between}/ );
+     $allArgumentRegEx = _construct_args_with_between();
      my $commandName = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
      my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
      my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
      my $unNamed = qr//;
-     my $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R)?} : q{});
+     $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R)?} : q{});
 
      #
      # environment regex
@@ -183,12 +188,101 @@ sub _construct_code_blocks_regex {
         )
      }x;
 
+     #
+     # m switch only, for the following poly-switches
+     #
+     #      CommaStartsOnOwnLine
+     #      CommaFinishesWithLineBreak
+     #
+     # goal:
+     #      - use a stripped down regex for arguments
+     #      - use this stripped regex in matching commas
+     #
+     if ($is_m_switch_active){
+        $mlbCommaSimpleArgBodyRegEx = qr{
+                (?>            # 
+                  (?:
+                    \\[{}\[\]] # \{, \}, \[, \] OK
+                  )
+                  |            #  
+                  [^{}\[\]]    # anything except {, }, [, ]
+                )              # 
+        }x;
+
+        $mlbCommaSimpleAllArgumentRegEx = qr{};
+
+        $mlbCommaSimpleAllArgumentRegEx = qr{
+             (?:
+               (?:
+                 (?<MANDARGBEGIN>
+                  (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
+                  (?<!\\)
+                  \{
+                  \h*
+                  (\R*)
+                 )
+                 (?<MANDARGBODY>
+                  (?:
+                    (?: $mlbCommaSimpleArgBodyRegEx )             # argument body 
+                    |
+                    (??{ $mlbCommaSimpleAllArgumentRegEx })
+                  )*
+                 )
+                 (?<MANDARGEND>
+                  (?<!\\)
+                  \}
+                 )
+               )
+               |
+               (?:
+                 (?<OPTARGBEGIN>
+                  (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
+                  (?<!\\)
+                  \[
+                  \h*
+                  (\R*)
+                 )
+                 (?<OPTARGBODY>
+                  (?:
+                    (?: $mlbCommaSimpleArgBodyRegEx )             # argument body 
+                    |
+                    (??{ $mlbCommaSimpleAllArgumentRegEx })
+                  )*
+                 )
+                 (?<OPTARGEND>
+                  (?<!\\)
+                  \]
+                 )
+               )
+             )
+             }x;
+
+        # used when either of the following poly-switches are active
+        #
+        #      CommaStartsOnOwnLine
+        #      CommaFinishesWithLineBreak
+        #
+        $mlbArgBodyWithCommasRegEx = qr{
+         (\s*)
+         (?:
+           (?<comma>
+             ,
+             (?<COMMASPACE>\s*)
+             $mSwitchOnlyTrailing 
+           )
+           |
+           (?<arguments>
+              $mlbCommaSimpleAllArgumentRegEx 
+           )
+         )
+        }xs;
+
+     }
 }
 
 sub _construct_args_with_between{
 
-    my $argumentsBetween = shift;
-
+    $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
     my $mSwitchOnlyTrailing = qr{};
     $mSwitchOnlyTrailing = qr{(\h*)?($trailingCommentRegExp)?(\R)?} if $is_m_switch_active;
     my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
@@ -370,7 +464,7 @@ sub _find_all_code_blocks {
                 $body = $argBody.$body;
 
                 # add indentation
-                $body =~ s"^"$addedIndentation"mg;
+                $body =~ s"^"$addedIndentation"mg if ($body !~ m@^\s*$@s);
                 $body =~ s"^$addedIndentation""s if (!$linebreaksAtEndBegin or $argBody);
              }
        } elsif ($+{IFELSEFI}){
@@ -654,6 +748,22 @@ sub _indent_all_args {
        #
        if ($is_m_switch_active){
 
+          my $argType = ($mandatoryArgument ? "mand" : "opt");
+
+          # possible comma poly-switch
+          if ($commaPolySwitchExists){
+
+             my $CommaStartsOnOwnLine = 
+               (defined ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{CommaStartsOnOwnLine}?
+               ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{CommaStartsOnOwnLine}: 0);
+
+            my $CommaFinishesWithLineBreak = 
+              (defined ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{CommaFinishesWithLineBreak}?
+              ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{CommaFinishesWithLineBreak}: 0);
+
+              $argBody = _mlb_commas_in_arg_body($argBody,$CommaStartsOnOwnLine,$CommaFinishesWithLineBreak);
+          }
+
           # begin statements
           my $BeginStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{LCuBStartsOnOwnLine};
 
@@ -665,8 +775,6 @@ sub _indent_all_args {
 
           # after end statements
           my $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{RCuBFinishesWithLineBreak};
-
-          my $argType = "mandatory";
 
           if (!$mandatoryArgument){
              # begin statements
@@ -734,4 +842,45 @@ sub _indent_all_args {
     return $body;
 }
 
+sub _mlb_commas_in_arg_body{
+    my ($body, $CommaStartsOnOwnLine,$CommaFinishesWithLineBreak) = @_;
+
+
+     $body =~ s/$mlbArgBodyWithCommasRegEx/
+                my $begin = $1;
+                my $commaOrArgs = q();
+                if ($+{comma}){
+                  # storage before finding nested things
+                  my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+                  my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+                  my $linebreaksAtEnd=($+{TRAILINGLINEBREAK}?1:0);
+
+                  $begin = $begin.",".$+{COMMASPACE};
+                  $linebreaksAtEnd = ($begin =~m @\R\h*$@s ? 1 : 0) if !$trailingComment;
+                  my $codeBlockObj = LatexIndent::Special->new(name=>"comma",
+                                                    begin=>$begin,
+                                                    body=>$horizontalTrailingSpace.$trailingComment,
+                                                    modifyLineBreaksYamlName=>"comma",
+                                                    type=>"comma",
+                                                    BeginStartsOnOwnLine=>$CommaStartsOnOwnLine,
+                                                    BodyStartsOnOwnLine=>$CommaFinishesWithLineBreak,
+                                                    linebreaksAtEnd=>{
+                                                          begin=>$linebreaksAtEnd
+                                                    },
+                                                    aliases=>{
+                                                       BeginStartsOnOwnLine=>"CommaStartsOnOwnLine",
+                                                       BodyStartsOnOwnLine=>"CommaFinishesWithLineBreak",
+                                                    },
+                  );
+
+                  $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                  $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+
+                  $commaOrArgs = ${$codeBlockObj}{begin}.${$codeBlockObj}{body};
+                  } else {
+                    $commaOrArgs = $+{arguments};
+                  };
+                $commaOrArgs;/sgex;
+    return $body;
+}
 1;
