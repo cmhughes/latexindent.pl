@@ -7,6 +7,12 @@ fineTuning:
       name: (?!cases)[a-zA-Z@\*0-9_\\]+
 
 specialBeginEnd:
+  - name: irrelevant
+    lookForThis: 0
   - name: cases
     begin: \\begin\{cases\}
     end: \\end\{cases\}
+  - name: moreirrelevant
+    lookForThis: verbatim
+    begin: 'cmh'
+    end: 'hmc'

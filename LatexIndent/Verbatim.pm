@@ -466,8 +466,17 @@ sub find_verbatim_special {
                 $logger->trace( ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace} )
                     if ${ $mainSettings{logFilePreferences} }{showDecorationFinishCodeBlockTrace};
             }
+            ${$_}{lookForThis} = 0;
         }
     }
+
+    # remove verbatim elements from specialBeginEnd
+    my @specialBeginEndTrimmed;
+    foreach(@{$mainSettings{specialBeginEnd}}){
+        push(@specialBeginEndTrimmed, $_) unless (${$_}{lookForThis} == 0);
+    }
+    $logger->trace("*specialBeginEnd removing any elements with lookForThis: 0") if $is_t_switch_active;
+    @{$mainSettings{specialBeginEnd}} = @specialBeginEndTrimmed;
 }
 
 sub put_verbatim_back_in {
