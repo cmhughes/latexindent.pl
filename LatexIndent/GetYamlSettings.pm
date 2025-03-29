@@ -1152,7 +1152,7 @@ sub yaml_poly_switch_get_every_or_custom_value {
 
     # alias
     if ( ${$self}{aliases}{$toBeAssignedTo} ) {
-        $logger->trace("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if ($is_t_switch_active);
+        $logger->trace("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if ($is_tt_switch_active);
     }
 
     # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
@@ -1167,14 +1167,14 @@ sub yaml_poly_switch_get_every_or_custom_value {
 
     # check for the *custom* value
     if ( defined $customValue ) {
-        $logger->trace("$name: $toBeAssignedToAlias=$customValue, (*per-name* value)")
+        $logger->trace("$name: $toBeAssignedToAlias=$customValue\t\t\t(*per-name* value)")
             if ($is_t_switch_active);
         ${$self}{$toBeAssignedTo} = $customValue;
     }
     else {
         # check for the *every* value
         if ( defined $everyValue ) {
-            $logger->trace("$name: $toBeAssignedToAlias=$everyValue, (*global* value)")
+            $logger->trace("$name: $toBeAssignedToAlias=$everyValue\t\t\t(*global* value)")
                 if ($is_t_switch_active);
             ${$self}{$toBeAssignedTo} = $everyValue;
         } 

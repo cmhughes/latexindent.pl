@@ -71,14 +71,14 @@
    \special{pdf:put @catalog
     <<
      /OutputIntents [
-     <<
-      /Type /OutputIntent
-      /S /GTS_PDFX
-      /DestOutputProfile @cmykdata
-      /OutputConditionIdentifier (Coated FOGRA39)
-      /Info (FOGRA39L)
-      /RegistryName (http://www.color.org/)
-     >>
+      <<
+       /Type /OutputIntent
+       /S /GTS_PDFX
+       /DestOutputProfile @cmykdata
+       /OutputConditionIdentifier (Coated FOGRA39)
+       /Info (FOGRA39L)
+       /RegistryName (http://www.color.org/)
+      >>
      ]
     >>
    }
@@ -87,13 +87,13 @@
    \special{pdf:put @catalog
     <<
      /OutputIntents [
-     <<
-      /Type /OutputIntent
-      /S /GTS_PDFX
-      /OutputConditionIdentifier (custom)
-      /Info (none)
-      /RegistryName (http://www.color.org/)
-     >>
+      <<
+       /Type /OutputIntent
+       /S /GTS_PDFX
+       /OutputConditionIdentifier (custom)
+       /Info (none)
+       /RegistryName (http://www.color.org/)
+      >>
      ]
     >>
    }
@@ -110,28 +110,28 @@
    \immediate\pdfobj stream attr{/N 4^^J/Alternate/DeviceCMYK} file{FOGRA39L_coated.icc}
    \pdfcatalog{
     /OutputIntents [
-      <<
-       /Type /OutputIntent
-       /S /GTS_PDFX
-       /DestOutputProfile \the\pdflastobj\space 0 R
-       /OutputConditionIdentifier (Coated FOGRA39)
-       /Info (FOGRA39L)
-       /RegistryName (http://www.color.org/)
-      >>
-     ]
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (Coated FOGRA39)
+      /Info (FOGRA39L)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
    }
   }{
    % Do not embed CMYK ICC profile from pdfx package.
    \pdfcatalog{
     /OutputIntents [
-      <<
-       /Type /OutputIntent
-       /S /GTS_PDFX
-       /OutputConditionIdentifier (custom)
-       /Info (none)
-       /RegistryName (http://www.color.org/)
-      >>
-     ]
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /OutputConditionIdentifier (custom)
+      /Info (none)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
    }
   }
  \fi
@@ -162,14 +162,14 @@
    \special{pdf:put @catalog
     <<
      /OutputIntents [
-     <<
-      /Type /OutputIntent
-      /S /GTS_PDFA1
-      /DestOutputProfile @cmykdata
-      /OutputConditionIdentifier (Coated FOGRA39)
-      /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
-      /RegistryName (http://www.argyllcms.com/)
-     >>
+      <<
+       /Type /OutputIntent
+       /S /GTS_PDFA1
+       /DestOutputProfile @cmykdata
+       /OutputConditionIdentifier (Coated FOGRA39)
+       /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
+       /RegistryName (http://www.argyllcms.com/)
+      >>
      ]
     >>
    }
@@ -183,14 +183,14 @@
    \special{pdf:put @catalog
     <<
      /OutputIntents [
-     <<
-      /Type /OutputIntent
-      /S /GTS_PDFA1
-      /DestOutputProfile @srgbdata
-      /OutputConditionIdentifier (sRGB IEC61966-2.1)
-      /Info (sRGB IEC61966 v2.1)
-      /RegistryName (http://www.color.org/)
-     >>
+      <<
+       /Type /OutputIntent
+       /S /GTS_PDFA1
+       /DestOutputProfile @srgbdata
+       /OutputConditionIdentifier (sRGB IEC61966-2.1)
+       /Info (sRGB IEC61966 v2.1)
+       /RegistryName (http://www.color.org/)
+      >>
      ]
     >>
    }
@@ -205,29 +205,29 @@
    \immediate\pdfobj stream attr{/N 4} file{FOGRA39L_coated.icc}
    \pdfcatalog{
     /OutputIntents [
-      <<
-       /Type /OutputIntent
-       /S /GTS_PDFA1
-       /DestOutputProfile \the\pdflastobj\space 0 R
-       /OutputConditionIdentifier (Coated FOGRA39)
-       /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
-       /RegistryName (http://www.argyllcms.com/)
-      >>
-     ]
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFA1
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (Coated FOGRA39)
+      /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
+      /RegistryName (http://www.argyllcms.com/)
+     >>
+    ]
    }
   }{
    \immediate\pdfobj stream attr{/N 3^^J/Alternate/DeviceRGB} file{sRGB.icc}
    \pdfcatalog{
     /OutputIntents [
-      <<
-       /Type /OutputIntent
-       /S /GTS_PDFA1
-       /DestOutputProfile \the\pdflastobj\space 0 R
-       /OutputConditionIdentifier (sRGB IEC61966-2.1)
-       /Info (sRGB IEC61966 v2.1)
-       /RegistryName (http://www.color.org/)
-      >>
-     ]
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFA1
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (sRGB IEC61966-2.1)
+      /Info (sRGB IEC61966 v2.1)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
    }
   }
  \fi
@@ -235,6 +235,7 @@
  % Set PDF/A part and conformance via hyperxmp.
  \hypersetup{
   pdfapart = {\pdfapart},
-  pdfaconformance = {\pdfaconformance},
+  pdfaconformance =
+  {\pdfaconformance},
  }
 }{}

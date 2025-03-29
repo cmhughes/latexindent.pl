@@ -1,4 +1,3 @@
 fineTuning:
   namedGroupingBracesBrackets:
-    name: [0-9\.a-zA-Z@\*><-]+?
-    follow: \h|\R|\{|\[|\$|\)|\(|,
+    name: [0-9\.a-zA-Z@\*><-]+

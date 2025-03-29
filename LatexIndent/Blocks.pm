@@ -52,7 +52,7 @@ sub _construct_code_blocks_regex {
      my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
      my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
      my $unNamed = qr//;
-     $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R)?} : q{});
+     $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R\s*)?} : q{});
 
      #
      # environment regex
@@ -63,7 +63,8 @@ sub _construct_code_blocks_regex {
            \\begin\{(?<ENVNAME>$environmentName)\}    # \begin{<ENVNAME>}
         )                                             # 
         (?<ENVARGS>                                   # *possible* arguments
-         $allArgumentRegEx*                           # 
+          $allArgumentRegEx*                        # 
+          $mSwitchOnlyTrailing 
         )                                             # 
         (?<ENVBODY>                                   # body
           \h*
@@ -114,6 +115,7 @@ sub _construct_code_blocks_regex {
      $specialEndRegEx = q(); 
      foreach ( @{ $mainSettings{specialBeginEnd} } ) {
         next if !${$_}{lookForThis}; 
+        next if ${$_}{lookForThis} eq 'verbatim';
 
         $specialBeginRegEx .= ( $specialBeginRegEx eq "" ? q() : "|" ) . ${$_}{begin};
         $specialEndRegEx .= ( $specialEndRegEx eq "" ? q() : "|" ) . ${$_}{end};
@@ -171,6 +173,7 @@ sub _construct_code_blocks_regex {
                (?:                                            #
                 $allArgumentRegEx                             #
                )+                                             #
+               $mSwitchOnlyTrailing 
               )
            )
            |
@@ -343,7 +346,6 @@ sub _construct_args_with_between{
          )
        )
      )
-     $mSwitchOnlyTrailing 
      }x;
 
      return $allArgumentRegEx; 
@@ -517,12 +519,13 @@ sub _find_all_code_blocks {
              # storage before finding nested things
              my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
              my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
-             my $linebreaksAtEnd=($+{TRAILINGLINEBREAK}?1:0);
+             my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
 
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
                 foreach ( @{ $mainSettings{specialBeginEnd} } ) {
                    next if !${$_}{lookForThis}; 
+                   next if ${$_}{lookForThis} eq 'verbatim';
                    if($lookupBegin =~m^${$_}{begin}^s){
                      $specialLookUpName{$lookupBegin} = ${$_}{name};
                      last;
@@ -608,6 +611,7 @@ sub _find_all_code_blocks {
           # argument body is always in $8
           my $argBody = $8;
           my $BeginStartsOnOwnLineAlias;
+          my $BodyStartsOnOwnLineAlias = undef;
           my $keyEqualsValue = q();
 
           #
@@ -622,9 +626,11 @@ sub _find_all_code_blocks {
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
+             $begin = $1;                                              # <possible leading space> 
              $name = $7 ;                                              # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
              $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
+             $BodyStartsOnOwnLineAlias = "NameFinishesWithLineBreak";  #
           } elsif($6)  {                                               # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
@@ -653,6 +659,7 @@ sub _find_all_code_blocks {
                                                  aliases=>{
                                                    # begin statements
                                                    BeginStartsOnOwnLine=>$BeginStartsOnOwnLineAlias,
+                                                   BodyStartsOnOwnLine=>$BodyStartsOnOwnLineAlias,
                                                  },
              );
           }
@@ -662,6 +669,7 @@ sub _find_all_code_blocks {
           # store settings for future use
           if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
              ${$codeBlockObj}{BeginStartsOnOwnLine} = 0;
+             ${$codeBlockObj}{BodyStartsOnOwnLine} = 0;
              $codeBlockObj->yaml_get_indentation_settings_for_this_object;
           }
 
@@ -671,7 +679,10 @@ sub _find_all_code_blocks {
                $codeBlockObj->modify_line_breaks_before_begin;  
                $begin = ${$codeBlockObj}{begin};
                $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
-               $begin =~ s@$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
+          }
+
+          if ($is_m_switch_active and ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} !=0){
+              $argBody =~ s"^\s*""s if ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} == -1;
           }
 
           # argument indentation
@@ -698,7 +709,7 @@ sub _find_all_code_blocks {
        # output indented block
        # ---------------------
        $begin.$body.$end;/sgex;
-
+       
        # m switch conflicting linebreak addition or removal handled by tokens
        $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
 
@@ -714,7 +725,7 @@ sub _indent_all_args {
     my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
 
-    $body =~ s|\G$allArgumentRegEx|
+    $body =~ s|\G$allArgumentRegEx$mSwitchOnlyTrailing|
        # mandatory or optional argument?
        my $mandatoryArgument = ($+{MANDARGBEGIN}?1:0);
 
@@ -734,9 +745,9 @@ sub _indent_all_args {
        my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
 
        # storage before finding nested things
-       my $horizontalTrailingSpace=$9?$9:q();
-       my $trailingComment=($10?$10:q());
-       my $linebreaksAtEnd=($10?0:($11?1:0));
+       my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+       my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+       my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
 
        # ***
        # find nested things
@@ -762,6 +773,8 @@ sub _indent_all_args {
               ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{CommaFinishesWithLineBreak}: 0);
 
               $argBody = _mlb_commas_in_arg_body($argBody,$CommaStartsOnOwnLine,$CommaFinishesWithLineBreak);
+              $argBody =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+              $argBody =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
           }
 
           # begin statements
@@ -853,7 +866,7 @@ sub _mlb_commas_in_arg_body{
                   # storage before finding nested things
                   my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
                   my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
-                  my $linebreaksAtEnd=($+{TRAILINGLINEBREAK}?1:0);
+                  my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
 
                   $begin = $begin.",".$+{COMMASPACE};
                   $linebreaksAtEnd = ($begin =~m @\R\h*$@s ? 1 : 0) if !$trailingComment;
@@ -873,6 +886,7 @@ sub _mlb_commas_in_arg_body{
                                                     },
                   );
 
+                  $logger->trace("*found: comma within argument")         if $is_t_switch_active;
                   $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 

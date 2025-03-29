@@ -43,7 +43,7 @@ sub modify_line_breaks_before_begin {
     my @polySwitchValues = ( ${$self}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BeginStartsOnOwnLine} );
     my $BeginStringLogFile = ${$self}{aliases}{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
     foreach (@polySwitchValues) {
-        if ( $_ >= 1 and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s and ${$self}{begin} !~ m/^\h*\R/s) {
+        if ( $_ >= 1 and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s and ${$self}{begin} !~ m/^\h*\R/s and ${$self}{begin} ne '') {
 
             # if the <begin> statement doesn't finish with a line break,
             # then we have different actions based upon the value of BodyStartsOnOwnLine:
@@ -66,7 +66,7 @@ sub modify_line_breaks_before_begin {
                     ${$self}{begin} =~ s/^(\h*(?:$argumentsBetweenCommands)*)//s;
                     ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
                 } else {
-                    ${$self}{begin} = "\n".${$self}{begin};
+                    ${$self}{begin} = $tokens{mBeforeBeginLineBreakADD}.${$self}{begin};
                 }
             }
             elsif ( $_ == 2 ) {
@@ -163,7 +163,7 @@ sub remove_line_breaks_begin {
     my $self              = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
     $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile)") if $is_t_switch_active;
-    ${$self}{begin} =~ s/\R*$//sx;
+    ${$self}{begin} =~ s/\R*$//s;
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
 
@@ -260,9 +260,13 @@ sub modify_line_breaks_after_end {
     #
 
     if (${$self}{EndFinishesWithLineBreak} == 0 ) {
-        ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.(${$self}{linebreaksAtEnd}{end}?"\n":q());
+        if (${$self}{trailingComment} and ${$self}{linebreaksAtEnd}{end} eq ''){
+           ${$self}{linebreaksAtEnd}{end} = "\n";
+        }
+        ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
         return;
     }
+
     my @polySwitchValues
         = ( ${$self}{EndFinishesWithLineBreak} == 4 ) ? ( -1, 3 ) : ( ${$self}{EndFinishesWithLineBreak} );
     foreach (@polySwitchValues) {
@@ -320,13 +324,14 @@ sub modify_line_breaks_after_end {
                     .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : $tokens{mAfterEndLineBreak}).$tokens{mAfterEndLineBreak}.${$self}{trailingComment};
             }
         } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
-                ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}."\n";
+                ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
         } elsif ( $_ == -1 ){
                 if (${$self}{trailingComment}){
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
                 } else {
-                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.(${$self}{linebreaksAtEnd}{end} ? $tokens{mAfterEndRemove} : q()).${$self}{trailingComment};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.(${$self}{linebreaksAtEnd}{end} ? $tokens{mAfterEndRemove} : q());
             }
+            $logger->trace("Removing linebreak *after* end") if $is_t_switch_active;
         }
     }
 
@@ -465,9 +470,13 @@ sub verbatim_modify_line_breaks {
 sub _modify_line_breaks_line_break_token_adjust{
     my $body = shift;
 
+       $body =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+       $body =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+
        $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreakREMOVE}@\n$1@sg;
-       $body =~ s@(?!\A)(\h*)\R\h*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
+       $body =~ s@(?!\A)(\h*)\R\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
+       $body =~ s@(\h*)\R\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
 
@@ -483,7 +492,7 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     #
     
     # space after } OR  ]
-    ${$self}{body} =~s@(.)$tokens{mAfterEndRemove}(.)@$1$2@sg;
+    ${$self}{body} =~s@(\S)$tokens{mAfterEndRemove}(\S)@$1$2@sg;
 
     # trailing comments
     ${$self}{body} =~s@(\}|\])$tokens{mAfterEndRemove}$tokens{mSwitchComment}@$1%@sg;
@@ -492,6 +501,7 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     # anything else
     ${$self}{body} =~s@(.)(\h*)$tokens{mAfterEndRemove}@$1$2@sg;
 
+    ${$self}{body} =~s@(\h*)\R\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
     ${$self}{body} =~s@$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
 
     #
@@ -504,7 +514,7 @@ sub modify_line_breaks_post_indentation_linebreaks_comments {
     # condense multiple SEQUENTIALLLY added comments into one
     ${$self}{body} =~ s/$tokens{mSwitchComment}\s*$tokens{mSwitchComment}\R/
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
-                "$trailingCommentToken\n";/sgeg;
+                "$trailingCommentToken\n";/sge;
 
     # trailing comment added at end of file
     ${$self}{body} =~ s/$tokens{mSwitchComment}\Z//s;

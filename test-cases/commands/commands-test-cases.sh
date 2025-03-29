@@ -230,6 +230,6 @@ latexindent.pl -s sub-super-scripts -o=+-mod55 -m -l=../mand-args/mand-args-mod5
 # named grouping bracket test case
 latexindent.pl commands-four-special-characters -o=+-mod1 -s -l=fine-tuning-args1
 
-[[ $silentMode == 0 ]] && set -x 
+set -x 
 [[ $noisyMode == 1 ]] && makenoise
 [[ $gitStatus == 1 ]] && git status
