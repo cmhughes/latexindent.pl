@@ -66,3 +66,9 @@ function makenoise
 {
     paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 }
+
+function wrapuptasks
+{
+    [[ $noisyMode == 1 ]] && makenoise
+    [[ $gitStatus == 1 ]] && git status
+}

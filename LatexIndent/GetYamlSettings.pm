@@ -400,6 +400,28 @@ sub yaml_read_settings {
             # if we can read userSettings
             if ($userSettings) {
 
+                # specialBeginEnd backwards compatibility
+                #
+                #   old: HASH
+                #   new: ARRAY
+                #
+                if (${ $userSettings->[0] }{specialBeginEnd} and (ref(${ $userSettings->[0] }{specialBeginEnd}) eq 'HASH') ){
+
+                   my @newSpecialBeginEnd;
+                   while ( my ($specialKey, $specialValue) = each %{${$userSettings->[0] }{specialBeginEnd}}){
+                     my %newIndvSpecialBeginEnd;
+                     if ( ref($specialValue) eq 'HASH'){
+                       $newIndvSpecialBeginEnd{name}= $specialKey;
+                       $newIndvSpecialBeginEnd{begin}= ${$specialValue}{begin} if defined ${$specialValue}{begin};
+                       $newIndvSpecialBeginEnd{end}= ${$specialValue}{end} if defined ${$specialValue}{end};
+                       $newIndvSpecialBeginEnd{lookForThis}= ${$specialValue}{lookForThis} if defined ${$specialValue}{lookForThis};
+                       push(@newSpecialBeginEnd,\%newIndvSpecialBeginEnd);
+                     }
+                   }
+                   ${ $userSettings->[0] }{specialBeginEnd} = \@newSpecialBeginEnd;
+                   $logger->warn("*specialBeginEnd should be specified as list, but has been converted to the appropriate format, see below");
+                }
+
                 # update the MASTER settings to include updates from the userSettings
                 while ( my ( $firstLevelKey, $firstLevelValue ) = each %{ $userSettings->[0] } ) {
 
@@ -809,6 +831,7 @@ sub yaml_read_settings {
         ${$_}{lookForThis} = 1 if not defined ${$_}{lookForThis};
         ${$_}{lookForThis} = 0 if not defined ${$_}{begin};
         ${$_}{lookForThis} = 0 if not defined ${$_}{end};
+        ${$_}{nested} = 0 if not defined ${$_}{nested};
     }
 
     # Comma poly-switch check

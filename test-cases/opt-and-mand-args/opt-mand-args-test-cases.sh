@@ -50,5 +50,5 @@ latexindent.pl -s -m -r heart -l heart1 -o=+-mod1 -y="modifyLineBreaks:optionalA
 
 latexindent.pl -s -l issue-520 -m issue-520 -o=+-mod1
 
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+set +x 
+wrapuptasks

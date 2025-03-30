@@ -56,6 +56,6 @@ latexindent.pl env-third-mand-args -l=../environments/env-all-on,addPercent-noAd
 latexindent.pl env-third-mand-args-mod1 -l=../environments/env-all-on,noAdditionalIndentGlobal -s -o=env-third-mand-args-mod1-global -tt
 # indentRules
 latexindent.pl env-third-mand-args-mod1 -l=../environments/env-all-on,indentRulesGlobal -s -o=env-third-mand-args-mod1-indent-rules-global -tt
-set +x
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+
+set +x 
+wrapuptasks

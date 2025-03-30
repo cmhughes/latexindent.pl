@@ -18,6 +18,30 @@
 </tr>
 <tr>
   <td>
+  <pre>
+specialBeginEnd:
+  displayMathTeX:
+    begin: \$\$                   
+    end: \$\$                     
+    lookForThis: 1
+  </pre>
+  </td>
+  <td>
+<pre>
+specialBeginEnd:
+  -
+    name: displayMathTeX:
+    begin: \$\$                   
+    end: \$\$                     
+    lookForThis: 1
+  </pre>
+  </td>
+  <td>
+  old formatting will be read, but recommend moving to new format
+  </td>
+</tr>
+<tr>
+  <td>
   partnering poly-switch behaviour
   </td>
   <td>

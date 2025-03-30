@@ -42,6 +42,7 @@ latexindent.pl -s tikz4.tex -o=+-no-add-global.tex -l ../texexchange/indentPream
 
 # issue 241: https://github.com/cmhughes/latexindent.pl/issues/241
 latexindent.pl -s -l issue241 issue241.tex -o +-mod1
+latexindent.pl -s -l issue241a issue241.tex -o +-mod2
 
 latexindent.pl -s issue-501.tex -o +-mod1
 
@@ -50,6 +51,6 @@ latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineB
 
 latexindent.pl -s -l issue-544 issue-544.tex -o=+-mod1
 latexindent.pl -s -l issue-565 issue-565.tex -o=+-mod1
-set +x
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+
+set +x 
+wrapuptasks

@@ -30,16 +30,25 @@ our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_co
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $allCodeBlocks;
+
 our $allArgumentRegEx; 
 our $argumentBodyRegEx;
 our $argumentsBetween; 
+
 our $environmentRegEx;
-our $ifElseFiRegExp; 
-our $specialRegExp = q();
+
+our $ifElseFiRegEx; 
+
+our $specialRegEx = q();
 our $specialBeginRegEx = q();
 our $specialEndRegEx = q(); 
+our $specialRegExNested = q();
+our $specialBeginRegExNested = q();
+our $specialEndRegExNested = q(); 
 our %specialLookUpName;
+
 our $codeBlockLookFor = q();
+
 our $mSwitchOnlyTrailing = q();
 our $mlbCommaSimpleArgBodyRegEx = qr();
 our $mlbCommaSimpleAllArgumentRegEx = qr{};
@@ -88,7 +97,7 @@ sub _construct_code_blocks_regex {
      # ifElseFi regex
      #
      my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
-     $ifElseFiRegExp = qr{
+     $ifElseFiRegEx = qr{
                 (?<IFELSEFIBEGIN>
                     (?<!\\newif)\\(?<IFELSEFINAME>
                       $ifElseFiNameRegExp
@@ -96,7 +105,7 @@ sub _construct_code_blocks_regex {
                 )                         
                 (?<IFELSEFIBODY>                    
                   (?>                               
-                      (??{ $ifElseFiRegExp })     
+                      (??{ $ifElseFiRegEx })     
                       |
                       (?!                           
                           (?:\\fi)                  
@@ -109,13 +118,21 @@ sub _construct_code_blocks_regex {
      }xs;
      
      #
-     # specials regex
+     # specials regex, separated into 2 cases:
+     #
+     #   1. NOT nested
+     #   2. YES nested
+     #
+     
+     #
+     # specials NOT nested
      #
      $specialBeginRegEx = q();
      $specialEndRegEx = q(); 
      foreach ( @{ $mainSettings{specialBeginEnd} } ) {
         next if !${$_}{lookForThis}; 
         next if ${$_}{lookForThis} eq 'verbatim';
+        next if ${$_}{nested}; 
 
         $specialBeginRegEx .= ( $specialBeginRegEx eq "" ? q() : "|" ) . ${$_}{begin};
         $specialEndRegEx .= ( $specialEndRegEx eq "" ? q() : "|" ) . ${$_}{end};
@@ -124,7 +141,7 @@ sub _construct_code_blocks_regex {
      $specialBeginRegEx = qr{$specialBeginRegEx}x;
      $specialEndRegEx = qr{$specialEndRegEx}x;
 
-     $specialRegExp = qr{
+     $specialRegEx = qr{
                 (?<SPECIALBEGIN>
                     $specialBeginRegEx
                     \h*
@@ -134,8 +151,6 @@ sub _construct_code_blocks_regex {
                 )                         
                 (?<SPECIALBODY>                    
                   (?>                               
-                      (??{ $specialRegExp })     
-                      |
                       (?!                           
                           (?:$specialEndRegEx)                  
                       ).                            
@@ -147,49 +162,142 @@ sub _construct_code_blocks_regex {
                 $mSwitchOnlyTrailing 
      }xs;
 
-     $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|\\if/s;
+     #
+     # specials YES nested
+     #
+     $specialBeginRegExNested = q();
+     $specialEndRegExNested = q(); 
+     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        next if !${$_}{lookForThis}; 
+        next if ${$_}{lookForThis} eq 'verbatim';
+        next if !${$_}{nested}; 
+
+        $specialBeginRegExNested .= ( $specialBeginRegExNested eq "" ? q() : "|" ) . ${$_}{begin};
+        $specialEndRegExNested .= ( $specialEndRegExNested eq "" ? q() : "|" ) . ${$_}{end};
+     }
+
+     #
+     # specials YES nested
+     #
+     if ($specialBeginRegExNested ne ''){
+
+        $specialBeginRegExNested = qr{$specialBeginRegExNested}x;
+        $specialEndRegExNested = qr{$specialEndRegExNested}x;
+
+        $specialRegExNested = qr{
+                   (?<SPECIALBEGIN>
+                       $specialBeginRegExNested
+                       \h*
+                       (?<SPECIALLINEBREAKSATENDBEGIN>
+                        \R*
+                       )
+                   )                         
+                   (?<SPECIALBODY>                    
+                     (?>                               
+                         (??{ $specialRegExNested })     
+                         |                          
+                         (?!                           
+                             (?:$specialEndRegExNested)                  
+                         ).                            
+                     )*                                
+                   )
+                   (?<SPECIALEND>                    
+                       $specialEndRegExNested
+                   )
+                   $mSwitchOnlyTrailing 
+        }xs;
+        $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|$specialBeginRegExNested|\\if/s;
+     } else {
+        $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|\\if/s;
+     }
+
 
      #
      # (commands, named, key=value, unnamed) <ARGUMENTS> regex
      #
-     $allCodeBlocks = qr{
-        (\s*)                                                 # $1 leading space
-        (?:
-           (                                                  # $2 <thing><arguments>
-              (?>                                             #    prevent backtracking
-                (                                             # $3 name
-                  (\\                                         # $4 command
-                    ((?!(?:begin|end))$commandName)           # $5 command name
-                  )                                           #
-                  |                                           #
-                  ($keyEqVal)                                 # $6 key=value name
-                  |                                           #
-                  ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
-                  |                                           #
-                  (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
-                )                                             #
-              )
-              (                                               # $8 arguments
-               (?:                                            #
-                $allArgumentRegEx                             #
-               )+                                             #
-               $mSwitchOnlyTrailing 
-              )
-           )
-           |
-           (?<ENVIRONMENT>
-               $environmentRegEx 
-           )
-           |
-           (?<IFELSEFI>
-               $ifElseFiRegExp 
-           )
-           |
-           (?<SPECIAL>
-               $specialRegExp 
-           )
-        )
-     }x;
+     if ( $specialRegExNested ne ''){
+         $allCodeBlocks = qr{
+            (\s*)                                                 # $1 leading space
+            (?:
+               (                                                  # $2 <thing><arguments>
+                  (?>                                             #    prevent backtracking
+                    (                                             # $3 name
+                      (\\                                         # $4 command
+                        ((?!(?:begin|end))$commandName)           # $5 command name
+                      )                                           #
+                      |                                           #
+                      ($keyEqVal)                                 # $6 key=value name
+                      |                                           #
+                      ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
+                      |                                           #
+                      (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
+                    )                                             #
+                  )
+                  (                                               # $8 arguments
+                   (?:                                            #
+                    $allArgumentRegEx                             #
+                   )+                                             #
+                   $mSwitchOnlyTrailing 
+                  )
+               )
+               |
+               (?<ENVIRONMENT>
+                   $environmentRegEx 
+               )
+               |
+               (?<IFELSEFI>
+                   $ifElseFiRegEx 
+               )
+               |
+               (?<SPECIAL>
+                   $specialRegEx 
+               )
+               |
+               (?<SPECIALNESTED>
+                   $specialRegExNested 
+               )
+            )
+         }x;
+     } else {
+         $allCodeBlocks = qr{
+            (\s*)                                                 # $1 leading space
+            (?:
+               (                                                  # $2 <thing><arguments>
+                  (?>                                             #    prevent backtracking
+                    (                                             # $3 name
+                      (\\                                         # $4 command
+                        ((?!(?:begin|end))$commandName)           # $5 command name
+                      )                                           #
+                      |                                           #
+                      ($keyEqVal)                                 # $6 key=value name
+                      |                                           #
+                      ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
+                      |                                           #
+                      (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
+                    )                                             #
+                  )
+                  (                                               # $8 arguments
+                   (?:                                            #
+                    $allArgumentRegEx                             #
+                   )+                                             #
+                   $mSwitchOnlyTrailing 
+                  )
+               )
+               |
+               (?<ENVIRONMENT>
+                   $environmentRegEx 
+               )
+               |
+               (?<IFELSEFI>
+                   $ifElseFiRegEx 
+               )
+               |
+               (?<SPECIAL>
+                   $specialRegEx 
+               )
+            )
+         }x;
+     }
 
      #
      # m switch only, for the following poly-switches
@@ -508,7 +616,7 @@ sub _find_all_code_blocks {
                 # \else statement gets special treatment; not that checking for \\fi ensures we're at the inner most block
                 $body =~ s"$addedIndentation(\\else)"$1"s if $body !~ m|\\fi|s ;
              }
-       } elsif ($+{SPECIAL}){
+       } elsif ($+{SPECIAL} or $+{SPECIALNESTED}){
              my $lookupBegin = $+{SPECIALBEGIN};
              $begin = $1.$+{SPECIALBEGIN};
              $body = $+{SPECIALBODY};

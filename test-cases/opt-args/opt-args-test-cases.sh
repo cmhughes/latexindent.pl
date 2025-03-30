@@ -76,7 +76,5 @@ latexindent.pl -s -l issue-445b -m issue-445 -o=+-mod3
 latexindent.pl -s -l issue-445c -m issue-445 -o=+-mod4
 latexindent.pl -s -l issue-445  -m issue-445a -o=+-mod1
 
-[[ $silentMode == 0 ]] && set -x
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
-exit 0
+set +x 
+wrapuptasks

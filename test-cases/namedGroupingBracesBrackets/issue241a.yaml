@@ -15,7 +15,6 @@ specialBeginEnd:
    begin: \<\<
    end: \>\>
    lookForThis: 1
-   nested: 1
 
 fineTuning:
   namedGroupingBracesBrackets:

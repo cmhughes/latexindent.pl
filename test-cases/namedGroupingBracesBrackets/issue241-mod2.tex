@@ -1,0 +1,241 @@
+% The code in this file is based on <https://tex.stackexchange.com/a/349521/303>.
+% ----
+
+\RequirePackage{etoolbox}
+\RequirePackage{iftex}
+
+% Check if we are generating a PDF using XeTeX.
+\ifboolexpr{test {\ifnumgreater{\value{pdftype}}{0}} and bool {XeTeX}}{
+ \RequirePackage{atbegshi}
+}{}
+
+\makeatletter
+\ifboolexpr{test {\ifnumequal{\value{pdftype}}{2}} and test {\ifnumequal{\value{colormode}}{1}}}{
+ % This is a hack to get hyperref to make RGB-like links annotated with a C mark to instead be annotated with a K mark, in order to work in PDF/A with the CMYK colour profile.
+ \patchcmd{\hyper@linkfile}{/C[}{/K[}{}{}
+ \patchcmd{\hyper@linkurl}{/C[}{/K[}{}{}
+ \patchcmd{\find@pdflink}{/C[}{/K[}{}{}
+ \patchcmd{\hyper@linkstart}{/C[}{/K[}{}{}
+}{}
+\makeatother
+
+% Check if PDF type is PDF/X.
+\ifnumequal{\value{pdftype}}{1}{
+ % ---- This code was derived from <http://tex.stackexchange.com/a/248911>.
+
+ % 72.27 pt is 72 bp, 800/803. (See <http://tex.stackexchange.com/a/113513>)
+ % Note: size in bp = (size in mm * 72) / 25.4.
+ \makeatletter
+ \edef\pwbp{\strip@pt\dimexpr0.996264009963\paperwidth\relax} % paper width in bp (PS points)
+ \edef\phbp{\strip@pt\dimexpr0.996264009963\paperheight\relax} % paper height in bp (PS points)
+ \makeatother
+
+ \edef\calcpdfpageattr{
+  /TrimBox [0 0 \pwbp\space\phbp]
+ }
+
+ % ----
+
+ \hypersetup{
+  pdfstartpage = {}, % Disable for PDF/X compliance.
+ }
+
+ \ifxetex
+  % We are using XeTeX.
+
+  \makeatletter
+
+  \AtBeginShipout{ % hook that gets executed for every page
+   \special{pdf: put @thispage
+    << \expandafter\calcpdfpageattr >>
+   }
+  }
+  \special{pdf: put @thispage
+   << \expandafter\calcpdfpageattr >>
+  }
+  \special{pdf:docinfo
+   <<
+    /GTS_PDFXVersion (PDF/X-1:2001)
+    /GTS_PDFXConformance (PDF/X-1a:2001)
+    /Trapped/False
+   >>
+  }
+
+  \ifnumequal{\value{iccinsert}}{1}{
+   % Embed CMYK ICC profile from pdfx package.
+   \special{pdf:fstream @cmykdata (FOGRA39L_coated.icc)
+    <<
+     /N 4^^J/Alternate/DeviceCMYK
+    >>
+   }
+   \special{pdf:put @catalog
+    <<
+     /OutputIntents [
+     <<
+     /Type /OutputIntent
+     /S /GTS_PDFX
+     /DestOutputProfile @cmykdata
+     /OutputConditionIdentifier (Coated FOGRA39)
+     /Info (FOGRA39L)
+     /RegistryName (http://www.color.org/)
+    >>
+    ]
+    >>
+   }
+  }{
+   % Do not embed CMYK ICC profile from pdfx package.
+   \special{pdf:put @catalog
+    <<
+     /OutputIntents [
+     <<
+     /Type /OutputIntent
+     /S /GTS_PDFX
+     /OutputConditionIdentifier (custom)
+     /Info (none)
+     /RegistryName (http://www.color.org/)
+    >>
+    ]
+    >>
+   }
+  }
+
+  \makeatother
+ \else
+  % We are using pdfTeX or LuaTeX.
+
+  \expandafter\pdfpageattr\expandafter{\calcpdfpageattr}
+
+  \ifnumequal{\value{iccinsert}}{1}{
+   % Embed CMYK ICC profile from pdfx package.
+   \immediate\pdfobj stream attr{/N 4^^J/Alternate/DeviceCMYK} file{FOGRA39L_coated.icc}
+   \pdfcatalog{
+    /OutputIntents [
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (Coated FOGRA39)
+      /Info (FOGRA39L)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
+   }
+  }{
+   % Do not embed CMYK ICC profile from pdfx package.
+   \pdfcatalog{
+    /OutputIntents [
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFX
+      /OutputConditionIdentifier (custom)
+      /Info (none)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
+   }
+  }
+ \fi
+
+ % Remove all links and annotations for PDF/X compliance.
+ % Note: the `NoHyper` environment does not deactivate the creation of bookmarks, the inclusion of document information, etc. (See <http://tex.stackexchange.com/a/300675> for more information.)
+ \NoHyper
+
+ % Set PDF/X standard via hyperxmp.
+ \hypersetup{
+  pdfxstandard = {\pdfxstandard},
+ }
+}{}
+
+% Check if PDF type is PDF/A.
+\ifnumequal{\value{pdftype}}{2}{
+ \ifxetex
+  % We are using XeTeX.
+
+  % Check if colour mode is CMYK.
+  \ifnumequal{\value{colormode}}{1}{
+   % Embed CMYK ICC profile from pdfx package.
+   \special{pdf:fstream @cmykdata (FOGRA39L_coated.icc)
+    <<
+     /N 4
+    >>
+   }
+   \special{pdf:put @catalog
+    <<
+     /OutputIntents [
+     <<
+     /Type /OutputIntent
+     /S /GTS_PDFA1
+     /DestOutputProfile @cmykdata
+     /OutputConditionIdentifier (Coated FOGRA39)
+     /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
+     /RegistryName (http://www.argyllcms.com/)
+    >>
+    ]
+    >>
+   }
+  }{
+   \makeatletter
+   \special{pdf:fstream @srgbdata (sRGB.icc)
+    <<
+     /N 3^^J/Alternate/DeviceRGB
+    >>
+   }
+   \special{pdf:put @catalog
+    <<
+     /OutputIntents [
+     <<
+     /Type /OutputIntent
+     /S /GTS_PDFA1
+     /DestOutputProfile @srgbdata
+     /OutputConditionIdentifier (sRGB IEC61966-2.1)
+     /Info (sRGB IEC61966 v2.1)
+     /RegistryName (http://www.color.org/)
+    >>
+    ]
+    >>
+   }
+   \makeatother
+  }
+ \else
+  % We are using pdfTeX or LuaTeX.
+
+  % Check if colour mode is CMYK.
+  \ifnumequal{\value{colormode}}{1}{
+   % Embed CMYK ICC profile from pdfx package.
+   \immediate\pdfobj stream attr{/N 4} file{FOGRA39L_coated.icc}
+   \pdfcatalog{
+    /OutputIntents [
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFA1
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (Coated FOGRA39)
+      /Info (FOGRA39 (ISO Coated v2 300\% (ECI)))
+      /RegistryName (http://www.argyllcms.com/)
+     >>
+    ]
+   }
+  }{
+   \immediate\pdfobj stream attr{/N 3^^J/Alternate/DeviceRGB} file{sRGB.icc}
+   \pdfcatalog{
+    /OutputIntents [
+     <<
+      /Type /OutputIntent
+      /S /GTS_PDFA1
+      /DestOutputProfile \the\pdflastobj\space 0 R
+      /OutputConditionIdentifier (sRGB IEC61966-2.1)
+      /Info (sRGB IEC61966 v2.1)
+      /RegistryName (http://www.color.org/)
+     >>
+    ]
+   }
+  }
+ \fi
+
+ % Set PDF/A part and conformance via hyperxmp.
+ \hypersetup{
+  pdfapart = {\pdfapart},
+  pdfaconformance =
+  {\pdfaconformance},
+ }
+}{}
