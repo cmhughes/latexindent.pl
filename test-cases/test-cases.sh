@@ -109,7 +109,7 @@ dirExec=(
   "opt-and-mand-args;opt-mand-args-test-cases.sh"
   "namedGroupingBracesBrackets;named-grouping-test-cases.sh"
   "unnamed-braces;un-named-grouping-braces.sh"
-  # "keyEqualsValueBraces;key-equals-values-test-cases.sh"
+  "keyEqualsValueBraces;key-equals-values-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "environments;environments-test-cases.sh"

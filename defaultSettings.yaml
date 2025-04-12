@@ -20,7 +20,7 @@
 #
 # See http://www.gnu.org/licenses/.
 #
-# Chris Hughes, 2017
+# Chris Hughes (cmhughes)
 #
 #---------------------------------------------------------------------------------------
 
@@ -518,21 +518,21 @@ fineTuning:
     canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
   keyEqualsValuesBracesBrackets:
     name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*
-    follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- PROBABLY DITCH
+    follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- DITCH
   namedGroupingBracesBrackets:
     name: [0-9\.a-zA-Z@\*><]+
-    follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- PROBABLY DITCH
+    follow: \h|\R|\{|\[|\$|\)|\(              #<!------------- DITCH
   UnNamedGroupingBracesBrackets:
-    follow: \{|\[|,|&|\)|\(|\$                #<!------------- PROBABLY DITCH
+    follow: \{|\[|,|&|\)|\(|\$                #<!------------- DITCH
   arguments:
-    before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- PROBABLY DITCH
+    before: (?:#\d\h*;?,?\/?)+|\<.*?\>        #<!------------- DITCH
     between: |-                               #
       (?x)                                    #
-      (?:                                     # Make 'between' different for each of
-        [_^*#0-9(),+-]                        #    commands
-        |                                     #    namedGroupintBracesBrackets
-        (?:node|at|to|decoration)             #    UnnamedGroupintBracesBrackets
-      )                                       #    keyEqualsValuesBracesBrackets
+      (?:                                     # 
+        [_^*#0-9(),+-]                        #
+        |                                     #
+        (?:node|at|to|decoration)             #
+      )                                       #
     #                                         # ????
     # adjust for beamer...?                       #<!-------- NEW FEATURE?
     #

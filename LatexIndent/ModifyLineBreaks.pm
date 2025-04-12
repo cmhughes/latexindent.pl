@@ -62,7 +62,7 @@ sub modify_line_breaks_before_begin {
                 ${$self}{begin} =~ s/^\s*//sg if ${$self}{type} eq "something-with-braces";
 
                 # arguments
-                 if (${$self}{type} eq 'argument' and ${$self}{modifyLineBreaksName} eq 'commands'){
+                 if (${$self}{type} eq 'argument' and (${$self}{modifyLineBreaksName} eq 'commands' or ${$self}{modifyLineBreaksName} eq 'keyEqualsValuesBracesBrackets')){
                     ${$self}{begin} =~ s/^(\h*(?:$argumentsBetweenCommands)*)//s;
                     ${$self}{begin} = ($1?$1:q())."\n".${$self}{begin};
                 } else {
@@ -72,6 +72,7 @@ sub modify_line_breaks_before_begin {
             elsif ( $_ == 2 ) {
                 ${$self}{begin} =~ s/^(\h*)//s;
                 ${$self}{begin} = "$tokens{mSwitchComment}\n".${$self}{begin};
+                $logger->trace("Adding a COMMENT and linebreak *before* begin statement \t\t ($BeginStringLogFile==2)") if $is_t_switch_active;
             }
             elsif ( $_ == 3 ) {
                 ${$self}{begin} =~ s/^\h*//s;
@@ -80,7 +81,7 @@ sub modify_line_breaks_before_begin {
         }
         elsif ( $_ == -1 ) {
             # remove line break *before* begin, if appropriate
-            $logger->trace("Removing linebreak *before* begin") if $is_t_switch_active;
+            $logger->trace("Removing linebreak *before* begin \t\t ($BeginStringLogFile==-1)") if $is_t_switch_active;
             ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreakREMOVE}/s;
         }
     }
@@ -162,7 +163,7 @@ sub modify_line_breaks_before_body {
 sub remove_line_breaks_begin {
     my $self              = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
-    $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile)") if $is_t_switch_active;
+    $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile==-1)") if $is_t_switch_active;
     ${$self}{begin} =~ s/\R*$//s;
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
@@ -186,7 +187,7 @@ sub modify_line_breaks_before_end {
             my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine} || "EndStartsOnOwnLine";
 
             # linebreaks at the end of body
-            ${$self}{linebreaksAtEnd}{body} = (${$self}{body} =~ m/\R\h*$/s ? 1 : 0);
+            ${$self}{linebreaksAtEnd}{body} = (${$self}{body} =~ m/\R\s*$/s ? 1 : 0);
 
             if ( $_ >= 1 and !${$self}{linebreaksAtEnd}{body} ) {
 
@@ -195,19 +196,19 @@ sub modify_line_breaks_before_end {
                 #     EndStartsOnOwnLine == 1 just add a new line
                 #     EndStartsOnOwnLine == 2 add a comment, and then new line
                 #     EndStartsOnOwnLine == 3 add a blank line, and then new line
-                $logger->trace("Adding a linebreak *before* end statement \t\t ($EndStringLogFile==1)") if $is_t_switch_active;
+                $logger->trace("Adding a linebreak *before* end statement \t\t ($EndStringLogFile==1)") if $is_t_switch_active and $_ == 1;
 
                 # by default, assume that no trailing character token is needed
                 my $trailingCharacterToken = q();
                 if ( $_ == 2 ) {
-                    $logger->trace("Adding a % immediately before end statement \t\t ($EndStringLogFile==2)")
+                    $logger->trace("Adding a % *before* end statement \t\t ($EndStringLogFile==2)")
                         if $is_t_switch_active;
                     $trailingCharacterToken = "%" . $self->add_comment_symbol;
                     ${$self}{body} =~ s/\h*$//s;
                 }
                 elsif ( $_ == 3 ) {
                     $logger->trace(
-                        "Adding a blank line immediately after body of ${$self}{name} \t\t ($EndStringLogFile==3)")
+                        "Adding a blank line *before* end statement \t\t ($EndStringLogFile == 3)")
                         if $is_t_switch_active;
                     $trailingCharacterToken = "\n"
                         . ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : q() );
@@ -233,9 +234,9 @@ sub modify_line_breaks_before_end {
                 # check to see that body does *not* finish with blank-line-token,
                 # if so, then don't remove that final line break
                 if ( ${$self}{body} !~ m/$tokens{blanklines}$/s ) {
-                    $logger->trace("Removing linebreak at the end of body \t\t ($EndStringLogFile)")
+                    $logger->trace("Removing linebreak *before* end \t\t ($EndStringLogFile==-1)")
                         if $is_t_switch_active;
-                    ${$self}{body} =~ s/\R*$//sx;
+                    ${$self}{body} =~ s/(\h*)\R\s*$/$1/s;
                     ${$self}{linebreaksAtEnd}{body} = 0;
                 }
                 else {
@@ -278,7 +279,6 @@ sub modify_line_breaks_after_end {
         # possibly modify line break *after* \end{statement}
         if (    defined $_
             and $_ >= 1
-            and !${$self}{linebreaksAtEnd}{end}
             and ${$self}{end} ne '' )
         {
             # if the <end> statement doesn't finish with a line break,
@@ -290,15 +290,20 @@ sub modify_line_breaks_after_end {
             if ( $_ == 1 ) {
                 $logger->trace("Adding a linebreak *after* end statement \t\t ($EndStringLogFile==1)")
                     if $is_t_switch_active;
-                ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
-                ${$self}{end} .= ${$self}{horizontalTrailingSpace}.$tokens{mAfterEndLineBreak}.${$self}{trailingComment};
+                if (${$self}{trailingComment}){
+                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.$tokens{mAfterEndLineBreak}.${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
+                 } elsif (${$self}{linebreaksAtEnd}{end}){
+                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
+                 } else {
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.$tokens{mAfterEndLineBreak};
+                }
             }
             elsif ( $_ == 2 ) {
                 if ( ${$self}{trailingComment} ) {
 
-                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
                     
                     # no need to add a % if one already exists
                     $logger->trace(
@@ -306,74 +311,49 @@ sub modify_line_breaks_after_end {
                     ) if $is_t_switch_active;
                 }
                 else {
-                    # otherwise, create a trailing comment, and tack it on
-                    $logger->trace("Adding a % immediately after ${$self}{end} ($EndStringLogFile==2)")
-                        if $is_t_switch_active;
-                    ${$self}{end} =~ s/\h*$//s;
-                    ${$self}{end} .= "$tokens{mSwitchComment}$tokens{mAfterEndLineBreak}";
-                    ${$self}{linebreaksAtEnd}{end} = 1;
+                    if (${$self}{linebreaksAtEnd}{end}){
+                      ${$self}{end} .= ${$self}{linebreaksAtEnd}{end};
+                    } else {
+                      # otherwise, create a trailing comment, and tack it on
+                      $logger->trace("Adding a % immediately after ${$self}{end} ($EndStringLogFile == 2)")
+                          if $is_t_switch_active;
+                      ${$self}{end} =~ s/\h*$//s;
+                      ${$self}{end} .= "$tokens{mSwitchComment}$tokens{mAfterEndLineBreak}";
+                    }
                 }
             }
             elsif ( $_ == 3 ) {
-                $logger->trace("Adding a blank line at the end of ${$self}{end} ($EndStringLogFile==3)")
+                $logger->trace("Adding a blank line *after* end statement \t\t($EndStringLogFile == 3)")
                     if $is_t_switch_active;
-                ${$self}{linebreaksAtEnd}{end} = 1;
 
                 # modified end statement
+                if (${$self}{trailingComment}){
                 ${$self}{end}
-                    .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : $tokens{mAfterEndLineBreak}).$tokens{mAfterEndLineBreak}.${$self}{trailingComment};
+                    .= ${$self}{horizontalTrailingSpace}
+                       .( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{mAfterEndLineBreak}.$tokens{blanklines} : $tokens{mAfterEndLineBreak})
+                       .( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{mAfterEndLineBreak}.$tokens{blanklines} : $tokens{mAfterEndLineBreak})
+                       .$tokens{mAfterEndLineBreak}
+                       .${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
+                } elsif (${$self}{linebreaksAtEnd}{end}){
+                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{linebreaksAtEnd}{end};
+                } else {
+                ${$self}{end}
+                    .= ${$self}{horizontalTrailingSpace}
+                       .( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{mAfterEndLineBreak}.$tokens{blanklines} : $tokens{mAfterEndLineBreak})
+                       .( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{mAfterEndLineBreak}.$tokens{blanklines} : $tokens{mAfterEndLineBreak})
+                       .$tokens{mAfterEndLineBreak};
+                }
             }
         } elsif ( $_ >=1 and ${$self}{linebreaksAtEnd}{end}){
                 ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.${$self}{linebreaksAtEnd}{end};
         } elsif ( $_ == -1 ){
                 if (${$self}{trailingComment}){
-                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak};
+                    ${$self}{end} .= ${$self}{horizontalTrailingSpace}.${$self}{trailingComment}.$tokens{mAfterEndLineBreak}.${$self}{linebreaksAtEnd}{end};;
                 } else {
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.(${$self}{linebreaksAtEnd}{end} ? $tokens{mAfterEndRemove} : q());
             }
             $logger->trace("Removing linebreak *after* end") if $is_t_switch_active;
         }
-    }
-
-}
-
-sub adjust_line_breaks_end_parent {
-
-    # when a parent object contains a child object, the line break
-    # at the end of the parent object can become messy
-
-    my $self = shift;
-
-    # most recent child object
-    my $child = @{ ${$self}{children} }[-1];
-
-    # adjust parent linebreaks information
-    if (    ${$child}{linebreaksAtEnd}{end}
-        and ${$self}{body} =~ m/${$child}{replacementText}\h*\R*$/s
-        and !${$self}{linebreaksAtEnd}{body} )
-    {
-        $logger->trace("ID: ${$child}{id}") if ($is_t_switch_active);
-        $logger->trace(
-            "${$child}{begin}...${$child}{end} is found at the END of body of parent, ${$self}{name}, avoiding a double line break:"
-        ) if ($is_t_switch_active);
-        $logger->trace("adjusting ${$self}{name} linebreaksAtEnd{body} to be 1") if ($is_t_switch_active);
-        ${$self}{linebreaksAtEnd}{body} = 1;
-    }
-
-    # the modify line switch can adjust line breaks, so we need another check,
-    # see for example, test-cases/environments/environments-remove-line-breaks-trailing-comments.tex
-    if (    defined ${$child}{linebreaksAtEnd}{body}
-        and !${$child}{linebreaksAtEnd}{body}
-        and ${$child}{body} =~ m/\R(?:$trailingCommentRegExp\h*)?$/s )
-    {
-        # log file information
-        $logger->trace("Undisclosed line break at the end of body of ${$child}{name}: '${$child}{end}'")
-            if ($is_t_switch_active);
-        $logger->trace("Adding a linebreak at the end of body for ${$child}{id}") if ($is_t_switch_active);
-
-        # make the adjustments
-        ${$child}{body} .= "\n";
-        ${$child}{linebreaksAtEnd}{body} = 1;
     }
 
 }
@@ -473,12 +453,13 @@ sub _modify_line_breaks_line_break_token_adjust{
        $body =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}@\n@sg;
        $body =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
 
-       $body =~ s@(?:$tokens{mAfterEndLineBreak})+$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)$tokens{mBeforeBeginLineBreakREMOVE}@\n$1@sg;
+       $body =~ s@(?:$tokens{mAfterEndLineBreak})+\s*$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)\s*$tokens{mBeforeBeginLineBreakREMOVE}@\n$1@sg;
        $body =~ s@(?!\A)(\h*)\R\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
        $body =~ s@(\h*)\R\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1@sg;
        $body =~ s@$tokens{mAfterEndLineBreak}($trailingCommentRegExp)@\n$1\n@sg;
-       $body =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
+       $body =~ s@($tokens{mAfterEndLineBreak}){3}\s*@\n\n@sg;
+       $body =~ s@$tokens{mAfterEndLineBreak}\R?@\n@sg;
 
        return $body;
 }

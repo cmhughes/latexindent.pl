@@ -16,6 +16,8 @@ latexindent.pl -w -s ifelsefi-multiple-nested.tex
 latexindent.pl -w -s ifelsefiSmall.tex
 latexindent.pl -w -s conditional.tex
 
+latexindent.pl -s outn.cls -o=outn-default.cls -l=notabular,resetItem,ifstar
+
 # modify line breaks
 latexindent.pl ifelsefi-first.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines1.yaml -o=ifelsefi-first-mod1.tex
 latexindent.pl ifelsefi-first.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines2.yaml -o=ifelsefi-first-mod2.tex

@@ -21,13 +21,12 @@ use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 use Exporter                     qw/import/;
+use Data::Dumper;
 our @EXPORT_OK = qw/remove_trailing_whitespace remove_leading_space/;
 
 sub remove_trailing_whitespace {
     my $self  = shift;
     my %input = @_;
-
-    $logger->trace("*Horizontal space removal routine") if $is_t_switch_active;
 
     # removeTrailingWhitespace can be either a hash or a scalar, but if
     # it's a scalar, we need to fix it
@@ -44,6 +43,8 @@ sub remove_trailing_whitespace {
         # redefine it as a hash
         ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} = $removeTWS;
         ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing}  = $removeTWS;
+
+        $logger->trace("*removeTrailingWhitespace setting defaults routine") if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: afterProcessing is now $removeTWS")  if $is_t_switch_active;
     }
@@ -52,14 +53,15 @@ sub remove_trailing_whitespace {
     if ( $input{when} eq "before" ) {
         return unless ( ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} );
         $logger->trace(
-            "Removing trailing white space *before* the document is processed (see removeTrailingWhitespace: beforeProcessing)"
+            "*Removing trailing white space *before* the document is processed (removeTrailingWhitespace: beforeProcessing == 1)"
         ) if $is_t_switch_active;
     }
     elsif ( $input{when} eq "after" ) {
         return unless ( ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing} );
         $logger->trace(
-            "Removing trailing white space *after* the document is processed (see removeTrailingWhitespace: afterProcessing)"
+            "*Removing trailing white space *after* the document is processed (removeTrailingWhitespace: afterProcessing == 1)"
         ) if $is_t_switch_active;
+        $logger->trace(Dumper(\%{$mainSettings{removeTrailingWhitespace}}));
     }
     else {
         return;

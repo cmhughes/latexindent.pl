@@ -18,7 +18,7 @@ package LatexIndent::Blocks;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings $commaPolySwitchExists/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings $commaPolySwitchExists $equalsPolySwitchExists/;
 use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile  qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
@@ -59,7 +59,8 @@ sub _construct_code_blocks_regex {
      $allArgumentRegEx = _construct_args_with_between();
      my $commandName = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
      my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
-     my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}\s*=\s*/;
+     my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}
+                       (?:\s|$trailingCommentRegExp|$tokens{blanklines})*=/x;
      my $unNamed = qr//;
      $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R\s*)?} : q{});
 
@@ -742,8 +743,9 @@ sub _find_all_code_blocks {
           # key = braces or brackets                                   # 
           #                                                            # 
              $name = $6;                                               # <name of key = value braces brackets>
-             $name =~ s|(\s*=$)||s;                                    # 
+             $name =~ s^((?:\s|$trailingCommentRegExp|$tokens{blanklines})*=)^^s;                                    # 
              $keyEqualsValue = $1;
+             $begin = $begin.$name;
              $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
              $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
           } else {                                                     # -------------------------------- 
@@ -780,20 +782,68 @@ sub _find_all_code_blocks {
           }
 
           # m-switch: command name starts on own line
-          if ($is_m_switch_active and ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
-               ${$codeBlockObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
-               $codeBlockObj->modify_line_breaks_before_begin;  
-               $begin = ${$codeBlockObj}{begin};
-               $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
-          }
+          if ($is_m_switch_active){
 
-          if ($is_m_switch_active and ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} !=0){
-              $argBody =~ s"^\s*""s if ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} == -1;
+               if ( ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
+                  ${$codeBlockObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
+                  $codeBlockObj->modify_line_breaks_before_begin;  
+                  $begin = ${$codeBlockObj}{begin};
+                  $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
+               }
+
+               if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} !=0){
+                   $argBody =~ s"^\s*""s if ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BodyStartsOnOwnLine} == -1;
+               }
+            
+               # key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
+               if ( $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets" and $equalsPolySwitchExists){
+                   my $EqualsStartsOnOwnLine= 
+                     (defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{EqualsStartsOnOwnLine}?
+                              ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{EqualsStartsOnOwnLine} : 0);
+                   my $EqualsFinishesWithLineBreak= 
+                     (defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{EqualsFinishesWithLineBreak}?
+                              ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{EqualsFinishesWithLineBreak} : 0);
+
+                   $keyEqualsValue =~s^=^^s;
+                   $argBody =~ s@^$mSwitchOnlyTrailing@@s;
+                   my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+                   my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+                   my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
+
+                   my $codeBlockObj = LatexIndent::Special->new(name=>"equals",
+                                                     body=>$keyEqualsValue,
+                                                     end=>"=",
+                                                     modifyLineBreaksYamlName=>"equals",
+                                                     type=>"equals",
+                                                     EndStartsOnOwnLine=>$EqualsStartsOnOwnLine,
+                                                     EndFinishesWithLineBreak=>$EqualsFinishesWithLineBreak,
+                                                     horizontalTrailingSpace=>$horizontalTrailingSpace,
+                                                     trailingComment=>$trailingComment,
+                                                     linebreaksAtEnd=>{
+                                                       end=>$linebreaksAtEnd,
+                                                     },
+                   );
+
+                   $logger->trace("*found: equals in key=value")         if $is_t_switch_active;
+                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;  
+                   $codeBlockObj->modify_line_breaks_after_end if ${$codeBlockObj}{EndFinishesWithLineBreak} != 0;  
+
+                   ${$codeBlockObj}{body} =  ${$codeBlockObj}{body}.${$codeBlockObj}{end};
+                   $codeBlockObj->modify_line_breaks_post_indentation_linebreaks_comments; 
+                   $keyEqualsValue = ${$codeBlockObj}{body};
+               }
+
+               if ( $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets"){
+                   $keyEqualsValue =~ s^=(.*)$^=^s;
+                   $argBody = $1.$argBody;
+               }
           }
 
           # argument indentation
           $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody,$currentIndentation);
           
+          $argBody = $keyEqualsValue.$argBody if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
+
           # command BODY indentation, possibly
           if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
              $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
@@ -803,11 +853,12 @@ sub _find_all_code_blocks {
              $argBody =~ s"^$addedIndentation""s;
           }
 
-          # key = value is particular
-          $name = $name.$keyEqualsValue if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
-          
           # put it all together
           $body = $name;
+          
+          # key = value is particular
+          $body = q() if $modifyLineBreaksName eq "keyEqualsValuesBracesBrackets";
+          
           $end = $argBody;
        }
 
@@ -853,7 +904,7 @@ sub _indent_all_args {
        # storage before finding nested things
        my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
        my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
-       my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
+       my $linebreaksAtEnd=( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q());
 
        # ***
        # find nested things
@@ -969,7 +1020,7 @@ sub _mlb_commas_in_arg_body{
                 my $begin = $1;
                 my $commaOrArgs = q();
                 if ($+{comma}){
-                  # storage before finding nested things
+                  
                   my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
                   my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
                   my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));

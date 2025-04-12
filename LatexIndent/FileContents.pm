@@ -23,7 +23,6 @@ use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is
 use LatexIndent::LogFile         qw/$logger/;
 use LatexIndent::Environment     qw/$environmentBasicRegExp/;
 use LatexIndent::IfElseFi        qw/$ifElseFiBasicRegExp/;
-use LatexIndent::Special         qw/$specialBeginAndBracesBracketsBasicRegExp/;
 use LatexIndent::Heading         qw/$allHeadingsRegexp/;
 use LatexIndent::Verbatim        qw/%verbatimStorage/;
 use Data::Dumper;
@@ -34,6 +33,8 @@ our $fileContentsCounter;
 
 sub find_file_contents_environments_and_preamble {
     my $self = shift;
+
+    return unless !$mainSettings{indentPreamble}; 
 
     # store the file contents blocks in an array which, depending on the value
     # of indentPreamble, will be put into the verbatim hash, or otherwise
@@ -115,7 +116,7 @@ sub find_file_contents_environments_and_preamble {
             push( @fileContentsStorageArray, $fileContentsBlock );
 
             # log file output
-            $logger->trace("FILECONTENTS environment found: ${$fileContentsBlock}{name}") if $is_t_switch_active;
+            $logger->trace("*found: ${$fileContentsBlock}{name} \t\ttype FILECONTENTS environment") if $is_t_switch_active;
 
             # remove the environment block, and replace with unique ID
             ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
@@ -252,9 +253,9 @@ sub tasks_particular_to_each_object {
     # search for headings (part, chapter, section, setc)
     $self->find_heading if ${$self}{body} =~ m/$allHeadingsRegexp/s;
 
-    # search for commands and special code blocks
-    $self->find_commands_or_key_equals_values_braces_and_special
-        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
+    ####  # search for commands and special code blocks                            ## <! ditch
+    ####  $self->find_commands_or_key_equals_values_braces_and_special             ## <! ditch
+    ####      if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;  ## <! ditch
 }
 
 1;

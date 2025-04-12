@@ -246,6 +246,7 @@ sub final_indentation_check {
     my $indentation;
     my $numberOfTABS;
     my $after;
+    $logger->trace("*Tab indentation work") if($is_tt_switch_active);
     ${$self}{body} =~ s/
                         ^((\h*|\t*)((\h+)(\t+))+)
                         /   
@@ -254,12 +255,12 @@ sub final_indentation_check {
 
                         # count the number of tabs
                         $numberOfTABS = () = $indentation=~ \/\t\/g;
-                        $logger->trace("Number of tabs: $numberOfTABS") if($is_t_switch_active);
+                        $logger->trace("Number of tabs: $numberOfTABS") if($is_tt_switch_active);
 
                         # log the after
                         ($after = $indentation) =~ s|\t||g;
                         $after = "TAB"x$numberOfTABS.$after;
-                        $logger->trace("Indentation after: '$after'") if($is_t_switch_active);
+                        $logger->trace("Indentation after: '$after'") if($is_tt_switch_active);
                         ($indentation = $after) =~s|TAB|\t|g;
 
                         $indentation;

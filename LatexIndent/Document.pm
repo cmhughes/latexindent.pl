@@ -186,6 +186,7 @@ sub operate_on_file {
         $self->protect_blank_lines                                     if $is_m_switch_active;
         $self->remove_trailing_whitespace( when => "before" );
         $self->find_file_contents_environments_and_preamble;
+        $self->dodge_double_backslash;
         $self->remove_leading_space;
         ${$self}{body} = _find_all_code_blocks(${$self}{body},"");
         ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
@@ -267,7 +268,11 @@ sub output_logfile {
         if ${ $mainSettings{logFilePreferences} }{endLogFileWith};
 
     # github info line
-    $logger->info("*Please direct all communication/issues to:\nhttps://github.com/cmhughes/latexindent.pl")
+    $logger->info("*Please direct all communication/issues to:")
+        if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
+    $logger->info("https://github.com/cmhughes/latexindent.pl")
+        if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
+    $logger->info("documentation: https://latexindentpl.readthedocs.io/en/latest/")
         if ${ $mainSettings{logFilePreferences} }{showGitHubInfoFooter};
 
     # open log file
