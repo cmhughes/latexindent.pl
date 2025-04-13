@@ -27,30 +27,31 @@ set +x
 latexindent.pl -m -s contributors-remove-line-breaks -o=+-vo-mod5-no-remove -l=mand-args-Vo-mod5,../commands/unprotect-blank-lines,online  -y="removeTrailingWhitespace:beforeProcessing: 0"
 
 # special characters
-latexindent.pl -s special-characters.tex -m -l=mand-args-mod1,../filecontents/indentPreambleYes -o=+-mod1.tex 
-latexindent.pl -s special-characters-minimal.tex -o=+-default.tex
-latexindent.pl -s special-characters-minimal-blank-lines.tex -o=+-default.tex -g=one.log
+latexindent.pl -s special-characters -m -l=mand-args-mod1,../filecontents/indentPreambleYes -o=+-mod1 
+latexindent.pl -s special-characters-minimal -o=+-default
+latexindent.pl -s special-characters-minimal-blank-lines -o=+-default -g=one.log
 
 # m switch active
-latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o=+-m-switch.tex -l=noCondenseBlankLines -g=two.log
-latexindent.pl -s -m special-characters-minimal-blank-lines.tex -o=+-m-switch-condense.tex
+latexindent.pl -t -s -m special-characters-minimal-blank-lines -o=+-m-switch -l=noCondenseBlankLines
+egrep 'found:' indent.log > special-characters-minimal-blank-lines-m-swith.txt
+latexindent.pl -s -m special-characters-minimal-blank-lines -o=+-m-switch-condense
 
 # legacy test case
-latexindent.pl -s tikz3.tex -o=+-default.tex
-latexindent.pl -s tikz4.tex -o=+-default.tex -l ../texexchange/indentPreamble
-latexindent.pl -s tikz4.tex -o=+-no-add-global.tex -l ../texexchange/indentPreamble,noAddGlobNamed
+latexindent.pl -s tikz3 -o=+-default
+latexindent.pl -s tikz4 -o=+-default -l ../texexchange/indentPreamble
+latexindent.pl -s tikz4 -o=+-no-add-global -l ../texexchange/indentPreamble,noAddGlobNamed
 
 # issue 241: https://github.com/cmhughes/latexindent.pl/issues/241
-latexindent.pl -s -l issue241 issue241.tex -o +-mod1
-latexindent.pl -s -l issue241a issue241.tex -o +-mod2
+latexindent.pl -s -l issue241 issue241 -o +-mod1
+latexindent.pl -s -l issue241a issue241 -o +-mod2
 
-latexindent.pl -s issue-501.tex -o +-mod1
+latexindent.pl -s issue-501 -o +-mod1
 
-latexindent.pl -s -l issue-501 issue-501.tex -o +-mod2
-latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineBreaks:textWrapOptions:blocksBeginWith:other:(?:\\\\),noAdditionalIndentGlobal:namedGroupingBracesBrackets:1" issue-501a.tex -o=+-mod2
+latexindent.pl -s -l issue-501 issue-501 -o +-mod2
+latexindent.pl -s -m -y "modifyLineBreaks:textWrapOptions:columns:25,modifyLineBreaks:textWrapOptions:blocksBeginWith:other:(?:\\\\),noAdditionalIndentGlobal:namedGroupingBracesBrackets:1" issue-501a -o=+-mod2
 
-latexindent.pl -s -l issue-544 issue-544.tex -o=+-mod1
-latexindent.pl -s -l issue-565 issue-565.tex -o=+-mod1
+latexindent.pl -s -l issue-544 issue-544 -o=+-mod1
+latexindent.pl -s -l issue-565 issue-565 -o=+-mod1
 
 set +x 
 wrapuptasks

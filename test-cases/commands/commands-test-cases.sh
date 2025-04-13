@@ -103,7 +103,7 @@ do
    latexindent.pl commands-nested-multiple -m -s -o=+-textbf-mand-args-noAdditionalIndentGlobal-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i,textbf-mand-args,noAdditionalIndentGlobal
 
    # multiple commands and environments
-   latexindent.pl figureValign -m -s -o=figureValign-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,mand-args-mod$i,figValign-yaml,../filecontents/indentPreambleYes,SAS
+   latexindent.pl figureValign -m -s -o=+-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,mand-args-mod$i,figValign-yaml,../filecontents/indentPreambleYes,SAS
    latexindent.pl figureValign -m -s -o=+-opt-mod$i -l=command-name-not-finishes-with-line-break,../opt-args/opt-args-remove-all,../environments/env-all-on,opt-args-mod$i,figValign-yaml,makebox,../filecontents/indentPreambleYes,SAS 
 
    set +x

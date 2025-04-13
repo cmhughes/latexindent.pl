@@ -1,0 +1,3 @@
+TRACE: found: newcolumntype 	 type: commands
+TRACE: found: > 	 type: namedGroupingBracesBrackets
+TRACE: found:  	 type: UnNamedGroupingBracesBrackets

@@ -99,6 +99,8 @@ sub modify_line_breaks_before_body {
 
     # add a line break after \begin{statement} if appropriate
     my @polySwitchValues = ( ${$self}{BodyStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BodyStartsOnOwnLine} );
+
+    ${$self}{linebreaksAtEnd}{begin} = (${$self}{body} =~ m/^\h*\R/s ? 1 : 0);
     foreach (@polySwitchValues) {
         my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
         if ( $_ >= 1 and !${$self}{linebreaksAtEnd}{begin} ) {
@@ -129,7 +131,6 @@ sub modify_line_breaks_before_body {
                         "Adding a % at the end of begin followed by a linebreak ($BodyStringLogFile == 2)"
                     ) if $is_t_switch_active;
                     $trailingCommentToken = "%" . $self->add_comment_symbol;
-                    ${$self}{begin} =~ s/\h*$//;
                     ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
                     ${$self}{body} =~ s/^\h*//;
@@ -141,21 +142,21 @@ sub modify_line_breaks_before_body {
                 }
             }
             elsif ( $_ == 3 ) {
-                my $trailingCharacterToken = q();
                 $logger->trace(
                     "Adding a blank line *after* begin followed by a linebreak ($BodyStringLogFile == 3)"
                 ) if $is_t_switch_active;
-                ${$self}{begin} =~ s/\h*$//;
-                ${$self}{begin}
-                    .= ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
                 ${$self}{body} =~ s/^\h*//;
+                ${$self}{body} = ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" )."\n".${$self}{body};
             }
         }
         elsif ( $_ == -1 and ${$self}{linebreaksAtEnd}{begin} ) {
 
             # remove line break *after* begin, if appropriate
-            $self->remove_line_breaks_begin;
+            my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
+            $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile == -1)") if $is_t_switch_active;
+            ${$self}{linebreaksAtEnd}{begin} = 0;
+            ${$self}{body} =~ s/^(\h*)\R*\s*/$1/s;
         }
     }
 }
@@ -163,7 +164,7 @@ sub modify_line_breaks_before_body {
 sub remove_line_breaks_begin {
     my $self              = shift;
     my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
-    $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile==-1)") if $is_t_switch_active;
+    $logger->trace("Removing linebreak *after* begin \t\t ($BodyStringLogFile == -1)") if $is_t_switch_active;
     ${$self}{begin} =~ s/\R*$//s;
     ${$self}{linebreaksAtEnd}{begin} = 0;
 }
@@ -196,12 +197,12 @@ sub modify_line_breaks_before_end {
                 #     EndStartsOnOwnLine == 1 just add a new line
                 #     EndStartsOnOwnLine == 2 add a comment, and then new line
                 #     EndStartsOnOwnLine == 3 add a blank line, and then new line
-                $logger->trace("Adding a linebreak *before* end statement \t\t ($EndStringLogFile==1)") if $is_t_switch_active and $_ == 1;
+                $logger->trace("Adding a linebreak *before* end statement \t\t ($EndStringLogFile == 1)") if $is_t_switch_active and $_ == 1;
 
                 # by default, assume that no trailing character token is needed
                 my $trailingCharacterToken = q();
                 if ( $_ == 2 ) {
-                    $logger->trace("Adding a % *before* end statement \t\t ($EndStringLogFile==2)")
+                    $logger->trace("Adding a % *before* end statement \t\t ($EndStringLogFile == 2 )")
                         if $is_t_switch_active;
                     $trailingCharacterToken = "%" . $self->add_comment_symbol;
                     ${$self}{body} =~ s/\h*$//s;
@@ -234,7 +235,7 @@ sub modify_line_breaks_before_end {
                 # check to see that body does *not* finish with blank-line-token,
                 # if so, then don't remove that final line break
                 if ( ${$self}{body} !~ m/$tokens{blanklines}$/s ) {
-                    $logger->trace("Removing linebreak *before* end \t\t ($EndStringLogFile==-1)")
+                    $logger->trace("Removing linebreak *before* end \t\t ($EndStringLogFile == -1)")
                         if $is_t_switch_active;
                     ${$self}{body} =~ s/(\h*)\R\s*$/$1/s;
                     ${$self}{linebreaksAtEnd}{body} = 0;
@@ -276,6 +277,7 @@ sub modify_line_breaks_after_end {
             if ( $_ == 3
             and ( defined ${$self}{EndFinishesWithLineBreak} and ${$self}{EndFinishesWithLineBreak} == 4 ) );
 
+            my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak} || "EndFinishesWithLineBreak";
         # possibly modify line break *after* \end{statement}
         if (    defined $_
             and $_ >= 1
@@ -286,9 +288,8 @@ sub modify_line_breaks_after_end {
             #     EndFinishesWithLineBreak == 1 just add a new line
             #     EndFinishesWithLineBreak == 2 add a comment, and then new line
             #     EndFinishesWithLineBreak == 3 add a blank line, and then new line
-            my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak} || "EndFinishesWithLineBreak";
             if ( $_ == 1 ) {
-                $logger->trace("Adding a linebreak *after* end statement \t\t ($EndStringLogFile==1)")
+                $logger->trace("Adding a linebreak *after* end statement \t\t ($EndStringLogFile == 1)")
                     if $is_t_switch_active;
 
                 # modified end statement
@@ -352,7 +353,7 @@ sub modify_line_breaks_after_end {
                 } else {
                     ${$self}{end} .= ${$self}{horizontalTrailingSpace}.(${$self}{linebreaksAtEnd}{end} ? $tokens{mAfterEndRemove} : q());
             }
-            $logger->trace("Removing linebreak *after* end") if $is_t_switch_active;
+            $logger->trace("Removing linebreak *after* end\t\t($EndStringLogFile == -1)") if $is_t_switch_active;
         }
     }
 

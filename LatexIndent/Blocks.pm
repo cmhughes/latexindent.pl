@@ -77,10 +77,6 @@ sub _construct_code_blocks_regex {
           $mSwitchOnlyTrailing 
         )                                             # 
         (?<ENVBODY>                                   # body
-          \h*
-          (?<ENVLINEBREAKSATENDBEGIN>
-           \R*
-          )
           (?>                                         # 
               (??{ $environmentRegEx })               # 
               |                                       # 
@@ -145,10 +141,6 @@ sub _construct_code_blocks_regex {
      $specialRegEx = qr{
                 (?<SPECIALBEGIN>
                     $specialBeginRegEx
-                    \h*
-                    (?<SPECIALLINEBREAKSATENDBEGIN>
-                     \R*
-                    )
                 )                         
                 (?<SPECIALBODY>                    
                   (?>                               
@@ -188,10 +180,6 @@ sub _construct_code_blocks_regex {
         $specialRegExNested = qr{
                    (?<SPECIALBEGIN>
                        $specialBeginRegExNested
-                       \h*
-                       (?<SPECIALLINEBREAKSATENDBEGIN>
-                        \R*
-                       )
                    )                         
                    (?<SPECIALBODY>                    
                      (?>                               
@@ -330,8 +318,6 @@ sub _construct_code_blocks_regex {
                   (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
                   (?<!\\)
                   \{
-                  \h*
-                  (\R*)
                  )
                  (?<MANDARGBODY>
                   (?:
@@ -351,8 +337,6 @@ sub _construct_code_blocks_regex {
                   (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
                   (?<!\\)
                   \[
-                  \h*
-                  (\R*)
                  )
                  (?<OPTARGBODY>
                   (?:
@@ -379,7 +363,6 @@ sub _construct_code_blocks_regex {
          (?:
            (?<comma>
              ,
-             (?<COMMASPACE>\s*)
              $mSwitchOnlyTrailing 
            )
            |
@@ -418,8 +401,6 @@ sub _construct_args_with_between{
           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
           (?<!\\)
           \{
-          \h*
-          (\R*)
          )
          (?<MANDARGBODY>
           (?:
@@ -439,8 +420,6 @@ sub _construct_args_with_between{
           (?:\s|$trailingCommentRegExp|$tokens{blanklines}|$argumentsBetween)*
           (?<!\\)
           \[
-          \h*
-          (\R*)
          )
          (?<OPTARGBODY>
           (?:
@@ -488,7 +467,7 @@ sub _find_all_code_blocks {
              $end = $+{ENVEND};
              $name = $+{ENVNAME};
              $modifyLineBreaksName = "environments";
-             my $linebreaksAtEndBegin=($+{ENVLINEBREAKSATENDBEGIN}?1:0);
+             my $linebreaksAtEndBegin;
 
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
                 $codeBlockObj = LatexIndent::Environment->new(name=>$name,
@@ -498,9 +477,6 @@ sub _find_all_code_blocks {
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> ($+{ENVARGS}?1:0),
                                                     type=>"environment",
-                                                    linebreaksAtEnd=>{
-                                                      begin=>$linebreaksAtEndBegin,
-                                                    },
                 );
              }
 
@@ -528,11 +504,13 @@ sub _find_all_code_blocks {
              # m switch linebreak adjustment
              #
              if ($is_m_switch_active){
+
+                   # argument trailing space goes to the *body* of the environment
+                   $argBody =~ s@(\s*)$@@s;
+                   $body = $1.$body;
+
                    # <arguments> appended to begin{<env>}
                    ${$codeBlockObj}{begin} = ${$codeBlockObj}{begin}.$argBody;
-
-                   # update linebreaksAtEnd of begin statement
-                   ${${$codeBlockObj}{linebreaksAtEnd} }{begin} = 1 if $argBody =~ m^\R$^s;
 
                    # get the *updated* environment body from above nested code blocks routine
                    ${$codeBlockObj}{body} = $body;
@@ -566,6 +544,8 @@ sub _find_all_code_blocks {
                    # add indentation to BEGIN statement
                    $begin =~ s"^"$addedIndentation"mg;
                    $begin =~ s"^$addedIndentation(\h*\\begin\{)"$1"m;
+             } else {
+                   $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
              }
 
              # environment BODY indentation, possibly
@@ -623,7 +603,7 @@ sub _find_all_code_blocks {
              $body = $+{SPECIALBODY};
              $end = $+{SPECIALEND};
              $modifyLineBreaksName = "specialBeginEnd";
-             my $linebreaksAtEndBegin=($+{SPECIALLINEBREAKSATENDBEGIN}?1:0);
+             my $linebreaksAtEndBegin;
              
              # storage before finding nested things
              my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
@@ -658,7 +638,6 @@ sub _find_all_code_blocks {
                                                     horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                     trailingComment=>$trailingComment,
                                                     linebreaksAtEnd=>{
-                                                          begin=>$linebreaksAtEndBegin,
                                                           end=>$linebreaksAtEnd,
                                                     },
                 );
@@ -704,6 +683,8 @@ sub _find_all_code_blocks {
                    $end = ${$codeBlockObj}{end};
 
                    $linebreaksAtEndBegin = ${$codeBlockObj}{linebreaksAtEnd}{begin};
+             } else {
+                   $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
              }
 
              # special BODY indentation, possibly
@@ -899,7 +880,7 @@ sub _indent_all_args {
        my $currentIndentation = ($mandatoryArgument ? $mandatoryArgumentsIndentation : $optionalArgumentsIndentation).$indentation;
 
        # does arg body start on own line?
-       my $argBodyStartsOwnLine = ( ($2 or $6) ? 1 : 0 );
+       my $argBodyStartsOwnLine;
 
        # storage before finding nested things
        my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
@@ -932,6 +913,7 @@ sub _indent_all_args {
               $argBody = _mlb_commas_in_arg_body($argBody,$CommaStartsOnOwnLine,$CommaFinishesWithLineBreak);
               $argBody =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}@\n@sg;
               $argBody =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+              $argBody =~ s@$tokens{mAfterEndLineBreak}@\n@sg;
           }
 
           # begin statements
@@ -975,7 +957,6 @@ sub _indent_all_args {
                                                 horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                 trailingComment=>$trailingComment,
                                                 linebreaksAtEnd=>{
-                                                  begin=>$argBodyStartsOwnLine,
                                                   end=>$linebreaksAtEnd,
                                                 },
                             );
@@ -996,13 +977,17 @@ sub _indent_all_args {
             $end = ${$argument}{end};
 
             $argBodyStartsOwnLine = ${$argument}{linebreaksAtEnd}{begin};
+       } else {
+         $argBodyStartsOwnLine = ($argBody =~ m@^\h*\R@ ? 1 : 0);
        }
 
+       my $bodyHasLineBreaks = ($argBody=~m@[\n]@s ? 1 : 0);
+
        # add indentation
-       $argBody =~ s@^@$currentIndentation@mg if ( ($argBodyStartsOwnLine or $argBody=~m@[\n]@s) and $argBody ne '');
+       $argBody =~ s@^@$currentIndentation@mg if ( ($argBodyStartsOwnLine or $bodyHasLineBreaks) and $argBody ne '');
 
        # if arg body does NOT start on its own line, remove the first indentation added by previous step
-       $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine);
+       $argBody =~ s@^$currentIndentation@@s if (!$argBodyStartsOwnLine and $bodyHasLineBreaks);
 
        # put it all together
        $begin.$argBody.$end;|sgex;
@@ -1025,29 +1010,21 @@ sub _mlb_commas_in_arg_body{
                   my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
                   my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
 
-                  $begin = $begin.",".$+{COMMASPACE};
-                  $linebreaksAtEnd = ($begin =~m @\R\h*$@s ? 1 : 0) if !$trailingComment;
                   my $codeBlockObj = LatexIndent::Special->new(name=>"comma",
-                                                    begin=>$begin,
-                                                    body=>$horizontalTrailingSpace.$trailingComment,
+                                                    begin=>$begin.",",
+                                                    body=>$horizontalTrailingSpace.$trailingComment.$linebreaksAtEnd,
+                                                    end=>q(),
                                                     modifyLineBreaksYamlName=>"comma",
                                                     type=>"comma",
                                                     BeginStartsOnOwnLine=>$CommaStartsOnOwnLine,
                                                     BodyStartsOnOwnLine=>$CommaFinishesWithLineBreak,
-                                                    linebreaksAtEnd=>{
-                                                          begin=>$linebreaksAtEnd
-                                                    },
-                                                    aliases=>{
-                                                       BeginStartsOnOwnLine=>"CommaStartsOnOwnLine",
-                                                       BodyStartsOnOwnLine=>"CommaFinishesWithLineBreak",
-                                                    },
                   );
 
                   $logger->trace("*found: comma within argument")         if $is_t_switch_active;
                   $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
-                  $commaOrArgs = ${$codeBlockObj}{begin}.${$codeBlockObj}{body};
+                  $commaOrArgs = ${$codeBlockObj}{begin}.${$codeBlockObj}{body}.${$codeBlockObj}{end}; 
                   } else {
                     $commaOrArgs = $+{arguments};
                   };
