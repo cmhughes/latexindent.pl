@@ -37,7 +37,7 @@ use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
-    qw/modify_line_breaks_before_begin modify_line_breaks_before_body modify_line_breaks_before_end modify_line_breaks_after_end remove_line_breaks_begin adjust_line_breaks_end_parent verbatim_modify_line_breaks modify_line_breaks_post_indentation_linebreaks_comments /;
+    qw/_mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust /;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
@@ -59,13 +59,13 @@ use LatexIndent::Environment qw/find_environments $environmentBasicRegExp constr
 use LatexIndent::IfElseFi    qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else        qw/check_for_else_statement/;
 use LatexIndent::Arguments   qw/get_arguments_regexp find_opt_mand_arguments construct_arguments_regexp comma_else/;
-use LatexIndent::OptionalArgument              qw/find_optional_arguments/;
-use LatexIndent::MandatoryArgument             qw/find_mandatory_arguments get_mand_arg_reg_exp/;
-use LatexIndent::RoundBrackets                 qw/find_round_brackets/;
-use LatexIndent::Item                          qw/find_items construct_list_of_items/;
-use LatexIndent::Blocks                        qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
-use LatexIndent::Command                       qw/construct_command_regexp/;
-use LatexIndent::KeyEqualsValuesBraces         qw/construct_key_equals_values_regexp/;
+use LatexIndent::OptionalArgument      qw/find_optional_arguments/;
+use LatexIndent::MandatoryArgument     qw/find_mandatory_arguments get_mand_arg_reg_exp/;
+use LatexIndent::RoundBrackets         qw/find_round_brackets/;
+use LatexIndent::Item                  qw/find_items construct_list_of_items/;
+use LatexIndent::Blocks                qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
+use LatexIndent::Command               qw/construct_command_regexp/;
+use LatexIndent::KeyEqualsValuesBraces qw/construct_key_equals_values_regexp/;
 use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brackets_regexp/;
 use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special
@@ -179,18 +179,18 @@ sub operate_on_file {
         $self->remove_trailing_comments;
         $self->find_verbatim_environments;
         $self->find_verbatim_special;
-        $logger->trace("*Verbatim storage:")                           if $is_tt_switch_active;
-        $logger->trace( Dumper( \%verbatimStorage ) )                  if $is_tt_switch_active;
-        $self->verbatim_modify_line_breaks( when => "beforeTextWrap" ) if $is_m_switch_active;
-        $self->make_replacements( when => "before" )                   if $is_rv_switch_active;
-        $self->protect_blank_lines                                     if $is_m_switch_active;
+        $logger->trace("*Verbatim storage:")             if $is_tt_switch_active;
+        $logger->trace( Dumper( \%verbatimStorage ) )    if $is_tt_switch_active;
+        $self->_mlb_verbatim( when => "beforeTextWrap" ) if $is_m_switch_active;
+        $self->make_replacements( when => "before" )     if $is_rv_switch_active;
+        $self->protect_blank_lines                       if $is_m_switch_active;
         $self->remove_trailing_whitespace( when => "before" );
         $self->find_file_contents_environments_and_preamble;
         $self->dodge_double_backslash;
         $self->remove_leading_space;
-        ${$self}{body} = _find_all_code_blocks(${$self}{body},"");
-        ${$self}{body} =~ s/\r\n/\n/sg if $mainSettings{dos2unixlinebreaks};
-        $self->modify_line_breaks_post_indentation_linebreaks_comments if $is_m_switch_active; 
+        ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
+        ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
+        $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines
@@ -214,6 +214,7 @@ sub construct_regular_expressions {
     my $self = shift;
     $self->construct_trailing_comment_regexp;
     $self->_construct_code_blocks_regex;
+
     # $self->construct_environments_regexp;                      # to be ditched
     # $self->construct_ifelsefi_regexp;                          # to be ditched
     # $self->construct_list_of_items;                            # to be ditched
@@ -345,7 +346,7 @@ sub process_body_of_text {
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'after' );
     return;
@@ -378,12 +379,12 @@ sub find_objects {
         $self->text_wrap();
 
         # text wrapping can affect verbatim poly-switches, so we run it again
-        $self->verbatim_modify_line_breaks( when => "afterTextWrap" );
+        $self->_mlb_verbatim( when => "afterTextWrap" );
     }
 
     # option for comment text wrap
     $self->text_wrap_comment_blocks()
-        if ($is_m_switch_active
+        if ( $is_m_switch_active
         and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
 
@@ -541,14 +542,14 @@ sub tasks_common_to_each_object {
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks on body and end statements
-    $self->modify_line_breaks_before_body
+    $self->_mlb_body_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{BodyStartsOnOwnLine} and ${$self}{BodyStartsOnOwnLine} != 0 );
 
     # modify line breaks end statements
-    $self->modify_line_breaks_before_end
+    $self->_mlb_end_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->modify_line_breaks_after_end
-        if ($is_m_switch_active
+    $self->_mlb_end_finishes_with_line_break
+        if ( $is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );
 

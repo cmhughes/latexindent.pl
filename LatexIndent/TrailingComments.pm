@@ -32,11 +32,12 @@ our $trailingCommentRegExp;
 
 sub construct_trailing_comment_regexp {
     $notPrecededByRegExp = qr/${${$mainSettings{fineTuning}}{trailingComments}}{notPrecededBy}/;
-    my $notPreceededBy = ${${mainSettings{fineTuning}}{trailingComments}}{notPreceededBy};
+    my $notPreceededBy = ${ ${ mainSettings {fineTuning} }{trailingComments} }{notPreceededBy};
 
-    if ( $notPreceededBy ) {
+    if ($notPreceededBy) {
         $logger->warn(
-            "*fineTuning:trailingComments:notPreceededBy is ok for now, but in future versions, fineTuning:trailingComments:notPrecededBy will be used" );
+            "*fineTuning:trailingComments:notPreceededBy is ok for now, but in future versions, fineTuning:trailingComments:notPrecededBy will be used"
+        );
         $notPrecededByRegExp = qr/$notPreceededBy/;
     }
 

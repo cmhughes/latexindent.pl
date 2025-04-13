@@ -44,7 +44,7 @@ sub remove_trailing_whitespace {
         ${ $mainSettings{removeTrailingWhitespace} }{beforeProcessing} = $removeTWS;
         ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing}  = $removeTWS;
 
-        $logger->trace("*removeTrailingWhitespace setting defaults routine") if $is_t_switch_active;
+        $logger->trace("*removeTrailingWhitespace setting defaults routine")           if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: beforeProcessing is now $removeTWS") if $is_t_switch_active;
         $logger->trace("removeTrailingWhitespace: afterProcessing is now $removeTWS")  if $is_t_switch_active;
     }
@@ -61,7 +61,7 @@ sub remove_trailing_whitespace {
         $logger->trace(
             "*Removing trailing white space *after* the document is processed (removeTrailingWhitespace: afterProcessing == 1)"
         ) if $is_t_switch_active;
-        $logger->trace(Dumper(\%{$mainSettings{removeTrailingWhitespace}}));
+        $logger->trace( Dumper( \%{ $mainSettings{removeTrailingWhitespace} } ) );
     }
     else {
         return;

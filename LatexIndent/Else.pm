@@ -142,7 +142,7 @@ sub create_unique_id {
     return;
 }
 
-sub modify_line_breaks_before_end {
+sub _mlb_end_starts_on_own_line {
     return;
 }
 

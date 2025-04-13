@@ -408,8 +408,7 @@ sub find_verbatim_special {
         my $specialName = ${$_}{name};
 
         # only classify special Verbatim if lookForThis is 'verbatim'
-        if ( ${$_}{lookForThis}  =~ m/v/s and ${$_}{lookForThis} eq 'verbatim' )
-        {
+        if ( ${$_}{lookForThis} =~ m/v/s and ${$_}{lookForThis} eq 'verbatim' ) {
             $logger->trace('*Searching for VERBATIM special (see specialBeginEnd)') if $is_t_switch_active;
 
             my $verbatimRegExp = qr/
@@ -472,11 +471,11 @@ sub find_verbatim_special {
 
     # remove verbatim elements from specialBeginEnd
     my @specialBeginEndTrimmed;
-    foreach(@{$mainSettings{specialBeginEnd}}){
-        push(@specialBeginEndTrimmed, $_) unless (${$_}{lookForThis} == 0);
+    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        push( @specialBeginEndTrimmed, $_ ) unless ( ${$_}{lookForThis} == 0 );
     }
     $logger->trace("*specialBeginEnd removing any elements with lookForThis: 0") if $is_t_switch_active;
-    @{$mainSettings{specialBeginEnd}} = @specialBeginEndTrimmed;
+    @{ $mainSettings{specialBeginEnd} } = @specialBeginEndTrimmed;
 }
 
 sub put_verbatim_back_in {
@@ -598,10 +597,10 @@ sub verbatim_common_tasks {
     $self->adjust_replacement_text_line_breaks_at_end;
 
     # modify line breaks end statements
-    $self->modify_line_breaks_before_end
+    $self->_mlb_end_starts_on_own_line
         if ( $is_m_switch_active and defined ${$self}{EndStartsOnOwnLine} and ${$self}{EndStartsOnOwnLine} != 0 );
-    $self->modify_line_breaks_after_end
-        if ($is_m_switch_active
+    $self->_mlb_end_finishes_with_line_break
+        if ( $is_m_switch_active
         and defined ${$self}{EndFinishesWithLineBreak}
         and ${$self}{EndFinishesWithLineBreak} != 0 );
 }

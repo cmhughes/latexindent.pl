@@ -18,62 +18,67 @@ package LatexIndent::Blocks;
 use strict;
 use warnings;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings %previouslyFoundSettings $commaPolySwitchExists $equalsPolySwitchExists/;
-use LatexIndent::Switches qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
-use LatexIndent::LogFile  qw/$logger/;
+use LatexIndent::GetYamlSettings
+    qw/%mainSettings %previouslyFoundSettings $commaPolySwitchExists $equalsPolySwitchExists/;
+use LatexIndent::Switches         qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
+use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Tokens           qw/%tokens/;
-use LatexIndent::ModifyLineBreaks qw/_modify_line_breaks_line_break_token_adjust/;
+use LatexIndent::ModifyLineBreaks qw/_mlb_line_break_token_adjust/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA       = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
+our @ISA                     = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK               = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $allCodeBlocks;
 
-our $allArgumentRegEx; 
+our $allArgumentRegEx;
 our $argumentBodyRegEx;
-our $argumentsBetween; 
+our $argumentsBetween;
 
 our $environmentRegEx;
 
-our $ifElseFiRegEx; 
+our $ifElseFiRegEx;
 
-our $specialRegEx = q();
-our $specialBeginRegEx = q();
-our $specialEndRegEx = q(); 
-our $specialRegExNested = q();
+our $specialRegEx            = q();
+our $specialBeginRegEx       = q();
+our $specialEndRegEx         = q();
+our $specialRegExNested      = q();
 our $specialBeginRegExNested = q();
-our $specialEndRegExNested = q(); 
+our $specialEndRegExNested   = q();
 our %specialLookUpName;
 
 our $codeBlockLookFor = q();
 
-our $mSwitchOnlyTrailing = q();
-our $mlbCommaSimpleArgBodyRegEx = qr();
+our $mSwitchOnlyTrailing            = q();
+our $mlbCommaSimpleArgBodyRegEx     = qr();
 our $mlbCommaSimpleAllArgumentRegEx = qr{};
-our $mlbArgBodyWithCommasRegEx = q(); 
+our $mlbArgBodyWithCommasRegEx      = q();
 
 sub _construct_code_blocks_regex {
 
-     $allArgumentRegEx = _construct_args_with_between();
-     my $commandName = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
-     my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
-     my $keyEqVal = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}
+    $allArgumentRegEx = _construct_args_with_between();
+    my $commandName         = qr/${${$mainSettings{fineTuning}}{commands}}{name}/;
+    my $namedBracesBrackets = qr/${${$mainSettings{fineTuning}}{namedGroupingBracesBrackets}}{name}/;
+    my $keyEqVal            = qr/${${$mainSettings{fineTuning}}{keyEqualsValuesBracesBrackets}}{name}
                        (?:\s|$trailingCommentRegExp|$tokens{blanklines})*=/x;
-     my $unNamed = qr//;
-     $mSwitchOnlyTrailing = ($is_m_switch_active ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R\s*)?} : q{});
+    my $unNamed = qr//;
+    $mSwitchOnlyTrailing = (
+        $is_m_switch_active
+        ? qr{(?<TRAILINGHSPACE>\h*)?(?<TRAILINGCOMMENT>$trailingCommentRegExp)?(?<TRAILINGLINEBREAK>\R\s*)?}
+        : q{}
+    );
 
-     #
-     # environment regex
-     #
-     my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
-     $environmentRegEx = qr{
+    #
+    # environment regex
+    #
+    my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
+    $environmentRegEx = qr{
         (?<ENVBEGIN>                                  # 
            \\begin\{(?<ENVNAME>$environmentName)\}    # \begin{<ENVNAME>}
         )                                             # 
         (?<ENVARGS>                                   # *possible* arguments
-          $allArgumentRegEx*                        # 
+          $allArgumentRegEx*                          # 
           $mSwitchOnlyTrailing 
         )                                             # 
         (?<ENVBODY>                                   # body
@@ -89,12 +94,12 @@ sub _construct_code_blocks_regex {
            \\end\{\g{ENVNAME}\}                       # 
         )                                             # 
      }xs;
-     
-     #
-     # ifElseFi regex
-     #
-     my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
-     $ifElseFiRegEx = qr{
+
+    #
+    # ifElseFi regex
+    #
+    my $ifElseFiNameRegExp = qr/${${$mainSettings{fineTuning}}{ifElseFi}}{name}/;
+    $ifElseFiRegEx = qr{
                 (?<IFELSEFIBEGIN>
                     (?<!\\newif)\\(?<IFELSEFINAME>
                       $ifElseFiNameRegExp
@@ -113,32 +118,32 @@ sub _construct_code_blocks_regex {
                     \\fi(?![a-zA-Z])                    # \fi statement 
                 )
      }xs;
-     
-     #
-     # specials regex, separated into 2 cases:
-     #
-     #   1. NOT nested
-     #   2. YES nested
-     #
-     
-     #
-     # specials NOT nested
-     #
-     $specialBeginRegEx = q();
-     $specialEndRegEx = q(); 
-     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
-        next if !${$_}{lookForThis}; 
+
+    #
+    # specials regex, separated into 2 cases:
+    #
+    #   1. NOT nested
+    #   2. YES nested
+    #
+
+    #
+    # specials NOT nested
+    #
+    $specialBeginRegEx = q();
+    $specialEndRegEx   = q();
+    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        next if !${$_}{lookForThis};
         next if ${$_}{lookForThis} eq 'verbatim';
-        next if ${$_}{nested}; 
+        next if ${$_}{nested};
 
         $specialBeginRegEx .= ( $specialBeginRegEx eq "" ? q() : "|" ) . ${$_}{begin};
-        $specialEndRegEx .= ( $specialEndRegEx eq "" ? q() : "|" ) . ${$_}{end};
-     }
+        $specialEndRegEx   .= ( $specialEndRegEx eq ""   ? q() : "|" ) . ${$_}{end};
+    }
 
-     $specialBeginRegEx = qr{$specialBeginRegEx}x;
-     $specialEndRegEx = qr{$specialEndRegEx}x;
+    $specialBeginRegEx = qr{$specialBeginRegEx}x;
+    $specialEndRegEx   = qr{$specialEndRegEx}x;
 
-     $specialRegEx = qr{
+    $specialRegEx = qr{
                 (?<SPECIALBEGIN>
                     $specialBeginRegEx
                 )                         
@@ -155,27 +160,27 @@ sub _construct_code_blocks_regex {
                 $mSwitchOnlyTrailing 
      }xs;
 
-     #
-     # specials YES nested
-     #
-     $specialBeginRegExNested = q();
-     $specialEndRegExNested = q(); 
-     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
-        next if !${$_}{lookForThis}; 
+    #
+    # specials YES nested
+    #
+    $specialBeginRegExNested = q();
+    $specialEndRegExNested   = q();
+    foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+        next if !${$_}{lookForThis};
         next if ${$_}{lookForThis} eq 'verbatim';
-        next if !${$_}{nested}; 
+        next if !${$_}{nested};
 
         $specialBeginRegExNested .= ( $specialBeginRegExNested eq "" ? q() : "|" ) . ${$_}{begin};
-        $specialEndRegExNested .= ( $specialEndRegExNested eq "" ? q() : "|" ) . ${$_}{end};
-     }
+        $specialEndRegExNested   .= ( $specialEndRegExNested eq ""   ? q() : "|" ) . ${$_}{end};
+    }
 
-     #
-     # specials YES nested
-     #
-     if ($specialBeginRegExNested ne ''){
+    #
+    # specials YES nested
+    #
+    if ( $specialBeginRegExNested ne '' ) {
 
         $specialBeginRegExNested = qr{$specialBeginRegExNested}x;
-        $specialEndRegExNested = qr{$specialEndRegExNested}x;
+        $specialEndRegExNested   = qr{$specialEndRegExNested}x;
 
         $specialRegExNested = qr{
                    (?<SPECIALBEGIN>
@@ -196,16 +201,16 @@ sub _construct_code_blocks_regex {
                    $mSwitchOnlyTrailing 
         }xs;
         $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|$specialBeginRegExNested|\\if/s;
-     } else {
+    }
+    else {
         $codeBlockLookFor = qr/[{[]|$specialBeginRegEx|\\if/s;
-     }
+    }
 
-
-     #
-     # (commands, named, key=value, unnamed) <ARGUMENTS> regex
-     #
-     if ( $specialRegExNested ne ''){
-         $allCodeBlocks = qr{
+    #
+    # (commands, named, key=value, unnamed) <ARGUMENTS> regex
+    #
+    if ( $specialRegExNested ne '' ) {
+        $allCodeBlocks = qr{
             (\s*)                                                 # $1 leading space
             (?:
                (                                                  # $2 <thing><arguments>
@@ -247,8 +252,9 @@ sub _construct_code_blocks_regex {
                )
             )
          }x;
-     } else {
-         $allCodeBlocks = qr{
+    }
+    else {
+        $allCodeBlocks = qr{
             (\s*)                                                 # $1 leading space
             (?:
                (                                                  # $2 <thing><arguments>
@@ -286,19 +292,19 @@ sub _construct_code_blocks_regex {
                )
             )
          }x;
-     }
+    }
 
-     #
-     # m switch only, for the following poly-switches
-     #
-     #      CommaStartsOnOwnLine
-     #      CommaFinishesWithLineBreak
-     #
-     # goal:
-     #      - use a stripped down regex for arguments
-     #      - use this stripped regex in matching commas
-     #
-     if ($is_m_switch_active){
+    #
+    # m switch only, for the following poly-switches
+    #
+    #      CommaStartsOnOwnLine
+    #      CommaFinishesWithLineBreak
+    #
+    # goal:
+    #      - use a stripped down regex for arguments
+    #      - use this stripped regex in matching commas
+    #
+    if ($is_m_switch_active) {
         $mlbCommaSimpleArgBodyRegEx = qr{
                 (?>            # 
                   (?:
@@ -372,10 +378,10 @@ sub _construct_code_blocks_regex {
          )
         }xs;
 
-     }
+    }
 }
 
-sub _construct_args_with_between{
+sub _construct_args_with_between {
 
     $argumentsBetween = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
     my $mSwitchOnlyTrailing = qr{};
@@ -436,7 +442,7 @@ sub _construct_args_with_between{
      )
      }x;
 
-     return $allArgumentRegEx; 
+    return $allArgumentRegEx;
 }
 
 sub _find_all_code_blocks {
@@ -527,9 +533,9 @@ sub _find_all_code_blocks {
 
                    $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
 
-                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+                   $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
-                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
+                   $codeBlockObj->_mlb_end_starts_on_own_line if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
 
                    # get updated begin, body, end
                    $begin = ${$codeBlockObj}{begin};
@@ -669,13 +675,13 @@ sub _find_all_code_blocks {
 
                    $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
 
-                   $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                   $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
 
-                   $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+                   $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
-                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
+                   $codeBlockObj->_mlb_end_starts_on_own_line if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
 
-                   $codeBlockObj->modify_line_breaks_after_end;
+                   $codeBlockObj->_mlb_end_finishes_with_line_break;
 
                    # get updated begin, body, end
                    $begin = ${$codeBlockObj}{begin};
@@ -767,7 +773,7 @@ sub _find_all_code_blocks {
 
                if ( ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine} !=0){
                   ${$codeBlockObj}{BeginStartsOnOwnLine}=${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{BeginStartsOnOwnLine};
-                  $codeBlockObj->modify_line_breaks_before_begin;  
+                  $codeBlockObj->_mlb_begin_starts_on_own_line;  
                   $begin = ${$codeBlockObj}{begin};
                   $begin =~ s@$tokens{mAfterEndLineBreak}$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
                }
@@ -806,11 +812,11 @@ sub _find_all_code_blocks {
                    );
 
                    $logger->trace("*found: equals in key=value")         if $is_t_switch_active;
-                   $codeBlockObj->modify_line_breaks_before_end if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;  
-                   $codeBlockObj->modify_line_breaks_after_end if ${$codeBlockObj}{EndFinishesWithLineBreak} != 0;  
+                   $codeBlockObj->_mlb_end_starts_on_own_line if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;  
+                   $codeBlockObj->_mlb_end_finishes_with_line_break if ${$codeBlockObj}{EndFinishesWithLineBreak} != 0;  
 
                    ${$codeBlockObj}{body} =  ${$codeBlockObj}{body}.${$codeBlockObj}{end};
-                   $codeBlockObj->modify_line_breaks_post_indentation_linebreaks_comments; 
+                   $codeBlockObj->_mlb_after_indentation_token_adjust; 
                    $keyEqualsValue = ${$codeBlockObj}{body};
                }
 
@@ -847,21 +853,22 @@ sub _find_all_code_blocks {
        # output indented block
        # ---------------------
        $begin.$body.$end;/sgex;
-       
-       # m switch conflicting linebreak addition or removal handled by tokens
-       $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
+
+    # m switch conflicting linebreak addition or removal handled by tokens
+    $body = _mlb_line_break_token_adjust($body) if $is_m_switch_active;
 
     return $body;
 }
 
 sub _indent_all_args {
 
-    my ($name, $modifyLineBreaksName, $body , $indentation ) = @_;
+    my ( $name, $modifyLineBreaksName, $body, $indentation ) = @_;
 
-    my $commandStorageName = $name.$modifyLineBreaksName;
+    my $commandStorageName = $name . $modifyLineBreaksName;
 
-    my $mandatoryArgumentsIndentation = ${$previouslyFoundSettings{$commandStorageName}}{mandatoryArgumentsIndentation};
-    my $optionalArgumentsIndentation  = ${$previouslyFoundSettings{$commandStorageName}}{optionalArgumentsIndentation};
+    my $mandatoryArgumentsIndentation
+        = ${ $previouslyFoundSettings{$commandStorageName} }{mandatoryArgumentsIndentation};
+    my $optionalArgumentsIndentation = ${ $previouslyFoundSettings{$commandStorageName} }{optionalArgumentsIndentation};
 
     $body =~ s|\G$allArgumentRegEx$mSwitchOnlyTrailing|
        # mandatory or optional argument?
@@ -963,13 +970,13 @@ sub _indent_all_args {
 
             $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
 
-            $argument->modify_line_breaks_before_begin if ${$argument}{BeginStartsOnOwnLine} != 0;  
+            $argument->_mlb_begin_starts_on_own_line if ${$argument}{BeginStartsOnOwnLine} != 0;  
 
-            $argument->modify_line_breaks_before_body if ${$argument}{BodyStartsOnOwnLine} != 0;  
+            $argument->_mlb_body_starts_on_own_line if ${$argument}{BodyStartsOnOwnLine} != 0;  
 
-            $argument->modify_line_breaks_before_end if ${$argument}{EndStartsOnOwnLine} != 0;
+            $argument->_mlb_end_starts_on_own_line if ${$argument}{EndStartsOnOwnLine} != 0;
 
-            $argument->modify_line_breaks_after_end;
+            $argument->_mlb_end_finishes_with_line_break;
 
             # get updated begin, body, end
             $begin = ${$argument}{begin};
@@ -992,16 +999,15 @@ sub _indent_all_args {
        # put it all together
        $begin.$argBody.$end;|sgex;
 
-       # m switch conflicting linebreak addition or removal handled by tokens
-       $body = _modify_line_breaks_line_break_token_adjust($body) if $is_m_switch_active;
+    # m switch conflicting linebreak addition or removal handled by tokens
+    $body = _mlb_line_break_token_adjust($body) if $is_m_switch_active;
     return $body;
 }
 
-sub _mlb_commas_in_arg_body{
-    my ($body, $CommaStartsOnOwnLine,$CommaFinishesWithLineBreak) = @_;
+sub _mlb_commas_in_arg_body {
+    my ( $body, $CommaStartsOnOwnLine, $CommaFinishesWithLineBreak ) = @_;
 
-
-     $body =~ s/$mlbArgBodyWithCommasRegEx/
+    $body =~ s/$mlbArgBodyWithCommasRegEx/
                 my $begin = $1;
                 my $commaOrArgs = q();
                 if ($+{comma}){
@@ -1021,8 +1027,8 @@ sub _mlb_commas_in_arg_body{
                   );
 
                   $logger->trace("*found: comma within argument")         if $is_t_switch_active;
-                  $codeBlockObj->modify_line_breaks_before_begin if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
-                  $codeBlockObj->modify_line_breaks_before_body if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+                  $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                  $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
 
                   $commaOrArgs = ${$codeBlockObj}{begin}.${$codeBlockObj}{body}.${$codeBlockObj}{end}; 
                   } else {

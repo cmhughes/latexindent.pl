@@ -34,7 +34,7 @@ our $fileContentsCounter;
 sub find_file_contents_environments_and_preamble {
     my $self = shift;
 
-    return unless !$mainSettings{indentPreamble}; 
+    return unless !$mainSettings{indentPreamble};
 
     # store the file contents blocks in an array which, depending on the value
     # of indentPreamble, will be put into the verbatim hash, or otherwise
@@ -116,7 +116,8 @@ sub find_file_contents_environments_and_preamble {
             push( @fileContentsStorageArray, $fileContentsBlock );
 
             # log file output
-            $logger->trace("*found: ${$fileContentsBlock}{name} \t\ttype FILECONTENTS environment") if $is_t_switch_active;
+            $logger->trace("*found: ${$fileContentsBlock}{name} \t\ttype FILECONTENTS environment")
+                if $is_t_switch_active;
 
             # remove the environment block, and replace with unique ID
             ${$self}{body} =~ s/$fileContentsRegExp/${$fileContentsBlock}{replacementText}/sx;
@@ -153,7 +154,7 @@ sub find_file_contents_environments_and_preamble {
             body            => $1,
             end             => q(),
             name            => "preamble",
-                    type                     => "special",
+            type            => "special",
             linebreaksAtEnd => {
                 begin => 0,
                 body  => 0,
@@ -163,7 +164,8 @@ sub find_file_contents_environments_and_preamble {
             modifyLineBreaksYamlName => "preamble",
         );
 
-        $verbatimBlock->unprotect_blank_lines if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
+        $verbatimBlock->unprotect_blank_lines
+            if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} );
 
         # there are common tasks for each of the verbatim objects
         $verbatimBlock->verbatim_common_tasks;

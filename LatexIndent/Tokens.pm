@@ -61,11 +61,11 @@ our %tokens = (
     endOfToken      => "-END",
 
     # m-switch specific tokens
-    mBeforeBeginLineBreakADD  => "mBeforeBeginLineADD",
-    mBeforeBeginLineBreakREMOVE  => "mBeforeBeginLineBreakREMOVE",
-    mAfterEndRemove  => "mAfterEndRemove",
-    mAfterEndLineBreak  => "mAfterEndLineBreak",
-    mSwitchComment  => "mSwitchComment",
+    mBeforeBeginLineBreakADD    => "mBeforeBeginLineADD",
+    mBeforeBeginLineBreakREMOVE => "mBeforeBeginLineBreakREMOVE",
+    mAfterEndRemove             => "mAfterEndRemove",
+    mAfterEndLineBreak          => "mAfterEndLineBreak",
+    mSwitchComment              => "mSwitchComment",
 );
 
 sub token_check {

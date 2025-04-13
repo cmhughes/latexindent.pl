@@ -11,19 +11,19 @@ use Exporter qw/import/;
 our @EXPORT_OK
     = qw/commandlineargs_with_encode @new_args copy_with_encode exist_with_encode open_with_encode zero_with_encode read_yaml_with_encode isdir_with_encode mkdir_with_encode/;
 
-our $encodingObject;  
+our $encodingObject;
 
-if ($^O eq 'MSWin32') {
+if ( $^O eq 'MSWin32' ) {
     my $encoding_sys = 'cp' . Win32::GetACP();
-    $encodingObject = find_encoding( $encoding_sys );
-    
+    $encodingObject = find_encoding($encoding_sys);
+
     # Check if the encoding is valid.
     unless ( ref($encodingObject) ) {
-        $encodingObject = find_encoding( 'utf-8' );
+        $encodingObject = find_encoding('utf-8');
     }
 }
 else {
-    $encodingObject = find_encoding( 'utf-8' );
+    $encodingObject = find_encoding('utf-8');
 }
 
 sub copy_with_encode {
@@ -36,7 +36,7 @@ sub copy_with_encode {
         copyW( $source, $destination, 1 );
     }
     else {
-        $source = $encodingObject->encode($source);
+        $source      = $encodingObject->encode($source);
         $destination = $encodingObject->encode($destination);
         copy( $source, $destination );
     }

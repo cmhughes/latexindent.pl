@@ -56,13 +56,13 @@ our @alignAtAmpersandInformation = (
     { name => "delimiterRegEx",                   default  => "(?<!\\\\)(&)" },
     { name => "delimiterJustification",           default  => "left" },
     { name => "leadingBlankColumn",               default  => -1 },
-    { name => "lookForChildCodeBlocks",           default  => 1 },
-    { name => "alignContentAfterDoubleBackSlash", default  => 0 },
-    { name => "spacesAfterDoubleBackSlash",       default  => 1 },
+    { name => "lookForChildCodeBlocks",           default  =>  1 },
+    { name => "alignContentAfterDoubleBackSlash", default  =>  0 },
+    { name => "spacesAfterDoubleBackSlash",       default  =>  1 },
 );
 
 our $argumentsBetweenCommands;
-our $commaPolySwitchExists = 0;
+our $commaPolySwitchExists  = 0;
 our $equalsPolySwitchExists = 0;
 
 sub yaml_read_settings {
@@ -406,21 +406,26 @@ sub yaml_read_settings {
                 #   old: HASH
                 #   new: ARRAY
                 #
-                if (${ $userSettings->[0] }{specialBeginEnd} and (ref(${ $userSettings->[0] }{specialBeginEnd}) eq 'HASH') ){
+                if ( ${ $userSettings->[0] }{specialBeginEnd}
+                    and ( ref( ${ $userSettings->[0] }{specialBeginEnd} ) eq 'HASH' ) )
+                {
 
-                   my @newSpecialBeginEnd;
-                   while ( my ($specialKey, $specialValue) = each %{${$userSettings->[0] }{specialBeginEnd}}){
-                     my %newIndvSpecialBeginEnd;
-                     if ( ref($specialValue) eq 'HASH'){
-                       $newIndvSpecialBeginEnd{name}= $specialKey;
-                       $newIndvSpecialBeginEnd{begin}= ${$specialValue}{begin} if defined ${$specialValue}{begin};
-                       $newIndvSpecialBeginEnd{end}= ${$specialValue}{end} if defined ${$specialValue}{end};
-                       $newIndvSpecialBeginEnd{lookForThis}= ${$specialValue}{lookForThis} if defined ${$specialValue}{lookForThis};
-                       push(@newSpecialBeginEnd,\%newIndvSpecialBeginEnd);
-                     }
-                   }
-                   ${ $userSettings->[0] }{specialBeginEnd} = \@newSpecialBeginEnd;
-                   $logger->warn("*specialBeginEnd should be specified as list, but has been converted to the appropriate format, see below");
+                    my @newSpecialBeginEnd;
+                    while ( my ( $specialKey, $specialValue ) = each %{ ${ $userSettings->[0] }{specialBeginEnd} } ) {
+                        my %newIndvSpecialBeginEnd;
+                        if ( ref($specialValue) eq 'HASH' ) {
+                            $newIndvSpecialBeginEnd{name}  = $specialKey;
+                            $newIndvSpecialBeginEnd{begin} = ${$specialValue}{begin} if defined ${$specialValue}{begin};
+                            $newIndvSpecialBeginEnd{end}   = ${$specialValue}{end}   if defined ${$specialValue}{end};
+                            $newIndvSpecialBeginEnd{lookForThis} = ${$specialValue}{lookForThis}
+                                if defined ${$specialValue}{lookForThis};
+                            push( @newSpecialBeginEnd, \%newIndvSpecialBeginEnd );
+                        }
+                    }
+                    ${ $userSettings->[0] }{specialBeginEnd} = \@newSpecialBeginEnd;
+                    $logger->warn(
+                        "*specialBeginEnd should be specified as list, but has been converted to the appropriate format, see below"
+                    );
                 }
 
                 # update the MASTER settings to include updates from the userSettings
@@ -584,7 +589,12 @@ sub yaml_read_settings {
         # store settings, possibly multiple ones split by commas
         my @yamlSettings;
         if ( $switches{yaml} =~ m/(?<!\\),/ ) {
-            @yamlSettings = split( /(?<!\\),/, $switches{yaml} );
+            foreach ( split( /(?<!\\),/, $switches{yaml} ) ) {
+
+                # check for empty entry
+                next if $_ =~ m/^\h*$/s;
+                push( @yamlSettings, $_ );
+            }
         }
         else {
             push( @yamlSettings, $switches{yaml} );
@@ -776,7 +786,8 @@ sub yaml_read_settings {
                 my $child      = $keysValues[1];
                 my $grandchild = $keysValues[2];
 
-                delete $mainSettings{$parent}{$child} if (defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
+                delete $mainSettings{$parent}{$child}
+                    if ( defined $mainSettings{$parent}{$child} and ref $mainSettings{$parent}{$child} ne "HASH" );
 
                 $logger->info("Updating mainSettings with $parent: $child: $grandchild: $value");
                 $mainSettings{$parent}{$child}{$grandchild} = $value;
@@ -828,65 +839,87 @@ sub yaml_read_settings {
 
     # special: set default look for this as 1 if not specified
     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+
         # default look for this
         ${$_}{lookForThis} = 1 if not defined ${$_}{lookForThis};
         ${$_}{lookForThis} = 0 if not defined ${$_}{begin};
         ${$_}{lookForThis} = 0 if not defined ${$_}{end};
-        ${$_}{nested} = 0 if not defined ${$_}{nested};
+        ${$_}{nested}      = 0 if not defined ${$_}{nested};
     }
 
     # Comma poly-switch check
-    if (    $is_m_switch_active ){
-    
-        # key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
-        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{keyEqualsValuesBracesBrackets} } ){
-          last if $equalsPolySwitchExists;
-          if ( ($polySwitch eq 'EqualsStartsOnOwnLine' or $polySwitch eq 'EqualsFinishesWithLineBreak' ) and $value != 0){
-             $equalsPolySwitchExists = 1;
-             $logger->trace("*poly-switch info: $polySwitch $value for keyEqualsValuesBracesBrackets");
-          }
+    if ($is_m_switch_active) {
 
-          # per-name key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
+        # key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
+        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{keyEqualsValuesBracesBrackets} } )
+        {
+            last if $equalsPolySwitchExists;
+            if ( ( $polySwitch eq 'EqualsStartsOnOwnLine' or $polySwitch eq 'EqualsFinishesWithLineBreak' )
+                and $value != 0 )
+            {
+                $equalsPolySwitchExists = 1;
+                $logger->trace("*poly-switch info: $polySwitch $value for keyEqualsValuesBracesBrackets");
+            }
+
+            # per-name key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
         }
 
         # OPTIONAL arguments
-        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{optionalArguments} } ){
-          last if $commaPolySwitchExists;
-          if ( ($polySwitch eq 'CommaStartsOnOwnLine' or $polySwitch eq 'CommaFinishesWithLineBreak' ) and $value != 0){
-             $commaPolySwitchExists = 1;
-             $logger->trace("*poly-switch info: $polySwitch $value for optionalArguments");
-          }
-
-          # per-name OPTIONAL arguments
-          if ( ref ${ $mainSettings{modifyLineBreaks}{optionalArguments}}{$polySwitch}  eq "HASH" ) {
-            while ( my ( $perNamePolySwitch, $perNameValue ) = each %{ ${ $mainSettings{modifyLineBreaks}{optionalArguments}}{$polySwitch}  } ){
-              last if $commaPolySwitchExists;
-              if ( ($perNamePolySwitch eq 'CommaStartsOnOwnLine' or $perNamePolySwitch eq 'CommaFinishesWithLineBreak' ) and $perNameValue != 0){
-                 $commaPolySwitchExists = 1;
-                 $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments");
-              }
+        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{optionalArguments} } ) {
+            last if $commaPolySwitchExists;
+            if ( ( $polySwitch eq 'CommaStartsOnOwnLine' or $polySwitch eq 'CommaFinishesWithLineBreak' )
+                and $value != 0 )
+            {
+                $commaPolySwitchExists = 1;
+                $logger->trace("*poly-switch info: $polySwitch $value for optionalArguments");
             }
-          }
+
+            # per-name OPTIONAL arguments
+            if ( ref ${ $mainSettings{modifyLineBreaks}{optionalArguments} }{$polySwitch} eq "HASH" ) {
+                while ( my ( $perNamePolySwitch, $perNameValue )
+                    = each %{ ${ $mainSettings{modifyLineBreaks}{optionalArguments} }{$polySwitch} } )
+                {
+                    last if $commaPolySwitchExists;
+                    if ((      $perNamePolySwitch eq 'CommaStartsOnOwnLine'
+                            or $perNamePolySwitch eq 'CommaFinishesWithLineBreak'
+                        )
+                        and $perNameValue != 0
+                        )
+                    {
+                        $commaPolySwitchExists = 1;
+                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments");
+                    }
+                }
+            }
         }
-    
-        # MANDAGORY arguments
-        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{mandatoryArguments} } ){
-          last if $commaPolySwitchExists;
-          if ( ($polySwitch eq 'CommaStartsOnOwnLine' or $polySwitch eq 'CommaFinishesWithLineBreak' ) and $value != 0){
-             $commaPolySwitchExists = 1;
-             $logger->trace("*poly-switch info: $polySwitch $value for mandatoryArguments");
-          }
 
-          # per-name MANDATORY arguments
-          if ( ref ${ $mainSettings{modifyLineBreaks}{mandatoryArguments}}{$polySwitch}  eq "HASH" ) {
-            while ( my ( $perNamePolySwitch, $perNameValue ) = each %{ ${ $mainSettings{modifyLineBreaks}{mandatoryArguments}}{$polySwitch}  } ){
-              last if $commaPolySwitchExists;
-              if ( ($perNamePolySwitch eq 'CommaStartsOnOwnLine' or $perNamePolySwitch eq 'CommaFinishesWithLineBreak' ) and $perNameValue != 0){
-                 $commaPolySwitchExists = 1;
-                 $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments");
-              }
+        # MANDAGORY arguments
+        while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{mandatoryArguments} } ) {
+            last if $commaPolySwitchExists;
+            if ( ( $polySwitch eq 'CommaStartsOnOwnLine' or $polySwitch eq 'CommaFinishesWithLineBreak' )
+                and $value != 0 )
+            {
+                $commaPolySwitchExists = 1;
+                $logger->trace("*poly-switch info: $polySwitch $value for mandatoryArguments");
             }
-          }
+
+            # per-name MANDATORY arguments
+            if ( ref ${ $mainSettings{modifyLineBreaks}{mandatoryArguments} }{$polySwitch} eq "HASH" ) {
+                while ( my ( $perNamePolySwitch, $perNameValue )
+                    = each %{ ${ $mainSettings{modifyLineBreaks}{mandatoryArguments} }{$polySwitch} } )
+                {
+                    last if $commaPolySwitchExists;
+                    if ((      $perNamePolySwitch eq 'CommaStartsOnOwnLine'
+                            or $perNamePolySwitch eq 'CommaFinishesWithLineBreak'
+                        )
+                        and $perNameValue != 0
+                        )
+                    {
+                        $commaPolySwitchExists = 1;
+                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments");
+                    }
+                }
+            }
         }
     }
 
@@ -910,102 +943,135 @@ sub yaml_get_indentation_settings_for_this_object {
         my $name = ${$self}{name};
 
         # check for noAdditionalIndent OR indentRules OR defaultIndent
-        my $indentation = $self->yaml_get_indentation_information(thing=>"body");
+        my $indentation = $self->yaml_get_indentation_information( thing => "body" );
 
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
 
         # minimal previouslyFoundSettings, possibly added to depending on switches
-        %{ ${previouslyFoundSettings}{$storageName} } = (
-            indentation               => $indentation,
-        );
+        %{ ${previouslyFoundSettings}{$storageName} } = ( indentation => $indentation, );
 
         # t switch gives more information to the log file
-        ${ ${previouslyFoundSettings}{$storageName} }{AMETA} = {name=>${$self}{name}, type=> ${$self}{modifyLineBreaksYamlName}} if $is_t_switch_active;
+        ${ ${previouslyFoundSettings}{$storageName} }{AMETA}
+            = { name => ${$self}{name}, type => ${$self}{modifyLineBreaksYamlName} }
+            if $is_t_switch_active;
 
         # check for line break settings
-        if ($is_m_switch_active){
+        if ($is_m_switch_active) {
             $self->yaml_modify_line_breaks_settings;
-            ${ ${previouslyFoundSettings}{$storageName} }{BeginStartsOnOwnLine} = ${$self}{BeginStartsOnOwnLine} if defined ${$self}{BeginStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{BodyStartsOnOwnLine} = ${$self}{BodyStartsOnOwnLine} if defined ${$self}{BodyStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EndStartsOnOwnLine} = ${$self}{EndStartsOnOwnLine} if defined ${$self}{EndStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EndFinishesWithLineBreak} = ${$self}{EndFinishesWithLineBreak} if defined ${$self}{EndFinishesWithLineBreak};
+            ${ ${previouslyFoundSettings}{$storageName} }{BeginStartsOnOwnLine} = ${$self}{BeginStartsOnOwnLine}
+                if defined ${$self}{BeginStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{BodyStartsOnOwnLine} = ${$self}{BodyStartsOnOwnLine}
+                if defined ${$self}{BodyStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{EndStartsOnOwnLine} = ${$self}{EndStartsOnOwnLine}
+                if defined ${$self}{EndStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{EndFinishesWithLineBreak} = ${$self}{EndFinishesWithLineBreak}
+                if defined ${$self}{EndFinishesWithLineBreak};
 
             # key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
-            ${ ${previouslyFoundSettings}{$storageName} }{EqualsStartsOnOwnLine} = ${$self}{EqualsStartsOnOwnLine} if defined ${$self}{EqualsStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EqualsFinishesWithLineBreak} = ${$self}{EqualsFinishesWithLineBreak} if defined ${$self}{EqualsFinishesWithLineBreak};
+            ${ ${previouslyFoundSettings}{$storageName} }{EqualsStartsOnOwnLine} = ${$self}{EqualsStartsOnOwnLine}
+                if defined ${$self}{EqualsStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{EqualsFinishesWithLineBreak}
+                = ${$self}{EqualsFinishesWithLineBreak}
+                if defined ${$self}{EqualsFinishesWithLineBreak};
             delete ${$self}{EqualsStartsOnOwnLine};
             delete ${$self}{EqualsFinishesWithLineBreak};
-        } 
+        }
 
         # store argument information, if arguments present
-        if (${$self}{arguments}){
+        if ( ${$self}{arguments} ) {
 
             #
             # mandatory arguments
             #
-            ${$self}{modifyLineBreaksYamlName}= "mandatoryArguments";
+            ${$self}{modifyLineBreaksYamlName} = "mandatoryArguments";
             $logger->trace("${$self}{modifyLineBreaksYamlName} info:") if ($is_t_switch_active);
-            ${ ${previouslyFoundSettings}{$storageName} }{ mandatoryArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"mandatoryArguments");
+            ${ ${previouslyFoundSettings}{$storageName} }{mandatoryArgumentsIndentation}
+                = $self->yaml_get_indentation_information( thing => "mandatoryArguments" );
 
             # mandatory arguments, poly-switches
-            if ($is_m_switch_active){
-               ${$self}{aliases} = {
-                 # begin statements
-                 BeginStartsOnOwnLine=>"LCuBStartsOnOwnLine",
-                 # body statements
-                 BodyStartsOnOwnLine=>"MandArgBodyStartsOnOwnLine",
-                 # end statements
-                 EndStartsOnOwnLine=>"RCuBStartsOnOwnLine",
-                 # after end statements
-                 EndFinishesWithLineBreak=>"RCuBFinishesWithLineBreak",
-               };
+            if ($is_m_switch_active) {
+                ${$self}{aliases} = {
 
-               # get poly switch values
-               $self->yaml_modify_line_breaks_settings;
+                    # begin statements
+                    BeginStartsOnOwnLine => "LCuBStartsOnOwnLine",
 
-               # store poly switch values
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ LCuBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ MandArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ RCuBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ RCuBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ CommaStartsOnOwnLine } = ${$self}{CommaStartsOnOwnLine} if defined ${$self}{CommaStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{mand}}{ CommaFinishesWithLineBreak } = ${$self}{CommaFinishesWithLineBreak} if defined ${$self}{CommaFinishesWithLineBreak};
+                    # body statements
+                    BodyStartsOnOwnLine => "MandArgBodyStartsOnOwnLine",
 
-               delete ${$self}{CommaStartsOnOwnLine}; 
-               delete ${$self}{CommaFinishesWithLineBreak};
+                    # end statements
+                    EndStartsOnOwnLine => "RCuBStartsOnOwnLine",
+
+                    # after end statements
+                    EndFinishesWithLineBreak => "RCuBFinishesWithLineBreak",
+                };
+
+                # get poly switch values
+                $self->yaml_modify_line_breaks_settings;
+
+                # store poly switch values
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{LCuBStartsOnOwnLine}
+                    = ${$self}{BeginStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{MandArgBodyStartsOnOwnLine}
+                    = ${$self}{BodyStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{RCuBStartsOnOwnLine}
+                    = ${$self}{EndStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{RCuBFinishesWithLineBreak}
+                    = ${$self}{EndFinishesWithLineBreak};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{CommaStartsOnOwnLine}
+                    = ${$self}{CommaStartsOnOwnLine}
+                    if defined ${$self}{CommaStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{CommaFinishesWithLineBreak}
+                    = ${$self}{CommaFinishesWithLineBreak}
+                    if defined ${$self}{CommaFinishesWithLineBreak};
+
+                delete ${$self}{CommaStartsOnOwnLine};
+                delete ${$self}{CommaFinishesWithLineBreak};
             }
 
             #
             # optional arguments
             #
-            ${$self}{modifyLineBreaksYamlName}= "optionalArguments";
+            ${$self}{modifyLineBreaksYamlName} = "optionalArguments";
             $logger->trace("${$self}{modifyLineBreaksYamlName} info:") if ($is_t_switch_active);
-            ${ ${previouslyFoundSettings}{$storageName} }{ optionalArgumentsIndentation} = $self->yaml_get_indentation_information(thing=>"optionalArguments");
+            ${ ${previouslyFoundSettings}{$storageName} }{optionalArgumentsIndentation}
+                = $self->yaml_get_indentation_information( thing => "optionalArguments" );
 
             # optional arguments, poly-switches
-            if ($is_m_switch_active){
-               ${$self}{aliases} = {
-                 # begin statements
-                 BeginStartsOnOwnLine=>"LSqBStartsOnOwnLine",
-                 # body statements
-                 BodyStartsOnOwnLine=>"OptArgBodyStartsOnOwnLine",
-                 # end statements
-                 EndStartsOnOwnLine=>"RSqBStartsOnOwnLine",
-                 # after end statements
-                 EndFinishesWithLineBreak=>"RSqBFinishesWithLineBreak",
-               };
+            if ($is_m_switch_active) {
+                ${$self}{aliases} = {
 
-               # get poly switch values
-               $self->yaml_modify_line_breaks_settings;
+                    # begin statements
+                    BeginStartsOnOwnLine => "LSqBStartsOnOwnLine",
 
-               # store poly switch values
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ LSqBStartsOnOwnLine } = ${$self}{BeginStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ OptArgBodyStartsOnOwnLine } = ${$self}{BodyStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ RSqBStartsOnOwnLine } = ${$self}{EndStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ RSqBFinishesWithLineBreak } = ${$self}{EndFinishesWithLineBreak};
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ CommaStartsOnOwnLine } = ${$self}{CommaStartsOnOwnLine} if defined ${$self}{CommaStartsOnOwnLine};
-               ${${ ${previouslyFoundSettings}{$storageName} }{opt}}{ CommaFinishesWithLineBreak } = ${$self}{CommaFinishesWithLineBreak} if defined ${$self}{CommaFinishesWithLineBreak};
+                    # body statements
+                    BodyStartsOnOwnLine => "OptArgBodyStartsOnOwnLine",
+
+                    # end statements
+                    EndStartsOnOwnLine => "RSqBStartsOnOwnLine",
+
+                    # after end statements
+                    EndFinishesWithLineBreak => "RSqBFinishesWithLineBreak",
+                };
+
+                # get poly switch values
+                $self->yaml_modify_line_breaks_settings;
+
+                # store poly switch values
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{LSqBStartsOnOwnLine}
+                    = ${$self}{BeginStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{OptArgBodyStartsOnOwnLine}
+                    = ${$self}{BodyStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{RSqBStartsOnOwnLine}
+                    = ${$self}{EndStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{RSqBFinishesWithLineBreak}
+                    = ${$self}{EndFinishesWithLineBreak};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{CommaStartsOnOwnLine}
+                    = ${$self}{CommaStartsOnOwnLine}
+                    if defined ${$self}{CommaStartsOnOwnLine};
+                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{CommaFinishesWithLineBreak}
+                    = ${$self}{CommaFinishesWithLineBreak}
+                    if defined ${$self}{CommaFinishesWithLineBreak};
             }
         }
 
@@ -1030,7 +1096,7 @@ sub yaml_get_indentation_settings_for_this_object {
         }
 
         # log file information
-        $logger->trace("*$name settings (stored for future use):")         if $is_t_switch_active;
+        $logger->trace("*$name settings (stored for future use):")              if $is_t_switch_active;
         $logger->trace( Dumper \%{ ${previouslyFoundSettings}{$storageName} } ) if $is_t_switch_active;
 
     }
@@ -1166,19 +1232,13 @@ sub yaml_modify_line_breaks_settings {
     );
 
     # arguments can have Comma poly switches
-    if (${$self}{modifyLineBreaksYamlName} =~ m/Arguments/s){
-       push(
-           @toBeAssignedTo,
-           (   "CommaStartsOnOwnLine", "CommaFinishesWithLineBreak")
-       );
+    if ( ${$self}{modifyLineBreaksYamlName} =~ m/Arguments/s ) {
+        push( @toBeAssignedTo, ( "CommaStartsOnOwnLine", "CommaFinishesWithLineBreak" ) );
     }
 
     # key = value can have Equals poly switches
-    if (${$self}{modifyLineBreaksYamlName} eq 'keyEqualsValuesBracesBrackets'){
-       push(
-           @toBeAssignedTo,
-           (   "EqualsStartsOnOwnLine", "EqualsFinishesWithLineBreak")
-       );
+    if ( ${$self}{modifyLineBreaksYamlName} eq 'keyEqualsValuesBracesBrackets' ) {
+        push( @toBeAssignedTo, ( "EqualsStartsOnOwnLine", "EqualsFinishesWithLineBreak" ) );
     }
 
     # we can efficiently loop through the following
@@ -1226,13 +1286,13 @@ sub yaml_poly_switch_get_every_or_custom_value {
             $logger->trace("$name: $toBeAssignedToAlias=$everyValue\t\t\t(*global* value)")
                 if ($is_t_switch_active);
             ${$self}{$toBeAssignedTo} = $everyValue;
-        } 
+        }
     }
     return;
 }
 
 sub yaml_get_indentation_information {
-    my $self = shift;
+    my $self  = shift;
     my %input = @_;
 
     #**************************************
