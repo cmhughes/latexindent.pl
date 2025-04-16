@@ -6,8 +6,8 @@
 #       vim opt-args-test-cases.sh && ./opt-args-test-cases.sh && vim -p env-second-opt-args env-second-opt-args-mod2
 . ../common.sh
 
-set +x
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
+
 # add linebreaks
 latexindent.pl -m -s env-opt-mand-args1 -o=+-default -l=../opt-args/opt-args-remove-all,../environments/env-all-on
 latexindent.pl -m -s env-opt-mand-args1 -o=+-addPercent-all -l=../opt-args/opt-args-remove-all,../environments/env-all-on,addPercentAll-mand,addPercentAll-opts

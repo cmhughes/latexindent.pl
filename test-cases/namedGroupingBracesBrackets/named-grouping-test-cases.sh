@@ -2,7 +2,7 @@
 loopmax=32
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 latexindent.pl -s -l online.yaml contributors -o=+-default
 latexindent.pl -m -s -t contributors-remove-line-breaks -o contributors-vo-nameStartsOnOwnLine -l=NameStartsOnOwnLineYes,online

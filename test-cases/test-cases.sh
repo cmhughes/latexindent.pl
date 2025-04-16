@@ -142,6 +142,7 @@ dirExec=(
   ) 
 
 
+totalTestCases=0
 dirExecCount=0
 dirExecCountTotal=${#dirExec[@]}
 # loop through the files
@@ -164,6 +165,8 @@ do
 
   ./$executable $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 
+  currentCount=$(egrep -i 'latexindent.pl' latexindent-count.log|wc -l)
+  totalTestCases=$((totalTestCases+currentCount))
   checkgitdiff
 
   echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal)${COLOR_OFF}\r"
@@ -183,6 +186,8 @@ checkgitdiff
 cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
+
+echo "TOTAL test cases $totalTestCases"
 
 # play sounds
 for i in {1..5}

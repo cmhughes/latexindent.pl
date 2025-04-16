@@ -2,7 +2,7 @@
 loopmax=1
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 latexindent.pl -s unnamed.tex -o unnamed-default.tex
 latexindent.pl -s issue-265.tex -o +-mod1 -l issue-265.yaml

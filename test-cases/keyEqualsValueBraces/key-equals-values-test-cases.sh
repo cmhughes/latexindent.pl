@@ -2,7 +2,8 @@
 loopmax=48
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
+
 latexindent.pl -s  keyEqualsValueFirst -o=+-default
 latexindent.pl -s  braceTestsmall -o=+-default 
 latexindent.pl -s  braceTest -o=+-default 

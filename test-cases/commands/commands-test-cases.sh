@@ -16,7 +16,8 @@
 loopmax=32
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
+
 latexindent.pl -s -w commands-simple.tex 
 latexindent.pl -s -w commands-simple1.tex 
 latexindent.pl -s -w commands-nested.tex 

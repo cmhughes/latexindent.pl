@@ -2,8 +2,8 @@
 loopmax=48
 . ../common.sh
 
-# if silentMode is not active, verbose
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
+
 latexindent.pl -w -s environments-simple
 latexindent.pl -w -s environments-simple-nested
 latexindent.pl -w -s environments-nested-nested

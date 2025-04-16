@@ -3,8 +3,7 @@
 loopmax=16
 . ../common.sh
 
-# if silentMode is not active, verbose
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 # optional arguments in environments
 latexindent.pl env-first-opt-args -m -s -o=+-mod0 -l=opt-args-remove-all,../environments/env-all-on
