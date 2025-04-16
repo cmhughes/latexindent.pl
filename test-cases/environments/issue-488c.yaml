@@ -7,11 +7,4 @@ modifyLineBreaks:
 
 fineTuning:
   environments:
-    begin: |-
-      (?x)                      # environment 
-        \\begin\{               # regex
-          (?<ENVNAME>           # NON default
-           [a-zA-Z@\*0-9_\\]+   #
-          )                     #
-        \}\s*\\label\{[^}]+?\}  #
     end: \\end\{\g{ENVNAME}\}   # note the capture group name

@@ -58,10 +58,12 @@ sub remove_trailing_whitespace {
     }
     elsif ( $input{when} eq "after" ) {
         return unless ( ${ $mainSettings{removeTrailingWhitespace} }{afterProcessing} );
-        $logger->trace(
-            "*Removing trailing white space *after* the document is processed (removeTrailingWhitespace: afterProcessing == 1)"
-        ) if $is_t_switch_active;
-        $logger->trace( Dumper( \%{ $mainSettings{removeTrailingWhitespace} } ) );
+        if ($is_t_switch_active) {
+            $logger->trace(
+                "*Removing trailing white space *after* the document is processed (removeTrailingWhitespace: afterProcessing == 1)"
+            );
+            $logger->trace( Dumper( \%{ $mainSettings{removeTrailingWhitespace} } ) );
+        }
     }
     else {
         return;

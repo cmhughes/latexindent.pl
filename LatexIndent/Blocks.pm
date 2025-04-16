@@ -73,13 +73,22 @@ sub _construct_code_blocks_regex {
     # environment regex
     #
     my $environmentName = qr/${${$mainSettings{fineTuning}}{environments}}{name}/;
+
+    # for environment arguments
+    my $mSwitchOnlyTrailingNoCapture = (
+        $is_m_switch_active
+        ? qr{(?:\h*)?(?:$trailingCommentRegExp)?(?:\R\s*)?}
+        : q{}
+    );
+
+    # default environment regex
     $environmentRegEx = qr{
         (?<ENVBEGIN>                                  # 
            \\begin\{(?<ENVNAME>$environmentName)\}    # \begin{<ENVNAME>}
         )                                             # 
         (?<ENVARGS>                                   # *possible* arguments
           $allArgumentRegEx*                          # 
-          $mSwitchOnlyTrailing 
+          $mSwitchOnlyTrailingNoCapture
         )                                             # 
         (?<ENVBODY>                                   # body
           (?>                                         # 
@@ -93,7 +102,51 @@ sub _construct_code_blocks_regex {
         (?<ENVEND>                                    # \end{<ENVNAME>}
            \\end\{\g{ENVNAME}\}                       # 
         )                                             # 
+        $mSwitchOnlyTrailing 
      }xs;
+
+    # non-default environment regex
+    if (    defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $logger->info("*environment regex changed from default using fineTuning");
+        $environmentRegEx = qr{
+        (?<ENVBEGIN>                                  # 
+           ${${$mainSettings{fineTuning}}{environments}}{begin}
+        )                                             # 
+        (?<ENVARGS>                                   # *possible* arguments
+          $allArgumentRegEx*                          # 
+          $mSwitchOnlyTrailingNoCapture
+        )                                             # 
+        (?<ENVBODY>                                   # body
+          (?>                                         # 
+              (??{ $environmentRegEx })               # 
+              |                                       # 
+              (?!                                     # 
+                  (?:\\end\{)                         # 
+              ).                                      # 
+          )*                                          # 
+        )                                             # 
+        (?<ENVEND>                                    # \end{<ENVNAME>}
+           ${${$mainSettings{fineTuning}}{environments}}{end} 
+        )                                             # 
+        $mSwitchOnlyTrailing 
+     }xs;
+    }
+
+    if ( defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and not defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $logger->warn(
+            "*fineTuning environment begin specified and *NOT* end, ignoring this and using default environment regex");
+    }
+
+    if ( not defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $logger->warn(
+            "*fineTuning environment end specified and *NOT* begin, ignoring this and using default environment regex");
+    }
 
     #
     # ifElseFi regex
@@ -475,6 +528,11 @@ sub _find_all_code_blocks {
              $modifyLineBreaksName = "environments";
              my $linebreaksAtEndBegin;
 
+             # storage before finding nested things
+             my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+             my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+             my $linebreaksAtEnd=( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q());
+
              if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
                 $codeBlockObj = LatexIndent::Environment->new(name=>$name,
                                                     begin=>$begin,
@@ -483,6 +541,11 @@ sub _find_all_code_blocks {
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> ($+{ENVARGS}?1:0),
                                                     type=>"environment",
+                                                    horizontalTrailingSpace=>$horizontalTrailingSpace,
+                                                    trailingComment=>$trailingComment,
+                                                    linebreaksAtEnd=>{
+                                                          end=>$linebreaksAtEnd,
+                                                    },
                 );
              }
 
@@ -496,9 +559,18 @@ sub _find_all_code_blocks {
              # argument indentation
              my $argBody = q();
              if ($+{ENVARGS}){
-                $argBody = _indent_all_args($name, $modifyLineBreaksName, $+{ENVARGS} ,$currentIndentation);
+                $argBody = $+{ENVARGS};
+                if ($argBody =~ m@^\s*$trailingCommentRegExp\s*$@s){
+                  $body = $argBody.$body;
+                  $argBody = q();
+                  $logger->trace("arguments for $name environment is ONLY a comment, pre-pending it to body")         if $is_t_switch_active;
+                } else {
+                  $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody, $currentIndentation);
+                }
+             } else {
+                $logger->trace("no arguments for $name environment")         if $is_t_switch_active;
              }
-          
+
              # ***
              # find nested things
              # ***
@@ -528,28 +600,46 @@ sub _find_all_code_blocks {
                    }
 
                    # poly-switch work
-                   ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
-                   ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
-
                    $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
 
-                   $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+                   ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
+                   ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
+                   ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+                   ${$codeBlockObj}{EndFinishesWithLineBreak} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndFinishesWithLineBreak};
 
+                   $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                   $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
                    $codeBlockObj->_mlb_end_starts_on_own_line if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
+                   $codeBlockObj->_mlb_end_finishes_with_line_break;
 
                    # get updated begin, body, end
                    $begin = ${$codeBlockObj}{begin};
                    $body = ${$codeBlockObj}{body};
                    $end = ${$codeBlockObj}{end};
 
+                   # add indentation to BEGIN statement
+                   if ($argBody and $addedIndentation ne ''){
+                      $argBody = $begin;
+
+                      # remove \begin{<name>} from arguments
+                      $argBody =~ s@(.*?\\begin\{[^}]+\})@@s;
+
+                      # store \begin{<name>} 
+                      $begin = $1;
+
+                      # operate on argument body
+                      $argBody =~ s"^"$addedIndentation"mg;
+                      $argBody =~ s"^$addedIndentation""s;
+
+                      # put begin back together
+                      $begin = $begin.$argBody;
+                   }
+
                    # delete arg body for future as we don't want to duplicate them later on
                    $argBody = q();
 
                    $linebreaksAtEndBegin = ${${$codeBlockObj}{linebreaksAtEnd}}{begin};
                    
-                   # add indentation to BEGIN statement
-                   $begin =~ s"^"$addedIndentation"mg;
-                   $begin =~ s"^$addedIndentation(\h*\\begin\{)"$1"m;
              } else {
                    $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
              }
@@ -669,18 +759,14 @@ sub _find_all_code_blocks {
                    ${$codeBlockObj}{body} = $body;
 
                    # poly-switch work
+                   $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
                    ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
                    ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
                    ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
 
-                   $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
-
                    $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
-
                    $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
-
                    $codeBlockObj->_mlb_end_starts_on_own_line if ${$codeBlockObj}{EndStartsOnOwnLine} != 0;
-
                    $codeBlockObj->_mlb_end_finishes_with_line_break;
 
                    # get updated begin, body, end

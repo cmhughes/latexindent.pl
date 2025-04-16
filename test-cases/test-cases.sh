@@ -23,6 +23,9 @@
 # reference
 #   https://stackoverflow.com/questions/9984722/git-rename-many-files-and-folders
 #
+# starting point for counting the number of calls to latexindent.pl 
+#   https://stackoverflow.com/a/11229532/1091649
+
 RED='\033[0;31m'          # red
 YELLOW='\033[1;33m'       # yellow
 BGreen='\033[1;32m'       # green
@@ -110,9 +113,9 @@ dirExec=(
   "namedGroupingBracesBrackets;named-grouping-test-cases.sh"
   "unnamed-braces;un-named-grouping-braces.sh"
   "keyEqualsValueBraces;key-equals-values-test-cases.sh"
+  "environments;environments-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
-  # "environments;environments-test-cases.sh"
   # "diacritics;diacritics-test-cases.sh"
   # "ifelsefi;ifelsefi-test-cases.sh"
   # "items;items-test-cases.sh"

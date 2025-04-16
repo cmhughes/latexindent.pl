@@ -56,7 +56,7 @@ sub _mlb_begin_starts_on_own_line {
             #     BodyStartsOnOwnLine == 3 add a blank line, and then new line
             if ( $_ == 1 ) {
 
-                $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile==1)")
+                $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile == 1)")
                     if $is_t_switch_active;
 
                 # modify the begin statement
@@ -76,7 +76,8 @@ sub _mlb_begin_starts_on_own_line {
                     ${$self}{begin} = ( $1 ? $1 : q() ) . "\n" . ${$self}{begin};
                 }
                 else {
-                    ${$self}{begin} = $tokens{mBeforeBeginLineBreakADD} . ${$self}{begin};
+                    ${$self}{begin} =~ s/^(\h*)//s;
+                    ${$self}{begin} = ( $1 ? $1 : q() ) . $tokens{mBeforeBeginLineBreakADD} . ${$self}{begin};
                 }
             }
             elsif ( $_ == 2 ) {
@@ -127,7 +128,7 @@ sub _mlb_body_starts_on_own_line {
             if ( $_ == 1 ) {
 
                 # modify the begin statement
-                $logger->trace("Adding a linebreak *after* begin statement \t\t ($BodyStringLogFile==1)")
+                $logger->trace("Adding a linebreak *after* begin statement \t\t ($BodyStringLogFile == 1)")
                     if $is_t_switch_active;
                 ${$self}{begin} .= "\n";
                 ${$self}{linebreaksAtEnd}{begin} = 1;
@@ -235,6 +236,15 @@ sub _mlb_end_starts_on_own_line {
         }
         elsif ( $_ == -1 and ${$self}{linebreaksAtEnd}{body} ) {
 
+            if ( ${$self}{body} =~ m/\R\h*$trailingCommentRegExp\h*\R$/s ) {
+                ${$self}{body} =~ s/\R(\h*)($trailingCommentRegExp)\h*\R$/\n/s;
+                ${$self}{end} = $1 . ${$self}{end} . $2;
+                $logger->trace(
+                    "comment on own line at END of body, pre-pending it to end\t\t ($EndStringLogFile == -1)")
+                    if $is_t_switch_active;
+                return;
+            }
+
             # remove line break *after* body, if appropriate
 
             # check to see that body does *not* finish with blank-line-token,
@@ -252,7 +262,6 @@ sub _mlb_end_starts_on_own_line {
             }
         }
     }
-
 }
 
 sub _mlb_end_finishes_with_line_break {
@@ -266,6 +275,7 @@ sub _mlb_end_finishes_with_line_break {
     # switch EndFinishesWithLineBreak back to 4
     #
 
+    ${$self}{EndFinishesWithLineBreak} = 0 if not defined ${$self}{EndFinishesWithLineBreak};
     if ( ${$self}{EndFinishesWithLineBreak} == 0 ) {
         if ( ${$self}{trailingComment} and ${$self}{linebreaksAtEnd}{end} eq '' ) {
             ${$self}{linebreaksAtEnd}{end} = "\n";
@@ -429,7 +439,7 @@ sub _mlb_verbatim {
                     my $trailingCharacterToken = q();
                     if ( $_ == 1 ) {
                         $logger->trace(
-                            "Adding a linebreak at the beginning of ${$child}{begin} \t\t ($BeginStringLogFile==1)")
+                            "Adding a linebreak at the beginning of ${$child}{begin} \t\t ($BeginStringLogFile == 1)")
                             if $is_t_switch_active;
                     }
                     elsif ( $_ == 2 ) {
@@ -465,7 +475,7 @@ sub _mlb_verbatim {
 
                 if ( ${$child}{EndFinishesWithLineBreak} == 1 ) {
                     $logger->trace(
-                        "Adding a linebreak at the end of ${$child}{end} (post text wrap $EndStringLogFile==1)")
+                        "Adding a linebreak at the end of ${$child}{end} (post text wrap $EndStringLogFile == 1)")
                         if $is_t_switch_active;
                     $lineBreakCharacter = "\n";
                 }
@@ -539,7 +549,10 @@ sub _mlb_after_indentation_token_adjust {
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 "$trailingCommentToken\n";/sge;
 
-    # trailing comment added at end of file
+    # trailing comment added at BEGIN of file
+    ${$self}{body} =~ s/\A$tokens{mSwitchComment}//s;
+
+    # trailing comment added at END of file
     ${$self}{body} =~ s/$tokens{mSwitchComment}\Z//s;
 
     # finally, make the remaining mSwitchComments into actual comments
