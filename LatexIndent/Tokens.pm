@@ -66,6 +66,9 @@ our %tokens = (
     mAfterEndRemove             => "mAfterEndRemove",
     mAfterEndLineBreak          => "mAfterEndLineBreak",
     mSwitchComment              => "mSwitchComment",
+
+    # specialBeginEnd Middle token
+    specialBeginEndMiddle => "specialMiddle",
 );
 
 sub token_check {

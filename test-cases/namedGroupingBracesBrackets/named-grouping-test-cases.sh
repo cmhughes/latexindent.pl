@@ -18,12 +18,15 @@ set +x
  do 
     [[ $showCounter == 1 ]] && echo $i of $loopmax
     [[ $silentMode == 0 ]] && set -x 
+    keepappendinglogfile
+
     # just linebreak modification
     latexindent.pl -m -s contributors -o=+-vo-mod$i -l=mand-args-Vo-mod$i,online
     latexindent.pl -t -m -s contributors-remove-line-breaks -o=+-vo-mod$i -l=mand-args-Vo-mod$i,../commands/unprotect-blank-lines,online
     set +x 
  done
 
+keepappendinglogfile
 latexindent.pl -m -s contributors-remove-line-breaks -o=+-vo-mod5-no-remove -l=mand-args-Vo-mod5,../commands/unprotect-blank-lines,online  -y="removeTrailingWhitespace:beforeProcessing: 0"
 
 # special characters

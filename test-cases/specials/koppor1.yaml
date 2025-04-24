@@ -1,7 +1,10 @@
 specialBeginEnd:
-    specialBeforeCommand: 1
     procedure:
-        begin: '\\Procedure'
-        end: '\\EndProcedure'
-        middle: '\\State'
+        begin: \\Procedure\{[^}]+\}
+        end: \\EndProcedure
+        middle: \\State
         lookForThis: 1
+        nested: 1
+fineTuning:
+  commands:
+    name: (?!Procedure|If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+

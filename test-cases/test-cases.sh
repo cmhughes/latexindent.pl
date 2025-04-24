@@ -114,6 +114,7 @@ dirExec=(
   "unnamed-braces;un-named-grouping-braces.sh"
   "keyEqualsValueBraces;key-equals-values-test-cases.sh"
   "environments;environments-test-cases.sh"
+  "specials;specials-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
@@ -122,7 +123,6 @@ dirExec=(
   # "tokenChecks;token-checks.sh"
   # "cruftdirectory;cruft-directory-test-cases.sh"
   # "STDIN;stdin-test-cases.sh"
-  # "specials;specials-test-cases.sh"
   # "headings;headings-test-cases.sh"
   # "filecontents;filecontents-test-cases.sh"
   # "alignment;alignment-test-cases.sh"
@@ -169,7 +169,7 @@ do
   totalTestCases=$((totalTestCases+currentCount))
   checkgitdiff
 
-  echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal)${COLOR_OFF}\r"
+  echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal) [$currentCount tests]${COLOR_OFF}\r"
 
   cd ..
   [[ $directory == 'demonstrations' ]] && cd ..

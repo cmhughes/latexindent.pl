@@ -33,6 +33,7 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
  [[ $showCounter == 1 ]] && echo $i of $loopmax
  [[ $silentMode == 0 ]] && set -x 
+ keepappendinglogfile
 
  # just linebreak modification
  latexindent.pl -s pgfkeys-nested -m -l=mand-args-mod$i -o=+-mod$i
@@ -54,6 +55,7 @@ do
  [[ $i -lt 33 ]] && latexindent.pl -s contributors.bib -m -l=equals-not-finishes-with-line-break,online,mand-args-keywords$i -o=+-mod$i.bib
 
  [[ $silentMode == 0 ]] && set -x 
+ keepappendinglogfile
  # remove line breaks, with trailing comments
  latexindent.pl pgfkeys-remove-line-breaks-first-tc -s -m -l=equals-not-finishes-with-line-break,unprotect-blank-lines,mand-args-mod$i -o=+-mod$i
  latexindent.pl -s pgfkeys-remove-line-breaks -m -l=equals-not-finishes-with-line-break,mand-args-mod$i -o=+-mod$i
@@ -63,6 +65,7 @@ do
 done
 
 [[ $silentMode == 0 ]] && set -x 
+keepappendinglogfile
 
 # KeyStartsOnOwnLine
 latexindent.pl -s pgfkeys-multiple-keys -l=equals-not-finishes-with-line-break,keyStartsOnOwnLine -m -o=+-remove

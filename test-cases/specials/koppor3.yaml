@@ -1,9 +1,12 @@
 specialBeginEnd:
-    specialBeforeCommand: 1
     While:
-        begin: '\\While'
-        end: '\\EndWhile'
+        begin: \\While(?:\{[^}]+\})?
+        end: \\EndWhile
     If:
-        begin: '\\If'
-        middle: '\\ElsIf'
-        end: '\\EndIf'
+        begin: \\If(?:\{[^}]+\})?
+        middle: \\ElsIf
+        end: \\EndIf
+        nested: 1
+fineTuning:
+  commands:
+    name: (?!If|While|ElsIf)[+a-zA-Z@\*0-9_\:]+

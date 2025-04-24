@@ -74,6 +74,12 @@ function openingtasks
     [[ $silentMode == 0 ]] && set -x
 }
 
+function keepappendinglogfile
+{
+    [[ $silentMode == 1 ]] && exec >> latexindent-count.log 2>&1 && set -x
+    [[ $silentMode == 0 ]] && set -x
+}
+
 function wrapuptasks
 {
     [[ $noisyMode == 1 ]] && makenoise

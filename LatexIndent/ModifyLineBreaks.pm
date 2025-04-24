@@ -26,7 +26,7 @@ use LatexIndent::Item             qw/$listOfItems/;
 use LatexIndent::LogFile          qw/$logger/;
 use LatexIndent::Verbatim         qw/%verbatimStorage/;
 our @EXPORT_OK
-    = qw/_mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust/;
+    = qw/_mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust _mlb_line_break_token_adjust/;
 our $paragraphRegExp = q();
 
 sub _mlb_begin_starts_on_own_line {
@@ -83,21 +83,25 @@ sub _mlb_begin_starts_on_own_line {
             elsif ( $_ == 2 ) {
                 ${$self}{begin} =~ s/^(\h*)//s;
                 ${$self}{begin} = "$tokens{mSwitchComment}\n" . ${$self}{begin};
-                $logger->trace("Adding a COMMENT and linebreak *before* begin statement \t\t ($BeginStringLogFile==2)")
+                $logger->trace(
+                    "Adding a COMMENT and linebreak *before* begin statement \t\t ($BeginStringLogFile == 2)")
                     if $is_t_switch_active;
             }
             elsif ( $_ == 3 ) {
                 ${$self}{begin} =~ s/^\h*//s;
                 ${$self}{begin}
-                    = ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
+                    = $tokens{mBeforeBeginLineBreakADD}
+                    . ( ${ $mainSettings{modifyLineBreaks} }{preserveBlankLines} ? $tokens{blanklines} : "\n" ) . "\n"
                     . ${$self}{begin};
+                $logger->trace("Adding a linebreak *before* begin statement \t\t ($BeginStringLogFile == 3)")
+                    if $is_t_switch_active;
             }
         }
         elsif ( $_ == -1 ) {
 
             # remove line break *before* begin, if appropriate
-            $logger->trace("Removing linebreak *before* begin \t\t ($BeginStringLogFile==-1)") if $is_t_switch_active;
-            ${$self}{begin} =~ s/^(?>\h*\R)*/$tokens{mBeforeBeginLineBreakREMOVE}/s;
+            $logger->trace("Removing linebreak *before* begin \t\t ($BeginStringLogFile == -1)") if $is_t_switch_active;
+            ${$self}{begin} =~ s/^(\h*)(?>\h*\R)*/$1$tokens{mBeforeBeginLineBreakREMOVE}/s;
         }
     }
 }
@@ -482,7 +486,8 @@ sub _mlb_verbatim {
                 elsif ( ${$child}{EndFinishesWithLineBreak} == 2
                     and ${$self}{body} !~ m/${$child}{id}\h*$trailingCommentRegExp/s )
                 {
-                    $logger->trace("Adding a % immediately after ${$child}{end} (post text wrap $EndStringLogFile==2)")
+                    $logger->trace(
+                        "Adding a % immediately after ${$child}{end} (post text wrap $EndStringLogFile == 2)")
                         if $is_t_switch_active;
                     $trailingCommentToken = "%" . $self->add_comment_symbol . "\n";
                 }
@@ -501,6 +506,7 @@ sub _mlb_line_break_token_adjust {
     my $body = shift;
 
     $body =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+    $body =~ s@$tokens{mBeforeBeginLineBreakADD}\R@\n@sg;
     $body =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
 
     $body =~ s@(?:$tokens{mAfterEndLineBreak})+\s*$tokens{mBeforeBeginLineBreakREMOVE}@@sg;
@@ -549,15 +555,44 @@ sub _mlb_after_indentation_token_adjust {
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 "$trailingCommentToken\n";/sge;
 
-    # trailing comment added at BEGIN of file
+    # remove trailing comment added at BEGIN of file
     ${$self}{body} =~ s/\A$tokens{mSwitchComment}//s;
 
-    # trailing comment added at END of file
+    # remove trailing comment added at END of file
     ${$self}{body} =~ s/$tokens{mSwitchComment}\Z//s;
+
+    # remove trailing comment added after blank line
+    #   see test-cases/specials/special1-remove-line-breaks-unprotect-mod17.tex
+    ${$self}{body} =~ s/(\R\h*\R)$tokens{mSwitchComment}\R/$1/sg;
 
     # finally, make the remaining mSwitchComments into actual comments
     ${$self}{body} =~ s/$tokens{mSwitchComment}/
                 $trailingCommentToken = "%" . $self->add_comment_symbol;
                 $trailingCommentToken;/sgex;
+}
+
+sub _mlb_file_starts_with_line_break {
+
+    # scenario:
+    #
+    #   * file does NOT start with a line break
+    #   * file starts with a code block which has a poly-switch that
+    #     mistakenly adds a link break
+    #
+    # solution
+    #
+    #   * check for file-leading line break
+    #   * make adjustments after indentation
+    #
+    # see, for example, test-cases/specials/env1.tex with BeginStartsOnOwnLine: 1
+    #
+    my $self  = shift;
+    my %input = @_;
+    if ( $input{when} eq "before" ) {
+        ${$self}{fileStartsWithLineBreak} = ( ${$self}{body} =~ m/\A\h*\R/s ? 1 : 0 );
+    }
+    elsif ( $input{when} eq "after" ) {
+        ${$self}{body} =~ s/\A\h*\R+//s if !${$self}{fileStartsWithLineBreak};
+    }
 }
 1;

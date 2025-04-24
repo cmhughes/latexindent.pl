@@ -251,13 +251,13 @@ specialBeginEnd:
     end: \\\]                     # \]                     # NEW specified as ORDERED array
   - name: inlineMath                                       # NEW specified as ORDERED array
     begin: (?<!\$)(?<!\\)\$(?!\$) # $ but *not* \$ or $$   # NEW specified as ORDERED array
-    body: [^$]*?                  # anything *except* $    # NEW specified as ORDERED array
+    body: [^$]*?                  # anything *except* $    # <!---- PROBABLY DITCH
     end: (?<!\\)\$(?!\$)          # $ but *not* \$ or $$   # NEW specified as ORDERED array
   - name: displayMathTeX                                   # NEW specified as ORDERED array
     begin: \$\$                   # $$                     # NEW specified as ORDERED array
     end: \$\$                     # $$                     # NEW specified as ORDERED array
     lookForThis: 1                                         # NEW specified as ORDERED array
-  ##specialBeforeCommand: 0                                  # <!---- PROBABLY DITCH
+  ##specialBeforeCommand: 0                                # <!---- PROBABLY DITCH
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

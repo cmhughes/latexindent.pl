@@ -417,6 +417,10 @@ sub yaml_read_settings {
                             $newIndvSpecialBeginEnd{name}  = $specialKey;
                             $newIndvSpecialBeginEnd{begin} = ${$specialValue}{begin} if defined ${$specialValue}{begin};
                             $newIndvSpecialBeginEnd{end}   = ${$specialValue}{end}   if defined ${$specialValue}{end};
+                            $newIndvSpecialBeginEnd{nested} = ${$specialValue}{nested}
+                                if defined ${$specialValue}{nested};
+                            $newIndvSpecialBeginEnd{middle} = ${$specialValue}{middle}
+                                if defined ${$specialValue}{middle};
                             $newIndvSpecialBeginEnd{lookForThis} = ${$specialValue}{lookForThis}
                                 if defined ${$specialValue}{lookForThis};
                             push( @newSpecialBeginEnd, \%newIndvSpecialBeginEnd );
@@ -499,7 +503,7 @@ sub yaml_read_settings {
                                     @{ $mainSettings{$firstLevelKey}{$secondLevelKey} } = @unique;
 
                                     $logger->trace(
-                                        "*master settings for $firstLevelKey -> $secondLevelKey now look like:")
+                                        "*main settings for $firstLevelKey -> $secondLevelKey now look like:")
                                         if $is_t_switch_active;
                                     foreach ( @{ $mainSettings{$firstLevelKey}{$secondLevelKey} } ) {
                                         $logger->trace("$_") if ($is_t_switch_active);
@@ -827,15 +831,56 @@ sub yaml_read_settings {
         ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} = q();
     }
 
-    # some users may wish to see showAmalgamatedSettings
-    # which details the overall state of the settings modified
-    # from the default in various user files
-    if ( $mainSettings{logFilePreferences}{showAmalgamatedSettings} ) {
-        $logger->info("Amalgamated/overall settings to be used:");
-        $logger->info( Dumper( \%mainSettings ) );
+    if ( defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and not defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $logger->warn(
+            "*fineTuning environment begin specified and *NOT* end, ignoring this and using default environment regex");
+    }
+
+    if ( not defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
+        and defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
+    {
+        $logger->warn(
+            "*fineTuning environment end specified and *NOT* begin, ignoring this and using default environment regex");
     }
 
     $argumentsBetweenCommands = qr/${${$mainSettings{fineTuning}}{arguments}}{between}/;
+
+    # specialBeginEnd: amalgamate duplicates
+    my %specialBeginEndNames;
+    my @specialToBeRemoved;
+    if ( ${ ${ $mainSettings{specialBeginEnd} }[0] }{amalgamate} ) {
+
+        my $index = -1;
+        foreach ( @{ $mainSettings{specialBeginEnd} } ) {
+            $index++;
+            next if not defined ${$_}{name};
+
+            # if a specialBeginEnd entry exists then amalgamate
+            if ( $specialBeginEndNames{ ${$_}{name} } ) {
+                $logger->trace("*specialBeginEnd amalgamating ${$_}{name} settings") if $is_t_switch_active;
+
+                my $originalIndex = ${ $specialBeginEndNames{ ${$_}{name} } }{index};
+                ${ ${ $mainSettings{specialBeginEnd} }[$originalIndex] }{lookForThis} = ${$_}{lookForThis}
+                    if defined ${$_}{lookForThis};
+                ${ ${ $mainSettings{specialBeginEnd} }[$originalIndex] }{begin}  = ${$_}{begin} if defined ${$_}{begin};
+                ${ ${ $mainSettings{specialBeginEnd} }[$originalIndex] }{end}    = ${$_}{end}   if defined ${$_}{end};
+                ${ ${ $mainSettings{specialBeginEnd} }[$originalIndex] }{nested} = ${$_}{nested}
+                    if defined ${$_}{nested};
+                ${ ${ $mainSettings{specialBeginEnd} }[$originalIndex] }{middle} = ${$_}{middle}
+                    if defined ${$_}{middle};
+                push( @specialToBeRemoved, $index );
+                next;
+            }
+            ${ $specialBeginEndNames{ ${$_}{name} } }{index} = $index;
+        }
+    }
+
+    # specialBeginEnd: remove duplicates now that they have been accounted for above
+    foreach ( reverse @specialToBeRemoved ) {
+        splice( @{ $mainSettings{specialBeginEnd} }, $_ );
+    }
 
     # special: set default look for this as 1 if not specified
     foreach ( @{ $mainSettings{specialBeginEnd} } ) {
@@ -844,7 +889,26 @@ sub yaml_read_settings {
         ${$_}{lookForThis} = 1 if not defined ${$_}{lookForThis};
         ${$_}{lookForThis} = 0 if not defined ${$_}{begin};
         ${$_}{lookForThis} = 0 if not defined ${$_}{end};
+        ${$_}{lookForThis} = 0 if not defined ${$_}{name};
         ${$_}{nested}      = 0 if not defined ${$_}{nested};
+
+        # look up for middle, if any
+        if ( defined ${$_}{middle} ) {
+            if ( ref( ${$_}{middle} ) eq 'ARRAY' ) {
+                ${ $mainSettings{specialLookUpMiddle} }{ ${$_}{name} } = join( "|", @{ ${$_}{middle} } );
+            }
+            else {
+                ${ $mainSettings{specialLookUpMiddle} }{ ${$_}{name} } = ${$_}{middle};
+            }
+        }
+    }
+
+    # some users may wish to see showAmalgamatedSettings
+    # which details the overall state of the settings modified
+    # from the default in various user files
+    if ( $mainSettings{logFilePreferences}{showAmalgamatedSettings} ) {
+        $logger->info("Amalgamated/overall settings to be used:");
+        $logger->info( Dumper( \%mainSettings ) );
     }
 
     # Comma poly-switch check
@@ -893,7 +957,7 @@ sub yaml_read_settings {
             }
         }
 
-        # MANDAGORY arguments
+        # MANDATORY arguments
         while ( my ( $polySwitch, $value ) = each %{ $mainSettings{modifyLineBreaks}{mandatoryArguments} } ) {
             last if $commaPolySwitchExists;
             if ( ( $polySwitch eq 'CommaStartsOnOwnLine' or $polySwitch eq 'CommaFinishesWithLineBreak' )
@@ -976,6 +1040,16 @@ sub yaml_get_indentation_settings_for_this_object {
                 if defined ${$self}{EqualsFinishesWithLineBreak};
             delete ${$self}{EqualsStartsOnOwnLine};
             delete ${$self}{EqualsFinishesWithLineBreak};
+
+            # specialBeginEnd poly-switches:  SpecialMiddleStartsOnOwnLine or SpecialMiddleFinishesWithLineBreak
+            ${ ${previouslyFoundSettings}{$storageName} }{SpecialMiddleStartsOnOwnLine}
+                = ${$self}{SpecialMiddleStartsOnOwnLine}
+                if defined ${$self}{SpecialMiddleStartsOnOwnLine};
+            ${ ${previouslyFoundSettings}{$storageName} }{SpecialMiddleFinishesWithLineBreak}
+                = ${$self}{SpecialMiddleFinishesWithLineBreak}
+                if defined ${$self}{SpecialMiddleFinishesWithLineBreak};
+            delete ${$self}{SpecialMiddleStartsOnOwnLine};
+            delete ${$self}{SpecialMiddleFinishesWithLineBreak};
         }
 
         # store argument information, if arguments present
@@ -1239,6 +1313,11 @@ sub yaml_modify_line_breaks_settings {
     # key = value can have Equals poly switches
     if ( ${$self}{modifyLineBreaksYamlName} eq 'keyEqualsValuesBracesBrackets' ) {
         push( @toBeAssignedTo, ( "EqualsStartsOnOwnLine", "EqualsFinishesWithLineBreak" ) );
+    }
+
+    # specialBeginEnd can have middle poly-switches
+    if ( ${$self}{modifyLineBreaksYamlName} eq 'specialBeginEnd' ) {
+        push( @toBeAssignedTo, ( "SpecialMiddleStartsOnOwnLine", "SpecialMiddleFinishesWithLineBreak" ) );
     }
 
     # we can efficiently loop through the following

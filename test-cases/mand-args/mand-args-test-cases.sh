@@ -14,6 +14,8 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
  [[ $showCounter == 1 ]] && echo $i of $loopmax
  [[ $silentMode == 0 ]] && set -x 
+ keepappendinglogfile
+
  # one mand arg
  latexindent.pl env-first-mand-args -m -s -o=+-mod$i -l=../environments/env-all-on,mand-args-mod$i 
  latexindent.pl env-first-mand-args -m -s -o=+-mod-supp$i -l=../environments/env-all-on,mand-args-mod$i,mand-args-supp 
@@ -33,6 +35,7 @@ done
 
 # multi switches set to 2
 [[ $silentMode == 0 ]] && set -x 
+keepappendinglogfile
 latexindent.pl env-third-mand-args-rm-lb1-tc -m -l=../environments/env-all-on,mand-args-mod1,addPercentAfterBegin -s -o=env-third-mand-args-rm-lb1-tc-mod1-addPercentAfterBegin
 latexindent.pl env-third-mand-args -l=../environments/env-all-on,mand-args-mod1,addPercentBeforeBegin -m -s -o=+-percent-before-begin
 latexindent.pl env-third-mand-args -l=../environments/env-all-on,addPercentAfterEnd -m -s -o=env-third-mand-args-percent-after-end

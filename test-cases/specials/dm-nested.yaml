@@ -1,0 +1,10 @@
+specialBeginEnd:
+  - name: displayMath 
+    nested: 1
+  - name: inlineMath 
+    nested: 1
+  - name: displayMathTeX
+    nested: 1
+
+logFilePreferences:
+  showAmalgamatedSettings: 1

@@ -348,6 +348,11 @@ latexindent.pl -y="lookForAlignDelims:tblr:alignFinalDoubleBackSlash:1" -s issue
 latexindent.pl -s -l issue-445a -m issue-445a -o=+-mod2
 latexindent.pl -s -l issue-445b -m issue-445a -o=+-mod3
 latexindent.pl -s -l issue-445c -m issue-445a -o=+-mod4
+
+# new specials test-cases
+latexindent.pl -s nestedalignment -o nestedalignment-NEW -local new-specials
+latexindent.pl -s nestedalignment -o nestedalignment-NEW1 -local new-specials1
+
 [[ $silentMode == 0 ]] && set -x 
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

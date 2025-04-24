@@ -2,12 +2,19 @@ specialBeginEnd:
     leftRightRound:
         begin: '\\left\('
         end: '\\right\)'
-        lookForThis: 1
+        nested: 1
     leftRightSquare:
         begin: '\\left\['
         end: '\\right\]'
-        lookForThis: 1
+        nested: 1
     leftRightCurly:
         begin: '\\left\\\{'
         end: '\\right\\\}'
-        lookForThis: 1
+        nested: 1
+
+fineTuning:
+  commands:
+    name: (?!left)[+a-zA-Z@\*0-9_\:]+
+
+logFilePreferences:
+  showAmalgamatedSettings: 1

@@ -26,6 +26,8 @@ do
  [[ $showCounter == 1 ]] && echo $i of 3
  [[ $silentMode == 0 ]] && set -x 
  # CommaStartsOnOwnLine, opt args
+ keepappendinglogfile
+
  latexindent.pl -s -m mycommand -o=+-opt-mod$i -y="modifyLineBreaks:optionalArguments:CommaStartsOnOwnLine:$i"
  # CommaStartsOnOwnLine, mand args
  latexindent.pl -s -m mycommand -o=+-mand-mod$i -y="modifyLineBreaks:mandatoryArguments:CommaStartsOnOwnLine:$i"
@@ -44,6 +46,8 @@ do
  latexindent.pl -s -m mycommand1 -o=+-mand-finish-mod$i -y="modifyLineBreaks:mandatoryArguments:another:CommaFinishesWithLineBreak:$i"
  set +x
 done
+keepappendinglogfile
+
 latexindent.pl -s -m heart -o=+-mod0 -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:-1"
 
 latexindent.pl -s -m -r heart -l heart1 -o=+-mod1 -y="modifyLineBreaks:optionalArguments:CommaFinishesWithLineBreak:-1"

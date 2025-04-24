@@ -52,5 +52,7 @@ latexindent.pl -s headings1.tex -o=+-mod1 -y=' indentAfterHeadings:paragraph:ind
 
 latexindent.pl -s -l issue-519.yaml issue-519.tex -o=+-mod1
 
+latexindent.pl -s issue-448 -l issue-448a -o=+-mod1
+
 [[ $noisyMode == 1 ]] && paplay /usr/share/sounds/freedesktop/stereo/complete.oga
 [[ $gitStatus == 1 ]] && git status

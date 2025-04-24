@@ -47,6 +47,7 @@ our $specialRegExNested      = q();
 our $specialBeginRegExNested = q();
 our $specialEndRegExNested   = q();
 our %specialLookUpName;
+our $specialAllRegEx = q();
 
 our $codeBlockLookFor = q();
 
@@ -134,20 +135,6 @@ sub _construct_code_blocks_regex {
      }xs;
     }
 
-    if ( defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
-        and not defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
-    {
-        $logger->warn(
-            "*fineTuning environment begin specified and *NOT* end, ignoring this and using default environment regex");
-    }
-
-    if ( not defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
-        and defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
-    {
-        $logger->warn(
-            "*fineTuning environment end specified and *NOT* begin, ignoring this and using default environment regex");
-    }
-
     #
     # ifElseFi regex
     #
@@ -193,25 +180,30 @@ sub _construct_code_blocks_regex {
         $specialEndRegEx   .= ( $specialEndRegEx eq ""   ? q() : "|" ) . ${$_}{end};
     }
 
-    $specialBeginRegEx = qr{$specialBeginRegEx}x;
-    $specialEndRegEx   = qr{$specialEndRegEx}x;
+    #
+    # specials NOT nested, account for possibility of special being empty
+    #
+    if ( $specialBeginRegEx ne '' ) {
+        $specialBeginRegEx = qr{$specialBeginRegEx}x;
+        $specialEndRegEx   = qr{$specialEndRegEx}x;
 
-    $specialRegEx = qr{
-                (?<SPECIALBEGIN>
-                    $specialBeginRegEx
-                )                         
-                (?<SPECIALBODY>                    
-                  (?>                               
-                      (?!                           
-                          (?:$specialEndRegEx)                  
-                      ).                            
-                  )*                                
-                )
-                (?<SPECIALEND>                    
-                    $specialEndRegEx
-                )
-                $mSwitchOnlyTrailing 
-     }xs;
+        $specialRegEx = qr{
+                     (?<SPECIALBEGIN>
+                         $specialBeginRegEx
+                     )                         
+                     (?<SPECIALBODY>                    
+                       (?>                               
+                           (?!                           
+                               (?:$specialEndRegEx)                  
+                           ).                            
+                       )*                                
+                     )
+                     (?<SPECIALEND>                    
+                         $specialEndRegEx
+                     )
+                     $mSwitchOnlyTrailing 
+          }xs;
+    }
 
     #
     # specials YES nested
@@ -260,9 +252,47 @@ sub _construct_code_blocks_regex {
     }
 
     #
+    # specialBeginEnd regex
+    #
+    if ( $specialRegEx ne '' and $specialRegExNested ne '' ) {
+
+        # YES nested
+        # YES not nested
+        $specialAllRegEx = qr{
+               (?<SPECIAL>
+                   $specialRegEx 
+               )
+               |
+               (?<SPECIALNESTED>
+                   $specialRegExNested 
+               )
+               }x;
+    }
+    elsif ( $specialRegEx ne '' ) {
+
+        # NO nested
+        # YES not nested
+        $specialAllRegEx = qr{
+               (?<SPECIAL>
+                   $specialRegEx 
+               )
+               }x;
+    }
+    elsif ( $specialRegExNested ne '' ) {
+
+        # YES nested
+        # no not nested
+        $specialAllRegEx = qr{
+               (?<SPECIALNESTED>
+                   $specialRegExNested 
+               )
+               }x;
+    }
+
+    #
     # (commands, named, key=value, unnamed) <ARGUMENTS> regex
     #
-    if ( $specialRegExNested ne '' ) {
+    if ( $specialAllRegEx ne '' ) {
         $allCodeBlocks = qr{
             (\s*)                                                 # $1 leading space
             (?:
@@ -296,13 +326,7 @@ sub _construct_code_blocks_regex {
                    $ifElseFiRegEx 
                )
                |
-               (?<SPECIAL>
-                   $specialRegEx 
-               )
-               |
-               (?<SPECIALNESTED>
-                   $specialRegExNested 
-               )
+               $specialAllRegEx 
             )
          }x;
     }
@@ -338,10 +362,6 @@ sub _construct_code_blocks_regex {
                |
                (?<IFELSEFI>
                    $ifElseFiRegEx 
-               )
-               |
-               (?<SPECIAL>
-                   $specialRegEx 
                )
             )
          }x;
@@ -704,7 +724,7 @@ sub _find_all_code_blocks {
              # storage before finding nested things
              my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
              my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
-             my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
+             my $linebreaksAtEnd=( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q());
 
              # get the name of special
              if (not defined $specialLookUpName{$lookupBegin}){
@@ -751,10 +771,17 @@ sub _find_all_code_blocks {
              # ***
              $body = _find_all_code_blocks($body ,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
 
+             # look for middle, if it is defined
+             $body = _find_special_middle($body, $name, $modifyLineBreaksName) if defined ${$mainSettings{specialLookUpMiddle}}{$name};
+
              #
              # m switch linebreak adjustment
              #
              if ($is_m_switch_active){
+                   # middle can add line break tokens to the specialBeginEnd body
+                   $body =~ s@\R\h*$tokens{mBeforeBeginLineBreakADD}($tokens{blanklines})?@\n@sg;
+                   $body =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@sg;
+
                    # get the *updated* environment body from above nested code blocks routine
                    ${$codeBlockObj}{body} = $body;
 
@@ -763,6 +790,7 @@ sub _find_all_code_blocks {
                    ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
                    ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
                    ${$codeBlockObj}{EndStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndStartsOnOwnLine};
+                   ${$codeBlockObj}{EndFinishesWithLineBreak} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{EndFinishesWithLineBreak};
 
                    $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
                    $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
@@ -784,8 +812,14 @@ sub _find_all_code_blocks {
                 $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
                 # add indentation
+                $body =~ s"^(\h)*$tokens{mSwitchComment}\s*($tokens{specialBeginEndMiddle})"$1$2"mg if defined ${$mainSettings{specialLookUpMiddle}}{$name};
                 $body =~ s"^"$addedIndentation"mg;
                 $body =~ s"^$addedIndentation""s if !$linebreaksAtEndBegin;
+                
+                if (defined ${$mainSettings{specialLookUpMiddle}}{$name}){
+                   $body =~ s"$addedIndentation$tokens{specialBeginEndMiddle}""mg;
+                   $body =~ s"$tokens{specialBeginEndMiddle}""g;
+                }
              }
        } else {
           # argument body is always in $8
@@ -1121,6 +1155,89 @@ sub _mlb_commas_in_arg_body {
                     $commaOrArgs = $+{arguments};
                   };
                 $commaOrArgs;/sgex;
+    return $body;
+}
+
+#
+# specialBeginEnd that have middle
+#
+sub _find_special_middle {
+    my ( $body, $name, $modifyLineBreaksName ) = @_;
+    $logger->trace("looking for special MIDDLE for $name")         if $is_t_switch_active;
+    $logger->trace("${$mainSettings{specialLookUpMiddle}}{$name}") if $is_t_switch_active;
+
+    my $specialMiddleRegEx = qr{
+         (\s*)
+         (?:
+           (?<SPECIALMIDDLE>
+             (?<SPECIALMIDDLESTATEMENT>
+               ${$mainSettings{specialLookUpMiddle}}{$name}
+             )
+             $mSwitchOnlyTrailing 
+           )
+           |
+           (?<SPECIALALL>
+             $specialAllRegEx            
+           )
+         )
+        }xs;
+
+    # m-switch notes
+    #   don't usually mix poly-switch work like this, but
+    #   the middle statements need finding regardless of
+    #   whether the m-switch is active
+    #
+    my $commandStorageName = $name . $modifyLineBreaksName;
+    my $SpecialMiddleStartsOnOwnLine
+        = (
+        defined ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleStartsOnOwnLine}
+        ? ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleStartsOnOwnLine}
+        : 0 );
+
+    my $SpecialMiddleFinishesWithLineBreak
+        = (
+        defined ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleFinishesWithLineBreak}
+        ? ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleFinishesWithLineBreak}
+        : 0 );
+
+    $body =~ s/$specialMiddleRegEx/
+                    my $begin = $1;
+                    my $middleOrSpecial = q();
+                    if ($+{SPECIALMIDDLE}){
+                        my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
+                        my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
+                        my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
+
+                        my $codeBlockObj = LatexIndent::Special->new(name=>"specialMiddle",
+                                                          begin=>$begin.$+{SPECIALMIDDLESTATEMENT},
+                                                          body=>$horizontalTrailingSpace.$trailingComment.$linebreaksAtEnd,
+                                                          end=>q(),
+                                                          modifyLineBreaksYamlName=>"middle",
+                                                          type=>"middle",
+                                                          BeginStartsOnOwnLine=>$SpecialMiddleStartsOnOwnLine,
+                                                          BodyStartsOnOwnLine=>$SpecialMiddleFinishesWithLineBreak,
+                        );
+
+
+                        $logger->trace("*found: $+{SPECIALMIDDLESTATEMENT}\t type: specialBeginEnd MIDDLE")         if $is_t_switch_active;
+
+                        # poly-switch work
+                        if ($is_m_switch_active){
+                            $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                            $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+                            $middleOrSpecial = ${$codeBlockObj}{begin}.${$codeBlockObj}{body}.${$codeBlockObj}{end}; 
+
+                            # poly-switch token adjustment
+                            $middleOrSpecial =~ s@^(\s*)@$1$tokens{specialBeginEndMiddle}@s;
+                            $middleOrSpecial =~ s@($tokens{specialBeginEndMiddle}\s*)($tokens{mSwitchComment}|$tokens{blanklines})(\s*)@$2$3$1@s;
+                            $middleOrSpecial =~ s@($tokens{specialBeginEndMiddle}\s*)($tokens{mBeforeBeginLineBreakADD}(?:$tokens{blanklines})?)(\s*)@$2$3$1@s;
+                        } else {
+                            $middleOrSpecial = $begin.$tokens{specialBeginEndMiddle}.$+{SPECIALMIDDLE};
+                        }
+                      } else {
+                        $middleOrSpecial = $begin.$+{SPECIALALL};
+                      };
+                      $middleOrSpecial;/sgex;
     return $body;
 }
 1;

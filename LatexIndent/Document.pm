@@ -37,7 +37,7 @@ use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
 use LatexIndent::ModifyLineBreaks
-    qw/_mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust /;
+    qw/_mlb_file_starts_with_line_break _mlb_begin_starts_on_own_line _mlb_body_starts_on_own_line _mlb_end_starts_on_own_line _mlb_end_finishes_with_line_break adjust_line_breaks_end_parent _mlb_verbatim _mlb_after_indentation_token_adjust /;
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
@@ -54,7 +54,7 @@ use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backs
 
 # code blocks
 use LatexIndent::Verbatim
-    qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
+    qw/_find_verbatim_all put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 use LatexIndent::IfElseFi    qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else        qw/check_for_else_statement/;
@@ -171,16 +171,11 @@ sub operate_on_file {
 
     $self->create_back_up_file;
     $self->token_check unless ( $switches{lines} );
-    $self->make_replacements( when => "before" ) if ( $is_r_switch_active and !$is_rv_switch_active );
+    $self->make_replacements( when => "before" )                if ( $is_r_switch_active and !$is_rv_switch_active );
+    $self->_mlb_file_starts_with_line_break( when => "before" ) if $is_m_switch_active;
     unless ($is_rr_switch_active) {
         $self->construct_regular_expressions;
-        $self->find_noindent_block;
-        $self->find_verbatim_commands;
-        $self->remove_trailing_comments;
-        $self->find_verbatim_environments;
-        $self->find_verbatim_special;
-        $logger->trace("*Verbatim storage:")             if $is_tt_switch_active;
-        $logger->trace( Dumper( \%verbatimStorage ) )    if $is_tt_switch_active;
+        $self->_find_verbatim_all;
         $self->_mlb_verbatim( when => "beforeTextWrap" ) if $is_m_switch_active;
         $self->make_replacements( when => "before" )     if $is_rv_switch_active;
         $self->protect_blank_lines                       if $is_m_switch_active;
@@ -202,9 +197,10 @@ sub operate_on_file {
         $self->put_verbatim_back_in( match => "everything-except-commands" );
         $self->put_trailing_comments_back_in;
         $self->put_verbatim_back_in( match => "just-commands" );
-        $self->make_replacements( when => "after" ) if ( $is_r_switch_active and !$is_rv_switch_active );
-        ${$self}{body} =~ s/\r\n/\n/sg              if $mainSettings{dos2unixlinebreaks};
-        $self->check_if_different                   if ${$self}{overwriteIfDifferent};
+        $self->_mlb_file_starts_with_line_break( when => "after" ) if $is_m_switch_active;
+        $self->make_replacements( when => "after" )                if ( $is_r_switch_active and !$is_rv_switch_active );
+        ${$self}{body} =~ s/\r\n/\n/sg                             if $mainSettings{dos2unixlinebreaks};
+        $self->check_if_different                                  if ${$self}{overwriteIfDifferent};
     }
     $self->output_indented_text;
     return;

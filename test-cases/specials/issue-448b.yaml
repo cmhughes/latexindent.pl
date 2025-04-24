@@ -4,9 +4,11 @@ specialBeginEnd:
   customSection:
     begin: \\(?:section|chapter)
     end: \%\h+end
-  specialBeforeCommand: 1
+    nested: 1
 
 fineTuning:
-    trailingComments:
-      notPrecededBy: (?<!\\)
-      afterComment: (?!(?:\hend)).*?
+  commands:
+    name: (?!chapter|section)[+a-zA-Z@\*0-9_\:]+
+  trailingComments:
+    notPrecededBy: (?<!\\)
+    afterComment: (?!(?:\hend)).*?

@@ -83,6 +83,8 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
+   keepappendinglogfile
+
    latexindent.pl -s env-single-line -o +-mod$i -m -l=env-mod$i
    latexindent.pl -s -o=+-protect-mod$i -m -l=env-mod$i  environments-modify-multiple-line-breaks
    latexindent.pl -s -o=+-un-protect-mod$i -m -l=env-mod$i,unprotect-blank-lines  environments-modify-multiple-line-breaks

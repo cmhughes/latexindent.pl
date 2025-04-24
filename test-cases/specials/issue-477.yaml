@@ -1,8 +1,7 @@
 defaultIndent: "  "
 
 specialBeginEnd:
-  specialBeforeCommand: 1
-  parentheses:
+  - name: parentheses
     begin: \(
-    body: [^)]*?
     end: \)
+    nested: 1

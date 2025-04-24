@@ -96,6 +96,9 @@ latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
 # bug fix from tcbbreakable-small.tex
 latexindent.pl -s tcbbreakable-small.tex -o=+-default
 
+# mixed test case
+latexindent.pl -s tabdo.sty -o tabdo-default.sty
+
 # or test case
 latexindent.pl -s ifelsefi-first-or.tex -o=+-default
 # modifyLineBreaks loop test cases

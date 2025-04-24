@@ -58,7 +58,7 @@ sub file_extension_check {
             $logger->info(
                 "latexindent called to act upon $fileName without a file extension;\nsearching for files in the following order (see fileExtensionPreference):"
             );
-            $logger->info( $fileName . join( "\n$fileName", @fileExtensions ) );
+            $logger->info( "\t" . $fileName . join( "\n\t$fileName", @fileExtensions ) );
 
             my $fileFound = 0;
 

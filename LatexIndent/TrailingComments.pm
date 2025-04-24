@@ -100,6 +100,13 @@ sub remove_trailing_comments {
     else {
         $logger->trace("No trailing comments found") if ($is_t_switch_active);
     }
+
+    # check for body ENDING with trailing comment
+    # see, for example, test-cases/specials/env1.tex with EndFinishesWithLineBreak: 1
+    ${$self}{fileFinishesWithTrailingComment}
+        = ( $is_m_switch_active and ${$self}{body} =~ m/$trailingCommentRegExp\h*\Z/s ? 1 : 0 );
+    $logger->trace("file finishes with trailing comment, no line break after it")
+        if ( $is_t_switch_active and ${$self}{fileFinishesWithTrailingComment} );
     return;
 }
 
@@ -108,6 +115,13 @@ sub put_trailing_comments_back_in {
     return unless ( @trailingComments > 0 );
 
     $logger->trace("*Returning trailing comments to body") if $is_t_switch_active;
+
+    # check for body ENDING with trailing comment
+    # see, for example, test-cases/specials/env1.tex with EndFinishesWithLineBreak: 1
+    if ( ${$self}{fileFinishesWithTrailingComment} ) {
+        $logger->trace("file finishes with trailing comment, no line break after it") if ($is_t_switch_active);
+        ${$self}{body} =~ s/($trailingCommentRegExp)\s*$/$1\n/s;
+    }
 
     # loop through trailing comments in reverse so that, for example,
     # latexindenttrailingcomment1 doesn't match the first

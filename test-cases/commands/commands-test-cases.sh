@@ -81,6 +81,7 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
+   keepappendinglogfile
    
    # add line breaks
    latexindent.pl just-one-command  -m -s -o=+-mod$i -l=../opt-args/opt-args-remove-all,mand-args-mod$i 
@@ -110,6 +111,8 @@ do
    set +x
 done
 [[ $silentMode == 0 ]] && set -x 
+
+keepappendinglogfile
 
 # testing the linebreak immediately before, e.g, \mycommand
 latexindent.pl commands-nested-multiple -m -s -o=+-command-mod1 -l=../opt-args/opt-args-remove-all,command-begin-mod1
@@ -160,6 +163,7 @@ for (( i=$loopmin ; i <= $loopmax ; i++ ))
 do 
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    [[ $silentMode == 0 ]] && set -x 
+   keepappendinglogfile
    # multiple commands
    latexindent.pl commands-nested-multiple -m  -s -o=+-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i
    latexindent.pl commands-nested-multiple -m  -s -o=+-un-protect-mod$i -l=../opt-args/opt-args-mod$i,mand-args-mod$i,unprotect-blank-lines
@@ -171,6 +175,8 @@ do
 done
 
 [[ $silentMode == 0 ]] && set -x 
+
+keepappendinglogfile
 
 # issue 123: https://github.com/cmhughes/latexindent.pl/issues/123
 latexindent.pl -s issue-123.tex -o=+-default.tex
