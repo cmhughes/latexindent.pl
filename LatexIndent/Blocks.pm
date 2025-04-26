@@ -745,12 +745,6 @@ sub _find_all_code_blocks {
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                     arguments=> 0,
                                                     type=>"special",
-                                                    aliases=>{
-                                                       BeginStartsOnOwnLine=>"SpecialBeginStartsOnOwnLine",
-                                                       BodyStartsOnOwnLine=>"SpecialBodyStartsOnOwnLine",
-                                                       EndStartsOnOwnLine=>"SpecialEndStartsOnOwnLine",
-                                                       EndFinishesWithLineBreak=>"SpecialEndFinishesWithLineBreak",
-                                                    },
                                                     horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                     trailingComment=>$trailingComment,
                                                     linebreaksAtEnd=>{
@@ -824,8 +818,6 @@ sub _find_all_code_blocks {
        } else {
           # argument body is always in $8
           my $argBody = $8;
-          my $BeginStartsOnOwnLineAlias;
-          my $BodyStartsOnOwnLineAlias = undef;
           my $keyEqualsValue = q();
 
           #
@@ -835,7 +827,6 @@ sub _find_all_code_blocks {
              $begin = $1.q(\\);                                        # \\
              $name = $5;                                               # <command name>
              $modifyLineBreaksName="commands";                         # 
-             $BeginStartsOnOwnLineAlias = "CommandStartsOnOwnLine";    # --------------------------------
           } elsif ($7) {                                               # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
@@ -843,8 +834,6 @@ sub _find_all_code_blocks {
              $begin = $1;                                              # <possible leading space> 
              $name = $7 ;                                              # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
-             $BeginStartsOnOwnLineAlias = "NameStartsOnOwnLine";       # 
-             $BodyStartsOnOwnLineAlias = "NameFinishesWithLineBreak";  #
           } elsif($6)  {                                               # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
@@ -854,7 +843,6 @@ sub _find_all_code_blocks {
              $keyEqualsValue = $1;
              $begin = $begin.$name;
              $modifyLineBreaksName="keyEqualsValuesBracesBrackets";    # 
-             $BeginStartsOnOwnLineAlias = "KeyStartsOnOwnLine";        # 
           } else {                                                     # -------------------------------- 
           #                                                            # 
           # unnamed braces and brackets                                # 
@@ -862,7 +850,6 @@ sub _find_all_code_blocks {
              $begin = $1;                                              # <possible leading space> 
              $name = q();                                              # 
              $modifyLineBreaksName="UnNamedGroupingBracesBrackets";    # 
-             $BeginStartsOnOwnLineAlias = undef;                       # 
           }
 
           if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
@@ -871,11 +858,6 @@ sub _find_all_code_blocks {
                                                  modifyLineBreaksYamlName=>$modifyLineBreaksName,
                                                  arguments=>1,
                                                  type=>"something-with-braces",
-                                                 aliases=>{
-                                                   # begin statements
-                                                   BeginStartsOnOwnLine=>$BeginStartsOnOwnLineAlias,
-                                                   BodyStartsOnOwnLine=>$BodyStartsOnOwnLineAlias,
-                                                 },
              );
           }
 
@@ -1187,18 +1169,18 @@ sub _find_special_middle {
     #   the middle statements need finding regardless of
     #   whether the m-switch is active
     #
-    my $commandStorageName = $name . $modifyLineBreaksName;
-    my $SpecialMiddleStartsOnOwnLine
-        = (
+    my $commandStorageName           = $name . $modifyLineBreaksName;
+    my $SpecialMiddleStartsOnOwnLine = (
         defined ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleStartsOnOwnLine}
         ? ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleStartsOnOwnLine}
-        : 0 );
+        : 0
+    );
 
-    my $SpecialMiddleFinishesWithLineBreak
-        = (
+    my $SpecialMiddleFinishesWithLineBreak = (
         defined ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleFinishesWithLineBreak}
         ? ${ $previouslyFoundSettings{$commandStorageName} }{SpecialMiddleFinishesWithLineBreak}
-        : 0 );
+        : 0
+    );
 
     $body =~ s/$specialMiddleRegEx/
                     my $begin = $1;

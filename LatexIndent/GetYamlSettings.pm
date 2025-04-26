@@ -26,7 +26,7 @@ use Cwd;
 use Exporter             qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK
-    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists/;
+    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists %polySwitchNames/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -64,6 +64,8 @@ our @alignAtAmpersandInformation = (
 our $argumentsBetweenCommands;
 our $commaPolySwitchExists  = 0;
 our $equalsPolySwitchExists = 0;
+
+our %polySwitchNames;
 
 sub yaml_read_settings {
     my $self = shift;
@@ -987,6 +989,53 @@ sub yaml_read_settings {
         }
     }
 
+    # set up poly-switch names/aliases
+    %polySwitchNames = (
+        environments => (
+            {   BeginStartsOnOwnLine     => "BeginStartsOnOwnLine",
+                BodyStartsOnOwnLine      => "BodyStartsOnOwnLine",
+                EndStartsOnOwnLine       => "EndStartsOnOwnLine",
+                EndFinishesWithLineBreak => "EndFinishesWithLineBreak"
+            }
+        ),
+        ifElseFi => (
+            {   BeginStartsOnOwnLine     => "IfStartsOnOwnLine",
+                BodyStartsOnOwnLine      => "BodyStartsOnOwnLine",
+                EndStartsOnOwnLine       => "FiStartsOnOwnLine",
+                EndFinishesWithLineBreak => "FiFinishesWithLineBreak"
+            }
+        ),
+        commands          => ( { BeginStartsOnOwnLine => "CommandStartsOnOwnLine", } ),
+        optionalArguments => (
+            {   BeginStartsOnOwnLine     => "LSqBStartsOnOwnLine",
+                BodyStartsOnOwnLine      => "OptArgBodyStartsOnOwnLine",
+                EndStartsOnOwnLine       => "RSqBStartsOnOwnLine",
+                EndFinishesWithLineBreak => "RSqBFinishesWithLineBreak"
+            }
+        ),
+        mandatoryArguments => (
+            {   BeginStartsOnOwnLine     => "LCuBStartsOnOwnLine",
+                BodyStartsOnOwnLine      => "MandArgBodyStartsOnOwnLine",
+                EndStartsOnOwnLine       => "RCuBStartsOnOwnLine",
+                EndFinishesWithLineBreak => "RCuBFinishesWithLineBreak"
+            }
+        ),
+        keyEqualsValuesBracesBrackets => ( { BeginStartsOnOwnLine => "KeyStartsOnOwnLine", } ),
+        namedGroupingBracesBrackets   => (
+            {   BeginStartsOnOwnLine => "NameStartsOnOwnLine",
+                BodyStartsOnOwnLine  => "NameFinishesWithLineBreak",
+            }
+        ),
+        UnNamedGroupingBracesBrackets => ( { BeginStartsOnOwnLineAlias => undef, } ),
+        specialBeginEnd               => (
+            {   BeginStartsOnOwnLine     => "SpecialBeginStartsOnOwnLine",
+                BodyStartsOnOwnLine      => "SpecialBodyStartsOnOwnLine",
+                EndStartsOnOwnLine       => "SpecialEndStartsOnOwnLine",
+                EndFinishesWithLineBreak => "SpecialEndFinishesWithLineBreak"
+            }
+        )
+    );
+
     return;
 }
 
@@ -1065,20 +1114,6 @@ sub yaml_get_indentation_settings_for_this_object {
 
             # mandatory arguments, poly-switches
             if ($is_m_switch_active) {
-                ${$self}{aliases} = {
-
-                    # begin statements
-                    BeginStartsOnOwnLine => "LCuBStartsOnOwnLine",
-
-                    # body statements
-                    BodyStartsOnOwnLine => "MandArgBodyStartsOnOwnLine",
-
-                    # end statements
-                    EndStartsOnOwnLine => "RCuBStartsOnOwnLine",
-
-                    # after end statements
-                    EndFinishesWithLineBreak => "RCuBFinishesWithLineBreak",
-                };
 
                 # get poly switch values
                 $self->yaml_modify_line_breaks_settings;
@@ -1113,20 +1148,6 @@ sub yaml_get_indentation_settings_for_this_object {
 
             # optional arguments, poly-switches
             if ($is_m_switch_active) {
-                ${$self}{aliases} = {
-
-                    # begin statements
-                    BeginStartsOnOwnLine => "LSqBStartsOnOwnLine",
-
-                    # body statements
-                    BodyStartsOnOwnLine => "OptArgBodyStartsOnOwnLine",
-
-                    # end statements
-                    EndStartsOnOwnLine => "RSqBStartsOnOwnLine",
-
-                    # after end statements
-                    EndFinishesWithLineBreak => "RSqBFinishesWithLineBreak",
-                };
 
                 # get poly switch values
                 $self->yaml_modify_line_breaks_settings;
@@ -1291,6 +1312,8 @@ sub yaml_alignment_at_ampersand_settings {
 sub yaml_modify_line_breaks_settings {
     my $self = shift;
 
+    my $modifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
+
     # details to the log file
     $logger->trace("*-m modifylinebreaks poly-switch lookup for ${$self}{name}") if $is_t_switch_active;
 
@@ -1306,17 +1329,17 @@ sub yaml_modify_line_breaks_settings {
     );
 
     # arguments can have Comma poly switches
-    if ( ${$self}{modifyLineBreaksYamlName} =~ m/Arguments/s ) {
+    if ( $modifyLineBreaksYamlName =~ m/Arguments/s ) {
         push( @toBeAssignedTo, ( "CommaStartsOnOwnLine", "CommaFinishesWithLineBreak" ) );
     }
 
     # key = value can have Equals poly switches
-    if ( ${$self}{modifyLineBreaksYamlName} eq 'keyEqualsValuesBracesBrackets' ) {
+    if ( $modifyLineBreaksYamlName eq 'keyEqualsValuesBracesBrackets' ) {
         push( @toBeAssignedTo, ( "EqualsStartsOnOwnLine", "EqualsFinishesWithLineBreak" ) );
     }
 
     # specialBeginEnd can have middle poly-switches
-    if ( ${$self}{modifyLineBreaksYamlName} eq 'specialBeginEnd' ) {
+    if ( $modifyLineBreaksYamlName eq 'specialBeginEnd' ) {
         push( @toBeAssignedTo, ( "SpecialMiddleStartsOnOwnLine", "SpecialMiddleFinishesWithLineBreak" ) );
     }
 
@@ -1324,7 +1347,9 @@ sub yaml_modify_line_breaks_settings {
     foreach (@toBeAssignedTo) {
         $self->yaml_poly_switch_get_every_or_custom_value(
             toBeAssignedTo      => $_,
-            toBeAssignedToAlias => ${$self}{aliases}{$_} ? ${$self}{aliases}{$_} : $_,
+            toBeAssignedToAlias => ${ $polySwitchNames{$modifyLineBreaksYamlName} }{$_}
+            ? ${ $polySwitchNames{$modifyLineBreaksYamlName} }{$_}
+            : $_,
         );
     }
 
@@ -1337,11 +1362,6 @@ sub yaml_poly_switch_get_every_or_custom_value {
 
     my $toBeAssignedTo      = $input{toBeAssignedTo};
     my $toBeAssignedToAlias = $input{toBeAssignedToAlias};
-
-    # alias
-    if ( ${$self}{aliases}{$toBeAssignedTo} ) {
-        $logger->trace("aliased $toBeAssignedTo using ${$self}{aliases}{$toBeAssignedTo}") if ($is_tt_switch_active);
-    }
 
     # name of the object in the modifyLineBreaks yaml (e.g environments, ifElseFi, etc)
     my $YamlName = ${$self}{modifyLineBreaksYamlName};

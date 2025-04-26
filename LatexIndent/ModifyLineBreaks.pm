@@ -18,7 +18,7 @@ package LatexIndent::ModifyLineBreaks;
 use strict;
 use warnings;
 use Exporter                      qw/import/;
-use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetweenCommands/;
+use LatexIndent::GetYamlSettings  qw/%mainSettings $argumentsBetweenCommands %polySwitchNames/;
 use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::TrailingComments qw/$trailingCommentRegExp/;
 use LatexIndent::Switches         qw/$is_m_switch_active $is_t_switch_active $is_tt_switch_active/;
@@ -40,8 +40,9 @@ sub _mlb_begin_starts_on_own_line {
     # switch BodyStartsOnOwnLine back to 4
 
     # add a line break BEFORE \begin{statement} if appropriate
-    my @polySwitchValues   = ( ${$self}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BeginStartsOnOwnLine} );
-    my $BeginStringLogFile = ${$self}{aliases}{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
+    my @polySwitchValues = ( ${$self}{BeginStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BeginStartsOnOwnLine} );
+    my $BeginStringLogFile
+        = ${ $polySwitchNames{ ${$self}{modifyLineBreaksYamlName} } }{BeginStartsOnOwnLine} || "BeginStartsOnOwnLine";
     foreach (@polySwitchValues) {
         if (    $_ >= 1
             and ${$self}{begin} !~ m/^\s*($trailingCommentRegExp)\s*\R/s
@@ -120,8 +121,9 @@ sub _mlb_body_starts_on_own_line {
     my @polySwitchValues = ( ${$self}{BodyStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{BodyStartsOnOwnLine} );
 
     ${$self}{linebreaksAtEnd}{begin} = ( ${$self}{body} =~ m/^\h*\R/s ? 1 : 0 );
+    my $BodyStringLogFile
+        = ${ $polySwitchNames{ ${$self}{modifyLineBreaksYamlName} } }{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
     foreach (@polySwitchValues) {
-        my $BodyStringLogFile = ${$self}{aliases}{BodyStartsOnOwnLine} || "BodyStartsOnOwnLine";
         if ( $_ >= 1 and !${$self}{linebreaksAtEnd}{begin} ) {
 
             # if the <begin> statement doesn't finish with a line break,
@@ -192,10 +194,10 @@ sub _mlb_end_starts_on_own_line {
     #
 
     my @polySwitchValues = ( ${$self}{EndStartsOnOwnLine} == 4 ) ? ( -1, 3 ) : ( ${$self}{EndStartsOnOwnLine} );
-    foreach (@polySwitchValues) {
+    my $EndStringLogFile
+        = ${ $polySwitchNames{ ${$self}{modifyLineBreaksYamlName} } }{EndStartsOnOwnLine} || "EndStartsOnOwnLine";
 
-        # possibly modify line break *before* \end{statement}
-        my $EndStringLogFile = ${$self}{aliases}{EndStartsOnOwnLine} || "EndStartsOnOwnLine";
+    foreach (@polySwitchValues) {
 
         # linebreaks at the end of body
         ${$self}{linebreaksAtEnd}{body} = ( ${$self}{body} =~ m/\R\s*$/s ? 1 : 0 );
@@ -290,12 +292,13 @@ sub _mlb_end_finishes_with_line_break {
 
     my @polySwitchValues
         = ( ${$self}{EndFinishesWithLineBreak} == 4 ) ? ( -1, 3 ) : ( ${$self}{EndFinishesWithLineBreak} );
+    my $EndStringLogFile = ${ $polySwitchNames{ ${$self}{modifyLineBreaksYamlName} } }{EndFinishesWithLineBreak}
+        || "EndFinishesWithLineBreak";
+
     foreach (@polySwitchValues) {
         ${$self}{linebreaksAtEnd}{end} = 0
             if ( $_ == 3
             and ${$self}{EndFinishesWithLineBreak} == 4 );
-
-        my $EndStringLogFile = ${$self}{aliases}{EndFinishesWithLineBreak} || "EndFinishesWithLineBreak";
 
         # possibly modify line break *after* \end{statement}
         if ( $_ >= 1
