@@ -13,6 +13,11 @@
 #   ./test-cases.sh -n              # play a noise at the end of each batch of test cases
 #   ./test-cases.sh -o <INTEGER>    # only do the loops for <INTEGER>
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
+#
+#-----------------------------
+# total number of test cases: 2259
+# total number of test cases last updated: 2025-04-27
+#-----------------------------
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
 #
@@ -48,6 +53,7 @@ gitStatusFlag=''
 benchmarkMode=0
 fileExtensionMode=0
 dontStopMode=0
+updateTotalCount=1
 
 # check flags, and change defaults appropriately
 while getopts "abcdfgno:s" OPTION
@@ -92,6 +98,7 @@ do
   o)
     # only do this one in the loop
     loopminFlag="-o $OPTARG"
+    updateTotalCount=0
    ;;
   ?)    printf "Usage: %s: [-s]  args\n" $(basename $0) >&2
         exit 2
@@ -187,7 +194,25 @@ cd ../benchmarks
 [[ $benchmarkMode == 1 ]] && ./benchmarks.sh $silentModeFlag $showCounterFlag $loopminFlag $noisyModeFlag $gitStatusFlag
 checkgitdiff
 
+#
+# TOTAL test cases: possibly update test-cases.sh with total count, and date last updated
+#
 echo "TOTAL test cases $totalTestCases"
+if [ $updateTotalCount == 1 ]; then
+   totalTestCasesOLD=$(egrep -i --color=auto '^# total number of test cases:' test-cases.sh)
+   totalTestCasesOLD=$(echo $totalTestCasesOLD |  cut -d ":" -f 2|awk '{$1=$1};1')
+
+   if [ $updateTotalCount == 1 ] && [ $totalTestCasesOLD == $totalTestCases ]; then
+       echo "Total number of test-cases NOT changed" 
+   else
+       totalTestCasesDateOLD=$(egrep -i --color=auto '^# total number of test cases last updated:' test-cases.sh)
+       totalTestCasesDateOLD=$(echo $totalTestCasesDateOLD|  cut -d ":" -f 2|awk '{$1=$1};1')
+       totalTestCasesDateNEW=$(date '+%Y-%m-%d')
+       echo "Total number of test-cases CHANGED" 
+       sed -i.bak "s/# total number of test cases: $totalTestCasesOLD/# total number of test cases: $totalTestCases/" test-cases.sh
+       sed -i.bak "s/# total number of test cases last updated: $totalTestCasesDateOLD/# total number of test cases last updated: $totalTestCasesDateNEW/" test-cases.sh
+   fi
+fi
 
 # play sounds
 for i in {1..5}

@@ -74,7 +74,8 @@ latexindent.pl -s pgfkeys-multiple-keys-single-line -l=equals-not-finishes-with-
 latexindent.pl -s pgfkeys-multiple-keys-single-line -l=equals-not-finishes-with-line-break,keyStartsOnOwnLineWithComment -m -o=+-to-multiple-comment
 
 # EqualsStartsOnOwnLine
-latexindent.pl -s pgfkeys-add-equals -m -l=equals-not-finishes-with-line-break,EqualsStartsOnOwnLine -o=+-first
+latexindent.pl -s pgfkeys-add-equals -m -l=equals-not-finishes-with-line-break,EqualsStartsOnOwnLine -o=+-mod1
+latexindent.pl -s pgfkeys-add-equals -m -l=EqualsStartsOnOwnLine2 -o=+-mod2
 latexindent.pl -s pgfkeys-add-equals -m -l=equals-not-finishes-with-line-break,EqualsStartsOnOwnLine-comment -o=+-comments
 latexindent.pl -s pgfkeys-add-equals -m -l=equals-not-finishes-with-line-break,EqualsStartsOnOwnLine-comment,mand-args-mod17 -o=+-comments-everywhere
 latexindent.pl -s pgfkeys-equals-remove-line-breaks -m -l=equals-not-finishes-with-line-break,EqualsStartsOnOwnLine-remove -o=+-mod0

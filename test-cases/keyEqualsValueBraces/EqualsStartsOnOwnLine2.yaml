@@ -1,0 +1,6 @@
+modifyLineBreaks:
+    keyEqualsValuesBracesBrackets:
+        start coordinate/.initial:
+           KeyStartsOnOwnLine: 0
+           EqualsStartsOnOwnLine: 1
+           EqualsFinishesWithLineBreak: -1

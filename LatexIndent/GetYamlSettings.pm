@@ -928,6 +928,22 @@ sub yaml_read_settings {
             }
 
             # per-name key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
+            if ( ref ${ $mainSettings{modifyLineBreaks}{keyEqualsValuesBracesBrackets} }{$polySwitch} eq "HASH" ) {
+                while ( my ( $perNamePolySwitch, $perNameValue )
+                    = each %{ ${ $mainSettings{modifyLineBreaks}{keyEqualsValuesBracesBrackets} }{$polySwitch} } )
+                {
+                    last if $equalsPolySwitchExists;
+                    if ((      $perNamePolySwitch eq 'EqualsStartsOnOwnLine'
+                            or $perNamePolySwitch eq 'EqualsFinishesWithLineBreak'
+                        )
+                        and $perNameValue != 0
+                        )
+                    {
+                        $equalsPolySwitchExists = 1;
+                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for keyEqualsValuesBracesBrackets ($polySwitch)");
+                    }
+                }
+            }
         }
 
         # OPTIONAL arguments
@@ -953,7 +969,7 @@ sub yaml_read_settings {
                         )
                     {
                         $commaPolySwitchExists = 1;
-                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments");
+                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments ($polySwitch)");
                     }
                 }
             }
@@ -982,7 +998,7 @@ sub yaml_read_settings {
                         )
                     {
                         $commaPolySwitchExists = 1;
-                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments");
+                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments ($polySwitch)");
                     }
                 }
             }
