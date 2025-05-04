@@ -550,8 +550,19 @@ sub _mlb_after_indentation_token_adjust {
     # trailing comment work
     #
 
+    # \fi
+    #   trailing comments added after \fi statements 
+    #   had ' ' added before them
+    # we start by removing this space
+    ${$self}{body} =~ s/\h$tokens{mSwitchCommentFi}/$tokens{mSwitchComment}/sg;
+
     # comments should NOT be added if a blank line was in play
     ${$self}{body} =~ s/$tokens{mSwitchComment}(\s*$tokens{blanklines})/$1/sg;
+
+    # trailing comments can be added sequentially, which means we can have
+    #   <trailing-comment-regex>$tokens{mSwitchComment}
+    # so we remove the mSwitchComment
+    ${$self}{body} =~ s/($trailingCommentRegExp)\R\h*$tokens{mSwitchComment}/$1/sg;
 
     # condense multiple SEQUENTIALLLY added comments into one
     ${$self}{body} =~ s/$tokens{mSwitchComment}\s*$tokens{mSwitchComment}\R/

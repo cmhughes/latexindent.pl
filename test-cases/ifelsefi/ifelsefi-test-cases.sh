@@ -1,106 +1,102 @@
 #!/bin/bash
-# set verbose mode, 
-# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
-loopmax=48
 . ../common.sh
-[[ $loopmin -lt 33 ]] && loopmin=33
-[[ $loopmax -lt 33 ]] && loopmax=33
 
-# if silentMode is not active, verbose
-[[ $silentMode == 0 ]] && set -x 
+set +x 
+[[ $loopmin -lt 33 ]] && loopmin=33
+[[ $userSpecifiedLoopMin -eq 0 ]] && loopmax=48
+[[ $userSpecifiedLoopMin -eq 1 ]] && [[ $loopmax -lt 33 ]] && loopmax=33
+
+openingtasks
 
 # if else fi code blocks, simple no line breaks
-latexindent.pl -w -s ifelsefi-first.tex
-latexindent.pl -w -s ifelsefi-simple-nested.tex
-latexindent.pl -w -s ifelsefi-multiple-nested.tex
-latexindent.pl -w -s ifelsefiSmall.tex
-latexindent.pl -w -s conditional.tex
-
-latexindent.pl -s outn.cls -o=outn-default.cls -l=notabular,resetItem,ifstar
+latexindent.pl -s ifelsefi-first -o=+-mod0
+latexindent.pl -s ifelsefi-simple-nested -o=+-mod1
+latexindent.pl -s ifelsefi-multiple-nested -o=+-mod1
+latexindent.pl -w -s ifelsefiSmall
+latexindent.pl -w -s conditional
+latexindent.pl -s outn -o=+-default -l=notabular,resetItem,ifstar
 
 # modify line breaks
-latexindent.pl ifelsefi-first.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines1.yaml -o=ifelsefi-first-mod1.tex
-latexindent.pl ifelsefi-first.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines2.yaml -o=ifelsefi-first-mod2.tex
-latexindent.pl ifelsefi-first.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines3.yaml -o=ifelsefi-first-mod3.tex
-latexindent.pl ifelsefi-first-mod-A.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines1.yaml -o=ifelsefi-first-mod-A-mod1.tex
-latexindent.pl ifelsefi-first-mod-A.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines2.yaml -o=ifelsefi-first-mod-A-mod2.tex
-latexindent.pl ifelsefi-first-mod-A.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines3.yaml -o=ifelsefi-first-mod-A-mod3.tex
-latexindent.pl ifelsefi-first-mod-B.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines4.yaml -o=ifelsefi-first-mod-B-mod4.tex
-latexindent.pl ifelsefi-first-mod-B.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines5.yaml -o=ifelsefi-first-mod-B-mod5.tex
-latexindent.pl ifelsefi-first-mod-B.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines6.yaml -o=ifelsefi-first-mod-B-mod6.tex
-latexindent.pl ifelsefi-first-mod-C.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines7.yaml -o=ifelsefi-first-mod-C-mod7.tex
-latexindent.pl ifelsefi-first-mod-C.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines8.yaml -o=ifelsefi-first-mod-C-mod8.tex
-latexindent.pl ifelsefi-first-mod-C.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines9.yaml -o=ifelsefi-first-mod-C-mod9.tex
-latexindent.pl ifelsefi-first-mod-D.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines10.yaml -o=ifelsefi-first-mod-D-mod10.tex
-latexindent.pl ifelsefi-first-mod-D.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines11.yaml -o=ifelsefi-first-mod-D-mod11.tex
-latexindent.pl ifelsefi-first-mod-D.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines12.yaml -o=ifelsefi-first-mod-D-mod12.tex
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines12.yaml -o=ifelsefi-first-mod-E-mod12.tex
+latexindent.pl ifelsefi-first -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines1 -o=+-mod1
+latexindent.pl ifelsefi-first -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines2 -o=+-mod2
+latexindent.pl ifelsefi-first -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines3 -o=+-mod3
+latexindent.pl ifelsefi-first-mod-A -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines1  -o=+-mod1
+latexindent.pl ifelsefi-first-mod-A -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines2  -o=+-mod2
+latexindent.pl ifelsefi-first-mod-A -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines3  -o=+-mod3
+latexindent.pl ifelsefi-first-mod-B -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines4  -o=+-mod4
+latexindent.pl ifelsefi-first-mod-B -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines5  -o=+-mod5
+latexindent.pl ifelsefi-first-mod-B -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines6  -o=+-mod6
+latexindent.pl ifelsefi-first-mod-C -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines7  -o=+-mod7
+latexindent.pl ifelsefi-first-mod-C -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines8  -o=+-mod8
+latexindent.pl ifelsefi-first-mod-C -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines9  -o=+-mod9
+latexindent.pl ifelsefi-first-mod-D -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines10 -o=+-mod10
+latexindent.pl ifelsefi-first-mod-D -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines11 -o=+-mod11
+latexindent.pl ifelsefi-first-mod-D -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines12 -o=+-mod12
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines12 -o=+-mod12
 
 # else line break experiments
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines13.yaml -o=ifelsefi-first-mod-E-mod13.tex
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines14.yaml -o=ifelsefi-first-mod-E-mod14.tex
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines15.yaml -o=ifelsefi-first-mod-E-mod15.tex
-latexindent.pl ifelsefi-first-mod-F.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines13.yaml -o=ifelsefi-first-mod-F-mod13.tex
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines16.yaml -o=ifelsefi-first-mod-E-mod16.tex
-latexindent.pl ifelsefi-first-mod-E.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines17.yaml -o=ifelsefi-first-mod-E-mod17.tex
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines13 -o=+-mod13
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines14 -o=+-mod14
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines15 -o=+-mod15
+latexindent.pl ifelsefi-first-mod-F -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines13 -o=+-mod13
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines16 -o=+-mod16
+latexindent.pl ifelsefi-first-mod-E -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines17 -o=+-mod17
 
 # removing line breaks
-latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -l=ifelsefi-all-on.yaml,ifelsefi-mod-lines18.yaml,removeTWS-before.yaml -o=ifelsefi-nested-blank-lines-mod18.tex
+latexindent.pl ifelsefi-nested-blank-lines -s -m -l=ifelsefi-all-on,ifelsefi-mod-lines18,removeTWS-before -o=+-mod18
 
 # testing a nested, one-line example
-latexindent.pl ifelsefi-one-line.tex -s -m -o=ifelsefi-one-line-mod1.tex -l=ifelsefi-all-on.yaml
+latexindent.pl ifelsefi-one-line -s -m -o=+-mod1 -l=ifelsefi-all-on
 
 # first mixed example
-latexindent.pl env-ifelsefi-mixed.tex -s -m -l=../environments/env-all-on.yaml,ifelsefi-all-on.yaml -o=env-ifelsefi-mixed-out1.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod1.yaml -o=env-ifelsefi-mixed-mod1.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod2.yaml -o=env-ifelsefi-mixed-mod2.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod3.yaml -o=env-ifelsefi-mixed-mod3.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod4.yaml -o=env-ifelsefi-mixed-mod4.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod5.yaml -o=env-ifelsefi-mixed-mod5.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod6.yaml -o=env-ifelsefi-mixed-mod6.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod7.yaml -o=env-ifelsefi-mixed-mod7.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod8.yaml -o=env-ifelsefi-mixed-mod8.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod9.yaml -o=env-ifelsefi-mixed-mod9.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod10.yaml -o=env-ifelsefi-mixed-mod10.tex
-latexindent.pl env-ifelsefi-mixed.tex -s  -m -l=ifelsefi-all-on.yaml,env-ifelsefi-mixed-mod11.yaml -o=env-ifelsefi-mixed-mod11.tex
+latexindent.pl env-ifelsefi-mixed -s -m -l=../environments/env-all-on,ifelsefi-all-on -o=+-out1
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod1 -o=+-mod1
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod2 -o=+-mod2
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod3 -o=+-mod3
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod4 -o=+-mod4
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod5 -o=+-mod5
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod6 -o=+-mod6
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod7 -o=+-mod7
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod8 -o=+-mod8
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod9 -o=+-mod9
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod10 -o=+-mod10
+latexindent.pl env-ifelsefi-mixed -s -m -l=ifelsefi-all-on,env-ifelsefi-mixed-mod11 -o=+-mod11
 
 # remove all example
-latexindent.pl -s ifelsefi-remove-line-breaks.tex -m -l env-ifelsefi-mixed-mod1.yaml -o ifelsefi-remove-line-breaks-mod1.tex 
+latexindent.pl -s ifelsefi-remove-line-breaks -m -l env-ifelsefi-mixed-mod1 -o=+-mod1 
 
 # recursive object examples
-latexindent.pl env-ifelsefi-mixed-recursive.tex -s -m -o=env-ifelsefi-mixed-recursive-mod1.tex -l=ifelsefi-all-on.yaml
-latexindent.pl env-ifelsefi-mixed-recursive.tex -s -m -o=env-ifelsefi-mixed-recursive-mod2.tex -l=ifelsefi-all-on.yaml,env-conflicts-mod2.yaml
-latexindent.pl ifelsefi-env-mixed-recursive.tex  -m -l=ifelsefi-all-on.yaml,if-env-recursive-conflicts.yaml -s -o=ifelsefi-env-mixed-recursive-mod1.tex
+latexindent.pl env-ifelsefi-mixed-recursive -s -m -o=+-mod1 -l=ifelsefi-all-on
+latexindent.pl env-ifelsefi-mixed-recursive -s -m -o=+-mod2 -l=ifelsefi-all-on,env-conflicts-mod2
+latexindent.pl ifelsefi-env-mixed-recursive  -m -l=ifelsefi-all-on,if-env-recursive-conflicts -s -o=+-mod1
 
 # condense/protect line breaks
-latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -o=ifelsefi-nested-blank-lines-condense.tex
-latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -o=ifelsefi-nested-blank-lines-condense-mod1.tex -l=ifelsefi-all-on.yaml,ifelsefi-condense-mod1.yaml
-latexindent.pl ifelsefi-nested-blank-lines.tex -s -m -o=ifelsefi-nested-blank-lines-condense-mod2.tex -l=ifelsefi-all-on.yaml,ifelsefi-condense-mod2.yaml
+latexindent.pl ifelsefi-nested-blank-lines -s -m -o=+-condense
+latexindent.pl ifelsefi-nested-blank-lines -s -m -o=+-condense-mod1 -l=ifelsefi-all-on,ifelsefi-condense-mod1
+latexindent.pl ifelsefi-nested-blank-lines -s -m -o=+-condense-mod2 -l=ifelsefi-all-on,ifelsefi-condense-mod2
 
 # multi-switch takes value of 2
-latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentBeforeBegin.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentBeforeBegin.tex 
-latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterBegin.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBegin.tex 
-latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterBody.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterBody.tex 
-latexindent.pl -s -m -l=ifelsefi-all-on.yaml,ifelsefi-addPercentAfterEnd.yaml ifelsefi-simpletrailing-comments.tex -o=ifelsefi-simpletrailing-comments-addPercentAfterEnd.tex 
-latexindent.pl -s -m -l=ifelsefi-add-comments-all.yaml ifelsefi-one-line-mk1.tex -o ifelsefi-one-line-mk1-all-comments.tex
+latexindent.pl -s -m -l=ifelsefi-all-on,ifelsefi-addPercentBeforeBegin ifelsefi-simpletrailing-comments -o=+-addPercentBeforeBegin 
+latexindent.pl -s -m -l=ifelsefi-all-on,ifelsefi-addPercentAfterBegin ifelsefi-simpletrailing-comments -o=+-addPercentAfterBegin 
+latexindent.pl -s -m -l=ifelsefi-all-on,ifelsefi-addPercentAfterBody ifelsefi-simpletrailing-comments -o=+-addPercentAfterBody 
+latexindent.pl -s -m -l=ifelsefi-all-on,ifelsefi-addPercentAfterEnd ifelsefi-simpletrailing-comments -o=+-addPercentAfterEnd 
+latexindent.pl -s -m -l=ifelsefi-add-comments-all ifelsefi-one-line-mk1 -o=+-all-comments
 
 # noAdditionalIndent
-latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,noAdditionalIndentGlobal.yaml -o=ifelsefi-multiple-nested-global.tex
+latexindent.pl -s ifelsefi-multiple-nested -l=ifelsefi-all-on,noAdditionalIndentGlobal -o=+-global
 
 # indentRules
-latexindent.pl -s ifelsefi-multiple-nested.tex -l=ifelsefi-all-on.yaml,indentRulesGlobal.yaml -o=ifelsefi-multiple-nested-indent-rules-global.tex
+latexindent.pl -s ifelsefi-multiple-nested -l=ifelsefi-all-on,indentRulesGlobal -o=+-indent-rules-global
 
 # ifx
-latexindent.pl -s ifnum-bug.tex -o ifnum-bug-out.tex
+latexindent.pl -s ifnum-bug -o=+-out
 
-# bug fix from tcbbreakable-small.tex
-latexindent.pl -s tcbbreakable-small.tex -o=+-default
-
-# mixed test case
-latexindent.pl -s tabdo.sty -o tabdo-default.sty
+# bug fix from tcbbreakable-small
+latexindent.pl -s tcbbreakable-small -o=+-default
 
 # or test case
-latexindent.pl -s ifelsefi-first-or.tex -o=+-default
+latexindent.pl -s ifelsefi-first-or -o=+-default
+
 # modifyLineBreaks loop test cases
 [[ $silentMode == 0 ]] && set +x 
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
@@ -108,17 +104,21 @@ do
    [[ $showCounter == 1 ]] && echo $i of $loopmax
    for (( j=1 ; j <= 10 ; j++ )) 
    do 
-     [[ $silentMode == 0 ]] && set -x 
+     keepappendinglogfile
      # else test cases
-     latexindent.pl -s ifelsefi-loop-test.tex -o +-mod$i-else$j.tex -m -l=ifelsefi-mod$i.yaml,else-mod$j.yaml
+     latexindent.pl -s ifelsefi-loop-test -o +-mod$i-else$j -m -l=ifelsefi-mod$i,else-mod$j
      # or test cases
-     latexindent.pl -s ifelsefi-loop-test-or.tex -o +-mod$i-or$j.tex -m -l=ifelsefi-mod$i.yaml,or-mod$j.yaml
-     [[ $silentMode == 0 ]] && set +x 
+     latexindent.pl -s ifelsefi-loop-test-or -o +-mod$i-or$j -m -l=ifelsefi-mod$i,or-mod$j
+     set +x
     done
 done
+keepappendinglogfile
 
 # https://github.com/cmhughes/latexindent.pl/issues/250
-latexindent.pl -s issue-250.tex -o=+-mod1
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
-exit
+latexindent.pl -s issue-250 -o=+-mod1
+
+# mixed test case
+latexindent.pl -s tabdo.sty -o=+-default
+
+set +x 
+wrapuptasks

@@ -66,9 +66,13 @@ our %tokens = (
     mAfterEndRemove             => "mAfterEndRemove",
     mAfterEndLineBreak          => "mAfterEndLineBreak",
     mSwitchComment              => "mSwitchComment",
+    mSwitchCommentFi              => "mSwitchCommentFi",
 
     # specialBeginEnd Middle token
     specialBeginEndMiddle => "specialMiddle",
+
+    # ifElseFi trailing singlespace
+    mElseTrailingSpace => "mElseTrailingSpace",
 );
 
 sub token_check {

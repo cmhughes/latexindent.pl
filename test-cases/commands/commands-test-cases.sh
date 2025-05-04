@@ -110,7 +110,6 @@ do
 
    set +x
 done
-[[ $silentMode == 0 ]] && set -x 
 
 keepappendinglogfile
 
@@ -173,8 +172,6 @@ do
 
    set +x
 done
-
-[[ $silentMode == 0 ]] && set -x 
 
 keepappendinglogfile
 

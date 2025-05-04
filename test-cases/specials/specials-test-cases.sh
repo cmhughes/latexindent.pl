@@ -26,8 +26,8 @@ do
    latexindent.pl -s special1-remove-line-breaks -o=+-unprotect-mod$i -m -l=special-mod$i,../commands/unprotect-blank-lines
    set +x
 done
-
 keepappendinglogfile
+
 latexindent.pl -s special2 -o=+-mod1 -m -l=special-mod1 
 latexindent.pl -s special3 -o=+-mod1 -m -l=special-mod1
 latexindent.pl -s special2 -o=+-mod17 -m -l=special-mod17
@@ -81,8 +81,8 @@ do
    keepappendinglogfile
    latexindent.pl -m -s algpseudocode-mk2 -l=koppor,special-middle$i -t -o=+-mod$i
 done
-
 keepappendinglogfile
+
 latexindent.pl -s algpseudocode-mk3 -o=+-mod1 -l=koppor,koppor1
 
 # special verbatim (see https://github.com/cmhughes/latexindent.pl/issues/124)

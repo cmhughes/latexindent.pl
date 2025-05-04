@@ -15,8 +15,8 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 2259
-# total number of test cases last updated: 2025-04-27
+# total number of test cases: 2640
+# total number of test cases last updated: 2025-05-04
 #-----------------------------
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -122,17 +122,17 @@ dirExec=(
   "keyEqualsValueBraces;key-equals-values-test-cases.sh"
   "environments;environments-test-cases.sh"
   "specials;specials-test-cases.sh"
+  "ifelsefi;ifelsefi-test-cases.sh"
+  # "alignment;alignment-test-cases.sh" <!------------- NEXT!!!
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
-  # "ifelsefi;ifelsefi-test-cases.sh"
   # "items;items-test-cases.sh"
   # "tokenChecks;token-checks.sh"
   # "cruftdirectory;cruft-directory-test-cases.sh"
   # "STDIN;stdin-test-cases.sh"
   # "headings;headings-test-cases.sh"
   # "filecontents;filecontents-test-cases.sh"
-  # "alignment;alignment-test-cases.sh"
   # "text-wrap;text-wrap-remove-PLB.sh"
   # "texexchange;texexchange-test-cases.sh"
   # "horizontalWhiteSpace;whitespace-test-cases.sh"

@@ -909,7 +909,7 @@ sub yaml_read_settings {
     # which details the overall state of the settings modified
     # from the default in various user files
     if ( $mainSettings{logFilePreferences}{showAmalgamatedSettings} ) {
-        $logger->info("Amalgamated/overall settings to be used:");
+        $logger->info("Amalgamated/overall settings to be used:\t\t(see logFilePreferences: showAmalgamatedSettings)");
         $logger->info( Dumper( \%mainSettings ) );
     }
 
@@ -940,7 +940,9 @@ sub yaml_read_settings {
                         )
                     {
                         $equalsPolySwitchExists = 1;
-                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for keyEqualsValuesBracesBrackets ($polySwitch)");
+                        $logger->trace(
+                            "*poly-switch info: $perNamePolySwitch $perNameValue for keyEqualsValuesBracesBrackets ($polySwitch)"
+                        );
                     }
                 }
             }
@@ -969,7 +971,8 @@ sub yaml_read_settings {
                         )
                     {
                         $commaPolySwitchExists = 1;
-                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments ($polySwitch)");
+                        $logger->trace(
+                            "*poly-switch info: $perNamePolySwitch $perNameValue for optionalArguments ($polySwitch)");
                     }
                 }
             }
@@ -998,7 +1001,8 @@ sub yaml_read_settings {
                         )
                     {
                         $commaPolySwitchExists = 1;
-                        $logger->trace("*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments ($polySwitch)");
+                        $logger->trace(
+                            "*poly-switch info: $perNamePolySwitch $perNameValue for mandatoryArguments ($polySwitch)");
                     }
                 }
             }
@@ -1088,33 +1092,25 @@ sub yaml_get_indentation_settings_for_this_object {
         # check for line break settings
         if ($is_m_switch_active) {
             $self->yaml_modify_line_breaks_settings;
-            ${ ${previouslyFoundSettings}{$storageName} }{BeginStartsOnOwnLine} = ${$self}{BeginStartsOnOwnLine}
-                if defined ${$self}{BeginStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{BodyStartsOnOwnLine} = ${$self}{BodyStartsOnOwnLine}
-                if defined ${$self}{BodyStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EndStartsOnOwnLine} = ${$self}{EndStartsOnOwnLine}
-                if defined ${$self}{EndStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EndFinishesWithLineBreak} = ${$self}{EndFinishesWithLineBreak}
-                if defined ${$self}{EndFinishesWithLineBreak};
 
-            # key = value poly-switches: EqualsStartsOnOwnLine or EqualsFinishesWithLineBreak
-            ${ ${previouslyFoundSettings}{$storageName} }{EqualsStartsOnOwnLine} = ${$self}{EqualsStartsOnOwnLine}
-                if defined ${$self}{EqualsStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{EqualsFinishesWithLineBreak}
-                = ${$self}{EqualsFinishesWithLineBreak}
-                if defined ${$self}{EqualsFinishesWithLineBreak};
-            delete ${$self}{EqualsStartsOnOwnLine};
-            delete ${$self}{EqualsFinishesWithLineBreak};
+            # poly-switches
+            foreach (
+                # basics
+                "BeginStartsOnOwnLine", "BodyStartsOnOwnLine", "EndStartsOnOwnLine", "EndFinishesWithLineBreak",
 
-            # specialBeginEnd poly-switches:  SpecialMiddleStartsOnOwnLine or SpecialMiddleFinishesWithLineBreak
-            ${ ${previouslyFoundSettings}{$storageName} }{SpecialMiddleStartsOnOwnLine}
-                = ${$self}{SpecialMiddleStartsOnOwnLine}
-                if defined ${$self}{SpecialMiddleStartsOnOwnLine};
-            ${ ${previouslyFoundSettings}{$storageName} }{SpecialMiddleFinishesWithLineBreak}
-                = ${$self}{SpecialMiddleFinishesWithLineBreak}
-                if defined ${$self}{SpecialMiddleFinishesWithLineBreak};
-            delete ${$self}{SpecialMiddleStartsOnOwnLine};
-            delete ${$self}{SpecialMiddleFinishesWithLineBreak};
+                # key = value specific
+                "EqualsStartsOnOwnLine", "EqualsFinishesWithLineBreak",
+
+                # specialBeginEnd specific
+                "SpecialMiddleStartsOnOwnLine", "SpecialMiddleFinishesWithLineBreak",
+
+                # ifElseFi specific
+                "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak"
+                )
+            {
+                ${ ${previouslyFoundSettings}{$storageName} }{$_} = ${$self}{$_} if defined ${$self}{$_};
+                delete ${$self}{$_};
+            }
         }
 
         # store argument information, if arguments present
@@ -1357,6 +1353,12 @@ sub yaml_modify_line_breaks_settings {
     # specialBeginEnd can have middle poly-switches
     if ( $modifyLineBreaksYamlName eq 'specialBeginEnd' ) {
         push( @toBeAssignedTo, ( "SpecialMiddleStartsOnOwnLine", "SpecialMiddleFinishesWithLineBreak" ) );
+    }
+
+    # ifElseFi can have ELSE/OR poly-switches
+    if ( $modifyLineBreaksYamlName eq 'ifElseFi' ) {
+        push( @toBeAssignedTo,
+            ( "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak" ) );
     }
 
     # we can efficiently loop through the following

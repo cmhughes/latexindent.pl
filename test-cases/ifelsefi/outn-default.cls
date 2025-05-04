@@ -414,7 +414,7 @@
 % Normal options: this is just using enumitem features with enumerate.
 \newenvironment{options}%
 {\par\medskip\@optiontext\begin{enumerate}[label=\textbf{\Alph*}]}%
-		{\end{enumerate}}
+{\end{enumerate}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Make marks always appear on RHS:
 %% Needed for marginnote package
@@ -532,9 +532,9 @@
 		\iow_open:Nn \g_solution_stream { \jobname-student.tex }
 		\def\solnpreamble{\documentclass{article}\usepackage{amsmath}\begin{document}}
 		\iow_now:Nn \g_solution_stream {\documentclass{article}\usepackage{amsmath}\begin{document}}
-			}
-			\AtEndDocument{
-			\iow_now:Nn \g_solution_stream{\end{document}}
+	}
+	\AtEndDocument{
+		\iow_now:Nn \g_solution_stream{\end{document}}
 		\iow_close:N \g_solution_stream
 	}
 	\ExplSyntaxOff

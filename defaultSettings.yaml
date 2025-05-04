@@ -25,11 +25,9 @@
 #---------------------------------------------------------------------------------------
 
 # latexindent can be called to act on a file without using the file's extension,
-# e.g, simply
 #       latexindent myfile
-# in which case the choice of file extension is chosen
-# according to the choices made in fileExtensionPreference
-# Other file extensions can be added.
+# in which case latexindent will look for, in order:
+#       myfile.tex, myfile.sty, myfile.cls, myfile.bib
 fileExtensionPreference:
   .tex: 1
   .sty: 2
@@ -39,30 +37,24 @@ fileExtensionPreference:
 # default file extension of backup file (if -w switch is active)
 # for example, if your .tex file is called
 #       myfile.tex
-# and you specify the backupExtension as BACKUP.bak then your
 # backup file will be
-#       myfileBACKUP.bak
+#       myfile.bak
 backupExtension: .bak
 
 # only one backup per file:
-#   - if onlyOneBackUp is 0 then, as a safety measure,
-#     the number on the extension increments by 1 each time:
+#   0:  the number on the extension increments by 1 each time:
 #           myfile.bak0, myfile.bak1, myfile.bak2
-#   - if you set onlyOnebackUp to 1, then the backup file will
-#     be overwritten each time (not recommended until you trust the script)
+#   1:  then the backup file will be overwritten each time 
 onlyOneBackUp: 0
 
-# some users may want a finite number of backup files,
-# say at most 3; in which case, they can change this maxNumberOfBackUps.
-#
-# If maxNumberOfBackUps is set to 0 (or less) then infinitely
-# many backups are possible, unless onlyOneBackUp is switched on
+# maxNumberOfBackUps 
+#   0 (or less) then infinitely many backups are possible, unless onlyOneBackUp: 1
+#   n (>0)      at most n back-up files will be created
 maxNumberOfBackUps: 0
 
 # some users may wish to cycle through back up files.
 #
-# for example, with maxNumberOfBackUps: 4, they may
-# wish to delete the oldest back up file, and keep only the most recent.
+# for example, with maxNumberOfBackUps: 4, will perform the following
 #
 #    copy myfile.bak1 to myfile.bak0
 #    copy myfile.bak2 to myfile.bak1
@@ -89,8 +81,7 @@ logFilePreferences:
     Sortkeys: 1
     Pair: " => "
 
-# verbatim environments specified
-# in this field will not be changed at all!
+# verbatim environments 
 verbatimEnvironments:
   verbatim: 1
   lstlisting: 1
@@ -126,11 +117,11 @@ lookForPreamble:
   STDIN: 1
 
 # some preambles can contain \begin and \end statements
-# that are not in their 'standard environment block', for example,
-# consider the following key = values:
-#    preheadhook={\begin{mdframed}[style=myframedstyle]},
-#    postfoothook=\end{mdframed},
-preambleCommandsBeforeEnvironments: 0
+# that are not in their 'standard environment block', for example, # <---- PROBABLY DITCH?
+# consider the following key = values:                             # <---- PROBABLY DITCH?
+#    preheadhook={\begin{mdframed}[style=myframedstyle]},          # <---- PROBABLY DITCH?
+#    postfoothook=\end{mdframed},                                  # <---- PROBABLY DITCH?
+preambleCommandsBeforeEnvironments: 0                              # <---- PROBABLY DITCH?
 
 # default value of indentation
 defaultIndent: "\t"
@@ -434,8 +425,8 @@ modifyLineBreaks:
   # poly-switches below here            
   #  -1: remove
   #   0: off
-  #   1: add
-  #   2: comment+add
+  #   1: add line break
+  #   2: comment and add line break
   #   3: add blank line
   #   4: add blank line
   #
@@ -505,13 +496,13 @@ replacements:
     lookForThis: 0
     when: before
 
-# fineTuning allows you to tweak the internal pattern matching that
-# is central to latexindent.pl
+# fineTuning: tweak the internal pattern central to latexindent.pl
 fineTuning:
   environments:
     name: [a-zA-Z@\*0-9_\\]+
   ifElseFi:
     name: (?!@?if[a-zA-Z@]*?\{)@?if[a-zA-Z@]*
+    elseOrRegEx: \\(?:else|or)               #<!---------- NEW
   commands:
     name: [+a-zA-Z@\*0-9_\:]+
   items:
