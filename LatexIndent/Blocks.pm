@@ -585,6 +585,14 @@ sub _find_all_code_blocks {
                   $body = $argBody.$body;
                   $argBody = q();
                   $logger->trace("arguments for $name environment is ONLY a comment, pre-pending it to body")         if $is_t_switch_active;
+                } elsif ($argBody =~ m@^\s*$@s){
+                  # respect trailing white space after begin statement
+                  $argBody =~ s@(^\h*)(\R\s*)?@$1@s;
+                  $begin = $begin.($1?$1:q());
+                  $body = ($2?$2:q()).$body;
+                  $argBody = q();
+                  ${$codeBlockObj}{begin} = $begin if $is_m_switch_active;
+                  $logger->trace("arguments for $name environment is ONLY space, pre-pending it to body")         if $is_t_switch_active;
                 } else {
                   $argBody = _indent_all_args($name, $modifyLineBreaksName, $argBody, $currentIndentation);
                 }
@@ -595,7 +603,12 @@ sub _find_all_code_blocks {
              # ***
              # find nested things
              # ***
-             $body = _find_all_code_blocks($body,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
+             if (${ $mainSettings{indentAfterItems} }{ $name }){
+                $logger->trace("looking for environments ITEM for $name")                        if $is_t_switch_active;
+                $body = _find_env_items ($body, $name, $modifyLineBreaksName, $currentIndentation);
+             } else {
+               $body = _find_all_code_blocks($body,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
+             }
 
              $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
@@ -1155,6 +1168,7 @@ sub _indent_all_args {
                                                 body=>$argBody,                                      # body  statement
                                                 end=>$end,                                           # end   statement
                                                 modifyLineBreaksName=>$modifyLineBreaksName,
+                                                modifyLineBreaksYamlName=>$argType."Arguments",
                                                 type=>"argument",
                                                 BeginStartsOnOwnLine=>$BeginStartsOnOwnLine,         # begin     poly-switch
                                                 BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,           # body      poly-switch
@@ -1369,13 +1383,13 @@ sub _find_ifelsefi_else_or {
                     my $middleOrSpecial = q();
                     if ($+{IFELSEFIELSE}){
                         $elseExists = 1;
-                        my $ifElseFiStatment = $+{IFELSEFIELSESTATEMENT};
+                        my $ifElseFiStatement = $+{IFELSEFIELSESTATEMENT};
                         my $horizontalTrailingSpace=($+{TRAILINGHSPACE}?$+{TRAILINGHSPACE}:q());
                         my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
                         my $linebreaksAtEnd=($+{TRAILINGCOMMENT} ? q() : ( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q()));
 
                         my $codeBlockObj = LatexIndent::Special->new(name=>"ifElseFiElse",
-                                                          begin=>$begin.$ifElseFiStatment,
+                                                          begin=>$begin.$ifElseFiStatement,
                                                           body=>$horizontalTrailingSpace.$trailingComment.$linebreaksAtEnd,
                                                           end=>q(),
                                                           modifyLineBreaksYamlName=>"middle",
@@ -1384,14 +1398,14 @@ sub _find_ifelsefi_else_or {
                                                           BodyStartsOnOwnLine=>$SpecialMiddleFinishesWithLineBreak,
                         );
 
-                        $logger->trace("*found: $ifElseFiStatment in $name \t type: ifElseFi ELSE")         if $is_t_switch_active;
+                        $logger->trace("*found: $ifElseFiStatement in $name \t type: ifElseFi ELSE")         if $is_t_switch_active;
 
                         # poly-switch work
                         if ($is_m_switch_active){
                             #
                             # update for OR statement poly-switch 
                             #
-                            if ($ifElseFiStatment =~ m@\\or@s ){
+                            if ($ifElseFiStatement =~ m@\\or@s ){
                                ${$codeBlockObj}{BeginStartsOnOwnLine} = (
                                        defined ${ $previouslyFoundSettings{$commandStorageName} }{OrStartsOnOwnLine}
                                        ? ${ $previouslyFoundSettings{$commandStorageName} }{OrStartsOnOwnLine}
@@ -1410,7 +1424,7 @@ sub _find_ifelsefi_else_or {
                             my $elseRequiresTrailingSpace = 0;
                             if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 and $horizontalTrailingSpace eq ''){
                                  $elseRequiresTrailingSpace = 1;
-                                 $logger->trace("adding trailing space ' ' *after* $ifElseFiStatment as body empty and BodyStartsOnOwnLine == -1");
+                                 $logger->trace("adding trailing space ' ' *after* $ifElseFiStatement as body empty and BodyStartsOnOwnLine == -1");
                             }
                             $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
                             $middleOrSpecial = ${$codeBlockObj}{begin}
@@ -1430,5 +1444,139 @@ sub _find_ifelsefi_else_or {
                       };
                       $middleOrSpecial;/sgex;
     return ( $body, $elseExists );
+}
+
+#
+# items in environment
+#
+sub _find_env_items {
+    my ( $body, $name, $modifyLineBreaksName, $currentIndentation ) = @_;
+    $logger->trace("looking for items for $name")                        if $is_t_switch_active;
+    $logger->trace( ${ ${ $mainSettings{fineTuning} }{items} }{itemRegEx} ) if $is_t_switch_active;
+
+    my $itemRegEx = qr{
+         (\s*)
+         (?:
+           (?<ITEMBEGIN>
+              ${${$mainSettings{fineTuning}}{items}}{itemRegEx}
+           )
+           (?<ITEMBODY>                                   # body
+              (?>                                         # 
+                  (??{ $environmentRegEx })               # 
+                  |                                       # 
+                  (?!                                     # 
+                      (?:${${$mainSettings{fineTuning}}{items}}{itemRegEx})
+                  ).                                      # 
+              )*                                          # 
+           )
+         )
+        }xs;
+
+    # m-switch notes
+    #   don't usually mix poly-switch work like this, but
+    #   the ELSE/OR statements need finding regardless of
+    #   whether the m-switch is active
+    #
+    my $commandStorageName           = $name . $modifyLineBreaksName;
+
+    $body =~ s/$itemRegEx/
+                    my $begin = $1.$+{ITEMBEGIN};
+                    my $body = $+{ITEMBODY};
+                    my $end = q();
+                    (my $name = $begin) =~ s@[^a-zA-Z0-9]@@sg;   # remove all non alphanumeric characters
+                    my $modifyLineBreaksName = "items";
+                    my $linebreaksAtEndBegin;
+                    my $codeBlockObj;
+
+                    if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+                       $codeBlockObj = LatexIndent::Special->new(name=>$name,
+                                                         begin=>$begin,
+                                                         body=>$body,
+                                                         end=>$end,
+                                                         modifyLineBreaksYamlName=>$modifyLineBreaksName,
+                                                         type=>"item",
+                       );
+                    }
+
+                    $logger->trace("*found: $name \t type: ITEM")         if $is_t_switch_active;
+
+                    # store settings for future use
+                    if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                       $codeBlockObj->yaml_get_indentation_settings_for_this_object;
+                    }
+             
+                    # ***
+                    # find nested things
+                    # ***
+                    $body = _find_all_code_blocks($body,$currentIndentation) if $body =~ m^$codeBlockLookFor^s;
+                    
+                    #
+                    # poly-switch work
+                    #
+                    if ($is_m_switch_active){
+                       # get the *updated* item body
+                       ${$codeBlockObj}{body} = $body;
+
+                       # poly-switch work
+                       $logger->trace("*-m switch poly-switch line break adjustment ($name ($modifyLineBreaksName))") if $is_t_switch_active;
+                       ${$codeBlockObj}{BeginStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BeginStartsOnOwnLine};
+                       ${$codeBlockObj}{BodyStartsOnOwnLine} = $previouslyFoundSettings{$name.$modifyLineBreaksName}{BodyStartsOnOwnLine};
+
+                       $codeBlockObj->_mlb_begin_starts_on_own_line if ${$codeBlockObj}{BeginStartsOnOwnLine} != 0;  
+                       $codeBlockObj->_mlb_body_starts_on_own_line if ${$codeBlockObj}{BodyStartsOnOwnLine} != 0;  
+
+                       # get updated begin, body, end
+                       $begin = ${$codeBlockObj}{begin};
+                       $body = ${$codeBlockObj}{body};
+                       $end = ${$codeBlockObj}{end};
+
+                       # need to avoid, for example,
+                       #
+                       #    itemtwo
+                       #
+                       # desired: item two
+                       if (${$codeBlockObj}{BodyStartsOnOwnLine} == -1 ){
+                            $logger->trace("adding trailing space ' ' *after*  item statement ItemStartsOnOwnLine == -1");
+                            $begin .= $tokens{mElseTrailingSpace};
+                       }
+
+                       $linebreaksAtEndBegin = ${$codeBlockObj}{linebreaksAtEnd}{begin};
+                    } else {
+                          $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
+                    }
+
+                    my $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
+
+                    # item BODY indentation, possibly
+                    if ($addedIndentation ne ''){
+
+                       # add indentation
+                       $body =~ s"^"$addedIndentation"mg if ($body !~ m@^\s*$@s);
+                       $body =~ s"^$addedIndentation""s if !$linebreaksAtEndBegin;
+                    }
+                    $begin.$body.$end;/sgex;
+
+    # final m switch adjustment
+    if ($is_m_switch_active){
+        # itemStartsOnOwnline == 2 needs care, see, for example, items1-mod5
+        #
+        # mSwitchComment
+        # \item
+        $body =~ s/\R\h*$tokens{mSwitchComment}\R(\h*${${$mainSettings{fineTuning}}{items}}{itemRegEx})/\n$1/sg;
+        
+        # items5-mod5.tex
+        $body =~ s/^$tokens{mSwitchComment}\R(\h*${${$mainSettings{fineTuning}}{items}}{itemRegEx})/$1/s;
+
+        # itemStartsOnOwnline == 3 needs care, see, for example, items1-mod8
+        $body =~ s/\R\h*$tokens{mBeforeBeginLineBreakADD}($tokens{blanklines})?\s*($itemRegEx)/\n$2/sg;
+
+        # itemFinishesWithLineBreak == -1 needs care, see, for example, items1-blanklines-unPreserveBlankLines-mod2
+        $body =~ s@([a-zA-Z0-9])$tokens{mElseTrailingSpace}([a-zA-Z0-9])@$1 $2@sg;
+        $body =~ s@$tokens{mElseTrailingSpace}@@sg;
+
+        # m switch conflicting linebreak addition or removal handled by tokens
+        $body = _mlb_line_break_token_adjust($body);
+    }
+    return $body;
 }
 1;

@@ -15,8 +15,8 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 2640
-# total number of test cases last updated: 2025-05-04
+# total number of test cases: 2775
+# total number of test cases last updated: 2025-05-11
 #-----------------------------
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -123,15 +123,16 @@ dirExec=(
   "environments;environments-test-cases.sh"
   "specials;specials-test-cases.sh"
   "ifelsefi;ifelsefi-test-cases.sh"
-  # "alignment;alignment-test-cases.sh" <!------------- NEXT!!!
+  "items;items-test-cases.sh"
+  # "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
+  # "alignment;alignment-test-cases.sh" 
+  # "headings;headings-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
-  # "items;items-test-cases.sh"
   # "tokenChecks;token-checks.sh"
   # "cruftdirectory;cruft-directory-test-cases.sh"
   # "STDIN;stdin-test-cases.sh"
-  # "headings;headings-test-cases.sh"
   # "filecontents;filecontents-test-cases.sh"
   # "text-wrap;text-wrap-remove-PLB.sh"
   # "texexchange;texexchange-test-cases.sh"
@@ -140,7 +141,6 @@ dirExec=(
   # "verbatim;verbatim-test-cases.sh"
   # "fine-tuning;fine-tuning-test-cases.sh"
   # "replacements;replacement-test-cases.sh"
-  # "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
   # "check-switch-tests;check-switch-test-cases.sh"
   # "line-switch-test-cases;line-switch-test-cases.sh"
   # "batch-tests;batch-tests.sh"

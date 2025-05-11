@@ -1,0 +1,6 @@
+TRACE: found: enumerate 	 type: environments
+TRACE: found: item 	 type: ITEM
+TRACE: found: item 	 type: ITEM
+TRACE: found: itemize 	 type: environments
+TRACE: found: item 	 type: ITEM
+TRACE: found: item 	 type: ITEM

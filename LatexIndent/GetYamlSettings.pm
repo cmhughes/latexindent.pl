@@ -833,6 +833,9 @@ sub yaml_read_settings {
         ${ $mainSettings{modifyLineBreaks}{oneSentencePerLine} }{sentenceIndent} = q();
     }
 
+    #
+    # fineTuning environment checks
+    #
     if ( defined ${ ${ $mainSettings{fineTuning} }{environments} }{begin}
         and not defined ${ ${ $mainSettings{fineTuning} }{environments} }{end} )
     {
@@ -1046,6 +1049,7 @@ sub yaml_read_settings {
                 BodyStartsOnOwnLine  => "NameFinishesWithLineBreak",
             }
         ),
+        items => ( { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" } ),
         UnNamedGroupingBracesBrackets => ( { BeginStartsOnOwnLineAlias => undef, } ),
         specialBeginEnd               => (
             {   BeginStartsOnOwnLine     => "SpecialBeginStartsOnOwnLine",

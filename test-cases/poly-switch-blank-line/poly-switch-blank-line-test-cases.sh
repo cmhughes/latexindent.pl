@@ -42,5 +42,7 @@ latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:RSqBS
 latexindent.pl -s -m xaltsc.tex -l=xaltsc.yaml -o=+-mod1
 latexindent.pl -s -m -r xaltsc.tex -l=xaltsc2.yaml -o=+-mod2
 
+latexindent.pl -s -m -l issue-492 issue-492 -o +-mod1
+
 [[ $gitStatus == 1 ]] && git status
 [[ $noisyMode == 1 ]] && makenoise

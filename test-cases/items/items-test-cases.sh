@@ -1,104 +1,118 @@
 #!/bin/bash
-# set verbose mode, 
-# see http://stackoverflow.com/questions/2853803/in-a-shell-script-echo-shell-commands-as-they-are-executed
 loopmax=10
 . ../common.sh
 
-# if silentMode is not active, verbose
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 # making strings of tabs and spaces gives different results; 
-# this first came to light when studying items1.tex -- the following test cases helped to 
+# this first came to light when studying items1 -- the following test cases helped to 
 # resolve the issue
-latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-tabs.yaml -o=spaces-and-tabs-tft.tex
-latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,spaces-follow-tabs.yaml -o=spaces-and-tabs-sft.tex
-latexindent.pl -s spaces-and-tabs.tex -l=../environments/env-all-on.yaml,tabs-follow-spaces -o=spaces-and-tabs-tfs.tex
+latexindent.pl -s spaces-and-tabs -l=../environments/env-all-on,tabs-follow-tabs -o=spaces-and-tabs-tft
+latexindent.pl -s spaces-and-tabs -l=../environments/env-all-on,spaces-follow-tabs -o=spaces-and-tabs-sft
+latexindent.pl -s spaces-and-tabs -l=../environments/env-all-on,tabs-follow-spaces -o=spaces-and-tabs-tfs
+
 # first lot of items
-latexindent.pl -s -w items1.tex
-# nested itemize/enumerate environments -- these ones needed ancestors, the understanding/development of which took about a week!
-latexindent.pl -s -w items1.5.tex
-latexindent.pl -s -w items2.tex
-latexindent.pl -s -w items2.5.tex
-latexindent.pl -s -w items3.tex
-latexindent.pl -s -w items4.tex -g=items4-check.log
-latexindent.pl -s -w items4.5.tex 
+latexindent.pl -s items1 -o=+-default
+
+# nested itemize/enumerate environments
+latexindent.pl -s items1-5 -o=+-mod1
+latexindent.pl -s -t items2   -o=+-default
+egrep 'found:' indent.log > items2.txt
+latexindent.pl -s items2-5 -o=+-mod1
+latexindent.pl -s items3   -o=+-default
+latexindent.pl -s -w items4
+latexindent.pl -s -w items4-5 
+
 # this next one won't treat yetanotheritem as an item
-latexindent.pl -s -w items4.6.tex 
-# but this one will -- see yetanotheritem.yaml for the difference
-latexindent.pl -s items4.6.tex -l=../environments/env-all-on.yaml,yetanotheritem.yaml -o=items4.6-yetanotheritem.tex
-latexindent.pl -s -w items5.tex
+latexindent.pl -s -w items4-6 
+
+# but this one will -- see yetanotheritem for the difference
+latexindent.pl -s items4-6 -l yetanotheritem -o=+-yetanotheritem
+latexindent.pl -s items5 -o=+-default
+
 # noAdditionalIndent
-latexindent.pl -s -l=../environments/env-all-on.yaml,noAdditionalIndentItemize.yaml items1.tex -o=items1-noAdditionalIndentItemize.tex
-latexindent.pl -s -l=../environments/env-all-on.yaml,noAdditionalIndentItems.yaml items1.tex -o=items1-noAdditionalIndentItems.tex
-latexindent.pl -s -g=other.log -l=../environments/env-all-on.yaml,noAdditionalIndent-myenv.yaml items3.tex -o=items3-noAdditionalIndent-myenv.tex
+latexindent.pl -s -l noAdditionalIndentItemize items1 -o=+-noAdditionalIndentItemize
+latexindent.pl -s -l noAdditionalIndentItems items1   -o=+-noAdditionalIndentItems
+latexindent.pl -s -l noAdditionalIndent-myenv items3  -o=+-noAdditionalIndent-myenv
+
 # indentRules
-latexindent.pl -s -l=../environments/env-all-on.yaml,indentRulesItemize.yaml items1.tex -o=items1-indentRulesItemize.tex
-latexindent.pl -s -l=../environments/env-all-on.yaml,indentRulesItems.yaml items1.tex -o=items1-indentRulesItems.tex
+latexindent.pl -s -l indentRulesItemize items1 -o=+-indentRulesItemize
+latexindent.pl -s -l indentRulesItems items1   -o=+-indentRulesItems
+
 # test different item names
-latexindent.pl -s -l=../environments/env-all-on.yaml,myitem.yaml -w items1-myitem.tex
-latexindent.pl -s -l=../environments/env-all-on.yaml,part.yaml -w items1-part.tex
+latexindent.pl -s -l myitem -w items1-myitem
+latexindent.pl -s -l part   -w items1-part
+
 # modify linebreaks starts here
-latexindent.pl -s -m items1.tex -o=items1-mod0.tex
-latexindent.pl -s -m items1-blanklines.tex -o=items1-blanklines-mod0.tex 
-latexindent.pl -s -m items2.tex -o=items2-mod0.tex
-[[ $silentMode == 0 ]] && set +x 
+latexindent.pl -s -m items1 -o=+-mod0
+latexindent.pl -s -m items1-blanklines -o=+-mod0 
+latexindent.pl -s -m items2 -o=+-mod0
+latexindent.pl -s -m items2-1 -l items-mod3 -o=+-mod3
+latexindent.pl -s -m items2-1 -l items-mod3,removeTWS-before -o=+-mod4
+
+set +x
 for (( i=$loopmin ; i <= $loopmax ; i++ )) 
 do 
-   [[ $showCounter == 1 ]] && echo $i of $loopmax
-    [[ $silentMode == 0 ]] && set -x 
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1.tex -o=items1-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items2.tex -o=items2-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items3.tex -o=items3-mod$i.tex
-    # blank line tests
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items1-blanklines.tex -o=items1-blanklines-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,unPreserveBlankLines.yaml items1-blanklines.tex -o=items1-blanklines-unPreserveBlankLines-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml,BodyStartsOnOwnLine.yaml items1.tex -o=items1-BodyStartsOnOwnLine-mod$i.tex
-    # starts on one line, adds linebreaks accordingly
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items5.tex -o=items5-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items6.tex -o=items6-mod$i.tex
-    latexindent.pl -s -m -l=../environments/env-all-on.yaml,items-mod$i.yaml items7.tex -o=items7-mod$i.tex -g=other.log
-    [[ $silentMode == 0 ]] && set +x 
+ [[ $showCounter == 1 ]] && echo $i of $loopmax
+
+ keepappendinglogfile
+
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items1 -o=+-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items2 -o=+-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items3 -o=+-mod$i
+
+ # blank line tests
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items1-blanklines -o=+-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i,unPreserveBlankLines items1-blanklines -o=+-unPreserveBlankLines-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i,BodyStartsOnOwnLine items1 -o=+-BodyStartsOnOwnLine-mod$i
+
+ # starts on one line, adds linebreaks accordingly
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items5 -o=+-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items6 -o=+-mod$i
+ latexindent.pl -s -m -l=../environments/env-all-on,items-mod$i items7 -o=+-mod$i
+ set +x
 done
-[[ $silentMode == 0 ]] && set -x 
-latexindent.pl -s items13.tex -m -l=items-mod2.yaml -o items13-mod2.tex
-latexindent.pl -s items13.tex -m -l=items-mod2.yaml,removeTWS-before.yaml -o items13-remove-before-mod2.tex
+
+keepappendinglogfile
+
+latexindent.pl -s items13 -m -l=items-mod2 -o=+-mod2
+latexindent.pl -s items13 -m -l=items-mod2,removeTWS-before -o=+-remove-before-mod2
 
 # ifelsefi within an item
-latexindent.pl -s items8.tex -o=items8-mod0.tex -l=../environments/env-all-on.yaml
-latexindent.pl -s items9.tex -o=items9-mod0.tex -l=../environments/env-all-on.yaml
-latexindent.pl -s items10.tex -w
-latexindent.pl -s items10.tex -o=items10-myenv-noAdditionalIndent.tex -l=../environments/env-all-on.yaml,myenv.yaml
-latexindent.pl -s items10.tex -o=items10-items-noAdditionalIndent.tex -l=../environments/env-all-on.yaml,noAdditionalIndentItems.yaml
-latexindent.pl -s items11.tex -w
-latexindent.pl -s items12.tex -o=items12-mod0.tex -l=../environments/env-all-on.yaml
-latexindent.pl -s items12.tex -m -l=../opt-args/opt-args-remove-all.yaml,../environments/env-all-on.yaml,env-mod-lines1.yaml -o=items12-mod1.tex
+latexindent.pl -s items8 -o=+-mod0 -l=../environments/env-all-on
+latexindent.pl -s items9 -o=+-mod0 -l=../environments/env-all-on
+latexindent.pl -s items10 -w
+latexindent.pl -s items10 -o=+-myenv-noAdditionalIndent -l=../environments/env-all-on,myenv
+latexindent.pl -s items10 -o=+-items-noAdditionalIndent -l=../environments/env-all-on,noAdditionalIndentItems
+latexindent.pl -s items11 -w
+latexindent.pl -s items12 -o=+-mod0 -l=../environments/env-all-on
+latexindent.pl -s items12 -m -l=../opt-args/opt-args-remove-all,../environments/env-all-on,env-mod-lines1 -o=+-mod1
 
 # noAdditionalIndent
-latexindent.pl -s items12.tex -o=items12-Global.tex -l=../environments/env-all-on.yaml,noAdditionalIndentGlobal.yaml,resetItem.yaml
+latexindent.pl -s items12 -o=items12-Global -l=../environments/env-all-on,noAdditionalIndentGlobal,resetItem
 
 # indentRules
-latexindent.pl -s items12.tex -o=items12-indent-rules-Global.tex -l=../environments/env-all-on.yaml,indentRulesGlobal.yaml,resetItem.yaml
+latexindent.pl -s items12 -o=items12-indent-rules-Global -l=../environments/env-all-on,indentRulesGlobal,resetItem
 
 # poly-switch bug reported at https://github.com/cmhughes/latexindent.pl/issues/94
-latexindent.pl -s -m bug1.tex -o=+-mod0 -l=bug.yaml
+latexindent.pl -s -m bug1 -o=+-mod0 -l=bug
 
 # itemsep issue https://github.com/cmhughes/latexindent.pl/issues/249
-latexindent.pl -s issue-249.tex -o=+-mod0
+latexindent.pl -s issue-249 -o=+-mod0
 
 # can be followed by, beamer stuff
-latexindent.pl -s issue-307.tex -o=+-mod0
+latexindent.pl -s issue-307 -o=+-mod0
 
 # issue 467, comments following item
-latexindent.pl -s issue-467.tex -o +-mod1
+latexindent.pl -s issue-467 -o +-mod1
 
 # issue 492
-latexindent.pl -s -m -l issue-492.yaml issue-492.tex -o +-mod1
-latexindent.pl -s -m -l issue-492a.yaml issue-492.tex -o +-mod2
+latexindent.pl -s -m -l issue-492a issue-492 -o +-mod2
 
-latexindent.pl -s -l issue-507.yaml issue-507.tex -o=+-mod1
-latexindent.pl -s -l issue-507a.yaml issue-507.tex -o=+-mod2
+latexindent.pl -s -l issue-507 issue-507 -o=+-mod1
+latexindent.pl -s -l issue-507a issue-507 -o=+-mod2
 
-latexindent.pl -s -l issue-518.yaml issue-518.tex -o=+-mod1
+latexindent.pl -s -l issue-518 issue-518 -o=+-mod1
 
-[[ $noisyMode == 1 ]] && makenoise
-[[ $gitStatus == 1 ]] && git status
+set +x 
+wrapuptasks

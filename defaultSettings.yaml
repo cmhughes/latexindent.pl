@@ -229,9 +229,9 @@ indentAfterItems:
 # then populate them here; note that you can trick latexindent.pl
 # into indenting all kinds of commands (within environments specified in
 # indentAfterItems) using this technique.
-itemNames:
-  item: 1
-  myitem: 1
+itemNames:                         #<---- DITCH !!!!!!!!!!!!!!!!
+  item: 1                          #<---- DITCH !!!!!!!!!!!!!!!!
+  myitem: 1                        #<---- DITCH !!!!!!!!!!!!!!!!
 
 # specialBeginEnd is, by default, mathmode focus, although
 # there's no restrictions
@@ -506,7 +506,8 @@ fineTuning:
   commands:
     name: [+a-zA-Z@\*0-9_\:]+
   items:
-    canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)
+    itemRegEx: \\(?:item|myitem)             #<!---------- NEW
+    canBeFollowedBy: (?:\[[^]]*?\])|(?:<[^>]*?>)  #<!------------- DITCH
   keyEqualsValuesBracesBrackets:
     name: [a-zA-Z@\*0-9_\/.:\#-]+[a-zA-Z@\*0-9_\/.\h\{\}:\#-]*
     follow: (?:(?<!\\)\{)|,|(?:(?<!\\)\[)     #<!------------- DITCH

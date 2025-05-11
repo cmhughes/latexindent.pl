@@ -83,7 +83,7 @@ sub _mlb_begin_starts_on_own_line {
             }
             elsif ( $_ == 2 ) {
                 ${$self}{begin} =~ s/^(\h*)//s;
-                ${$self}{begin} = "$tokens{mSwitchComment}\n" . ${$self}{begin};
+                ${$self}{begin} = $tokens{mSwitchComment}."\n" . ${$self}{begin};
                 $logger->trace(
                     "Adding a COMMENT and linebreak *before* begin statement \t\t ($BeginStringLogFile == 2)")
                     if $is_t_switch_active;
@@ -150,6 +150,7 @@ sub _mlb_body_starts_on_own_line {
                     $logger->trace("Adding a % at the end of begin followed by a linebreak ($BodyStringLogFile == 2)")
                         if $is_t_switch_active;
                     $trailingCommentToken = "%" . $self->add_comment_symbol;
+                    ${$self}{begin} =~ s/\h*$//s;
                     ${$self}{begin} .= "$trailingCommentToken\n";
                     ${$self}{linebreaksAtEnd}{begin} = 1;
                     ${$self}{body} =~ s/^\h*//;

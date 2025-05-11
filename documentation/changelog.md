@@ -18,6 +18,24 @@
 </tr>
 <tr>
   <td>
+<pre>
+itemNames: 
+  item: 1  
+  myitem: 1
+</pre>
+  </td>
+  <td>
+<pre>
+fineTuning:
+  items:
+    itemRegEx: \\(?:item|myitem)
+</pre>
+  </td>
+  <td>
+  </td>
+</tr>
+<tr>
+  <td>
   <pre>
 specialBeginEnd:
   displayMathTeX:
