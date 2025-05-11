@@ -15,7 +15,7 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 2775
+# total number of test cases: 2776
 # total number of test cases last updated: 2025-05-11
 #-----------------------------
 
@@ -175,6 +175,9 @@ do
   currentCount=$(egrep -i 'latexindent.pl' latexindent-count.log|wc -l)
   totalTestCases=$((totalTestCases+currentCount))
   checkgitdiff
+
+  # check log files for errors
+  egrep -i --color=auto 'Use of uninitialized value' latexindent-count.log
 
   echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal) [$currentCount tests]${COLOR_OFF}\r"
 

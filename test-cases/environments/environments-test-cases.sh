@@ -4,6 +4,7 @@ loopmax=48
 
 openingtasks
 
+latexindent.pl -s env-diff-opt-mand-args -o=+-mod1
 latexindent.pl -w -s environments-simple
 latexindent.pl -w -s environments-simple-nested
 latexindent.pl -w -s environments-nested-nested

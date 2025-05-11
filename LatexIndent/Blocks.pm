@@ -560,7 +560,7 @@ sub _find_all_code_blocks {
                                                     body=>$body, 
                                                     end=>$end,
                                                     modifyLineBreaksYamlName=>$modifyLineBreaksName,
-                                                    arguments=> ($+{ENVARGS}?1:0),
+                                                    arguments=> 1,
                                                     type=>"environment",
                                                     horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                     trailingComment=>$trailingComment,
@@ -916,7 +916,9 @@ sub _find_all_code_blocks {
                 $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
                 # add indentation
-                $body =~ s"^(\h)*$tokens{mSwitchComment}\s*($tokens{specialBeginEndMiddle})"$1$2"mg if defined ${$mainSettings{specialLookUpMiddle}}{$name};
+                if ($is_m_switch_active and defined ${$mainSettings{specialLookUpMiddle}}{$name}){
+                   $body =~ s"^(\h)*$tokens{mSwitchComment}\s*($tokens{specialBeginEndMiddle})"($1?$1:q()).$2;"emg;
+                }
                 $body =~ s"^"$addedIndentation"mg;
                 $body =~ s"^$addedIndentation""s if !$linebreaksAtEndBegin;
                 
