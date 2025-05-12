@@ -1532,6 +1532,12 @@ sub _find_env_items {
                        $body = ${$codeBlockObj}{body};
                        $end = ${$codeBlockObj}{end};
 
+                       # itemStartsOnOwnLine == 4, forced blank line
+                       if (${$codeBlockObj}{BeginStartsOnOwnLine} == 4 ){
+                            $begin =~ s@($tokens{blanklines})\s*$tokens{mBeforeBeginLineBreakREMOVE}@$1\n@s;
+                            $begin =~ s@$tokens{mBeforeBeginLineBreakADD}@\n@s;
+                       }
+
                        # need to avoid, for example,
                        #
                        #    itemtwo

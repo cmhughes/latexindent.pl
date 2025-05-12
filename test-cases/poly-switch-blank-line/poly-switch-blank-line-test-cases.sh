@@ -2,7 +2,7 @@
 loopmax=0
 . ../common.sh
 
-[[ $silentMode == 0 ]] && set -x 
+openingtasks
 
 # blank line poly-switch, https://github.com/cmhughes/latexindent.pl/issues/146
 
@@ -41,8 +41,7 @@ latexindent.pl -s -m mycommand1.tex -y="modifyLineBreaks:optionalArguments:RSqBS
 # https://github.com/cmhughes/latexindent.pl/issues/160
 latexindent.pl -s -m xaltsc.tex -l=xaltsc.yaml -o=+-mod1
 latexindent.pl -s -m -r xaltsc.tex -l=xaltsc2.yaml -o=+-mod2
-
 latexindent.pl -s -m -l issue-492 issue-492 -o +-mod1
 
-[[ $gitStatus == 1 ]] && git status
-[[ $noisyMode == 1 ]] && makenoise
+set +x 
+wrapuptasks
