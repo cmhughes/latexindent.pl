@@ -283,6 +283,7 @@ I find that the following quotes resonate with me with regards to my approach to
 - *Gwneuwch y pethau bychain, do the little things*, Dewi Sant
 - *We are our mistakes. Sometimes they are the best part of us*. Harlen Coben, Think Twice
 - *Formatting. Indentation. Style. Code layout. Whatever you choose to call it, it's one of the most contentious aspects of programming discipline.* Damian Conway, Perl Best Practices, chapter 2.
+- *If you're not making mistakes, then you're not doing anything*, John Woodern
 
 ## changelog
 [changelog.md](documentation/changelog.md) provides details of the history of the project.
