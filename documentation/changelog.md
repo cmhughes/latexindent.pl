@@ -2,6 +2,9 @@
 
 # changelog.md
 
+## V3.24.6, August 8, 2025
+* bug fix for align at ampersand, see [issue 595](https://github.com/cmhughes/latexindent.pl/issues/595)
+
 ## V3.24.5, March 13, 2025
 * aarch64 linux binary to releases, see [issue 560](https://github.com/cmhughes/latexindent.pl/issues/560), thanks to @life00
 * `oneSentencePerLine` update, see [issue 579](https://github.com/cmhughes/latexindent.pl/issues/579), thanks to @desk7
