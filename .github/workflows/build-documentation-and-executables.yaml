@@ -28,7 +28,7 @@ jobs:
       - name: load the "base actions/checkout" so as to access latexindent.pl
         uses: actions/checkout@v4
       - name: installing texlive full
-        uses: xu-cheng/texlive-action@v2
+        uses: xu-cheng/texlive-action@v3
         with:
           scheme: full
           run: |

@@ -762,7 +762,7 @@ sub dont_measure {
                 #         dontMeasure:
                 #           -
                 #               this: \multicolumn{1}{c}{Expiry}
-                next if ( defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                next if ( defined ${$_}{applyTo} and ${$_}{applyTo} ne "cell" );
                 $logger->trace("CELL FOUND (this): ${$_}{this} and will not be measured") if ($is_t_switch_active);
                 ${ $cellStorage[ $input{row} ][ $input{column} ] }{measureThis} = 0;
                 ${ $cellStorage[ $input{row} ][ $input{column} ] }{type}        = "X";
@@ -785,7 +785,7 @@ sub dont_measure {
                 #         dontMeasure:
                 #           -
                 #               regex: \multicolumn{1}{c}{Expiry}
-                next if ( defined ${$_}{applyTo} and !${$_}{applyTo} eq "cell" );
+                next if ( defined ${$_}{applyTo} and ${$_}{applyTo} ne "cell" );
                 my $regex = qr/${$_}{regex}/;
                 next unless ${ $cellStorage[ $input{row} ][ $input{column} ] }{entry} =~ m/${$_}{regex}/;
                 $logger->trace("CELL FOUND (regex): ${$_}{regex} and will not be measured") if ($is_t_switch_active);
