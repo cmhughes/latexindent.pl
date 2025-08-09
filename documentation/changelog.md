@@ -1,4 +1,4 @@
-<!-- announcement: aarch 64 binary, and small update to oneSentencePerLine -->
+<!-- announcement: bug fix for align at ampersand -->
 
 # changelog.md
 
