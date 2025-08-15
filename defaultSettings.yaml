@@ -644,7 +644,7 @@ fineTuning:
     name: [0-9\.a-zA-Z@\*><]+?
     follow: \h|\R|\{|\[|\$|\)|\(
   UnNamedGroupingBracesBrackets:
-    follow: \{|\[|,|&|\)|\(|\$
+    follow: \{|\[|,|&|\)|\(|\$|\_|\^
   arguments:
     before: (?:#\d\h*;?,?\/?)+|\<.*?\>
     between: _|\^|\*
