@@ -1053,7 +1053,7 @@ An overview of how the oneSentencePerLine routine feature works:
 
    #. *end* with the fields specified in ``sentencesEndWith``
 
-#. by default, the oneSentencePerLine routine will remove line breaks within sentences because ``removeBlockLineBreaks`` is set to 1; switch it to 0 if you wish to change this;
+#. by default, the oneSentencePerLine routine will remove line breaks within sentences because ``removeSentenceLineBreaks`` is set to 1; switch it to 0 if you wish to change this;
 
 #. sentences can be text wrapped according to ``textWrapSentences``, and will be done either ``before`` or ``after`` the main indentation routine (see :numref:`subsubsec:ospl:before:after`);
 
