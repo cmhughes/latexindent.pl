@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 #
-#   latexindent.pl, version 3.24.6, 2025-08-08
+#   latexindent.pl, version 3.24.7, 2025-08-15
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
 #
 #	See http://www.gnu.org/licenses/.
 #
-#	Chris Hughes, 2017
+#	Chris Hughes, 2017-2025
 #
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 

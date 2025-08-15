@@ -1,6 +1,9 @@
-<!-- announcement: aarch 64 binary, and small update to oneSentencePerLine -->
+<!-- announcement: bug fix for named braces -->
 
 # changelog.md
+
+## V3.24.7, August 15, 2025
+* bug fix for named braces, see [issue 563](https://github.com/cmhughes/latexindent.pl/issues/563), thanks to @torik42
 
 ## V3.24.6, August 8, 2025
 * bug fix for align at ampersand, see [issue 595](https://github.com/cmhughes/latexindent.pl/issues/595)

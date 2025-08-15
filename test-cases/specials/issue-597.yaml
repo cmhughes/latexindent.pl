@@ -1,0 +1,5 @@
+specialBeginEnd:
+  Tokariew:
+    begin: \\todo[a-zA-Z]+
+    end: (?:\s*\{[^}]*\})+
+    lookForThis: verbatim

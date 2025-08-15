@@ -358,8 +358,11 @@ jobs:
       - name: create latexindent.zip
         run: |
           mv latexindent/bin/linux/latexindent-linux latexindent/bin/linux/latexindent
+          chmod 0755 latexindent/bin/linux/latexindent
           mv latexindent/bin/linux-arm64/latexindent-linux-arm64 latexindent/bin/linux-arm64/latexindent
+          chmod 0755 latexindent/bin/linux-arm64/latexindent
           mv latexindent/bin/macos/latexindent-macos latexindent/bin/macos/latexindent
+          chmod 0755 latexindent-macos latexindent/bin/macos/latexindent
           zip -r latexindent.zip latexindent/
           mkdir -p target/release
           cp latexindent.zip target/release

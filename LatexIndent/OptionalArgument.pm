@@ -12,7 +12,7 @@ package LatexIndent::OptionalArgument;
 #
 #	See http://www.gnu.org/licenses/.
 #
-#	Chris Hughes, 2017
+#	Chris Hughes, 2017-2025
 #
 #	For all communication, please visit: https://github.com/cmhughes/latexindent.pl
 use strict;
