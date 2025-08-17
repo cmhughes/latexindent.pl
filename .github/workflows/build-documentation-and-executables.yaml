@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: installing texlive full
         uses: xu-cheng/texlive-action@v3
         with:
@@ -70,7 +70,7 @@ jobs:
       # https://github.com/actions/checkout
       #
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
@@ -129,7 +129,7 @@ jobs:
       # https://github.com/actions/checkout
       #
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
@@ -184,7 +184,7 @@ jobs:
       # https://github.com/actions/checkout
       #
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
@@ -239,7 +239,7 @@ jobs:
       # https://github.com/actions/checkout
       #
       - name: load the "base actions/checkout" so as to access latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       #
       # https://github.com/marketplace/actions/setup-perl-environment
       #
@@ -291,7 +291,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Loading the "base actions/checkout" so as to access the repository latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: copy source files from repository into temporary folder
         run: |
           mkdir latexindent
@@ -384,7 +384,7 @@ jobs:
     needs: [zip-files]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       # 
       # download artifacts
       #
@@ -447,7 +447,7 @@ jobs:
           echo "version=$(echo ${{ github.ref }}|cut -d'/' -f 3)" >> $GITHUB_OUTPUT
           echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
       - name: Loading the "base actions/checkout" so as to access the repository latexindent.pl
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: get latexindent announcement text from changelog.md
         id: announcement
         run: |
