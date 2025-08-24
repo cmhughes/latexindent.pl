@@ -1,4 +1,4 @@
-FROM perl:5.36.1-slim-threaded-buster
+FROM perl:5.41.13-slim-threaded-bookworm
 #
 # GitHub codespaces necessary file
 #
