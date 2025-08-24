@@ -234,7 +234,7 @@ I align with many of the approaches and details at [Dramatically increase your p
 
 ## perl version
 
-I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.40.0
+I develop latexindent.pl on Ubuntu Linux, using [perlbrew](https://perlbrew.pl/); I currently develop on perl version v5.42.0
 
 ## GitHub Actions
 The standalone executables `latexindent.exe`, `latexindent-linux`, `latexindent-macos` are created and released by [GitHub Actions](https://github.com/features/actions); the

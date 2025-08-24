@@ -1,4 +1,4 @@
-FROM perl:5.40.0-slim-threaded-buster
+FROM perl:5.42.0-slim-threaded-bookworm
 #
 # Docker necessary file
 #
@@ -17,7 +17,7 @@ FROM perl:5.40.0-slim-threaded-buster
 #
 
 ARG LATEXINDENT_VERSION
-ENV LATEXINDENT_VERSION ${LATEXINDENT_VERSION:-V3.24.7}
+ENV LATEXINDENT_VERSION=${LATEXINDENT_VERSION:-V3.24.7}
 
 RUN apt-get update \
     && apt-get install \
