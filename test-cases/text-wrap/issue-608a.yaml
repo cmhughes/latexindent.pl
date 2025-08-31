@@ -1,0 +1,17 @@
+modifyLineBreaks:
+    condenseMultipleBlankLinesInto: 1
+    oneSentencePerLine:
+        manipulateSentences: 1
+        removeSentenceLineBreaks: 1
+        multipleSpacesToSingle: 1
+        textWrapSentences: 1
+        sentencesFollow:
+          other: \\item
+    textWrapOptions:
+        columns: 40
+        when: after
+
+replacements:
+  - 
+    when: after
+    substitution: s/(\\item)\s*/$1 /sg
