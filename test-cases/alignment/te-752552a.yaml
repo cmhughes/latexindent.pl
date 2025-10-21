@@ -1,0 +1,30 @@
+defaultIndent: " "
+
+replacements:
+  -
+   when: after
+   substitution: |-
+     s/(\\begin\{prooftree\})(.*?)(\\end\{prooftree\})/
+       my $begin = $1;
+       my $body = $2;
+       my $end = $3;
+       my @lines = split("\n",$body);
+       my @beforeJustLengths;
+       # loop 1 of 2: measure content BEFORE just
+       foreach (@lines){
+          next unless $_ =~ m".*just";
+          $_ =~ s"(just.*)$"";
+          push(@beforeJustLengths,length($_));
+          $_ = $_.$1;
+       };
+       # sort the lengths min to max
+       @beforeJustLengths = sort { $a <=> $b } @beforeJustLengths;
+       # loop 2 of 2: adjust spacing before just
+       foreach (@lines){
+          next unless $_ =~ m".*just";
+          $_ =~ s"\h*(just.*)$"";
+          $_ = $_.(" "x($beforeJustLengths[-1]-length($_))).$1;
+       };
+       # put it all back together
+       $body = join("\n",@lines)."\n";
+       $begin.$body.$end;/xesg
