@@ -32,7 +32,7 @@ use LatexIndent::Check       qw/simple_diff/;
 use LatexIndent::Lines       qw/lines_body_selected_lines lines_verbatim_create_line_block/;
 use LatexIndent::Replacement qw/make_replacements/;
 use LatexIndent::GetYamlSettings
-    qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings /;
+    qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings yaml_get_alignment_at_ampersand_from_parent/;
 use LatexIndent::FileExtension       qw/file_extension_check/;
 use LatexIndent::BackUpFileProcedure qw/create_back_up_file check_if_different/;
 use LatexIndent::BlankLines          qw/protect_blank_lines unprotect_blank_lines condense_blank_lines/;
@@ -41,7 +41,7 @@ use LatexIndent::ModifyLineBreaks
 use LatexIndent::Sentence qw/one_sentence_per_line/;
 use LatexIndent::Wrap     qw/text_wrap text_wrap_comment_blocks/;
 use LatexIndent::TrailingComments
-    qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp/;
+    qw/remove_trailing_comments put_trailing_comments_back_in add_comment_symbol construct_trailing_comment_regexp $alignMarkUpBlockPresent/;
 use LatexIndent::HorizontalWhiteSpace qw/remove_trailing_whitespace remove_leading_space/;
 use LatexIndent::Indent
     qw/indent wrap_up_statement determine_total_indentation indent_begin indent_body indent_end_statement final_indentation_check  get_surrounding_indentation indent_children_recursively check_for_blank_lines_at_beginning put_blank_lines_back_in_at_beginning add_surrounding_indentation_to_begin_statement post_indentation_check replace_id_with_begin_body_end/;
@@ -49,12 +49,12 @@ use LatexIndent::Tokens qw/token_check %tokens/;
 use LatexIndent::HiddenChildren
     qw/find_surrounding_indentation_for_children update_family_tree get_family_tree check_for_hidden_children hidden_children_preparation_for_alignment unpack_children_into_body/;
 use LatexIndent::AlignmentAtAmpersand
-    qw/align_at_ampersand find_aligned_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
+    qw/align_at_ampersand _align_mark_down_block double_back_slash_else main_formatting individual_padding multicolumn_padding multicolumn_pre_check  multicolumn_post_check dont_measure hidden_child_cell_row_width hidden_child_row_width /;
 use LatexIndent::DoubleBackSlash qw/dodge_double_backslash un_dodge_double_backslash/;
 
 # code blocks
 use LatexIndent::Verbatim
-    qw/_find_verbatim_all put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
+    qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands  find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 use LatexIndent::Environment qw/find_environments $environmentBasicRegExp construct_environments_regexp/;
 use LatexIndent::IfElseFi    qw/find_ifelsefi construct_ifelsefi_regexp $ifElseFiBasicRegExp/;
 use LatexIndent::Else        qw/check_for_else_statement/;
@@ -175,14 +175,28 @@ sub operate_on_file {
     $self->_mlb_file_starts_with_line_break( when => "before" ) if $is_m_switch_active;
     unless ($is_rr_switch_active) {
         $self->construct_regular_expressions;
-        $self->_find_verbatim_all;
+
+        # ---------- verbatim -------------------
+        $self->find_noindent_block;
+        $self->find_verbatim_commands;
+        $self->remove_trailing_comments;
+        $self->find_verbatim_environments;
+        $self->find_verbatim_special;
         $self->_mlb_verbatim( when => "beforeTextWrap" ) if $is_m_switch_active;
-        $self->make_replacements( when => "before" )     if $is_rv_switch_active;
-        $self->protect_blank_lines                       if $is_m_switch_active;
+
+        # ---------- END verbatim -------------------
+        $self->make_replacements( when => "before" ) if $is_rv_switch_active;
+        $self->protect_blank_lines                   if $is_m_switch_active;
         $self->remove_trailing_whitespace( when => "before" );
         $self->find_file_contents_environments_and_preamble;
         $self->dodge_double_backslash;
         $self->remove_leading_space;
+
+        # ---------- one sentence per line, text wrap -------------------
+        $self->mlb_pre_indent_sentence_and_text_wrap if $is_m_switch_active;
+
+        $self->_align_mark_down_block
+            if $alignMarkUpBlockPresent;    # marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular}
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
         ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
         $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
@@ -348,7 +362,7 @@ sub process_body_of_text {
     return;
 }
 
-sub find_objects {
+sub mlb_pre_indent_sentence_and_text_wrap {
     my $self = shift;
 
     # one sentence per line: sentences are objects, as of V3.5.1
@@ -383,31 +397,6 @@ sub find_objects {
         if ( $is_m_switch_active
         and ${ ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{comments} }{wrap}
         and ${ $mainSettings{modifyLineBreaks}{textWrapOptions} }{when} eq 'before' );
-
-    # search for environments
-    $logger->trace('*looking for ENVIRONMENTS') if $is_t_switch_active;
-    $self->find_environments                    if ${$self}{body} =~ m/$environmentBasicRegExp/s;
-
-    # search for ifElseFi blocks
-    $logger->trace('*looking for IFELSEFI') if $is_t_switch_active;
-    $self->find_ifelsefi                    if ${$self}{body} =~ m/$ifElseFiBasicRegExp/s;
-
-    # search for headings (part, chapter, section, setc)
-    $logger->trace('*looking for HEADINGS (chapter, section, part, etc)') if $is_t_switch_active;
-    $self->find_heading                                                   if ${$self}{body} =~ m/$allHeadingsRegexp/s;
-
-    # the ordering of finding commands and special code blocks can change
-    $self->find_commands_or_key_equals_values_braces_and_special
-        if ${$self}{body} =~ m/$specialBeginAndBracesBracketsBasicRegExp/s;
-
-    # if there are no children, return
-    if ( ${$self}{children} ) {
-        $logger->trace("*Objects have been found.") if $is_t_switch_active;
-    }
-    else {
-        $logger->trace("No objects found.");
-        return;
-    }
 
     # logfile information
     $logger->trace( Dumper( \%{$self} ) ) if ($is_tt_switch_active);

@@ -191,7 +191,7 @@ egrep 'found:' indent.log > issue-379-mod1.txt
 latexindent.pl -s commands-keys -l commands-keys -o=+-mod1
 
 # from the documentation
-latexindent.pl -s stars-from-documentation -o stars-from-documentation-default.tex
+latexindent.pl -s stars-from-documentation -o=+-default
 
 # small test case for environments
 latexindent.pl -s -t testcls-small.cls -o=+-default.cls

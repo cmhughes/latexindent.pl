@@ -1,0 +1,11 @@
+specialBeginEnd:
+  -
+   name: funkyLeftRight
+   begin: '\\left\('
+   end: '\\right\)'
+  -
+   name: displayMath
+   nested: 1
+
+logFilePreferences:
+  showAmalgamatedSettings: 1

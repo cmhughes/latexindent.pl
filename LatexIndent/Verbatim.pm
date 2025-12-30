@@ -24,22 +24,10 @@ use LatexIndent::GetYamlSettings qw/%mainSettings/;
 use LatexIndent::Switches        qw/$is_t_switch_active $is_tt_switch_active $is_m_switch_active/;
 use LatexIndent::LogFile         qw/$logger/;
 our @EXPORT_OK
-    = qw/_find_verbatim_all put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks %verbatimStorage/;
+    = qw/put_verbatim_back_in find_verbatim_environments find_noindent_block find_verbatim_commands find_verbatim_special verbatim_common_tasks %verbatimStorage/;
 our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
 our $verbatimCounter;
 our %verbatimStorage;
-
-sub _find_verbatim_all {
-    my $self = shift;
-    $self->find_noindent_block;
-    $self->find_verbatim_commands;
-    $self->remove_trailing_comments;
-    $self->find_verbatim_environments;
-    $self->find_verbatim_special;
-    $logger->trace("*Verbatim storage:")          if $is_tt_switch_active;
-    $logger->trace( Dumper( \%verbatimStorage ) ) if $is_tt_switch_active;
-    return;
-}
 
 sub find_noindent_block {
     my $self = shift;
@@ -488,6 +476,9 @@ sub find_verbatim_special {
     }
     $logger->trace("*specialBeginEnd removing any elements with lookForThis: 0") if $is_t_switch_active;
     @{ $mainSettings{specialBeginEnd} } = @specialBeginEndTrimmed;
+
+    $logger->trace("*Verbatim storage:")          if $is_tt_switch_active;
+    $logger->trace( Dumper( \%verbatimStorage ) ) if $is_tt_switch_active;
 }
 
 sub put_verbatim_back_in {

@@ -30,7 +30,7 @@ keepappendinglogfile
 latexindent.pl -m -s contributors-remove-line-breaks -o=+-vo-mod5-no-remove -l=mand-args-Vo-mod5,../commands/unprotect-blank-lines,online  -y="removeTrailingWhitespace:beforeProcessing: 0"
 
 # special characters
-latexindent.pl -s special-characters -m -l=mand-args-mod1,../filecontents/indentPreambleYes -o=+-mod1 
+latexindent.pl -s special-characters -m -l=mand-args-mod1,../filecontents/indentPreambleYes -y "lookForAlignDelims:array:0" -o=+-mod1 
 latexindent.pl -s special-characters-minimal -o=+-default
 latexindent.pl -s special-characters-minimal-blank-lines -o=+-default -g=one.log
 

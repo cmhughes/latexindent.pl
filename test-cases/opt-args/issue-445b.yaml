@@ -6,3 +6,17 @@ modifyLineBreaks:
     optionalArguments:
         cases:
            LSqBStartsOnOwnLine: 1
+
+fineTuning:
+  environments:
+    begin: \\begin\{(?!cases)[^}]+\}
+    end: \\end\{\2\}
+
+specialBeginEnd:
+  - name: cases
+    begin: \\begin\{cases\}
+    end: \\end\{cases\}
+
+lookForAlignDelims:
+  cases: 
+    lookForChildCodeBlocks: 0

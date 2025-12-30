@@ -3,3 +3,18 @@ modifyLineBreaks:
         BodyStartsOnOwnLine: 2
         cases:
           BodyStartsOnOwnLine: 0
+
+fineTuning:
+  environments:
+    begin: \\begin\{(?!cases)[^}]+\}
+    end: \\end\{\2\}
+
+specialBeginEnd:
+  - name: cases
+    begin: \\begin\{cases\}
+    end: \\end\{cases\}
+    nested: 1
+
+lookForAlignDelims:
+  cases: 
+    lookForChildCodeBlocks: 0

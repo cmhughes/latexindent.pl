@@ -83,7 +83,7 @@ sub _mlb_begin_starts_on_own_line {
             }
             elsif ( $_ == 2 ) {
                 ${$self}{begin} =~ s/^(\h*)//s;
-                ${$self}{begin} = $tokens{mSwitchComment}."\n" . ${$self}{begin};
+                ${$self}{begin} = $tokens{mSwitchComment} . "\n" . ${$self}{begin};
                 $logger->trace(
                     "Adding a COMMENT and linebreak *before* begin statement \t\t ($BeginStringLogFile == 2)")
                     if $is_t_switch_active;
@@ -552,7 +552,7 @@ sub _mlb_after_indentation_token_adjust {
     #
 
     # \fi
-    #   trailing comments added after \fi statements 
+    #   trailing comments added after \fi statements
     #   had ' ' added before them
     # we start by removing this space
     ${$self}{body} =~ s/\h$tokens{mSwitchCommentFi}/$tokens{mSwitchComment}/sg;

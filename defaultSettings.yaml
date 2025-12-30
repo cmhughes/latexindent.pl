@@ -248,7 +248,8 @@ specialBeginEnd:
     begin: \$\$                   # $$                     # NEW specified as ORDERED array
     end: \$\$                     # $$                     # NEW specified as ORDERED array
     lookForThis: 1                                         # NEW specified as ORDERED array
-  ##specialBeforeCommand: 0                                # <!---- PROBABLY DITCH
+    # nested: 0/1                                          # NEW: needs documentation
+  ### specialBeforeCommand: 0                              # <!---- PROBABLY DITCH 
 
 # if you want to add indentation after
 # a heading, such as \part, \chapter, etc

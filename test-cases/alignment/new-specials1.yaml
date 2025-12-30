@@ -2,8 +2,12 @@ specialBeginEnd:
     inlineMathLatex:
         begin: '\\\('
         end: '\\\)'
-        lookForThis: 1
+        nested: 1
     funkyLeftRight:
         begin: '\\left\\\{'
         end: '\\right\.'
-        lookForThis: 1
+        nested: 1
+    em:
+        begin: '\{\\em'
+        end: '\}'
+        lookForThis: verbatim

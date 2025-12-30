@@ -66,7 +66,7 @@ our %tokens = (
     mAfterEndRemove             => "mAfterEndRemove",
     mAfterEndLineBreak          => "mAfterEndLineBreak",
     mSwitchComment              => "mSwitchComment",
-    mSwitchCommentFi              => "mSwitchCommentFi",
+    mSwitchCommentFi            => "mSwitchCommentFi",
 
     # specialBeginEnd Middle token
     specialBeginEndMiddle => "specialMiddle",

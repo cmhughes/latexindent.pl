@@ -1,11 +1,19 @@
 defaultIndent: '  '
+
 specialBeginEnd:
-    draw:
-        begin: '\\draw'
-        end: ';'
-    specialBeforeCommand: 1
-    inlineMath:        # <---- NEW BIT           
-        lookForThis: 0 # <---- NEW BIT 
+    -
+     specialBeforeCommand: 1
+    -
+     name: draw
+     begin: '\\draw'
+     end: ';'
+    -
+     name: inlineMath        # <---- NEW BIT           
+     lookForThis: 0          # <---- NEW BIT 
+
+fineTuning:
+  commands:
+    name: (?!draw)[+a-zA-Z@\*0-9_\:]+
 
 lookForAlignDelims:
     draw:

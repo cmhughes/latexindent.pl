@@ -10,3 +10,4 @@ specialBeginEnd:
   - name: cases
     begin: \\begin\{cases\}
     end: \\end\{cases\}
+    nested: 1

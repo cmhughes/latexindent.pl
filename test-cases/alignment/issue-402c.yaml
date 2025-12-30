@@ -10,3 +10,7 @@ modifyLineBreaks:
     SpecialBodyStartsOnOwnLine: 1
     SpecialEndStartsOnOwnLine: 1
     SpecialEndFinishesWithLineBreak: 1
+
+lookForAlignDelims:
+  displayMath: 
+    alignDoubleBackSlash: 0

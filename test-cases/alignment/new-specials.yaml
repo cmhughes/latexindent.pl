@@ -1,5 +1,11 @@
 specialBeginEnd:
-    inlineMathLatex:
-        begin: '\\\('
-        end: '\\\)'
-        lookForThis: 1
+  -
+    name: inlineMathLatex
+    begin: '\\\('
+    end: '\\\)'
+    nested: 1
+  -
+    name: em
+    begin: '\{\\em'
+    end: '\}'
+    lookForThis: verbatim

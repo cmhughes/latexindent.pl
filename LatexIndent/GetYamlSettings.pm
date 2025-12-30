@@ -26,7 +26,7 @@ use Cwd;
 use Exporter             qw/import/;
 use LatexIndent::LogFile qw/$logger/;
 our @EXPORT_OK
-    = qw/yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists %polySwitchNames/;
+    = qw/yaml_get_alignment_at_ampersand_from_parent yaml_read_settings yaml_modify_line_breaks_settings yaml_get_indentation_settings_for_this_object yaml_poly_switch_get_every_or_custom_value yaml_get_indentation_information yaml_get_object_attribute_for_indentation_settings yaml_alignment_at_ampersand_settings %mainSettings %previouslyFoundSettings $argumentsBetweenCommands $commaPolySwitchExists $equalsPolySwitchExists %polySwitchNames/;
 
 # Read in defaultSettings.YAML file
 our $defaultSettings;
@@ -449,10 +449,22 @@ sub yaml_read_settings {
                                 if ( defined $mainSettings{$firstLevelKey}{$secondLevelKey}
                                     and ref $mainSettings{$firstLevelKey}{$secondLevelKey} ne "HASH" )
                                 {
+                              # tabular: 0/1 needs to be translated into
+                              #   lookForAlignDelims:
+                              #     tabular:
+                              #       delims: 0/1
+                              # see, for example, latexindent.pl -t -s table1 -o=+-mod3 -l=tabular3,multiColumnGrouping2
+                                    if ( $firstLevelKey eq 'lookForAlignDelims' ) {
+                                        my $delims = $mainSettings{$firstLevelKey}{$secondLevelKey};
+                                        delete $mainSettings{$firstLevelKey}{$secondLevelKey};
+                                        ${ $mainSettings{$firstLevelKey}{$secondLevelKey} }{delims} = $delims;
+                                    }
+                                    else {
+                                        delete $mainSettings{$firstLevelKey}{$secondLevelKey};
+                                    }
                                     $logger->trace(
                                         "*mainSettings{$firstLevelKey}{$secondLevelKey} currently contains a *scalar* value, but it needs to be updated with a hash (see $settings); deleting the scalar"
                                     ) if ($is_t_switch_active);
-                                    delete $mainSettings{$firstLevelKey}{$secondLevelKey};
                                 }
                                 while ( my ( $thirdLevelKey, $thirdLevelValue ) = each %{$secondLevelValue} ) {
                                     if ( ref $thirdLevelValue eq "HASH" ) {
@@ -523,6 +535,10 @@ sub yaml_read_settings {
                         if ( ref( ${$firstLevelValue}[0] ) eq "HASH" and defined ${$firstLevelValue}[0]{amalgamate} ) {
                             ${ $mainSettings{$firstLevelKey}[0] }{amalgamate} = ${$firstLevelValue}[0]{amalgamate};
                             shift @{$firstLevelValue} if ${ $mainSettings{$firstLevelKey}[0] }{amalgamate};
+                        }
+
+                        if ( ref( ${$firstLevelValue}[0] ) eq "HASH" and defined ${$firstLevelValue}[0]{specialBeforeCommand} ) {
+                          ${ $mainSettings{$firstLevelKey}[0] }{specialBeforeCommand} = ${$firstLevelValue}[0]{specialBeforeCommand};
                         }
 
                         # if amalgamate is set to 1, then append
@@ -1049,7 +1065,10 @@ sub yaml_read_settings {
                 BodyStartsOnOwnLine  => "NameFinishesWithLineBreak",
             }
         ),
-        items => ( { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" } ),
+        items => (
+            { BeginStartsOnOwnLine => "ItemStartsOnOwnLine", BodyStartsOnOwnLine => "ItemFinishesWithLineBreak" }
+        ),
+        DBS => ( { BeginStartsOnOwnLine => "DBSStartsOnOwnLine", BodyStartsOnOwnLine => "DBSFinishesWithLineBreak" } ),
         UnNamedGroupingBracesBrackets => ( { BeginStartsOnOwnLineAlias => undef, } ),
         specialBeginEnd               => (
             {   BeginStartsOnOwnLine     => "SpecialBeginStartsOnOwnLine",
@@ -1109,7 +1128,10 @@ sub yaml_get_indentation_settings_for_this_object {
                 "SpecialMiddleStartsOnOwnLine", "SpecialMiddleFinishesWithLineBreak",
 
                 # ifElseFi specific
-                "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak"
+                "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak",
+
+                # DBS specific
+                "DBSStartsOnOwnLine", "DBSFinishesWithLineBreak",
                 )
             {
                 ${ ${previouslyFoundSettings}{$storageName} }{$_} = ${$self}{$_} if defined ${$self}{$_};
@@ -1123,6 +1145,7 @@ sub yaml_get_indentation_settings_for_this_object {
             #
             # mandatory arguments
             #
+            my $actualModifyLineBreaksYamlName = ${$self}{modifyLineBreaksYamlName};
             ${$self}{modifyLineBreaksYamlName} = "mandatoryArguments";
             $logger->trace("${$self}{modifyLineBreaksYamlName} info:") if ($is_t_switch_active);
             ${ ${previouslyFoundSettings}{$storageName} }{mandatoryArgumentsIndentation}
@@ -1143,15 +1166,16 @@ sub yaml_get_indentation_settings_for_this_object {
                     = ${$self}{EndStartsOnOwnLine};
                 ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{RCuBFinishesWithLineBreak}
                     = ${$self}{EndFinishesWithLineBreak};
-                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{CommaStartsOnOwnLine}
-                    = ${$self}{CommaStartsOnOwnLine}
-                    if defined ${$self}{CommaStartsOnOwnLine};
-                ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{CommaFinishesWithLineBreak}
-                    = ${$self}{CommaFinishesWithLineBreak}
-                    if defined ${$self}{CommaFinishesWithLineBreak};
 
-                delete ${$self}{CommaStartsOnOwnLine};
-                delete ${$self}{CommaFinishesWithLineBreak};
+                foreach (
+                    "CommaStartsOnOwnLine", "CommaFinishesWithLineBreak",
+                    "DBSStartsOnOwnLine",   "DBSFinishesWithLineBreak"
+                    )
+                {
+                    next unless defined ${$self}{$_};
+                    ${ ${ ${previouslyFoundSettings}{$storageName} }{mand} }{$_} = ${$self}{$_};
+                    delete ${$self}{$_};
+                }
             }
 
             #
@@ -1177,13 +1201,19 @@ sub yaml_get_indentation_settings_for_this_object {
                     = ${$self}{EndStartsOnOwnLine};
                 ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{RSqBFinishesWithLineBreak}
                     = ${$self}{EndFinishesWithLineBreak};
-                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{CommaStartsOnOwnLine}
-                    = ${$self}{CommaStartsOnOwnLine}
-                    if defined ${$self}{CommaStartsOnOwnLine};
-                ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{CommaFinishesWithLineBreak}
-                    = ${$self}{CommaFinishesWithLineBreak}
-                    if defined ${$self}{CommaFinishesWithLineBreak};
+                foreach (
+                    "CommaStartsOnOwnLine", "CommaFinishesWithLineBreak",
+                    "DBSStartsOnOwnLine",   "DBSFinishesWithLineBreak"
+                    )
+                {
+                    next unless defined ${$self}{$_};
+                    ${ ${ ${previouslyFoundSettings}{$storageName} }{opt} }{$_} = ${$self}{$_};
+                    delete ${$self}{$_};
+                }
             }
+
+            # change modifyLineBreaksYamlName back to its actual value (it's not an argument)
+            ${$self}{modifyLineBreaksYamlName} = $actualModifyLineBreaksYamlName;
         }
 
         # text wrap 'after' information
@@ -1217,6 +1247,19 @@ sub yaml_get_indentation_settings_for_this_object {
         ${$self}{$key} = $value;
     }
 
+    return;
+}
+
+sub yaml_get_alignment_at_ampersand_from_parent {
+
+    # arguments get alignment settings from their parent information
+    # see, for example, test-cases/alignment/matrix1.tex
+    my $self       = shift;
+    my $parentName = shift;
+    foreach (@alignAtAmpersandInformation) {
+        ${$self}{ ${$_}{name} } = ${ ${previouslyFoundSettings}{$parentName} }{ ${$_}{name} }
+            if ( defined ${ ${previouslyFoundSettings}{$parentName} }{ ${$_}{name} } );
+    }
     return;
 }
 

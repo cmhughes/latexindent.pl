@@ -26,8 +26,9 @@ use LatexIndent::Tokens           qw/%tokens/;
 use LatexIndent::ModifyLineBreaks qw/_mlb_line_break_token_adjust/;
 use Data::Dumper;
 use Exporter qw/import/;
-our @ISA                     = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
-our @EXPORT_OK               = qw/$braceBracketRegExpBasic _find_all_code_blocks _construct_code_blocks_regex/;
+our @ISA = "LatexIndent::Document";    # class inheritance, Programming Perl, pg 321
+our @EXPORT_OK
+    = qw/$mSwitchOnlyTrailing $allCodeBlocks _find_all_code_blocks _construct_code_blocks_regex $braceBracketRegExpBasic/;
 our $braceBracketRegExpBasic = qr/\{|\[/;
 
 our $allCodeBlocks;
@@ -297,21 +298,30 @@ sub _construct_code_blocks_regex {
         $allCodeBlocks = qr{
             (\s*)                                                 # $1 leading space
             (?:
-               (                                                  # $2 <thing><arguments>
+               (?<THINGWITHARGS>                                  # $2 <thing><arguments>
                   (?>                                             #    prevent backtracking
                     (                                             # $3 name
-                      (\\                                         # $4 command
-                        ((?!(?:begin|end))$commandName)           # $5 command name
+                      (?<COMMAND>
+                        \\                                        # $4 command
+                        (?<COMMANDNAME>
+                          (?!(?:begin|end))$commandName
+                        )                                         # $5 command name
                       )                                           #
                       |                                           #
-                      ($keyEqVal)                                 # $6 key=value name
+                      (?<KEYEQVAL>
+                         $keyEqVal
+                      )                                           # $6 key=value name
                       |                                           #
-                      ((?<!\\)(?<![a-zA-Z])$namedBracesBrackets)  # $7 named braces name
+                      (?<NAMEDBRACESBRACKETS>
+                          (?<!\\)(?<![a-zA-Z])$namedBracesBrackets
+                      )                                           # $7 named braces name
                       |                                           #
-                      (?<![a-zA-Z])$unNamed                       #    unnamed braces or brackets
+                      (?<UNNAMEDBRACESBRACKETS>
+                         (?<![a-zA-Z])$unNamed                    #    unnamed braces or brackets
+                      )
                     )                                             #
                   )
-                  (                                               # $8 arguments
+                  (?<ARGUMENTS>                                   # $8 arguments
                    (?:                                            #
                     $allArgumentRegEx                             #
                    )+                                             #
@@ -554,7 +564,21 @@ sub _find_all_code_blocks {
              my $trailingComment=($+{TRAILINGCOMMENT}?$+{TRAILINGCOMMENT}:q());
              my $linebreaksAtEnd=( $+{TRAILINGLINEBREAK} ? $+{TRAILINGLINEBREAK} : q());
 
-             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+             $logger->trace("*found: $name \t type: environments")         if $is_t_switch_active;
+             
+             # align at ampersand
+             my $lookForAlignDelims = 0;
+             if (defined $previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                $lookForAlignDelims = (defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                       ?
+                                       ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                       :
+                                       0
+                                       );
+                $logger->trace("alignment at ampersand ACTIVE")         if ($is_t_switch_active and $lookForAlignDelims) ;
+             }
+
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $lookForAlignDelims or $is_m_switch_active){
                 $codeBlockObj = LatexIndent::Environment->new(name=>$name,
                                                     begin=>$begin,
                                                     body=>$body, 
@@ -570,17 +594,19 @@ sub _find_all_code_blocks {
                 );
              }
 
-             $logger->trace("*found: $name \t type: $modifyLineBreaksName")         if $is_t_switch_active;
-             
              # store settings for future use
-             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $lookForAlignDelims ){
                 $codeBlockObj->yaml_get_indentation_settings_for_this_object;
+                $lookForAlignDelims = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                      if defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims};
              }
              
              # argument indentation
              my $argBody = q();
              if ($+{ENVARGS}){
                 $argBody = $+{ENVARGS};
+                $logger->trace("*found: arguments for $name environment")         if $is_t_switch_active;
+                $logger->trace("$argBody")         if $is_t_switch_active;
                 if ($argBody =~ m@^\s*$trailingCommentRegExp\s*$@s){
                   $body = $argBody.$body;
                   $argBody = q();
@@ -669,7 +695,7 @@ sub _find_all_code_blocks {
                       $begin = $begin.$argBody;
                    }
 
-                   # delete arg body for future as we don't want to duplicate them later on
+                   # delete arg body for future as we don't want duplication
                    $argBody = q();
 
                    $linebreaksAtEndBegin = ${${$codeBlockObj}{linebreaksAtEnd}}{begin};
@@ -678,11 +704,29 @@ sub _find_all_code_blocks {
                    $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
              }
 
+             ${$codeBlockObj}{body} = $body;
+
+             #
+             # align at ampersand
+             #
+             if ($lookForAlignDelims){
+                 # environment argument or body needs care, see alignment SLASH environments.tex for example
+                 if (!$is_m_switch_active and $argBody and ${$codeBlockObj}{body} !~ m@^\R@s){
+                     ${$codeBlockObj}{body} = $argBody.${$codeBlockObj}{body};
+                     $argBody = q();
+                 }
+
+                 $codeBlockObj->align_at_ampersand;  
+                 $begin = ${$codeBlockObj}{begin} if ${$codeBlockObj}{beginAdjusted};
+                 $body = ${$codeBlockObj}{body};
+                 $addedIndentation = ${$codeBlockObj}{indentation} if defined ${$codeBlockObj}{indentation};
+             }
+
+             # prepend argument body
+             $body = $argBody.$body;
+
              # environment BODY indentation, possibly
              if ($addedIndentation ne ''){
-
-                # prepend argument body (when m switch not active)
-                $body = $argBody.$body;
 
                 # add indentation
                 $body =~ s"^"$addedIndentation"mg if ($body !~ m@^\s*$@s);
@@ -846,8 +890,20 @@ sub _find_all_code_blocks {
                 }
              }
              $name = $specialLookUpName{$lookupBegin};
+             
+             # align at ampersand
+             my $lookForAlignDelims = 0;
+             if (defined $previouslyFoundSettings{$name.$modifyLineBreaksName}){
+                $lookForAlignDelims = (defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                       ?
+                                       ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                       :
+                                       0
+                                       );
+                $logger->trace("alignment at ampersand ACTIVE")         if ($is_t_switch_active and $lookForAlignDelims) ;
+             }
 
-             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $is_m_switch_active){
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $lookForAlignDelims or $is_m_switch_active){
                 $codeBlockObj = LatexIndent::Special->new(name=>$name,
                                                     begin=>$begin,
                                                     body=>$body,
@@ -866,8 +922,10 @@ sub _find_all_code_blocks {
              $logger->trace("*found: $name \t type: $modifyLineBreaksName")         if $is_t_switch_active;
              
              # store settings for future use
-             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName}){
+             if (!$previouslyFoundSettings{$name.$modifyLineBreaksName} or $lookForAlignDelims ){
                 $codeBlockObj->yaml_get_indentation_settings_for_this_object;
+                $lookForAlignDelims = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims}
+                                      if defined ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{lookForAlignDelims};
              }
              
              # ***
@@ -877,6 +935,8 @@ sub _find_all_code_blocks {
 
              # look for middle, if it is defined
              $body = _find_special_middle($body, $name, $modifyLineBreaksName) if defined ${$mainSettings{specialLookUpMiddle}}{$name};
+
+             $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
 
              #
              # m switch linebreak adjustment
@@ -911,10 +971,18 @@ sub _find_all_code_blocks {
                    $linebreaksAtEndBegin = ($body =~ m@^\h*\R@ ? 1 : 0);
              }
 
+             #
+             # align at ampersand
+             #
+             if ($lookForAlignDelims){
+                 $codeBlockObj->align_at_ampersand;  
+                 $begin = ${$codeBlockObj}{begin};
+                 $body = ${$codeBlockObj}{body};
+                 $addedIndentation = ${$codeBlockObj}{indentation} if defined ${$codeBlockObj}{indentation};
+             }
+
              # special BODY indentation, possibly
              if (${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation} ne ''){
-                $addedIndentation = ${$previouslyFoundSettings{$name.$modifyLineBreaksName}}{indentation};
-
                 # add indentation
                 if ($is_m_switch_active and defined ${$mainSettings{specialLookUpMiddle}}{$name}){
                    $body =~ s"^(\h)*$tokens{mSwitchComment}\s*($tokens{specialBeginEndMiddle})"($1?$1:q()).$2;"emg;
@@ -929,28 +997,28 @@ sub _find_all_code_blocks {
              }
        } else {
           # argument body is always in $8
-          my $argBody = $8;
+          my $argBody = $+{ARGUMENTS};
           my $keyEqualsValue = q();
 
           #
           # command
           #
-          if ($4) {                                                    # 
+          if ($+{COMMAND}) {                                                    # 
              $begin = $1.q(\\);                                        # \\
-             $name = $5;                                               # <command name>
+             $name = $+{COMMANDNAME};                                  # <command name>
              $modifyLineBreaksName="commands";                         # 
-          } elsif ($7) {                                               # <name of named braces brackets>
+          } elsif ($+{NAMEDBRACESBRACKETS}) {                          # <name of named braces brackets>
           #                                                            # 
           # named braces or brackets                                   # 
           #                                                            # 
              $begin = $1;                                              # <possible leading space> 
-             $name = $7 ;                                              # <name of named braces brackets>
+             $name = $+{NAMEDBRACESBRACKETS} ;                         # <name of named braces brackets>
              $modifyLineBreaksName="namedGroupingBracesBrackets";      # 
-          } elsif($6)  {                                               # -------------------------------- 
+          } elsif($+{KEYEQVAL})  {                                               # -------------------------------- 
           #                                                            # 
           # key = braces or brackets                                   # 
           #                                                            # 
-             $name = $6;                                               # <name of key = value braces brackets>
+             $name = $+{KEYEQVAL};                                     # <name of key = value braces brackets>
              $name =~ s^((?:\s|$trailingCommentRegExp|$tokens{blanklines})*=)^^s;                                    # 
              $keyEqualsValue = $1;
              $begin = $begin.$name;
@@ -1084,6 +1152,12 @@ sub _indent_all_args {
         = ${ $previouslyFoundSettings{$commandStorageName} }{mandatoryArgumentsIndentation};
     my $optionalArgumentsIndentation = ${ $previouslyFoundSettings{$commandStorageName} }{optionalArgumentsIndentation};
 
+    my $lookForAlignDelims = (
+        defined ${ $previouslyFoundSettings{$commandStorageName} }{lookForAlignDelims}
+        ? ${ $previouslyFoundSettings{ $name . $modifyLineBreaksName } }{lookForAlignDelims}
+        : 0
+    );
+
     $body =~ s|\G$allArgumentRegEx$mSwitchOnlyTrailing|
        # mandatory or optional argument?
        my $mandatoryArgument = ($+{MANDARGBEGIN}?1:0);
@@ -1116,7 +1190,7 @@ sub _indent_all_args {
        #
        # m switch linebreak adjustment
        #
-       if ($is_m_switch_active){
+       if ($is_m_switch_active or $lookForAlignDelims ){
 
           my $argType = ($mandatoryArgument ? "mand" : "opt");
 
@@ -1149,6 +1223,15 @@ sub _indent_all_args {
           # after end statements
           my $EndFinishesWithLineBreak=${${$previouslyFoundSettings{$commandStorageName}}{mand}}{RCuBFinishesWithLineBreak};
 
+          # DBSStartsOnOwnLine, DBSFinishesWithLineBreak
+          my $DBSStartsOnOwnLine= 
+            (defined ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{DBSStartsOnOwnLine}?
+            ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{DBSStartsOnOwnLine}: 0);
+
+          my $DBSFinishesWithLineBreak= 
+            (defined ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{DBSFinishesWithLineBreak}?
+            ${${$previouslyFoundSettings{$commandStorageName}}{$argType}}{DBSFinishesWithLineBreak}: 0);
+
           if (!$mandatoryArgument){
              # begin statements
              $BeginStartsOnOwnLine=${${$previouslyFoundSettings{$commandStorageName}}{opt}}{LSqBStartsOnOwnLine};
@@ -1169,6 +1252,7 @@ sub _indent_all_args {
                                                 begin=>$begin,                                       # begin statement
                                                 body=>$argBody,                                      # body  statement
                                                 end=>$end,                                           # end   statement
+                                                name=>$name,
                                                 modifyLineBreaksName=>$modifyLineBreaksName,
                                                 modifyLineBreaksYamlName=>$argType."Arguments",
                                                 type=>"argument",
@@ -1176,6 +1260,8 @@ sub _indent_all_args {
                                                 BodyStartsOnOwnLine=>$BodyStartsOnOwnLine,           # body      poly-switch
                                                 EndStartsOnOwnLine=>$EndStartsOnOwnLine,             # end       poly-switch
                                                 EndFinishesWithLineBreak=>$EndFinishesWithLineBreak, # after end poly-switch
+                                                DBSStartsOnOwnLine=>$DBSStartsOnOwnLine, 
+                                                DBSFinishesWithLineBreak=>$DBSFinishesWithLineBreak,
                                                 horizontalTrailingSpace=>$horizontalTrailingSpace,
                                                 trailingComment=>$trailingComment,
                                                 linebreaksAtEnd=>{
@@ -1183,15 +1269,21 @@ sub _indent_all_args {
                                                 },
                             );
 
-            $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
+            # poly-switch
+            if($is_m_switch_active){
+               $logger->trace("*-m switch poly-switch line break adjustment ($commandStorageName, arg-type $argType)") if $is_t_switch_active;
 
-            $argument->_mlb_begin_starts_on_own_line if ${$argument}{BeginStartsOnOwnLine} != 0;  
+               $argument->_mlb_begin_starts_on_own_line if ${$argument}{BeginStartsOnOwnLine} != 0;  
+               $argument->_mlb_body_starts_on_own_line if ${$argument}{BodyStartsOnOwnLine} != 0;  
+               $argument->_mlb_end_starts_on_own_line if ${$argument}{EndStartsOnOwnLine} != 0;
+               $argument->_mlb_end_finishes_with_line_break;
+            }
 
-            $argument->_mlb_body_starts_on_own_line if ${$argument}{BodyStartsOnOwnLine} != 0;  
-
-            $argument->_mlb_end_starts_on_own_line if ${$argument}{EndStartsOnOwnLine} != 0;
-
-            $argument->_mlb_end_finishes_with_line_break;
+            # align at ampersand
+            if ($lookForAlignDelims){
+               $argument->yaml_get_alignment_at_ampersand_from_parent($commandStorageName);
+               $argument->align_at_ampersand;
+            }
 
             # get updated begin, body, end
             $begin = ${$argument}{begin};
@@ -1453,7 +1545,7 @@ sub _find_ifelsefi_else_or {
 #
 sub _find_env_items {
     my ( $body, $name, $modifyLineBreaksName, $currentIndentation ) = @_;
-    $logger->trace("looking for items for $name")                        if $is_t_switch_active;
+    $logger->trace("looking for items for $name")                           if $is_t_switch_active;
     $logger->trace( ${ ${ $mainSettings{fineTuning} }{items} }{itemRegEx} ) if $is_t_switch_active;
 
     my $itemRegEx = qr{
@@ -1479,7 +1571,7 @@ sub _find_env_items {
     #   the ELSE/OR statements need finding regardless of
     #   whether the m-switch is active
     #
-    my $commandStorageName           = $name . $modifyLineBreaksName;
+    my $commandStorageName = $name . $modifyLineBreaksName;
 
     $body =~ s/$itemRegEx/
                     my $begin = $1.$+{ITEMBEGIN};
@@ -1565,13 +1657,14 @@ sub _find_env_items {
                     $begin.$body.$end;/sgex;
 
     # final m switch adjustment
-    if ($is_m_switch_active){
+    if ($is_m_switch_active) {
+
         # itemStartsOnOwnline == 2 needs care, see, for example, items1-mod5
         #
         # mSwitchComment
         # \item
         $body =~ s/\R\h*$tokens{mSwitchComment}\R(\h*${${$mainSettings{fineTuning}}{items}}{itemRegEx})/\n$1/sg;
-        
+
         # items5-mod5.tex
         $body =~ s/^$tokens{mSwitchComment}\R(\h*${${$mainSettings{fineTuning}}{items}}{itemRegEx})/$1/s;
 

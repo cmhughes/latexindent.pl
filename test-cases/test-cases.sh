@@ -1,9 +1,10 @@
 #!/bin/bash
-
+#----------------------------------------------------------------------
 # latexindent.pl test-cases script to ensure that, as much as possible, 
 # the script behaves as intended.
+#----------------------------------------------------------------------
 #
-# Sample usage
+# sample usage
 #   ./test-cases.sh 
 #   ./test-cases.sh -a              # do *all* test cases (toggles bench mark and file extension switches)
 #   ./test-cases.sh -b              # do the benchmark test cases
@@ -15,8 +16,8 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 2800
-# total number of test cases last updated: 2025-05-12
+# total number of test cases: 3151
+# total number of test cases last updated: 2025-12-30
 #-----------------------------
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -125,7 +126,7 @@ dirExec=(
   "ifelsefi;ifelsefi-test-cases.sh"
   "items;items-test-cases.sh"
   "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
-  # "alignment;alignment-test-cases.sh" 
+  "alignment;alignment-test-cases.sh" 
   # "headings;headings-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
@@ -178,6 +179,9 @@ do
 
   # check log files for errors
   egrep -i --color=auto 'Use of uninitialized value' latexindent-count.log
+  egrep -i --color=auto 'BEGIN failed--compilation aborted' latexindent-count.log
+  egrep -i --color=auto 'Compilation failed in require' latexindent-count.log
+  egrep -i --color=auto 'Global symbol' latexindent-count.log
 
   echo -e "./$directory/${BGreen}$executable SUCCESS ($dirExecCount of $dirExecCountTotal) [$currentCount tests]${COLOR_OFF}\r"
 

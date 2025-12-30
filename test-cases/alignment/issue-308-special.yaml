@@ -3,5 +3,10 @@ lookForAlignDelims:
   displayMath: 
     dontMeasure: largest
 
-specialBeginEnd:
-    specialBeforeCommand: 1
+fineTuning:
+  arguments:
+    between: |-                               #
+      (?x)                                    #
+      (?:                                     # 
+        [_^*#0-9(),+-<>]                      #
+      )                                       #
