@@ -4,4 +4,5 @@ INFO:  Output routine:
        Not outputting to file; see -w and -o switches for more options.
        --------------
 INFO:  Please direct all communication/issues to:
-        https://github.com/cmhughes/latexindent.pl
+       https://github.com/cmhughes/latexindent.pl
+       documentation: https://latexindentpl.readthedocs.io/en/latest/

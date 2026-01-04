@@ -1,5 +1,4 @@
 #!/bin/bash
-loopmax=4
 . ../common.sh
 
 openingtasks

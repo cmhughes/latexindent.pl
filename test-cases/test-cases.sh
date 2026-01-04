@@ -16,7 +16,7 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 3186
+# total number of test cases: 3190
 # total number of test cases last updated: 2026-01-04
 #-----------------------------
 
@@ -128,7 +128,7 @@ dirExec=(
   "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
   "alignment;alignment-test-cases.sh" 
   "headings;headings-test-cases.sh"
-  # "back-up-tests;back-up-tests.sh"
+  "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"
   # "tokenChecks;token-checks.sh"
