@@ -260,6 +260,16 @@ specialBeginEnd:
 # you can also change the level if you like,
 # or add your own title command
 indentAfterHeadings:
+  # wishlist                  <!----------------
+  # (1) change                <!----------------
+  #     indentAfterThisHeading: 0
+  # into
+  #     lookForThis: 0
+  # but still support old syntax, 
+  # with warning to logfile
+  #
+  # (2) support                <!----------------
+  #     type: regex
   part:
     indentAfterThisHeading: 0
     level: 1

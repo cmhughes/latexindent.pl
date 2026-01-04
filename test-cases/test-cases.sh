@@ -16,8 +16,8 @@
 #   ./test-cases.sh -s              # silent mode, don't echo the latexindent command
 #
 #-----------------------------
-# total number of test cases: 3151
-# total number of test cases last updated: 2025-12-30
+# total number of test cases: 3186
+# total number of test cases last updated: 2026-01-04
 #-----------------------------
 
 # https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
@@ -127,7 +127,7 @@ dirExec=(
   "items;items-test-cases.sh"
   "poly-switch-blank-line;poly-switch-blank-line-test-cases.sh"
   "alignment;alignment-test-cases.sh" 
-  # "headings;headings-test-cases.sh"
+  "headings;headings-test-cases.sh"
   # "back-up-tests;back-up-tests.sh"
   # "path-tests;path-tests.sh"
   # "diacritics;diacritics-test-cases.sh"

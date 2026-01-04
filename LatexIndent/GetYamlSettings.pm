@@ -1099,7 +1099,8 @@ sub yaml_get_indentation_settings_for_this_object {
         my $name = ${$self}{name};
 
         # check for noAdditionalIndent OR indentRules OR defaultIndent
-        my $indentation = $self->yaml_get_indentation_information( thing => "body" );
+        my $indentationAttribute = (${$self}{modifyLineBreaksYamlName} eq "afterHeading" ? "afterHeading" : "body");
+        my $indentation = $self->yaml_get_indentation_information( thing => $indentationAttribute );
 
         # check for alignment at ampersand settings
         $self->yaml_alignment_at_ampersand_settings;
@@ -1229,6 +1230,11 @@ sub yaml_get_indentation_settings_for_this_object {
             ${ ${previouslyFoundSettings}{$storageName} }{ ${$_}{name} } = ${$self}{ ${$_}{name} }
                 if ( defined ${$self}{ ${$_}{name} } );
         }
+
+    # headings
+    if ( ${$self}{modifyLineBreaksYamlName} eq 'afterHeading' and defined ${$self}{blocksEndBefore} ) {
+        @{ ${$self}{additionalAssignments} } = ( "blocksEndBefore");
+    }
 
         # some objects, e.g ifElseFi, can have extra assignments, e.g ElseStartsOnOwnLine
         # these need to be stored as well!
@@ -1407,7 +1413,7 @@ sub yaml_modify_line_breaks_settings {
         push( @toBeAssignedTo,
             ( "ElseStartsOnOwnLine", "ElseFinishesWithLineBreak", "OrStartsOnOwnLine", "OrFinishesWithLineBreak" ) );
     }
-
+    
     # we can efficiently loop through the following
     foreach (@toBeAssignedTo) {
         $self->yaml_poly_switch_get_every_or_custom_value(
@@ -1512,8 +1518,12 @@ sub yaml_get_indentation_information {
         if ( defined ${ $mainSettings{$indentationAbout} }{$name} ) {
             if ( ref ${ $mainSettings{$indentationAbout} }{$name} eq "HASH" ) {
                 $logger->trace(
-                    "$indentationAbout indentation specified with multiple fields for $name, searching for $name: $YamlName (see $indentationAbout)"
+                    "$indentationAbout indentation specified with multiple fields for $name (see $indentationAbout)"
                 ) if $is_t_switch_active;
+                $logger->trace(
+                    "searching for $indentationAbout: $name: $YamlName"
+                ) if $is_t_switch_active;
+                $logger->trace( Dumper( \%{${ $mainSettings{$indentationAbout} }{$name} }) ) if $is_t_switch_active;
                 $indentationInformation = ${ ${ $mainSettings{$indentationAbout} }{$name} }{$YamlName};
             }
             else {

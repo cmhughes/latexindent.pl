@@ -2,15 +2,27 @@ indentAfterHeadings:
     part:
        indentAfterThisHeading: 1
        level: 1
+       blocksEndBefore: |-
+         (?x)
+           \\end\{myenv\}
     chapter: 
        indentAfterThisHeading: 1
        level: 2
+       blocksEndBefore: |-
+         (?x)
+           \\end\{myenv\}
     section:
        indentAfterThisHeading: 1
        level: 3
+       blocksEndBefore: |-
+         (?x)
+           \\end\{myenv\}
     subsection:
        indentAfterThisHeading: 1
        level: 4
+       blocksEndBefore: |-
+         (?x)
+           \\end\{myenv\}
     subsection*:
        indentAfterThisHeading: 1
        level: 4

@@ -70,7 +70,7 @@ use LatexIndent::NamedGroupingBracesBrackets   qw/construct_grouping_braces_brac
 use LatexIndent::UnNamedGroupingBracesBrackets qw/construct_unnamed_grouping_braces_brackets_regexp/;
 use LatexIndent::Special
     qw/find_special construct_special_begin $specialBeginAndBracesBracketsBasicRegExp $specialBeginBasicRegExp/;
-use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHeadingsRegexp/;
+use LatexIndent::Heading      qw/find_heading construct_headings_levels $allHeadingsRegexp after_heading_indentation/;
 use LatexIndent::FileContents qw/find_file_contents_environments_and_preamble/;
 
 use LatexIndent::UTF8CmdLineArgsFileOperation
@@ -197,9 +197,15 @@ sub operate_on_file {
 
         $self->_align_mark_down_block
             if $alignMarkUpBlockPresent;    # marked-up alignment blocks: %*\begin{tabular}...%*\end{tabular}
+
+        # ---------- main code blocks  -------------------
         ${$self}{body} = _find_all_code_blocks( ${$self}{body}, "" );
         ${$self}{body} =~ s/\r\n/\n/sg             if $mainSettings{dos2unixlinebreaks};
         $self->_mlb_after_indentation_token_adjust if $is_m_switch_active;
+
+        # ---------- headings -------------------
+        $self->find_heading; 
+
         $self->condense_blank_lines
             if ( $is_m_switch_active and ${ $mainSettings{modifyLineBreaks} }{condenseMultipleBlankLinesInto} );
         $self->unprotect_blank_lines
@@ -224,12 +230,12 @@ sub construct_regular_expressions {
     my $self = shift;
     $self->construct_trailing_comment_regexp;
     $self->_construct_code_blocks_regex;
+    $self->construct_headings_levels;                          # to be ditched
 
     # $self->construct_environments_regexp;                      # to be ditched
     # $self->construct_ifelsefi_regexp;                          # to be ditched
     # $self->construct_list_of_items;                            # to be ditched
     # $self->construct_special_begin;                            # to be ditched
-    # $self->construct_headings_levels;                          # to be ditched
     # $self->construct_arguments_regexp;                         # to be ditched
     # $self->construct_key_equals_values_regexp;                 # to be ditched
     # $self->construct_grouping_braces_brackets_regexp;          # to be ditched

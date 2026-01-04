@@ -131,8 +131,8 @@ sub find_file_contents_environments_and_preamble {
     my $preambleRegExp = qr/
                         (
                          .*?
-                         \\begin\{document\}
                         )
+                        \\begin\{document\}
                 /sx;
     my $preamble = q();
 
@@ -174,7 +174,7 @@ sub find_file_contents_environments_and_preamble {
         $verbatimStorage{ ${$verbatimBlock}{id} } = $verbatimBlock;
 
         # remove the special block, and replace with unique ID
-        ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}/sx;
+        ${$self}{body} =~ s/$preambleRegExp/${$verbatimBlock}{replacementText}\\begin{document}/sx;
 
         # log file output
         $logger->trace("*found: preamble, storing as verbatim (indentPreamble: 0)") if $is_t_switch_active;

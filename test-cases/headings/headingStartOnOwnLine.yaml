@@ -9,3 +9,21 @@ modifyLineBreaks:
         RCuBFinishesWithLineBreak: 1
         emph:
             RCuBFinishesWithLineBreak: 0
+
+indentAfterHeadings:
+  part:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}
+  chapter:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}
+  section:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}
+  subsection:
+    blocksEndBefore: |-
+      (?x)
+        \\end\{myenv\}
